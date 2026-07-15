@@ -8,7 +8,7 @@ Create one reusable aftermath framework that can be called by gradual Air collap
 
 This document records both the required architecture and the current implementation boundary. The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain design authority.
 
-The live foundation includes the request envelope, once-per-date project coordinator, schema-10 migration gate, transactional blackout lock, Air Winter-owned snapshot provenance, frozen live category capture, blackout phase events, row-proven snapshot, grading, population-loss, and physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
+The live foundation includes the request envelope, once-per-date project coordinator, schema-11 transition with a guarded schema-10 migration gate, transactional blackout lock, Air Winter-owned snapshot provenance, frozen live category capture, blackout phase events, row-proven snapshot, grading, population-loss, and physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, formula-neutral survival identity staging, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
 
 The transition is not complete. General successor allocation, country-package producers, focus-package producers, player-successor materialization, and candidate-choice UI are not implemented. A player can be committed only to an already existing target with current-transition packages and an exact valid reservation. Immediate `is_ai` observation after `change_tag_from` remains statically unresolved. The old-world diplomacy proof gate is also unresolved. Map return therefore remains intentionally fail closed.
 
@@ -177,7 +177,7 @@ Live boundary: `fallout_build_successor_conflict_ledger` implements the generati
 
 No allocator calls the transaction initializer or finalizer. No assignment or package producer exists. The transition therefore remains in survivor allocation.
 
-The accepted ordering requires a committed nine-resource survival ledger after final allocation. The live survivor-allocation phase does not yet enforce it. The future proof must cover Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition for every assigned successor and included state. No row contract, numeric initialization, aggregation producer, or transition barrier exists.
+The accepted ordering requires a committed nine-resource survival ledger after final allocation. The survivor-allocation phase now stages a formula-neutral identity transaction and enforces the committed-ledger barrier before player continuation. It covers every assigned successor and every included state through aligned generation and physical-index arrays. State rows freeze snapshot, Air Winter, grading, population, rewrite, supply, and owner provenance. Country rows freeze allocation, state-count, region, archetype, and country-memory provenance. Numerical row producers, aggregation, validation, row commits, and the ready setter remain absent.
 
 ### `fallout_apply_country_packages`
 
@@ -185,7 +185,7 @@ Applies country identity, politics, ideas, units, focus tree, AI, and starting m
 
 ### `fallout_initialize_survival_ledger`
 
-This required future producer runs after successor allocation and package assignment but before player continuation. It stores immutable initial values, raw numerators and denominators, and separate mutable values for all nine resources. The global commit must match the current transition generation and exact finalized successor count. No starting formula or value is approved, so no implementation may write the ready flag yet.
+The live formula-neutral stage runs after successor allocation and package assignment but before player continuation. The future numerical producer must fill state raw rows and country raw, immutable initial, and mutable values for all nine resources. The global commit must match the current transition generation, exact finalized successor count, and exact included-state set. No starting formula or value is approved, so no implementation writes the ready flag.
 
 ### `fallout_select_player_continuation`
 
@@ -228,18 +228,21 @@ After destructive rewrite begins, the system must finish or enter a dedicated re
 
 ## Live save migration boundary
 
-The current schema is version 10 and migration is deliberately fail closed.
+The current schema is version 11 and migration is deliberately fail closed.
 
-- A completed old Fallout save is promoted non-destructively and marked as lacking current-schema row receipts. No state receipt is fabricated.
-- An active schema-7, schema-8, or schema-9 transition may rebuild only in the snapshot phase, before snapshot application or destruction, and when no unrelated error owns the ledger.
-- The schema-7, schema-8, and schema-9 rebuild discards and recreates both snapshot halves through the schema-10 producer and live-category contract.
-- Every later active legacy state remains under blackout with schema migration blocked.
-- An incomplete terminal save with no schema also remains under blackout with schema migration blocked.
+- Completed schema-10 and older saves are promoted non-destructively and marked as lacking current-schema and supply-network receipts. No state receipt is fabricated.
+- Active schema-7, schema-8, schema-9, and schema-10 transitions may rebuild only in the snapshot phase, before snapshot application or destruction, and without an unrelated error.
+- An active schema-10 phase 2 transition may promote before grading mutation.
+- An active schema-10 phase 3 through 6 transition may promote only before allocation, with current grading, and with exact live-to-frozen supply-network equality for every destructive-grade state.
+- Promoted phase 5 or 6 transitions rewind to physical collapse and discard derived government and conflict rows.
+- Schema-10 phase 7 or 8 saves and saves with initialized allocation remain blocked.
+- Completed legacy saves receive no fabricated receipts and do not replay destruction.
+- An incomplete terminal save with no schema remains under blackout with migration blocked.
 - The former schema-3 map-return-error promotion is removed because its consumed rows cannot receive trustworthy provenance retrospectively.
 - Migration does not treat a missing `fallout_transition_destructive_started` flag as proof that a legacy state is safe to restart.
 - No generic pre-destructive restart and no legacy altered-grade replay are active behavior.
 
-Schema 10 makes snapshot and destructive-phase completion proof results. Player and world rows are captured and retried as one epoch. Air Winter opens a distinct producer generation for every attempt. Valid states must pass canonical initialization, normalization, and exact live-to-frozen comparison. Invalid states receive a typed N/A row without initialization. Every state also freezes its live category through a separate enum and `has_state_category` match. The historical Air Winter category is retained for provenance and classification only. Exact live owner, controller, Air Winter payload, and live category equality are required while capture is being accepted. The request coordinator commits blackout and world-end ownership only after both snapshot halves pass. Air Winter mutation then pauses while the transition is active. Grading cannot begin unless both snapshot ledgers pass their structural current-row proofs. Grading failures rebuild safe derived rows. Population, building, and category issue flags are written before their one permitted mutation. Recovery observes and reconciles those transactions without applying loss again. Map return uses generation-bound durable receipts, so later normal demographic or construction change does not invalidate completed destruction. Modifier recovery removes and rebuilds Fallout-owned modifiers. Each phase can re-enter only with its matching one-error signature. Schema 10 also applies the approved `market_access_rights` cancellation token across every country pair and validates global absence through `has_market_access_with` before the diplomacy gate can pass.
+Schema 11 makes snapshot and destructive-phase completion proof results. Player and world rows are captured and retried as one epoch. Air Winter opens a distinct producer generation for every attempt. Valid states must pass canonical initialization, normalization, and exact live-to-frozen comparison. Invalid states receive a typed N/A row without initialization. Every state also freezes its live category through a separate enum and `has_state_category` match. The historical Air Winter category is retained for provenance and classification only. Exact live owner, controller, Air Winter payload, and live category equality are required while capture is being accepted. The request coordinator commits blackout and world-end ownership only after both snapshot halves pass. Air Winter mutation then pauses while the transition is active. Grading cannot begin unless both snapshot ledgers pass their structural current-row proofs. Grading failures rebuild safe derived rows. Population, building, category, and supply-network issue flags are written before their permitted mutation. Recovery observes and reconciles those transactions without applying loss again. Map return uses generation-bound durable receipts, so later normal demographic or construction change does not invalidate completed destruction. Modifier recovery removes and rebuilds Fallout-owned modifiers. Each phase can re-enter only with its matching one-error signature. Schema 11 applies the approved `market_access_rights` cancellation token across every country pair, validates global absence through `has_market_access_with`, and binds province supply-network collapse receipts to the current generation before the diplomacy and map-return gates can pass.
 
 This narrow recovery rule prevents the current transition from mixing its snapshot and phase ledgers with an ambiguous legacy rewrite.
 

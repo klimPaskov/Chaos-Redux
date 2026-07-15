@@ -166,10 +166,61 @@ fallout_event_registry_country_identity_is_current = {
 	fallout_event_registry_arrays_are_aligned = yes
 }
 
+# Supported scope: COUNTRY. The scheduler and survival ledgers are frozen from
+# the same finalized allocation order. This proves the exact matching row.
+fallout_event_registry_country_survival_binding_is_current = {
+	has_variable = fallout_event_registry_index
+	has_variable = global.fallout_survival_ledger_country_count
+	NOT = { check_variable = { fallout_event_registry_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = {
+		var = fallout_event_registry_index
+		value = global.fallout_survival_ledger_country_count
+		compare = less_than
+	}
+	fallout_survival_country_resource_row_is_durable = yes
+	check_variable = {
+		var = fallout_survival_country_generation
+		value = global.fallout_survival_ledger_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_survival_country_source_allocation_schema
+		value = global.fallout_survival_ledger_source_allocation_schema
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_survival_country_source_allocation_generation
+		value = global.fallout_survival_ledger_source_allocation_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_survival_country_index
+		value = fallout_event_registry_index
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_survival_ledger_country_generation_entries^fallout_event_registry_index
+		value = global.fallout_survival_ledger_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_survival_ledger_country_index_entries^fallout_event_registry_index
+		value = fallout_event_registry_index
+		compare = equals
+	}
+	set_temp_variable = { fallout_event_registry_survival_context_loaded = constant:fallout_event_runtime.zero }
+	var:global.fallout_survival_ledger_countries^fallout_event_registry_index = {
+		set_temp_variable = { fallout_event_registry_survival_context_loaded = constant:fallout_event_runtime.one }
+		tag = PREV
+	}
+	check_variable = { fallout_event_registry_survival_context_loaded = constant:fallout_event_runtime.one }
+}
+
 # Supported scope: COUNTRY. The stored index must resolve back to this exact
 # country and every generation-bound runtime receipt must remain current.
 fallout_event_registry_country_row_is_current = {
 	fallout_event_registry_country_identity_is_current = yes
+	fallout_event_registry_country_survival_binding_is_current = yes
 	fallout_event_country_runtime_row_is_current = yes
 }
 
@@ -181,6 +232,9 @@ fallout_event_registry_header_payload_is_current = {
 	has_variable = global.fallout_event_registry_generation
 	has_variable = global.fallout_event_registry_count
 	has_variable = global.fallout_event_registry_source_count
+	has_variable = global.fallout_event_registry_survival_schema
+	has_variable = global.fallout_event_registry_survival_generation
+	has_variable = global.fallout_event_registry_survival_country_count
 	has_variable = global.fallout_event_registry_cursor
 	has_variable = global.fallout_event_registry_initialized_date
 	has_variable = global.fallout_event_registry_initialized_day
@@ -188,6 +242,10 @@ fallout_event_registry_header_payload_is_current = {
 	has_variable = global.fallout_event_next_ticket_id
 	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
 	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+	fallout_survival_ledger_header_is_current = yes
+	check_variable = { var = global.fallout_event_registry_survival_schema value = global.fallout_survival_ledger_schema_version compare = equals }
+	check_variable = { var = global.fallout_event_registry_survival_generation value = global.fallout_survival_ledger_generation compare = equals }
+	check_variable = { var = global.fallout_event_registry_survival_country_count value = global.fallout_survival_ledger_country_count compare = equals }
 	check_variable = {
 		var = global.fallout_event_ticket_generation
 		value = global.fallout_transition_generation
@@ -203,6 +261,11 @@ fallout_event_registry_header_payload_is_current = {
 	check_variable = {
 		var = global.fallout_event_registry_count
 		value = global.fallout_event_registry_source_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_survival_ledger_country_count
 		compare = equals
 	}
 	check_variable = {
@@ -1472,8 +1535,11 @@ fallout_event_legacy_registry_header_payload_is_current = {
 	has_variable = global.fallout_event_registry_initialized_day
 	NOT = { has_variable = global.fallout_event_ticket_generation }
 	NOT = { has_variable = global.fallout_event_next_ticket_id }
+	NOT = { has_variable = global.fallout_event_registry_survival_schema }
+	NOT = { has_variable = global.fallout_event_registry_survival_generation }
+	NOT = { has_variable = global.fallout_event_registry_survival_country_count }
 	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
-	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
 	check_variable = {
 		var = global.fallout_event_registry_generation
 		value = global.fallout_transition_generation
@@ -1483,6 +1549,11 @@ fallout_event_legacy_registry_header_payload_is_current = {
 	check_variable = {
 		var = global.fallout_event_registry_count
 		value = global.fallout_event_registry_source_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_survival_ledger_country_count
 		compare = equals
 	}
 	check_variable = {
@@ -1550,6 +1621,7 @@ fallout_event_legacy_registry_country_row_is_current = {
 		value = fallout_event_registry_index
 		compare = equals
 	}
+	fallout_event_registry_country_survival_binding_is_current = yes
 	fallout_event_legacy_empty_transaction_row_can_migrate = yes
 }
 
@@ -1595,7 +1667,95 @@ fallout_event_dormant_transaction_schema_migration_is_allowed = {
 	NOT = { has_global_flag = fallout_event_scheduler_active }
 	NOT = { has_global_flag = fallout_event_scheduler_error }
 	fallout_event_map_return_receipts_are_current = yes
+	fallout_survival_ledger_is_current = yes
 	fallout_event_legacy_registry_payload_is_current = yes
+}
+
+# Supported scope: COUNTRY coordinator. This is the narrow migration shape for
+# a current runtime schema whose registry predates survival binding receipts.
+fallout_event_unbound_current_registry_header_payload_is_current = {
+	has_variable = global.fallout_transition_generation
+	has_variable = global.fallout_event_schema_version
+	has_variable = global.fallout_event_registry_schema_version
+	has_variable = global.fallout_event_registry_generation
+	has_variable = global.fallout_event_registry_count
+	has_variable = global.fallout_event_registry_source_count
+	has_variable = global.fallout_event_registry_cursor
+	has_variable = global.fallout_event_registry_initialized_date
+	has_variable = global.fallout_event_registry_initialized_day
+	has_variable = global.fallout_event_ticket_generation
+	has_variable = global.fallout_event_next_ticket_id
+	NOT = { has_variable = global.fallout_event_registry_survival_schema }
+	NOT = { has_variable = global.fallout_event_registry_survival_generation }
+	NOT = { has_variable = global.fallout_event_registry_survival_country_count }
+	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
+	fallout_survival_ledger_header_is_current = yes
+	check_variable = { var = global.fallout_event_ticket_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { global.fallout_event_next_ticket_id > constant:fallout_event_runtime.no_ticket }
+	check_variable = { var = global.fallout_event_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { global.fallout_event_registry_count > constant:fallout_event_runtime.zero }
+	check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_source_count compare = equals }
+	check_variable = { var = global.fallout_event_registry_count value = global.fallout_survival_ledger_country_count compare = equals }
+	check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_countries^num compare = equals }
+	check_variable = { var = global.fallout_event_registry_source_count value = global.fallout_successor_assigned_countries^num compare = equals }
+	NOT = { check_variable = { global.fallout_event_registry_cursor < constant:fallout_event_runtime.first_array_index } }
+	check_variable = { var = global.fallout_event_registry_cursor value = global.fallout_event_registry_count compare = less_than }
+	NOT = { check_variable = { var = global.fallout_event_registry_initialized_date value = global.date compare = greater_than } }
+	NOT = { check_variable = { var = global.fallout_event_registry_initialized_day value = global.num_days compare = greater_than } }
+	fallout_event_registry_arrays_are_aligned = yes
+}
+
+# Supported scope: COUNTRY coordinator. Every current runtime row and both
+# frozen allocation arrays must already agree before the binding is written.
+fallout_event_unbound_current_registry_payload_is_current = {
+	fallout_event_unbound_current_registry_header_payload_is_current = yes
+	all_of = {
+		array = global.fallout_event_registry_index_entries
+		value = fallout_event_unbound_registry_stored_index
+		index = fallout_event_unbound_registry_payload_index
+		set_temp_variable = { fallout_event_unbound_registry_country_context_loaded = constant:fallout_event_runtime.zero }
+		check_variable = { var = fallout_event_unbound_registry_stored_index value = fallout_event_unbound_registry_payload_index compare = equals }
+		var:global.fallout_event_registry_countries^fallout_event_unbound_registry_payload_index = {
+			set_temp_variable = { fallout_event_unbound_registry_country_context_loaded = constant:fallout_event_runtime.one }
+			check_variable = { var = fallout_event_registry_index value = fallout_event_unbound_registry_payload_index compare = equals }
+			is_in_array = { array = global.fallout_successor_assigned_countries value = THIS }
+			fallout_event_registry_country_identity_is_current = yes
+			fallout_event_registry_country_survival_binding_is_current = yes
+			fallout_event_country_runtime_row_is_current = yes
+		}
+		check_variable = { fallout_event_unbound_registry_country_context_loaded = constant:fallout_event_runtime.one }
+	}
+	all_of = {
+		array = global.fallout_successor_assigned_countries
+		value = fallout_event_unbound_registry_source_country
+		set_temp_variable = { fallout_event_unbound_registry_source_context_loaded = constant:fallout_event_runtime.zero }
+		var:fallout_event_unbound_registry_source_country = {
+			set_temp_variable = { fallout_event_unbound_registry_source_context_loaded = constant:fallout_event_runtime.one }
+			is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+		}
+		check_variable = { fallout_event_unbound_registry_source_context_loaded = constant:fallout_event_runtime.one }
+	}
+	all_of = {
+		array = global.fallout_survival_ledger_countries
+		value = fallout_event_unbound_registry_survival_country
+		set_temp_variable = { fallout_event_unbound_registry_survival_context_loaded = constant:fallout_event_runtime.zero }
+		var:fallout_event_unbound_registry_survival_country = {
+			set_temp_variable = { fallout_event_unbound_registry_survival_context_loaded = constant:fallout_event_runtime.one }
+			is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+		}
+		check_variable = { fallout_event_unbound_registry_survival_context_loaded = constant:fallout_event_runtime.one }
+	}
+}
+
+fallout_event_registry_survival_binding_migration_is_allowed = {
+	has_global_flag = fallout_event_scheduler_registry_ready
+	NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
+	NOT = { has_global_flag = fallout_event_scheduler_active }
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+	fallout_event_map_return_receipts_are_current = yes
+	fallout_survival_ledger_is_current = yes
+	fallout_event_unbound_current_registry_payload_is_current = yes
 }
 
 # Supported scope: COUNTRY

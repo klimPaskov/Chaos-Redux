@@ -1,0 +1,178 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT SURVIVAL LEDGER EFFECTS
+# ============================================================================
+# This file stages the exact allocation identity and immutable producer
+# provenance for the nine-resource Fallout survival transaction. Numerical
+# resource providers and the ready-flag commit effect are deliberately absent.
+# ============================================================================
+
+# Supported scope: STATE
+fallout_survival_clear_state_row = {
+	clr_state_flag = fallout_survival_state_identity_staged
+	clr_state_flag = fallout_survival_state_row_committed
+	clear_variable = fallout_survival_state_schema_version
+	clear_variable = fallout_survival_state_generation
+	clear_variable = fallout_survival_state_index
+	clear_variable = fallout_survival_state_owner
+	clear_variable = fallout_survival_state_source_snapshot_generation
+	clear_variable = fallout_survival_state_source_air_winter_schema
+	clear_variable = fallout_survival_state_source_air_winter_generation
+	clear_variable = fallout_survival_state_source_air_winter_kind
+	clear_variable = fallout_survival_state_source_grading_generation
+	clear_variable = fallout_survival_state_source_population_generation
+	clear_variable = fallout_survival_state_source_rewrite_generation
+	clear_variable = fallout_survival_state_source_supply_generation
+	clear_array = fallout_survival_state_resource_id_entries
+	clear_array = fallout_survival_state_raw_numerator_entries
+	clear_array = fallout_survival_state_raw_denominator_entries
+	clear_array = fallout_survival_state_equal_share_entries
+}
+
+# Supported scope: COUNTRY
+fallout_survival_clear_country_row = {
+	clr_country_flag = fallout_survival_country_identity_staged
+	clr_country_flag = fallout_survival_country_row_committed
+	clear_variable = fallout_survival_country_schema_version
+	clear_variable = fallout_survival_country_generation
+	clear_variable = fallout_survival_country_index
+	clear_variable = fallout_survival_country_source_allocation_schema
+	clear_variable = fallout_survival_country_source_allocation_generation
+	clear_variable = fallout_survival_country_state_count
+	clear_variable = fallout_survival_country_source_region
+	clear_variable = fallout_survival_country_source_archetype
+	clear_variable = fallout_survival_country_source_memory
+	clear_array = fallout_survival_country_resource_id_entries
+	clear_array = fallout_survival_raw_numerator_entries
+	clear_array = fallout_survival_raw_denominator_entries
+	clear_array = fallout_survival_initial_entries
+	clear_array = fallout_survival_current_entries
+}
+
+# Supported scope: COUNTRY coordinator. A committed ledger is immutable and
+# this reset becomes a no-op once the future ready flag exists.
+fallout_reset_uncommitted_survival_ledger = {
+	if = {
+		limit = { NOT = { has_global_flag = fallout_survival_ledger_ready } }
+		clr_global_flag = fallout_survival_ledger_identity_staged
+		clr_global_flag = fallout_survival_ledger_building
+		for_each_scope_loop = {
+			array = global.fallout_survival_ledger_countries
+			fallout_survival_clear_country_row = yes
+		}
+		clear_array = global.fallout_survival_ledger_countries
+		clear_array = global.fallout_survival_ledger_country_generation_entries
+		clear_array = global.fallout_survival_ledger_country_index_entries
+		clear_array = global.fallout_survival_ledger_states
+		clear_array = global.fallout_survival_ledger_state_generation_entries
+		clear_array = global.fallout_survival_ledger_state_index_entries
+		clear_variable = global.fallout_survival_ledger_schema_version
+		clear_variable = global.fallout_survival_ledger_generation
+		clear_variable = global.fallout_survival_ledger_source_allocation_schema
+		clear_variable = global.fallout_survival_ledger_source_allocation_generation
+		clear_variable = global.fallout_survival_ledger_source_country_count
+		clear_variable = global.fallout_survival_ledger_country_count
+		clear_variable = global.fallout_survival_ledger_source_state_count
+		clear_variable = global.fallout_survival_ledger_state_count
+		clear_variable = global.fallout_survival_ledger_identity_staged_date
+		clear_variable = global.fallout_survival_ledger_identity_staged_day
+		clear_variable = global.fallout_survival_ledger_committed_date
+		clear_variable = global.fallout_survival_ledger_committed_day
+		every_country = { fallout_survival_clear_country_row = yes }
+		every_possible_country = { fallout_survival_clear_country_row = yes }
+		every_state = { fallout_survival_clear_state_row = yes }
+	}
+}
+
+# Supported scope: COUNTRY coordinator. This is the formula-neutral first
+# phase of the survival transaction. It freezes all-and-only allocated country
+# and state identities plus the producer generations required by later math.
+fallout_stage_survival_ledger_identity_transaction = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_survival_ledger_ready }
+			NOT = { has_global_flag = fallout_transition_error }
+			fallout_successor_allocation_is_current = yes
+			NOT = { has_global_flag = fallout_player_continuation_commit_complete }
+		}
+		fallout_reset_uncommitted_survival_ledger = yes
+		set_global_flag = fallout_survival_ledger_building
+		set_variable = { global.fallout_survival_ledger_schema_version = constant:fallout_survival_ledger_schema.version }
+		set_variable = { global.fallout_survival_ledger_generation = global.fallout_transition_generation }
+		set_variable = { global.fallout_survival_ledger_source_allocation_schema = global.fallout_successor_allocation_schema_version }
+		set_variable = { global.fallout_survival_ledger_source_allocation_generation = global.fallout_successor_allocation_generation }
+		set_variable = { global.fallout_survival_ledger_source_country_count = global.fallout_successor_assignment_count }
+		set_variable = { global.fallout_survival_ledger_source_state_count = global.fallout_successor_inventory_state_count }
+		set_temp_variable = { fallout_survival_country_build_index = constant:fallout_runtime.zero }
+		for_each_scope_loop = {
+			array = global.fallout_successor_assigned_countries
+			set_country_flag = fallout_survival_country_identity_staged
+			set_variable = { fallout_survival_country_schema_version = constant:fallout_survival_ledger_schema.version }
+			set_variable = { fallout_survival_country_generation = global.fallout_transition_generation }
+			set_variable = { fallout_survival_country_index = fallout_survival_country_build_index }
+			set_variable = { fallout_survival_country_source_allocation_schema = global.fallout_successor_allocation_schema_version }
+			set_variable = { fallout_survival_country_source_allocation_generation = fallout_successor_assignment_generation }
+			set_variable = { fallout_survival_country_state_count = num_owned_states }
+			set_variable = { fallout_survival_country_source_region = fallout_region_id }
+			set_variable = { fallout_survival_country_source_archetype = fallout_government_archetype }
+			set_variable = { fallout_survival_country_source_memory = fallout_country_memory_id }
+			clear_array = fallout_survival_country_resource_id_entries
+			for_loop_effect = {
+				start = constant:fallout_event_runtime.first_array_index
+				end = constant:fallout_survival_resource.upper_bound
+				value = fallout_survival_resource_build_index
+				add_to_array = {
+					array = fallout_survival_country_resource_id_entries
+					value = fallout_survival_resource_build_index
+				}
+			}
+			add_to_array = { array = global.fallout_survival_ledger_countries value = THIS }
+			add_to_array = { array = global.fallout_survival_ledger_country_generation_entries value = global.fallout_transition_generation }
+			add_to_array = { array = global.fallout_survival_ledger_country_index_entries value = fallout_survival_country_build_index }
+			add_to_temp_variable = { fallout_survival_country_build_index = constant:fallout_runtime.one }
+		}
+		set_temp_variable = { fallout_survival_state_build_index = constant:fallout_runtime.zero }
+		every_state = {
+			set_state_flag = fallout_survival_state_identity_staged
+			set_variable = { fallout_survival_state_schema_version = constant:fallout_survival_ledger_schema.version }
+			set_variable = { fallout_survival_state_generation = global.fallout_transition_generation }
+			set_variable = { fallout_survival_state_index = fallout_survival_state_build_index }
+			set_variable = { fallout_survival_state_owner = OWNER }
+			set_variable = { fallout_survival_state_source_snapshot_generation = fallout_pretransition_snapshot_generation }
+			set_variable = { fallout_survival_state_source_air_winter_schema = fallout_pretransition_air_winter_source_schema_version }
+			set_variable = { fallout_survival_state_source_air_winter_generation = fallout_pretransition_air_winter_source_generation }
+			set_variable = { fallout_survival_state_source_air_winter_kind = fallout_pretransition_air_winter_source_kind }
+			set_variable = { fallout_survival_state_source_grading_generation = fallout_state_grading_generation }
+			set_variable = { fallout_survival_state_source_population_generation = fallout_population_loss_generation }
+			set_variable = { fallout_survival_state_source_rewrite_generation = fallout_state_rewrite_generation }
+			set_variable = { fallout_survival_state_source_supply_generation = fallout_supply_network_collapse_generation }
+			clear_array = fallout_survival_state_resource_id_entries
+			for_loop_effect = {
+				start = constant:fallout_event_runtime.first_array_index
+				end = constant:fallout_survival_resource.upper_bound
+				value = fallout_survival_resource_build_index
+				add_to_array = {
+					array = fallout_survival_state_resource_id_entries
+					value = fallout_survival_resource_build_index
+				}
+			}
+			add_to_array = { array = global.fallout_survival_ledger_states value = THIS }
+			add_to_array = { array = global.fallout_survival_ledger_state_generation_entries value = global.fallout_transition_generation }
+			add_to_array = { array = global.fallout_survival_ledger_state_index_entries value = fallout_survival_state_build_index }
+			add_to_temp_variable = { fallout_survival_state_build_index = constant:fallout_runtime.one }
+		}
+		set_variable = { global.fallout_survival_ledger_country_count = global.fallout_survival_ledger_countries^num }
+		set_variable = { global.fallout_survival_ledger_state_count = global.fallout_survival_ledger_states^num }
+		set_variable = { global.fallout_survival_ledger_identity_staged_date = global.date }
+		set_variable = { global.fallout_survival_ledger_identity_staged_day = global.num_days }
+		if = {
+			limit = { fallout_survival_ledger_identity_payload_is_current = yes }
+			set_global_flag = fallout_survival_ledger_identity_staged
+			clr_global_flag = fallout_survival_ledger_building
+		}
+		else = {
+			set_global_flag = fallout_transition_error
+			set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.survival_ledger_incomplete }
+			add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+		}
+	}
+}

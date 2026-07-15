@@ -292,6 +292,10 @@ fallout_event_migrate_dormant_transaction_schema = {
 			fallout_event_migrate_empty_transaction_row = yes
 		}
 		set_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+		set_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+		set_variable = { global.fallout_event_registry_survival_schema = global.fallout_survival_ledger_schema_version }
+		set_variable = { global.fallout_event_registry_survival_generation = global.fallout_survival_ledger_generation }
+		set_variable = { global.fallout_event_registry_survival_country_count = global.fallout_survival_ledger_country_count }
 		set_variable = { global.fallout_event_ticket_generation = global.fallout_transition_generation }
 		set_variable = { global.fallout_event_next_ticket_id = constant:fallout_event_runtime.first_ticket_id }
 		if = {
@@ -308,6 +312,36 @@ fallout_event_migrate_dormant_transaction_schema = {
 		limit = {
 			has_variable = global.fallout_event_schema_version
 			check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
+		}
+		set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.schema_migration_unproven }
+		fallout_event_register_scheduler_error_if_unowned = yes
+	}
+}
+
+# Supported scope: COUNTRY coordinator. This promotes only a dormant schema-2
+# runtime whose schema-1 registry already matches the committed survival rows.
+fallout_event_migrate_registry_survival_binding = {
+	if = {
+		limit = { fallout_event_registry_survival_binding_migration_is_allowed = yes }
+		set_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+		set_variable = { global.fallout_event_registry_survival_schema = global.fallout_survival_ledger_schema_version }
+		set_variable = { global.fallout_event_registry_survival_generation = global.fallout_survival_ledger_generation }
+		set_variable = { global.fallout_event_registry_survival_country_count = global.fallout_survival_ledger_country_count }
+		if = {
+			limit = { fallout_event_registry_payload_is_current = yes }
+			clr_global_flag = fallout_event_scheduler_initialization_pending
+		}
+		else = {
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.schema_migration_unproven }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = global.fallout_event_schema_version
+			has_variable = global.fallout_event_registry_schema_version
+			check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+			check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
 		}
 		set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.schema_migration_unproven }
 		fallout_event_register_scheduler_error_if_unowned = yes
@@ -467,6 +501,9 @@ fallout_event_reset_uncommitted_registry = {
 	clear_variable = global.fallout_event_registry_generation
 	clear_variable = global.fallout_event_registry_count
 	clear_variable = global.fallout_event_registry_source_count
+	clear_variable = global.fallout_event_registry_survival_schema
+	clear_variable = global.fallout_event_registry_survival_generation
+	clear_variable = global.fallout_event_registry_survival_country_count
 	clear_variable = global.fallout_event_registry_cursor
 	clear_variable = global.fallout_event_registry_initialized_date
 	clear_variable = global.fallout_event_registry_initialized_day
@@ -482,6 +519,9 @@ fallout_event_build_initial_registry = {
 	set_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
 	set_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
 	set_variable = { global.fallout_event_registry_generation = global.fallout_transition_generation }
+	set_variable = { global.fallout_event_registry_survival_schema = global.fallout_survival_ledger_schema_version }
+	set_variable = { global.fallout_event_registry_survival_generation = global.fallout_survival_ledger_generation }
+	set_variable = { global.fallout_event_registry_survival_country_count = global.fallout_survival_ledger_country_count }
 	set_variable = { global.fallout_event_ticket_generation = global.fallout_transition_generation }
 	set_variable = { global.fallout_event_next_ticket_id = constant:fallout_event_runtime.first_ticket_id }
 	set_variable = { global.fallout_event_registry_source_count = global.fallout_successor_assigned_countries^num }
@@ -1048,11 +1088,54 @@ fallout_event_scheduler_reconcile = {
 		if = {
 			limit = {
 				has_global_flag = fallout_event_scheduler_registry_ready
+				OR = {
+					AND = {
+						has_variable = global.fallout_event_schema_version
+						check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
+					}
+					AND = {
+						has_variable = global.fallout_event_registry_schema_version
+						check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
+					}
+				}
+				NOT = { fallout_survival_ledger_is_current = yes }
+				NOT = { has_global_flag = fallout_event_scheduler_error }
+			}
+			set_variable = { global.fallout_event_initialization_status = constant:fallout_event_initialization_status.survival_ledger_pending }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.survival_ledger_not_current }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = fallout_event_scheduler_registry_ready
 				has_variable = global.fallout_event_schema_version
 				check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
+				fallout_survival_ledger_is_current = yes
 				NOT = { has_global_flag = fallout_event_scheduler_error }
 			}
 			fallout_event_migrate_dormant_transaction_schema = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = fallout_event_scheduler_registry_ready
+				has_variable = global.fallout_event_schema_version
+				has_variable = global.fallout_event_registry_schema_version
+				check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+				check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
+				fallout_survival_ledger_is_current = yes
+				NOT = { has_global_flag = fallout_event_scheduler_error }
+			}
+			fallout_event_migrate_registry_survival_binding = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = fallout_event_scheduler_registry_ready
+				NOT = { fallout_survival_ledger_header_is_current = yes }
+				NOT = { has_global_flag = fallout_event_scheduler_error }
+			}
+			set_variable = { global.fallout_event_initialization_status = constant:fallout_event_initialization_status.survival_ledger_pending }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.survival_ledger_not_current }
+			fallout_event_register_scheduler_error_if_unowned = yes
 		}
 		if = {
 			limit = { fallout_event_map_return_receipts_are_current = yes }
@@ -1060,8 +1143,20 @@ fallout_event_scheduler_reconcile = {
 			if = {
 				limit = {
 					has_global_flag = fallout_event_scheduler_initialization_pending
+					NOT = { fallout_survival_ledger_is_current = yes }
+					NOT = { has_global_flag = fallout_event_scheduler_error }
+				}
+				set_variable = { global.fallout_event_initialization_status = constant:fallout_event_initialization_status.survival_ledger_pending }
+				set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.survival_ledger_not_current }
+				fallout_event_register_scheduler_error_if_unowned = yes
+			}
+			if = {
+				limit = {
+					has_global_flag = fallout_event_scheduler_initialization_pending
 					NOT = { has_global_flag = fallout_event_scheduler_registry_ready }
+					NOT = { has_global_flag = fallout_event_scheduler_error }
 					fallout_successor_allocation_is_current = yes
+					fallout_survival_ledger_is_current = yes
 				}
 				fallout_event_build_initial_registry = yes
 			}
