@@ -1,5 +1,7 @@
 # Event 014 Decision and Mission Final Reaudit
 
+> Superseded for current authority by `event014_decision_mission_consolidation_reaudit_2026-07-15.md`. This same-day checkpoint remains historical evidence only.
+
 Date: 2026-07-15
 
 Audit basis: live shared working tree after remediation of the three findings from the earlier Event 014 decision and mission reaudit. The working tree also contained concurrent Event 014 work, so this report treats current source files as authoritative and does not infer ownership from Git status.

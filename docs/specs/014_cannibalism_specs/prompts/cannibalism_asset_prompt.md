@@ -97,7 +97,7 @@ Produce:
 - GIF preview
 - contact sheet
 
-The ordinary Hannibal Lecter portrait remains human-origin but is gaunt, pallid, bloodshot, severely scarred, wet with gore, and visibly crazed, with irregular stained teeth and no actor likeness. Its twelve independently generated frames form a skull-handling action loop in which he raises a human skull and progressively licks blood from it while jaw, tongue, fingers, eyes, posture, and wet gore change.
+Use `gfx/leaders/014_cannibalism/hannibal.dds` directly as the exact ordinary static portrait and as frame `000`. Generate 11 identity-preserving motion states around it: Hannibal Lecter raises a blood-darkened dinner fork, licks the tines, bites the morsel, chews, and returns close to the supplied pose. Jaw, tongue, fingers, eyes, fork, morsel, posture, and painted gore change through genuine generated frames.
 
 ### Wendigo Hannibal
 
@@ -111,7 +111,7 @@ Produce:
 - GIF preview
 - contact sheet
 
-The transformed Hannibal Lecter portrait is dramatically more inhuman, asymmetrical, distorted, and frenzied. Its sixteen independently generated frames use a separate predatory action beat with real changes to anatomy, jaw, eyes, limbs, frost, breath, flesh, and gore. It includes no borrowed sacred or living Indigenous motif.
+Use `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` directly as the exact transformed static portrait and as frame `000`. Generate 15 motion states in the supplied black, bone-white, and red graphic identity: jaw opening, tongue coiling around a skull fragment, bite, crush, chew, and closed-mouth recovery. It includes no borrowed sacred or living Indigenous motif.
 
 Do not create motion through translation, scaling, rotation, blur, recolor, opacity, glow filters, or other one-still transforms. Every meaningful frame state needs real source art.
 
@@ -127,7 +127,7 @@ Produce normal, medium, and small TGA files for:
 
 Keep existing Wendigo base flags unchanged unless the transformation uses an explicit cosmetic tag. Validate dimensions and TGA orientation.
 
-Every flag begins with its own image-generated source composition. Runtime masters must then be flattened to two to four opaque colors with crisp edges. They show only the front-facing flag graphic: no cloth, folds, poles, scenery, perspective, texture, gradients, bevels, shadows, lighting, or mockup framing. Preserve both source and final-runtime contact sheets so the flattening is verifiable.
+Every flag begins with its own image-generated source composition. Runtime masters must then be flattened to three to five opaque colors with crisp edges. They show only the front-facing flag graphic: no cloth, folds, poles, scenery, perspective, texture, gradients, bevels, shadows, lighting, or mockup framing. Preserve both source and final-runtime contact sheets so the flattening is verifiable.
 
 ## Icon package
 

@@ -1,5 +1,7 @@
 # Event 014 Spreadsheet Re-audit
 
+> Superseded for current authority by `event014_spreadsheet_consolidation_reaudit_2026-07-15.md`. This same-day checkpoint remains historical evidence only.
+
 Date: 2026-07-15
 
 Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`

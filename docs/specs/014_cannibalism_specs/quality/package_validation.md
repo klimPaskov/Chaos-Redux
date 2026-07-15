@@ -22,13 +22,13 @@ Status date: 2026-07-15
 - Runtime focus icons: 204 of 204.
 - Runtime idea/modifier textures: 62 of 62.
 - Runtime decision/category textures: 135 of 135, including 38 distinct unified decision icons.
-- Live idea pictures: 37 of 37 registered; the eight repaired icons are unique 68x68 DDS files with independent image-generated sources.
+- Live idea pictures: 37 of 37 registered. The eight repaired icons are unique 68x68 DDS files with independent image-generated sources.
 - Regional warlord portraits: 56 of 56.
 - Achievement assets: 18 triplets, 54 DDS files.
 - Closure package: 21 distinct assets with generated sources, processed finals, runtime DDS files, hashes, and contact sheets.
 - Super-event action images: four distinct 457x328 DDS files.
-- Revealed leader animations: one 12-frame ordinary sheet and one 16-frame transformed sheet, both made from independently generated source frames.
-- Event 014 texture references across nine `.gfx` files: 812 total, 598 unique paths, zero missing files.
+- Revealed leader animations: the static sprites directly register the exact supplied `hannibal.dds` and `hannibal_wendigo.dds` files. One 12-frame ordinary sheet and one 16-frame transformed sheet use those exact portraits as frame `000` and separately image-generated source art for every later motion state. Both play at 12 fps with frame blending.
+- Event 014 texture references across exactly three GFX files, one dedicated registry plus `chaosx_pictures.gfx` and `chaosx_super_events.gfx`: 812 total references, 598 unique existing paths, and 598 unique hashes.
 - Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz OGG and WAV files and a rights/source record. ID 51 is not used by Event 014.
 - The runtime audio inventory is eight files: four OGG and four WAV.
 - No custom subunit or equipment identifiers were added. Existing battalion and equipment surfaces remain in use, so no bespoke unit-counter or equipment art is required. This is a verified scope disposition, not a fallback.
@@ -45,7 +45,7 @@ Status date: 2026-07-15
 
 The evidence above is definition-level, filesystem, source-manifest, and audit evidence. This documentation reconciliation did not launch an in-game runtime session and does not claim runtime scenario testing. The current 2026-07-15 country-package, decision/mission, focus-tree, asset, and documentation evidence reports P0/P1/P2/P3 all zero. The authoritative workbook and update helper record `Events!M15` and `Scenarios!F10` as `Fully Functional`. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint.
 
-The post-remediation asset recheck found 18 exact not-eligible overlay composites with zero pixel mismatches, 54 package/live achievement triplet files with zero mismatches, 14 animation packages with 142 source and 142 processed frames and zero contract gaps, and zero stale claims in the reconciled asset manifests.
+The post-remediation asset recheck found 18 exact not-eligible overlay composites with zero pixel mismatches, 54 package/live achievement triplet files with zero mismatches, 65 separate built-in ImageGen flag masters with 195 unique runtime TGAs, 14 semantic animation packages with 142 source and 142 processed frames and zero contract gaps, and zero stale claims in the reconciled asset manifests.
 
 ## Resolved first-band strategy design
 

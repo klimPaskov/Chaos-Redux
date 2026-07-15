@@ -57,8 +57,8 @@ All non-portrait animation files are rooted at `gfx/interface/animated/014_canni
 
 | Portrait | Frames | Frame size | Sheet size | Static runtime | Sheet runtime |
 | --- | ---: | ---: | ---: | --- | --- |
-| Ordinary revealed Hannibal | 12 | 156x210 | 1872x210 | `gfx/leaders/014_cannibalism/leader_CBL_hannibal_static.dds` | `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds` |
-| Wendigo Hannibal | 16 | 156x210 | 2496x210 | `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_static.dds` | `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds` |
+| Ordinary revealed Hannibal | 12 | 156x210 | 1872x210 | `gfx/leaders/014_cannibalism/hannibal.dds` | `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds` |
+| Wendigo Hannibal | 16 | 156x210 | 2496x210 | `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` | `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds` |
 
 The ordinary portrait is reveal-gated. The transformed portrait is additionally gated by the Wendigo route. Neither portrait may resolve through an early or network GUI surface.
 

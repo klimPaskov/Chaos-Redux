@@ -239,26 +239,24 @@ Completed special projects, prototypes, facilities, scientists, and project prog
 
 ### Visual identity
 
-Hannibal should look like the person who can command the existing warlords.
+Hannibal Lecter's ordinary static identity is fixed by `gfx/leaders/014_cannibalism/hannibal.dds`. That supplied portrait is the exact live static fallback and the identity anchor for every action frame.
 
-Required visual cues:
+Binding visual cues:
 
-- bald or closely shaven head
-- asymmetrical scars that are distinct from every generic warlord
-- heavy fictional blood and gore
-- layered invented rough cloth, hide repairs, scavenged officer material, and a unique ruined command silhouette
-- bloodshot mismatched eyes, irregular stained teeth, pallid damaged skin, and an ecstatic predatory expression
-- a blood-wet skull held and actively licked during the portrait loop
+- exact face, skin tone, bald head, formal black jacket, white shirt, red bow tie, red backdrop, and black branching silhouette from the supplied portrait
+- a disturbing fork, tongue, bite, and chewing action in the animated loop
+- painted blood on the fork, morsel, and mouth while keeping the supplied identity readable
 - strong silhouette at 156 by 210
 - no Wendigo traits in the ordinary portrait
 - no actor likeness
 
 ### Animated portrait behavior
 
-- 12 distinct generated source frames
-- a complete skull-licking action arc: clutch, raise, tongue approach, contact, drag, apex, wet pull-away, second lap, lowering, swallow, and near-rest return
-- jaw, tongue, lips, fingers, wrists, eyes, skull angle, blood trails, shoulders, and cloth folds independently redrawn across the frames
-- static fallback
+- one exact canonical frame `000` and 11 distinct image-generated motion frames
+- a complete fork action arc: attention shift, raise, appraisal, tongue approach, contact, deliberate lick, bite, chew, lower, and near-rest return
+- jaw, tongue, lips, fingers, eyes, fork, morsel, blood marks, shoulders, and clothing are redrawn across the generated states
+- directly registered supplied static fallback
+- 12 fps playback with the vanilla blend-frames effect
 - animation activates only after reveal
 - a transformed still, local mouth composite, or translation/scale/rotation/filter animation is rejected
 

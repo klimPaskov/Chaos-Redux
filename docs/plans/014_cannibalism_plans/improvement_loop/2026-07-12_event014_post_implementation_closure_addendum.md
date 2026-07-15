@@ -27,9 +27,11 @@ Current authority is:
 
 - `docs/specs/014_cannibalism_specs/`
 - `docs/events/014_cannibalism.md`
-- `docs/plans/014_cannibalism_plans/audits/event014_country_package_reaudit_2026-07-15.md`
-- `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_reaudit_2026-07-15.md`
-- `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_consolidation_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_improvement_loop_consolidation_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_documentation_consolidation_reaudit_2026-07-15.md`
 
 Historical implementation evidence includes:
 
@@ -38,7 +40,7 @@ Historical implementation evidence includes:
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_wendigo_preservation_audit.md`
 - `docs/plans/014_cannibalism_plans/014_scripted_system_architecture.md`
 
-This file is an accepted historical implementation addendum under `docs/plans/`. Its accepted behavior is folded into the relevant specification and event documentation. The source specifications, current matrices, and package status supersede checkpoint language in this plan.
+This file is an accepted historical implementation addendum under `docs/plans/`. Its accepted behavior is folded into the relevant specification and event documentation. The source specifications, current matrices, and package status supersede checkpoint language in this plan. Pre-consolidation runtime filenames retained below are historical coordinates and map to the current consolidated loader for their HOI4 schema.
 
 ## Live remediation reconciliation
 

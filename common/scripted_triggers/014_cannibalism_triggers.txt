@@ -1,3 +1,2617 @@
+# Event 014 Cannibalism scripted triggers
+# Consolidated by loader surface. Identifiers, ordering, and gameplay content are preserved.
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_achievement_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 ACHIEVEMENT, COUNTERPLAY, AND AFTERMATH TRIGGERS
+# ============================================================================
+# Defines the eighteen exact achievement contracts and the reusable gates for
+# international suppression, convergence interdiction, island rescue, and
+# post-defeat reconstruction. Manual scenario launches are intentionally
+# excluded from the campaign achievements, but never from gameplay systems.
+# ============================================================================
+
+cannibalism_achievement_campaign_is_eligible = {
+	has_global_flag = cannibalism_system_started
+	NOT = { has_global_flag = cannibalism_manual_scenario_ever_launched }
+}
+
+cannibalism_achievement_player_is_valid = {
+	is_ai = no
+	has_capitulated = no
+	cannibalism_achievement_campaign_is_eligible = yes
+}
+
+cannibalism_achievement_01_clean_first_country_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_first_host
+	has_country_flag = cannibalism_local_victory
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_country_flag = cannibalism_clean_route_disqualified }
+	NOT = { has_country_flag = achievement_cannibalism_exploitation_ever }
+	NOT = { has_global_flag = achievement_cannibalism_second_country_infected }
+	NOT = { has_global_flag = achievement_cannibalism_commune_ever_formed }
+	NOT = { has_global_flag = achievement_cannibalism_warlord_ever_formed }
+}
+
+cannibalism_achievement_02_no_second_table_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = achievement_cannibalism_second_country_infected }
+	OR = {
+		has_country_flag = achievement_cannibalism_first_host
+		has_country_flag = achievement_cannibalism_decisive_aid
+	}
+}
+
+cannibalism_achievement_03_three_front_containment_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_global_victory
+	has_country_flag = achievement_cannibalism_joint_suppression_completed
+	check_variable = {
+		var = achievement_cannibalism_countries_suppressed
+		value = constant:cannibalism_achievement.three_country_suppressions
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = achievement_cannibalism_warlord_ever_formed }
+}
+
+cannibalism_achievement_04_silent_islands_reclaimed_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	check_variable = {
+		var = achievement_cannibalism_isolated_nodes_recovered
+		value = constant:cannibalism_achievement.island_recoveries
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_05_cured_then_returned_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_reinfection_faced
+	has_country_flag = achievement_cannibalism_reinfection_defeated
+	NOT = { has_country_flag = achievement_cannibalism_reinfection_exploitation }
+}
+
+cannibalism_achievement_06_repentant_weapon_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_exploitation_ever
+	has_country_flag = achievement_cannibalism_exploitation_renounced
+	has_country_flag = cannibalism_public_court_martial_held
+	has_country_flag = cannibalism_local_victory
+	NOT = { has_country_flag = achievement_cannibalism_exploitation_repeated }
+	NOT = { has_country_flag = achievement_cannibalism_commune_formed_domestically }
+}
+
+cannibalism_achievement_07_break_the_island_host_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_island_host_blockaded
+	has_country_flag = achievement_cannibalism_island_host_landing
+	has_country_flag = achievement_cannibalism_island_host_defeated
+	has_country_flag = achievement_cannibalism_island_survivors_rescued
+	has_global_flag = cannibalism_global_victory
+	NOT = { any_country = { is_cannibalism_warlord_country = yes has_country_flag = cannibalism_origin_island_host } }
+}
+
+cannibalism_achievement_08_warlord_without_master_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_resistant_warlord
+	has_country_flag = achievement_cannibalism_defiant_warlord_survived
+	is_subject = no
+	NOT = { tag = CBL }
+}
+
+cannibalism_achievement_unified_major_branch_is_complete = {
+	OR = {
+		has_country_flag = cannibalism_unified_single_will_capstone
+		has_country_flag = cannibalism_unified_confederation_capstone
+		has_country_flag = cannibalism_unified_ritual_state_capstone
+		has_country_flag = cannibalism_unified_rapid_larder_capstone
+		has_country_flag = cannibalism_unified_managed_larder_capstone
+		has_country_flag = cannibalism_unified_mobile_larder_capstone
+		has_country_flag = cannibalism_unified_battlefield_larder_capstone
+		has_country_flag = cannibalism_unified_air_network_capstone
+		has_country_flag = cannibalism_unified_internal_front_capstone
+		has_country_flag = cannibalism_unified_counterwar_capstone
+	}
+}
+
+cannibalism_achievement_09_host_of_unification_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	has_country_flag = achievement_cannibalism_player_unification_host
+	check_variable = {
+		var = cannibalism_integrated_named_commander_count
+		value = constant:cannibalism_achievement.retained_warlords
+		compare = greater_than_or_equals
+	}
+	cannibalism_achievement_unified_major_branch_is_complete = yes
+}
+
+cannibalism_achievement_unified_absorption_is_complete = {
+	is_cannibalism_unified_country = yes
+	NOT = { any_country = { is_cannibalism_warlord_country = yes NOT = { tag = ROOT } } }
+	NOT = { any_country = { has_country_flag = cannibalism_resistant_warlord } }
+	NOT = {
+		any_state = {
+			has_state_flag = cannibalism_commune_state
+			NOT = { is_controlled_by = ROOT }
+		}
+	}
+	check_variable = {
+		var = global.cannibalism_global_larder
+		value = constant:cannibalism_achievement.functional_larder
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_connected_route_count
+		value = constant:cannibalism_achievement.functional_routes
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_10_all_mouths_one_command_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_reveal_complete
+	cannibalism_achievement_unified_absorption_is_complete = yes
+}
+
+cannibalism_achievement_11_continental_larder_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	check_variable = {
+		var = achievement_cannibalism_feeding_continent_count
+		value = constant:cannibalism_achievement.continental_feeding_continents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_consumed_population_k
+		value = constant:cannibalism_achievement.continental_consumed_population_k
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_achievement_12_stop_the_reveal_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_convergence_mission_won
+	has_country_flag = achievement_cannibalism_likely_host_destroyed
+	has_global_flag = cannibalism_convergence_broken_once
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	check_variable = {
+		var = global.cannibalism_network_reach
+		value = constant:cannibalism_achievement.pre_reveal_network_reach
+		compare = less_than_or_equals
+	}
+}
+
+cannibalism_achievement_13_defeat_hannibal_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_reveal_complete
+	has_global_flag = cannibalism_global_victory
+	has_global_flag = cannibalism_cleanup_complete
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_achievement_14_break_the_winter_hunger_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_wendigo_counterwar_contributor
+	has_global_flag = achievement_cannibalism_wendigo_merge_occurred
+	has_global_flag = cannibalism_wendigo_transformation_defeated
+	has_global_flag = achievement_cannibalism_all_wendigo_anchors_broken_prelock
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = cannibalism_world_end_wendigo }
+}
+
+cannibalism_achievement_15_ordinary_world_end_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	has_global_flag = cannibalism_world_end_ordinary
+	check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+}
+
+cannibalism_achievement_16_wendigo_world_end_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_wendigo_hannibal_country = yes
+	has_global_flag = cannibalism_world_end_wendigo
+	check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+}
+
+cannibalism_achievement_17_global_burial_detail_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_global_defeat_aftermath_eligible
+	has_global_flag = cannibalism_aftermath_all_states_reconstructed
+	has_country_flag = achievement_cannibalism_compact_vigilance_complete
+	check_variable = {
+		var = achievement_cannibalism_reconstruction_contribution
+		value = constant:cannibalism_achievement.reconstruction_contribution
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_18_no_empty_state_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_global_victory
+	has_global_flag = achievement_cannibalism_warlord_ever_formed
+	NOT = { has_global_flag = achievement_cannibalism_silent_larder_ever_reached }
+}
+
+# ---------------------------------------------------------------------------
+# International response and convergence counterplay
+# ---------------------------------------------------------------------------
+
+cannibalism_international_response_category_is_visible = {
+	exists = yes
+	NOT = { is_cannibalism_country = yes }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		AND = {
+			has_global_flag = cannibalism_system_active
+			has_global_flag = cannibalism_evolution_ii_active
+		}
+		AND = {
+			has_global_flag = cannibalism_reconstruction_system_active
+			has_country_flag = cannibalism_reconstruction_participant
+		}
+	}
+}
+
+cannibalism_can_pay_joint_suppression_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.joint_manpower_gate
+	command_power > constant:cannibalism_international_response_cost.joint_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.joint_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.joint_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.joint_trucks } }
+}
+
+cannibalism_is_valid_joint_suppression_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_capitulated = yes }
+	is_cannibalism_active_country = yes
+	NOT = { has_country_flag = cannibalism_reveal_host }
+}
+
+cannibalism_can_pay_convergence_interdiction_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.convergence_manpower_gate
+	command_power > constant:cannibalism_international_response_cost.convergence_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.convergence_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.convergence_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.convergence_trucks } }
+}
+
+cannibalism_is_likely_convergence_host = {
+	has_global_flag = cannibalism_convergence_active
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	has_event_target = cannibalism_achievement_likely_host
+	tag = event_target:cannibalism_achievement_likely_host
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_can_pay_island_blockade_cost = {
+	command_power > constant:cannibalism_international_response_cost.blockade_command_gate
+	has_navy_experience > constant:cannibalism_international_response_cost.blockade_navy_experience_gate
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.blockade_convoys } }
+}
+
+cannibalism_is_valid_island_host_target = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_origin_island_host
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_island_host_under_blockade }
+}
+
+cannibalism_can_pay_island_landing_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.landing_manpower_gate
+	command_power > constant:cannibalism_international_response_cost.landing_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.landing_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.landing_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.landing_convoys } }
+}
+
+cannibalism_is_valid_blockaded_island_host_target = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_origin_island_host
+	has_country_flag = cannibalism_island_host_under_blockade
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_can_pay_island_rescue_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.rescue_manpower_gate
+	command_power > constant:cannibalism_international_response_cost.rescue_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.rescue_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.rescue_convoys } }
+}
+
+cannibalism_state_is_valid_island_rescue_target = {
+	has_state_flag = cannibalism_former_island_host_origin
+	NOT = { has_state_flag = cannibalism_island_survivors_rescued }
+	is_controlled_by = ROOT
+	OR = {
+		has_state_flag = cannibalism_recovery_active
+		has_state_flag = cannibalism_state_stabilized
+	}
+	NOT = { cannibalism_state_has_active_cell = yes }
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_international_response_cost.rescue_population_floor_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_recovery_supply_is_maintained = {
+	OR = { is_island_state = yes is_coastal = yes }
+	CONTROLLER = {
+		exists = yes
+		has_capitulated = no
+		NOT = { has_country_flag = cannibalism_supply_corridor_failed }
+		NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.logistics_support } }
+		OR = {
+			AND = {
+				PREV = { OR = { is_island_state = yes is_coastal = yes } }
+				NOT = { has_equipment = { convoy_1 < constant:cannibalism_decision_cost.logistics_convoy_reserve } }
+			}
+			AND = {
+				PREV = { is_island_state = no }
+				NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_decision_cost.logistics_train_reserve } }
+			}
+		}
+	}
+	OR = { infrastructure > 0 naval_base > 0 supply_node > 0 }
+}
+
+# ---------------------------------------------------------------------------
+# Eligible global-defeat reconstruction
+# ---------------------------------------------------------------------------
+
+cannibalism_reconstruction_category_is_visible = {
+	has_global_flag = cannibalism_reconstruction_system_active
+	has_country_flag = cannibalism_reconstruction_participant
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_state_is_former_feeding_state = {
+	has_state_flag = cannibalism_former_feeding_state
+	is_in_array = { array = global.cannibalism_former_feeding_states value = THIS }
+}
+
+cannibalism_state_can_begin_aftermath_identification = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_state_stabilized
+	NOT = { has_state_flag = cannibalism_aftermath_identification_complete }
+}
+
+cannibalism_state_can_rebuild_aftermath_institutions = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_aftermath_identification_complete
+	NOT = { has_state_flag = cannibalism_aftermath_institutions_complete }
+}
+
+cannibalism_state_can_complete_aftermath_memorial = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_aftermath_institutions_complete
+	NOT = { has_state_flag = cannibalism_aftermath_reconstruction_complete }
+}
+
+cannibalism_can_pay_aftermath_identification_cost = {
+	has_manpower > constant:cannibalism_reconstruction.identification_manpower_gate
+	command_power > constant:cannibalism_reconstruction.identification_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.identification_support } }
+}
+
+cannibalism_can_pay_aftermath_institution_cost = {
+	has_manpower > constant:cannibalism_reconstruction.institution_manpower_gate
+	command_power > constant:cannibalism_reconstruction.institution_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.institution_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_reconstruction.institution_trucks } }
+	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_reconstruction.institution_trains } }
+}
+
+cannibalism_can_pay_aftermath_memorial_cost = {
+	has_manpower > constant:cannibalism_reconstruction.memorial_manpower_gate
+	command_power > constant:cannibalism_reconstruction.memorial_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.memorial_support } }
+}
+
+cannibalism_country_has_unfinished_aftermath_state = {
+	any_owned_state = {
+		cannibalism_state_is_former_feeding_state = yes
+		NOT = { has_state_flag = cannibalism_aftermath_reconstruction_complete }
+	}
+}
+
+cannibalism_can_ratify_international_compact = {
+	cannibalism_reconstruction_category_is_visible = yes
+	NOT = { has_country_flag = cannibalism_international_compact_member }
+	NOT = { cannibalism_country_has_unfinished_aftermath_state = yes }
+	command_power > constant:cannibalism_reconstruction.compact_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.compact_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_reconstruction.compact_convoys } }
+	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_reconstruction.compact_trains } }
+}
+
+cannibalism_compact_vigilance_is_maintained = {
+	has_country_flag = cannibalism_international_compact_member
+	NOT = { has_country_flag = cannibalism_compact_inspection_failed }
+	NOT = { cannibalism_country_has_unfinished_aftermath_state = yes }
+	NOT = { has_global_flag = world_end }
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_focus_closure_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 FOCUS-CLOSURE TRIGGERS
+# ============================================================================
+# Click-time contracts for the terminal hunt, bounded casualty receipts,
+# receipt-backed Pack muster, and inherited winter-cell operation.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Terminal hunt: actor and target contracts
+# ---------------------------------------------------------------------------
+
+cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_terminal_hunt_open
+	has_country_flag = cannibalism_wendigo_countdown_active
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_launch_cooldown }
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_terminal_hunt.launch_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_terminal_hunt.launch_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_wendigo_terminal_hunt.launch_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_wendigo_terminal_hunt.launch_support } }
+}
+
+cannibalism_wendigo_ai_can_pay_terminal_hunt_launch_cost = {
+	cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_terminal_hunt.launch_larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
+}
+
+cannibalism_wendigo_is_valid_terminal_hunt_target = {
+	cannibalism_target_country_is_ordinary_human_target = yes
+	has_war_with = ROOT
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_defender }
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
+	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+}
+
+cannibalism_wendigo_has_valid_active_terminal_hunt_target = {
+	has_country_flag = cannibalism_wendigo_terminal_hunt_active
+	has_event_target = cannibalism_wendigo_terminal_hunt_target
+	event_target:cannibalism_wendigo_terminal_hunt_target = {
+		cannibalism_target_country_is_ordinary_human_target = yes
+		has_country_flag = cannibalism_wendigo_terminal_hunt_defender
+		has_war_with = ROOT
+	}
+}
+
+cannibalism_wendigo_can_pay_terminal_hunt_press_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	cannibalism_wendigo_has_valid_active_terminal_hunt_target = yes
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_press_cooldown }
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_terminal_hunt.press_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_terminal_hunt.press_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_wendigo_terminal_hunt.press_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_wendigo_terminal_hunt.press_support } }
+	NOT = { has_fuel < constant:cannibalism_wendigo_terminal_hunt.press_fuel }
+}
+
+cannibalism_wendigo_ai_should_press_terminal_hunt = {
+	cannibalism_wendigo_can_pay_terminal_hunt_press_cost = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_terminal_hunt.press_larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
+	set_temp_variable = { cannibalism_wendigo_terminal_hunt_ai_pressure_gate = constant:cannibalism_wendigo_terminal_hunt.starting_pressure }
+	add_to_temp_variable = { cannibalism_wendigo_terminal_hunt_ai_pressure_gate = constant:cannibalism_wendigo_terminal_hunt.press_pressure }
+	check_variable = {
+		var = global.cannibalism_wendigo_active_anchor_count
+		value = constant:cannibalism_wendigo_anchor.minimum_for_countdown
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = cannibalism_wendigo_terminal_hunt_pressure
+			value = cannibalism_wendigo_terminal_hunt_ai_pressure_gate
+			compare = greater_than_or_equals
+		}
+		event_target:cannibalism_wendigo_terminal_hunt_target = {
+			capital_scope = { is_controlled_by = ROOT }
+		}
+	}
+}
+
+cannibalism_wendigo_terminal_hunt_defender_is_open = {
+	has_country_flag = cannibalism_wendigo_terminal_hunt_defender
+	has_event_target = cannibalism_wendigo_terminal_hunt_target
+	tag = event_target:cannibalism_wendigo_terminal_hunt_target
+	has_event_target = cannibalism_wendigo_merge_host
+	event_target:cannibalism_wendigo_merge_host = {
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_country_flag = cannibalism_wendigo_terminal_hunt_active
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+		has_war_with = ROOT
+	}
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_can_pay_wendigo_terminal_hunt_break_cost = {
+	cannibalism_wendigo_terminal_hunt_defender_is_open = yes
+	capital_scope = { is_controlled_by = ROOT }
+	has_manpower > constant:cannibalism_wendigo_terminal_hunt.defender_manpower_gate
+	command_power > constant:cannibalism_wendigo_terminal_hunt.defender_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_wendigo_terminal_hunt.defender_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_wendigo_terminal_hunt.defender_support } }
+	event_target:cannibalism_wendigo_merge_host = {
+		check_variable = {
+			var = cannibalism_wendigo_terminal_hunt_counterpressure
+			value = constant:cannibalism_wendigo_terminal_hunt.counterpressure_goal
+			compare = less_than
+		}
+	}
+}
+
+cannibalism_wendigo_terminal_hunt_has_succeeded = {
+	has_country_flag = cannibalism_wendigo_terminal_hunt_active
+	has_event_target = cannibalism_wendigo_terminal_hunt_target
+	event_target:cannibalism_wendigo_terminal_hunt_target = {
+		OR = {
+			has_capitulated = yes
+			AND = {
+				capital_scope = { is_controlled_by = ROOT }
+				ROOT = {
+					check_variable = {
+						var = cannibalism_wendigo_terminal_hunt_pressure
+						value = constant:cannibalism_wendigo_terminal_hunt.pressure_goal
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+	}
+}
+
+cannibalism_wendigo_terminal_hunt_has_failed = {
+	has_country_flag = cannibalism_wendigo_terminal_hunt_active
+	NOT = { cannibalism_wendigo_terminal_hunt_has_succeeded = yes }
+	OR = {
+		has_country_flag = cannibalism_wendigo_transformation_broken
+		check_variable = { global.cannibalism_wendigo_active_anchor_count < 1 }
+		check_variable = {
+			var = cannibalism_wendigo_terminal_hunt_counterpressure
+			value = constant:cannibalism_wendigo_terminal_hunt.counterpressure_goal
+			compare = greater_than_or_equals
+		}
+		NOT = { exists = yes }
+		NOT = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+		event_target:cannibalism_wendigo_terminal_hunt_target = { NOT = { exists = yes } }
+		event_target:cannibalism_wendigo_terminal_hunt_target = { NOT = { has_war_with = ROOT } }
+		event_target:cannibalism_wendigo_terminal_hunt_target = { NOT = { cannibalism_target_country_is_ordinary_human_target = yes } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Enemy-loss receipt and state muster contracts
+# ---------------------------------------------------------------------------
+
+cannibalism_wendigo_can_process_enemy_death_receipts = {
+	is_cannibalism_wendigo_hannibal_country = yes
+	has_country_flag = cannibalism_wendigo_enemy_death_receipts_open
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_wendigo_can_pay_enemy_death_receipt_muster = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_enemy_death_receipts_open
+	has_country_flag = cannibalism_wendigo_receipt_muster_open
+	has_country_flag = cannibalism_wendigo_pack_training_open
+	NOT = { has_country_flag = cannibalism_wendigo_receipt_muster_cooldown }
+	has_template = "Wendigo Pack"
+	check_variable = {
+		var = cannibalism_wendigo_enemy_death_receipts
+		value = constant:cannibalism_wendigo_enemy_death_receipt.muster_receipt_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_enemy_death_receipt.muster_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_wendigo_enemy_death_receipt.muster_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_wendigo_enemy_death_receipt.muster_support } }
+	set_temp_variable = { cannibalism_wendigo_requested_pack_batch = constant:cannibalism_wendigo_enemy_death_receipt.muster_pack_batch }
+	cannibalism_wendigo_requested_pack_batch_fits_capacity = yes
+}
+
+cannibalism_wendigo_ai_can_pay_enemy_death_receipt_muster = {
+	cannibalism_wendigo_can_pay_enemy_death_receipt_muster = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_enemy_death_receipt.muster_larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
+}
+
+cannibalism_state_can_muster_wendigo_pack_from_enemy_death_receipt = {
+	OWNER = { tag = ROOT }
+	CONTROLLER = { tag = ROOT }
+	cannibalism_current_wendigo_anchor_is_live = yes
+	NOT = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
+	NOT = { has_state_flag = cannibalism_recruitment_cooldown }
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_wendigo_enemy_death_receipt.muster_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Inherited winter-cell operation
+# ---------------------------------------------------------------------------
+
+cannibalism_wendigo_can_pay_inherited_cell_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_inherited_cell_operations_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_inherited_cell.larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_inherited_cell.command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_wendigo_inherited_cell.support } }
+}
+
+cannibalism_wendigo_ai_can_pay_inherited_cell_cost = {
+	cannibalism_wendigo_can_pay_inherited_cell_cost = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_inherited_cell.larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
+}
+
+cannibalism_wendigo_is_valid_inherited_cell_target = {
+	cannibalism_target_country_is_ordinary_human_target = yes
+	has_war_with = ROOT
+	cannibalism_target_has_existing_cells = yes
+	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target }
+	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_gui_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 SCRIPTED GUI FILTERS
+# ============================================================================
+# These filters run only while a human player refreshes the Evolution II
+# network ledger. ROOT is the viewing country and THIS is the candidate scope.
+# No event target is read by the scripted GUI.
+# ============================================================================
+
+cannibalism_gui_country_matches_selected_tab = {
+	OR = {
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.domestic_cells } }
+			tag = ROOT
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes } }
+			is_cannibalism_warlord_country = yes
+			has_country_flag = cannibalism_origin_island_host
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.foreign_links } }
+			NOT = { tag = ROOT }
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.warlord_states } }
+			is_cannibalism_warlord_country = yes
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.countermeasures } }
+			NOT = { tag = ROOT }
+			OR = {
+				is_cannibalism_warlord_country = yes
+				is_cannibalism_unified_country = yes
+				is_cannibalism_wendigo_hannibal_country = yes
+			}
+		}
+	}
+}
+
+cannibalism_gui_state_matches_selected_tab = {
+	OR = {
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.domestic_cells } }
+			OR = { OWNER = { tag = ROOT } CONTROLLER = { tag = ROOT } }
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes } }
+			OR = {
+				check_variable = { cannibalism_node_type = constant:cannibalism_node_type.island_commune }
+				has_state_flag = cannibalism_commune_state
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.foreign_links } }
+			NOT = { OWNER = { tag = ROOT } }
+			NOT = { CONTROLLER = { tag = ROOT } }
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.warlord_states } }
+			OR = {
+				OWNER = { is_cannibalism_warlord_country = yes }
+				CONTROLLER = { is_cannibalism_warlord_country = yes }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.countermeasures } }
+			NOT = { CONTROLLER = { tag = ROOT } }
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_integration_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CROSS-EVENT INTEGRATION TRIGGERS
+# ============================================================================
+# Shared classification for human special-country exceptions, shortages,
+# disasters, detention sites, and contamination. The locust flags are an
+# explicit ingress contract for any crop-swarm system; current crop-collapse
+# pressure is supplied by the live famine and natural-disaster systems.
+# ============================================================================
+
+cannibalism_is_ineligible_special_country = {
+	is_special_chaos_country = yes
+	NOT = { has_country_flag = fury_actor }
+}
+
+cannibalism_state_has_famine_pressure = {
+	OR = {
+		has_state_flag = natural_disaster_famine_pressure
+		has_state_flag = genocide_soviet_famine_pressure_site
+		has_state_flag = camp_rework_soviet_famine_pressure
+		has_dynamic_modifier = { modifier = sov_famine_pressure_state }
+	}
+}
+
+cannibalism_state_has_locust_pressure = {
+	OR = {
+		has_state_flag = locust_pressure
+		has_state_flag = locust_swarm_active
+		has_state_flag = natural_disaster_locust_pressure
+	}
+}
+
+cannibalism_state_has_disease_pressure = {
+	OR = {
+		has_state_flag = natural_disaster_disease_pressure
+		cannibalism_state_has_bioweapon_contamination = yes
+	}
+}
+
+cannibalism_state_has_disaster_supply_pressure = {
+	OR = {
+		has_state_flag = natural_disaster_supply_collapse
+		has_state_flag = natural_disaster_aftermath_active
+		has_state_flag = natural_disaster_recovery_unresolved_territory
+		has_state_flag = natural_disaster_refugee_pressure
+	}
+}
+
+cannibalism_state_has_external_hunger_pressure = {
+	OR = {
+		cannibalism_state_has_famine_pressure = yes
+		cannibalism_state_has_locust_pressure = yes
+		cannibalism_state_has_disease_pressure = yes
+		cannibalism_state_has_disaster_supply_pressure = yes
+	}
+}
+
+cannibalism_state_has_severe_external_hunger_pressure = {
+	OR = {
+		cannibalism_state_has_famine_pressure = yes
+		cannibalism_state_has_locust_pressure = yes
+		has_state_flag = natural_disaster_supply_collapse
+		cannibalism_state_has_severe_bioweapon_contamination = yes
+	}
+}
+
+cannibalism_country_has_external_hunger_pressure = {
+	OR = {
+		check_variable = { famine_pressure > 0 }
+		has_country_flag = sov_famine_crisis_active
+		has_country_flag = locust_outbreak_active
+		has_country_flag = natural_disaster_locust_outbreak_active
+		any_controlled_state = { cannibalism_state_has_external_hunger_pressure = yes }
+	}
+}
+
+cannibalism_country_has_severe_external_hunger_pressure = {
+	OR = {
+		check_variable = {
+			var = famine_pressure
+			value = constant:camp_rework_soviet.famine_pressure_critical
+			compare = greater_than_or_equals
+		}
+		has_country_flag = locust_outbreak_severe
+		any_controlled_state = { cannibalism_state_has_severe_external_hunger_pressure = yes }
+	}
+}
+
+cannibalism_state_has_chemical_contamination = {
+	mapmode_state_has_chemical_contamination = yes
+}
+
+cannibalism_state_has_severe_chemical_contamination = {
+	cannibalism_state_has_chemical_contamination = yes
+	has_variable = chem_state_contamination_strength
+	check_variable = {
+		var = chem_state_contamination_strength
+		value = constant:cannibalism_integration.severe_chemical_strength
+		compare = less_than_or_equals
+	}
+}
+
+cannibalism_state_has_any_larder_contamination = {
+	OR = {
+		cannibalism_state_has_chemical_contamination = yes
+		cannibalism_state_has_bioweapon_contamination = yes
+		has_dynamic_modifier = { modifier = nuclear_fallout_state }
+	}
+}
+
+cannibalism_state_has_active_detention_exploitation_link = {
+	has_state_flag = cannibalism_feeding_program_link
+	cannibalism_state_has_prison_or_camp = yes
+	cannibalism_state_has_active_cell = yes
+}
+
+cannibalism_country_has_active_detention_exploitation_link = {
+	any_controlled_state = { cannibalism_state_has_active_detention_exploitation_link = yes }
+}
+
+cannibalism_can_pay_selected_prisoner_feeding_cost = {
+	is_cannibalism_active_country = yes
+	OR = {
+		has_country_flag = cannibalism_policy_exploitation
+		has_country_flag = cannibalism_ritual_response_appropriation
+		has_country_flag = cannibalism_network_response_exploitation
+	}
+	command_power > constant:cannibalism_integration.prisoner_feeding_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_integration.prisoner_feeding_support_cost } }
+}
+
+cannibalism_state_can_feed_selected_prisoners = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_state_has_prison_or_camp = yes
+	cannibalism_state_has_active_cell = yes
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_integration.prisoner_feeding_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_is_empty_or_contaminated_expansion_target = {
+	OR = {
+		cannibalism_state_is_unusable_larder = yes
+		cannibalism_state_has_severe_chemical_contamination = yes
+		has_global_flag = air_contamination_irreversible
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_objective_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 MAINTAINED OBJECTIVE TRIGGERS
+# ============================================================================
+# Validates paid action families, persisted state/country identities, objective
+# caps, and success/partial thresholds for the six maintained mission families.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Paid action families
+# ---------------------------------------------------------------------------
+
+cannibalism_can_pay_officer_chain_cost = {
+	has_manpower > constant:cannibalism_objective_cost.officer_manpower_gate
+	command_power > constant:cannibalism_objective_cost.officer_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.officer_support } }
+}
+
+cannibalism_can_pay_ritual_infiltration_cost = {
+	has_manpower > constant:cannibalism_objective_cost.infiltration_manpower_gate
+	command_power > constant:cannibalism_objective_cost.infiltration_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.infiltration_support } }
+}
+
+cannibalism_can_pay_ritual_economy_cost = {
+	has_manpower > constant:cannibalism_objective_cost.ritual_economy_manpower_gate
+	command_power > constant:cannibalism_objective_cost.ritual_economy_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.ritual_economy_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.ritual_economy_support } }
+}
+
+cannibalism_can_pay_island_recon_cost = {
+	command_power > constant:cannibalism_objective_cost.island_recon_command_gate
+	has_navy_experience > constant:cannibalism_objective_cost.island_recon_navy_experience_gate
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_objective_cost.island_recon_convoys } }
+}
+
+cannibalism_can_pay_feeding_state_liberation_cost = {
+	has_manpower > constant:cannibalism_objective_cost.liberation_manpower_gate
+	command_power > constant:cannibalism_objective_cost.liberation_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.liberation_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.liberation_support } }
+}
+
+cannibalism_can_pay_network_submission_cost = {
+	is_cannibalism_warlord_country = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_objective_cost.submission_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_objective_cost.submission_command_gate
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.submission_support } }
+}
+
+cannibalism_can_pay_network_resistance_cost = {
+	is_cannibalism_warlord_country = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_objective_cost.resistance_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_objective_cost.resistance_command_gate
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.resistance_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.resistance_support } }
+}
+
+cannibalism_state_can_infiltrate_ritual_cell = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_state_has_active_cell = yes
+	has_state_flag = cannibalism_active_node
+	has_variable = cannibalism_node_id
+	has_variable = cannibalism_node_generation
+	NOT = { has_state_flag = cannibalism_ritual_infiltration_cooldown }
+}
+
+cannibalism_state_can_break_ritual_economy = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_state_has_active_cell = yes
+	has_state_flag = cannibalism_active_node
+	has_variable = cannibalism_node_id
+	has_variable = cannibalism_node_generation
+	OR = {
+		has_state_flag = cannibalism_feeding_program_link
+		has_state_flag = cannibalism_feeding_state
+		has_state_flag = cannibalism_silent_larder
+		check_variable = {
+			var = cannibalism_state_stage
+			value = constant:cannibalism_state_stage.feeding_state
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { has_state_flag = cannibalism_ritual_economy_cooldown }
+}
+
+cannibalism_state_can_be_liberated_from_feeding_system = {
+	is_controlled_by = ROOT
+	impassable = no
+	has_state_flag = cannibalism_active_node
+	has_variable = cannibalism_node_id
+	has_variable = cannibalism_node_generation
+	check_variable = {
+		var = cannibalism_state_stage
+		value = constant:cannibalism_state_stage.feeding_state
+		compare = greater_than_or_equals
+	}
+	NOT = { has_state_flag = cannibalism_recovery_active }
+	NOT = { has_state_flag = cannibalism_feeding_state_liberation_cooldown }
+}
+
+cannibalism_is_valid_silent_island_recon_target = {
+	exists = yes
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_origin_island_host
+	has_variable = cannibalism_actor_generation
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_island_recon_cooldown }
+}
+
+cannibalism_network_preparation_decisions_are_open = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	NOT = { has_country_flag = cannibalism_network_submission_prepared }
+	NOT = { has_country_flag = cannibalism_network_resistance_prepared }
+}
+
+# ---------------------------------------------------------------------------
+# Persisted objective identities
+# ---------------------------------------------------------------------------
+
+cannibalism_investigation_target_is_valid = {
+	has_variable = cannibalism_investigation_target_state
+	var:cannibalism_investigation_target_state = {
+		is_controlled_by = ROOT
+		impassable = no
+		OR = {
+			ROOT = { NOT = { has_country_flag = cannibalism_investigation_target_has_node_identity } }
+			AND = {
+				has_variable = cannibalism_node_id
+				has_variable = cannibalism_node_generation
+				check_variable = { var = cannibalism_node_id value = ROOT.cannibalism_investigation_target_node_id compare = equals }
+				check_variable = { var = cannibalism_node_generation value = ROOT.cannibalism_investigation_target_node_generation compare = equals }
+			}
+		}
+	}
+}
+
+cannibalism_prison_target_is_valid = {
+	has_variable = cannibalism_prison_target_state
+	var:cannibalism_prison_target_state = {
+		is_controlled_by = ROOT
+		cannibalism_state_has_prison_or_camp = yes
+		has_state_flag = cannibalism_active_node
+		has_variable = cannibalism_node_id
+		has_variable = cannibalism_node_generation
+		check_variable = { var = cannibalism_node_id value = ROOT.cannibalism_prison_target_node_id compare = equals }
+		check_variable = { var = cannibalism_node_generation value = ROOT.cannibalism_prison_target_node_generation compare = equals }
+	}
+}
+
+cannibalism_reach_island_target_identity_matches = {
+	has_variable = cannibalism_reach_island_target_country
+	country_exists = var:cannibalism_reach_island_target_country
+	var:cannibalism_reach_island_target_country = {
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_reach_island_target_generation compare = equals }
+		has_country_flag = cannibalism_origin_island_host
+	}
+}
+
+cannibalism_break_network_target_identity_matches = {
+	has_variable = cannibalism_break_network_target_country
+	country_exists = var:cannibalism_break_network_target_country
+	var:cannibalism_break_network_target_country = {
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_break_network_target_generation compare = equals }
+	}
+}
+
+cannibalism_stop_unification_target_identity_matches = {
+	has_variable = cannibalism_stop_unification_target_country
+	country_exists = var:cannibalism_stop_unification_target_country
+	var:cannibalism_stop_unification_target_country = {
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_stop_unification_target_generation compare = equals }
+	}
+}
+
+cannibalism_stop_transformation_target_identity_matches = {
+	has_variable = cannibalism_stop_transformation_target_country
+	country_exists = var:cannibalism_stop_transformation_target_country
+	var:cannibalism_stop_transformation_target_country = {
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_stop_transformation_target_generation compare = equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Maintained conditions and completion thresholds
+# ---------------------------------------------------------------------------
+
+cannibalism_investigation_objective_complete = {
+	has_country_flag = cannibalism_investigation_mission_active
+	check_variable = {
+		var = cannibalism_investigation_progress
+		value = cannibalism_investigation_goal
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_prison_objective_secured = {
+	cannibalism_prison_target_is_valid = yes
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.prison_support_reserve } }
+	OR = {
+		var:cannibalism_prison_target_state = { is_island_state = yes }
+		NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_objective_cost.prison_train_reserve } }
+	}
+	OR = {
+		var:cannibalism_prison_target_state = { is_island_state = no }
+		NOT = { has_equipment = { convoy_1 < constant:cannibalism_objective_cost.prison_convoy_reserve } }
+	}
+	meta_trigger = {
+		text = {
+			divisions_in_state = {
+				state = var:cannibalism_prison_target_state
+				size > [DIVISION_FLOOR]
+			}
+		}
+		DIVISION_FLOOR = "[?cannibalism_prison_division_floor|.0]"
+	}
+}
+
+cannibalism_prison_objective_complete = {
+	has_country_flag = cannibalism_hold_prison_mission_active
+	check_variable = {
+		var = cannibalism_prison_hold_days
+		value = cannibalism_prison_required_hold_days
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_reach_island_objective_complete = {
+	has_country_flag = cannibalism_reach_island_mission_active
+	OR = {
+		check_variable = {
+			var = cannibalism_reach_island_progress
+			value = cannibalism_reach_island_goal
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = { cannibalism_reach_island_progress > constant:cannibalism_objective_value.zero }
+			cannibalism_reach_island_target_identity_matches = yes
+			var:cannibalism_reach_island_target_country = { has_capitulated = yes }
+		}
+	}
+}
+
+cannibalism_break_network_objective_complete = {
+	has_country_flag = cannibalism_break_network_mission_active
+	OR = {
+		check_variable = {
+			var = cannibalism_break_network_progress
+			value = cannibalism_break_network_goal
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = { cannibalism_break_network_progress > constant:cannibalism_objective_value.zero }
+			cannibalism_break_network_target_identity_matches = yes
+			var:cannibalism_break_network_target_country = { has_capitulated = yes }
+		}
+	}
+}
+
+cannibalism_stop_unification_objective_is_maintained = {
+	cannibalism_stop_unification_target_identity_matches = yes
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	var:cannibalism_stop_unification_target_country = {
+		has_war_with = ROOT
+		NOT = { has_capitulated = yes }
+	}
+}
+
+cannibalism_stop_unification_objective_complete = {
+	has_country_flag = cannibalism_stop_unification_mission_active
+	OR = {
+		check_variable = {
+			var = cannibalism_stop_unification_hold_days
+			value = cannibalism_stop_unification_goal_days
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = { cannibalism_stop_unification_hold_days > constant:cannibalism_objective_value.zero }
+			has_global_flag = cannibalism_convergence_broken
+			NOT = { has_global_flag = cannibalism_reveal_complete }
+		}
+		AND = {
+			check_variable = { cannibalism_stop_unification_hold_days > constant:cannibalism_objective_value.zero }
+			cannibalism_stop_unification_target_identity_matches = yes
+			var:cannibalism_stop_unification_target_country = { has_capitulated = yes }
+		}
+	}
+}
+
+cannibalism_stop_transformation_objective_complete = {
+	has_country_flag = cannibalism_stop_transformation_mission_active
+	OR = {
+		has_global_flag = cannibalism_wendigo_transformation_defeated
+		check_variable = {
+			var = cannibalism_stop_transformation_progress
+			value = cannibalism_stop_transformation_goal
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cannibalism_compact_vigilance_has_full_progress = {
+	check_variable = {
+		var = cannibalism_compact_vigilance_progress_days
+		value = constant:cannibalism_objective_progress.compact_goal_days
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_compact_vigilance_has_partial_progress = {
+	check_variable = {
+		var = cannibalism_compact_vigilance_progress_days
+		value = constant:cannibalism_objective_progress.compact_partial_days
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_current_country_has_active_maintained_objective = {
+	OR = {
+		has_country_flag = cannibalism_investigation_mission_active
+		has_country_flag = cannibalism_hold_prison_mission_active
+		has_country_flag = cannibalism_reach_island_mission_active
+		has_country_flag = cannibalism_break_network_mission_active
+		has_country_flag = cannibalism_stop_unification_mission_active
+		has_country_flag = cannibalism_stop_transformation_mission_active
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_scenario_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 TRIGGERABLE-SCENARIO TRIGGERS
+# ============================================================================
+# Manual scenario gates bypass the random event's war, date, chaos, and
+# evolution prerequisites. They block only terminal conflicts, missing safe
+# country/state scopes, or insufficient reusable warlord/map capacity.
+# ============================================================================
+
+cannibalism_scenario_valid_source_country = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_cannibalism_country = yes }
+	num_of_controlled_states > 0
+	any_controlled_state = { cannibalism_state_is_valid_origin = yes }
+}
+
+cannibalism_scenario_valid_new_actor_country = {
+	cannibalism_scenario_valid_source_country = yes
+	NOT = { is_cannibalism_active_country = yes }
+}
+
+# Manual-launch preflight runs after the selected profile and intensity have
+# been copied into temporary variables. Every planned actor must have enough
+# distinct opening states for the canonical initializer to finish without a
+# post-registration selection failure.
+cannibalism_scenario_actor_opening_state_is_available = {
+	cannibalism_state_is_valid_origin = yes
+	NOT = { cannibalism_state_has_active_cell = yes }
+}
+
+cannibalism_scenario_actor_has_required_opening_states = {
+	OR = {
+		AND = {
+			check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_discipline_collapse }
+			any_controlled_state = { count = constant:cannibalism_opening.baseline_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_ritual_cells }
+			any_controlled_state = { count = constant:cannibalism_opening.ritual_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+		AND = {
+			check_variable = {
+				var = cannibalism_scenario_selected_type
+				value = constant:cannibalism_scenario.type_ritual_cells
+				compare = greater_than
+			}
+			any_controlled_state = { count = constant:cannibalism_opening.network_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+	}
+}
+
+cannibalism_scenario_source_has_required_opening_states = {
+	cannibalism_scenario_actor_has_required_opening_states = yes
+	OR = {
+		NOT = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_discipline_collapse } }
+		AND = {
+			OR = {
+				check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.low }
+				check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.medium }
+			}
+		}
+		any_controlled_state = { count = constant:cannibalism_scenario_scale.discipline_extended_source_states cannibalism_scenario_actor_opening_state_is_available = yes }
+	}
+}
+
+cannibalism_scenario_valid_preflight_source_country = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	cannibalism_scenario_source_has_required_opening_states = yes
+}
+
+cannibalism_scenario_valid_preflight_additional_actor = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	cannibalism_scenario_actor_has_required_opening_states = yes
+}
+
+cannibalism_scenario_valid_destructive_host_country = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	is_ai = yes
+}
+
+cannibalism_scenario_valid_target_state = {
+	cannibalism_state_is_valid_origin = yes
+	NOT = { cannibalism_state_has_active_cell = yes }
+	NOT = { has_state_flag = cannibalism_recovery_active }
+	NOT = { has_state_flag = cannibalism_scenario_reserved_state }
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	CONTROLLER = { cannibalism_scenario_valid_destructive_host_country = yes }
+}
+
+cannibalism_scenario_state_has_siege_package = {
+	OR = {
+		victory_points > constant:cannibalism_state_threshold.siege_victory_points
+		bunker > 0
+		industrial_complex > 0
+		arms_factory > 0
+	}
+}
+
+cannibalism_scenario_state_has_march_package = {
+	OR = {
+		rail_way > 0
+		infrastructure > constant:cannibalism_state_threshold.critical_infrastructure
+	}
+}
+
+cannibalism_scenario_state_can_seed_island_host = {
+	cannibalism_scenario_valid_target_state = yes
+	is_island_state = yes
+	naval_base > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_scenario_state_can_seed_siege_commune = {
+	cannibalism_scenario_valid_target_state = yes
+	NOT = { is_island_state = yes }
+	cannibalism_scenario_state_has_siege_package = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_scenario_state_can_seed_march_host = {
+	cannibalism_scenario_valid_target_state = yes
+	NOT = { is_island_state = yes }
+	NOT = { cannibalism_scenario_state_has_siege_package = yes }
+	cannibalism_scenario_state_has_march_package = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+# These origin scopes are frozen into temporary arrays before manual setup.
+# They exclude every planned actor so canonical opening initialization can
+# never consume a state that the node or warlord distribution counted.
+cannibalism_scenario_preflight_island_node_state = {
+	cannibalism_scenario_state_can_seed_island_host = yes
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_preflight_island_warlord_state = {
+	cannibalism_scenario_preflight_island_node_state = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+}
+
+cannibalism_scenario_preflight_siege_warlord_state = {
+	cannibalism_scenario_state_can_seed_siege_commune = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_preflight_march_warlord_state = {
+	cannibalism_scenario_state_can_seed_march_host = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_has_one_warlord_slot = {
+	count_triggers = {
+		amount > 0
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_scenario_has_two_warlord_slots = {
+	count_triggers = {
+		amount > 1
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_scenario_has_three_warlord_slots = {
+	count_triggers = {
+		amount > 2
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_scenario_has_four_warlord_slots = {
+	count_triggers = {
+		amount > 3
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_scenario_has_five_warlord_slots = {
+	count_triggers = {
+		amount > 4
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_scenario_has_six_warlord_slots = {
+	count_triggers = {
+		amount > 5
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
+}
+
+cannibalism_prefire_state_can_seed_island_host = {
+	cannibalism_scenario_state_can_seed_island_host = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_prefire_state_can_seed_siege_commune = {
+	cannibalism_scenario_state_can_seed_siege_commune = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_prefire_state_can_seed_march_host = {
+	cannibalism_scenario_state_can_seed_march_host = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_scenario_warlord_states_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			cannibalism_scenario_has_one_warlord_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			cannibalism_scenario_has_two_warlord_slots = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			cannibalism_scenario_has_four_warlord_slots = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			cannibalism_scenario_has_six_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+	}
+}
+
+cannibalism_scenario_convergence_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	NOT = { has_global_flag = cannibalism_convergence_broken }
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			cannibalism_scenario_has_three_warlord_slots = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			cannibalism_scenario_has_four_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			cannibalism_scenario_has_five_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			cannibalism_scenario_has_six_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+	}
+}
+
+# The automatic Evolution III pre-fire opening always uses the deliberately
+# small convergence package: one Island Host, one Siege Commune, and one March
+# Host. It must prove that all three distinct map origins and reusable slots are
+# available before the fire-once dispatcher commits the evolved opening.
+cannibalism_prefire_evolution_iii_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	NOT = { has_global_flag = world_end }
+	cannibalism_scenario_has_three_warlord_slots = yes
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_island_host = yes }
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_siege_commune = yes }
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_march_host = yes }
+}
+
+cannibalism_scenario_has_required_island_states = {
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			any_state = { count = constant:cannibalism_scenario_scale.low_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			any_state = { count = constant:cannibalism_scenario_scale.medium_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			any_state = { count = constant:cannibalism_scenario_scale.high_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			any_state = { count = constant:cannibalism_scenario_scale.maximum_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+	}
+}
+
+cannibalism_scenario_has_required_actor_capacity = {
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			OR = {
+				cannibalism_scenario_valid_source_country = yes
+				any_country = { count = constant:cannibalism_scenario_scale.low_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.medium_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.medium_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.high_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.high_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.maximum_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.maximum_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+	}
+}
+
+cannibalism_scenario_convergence_contract_holds = {
+	has_global_flag = cannibalism_scenario_convergence_contract
+	check_variable = {
+		var = global.cannibalism_warlord_count
+		value = constant:cannibalism_scenario_scale.convergence_contract_minimum_warlords
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_independent_node_count
+		value = constant:cannibalism_scenario_scale.convergence_contract_minimum_nodes
+		compare = greater_than_or_equals
+	}
+	any_country = { cannibalism_is_viable_unification_host = yes }
+}
+
+cannibalism_scenario_can_launch = {
+	NOT = { has_global_flag = world_end }
+	OR = {
+		cannibalism_scenario_valid_source_country = yes
+		any_country = { cannibalism_scenario_valid_source_country = yes }
+	}
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_discipline_collapse }
+			cannibalism_scenario_has_required_actor_capacity = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_ritual_cells }
+			cannibalism_scenario_has_required_actor_capacity = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_silent_islands }
+			cannibalism_scenario_has_required_island_states = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_warlord_states }
+			cannibalism_scenario_warlord_states_capacity_is_available = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_convergence }
+			cannibalism_scenario_convergence_capacity_is_available = yes
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_spread_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 FOREIGN-SPREAD TRIGGERS
+# ============================================================================
+# Validates the nine-array spread ledger, the exact per-state inbound identity,
+# physical route provenance, and click-time screening affordability. The queue
+# is authoritative; flags and counts are only identity-checked caches.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Queue shape and row-status predicates
+# ---------------------------------------------------------------------------
+
+cannibalism_spread_queue_arrays_are_aligned = {
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_country_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_state_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_target_country_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_target_state_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_route_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_generation_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_due_date_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_status_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+}
+
+cannibalism_loaded_spread_status_is_live = {
+	OR = {
+		check_variable = { global.cannibalism_spread_queue_status_entries^cannibalism_spread_queue_index = constant:cannibalism_spread_status.queued }
+		check_variable = { global.cannibalism_spread_queue_status_entries^cannibalism_spread_queue_index = constant:cannibalism_spread_status.in_transit }
+	}
+}
+
+cannibalism_spread_route_value_is_valid = {
+	check_variable = {
+		var = cannibalism_spread_route
+		value = constant:cannibalism_spread_route.none
+		compare = greater_than
+	}
+	check_variable = {
+		var = cannibalism_spread_route
+		value = constant:cannibalism_spread_route.survivor
+		compare = less_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Source, target, and route context
+# ---------------------------------------------------------------------------
+
+cannibalism_spread_source_country_is_valid = {
+	exists = yes
+	OR = {
+		is_cannibalism_active_country = yes
+		AND = {
+			has_country_flag = cannibalism_local_victory
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.survivor }
+		}
+	}
+	has_variable = cannibalism_actor_generation
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_country_cleanup_complete }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_state_is_spread_recovery_blocked = {
+	has_state_flag = cannibalism_recovery_active
+}
+
+cannibalism_spread_target_country_is_valid = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_cannibalism_country = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = cannibalism_country_cleanup_complete }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_spread_target_state_is_valid = {
+	has_event_target = cannibalism_spread_target_country
+	is_controlled_by = event_target:cannibalism_spread_target_country
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+}
+
+cannibalism_spread_source_state_matches_route = {
+	has_event_target = cannibalism_spread_source_country
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	OR = {
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.retreat }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.prisoner_transfer }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.convoy }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			OR = {
+				check_variable = { cannibalism_node_type = constant:cannibalism_node_type.port }
+				check_variable = { cannibalism_node_type = constant:cannibalism_node_type.island_commune }
+			}
+			is_coastal = yes
+			naval_base > 0
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.volunteer_return }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.occupation_turnover }
+			has_state_flag = cannibalism_recovery_active
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.deliberate_seed }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.conquest }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.survivor }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+	}
+}
+
+cannibalism_spread_context_is_valid = {
+	has_global_flag = cannibalism_evolution_ii_active
+	NOT = { has_global_flag = cannibalism_global_victory }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+	has_event_target = cannibalism_spread_source_country
+	has_event_target = cannibalism_spread_source_state
+	has_event_target = cannibalism_spread_target_country
+	has_event_target = cannibalism_spread_target_state
+	cannibalism_spread_route_value_is_valid = yes
+	event_target:cannibalism_spread_source_country = {
+		cannibalism_spread_source_country_is_valid = yes
+		NOT = { tag = event_target:cannibalism_spread_target_country }
+	}
+	event_target:cannibalism_spread_target_country = {
+		cannibalism_spread_target_country_is_valid = yes
+	}
+	event_target:cannibalism_spread_source_state = {
+		cannibalism_spread_source_state_matches_route = yes
+	}
+	event_target:cannibalism_spread_target_state = {
+		cannibalism_spread_target_state_is_valid = yes
+	}
+}
+
+cannibalism_state_is_automatic_border_spread_source = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_active_node
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	any_neighbor_state = {
+		cannibalism_state_is_automatic_border_spread_target = yes
+	}
+}
+
+cannibalism_state_is_automatic_border_spread_target = {
+	CONTROLLER = {
+		cannibalism_spread_target_country_is_valid = yes
+		NOT = { tag = ROOT }
+		has_war_with = ROOT
+	}
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+}
+
+# The row loader sets four context-loaded temp flags so an invalid scope-array
+# entry cannot reuse a regular event target left by an earlier row.
+cannibalism_loaded_spread_entry_is_valid = {
+	check_variable = { cannibalism_spread_source_country_context_loaded > 0 }
+	check_variable = { cannibalism_spread_source_state_context_loaded > 0 }
+	check_variable = { cannibalism_spread_target_country_context_loaded > 0 }
+	check_variable = { cannibalism_spread_target_state_context_loaded > 0 }
+	check_variable = { cannibalism_expected_spread_id > 0 }
+	cannibalism_loaded_spread_status_is_live = yes
+	cannibalism_spread_route_value_is_valid = yes
+	event_target:cannibalism_spread_source_country = {
+		cannibalism_spread_source_country_is_valid = yes
+		check_variable = {
+			var = cannibalism_actor_generation
+			value = cannibalism_spread_source_generation
+			compare = equals
+		}
+	}
+	event_target:cannibalism_spread_source_state = {
+		cannibalism_spread_source_state_matches_route = yes
+	}
+	event_target:cannibalism_spread_target_country = {
+		cannibalism_spread_target_country_is_valid = yes
+	}
+	event_target:cannibalism_spread_target_state = {
+		is_controlled_by = event_target:cannibalism_spread_target_country
+		has_state_flag = cannibalism_spread_inbound_active
+		has_variable = cannibalism_inbound_spread_id
+		has_variable = cannibalism_inbound_spread_route
+		has_variable = cannibalism_inbound_spread_source_country
+		has_variable = cannibalism_inbound_spread_source_generation
+		check_variable = {
+			var = cannibalism_inbound_spread_id
+			value = cannibalism_expected_spread_id
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_route
+			value = cannibalism_spread_route
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_source_country
+			value = event_target:cannibalism_spread_source_country
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_source_generation
+			value = cannibalism_spread_source_generation
+			compare = equals
+		}
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Targeted counterplay
+# ---------------------------------------------------------------------------
+
+cannibalism_inbound_state_can_be_screened = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_spread_inbound_active
+	has_variable = cannibalism_inbound_spread_id
+	check_variable = { cannibalism_inbound_spread_id > 0 }
+	NOT = { has_state_flag = cannibalism_spread_screening_active }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+}
+
+cannibalism_screening_state_matches_expected_spread = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_spread_inbound_active
+	has_variable = cannibalism_inbound_spread_id
+	has_variable = cannibalism_inbound_spread_route
+	has_variable = cannibalism_inbound_spread_source_country
+	has_variable = cannibalism_inbound_spread_source_generation
+	check_variable = {
+		var = cannibalism_inbound_spread_id
+		value = cannibalism_expected_spread_id
+		compare = equals
+	}
+	NOT = { has_state_flag = cannibalism_spread_screening_active }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	OR = {
+		NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+		AND = {
+			has_variable = cannibalism_warning_expected_spread_id
+			check_variable = {
+				var = cannibalism_warning_expected_spread_id
+				value = cannibalism_inbound_spread_id
+				compare = equals
+			}
+		}
+	}
+}
+
+cannibalism_inbound_route_response_is_visible = {
+	exists = yes
+	NOT = { is_cannibalism_country = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	any_controlled_state = {
+		cannibalism_inbound_state_can_be_screened = yes
+	}
+}
+
+cannibalism_can_pay_humane_route_screening_cost = {
+	cannibalism_inbound_route_response_is_visible = yes
+	check_variable = {
+		var = manpower
+		value = constant:cannibalism_spread.humane_screening_manpower
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.humane_screening_command
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.humane_screening_support
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_can_pay_hard_route_screening_cost = {
+	cannibalism_inbound_route_response_is_visible = yes
+	check_variable = {
+		var = manpower
+		value = constant:cannibalism_spread.hard_screening_manpower
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.hard_screening_command
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.hard_screening_support
+		compare = greater_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Deliberate physical operations
+# ---------------------------------------------------------------------------
+
+cannibalism_state_has_deliberate_seed_route_from_root = {
+	has_global_flag = cannibalism_evolution_ii_active
+	ROOT = {
+		is_cannibalism_country = yes
+		has_country_flag = cannibalism_warlord_foreign_cell_open
+		NOT = { has_capitulated = yes }
+	}
+	CONTROLLER = {
+		cannibalism_spread_target_country_is_valid = yes
+		NOT = { tag = ROOT }
+	}
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+	NOT = { cannibalism_state_has_active_cell = yes }
+	OR = {
+		any_neighbor_state = { is_controlled_by = ROOT impassable = no }
+		AND = {
+			is_coastal = yes
+			naval_base > 0
+			ROOT = {
+				any_controlled_state = { is_coastal = yes naval_base > 0 impassable = no }
+				check_variable = {
+					var = num_equipment@convoy
+					value = constant:cannibalism_spread.seed_convoy_cost
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+}
+
+cannibalism_warlord_can_pay_deliberate_seed_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	has_country_flag = cannibalism_warlord_foreign_cell_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_spread.seed_larder_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.seed_command_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.seed_support_cost
+		compare = greater_than_or_equals
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_super_event_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM SUPER-EVENT TRIGGERS
+# ============================================================================
+# Guards the four public Event 014 super-events. Reveal-facing text is never
+# reachable before cannibalism_reveal_complete. The defeat aftermath requires
+# a year-long, multi-country, region-scale campaign and cumulative population
+# loss; local containment can never satisfy it.
+# ============================================================================
+
+cannibalism_global_defeat_aftermath_is_eligible = {
+	has_global_flag = cannibalism_global_victory
+	has_global_flag = cannibalism_reveal_complete
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = cannibalism_global_defeat_aftermath_emitted }
+	check_variable = {
+		var = global.cannibalism_consumed_population_k
+		value = constant:cannibalism_evolution_threshold.major_defeat_consumed_population_k
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_max_controlled_states
+		value = constant:cannibalism_evolution_threshold.major_defeat_controlled_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_global_defeat_duration_days
+		value = constant:cannibalism_evolution_threshold.major_defeat_duration_days
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_global_defeat_contributor_count
+		value = constant:cannibalism_evolution_threshold.major_defeat_contributor_countries
+		compare = greater_than_or_equals
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_target_scoring_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 TARGET-SCORING TRIGGERS
+# ============================================================================
+# Shared hard eligibility and additive/multiplicative score factors for the
+# unified and Wendigo country scorers. Scorer target triggers run in actor
+# ROOT/default scope with the candidate in FROM, matching targeted decisions.
+# Scorer score blocks run in candidate THIS/default scope with the actor in
+# FROM. The two contracts use explicitly named wrappers below.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Candidate-only eligibility and factors
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_usable_population = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_state_threshold.minimum_consumable_population_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cannibalism_target_country_is_ordinary_human_target = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_cannibalism_country = yes }
+	cannibalism_target_country_has_usable_population = yes
+}
+
+cannibalism_target_has_high_population_center = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_target_score.high_population_state_k
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { cannibalism_target_has_very_high_population_center = yes }
+}
+
+cannibalism_target_has_very_high_population_center = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_target_score.very_high_population_state_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cannibalism_target_has_weak_supply = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		OR = {
+			infrastructure < constant:cannibalism_state_threshold.low_infrastructure
+			NOT = { supply_node > 0 }
+		}
+	}
+}
+
+cannibalism_target_has_existing_cells = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		cannibalism_state_has_active_cell = yes
+	}
+}
+
+cannibalism_target_has_prison_route = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		cannibalism_state_has_prison_or_camp = yes
+	}
+}
+
+cannibalism_target_has_port_route = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		naval_base > 0
+	}
+}
+
+cannibalism_target_has_low_stability = {
+	has_stability < constant:cannibalism_target_score.low_stability_threshold
+}
+
+cannibalism_target_has_rail_or_naval_route = {
+	OR = {
+		cannibalism_target_has_port_route = yes
+		any_controlled_state = {
+			impassable = no
+			NOT = { cannibalism_state_is_unusable_larder = yes }
+			rail_way > 0
+		}
+	}
+}
+
+cannibalism_target_is_coalition_leader = {
+	OR = {
+		is_faction_leader = yes
+		is_in_array = { global.cannibalism_defeat_contributors = THIS }
+		has_country_flag = cannibalism_unified_coalition_command_country
+	}
+}
+
+cannibalism_target_has_cold_front = {
+	OR = {
+		check_variable = {
+			var = num_units_on_climate@cold_climate
+			value = 0
+			compare = greater_than
+		}
+		any_controlled_state = {
+			has_dynamic_modifier = { modifier = natural_disaster_winter_temperature_disruption }
+		}
+	}
+}
+
+cannibalism_target_is_postlock_population_or_capital_priority = {
+	OR = {
+		cannibalism_target_has_high_population_center = yes
+		cannibalism_target_has_very_high_population_center = yes
+		cannibalism_target_is_coalition_leader = yes
+	}
+}
+
+cannibalism_target_has_partial_contamination = {
+	cannibalism_target_country_has_usable_population = yes
+	any_controlled_state = {
+		OR = {
+			cannibalism_state_has_bioweapon_contamination = yes
+			cannibalism_state_has_chemical_contamination = yes
+			has_dynamic_modifier = { modifier = nuclear_fallout_state }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Relationship predicates: candidate scope, scorer FROM actor
+# ---------------------------------------------------------------------------
+
+cannibalism_scored_target_is_current_enemy = {
+	has_war_with = FROM
+}
+
+cannibalism_scored_target_is_adjacent_to_actor = {
+	is_neighbor_of = FROM
+}
+
+cannibalism_scored_target_has_only_distant_route = {
+	NOT = { cannibalism_scored_target_is_current_enemy = yes }
+	NOT = { cannibalism_scored_target_is_adjacent_to_actor = yes }
+	NOT = { cannibalism_target_has_existing_cells = yes }
+	cannibalism_target_has_rail_or_naval_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# Actor-only logistics predicates
+# ---------------------------------------------------------------------------
+
+cannibalism_scoring_actor_has_mature_distant_logistics = {
+	OR = {
+		AND = {
+			check_variable = {
+				var = global.cannibalism_network_reach
+				value = constant:cannibalism_target_score.mature_network_reach
+				compare = greater_than_or_equals
+			}
+			OR = {
+				has_country_flag = cannibalism_unified_global_naval_corridors_open
+				has_country_flag = cannibalism_unified_origin_island_knowledge
+				has_country_flag = cannibalism_unified_origin_march_knowledge
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+		}
+		has_country_flag = cannibalism_wendigo_transformation_locked
+	}
+}
+
+cannibalism_scoring_actor_is_overextended = {
+	check_variable = {
+		var = enemies^num
+		value = constant:cannibalism_target_score.overextension_enemy_count
+		compare = greater_than_or_equals
+	}
+	NOT = { cannibalism_scoring_actor_has_mature_distant_logistics = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Candidate-scope reach and hard validity: candidate default, FROM actor
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_physical_route_from_actor = {
+	OR = {
+		has_war_with = FROM
+		is_neighbor_of = FROM
+		cannibalism_target_has_existing_cells = yes
+		AND = {
+			FROM = {
+				OR = {
+					has_country_flag = cannibalism_unified_global_naval_corridors_open
+					has_country_flag = cannibalism_unified_origin_island_knowledge
+					has_country_flag = cannibalism_wendigo_winter_network_active
+				}
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					naval_base > 0
+				}
+			}
+			cannibalism_target_has_port_route = yes
+		}
+		AND = {
+			FROM = {
+				OR = {
+					has_country_flag = cannibalism_unified_origin_march_knowledge
+					has_country_flag = cannibalism_unified_corridor_target_pool_open
+					has_country_flag = cannibalism_wendigo_frozen_corridor_open
+					has_country_flag = cannibalism_wendigo_winter_network_active
+				}
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					rail_way > 0
+				}
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				rail_way > 0
+			}
+		}
+		FROM = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	}
+}
+
+cannibalism_scored_target_passes_shared_hard_gates = {
+	exists = yes
+	NOT = { tag = FROM }
+	cannibalism_target_country_is_ordinary_human_target = yes
+	NOT = { is_ally_with = FROM }
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
+	NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
+	NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
+	NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
+	OR = {
+		NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
+		AND = {
+			tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			FROM = {
+				has_country_flag = cannibalism_wendigo_terminal_hunt_active
+				has_event_target = cannibalism_wendigo_terminal_hunt_target
+			}
+		}
+	}
+	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+	cannibalism_target_country_has_physical_route_from_actor = yes
+	OR = {
+		FROM = { NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active } }
+		AND = {
+			tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			FROM = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+		}
+	}
+}
+
+cannibalism_unified_scored_target_is_valid = {
+	FROM = { is_cannibalism_unified_country = yes }
+	cannibalism_scored_target_passes_shared_hard_gates = yes
+}
+
+cannibalism_wendigo_scored_target_is_valid = {
+	FROM = { is_cannibalism_wendigo_hannibal_country = yes }
+	cannibalism_scored_target_passes_shared_hard_gates = yes
+}
+
+# ---------------------------------------------------------------------------
+# Actor-root hard-validity wrappers: actor ROOT, candidate FROM
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_physical_route_from_actor_decision = {
+	OR = {
+		FROM = { has_war_with = ROOT }
+		FROM = { is_neighbor_of = ROOT }
+		FROM = { cannibalism_target_has_existing_cells = yes }
+		AND = {
+			OR = {
+				has_country_flag = cannibalism_unified_global_naval_corridors_open
+				has_country_flag = cannibalism_unified_origin_island_knowledge
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				naval_base > 0
+			}
+			FROM = { cannibalism_target_has_port_route = yes }
+		}
+		AND = {
+			OR = {
+				has_country_flag = cannibalism_unified_origin_march_knowledge
+				has_country_flag = cannibalism_unified_corridor_target_pool_open
+				has_country_flag = cannibalism_wendigo_frozen_corridor_open
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				rail_way > 0
+			}
+			FROM = {
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					rail_way > 0
+				}
+			}
+		}
+		has_country_flag = cannibalism_wendigo_transformation_locked
+	}
+}
+
+cannibalism_scored_target_passes_shared_hard_gates_from_decision = {
+	exists = yes
+	NOT = { tag = FROM }
+	FROM = {
+		cannibalism_target_country_is_ordinary_human_target = yes
+		NOT = { is_ally_with = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		NOT = { is_subject_of = ROOT }
+		NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
+		NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
+		NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
+		NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
+		OR = {
+			NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
+			AND = {
+				ROOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+				ROOT = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+				tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			}
+		}
+		NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+	}
+	cannibalism_target_country_has_physical_route_from_actor_decision = yes
+	OR = {
+		NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+		AND = {
+			has_event_target = cannibalism_wendigo_terminal_hunt_target
+			FROM = { tag = event_target:cannibalism_wendigo_terminal_hunt_target }
+		}
+	}
+}
+
+cannibalism_unified_scored_target_is_valid_from_decision = {
+	is_cannibalism_unified_country = yes
+	cannibalism_scored_target_passes_shared_hard_gates_from_decision = yes
+}
+
+cannibalism_wendigo_scored_target_is_valid_from_decision = {
+	is_cannibalism_wendigo_hannibal_country = yes
+	cannibalism_scored_target_passes_shared_hard_gates_from_decision = yes
+}
+
+# Scorer target_trigger uses the same ROOT/FROM relationship as a targeted
+# decision. These aliases make that engine contract explicit at the call site.
+cannibalism_unified_scorer_target_is_valid = {
+	cannibalism_unified_scored_target_is_valid_from_decision = yes
+}
+
+cannibalism_wendigo_scorer_target_is_valid = {
+	cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+}
+
+# ---------------------------------------------------------------------------
+# Targeted-decision relationship wrappers: actor ROOT, candidate FROM
+# ---------------------------------------------------------------------------
+
+cannibalism_scored_target_is_current_enemy_from_decision = {
+	FROM = { has_war_with = ROOT }
+}
+
+cannibalism_scored_target_is_adjacent_to_actor_from_decision = {
+	FROM = { is_neighbor_of = ROOT }
+}
+
+cannibalism_scored_target_has_only_distant_route_from_decision = {
+	NOT = { cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	NOT = { cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	FROM = {
+		NOT = { cannibalism_target_has_existing_cells = yes }
+		cannibalism_target_has_rail_or_naval_route = yes
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_triggers.txt
+# ============================================================================
 # ============================================================================
 # CHAOS REDUX - EVENT 014 CANNIBALISM TRIGGERS
 # ============================================================================
@@ -424,6 +3038,7 @@ cannibalism_can_consume_current_state = {
 	NOT = { has_state_flag = cannibalism_consumption_cooldown }
 	NOT = { has_state_flag = cannibalism_state_stabilized }
 	NOT = { has_state_flag = cannibalism_liberated_emergency }
+	NOT = { has_state_flag = cannibalism_recovery_active }
 }
 
 cannibalism_can_recruit_from_current_state = {
@@ -1265,5 +3880,1544 @@ cannibalism_is_existential_world_threat = {
 			value = constant:cannibalism_world_threat.consumed_population_k
 			compare = greater_than_or_equals
 		}
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_unified_decision_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 UNIFIED COUNTRY DECISION TRIGGERS
+# ============================================================================
+# Gates CBL's post-reveal contract decisions, exact Deaths-backed population
+# transactions, paid military operations, target validity, and operational
+# proof for the four ordinary world-end packages.
+# ============================================================================
+
+cannibalism_unified_decisions_are_open = {
+	exists = yes
+	tag = CBL
+	is_cannibalism_unified_country = yes
+	has_country_flag = cannibalism_unified_decisions_open
+	has_global_flag = cannibalism_reveal_complete
+	NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+	NOT = { has_capitulated = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_unified_cannibal_recruitment_is_open = {
+	OR = {
+		cannibalism_unified_decisions_are_open = yes
+		AND = {
+			cannibalism_wendigo_command_is_open = yes
+			has_country_flag = cannibalism_wendigo_cannibal_recruitment_open
+		}
+	}
+}
+
+cannibalism_unified_command_category_is_visible = {
+	cannibalism_unified_decisions_are_open = yes
+	has_country_flag = cannibalism_unified_command_category_open
+	check_variable = {
+		var = cannibalism_unified_command_capacity
+		value = constant:cannibalism_unified_contract.command_stage_1
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_unified_larder_category_is_visible = {
+	cannibalism_unified_decisions_are_open = yes
+	has_country_flag = cannibalism_unified_larder_category_open
+	check_variable = {
+		var = cannibalism_unified_larder_capacity
+		value = constant:cannibalism_unified_contract.larder_stage_1
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_unified_war_machine_category_is_visible = {
+	cannibalism_unified_cannibal_recruitment_is_open = yes
+	OR = {
+		check_variable = { var = cannibalism_unified_army_capacity value = constant:cannibalism_unified_contract.army_stage_1 compare = greater_than_or_equals }
+		check_variable = { var = cannibalism_unified_navy_capacity value = constant:cannibalism_unified_contract.navy_stage_1 compare = greater_than_or_equals }
+		check_variable = { var = cannibalism_unified_air_capacity value = constant:cannibalism_unified_contract.air_stage_1 compare = greater_than_or_equals }
+	}
+}
+
+cannibalism_unified_global_campaign_category_is_visible = {
+	cannibalism_unified_decisions_are_open = yes
+	OR = {
+		AND = {
+			has_country_flag = cannibalism_unified_cell_category_open
+			check_variable = { var = cannibalism_unified_cell_capacity value = constant:cannibalism_unified_contract.cell_stage_1 compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_campaign_category_open
+			check_variable = { var = cannibalism_unified_campaign_capacity value = constant:cannibalism_unified_contract.campaign_stage_1 compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_counterwar_category_open
+			check_variable = { var = cannibalism_unified_counterwar_capacity value = constant:cannibalism_unified_contract.counterwar_stage_1 compare = greater_than_or_equals }
+		}
+	}
+}
+
+cannibalism_unified_terminal_decisions_are_open = {
+	exists = yes
+	tag = CBL
+	is_cannibalism_unified_country = yes
+	has_country_flag = cannibalism_terminal_host_active
+	has_country_flag = cannibalism_unified_terminal_consumption_open
+	has_country_flag = cannibalism_unified_global_absorption_open
+	has_global_flag = cannibalism_reveal_complete
+	has_global_flag = cannibalism_world_end_ordinary
+	has_global_flag = world_end
+	NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+	NOT = { has_capitulated = yes }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_unified_world_end_category_is_visible = {
+	OR = {
+		AND = {
+			cannibalism_unified_decisions_are_open = yes
+			has_country_flag = cannibalism_unified_final_global_mobilization_active
+		}
+		cannibalism_unified_terminal_decisions_are_open = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Command and Larder costs
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_can_pay_absorb_warlord = {
+	cannibalism_unified_command_category_is_visible = yes
+	has_country_flag = cannibalism_unified_submission_decisions_open
+	has_country_flag = cannibalism_unified_warlord_settlement_category_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_absorb_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_absorb_command_gate
+}
+
+cannibalism_unified_is_valid_absorb_warlord_target = {
+	exists = yes
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_autonomous_warlord_governor
+	is_subject_of = ROOT
+	NOT = { has_war_with = ROOT }
+	NOT = { has_capitulated = yes }
+	cannibalism_has_valid_unification_destination = yes
+}
+
+cannibalism_unified_can_pay_appoint_governor = {
+	cannibalism_unified_command_category_is_visible = yes
+	has_country_flag = cannibalism_unified_regional_governor_assignments_open
+	OR = {
+		has_country_flag = cannibalism_unified_disposition_keep
+		has_country_flag = cannibalism_unified_hierarchy_many_jaws
+	}
+	has_manpower > cannibalism_unified_governor_manpower_gate
+	command_power > cannibalism_unified_governor_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_governor_support_cost } }
+}
+
+cannibalism_unified_state_can_receive_governor = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	impassable = no
+	NOT = { has_state_flag = cannibalism_unified_governor_appointed }
+}
+
+cannibalism_unified_can_pay_purge_rival = {
+	cannibalism_unified_command_category_is_visible = yes
+	has_country_flag = cannibalism_unified_disposition_break
+	has_country_flag = cannibalism_unified_rival_purges_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_purge_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_purge_command_gate
+	has_army_experience > cannibalism_unified_purge_army_experience_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_purge_support_cost } }
+}
+
+cannibalism_unified_is_valid_purge_rival_target = {
+	exists = yes
+	is_cannibalism_warlord_country = yes
+	OR = {
+		has_country_flag = cannibalism_resistant_warlord
+		has_country_flag = cannibalism_challenger_warlord
+	}
+	has_war_with = ROOT
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_unified_rival_purge_target }
+}
+
+cannibalism_unified_can_pay_command_operation = {
+	cannibalism_unified_command_category_is_visible = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = cannibalism_unified_command_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > cannibalism_unified_command_power_gate
+	has_army_experience > cannibalism_unified_command_army_experience_gate
+}
+
+cannibalism_unified_can_pay_storage_project = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_storage_projects_open
+	has_manpower > cannibalism_unified_storage_manpower_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_storage_support_cost } }
+	NOT = { has_equipment = { train_equipment_1 < cannibalism_unified_storage_train_cost } }
+}
+
+cannibalism_unified_can_pay_feeding_capital = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_central_accounting_open
+	has_country_flag = cannibalism_unified_state_classification_open
+	NOT = { has_country_flag = cannibalism_unified_feeding_capital_designated }
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_feeding_capital_larder_cost compare = greater_than_or_equals }
+	has_manpower > cannibalism_unified_feeding_capital_manpower_gate
+	command_power > cannibalism_unified_feeding_capital_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_feeding_capital_support_cost } }
+}
+
+cannibalism_unified_state_can_become_feeding_capital = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { has_state_flag = cannibalism_unified_feeding_capital }
+}
+
+cannibalism_unified_state_can_receive_storage_project = {
+	is_controlled_by = ROOT
+	impassable = no
+	NOT = { has_state_flag = cannibalism_unified_storage_network_active }
+}
+
+cannibalism_unified_can_pay_captured_workshop = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_captured_industry_projects_open
+	has_country_flag = cannibalism_unified_workshop_conversion_open
+	has_manpower > cannibalism_unified_workshop_manpower_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_workshop_support_cost } }
+	NOT = { has_equipment = { train_equipment_1 < cannibalism_unified_workshop_train_cost } }
+}
+
+cannibalism_unified_state_can_receive_captured_workshop = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	impassable = no
+	NOT = { has_state_flag = cannibalism_unified_captured_workshop_active }
+}
+
+cannibalism_unified_can_pay_frontier_abandonment = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_exhausted_state_abandonment_open
+	command_power > cannibalism_unified_frontier_abandon_command_gate
+}
+
+cannibalism_unified_state_can_abandon_exhausted_frontier = {
+	is_controlled_by = ROOT
+	impassable = no
+	has_state_flag = cannibalism_unified_frontier_exhausted
+	NOT = { has_state_flag = cannibalism_unified_frontier_abandoned }
+}
+
+cannibalism_unified_can_pay_rapid_consumption = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_larder_method_rapid
+	command_power > cannibalism_unified_rapid_command_gate
+}
+
+cannibalism_unified_can_pay_managed_consumption = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_larder_method_managed
+	command_power > cannibalism_unified_managed_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_managed_support_cost } }
+}
+
+cannibalism_unified_can_pay_mobile_consumption = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_larder_method_mobile
+	command_power > cannibalism_unified_mobile_command_gate
+	NOT = { has_equipment = { motorized_equipment_1 < cannibalism_unified_mobile_truck_cost } }
+	NOT = { has_equipment = { train_equipment_1 < cannibalism_unified_mobile_train_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_mobile_support_cost } }
+	NOT = { has_equipment = { convoy_1 < cannibalism_unified_mobile_convoy_cost } }
+	has_fuel > cannibalism_unified_mobile_fuel_gate
+}
+
+cannibalism_unified_can_pay_battlefield_consumption = {
+	cannibalism_unified_larder_category_is_visible = yes
+	has_country_flag = cannibalism_unified_larder_method_battlefield
+	command_power > cannibalism_unified_battlefield_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_battlefield_support_cost } }
+	if = {
+		limit = { has_country_flag = cannibalism_unified_battlefield_harvest_caps_required }
+		check_variable = { cannibalism_unified_battlefield_receipts > constant:cannibalism_unified_profile.zero }
+	}
+}
+
+cannibalism_unified_state_can_support_rapid_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.rapid_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_state_can_support_managed_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.managed_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_state_can_support_mobile_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.mobile_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_state_can_support_battlefield_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.battlefield_minimum_population_k compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Army, navy, and air costs
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_can_pay_legion_recruitment = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_cannibal_legion_recruitment_open
+	has_country_flag = cannibalism_unified_legion_deaths_accounting_required
+	check_variable = { var = cannibalism_unified_legions_raised value = cannibalism_unified_legion_cap compare = less_than }
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_legion_larder_cost compare = greater_than_or_equals }
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_legion_infantry_reserve } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_legion_support_reserve } }
+}
+
+cannibalism_unified_can_pay_legion_surge = {
+	cannibalism_unified_can_pay_legion_recruitment = yes
+	has_country_flag = cannibalism_unified_legion_surge_decisions_open
+	has_country_flag = cannibalism_unified_rapid_recruitment_cost_scaling_open
+}
+
+cannibalism_unified_can_pay_bone_guard_recruitment = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_bone_guard_recruitment_open
+	check_variable = { var = cannibalism_unified_bone_guards_raised value = cannibalism_unified_bone_guard_cap compare = less_than }
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_bone_guard_larder_cost compare = greater_than_or_equals }
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_bone_guard_infantry_reserve } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_bone_guard_support_reserve } }
+	NOT = { has_equipment = { artillery_equipment < cannibalism_unified_bone_guard_artillery_reserve } }
+}
+
+cannibalism_unified_can_pay_origin_specialist_recruitment = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_origin_specialists_preserved
+	has_country_flag = cannibalism_unified_origin_template_mapping_open
+	has_country_flag = cannibalism_unified_origin_specialist_recruitment_open
+	has_country_flag = cannibalism_unified_origin_specialists_inherited
+	OR = {
+		has_country_flag = cannibalism_unified_origin_island_knowledge
+		has_country_flag = cannibalism_unified_origin_siege_knowledge
+		has_country_flag = cannibalism_unified_origin_march_knowledge
+	}
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_origin_specialist_larder_cost compare = greater_than_or_equals }
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_origin_specialist_infantry_reserve } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_origin_specialist_support_reserve } }
+}
+
+cannibalism_unified_can_pay_island_specialist_recruitment = {
+	cannibalism_unified_can_pay_origin_specialist_recruitment = yes
+	has_country_flag = cannibalism_unified_origin_island_knowledge
+	check_variable = { var = cannibalism_unified_island_specialists_raised value = cannibalism_unified_origin_specialist_cap compare = less_than }
+}
+
+cannibalism_unified_can_pay_siege_specialist_recruitment = {
+	cannibalism_unified_can_pay_origin_specialist_recruitment = yes
+	has_country_flag = cannibalism_unified_origin_siege_knowledge
+	check_variable = { var = cannibalism_unified_siege_specialists_raised value = cannibalism_unified_origin_specialist_cap compare = less_than }
+	NOT = { has_equipment = { artillery_equipment < cannibalism_unified_origin_specialist_artillery_reserve } }
+}
+
+cannibalism_unified_can_pay_march_specialist_recruitment = {
+	cannibalism_unified_can_pay_origin_specialist_recruitment = yes
+	has_country_flag = cannibalism_unified_origin_march_knowledge
+	check_variable = { var = cannibalism_unified_march_specialists_raised value = cannibalism_unified_origin_specialist_cap compare = less_than }
+	NOT = { has_equipment = { motorized_equipment_1 < cannibalism_unified_origin_specialist_motorized_reserve } }
+}
+
+cannibalism_unified_state_can_recruit_legion = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.legion_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_state_can_recruit_bone_guard = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.bone_guard_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_state_can_recruit_origin_specialist = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.origin_specialist_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_can_pay_army_operation = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_joint_army_operations_open
+	check_variable = { var = cannibalism_unified_army_capacity value = constant:cannibalism_unified_contract.army_stage_2 compare = greater_than_or_equals }
+	command_power > cannibalism_unified_army_command_gate
+	has_army_experience > cannibalism_unified_army_experience_gate
+	has_fuel > cannibalism_unified_army_fuel_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_army_support_cost } }
+}
+
+cannibalism_unified_has_air_program_foundation = {
+	OR = {
+		any_controlled_state = { air_base > 0 }
+		has_air_experience > constant:cannibalism_unified_operation.air_program_experience_gate
+		has_equipment = { small_plane_airframe > constant:cannibalism_unified_operation.air_program_airframe_gate }
+	}
+}
+
+cannibalism_unified_can_pay_air_foundation = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_captured_equipment_conversion_open
+	NOT = { cannibalism_unified_has_air_program_foundation = yes }
+	has_manpower > cannibalism_unified_air_foundation_manpower_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_air_foundation_support_cost } }
+	has_fuel > cannibalism_unified_air_foundation_fuel_gate
+}
+
+cannibalism_unified_can_pay_naval_operation = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	check_variable = { var = cannibalism_unified_navy_capacity value = constant:cannibalism_unified_contract.navy_stage_1 compare = greater_than_or_equals }
+	any_controlled_state = { is_coastal = yes naval_base > 0 }
+	has_navy_experience > cannibalism_unified_naval_experience_gate
+	has_fuel > cannibalism_unified_naval_fuel_gate
+	NOT = { has_equipment = { convoy_1 < cannibalism_unified_naval_convoy_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_naval_support_cost } }
+}
+
+cannibalism_unified_can_pay_air_operation = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	cannibalism_unified_has_air_program_foundation = yes
+	check_variable = { var = cannibalism_unified_air_capacity value = constant:cannibalism_unified_contract.air_stage_1 compare = greater_than_or_equals }
+	has_air_experience > cannibalism_unified_air_experience_gate
+	has_fuel > cannibalism_unified_air_fuel_gate
+	NOT = { has_equipment = { small_plane_airframe < cannibalism_unified_air_airframe_cost } }
+	NOT = { has_equipment = { transport_plane_equipment < cannibalism_unified_air_transport_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_air_support_cost } }
+}
+
+cannibalism_unified_can_pay_silent_anchorage = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_silent_anchorage_projects_open
+	has_manpower > cannibalism_unified_anchorage_manpower_gate
+	has_navy_experience > cannibalism_unified_anchorage_experience_gate
+	has_fuel > cannibalism_unified_anchorage_fuel_gate
+	NOT = { has_equipment = { convoy_1 < cannibalism_unified_anchorage_convoy_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_anchorage_support_cost } }
+}
+
+cannibalism_unified_state_can_receive_silent_anchorage = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	is_coastal = yes
+	impassable = no
+	NOT = { has_state_flag = cannibalism_unified_silent_anchorage_active }
+}
+
+cannibalism_unified_can_pay_enemy_front_collapse = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_enemy_collapse_decisions_open
+	command_power > cannibalism_unified_enemy_front_command_gate
+	has_army_experience > cannibalism_unified_enemy_front_experience_gate
+	has_fuel > cannibalism_unified_enemy_front_fuel_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_enemy_front_support_cost } }
+	if = {
+		limit = { has_country_flag = cannibalism_unified_rout_harvest_caps_required }
+		check_variable = { cannibalism_unified_rout_harvest_receipts > constant:cannibalism_unified_profile.zero }
+	}
+}
+
+cannibalism_unified_is_valid_enemy_front_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_war_with = ROOT
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
+}
+
+cannibalism_unified_can_process_convoy_harvest = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_convoy_hunt_missions_open
+	has_country_flag = cannibalism_unified_convoy_harvest_caps_required
+	check_variable = { cannibalism_unified_convoy_harvest_receipts > constant:cannibalism_unified_profile.zero }
+}
+
+# ---------------------------------------------------------------------------
+# Cells, campaigns, integration, and counterwar
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_can_pay_cell_operation = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_prewar_cell_operations_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_cell_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_cell_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_cell_support_cost } }
+}
+
+cannibalism_unified_is_valid_cell_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { is_cannibalism_active_country = yes }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { is_subject_of = ROOT }
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
+}
+
+cannibalism_unified_can_pay_campaign_operation = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_global_campaigns_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_campaign_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_campaign_command_gate
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_campaign_infantry_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_campaign_support_cost } }
+}
+
+cannibalism_unified_is_valid_campaign_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { is_cannibalism_active_country = yes }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { is_subject_of = ROOT }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
+}
+
+cannibalism_unified_can_pay_terror_ultimatum = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_terror_ultimata_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_ultimatum_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_ultimatum_command_gate
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_ultimatum_infantry_cost } }
+}
+
+cannibalism_unified_can_pay_border_incident = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_border_incident_decisions_open
+	check_variable = { var = cannibalism_larder value = cannibalism_unified_border_incident_larder_cost compare = greater_than_or_equals }
+	command_power > cannibalism_unified_border_incident_command_gate
+	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_border_incident_infantry_cost } }
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_border_incident_support_cost } }
+}
+
+cannibalism_unified_is_valid_border_incident_target = {
+	cannibalism_unified_is_valid_campaign_target = yes
+	is_neighbor_of = ROOT
+}
+
+cannibalism_unified_can_pay_postwar_integration = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_postwar_integration_open
+	has_manpower > cannibalism_unified_integration_manpower_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_integration_support_cost } }
+	NOT = { has_equipment = { train_equipment_1 < cannibalism_unified_integration_train_cost } }
+}
+
+cannibalism_unified_state_can_receive_postwar_integration = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	impassable = no
+	NOT = { is_core_of = ROOT }
+	NOT = { has_state_flag = cannibalism_unified_postwar_integrated }
+}
+
+cannibalism_unified_can_pay_counterwar_operation = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_coalition_command_operations_open
+	command_power > cannibalism_unified_counterwar_command_gate
+	has_army_experience > cannibalism_unified_counterwar_experience_gate
+	has_fuel > cannibalism_unified_counterwar_fuel_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_counterwar_support_cost } }
+	NOT = { has_equipment = { motorized_equipment_1 < cannibalism_unified_counterwar_truck_cost } }
+}
+
+cannibalism_unified_is_valid_counterwar_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_war_with = ROOT
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
+}
+
+cannibalism_unified_can_pay_counterwar_conversion = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_counterwar_conversion_open
+	check_variable = { var = cannibalism_world_hostility value = constant:cannibalism_unified_hostility.pressure_threshold compare = greater_than_or_equals }
+	command_power > cannibalism_unified_counterwar_conversion_command_gate
+	has_army_experience > cannibalism_unified_counterwar_conversion_experience_gate
+	has_fuel > cannibalism_unified_counterwar_conversion_fuel_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_counterwar_conversion_support_cost } }
+	NOT = { has_equipment = { motorized_equipment_1 < cannibalism_unified_counterwar_conversion_truck_cost } }
+}
+
+# ---------------------------------------------------------------------------
+# Terminal consumption and mission objectives
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_can_pay_terminal_consumption = {
+	cannibalism_unified_world_end_category_is_visible = yes
+	has_country_flag = cannibalism_unified_universal_enemy_decisions_open
+	has_country_flag = cannibalism_unified_terminal_consumption_preparation_open
+	NOT = { has_country_flag = cannibalism_unified_terminal_mobilization_prepared }
+	command_power > constant:cannibalism_unified_decision_cost.terminal_command_gate
+}
+
+cannibalism_unified_state_can_support_terminal_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.terminal_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_can_pay_locked_terminal_consumption = {
+	cannibalism_unified_terminal_decisions_are_open = yes
+	command_power > constant:cannibalism_unified_decision_cost.terminal_locked_command_gate
+}
+
+cannibalism_unified_state_can_support_locked_terminal_consumption = {
+	is_controlled_by = ROOT
+	impassable = no
+	cannibalism_can_consume_current_state = yes
+	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.terminal_locked_minimum_population_k compare = greater_than_or_equals }
+}
+
+cannibalism_unified_command_mission_complete = {
+	check_variable = { var = cannibalism_unified_command_mission_actions value = cannibalism_unified_command_mission_goal compare = greater_than_or_equals }
+}
+
+cannibalism_unified_command_mission_partial = {
+	check_variable = { var = cannibalism_unified_command_mission_actions value = cannibalism_unified_command_mission_partial_goal compare = greater_than_or_equals }
+	NOT = { cannibalism_unified_command_mission_complete = yes }
+}
+
+cannibalism_unified_larder_mission_complete = {
+	check_variable = { var = cannibalism_unified_larder_mission_actions value = cannibalism_unified_larder_mission_goal compare = greater_than_or_equals }
+}
+
+cannibalism_unified_larder_mission_partial = {
+	check_variable = { var = cannibalism_unified_larder_mission_actions value = cannibalism_unified_larder_mission_partial_goal compare = greater_than_or_equals }
+	NOT = { cannibalism_unified_larder_mission_complete = yes }
+}
+
+cannibalism_unified_war_machine_mission_complete = {
+	check_variable = { var = cannibalism_unified_war_machine_mission_actions value = cannibalism_unified_war_machine_mission_goal compare = greater_than_or_equals }
+}
+
+cannibalism_unified_war_machine_mission_partial = {
+	check_variable = { var = cannibalism_unified_war_machine_mission_actions value = cannibalism_unified_war_machine_mission_partial_goal compare = greater_than_or_equals }
+	NOT = { cannibalism_unified_war_machine_mission_complete = yes }
+}
+
+cannibalism_unified_counterwar_mission_complete = {
+	check_variable = { var = cannibalism_unified_counterwar_mission_actions value = cannibalism_unified_counterwar_mission_goal compare = greater_than_or_equals }
+}
+
+cannibalism_unified_counterwar_mission_partial = {
+	check_variable = { var = cannibalism_unified_counterwar_mission_actions value = cannibalism_unified_counterwar_mission_partial_goal compare = greater_than_or_equals }
+	NOT = { cannibalism_unified_counterwar_mission_complete = yes }
+}
+
+cannibalism_unified_larder_package_is_operational = {
+	has_country_flag = cannibalism_unified_terminal_larder_gate
+	check_variable = { var = cannibalism_unified_larder_operations value = constant:cannibalism_unified_operation.larder_package_actions compare = greater_than_or_equals }
+}
+
+cannibalism_unified_army_package_is_operational = {
+	has_country_flag = cannibalism_unified_terminal_army_gate
+	check_variable = { var = cannibalism_unified_legions_raised value = constant:cannibalism_unified_operation.army_package_legions compare = greater_than_or_equals }
+	check_variable = { var = cannibalism_unified_bone_guards_raised value = constant:cannibalism_unified_operation.army_package_bone_guards compare = greater_than_or_equals }
+	check_variable = { var = cannibalism_unified_army_operations value = constant:cannibalism_unified_operation.army_package_operations compare = greater_than_or_equals }
+}
+
+cannibalism_unified_expansion_package_is_operational = {
+	has_country_flag = cannibalism_unified_terminal_expansion_gate
+	check_variable = { var = cannibalism_unified_campaigns_prepared value = constant:cannibalism_unified_operation.expansion_package_campaigns compare = greater_than_or_equals }
+	check_variable = { var = cannibalism_unified_postwar_integrations value = constant:cannibalism_unified_operation.expansion_package_integrations compare = greater_than_or_equals }
+	check_variable = { var = cannibalism_unified_cell_operations value = constant:cannibalism_unified_operation.expansion_package_cells compare = greater_than_or_equals }
+}
+
+cannibalism_unified_counterwar_package_is_operational = {
+	has_country_flag = cannibalism_unified_terminal_counterwar_gate
+	check_variable = { var = cannibalism_unified_counterwar_operations value = constant:cannibalism_unified_operation.counterwar_package_operations compare = greater_than_or_equals }
+}
+
+cannibalism_unified_all_operational_packages_are_ready = {
+	has_country_flag = cannibalism_unified_operational_larder_package
+	has_country_flag = cannibalism_unified_operational_army_package
+	has_country_flag = cannibalism_unified_operational_expansion_package
+	has_country_flag = cannibalism_unified_operational_counterwar_package
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_warlord_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WARLORD DECISION TRIGGERS
+# ============================================================================
+# Validates the cannibal command category, exact-population recruitment states,
+# unit caps, Larder reserves, and equipment stores. Normal recruitment remains
+# disabled by Closed Muster Rolls and every scripted unit uses these gates.
+# ============================================================================
+
+cannibalism_warlord_command_is_open = {
+	exists = yes
+	OR = {
+		AND = {
+			is_cannibalism_warlord_country = yes
+			has_country_flag = cannibalism_warlord_decisions_open
+		}
+		AND = {
+			has_global_flag = cannibalism_reveal_complete
+			has_country_flag = cannibalism_inherited_warlord_recruitment_open
+			OR = {
+				cannibalism_unified_decisions_are_open = yes
+				cannibalism_wendigo_command_is_open = yes
+			}
+		}
+	}
+	NOT = { has_capitulated = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_state_is_warlord_consumption_territory = {
+	is_controlled_by = ROOT
+	OR = {
+		AND = {
+			OR = {
+				has_state_flag = cannibalism_warlord_state
+				cannibalism_state_has_active_cell = yes
+			}
+		}
+		AND = {
+			is_owned_by = ROOT
+			ROOT = {
+				has_country_flag = cannibalism_inherited_warlord_recruitment_open
+				OR = {
+					cannibalism_unified_decisions_are_open = yes
+					cannibalism_wendigo_command_is_open = yes
+				}
+			}
+		}
+	}
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_liberated_recovery = yes }
+	NOT = { has_state_flag = cannibalism_recovery_active }
+}
+
+cannibalism_state_can_feed_current_warlord = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_consume_current_state = yes
+}
+
+cannibalism_state_can_recruit_scavenger_warband = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.scavenger_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_recruit_feast_cohort = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.feast_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_recruit_bone_guard = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.bone_guard_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_recruit_origin_specialist = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.origin_specialist_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_recruit_network_cadre = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.network_cadre_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_supply_emergency_reinforcement = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_recruit_from_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_unit_cost.emergency_reinforcement_minimum_state_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_warlord_has_scavenger_capacity = {
+	check_variable = {
+		var = cannibalism_scavenger_warbands_raised
+		value = constant:cannibalism_unit_cap.scavenger_base
+		compare = less_than
+	}
+}
+
+cannibalism_warlord_has_feast_capacity = {
+	check_variable = {
+		var = cannibalism_feast_cohorts_raised
+		value = constant:cannibalism_unit_cap.feast_base
+		compare = less_than
+	}
+}
+
+cannibalism_warlord_has_bone_guard_capacity = {
+	OR = {
+		check_variable = {
+			var = cannibalism_bone_guard_raised
+			value = constant:cannibalism_unit_cap.bone_guard_base
+			compare = less_than
+		}
+		AND = {
+			has_country_flag = cannibalism_warlord_bone_guard_cap_upgraded
+			check_variable = {
+				var = cannibalism_bone_guard_raised
+				value = constant:cannibalism_unit_cap.bone_guard_upgraded
+				compare = less_than
+			}
+		}
+	}
+}
+
+cannibalism_warlord_has_origin_specialist_capacity = {
+	OR = {
+		check_variable = {
+			var = cannibalism_origin_specialists_raised
+			value = constant:cannibalism_unit_cap.origin_specialist_base
+			compare = less_than
+		}
+		AND = {
+			has_country_flag = cannibalism_warlord_origin_specialist_cap_upgraded
+			check_variable = {
+				var = cannibalism_origin_specialists_raised
+				value = constant:cannibalism_unit_cap.origin_specialist_upgraded
+				compare = less_than
+			}
+		}
+	}
+}
+
+cannibalism_warlord_has_network_cadre_capacity = {
+	OR = {
+		check_variable = {
+			var = cannibalism_network_cadres_raised
+			value = constant:cannibalism_unit_cap.network_cadre_base
+			compare = less_than
+		}
+		AND = {
+			has_country_flag = cannibalism_warlord_network_cadre_cap_upgraded
+			check_variable = {
+				var = cannibalism_network_cadres_raised
+				value = constant:cannibalism_unit_cap.network_cadre_upgraded
+				compare = less_than
+			}
+		}
+	}
+}
+
+cannibalism_warlord_can_pay_scavenger_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_basic_recruitment_open
+	cannibalism_warlord_has_scavenger_capacity = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.scavenger_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.scavenger_infantry } }
+}
+
+cannibalism_warlord_can_pay_feast_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_feast_cohort_open
+	cannibalism_warlord_has_feast_capacity = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.feast_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.feast_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.feast_support } }
+}
+
+cannibalism_warlord_can_pay_bone_guard_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_bone_guard_open
+	cannibalism_warlord_has_bone_guard_capacity = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.bone_guard_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.bone_guard_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.bone_guard_support } }
+	NOT = { has_equipment = { artillery_equipment < constant:cannibalism_unit_cost.bone_guard_artillery } }
+}
+
+cannibalism_warlord_can_pay_origin_specialist_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_origin_specialist_open
+	cannibalism_warlord_has_origin_specialist_capacity = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.origin_specialist_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.origin_specialist_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.origin_specialist_support } }
+	if = {
+		limit = { has_country_flag = cannibalism_origin_siege_commune }
+		NOT = { has_equipment = { artillery_equipment < constant:cannibalism_unit_cost.origin_specialist_artillery } }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_origin_march_host }
+		NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_unit_cost.origin_specialist_motorized } }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_origin_island_host }
+		NOT = { has_equipment = { convoy_1 < constant:cannibalism_unit_cost.origin_specialist_convoys } }
+	}
+}
+
+cannibalism_warlord_can_pay_network_cadre_cost = {
+	cannibalism_warlord_command_is_open = yes
+	OR = {
+		has_global_flag = cannibalism_evolution_ii_active
+		has_global_flag = cannibalism_reveal_complete
+	}
+	has_country_flag = cannibalism_warlord_network_cadre_open
+	cannibalism_warlord_has_network_cadre_capacity = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.network_cadre_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.network_cadre_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.network_cadre_support } }
+}
+
+cannibalism_warlord_can_pay_emergency_reinforcement_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_emergency_reinforcement_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_unit_cost.emergency_reinforcement_larder
+		compare = greater_than_or_equals
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_unit_cost.emergency_reinforcement_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.emergency_reinforcement_support } }
+}
+
+cannibalism_state_can_be_intensified_by_current_warlord = {
+	cannibalism_state_is_warlord_consumption_territory = yes
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = cannibalism_state_stage
+		value = constant:cannibalism_state_stage.feeding_state
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_be_abandoned_by_current_warlord = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_warlord_state
+	has_state_flag = cannibalism_active_node
+	NOT = { is_capital = yes }
+	NOT = { has_state_flag = cannibalism_recovery_active }
+	check_variable = {
+		var = cannibalism_consumption_actions
+		value = constant:cannibalism_consumption.state_exhausted_actions
+		compare = greater_than_or_equals
+	}
+	ROOT = {
+		cannibalism_warlord_command_is_open = yes
+		num_of_controlled_states > constant:cannibalism_slot.minimum
+		has_variable = cannibalism_warlord_former_owner
+		var:cannibalism_warlord_former_owner = {
+			exists = yes
+			NOT = { tag = ROOT }
+		}
+	}
+}
+
+cannibalism_warlord_can_pay_intensification_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_state_intensification_open
+	command_power > constant:cannibalism_warlord_decision.intensification_command_gate
+}
+
+cannibalism_warlord_can_pay_abandon_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_relocation_open
+	command_power > constant:cannibalism_warlord_decision.abandon_command_gate
+}
+
+cannibalism_warlord_can_pay_align_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	has_country_flag = cannibalism_warlord_alignment_endgame_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_warlord_decision.align_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_warlord_decision.align_command_gate
+}
+
+cannibalism_warlord_can_pay_synchronized_attack_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	has_country_flag = cannibalism_warlord_synchronized_attack_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_warlord_decision.synchronized_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_warlord_decision.synchronized_command_gate
+}
+
+cannibalism_is_valid_synchronized_warlord_partner = {
+	exists = yes
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_warlord_slot_in_use
+	has_country_flag = cannibalism_warlord_decisions_open
+	has_country_flag = cannibalism_warlord_synchronized_attack_open
+	NOT = { has_capitulated = yes }
+	NOT = { tag = ROOT }
+	is_in_array = { array = global.cannibalism_actor_countries value = THIS }
+	cannibalism_warlord_can_pay_synchronized_attack_cost = yes
+}
+
+cannibalism_warlord_can_pay_island_operation_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_origin_island_host
+	has_country_flag = cannibalism_warlord_island_actions_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_warlord_decision.island_operation_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_warlord_decision.island_operation_command_gate
+	any_controlled_state = { is_coastal = yes naval_base > 0 }
+}
+
+cannibalism_warlord_can_pay_siege_operation_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_origin_siege_commune
+	has_country_flag = cannibalism_warlord_siege_actions_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_warlord_decision.siege_operation_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_warlord_decision.siege_operation_command_gate
+}
+
+cannibalism_warlord_can_pay_march_operation_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_origin_march_host
+	has_country_flag = cannibalism_warlord_march_actions_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_warlord_decision.march_operation_larder_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_warlord_decision.march_operation_command_gate
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_wendigo_decision_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WENDIGO DECISION TRIGGERS
+# ============================================================================
+# Defines click-time resource, state, capacity, and counterwar checks for the
+# revealed Wendigo route. Counterwar availability iterates only the registered
+# transformation-anchor array; it never scans every state on a recurring tick.
+# ============================================================================
+
+cannibalism_wendigo_command_is_open = {
+	has_global_flag = cannibalism_reveal_complete
+	has_global_flag = cannibalism_wendigo_route_active
+	NOT = { has_global_flag = world_end }
+	is_cannibalism_wendigo_hannibal_country = yes
+	has_country_flag = cannibalism_wendigo_transformation_prelock
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	NOT = { has_capitulated = yes }
+	has_event_target = cannibalism_wendigo_merge_host
+	tag = event_target:cannibalism_wendigo_merge_host
+}
+
+cannibalism_wendigo_can_pay_designate_anchor_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.designate_anchor_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_decision.designate_anchor_command_gate
+	check_variable = {
+		var = global.cannibalism_wendigo_active_anchor_count
+		value = constant:cannibalism_wendigo_anchor.maximum
+		compare = less_than
+	}
+}
+
+cannibalism_wendigo_can_pay_fortify_anchor_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.fortify_anchor_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_decision.fortify_anchor_command_gate
+}
+
+cannibalism_wendigo_requested_pack_batch_fits_capacity = {
+	has_variable = cannibalism_wendigo_pack_capacity
+	check_variable = {
+		var = cannibalism_wendigo_requested_pack_batch
+		value = constant:cannibalism_meter.min
+		compare = greater_than
+	}
+	set_temp_variable = { cannibalism_wendigo_pack_count_after_requested_batch = cannibalism_wendigo_trained_pack_count }
+	add_to_temp_variable = { cannibalism_wendigo_pack_count_after_requested_batch = cannibalism_wendigo_requested_pack_batch }
+	check_variable = {
+		var = cannibalism_wendigo_pack_count_after_requested_batch
+		value = cannibalism_wendigo_pack_capacity
+		compare = less_than_or_equals
+	}
+}
+
+cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = {
+	set_temp_variable = { cannibalism_wendigo_ai_required_larder_after_cost = constant:cannibalism_wendigo_countdown.minimum_larder }
+	add_to_temp_variable = { cannibalism_wendigo_ai_required_larder_after_cost = cannibalism_wendigo_ai_larder_cost }
+	check_variable = {
+		var = cannibalism_larder
+		value = cannibalism_wendigo_ai_required_larder_after_cost
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_wendigo_can_pay_train_pack_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_pack_training_open
+	has_template = "Wendigo Pack"
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.train_pack_larder
+		compare = greater_than_or_equals
+	}
+	set_temp_variable = { cannibalism_wendigo_requested_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
+	cannibalism_wendigo_requested_pack_batch_fits_capacity = yes
+}
+
+cannibalism_wendigo_ai_can_pay_train_pack_cost = {
+	cannibalism_wendigo_can_pay_train_pack_cost = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_decision.train_pack_larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
+}
+
+cannibalism_wendigo_can_pay_acceleration_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_countdown_active
+	has_country_flag = cannibalism_wendigo_countdown_acceleration_open
+	NOT = { has_country_flag = cannibalism_wendigo_acceleration_cooldown }
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.accelerate_larder
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_wendigo_can_pay_stabilization_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_countdown_active
+	has_country_flag = cannibalism_wendigo_countdown_stabilization_open
+	NOT = { has_country_flag = cannibalism_wendigo_stabilization_cooldown }
+	check_variable = { cannibalism_wendigo_broken_anchor_count > 0 }
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.stabilize_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_decision.stabilize_command_gate
+}
+
+cannibalism_wendigo_can_pay_frozen_corridor_cost = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_winter_network_active
+	has_country_flag = cannibalism_wendigo_frozen_corridor_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_decision.freeze_corridor_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_wendigo_decision.freeze_corridor_command_gate
+}
+
+cannibalism_state_can_become_wendigo_anchor = {
+	OWNER = { tag = ROOT }
+	CONTROLLER = { tag = ROOT }
+	NOT = { has_state_flag = cannibalism_wendigo_transformation_anchor }
+	NOT = { has_state_flag = cannibalism_wendigo_anchor_population_committed }
+	NOT = { has_state_flag = cannibalism_wendigo_anchor_broken }
+	NOT = { has_state_flag = cannibalism_recovery_active }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	NOT = { is_in_array = { array = global.cannibalism_transformation_anchor_states value = THIS } }
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_wendigo_anchor.minimum_creation_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_fortify_wendigo_anchor = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	check_variable = {
+		var = cannibalism_wendigo_anchor_strength
+		value = constant:cannibalism_wendigo_anchor.maximum_strength
+		compare = less_than
+	}
+}
+
+cannibalism_state_can_feed_wendigo_anchor = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_wendigo_decision.feed_anchor_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_train_wendigo_pack = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	NOT = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_wendigo_decision.train_pack_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_accelerate_wendigo_countdown = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	cannibalism_can_consume_current_state = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_wendigo_decision.accelerate_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_can_stabilize_wendigo_countdown = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	check_variable = {
+		var = cannibalism_wendigo_anchor_strength
+		value = constant:cannibalism_wendigo_anchor.maximum_strength
+		compare = less_than
+	}
+}
+
+cannibalism_state_can_freeze_wendigo_supply_corridor = {
+	OWNER = { tag = ROOT }
+	CONTROLLER = { tag = ROOT }
+	NOT = { has_state_flag = cannibalism_wendigo_frozen_supply_corridor_active }
+	OR = {
+		supply_node > 0
+		rail_way > 0
+		naval_base > 0
+	}
+	any_neighbor_state = {
+		CONTROLLER = {
+			exists = yes
+			has_war_with = ROOT
+		}
+	}
+}
+
+cannibalism_current_wendigo_anchor_is_reachable_by_root = {
+	cannibalism_current_wendigo_anchor_is_live = yes
+	OR = {
+		CONTROLLER = { has_war_with = ROOT }
+		any_neighbor_state = { CONTROLLER = { tag = ROOT } }
+	}
+}
+
+cannibalism_wendigo_counterwar_is_open = {
+	has_global_flag = cannibalism_reveal_complete
+	has_global_flag = cannibalism_wendigo_route_active
+	NOT = { has_global_flag = world_end }
+	NOT = { is_cannibalism_wendigo_hannibal_country = yes }
+	NOT = { has_capitulated = yes }
+	has_event_target = cannibalism_wendigo_merge_host
+	event_target:cannibalism_wendigo_merge_host = {
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_country_flag = cannibalism_wendigo_transformation_prelock
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	}
+	any_of_scopes = {
+		array = global.cannibalism_transformation_anchor_states
+		cannibalism_current_wendigo_anchor_is_reachable_by_root = yes
+	}
+}
+
+cannibalism_can_identify_any_wendigo_anchor = {
+	cannibalism_wendigo_counterwar_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_identification_cooldown }
+	has_political_power > constant:cannibalism_wendigo_decision.identify_political_power_gate
+	any_of_scopes = {
+		array = global.cannibalism_transformation_anchor_states
+		cannibalism_current_wendigo_anchor_is_reachable_by_root = yes
+		NOT = { has_state_flag = cannibalism_wendigo_anchor_identified }
+	}
+}
+
+cannibalism_can_pay_wendigo_anchor_assault_cost = {
+	cannibalism_wendigo_counterwar_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_anchor_assault_cooldown }
+	has_manpower > constant:cannibalism_wendigo_decision.assault_manpower_gate
+	command_power > constant:cannibalism_wendigo_decision.assault_command_gate
+	has_equipment = { infantry_equipment > constant:cannibalism_wendigo_decision.assault_infantry_equipment_gate }
+	has_equipment = { support_equipment_1 > constant:cannibalism_wendigo_decision.assault_support_equipment_gate }
+}
+
+cannibalism_can_pay_wendigo_logistics_disruption_cost = {
+	cannibalism_wendigo_counterwar_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_logistics_disruption_cooldown }
+	has_manpower > constant:cannibalism_wendigo_decision.disrupt_manpower_gate
+	command_power > constant:cannibalism_wendigo_decision.disrupt_command_gate
+	has_equipment = { support_equipment_1 > constant:cannibalism_wendigo_decision.disrupt_support_equipment_gate }
+}
+
+cannibalism_can_pay_wendigo_recruitment_site_break_cost = {
+	cannibalism_wendigo_counterwar_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_recruitment_site_break_cooldown }
+	has_manpower > constant:cannibalism_wendigo_decision.break_site_manpower_gate
+	command_power > constant:cannibalism_wendigo_decision.break_site_command_gate
+	has_equipment = { infantry_equipment > constant:cannibalism_wendigo_decision.break_site_infantry_equipment_gate }
+	any_of_scopes = {
+		array = global.cannibalism_transformation_anchor_states
+		cannibalism_current_wendigo_anchor_is_reachable_by_root = yes
+		NOT = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
+	}
+}
+
+# ============================================================================
+# Consolidated source section: 014_cannibalism_wendigo_triggers.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WENDIGO AND UNIFICATION DESTINATION TRIGGERS
+# ============================================================================
+# Defines the exact live Wendigo identity discovered in Event 2, the durable
+# selected-host contract, and a route-neutral destination trigger used by
+# post-reveal warlord submission. These checks preserve the structural ZZZ
+# survivor instead of attempting to reconstruct its country-scoped state.
+# ============================================================================
+
+cannibalism_is_valid_wendigo_merge_host = {
+	exists = yes
+	original_tag = ZZZ
+	has_country_flag = zombie_outbreak_dynamic_country
+	has_country_flag = weaponized_zombie_outbreak_country
+	has_country_flag = weaponized_zombie_independent_outbreak
+	has_country_flag = weaponized_zombie_type_wendigo
+	has_country_flag = weaponized_zombie_archetype_wendigo
+	NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+	NOT = { has_capitulated = yes }
+	NOT = { has_idea = weaponized_zombie_wendigo_world_end }
+	OR = {
+		num_of_controlled_states > 0
+		num_divisions > 0
+	}
+}
+
+cannibalism_selected_wendigo_merge_host_is_valid = {
+	has_event_target = cannibalism_wendigo_merge_host
+	has_global_flag = cannibalism_wendigo_transformation_pending
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_wendigo }
+	event_target:cannibalism_wendigo_merge_host = {
+		cannibalism_is_valid_wendigo_merge_host = yes
+	}
+}
+
+cannibalism_valid_wendigo_merge_host_exists = {
+	any_country = { cannibalism_is_valid_wendigo_merge_host = yes }
+}
+
+cannibalism_is_valid_unification_destination = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	has_global_flag = cannibalism_reveal_complete
+	OR = {
+		is_cannibalism_unified_country = yes
+		is_cannibalism_wendigo_hannibal_country = yes
+	}
+}
+
+cannibalism_has_valid_unification_destination = {
+	has_event_target = cannibalism_unification_host
+	event_target:cannibalism_unification_host = {
+		cannibalism_is_valid_unification_destination = yes
+	}
+}
+
+cannibalism_current_warlord_can_submit_without_displacing_player = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_pending_absorption
+	cannibalism_has_valid_unification_destination = yes
+	OR = {
+		is_ai = yes
+		event_target:cannibalism_unification_host = { is_ai = yes }
+	}
+}
+
+cannibalism_current_warlord_can_challenge_active_unifier = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_pending_absorption
+	has_country_flag = cannibalism_hierarchy_personal_tyranny
+	NOT = { has_capitulated = yes }
+	num_divisions > constant:cannibalism_unification.minimum_challenge_divisions
+	cannibalism_has_valid_unification_destination = yes
+}
+
+cannibalism_current_wendigo_anchor_is_live = {
+	has_state_flag = cannibalism_wendigo_transformation_anchor
+	has_variable = cannibalism_wendigo_anchor_strength
+	has_variable = cannibalism_wendigo_anchor_source_country
+	has_variable = cannibalism_wendigo_anchor_source_generation
+	check_variable = {
+		var = cannibalism_wendigo_anchor_strength
+		value = constant:cannibalism_wendigo_anchor.minimum_live_strength
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cannibalism_wendigo_anchor_source_country
+		value = event_target:cannibalism_wendigo_merge_host
+		compare = equals
+	}
+	check_variable = {
+		var = cannibalism_wendigo_anchor_source_generation
+		value = event_target:cannibalism_wendigo_merge_host.cannibalism_actor_generation
+		compare = equals
+	}
+	OWNER = { tag = event_target:cannibalism_wendigo_merge_host }
+	CONTROLLER = { tag = event_target:cannibalism_wendigo_merge_host }
+}
+
+cannibalism_wendigo_can_start_countdown = {
+	is_cannibalism_wendigo_hannibal_country = yes
+	has_country_flag = cannibalism_wendigo_winter_network_active
+	has_country_flag = cannibalism_wendigo_countdown_route_complete
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:cannibalism_evolution_threshold.world_end_chaos
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.cannibalism_wendigo_active_anchor_count
+		value = constant:cannibalism_wendigo_anchor.minimum_for_countdown
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_network_reach
+		value = constant:cannibalism_wendigo_countdown.network_reach_gate
+		compare = greater_than_or_equals
+	}
+	num_of_controlled_states > constant:cannibalism_wendigo_countdown.controlled_states_gate
+	check_variable = {
+		var = global.cannibalism_consumed_population_k
+		value = constant:cannibalism_wendigo_countdown.consumed_population_k_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cannibalism_wendigo_winter_victories
+		value = constant:cannibalism_wendigo_countdown.minimum_winter_victories
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cannibalism_unified_authority
+		value = constant:cannibalism_wendigo_countdown.minimum_authority
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_wendigo_countdown.minimum_larder
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_wendigo_can_lock_terminal_form = {
+	cannibalism_wendigo_can_start_countdown = yes
+	world_end_cannibalism_wendigo_scenario_enabled = yes
+	has_country_flag = cannibalism_wendigo_countdown_active
+	has_country_flag = cannibalism_wendigo_terminal_route_complete
+	check_variable = {
+		var = cannibalism_wendigo_transformation_progress
+		value = constant:cannibalism_wendigo_countdown.progress_max
+		compare = greater_than_or_equals
 	}
 }

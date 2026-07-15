@@ -4,13 +4,15 @@ Date: 2026-07-12
 
 Status: accepted, implemented, audited, and promoted into the Event 014 source specifications on 2026-07-13.
 
-Disposition: H-01, H-02, H-03, and M-01 are implemented. The current 2026-07-15 country-package and focus-tree re-audits report P0/P1/P2/P3 all at zero. The fixed first-band pre-lock AI package is intentional implemented design followed by a separate one-time post-lock package, not an open finding. All 21 final closure assets are present.
+Disposition: H-01, H-02, H-03, and M-01 are accepted, implemented, audited, promoted, and closed. The current 2026-07-15 country-package, focus-tree, and improvement-loop consolidation re-audits report P0/P1/P2/P3 all at zero. The fixed first-band pre-lock AI package is intentional implemented design followed by a separate one-time post-lock package, not an open finding. All 21 final closure assets are present.
 
 Correction: the 2026-07-15 origin revision removes the fourth origin package and its inherited-template stage. Only Island Reavers, Siege Eaters, and March Predation Columns remain in this contract.
 
-Audit source: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-12.md
+Historical audit source: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-12.md`.
 
-Current closure sources: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-15.md` and `docs/plans/014_cannibalism_plans/audits/event014_country_package_reaudit_2026-07-15.md`.
+Current closure sources are `docs/plans/014_cannibalism_plans/audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md`, `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`, and `docs/plans/014_cannibalism_plans/audits/event014_improvement_loop_consolidation_reaudit_2026-07-15.md`.
+
+Pre-consolidation runtime filenames retained below are historical implementation coordinates. Current runtime authority is the 23-file dedicated loader set enumerated by the consolidation re-audits, with definitions folded into the appropriate consolidated loader for each HOI4 schema.
 
 ## Outcome
 

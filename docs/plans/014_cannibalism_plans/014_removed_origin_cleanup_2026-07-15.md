@@ -8,7 +8,7 @@ Status: implemented and closed by the 2026-07-15 cross-surface re-audits.
 
 Event 014 has three warlord origins: Island Host, Siege Commune, and March Host. `CBA` through `CBH` are eight origin-agnostic reusable slots. No current gameplay, localisation, interface, portrait, flag, scenario, country package, focus, decision, idea, trait, AI profile, recruitment template, or Wendigo inheritance stage reserves a slot for any other origin.
 
-Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/subagent_handoffs/` are historical evidence of the superseded implementation and are not design authority. Current authority is the specification package, `docs/events/014_cannibalism.md`, this cleanup record, and the 2026-07-15 re-audits.
+Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/subagent_handoffs/` are historical evidence of the superseded implementation and are not design authority. Current authority is the specification package, `docs/events/014_cannibalism.md`, this cleanup record, and the 2026-07-15 consolidation re-audits.
 
 ## Removed runtime surfaces
 
@@ -30,10 +30,10 @@ Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/suba
 
 ## Closed audit proof
 
-- `event014_focus_tree_reaudit_2026-07-15.md` confirms exactly 68 local warlord focuses, four focus-specific nodes for each of the three origins, 204 total focus icons across all three trees, and zero retired-origin identifiers.
-- `event014_decision_mission_reaudit_2026-07-15.md` confirms exactly three live origin-specific warlord actions, three paid unified specialist-recruitment decisions, and atomic three-origin scenario planning.
-- `event014_country_package_reaudit_2026-07-15.md` confirms eight origin-agnostic slots, exactly three origin packages, zero removed-origin runtime matches, and the full regional leader/flag wiring.
-- The current asset authority confirms 204 focus-icon DDS files, 62 idea/modifier DDS files, 135 decision/category DDS files, and 812 GFX references resolving to 598 unique runtime paths with no missing file.
+- `audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md` confirms exactly 68 local warlord focuses, four focus-specific nodes for each of the three origins, 204 total focus icons across all three trees, and zero retired-origin identifiers.
+- `audits/event014_decision_mission_consolidation_reaudit_2026-07-15.md` confirms exactly three live origin-specific warlord actions, three paid unified specialist-recruitment decisions, and atomic three-origin scenario planning.
+- `audits/event014_country_package_consolidation_reaudit_2026-07-15.md` confirms eight origin-agnostic slots, exactly three origin packages, zero removed-origin runtime matches, and the full regional leader/flag wiring.
+- The current asset authority confirms 204 focus-icon DDS files, 62 idea/modifier DDS files, 135 decision/category DDS files, and exactly three Event 014-referencing GFX files: the dedicated `interface/014_cannibalism.gfx` registry plus the shared `interface/chaosx_pictures.gfx` and `interface/chaosx_super_events.gfx` registries. Their 812 references resolve to 598 unique existing runtime paths with 598 unique hashes and no missing file.
 - Current gameplay, localisation, interface, portrait, flag, scenario, country, focus, decision, idea, trait, AI, recruitment, and Wendigo inheritance surfaces contain no live fourth-origin package.
 
 No fallback or partial replacement was used. Generic prison, camp, prisoner-protection, transfer-record, and humanitarian-recovery mechanics remain because they are origin-independent Event 014 content.

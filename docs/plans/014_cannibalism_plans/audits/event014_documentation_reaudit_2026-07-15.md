@@ -1,5 +1,7 @@
 # Event 014 Documentation Reaudit - 2026-07-15
 
+> Superseded for current authority by `event014_documentation_consolidation_reaudit_2026-07-15.md`. This same-day checkpoint remains historical evidence only.
+
 ## Scope
 
 This was a documentation-only reconciliation of the current Event 014 source specifications, matrices, canonical event document, scenario catalog document, accepted addenda, current asset authority, and status plans. Gameplay, localisation, runtime assets, spreadsheets, and `docs/specs/014_cannibalism_specs/PACKAGE_MANIFEST.md` were not edited.

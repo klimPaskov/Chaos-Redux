@@ -1,5 +1,7 @@
 # Event 014 Country Package Final Reaudit
 
+> Superseded for current authority by `event014_country_package_consolidation_reaudit_2026-07-15.md`. This same-day checkpoint remains historical evidence only.
+
 Date: 2026-07-15
 
 Audit basis: live shared working tree at Git HEAD `7f15cf8b0b1ab764c1d7aee04c02c5c6e8f73614`. The working tree contains concurrent Event 014 work. Live source files, not Git HEAD or an older audit, are the implementation authority for this report.
