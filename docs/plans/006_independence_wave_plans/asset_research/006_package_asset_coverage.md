@@ -24,6 +24,15 @@ The five groups below are mutually exclusive and collectively exhaustive. Their 
 
 All final flag families require normal, medium, and small 32-bit uncompressed TGA files at 82x52, 41x26, and 10x7, with bottom-left origin. All sourced portraits require a provenance record and a 156x210 final DDS. Generated institutional portraits and fictional leaders are owned by the generated-art route.
 
+### Current produced-asset progress
+
+- `IW-018` Sardinia (`ARX`): researched Four Moors civic synthesis delivered as an official-ImageGen-derived normal/medium/small triplet.
+- `IW-019` Sicily (`ASX`): researched 1848 S.015 constitutional-independence triplet delivered, but route ownership remains under review and the art is not a neutral baseline.
+- `IW-021` Trieste Free State (`ICX`): researched 1918-1936 civic corsesca triplet delivered; `ICX` replaces the Windows-reserved `AUX` basename.
+- `IW-024` Banat (`AXX`): no flag produced; no attested Republic flag or approved fictional route design was found.
+
+The source and generated packages are under `docs/assets/006_independence_wave/mediterranean_danube_flag_sources_2026_07_15/` and `docs/assets/006_independence_wave/mediterranean_danube_generated_flags_2026_07_15/`. Asset delivery does not override package readiness, route, portrait, focus, mechanic, or AI gates.
+
 ## Group A: existing registered base reuse — 63
 
 Installed Hearts of Iron IV provides at least one complete normal/medium/small flag set for every tag in this group. The base may be retained only when it matches the package identity and opening route. Existing character art may be reused only after the implementation pass confirms the leader is period-valid and not active in another country. Otherwise the accepted opening is a generated institutional cabinet, not a borrowed real person.

@@ -42,6 +42,10 @@ FLAG_RE = re.compile(r'^([A-Z0-9]{3})(?:_(?:communism|democratic|fascism|neutral
 HISTORY_COUNTRY_RE = re.compile(r'^([A-Z0-9]{3}).*\.txt$', re.IGNORECASE)
 ENGINE_RESERVED_THREE_CHARACTER_NAMESPACES = {
 	"GFX": "HOI4 sprite and interface graphics identifier namespace",
+	"AUX": "Windows reserved DOS device basename; country, history, localisation, and flag files cannot be opened reliably",
+	"CON": "Windows reserved DOS device basename",
+	"NUL": "Windows reserved DOS device basename",
+	"PRN": "Windows reserved DOS device basename",
 }
 LOC_MARKUP_RE = re.compile(r'(?:§.|£[^£\s]+£|\$[^$]+\$|\[[^\]]+\])')
 STATE_WORDS = {
@@ -441,7 +445,7 @@ def markdown_report(data: dict[str, object]) -> str:
 		f"- Reserved Event 006 tags scanned: **{data['event6_reserved_tag_count']}**.",
 		f"- Registered vanilla-tag reuse rows: **{data['reused_registry_count']}**.",
 		f"- Non-selectable vanilla route-overlay rows: **{data['overlay_registry_count']}**.",
-		f"- Engine-reserved three-character namespaces excluded: **{', '.join(data['engine_reserved_namespaces'])}**.",
+		f"- Engine- or OS-reserved three-character namespaces excluded: **{', '.join(data['engine_reserved_namespaces'])}**.",
 		f"- Installed Workshop directories scanned: **{data['workshop_directory_count']}**.",
 		f"- Workshop directories containing country-tag definitions: **{data['workshop_roots_with_tags']}**.",
 		f"- External and vanilla country-tag definitions parsed: **{data['external_definition_count']}**.",
@@ -513,7 +517,7 @@ def markdown_report(data: dict[str, object]) -> str:
 			"## Scope and limitations",
 			"",
 			"- The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.",
-			"- Engine-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation; `GFX` is reserved for HOI4 sprite and interface identifiers.",
+			"- Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.",
 			"- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods.",
 			"- Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.",
 			"- Cosmetic tags have no single engine registry, so call sites, localisation, and flags are treated as collision evidence. A localisation-only hit can be over-inclusive but is safer than silently taking another mod's route identity.",
@@ -577,7 +581,7 @@ def main() -> None:
 			f"{tag} ({ENGINE_RESERVED_THREE_CHARACTER_NAMESPACES[tag]})"
 			for tag in reserved_namespace_tags
 		)
-		raise RuntimeError(f"Event 006 consumes engine-reserved namespace tags: {details}")
+		raise RuntimeError(f"Event 006 consumes engine- or OS-reserved namespace tags: {details}")
 	overlay_rows = [row for row in registry_rows if row.get("automatic_pool_disposition") == "vanilla_route_overlay_only"]
 	if any(row.get("resolved_tag") for row in overlay_rows):
 		raise RuntimeError("A vanilla route overlay has a standalone resolved tag")

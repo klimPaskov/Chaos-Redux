@@ -21,7 +21,7 @@ Implementation reconciliation: 2026-07-14
 
 - [x] Installed vanilla, Workshop, local-mod, and Chaos Redux tags and aliases were checked in the 2026-07-15 scan universe.
 - [x] All 102 custom Event 6 tags are collision-free in that scan universe.
-- [x] Registered-tag migrations and the `HYX`, `HZX`, `IAX`, and `IBX` custom remaps are locked; no country consumes the engine-reserved `GFX` namespace.
+- [x] Registered-tag migrations and the `ICX`, `HYX`, `HZX`, `IAX`, and `IBX` custom remaps are locked; no country consumes the engine-reserved `GFX` namespace or a Windows-reserved device basename.
 - [x] `IW-153` reuses registered `POK` and retires `FWX`.
 - [x] `CHU` is shared by `IW-043` and `IW-046`, with package flags and mutual exclusion required.
 - [x] `BIA` is shared by `IW-096` and `IW-107`, with package flags and mutual exclusion required.
