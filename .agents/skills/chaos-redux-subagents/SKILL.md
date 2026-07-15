@@ -221,9 +221,35 @@ Use:
 
 The parent agent must give each asset subagent a bounded prompt with exact asset names, target sizes, source mode, final folders, sprite names when already registered, reference folders, and constraints.
 
+Country-identity asset work must not start until the parent has audited the
+candidate tag against vanilla, Chaos Redux, every installed Workshop mod, and
+other local mods, and has checked whether the national identity already exists
+in vanilla. A conflicting new tag must be remapped; a vanilla country identity
+must reuse the vanilla tag and preserve its meaningful content. Pass the
+locked tag and audit evidence into the context-free subagent prompt.
+
+Portrait prompts must name project-root `assets/leader_portraits` and
+`assets/advisor_icons`. Real people require an attributed source, explicit
+head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop
+metadata, and comparison sheet. Fictional portraits require imagegen with the
+leader references as style inputs. Advisor, theorist, and high-command icons
+are separate `65x67` dossier-card assets made from approved portrait masters,
+not resized leader portraits; require `.tools/process_hoi4_portrait.py` and its
+comparison output.
+
 For `chaosx_icon_artist`, the parent prompt must require `$imagegen` source atlas or source PNG evidence, prompt and source-mode notes, transparent-background processing, contact sheets, dimension and alignment QA, no white matte or opaque square backgrounds, and confirmation that final generated icons are not primitive local drawings or resized unrelated icons.
 
-For flags, the parent prompt must state whether each flag is a base flag, ideology variant, route variant, cosmetic-tag flag, historical flag, or fictional flag. Base flags for existing countries must be preserved unless explicitly in scope. Ideology variants must be distinct designs, not recolors or copied emblems. Historical flags and attested symbols belong with `chaosx_asset_source_researcher`. Fictional or alternate-history variants belong with `chaosx_generated_event_art`.
+For flags, the parent prompt must state whether each flag is a base flag,
+ideology variant, route variant, cosmetic-tag flag, historical flag, or
+fictional flag. Every final flag requires imagegen source evidence. Historical
+flags and attested symbols begin with `chaosx_asset_source_researcher`, then
+use the cited design as a strict imagegen input; fictional or alternate-history
+variants belong with `chaosx_generated_event_art`. Require clean flat flag
+designs, exact historical geometry and symbols when attested, and reject
+waving fabric, folds, flagpoles, scenery, painterly artwork, perspective,
+lighting, gradients, fake text, or invented heraldry. Base flags for existing
+countries must be preserved unless explicitly in scope. Ideology variants
+must be distinct designs, not recolors or copied emblems.
 
 Asset subagents may create source files, PNG previews, DDS files, contact sheets, manifests, and `gfx_handoff.md`. They must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files unless the parent explicitly expands scope.
 

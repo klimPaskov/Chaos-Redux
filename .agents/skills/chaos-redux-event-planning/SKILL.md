@@ -766,6 +766,17 @@ A good AI section should make the implementation agent unable to create generic 
 
 When an event creates, releases, transforms, or significantly modifies a country, the spec must define that country as a full package. This applies to new custom tags and to existing countries that gain event-specific political identities, focus trees, flags, leaders, cosmetic names, ideology names, starting forces, or mechanics.
 
+Before assigning a new tag, inventory vanilla country tags and identities,
+Chaos Redux tags, every installed Workshop mod's country tags, and other local
+mods. A new tag must be unused across that complete installed set. If the
+country or national identity already exists in vanilla, reuse the vanilla tag
+and plan safe additive content; do not create a duplicate country under a new
+tag. Preserve a living vanilla country and any meaningful vanilla or existing
+tree. When an event requires a naming family such as a suffix convention,
+apply that convention only after the collision audit. Record the audit source
+roots, conflicts, reused vanilla tags, and unresolved identity matches in the
+spec or implementation handoff.
+
 For every new country, and every existing country that is meaningfully changed, the spec should provide a country package matrix or equivalent structured section. It must cover:
 
 - tag or placeholder tag, with a note that final tags must avoid conflicts
@@ -904,9 +915,26 @@ Every decision, decision category, idea, national spirit, achievement, faction e
 
 Every country package must include flags. Required flag coverage includes normal, medium, and small sizes for each implemented flag state. If the country has ideology-specific names, focus-tree transformations, puppet identities, restored historical forms, radical routes, or high-chaos mutations, the spec must identify whether those states need separate flags.
 
-Historical and real-world flags should not be invented with `$imagegen` by default. If a country, movement, party, military authority, or restoration path has a real historical flag or a well-attested symbolic design, the asset brief should instruct the asset agent to source that flag or symbol from a reliable source, document it, and convert it into HOI4 flag sizes. Use `$imagegen` only for fictional, alternate, supernatural, or deliberately invented flag identities when generated art is appropriate.
+Every new flag uses `$imagegen`. For a real or historically attested country,
+movement, party, military authority, or restoration path, the asset brief must
+first require reliable design research and a cited reference. Imagegen then
+reconstructs that exact design as a flat flag under the reference constraint;
+it must not produce waving fabric, painterly flag artwork, scenery, gradients,
+perspective, fake lettering, or invented heraldry. The brief must require a
+manual geometry, colour, orientation, and symbol comparison before HOI4 flag
+resizing. Fictional and alternate flags also use imagegen, but still as flat
+flag designs rather than illustrations.
 
-Historical or real leaders should not be generated. The spec should identify likely real portrait needs and instruct the asset agent to source real images, document source and license status, and crop them to HOI4 portrait size. Fictional leaders, council portraits, cult leaders, alternate invented officers, and symbolic committee portraits can use `$imagegen` when generated art is appropriate.
+Historical or real leaders should not be generated. The spec should identify
+likely real portrait needs and instruct the asset agent to source real images,
+document source and license status, choose an explicit head-and-shoulders
+crop, apply an identity-preserving HOI4 painted finish, and compare the result
+with project-root `assets/leader_portraits`. Advisor, theorist, and
+high-command portraits must be separately planned as `65x67` dossier icons
+using project-root `assets/advisor_icons`; they are not resized leader
+portraits. Fictional leaders, council portraits, cult leaders, alternate
+invented officers, and symbolic committee portraits can use `$imagegen` when
+generated art is appropriate.
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset brief must require source notes, and a clear distinction between sourced historical use and fictional alternate-history invention.
 
@@ -1281,7 +1309,15 @@ Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, 
 
 This skill should define what assets are needed, what they should represent, what source mode they require, and which visible states should be animated. If a major mechanic has no animated sprite plan, the spec should explain why the static presentation is stronger.
 
-Historical or real-world assets need special care. Historical flags, historical symbols, and real leader portraits should be sourced from reliable references and converted to HOI4 style rather than generated. Generated art is appropriate for fictional flags, fictional leaders, symbolic council portraits, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, UI art, and fictional or alternate-history report/news/super-event images unless the user says otherwise.
+Historical or real-world assets need special care. Historical flags and
+symbols require reliable cited design references; every final flag still uses
+imagegen as a reference-constrained, flat reconstruction step. Real leader
+portraits require sourced photographs, explicit head-and-shoulders crops, and
+identity-preserving conversion to the HOI4 painted style. Generated art is
+appropriate for fictional leaders, symbolic council portraits, invented
+high-chaos identities, idea icons, focus icons, decision icons, achievements,
+faction emblems, UI art, and fictional or alternate-history
+report/news/super-event images unless the user says otherwise.
 
 ### Reference examples for asset planning
 
@@ -1299,6 +1335,8 @@ C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chao
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/leader_portraits
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/advisor_icons
 ```
 
 Reference mapping:
@@ -1312,6 +1350,8 @@ Reference mapping:
 - decision and decision category icons: `assets/decisions`
 - flags: `assets/flags`
 - focus icons: `assets/focuses`
+- leader portraits: project-root `assets/leader_portraits`
+- advisor, theorist, and high-command portrait icons: project-root `assets/advisor_icons`
 - and others if needed
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
@@ -1342,7 +1382,16 @@ The asset brief must state the correct source mode where relevant.
 
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
-Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for real historical people, real photographed events, and real archival artifacts. Historical flags and historically attested symbols should be sourced and documented, then converted to HOI4 flag sizes. Fictional, supernatural, invented, or alternate-history flags can use `$imagegen` through `chaos-redux-event-assets` when appropriate.
+Use `chaos-redux-event-assets` rules for source selection. Symbolic icons
+usually use `$imagegen`. News event images, report event images, and
+super-event images may be sourced or generated. Prefer generated assets for
+fictional, alternate-history, symbolic, high-chaos, or unique scenes, and
+sourced assets for real historical people, real photographed events, and real
+archival artifacts. Every flag uses `$imagegen`; historical flags first use a
+cited design reference and must remain a flat, faithful reconstruction rather
+than flag artwork. Real portrait briefs must name the leader and advisor
+reference folders, explicit head-and-shoulders crop, identity-preservation,
+and separate `156x210` leader versus `65x67` advisor outputs.
 
 Do not make the asset brief vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset brief must list the required assets for each visible identity state. If any visible identity state is important enough to feel like a reveal, crisis mode, high-chaos form, completed formable, or living mechanic state, the asset prompt should usually include an animated sprite or animated portrait plan plus a static fallback.
 
