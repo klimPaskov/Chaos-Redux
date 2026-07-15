@@ -93,7 +93,7 @@ The dormant manual runtime ledger is schema 2. Each scheduled batch, verifier, a
 
 Static control flow requires issued calls, observed callbacks, unique struck states, state strike totals, and array size to agree before aggregate consequences run. Aggregate Deaths, fallout, Air Contamination, Chaos history, condemnation, and treaty consequences then run once. The countdown end is stored as the verified start day plus seven. Only the engine-scheduled seven-day callback may submit the request. Daily reconciliation cannot submit or reconstruct it, and lost ownership or an overdue callback fails closed.
 
-The public scenario row and dispatch are absent. The live registry ends at SCN-011. Event 20 reserves raw id 12 for Black Plague without registering a live SCN-012 row. Fallout cannot honestly allocate id 12 or claim id 13 as one greater than the live maximum.
+The public scenario row and dispatch are absent. The live registry reaches SCN-013 with The Unbidden Muster. Event 20 still reserves raw id 12 for Black Plague without registering a live SCN-012 row. Fallout reserves SCN-014 as exactly one greater than the highest live assignment and does not renumber or reuse any existing id.
 
 ## Runtime release boundary
 
@@ -134,7 +134,7 @@ The old-world diplomacy proof gate also remains unresolved. Market access is no 
 
 ## Hard release blockers
 
-1. Resolve the SCN-012 ownership conflict and register a truthful public Fallout row and dispatch only after a valid next id exists.
+1. Register the reserved SCN-014 public Fallout row and dispatch only after the exact native sweep release gate passes.
 2. Prove native strike acceptance, one callback per call, callback timing, performance, save behavior, and multiplayer behavior in a separately authorized runtime pass.
 3. Resolve the possible 121,848 vanilla news-event attempts without reducing the exact 10,154-target requirement.
 4. Implement general successor allocation and the country and focus package producers, including current transition generation ledgers. Re-audit every live event-package producer before the first state transfer or tag materialization.

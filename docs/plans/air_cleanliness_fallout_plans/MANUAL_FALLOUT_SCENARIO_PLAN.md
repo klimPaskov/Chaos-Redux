@@ -15,7 +15,7 @@ The exact installed-map sweep substrate exists but is dormant.
 - Static control flow runs aggregate Deaths, nuclear fallout, Air Contamination, Chaos history, condemnation, and treaty consequences once after complete verification.
 - Save recovery extends the existing host daily coordinator for hourly sweep and verifier callbacks and never adds a second recurring world iterator. The seven-day callback remains engine-owned and cannot be reconstructed from a calendar-day value.
 
-The public row and dispatch remain absent. The live registry ends at SCN-011 while the unfinished Black Plague package separately reserves raw id 12. Fallout cannot take 12 without collision and cannot take 13 until 12 is genuinely live.
+The public row and dispatch remain absent. The live registry reaches SCN-013 with The Unbidden Muster while the unfinished Black Plague package separately reserves raw id 12. Fallout reserves SCN-014 as the live maximum plus one. Existing ids, including the unused public gap at 12, remain unchanged.
 
 Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The dormant substrate is not a release claim.
 
@@ -45,7 +45,7 @@ The manual scenario uses the same transition and successor systems as every othe
 
 ## Scenario id allocation
 
-Fallout must use the next id in the live triggerable-scenario registry. No fixed id is reserved in this plan.
+Fallout uses reserved id 14, the next integer after the live maximum of 13 observed during implementation.
 
 Allocation procedure:
 
@@ -58,7 +58,7 @@ Allocation procedure:
 
 Do not move Africa Is One or any other existing scenario. Do not reuse a gap unless the user later asks for gap reuse. Do not copy the next value observed in an older repository snapshot.
 
-The public row should display `SCN-<allocated padded id>` only after the allocation has been verified from the live registry.
+The public row will display `SCN-014` only after the native sweep release gate passes. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation until then.
 
 ## Engine feasibility and runtime release gate
 

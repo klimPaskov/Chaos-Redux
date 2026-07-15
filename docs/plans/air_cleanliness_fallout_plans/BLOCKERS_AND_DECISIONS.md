@@ -51,13 +51,13 @@ Forbidden resolution:
 
 ## B3: manual scenario id allocation
 
-Status: blocked by a live versus reserved allocation conflict
+Status: resolved, SCN-014 reserved and public activation remains blocked by B2
 
 Observed live checkout:
 
-- the registered public scenario sequence ends at raw id 11
+- the registered public scenario sequence reaches raw id 13 with The Unbidden Muster
 - the unfinished Black Plague package separately reserves raw id 12
-- Black Plague does not yet register or dispatch a live SCN-012 row
+- the gap at raw id 12 does not lower the highest live assignment
 
 Allocation rule:
 
@@ -66,7 +66,7 @@ Allocation rule:
 - preserve every existing scenario id and stored selection value
 - update registry arrays, sorting, localisation, dispatch, and documentation with the allocated id
 
-Fallout cannot take raw id 12 without colliding with Event 20. It cannot claim raw id 13 as the previous live maximum plus one until SCN-012 is genuinely live. The public Fallout row remains absent and no existing id was renumbered.
+`fallout_manual_scenario_identity.triggerable_scenario_id` reserves raw id 14, which is exactly one greater than the live maximum of 13. Raw id 12 remains untouched, no existing id was renumbered, and the public Fallout row remains absent until the exact native sweep passes B2.
 
 ## B4: mapmode strip frame mismatch
 
