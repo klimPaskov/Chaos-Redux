@@ -184,6 +184,34 @@ The shared daily pulse removes duplicate `is_global_host` flags. A human can tak
 
 Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`, or `is_local_player` surface. The live flag therefore identifies a deterministic project coordinator on synchronized game state. It is not proof of the actual network lobby host. Literal host authority remains an engine blocker and must not be claimed.
 
+## B9: living-world scheduler activation
+
+Status: dormant registry and timeline substrate implemented, gameplay activation blocked
+
+Implemented structural proof:
+
+- successful map return records the current transition generation, exact engine date, and arithmetic engine day
+- the existing at-most-once project coordinator owns scheduler reconciliation
+- initial registry construction requires a current successor-allocation transaction
+- aligned country, generation, and stable-index arrays reject missing, extra, stale, and duplicate rows
+- country runtime rows have separate schema receipts for orientation, arcs, delayed queue, and bilateral data
+- five independent orientation components gate ordinary events
+- per-country fatigue slots are initialized, while the last cooldown family provides the hard immediate-repeat veto
+- no daily global candidate pool, event dispatch, or activation setter exists
+
+Missing release work:
+
+- the schema and nine resource identities are reserved, but the required state and country receipt transaction is not implemented
+- survivor-allocation advancement and map return do not yet enforce the required ledger after final allocation and before player continuation
+- the frozen Fallout snapshot must distinguish a real zero Air Winter value from an absent producer before survival initialization
+- no active arc reservation, delayed-result ticket, bilateral reservation, target-loss policy, hidden AI resolution, cleanup recovery, or bounded candidate selection exists
+- family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
+- the five orientation receipts have no implemented Fallout orientation event content
+- reserved suffixes `100` through `122` have no event definitions and count as zero release-floor blocks
+- literal lobby-host authority and runtime save or multiplayer behavior remain unproven
+
+Both activation flags remain unset. No ordinary Fallout living-world event can pass its eligibility trigger. Full evidence is recorded in `FALLOUT_EVENT_SCHEDULER_PROOF.md`.
+
 ## Design decisions already resolved
 
 ### D1: normal super-event removal

@@ -40,7 +40,17 @@ New global values:
 | `global.fallout_transition_phase` | variable | blackout and rewrite state | set during transition, cleared after finish |
 | `global.fallout_transition_dirty` | variable | scripted GUI update marker | increment on visible phase change |
 | `global.fallout_coordinator_last_reconcile_date` | variable | at-most-once project coordinator receipt | written before daily Fallout reconciliation |
+| `global.fallout_event_timeline_generation` | variable | binds the living-world clock to the current transition | written once by the current map-return transaction |
 | `global.fallout_event_timeline_start_date` | variable | exact successful map-return date | written once by the current map-return transaction |
+| `global.fallout_event_timeline_start_day` | variable | arithmetic reveal day used for elapsed-day phase calculation | written once by the current map-return transaction |
+| `global.fallout_event_registry_countries` | scope array | stable ordered post-allocation scheduler identities | frozen after successor allocation proves current |
+| `global.fallout_event_registry_generation_entries` | numeric array | transition generation aligned to each registry country | frozen with the registry payload |
+| `global.fallout_event_registry_index_entries` | numeric array | exact stable zero-based position for each registry country | frozen with the registry payload |
+| `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | future producer writes before commit |
+| `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | future producer writes before commit |
+| `global.fallout_survival_ledger_country_count` | variable | exact finalized successor-assignment row count | future producer writes before commit |
+| `global.fallout_survival_ledger_committed_date` | variable | immutable commit date receipt | future producer writes once |
+| `global.fallout_survival_ledger_committed_day` | variable | immutable arithmetic commit-day receipt | future producer writes once |
 | `global.fallout_rewrite_batch_index` | variable | persistent batch cursor | cleared on completion |
 | `global.fallout_rewrite_error_count` | variable | safety counter for failed assignments | cleared on completion |
 | `global.fallout_surviving_country_count` | variable | final survivor count | set after rewrite |
@@ -63,6 +73,11 @@ Global flags:
 | `world_end_fallout` | Fallout terminal branch marker | persistent |
 | `fallout_manual_scenario_active` | manual launch owns the current request | clear after transition begins |
 | `fallout_synthetic_strike_batch` | suppresses per-strike log and diplomatic spam | clear immediately after strike pass |
+| `fallout_event_scheduler_initialization_pending` | a current map return may initialize the dormant living-world registry | retained while post-reveal orientation and scheduler work remains incomplete |
+| `fallout_event_scheduler_registry_ready` | the aligned country registry payload passed its commit proof | clear only when an uncommitted payload is rebuilt |
+| `fallout_survival_ledger_ready` | all nine-resource rows passed schema, generation, and count proof | no setter until numeric initialization is accepted |
+| `fallout_event_scheduler_activation_approved` | manual review approved gameplay scheduling | no setter until the pilot passes review |
+| `fallout_event_scheduler_active` | ordinary living-world dispatch is live | no setter until all activation gates pass |
 
 ## Transition ledger schemas
 
@@ -73,6 +88,11 @@ Global flags:
 | Successor pre-allocation inventory | 1 | live countries, possible-country scopes, states, reservations, and package conflicts |
 | Successor allocation output | 2 | consumed source receipt, reciprocal conflict links, unique assignments, package layers, capitals, and cleanup |
 | Manual province sweep runtime | 2 | generation-bound batch, verifier, and exact seven-day callback provenance |
+| Fallout living-world scheduler | 1 | exact reveal timeline and country runtime schemas |
+| Fallout living-world registry | 1 | aligned country, generation, and stable-index commit payload |
+| Fallout orientation | 1 | five independent current-generation orientation receipts |
+| Fallout arc, delayed queue, and bilateral ledgers | 1 | dormant row schemas only, with no scheduling producer |
+| Fallout survival ledger | 1 | reserved schema and nine resource identities only, with no row contract or producer |
 
 The region enum has nine live values: North America, Europe, Eurasian Interior, East Asia, South Asia, Middle East and North Africa, Sub-Saharan Africa, Latin America and the Caribbean, and Oceania and Remote Islands.
 
@@ -266,3 +286,6 @@ Altered biosphere is subtype 1, not grade 6. It is fictional high-Chaos content 
 11. No inferred abort or partial map return is permitted. An unresolved postcondition keeps the blackout active and records the owning blocker.
 12. Manual synthetic strikes suppress repeated global event logs and apply one aggregate history entry.
 13. Player reservations become immutable when successor allocation initialization consumes them. Later drift records its own fail-closed error and never rebuilds the consumed ledger.
+14. The living-world registry commits only after successor allocation proves current and each stored country index equals its exact array position.
+15. Ordinary living-world events remain ineligible until all five orientation receipts are current and both scheduler activation flags are explicitly set by reviewed future work.
+16. The future nine-resource ledger must cover every finalized successor after allocation and before player continuation. Survivor-allocation advancement and map return must gain that barrier in the same complete implementation tranche.

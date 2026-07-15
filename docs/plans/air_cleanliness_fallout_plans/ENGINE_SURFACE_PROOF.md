@@ -72,6 +72,18 @@ No official trigger or scripted-GUI surface was found for identifying the actual
 
 All request sources write to one global request ledger. The coordinator accepts the first valid request, records cause and intensity, and rejects duplicate transition starts. Manual, terminal-event, and Air Contamination callers do not own their own rewrite chains.
 
+## Dormant living-world scheduler registry
+
+Verdict: exact reveal-day arithmetic, aligned registry construction, stable index identity, and dormant eligibility are statically proven. Event scheduling, survival aggregation, target-loss recovery, literal lobby-host ownership, and runtime save behavior are not proven.
+
+A successful current-schema map return records `global.fallout_event_timeline_generation`, `global.fallout_event_timeline_start_date`, and `global.fallout_event_timeline_start_day`. The timeline trigger rejects a future date or day and requires the current transition generation. Elapsed campaign time is current engine day minus the frozen reveal day. Phase boundaries are exact through day 3650, with open continuation beginning on day 3651. Completed legacy Fallout saves receive no invented reveal receipt.
+
+The existing coordinator calls the dormant reconciler inside its at-most-once global-date block. Registry construction first requires `fallout_successor_allocation_is_current`, then copies only `global.fallout_successor_assigned_countries`. Official `all_of`, `all_of_scopes`, `for_each_scope_loop`, and `for_loop_effect` documentation supports the aligned-array and bounded-loop syntax. Each numeric index must equal its physical array position, and the country at that position must store the same index and generation. This rejects duplicate rows without a recurring `game:all_countries` candidate query. The ready flag is written last as the commit marker.
+
+Country runtime rows initialize five orientation receipts, twenty nonnegative cooldown-family fatigue slots, one last-family hard veto, ordinary and quiet-period due days, major-arc count bounds, and aligned empty bilateral arrays. Fatigue mutation, decay, and score magnitudes remain undefined because the accepted specs do not supply them. The ordinary trigger requires two activation flags that have no setter. Suffixes `100` through `122` have no event definitions and count as zero release-floor blocks.
+
+The scheduler does not initialize survival values because the accepted specs do not define numeric source formulas. Only the schema and nine resource identities are reserved. The required state and country receipt transaction and pre-player-continuation transition barrier are absent. The snapshot also cannot yet distinguish a valid zero Air Winter input from an absent producer. Active arcs, delayed tickets, bilateral reservations, invalid-target handling, hidden AI resolution, cleanup recovery, and bounded candidate selection remain absent. `FALLOUT_EVENT_SCHEDULER_PROOF.md` records the full contract.
+
 ## Destructive state rewrite receipts
 
 Verdict: the grading, Deaths, modifier, category, and damaged-building observation surfaces are documented. Immediate read-after-write timing for state population and damaged-building dynamic variables is not explicitly guaranteed. The transition therefore records the observed result and fails closed when it differs from the deterministic request.
@@ -188,7 +200,7 @@ The current implementation only plans the proven surviving-tag branch. It reserv
 
 No documented script surface distinguishes separate people sharing one cooperative country. `is_ai = no` identifies the human-controlled country scope. It does not identify individual co-op seats. An absent player can have a successor reserved, but scripted reassignment while disconnected is not proven. Vanilla proves individual tag switches, not several simultaneous multiplayer switches or save recovery during the commit barrier.
 
-Map return requires equal snapshot, planned, and committed player counts, unique target verification, a valid package and focus layer on every destination, a hostable owned and controlled capital, a finished successor allocation, a clean diplomacy ledger, a complete state rewrite, and a zero transition-error count. A successful current-schema map return records the exact Fallout event timeline start date. The blackout remains active when any item fails.
+Map return requires equal snapshot, planned, and committed player counts, unique target verification, a valid package and focus layer on every destination, a hostable owned and controlled capital, a finished successor allocation, a clean diplomacy ledger, a complete state rewrite, and a zero transition-error count. A successful current-schema map return records the exact Fallout event timeline generation, date, and arithmetic day. The missing survival-resource barrier remains a release blocker. The blackout remains active when any implemented item fails.
 
 ## Open proof obligations
 
