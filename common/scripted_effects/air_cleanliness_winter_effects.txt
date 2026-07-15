@@ -1558,17 +1558,23 @@ air_winter_apply_state_population_loss = {
 		}
 
 		if = {
-			limit = { check_variable = { chaos_deaths_change > constant:air_winter_runtime.zero } }
-			set_temp_variable = { air_winter_population_loss_for_memory = chaos_deaths_change }
-			set_temp_variable = { chaos_deaths_is_civilian = constant:air_winter_runtime.one }
-			set_temp_variable = { chaos_deaths_apply_state_pop = constant:air_winter_runtime.one }
-			set_temp_variable = { chaos_deaths_target_country = OWNER }
-			set_temp_variable = { chaos_deaths_has_target_country = constant:air_winter_runtime.one }
-			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.air_winter_exposure }
-			chaos_meter_register_deaths = yes
+			limit = {
+				check_variable = { chaos_deaths_change > constant:air_winter_runtime.zero }
+				NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			}
+			set_temp_variable = { state_civilian_population_loss_requested = chaos_deaths_change }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:air_winter_runtime.zero }
+			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:air_winter_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.air_winter_exposure }
+			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:air_winter_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_applied = constant:air_winter_runtime.zero }
+			set_temp_variable = { state_civilian_population_loss_result = constant:air_winter_runtime.zero }
+			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:air_winter_runtime.one }
+			apply_exact_state_civilian_population_loss = yes
 			if = {
-				limit = { NOT = { has_global_flag = settings_chaos_deaths_disabled } }
-				add_to_variable = { air_winter_population_loss_memory = air_winter_population_loss_for_memory }
+				limit = { check_variable = { state_civilian_population_loss_applied > constant:air_winter_runtime.zero } }
+				add_to_variable = { air_winter_population_loss_memory = state_civilian_population_loss_applied }
 			}
 		}
 	}
@@ -1579,6 +1585,8 @@ air_winter_apply_state_population_loss = {
 	set_temp_variable = { chaos_deaths_target_country = constant:air_winter_runtime.zero }
 	set_temp_variable = { chaos_deaths_has_target_country = constant:air_winter_runtime.zero }
 	set_temp_variable = { chaos_deaths_reason = constant:air_winter_runtime.zero }
+	set_temp_variable = { state_civilian_population_loss_applied = constant:air_winter_runtime.zero }
+	set_temp_variable = { state_civilian_population_loss_result = constant:air_winter_runtime.zero }
 }
 
 # Supported scope: STATE
