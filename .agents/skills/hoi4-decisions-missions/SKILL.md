@@ -9,8 +9,6 @@ Use this skill when a task touches decisions, missions, timed objectives, decisi
 
 This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `hoi4-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
 
-When a decision or mission owns scripted GUI surfaces, use `hoi4.gui_inspect` and `hoi4.gui_render` to inspect linked layout, states, clipping, click regions, localisation overflow, sprites, fonts, and animation placement. Use `hoi4.gui_rewrite` only for a GUI change inside the current decision scope; keep gameplay validation and balance review here.
-
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
 ## 1. Required reading
@@ -701,6 +699,12 @@ Formation systems should support partial success and failure. A country can form
 ## Scripted GUI decision categories and mechanic windows
 
 When a decision category controls a major mechanic, consider attaching a scripted GUI or opening a custom mechanic window from a category button. This is appropriate when the player needs to manage values, targets, meters, factions, sponsors, province groups, formable requirements, investment tracks, or competing internal blocs.
+
+Use `hoi4.gui_inspect` and `hoi4.gui_render` to inspect linked layout, states,
+clipping, click regions, localisation overflow, sprites, fonts, and animation
+placement. Use `hoi4.gui_rewrite` only for a GUI change inside the current
+decision scope. Set the MCP server `cwd` to the target mod and omit
+`workspaceId`; keep gameplay validation and balance review in this skill.
 
 A scripted GUI or custom window must have a gameplay reason. It should expose useful choices, not merely decorate a category.
 

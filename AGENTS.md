@@ -74,9 +74,38 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-subagents` when coordinating custom Codex subagents, routing bounded work, or defining parent/subagent ownership boundaries.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
 
-### Shared MCP support infrastructure
+### HOI4 MCP
 
-The `hoi4-agent-tools` MCP server is optional support for coding agents. Follow the existing skill that owns the task. Use the installed `hoi4.focus_*`, `hoi4.gui_*`, `hoi4.map_*`, and `hoi4.event_*` tools when they improve inspection, rendering, comparison, or confidence. Read-only tools may inspect source and create linked artifacts without changing gameplay files. Write-capable tools perform dry-run planning and review, apply through the shared transaction engine, post-validate, and retain rollback/recovery data. The Event Chain Viewer and Technology Tree Viewer are read-only; Scripted GUI Studio renders offline and never launches, controls, or captures HOI4. Artifacts are evidence; HOI4 source files remain authoritative. Report unsupported or uncertain analysis honestly. MCP use does not remove the required wiki, vanilla documentation, source review, skill, spec, plan, audit, or handoff requirements, and failure of an optional tool is not automatically a blocker unless the task depends on it.
+The installed `hoi4-agent-tools` server is the normal coding-agent tool for
+focus trees, event-chain analysis, scripted GUIs, and maps. Register one server
+entry with this repository as its working directory:
+
+```toml
+[mcp_servers.hoi4_agent_tools]
+command = "hoi4-agent-tools.cmd"
+cwd = "C:\\Users\\<you>\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux"
+```
+
+Install it once with `npm install --global hoi4-agent-tools@2.0.0`. If the npm
+release is not available yet, clone the standalone project and run
+`npm install --global . --ignore-scripts` from its root. Reload the coding
+agent and call the domain tool directly. With `cwd` inside this mod,
+omit `workspaceId`; the server resolves the current mod automatically. The
+optional `hoi4-agent-tools-setup --init` flow is for persistent multi-mod or
+remote deployments, not ordinary mod-local work.
+
+- Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or
+  a complete new route plan; review the returned layout and diagnostics.
+- Event work: use narrow `hoi4.event_inspect` queries and the read-only render
+  and compare tools, then edit source files through the normal workflow.
+- GUI work: inspect and render the linked layout, states, resolutions, and
+  click regions before an in-scope `hoi4.gui_rewrite`.
+- Map work: inspect connected province, state, region, adjacency, supply, and
+  railway data before a declarative `hoi4.map_rewrite`.
+
+The agent may call MCP autonomously as part of the larger skills, source review,
+wiki and vanilla-documentation checks, tests, audits, and subagent handoffs.
+MCP does not replace those repository requirements.
 
 ### Subagents
 
