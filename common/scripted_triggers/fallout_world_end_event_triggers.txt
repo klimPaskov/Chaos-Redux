@@ -1,0 +1,518 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT LIVING-WORLD EVENT TRIGGERS
+# ============================================================================
+# Dormant scheduler contracts for the exact reveal timeline, stable country
+# registry, country runtime rows, five-part orientation, and anti-repetition.
+# No trigger in this file activates an event block.
+# ============================================================================
+
+# Supported scope: COUNTRY. This proves a current-transition map return with an
+# exact calendar date and an arithmetic day receipt. Legacy completed saves do
+# not receive a fabricated reveal day.
+fallout_event_map_return_receipts_are_current = {
+	has_global_flag = fallout_active
+	has_global_flag = fallout_transition_complete
+	has_global_flag = fallout_transition_map_return_applied
+	NOT = { has_global_flag = fallout_transition_active }
+	has_variable = global.fallout_transition_generation
+	has_variable = global.fallout_event_timeline_generation
+	has_variable = global.fallout_event_timeline_start_date
+	has_variable = global.fallout_event_timeline_start_day
+	check_variable = {
+		var = global.fallout_event_timeline_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_timeline_start_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_timeline_start_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_timeline_phase_receipt_is_current = {
+	fallout_event_map_return_receipts_are_current = yes
+	has_variable = global.fallout_event_timeline_elapsed_days
+	has_variable = global.fallout_event_current_phase
+	has_variable = global.fallout_event_phase_generation
+	has_variable = global.fallout_event_phase_last_update_day
+	check_variable = {
+		var = global.fallout_event_phase_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_phase_last_update_day
+		value = global.num_days
+		compare = equals
+	}
+	NOT = { check_variable = { global.fallout_event_timeline_elapsed_days < constant:fallout_event_runtime.zero } }
+	check_variable = { global.fallout_event_current_phase > constant:fallout_event_phase.none }
+	check_variable = { global.fallout_event_current_phase < constant:fallout_event_phase.upper_bound }
+	OR = {
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.ash_week }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.ash_week_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.first_season }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.ash_week_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.first_season_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.first_winter_year }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.first_season_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.first_winter_year_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.consolidation }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.first_winter_year_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.consolidation_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.rival_orders }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.consolidation_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.rival_orders_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.new_states }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.rival_orders_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.new_states_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.soot_retreat }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.new_states_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.soot_retreat_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.second_world }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.soot_retreat_end_days }
+			NOT = { check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.second_world_end_days } }
+		}
+		AND = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.open_continuation }
+			check_variable = { global.fallout_event_timeline_elapsed_days > constant:fallout_event_timeline.second_world_end_days }
+		}
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_registry_arrays_are_aligned = {
+	check_variable = {
+		var = global.fallout_event_registry_countries^num
+		value = global.fallout_event_registry_generation_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_countries^num
+		value = global.fallout_event_registry_index_entries^num
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY. The stored index must resolve back to this exact
+# country and to the same transition generation in both aligned arrays.
+fallout_event_registry_country_row_is_current = {
+	has_country_flag = fallout_event_registry_member
+	has_country_flag = fallout_event_runtime_initialized
+	has_variable = fallout_event_registry_generation
+	has_variable = fallout_event_registry_index
+	has_variable = fallout_event_runtime_generation
+	check_variable = {
+		var = fallout_event_registry_generation
+		value = global.fallout_event_registry_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_runtime_generation
+		value = global.fallout_event_registry_generation
+		compare = equals
+	}
+	NOT = { check_variable = { fallout_event_registry_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = {
+		var = fallout_event_registry_index
+		value = global.fallout_event_registry_count
+		compare = less_than
+	}
+	var:global.fallout_event_registry_countries^fallout_event_registry_index = { tag = PREV }
+	check_variable = {
+		var = global.fallout_event_registry_generation_entries^fallout_event_registry_index
+		value = fallout_event_registry_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_index_entries^fallout_event_registry_index
+		value = fallout_event_registry_index
+		compare = equals
+	}
+	fallout_event_country_runtime_row_is_current = yes
+}
+
+# Supported scope: COUNTRY. This validates the constant-cost header shared by
+# uncommitted payload validation and bounded country eligibility checks.
+fallout_event_registry_header_payload_is_current = {
+	has_variable = global.fallout_event_schema_version
+	has_variable = global.fallout_event_registry_schema_version
+	has_variable = global.fallout_event_registry_generation
+	has_variable = global.fallout_event_registry_count
+	has_variable = global.fallout_event_registry_source_count
+	has_variable = global.fallout_event_registry_cursor
+	has_variable = global.fallout_event_registry_initialized_date
+	has_variable = global.fallout_event_registry_initialized_day
+	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+	check_variable = {
+		var = global.fallout_event_registry_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = { global.fallout_event_registry_count > constant:fallout_event_runtime.zero }
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_event_registry_source_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_event_registry_countries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_source_count
+		value = global.fallout_successor_assigned_countries^num
+		compare = equals
+	}
+	NOT = { check_variable = { global.fallout_event_registry_cursor < constant:fallout_event_runtime.first_array_index } }
+	check_variable = {
+		var = global.fallout_event_registry_cursor
+		value = global.fallout_event_registry_count
+		compare = less_than
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_registry_initialized_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_registry_initialized_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+	fallout_event_registry_arrays_are_aligned = yes
+}
+
+# Supported scope: COUNTRY. This validates the complete uncommitted payload
+# before the ready flag is written. Initial registry equality is frozen from
+# the final allocation array. Later annexation does not delete the identity row.
+fallout_event_registry_payload_is_current = {
+	fallout_event_registry_header_payload_is_current = yes
+	all_of = {
+		array = global.fallout_event_registry_index_entries
+		value = fallout_event_registry_stored_index
+		index = fallout_event_registry_payload_index
+		check_variable = {
+			var = fallout_event_registry_stored_index
+			value = fallout_event_registry_payload_index
+			compare = equals
+		}
+		var:global.fallout_event_registry_countries^fallout_event_registry_payload_index = {
+			check_variable = {
+				var = fallout_event_registry_index
+				value = fallout_event_registry_payload_index
+				compare = equals
+			}
+			is_in_array = { array = global.fallout_successor_assigned_countries value = THIS }
+			fallout_event_registry_country_row_is_current = yes
+		}
+	}
+	all_of_scopes = {
+		array = global.fallout_successor_assigned_countries
+		is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+	}
+}
+
+# Supported scope: COUNTRY. This omits the full registry loop and is safe for
+# a bounded current-country eligibility check.
+fallout_event_registry_header_is_current = {
+	has_global_flag = fallout_event_scheduler_registry_ready
+	fallout_event_registry_header_payload_is_current = yes
+}
+
+# Supported scope: COUNTRY. The ready flag is the commit marker and may only
+# exist beside a payload that still proves the source allocation transaction.
+fallout_event_registry_is_current = {
+	has_global_flag = fallout_event_scheduler_registry_ready
+	fallout_event_registry_payload_is_current = yes
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_national_receipt_is_current = {
+	has_country_flag = fallout_event_orientation_national_complete
+	has_variable = fallout_event_orientation_national_generation
+	check_variable = {
+		var = fallout_event_orientation_national_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_capital_receipt_is_current = {
+	has_country_flag = fallout_event_orientation_capital_complete
+	has_variable = fallout_event_orientation_capital_generation
+	check_variable = {
+		var = fallout_event_orientation_capital_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_resource_receipt_is_current = {
+	has_country_flag = fallout_event_orientation_resource_complete
+	has_variable = fallout_event_orientation_resource_generation
+	check_variable = {
+		var = fallout_event_orientation_resource_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_archetype_receipt_is_current = {
+	has_country_flag = fallout_event_orientation_archetype_complete
+	has_variable = fallout_event_orientation_archetype_generation
+	check_variable = {
+		var = fallout_event_orientation_archetype_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_character_receipt_is_current = {
+	has_country_flag = fallout_event_orientation_character_complete
+	has_variable = fallout_event_orientation_character_generation
+	check_variable = {
+		var = fallout_event_orientation_character_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_orientation_is_complete = {
+	has_country_flag = fallout_event_orientation_complete
+	has_variable = fallout_event_orientation_generation
+	check_variable = { fallout_event_orientation_status = constant:fallout_event_orientation_status.complete }
+	check_variable = {
+		var = fallout_event_orientation_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+	fallout_event_orientation_national_receipt_is_current = yes
+	fallout_event_orientation_capital_receipt_is_current = yes
+	fallout_event_orientation_resource_receipt_is_current = yes
+	fallout_event_orientation_archetype_receipt_is_current = yes
+	fallout_event_orientation_character_receipt_is_current = yes
+}
+
+# Supported scope: COUNTRY. Pending rows may hold any exact subset of the five
+# receipts. A flag without its generation, or a generation without its flag,
+# invalidates the row.
+fallout_event_orientation_receipts_are_consistent = {
+	has_variable = fallout_event_orientation_status
+	OR = {
+		fallout_event_orientation_is_complete = yes
+		AND = {
+			check_variable = { fallout_event_orientation_status = constant:fallout_event_orientation_status.pending }
+			NOT = { has_country_flag = fallout_event_orientation_complete }
+			NOT = { has_variable = fallout_event_orientation_generation }
+			OR = {
+				fallout_event_orientation_national_receipt_is_current = yes
+				AND = {
+					NOT = { has_country_flag = fallout_event_orientation_national_complete }
+					NOT = { has_variable = fallout_event_orientation_national_generation }
+				}
+			}
+			OR = {
+				fallout_event_orientation_capital_receipt_is_current = yes
+				AND = {
+					NOT = { has_country_flag = fallout_event_orientation_capital_complete }
+					NOT = { has_variable = fallout_event_orientation_capital_generation }
+				}
+			}
+			OR = {
+				fallout_event_orientation_resource_receipt_is_current = yes
+				AND = {
+					NOT = { has_country_flag = fallout_event_orientation_resource_complete }
+					NOT = { has_variable = fallout_event_orientation_resource_generation }
+				}
+			}
+			OR = {
+				fallout_event_orientation_archetype_receipt_is_current = yes
+				AND = {
+					NOT = { has_country_flag = fallout_event_orientation_archetype_complete }
+					NOT = { has_variable = fallout_event_orientation_archetype_generation }
+				}
+			}
+			OR = {
+				fallout_event_orientation_character_receipt_is_current = yes
+				AND = {
+					NOT = { has_country_flag = fallout_event_orientation_character_complete }
+					NOT = { has_variable = fallout_event_orientation_character_generation }
+				}
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_event_country_runtime_row_is_current = {
+	has_variable = fallout_event_runtime_schema_version
+	has_variable = fallout_event_orientation_schema_version
+	has_variable = fallout_event_arc_schema_version
+	has_variable = fallout_event_delayed_queue_schema_version
+	has_variable = fallout_event_bilateral_schema_version
+	has_variable = fallout_event_runtime_generation
+	has_variable = fallout_event_active_major_arc_count
+	has_variable = fallout_event_last_cooldown_family
+	has_variable = fallout_event_ordinary_cooldown_due_day
+	has_variable = fallout_event_quiet_period_due_day
+	has_variable = fallout_event_runtime_initialized_date
+	has_variable = fallout_event_runtime_initialized_day
+	check_variable = { fallout_event_runtime_schema_version = constant:fallout_event_schema.version }
+	check_variable = { fallout_event_orientation_schema_version = constant:fallout_event_orientation_schema.version }
+	check_variable = { fallout_event_arc_schema_version = constant:fallout_event_arc_schema.version }
+	check_variable = { fallout_event_delayed_queue_schema_version = constant:fallout_event_delayed_queue_schema.version }
+	check_variable = { fallout_event_bilateral_schema_version = constant:fallout_event_bilateral_schema.version }
+	NOT = { check_variable = { fallout_event_active_major_arc_count < constant:fallout_event_runtime.zero } }
+	NOT = { check_variable = { fallout_event_active_major_arc_count > constant:fallout_event_runtime.maximum_major_arcs } }
+	NOT = { check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.none } }
+	check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_day
+			value = global.fallout_event_timeline_start_day
+			compare = less_than
+		}
+	}
+	set_temp_variable = { fallout_event_expected_quiet_period_due_day = global.fallout_event_timeline_start_day }
+	add_to_temp_variable = { fallout_event_expected_quiet_period_due_day = constant:fallout_event_runtime.quiet_period_days }
+	check_variable = {
+		var = fallout_event_quiet_period_due_day
+		value = fallout_event_expected_quiet_period_due_day
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_family_fatigue_entries^num
+		value = constant:fallout_event_cooldown_family.upper_bound
+		compare = equals
+	}
+	all_of = {
+		array = fallout_event_family_fatigue_entries
+		value = fallout_event_family_fatigue_value
+		NOT = { check_variable = { fallout_event_family_fatigue_value < constant:fallout_event_runtime.zero } }
+	}
+	fallout_event_orientation_receipts_are_consistent = yes
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_ticket_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_generation_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_role_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_response_token_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_due_date_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_status_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_bilateral_partner_entries^num
+		value = fallout_event_bilateral_cleanup_owner_entries^num
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY. The caller sets the requested cooldown family in
+# the temporary variable named below. Repetition is a hard veto, not a score.
+fallout_event_requested_family_differs_from_last = {
+	check_variable = { fallout_event_requested_cooldown_family > constant:fallout_event_cooldown_family.none }
+	check_variable = { fallout_event_requested_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+	NOT = {
+		check_variable = {
+			var = fallout_event_requested_cooldown_family
+			value = fallout_event_last_cooldown_family
+			compare = equals
+		}
+	}
+}
+
+# Supported scope: COUNTRY. This gate is deliberately dormant. No gameplay
+# file sets the activation flag before a reviewed pilot passes its audit.
+fallout_event_country_can_receive_ordinary_event = {
+	has_global_flag = fallout_event_scheduler_activation_approved
+	has_global_flag = fallout_event_scheduler_active
+	fallout_event_timeline_phase_receipt_is_current = yes
+	fallout_event_registry_header_is_current = yes
+	fallout_event_registry_country_row_is_current = yes
+	fallout_event_orientation_is_complete = yes
+	check_variable = {
+		var = global.num_days
+		value = fallout_event_quiet_period_due_day
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.num_days
+		value = fallout_event_ordinary_cooldown_due_day
+		compare = greater_than_or_equals
+	}
+	any_owned_state = { always = yes }
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+}

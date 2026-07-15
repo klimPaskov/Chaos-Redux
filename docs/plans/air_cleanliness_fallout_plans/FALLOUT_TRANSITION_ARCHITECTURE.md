@@ -177,9 +177,15 @@ Live boundary: `fallout_build_successor_conflict_ledger` implements the generati
 
 No allocator calls the transaction initializer or finalizer. No assignment or package producer exists. The transition therefore remains in survivor allocation.
 
+The accepted ordering requires a committed nine-resource survival ledger after final allocation. The live survivor-allocation phase does not yet enforce it. The future proof must cover Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition for every assigned successor and included state. No row contract, numeric initialization, aggregation producer, or transition barrier exists.
+
 ### `fallout_apply_country_packages`
 
 Applies country identity, politics, ideas, units, focus tree, AI, and starting mechanic values.
+
+### `fallout_initialize_survival_ledger`
+
+This required future producer runs after successor allocation and package assignment but before player continuation. It stores immutable initial values, raw numerators and denominators, and separate mutable values for all nine resources. The global commit must match the current transition generation and exact finalized successor count. No starting formula or value is approved, so no implementation may write the ready flag yet.
 
 ### `fallout_select_player_continuation`
 
@@ -523,7 +529,7 @@ The ordering exists in the live phase skeleton. General successor assignment, pa
 
 ## Post-transition handoff
 
-The transition records `global.fallout_event_timeline_start_date` on the successful map-return transaction, then ends with a short stabilization period:
+The transition records `global.fallout_event_timeline_generation`, `global.fallout_event_timeline_start_date`, and `global.fallout_event_timeline_start_day` on the successful map-return transaction, then ends with a short stabilization period:
 
 - ordinary random events remain stopped
 - Fallout survival decisions become visible

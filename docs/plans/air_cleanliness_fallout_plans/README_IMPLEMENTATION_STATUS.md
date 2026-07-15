@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout Implementation Status
 
-Status reviewed against the live working tree on 2026-07-14.
+Status reviewed against the live working tree on 2026-07-15.
 
 Overall status: partial implementation with hard release blockers. This document does not claim that Fallout, the manual scenario, the world rewrite, or the player handoff is complete.
 
@@ -51,9 +51,20 @@ The live Fallout package includes:
 - two-pass player commit preflight for existing current-generation targets
 - durable assignment recording, retry recovery, commit reconstruction, and collision validation
 - strict map-return postconditions
-- an exact event-timeline start date written only by a successful current-schema map return
+- exact event-timeline generation, date, and arithmetic day receipts written only by a successful current-schema map return
+- a dormant living-world registry with aligned country, generation, and stable-index arrays
+- versioned country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, arc count, delayed queue, and bilateral alignment
+- a scheduler activation gate with no setter and no defined living-world event blocks
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
+
+### Dormant living-world scheduler substrate
+
+The successful map-return transaction freezes the current transition generation, engine date, and engine day for exact campaign-phase arithmetic. The existing at-most-once project coordinator maintains the timeline and can build the country registry once after final successor allocation proves current. It does not add a recurring world-country pool.
+
+Registry validation proves aligned country, generation, and index arrays. The stored index must equal the real array position, which rejects duplicate country rows without a whole-world duplicate scan. The ready flag is written only after the full payload passes. Every member receives current scheduler schemas, twenty nonnegative family-fatigue slots, a hard immediate-family repeat veto, ordinary and quiet-period due days, five independent orientation receipts, and empty aligned bilateral arrays. The accepted specs do not define fatigue mutation, decay, or score magnitudes, so those producers remain absent.
+
+The constants file reserves a schema and the nine accepted survival-resource identities. The required state and country receipt transaction, numerical initialization, aggregation, and transition barrier are not implemented. They belong after final allocation and before player continuation. Arc reservation, delayed-result tickets, bilateral reservation, target-loss handling, AI resolution, cleanup recovery, orientation event content, and debug presentation also remain absent. Activation flags have no setter. Typed suffixes `100` through `122` reserve identities only. Defined blocks in that range: `0`. Countable living-world blocks toward the release floor: `0`.
 
 ## Dormant manual scenario substrate
 
@@ -126,6 +137,7 @@ The old-world diplomacy proof gate also remains unresolved. Map return must stay
 7. Close the tracked blackout input, scripted-GUI binding, all-resolution drawing-order, and mapmode frame gates.
 8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
 9. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
+10. Implement and review the survival ledger, five-part orientation content, arc and delayed-result transactions, bilateral reservations, target-loss cleanup, hidden AI resolution, and bounded candidate selection before enabling the living-world scheduler.
 
 ## Resume map
 
@@ -142,6 +154,8 @@ The old-world diplomacy proof gate also remains unresolved. Map return must stay
 - Fallout transition effects: `common/scripted_effects/fallout_world_end_effects.txt`
 - Fallout postcondition triggers: `common/scripted_triggers/fallout_world_end_triggers.txt`
 - Fallout event tokens and phase events: `events/fallout_world_end_events.txt`
+- Dormant scheduler proof: `FALLOUT_EVENT_SCHEDULER_PROOF.md`
+- Living-world suffix reservations: `FALLOUT_EVENT_ID_LEDGER.md`
 
 ## Simplifications and fallbacks
 
