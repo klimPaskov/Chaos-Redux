@@ -4,8 +4,8 @@
 # Dormant, idempotent scheduler initialization for the reveal timeline, stable
 # successor registry, country runtime rows, orientation receipts, cooldown
 # slots, a hard family-repeat veto, and generation-bound arc, delayed-result,
-# bilateral, cancellation, cleanup, and structural dispatch receipts. It does
-# not schedule or fire an event.
+# bilateral, cancellation, cleanup, and exact dispatch-issuance receipts. It
+# does not select or schedule an ordinary event.
 # ============================================================================
 
 # Engine contract for public transaction APIs: the outer caller must create
@@ -31,6 +31,21 @@ fallout_event_register_scheduler_error_if_unowned = {
 }
 
 # Supported scope: COUNTRY
+fallout_event_clear_dispatch_issue_receipt = {
+	clr_country_flag = fallout_event_dispatch_issued
+	clear_variable = fallout_event_dispatch_issued_source
+	clear_variable = fallout_event_dispatch_issued_ticket
+	clear_variable = fallout_event_dispatch_issued_generation
+	clear_variable = fallout_event_dispatch_issued_mode
+	clear_variable = fallout_event_dispatch_issued_event_token
+	clear_variable = fallout_event_dispatch_issued_branch
+	clear_variable = fallout_event_dispatch_issued_target_type
+	clear_variable = fallout_event_dispatch_issued_target
+	clear_variable = fallout_event_dispatch_issued_date
+	clear_variable = fallout_event_dispatch_issued_day
+}
+
+# Supported scope: COUNTRY
 fallout_event_clear_dispatch_envelope = {
 	clr_country_flag = fallout_event_dispatch_ready
 	clear_variable = fallout_event_dispatch_source
@@ -41,6 +56,7 @@ fallout_event_clear_dispatch_envelope = {
 	clear_variable = fallout_event_dispatch_branch
 	clear_variable = fallout_event_dispatch_target_type
 	clear_variable = fallout_event_dispatch_target
+	fallout_event_clear_dispatch_issue_receipt = yes
 }
 
 # Supported scope: COUNTRY. Inputs use the fallout_event_requested_dispatch_*
@@ -106,12 +122,57 @@ fallout_event_acknowledge_dispatch_envelope = {
 			fallout_event_registry_country_row_is_current = yes
 			fallout_event_dispatch_envelope_is_consistent = yes
 			has_country_flag = fallout_event_dispatch_ready
+			fallout_event_dispatch_issue_receipt_is_current = yes
 			check_variable = { var = fallout_event_dispatch_source value = fallout_event_requested_dispatch_source compare = equals }
 			check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
 			check_variable = { var = fallout_event_dispatch_generation value = fallout_event_runtime_generation compare = equals }
 		}
 		fallout_event_clear_dispatch_envelope = yes
 		set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+	}
+}
+
+# Supported scope: COUNTRY. Output: fallout_event_dispatch_issue_accepted. The
+# outer caller must pre-seed that output. The immutable envelope identity is
+# copied first and its issued flag is written last. The dynamic event command
+# runs only after that receipt proves current. Event content acknowledges the
+# exact envelope after resolving or completing its own cleanup.
+fallout_event_issue_dispatch_envelope = {
+	set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_dispatch_issuance_is_approved = yes
+			fallout_event_registry_country_row_is_current = yes
+			has_country_flag = fallout_event_dispatch_ready
+			fallout_event_dispatch_issue_receipt_is_absent = yes
+		}
+		set_variable = { fallout_event_dispatch_issued_source = fallout_event_dispatch_source }
+		set_variable = { fallout_event_dispatch_issued_ticket = fallout_event_dispatch_ticket }
+		set_variable = { fallout_event_dispatch_issued_generation = fallout_event_dispatch_generation }
+		set_variable = { fallout_event_dispatch_issued_mode = fallout_event_dispatch_mode }
+		set_variable = { fallout_event_dispatch_issued_event_token = fallout_event_dispatch_event_token }
+		set_variable = { fallout_event_dispatch_issued_branch = fallout_event_dispatch_branch }
+		set_variable = { fallout_event_dispatch_issued_target_type = fallout_event_dispatch_target_type }
+		set_variable = { fallout_event_dispatch_issued_target = fallout_event_dispatch_target }
+		set_variable = { fallout_event_dispatch_issued_date = global.date }
+		set_variable = { fallout_event_dispatch_issued_day = global.num_days }
+		set_country_flag = fallout_event_dispatch_issued
+		if = {
+			limit = {
+				fallout_event_dispatch_issue_receipt_is_current = yes
+				fallout_event_dispatch_envelope_matches_transaction = yes
+			}
+			set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.one }
+			meta_effect = {
+				text = { country_event = { id = chaosx.fallout.[FALLOUT_EVENT_ID] } }
+				FALLOUT_EVENT_ID = "[?fallout_event_dispatch_event_token|.0]"
+			}
+		}
+		else = {
+			fallout_event_clear_dispatch_issue_receipt = yes
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.dispatch_issue_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
 	}
 }
 
@@ -290,7 +351,7 @@ fallout_event_clear_country_runtime = {
 	clr_country_flag = fallout_event_arc_cleanup_pending
 	clr_country_flag = fallout_event_delayed_cleanup_pending
 	clr_country_flag = fallout_event_bilateral_cleanup_pending
-	clr_country_flag = fallout_event_dispatch_ready
+	fallout_event_clear_dispatch_envelope = yes
 	clr_country_flag = fallout_event_transaction_schema_migrated
 	fallout_event_reset_orientation_receipts = yes
 	clear_array = fallout_event_family_fatigue_entries
@@ -358,14 +419,6 @@ fallout_event_clear_country_runtime = {
 	clear_variable = fallout_event_last_cancellation_generation
 	clear_variable = fallout_event_last_cancellation_day
 	clear_variable = fallout_event_cancellation_count
-	clear_variable = fallout_event_dispatch_source
-	clear_variable = fallout_event_dispatch_ticket
-	clear_variable = fallout_event_dispatch_generation
-	clear_variable = fallout_event_dispatch_mode
-	clear_variable = fallout_event_dispatch_event_token
-	clear_variable = fallout_event_dispatch_branch
-	clear_variable = fallout_event_dispatch_target_type
-	clear_variable = fallout_event_dispatch_target
 	clear_variable = fallout_event_transaction_schema_migration_generation
 	clear_variable = fallout_event_transaction_schema_migration_day
 }
@@ -952,6 +1005,8 @@ fallout_event_reconcile_next_registry_country = {
 		var:global.fallout_event_registry_countries^fallout_event_registry_reconcile_index = {
 			set_temp_variable = { fallout_event_registry_reconcile_country_context_loaded = constant:fallout_event_runtime.one }
 			fallout_event_reconcile_country_transactions = yes
+			set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
+			fallout_event_issue_dispatch_envelope = yes
 		}
 		if = {
 			limit = {
@@ -981,8 +1036,8 @@ fallout_event_reconcile_next_registry_country = {
 }
 
 # Supported scope: COUNTRY. This coordinator hook performs dormant
-# initialization, phase-receipt maintenance, schema promotion, and bounded
-# transaction reconciliation. It never fires an event.
+# initialization, phase-receipt maintenance, schema promotion, bounded
+# transaction reconciliation, and exact one-time dispatch issuance.
 fallout_event_scheduler_reconcile = {
 	if = {
 		limit = {
