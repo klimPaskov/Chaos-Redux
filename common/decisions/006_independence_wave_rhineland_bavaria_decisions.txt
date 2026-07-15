@@ -1,0 +1,587 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RHINELAND AND BAVARIA DECISIONS
+# ============================================================================
+# Package-owned founding crises, government settlements, host ledgers,
+# network projects, regional ambitions, and high-chaos actions for IW-008 and
+# IW-009. Timed projects are serialized per package and carry cancellation or
+# timeout consequences.
+# ============================================================================
+
+independence_wave_rhi_corridor_category = {
+	independence_wave_rhi_keep_rhine_arteries_open = {
+		name = independence_wave_rhi_keep_rhine_arteries_open
+		desc = independence_wave_rhi_keep_rhine_arteries_open_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_rhi_package = yes
+			has_country_flag = independence_wave_iw_008_setup_complete
+			NOT = { has_country_flag = independence_wave_rhi_corridor_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_rhi_corridor_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_rhine_bavaria_duration.rhi_corridor_crisis
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_rhi_package = yes }
+				has_stable_independence_wave_rhi_corridor = yes
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_rhi_package = yes has_stable_independence_wave_rhi_corridor = yes }
+				set_country_flag = independence_wave_rhi_corridor_crisis_resolved
+			}
+			else_if = {
+				limit = { is_independence_wave_rhi_package = yes }
+				set_country_flag = independence_wave_rhi_corridor_crisis_failed
+				set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+				independence_wave_change_rhi_corridor_authority = yes
+				independence_wave_rhine_bavaria_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_rhine_bavaria_project_failure_effect_tt
+			set_country_flag = independence_wave_rhi_corridor_crisis_failed
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+			independence_wave_change_rhi_corridor_authority = yes
+			independence_wave_rhine_bavaria_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_rhi_restore_bridge_dispatch = {
+		name = independence_wave_rhi_restore_bridge_dispatch
+		desc = independence_wave_rhi_restore_bridge_dispatch_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_bridge_dispatch_restored } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rhi_corridor_project_effect_tt
+			set_country_flag = independence_wave_rhi_bridge_dispatch_restored
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain }
+			independence_wave_change_rhi_corridor_authority = yes
+			independence_wave_rhine_bavaria_apply_administrative_progress = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			if = { limit = { is_independence_wave_rhi_package = yes } set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_project_failure = yes }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_integrate_factory_rail_guards = {
+		name = independence_wave_rhi_integrate_factory_rail_guards
+		desc = independence_wave_rhi_integrate_factory_rail_guards_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_factory_rail_guards_integrated } }
+		available = { can_pay_independence_wave_security_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_light_cost = yes }
+		custom_cost_text = independence_wave_cost_security_light
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_light = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rhi_corridor_project_effect_tt
+			set_country_flag = independence_wave_rhi_factory_rail_guards_integrated
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain }
+			independence_wave_change_rhi_corridor_authority = yes
+			independence_wave_rhine_bavaria_apply_security_progress = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_rhi_package = yes } set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_emergency_military_route = yes } }
+	}
+
+	independence_wave_rhi_settle_host_customs_ledgers = {
+		name = independence_wave_rhi_settle_host_customs_ledgers
+		desc = independence_wave_rhi_settle_host_customs_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_rhi_host_ledgers_settled } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rhine_bavaria_host_settlement_effect_tt
+			set_country_flag = independence_wave_rhi_host_ledgers_settled
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+			independence_wave_change_rhi_corridor_authority = yes
+			independence_wave_rhine_bavaria_settle_former_host_ledgers = yes
+			independence_wave_rhine_bavaria_apply_diplomatic_progress = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_independence_wave_living_former_host = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } var:independence_wave_former_host = { has_war_with = ROOT } } }
+		cancel_effect = { if = { limit = { is_independence_wave_rhi_package = yes capital_scope = { NOT = { is_controlled_by = ROOT } } } set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes } }
+	}
+
+	independence_wave_rhi_secure_river_crossings = {
+		name = independence_wave_rhi_secure_river_crossings
+		desc = independence_wave_rhi_secure_river_crossings_desc
+		icon = GFX_decision_independence_wave_depot_border_actions
+		visible = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_crossings_secured } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rhi_corridor_project_effect_tt
+			set_country_flag = independence_wave_rhi_crossings_secured
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+			independence_wave_change_rhi_corridor_authority = yes
+			independence_wave_rhine_bavaria_apply_security_progress = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_rhi_package = yes } set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_ratify_constitutional_charter = {
+		name = independence_wave_rhi_ratify_constitutional_charter
+		desc = independence_wave_rhi_ratify_constitutional_charter_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhi_route_government_effect_tt independence_wave_install_rhi_constitutional_government = yes set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_administrative_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_independence_wave_constitutional_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_entrust_workers_councils = {
+		name = independence_wave_rhi_entrust_workers_councils
+		desc = independence_wave_rhi_entrust_workers_councils_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhi_route_government_effect_tt independence_wave_install_rhi_labor_government = yes set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_administrative_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_independence_wave_popular_council_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_rhi_matthes_available = yes } }
+	}
+
+	independence_wave_rhi_establish_corridor_command = {
+		name = independence_wave_rhi_establish_corridor_command
+		desc = independence_wave_rhi_establish_corridor_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		available = { can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhi_route_government_effect_tt independence_wave_install_rhi_emergency_government = yes set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_security_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_independence_wave_emergency_military_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes } }
+	}
+
+	independence_wave_rhi_accept_patron_transit_mandate = {
+		name = independence_wave_rhi_accept_patron_transit_mandate
+		desc = independence_wave_rhi_accept_patron_transit_mandate_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_patron_client_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhi_route_government_effect_tt independence_wave_install_rhi_patron_government = yes set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain } independence_wave_change_rhi_corridor_authority = yes independence_wave_rhine_bavaria_apply_diplomatic_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_independence_wave_patron_client_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes } }
+	}
+
+	independence_wave_rhi_codify_durable_independence = {
+		name = independence_wave_rhi_codify_durable_independence
+		desc = independence_wave_rhi_codify_durable_independence_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_rhi_route_government = yes NOT = { has_country_flag = independence_wave_rhi_durable_independence } }
+		available = { has_stable_independence_wave_rhi_corridor = yes has_country_flag = independence_wave_founding_settlement_complete can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = { custom_effect_tooltip = independence_wave_rhi_durable_independence_effect_tt independence_wave_decision_pay_strategic = yes set_country_flag = independence_wave_rhi_durable_independence independence_wave_rhine_bavaria_apply_major_settlement = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_survey_rhine_federation_corridor = {
+		name = independence_wave_rhi_survey_rhine_federation_corridor
+		desc = independence_wave_rhi_survey_rhine_federation_corridor_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_regional_ambition_open NOT = { has_country_flag = independence_wave_rhi_corridor_survey_complete } }
+		available = { has_stable_independence_wave_rhi_corridor = yes can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		complete_effect = { custom_effect_tooltip = independence_wave_rhi_corridor_survey_effect_tt independence_wave_decision_pay_diplomatic_standard = yes set_country_flag = independence_wave_rhi_corridor_survey_complete independence_wave_rhine_bavaria_apply_diplomatic_progress = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_convene_rhine_congress = {
+		name = independence_wave_rhi_convene_rhine_congress
+		desc = independence_wave_rhi_convene_rhine_congress_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_rhi_corridor_survey_complete NOT = { has_country_flag = independence_wave_rhi_rhine_congress_complete } }
+		available = { can_independence_wave_prepare_formable = yes can_pay_independence_wave_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = { independence_wave_decision_pay_strategic = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rhi_rhine_congress_effect_tt
+			set_country_flag = independence_wave_rhi_rhine_congress_complete
+			set_country_flag = independence_wave_formation_congress_complete
+			independence_wave_decision_request_selected_formable_commit = yes
+			independence_wave_rhine_bavaria_reward_network_project = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_rhi_package = yes } independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_rhi_charter_network_transit = {
+		name = independence_wave_rhi_charter_network_transit
+		desc = independence_wave_rhi_charter_network_transit_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_network_member has_country_flag = independence_wave_league_route_available NOT = { has_country_flag = independence_wave_rhi_network_transit_chartered } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_rhi_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhine_bavaria_network_project_effect_tt set_country_flag = independence_wave_rhi_network_transit_chartered independence_wave_rhine_bavaria_reward_network_project = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_rhi_package = yes } NOT = { has_country_flag = independence_wave_network_member } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_rhi_package = yes } independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_rhi_seize_corridor_authorities = {
+		name = independence_wave_rhi_seize_corridor_authorities
+		desc = independence_wave_rhi_seize_corridor_authorities_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = { is_independence_wave_rhi_package = yes has_independence_wave_rhi_route_government = yes NOT = { has_country_flag = independence_wave_rhi_high_chaos_corridor_seized } }
+		available = { can_independence_wave_use_rhine_bavaria_high_chaos_actions = yes can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_rhi_high_chaos_effect_tt
+			independence_wave_decision_pay_security_major = yes
+			set_country_flag = independence_wave_rhi_high_chaos_corridor_seized
+			set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.decisive_gain }
+			independence_wave_change_rhi_corridor_authority = yes
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_decisive }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.low modifier = { factor = constant:independence_wave_decision_ai.modifier_major is_independence_wave_regional_power = yes } }
+	}
+}
+
+independence_wave_bay_state_category = {
+	independence_wave_bay_hold_the_state_together = {
+		name = independence_wave_bay_hold_the_state_together
+		desc = independence_wave_bay_hold_the_state_together_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_bay_package = yes
+			has_country_flag = independence_wave_iw_009_setup_complete
+			NOT = { has_country_flag = independence_wave_bay_state_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_bay_state_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_rhine_bavaria_duration.bay_state_crisis
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } has_stable_independence_wave_bay_state = yes capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			if = { limit = { is_independence_wave_bay_package = yes has_stable_independence_wave_bay_state = yes } set_country_flag = independence_wave_bay_state_crisis_resolved }
+			else_if = {
+				limit = { is_independence_wave_bay_package = yes }
+				set_country_flag = independence_wave_bay_state_crisis_failed
+				set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+				set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+				independence_wave_change_bay_civic_security = yes
+				independence_wave_rhine_bavaria_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_rhine_bavaria_project_failure_effect_tt
+			set_country_flag = independence_wave_bay_state_crisis_failed
+			set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+			set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.standard_loss }
+			independence_wave_change_bay_civic_security = yes
+			independence_wave_rhine_bavaria_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_bay_reconcile_district_treasuries = {
+		name = independence_wave_bay_reconcile_district_treasuries
+		desc = independence_wave_bay_reconcile_district_treasuries_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_treasuries_reconciled } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_state_project_effect_tt set_country_flag = independence_wave_bay_treasuries_reconciled set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minimum } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_administrative_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes } set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minimum } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_organize_mountain_passes = {
+		name = independence_wave_bay_organize_mountain_passes
+		desc = independence_wave_bay_organize_mountain_passes_desc
+		icon = GFX_decision_independence_wave_depot_border_actions
+		visible = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_passes_organized } }
+		available = { can_pay_independence_wave_security_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_light_cost = yes }
+		custom_cost_text = independence_wave_cost_security_light
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_state_project_effect_tt set_country_flag = independence_wave_bay_passes_organized set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_security_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes } set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_settle_wittelsbach_host_ledgers = {
+		name = independence_wave_bay_settle_wittelsbach_host_ledgers
+		desc = independence_wave_bay_settle_wittelsbach_host_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_bay_host_ledgers_settled } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhine_bavaria_host_settlement_effect_tt set_country_flag = independence_wave_bay_host_ledgers_settled set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minimum } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_settle_former_host_ledgers = yes independence_wave_rhine_bavaria_apply_diplomatic_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_independence_wave_living_former_host = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } var:independence_wave_former_host = { has_war_with = ROOT } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes capital_scope = { NOT = { is_controlled_by = ROOT } } } set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minimum } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes } }
+	}
+
+	independence_wave_bay_integrate_mountain_companies = {
+		name = independence_wave_bay_integrate_mountain_companies
+		desc = independence_wave_bay_integrate_mountain_companies_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_mountain_companies_integrated } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_state_project_effect_tt set_country_flag = independence_wave_bay_mountain_companies_integrated set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_security_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes } set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_ratify_constitutional_compact = {
+		name = independence_wave_bay_ratify_constitutional_compact
+		desc = independence_wave_bay_ratify_constitutional_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_route_government_effect_tt independence_wave_install_bay_constitutional_government = yes set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_administrative_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_independence_wave_constitutional_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_entrust_workers_districts = {
+		name = independence_wave_bay_entrust_workers_districts
+		desc = independence_wave_bay_entrust_workers_districts_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		available = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_rhine_bavaria_emergency_administration_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_route_government_effect_tt independence_wave_install_bay_labor_government = yes set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_administrative_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_independence_wave_popular_council_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	independence_wave_bay_restore_the_crown = {
+		name = independence_wave_bay_restore_the_crown
+		desc = independence_wave_bay_restore_the_crown_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_route_government_effect_tt independence_wave_install_bay_traditional_government = yes set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_diplomatic_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_independence_wave_traditional_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_bay_rupprecht_available = yes } }
+	}
+
+	independence_wave_bay_establish_mountain_guardians = {
+		name = independence_wave_bay_establish_mountain_guardians
+		desc = independence_wave_bay_establish_mountain_guardians_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		available = { can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_bay_route_government_effect_tt independence_wave_install_bay_emergency_government = yes set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss } set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.major_gain } independence_wave_change_bay_civic_security = yes independence_wave_rhine_bavaria_apply_security_progress = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_independence_wave_emergency_military_route = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes } }
+	}
+
+	independence_wave_bay_codify_durable_independence = {
+		name = independence_wave_bay_codify_durable_independence
+		desc = independence_wave_bay_codify_durable_independence_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_bay_route_government = yes NOT = { has_country_flag = independence_wave_bay_durable_independence } }
+		available = { has_stable_independence_wave_bay_state = yes has_country_flag = independence_wave_founding_settlement_complete can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = { custom_effect_tooltip = independence_wave_bay_durable_independence_effect_tt independence_wave_decision_pay_strategic = yes set_country_flag = independence_wave_bay_durable_independence independence_wave_rhine_bavaria_apply_major_settlement = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_choose_south_german_restoration = {
+		name = independence_wave_bay_choose_south_german_restoration
+		desc = independence_wave_bay_choose_south_german_restoration_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_regional_ambition_open NOT = { has_country_flag = independence_wave_bay_south_german_choice } NOT = { has_country_flag = independence_wave_bay_german_reunification_choice } }
+		available = { has_stable_independence_wave_bay_state = yes can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_bay_south_german_choice_effect_tt
+			independence_wave_decision_pay_strategic = yes
+			set_country_flag = independence_wave_bay_south_german_choice
+			clr_country_flag = independence_wave_bay_german_reunification_preserved
+			activate_decision = declare_germany_reunified_decision
+			remove_decision = declare_germany_reunified_decision
+			independence_wave_rhine_bavaria_apply_major_settlement = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_traditional_route = yes } }
+	}
+
+	independence_wave_bay_keep_german_reunification_claim = {
+		name = independence_wave_bay_keep_german_reunification_claim
+		desc = independence_wave_bay_keep_german_reunification_claim_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_regional_ambition_open NOT = { has_country_flag = independence_wave_bay_south_german_choice } NOT = { has_country_flag = independence_wave_bay_german_reunification_choice } }
+		available = { has_stable_independence_wave_bay_state = yes can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_bay_german_reunification_choice_effect_tt
+			independence_wave_decision_pay_strategic = yes
+			set_country_flag = independence_wave_bay_german_reunification_choice
+			set_country_flag = independence_wave_bay_german_reunification_preserved
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.low modifier = { factor = constant:independence_wave_decision_ai.modifier_major is_independence_wave_regional_power = yes } }
+	}
+
+	independence_wave_bay_convene_south_german_estates = {
+		name = independence_wave_bay_convene_south_german_estates
+		desc = independence_wave_bay_convene_south_german_estates_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_bay_south_german_choice NOT = { has_country_flag = independence_wave_bay_south_german_estates_settlement } }
+		available = { is_independence_wave_recognized_or_later = yes has_stable_independence_wave_bay_state = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bay_south_german_estates_effect_tt
+			set_country_flag = independence_wave_bay_south_german_estates_settlement
+			set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+			set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+			independence_wave_change_bay_civic_security = yes
+			independence_wave_rhine_bavaria_reward_network_project = yes
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes } independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_bay_negotiate_alpine_supply_accord = {
+		name = independence_wave_bay_negotiate_alpine_supply_accord
+		desc = independence_wave_bay_negotiate_alpine_supply_accord_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_network_member has_country_flag = independence_wave_league_route_available NOT = { has_country_flag = independence_wave_bay_alpine_supply_accord } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_bay_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_rhine_bavaria_network_project_effect_tt set_country_flag = independence_wave_bay_alpine_supply_accord independence_wave_rhine_bavaria_reward_network_project = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } NOT = { has_country_flag = independence_wave_network_member } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_bay_package = yes } independence_wave_rhine_bavaria_apply_project_failure = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bay_seize_south_german_protectorates = {
+		name = independence_wave_bay_seize_south_german_protectorates
+		desc = independence_wave_bay_seize_south_german_protectorates_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = { is_independence_wave_bay_package = yes has_independence_wave_bay_route_government = yes NOT = { has_country_flag = independence_wave_bay_high_chaos_protectorates } }
+		available = { can_independence_wave_use_rhine_bavaria_high_chaos_actions = yes can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_bay_high_chaos_effect_tt
+			independence_wave_decision_pay_security_major = yes
+			set_country_flag = independence_wave_bay_high_chaos_protectorates
+			set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.major_loss }
+			set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.decisive_gain }
+			independence_wave_change_bay_civic_security = yes
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_decisive }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.low modifier = { factor = constant:independence_wave_decision_ai.modifier_major is_independence_wave_regional_power = yes } }
+	}
+}

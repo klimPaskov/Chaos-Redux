@@ -286,7 +286,13 @@ independence_wave_apply_open_sovereignty_to_country = {
 		set_country_flag = independence_wave_open_sovereignty_applied
 		set_country_flag = independence_wave_high_chaos_route_revealed
 		set_country_flag = independence_wave_unlock_formable_discovery
-		set_country_flag = independence_wave_route_radical_sovereignty_available
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_radical_sovereignty_route_excluded } }
+			set_country_flag = independence_wave_route_radical_sovereignty_available
+		}
+		else = {
+			clr_country_flag = independence_wave_route_radical_sovereignty_available
+		}
 		add_to_variable = { independence_wave_security = constant:independence_wave_evolution_country.open_security }
 		add_to_variable = { independence_wave_instability = constant:independence_wave_evolution_country.open_instability }
 		set_temp_variable = { independence_wave_host_claim_delta = constant:independence_wave_value.minimum }
