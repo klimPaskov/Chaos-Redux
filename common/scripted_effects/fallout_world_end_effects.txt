@@ -2278,6 +2278,7 @@ fallout_clear_recoverable_peace_conference_error = {
 # safe to retry after a peace conference or a partially applied save.
 fallout_reset_old_world_diplomacy = {
 	fallout_clear_recoverable_peace_conference_error = yes
+	set_temp_variable = { fallout_truce_reset_days = constant:fallout_runtime.zero }
 	clr_global_flag = fallout_transition_diplomacy_validation_failed
 	clr_global_flag = fallout_transition_diplomacy_reset_applied
 	clr_global_flag = fallout_transition_old_world_diplomacy_proven_complete
@@ -2285,6 +2286,7 @@ fallout_reset_old_world_diplomacy = {
 	clr_global_flag = fallout_transition_volunteers_reset_complete
 	clr_global_flag = fallout_transition_civil_wars_reset_complete
 	clr_global_flag = fallout_transition_wars_reset_complete
+	clr_global_flag = fallout_transition_truces_reset_complete
 	clr_global_flag = fallout_transition_subjects_reset_complete
 	clr_global_flag = fallout_transition_factions_reset_complete
 	clr_global_flag = fallout_transition_guarantees_reset_complete
@@ -2378,6 +2380,22 @@ fallout_reset_old_world_diplomacy = {
 			every_enemy_country = { white_peace = PREV }
 		}
 		clr_global_flag = white_peace_suppress_standard_chaos_on_peace
+		# White peace can create a truce. Clear every old-world truce
+		# after war settlement, then require the official readback below.
+		every_country = {
+			every_other_country = {
+				limit = { has_truce_with = PREV }
+				meta_effect = {
+					text = {
+						set_truce = {
+							target = PREV
+							days = [FALLOUT_TRUCE_RESET_DAYS]
+						}
+					}
+					FALLOUT_TRUCE_RESET_DAYS = "[?fallout_truce_reset_days|.0]"
+				}
+			}
+		}
 		every_country = {
 			if = {
 				limit = { is_subject = yes }
@@ -2466,6 +2484,7 @@ fallout_reset_old_world_diplomacy = {
 			set_global_flag = fallout_transition_volunteers_reset_complete
 			set_global_flag = fallout_transition_civil_wars_reset_complete
 			set_global_flag = fallout_transition_wars_reset_complete
+			set_global_flag = fallout_transition_truces_reset_complete
 			set_global_flag = fallout_transition_subjects_reset_complete
 			set_global_flag = fallout_transition_factions_reset_complete
 			set_global_flag = fallout_transition_guarantees_reset_complete

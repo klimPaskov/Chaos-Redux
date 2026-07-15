@@ -3345,6 +3345,11 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 	NOT = { any_country = { has_civil_war = yes } }
 	NOT = {
 		any_country = {
+			any_other_country = { has_truce_with = PREV }
+		}
+	}
+	NOT = {
+		any_country = {
 			any_other_country = { civilwar_target = PREV }
 		}
 	}
@@ -3411,12 +3416,14 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 	NOT = { any_country = { is_in_peace_conference = yes } }
 }
 
-# Supported scope: COUNTRY. Docking rights have an exhaustive ordered-pair
-# inverse with a generation-bound application proof. Market access and resource
-# rights also have exact reset and readback routes. The other required surfaces
-# remain fail closed until an exact reset and validation route is proven.
+# Supported scope: COUNTRY. Truces and market access have exact inverses and
+# ordered-pair readback. Docking rights have an exhaustive ordered-pair inverse
+# with generation-bound application proof. Resource rights have an exhaustive
+# country-state inverse and readback for observable grants. The other required
+# surfaces remain fail closed until an exact reset and validation route is proven.
 fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_global_flag = fallout_transition_old_world_diplomacy_proven_complete
+	has_global_flag = fallout_transition_truces_reset_complete
 	fallout_old_world_diplomacy_proven_surfaces_are_clean = yes
 	NOT = { has_global_flag = fallout_transition_docking_rights_validation_blocked }
 	NOT = { has_global_flag = fallout_transition_market_access_reset_blocked }
