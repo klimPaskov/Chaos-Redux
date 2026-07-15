@@ -1977,6 +1977,8 @@ fallout_reset_old_world_diplomacy = {
 	clr_global_flag = fallout_transition_embargoes_reset_complete
 	clr_global_flag = fallout_transition_docking_rights_reset_applied
 	clr_global_flag = fallout_transition_docking_rights_reset_verified
+	clear_variable = global.fallout_transition_docking_rights_reset_generation
+	clear_variable = global.fallout_transition_docking_rights_verification_generation
 	clr_global_flag = fallout_transition_market_access_reset_applied
 	clr_global_flag = fallout_transition_market_access_reset_verified
 	clear_variable = global.fallout_transition_market_access_reset_generation
@@ -2117,7 +2119,16 @@ fallout_reset_old_world_diplomacy = {
 				}
 			}
 		}
+		# Docking rights have no documented readback trigger. The official
+		# diplomatic relation effect defines active = no as cancellation, and
+		# the ordered pair sweep applies that inverse in both directions for
+		# every live country pair. Bind the exhaustive application receipt to
+		# this transition generation instead of inventing a detector.
 		set_global_flag = fallout_transition_docking_rights_reset_applied
+		set_variable = { global.fallout_transition_docking_rights_reset_generation = global.fallout_transition_generation }
+		set_global_flag = fallout_transition_docking_rights_reset_verified
+		set_variable = { global.fallout_transition_docking_rights_verification_generation = global.fallout_transition_generation }
+		clr_global_flag = fallout_transition_docking_rights_validation_blocked
 		set_global_flag = fallout_transition_market_access_reset_applied
 		set_variable = { global.fallout_transition_market_access_reset_generation = global.fallout_transition_generation }
 		# Resource rights are stored on the receiving country for a state. Sweep
@@ -2233,7 +2244,6 @@ fallout_reset_old_world_diplomacy = {
 			set_global_flag = fallout_transition_expeditionaries_reset_blocked
 		}
 
-		set_global_flag = fallout_transition_docking_rights_validation_blocked
 		set_global_flag = fallout_transition_trade_routes_reset_blocked
 		set_global_flag = fallout_transition_intelligence_reset_blocked
 		set_global_flag = fallout_transition_unprovable_diplomacy_surface
