@@ -18,15 +18,16 @@ then create an original or properly sourced Chaos Redux asset.
 - Review format: lossless RGBA PNG decoded from the source DDS or TGA
 - Pixel policy: preserve the source texture canvas exactly; do not crop,
   stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 87 reference PNGs in 38 leaf folders, plus 6 contact sheets
+- Inventory: 90 reference PNGs in 38 leaf folders, plus 6 contact sheets
 - Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
 Every PNG and its exact vanilla source path are listed in [CATALOG.md](CATALOG.md).
 
 ## Contact sheets
 
-- `contact_sheets/portraits_and_flags.png` — leader, commander, operative, and
-  advisor portrait treatments plus three flat flags across the complete ladder
+- `contact_sheets/portraits_and_flags.png` — leader, commander, operative,
+  advisor, and explicit army-small dossier treatments plus three flat flags
+  across the complete ladder
 - `contact_sheets/icons.png` — focus, idea, decision, mission, decision-category,
   achievement, officer-corps, technology, special-project, and balance-of-power
   icon families

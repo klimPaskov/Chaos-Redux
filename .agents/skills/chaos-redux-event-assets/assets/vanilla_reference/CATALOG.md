@@ -18,6 +18,9 @@ Dimensions are the decoded source canvas and match the lossless PNG review copy.
 | Advisor dossier | `portraits/advisors/generic_europe_1.png` | 65x67 | `gfx/interface/ideas/idea_generic_political_advisor_europe_1.dds` | — |
 | Advisor dossier | `portraits/advisors/generic_female_europe.png` | 65x67 | `gfx/interface/ideas/idea_generic_political_advisor_female_europe.dds` | — |
 | Advisor dossier | `portraits/advisors/generic_asia_1.png` | 65x67 | `gfx/interface/ideas/idea_generic_political_advisor_asia_1.dds` | — |
+| Army-small dossier | `portraits/advisors/army_small_ger_friedrich_paulus.png` | 65x67 | `gfx/interface/ideas/idea_GER_friedrich_paulus.dds` | `interface/_leader_portraits.gfx; common/characters/GER.txt` |
+| Army-small dossier | `portraits/advisors/army_small_ger_gunther_von_kluge.png` | 65x67 | `gfx/interface/ideas/idea_GER_gunther_von_kluge.dds` | `interface/_leader_portraits.gfx; common/characters/GER.txt` |
+| Army-small dossier | `portraits/advisors/army_small_ger_erwin_rommel.png` | 65x67 | `gfx/interface/ideas/idea_erwin_rommel.dds` | `interface/ideas.gfx; common/characters/GER.txt` |
 | Flag, normal | `flags/normal/arm.png` | 82x52 | `gfx/flags/ARM.tga` | — |
 | Flag, medium | `flags/medium/arm.png` | 41x26 | `gfx/flags/medium/ARM.tga` | — |
 | Flag, small | `flags/small/arm.png` | 10x7 | `gfx/flags/small/ARM.tga` | — |

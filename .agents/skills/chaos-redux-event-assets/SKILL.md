@@ -1065,6 +1065,15 @@ draw the frame, paper, seal, faux writing, bevel, patina, emblem, or any other
 visible dossier element from rectangles, rounded rectangles, polygons, lines,
 ellipses, gradients, procedural texture, or other primitive geometry.
 
+Apply this same dossier-card pipeline when a character explicitly defines a
+`portraits = { army = { small = ... } }` sprite. Vanilla army-character
+precedents point that small slot to a `65x67` idea/dossier portrait while the
+character's `army.large` sprite remains the full `156x210` commander portrait.
+Do not create a plain `50x67` resize or crop for the army-small slot, and do not
+replace or downsize the approved full commander texture. Independently compose
+the approved portrait master inside the dossier overlays, keep the large and
+small sprite names stable, and validate both runtime textures separately.
+
 Retain the portrait master, generated overlay sources, alpha-processed
 overlays, overlay prompts, processor arguments, hashes, metadata, and reference
 comparison sheet. Inspect every result at native size and enlarged
