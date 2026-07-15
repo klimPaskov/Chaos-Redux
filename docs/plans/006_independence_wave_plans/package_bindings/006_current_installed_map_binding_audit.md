@@ -124,7 +124,10 @@ Important current split expansions are recorded exactly in the CSV. They include
 
 Notable stale baseline findings include:
 
-- state 123 is South-West England, not a unique Cornwall state;
+- state 123 is South-West England, not a unique Cornwall state; the exact
+  Truro-only split is province 6526, but legal next state ID 1082 collides in
+  eleven installed Workshop mods and the first unused ID would create an
+  invalid 1,444-ID gap;
 - the Basque anchor is current state 792 País Vasco, not baseline Navarra 172;
 - state 232 is current Dagestan, while Chechnya-Ingushetia is 821;
 - the dedicated Kurdistan anchor is 1001 rather than broad Ilam 421;
@@ -139,6 +142,14 @@ Notable stale baseline findings include:
 These 27 automatic or high-chaos candidates are excluded from selection:
 
 `IW-003 Cornwall`; `IW-032 Slavonia`; `IW-049 Mordovia`; `IW-061 Luristan`; `IW-063 Bakhtiari`; `IW-075 Jabal Shammar`; `IW-084 Kabylia`; `IW-087 Fezzan`; `IW-090 Wadai`; `IW-094 Fante`; `IW-096 Benin Kingdom`; `IW-103 Luba`; `IW-104 Lunda`; `IW-109 Bunyoro`; `IW-112 Ankole`; `IW-117 Kilwa restoration`; `IW-122 Ndebele`; `IW-123 Xhosa`; `IW-124 Basotho`; `IW-125 Eswatini`; `IW-165 Wa state`; `IW-176 Tonga`; `IW-181 Acadia`; `IW-186 Cherokee state`; `IW-188 Lakota state`; `IW-189 Dine state`; `IW-194 Miskito state`.
+
+The Cornwall feasibility audit fixes the intended geometry without opening the
+package: province 6526 and its thirteen state-bound building placements form
+the Cornish side, while province 11406 and Plymouth province 540 remain in the
+surviving state 123. Chaos Redux cannot install that split compatibly because
+vanilla state IDs are contiguous through 1081, 1082 collides externally, every
+ID through 2525 is already claimed by an installed mod, and 2526 is not a legal
+next ID. `ACX` remains reserved and collision-free, but IW-003 stays disabled.
 
 `IW-102 Kuba` and `IW-105 Loango` retain their no-unique-state geographic findings, but they are no longer selectable candidates: they are additive `COG` cosmetic-route overlays. The complete overlay set is `IW-005`, `IW-022`, `IW-025`, `IW-035`, `IW-059`, `IW-085`, `IW-101`, `IW-102`, `IW-105`, `IW-156`, `IW-196`, `IW-197`, and `IW-204`.
 
