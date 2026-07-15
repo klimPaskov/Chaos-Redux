@@ -11,20 +11,22 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 The shared Liberations coordinator owns the transaction lifecycle:
 
 1. Begin an Event 005, Event 006, or joint plan.
-2. Reserve country tags, reservation groups, exact states, hosts, and one protected state per host.
+2. Reserve every selected country tag, reservation group, unique anchor, host, and one protected state per host; during a joint incident Event 005 anchors are frozen first and Event 006 rerolls against them.
 3. Reject living tags, active origins, duplicate anchors, occupied reservation groups, and state collisions.
-4. Trim optional territory before rejecting a package.
+4. After all anchors are frozen, run compact territory for every selected package before running extended territory for any package. Trim optional collisions and host-survival failures without dropping the anchored country.
 5. Revalidate aligned rows, ownership, host survival, and exact counts at lock.
 6. If a host capital is a frozen release row, move it to that host's protected state before ownership changes.
 7. Prove that every selected dormant tag has an exact runtime adapter, audited history laws and command roster, and the content-ready flag before ownership changes.
-8. Release and transfer all accepted rows in one effect chain.
+8. Release and transfer all accepted rows in one effect chain, counting a state only after both its owner and controller match the frozen target. Any failed transfer blocks package initialization and incident commit.
 9. Prepare every country-local package, publish reversible active/network/host registries, validate every live package, and only then append durable origin history and evolution delivery.
 
 `chaosx.nr6.1` is the hidden repeatable dispatcher. On a standalone firing it captures tuning, opens the shared plan, allocates the exact automatic count, executes the frozen Event 006 contribution, and dispatches the public report only after commit. During a joint Liberations firing it consumes `independence_wave_joint_presentation_pending` and presents the already committed result without planning or releasing a second time. Any standalone failure before ownership mutation restores the original-capital ledger, clears Event 006 reservations, and aborts without a report. A failure after execution begins is recorded as non-rollbackable and is never presented as success.
 
 The package initializer is a four-pass incident transaction. A failed preparation, activation, or validation pass removes package and live-registry state for every row and restores the generation counter before any durable history is opened. Ownership cannot be reversed safely after engine release, so the pre-release adapter proof makes package setup deterministic and a post-release failure is terminal rather than silently downgraded. The same adapter is used by standalone waves, joint Event 5/Event 6 execution, and SCN-008.
 
-The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count.
+The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count. The 126 automatic/high-chaos selectors contain only bound rows with an automatic readiness verdict. Overlay-only, community-variant-only, formable-or-route-only, scenario-variant-only, and unbound rows remain available only through their explicit owning systems; Open Sovereignty cannot promote them merely to fill a wave.
+
+SCN-008 uses the same anchor-first transaction but attempts every viable ranked candidate at every intensity. Intensity selects anchor/compact/extended territory and fragile/viable/armed/high-chaos forces; scenario type independently selects league, host-war, belligerence, patron, and partition rules. Great Partition may advance the territory tier but never the candidate count. Universal Belligerence keeps a bounded target array only for the duration of its launch, preventing duplicate targets inside one incident while clearing every target mark after successful or failed war declarations.
 
 ## Origin separation
 

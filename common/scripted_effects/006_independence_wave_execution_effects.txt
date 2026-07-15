@@ -198,6 +198,7 @@ independence_wave_transfer_frozen_states = {
 	set_temp_variable = { independence_wave_execution_state_index = constant:independence_wave_plan.first_array_index }
 	set_temp_variable = { independence_wave_execution_expected_state_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = independence_wave_execution_state_index value = global.liberation_plan_states^num compare = less_than }
@@ -211,8 +212,17 @@ independence_wave_transfer_frozen_states = {
 			var:global.liberation_plan_states^independence_wave_execution_state_index = {
 				set_state_owner_to = event_target:independence_wave_execution_state_target
 				set_state_controller_to = event_target:independence_wave_execution_state_target
+				if = {
+					limit = {
+						is_owned_by = event_target:independence_wave_execution_state_target
+						is_controlled_by = event_target:independence_wave_execution_state_target
+					}
+					add_to_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_plan.loop_increment }
+				}
+				else = {
+					set_temp_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
+				}
 			}
-			add_to_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_plan.loop_increment }
 		}
 		add_to_temp_variable = { independence_wave_execution_state_index = constant:independence_wave_plan.loop_increment }
 	}
@@ -246,7 +256,10 @@ independence_wave_prepare_frozen_country_packages = {
 		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
 		independence_wave_load_frozen_country_execution_context = yes
 		event_target:independence_wave_execution_country = {
-			set_capital = event_target:independence_wave_execution_anchor
+			set_capital = {
+				state = event_target:independence_wave_execution_anchor
+				remember_old_capital = no
+			}
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.no_candidates }
 			independence_wave_prepare_country_origin = yes
 			if = {
@@ -431,7 +444,13 @@ independence_wave_execute_standalone_frozen_plan = {
 							}
 						}
 						independence_wave_transfer_frozen_states = yes
-						independence_wave_initialize_frozen_countries = yes
+						if = {
+							limit = {
+								check_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+								check_variable = { var = independence_wave_execution_transferred_state_count value = independence_wave_execution_expected_state_count compare = equals }
+							}
+							independence_wave_initialize_frozen_countries = yes
+						}
 					}
 					if = {
 						limit = {
@@ -500,6 +519,13 @@ independence_wave_prepare_and_execute_standalone_incident = {
 	}
 	if = {
 		limit = { has_global_flag = independence_wave_plan_contribution_ready }
+		independence_wave_expand_selected_optional_territory = yes
+	}
+	if = {
+		limit = {
+			has_global_flag = independence_wave_plan_contribution_ready
+			NOT = { has_global_flag = independence_wave_plan_optional_expansion_failed }
+		}
 		independence_wave_execute_standalone_frozen_plan = yes
 	}
 
@@ -524,6 +550,7 @@ independence_wave_prepare_and_execute_standalone_incident = {
 		clr_global_flag = independence_wave_plan_contribution_ready
 		clr_global_flag = independence_wave_plan_exact_count_failed
 		clr_global_flag = independence_wave_plan_pool_exhausted
+		clr_global_flag = independence_wave_plan_optional_expansion_failed
 		liberation_release_abort_plan = yes
 		set_global_flag = independence_wave_standalone_incident_cancelled_before_mutation
 	}
