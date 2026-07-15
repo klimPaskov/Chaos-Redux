@@ -25,6 +25,7 @@ Fallout remains an unnumbered system package with dedicated ownership of:
 - Official installed documentation and vanilla precedents inspected locally
 - Hearts of Iron IV runtime was not launched and must not be launched for this documentation reconciliation
 - Static artifacts and source inspection are evidence only, not runtime acceptance
+- The optional offline event inspector returned `ARTIFACT_STORAGE_LIMIT`. It scanned no file and produced no artifact, so it is not part of the proof basis.
 
 ## Live implemented foundations
 
@@ -53,7 +54,8 @@ The live Fallout package includes:
 - strict map-return postconditions
 - exact event-timeline generation, date, and arithmetic day receipts written only by a successful current-schema map return
 - a dormant living-world registry with aligned country, generation, and stable-index arrays
-- versioned country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, arc count, delayed queue, and bilateral alignment
+- schema-2 country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, compact arc, delayed-result, reciprocal bilateral, cancellation, cleanup, and routing receipts
+- a generation-bound monotonic ticket allocator, three independent reconciliation cursors, and data-only dispatch envelopes
 - a scheduler activation gate with no setter and no defined living-world event blocks
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
@@ -62,9 +64,11 @@ These are foundations. The phase chain cannot yet produce a valid complete post-
 
 The successful map-return transaction freezes the current transition generation, engine date, and engine day for exact campaign-phase arithmetic. The existing at-most-once project coordinator maintains the timeline and can build the country registry once after final successor allocation proves current. It does not add a recurring world-country pool.
 
-Registry validation proves aligned country, generation, and index arrays. The stored index must equal the real array position, which rejects duplicate country rows without a whole-world duplicate scan. The ready flag is written only after the full payload passes. Every member receives current scheduler schemas, twenty nonnegative family-fatigue slots, a hard immediate-family repeat veto, ordinary and quiet-period due days, five independent orientation receipts, and empty aligned bilateral arrays. The accepted specs do not define fatigue mutation, decay, or score magnitudes, so those producers remain absent.
+Registry validation proves aligned country, generation, and index arrays. The stored index must equal the real array position, which rejects duplicate country rows without a whole-world duplicate scan. The ready flag is written only after the full payload passes, then the initialization request is cleared. Later annexation retains the frozen identity without rerunning successor allocation. Every member receives current scheduler schemas, twenty nonnegative family-fatigue slots, a hard immediate-family repeat veto, ordinary and quiet-period due days, five independent orientation receipts, and empty aligned arc, delayed-result, and bilateral arrays.
 
-The constants file reserves a schema and the nine accepted survival-resource identities. The required state and country receipt transaction, numerical initialization, aggregation, and transition barrier are not implemented. They belong after final allocation and before player continuation. Arc reservation, delayed-result tickets, bilateral reservation, target-loss handling, AI resolution, cleanup recovery, orientation event content, and debug presentation also remain absent. Activation flags have no setter. Typed suffixes `100` through `122` reserve identities only. Defined blocks in that range: `0`. Countable living-world blocks toward the release floor: `0`.
+Schema 2 supplies idempotent arc, delayed-result, and reciprocal bilateral reservation APIs. Mutable liveness and due-day checks apply only to new rows, while exact retries authenticate the stored payload. It derives the three arc-slot flags from compact rows, records typed owner, actor, target, and reciprocal loss, and requires cleanup and dispatch envelopes to match their source ticket. A country that no longer exists cannot receive a new reservation or dispatch envelope. Bilateral status changes write both payloads before either status, authenticate the initiator cleanup owner, prove both reciprocal directions, and restore both snapshots on a failed commit. One primary frozen registry country reconciles per date and selects one primary row from each transaction family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring reads are linear in those two local ledgers. Production-only full uniqueness gates are quadratic in each local ledger. Delayed and bilateral queue caps remain absent. Schema 1 can promote only after the current map-return and every preserved runtime field pass, while every later transaction surface is empty or absent as required. The accepted specs do not define fatigue mutation, decay, or score magnitudes, so those producers remain absent.
+
+The constants file reserves a schema and the nine accepted survival-resource identities. The required state and country receipt transaction, numerical initialization, aggregation, and transition barrier are not implemented. They belong after final allocation and before player continuation. Candidate selection, event scheduling, event firing, actual human dispatch consumption, hidden AI mechanical resolution, content-owned cleanup execution, fatigue mutation and scoring, orientation event content, and debug presentation remain absent. Activation flags have no setter. Typed suffixes `100` through `122` reserve identities only. Defined blocks in that range: `0`. Countable living-world blocks toward the release floor: `0`.
 
 ## Dormant manual scenario substrate
 
@@ -139,7 +143,7 @@ The old-world diplomacy proof gate also remains unresolved. Map return must stay
 7. Close the tracked blackout input, scripted-GUI binding, all-resolution drawing-order, and mapmode frame gates.
 8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
 9. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
-10. Implement and review the survival ledger, five-part orientation content, arc and delayed-result transactions, bilateral reservations, target-loss cleanup, hidden AI resolution, and bounded candidate selection before enabling the living-world scheduler.
+10. Implement and review the survival ledger, five-part orientation content, bounded candidate selection, actual dispatch consumers, hidden AI resolution, content-owned cleanup, fatigue behavior, and runtime persistence proof before enabling the living-world scheduler.
 
 ## Resume map
 

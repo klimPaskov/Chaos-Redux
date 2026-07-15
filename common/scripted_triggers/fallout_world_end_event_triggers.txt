@@ -2,7 +2,8 @@
 # CHAOS REDUX - FALLOUT LIVING-WORLD EVENT TRIGGERS
 # ============================================================================
 # Dormant scheduler contracts for the exact reveal timeline, stable country
-# registry, country runtime rows, five-part orientation, and anti-repetition.
+# registry, country runtime rows, five-part orientation, anti-repetition, and
+# generation-bound arc, delayed-result, and bilateral transaction receipts.
 # No trigger in this file activates an event block.
 # ============================================================================
 
@@ -120,11 +121,13 @@ fallout_event_registry_arrays_are_aligned = {
 	}
 }
 
-# Supported scope: COUNTRY. The stored index must resolve back to this exact
-# country and to the same transition generation in both aligned arrays.
-fallout_event_registry_country_row_is_current = {
+# Supported scope: COUNTRY. This proves only the frozen registry identity.
+# Runtime ledger consistency is layered by the full row trigger below.
+fallout_event_registry_country_identity_is_current = {
 	has_country_flag = fallout_event_registry_member
 	has_country_flag = fallout_event_runtime_initialized
+	has_variable = global.fallout_event_registry_generation
+	has_variable = global.fallout_event_registry_count
 	has_variable = fallout_event_registry_generation
 	has_variable = fallout_event_registry_index
 	has_variable = fallout_event_runtime_generation
@@ -144,7 +147,12 @@ fallout_event_registry_country_row_is_current = {
 		value = global.fallout_event_registry_count
 		compare = less_than
 	}
-	var:global.fallout_event_registry_countries^fallout_event_registry_index = { tag = PREV }
+	set_temp_variable = { fallout_event_registry_back_reference_context_loaded = constant:fallout_event_runtime.zero }
+	var:global.fallout_event_registry_countries^fallout_event_registry_index = {
+		set_temp_variable = { fallout_event_registry_back_reference_context_loaded = constant:fallout_event_runtime.one }
+		tag = PREV
+	}
+	check_variable = { fallout_event_registry_back_reference_context_loaded = constant:fallout_event_runtime.one }
 	check_variable = {
 		var = global.fallout_event_registry_generation_entries^fallout_event_registry_index
 		value = fallout_event_registry_generation
@@ -155,6 +163,13 @@ fallout_event_registry_country_row_is_current = {
 		value = fallout_event_registry_index
 		compare = equals
 	}
+	fallout_event_registry_arrays_are_aligned = yes
+}
+
+# Supported scope: COUNTRY. The stored index must resolve back to this exact
+# country and every generation-bound runtime receipt must remain current.
+fallout_event_registry_country_row_is_current = {
+	fallout_event_registry_country_identity_is_current = yes
 	fallout_event_country_runtime_row_is_current = yes
 }
 
@@ -169,8 +184,16 @@ fallout_event_registry_header_payload_is_current = {
 	has_variable = global.fallout_event_registry_cursor
 	has_variable = global.fallout_event_registry_initialized_date
 	has_variable = global.fallout_event_registry_initialized_day
+	has_variable = global.fallout_event_ticket_generation
+	has_variable = global.fallout_event_next_ticket_id
 	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
 	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+	check_variable = {
+		var = global.fallout_event_ticket_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = { global.fallout_event_next_ticket_id > constant:fallout_event_runtime.no_ticket }
 	check_variable = {
 		var = global.fallout_event_registry_generation
 		value = global.fallout_transition_generation
@@ -224,12 +247,14 @@ fallout_event_registry_payload_is_current = {
 		array = global.fallout_event_registry_index_entries
 		value = fallout_event_registry_stored_index
 		index = fallout_event_registry_payload_index
+		set_temp_variable = { fallout_event_registry_payload_country_context_loaded = constant:fallout_event_runtime.zero }
 		check_variable = {
 			var = fallout_event_registry_stored_index
 			value = fallout_event_registry_payload_index
 			compare = equals
 		}
 		var:global.fallout_event_registry_countries^fallout_event_registry_payload_index = {
+			set_temp_variable = { fallout_event_registry_payload_country_context_loaded = constant:fallout_event_runtime.one }
 			check_variable = {
 				var = fallout_event_registry_index
 				value = fallout_event_registry_payload_index
@@ -238,10 +263,17 @@ fallout_event_registry_payload_is_current = {
 			is_in_array = { array = global.fallout_successor_assigned_countries value = THIS }
 			fallout_event_registry_country_row_is_current = yes
 		}
+		check_variable = { fallout_event_registry_payload_country_context_loaded = constant:fallout_event_runtime.one }
 	}
-	all_of_scopes = {
+	all_of = {
 		array = global.fallout_successor_assigned_countries
-		is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+		value = fallout_event_registry_source_country
+		set_temp_variable = { fallout_event_registry_source_country_context_loaded = constant:fallout_event_runtime.zero }
+		var:fallout_event_registry_source_country = {
+			set_temp_variable = { fallout_event_registry_source_country_context_loaded = constant:fallout_event_runtime.one }
+			is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+		}
+		check_variable = { fallout_event_registry_source_country_context_loaded = constant:fallout_event_runtime.one }
 	}
 }
 
@@ -381,6 +413,1115 @@ fallout_event_orientation_receipts_are_consistent = {
 	}
 }
 
+# Supported scope: COUNTRY. Inputs: fallout_event_subject_type_to_check and
+# fallout_event_subject_value_to_check. This proves only the stored type/value
+# shape. Live actor and target validity is checked separately for cancellation.
+fallout_event_subject_shape_is_valid = {
+	check_variable = { fallout_event_subject_type_to_check > constant:fallout_event_subject_type.none }
+	check_variable = { fallout_event_subject_type_to_check < constant:fallout_event_subject_type.upper_bound }
+	check_variable = { fallout_event_subject_value_to_check > constant:fallout_event_runtime.zero }
+}
+
+# Supported scope: COUNTRY. Inputs are the same as the shape trigger.
+fallout_event_subject_is_current = {
+	fallout_event_subject_shape_is_valid = yes
+	OR = {
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.country }
+			set_temp_variable = { fallout_event_subject_country_context_loaded = constant:fallout_event_runtime.zero }
+			var:fallout_event_subject_value_to_check = {
+				set_temp_variable = { fallout_event_subject_country_context_loaded = constant:fallout_event_runtime.one }
+				exists = yes
+				fallout_event_registry_country_row_is_current = yes
+			}
+			check_variable = { fallout_event_subject_country_context_loaded = constant:fallout_event_runtime.one }
+		}
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.state }
+			set_temp_variable = { fallout_event_subject_state_context_loaded = constant:fallout_event_runtime.zero }
+			var:fallout_event_subject_value_to_check = {
+				set_temp_variable = { fallout_event_subject_state_context_loaded = constant:fallout_event_runtime.one }
+				has_variable = fallout_pretransition_snapshot_generation
+				check_variable = {
+					var = fallout_pretransition_snapshot_generation
+					value = global.fallout_transition_generation
+					compare = equals
+				}
+			}
+			check_variable = { fallout_event_subject_state_context_loaded = constant:fallout_event_runtime.one }
+		}
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.character }
+			has_character = var:fallout_event_subject_value_to_check
+		}
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.institution }
+			# No generic engine liveness surface exists for an opaque institution
+			# token. Future content must add a generation-bound registry first.
+			always = no
+		}
+	}
+}
+
+fallout_event_arc_arrays_are_aligned = {
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_identity_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_generation_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_primary_family_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_cooldown_family_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_stage_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_actor_type_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_actor_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_outcome_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_cancellation_reason_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_cleanup_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_arc_ticket_entries^num value = fallout_event_arc_cleanup_owner_entries^num compare = equals }
+}
+
+fallout_event_delayed_queue_arrays_are_aligned = {
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_key_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_generation_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_parent_arc_ticket_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_human_event_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_ai_event_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_branch_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_due_day_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_status_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_target_type_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_target_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_cleanup_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_cleanup_owner_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_outcome_entries^num compare = equals }
+	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_cancellation_reason_entries^num compare = equals }
+}
+
+fallout_event_bilateral_arrays_are_aligned = {
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_ticket_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_key_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_generation_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_role_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_response_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_ai_response_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_due_date_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_status_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_cleanup_owner_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_parent_arc_ticket_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_cleanup_token_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_outcome_entries^num compare = equals }
+	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_cancellation_reason_entries^num compare = equals }
+}
+
+fallout_event_arc_cursor_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { fallout_event_arc_ticket_entries^num = constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_arc_reconcile_cursor = constant:fallout_event_runtime.first_array_index }
+		}
+		AND = {
+			check_variable = { fallout_event_arc_ticket_entries^num > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { fallout_event_arc_reconcile_cursor < constant:fallout_event_runtime.first_array_index } }
+			check_variable = { var = fallout_event_arc_reconcile_cursor value = fallout_event_arc_ticket_entries^num compare = less_than }
+		}
+	}
+}
+
+fallout_event_delayed_cursor_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { fallout_event_delayed_ticket_entries^num = constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_delayed_reconcile_cursor = constant:fallout_event_runtime.first_array_index }
+		}
+		AND = {
+			check_variable = { fallout_event_delayed_ticket_entries^num > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { fallout_event_delayed_reconcile_cursor < constant:fallout_event_runtime.first_array_index } }
+			check_variable = { var = fallout_event_delayed_reconcile_cursor value = fallout_event_delayed_ticket_entries^num compare = less_than }
+		}
+	}
+}
+
+fallout_event_bilateral_cursor_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { fallout_event_bilateral_ticket_entries^num = constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_bilateral_reconcile_cursor = constant:fallout_event_runtime.first_array_index }
+		}
+		AND = {
+			check_variable = { fallout_event_bilateral_ticket_entries^num > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { fallout_event_bilateral_reconcile_cursor < constant:fallout_event_runtime.first_array_index } }
+			check_variable = { var = fallout_event_bilateral_reconcile_cursor value = fallout_event_bilateral_ticket_entries^num compare = less_than }
+		}
+	}
+}
+
+# Inputs are the family-specific validation indexes. Each selected identity is
+# compared with every compact row. The same physical index is the only allowed
+# equality, which makes lookup results authoritative.
+fallout_event_arc_row_identity_is_unique = {
+	NOT = { is_in_array = { array = fallout_event_delayed_ticket_entries value = fallout_event_arc_ticket_entries^fallout_event_arc_validation_index } }
+	NOT = { is_in_array = { array = fallout_event_bilateral_ticket_entries value = fallout_event_arc_ticket_entries^fallout_event_arc_validation_index } }
+	all_of = {
+		array = fallout_event_arc_ticket_entries
+		value = fallout_event_unique_stored_ticket
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_arc_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_ticket value = fallout_event_arc_ticket_entries^fallout_event_arc_validation_index compare = equals } }
+		}
+	}
+	all_of = {
+		array = fallout_event_arc_identity_entries
+		value = fallout_event_unique_stored_identity
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_arc_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_identity value = fallout_event_arc_identity_entries^fallout_event_arc_validation_index compare = equals } }
+		}
+	}
+	all_of = {
+		array = fallout_event_arc_actor_entries
+		value = fallout_event_unique_stored_actor
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_arc_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_actor value = fallout_event_arc_actor_entries^fallout_event_arc_validation_index compare = equals } }
+			NOT = { check_variable = { var = fallout_event_arc_actor_type_entries^fallout_event_unique_stored_index value = fallout_event_arc_actor_type_entries^fallout_event_arc_validation_index compare = equals } }
+		}
+	}
+}
+
+fallout_event_delayed_row_identity_is_unique = {
+	NOT = { is_in_array = { array = fallout_event_arc_ticket_entries value = fallout_event_delayed_ticket_entries^fallout_event_delayed_validation_index } }
+	NOT = { is_in_array = { array = fallout_event_bilateral_ticket_entries value = fallout_event_delayed_ticket_entries^fallout_event_delayed_validation_index } }
+	all_of = {
+		array = fallout_event_delayed_ticket_entries
+		value = fallout_event_unique_stored_ticket
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_delayed_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_ticket value = fallout_event_delayed_ticket_entries^fallout_event_delayed_validation_index compare = equals } }
+		}
+	}
+	all_of = {
+		array = fallout_event_delayed_key_entries
+		value = fallout_event_unique_stored_key
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_delayed_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_key value = fallout_event_delayed_key_entries^fallout_event_delayed_validation_index compare = equals } }
+		}
+	}
+}
+
+fallout_event_bilateral_row_identity_is_unique = {
+	NOT = { is_in_array = { array = fallout_event_arc_ticket_entries value = fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index } }
+	NOT = { is_in_array = { array = fallout_event_delayed_ticket_entries value = fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index } }
+	all_of = {
+		array = fallout_event_bilateral_ticket_entries
+		value = fallout_event_unique_stored_ticket
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_bilateral_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_ticket value = fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index compare = equals } }
+		}
+	}
+	all_of = {
+		array = fallout_event_bilateral_key_entries
+		value = fallout_event_unique_stored_key
+		index = fallout_event_unique_stored_index
+		OR = {
+			check_variable = { var = fallout_event_unique_stored_index value = fallout_event_bilateral_validation_index compare = equals }
+			NOT = { check_variable = { var = fallout_event_unique_stored_key value = fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index compare = equals } }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_arc_validation_index.
+fallout_event_arc_row_at_index_has_current_shape = {
+	NOT = { check_variable = { fallout_event_arc_validation_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = { var = fallout_event_arc_validation_index value = fallout_event_arc_ticket_entries^num compare = less_than }
+	check_variable = { fallout_event_arc_ticket_entries^fallout_event_arc_validation_index > constant:fallout_event_runtime.no_ticket }
+	check_variable = { var = fallout_event_arc_ticket_entries^fallout_event_arc_validation_index value = global.fallout_event_next_ticket_id compare = less_than }
+	check_variable = { fallout_event_arc_identity_entries^fallout_event_arc_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { var = fallout_event_arc_generation_entries^fallout_event_arc_validation_index value = fallout_event_runtime_generation compare = equals }
+	check_variable = { fallout_event_arc_primary_family_entries^fallout_event_arc_validation_index > constant:fallout_event_primary_family.none }
+	check_variable = { fallout_event_arc_primary_family_entries^fallout_event_arc_validation_index < constant:fallout_event_primary_family.upper_bound }
+	check_variable = { fallout_event_arc_cooldown_family_entries^fallout_event_arc_validation_index > constant:fallout_event_cooldown_family.none }
+	check_variable = { fallout_event_arc_cooldown_family_entries^fallout_event_arc_validation_index < constant:fallout_event_cooldown_family.upper_bound }
+	check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_validation_index > constant:fallout_event_arc_stage.none }
+	check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_validation_index < constant:fallout_event_arc_stage.closed }
+	set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_arc_actor_type_entries^fallout_event_arc_validation_index }
+	set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_arc_actor_entries^fallout_event_arc_validation_index }
+	fallout_event_subject_shape_is_valid = yes
+	NOT = { check_variable = { fallout_event_arc_cancellation_reason_entries^fallout_event_arc_validation_index < constant:fallout_event_cancellation_reason.none } }
+	check_variable = { fallout_event_arc_cancellation_reason_entries^fallout_event_arc_validation_index < constant:fallout_event_cancellation_reason.upper_bound }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_validation_index < constant:fallout_event_arc_stage.cleanup }
+			NOT = { check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index < constant:fallout_event_outcome_type.none } }
+			check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+			check_variable = { fallout_event_arc_cancellation_reason_entries^fallout_event_arc_validation_index = constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_validation_index = constant:fallout_event_arc_stage.cleanup }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index > constant:fallout_event_outcome_type.none }
+					check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+					check_variable = { fallout_event_arc_cancellation_reason_entries^fallout_event_arc_validation_index = constant:fallout_event_cancellation_reason.none }
+				}
+				AND = {
+					OR = {
+						check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index = constant:fallout_event_outcome_type.aborted_after_choice }
+						check_variable = { fallout_event_arc_outcome_entries^fallout_event_arc_validation_index = constant:fallout_event_outcome_type.cancelled_before_choice }
+					}
+					check_variable = { fallout_event_arc_cancellation_reason_entries^fallout_event_arc_validation_index > constant:fallout_event_cancellation_reason.none }
+				}
+			}
+		}
+	}
+	check_variable = { fallout_event_arc_cleanup_token_entries^fallout_event_arc_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { var = fallout_event_arc_cleanup_owner_entries^fallout_event_arc_validation_index value = fallout_event_registry_index compare = equals }
+}
+
+fallout_event_arc_row_at_index_is_structurally_current = {
+	fallout_event_arc_row_at_index_has_current_shape = yes
+	fallout_event_arc_row_identity_is_unique = yes
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_delayed_validation_index.
+fallout_event_delayed_row_at_index_has_current_shape = {
+	NOT = { check_variable = { fallout_event_delayed_validation_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = { var = fallout_event_delayed_validation_index value = fallout_event_delayed_ticket_entries^num compare = less_than }
+	check_variable = { fallout_event_delayed_ticket_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.no_ticket }
+	check_variable = { var = fallout_event_delayed_ticket_entries^fallout_event_delayed_validation_index value = global.fallout_event_next_ticket_id compare = less_than }
+	check_variable = { fallout_event_delayed_key_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { var = fallout_event_delayed_generation_entries^fallout_event_delayed_validation_index value = fallout_event_runtime_generation compare = equals }
+	NOT = { check_variable = { fallout_event_delayed_parent_arc_ticket_entries^fallout_event_delayed_validation_index < constant:fallout_event_runtime.no_ticket } }
+	check_variable = { fallout_event_delayed_human_event_token_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_delayed_ai_event_token_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { var = fallout_event_delayed_human_event_token_entries^fallout_event_delayed_validation_index value = fallout_event_delayed_ai_event_token_entries^fallout_event_delayed_validation_index compare = equals } }
+	check_variable = { fallout_event_delayed_branch_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { fallout_event_delayed_due_day_entries^fallout_event_delayed_validation_index < global.fallout_event_timeline_start_day } }
+	check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index > constant:fallout_event_queue_status.none }
+	check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index < constant:fallout_event_queue_status.upper_bound }
+	set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_delayed_target_type_entries^fallout_event_delayed_validation_index }
+	set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_delayed_target_entries^fallout_event_delayed_validation_index }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+			check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+		}
+		fallout_event_subject_shape_is_valid = yes
+	}
+	check_variable = { fallout_event_delayed_cleanup_token_entries^fallout_event_delayed_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { var = fallout_event_delayed_cleanup_owner_entries^fallout_event_delayed_validation_index value = fallout_event_registry_index compare = equals }
+	NOT = { check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index < constant:fallout_event_outcome_type.none } }
+	check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index < constant:fallout_event_outcome_type.upper_bound }
+	NOT = { check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index < constant:fallout_event_cancellation_reason.none } }
+	check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index < constant:fallout_event_cancellation_reason.upper_bound }
+	OR = {
+		AND = {
+			OR = {
+				check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index = constant:fallout_event_queue_status.result_scheduled }
+				check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index = constant:fallout_event_queue_status.callback_scheduled }
+			}
+			check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index = constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index = constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index = constant:fallout_event_queue_status.resolved }
+			check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index > constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+			check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index = constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index = constant:fallout_event_queue_status.cancelled }
+			OR = {
+				check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index = constant:fallout_event_outcome_type.aborted_after_choice }
+				check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index = constant:fallout_event_outcome_type.cancelled_before_choice }
+			}
+			check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index > constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_delayed_status_entries^fallout_event_delayed_validation_index = constant:fallout_event_queue_status.cleanup_pending }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index > constant:fallout_event_outcome_type.none }
+					check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+					check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index = constant:fallout_event_cancellation_reason.none }
+				}
+				AND = {
+					OR = {
+						check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index = constant:fallout_event_outcome_type.aborted_after_choice }
+						check_variable = { fallout_event_delayed_outcome_entries^fallout_event_delayed_validation_index = constant:fallout_event_outcome_type.cancelled_before_choice }
+					}
+					check_variable = { fallout_event_delayed_cancellation_reason_entries^fallout_event_delayed_validation_index > constant:fallout_event_cancellation_reason.none }
+				}
+			}
+		}
+	}
+}
+
+fallout_event_delayed_row_at_index_is_structurally_current = {
+	fallout_event_delayed_row_at_index_has_current_shape = yes
+	fallout_event_delayed_row_identity_is_unique = yes
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_bilateral_validation_index.
+fallout_event_bilateral_row_at_index_has_current_shape = {
+	NOT = { check_variable = { fallout_event_bilateral_validation_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = { var = fallout_event_bilateral_validation_index value = fallout_event_bilateral_ticket_entries^num compare = less_than }
+	check_variable = { fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index > constant:fallout_event_runtime.no_ticket }
+	check_variable = { var = fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index value = global.fallout_event_next_ticket_id compare = less_than }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { var = fallout_event_bilateral_generation_entries^fallout_event_bilateral_validation_index value = fallout_event_runtime_generation compare = equals }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index > constant:fallout_event_bilateral_role.none }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index < constant:fallout_event_bilateral_role.upper_bound }
+	check_variable = { fallout_event_bilateral_response_token_entries^fallout_event_bilateral_validation_index > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_bilateral_ai_response_token_entries^fallout_event_bilateral_validation_index > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { var = fallout_event_bilateral_response_token_entries^fallout_event_bilateral_validation_index value = fallout_event_bilateral_ai_response_token_entries^fallout_event_bilateral_validation_index compare = equals } }
+	NOT = { check_variable = { fallout_event_bilateral_due_date_entries^fallout_event_bilateral_validation_index < global.fallout_event_timeline_start_day } }
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index > constant:fallout_event_bilateral_status.none }
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index < constant:fallout_event_bilateral_status.upper_bound }
+	NOT = { check_variable = { fallout_event_bilateral_parent_arc_ticket_entries^fallout_event_bilateral_validation_index < constant:fallout_event_runtime.no_ticket } }
+	check_variable = { fallout_event_bilateral_cleanup_token_entries^fallout_event_bilateral_validation_index > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { fallout_event_bilateral_cleanup_owner_entries^fallout_event_bilateral_validation_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = { var = fallout_event_bilateral_cleanup_owner_entries^fallout_event_bilateral_validation_index value = global.fallout_event_registry_count compare = less_than }
+	NOT = { check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index < constant:fallout_event_outcome_type.none } }
+	check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index < constant:fallout_event_outcome_type.upper_bound }
+	NOT = { check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index < constant:fallout_event_cancellation_reason.none } }
+	check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index < constant:fallout_event_cancellation_reason.upper_bound }
+	OR = {
+		AND = {
+			OR = {
+				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.reserved }
+				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.response_pending }
+			}
+			check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index = constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index = constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.resolved }
+			check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index > constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+			check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index = constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.cancelled }
+			OR = {
+				check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index = constant:fallout_event_outcome_type.aborted_after_choice }
+				check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index = constant:fallout_event_outcome_type.cancelled_before_choice }
+			}
+			check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index > constant:fallout_event_cancellation_reason.none }
+		}
+		AND = {
+			check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.cleanup_pending }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index > constant:fallout_event_outcome_type.none }
+					check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index < constant:fallout_event_outcome_type.aborted_after_choice }
+					check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index = constant:fallout_event_cancellation_reason.none }
+				}
+				AND = {
+					OR = {
+						check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index = constant:fallout_event_outcome_type.aborted_after_choice }
+						check_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index = constant:fallout_event_outcome_type.cancelled_before_choice }
+					}
+					check_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index > constant:fallout_event_cancellation_reason.none }
+				}
+			}
+		}
+	}
+}
+
+fallout_event_bilateral_row_at_index_is_structurally_current = {
+	fallout_event_bilateral_row_at_index_has_current_shape = yes
+	fallout_event_bilateral_row_identity_is_unique = yes
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_bilateral_validation_index.
+# The partner may disappear later. A missing reciprocal is therefore a
+# recoverable cancellation condition rather than a local array-shape failure.
+fallout_event_bilateral_row_at_index_has_current_reciprocal = {
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	set_temp_variable = { fallout_event_reciprocal_origin_row_index = fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_ticket_to_check = fallout_event_bilateral_ticket_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_key_to_check = fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_generation_to_check = fallout_event_bilateral_generation_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_role_to_check = fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_due_day_to_check = fallout_event_bilateral_due_date_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_status_to_check = fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_parent_arc_to_check = fallout_event_bilateral_parent_arc_ticket_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_cleanup_token_to_check = fallout_event_bilateral_cleanup_token_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_cleanup_owner_to_check = fallout_event_bilateral_cleanup_owner_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_outcome_to_check = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_cancellation_to_check = fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_validation_index }
+	set_temp_variable = { fallout_event_reciprocal_origin_registry_index = fallout_event_registry_index }
+	set_temp_variable = { fallout_event_reciprocal_partner_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_bilateral_partner_entries^fallout_event_bilateral_validation_index = {
+		set_temp_variable = { fallout_event_reciprocal_partner_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		fallout_event_registry_country_identity_is_current = yes
+		fallout_event_bilateral_receipts_are_current = yes
+		set_temp_variable = { fallout_event_reciprocal_match_found = constant:fallout_event_runtime.zero }
+		set_temp_variable = { fallout_event_reciprocal_match_index = constant:fallout_event_runtime.first_array_index }
+		any_of = {
+			array = fallout_event_bilateral_ticket_entries
+			value = fallout_event_reciprocal_stored_ticket
+			index = fallout_event_reciprocal_stored_index
+			set_temp_variable = { fallout_event_reciprocal_back_pointer_context_loaded = constant:fallout_event_runtime.zero }
+			check_variable = { var = fallout_event_reciprocal_stored_ticket value = fallout_event_reciprocal_ticket_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_key_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_key_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_generation_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_generation_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_due_date_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_due_day_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_status_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_status_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_parent_arc_ticket_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_parent_arc_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_cleanup_token_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_cleanup_token_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_outcome_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_outcome_to_check compare = equals }
+			check_variable = { var = fallout_event_bilateral_cancellation_reason_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_cancellation_to_check compare = equals }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_reciprocal_role_to_check = constant:fallout_event_bilateral_role.initiator }
+					check_variable = { var = fallout_event_reciprocal_cleanup_owner_to_check value = fallout_event_reciprocal_origin_registry_index compare = equals }
+					check_variable = { fallout_event_bilateral_role_entries^fallout_event_reciprocal_stored_index = constant:fallout_event_bilateral_role.responder }
+					check_variable = { var = fallout_event_bilateral_cleanup_owner_entries^fallout_event_reciprocal_stored_index value = fallout_event_reciprocal_origin_registry_index compare = equals }
+				}
+				AND = {
+					check_variable = { fallout_event_reciprocal_role_to_check = constant:fallout_event_bilateral_role.responder }
+					check_variable = { var = fallout_event_reciprocal_cleanup_owner_to_check value = fallout_event_registry_index compare = equals }
+					check_variable = { fallout_event_bilateral_role_entries^fallout_event_reciprocal_stored_index = constant:fallout_event_bilateral_role.initiator }
+					check_variable = { var = fallout_event_bilateral_cleanup_owner_entries^fallout_event_reciprocal_stored_index value = fallout_event_registry_index compare = equals }
+				}
+			}
+			var:fallout_event_bilateral_partner_entries^fallout_event_reciprocal_stored_index = {
+				set_temp_variable = { fallout_event_reciprocal_back_pointer_context_loaded = constant:fallout_event_runtime.one }
+				exists = yes
+				check_variable = { var = fallout_event_registry_index value = fallout_event_reciprocal_origin_registry_index compare = equals }
+			}
+			check_variable = { fallout_event_reciprocal_back_pointer_context_loaded = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_reciprocal_match_index = fallout_event_reciprocal_stored_index }
+			set_temp_variable = { fallout_event_reciprocal_match_found = constant:fallout_event_runtime.one }
+		}
+		check_variable = { fallout_event_reciprocal_match_found = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_reciprocal_match_index }
+		fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	}
+	check_variable = { fallout_event_reciprocal_partner_context_loaded = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_reciprocal_origin_row_index }
+}
+
+fallout_event_arc_receipts_are_current = {
+	fallout_event_arc_arrays_are_aligned = yes
+	check_variable = { var = fallout_event_active_major_arc_count value = fallout_event_arc_ticket_entries^num compare = equals }
+	NOT = { check_variable = { fallout_event_active_major_arc_count > constant:fallout_event_runtime.maximum_major_arcs } }
+	all_of = {
+		array = fallout_event_arc_ticket_entries
+		index = fallout_event_arc_validation_index
+		fallout_event_arc_row_at_index_has_current_shape = yes
+	}
+}
+
+fallout_event_delayed_queue_receipts_are_current = {
+	fallout_event_delayed_queue_arrays_are_aligned = yes
+	all_of = {
+		array = fallout_event_delayed_ticket_entries
+		index = fallout_event_delayed_validation_index
+		fallout_event_delayed_row_at_index_has_current_shape = yes
+	}
+}
+
+# This validates local bilateral row shape. Reciprocal partner equality is a
+# separate proof because a disappeared partner is a recoverable cancellation.
+fallout_event_bilateral_receipts_are_current = {
+	fallout_event_bilateral_arrays_are_aligned = yes
+	all_of = {
+		array = fallout_event_bilateral_ticket_entries
+		index = fallout_event_bilateral_validation_index
+		fallout_event_bilateral_row_at_index_has_current_shape = yes
+	}
+}
+
+# Full local uniqueness is reserved for transaction production. Recurring
+# reconciliation validates one selected identity so it remains linear locally.
+fallout_event_arc_all_row_identities_are_unique = {
+	all_of = {
+		array = fallout_event_arc_ticket_entries
+		index = fallout_event_arc_validation_index
+		fallout_event_arc_row_at_index_is_structurally_current = yes
+	}
+}
+
+fallout_event_delayed_all_row_identities_are_unique = {
+	all_of = {
+		array = fallout_event_delayed_ticket_entries
+		index = fallout_event_delayed_validation_index
+		fallout_event_delayed_row_at_index_is_structurally_current = yes
+	}
+}
+
+fallout_event_bilateral_all_row_identities_are_unique = {
+	all_of = {
+		array = fallout_event_bilateral_ticket_entries
+		index = fallout_event_bilateral_validation_index
+		fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	}
+}
+
+fallout_event_dispatch_envelope_is_consistent = {
+	OR = {
+		AND = {
+			NOT = { has_country_flag = fallout_event_dispatch_ready }
+			NOT = { has_variable = fallout_event_dispatch_source }
+			NOT = { has_variable = fallout_event_dispatch_ticket }
+			NOT = { has_variable = fallout_event_dispatch_generation }
+			NOT = { has_variable = fallout_event_dispatch_mode }
+			NOT = { has_variable = fallout_event_dispatch_event_token }
+			NOT = { has_variable = fallout_event_dispatch_branch }
+			NOT = { has_variable = fallout_event_dispatch_target_type }
+			NOT = { has_variable = fallout_event_dispatch_target }
+		}
+		AND = {
+			has_country_flag = fallout_event_dispatch_ready
+			has_variable = fallout_event_dispatch_source
+			has_variable = fallout_event_dispatch_ticket
+			has_variable = fallout_event_dispatch_generation
+			has_variable = fallout_event_dispatch_mode
+			has_variable = fallout_event_dispatch_event_token
+			has_variable = fallout_event_dispatch_branch
+			has_variable = fallout_event_dispatch_target_type
+			has_variable = fallout_event_dispatch_target
+			check_variable = { fallout_event_dispatch_source > constant:fallout_event_dispatch_source.none }
+			check_variable = { fallout_event_dispatch_source < constant:fallout_event_dispatch_source.upper_bound }
+			check_variable = { fallout_event_dispatch_ticket > constant:fallout_event_runtime.no_ticket }
+			check_variable = { var = fallout_event_dispatch_generation value = fallout_event_runtime_generation compare = equals }
+			check_variable = { fallout_event_dispatch_mode > constant:fallout_event_dispatch_mode.none }
+			check_variable = { fallout_event_dispatch_mode < constant:fallout_event_dispatch_mode.upper_bound }
+			check_variable = { fallout_event_dispatch_event_token > constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_dispatch_branch > constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_dispatch_target_type }
+			set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_dispatch_target }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+					check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+				}
+				fallout_event_subject_shape_is_valid = yes
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. A committed envelope must still name the exact
+# compact transaction row and the token appropriate to its routing mode.
+fallout_event_dispatch_envelope_matches_transaction = {
+	OR = {
+		NOT = { has_country_flag = fallout_event_dispatch_ready }
+		AND = {
+			has_country_flag = fallout_event_dispatch_ready
+			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.delayed_ticket }
+			set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_dispatch_match_index = constant:fallout_event_runtime.first_array_index }
+			any_of = {
+				array = fallout_event_delayed_ticket_entries
+				value = fallout_event_dispatch_stored_ticket
+				index = fallout_event_dispatch_stored_index
+				check_variable = { var = fallout_event_dispatch_stored_ticket value = fallout_event_dispatch_ticket compare = equals }
+				check_variable = { var = fallout_event_delayed_generation_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_generation compare = equals }
+				OR = {
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+						OR = {
+							check_variable = { fallout_event_delayed_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_queue_status.result_scheduled }
+							check_variable = { fallout_event_delayed_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_queue_status.callback_scheduled }
+						}
+						check_variable = { var = fallout_event_delayed_human_event_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+						check_variable = { var = fallout_event_delayed_branch_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_branch compare = equals }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+						OR = {
+							check_variable = { fallout_event_delayed_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_queue_status.result_scheduled }
+							check_variable = { fallout_event_delayed_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_queue_status.callback_scheduled }
+						}
+						check_variable = { var = fallout_event_delayed_ai_event_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+						check_variable = { var = fallout_event_delayed_branch_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_branch compare = equals }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
+						check_variable = { fallout_event_delayed_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_queue_status.cleanup_pending }
+						check_variable = { var = fallout_event_delayed_cleanup_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+						check_variable = { fallout_event_dispatch_branch = constant:fallout_event_runtime.one }
+					}
+				}
+				check_variable = { var = fallout_event_delayed_target_type_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_target_type compare = equals }
+				check_variable = { var = fallout_event_delayed_target_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_target compare = equals }
+				set_temp_variable = { fallout_event_dispatch_match_index = fallout_event_dispatch_stored_index }
+				set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			}
+			check_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_delayed_validation_index = fallout_event_dispatch_match_index }
+			fallout_event_delayed_row_at_index_is_structurally_current = yes
+		}
+		AND = {
+			has_country_flag = fallout_event_dispatch_ready
+			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
+			check_variable = { fallout_event_dispatch_target_type = constant:fallout_event_subject_type.country }
+			set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_dispatch_match_index = constant:fallout_event_runtime.first_array_index }
+			any_of = {
+				array = fallout_event_bilateral_ticket_entries
+				value = fallout_event_dispatch_stored_ticket
+				index = fallout_event_dispatch_stored_index
+				check_variable = { var = fallout_event_dispatch_stored_ticket value = fallout_event_dispatch_ticket compare = equals }
+				check_variable = { var = fallout_event_bilateral_generation_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_generation compare = equals }
+				check_variable = { var = fallout_event_bilateral_role_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_branch compare = equals }
+				check_variable = { var = fallout_event_bilateral_partner_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_target compare = equals }
+				OR = {
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.response_pending }
+						check_variable = { fallout_event_bilateral_role_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_role.responder }
+						check_variable = { var = fallout_event_bilateral_response_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.response_pending }
+						check_variable = { fallout_event_bilateral_role_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_role.responder }
+						check_variable = { var = fallout_event_bilateral_ai_response_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
+						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.cleanup_pending }
+						check_variable = { var = fallout_event_bilateral_cleanup_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
+					}
+				}
+				set_temp_variable = { fallout_event_dispatch_match_index = fallout_event_dispatch_stored_index }
+				set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			}
+			check_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+			fallout_event_bilateral_row_at_index_is_structurally_current = yes
+		}
+	}
+}
+
+fallout_event_cleanup_flags_are_consistent = {
+	OR = {
+		AND = {
+			has_country_flag = fallout_event_arc_cleanup_pending
+			any_of = {
+				array = fallout_event_arc_stage_entries
+				value = fallout_event_stored_cleanup_stage
+				check_variable = { fallout_event_stored_cleanup_stage = constant:fallout_event_arc_stage.cleanup }
+			}
+		}
+		AND = {
+			NOT = { has_country_flag = fallout_event_arc_cleanup_pending }
+			NOT = {
+				any_of = {
+					array = fallout_event_arc_stage_entries
+					value = fallout_event_stored_cleanup_stage
+					check_variable = { fallout_event_stored_cleanup_stage = constant:fallout_event_arc_stage.cleanup }
+				}
+			}
+		}
+	}
+	OR = {
+		AND = {
+			has_country_flag = fallout_event_delayed_cleanup_pending
+			any_of = {
+				array = fallout_event_delayed_status_entries
+				value = fallout_event_stored_cleanup_status
+				check_variable = { fallout_event_stored_cleanup_status = constant:fallout_event_queue_status.cleanup_pending }
+			}
+		}
+		AND = {
+			NOT = { has_country_flag = fallout_event_delayed_cleanup_pending }
+			NOT = {
+				any_of = {
+					array = fallout_event_delayed_status_entries
+					value = fallout_event_stored_cleanup_status
+					check_variable = { fallout_event_stored_cleanup_status = constant:fallout_event_queue_status.cleanup_pending }
+				}
+			}
+		}
+	}
+	OR = {
+		AND = {
+			has_country_flag = fallout_event_bilateral_cleanup_pending
+			any_of = {
+				array = fallout_event_bilateral_status_entries
+				value = fallout_event_stored_cleanup_status
+				check_variable = { fallout_event_stored_cleanup_status = constant:fallout_event_bilateral_status.cleanup_pending }
+			}
+		}
+		AND = {
+			NOT = { has_country_flag = fallout_event_bilateral_cleanup_pending }
+			NOT = {
+				any_of = {
+					array = fallout_event_bilateral_status_entries
+					value = fallout_event_stored_cleanup_status
+					check_variable = { fallout_event_stored_cleanup_status = constant:fallout_event_bilateral_status.cleanup_pending }
+				}
+			}
+		}
+	}
+}
+
+fallout_event_transaction_history_receipts_are_consistent = {
+	has_variable = fallout_event_cancellation_count
+	NOT = { check_variable = { fallout_event_cancellation_count < constant:fallout_event_runtime.zero } }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_cancellation_count = constant:fallout_event_runtime.zero }
+			NOT = { has_variable = fallout_event_last_cancelled_ticket }
+			NOT = { has_variable = fallout_event_last_cancellation_reason }
+			NOT = { has_variable = fallout_event_last_cancellation_generation }
+			NOT = { has_variable = fallout_event_last_cancellation_day }
+		}
+		AND = {
+			check_variable = { fallout_event_cancellation_count > constant:fallout_event_runtime.zero }
+			has_variable = fallout_event_last_cancelled_ticket
+			has_variable = fallout_event_last_cancellation_reason
+			has_variable = fallout_event_last_cancellation_generation
+			has_variable = fallout_event_last_cancellation_day
+			check_variable = { fallout_event_last_cancelled_ticket > constant:fallout_event_runtime.no_ticket }
+			check_variable = { fallout_event_last_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_last_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+			check_variable = { var = fallout_event_last_cancellation_generation value = fallout_event_runtime_generation compare = equals }
+			check_variable = { var = fallout_event_last_cancellation_day value = global.num_days compare = less_than_or_equals }
+		}
+	}
+	OR = {
+		AND = {
+			NOT = { has_variable = fallout_event_last_transaction_reconcile_generation }
+			NOT = { has_variable = fallout_event_last_transaction_reconcile_day }
+		}
+		AND = {
+			has_variable = fallout_event_last_transaction_reconcile_generation
+			has_variable = fallout_event_last_transaction_reconcile_day
+			check_variable = { var = fallout_event_last_transaction_reconcile_generation value = fallout_event_runtime_generation compare = equals }
+			check_variable = { var = fallout_event_last_transaction_reconcile_day value = global.num_days compare = less_than_or_equals }
+		}
+	}
+	OR = {
+		AND = {
+			has_country_flag = fallout_event_transaction_schema_migrated
+			has_variable = fallout_event_transaction_schema_migration_generation
+			has_variable = fallout_event_transaction_schema_migration_day
+			check_variable = { var = fallout_event_transaction_schema_migration_generation value = fallout_event_runtime_generation compare = equals }
+			check_variable = { var = fallout_event_transaction_schema_migration_day value = global.num_days compare = less_than_or_equals }
+		}
+		AND = {
+			NOT = { has_country_flag = fallout_event_transaction_schema_migrated }
+			NOT = { has_variable = fallout_event_transaction_schema_migration_generation }
+			NOT = { has_variable = fallout_event_transaction_schema_migration_day }
+		}
+	}
+}
+
+fallout_event_ticket_ledger_is_current = {
+	has_variable = global.fallout_event_ticket_generation
+	has_variable = global.fallout_event_next_ticket_id
+	check_variable = {
+		var = global.fallout_event_ticket_generation
+		value = fallout_event_runtime_generation
+		compare = equals
+	}
+	check_variable = { global.fallout_event_next_ticket_id > constant:fallout_event_runtime.no_ticket }
+}
+
+# Reservation producers remain unreachable until a reviewed pilot explicitly
+# sets both activation flags. Terminalization and cleanup do not use this gate.
+fallout_event_transaction_production_is_approved = {
+	has_global_flag = fallout_event_scheduler_activation_approved
+	has_global_flag = fallout_event_scheduler_active
+	exists = yes
+	fallout_event_registry_header_is_current = yes
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+}
+
+# Supported scope: COUNTRY. Input: requested parent arc ticket. Ticket zero is
+# the explicit no-parent value. A non-zero parent must be unique, current,
+# live, and still before cleanup.
+fallout_event_requested_parent_arc_is_current = {
+	OR = {
+		check_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+		any_of = {
+			array = fallout_event_arc_ticket_entries
+			value = fallout_event_parent_arc_stored_ticket
+			index = fallout_event_parent_arc_stored_index
+			check_variable = { var = fallout_event_parent_arc_stored_ticket value = fallout_event_requested_parent_arc_ticket compare = equals }
+			set_temp_variable = { fallout_event_arc_validation_index = fallout_event_parent_arc_stored_index }
+			fallout_event_arc_row_at_index_is_structurally_current = yes
+			check_variable = { fallout_event_arc_stage_entries^fallout_event_parent_arc_stored_index < constant:fallout_event_arc_stage.cleanup }
+			set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_arc_actor_type_entries^fallout_event_parent_arc_stored_index }
+			set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_arc_actor_entries^fallout_event_parent_arc_stored_index }
+			fallout_event_subject_is_current = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Mutable liveness and not-in-the-past checks apply
+# only when a delayed row is first created. An exact key retry is authenticated
+# from its stored row and does not become false merely because time advanced.
+fallout_event_requested_delayed_new_row_inputs_are_current = {
+	check_variable = { var = fallout_event_requested_due_day value = global.num_days compare = greater_than_or_equals }
+	fallout_event_requested_parent_arc_is_current = yes
+	set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_requested_target_type }
+	set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_requested_target }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+			check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+		}
+		fallout_event_subject_is_current = yes
+	}
+}
+
+# Supported scope: COUNTRY. The reciprocal countries are validated by the
+# reservation effect. These mutable scheduling checks apply only to a new pair.
+fallout_event_requested_bilateral_new_row_inputs_are_current = {
+	check_variable = { var = fallout_event_requested_due_day value = global.num_days compare = greater_than_or_equals }
+	fallout_event_requested_parent_arc_is_current = yes
+}
+
+# Schema 1 never had transaction producers. It can be promoted only while the
+# scheduler is still dormant and every reserved transaction surface is empty.
+fallout_event_legacy_empty_transaction_row_can_migrate = {
+	has_country_flag = fallout_event_registry_member
+	has_country_flag = fallout_event_runtime_initialized
+	has_variable = fallout_event_runtime_schema_version
+	has_variable = fallout_event_orientation_schema_version
+	has_variable = fallout_event_arc_schema_version
+	has_variable = fallout_event_delayed_queue_schema_version
+	has_variable = fallout_event_bilateral_schema_version
+	has_variable = fallout_event_runtime_generation
+	has_variable = fallout_event_active_major_arc_count
+	has_variable = fallout_event_last_cooldown_family
+	has_variable = fallout_event_ordinary_cooldown_due_day
+	has_variable = fallout_event_quiet_period_due_day
+	has_variable = fallout_event_runtime_initialized_date
+	has_variable = fallout_event_runtime_initialized_day
+	check_variable = { fallout_event_runtime_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
+	check_variable = { fallout_event_orientation_schema_version = constant:fallout_event_orientation_schema.version }
+	check_variable = { fallout_event_arc_schema_version = constant:fallout_event_arc_schema.previous_empty_version }
+	check_variable = { fallout_event_delayed_queue_schema_version = constant:fallout_event_delayed_queue_schema.previous_empty_version }
+	check_variable = { fallout_event_bilateral_schema_version = constant:fallout_event_bilateral_schema.previous_empty_version }
+	check_variable = {
+		var = fallout_event_runtime_generation
+		value = global.fallout_event_registry_generation
+		compare = equals
+	}
+	check_variable = { fallout_event_active_major_arc_count = constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.none } }
+	check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+	NOT = { check_variable = { var = fallout_event_ordinary_cooldown_due_day value = global.fallout_event_timeline_start_day compare = less_than } }
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = fallout_event_runtime_initialized_day
+			value = global.fallout_event_timeline_start_day
+			compare = less_than
+		}
+	}
+	set_temp_variable = { fallout_event_legacy_expected_quiet_period_due_day = global.fallout_event_timeline_start_day }
+	add_to_temp_variable = { fallout_event_legacy_expected_quiet_period_due_day = constant:fallout_event_runtime.quiet_period_days }
+	check_variable = {
+		var = fallout_event_quiet_period_due_day
+		value = fallout_event_legacy_expected_quiet_period_due_day
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_event_family_fatigue_entries^num
+		value = constant:fallout_event_cooldown_family.upper_bound
+		compare = equals
+	}
+	all_of = {
+		array = fallout_event_family_fatigue_entries
+		value = fallout_event_legacy_family_fatigue_value
+		NOT = { check_variable = { fallout_event_legacy_family_fatigue_value < constant:fallout_event_runtime.zero } }
+	}
+	fallout_event_arc_arrays_are_aligned = yes
+	fallout_event_delayed_queue_arrays_are_aligned = yes
+	fallout_event_bilateral_arrays_are_aligned = yes
+	check_variable = { fallout_event_arc_ticket_entries^num = constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_delayed_ticket_entries^num = constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_bilateral_ticket_entries^num = constant:fallout_event_runtime.zero }
+	NOT = { has_country_flag = fallout_event_arc_slot_1_active }
+	NOT = { has_country_flag = fallout_event_arc_slot_2_active }
+	NOT = { has_country_flag = fallout_event_arc_slot_3_active }
+	NOT = { has_country_flag = fallout_event_arc_cleanup_pending }
+	NOT = { has_country_flag = fallout_event_delayed_cleanup_pending }
+	NOT = { has_country_flag = fallout_event_bilateral_cleanup_pending }
+	NOT = { has_country_flag = fallout_event_transaction_schema_migrated }
+	NOT = { has_variable = fallout_event_arc_reconcile_cursor }
+	NOT = { has_variable = fallout_event_delayed_reconcile_cursor }
+	NOT = { has_variable = fallout_event_bilateral_reconcile_cursor }
+	NOT = { has_variable = fallout_event_last_transaction_reconcile_generation }
+	NOT = { has_variable = fallout_event_last_transaction_reconcile_day }
+	NOT = { has_variable = fallout_event_last_cancelled_ticket }
+	NOT = { has_variable = fallout_event_last_cancellation_reason }
+	NOT = { has_variable = fallout_event_last_cancellation_generation }
+	NOT = { has_variable = fallout_event_last_cancellation_day }
+	NOT = { has_variable = fallout_event_cancellation_count }
+	NOT = { has_variable = fallout_event_transaction_schema_migration_generation }
+	NOT = { has_variable = fallout_event_transaction_schema_migration_day }
+	NOT = { has_country_flag = fallout_event_dispatch_ready }
+	fallout_event_dispatch_envelope_is_consistent = yes
+	fallout_event_orientation_receipts_are_consistent = yes
+}
+
+fallout_event_legacy_registry_header_payload_is_current = {
+	has_variable = global.fallout_transition_generation
+	has_variable = global.fallout_event_schema_version
+	has_variable = global.fallout_event_registry_schema_version
+	has_variable = global.fallout_event_registry_generation
+	has_variable = global.fallout_event_registry_count
+	has_variable = global.fallout_event_registry_source_count
+	has_variable = global.fallout_event_registry_cursor
+	has_variable = global.fallout_event_registry_initialized_date
+	has_variable = global.fallout_event_registry_initialized_day
+	NOT = { has_variable = global.fallout_event_ticket_generation }
+	NOT = { has_variable = global.fallout_event_next_ticket_id }
+	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.previous_initialization_only_version }
+	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+	check_variable = {
+		var = global.fallout_event_registry_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = { global.fallout_event_registry_count > constant:fallout_event_runtime.zero }
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_event_registry_source_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_count
+		value = global.fallout_event_registry_countries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_source_count
+		value = global.fallout_successor_assigned_countries^num
+		compare = equals
+	}
+	NOT = { check_variable = { global.fallout_event_registry_cursor < constant:fallout_event_runtime.first_array_index } }
+	check_variable = {
+		var = global.fallout_event_registry_cursor
+		value = global.fallout_event_registry_count
+		compare = less_than
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_registry_initialized_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_registry_initialized_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+	fallout_event_registry_arrays_are_aligned = yes
+}
+
+# Supported scope: legacy registry COUNTRY. The aligned global entry must point
+# back to this exact country before any schema receipt can be promoted.
+fallout_event_legacy_registry_country_row_is_current = {
+	has_variable = fallout_event_registry_generation
+	has_variable = fallout_event_registry_index
+	check_variable = {
+		var = fallout_event_registry_generation
+		value = global.fallout_event_registry_generation
+		compare = equals
+	}
+	NOT = { check_variable = { fallout_event_registry_index < constant:fallout_event_runtime.first_array_index } }
+	check_variable = {
+		var = fallout_event_registry_index
+		value = global.fallout_event_registry_count
+		compare = less_than
+	}
+	set_temp_variable = { fallout_event_legacy_registry_back_reference_context_loaded = constant:fallout_event_runtime.zero }
+	var:global.fallout_event_registry_countries^fallout_event_registry_index = {
+		set_temp_variable = { fallout_event_legacy_registry_back_reference_context_loaded = constant:fallout_event_runtime.one }
+		tag = PREV
+	}
+	check_variable = { fallout_event_legacy_registry_back_reference_context_loaded = constant:fallout_event_runtime.one }
+	check_variable = {
+		var = global.fallout_event_registry_generation_entries^fallout_event_registry_index
+		value = fallout_event_registry_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_registry_index_entries^fallout_event_registry_index
+		value = fallout_event_registry_index
+		compare = equals
+	}
+	fallout_event_legacy_empty_transaction_row_can_migrate = yes
+}
+
+fallout_event_legacy_registry_payload_is_current = {
+	fallout_event_legacy_registry_header_payload_is_current = yes
+	all_of = {
+		array = global.fallout_event_registry_index_entries
+		value = fallout_event_legacy_registry_stored_index
+		index = fallout_event_legacy_registry_payload_index
+		set_temp_variable = { fallout_event_legacy_registry_country_context_loaded = constant:fallout_event_runtime.zero }
+		check_variable = {
+			var = fallout_event_legacy_registry_stored_index
+			value = fallout_event_legacy_registry_payload_index
+			compare = equals
+		}
+		var:global.fallout_event_registry_countries^fallout_event_legacy_registry_payload_index = {
+			set_temp_variable = { fallout_event_legacy_registry_country_context_loaded = constant:fallout_event_runtime.one }
+			check_variable = {
+				var = fallout_event_registry_index
+				value = fallout_event_legacy_registry_payload_index
+				compare = equals
+			}
+			is_in_array = { array = global.fallout_successor_assigned_countries value = THIS }
+			fallout_event_legacy_registry_country_row_is_current = yes
+		}
+		check_variable = { fallout_event_legacy_registry_country_context_loaded = constant:fallout_event_runtime.one }
+	}
+	all_of = {
+		array = global.fallout_successor_assigned_countries
+		value = fallout_event_legacy_registry_source_country
+		set_temp_variable = { fallout_event_legacy_registry_source_country_context_loaded = constant:fallout_event_runtime.zero }
+		var:fallout_event_legacy_registry_source_country = {
+			set_temp_variable = { fallout_event_legacy_registry_source_country_context_loaded = constant:fallout_event_runtime.one }
+			is_in_array = { array = global.fallout_event_registry_countries value = THIS }
+		}
+		check_variable = { fallout_event_legacy_registry_source_country_context_loaded = constant:fallout_event_runtime.one }
+	}
+}
+
+fallout_event_dormant_transaction_schema_migration_is_allowed = {
+	has_global_flag = fallout_event_scheduler_registry_ready
+	NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
+	NOT = { has_global_flag = fallout_event_scheduler_active }
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+	fallout_event_map_return_receipts_are_current = yes
+	fallout_event_legacy_registry_payload_is_current = yes
+}
+
 # Supported scope: COUNTRY
 fallout_event_country_runtime_row_is_current = {
 	has_variable = fallout_event_runtime_schema_version
@@ -395,6 +1536,9 @@ fallout_event_country_runtime_row_is_current = {
 	has_variable = fallout_event_quiet_period_due_day
 	has_variable = fallout_event_runtime_initialized_date
 	has_variable = fallout_event_runtime_initialized_day
+	has_variable = fallout_event_arc_reconcile_cursor
+	has_variable = fallout_event_delayed_reconcile_cursor
+	has_variable = fallout_event_bilateral_reconcile_cursor
 	check_variable = { fallout_event_runtime_schema_version = constant:fallout_event_schema.version }
 	check_variable = { fallout_event_orientation_schema_version = constant:fallout_event_orientation_schema.version }
 	check_variable = { fallout_event_arc_schema_version = constant:fallout_event_arc_schema.version }
@@ -404,6 +1548,7 @@ fallout_event_country_runtime_row_is_current = {
 	NOT = { check_variable = { fallout_event_active_major_arc_count > constant:fallout_event_runtime.maximum_major_arcs } }
 	NOT = { check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.none } }
 	check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+	NOT = { check_variable = { var = fallout_event_ordinary_cooldown_due_day value = global.fallout_event_timeline_start_day compare = less_than } }
 	NOT = {
 		check_variable = {
 			var = fallout_event_runtime_initialized_date
@@ -443,41 +1588,21 @@ fallout_event_country_runtime_row_is_current = {
 		NOT = { check_variable = { fallout_event_family_fatigue_value < constant:fallout_event_runtime.zero } }
 	}
 	fallout_event_orientation_receipts_are_consistent = yes
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_ticket_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_generation_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_role_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_response_token_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_due_date_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_status_entries^num
-		compare = equals
-	}
-	check_variable = {
-		var = fallout_event_bilateral_partner_entries^num
-		value = fallout_event_bilateral_cleanup_owner_entries^num
-		compare = equals
-	}
+	fallout_event_arc_arrays_are_aligned = yes
+	fallout_event_delayed_queue_arrays_are_aligned = yes
+	fallout_event_bilateral_arrays_are_aligned = yes
+	check_variable = { var = fallout_event_active_major_arc_count value = fallout_event_arc_ticket_entries^num compare = equals }
+	fallout_event_arc_cursor_is_valid = yes
+	fallout_event_delayed_cursor_is_valid = yes
+	fallout_event_bilateral_cursor_is_valid = yes
+	fallout_event_dispatch_envelope_is_consistent = yes
+	fallout_event_dispatch_envelope_matches_transaction = yes
+	fallout_event_cleanup_flags_are_consistent = yes
+	fallout_event_transaction_history_receipts_are_consistent = yes
+	fallout_event_ticket_ledger_is_current = yes
+	fallout_event_arc_receipts_are_current = yes
+	fallout_event_delayed_queue_receipts_are_current = yes
+	fallout_event_bilateral_receipts_are_current = yes
 }
 
 # Supported scope: COUNTRY. The caller sets the requested cooldown family in
