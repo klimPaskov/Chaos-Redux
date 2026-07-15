@@ -1981,6 +1981,10 @@ fallout_reset_old_world_diplomacy = {
 	clr_global_flag = fallout_transition_market_access_reset_verified
 	clear_variable = global.fallout_transition_market_access_reset_generation
 	clear_variable = global.fallout_transition_market_access_verification_generation
+	clr_global_flag = fallout_transition_resource_rights_reset_applied
+	clr_global_flag = fallout_transition_resource_rights_reset_verified
+	clear_variable = global.fallout_transition_resource_rights_reset_generation
+	clear_variable = global.fallout_transition_resource_rights_verification_generation
 	clr_global_flag = fallout_transition_lend_lease_reset_verified
 	clear_variable = global.fallout_transition_lend_lease_verification_generation
 	clr_global_flag = fallout_transition_trade_routes_reset_verified
@@ -1988,6 +1992,7 @@ fallout_reset_old_world_diplomacy = {
 	clr_global_flag = fallout_transition_expeditionaries_reset_verified
 	clear_variable = global.fallout_transition_expeditionaries_verification_generation
 	clr_global_flag = fallout_transition_market_access_reset_blocked
+	clr_global_flag = fallout_transition_resource_rights_reset_blocked
 	clr_global_flag = fallout_transition_expeditionaries_reset_blocked
 	clr_global_flag = fallout_transition_docking_rights_validation_blocked
 	clr_global_flag = fallout_transition_lend_lease_reset_blocked
@@ -2115,6 +2120,16 @@ fallout_reset_old_world_diplomacy = {
 		set_global_flag = fallout_transition_docking_rights_reset_applied
 		set_global_flag = fallout_transition_market_access_reset_applied
 		set_variable = { global.fallout_transition_market_access_reset_generation = global.fallout_transition_generation }
+		# Resource rights are stored on the receiving country for a state. Sweep
+		# every live country-state pair so ownership and control changes do not
+		# leave an old-world extraction grant behind.
+		every_state = {
+			every_country = {
+				remove_resource_rights = PREV
+			}
+		}
+		set_global_flag = fallout_transition_resource_rights_reset_applied
+		set_variable = { global.fallout_transition_resource_rights_reset_generation = global.fallout_transition_generation }
 
 		if = {
 			limit = { fallout_old_world_diplomacy_proven_surfaces_are_clean = yes }
@@ -2154,6 +2169,24 @@ fallout_reset_old_world_diplomacy = {
 			clr_global_flag = fallout_transition_market_access_reset_verified
 			clear_variable = global.fallout_transition_market_access_verification_generation
 			set_global_flag = fallout_transition_market_access_reset_blocked
+		}
+
+		if = {
+			limit = {
+				NOT = {
+					any_state = {
+						any_country = { has_resources_rights = { state = PREV } }
+					}
+				}
+			}
+			set_global_flag = fallout_transition_resource_rights_reset_verified
+			set_variable = { global.fallout_transition_resource_rights_verification_generation = global.fallout_transition_generation }
+			clr_global_flag = fallout_transition_resource_rights_reset_blocked
+		}
+		else = {
+			clr_global_flag = fallout_transition_resource_rights_reset_verified
+			clear_variable = global.fallout_transition_resource_rights_verification_generation
+			set_global_flag = fallout_transition_resource_rights_reset_blocked
 		}
 
 		# The engine exposes an exact ordered-country-pair detector for outgoing
