@@ -36,7 +36,7 @@ The 39 source packets without direct URLs are books or grouped institutional res
 - The 102 custom tags are unique and avoid the installed vanilla, Workshop, local-mod, and Chaos Redux tag and alias universe recorded by the accepted audit.
 - Registered-tag migrations are locked for `IW-038 RUT`, `IW-042 GAL`, `IW-043 CHU`, `IW-096 BIA`, `IW-133 BAN`, `IW-150 ATJ`, `IW-153 POK`, `IW-155 BLI`, `IW-157 WPG`, `IW-167 CHM`, `IW-171 OKN`, `IW-172 ANU`, and `IW-178 PNG`.
 - `IW-153` remains `specific_community_variant_only` and unbound. Its `POK` adapter must preserve history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior.
-- Custom remaps are locked as `IW-087 HYX`, `IW-124 HZX`, `IW-161 IAX`, and `IW-162 IBX`; `IBX` replaces the engine-reserved `GFX` graphics namespace.
+- Custom remaps are locked as `IW-021 ICX`, `IW-087 HYX`, `IW-124 HZX`, `IW-161 IAX`, and `IW-162 IBX`; `ICX` replaces the Windows-reserved `AUX` device basename and `IBX` replaces the engine-reserved `GFX` graphics namespace.
 - `CHU` is shared by `IW-043` and `IW-046`. `BIA` is shared by `IW-096` and `IW-107`. Each pair requires package flags and mutual exclusion rather than identity separation by tag.
 - The thirteen exact vanilla cosmetic, dynamic-country, formable, autonomy, and ideology overlays are non-selectable and have no standalone resolved tag.
 - Every resolution field mirrored into the expanded candidate registry matches exactly.

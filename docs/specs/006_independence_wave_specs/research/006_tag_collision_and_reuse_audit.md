@@ -26,12 +26,13 @@ The decisive audit scanned:
 
 The scan parsed 7,981 literal country-tag registration records representing 2,262 unique tags and 986 top-level alias records representing 840 unique aliases. It also checked literal `set_cosmetic_tag` calls, exact three-character base localisation keys, flag filenames, and country-history filenames. All 206 provisional Event 6 reservations remain excluded from the replacement pool even when their package later became a vanilla reuse or overlay.
 
-No accepted custom Event 6 tag overlaps a tag or alias found in that installed universe or consumes the engine-reserved `GFX` graphics namespace. The post-migration identity comparison found `IW-153` Dayak federation equivalent to vanilla `POK`'s Dayak Republic of West Borneo identity; `FWX` was therefore retired and `IW-153` now reuses `POK`. A later installed mod can still consume a tag, so the audit must be rerun immediately before any later tag migration or final completion audit.
+No accepted custom Event 6 tag overlaps a tag or alias found in that installed universe, consumes the engine-reserved `GFX` graphics namespace, or uses a Windows-reserved device basename. The post-migration identity comparison found `IW-153` Dayak federation equivalent to vanilla `POK`'s Dayak Republic of West Borneo identity; `FWX` was therefore retired and `IW-153` now reuses `POK`. A later installed mod can still consume a tag, so the audit must be rerun immediately before any later tag migration or final completion audit.
 
 ## Installed-mod collision migrations
 
 | Package | Retired value | Locked representation |
 | --- | --- | --- |
+| `IW-021` Trieste Free State | `AUX`, the Windows-reserved auxiliary-device basename | Custom `ICX` |
 | `IW-087` Fezzan | `DIX`, registered by Red Flood | Custom `HYX` |
 | `IW-124` Basotho | `ETX`, used as an Empire of Texas cosmetic by KaiserreduX and copies | Custom `HZX` |
 | `IW-161` Mon State | `GEX`, a German-exile alias in Kaiserreich and KaiserreduX | Custom `IAX` |
@@ -39,7 +40,7 @@ No accepted custom Event 6 tag overlaps a tag or alias found in that installed u
 | `IW-157` West Papua | `GAX`, registered for Galápagos by TNO | Reuse registered `WPG`; retire `GAX` |
 | `IW-059` Mesopotamian Federation | `CGX`, occupied by vanilla and copied flag surfaces | Additive `neo_mesopotamia` formable overlay; retire `CGX` |
 
-`HYX`, `HZX`, `IAX`, and `IBX` were the first deterministic safe values in the matrix-aware pool. Retired values and engine-reserved namespaces are not recycled.
+`ICX`, `HYX`, `HZX`, `IAX`, and `IBX` were reviewed safe values in the matrix-aware pool. Retired values and engine- or OS-reserved namespaces are not recycled.
 
 ## Registered-tag migrations and compatibility obligations
 

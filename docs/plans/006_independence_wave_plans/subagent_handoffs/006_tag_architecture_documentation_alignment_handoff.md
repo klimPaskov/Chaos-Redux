@@ -40,6 +40,7 @@ Registered-tag migrations:
 
 Custom remaps:
 
+- `IW-021 ICX` (parent post-review correction; `AUX` is a Windows-reserved device basename)
 - `IW-087 HYX`
 - `IW-124 HZX`
 - `IW-161 IAX`
@@ -118,7 +119,7 @@ Promoted into current source-of-truth narrative:
 - the `102/91/13` representation architecture
 - the `138/55` selectable pool
 - the thirteen registered migrations
-- the three custom remaps
+- the five custom remaps
 - the two intentional shared tags
 - the thirteen exact overlay identities
 - the `IW-153 POK` compatibility obligations
