@@ -150,7 +150,7 @@ The country-memory enum assigns ids 1 through 99 in the exact accepted row order
 | `air_winter_phase_months` | variable | 0 and above | consecutive months in current phase |
 | `air_winter_recovery_months` | variable | 0 and above | consecutive months with recovery force above escalation |
 | `air_winter_adaptation` | variable | 0 to 100 | shelter, governance, food, and infrastructure adaptation |
-| `air_winter_monitoring` | variable | 0 to 3 | forecast and tooltip precision |
+| Air Winter monitoring access | viewer-derived capability | none, basic, office, or terminal | forecast and tooltip precision without leaking one viewer's access to another |
 | `air_winter_food_reserve` | variable | 0 to configured cap | local survival stock |
 | `air_winter_shelter_capacity` | variable | 0 to configured cap | protected population and administration |
 | `air_winter_category_damage` | variable | 0 to configured cap | sustained category degradation progress |
@@ -164,6 +164,8 @@ The country-memory enum assigns ids 1 through 99 in the exact accepted row order
 | `fallout_state_cause_mask` | variable or flags | implementation-defined | cause memory for regional content |
 | `fallout_pretransition_air_winter_original_category` | variable | Air Winter category enum | frozen historical category provenance for classification and restoration memory |
 | `fallout_pretransition_state_category` | variable | Air Winter category enum | live category frozen for grading and rewrite |
+
+Monitoring access is deliberately not one persistent state variable. The live tooltip derives it from the viewing country, state ownership and control, treaty membership, national sampler investment, major-power status, and the global 90 percent threshold. `AIR_WINTER_MAPMODE_MONITORING_PROOF.md` records the scope and cleanup contract.
 
 Live destructive-phase receipt values:
 

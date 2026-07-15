@@ -969,6 +969,10 @@ air_winter_response_complete_samplers = {
 	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.sampling_adaptation_gain }
 	add_to_variable = { air_winter_reclamation = constant:air_winter_response_result.sampling_reclamation_gain }
 	set_state_flag = air_winter_sampling_stations
+	if = {
+		limit = { OWNER = { exists = yes } }
+		OWNER = { set_country_flag = air_winter_atmospheric_office }
+	}
 	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.early_state_cooldown_months }
 	air_winter_response_finish_state_project = yes
 }

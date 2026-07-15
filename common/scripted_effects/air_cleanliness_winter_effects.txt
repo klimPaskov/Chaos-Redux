@@ -575,6 +575,13 @@ air_winter_normalize_state_ledger = {
 	if = { limit = { NOT = { has_variable = air_winter_airbase_closure_months } } set_variable = { air_winter_airbase_closure_months = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = air_winter_population_loss_memory } } set_variable = { air_winter_population_loss_memory = constant:air_winter_runtime.zero } }
 	air_winter_initialize_presentation_water_profile = yes
+	if = {
+		limit = {
+			has_state_flag = air_winter_sampling_stations
+			OWNER = { exists = yes }
+		}
+		OWNER = { set_country_flag = air_winter_atmospheric_office }
+	}
 
 	clamp_variable = { var = air_winter_phase min = constant:air_winter_phase.clear max = constant:air_winter_phase.maximum }
 	clamp_variable = { var = air_winter_target_phase min = constant:air_winter_phase.clear max = constant:air_winter_phase.maximum }
@@ -1911,6 +1918,7 @@ air_winter_reset_country = {
 	clear_variable = air_winter_response_active_project_state
 	clear_variable = air_winter_response_priority_state
 	clr_country_flag = air_winter_response_project_active
+	clr_country_flag = air_winter_atmospheric_office
 	air_winter_response_clear_evacuation_cache = yes
 	air_winter_event_clear_country_memory = yes
 }
