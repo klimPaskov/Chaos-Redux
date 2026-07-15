@@ -68,19 +68,21 @@ Allocation rule:
 
 `fallout_manual_scenario_identity.triggerable_scenario_id` reserves raw id 14, which is exactly one greater than the live maximum of 13. Raw id 12 remains untouched, no existing id was renumbered, and the public Fallout row remains absent until the exact native sweep passes B2.
 
-## B4: mapmode strip frame mismatch
+## B4: mapmode strip frame ownership
 
-Status: local asset inspection required
+Status: resolved by DDS geometry and decoded-frame comparison
 
-Live state:
+Proven state:
 
-- `.gfx` declares 19 frames
-- comment claims vanilla 18 plus two Chaos Redux slots
-- documentation claims 20 frames and assigns slots 19 and 20
+- vanilla uses 18 frames across a 360 by 18 strip
+- Chaos Redux uses 19 frames across a 380 by 18 strip
+- both layouts produce exact 20 by 18 frames
+- frames 1 through 17 retain vanilla pixels
+- frame 18 replaces vanilla's transparent slot with Deaths
+- frame 19 appends contaminated states
+- every Air Winter mapmode uses its dedicated named 20 by 18 sprite
 
-Resolution:
-
-Inspect actual DDS dimensions and frames. Correct metadata and documentation before appending the winter icon.
+No twentieth strip frame is required. `AIR_WINTER_MAPMODE_ICON_PROOF.md` records the hashes, frame comparison, and official per-mapmode sprite naming contract.
 
 ## B5: full-screen GUI drawing order
 

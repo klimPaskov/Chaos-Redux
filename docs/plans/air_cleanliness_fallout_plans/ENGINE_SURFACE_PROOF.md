@@ -110,6 +110,8 @@ Official scripted map-mode documentation supports state color layers, country ba
 
 The Air Winter mapmode can therefore expose phase, trend, exposure, recovery, adaptation, food, shelter, reclamation, and category pressure without relying on a country-wide color.
 
+The icon route is also statically proven. Vanilla's scripted-mapmode documentation resolves dedicated selected and deselected sprite names from the mapmode key. All six Air Winter icons use those exact names and decode to 20 by 18 pixels. The shared Chaos Redux strip is a coherent 380 by 18 texture with 19 exact 20-pixel frames. Its first 17 frames match vanilla, frame 18 owns Deaths, and frame 19 owns contaminated states. Air Winter requires no shared-strip frame. Exact hashes and decoded-frame comparison are recorded in `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
+
 ## Normal-map climate route
 
 Verdict: official effect signatures and the approved normal-mapped entity precedent prove the regional state-cue route. Runtime visual observation is outside this proof. Native runtime weather replacement is not claimed.
