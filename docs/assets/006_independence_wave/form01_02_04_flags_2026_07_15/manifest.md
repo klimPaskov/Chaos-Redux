@@ -9,11 +9,11 @@
 - Accepted design authority:
   `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form01_04_identity_research_2026_07_15.md`
 - Tag-audit authority:
-  `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
+  `docs/plans/006_independence_wave_plans/tag_audit/006_formable_identity_tag_collision_audit_2026_07_15.md`
 - Status: `handed_off`
 
-The accepted 2026-07-15 installed-mod audit records `CCX`, `NUX`, and `RLX` as
-collision-clean candidates. This package does not register those tags, change
+The accepted 2026-07-15 installed-mod and internal-registry audit records
+`KCX`, `NUX`, and `RLX` as collision-clean candidates. This package does not register those tags, change
 country identities, or wire gameplay. It installs only the requested runtime
 flag triplets and records the asset handoff.
 
@@ -34,27 +34,27 @@ constructed rectangles, crosses, flowers, or river lines for ImageGen output.
 
 ## Asset inventory
 
-### CCX - Celtic Congress
+### KCX - Celtic Congress
 
 - Family: `FORM-01`
 - Classification: alternate-history base flag; one shared design for all routes
 - Design: forest-green 1:2:1 outer panels around an ivory center, with the
   generated three-bell heather-purple cluster and dark-green stem
-- Prompt: `prompts/CCX_flag_imagegen_prompt.txt`
-- Source: `source_png/CCX_celtic_congress_heather_imagegen_raw.png`
+- Prompt: `prompts/KCX_flag_imagegen_prompt.txt`
+- Source: `source_png/KCX_celtic_congress_heather_imagegen_raw.png`
 - Source evidence: `metadata/generation_evidence.json`
-- Processed master: `processed_png/CCX_flat_master_820x520.png`
+- Processed master: `processed_png/KCX_flat_master_820x520.png`
 - Review PNGs:
-  `processed_png/CCX_normal_82x52.png`,
-  `processed_png/CCX_medium_41x26.png`, and
-  `processed_png/CCX_small_10x7.png`
+  `processed_png/KCX_normal_82x52.png`,
+  `processed_png/KCX_medium_41x26.png`, and
+  `processed_png/KCX_small_10x7.png`
 - Package TGAs:
-  `final_tga/CCX_normal_82x52.tga`,
-  `final_tga/CCX_medium_41x26.tga`, and
-  `final_tga/CCX_small_10x7.tga`
+  `final_tga/KCX_normal_82x52.tga`,
+  `final_tga/KCX_medium_41x26.tga`, and
+  `final_tga/KCX_small_10x7.tga`
 - Runtime TGAs:
-  `gfx/flags/CCX.tga`, `gfx/flags/medium/CCX.tga`, and
-  `gfx/flags/small/CCX.tga`
+  `gfx/flags/KCX.tga`, `gfx/flags/medium/KCX.tga`, and
+  `gfx/flags/small/KCX.tga`
 - Palette: `#22543D`, `#F1E8CF`, `#70456C`
 - Status: `handed_off`
 
@@ -132,7 +132,7 @@ alternate history.
   checks: `metadata/flag_validation.json`
 - Hashes: `metadata/checksums.sha256`
 
-Native and enlarged review accepted all three ladders. At 10x7, CCX retains
+Native and enlarged review accepted all three ladders. At 10x7, KCX retains
 three purple flower heads and a green stem, NUX retains a continuous red cross
 over a white saltire in every quadrant, and RLX retains the green-white-red
 order with a continuous blue river device. The nine TGAs have exact dimensions,

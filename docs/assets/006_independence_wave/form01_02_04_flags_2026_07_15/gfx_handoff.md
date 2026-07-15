@@ -9,7 +9,7 @@ edited by this asset package.
 
 | Identity | Tag | Normal | Medium | Small |
 | --- | --- | --- | --- | --- |
-| Celtic Congress | `CCX` | `gfx/flags/CCX.tga` | `gfx/flags/medium/CCX.tga` | `gfx/flags/small/CCX.tga` |
+| Celtic Congress | `KCX` | `gfx/flags/KCX.tga` | `gfx/flags/medium/KCX.tga` | `gfx/flags/small/KCX.tga` |
 | North Atlantic Union | `NUX` | `gfx/flags/NUX.tga` | `gfx/flags/medium/NUX.tga` | `gfx/flags/small/NUX.tga` |
 | Rhenish League | `RLX` | `gfx/flags/RLX.tga` | `gfx/flags/medium/RLX.tga` | `gfx/flags/small/RLX.tga` |
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Process the CCX, NUX, and RLX ImageGen flag masters.
+"""Process the KCX, NUX, and RLX ImageGen flag masters.
 
 The three source PNGs are genuine official ImageGen outputs. This processor
 does not draw or replace their designs. It performs only the permitted
@@ -49,9 +49,9 @@ class FlagSpec:
 
 SPECS = (
     FlagSpec(
-        tag="CCX",
+        tag="KCX",
         identity="Celtic Congress",
-        source_name="CCX_celtic_congress_heather_imagegen_raw.png",
+        source_name="KCX_celtic_congress_heather_imagegen_raw.png",
         # The generated center panel spans x=456..1120. Cropping the equal
         # excess from the two outer fields preserves the generated heather
         # while bringing the three generated panels to the accepted 1:2:1.
@@ -106,7 +106,7 @@ def nearest_palette(
     return distances.argmin(axis=2)
 
 
-def clean_ccx(pixels: np.ndarray, palette: tuple[tuple[int, int, int], ...]) -> np.ndarray:
+def clean_kcx(pixels: np.ndarray, palette: tuple[tuple[int, int, int], ...]) -> np.ndarray:
     values = pixels.astype(np.int32)
     red, green, blue = values[:, :, 0], values[:, :, 1], values[:, :, 2]
     purple = (red > green + 15) & (blue > green + 12) & (red < 205)
@@ -144,8 +144,8 @@ def clean_rlx(pixels: np.ndarray, palette: tuple[tuple[int, int, int], ...]) -> 
 
 def clean_image(spec: FlagSpec, image: Image.Image) -> Image.Image:
     pixels = np.asarray(image.convert("RGB"), dtype=np.uint8)
-    if spec.tag == "CCX":
-        cleaned = clean_ccx(pixels, spec.palette)
+    if spec.tag == "KCX":
+        cleaned = clean_kcx(pixels, spec.palette)
     elif spec.tag == "NUX":
         cleaned = clean_nux(pixels, spec.palette)
     elif spec.tag == "RLX":
@@ -232,7 +232,7 @@ def colour_mask(image: Image.Image, colour: tuple[int, int, int]) -> np.ndarray:
 
 def semantic_validation(spec: FlagSpec, image: Image.Image) -> dict[str, object]:
     width, height = image.size
-    if spec.tag == "CCX":
+    if spec.tag == "KCX":
         purple = colour_mask(image, spec.palette[2])
         green = colour_mask(image, spec.palette[0])
         components = connected_components(purple)
@@ -423,13 +423,13 @@ def process() -> None:
         tag_outputs: dict[str, Image.Image] = {}
         size_records: dict[str, object] = {}
         for role, size in SIZES.items():
-            # The CCX 10x7 export needs point sampling to retain the generated
+            # The KCX 10x7 export needs point sampling to retain the generated
             # three-blossom cluster and perfectly straight 1:2:1 panel edges.
             # The other ladders retain LANCZOS because their diagonal or wavy
             # generated devices need coverage-aware reduction.
             resample = (
                 Image.Resampling.NEAREST
-                if spec.tag == "CCX" and role == "small"
+                if spec.tag == "KCX" and role == "small"
                 else Image.Resampling.LANCZOS
             )
             candidate = clean_image(spec, master.resize(size, resample))
