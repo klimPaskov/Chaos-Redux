@@ -2,7 +2,7 @@
 
 ## Verdict
 
-The formula-neutral first phase of the Fallout survival ledger is implemented. It stages one exact country row for every finalized successor and one exact state row for every included state. It records transition generation, allocation provenance, region, archetype, and country-memory identities, destructive-phase provenance, stable physical indexes, and the fixed nine-resource identity order.
+The formula-neutral first phase of the Fallout survival ledger is implemented. It stages one exact country row for every finalized successor and one exact state row for every included state. It records transition generation, allocation provenance, region, archetype, and country-memory identities, destructive-phase provenance, stable physical indexes, and the fixed nine-resource identity order. An exact recovery transaction can discard and rebuild only a malformed uncommitted identity payload during survivor allocation.
 
 No survival resource value is produced. No state numerator, denominator, share, country initial value, or mutable value is written. No effect sets `fallout_survival_ledger_ready`. The blackout transition therefore remains unable to pass this barrier until the numerical contract is reviewed and implemented.
 
@@ -30,6 +30,14 @@ No survival resource value is produced. No state numerator, denominator, share, 
 
 The effect first clears only an uncommitted survival transaction. A future committed ledger makes that reset a no-op. The staging flag is written last, after the full payload trigger proves every aligned back-reference and all-and-only coverage.
 
+## Uncommitted recovery
+
+`fallout_recover_uncommitted_survival_ledger_identity_transaction` owns the sole retry route for an identity build that registered exactly one `survival_ledger_incomplete` error. Recovery is permitted only while the transition remains in survivor allocation, the final allocation and player planning ledgers are current, no committed survival ledger exists, survivor allocation has not committed, and player continuation has not committed or applied.
+
+The wrapper clears only that exact error signature and immediately invokes the ordinary staging transaction. The recovery trigger proves the complete allocation structure without requiring the error to disappear first. The staging transaction performs the full uncommitted reset before rebuilding every country and state identity from the current allocation. If validation fails again, it writes the same single owned error. The static retry path can rebuild a persisted absent, building, or structurally invalid identity payload after an interruption. Runtime interruption behavior remains unobserved.
+
+A malformed identity payload without an error is rebuilt because survivor allocation now tests the structural identity proof instead of trusting the staging flag alone. A committed ledger, a later transition phase, or any different error signature cannot enter this route. Numerical arrays remain empty and the ready flag remains absent.
+
 The state list covers every state in `game:all_states`. Final allocation already proves that every landholding country is one of the assigned successors. Each staged state stores its exact owner scope and the transition generations for snapshot, Air Winter provenance, grading, population loss, state rewrite, and province supply-network collapse.
 
 Each staged country stores the exact final allocation schema and generation, stable array index, owned-state count, region identity, government archetype identity, and country-memory identity.
@@ -54,7 +62,7 @@ The survivor-allocation phase now performs these steps in order:
 
 Player continuation checks the barrier again before any player-country commit. Every selected player target must carry its committed country survival row. Map return also requires the same global barrier.
 
-The stage effect does not invent resource values to escape this wait. A fresh staging failure records `survival_ledger_incomplete`. A later phase that somehow lacks the committed ledger records the same error and remains closed. No owned recovery path currently resets or restages a malformed payload whose identity-staged flag already exists.
+The stage effect does not invent resource values to escape this wait. A fresh staging failure records `survival_ledger_incomplete`. During survivor allocation, the exact single-error signature can clear and restage the uncommitted identity payload. A later phase that lacks the committed ledger records the same error and remains closed because later phases are outside the recovery gate.
 
 ## Scheduler ownership
 
@@ -92,7 +100,6 @@ Living-world registry schema advances from 1 to 2 because the registry now carri
 - No numerical row commit effect exists.
 - No global survival ready-flag setter exists.
 - General successor allocation and package producers remain absent, so the identity stage is not reachable end to end in the current transition.
-- A malformed payload with an existing identity-staged flag has no owned reset and restage path.
 - Runtime persistence, interruption recovery, and multiplayer behavior are unobserved because HOI4 was not run.
 
 These are intentional blockers. The identity transaction is not a completed survival mechanic and does not enable any living-world event.

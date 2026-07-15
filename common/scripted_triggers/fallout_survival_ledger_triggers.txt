@@ -182,9 +182,10 @@ fallout_survival_ledger_identity_arrays_are_aligned = {
 	check_variable = { var = global.fallout_survival_ledger_states^num value = global.fallout_survival_ledger_state_index_entries^num compare = equals }
 }
 
-# Supported scope: COUNTRY coordinator. This validates the uncommitted staged
-# payload. The global identity flag is written only after this trigger passes.
-fallout_survival_ledger_identity_payload_is_current = {
+# Supported scope: COUNTRY coordinator. This validates the complete structural
+# payload without reading the global transition error ledger. Exact recovery
+# uses it before clearing the error that owns the failed identity transaction.
+fallout_survival_ledger_identity_payload_structure_is_current = {
 	OR = {
 		has_global_flag = fallout_survival_ledger_building
 		has_global_flag = fallout_survival_ledger_identity_staged
@@ -211,7 +212,7 @@ fallout_survival_ledger_identity_payload_is_current = {
 	check_variable = { var = global.fallout_survival_ledger_state_count value = global.fallout_survival_ledger_states^num compare = equals }
 	NOT = { check_variable = { var = global.fallout_survival_ledger_identity_staged_date value = global.date compare = greater_than } }
 	NOT = { check_variable = { var = global.fallout_survival_ledger_identity_staged_day value = global.num_days compare = greater_than } }
-	fallout_successor_allocation_is_current = yes
+	fallout_successor_allocation_structure_is_current = yes
 	fallout_survival_ledger_identity_arrays_are_aligned = yes
 	all_of = {
 		array = global.fallout_survival_ledger_country_index_entries
@@ -270,11 +271,56 @@ fallout_survival_ledger_identity_payload_is_current = {
 	}
 }
 
+# Supported scope: COUNTRY coordinator. Ordinary staging additionally requires
+# an error-free transition, matching the original allocation contract.
+fallout_survival_ledger_identity_payload_is_current = {
+	NOT = { has_global_flag = fallout_transition_error }
+	fallout_survival_ledger_identity_payload_structure_is_current = yes
+}
+
+# Supported scope: COUNTRY coordinator. Exact error recovery uses this proof so
+# a valid staged payload cannot be discarded merely because an unrelated error
+# flag is present.
+fallout_survival_ledger_identity_structure_is_current = {
+	has_global_flag = fallout_survival_ledger_identity_staged
+	NOT = { has_global_flag = fallout_survival_ledger_building }
+	fallout_survival_ledger_identity_payload_structure_is_current = yes
+}
+
 # Supported scope: COUNTRY coordinator
 fallout_survival_ledger_identity_is_current = {
 	has_global_flag = fallout_survival_ledger_identity_staged
 	NOT = { has_global_flag = fallout_survival_ledger_building }
 	fallout_survival_ledger_identity_payload_is_current = yes
+}
+
+# Supported scope: COUNTRY coordinator. Only the exact one-error signature
+# owned by an uncommitted identity build may clear and restage. A committed
+# ledger or any transition that reached player continuation remains immutable.
+fallout_recoverable_survival_ledger_identity_error_is_active = {
+	has_global_flag = fallout_transition_error
+	NOT = { has_global_flag = fallout_survival_ledger_ready }
+	NOT = { has_global_flag = fallout_transition_survivor_allocation_applied }
+	NOT = { has_global_flag = fallout_player_continuation_commit_complete }
+	NOT = { has_global_flag = fallout_transition_player_continuation_applied }
+	check_variable = {
+		var = global.fallout_transition_phase
+		value = constant:fallout_transition_phase.survivor_allocation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_error_code
+		value = constant:fallout_transition_error_code.survival_ledger_incomplete
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_error_count
+		value = constant:fallout_runtime.one
+		compare = equals
+	}
+	fallout_player_planning_ledger_is_current = yes
+	fallout_successor_allocation_structure_is_current = yes
+	NOT = { fallout_survival_ledger_identity_structure_is_current = yes }
 }
 
 # Supported scope: STATE. This is the future numerical row shape only.

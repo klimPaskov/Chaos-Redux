@@ -2773,9 +2773,10 @@ fallout_player_target_matches_conflict_output = {
 	}
 }
 
-# Supported scope: COUNTRY. This is the dynamic post-allocation proof. It does
-# not require pre-allocation owner rows to remain current after valid mutation.
-fallout_successor_allocation_ledger_postconditions_are_met = {
+# Supported scope: COUNTRY. This is the structural dynamic post-allocation
+# proof. It does not require pre-allocation owner rows to remain current after
+# valid mutation, and it does not read the global transition error ledger.
+fallout_successor_allocation_ledger_structure_is_current = {
 	has_global_flag = fallout_successor_allocation_initialized
 	fallout_successor_preallocation_consumption_is_current = yes
 	fallout_player_planning_ledger_is_current = yes
@@ -2813,7 +2814,23 @@ fallout_successor_allocation_ledger_postconditions_are_met = {
 			NOT = { is_in_array = { array = global.fallout_successor_assigned_countries value = THIS } }
 		}
 	}
+}
+
+# Supported scope: COUNTRY. Ordinary callers additionally require an error-free
+# transition. Exact transaction recovery can validate the structural proof
+# without making the unrelated global error ledger disappear first.
+fallout_successor_allocation_ledger_postconditions_are_met = {
+	fallout_successor_allocation_ledger_structure_is_current = yes
 	NOT = { has_global_flag = fallout_transition_error }
+}
+
+# Supported scope: COUNTRY. This is reserved for an exact error-owning recovery
+# trigger. It preserves every allocation postcondition except the unrelated
+# requirement that no transition error currently exists.
+fallout_successor_allocation_structure_is_current = {
+	has_global_flag = fallout_successor_assignment_ledger_built
+	has_global_flag = fallout_successor_allocation_complete
+	fallout_successor_allocation_ledger_structure_is_current = yes
 }
 
 # Supported scope: COUNTRY

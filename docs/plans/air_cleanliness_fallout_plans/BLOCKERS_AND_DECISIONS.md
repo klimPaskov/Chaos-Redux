@@ -225,6 +225,7 @@ Implemented structural proof:
 - successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
 - no daily global candidate pool, candidate selector, call to the ordinary reservation API, event definition, or activation setter exists
 - the formula-neutral identity transaction stages exact successor and state rows with generation, allocation, region, archetype, country-memory, destructive-phase, and resource-index provenance
+- a malformed uncommitted identity payload can be reset and restaged only during survivor allocation. The error-owned route requires the sole `survival_ledger_incomplete` signature, current planning and allocation proof, and no committed survival or player-continuation receipt
 - survivor-allocation advancement, player continuation, map return, and scheduler initialization require the committed ledger
 - the frozen Fallout snapshot distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
 
