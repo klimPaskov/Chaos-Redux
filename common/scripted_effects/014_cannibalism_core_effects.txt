@@ -2314,7 +2314,55 @@ cannibalism_add_prefire_secondary_state = {
 	}
 }
 
+cannibalism_clear_all_current_country_mission_runtime = {
+	if = { limit = { has_active_mission = cannibalism_restore_supply_corridor_mission } remove_mission = cannibalism_restore_supply_corridor_mission }
+	if = { limit = { has_active_mission = cannibalism_rotate_compromised_formations_mission } remove_mission = cannibalism_rotate_compromised_formations_mission }
+	if = { limit = { has_active_mission = cannibalism_investigation_mission } remove_mission = cannibalism_investigation_mission }
+	if = { limit = { has_active_mission = cannibalism_hold_prison_mission } remove_mission = cannibalism_hold_prison_mission }
+	if = { limit = { has_active_mission = cannibalism_reach_island_mission } remove_mission = cannibalism_reach_island_mission }
+	if = { limit = { has_active_mission = cannibalism_break_network_mission } remove_mission = cannibalism_break_network_mission }
+	if = { limit = { has_active_mission = cannibalism_stop_unification_mission } remove_mission = cannibalism_stop_unification_mission }
+	if = { limit = { has_active_mission = cannibalism_stop_transformation_mission } remove_mission = cannibalism_stop_transformation_mission }
+	if = { limit = { has_active_mission = cannibalism_maintain_international_inspection_compact } remove_mission = cannibalism_maintain_international_inspection_compact }
+	if = { limit = { has_active_mission = cannibalism_unified_command_mission } remove_mission = cannibalism_unified_command_mission }
+	if = { limit = { has_active_mission = cannibalism_unified_larder_mission } remove_mission = cannibalism_unified_larder_mission }
+	if = { limit = { has_active_mission = cannibalism_unified_war_machine_mission } remove_mission = cannibalism_unified_war_machine_mission }
+	if = { limit = { has_active_mission = cannibalism_unified_counterwar_mission } remove_mission = cannibalism_unified_counterwar_mission }
+	if = { limit = { has_active_mission = cannibalism_wendigo_terminal_hunt_mission } remove_mission = cannibalism_wendigo_terminal_hunt_mission }
+
+	cannibalism_clear_logistics_mission = yes
+	cannibalism_clear_rotation_mission = yes
+	cannibalism_clear_investigation_mission = yes
+	cannibalism_clear_hold_prison_mission = yes
+	cannibalism_clear_reach_island_mission = yes
+	cannibalism_clear_break_network_mission = yes
+	cannibalism_clear_stop_unification_mission = yes
+	cannibalism_clear_stop_transformation_mission = yes
+	cannibalism_clear_current_country_compact_vigilance_runtime = yes
+	cannibalism_unified_clear_command_mission = yes
+	cannibalism_unified_clear_larder_mission = yes
+	cannibalism_unified_clear_war_machine_mission = yes
+	cannibalism_unified_clear_counterwar_mission = yes
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+
+	if = {
+		limit = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+		set_temp_variable = { cannibalism_wendigo_terminal_hunt_remove_mission = 0 }
+		set_temp_variable = { cannibalism_wendigo_terminal_hunt_clear_target_lock = 1 }
+		cannibalism_clear_wendigo_terminal_hunt_runtime = yes
+	}
+	else = {
+		clr_country_flag = cannibalism_wendigo_terminal_hunt_press_cooldown
+		clr_country_flag = cannibalism_wendigo_inherited_cell_hunt_pressure_applied
+		clear_variable = cannibalism_wendigo_terminal_hunt_pressure
+		clear_variable = cannibalism_wendigo_terminal_hunt_counterpressure
+		clear_variable = cannibalism_wendigo_terminal_hunt_start_date
+		clear_variable = cannibalism_wendigo_terminal_hunt_due_date
+	}
+}
+
 cannibalism_reset_current_country_incarnation_state = {
+	cannibalism_clear_all_current_country_mission_runtime = yes
 	cannibalism_clear_current_policy = yes
 	clr_country_flag = cannibalism_opening_policy_chosen
 	clr_country_flag = cannibalism_evolution_i_report_scheduled
@@ -2336,8 +2384,6 @@ cannibalism_reset_current_country_incarnation_state = {
 	clr_country_flag = cannibalism_convoy_search_open
 	clr_country_flag = cannibalism_network_manipulation_open
 	clr_country_flag = cannibalism_clean_route_disqualified
-	clr_country_flag = cannibalism_logistics_mission_active
-	clr_country_flag = cannibalism_rotation_mission_active
 	clr_country_flag = cannibalism_warlord_basic_recruitment_open
 	clr_country_flag = cannibalism_inherited_warlord_recruitment_open
 	clr_country_flag = cannibalism_wendigo_cannibal_recruitment_open
@@ -2355,7 +2401,6 @@ cannibalism_reset_current_country_incarnation_state = {
 	clr_country_flag = cannibalism_warlord_island_actions_open
 	clr_country_flag = cannibalism_warlord_siege_actions_open
 	clr_country_flag = cannibalism_warlord_march_actions_open
-	clr_country_flag = cannibalism_warlord_prison_actions_open
 	clr_country_flag = cannibalism_warlord_bone_guard_cap_upgraded
 	clr_country_flag = cannibalism_warlord_origin_specialist_cap_upgraded
 	clr_country_flag = cannibalism_warlord_network_cadre_cap_upgraded
@@ -2399,16 +2444,7 @@ cannibalism_reset_current_country_incarnation_state = {
 	clear_variable = cannibalism_evolution_i_report_due_date
 	clear_variable = cannibalism_evolution_ii_report_due_date
 	clear_variable = cannibalism_primary_theater_state
-	clear_variable = cannibalism_logistics_hold_days
-	clear_variable = cannibalism_logistics_required_hold_days
-	clear_variable = cannibalism_logistics_mission_duration
-	clear_variable = cannibalism_rotation_hold_days
-	clear_variable = cannibalism_rotation_required_hold_days
-	clear_variable = cannibalism_rotation_mission_duration
-	clear_variable = cannibalism_rotation_division_floor
 	clear_variable = cannibalism_wendigo_cannibal_formations_raised
-	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_emergency_logistics_burden } } remove_dynamic_modifier = { modifier = cannibalism_emergency_logistics_burden } }
-	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_formation_screening_burden } } remove_dynamic_modifier = { modifier = cannibalism_formation_screening_burden } }
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_terror_battalion_deployed } } remove_dynamic_modifier = { modifier = cannibalism_terror_battalion_deployed } }
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_synchronized_warlord_attack } } remove_dynamic_modifier = { modifier = cannibalism_synchronized_warlord_attack } }
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } } remove_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } }

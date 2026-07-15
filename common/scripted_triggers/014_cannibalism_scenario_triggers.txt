@@ -22,6 +22,60 @@ cannibalism_scenario_valid_new_actor_country = {
 	NOT = { is_cannibalism_active_country = yes }
 }
 
+# Manual-launch preflight runs after the selected profile and intensity have
+# been copied into temporary variables. Every planned actor must have enough
+# distinct opening states for the canonical initializer to finish without a
+# post-registration selection failure.
+cannibalism_scenario_actor_opening_state_is_available = {
+	cannibalism_state_is_valid_origin = yes
+	NOT = { cannibalism_state_has_active_cell = yes }
+}
+
+cannibalism_scenario_actor_has_required_opening_states = {
+	OR = {
+		AND = {
+			check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_discipline_collapse }
+			any_controlled_state = { count = constant:cannibalism_opening.baseline_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_ritual_cells }
+			any_controlled_state = { count = constant:cannibalism_opening.ritual_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+		AND = {
+			check_variable = {
+				var = cannibalism_scenario_selected_type
+				value = constant:cannibalism_scenario.type_ritual_cells
+				compare = greater_than
+			}
+			any_controlled_state = { count = constant:cannibalism_opening.network_state_count cannibalism_scenario_actor_opening_state_is_available = yes }
+		}
+	}
+}
+
+cannibalism_scenario_source_has_required_opening_states = {
+	cannibalism_scenario_actor_has_required_opening_states = yes
+	OR = {
+		NOT = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_discipline_collapse } }
+		AND = {
+			OR = {
+				check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.low }
+				check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.medium }
+			}
+		}
+		any_controlled_state = { count = constant:cannibalism_scenario_scale.discipline_extended_source_states cannibalism_scenario_actor_opening_state_is_available = yes }
+	}
+}
+
+cannibalism_scenario_valid_preflight_source_country = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	cannibalism_scenario_source_has_required_opening_states = yes
+}
+
+cannibalism_scenario_valid_preflight_additional_actor = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	cannibalism_scenario_actor_has_required_opening_states = yes
+}
+
 cannibalism_scenario_valid_destructive_host_country = {
 	cannibalism_scenario_valid_new_actor_country = yes
 	is_ai = yes
@@ -61,14 +115,12 @@ cannibalism_scenario_state_can_seed_island_host = {
 		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
 		compare = greater_than_or_equals
 	}
-	NOT = { cannibalism_state_has_prison_or_camp = yes }
 }
 
 cannibalism_scenario_state_can_seed_siege_commune = {
 	cannibalism_scenario_valid_target_state = yes
 	NOT = { is_island_state = yes }
 	cannibalism_scenario_state_has_siege_package = yes
-	NOT = { cannibalism_state_has_prison_or_camp = yes }
 	check_variable = {
 		var = state_population_k
 		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
@@ -79,7 +131,6 @@ cannibalism_scenario_state_can_seed_siege_commune = {
 cannibalism_scenario_state_can_seed_march_host = {
 	cannibalism_scenario_valid_target_state = yes
 	NOT = { is_island_state = yes }
-	NOT = { cannibalism_state_has_prison_or_camp = yes }
 	NOT = { cannibalism_scenario_state_has_siege_package = yes }
 	cannibalism_scenario_state_has_march_package = yes
 	check_variable = {
@@ -89,43 +140,119 @@ cannibalism_scenario_state_can_seed_march_host = {
 	}
 }
 
-cannibalism_scenario_state_can_seed_prison_host = {
-	cannibalism_scenario_valid_target_state = yes
-	NOT = { is_island_state = yes }
-	NOT = { cannibalism_state_has_prison_or_camp = yes }
-	NOT = { cannibalism_scenario_state_has_siege_package = yes }
-	NOT = { cannibalism_scenario_state_has_march_package = yes }
-	check_variable = {
-		var = state_population_k
-		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
-		compare = greater_than_or_equals
+# These origin scopes are frozen into temporary arrays before manual setup.
+# They exclude every planned actor so canonical opening initialization can
+# never consume a state that the node or warlord distribution counted.
+cannibalism_scenario_preflight_island_node_state = {
+	cannibalism_scenario_state_can_seed_island_host = yes
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_preflight_island_warlord_state = {
+	cannibalism_scenario_preflight_island_node_state = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+}
+
+cannibalism_scenario_preflight_siege_warlord_state = {
+	cannibalism_scenario_state_can_seed_siege_commune = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_preflight_march_warlord_state = {
+	cannibalism_scenario_state_can_seed_march_host = yes
+	cannibalism_state_has_supported_warlord_region = yes
+	NOT = { has_state_flag = cannibalism_warlord_formation_pending }
+	NOT = { has_state_flag = cannibalism_consumption_cooldown }
+	CONTROLLER = { NOT = { is_in_array = { array = cannibalism_scenario_planned_actor_countries value = THIS } } }
+}
+
+cannibalism_scenario_has_one_warlord_slot = {
+	count_triggers = {
+		amount > 0
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
 	}
 }
 
-cannibalism_scenario_has_one_island_slot = {
-	OR = { cannibalism_slot_cba_available = yes cannibalism_slot_cbb_available = yes }
+cannibalism_scenario_has_two_warlord_slots = {
+	count_triggers = {
+		amount > 1
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
 }
 
-cannibalism_scenario_has_two_island_slots = {
-	cannibalism_slot_cba_available = yes
-	cannibalism_slot_cbb_available = yes
+cannibalism_scenario_has_three_warlord_slots = {
+	count_triggers = {
+		amount > 2
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
 }
 
-cannibalism_scenario_has_one_siege_slot = {
-	OR = { cannibalism_slot_cbc_available = yes cannibalism_slot_cbd_available = yes }
+cannibalism_scenario_has_four_warlord_slots = {
+	count_triggers = {
+		amount > 3
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
 }
 
-cannibalism_scenario_has_two_siege_slots = {
-	cannibalism_slot_cbc_available = yes
-	cannibalism_slot_cbd_available = yes
+cannibalism_scenario_has_five_warlord_slots = {
+	count_triggers = {
+		amount > 4
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
 }
 
-cannibalism_scenario_has_one_march_slot = {
-	OR = { cannibalism_slot_cbe_available = yes cannibalism_slot_cbf_available = yes }
-}
-
-cannibalism_scenario_has_one_prison_slot = {
-	OR = { cannibalism_slot_cbg_available = yes cannibalism_slot_cbh_available = yes }
+cannibalism_scenario_has_six_warlord_slots = {
+	count_triggers = {
+		amount > 5
+		cannibalism_slot_cba_available = yes
+		cannibalism_slot_cbb_available = yes
+		cannibalism_slot_cbc_available = yes
+		cannibalism_slot_cbd_available = yes
+		cannibalism_slot_cbe_available = yes
+		cannibalism_slot_cbf_available = yes
+		cannibalism_slot_cbg_available = yes
+		cannibalism_slot_cbh_available = yes
+	}
 }
 
 cannibalism_prefire_state_can_seed_island_host = {
@@ -148,37 +275,28 @@ cannibalism_scenario_warlord_states_capacity_is_available = {
 	OR = {
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
-			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_one_warlord_slot = yes
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
 		}
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
-			cannibalism_scenario_has_one_island_slot = yes
-			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_two_warlord_slots = yes
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
 		}
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
-			cannibalism_scenario_has_one_island_slot = yes
-			cannibalism_scenario_has_one_siege_slot = yes
-			cannibalism_scenario_has_one_march_slot = yes
-			cannibalism_scenario_has_one_prison_slot = yes
+			cannibalism_scenario_has_four_warlord_slots = yes
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
 		}
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
-			cannibalism_scenario_has_two_island_slots = yes
-			cannibalism_scenario_has_two_siege_slots = yes
-			cannibalism_scenario_has_one_march_slot = yes
-			cannibalism_scenario_has_one_prison_slot = yes
+			cannibalism_scenario_has_six_warlord_slots = yes
 			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
 			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_march_host = yes }
 		}
 	}
 }
@@ -186,48 +304,35 @@ cannibalism_scenario_warlord_states_capacity_is_available = {
 cannibalism_scenario_convergence_capacity_is_available = {
 	NOT = { has_global_flag = cannibalism_convergence_active }
 	NOT = { has_global_flag = cannibalism_reveal_complete }
+	NOT = { has_global_flag = cannibalism_convergence_broken }
 	OR = {
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
-			cannibalism_scenario_has_one_island_slot = yes
-			cannibalism_scenario_has_one_siege_slot = yes
-			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_three_warlord_slots = yes
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
 		}
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
-			cannibalism_scenario_has_one_island_slot = yes
-			cannibalism_scenario_has_one_siege_slot = yes
-			cannibalism_scenario_has_one_march_slot = yes
-			cannibalism_scenario_has_one_prison_slot = yes
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			cannibalism_scenario_has_four_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
 		}
 		AND = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
-			cannibalism_scenario_has_two_island_slots = yes
-			cannibalism_scenario_has_one_siege_slot = yes
-			cannibalism_scenario_has_one_march_slot = yes
-			cannibalism_scenario_has_one_prison_slot = yes
-			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
-		}
-		AND = {
-			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
-			cannibalism_scenario_has_two_island_slots = yes
-			cannibalism_scenario_has_two_siege_slots = yes
-			cannibalism_scenario_has_one_march_slot = yes
-			cannibalism_scenario_has_one_prison_slot = yes
+			cannibalism_scenario_has_five_warlord_slots = yes
 			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
 			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
 			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
-			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			cannibalism_scenario_has_six_warlord_slots = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_march_host = yes }
 		}
 	}
 }
@@ -240,9 +345,7 @@ cannibalism_prefire_evolution_iii_capacity_is_available = {
 	NOT = { has_global_flag = cannibalism_convergence_active }
 	NOT = { has_global_flag = cannibalism_reveal_complete }
 	NOT = { has_global_flag = world_end }
-	cannibalism_scenario_has_one_island_slot = yes
-	cannibalism_scenario_has_one_siege_slot = yes
-	cannibalism_scenario_has_one_march_slot = yes
+	cannibalism_scenario_has_three_warlord_slots = yes
 	any_state = { count = 1 cannibalism_prefire_state_can_seed_island_host = yes }
 	any_state = { count = 1 cannibalism_prefire_state_can_seed_siege_commune = yes }
 	any_state = { count = 1 cannibalism_prefire_state_can_seed_march_host = yes }

@@ -4,9 +4,13 @@ Date: 2026-07-12
 
 Status: accepted, implemented, audited, and promoted into the Event 014 source specifications on 2026-07-13.
 
-Disposition: H-01, H-02, H-03, and M-01 are implemented. The final country-package audit reports P0/P1/P2/P3 all at zero. The final focus audit reports no P0 or P1 and identifies only this documentation promotion plus the bounded P3 pre-lock AI behavior recorded in the source specs. All 21 final closure assets are present.
+Disposition: H-01, H-02, H-03, and M-01 are implemented. The current 2026-07-15 country-package and focus-tree re-audits report P0/P1/P2/P3 all at zero. The fixed first-band pre-lock AI package is intentional implemented design followed by a separate one-time post-lock package, not an open finding. All 21 final closure assets are present.
+
+Correction: the 2026-07-15 origin revision removes the fourth origin package and its inherited-template stage. Only Island Reavers, Siege Eaters, and March Predation Columns remain in this contract.
 
 Audit source: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-12.md
+
+Current closure sources: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-15.md` and `docs/plans/014_cannibalism_plans/audits/event014_country_package_reaudit_2026-07-15.md`.
 
 ## Outcome
 
@@ -17,14 +21,14 @@ The bounded implementation is:
 1. one reusable country-target scoring contract with a unified profile and a route-aware Wendigo profile;
 2. four terminal-hunt decision surfaces: launch, mission, press, and defender break;
 3. two additional selectable Wendigo operations: receipt-gated Pack muster and inherited winter-cell activation;
-4. three staged Pack upgrades, four inherited origin-template upgrades, and two inherited-commander stages folded into the existing 28-focus Wendigo overlay;
+4. three staged Pack upgrades, three inherited origin-template upgrades, and two inherited-commander stages folded into the existing 28-focus Wendigo overlay;
 5. an exact normalization or explicit exception for every non-round authored value in the two focus-constant files cited by H-03; and
 6. six new decision DDS files, one unique file for each new selectable or mission decision.
 
 The previous closure addendum at docs/plans/014_cannibalism_plans/improvement_loop/2026-07-12_event014_post_implementation_closure_addendum.md is implemented:
 
 - constituent technology union is live; and
-- all 39 unified decision IDs have their own registered decision icons.
+- all 38 unified decision IDs have their own registered decision icons.
 
 Those two items are not reopened here. Their final implementation facts are reconciled into the Event 014 source-of-truth documentation with this closure tranche.
 
@@ -35,7 +39,7 @@ Those two items are not reopened here. Their final implementation facts are reco
 | H-01 | Real reusable target scoring and route-aware AI consumers | Two country scorers, shared factor triggers/constants, two decision-weight MTTH entries, six unified decision consumers, Wendigo pre-lock priority, and Wendigo post-lock global-war priority |
 | H-02 | A paid target-aware terminal-hunt family | Exactly four IDs: launch, mission, press, and defender break, with one persistent target, timer, success, failure, counterplay, AI, and full cleanup |
 | H-03 | Round authored tuning or explicit formula/engine exceptions | Exact normalization table for both cited focus-constant files plus a narrow exception ledger for semantic counts and multiplier encodings |
-| M-01 | Deeper Wendigo progression | No new focuses: receipt-gated recruitment, three Pack stages, four inherited origin upgrades, two commander stages, one inherited-cell operation, and the terminal hunt are attached to existing focus rewards |
+| M-01 | Deeper Wendigo progression | No new focuses: receipt-gated recruitment, three Pack stages, three inherited origin upgrades, two commander stages, one inherited-cell operation, and the terminal hunt are attached to existing focus rewards |
 
 ## Non-negotiable boundaries
 
@@ -48,7 +52,7 @@ Those two items are not reopened here. Their final implementation facts are reco
 - The final focus may complete the terminal route, but only cannibalism_process_wendigo_transformation_pulse may call cannibalism_complete_wendigo_terminal_lock and set world_end.
 - Broken anchors and the existing counterwar remain meaningful before the pulse applies the final lock.
 - Player-facing content may use Hannibal Lecter only after cannibalism_reveal_complete.
-- No ancient-general, Carthaginian, Punic, or classical framing is permitted.
+- No actor likeness or borrowed real-person likeness is permitted.
 - No text may claim to represent living Indigenous traditions. The transformed route remains the mod's fictional Event 2/Event 14 entity.
 - No fallback icon, shared icon, generic substitute, or transform-only duplicate art is accepted for the six new decisions.
 
@@ -616,7 +620,7 @@ Attach them to:
 
 Use add_units_to_division_template and the stage flag to prevent duplicate support companies. Do not add or remove any of the 16 wendigo_zombies battalions. Existing and later Packs inherit the upgraded template and must draw the added support manpower/equipment through normal reinforcement.
 
-### D. Four inherited origin variants
+### D. Three inherited origin variants
 
 Add flags:
 
@@ -624,7 +628,6 @@ Add flags:
 - cannibalism_wendigo_origin_island_winterbound
 - cannibalism_wendigo_origin_siege_winterbound
 - cannibalism_wendigo_origin_march_winterbound
-- cannibalism_wendigo_origin_prison_winterbound
 
 Add:
 
@@ -637,7 +640,6 @@ ZZZ_wendigo_all_inheritances_intact calls the helper once. It upgrades only temp
 | cannibalism_unified_origin_island_knowledge | Island Reavers | recon |
 | cannibalism_unified_origin_siege_knowledge | Siege Eaters | artillery |
 | cannibalism_unified_origin_march_knowledge | March Predation Column | logistics_company |
-| cannibalism_unified_origin_prison_knowledge | Lockhouse Column | engineer |
 
 These are the supernatural winter-bound variants promised by the route. They retain the existing template names and units, add no free equipment or manpower, remain locked, and continue to be raised only through the paid Event 014 recruitment helper.
 
@@ -726,7 +728,7 @@ Inherited origin knowledge affects target reach/score, not free output:
 - island knowledge validates proved port routes;
 - siege knowledge raises capital/supply-pressure targets;
 - march knowledge validates proved rail routes;
-- prison knowledge raises prison-route targets.
+- the live prison/camp route remains an independent target-score factor and does not derive from inherited origin knowledge.
 
 Cleanup loops the registered active-cell array; it never scans every country.
 
@@ -904,7 +906,7 @@ Add localisation for:
 - terminal-hunt success/failure/pressure/target tooltips;
 - enemy-death receipt count and muster contract;
 - the three Pack-stage flags/tooltips;
-- four origin-variant state descriptions;
+- three origin-variant state descriptions;
 - two commander traits;
 - inherited winter-cell pressure;
 - the three scoring tooltips; and
@@ -1016,7 +1018,7 @@ Complete each Pack focus once, rebuild/reload runtime helpers, and confirm exact
 
 ### Scenario 14: origin variants
 
-Test island-only, siege-only, march-only, prison-only, multiple-origin, and no-origin inheritance. Confirm only corresponding existing locked templates gain their one support addition.
+Test island-only, siege-only, march-only, multiple-origin, and no-origin inheritance. Confirm only corresponding existing locked templates gain their one support addition.
 
 ### Scenario 15: commander stages
 
@@ -1036,7 +1038,7 @@ Confirm all six decision IDs resolve to six different registered DDS files and e
 
 ### Scenario 19: reveal and cultural boundary
 
-Inspect every new visible surface before and after cannibalism_reveal_complete. Confirm no pre-reveal Hannibal Lecter name, no ancient/classical framing, and no claims about living Indigenous traditions.
+Inspect every new visible surface before and after cannibalism_reveal_complete. Confirm no pre-reveal Hannibal Lecter identity leak and no claims about living Indigenous traditions.
 
 ### Scenario 20: lifecycle cleanup
 
@@ -1110,13 +1112,13 @@ The verified implementation facts are reconciled in:
 - package_validation.md
 - PACKAGE_MANIFEST.md
 - the three live asset ledgers named above
-- the previous closure addendum's implemented technology-union and 39-icon status.
+- the previous closure addendum's implemented technology-union and 38-icon status.
 
 The source specs must describe the accepted live behavior. This working addendum remains in plans and is not itself a substitute for source-of-truth promotion.
 
 ## Simplifications, omissions, and blockers
 
-No design simplification or fallback was used for this addendum. H-01, H-02, H-03, and M-01 are implemented. The final country-package audit reports no findings. The final focus audit reports no P0 or P1, with documentation promotion completed here and the bounded P3 AI behavior documented in the source specifications.
+No design simplification or fallback was used for this addendum. H-01, H-02, H-03, and M-01 are implemented. The current 2026-07-15 country-package and focus-tree audits report P0/P1/P2/P3 all at zero. The fixed first-band pre-lock AI package is recorded as resolved intentional design in the source specifications.
 
 The casualty receipt uses the engine's exact read-only casualties counter for active enemies. Because that counter represents all military casualties suffered by the target, player-facing text must not attribute every recorded loss to the Wendigo actor. This is an explicit engine-semantic boundary, not permission to estimate, generate, or double-count deaths.
 

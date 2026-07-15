@@ -459,4 +459,4 @@ All matches before the reveal flag must be removed or made internal-only.
 
 ## Unified decision asset closure
 
-All 39 unified decisions have a one-to-one deterministic asset contract: decision ID, `GFX_decision_<decision_id>` sprite, source PNG, processed transparent PNG, and `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline decision, focus, idea, or unrelated icon.
+All 38 unified decisions have a one-to-one deterministic asset contract: decision ID, `GFX_decision_<decision_id>` sprite, source PNG, processed transparent PNG, and `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline decision, focus, idea, or unrelated icon.

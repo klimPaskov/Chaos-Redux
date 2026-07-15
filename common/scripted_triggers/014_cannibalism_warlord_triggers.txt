@@ -315,13 +315,13 @@ cannibalism_state_can_be_abandoned_by_current_warlord = {
 cannibalism_warlord_can_pay_intensification_cost = {
 	cannibalism_warlord_command_is_open = yes
 	has_country_flag = cannibalism_warlord_state_intensification_open
-	command_power > constant:cannibalism_warlord_decision.intensification_command_trigger
+	command_power > constant:cannibalism_warlord_decision.intensification_command_gate
 }
 
 cannibalism_warlord_can_pay_abandon_cost = {
 	cannibalism_warlord_command_is_open = yes
 	has_country_flag = cannibalism_warlord_relocation_open
-	command_power > constant:cannibalism_warlord_decision.abandon_command_trigger
+	command_power > constant:cannibalism_warlord_decision.abandon_command_gate
 }
 
 cannibalism_warlord_can_pay_align_cost = {
@@ -333,7 +333,7 @@ cannibalism_warlord_can_pay_align_cost = {
 		value = constant:cannibalism_warlord_decision.align_larder_cost
 		compare = greater_than_or_equals
 	}
-	command_power > constant:cannibalism_warlord_decision.align_command_trigger
+	command_power > constant:cannibalism_warlord_decision.align_command_gate
 }
 
 cannibalism_warlord_can_pay_synchronized_attack_cost = {
@@ -345,7 +345,7 @@ cannibalism_warlord_can_pay_synchronized_attack_cost = {
 		value = constant:cannibalism_warlord_decision.synchronized_larder_cost
 		compare = greater_than_or_equals
 	}
-	command_power > constant:cannibalism_warlord_decision.synchronized_command_trigger
+	command_power > constant:cannibalism_warlord_decision.synchronized_command_gate
 }
 
 cannibalism_is_valid_synchronized_warlord_partner = {
@@ -369,7 +369,7 @@ cannibalism_warlord_can_pay_island_operation_cost = {
 		value = constant:cannibalism_warlord_decision.island_operation_larder_cost
 		compare = greater_than_or_equals
 	}
-	command_power > constant:cannibalism_warlord_decision.island_operation_command_trigger
+	command_power > constant:cannibalism_warlord_decision.island_operation_command_gate
 	any_controlled_state = { is_coastal = yes naval_base > 0 }
 }
 
@@ -382,7 +382,7 @@ cannibalism_warlord_can_pay_siege_operation_cost = {
 		value = constant:cannibalism_warlord_decision.siege_operation_larder_cost
 		compare = greater_than_or_equals
 	}
-	command_power > constant:cannibalism_warlord_decision.siege_operation_command_trigger
+	command_power > constant:cannibalism_warlord_decision.siege_operation_command_gate
 }
 
 cannibalism_warlord_can_pay_march_operation_cost = {
@@ -394,18 +394,5 @@ cannibalism_warlord_can_pay_march_operation_cost = {
 		value = constant:cannibalism_warlord_decision.march_operation_larder_cost
 		compare = greater_than_or_equals
 	}
-	command_power > constant:cannibalism_warlord_decision.march_operation_command_trigger
-}
-
-cannibalism_warlord_can_pay_prison_operation_cost = {
-	cannibalism_warlord_command_is_open = yes
-	has_global_flag = cannibalism_evolution_ii_active
-	has_country_flag = cannibalism_origin_prison_host
-	has_country_flag = cannibalism_warlord_prison_actions_open
-	check_variable = {
-		var = cannibalism_larder
-		value = constant:cannibalism_warlord_decision.prison_operation_larder_cost
-		compare = greater_than_or_equals
-	}
-	command_power > constant:cannibalism_warlord_decision.prison_operation_command_trigger
+	command_power > constant:cannibalism_warlord_decision.march_operation_command_gate
 }

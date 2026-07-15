@@ -67,7 +67,9 @@
 ## Warlord countries
 
 - At least eight reusable tag slots are available or an equivalent safe strategy exists.
-- Four origin archetypes are implemented.
+- Three origin archetypes are implemented: Island Host, Siege Commune, and March Host.
+- All eight warlord tags are origin-agnostic reusable slots; no slot is reserved for a removed origin.
+- No warlord portrait uses a prison or detention setting.
 - Generic warlord portraits are bloody, bald, male-presenting, feral, visibly crazed, less human-looking, and use invented rough clothing.
 - Warlord names come from matching regional male pools.
 - No portrait or name mismatch exists.
@@ -88,7 +90,7 @@
 - Rewards are varied and strong.
 - AI route behavior exists.
 - Focus icons and localisation direction are complete.
-- The implemented tree has exactly 72 focuses.
+- The implemented tree has exactly 68 focuses.
 
 ## Population consumption
 
@@ -188,6 +190,7 @@
 - Hannibal Lecter and Wendigo Hannibal Lecter portraits are complete, substantially less human and more crazed than ordinary leader art, and use real independently generated action frames.
 - Flags exist in all engine sizes.
 - Every focus, idea, decision, category, achievement, unit, GUI state, report, news event, and super-event has asset coverage.
+- No custom subunit or equipment identifier is introduced by Event 014. Its formations retain existing battalion and equipment surfaces, so no bespoke unit-counter or equipment art is required. This is a verified scope disposition, not a fallback.
 - Every animated asset has separate source frames, processed frames, sheet PNG, sheet DDS, static fallback, preview GIF, manifest, and GFX handoff.
 - No animation is fabricated through transforms or filters on one still.
 - The 21-surface closure package and all 56 regional warlord portraits are present.

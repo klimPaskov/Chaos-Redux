@@ -15,6 +15,8 @@
 
 The six objective-tranche missions use runtime durations, capped progress, generation-safe targets, explicit full, partial, and failure outcomes, timeout handling, and cancellation cleanup. The two earlier maintained missions retain their established contracts.
 
+Incarnation reset begins with one idempotent cleanup effect for exactly 14 timed missions: two baseline missions, six maintained objectives, compact vigilance, four unified receipt missions, and the Wendigo terminal hunt. Each family is removed before its runtime is cleared. The terminal global target is cleared only when the reset country owns the active hunt.
+
 ## Added paid action families, 7
 
 | Decision | Route and target | Paid resources | Lifecycle | Main result |

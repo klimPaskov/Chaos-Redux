@@ -570,7 +570,6 @@ cannibalism_clear_investigation_mission = {
 	clear_variable = cannibalism_investigation_progress
 	clear_variable = cannibalism_investigation_goal
 	clear_variable = cannibalism_investigation_duration
-	set_country_flag = cannibalism_investigation_objective_resolved
 }
 
 cannibalism_apply_investigation_target_node_change = {
@@ -592,6 +591,7 @@ cannibalism_complete_investigation_mission = {
 	add_to_variable = { cannibalism_evidence = constant:cannibalism_objective_effect.investigation_success_evidence }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_success_cell }
 	set_country_flag = cannibalism_investigation_objective_complete
+	set_country_flag = cannibalism_investigation_objective_resolved
 	cannibalism_clear_investigation_mission = yes
 	cannibalism_clamp_current_country_evidence = yes
 	cannibalism_clamp_current_country_meters = yes
@@ -604,6 +604,7 @@ cannibalism_partial_investigation_mission = {
 	add_to_variable = { cannibalism_evidence = constant:cannibalism_objective_effect.investigation_partial_evidence }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_partial_cell }
 	set_country_flag = cannibalism_investigation_objective_partial
+	set_country_flag = cannibalism_investigation_objective_resolved
 	cannibalism_clear_investigation_mission = yes
 	cannibalism_clamp_current_country_evidence = yes
 	cannibalism_clamp_current_country_meters = yes
@@ -616,6 +617,7 @@ cannibalism_fail_investigation_mission = {
 	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.investigation_failure_integrity }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_failure_cell }
 	set_country_flag = cannibalism_investigation_objective_failed
+	set_country_flag = cannibalism_investigation_objective_resolved
 	cannibalism_clear_investigation_mission = yes
 	cannibalism_clamp_current_country_meters = yes
 	cannibalism_refresh_country_penalty_variables = yes
@@ -655,7 +657,6 @@ cannibalism_clear_hold_prison_mission = {
 	clear_variable = cannibalism_prison_required_hold_days
 	clear_variable = cannibalism_prison_division_floor
 	clear_variable = cannibalism_prison_duration
-	set_country_flag = cannibalism_hold_prison_objective_resolved
 }
 
 cannibalism_complete_hold_prison_mission = {
@@ -664,6 +665,7 @@ cannibalism_complete_hold_prison_mission = {
 	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_success_integrity }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_success_cell }
 	set_country_flag = cannibalism_hold_prison_objective_complete
+	set_country_flag = cannibalism_hold_prison_objective_resolved
 	cannibalism_clear_hold_prison_mission = yes
 	cannibalism_clamp_current_country_meters = yes
 	cannibalism_refresh_country_penalty_variables = yes
@@ -675,6 +677,7 @@ cannibalism_partial_hold_prison_mission = {
 	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_partial_integrity }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_partial_cell }
 	set_country_flag = cannibalism_hold_prison_objective_partial
+	set_country_flag = cannibalism_hold_prison_objective_resolved
 	cannibalism_clear_hold_prison_mission = yes
 	cannibalism_clamp_current_country_meters = yes
 	cannibalism_refresh_country_penalty_variables = yes
@@ -686,6 +689,7 @@ cannibalism_fail_hold_prison_mission = {
 	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_failure_integrity }
 	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_failure_cell }
 	set_country_flag = cannibalism_hold_prison_objective_failed
+	set_country_flag = cannibalism_hold_prison_objective_resolved
 	cannibalism_clear_hold_prison_mission = yes
 	cannibalism_clamp_current_country_meters = yes
 	cannibalism_refresh_country_penalty_variables = yes
@@ -981,10 +985,9 @@ cannibalism_refresh_global_aftermath_category_lifecycle = {
 	}
 }
 
-cannibalism_retire_current_country_reconstruction_participation = {
+cannibalism_clear_current_country_compact_vigilance_runtime = {
 	clr_country_flag = cannibalism_compact_vigilance_mission_active
 	clr_country_flag = cannibalism_reconstruction_participant
-	set_country_flag = cannibalism_reconstruction_participant_complete
 	if = {
 		limit = { is_in_array = { array = global.cannibalism_reconstruction_participants value = THIS } }
 		remove_from_array = { array = global.cannibalism_reconstruction_participants value = THIS }
@@ -994,6 +997,11 @@ cannibalism_retire_current_country_reconstruction_participation = {
 	clear_variable = cannibalism_compact_vigilance_duration
 	cannibalism_refresh_current_country_reconstruction_idea = yes
 	cannibalism_refresh_global_aftermath_category_lifecycle = yes
+}
+
+cannibalism_retire_current_country_reconstruction_participation = {
+	cannibalism_clear_current_country_compact_vigilance_runtime = yes
+	set_country_flag = cannibalism_reconstruction_participant_complete
 }
 
 cannibalism_partial_compact_vigilance = {

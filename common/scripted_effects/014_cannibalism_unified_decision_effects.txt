@@ -22,7 +22,6 @@ cannibalism_unified_initialize_decision_values = {
 		set_variable = { cannibalism_unified_island_specialists_raised = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_siege_specialists_raised = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_march_specialists_raised = constant:cannibalism_unified_profile.zero }
-		set_variable = { cannibalism_unified_prison_specialists_raised = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_army_operations = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_naval_operations = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_air_operations = constant:cannibalism_unified_profile.zero }
@@ -1365,12 +1364,102 @@ cannibalism_unified_apply_counterpressure_to_current_target = {
 	}
 }
 
+cannibalism_unified_refresh_affordability_gates = {
+	set_variable = { cannibalism_unified_absorb_command_gate = cannibalism_unified_absorb_command_cost }
+	subtract_from_variable = { cannibalism_unified_absorb_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_governor_manpower_gate = cannibalism_unified_governor_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_governor_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_governor_command_gate = cannibalism_unified_governor_command_cost }
+	subtract_from_variable = { cannibalism_unified_governor_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_purge_command_gate = cannibalism_unified_purge_command_cost }
+	subtract_from_variable = { cannibalism_unified_purge_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_purge_army_experience_gate = cannibalism_unified_purge_army_experience_cost }
+	subtract_from_variable = { cannibalism_unified_purge_army_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_command_power_gate = cannibalism_unified_command_power_cost }
+	subtract_from_variable = { cannibalism_unified_command_power_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_command_army_experience_gate = cannibalism_unified_command_army_experience_cost }
+	subtract_from_variable = { cannibalism_unified_command_army_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_storage_manpower_gate = cannibalism_unified_storage_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_storage_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_feeding_capital_manpower_gate = cannibalism_unified_feeding_capital_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_feeding_capital_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_feeding_capital_command_gate = cannibalism_unified_feeding_capital_command_cost }
+	subtract_from_variable = { cannibalism_unified_feeding_capital_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_workshop_manpower_gate = cannibalism_unified_workshop_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_workshop_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_frontier_abandon_command_gate = cannibalism_unified_frontier_abandon_command_cost }
+	subtract_from_variable = { cannibalism_unified_frontier_abandon_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_rapid_command_gate = cannibalism_unified_rapid_command_cost }
+	subtract_from_variable = { cannibalism_unified_rapid_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_managed_command_gate = cannibalism_unified_managed_command_cost }
+	subtract_from_variable = { cannibalism_unified_managed_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_mobile_command_gate = cannibalism_unified_mobile_command_cost }
+	subtract_from_variable = { cannibalism_unified_mobile_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_mobile_fuel_gate = cannibalism_unified_mobile_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_mobile_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_battlefield_command_gate = cannibalism_unified_battlefield_command_cost }
+	subtract_from_variable = { cannibalism_unified_battlefield_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_army_command_gate = cannibalism_unified_army_command_cost }
+	subtract_from_variable = { cannibalism_unified_army_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_army_experience_gate = cannibalism_unified_army_experience_cost }
+	subtract_from_variable = { cannibalism_unified_army_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_army_fuel_gate = cannibalism_unified_army_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_army_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_air_foundation_manpower_gate = cannibalism_unified_air_foundation_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_air_foundation_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_air_foundation_fuel_gate = cannibalism_unified_air_foundation_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_air_foundation_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_naval_experience_gate = cannibalism_unified_naval_experience_cost }
+	subtract_from_variable = { cannibalism_unified_naval_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_naval_fuel_gate = cannibalism_unified_naval_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_naval_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_air_experience_gate = cannibalism_unified_air_experience_price }
+	subtract_from_variable = { cannibalism_unified_air_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_air_fuel_gate = cannibalism_unified_air_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_air_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_anchorage_manpower_gate = cannibalism_unified_anchorage_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_anchorage_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_anchorage_experience_gate = cannibalism_unified_anchorage_experience_cost }
+	subtract_from_variable = { cannibalism_unified_anchorage_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_anchorage_fuel_gate = cannibalism_unified_anchorage_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_anchorage_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_enemy_front_command_gate = cannibalism_unified_enemy_front_command_cost }
+	subtract_from_variable = { cannibalism_unified_enemy_front_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_enemy_front_experience_gate = cannibalism_unified_enemy_front_experience_cost }
+	subtract_from_variable = { cannibalism_unified_enemy_front_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_enemy_front_fuel_gate = cannibalism_unified_enemy_front_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_enemy_front_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_cell_command_gate = cannibalism_unified_cell_command_cost }
+	subtract_from_variable = { cannibalism_unified_cell_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_campaign_command_gate = cannibalism_unified_campaign_command_cost }
+	subtract_from_variable = { cannibalism_unified_campaign_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_ultimatum_command_gate = cannibalism_unified_ultimatum_command_cost }
+	subtract_from_variable = { cannibalism_unified_ultimatum_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_border_incident_command_gate = cannibalism_unified_border_incident_command_cost }
+	subtract_from_variable = { cannibalism_unified_border_incident_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_integration_manpower_gate = cannibalism_unified_integration_manpower_cost }
+	subtract_from_variable = { cannibalism_unified_integration_manpower_gate = constant:cannibalism_unified_affordability.manpower_gate_step }
+	set_variable = { cannibalism_unified_counterwar_command_gate = cannibalism_unified_counterwar_command_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_counterwar_experience_gate = cannibalism_unified_counterwar_experience_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_counterwar_fuel_gate = cannibalism_unified_counterwar_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_counterwar_conversion_command_gate = cannibalism_unified_counterwar_conversion_command_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_conversion_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_counterwar_conversion_experience_gate = cannibalism_unified_counterwar_conversion_experience_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_conversion_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_counterwar_conversion_fuel_gate = cannibalism_unified_counterwar_conversion_fuel_cost }
+	subtract_from_variable = { cannibalism_unified_counterwar_conversion_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+}
+
 cannibalism_unified_refresh_operational_profiles = {
 	cannibalism_unified_refresh_command_profile = yes
 	cannibalism_unified_refresh_larder_profile = yes
 	cannibalism_unified_refresh_war_machine_profile = yes
 	cannibalism_unified_refresh_global_profile = yes
 	cannibalism_unified_refresh_hostility_pressure = yes
+	cannibalism_unified_refresh_affordability_gates = yes
 }
 
 cannibalism_unified_focus_finalize_reward = {
@@ -1521,6 +1610,7 @@ cannibalism_unified_record_counterwar_operation = {
 cannibalism_unified_clear_command_mission = {
 	clr_country_flag = cannibalism_unified_command_mission_active
 	clear_variable = cannibalism_unified_command_mission_actions
+	clear_variable = cannibalism_unified_command_mission_duration
 }
 
 cannibalism_unified_complete_command_mission = {
@@ -1548,6 +1638,7 @@ cannibalism_unified_fail_command_mission = {
 cannibalism_unified_clear_larder_mission = {
 	clr_country_flag = cannibalism_unified_larder_mission_active
 	clear_variable = cannibalism_unified_larder_mission_actions
+	clear_variable = cannibalism_unified_larder_mission_duration
 }
 
 cannibalism_unified_complete_larder_mission = {
@@ -1574,6 +1665,7 @@ cannibalism_unified_fail_larder_mission = {
 cannibalism_unified_clear_war_machine_mission = {
 	clr_country_flag = cannibalism_unified_war_machine_mission_active
 	clear_variable = cannibalism_unified_war_machine_mission_actions
+	clear_variable = cannibalism_unified_war_machine_mission_duration
 }
 
 cannibalism_unified_complete_war_machine_mission = {
@@ -1600,6 +1692,7 @@ cannibalism_unified_fail_war_machine_mission = {
 cannibalism_unified_clear_counterwar_mission = {
 	clr_country_flag = cannibalism_unified_counterwar_mission_active
 	clear_variable = cannibalism_unified_counterwar_mission_actions
+	clear_variable = cannibalism_unified_counterwar_mission_duration
 }
 
 cannibalism_unified_complete_counterwar_mission = {
@@ -1942,15 +2035,6 @@ cannibalism_unified_spawn_origin_specialist = {
 			START_MANPOWER = "[?cannibalism_unified_unit_start_manpower]"
 		}
 	}
-	else_if = {
-		limit = { check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.lockhouse_column } }
-		meta_effect = {
-			text = { create_unit = { division = "name = \"Lockhouse Column\" division_template = \"Lockhouse Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_unified_recruitment_actor allow_spawning_on_enemy_provs = no } }
-			START_EXPERIENCE = "[?cannibalism_unified_unit_start_experience]"
-			START_EQUIPMENT = "[?cannibalism_unified_unit_start_equipment]"
-			START_MANPOWER = "[?cannibalism_unified_unit_start_manpower]"
-		}
-	}
 }
 
 cannibalism_unified_execute_recruitment = {
@@ -1993,7 +2077,6 @@ cannibalism_unified_execute_recruitment = {
 						check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.island_reavers }
 						check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.siege_eaters }
 						check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.march_predation_column }
-						check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.lockhouse_column }
 					}
 				}
 				event_target:cannibalism_unified_decision_state = { cannibalism_unified_spawn_origin_specialist = yes }
@@ -2009,10 +2092,6 @@ cannibalism_unified_execute_recruitment = {
 				else_if = {
 					limit = { check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.march_predation_column } }
 					add_to_variable = { cannibalism_unified_march_specialists_raised = constant:cannibalism_unified_profile.one }
-				}
-				else_if = {
-					limit = { check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.lockhouse_column } }
-					add_to_variable = { cannibalism_unified_prison_specialists_raised = constant:cannibalism_unified_profile.one }
 				}
 			}
 			event_target:cannibalism_unified_decision_state = {
@@ -2070,11 +2149,6 @@ cannibalism_unified_execute_siege_specialist_recruitment = {
 
 cannibalism_unified_execute_march_specialist_recruitment = {
 	set_temp_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.march_predation_column }
-	cannibalism_unified_execute_origin_specialist_recruitment = yes
-}
-
-cannibalism_unified_execute_prison_specialist_recruitment = {
-	set_temp_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.lockhouse_column }
 	cannibalism_unified_execute_origin_specialist_recruitment = yes
 }
 

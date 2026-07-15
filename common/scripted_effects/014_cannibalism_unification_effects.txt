@@ -112,26 +112,65 @@ cannibalism_calculate_current_unification_host_score = {
 	}
 }
 
+cannibalism_consider_current_unification_host_candidate = {
+	set_temp_variable = { cannibalism_current_unification_host_id = THIS.id }
+	cannibalism_calculate_current_unification_host_score = yes
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = cannibalism_current_unification_host_score
+					value = cannibalism_best_unification_host_score
+					compare = greater_than
+				}
+				AND = {
+					check_variable = {
+						var = cannibalism_current_unification_host_score
+						value = cannibalism_best_unification_host_score
+						compare = equals
+					}
+					check_variable = {
+						var = cannibalism_current_unification_host_id
+						value = cannibalism_best_unification_host_id
+						compare = less_than
+					}
+				}
+			}
+		}
+		set_temp_variable = { cannibalism_best_unification_host_score = cannibalism_current_unification_host_score }
+		set_temp_variable = { cannibalism_best_unification_host_id = cannibalism_current_unification_host_id }
+		save_global_event_target_as = cannibalism_unification_host
+		set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
+	}
+}
+
 cannibalism_select_unification_host = {
 	clear_global_event_target = cannibalism_unification_host
 	clear_variable = global.cannibalism_unification_host_generation
 	set_temp_variable = { cannibalism_best_unification_host_score = 0 }
+	set_temp_variable = { cannibalism_best_unification_host_id = 0 }
+	set_temp_variable = { cannibalism_human_unification_host_found = 0 }
 	for_each_scope_loop = {
 		array = global.cannibalism_actor_countries
 		if = {
-			limit = { cannibalism_is_viable_unification_host = yes }
-			cannibalism_calculate_current_unification_host_score = yes
+			limit = {
+				cannibalism_is_viable_unification_host = yes
+				is_ai = no
+			}
+			set_temp_variable = { cannibalism_human_unification_host_found = 1 }
+			cannibalism_consider_current_unification_host_candidate = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { cannibalism_human_unification_host_found < 1 } }
+		for_each_scope_loop = {
+			array = global.cannibalism_actor_countries
 			if = {
 				limit = {
-					check_variable = {
-						var = cannibalism_current_unification_host_score
-						value = cannibalism_best_unification_host_score
-						compare = greater_than
-					}
+					cannibalism_is_viable_unification_host = yes
+					is_ai = yes
 				}
-				set_temp_variable = { cannibalism_best_unification_host_score = cannibalism_current_unification_host_score }
-				save_global_event_target_as = cannibalism_unification_host
-				set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
+				cannibalism_consider_current_unification_host_candidate = yes
 			}
 		}
 	}
@@ -160,11 +199,9 @@ cannibalism_capture_current_warlord_inheritance = {
 	set_temp_variable = { cannibalism_inherited_origin_island = 0 }
 	set_temp_variable = { cannibalism_inherited_origin_siege = 0 }
 	set_temp_variable = { cannibalism_inherited_origin_march = 0 }
-	set_temp_variable = { cannibalism_inherited_origin_prison = 0 }
 	if = { limit = { has_country_flag = cannibalism_origin_island_host } set_temp_variable = { cannibalism_inherited_origin_island = 1 } }
 	else_if = { limit = { has_country_flag = cannibalism_origin_siege_commune } set_temp_variable = { cannibalism_inherited_origin_siege = 1 } }
 	else_if = { limit = { has_country_flag = cannibalism_origin_march_host } set_temp_variable = { cannibalism_inherited_origin_march = 1 } }
-	else_if = { limit = { has_country_flag = cannibalism_origin_prison_host } set_temp_variable = { cannibalism_inherited_origin_prison = 1 } }
 }
 
 cannibalism_apply_inherited_host_identity_to_cbl = {
@@ -244,7 +281,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
-	if = { limit = { check_variable = { cannibalism_inherited_origin_prison > 0 } } set_country_flag = cannibalism_unified_origin_prison_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
 	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
 	clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
@@ -269,7 +305,6 @@ cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = {
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
-	if = { limit = { check_variable = { cannibalism_inherited_origin_prison > 0 } } set_country_flag = cannibalism_unified_origin_prison_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 }
 
 # Revealed unified and transformed hosts retain the two paid warlord-era unit

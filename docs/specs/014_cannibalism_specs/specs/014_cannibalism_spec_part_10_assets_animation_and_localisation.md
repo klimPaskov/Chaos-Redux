@@ -119,7 +119,7 @@ Target size: 156 by 210.
 
 Required production:
 
-- eight reusable slot identities, two for each of the four origin archetypes
+- eight origin-agnostic reusable slot identities available to any of the three origin archetypes
 - seven visual-region variants for every slot: Europe, Asia, Africa, Middle East, North America, South America, and Oceania
 - fifty-six distinct final portraits in total
 - the eight unsuffixed runtime paths serve as the European variants and are independently regenerated with the rest of the matrix
@@ -130,6 +130,7 @@ warlord country. There is no generic portrait fallback.
 
 Every portrait:
 
+- uses the painted HOI4 leader-bust composition, restrained background, period tonal treatment, and readable head-and-shoulders crop rather than a full environmental action scene
 - male-presenting
 - bald
 - blood and gore
@@ -140,6 +141,7 @@ Every portrait:
 - a unique pose, prop, expression, clothing silhouette, crop, and background
 - no Hannibal resemblance
 - no literal supernatural anatomy
+- no prison, cell, bars, detention corridor, guard station, prisoner uniform, confinement setting, or penal-unit imagery
 
 At least one warlord holds a human skull in one hand and licks blood from it. Other portraits use distinct active behaviors such as gnawing a bone, biting a bloodied glove, laughing through a damaged jaw, gripping a ration cleaver, clutching stolen dog tags, or dragging a torn ration sack. No behavior, prop, face, or pose is reused across the fifty-six portraits.
 
@@ -190,7 +192,6 @@ Every flag needs normal, medium, and small TGA variants.
 Required flag families:
 
 - eight warlord slot base identities
-- origin-route variants where the public country identity changes
 - unified Hannibal base identity
 - unified route variants for central, confederated, and ritual-state forms
 - Wendigo Hannibal transformed identity
@@ -198,7 +199,9 @@ Required flag families:
 
 Design rules:
 
-- fictional generated art
+- fictional image-generated source art, followed by deterministic flat-color processing for runtime
+- front-facing vexillological layouts only: no fabric, folds, poles, scenery, perspective, texture, gradients, bevels, shadows, lighting, or presentation mockups
+- two to four opaque colors with crisp geometric boundaries
 - readable at 10 by 7
 - bone, tooth, hand, jaw, blade, bowl, chain, island, rail, or siege motifs
 - no text
@@ -212,7 +215,7 @@ Target size: 94 by 86.
 
 Expected production scale:
 
-- 72 local warlord icons
+- 68 local warlord icons
 - 108 unified Hannibal icons
 - 28 Wendigo overlay icons
 
@@ -249,7 +252,7 @@ Required directions include:
 - Broken Chain of Command
 - Hunted by All
 - The First Larder
-- four origin ideas
+- three origin ideas
 - three hierarchy final ideas
 - unified Larder state
 - Hannibal's command trait or spirit
@@ -300,18 +303,20 @@ Every achievement in Part 11 receives a distinct completed-icon direction.
 
 ## Unit and technology art
 
-If new unit types require icons:
+The implemented package adds no custom subunit or equipment identifiers. It retains the existing battalion and equipment surfaces used by the source countries and the existing Wendigo package. No bespoke Event 014 unit counter, subunit icon, equipment icon, or equipment illustration is therefore required. This is a verified scope disposition, not a fallback or omitted asset family.
+
+The following formation names are scripted templates built from those retained surfaces rather than new equipment or subunit definitions:
 
 - Scavenger Warband
 - Feast Cohort
 - Bone Guard
 - Island Reavers
 - Siege Eaters
-- Prison Columns
+- March Predation Columns
 - Network Cadres
 - transformed Wendigo variants
 
-The implementation pass must inspect whether existing unit and technology surfaces require new icons, equipment art, or badges.
+Any later change that adds a custom subunit or equipment identifier must reopen this art review and provide its counter, icon, equipment art, registration, and manifest coverage.
 
 ## Scripted GUI art
 
@@ -515,14 +520,14 @@ The implemented runtime package contains:
 - 56 regional warlord portraits
 - one 12-frame ordinary reveal portrait and one 16-frame transformed portrait, both built from independently generated source frames
 - 195 current Event 014 flag TGAs
-- 208 focus icons
-- 56 idea and modifier icons
-- 137 decision, category, mission, and panel textures
+- 204 focus icons
+- 62 idea and modifier icons
+- 135 decision and category textures, including 38 distinct unified decision icons
 - 18 achievement triplets
 - 12 non-portrait animation packages plus exact static GUI surfaces
-- four unique 44.1 kHz OGG/WAV super-event audio pairs
+- eight unique 44.1 kHz super-event runtime audio files, four OGG and four WAV
 - the final 21-surface closure package.
 
 The closure package covers 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt textures, the receipt-backed Pack icon, and the inherited winter-cell icon. Every closure composition has independent generated source art, processed output, runtime DDS, hash ledger, validation report, and contact-sheet evidence.
 
-A final scan across the nine `.gfx` files that reference Event 014 found 816 texture references, 598 unique paths, and zero missing runtime files. The two leader animations are real-frame sequences. No completion claim relies on transform-only portrait motion, an absent static fallback, a missing texture, or reused unified decision art.
+A current scan across the nine `.gfx` files that reference Event 014 found 812 texture references, 598 unique paths, and zero missing runtime files. The two leader animations are real-frame sequences. No completion claim relies on transform-only portrait motion, an absent static fallback, a missing texture, or reused unified decision art.

@@ -20,7 +20,7 @@ Hannibal is internal-only before the Evolution III reveal. Do not expose his nam
 
 ## Country and map content
 
-Implement four warlord origins, at least eight safe reusable tag slots or an equivalent verified strategy, complete country packages, coherent state selection, generated male regional warlords, starting forces, reinforcement paths, decisions, AI, focus trees, flags, portraits, ideas, and defeat cleanup. Register all human cannibal countries in shared special-chaos classification. Register only transformed nonhuman countries in actual-nonhuman classification.
+Implement the Island Host, Siege Commune, and March Host origins, at least eight safe reusable tag slots or an equivalent verified strategy, complete country packages, coherent state selection, generated male regional warlords, starting forces, reinforcement paths, decisions, AI, focus trees, flags, portraits, ideas, and defeat cleanup. Register all human cannibal countries in shared special-chaos classification. Register only transformed nonhuman countries in actual-nonhuman classification.
 
 Implement the full local warlord tree, unified Hannibal tree, and Wendigo overlay. Preserve route depth, origin variation, decision integration, idea lifecycle, strong rewards, AI validity, and postwar handling. Do not use a thin generic tree or repeated micro modifiers.
 

@@ -1,15 +1,12 @@
 # Event 014 Flag Asset Frozen Ledger
 
-> **Fulfilled frozen contract.** The thirteen families, five compositions, and three sizes defined below are present in the final 195-file flag package. This ledger remains authoritative for naming and design history; current file and provenance evidence is in `docs/assets/014_cannibalism/flags_imagegen/manifest.md` and the top-level Event 014 asset manifest.
+> **Corrected production contract (2026-07-15).** The thirteen families, five compositions, and three sizes below remain the runtime contract, but every design is a flat, front-facing vexillological graphic generated specifically for the refresh. Warlord families are origin-agnostic. Current source and provenance evidence lives in `docs/assets/014_cannibalism/flags_refresh/` and the top-level Event 014 asset manifest.
 
 ## Runtime contract
 
 This ledger resolves the former `CBL_LAST_TABLE` conflict and is the production source of truth for Event 014 flags.
 
-- `CBA` and `CBB`: reusable Island Host slots.
-- `CBC` and `CBD`: reusable Siege Commune slots.
-- `CBE` and `CBF`: reusable March Host slots.
-- `CBG` and `CBH`: reusable Prison Host slots.
+- `CBA` through `CBH`: eight origin-agnostic reusable slots. Each can host an Island Host, Siege Commune, or March Host package.
 - `CBL`: ordinary unified base identity, created only by the public Evolution III reveal.
 - `CBL_CENTRAL_COMMAND`: applied by `cannibalism_unified_focus_one_command`.
 - `CBL_HOST_CONFEDERATION`: applied by `cannibalism_unified_focus_many_jaws`.
@@ -20,7 +17,7 @@ No Event 014 flag or cosmetic tag exposes Hannibal before `cannibalism_reveal_co
 
 ## Required files
 
-For every family token `F`, produce five genuinely distinct compositions rather than palette swaps:
+For every family token `F`, produce five genuinely distinct compositions rather than palette swaps. Each source must depict only the flat flag design: no fabric, folds, poles, scenery, perspective, texture, lighting, or presentation mockup.
 
 - `gfx/flags/F.tga`
 - `gfx/flags/F_communism.tga`
@@ -44,14 +41,14 @@ Ideology-specific files are mandatory because a cosmetic fallback does not overr
 
 | Family | Distinct fictional motif |
 |---|---|
-| `CBA` | island reef, hooked blade, torn convoy rope, red surf |
-| `CBB` | black lighthouse, jaw-shaped harbor, signal lamp, broken chain |
-| `CBC` | breached wall, ration bowl, siege stakes, blood-marked masonry |
-| `CBD` | tunnel lamp, chained gate, buried knives, collapsed city arch |
-| `CBE` | scavenged wagon wheel, marching blade, torn field map, muddy track |
-| `CBF` | rail spike, horse jaw, depot flame, severed transport line |
-| `CBG` | barred mouth, key, prison tower, cut transfer ledger |
-| `CBH` | shackled hand, transport gate, stamped file, broken guard baton |
+| `CBA` | tooth-ring and crossed cleavers in hard geometric bands |
+| `CBB` | split jaw and hooked knife in a bold saltire or chevron field |
+| `CBC` | cracked bowl and three fangs in high-contrast heraldic geometry |
+| `CBD` | black sunburst, butcher hook, and angular bone-white divisions |
+| `CBE` | wagon wheel and cleaver reduced to severe flat silhouettes |
+| `CBF` | rail spike, horse jaw, and broken line rendered as simple heraldry |
+| `CBG` | crescent bite, butcher block, and triangular color divisions |
+| `CBH` | crossed cleavers, tooth crown, and asymmetric flat bands |
 | `CBL` | one empty command table joined to several blood-red routes; no leader portrait |
 | `CBL_CENTRAL_COMMAND` | one blade and one chain binding every route into a rigid vertical command |
 | `CBL_HOST_CONFEDERATION` | four unequal Host weapons joined around a common table without losing their shapes |

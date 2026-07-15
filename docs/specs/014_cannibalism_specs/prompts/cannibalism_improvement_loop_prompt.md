@@ -19,7 +19,7 @@ Required review targets:
 1. Is early containment deep enough to be a real campaign problem without becoming unwinnable?
 2. Do Field Hunger, Command Integrity, Cult Cohesion, Network Reach, Larder, Frenzy, and Network Alignment change decisions and routes?
 3. Are spread routes concrete and readable?
-4. Are islands, communes, and four warlord origins meaningfully different?
+4. Are islands, communes, and the Island Host, Siege Commune, and March Host origins meaningfully different?
 5. Are local and unified focus trees deep, connected, and free of reward dust?
 6. Are final cannibal routes sufficiently absurd and overpowered?
 7. Does the world have real counterplay before terminal lock?

@@ -177,13 +177,6 @@ Ordinary AI should rarely support cannibal actors directly. Such support belongs
 - abandons exhausted states
 - avoids long sieges without Larder
 
-### Prison Breaker AI
-
-- targets prisons and rear areas
-- uses cells and transfer routes
-- manages internal factions
-- prefers infiltration over direct major-front assault
-
 ### Hoarder personality
 
 - saves Larder
@@ -546,9 +539,9 @@ Exactly six unified targeted decisions consume the unified weight: foreign army 
 
 Hard-invalid candidates are absent rather than weakly scored. The model rejects self, allies and subjects, dead or capitulated countries, Event 014 cannibal countries, actual nonhumans, unusable population, locked targets, and targets without a proved war, adjacency, inherited cell, rail, naval, or post-lock route. Valid factors include population, weak supply, cells, prisons, ports, low stability, adjacency, physical corridors, coalition command, current war, cold-front evidence, contamination, distance, and actor overextension.
 
-### Bounded P3 pre-lock strategy behavior
+### Resolved pre-lock first-band strategy behavior
 
-The pre-lock Wendigo strategy package is idempotent. A valid target receives one low, medium, or high package, and later focus calls can add newly valid targets. The effects database exposes `add_ai_strategy` but no corresponding scripted removal effect. An already recorded pre-lock target is therefore not dynamically removed or re-banded if its score later changes. The transformation lock runs a separate post-lock scorer and applies a separate one-time 1000/2000/3000 escalation package. Documentation and player-facing text must not describe the pre-lock package as continuously re-scored.
+The pre-lock Wendigo strategy package intentionally uses fixed first assignment. A valid target receives one low, medium, or high package, and later focus calls can add newly valid targets. The effects database exposes `add_ai_strategy` but no corresponding scripted removal effect, so an already recorded pre-lock target is not dynamically removed or re-banded if its score later changes. The transformation lock runs a separate post-lock scorer and applies a separate one-time 1000/2000/3000 escalation package. This is the implemented design contract, not an open finding. Documentation and player-facing text must not describe the pre-lock package as continuously re-scored.
 
 AI Pack training, receipt muster, inherited winter cells, hunt launch, and hunt pressure also preserve the existing 800-Larder countdown floor after payment. Duplicate Pack-contract and pre-lock target-priority writes are guarded.
 

@@ -169,7 +169,7 @@ The minimum non-fallback package is eight distinct portraits, one for each warlo
 | CBG | gfx/leaders/014_cannibalism/leader_CBG_warlord.dds | 156x210 BGRA DDS | Missing |
 | CBH | gfx/leaders/014_cannibalism/leader_CBH_warlord.dds | 156x210 BGRA DDS | Missing |
 
-The eight portraits must cover two Island Host, two Siege Commune, two March Host, and two Prison Host candidates. Each must be male-presenting, bald, bloodied, visibly distinct, grounded in invented hides/raw cloth and scavenged period military pieces, non-supernatural, and visibly unlike the hidden leader. Four optional regional alternatives may be generated only after the required eight are accepted.
+The eight base portraits cover eight origin-agnostic reusable warlord slots. Each must be male-presenting, bald, bloodied, visibly distinct, grounded in invented rough cloth and scavenged period military pieces, non-supernatural, and visibly unlike the hidden leader. Six additional regional variants per slot complete the mandatory 56-portrait matrix; none is optional and none may use a prison setting.
 
 The old deleted leader_CBL_warlord.dds and the retained source portrait of a clean, dark-haired suited man do not satisfy this package.
 
@@ -333,7 +333,6 @@ idea_cannibalism_the_first_larder.dds
 idea_cannibalism_origin_island_host.dds
 idea_cannibalism_origin_siege_commune.dds
 idea_cannibalism_origin_march_host.dds
-idea_cannibalism_origin_prison_host.dds
 idea_cannibalism_hierarchy_central_command.dds
 idea_cannibalism_hierarchy_host_confederation.dds
 idea_cannibalism_hierarchy_ritual_state.dds
@@ -446,7 +445,7 @@ The required design ledger must evaluate:
 - Bone Guard
 - Island Reavers
 - Siege Eaters
-- Prison Columns
+- March Predation Columns
 - Network Cadres
 - transformed Wendigo variants
 

@@ -12,7 +12,7 @@ The unified Hannibal country remains human at first, even though its institution
 
 The implemented country contract uses eight reusable regional warlord slots, `CBA` through `CBH`, one ordinary unified country, `CBL`, and an in-place transformation of the existing original `ZZZ` country with the `ZZZ_CANNIBALISM_HANNIBAL` cosmetic identity.
 
-The eight warlord slots should be reusable after a country is fully eliminated and cleaned up, provided no history, character, flag, decision, focus, or global target still references the old incarnation.
+The eight warlord slots are origin-agnostic and should be reusable after a country is fully eliminated and cleaned up, provided no history, character, flag, decision, focus, or global target still references the old incarnation. Any available slot can carry an Island Host, Siege Commune, or March Host package selected from the actual origin state.
 
 Each slot has a distinct portrait for Europe, Asia, Africa, the Middle East, North America, South America, and Oceania. The complete matrix contains 56 portraits. The actual origin state's stored region chooses the portrait and male name pool together. That region and portrait survive submission and commander reconstruction at unification. An unsupported or missing region prevents formation instead of selecting a generic face.
 
@@ -55,7 +55,7 @@ Every pre-unification country receives one generated male warlord.
 - blood on skin, clothing, hands, or mouth
 - physically intimidating, visibly scarred, feral, and deranged rather than merely stern
 - less conventionally human-looking through grounded human-origin traits such as pallor, bloodshot eyes, asymmetry, damaged ears, irregular teeth, extreme posture, and predatory expression
-- rough hides, raw cloth, bone ornaments, scavenged webbing, damaged helmets, prison garments, or torn period uniforms
+- rough hides, raw cloth, damaged work clothes, scavenged webbing, damaged helmets, or torn period uniforms
 - period-compatible weapon or command prop when composition allows
 - at least one of the 56 regional portraits must hold a skull and visibly lick a dark-crimson smear from it. The other portraits need different behaviors and props rather than repeating that pose
 - no modern objects
@@ -80,7 +80,6 @@ Origin traits:
 
 - Island Reaver
 - Siege Butcher
-- Prison Breaker
 - March Predator
 
 Personality traits:
@@ -222,45 +221,6 @@ The Host has the strongest mobile opening and the weakest civilian base. It must
 - avoids static defense unless a city or port is captured
 - can become the strongest unification host through rapid conquest
 
-### Prison Host
-
-#### Formation conditions
-
-- military prison, detention island, prisoner camp, or penal formation under mature cult control
-- guards, prisoners, and compromised soldiers combine into a territorial actor
-
-#### Starting problem
-
-The Host begins with a large pool of traumatized and unreliable manpower, weak equipment, and intense internal faction conflict.
-
-#### Starting military
-
-- guard defectors
-- prisoner mobs
-- penal assault units
-- one organizer cadre
-
-#### Recruitment path
-
-- free or capture prisons
-- turn captives into initiates
-- raid armories
-- use infiltrators among prisoner transfers
-
-#### Special decisions
-
-- open the cells
-- select an initiation cohort
-- infiltrate a transfer train
-- punish a guard faction
-- trade captives for weapons
-
-#### AI role
-
-- targets prisons, railways, and poorly defended rear areas
-- uses infiltration more than conventional assault
-- has high risk of internal purge or route split
-
 ## Dynamic state selection for country formation
 
 A country should receive a coherent map package.
@@ -350,7 +310,7 @@ Use when a mature commune controls a substantial state or several formations def
 
 ### Severe opening
 
-Use when a large garrison, prison system, or multiple units join at high chaos.
+Use when a large garrison, major urban complex, or multiple units join at high chaos.
 
 - eight to fourteen formations
 - several origin specialists
@@ -387,10 +347,6 @@ Elite guard for the warlord or later Hannibal. Small cap, strong combat, expensi
 ### Carrion Riders
 
 Mobile cavalry or truck formations available to March Hosts and suitable terrain routes.
-
-### Prison Column
-
-Large penal formation with low organization, high reinforcement, and brutal casualty conversion.
 
 ### Island Reavers
 

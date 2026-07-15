@@ -10,7 +10,6 @@ This matrix uses the implemented identifiers. Baseline country and state crises 
 | Island origin | `cannibalism_island_host_origin` | `cannibalism_archipelago_hunt` | Inherited island knowledge and winter-bound Reaver support after absorption | Warlord focus and unification inheritance |
 | Siege origin | `cannibalism_siege_commune_origin` | `cannibalism_city_that_eats` | Inherited siege knowledge and winter-bound Siege Eater support | Warlord focus and unification inheritance |
 | March origin | `cannibalism_march_host_origin` | `cannibalism_moving_front` | Inherited march knowledge and winter-bound March Column support | Warlord focus and unification inheritance |
-| Prison origin | `cannibalism_prison_host_origin` | `cannibalism_lockhouse_network` | Inherited prison knowledge and winter-bound Lockhouse support | Warlord focus and unification inheritance |
 | Retained lieutenants | `cannibalism_retained_lieutenants` | `cannibalism_council_of_retained_hosts` | Preserved into transformed-ZZZ inheritance where valid | Unified focus effects |
 | Broken warlords | `cannibalism_warlords_broken` | `cannibalism_authority_without_rivals` | Preserved into transformed-ZZZ inheritance where valid | Unified focus effects |
 | Chained rivals | `cannibalism_rivals_in_chains` | `cannibalism_dominion_of_chains` | Preserved into transformed-ZZZ inheritance where valid | Unified focus effects |

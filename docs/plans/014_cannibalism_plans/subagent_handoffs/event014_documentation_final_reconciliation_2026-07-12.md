@@ -1,5 +1,7 @@
 # Event 014 Documentation Final Reconciliation Handoff
 
+> Historical checkpoint. Current Event 014 documentation authority is the 2026-07-15 audit set. The preserved `Implemented` catalog wording below predates the repository-wide `Fully Functional` status vocabulary.
+
 Date: 2026-07-12
 
 Mode: documentation-only curation

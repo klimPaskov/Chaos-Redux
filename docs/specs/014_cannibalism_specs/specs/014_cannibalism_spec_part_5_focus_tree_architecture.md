@@ -10,7 +10,7 @@ Event 14 needs three focus surfaces:
 
 The implemented node counts are exact:
 
-- local warlord tree: 72 focuses
+- local warlord tree: 68 focuses
 - unified Hannibal tree: 108 focuses
 - Wendigo Hannibal overlay: 28 focuses
 
@@ -100,7 +100,7 @@ A stable regional state that can absorb communes and field several specialized a
 
 AI:
 
-Chosen by large multi-state countries, Prison Hosts with many factions, and warlords lacking personal dominance.
+Chosen by large multi-state countries, warlords with many rival captains, and rulers lacking personal dominance.
 
 #### Pack-captain confederacy
 
@@ -192,8 +192,7 @@ The branch changes how the country wages war and how quickly controlled states d
 
 - Island Reavers
 - Siege Eaters
-- Carrion Riders or mobile columns
-- Prison Columns
+- March Predation Columns
 
 The origin overlay determines the available specialist and related decisions.
 
@@ -261,19 +260,6 @@ Extreme urban defense and assault, with a decision family for relief-column ambu
 Payoff:
 
 Fast expansion and the ability to relocate the capital and primary Larder under pressure.
-
-#### Prison Host overlay
-
-- unite guards and prisoners
-- arm the cells
-- transfer-train infiltration
-- internal purge or reconciliation
-- penal assault cadres
-- prison network expansion
-
-Payoff:
-
-Powerful infiltration and mass recruitment, balanced by internal faction risk.
 
 ### Expansion branch
 
@@ -708,10 +694,10 @@ The focus-closure addendum did not add, remove, move, or rename a focus. It deep
 - `Open the Pack Musters` opens the one-Pack receipt muster alongside the ordinary two-Pack paid trainer.
 - `Retain the Warlord Captains` and `All Inheritances Intact` apply the two inherited-commander stages.
 - `Keep the Foreign Cells` opens the paid inherited winter-cell operation.
-- `All Inheritances Intact` also upgrades only the four inherited origin templates that actually exist.
+- `All Inheritances Intact` also upgrades only the three inherited origin templates that actually exist.
 - `Hunt Every Remaining Capital` opens the four terminal-hunt surfaces.
 - `The World Beneath Winter` keeps the route and scored priorities open but does not set the terminal lock.
 
 The final country and focus audits confirm that normal queue recruitment for the Pack closes immediately during the in-place ZZZ transformation, before the first overlay focus. Both scripted Pack musters validate the complete requested batch against capacity before population consumption.
 
-All 208 focuses retain unique IDs, AI blocks, reward helpers, localisation, and distinct registered DDS icons. The accepted tuning normalization uses five-point increments for authored percentage and meter ladders, with documented exceptions only for semantic counters, engine building levels, Pack batch multiples, research-use counts, and encoded AI factors.
+All 204 focuses retain unique IDs, AI blocks, reward helpers, localisation, and distinct registered DDS icons. The local tree contains three origin overlays; removing the fourth overlay leaves every convergence prerequisite reachable through Island Host, Siege Commune, or March Host. The accepted tuning normalization uses five-point increments for authored percentage and meter ladders, with documented exceptions only for semantic counters, engine building levels, Pack batch multiples, research-use counts, and encoded AI factors.

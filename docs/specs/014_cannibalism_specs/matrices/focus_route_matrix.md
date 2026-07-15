@@ -1,19 +1,19 @@
 # Focus Route Matrix
 
-This matrix records the implemented focus surfaces after both accepted closure addenda. Focus counts are exact: 72 local warlord focuses, 108 unified focuses, and 28 Wendigo overlay focuses.
+This matrix records the implemented focus surfaces after the accepted closure addenda and the 2026-07-15 origin correction. Focus counts are exact: 68 local warlord focuses, 108 unified focuses, and 28 Wendigo overlay focuses.
 
-## Local warlord tree, 72 focuses
+## Local warlord tree, 68 focuses
 
 | Route | Unlock | Main mechanic | Major payoff | Tradeoff | AI |
 | --- | --- | --- | --- | --- | --- |
 | Opening survival | Country creation | Capital, first Larder, emergency units | Stable playable start | Consumes local resources | All |
 | Personal tyranny | Early hierarchy choice | Leader authority and purges | Elite Bone Guard and fast command | Succession and low commander depth | Suspicious or dominant warlords |
-| Feast council | Early hierarchy choice | Captain factions and votes | Administration and commanders | Slower decisions and rivalry | Multi-state and Prison Hosts |
+| Feast council | Early hierarchy choice | Captain factions and votes | Administration and commanders | Slower decisions and rivalry | Multi-state Hosts with rival captains |
 | Pack confederacy | Early hierarchy choice | Distributed warbands | Mobility and anti-decapitation | Weak central industry | March Hosts and defiant AI |
 | Rapid consumption | Larder fork | Immediate population conversion | Fast recruitment and Frenzy | State exhaustion | Aggressive AI |
 | Managed herds | Larder fork | Slower controlled consumption | Long-term Larder | Resistance and administration | Defensive AI |
-| Mobile Larder | Larder fork | Transport and prisoner columns | Expansion logistics | Convoy, train, and fuel burden | March and Island AI |
-| Origin overlays | Origin flag | Island, siege, march, and prison units and decisions | Distinct military identity | Origin-specific weakness | Matching archetype |
+| Mobile Larder | Larder fork | Transport columns and mobile stores | Expansion logistics | Convoy, train, and fuel burden | March and Island AI |
+| Origin overlays | Origin flag | Island, siege, and march units and decisions | Distinct military identity | Origin-specific weakness | Matching archetype |
 | Terror and cells | Mid tree | Foreign seeding and fear | Front collapse before invasion | Exposure and cadre losses | Charismatic or network AI |
 | Network alignment | Evolution II | Shared orders | Reinforcement and smooth submission | Autonomy loss | Network disciple |
 | Network manipulation | Evolution II | Steal routes and Larder | Host-selection leverage | High discovery risk | Hoarder or opportunist AI |
@@ -47,7 +47,7 @@ The unified tree's short, normal, and terminal cadences are 21, 35, and 56 days.
 | Merge trunk | In-place original ZZZ transformation | Both inherited systems preserved | Normal Pack queue closes immediately. Paid recruitment only |
 | Winter hunger | Cold and supply warfare | Harsh-terrain dominance | Anchors and Larder floor |
 | Paid Pack progression | Two-Pack muster, one-Pack receipt muster, three support stages | Growing locked Pack template | Exact population, Larder, equipment, capacity, and receipt caps |
-| Cannibal inheritance | Four origin-template upgrades and two commander stages | Existing inherited units and captains deepen | Only live inherited flags, templates, and characters qualify |
+| Cannibal inheritance | Three origin-template upgrades and two commander stages | Existing inherited units and captains deepen | Only live inherited flags, templates, and characters qualify |
 | Inherited winter cells | Paid disruption of a real existing enemy cell | Supply and planning pressure | Current enemy, live cell, usable population, target lock |
 | Terminal hunt | Launch, maintained mission, pressure action, defender break | Bounded transformation progress | 120-day mission, counterpressure, route break, anchors, and paid costs |
 | Transformation countdown | Anchor states and pulse processing | Terminal readiness | Counterwar can break anchors and route |

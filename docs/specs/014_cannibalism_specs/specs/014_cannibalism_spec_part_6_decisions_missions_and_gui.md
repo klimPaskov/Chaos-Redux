@@ -365,7 +365,7 @@ Success:
 
 Failure:
 
-- Prison Host sequence advances
+- the prison node strengthens and nearby warlord emergence accelerates through the normal geographic origin rules
 
 ### Reach the island
 
@@ -749,6 +749,8 @@ The maintained mission layer contains exactly eight families:
 8. stop transformation
 
 The final six use runtime durations, capped progress, persisted state or country targets, node or actor generation checks where relevant, and separate full, partial, failure, timeout, and cancellation outcomes. Objective pulse work iterates only the bounded actor and objective-country registries.
+
+Incarnation reset begins with one idempotent cleanup effect covering exactly 14 timed missions: the two baseline missions, six maintained objectives, compact vigilance, four unified receipt missions, and the Wendigo terminal hunt. The cleanup removes each family before clearing its runtime state. The terminal-hunt global target is cleared only when the resetting country owns that hunt, so another actor's reset cannot destroy an unrelated active hunt.
 
 Seven paid action families close the previously missing action layer: officer-chain replacement, ritual-cell infiltration, ritual-economy disruption, silent-island reconnaissance, feeding-state liberation, network-submission preparation, and network-resistance preparation. Every action has a real resource gate and payment, a cooldown or one-shot lifecycle, route-aware AI, and cleanup. None grants free units, equipment, population, or Larder.
 

@@ -44,22 +44,58 @@ cannibalism_calculate_current_wendigo_merge_host_score = {
 	}
 }
 
-cannibalism_select_wendigo_merge_host = {
-	clear_global_event_target = cannibalism_wendigo_merge_host
-	set_temp_variable = { cannibalism_best_wendigo_merge_host_score = 0 }
-	every_country = {
-		limit = { cannibalism_is_valid_wendigo_merge_host = yes }
-		cannibalism_calculate_current_wendigo_merge_host_score = yes
-		if = {
-			limit = {
+cannibalism_consider_current_wendigo_merge_host_candidate = {
+	set_temp_variable = { cannibalism_current_wendigo_merge_host_id = THIS.id }
+	cannibalism_calculate_current_wendigo_merge_host_score = yes
+	if = {
+		limit = {
+			OR = {
 				check_variable = {
 					var = cannibalism_current_wendigo_merge_host_score
 					value = cannibalism_best_wendigo_merge_host_score
 					compare = greater_than
 				}
+				AND = {
+					check_variable = {
+						var = cannibalism_current_wendigo_merge_host_score
+						value = cannibalism_best_wendigo_merge_host_score
+						compare = equals
+					}
+					check_variable = {
+						var = cannibalism_current_wendigo_merge_host_id
+						value = cannibalism_best_wendigo_merge_host_id
+						compare = less_than
+					}
+				}
 			}
-			set_temp_variable = { cannibalism_best_wendigo_merge_host_score = cannibalism_current_wendigo_merge_host_score }
-			save_global_event_target_as = cannibalism_wendigo_merge_host
+		}
+		set_temp_variable = { cannibalism_best_wendigo_merge_host_score = cannibalism_current_wendigo_merge_host_score }
+		set_temp_variable = { cannibalism_best_wendigo_merge_host_id = cannibalism_current_wendigo_merge_host_id }
+		save_global_event_target_as = cannibalism_wendigo_merge_host
+	}
+}
+
+cannibalism_select_wendigo_merge_host = {
+	clear_global_event_target = cannibalism_wendigo_merge_host
+	set_temp_variable = { cannibalism_best_wendigo_merge_host_score = 0 }
+	set_temp_variable = { cannibalism_best_wendigo_merge_host_id = 0 }
+	set_temp_variable = { cannibalism_human_wendigo_merge_host_found = 0 }
+	every_country = {
+		limit = {
+			cannibalism_is_valid_wendigo_merge_host = yes
+			is_ai = no
+		}
+		set_temp_variable = { cannibalism_human_wendigo_merge_host_found = 1 }
+		cannibalism_consider_current_wendigo_merge_host_candidate = yes
+	}
+	if = {
+		limit = { check_variable = { cannibalism_human_wendigo_merge_host_found < 1 } }
+		every_country = {
+			limit = {
+				cannibalism_is_valid_wendigo_merge_host = yes
+				is_ai = yes
+			}
+			cannibalism_consider_current_wendigo_merge_host_candidate = yes
 		}
 	}
 	set_variable = { global.cannibalism_wendigo_merge_host_score = cannibalism_best_wendigo_merge_host_score }
@@ -241,10 +277,6 @@ cannibalism_open_wendigo_inherited_cannibal_recruitment = {
 	if = {
 		limit = { NOT = { has_variable = cannibalism_unified_march_specialists_raised } }
 		set_variable = { cannibalism_unified_march_specialists_raised = constant:cannibalism_unified_profile.zero }
-	}
-	if = {
-		limit = { NOT = { has_variable = cannibalism_unified_prison_specialists_raised } }
-		set_variable = { cannibalism_unified_prison_specialists_raised = constant:cannibalism_unified_profile.zero }
 	}
 	if = {
 		limit = { NOT = { has_variable = cannibalism_wendigo_cannibal_formations_raised } }

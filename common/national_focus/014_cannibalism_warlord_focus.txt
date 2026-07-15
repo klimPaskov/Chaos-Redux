@@ -4,7 +4,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 014 LOCAL WARLORD FOCUS TREE
 # ============================================================================
-# Seventy-two manually authored focuses shared by active Event 014 CBA-CBH
+# Sixty-eight manually authored focuses shared by active Event 014 CBA-CBH
 # warlords. The tree branches through survival, hierarchy, Larder policy,
 # military organization, origin overlays, regional predation, infiltration,
 # and Evolution II network policy without exposing later identities.
@@ -256,7 +256,6 @@ focus_tree = {
 		}
 		ai_will_do = {
 			base = constant:cannibalism_ai.standard
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
 			modifier = { factor = constant:cannibalism_ai.resource_secure_factor num_of_controlled_states > constant:cannibalism_slot.minimum }
 			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.feast_captain } }
 		}
@@ -314,7 +313,6 @@ focus_tree = {
 		}
 		ai_will_do = {
 			base = constant:cannibalism_ai.urgent
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
 			modifier = { factor = constant:cannibalism_ai.resource_secure_factor num_of_controlled_states > constant:cannibalism_slot.minimum }
 		}
 	}
@@ -438,7 +436,6 @@ focus_tree = {
 		}
 		ai_will_do = {
 			base = constant:cannibalism_ai.high
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
 			modifier = { factor = constant:cannibalism_ai.resource_poor_factor check_variable = { cannibalism_frenzy > constant:cannibalism_meter.severe } }
 		}
 	}
@@ -699,7 +696,6 @@ focus_tree = {
 			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_island_host }
 			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_siege_commune }
 			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_march_host }
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
 		}
 	}
 
@@ -1053,89 +1049,6 @@ focus_tree = {
 	}
 
 	# ------------------------------------------------------------------------
-	# Prison Host overlay
-	# ------------------------------------------------------------------------
-
-	focus = {
-		id = cannibalism_warlord_prison_unite_cells_and_guards
-		icon = GFX_goal_cannibalism_warlord_prison_unite_cells_and_guards
-		x = 44
-		y = 6
-		cost = @cannibalism_warlord_focus_short
-		prerequisite = { focus = cannibalism_warlord_the_host_endures }
-		allow_branch = { has_country_flag = cannibalism_origin_prison_host }
-		available = { has_country_flag = cannibalism_origin_prison_host }
-		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_MANPOWER }
-		completion_reward = {
-			custom_effect_tooltip = cannibalism_warlord_prison_unite_cells_and_guards_tt
-			hidden_effect = { cannibalism_warlord_focus_prison_unite_cells_and_guards = yes }
-		}
-		ai_will_do = {
-			base = constant:cannibalism_ai.high
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
-			modifier = { factor = constant:cannibalism_ai.resource_secure_factor num_of_controlled_states > constant:cannibalism_slot.minimum }
-			modifier = { factor = constant:cannibalism_ai.invalid_factor NOT = { has_country_flag = cannibalism_origin_prison_host } }
-		}
-	}
-
-	focus = {
-		id = cannibalism_warlord_prison_infiltrate_the_transfers
-		icon = GFX_goal_cannibalism_warlord_prison_infiltrate_the_transfers
-		x = 44
-		y = 7
-		cost = @cannibalism_warlord_focus_short
-		prerequisite = { focus = cannibalism_warlord_prison_unite_cells_and_guards }
-		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_ANNEXATION }
-		completion_reward = {
-			custom_effect_tooltip = cannibalism_warlord_prison_infiltrate_the_transfers_tt
-			hidden_effect = { cannibalism_warlord_focus_prison_infiltrate_the_transfers = yes }
-		}
-		ai_will_do = {
-			base = constant:cannibalism_ai.urgent
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.charismatic_initiator } }
-			modifier = { factor = constant:cannibalism_ai.terminal_factor has_war = yes }
-		}
-	}
-
-	focus = {
-		id = cannibalism_warlord_prison_arm_the_penal_columns
-		icon = GFX_goal_cannibalism_warlord_prison_arm_the_penal_columns
-		x = 44
-		y = 8
-		cost = @cannibalism_warlord_focus_normal
-		prerequisite = { focus = cannibalism_warlord_prison_infiltrate_the_transfers }
-		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
-		completion_reward = {
-			custom_effect_tooltip = cannibalism_warlord_prison_arm_the_penal_columns_tt
-			hidden_effect = { cannibalism_warlord_focus_prison_arm_the_penal_columns = yes }
-		}
-		ai_will_do = {
-			base = constant:cannibalism_ai.high
-			modifier = { factor = constant:cannibalism_ai.terminal_factor has_war = yes }
-			modifier = { factor = constant:cannibalism_ai.resource_poor_factor check_variable = { cannibalism_larder < constant:cannibalism_unit_cost.origin_specialist_larder } }
-		}
-	}
-
-	focus = {
-		id = cannibalism_warlord_prison_lockhouse_network
-		icon = GFX_goal_cannibalism_warlord_prison_lockhouse_network
-		x = 44
-		y = 9
-		cost = @cannibalism_warlord_focus_normal
-		prerequisite = { focus = cannibalism_warlord_prison_arm_the_penal_columns }
-		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_ANNEXATION }
-		completion_reward = {
-			custom_effect_tooltip = cannibalism_warlord_prison_lockhouse_network_tt
-			hidden_effect = { cannibalism_warlord_focus_prison_lockhouse_network = yes }
-		}
-		ai_will_do = {
-			base = constant:cannibalism_ai.maximum
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.charismatic_initiator } }
-			modifier = { factor = constant:cannibalism_ai.resource_secure_factor num_of_controlled_states > constant:cannibalism_slot.minimum }
-		}
-	}
-
-	# ------------------------------------------------------------------------
 	# Regional expansion, terror, and infiltration
 	# ------------------------------------------------------------------------
 
@@ -1145,7 +1058,7 @@ focus_tree = {
 		x = 34
 		y = 12
 		cost = @cannibalism_warlord_focus_short
-		prerequisite = { focus = cannibalism_warlord_island_archipelago_hunt focus = cannibalism_warlord_siege_city_that_eats focus = cannibalism_warlord_march_moving_front focus = cannibalism_warlord_prison_lockhouse_network }
+		prerequisite = { focus = cannibalism_warlord_island_archipelago_hunt focus = cannibalism_warlord_siege_city_that_eats focus = cannibalism_warlord_march_moving_front }
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		completion_reward = {
 			custom_effect_tooltip = cannibalism_warlord_raid_the_neighboring_states_tt
@@ -1193,7 +1106,6 @@ focus_tree = {
 		}
 		ai_will_do = {
 			base = constant:cannibalism_ai.high
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor has_country_flag = cannibalism_origin_prison_host }
 			modifier = { factor = constant:cannibalism_ai.terminal_factor has_war = yes }
 			modifier = { factor = constant:cannibalism_ai.resource_secure_factor check_variable = { cannibalism_larder < constant:cannibalism_unit_cost.feast_larder } }
 		}

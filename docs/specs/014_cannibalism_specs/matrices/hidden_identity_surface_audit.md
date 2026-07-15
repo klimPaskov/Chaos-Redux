@@ -11,7 +11,7 @@ The hard public boundary is `cannibalism_reveal_complete`. Internal identifiers 
 | Evolution II log | Organized coordination with uncertain source | Historical row stays spoiler-safe | Evolution II title/body remain neutral |
 | Evolution III log | Row cannot exist before trigger | Names Hannibal and unification | Evolution III mappings require reveal state |
 | Ordinary decisions | Containment, cells, networks, and convergence | Counter-Hannibal actions allowed | Named content is post-reveal only |
-| Warlord focuses | Alignment, shared orders, manipulation, and defiance | Submission and resistance can name revealed command | All 72 pre-reveal focus titles/descriptions/tooltips passed the focus audit |
+| Warlord focuses | Alignment, shared orders, manipulation, and defiance | Submission and resistance can name revealed command | All 68 pre-reveal focus titles/descriptions/tooltips passed the focus audit |
 | Scripted GUI | Early crisis and uncertain network | Revealed and transformed command windows | Early/network windows require no reveal. Named portrait windows require reveal |
 | Country names and flags | Regional Host or Commune identity | CBL and transformed cosmetic identities | Public identity transaction follows reveal flag |
 | Warlord portraits | Generic regional leaders | Remain as commanders, governors, servants, or rivals | All 56 are distinct and do not resemble Hannibal |
@@ -25,4 +25,4 @@ The hard public boundary is `cannibalism_reveal_complete`. Internal identifiers 
 | Music and audio UI | No identity metadata displayed | Matching event can expose its public role | Track metadata remains documentation, not an early player surface |
 | Spreadsheet details | Baseline premise | Dedicated evolution and terminal columns contain public-stage facts | Workbook wording mirrors the in-game surfaces |
 
-Strict cultural and likeness boundaries apply in both stages. No surface uses ancient-general, Carthaginian, Punic, actor-likeness, living Indigenous ceremonial, sacred, tribal, or authenticity framing.
+Strict cultural and likeness boundaries apply in both stages. No surface uses an actor likeness or borrows living Indigenous ceremonial, sacred, tribal, or authenticity framing.
