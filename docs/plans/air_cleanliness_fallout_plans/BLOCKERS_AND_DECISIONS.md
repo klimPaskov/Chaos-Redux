@@ -113,7 +113,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema 9 fail-closed policy implemented, full transition still blocked
+Status: schema 10 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -126,14 +126,14 @@ Implemented policy:
 
 - completed Fallout saves are promoted to the current schema without restarting destruction
 - completed legacy saves are marked as lacking current-schema row receipts and receive no fabricated receipts
-- an active schema-7 or schema-8 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- an active schema-7, schema-8, or schema-9 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
 - every other incomplete legacy transition fails closed under blackout
 - an incomplete terminal save with no schema also fails closed under blackout
 - the former schema-3 map-return-error promotion is removed because consumed rows cannot acquire trustworthy Air Winter receipts after the fact
 - migration does not infer safety from a missing `fallout_transition_destructive_started` marker
 - no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The schema-7 and schema-8 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-9 row freezes the live state category separately from the historical Air Winter category. Any ambiguity remains blocked.
+The schema-7, schema-8, and schema-9 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-10 row freezes the live state category separately from the historical Air Winter category and includes the market-access reset contract. Any ambiguity remains blocked.
 
 Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
 
@@ -221,6 +221,24 @@ Missing release work:
 - literal lobby-host authority, schema-2 runtime save-load preservation, and multiplayer behavior remain unproven
 
 Both activation flags remain unset. No ordinary Fallout living-world event can pass its eligibility trigger. Full evidence is recorded in `FALLOUT_EVENT_SCHEDULER_PROOF.md`.
+
+## B10: old-world diplomacy reset
+
+Status: market access resolved by approved precedent, five required surfaces remain blocked
+
+The transaction clears wars, civil-war links, factions, subjects, exiles, guarantees, military access, non-aggression pacts, embargoes, volunteers, collaboration, and purchase contracts with documented effects and documented postcondition triggers. It waits while a peace conference is active.
+
+Market access uses the official generic `diplomatic_relation` cancellation contract, the vanilla `market_access_rights` relation identity, the approved Kaiserreich `clear_relations_with_PREV` cancellation precedent, and the official `has_market_access_with` trigger. The coordinator first dismantles factions and subjects, then applies the cancellation across every country pair, records current-generation application and validation receipts, and requires a global absence result. No Hearts of Iron IV run was performed, so this is static engine and precedent proof only.
+
+Map return still fails closed on these unresolved surfaces:
+
+- docking rights can be cancelled through an officially enumerated relation token, but no exact validation trigger was found
+- expeditionary forces have a documented detector, but no exact return effect was found
+- active lend lease has no complete scripted enumerator and inverse pair
+- ordinary resource trade has a creation effect, but no complete scripted enumerator and inverse pair
+- intelligence has partial detectors and destructive operative effects, but no complete agency, upgrade, network, decryption, capture, and static-intel reset
+
+No fallback reset is active for any of these surfaces.
 
 ## Design decisions already resolved
 

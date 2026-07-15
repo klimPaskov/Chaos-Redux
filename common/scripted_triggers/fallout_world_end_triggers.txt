@@ -1040,7 +1040,7 @@ fallout_state_subtype_modifier_receipt_is_current = {
 }
 
 # Supported scope: STATE. Historical damage identifiers record permanently
-# removed building levels in transition schema 9.
+# removed building levels in transition schema 10.
 fallout_state_building_damage_receipt_is_durable = {
 	has_state_flag = fallout_building_damage_mutation_issued
 	has_state_flag = fallout_building_damage_evaluated
@@ -3219,9 +3219,9 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 	NOT = { any_country = { is_in_peace_conference = yes } }
 }
 
-# Supported scope: COUNTRY. The engine does not expose exact reset and
-# validation pairs for these required old-world surfaces. These flags remain
-# unset until a proven implementation exists.
+# Supported scope: COUNTRY. Market access has an approved-reference reset
+# token and an official validation trigger. The other required surfaces remain
+# fail closed until an exact reset and validation pair is proven.
 fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_global_flag = fallout_transition_old_world_diplomacy_proven_complete
 	fallout_old_world_diplomacy_proven_surfaces_are_clean = yes
@@ -3232,7 +3232,20 @@ fallout_old_world_diplomacy_full_reset_is_verified = {
 	NOT = { has_global_flag = fallout_transition_intelligence_reset_blocked }
 	NOT = { has_global_flag = fallout_transition_expeditionaries_reset_blocked }
 	has_global_flag = fallout_transition_docking_rights_reset_verified
+	has_global_flag = fallout_transition_market_access_reset_applied
 	has_global_flag = fallout_transition_market_access_reset_verified
+	has_variable = global.fallout_transition_market_access_reset_generation
+	has_variable = global.fallout_transition_market_access_verification_generation
+	check_variable = {
+		var = global.fallout_transition_market_access_reset_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_market_access_verification_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
 	has_global_flag = fallout_transition_lend_lease_reset_verified
 	has_global_flag = fallout_transition_trade_routes_reset_verified
 	has_global_flag = fallout_transition_intelligence_reset_verified
