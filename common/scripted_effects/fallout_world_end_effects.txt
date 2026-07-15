@@ -4202,6 +4202,10 @@ fallout_apply_transition_phase_government_sorting = {
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_survivor_allocation = {
 	if = {
+		limit = { fallout_recoverable_survival_ledger_identity_error_is_active = yes }
+		fallout_recover_uncommitted_survival_ledger_identity_transaction = yes
+	}
+	if = {
 		limit = {
 			has_global_flag = fallout_successor_allocation_initialized
 			OR = {
@@ -4250,7 +4254,7 @@ fallout_apply_transition_phase_survivor_allocation = {
 		}
 		set_variable = { global.fallout_event_initialization_status = constant:fallout_event_initialization_status.survival_ledger_pending }
 		if = {
-			limit = { NOT = { has_global_flag = fallout_survival_ledger_identity_staged } }
+			limit = { NOT = { fallout_survival_ledger_identity_is_current = yes } }
 			fallout_stage_survival_ledger_identity_transaction = yes
 		}
 	}

@@ -83,6 +83,20 @@ fallout_reset_uncommitted_survival_ledger = {
 	}
 }
 
+# Supported scope: COUNTRY coordinator. This consumes only the exact
+# uncommitted identity-build error, then rebuilds the complete identity payload
+# through the ordinary staging transaction. A failed retry owns the same sole
+# error signature again.
+fallout_recover_uncommitted_survival_ledger_identity_transaction = {
+	if = {
+		limit = { fallout_recoverable_survival_ledger_identity_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+		fallout_stage_survival_ledger_identity_transaction = yes
+	}
+}
+
 # Supported scope: COUNTRY coordinator. This is the formula-neutral first
 # phase of the survival transaction. It freezes all-and-only allocated country
 # and state identities plus the producer generations required by later math.
@@ -91,6 +105,14 @@ fallout_stage_survival_ledger_identity_transaction = {
 		limit = {
 			NOT = { has_global_flag = fallout_survival_ledger_ready }
 			NOT = { has_global_flag = fallout_transition_error }
+			NOT = { has_global_flag = fallout_transition_survivor_allocation_applied }
+			NOT = { has_global_flag = fallout_transition_player_continuation_applied }
+			check_variable = {
+				var = global.fallout_transition_phase
+				value = constant:fallout_transition_phase.survivor_allocation
+				compare = equals
+			}
+			fallout_player_planning_ledger_is_current = yes
 			fallout_successor_allocation_is_current = yes
 			NOT = { has_global_flag = fallout_player_continuation_commit_complete }
 		}
