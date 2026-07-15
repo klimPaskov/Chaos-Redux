@@ -22,6 +22,151 @@ air_winter_state_is_valid = {
 	NOT = { has_state_flag = air_winter_excluded }
 }
 
+# Supported scope: any. One global generation is opened for each complete
+# Fallout snapshot attempt, including retries on the same date.
+air_winter_fallout_snapshot_generation_is_open = {
+	has_variable = global.air_winter_fallout_snapshot_producer_schema_version
+	has_variable = global.air_winter_fallout_snapshot_producer_generation
+	check_variable = {
+		var = global.air_winter_fallout_snapshot_producer_schema_version
+		value = constant:air_winter_fallout_snapshot_schema.version
+		compare = equals
+	}
+	check_variable = { global.air_winter_fallout_snapshot_producer_generation > constant:air_winter_runtime.zero }
+}
+
+# Supported scope: STATE. This is the Air Winter-owned canonical payload
+# contract. A state receives a producer receipt only after every field passes.
+air_winter_fallout_snapshot_payload_is_canonical = {
+	air_winter_state_is_valid = yes
+	has_state_flag = air_winter_initialized
+	has_state_flag = air_winter_original_category_recorded
+	has_variable = air_winter_original_category
+	has_variable = air_winter_phase
+	has_variable = air_winter_exposure
+	has_variable = air_winter_recovery
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_food_reserve
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_water_security
+	check_variable = {
+		var = air_winter_original_category
+		value = constant:air_winter_state_category.wasteland
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_original_category
+		value = constant:air_winter_state_category.large_island
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_phase
+		value = constant:air_winter_phase.clear
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_phase
+		value = constant:air_winter_phase.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_recovery
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_recovery
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_food_reserve
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_food_reserve
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_shelter_capacity
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_shelter_capacity
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_reclamation
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_reclamation
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_ledger.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_ledger.maximum
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE. This receipt proves that Air Winter produced the
+# canonical row during the currently open Fallout snapshot generation.
+air_winter_fallout_snapshot_source_receipt_is_current = {
+	air_winter_fallout_snapshot_generation_is_open = yes
+	air_winter_fallout_snapshot_payload_is_canonical = yes
+	has_state_flag = air_winter_fallout_snapshot_produced
+	has_variable = air_winter_fallout_snapshot_producer_schema_version
+	has_variable = air_winter_fallout_snapshot_producer_generation
+	check_variable = {
+		var = air_winter_fallout_snapshot_producer_schema_version
+		value = constant:air_winter_fallout_snapshot_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = air_winter_fallout_snapshot_producer_schema_version
+		value = global.air_winter_fallout_snapshot_producer_schema_version
+		compare = equals
+	}
+	check_variable = {
+		var = air_winter_fallout_snapshot_producer_generation
+		value = global.air_winter_fallout_snapshot_producer_generation
+		compare = equals
+	}
+}
+
 # Supported scope: STATE
 air_winter_is_phase_0 = {
 	check_variable = { air_winter_phase = constant:air_winter_phase.clear }

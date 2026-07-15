@@ -161,6 +161,174 @@ fallout_state_has_live_nuclear_fallout = {
 	check_variable = { nuclear_fallout_intensity > constant:fallout_runtime.zero }
 }
 
+# Supported scope: STATE. This proof reads only the frozen row. It remains
+# valid after Air Winter changes, ownership changes, or the live receipt clears.
+fallout_pretransition_air_winter_source_is_structurally_current = {
+	has_variable = global.fallout_pretransition_air_winter_ledger_schema_version
+	has_variable = global.fallout_pretransition_air_winter_ledger_generation
+	has_state_flag = fallout_pretransition_air_winter_provenance_recorded
+	has_variable = fallout_pretransition_air_winter_source_kind
+	has_variable = fallout_pretransition_air_winter_source_schema_version
+	has_variable = fallout_pretransition_air_winter_source_generation
+	has_variable = fallout_pretransition_air_winter_phase
+	has_variable = fallout_pretransition_air_winter_exposure
+	has_variable = fallout_pretransition_air_winter_recovery
+	has_variable = fallout_pretransition_air_winter_adaptation
+	has_variable = fallout_pretransition_air_winter_food_reserve
+	has_variable = fallout_pretransition_air_winter_shelter_capacity
+	has_variable = fallout_pretransition_air_winter_reclamation
+	has_variable = fallout_pretransition_air_winter_water_security
+	has_variable = fallout_pretransition_air_winter_original_category
+	check_variable = {
+		var = fallout_pretransition_air_winter_source_schema_version
+		value = constant:air_winter_fallout_snapshot_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_pretransition_air_winter_source_schema_version
+		value = global.fallout_pretransition_air_winter_ledger_schema_version
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_pretransition_air_winter_source_generation
+		value = global.fallout_pretransition_air_winter_ledger_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_pretransition_air_winter_original_category
+		value = constant:air_winter_state_category.wasteland
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_pretransition_air_winter_original_category
+		value = constant:air_winter_state_category.large_island
+		compare = less_than_or_equals
+	}
+	OR = {
+		AND = {
+			check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+			check_variable = {
+				var = fallout_pretransition_air_winter_phase
+				value = constant:air_winter_phase.clear
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_phase
+				value = constant:air_winter_phase.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_exposure
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_exposure
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_recovery
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_recovery
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_adaptation
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_adaptation
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_food_reserve
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_food_reserve
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_shelter_capacity
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_shelter_capacity
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_reclamation
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_reclamation
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_water_security
+				value = constant:air_winter_ledger.minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_pretransition_air_winter_water_security
+				value = constant:air_winter_ledger.maximum
+				compare = less_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable }
+			check_variable = { fallout_pretransition_air_winter_phase = constant:air_winter_fallout_snapshot_not_applicable.phase }
+			check_variable = { fallout_pretransition_air_winter_exposure = constant:air_winter_fallout_snapshot_not_applicable.exposure }
+			check_variable = { fallout_pretransition_air_winter_recovery = constant:air_winter_fallout_snapshot_not_applicable.recovery }
+			check_variable = { fallout_pretransition_air_winter_adaptation = constant:air_winter_fallout_snapshot_not_applicable.adaptation }
+			check_variable = { fallout_pretransition_air_winter_food_reserve = constant:air_winter_fallout_snapshot_not_applicable.food_reserve }
+			check_variable = { fallout_pretransition_air_winter_shelter_capacity = constant:air_winter_fallout_snapshot_not_applicable.shelter_capacity }
+			check_variable = { fallout_pretransition_air_winter_reclamation = constant:air_winter_fallout_snapshot_not_applicable.reclamation }
+			check_variable = { fallout_pretransition_air_winter_water_security = constant:air_winter_fallout_snapshot_not_applicable.water_security }
+		}
+	}
+}
+
+# Supported scope: STATE. This capture-only proof binds a produced frozen row
+# to the live Air Winter receipt. N/A is accepted only for an invalid state.
+fallout_pretransition_air_winter_source_matches_capture = {
+	fallout_pretransition_air_winter_source_is_structurally_current = yes
+	OR = {
+		AND = {
+			check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+			air_winter_fallout_snapshot_source_receipt_is_current = yes
+			check_variable = { var = fallout_pretransition_air_winter_source_schema_version value = air_winter_fallout_snapshot_producer_schema_version compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_source_generation value = air_winter_fallout_snapshot_producer_generation compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_phase value = air_winter_phase compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_exposure value = air_winter_exposure compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_recovery value = air_winter_recovery compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_adaptation value = air_winter_adaptation compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_food_reserve value = air_winter_food_reserve compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_shelter_capacity value = air_winter_shelter_capacity compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_reclamation value = air_winter_reclamation compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_water_security value = air_winter_water_security compare = equals }
+			check_variable = { var = fallout_pretransition_air_winter_original_category value = air_winter_original_category compare = equals }
+		}
+		AND = {
+			check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable }
+			NOT = { air_winter_state_is_valid = yes }
+		}
+	}
+}
+
 # Supported scope: COUNTRY
 fallout_pretransition_country_snapshot_row_is_current = {
 	has_country_flag = fallout_pretransition_country
@@ -239,22 +407,8 @@ fallout_pretransition_state_snapshot_row_is_structurally_current = {
 	has_variable = fallout_pretransition_resource_steel
 	has_variable = fallout_pretransition_days_since_bombing
 	has_variable = fallout_pretransition_nuclear_fallout_intensity
-	has_variable = fallout_pretransition_air_winter_phase
-	has_variable = fallout_pretransition_air_winter_exposure
-	has_variable = fallout_pretransition_air_winter_recovery
-	has_variable = fallout_pretransition_air_winter_adaptation
-	has_variable = fallout_pretransition_air_winter_food_reserve
-	has_variable = fallout_pretransition_air_winter_shelter_capacity
-	has_variable = fallout_pretransition_air_winter_reclamation
-	has_variable = fallout_pretransition_air_winter_water_security
-	has_variable = fallout_pretransition_air_winter_original_category
+	fallout_pretransition_air_winter_source_is_structurally_current = yes
 	check_variable = { fallout_pretransition_population_k > constant:fallout_runtime.negative_one }
-	check_variable = { fallout_pretransition_air_winter_original_category > constant:fallout_runtime.negative_one }
-	check_variable = {
-		var = fallout_pretransition_air_winter_original_category
-		value = constant:air_winter_state_category.large_island
-		compare = less_than_or_equals
-	}
 	check_variable = {
 		var = fallout_pretransition_snapshot_generation
 		value = global.fallout_snapshot_epoch_generation
@@ -268,6 +422,7 @@ fallout_pretransition_state_snapshot_row_is_structurally_current = {
 # capture-time proof only. Durable rewrite receipts use the structural row.
 fallout_pretransition_state_snapshot_row_is_current = {
 	fallout_pretransition_state_snapshot_row_is_structurally_current = yes
+	fallout_pretransition_air_winter_source_matches_capture = yes
 	OWNER = { tag = var:PREV.fallout_original_owner_scope }
 	CONTROLLER = { tag = var:PREV.fallout_original_controller_scope }
 }
@@ -281,6 +436,14 @@ fallout_world_snapshot_rows_are_current = {
 	has_variable = global.fallout_pretransition_chaos_meter_value
 	has_variable = global.fallout_pretransition_air_contamination_bp
 	has_variable = global.fallout_pretransition_date
+	has_variable = global.fallout_pretransition_air_winter_ledger_schema_version
+	has_variable = global.fallout_pretransition_air_winter_ledger_generation
+	check_variable = {
+		var = global.fallout_pretransition_air_winter_ledger_schema_version
+		value = constant:air_winter_fallout_snapshot_schema.version
+		compare = equals
+	}
+	check_variable = { global.fallout_pretransition_air_winter_ledger_generation > constant:fallout_runtime.zero }
 	check_variable = {
 		var = global.fallout_snapshot_epoch_generation
 		value = global.fallout_transition_generation
@@ -331,11 +494,83 @@ fallout_world_snapshot_rows_are_current = {
 		input = {
 			input = game:all_states
 			operators = {
+				limit = { NOT = { fallout_pretransition_state_snapshot_row_is_structurally_current = yes } }
+			}
+		}
+		value = constant:fallout_runtime.zero
+	}
+}
+
+# Supported scope: any. This stronger proof is used only in the synchronous
+# capture transaction. It compares owner, controller, and Air Winter producer
+# values to the frozen row before the complete flag can be written.
+fallout_world_snapshot_capture_rows_are_current = {
+	fallout_world_snapshot_rows_are_current = yes
+	collection_size = {
+		input = {
+			input = game:all_states
+			operators = {
 				limit = { NOT = { fallout_pretransition_state_snapshot_row_is_current = yes } }
 			}
 		}
 		value = constant:fallout_runtime.zero
 	}
+}
+
+# Supported scope: COUNTRY. A rebuild is legal only inside the short pre-lock
+# transaction or while an active current-schema transition remains in phase 1.
+fallout_snapshot_epoch_rebuild_is_allowed = {
+	NOT = { has_global_flag = fallout_transition_snapshot_applied }
+	NOT = { has_global_flag = fallout_transition_destructive_started }
+	has_variable = global.fallout_transition_schema_version
+	has_variable = global.fallout_transition_phase
+	check_variable = {
+		var = global.fallout_transition_schema_version
+		value = constant:fallout_world_end_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_phase
+		value = constant:fallout_transition_phase.snapshot
+		compare = equals
+	}
+	OR = {
+		AND = {
+			has_global_flag = fallout_snapshot_prelock_capture_authorized
+			has_global_flag = fallout_request_pending
+			NOT = { has_global_flag = fallout_transition_active }
+			fallout_current_country_is_coordinator = yes
+		}
+		AND = {
+			has_global_flag = world_end_fallout
+			has_global_flag = fallout_transition_active
+			fallout_current_country_is_coordinator = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Blackout and world-end ownership may be committed
+# only after both halves of the shared snapshot epoch pass their full proofs.
+fallout_snapshot_epoch_is_ready_to_lock = {
+	has_global_flag = fallout_request_pending
+	NOT = { has_global_flag = fallout_request_locked }
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_transition_error }
+	fallout_current_country_is_coordinator = yes
+	check_variable = {
+		var = global.fallout_transition_schema_version
+		value = constant:fallout_world_end_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_phase
+		value = constant:fallout_transition_phase.snapshot
+		compare = equals
+	}
+	has_global_flag = fallout_player_snapshot_complete
+	fallout_player_snapshot_ledger_is_current = yes
+	has_global_flag = fallout_world_snapshot_complete
+	fallout_world_snapshot_capture_rows_are_current = yes
 }
 
 # Supported scope: STATE. This validates the deterministic grading receipt

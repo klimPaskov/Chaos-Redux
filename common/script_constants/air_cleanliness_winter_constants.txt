@@ -3,8 +3,8 @@
 # ============================================================================
 # Shared tuning for the deterministic state-scoped Air Winter lifecycle.
 # The host integration calls one begin helper, updates each valid state once,
-# and calls one finalize helper. Fallout transition logic is intentionally not
-# owned by this file.
+# and calls one finalize helper. Air Winter also owns the versioned producer
+# receipt used when Fallout freezes these state values.
 # ============================================================================
 
 air_winter_phase = {
@@ -76,6 +76,48 @@ air_winter_presentation_ledger = {
 	}
 
 	schema_version = 1
+}
+
+# Fallout opens one producer generation inside its existing state snapshot
+# pass. Air Winter alone validates and stamps the live state payload. Fallout
+# stores the resulting receipt with its frozen row.
+air_winter_fallout_snapshot_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
+air_winter_fallout_snapshot_source_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	produced = 1
+	not_applicable = 2
+	upper_bound = 3
+}
+
+# States outside the Air Winter gameplay domain receive one deliberate N/A
+# payload. These values are data, not inferred defaults.
+air_winter_fallout_snapshot_not_applicable = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	phase = 0
+	exposure = 0
+	recovery = 0
+	adaptation = 0
+	food_reserve = 0
+	shelter_capacity = 0
+	reclamation = 0
+	water_security = 0
 }
 
 air_winter_state_category = {

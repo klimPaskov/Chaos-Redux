@@ -103,7 +103,7 @@ The initialization effects record one owned error for reveal, allocation, or reg
 The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are not accepted. Cohesion and Reclamation remain separate mechanics. The full state and country receipt transaction is not implemented.
-- The frozen Fallout snapshot currently permits zero-seeded Air Winter fields when the producer is absent. Survival initialization must require an explicit producer-generation receipt or initialize the canonical state row before capture.
+- Schema 8 authenticates frozen Air Winter rows with an Air-owned producer schema and generation. Valid rows use exact produced values. Invalid rows use a typed N/A payload. Survival initialization may consume only this frozen provenance contract.
 - Active arc slots, delayed-result tickets, bilateral reservations, target-loss handling, hidden AI resolution, cleanup recovery, and scheduler debug display are not implemented.
 - The five orientation components have receipts but no Fallout orientation event content.
 - Literal multiplayer lobby-host identity remains unavailable in the documented script surface. The live authority is the project coordinator.

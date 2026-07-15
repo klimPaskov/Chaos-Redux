@@ -38,7 +38,7 @@ The live Fallout package includes:
 
 - `fallout_request_aftermath` and request validation
 - one project-coordinator reconciliation path with an at-most-once global-date receipt
-- a versioned transition envelope with schema 7
+- a versioned transition envelope with schema 8
 - blackout GUI state and phase events
 - player and world snapshots
 - deterministic state grading and survival values
@@ -99,11 +99,13 @@ Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback
 
 ## Transition and migration boundary
 
-Schema-7 migration is fail closed:
+Schema-8 migration is fail closed:
 
 - completed saves are promoted non-destructively
-- only the exact schema-3 map-return-error signature is recovered
-- every other incomplete schema 1 through 3 state remains under blackout
+- active schema-7 saves rebuild only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- completed legacy saves are marked as lacking row-level Air Winter provenance and receive no fabricated receipts
+- the former schema-3 map-return-error promotion is removed
+- every other incomplete legacy state remains under blackout
 - an incomplete terminal state with no schema remains under blackout
 - migration does not infer that a missing `fallout_transition_destructive_started` marker means an old transition is safe
 - no generic pre-destructive restart and no legacy altered-grade replay are active behavior
@@ -112,7 +114,7 @@ Completed legacy Fallout saves have no proven reveal date. Migration does not in
 
 Player source reservation is separate from final destination materialization. Every snapshot-origin human state is reserved before the successor inventory is frozen. A landless human is retained as an explicit emergency-materialization source instead of raising a false missing-anchor error. Derived inventory schema 1 binds every row to the active transition generation. The validator checks every live country, every possible country scope, every state, exact candidate and reservation membership, human ownership and control, known overlapping event-package ownership, and capital consistency. A proposed target is commit-ready only when it already exists, has country and focus packages from the current transition generation, owns survivable territory, and owns and controls the exact capital reserved for that player. A global two-pass preflight validates all existing commits and proposed targets before any player switch. Exact single-error signatures can re-enter snapshot, reservation, inventory, peace-conference, or player-commit paths without taking ownership from another failure. Once allocation initialization consumes the reservation ledger, later drift records its own fail-closed error and cannot rebuild those rows.
 
-World transition schema 7 makes the snapshot, grading, population-loss, and physical-collapse ledgers hard phase barriers. One epoch freezes every player, state, and country input used by grading, survival, population targeting, category conversion, and provisional government classification. Exact live owner and controller equality is checked at capture. Later durable rows retain the frozen scopes without requiring ownership to remain unchanged. Grading rows recompute score and survival from frozen inputs. Population rows recompute the grade request and reconcile the Deaths result without calling it twice. Physical rows prove five state-building families independently, unchanged or converted state category, supply collapse, exact grade and subtype modifiers, and rewrite generation. Phase-local population and building checks require current engine observations before advancing. Map return uses durable transaction receipts, so later normal population change or repair does not invalidate completed destruction. Province rail and supply-node damage is excluded until per-province selection can be proved. Each phase advances only after every state row passes. Government classifier schema 2 aggregates the frozen rows before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The provisional result is stored separately from the final package archetype. The classifier does not change politics or activate content.
+World transition schema 8 makes the snapshot, grading, population-loss, and physical-collapse ledgers hard phase barriers. One epoch freezes every player, state, and country input used by grading, survival, population targeting, category conversion, and provisional government classification. Air Winter owns a versioned live producer receipt. Valid states initialize and normalize through that producer before exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and complete Air-owned payload. Exact live owner and controller equality is also checked at capture. Blackout and world-end flags are committed only after both snapshot halves pass. Later durable rows retain frozen scopes and Air Winter provenance without requiring ownership or live climate values to remain unchanged. Grading rows recompute score and survival from frozen inputs. Population rows recompute the grade request and reconcile the Deaths result without calling it twice. Physical rows prove five state-building families independently, unchanged or converted state category, supply collapse, exact grade and subtype modifiers, and rewrite generation. Phase-local population and building checks require current engine observations before advancing. Map return uses durable transaction receipts, so later normal population change or repair does not invalidate completed destruction. Province rail and supply-node damage is excluded until per-province selection can be proved. Each phase advances only after every state row passes. Government classifier schema 2 aggregates the frozen rows before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The provisional result is stored separately from the final package archetype. The classifier does not change politics or activate content.
 
 The conflict inventory is not an allocator. It does not choose tags, final package layers, conflict results, or cleanup owners. Its known package-ownership helper must be reviewed again against the live repository before ownership changes begin. Successor allocation schema 2 requires each input row to retain its frozen generation, leave the pending state, and own current resolution and cleanup generations. Each non-retired input row and output assignment must name each other, match resolution and generation, and share the same cleanup owner. Converted, released, and dynamically created outputs require distinct current-generation provenance receipts. Frozen possible-country membership is not release proof. A retired input must be landless and cannot name an output. The proof also cross-links every player-reserved source to the same continuation target, requires unique assigned countries and capitals, exact live-landholder coverage, and current package generations. Its guarded finalizer is the only setter for `fallout_successor_allocation_complete`, but no active allocator calls it or produces the required rows.
 
@@ -145,6 +147,7 @@ The old-world diplomacy proof gate also remains unresolved. Map return must stay
 - Manual scenario contract and release gates: `MANUAL_FALLOUT_SCENARIO_PLAN.md`
 - Current hard blockers and accepted decisions: `BLOCKERS_AND_DECISIONS.md`
 - Transition ordering and postconditions: `FALLOUT_TRANSITION_ARCHITECTURE.md`
+- Air Winter snapshot provenance and transactional lock: `FALLOUT_AIR_WINTER_SNAPSHOT_PROVENANCE_PROOF.md`
 - Source-of-truth routing: `SOURCE_OF_TRUTH_RECONCILIATION.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
 - Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`

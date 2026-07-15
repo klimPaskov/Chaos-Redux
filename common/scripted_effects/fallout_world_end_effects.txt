@@ -80,6 +80,18 @@ fallout_queue_request_envelope = {
 	}
 }
 
+# Supported scope: COUNTRY. This clears an uncommitted request without touching
+# a completed cause-memory ledger or any active Fallout transition.
+fallout_clear_pending_request_envelope = {
+	clr_global_flag = fallout_request_pending
+	clear_variable = global.fallout_request_source
+	clear_variable = global.fallout_request_intensity
+	clear_variable = global.fallout_request_date
+	clear_global_event_target = fallout_request_actor
+	clear_global_event_target = fallout_request_state
+	clear_global_event_target = fallout_transition_coordinator
+}
+
 # Supported scope: COUNTRY
 fallout_validate_pending_request = {
 	if = {
@@ -92,13 +104,7 @@ fallout_validate_pending_request = {
 	}
 	else_if = {
 		limit = { has_global_flag = fallout_request_pending }
-		clr_global_flag = fallout_request_pending
-		clear_variable = global.fallout_request_source
-		clear_variable = global.fallout_request_intensity
-		clear_variable = global.fallout_request_date
-		clear_global_event_target = fallout_request_actor
-		clear_global_event_target = fallout_request_state
-		clear_global_event_target = fallout_transition_coordinator
+		fallout_clear_pending_request_envelope = yes
 	}
 }
 
@@ -137,21 +143,36 @@ fallout_toggle_system_scenario_disabled = {
 # Supported scope: COUNTRY
 fallout_lock_transition = {
 	set_variable = { global.fallout_transition_generation = global.date }
-	clr_global_flag = fallout_transition_error
-	set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
-	set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
-	fallout_rebuild_complete_snapshot_epoch = yes
-	clr_global_flag = fallout_request_pending
-	set_global_flag = fallout_request_locked
-	set_global_flag = fallout_transition_active
-	set_global_flag = world_end
-	set_global_flag = world_end_fallout
 	set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.snapshot }
-	set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
 	set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
-	fallout_mark_blackout_gui_dirty = yes
-	fallout_dispatch_blackout_audio = yes
-	fallout_schedule_current_transition_phase = yes
+	clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
+	clr_global_flag = fallout_snapshot_prelock_capture_authorized
+	fallout_clear_recoverable_player_snapshot_error = yes
+	fallout_clear_recoverable_snapshot_error = yes
+	if = {
+		limit = { NOT = { has_global_flag = fallout_transition_error } }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+	}
+	set_global_flag = fallout_snapshot_prelock_capture_authorized
+	fallout_rebuild_complete_snapshot_epoch = yes
+	clr_global_flag = fallout_snapshot_prelock_capture_authorized
+	if = {
+		limit = { fallout_snapshot_epoch_is_ready_to_lock = yes }
+		clr_global_flag = fallout_request_pending
+		set_global_flag = fallout_request_locked
+		set_global_flag = fallout_transition_active
+		set_global_flag = world_end
+		set_global_flag = world_end_fallout
+		set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
+		fallout_dispatch_blackout_audio = yes
+		fallout_schedule_current_transition_phase = yes
+	}
+	else_if = {
+		limit = { fallout_request_source_is_manual = yes }
+		fallout_clear_pending_request_envelope = yes
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -236,36 +257,32 @@ fallout_world_end_migrate_save = {
 				has_global_flag = fallout_transition_active
 				NOT = { has_global_flag = fallout_active }
 				NOT = { has_global_flag = fallout_transition_complete }
-				NOT = { has_global_flag = fallout_transition_map_return_applied }
-				has_global_flag = fallout_transition_map_return_blocked
-				has_global_flag = fallout_transition_error
+				NOT = { has_global_flag = fallout_transition_snapshot_applied }
+				NOT = { has_global_flag = fallout_transition_destructive_started }
 				check_variable = {
 					var = global.fallout_transition_schema_version
-					value = constant:fallout_world_end_schema.legacy_map_return_error_version
+					value = constant:fallout_world_end_schema.previous_air_winter_provenance_version
 					compare = equals
 				}
 				check_variable = {
 					var = global.fallout_transition_phase
-					value = constant:fallout_transition_phase.map_return
+					value = constant:fallout_transition_phase.snapshot
 					compare = equals
 				}
-				check_variable = {
-					var = global.fallout_transition_error_code
-					value = constant:fallout_transition_error_code.map_postcondition_failed
-					compare = equals
-				}
-				check_variable = {
-					var = global.fallout_transition_error_count
-					value = constant:fallout_runtime.one
-					compare = equals
+				OR = {
+					NOT = { has_global_flag = fallout_transition_error }
+					fallout_recoverable_player_snapshot_error_is_active = yes
+					fallout_recoverable_snapshot_error_is_active = yes
 				}
 			}
-			clr_global_flag = fallout_transition_error
 			clr_global_flag = fallout_transition_schema_migration_blocked
 			clr_global_flag = fallout_transition_phase_event_scheduled
-			set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
-			set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
 			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
+			set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+			clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
+			save_global_event_target_as = fallout_transition_coordinator
+			fallout_rebuild_complete_snapshot_epoch = yes
+			fallout_mark_blackout_gui_dirty = yes
 		}
 		else_if = {
 			limit = {
@@ -279,6 +296,7 @@ fallout_world_end_migrate_save = {
 			set_global_flag = fallout_active
 			set_global_flag = fallout_transition_complete
 			set_global_flag = fallout_transition_map_return_applied
+			set_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 			set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.complete }
 			clr_global_flag = fallout_transition_schema_migration_blocked
 			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
@@ -819,19 +837,24 @@ fallout_take_world_snapshot = {
 			clr_state_flag = fallout_pretransition_biological_contamination
 			clr_state_flag = fallout_pretransition_direct_manual_target
 			clr_state_flag = fallout_pretransition_coastal
+			clr_state_flag = fallout_pretransition_air_winter_provenance_recorded
 			clear_variable = fallout_pretransition_capital_country
 			clear_variable = fallout_pretransition_player_owner
 			set_variable = { fallout_pretransition_nuclear_fallout_intensity = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_phase = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_exposure = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_recovery = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_adaptation = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_food_reserve = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_shelter_capacity = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_reclamation = constant:fallout_runtime.zero }
-			set_variable = { fallout_pretransition_air_winter_water_security = constant:fallout_runtime.zero }
+			clear_variable = fallout_pretransition_air_winter_source_kind
+			clear_variable = fallout_pretransition_air_winter_source_schema_version
+			clear_variable = fallout_pretransition_air_winter_source_generation
+			clear_variable = fallout_pretransition_air_winter_phase
+			clear_variable = fallout_pretransition_air_winter_exposure
+			clear_variable = fallout_pretransition_air_winter_recovery
+			clear_variable = fallout_pretransition_air_winter_adaptation
+			clear_variable = fallout_pretransition_air_winter_food_reserve
+			clear_variable = fallout_pretransition_air_winter_shelter_capacity
+			clear_variable = fallout_pretransition_air_winter_reclamation
+			clear_variable = fallout_pretransition_air_winter_water_security
 			clear_variable = fallout_pretransition_air_winter_original_category
 			air_winter_record_original_category = yes
+			air_winter_prepare_fallout_snapshot_source = yes
 			set_variable = { fallout_original_owner_scope = OWNER }
 			set_variable = { fallout_original_controller_scope = CONTROLLER }
 			set_variable = { fallout_pretransition_snapshot_generation = global.fallout_snapshot_epoch_generation }
@@ -865,20 +888,47 @@ fallout_take_world_snapshot = {
 			set_variable = { fallout_pretransition_resource_steel = resource@steel }
 			set_variable = { fallout_pretransition_days_since_bombing = days_since_last_strategic_bombing }
 			if = { limit = { has_variable = nuclear_fallout_intensity } set_variable = { fallout_pretransition_nuclear_fallout_intensity = nuclear_fallout_intensity } }
-			if = { limit = { has_variable = air_winter_phase } set_variable = { fallout_pretransition_air_winter_phase = air_winter_phase } }
-			if = { limit = { has_variable = air_winter_exposure } set_variable = { fallout_pretransition_air_winter_exposure = air_winter_exposure } }
-			if = { limit = { has_variable = air_winter_recovery } set_variable = { fallout_pretransition_air_winter_recovery = air_winter_recovery } }
-			if = { limit = { has_variable = air_winter_adaptation } set_variable = { fallout_pretransition_air_winter_adaptation = air_winter_adaptation } }
-			if = { limit = { has_variable = air_winter_food_reserve } set_variable = { fallout_pretransition_air_winter_food_reserve = air_winter_food_reserve } }
-			if = { limit = { has_variable = air_winter_shelter_capacity } set_variable = { fallout_pretransition_air_winter_shelter_capacity = air_winter_shelter_capacity } }
-			if = { limit = { has_variable = air_winter_reclamation } set_variable = { fallout_pretransition_air_winter_reclamation = air_winter_reclamation } }
-			if = { limit = { has_variable = air_winter_water_security } set_variable = { fallout_pretransition_air_winter_water_security = air_winter_water_security } }
 			if = {
-				limit = {
-					has_state_flag = air_winter_original_category_recorded
-					has_variable = air_winter_original_category
+				limit = { air_winter_state_is_valid = yes }
+				if = {
+					limit = { air_winter_fallout_snapshot_source_receipt_is_current = yes }
+					set_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+					set_variable = { fallout_pretransition_air_winter_source_schema_version = air_winter_fallout_snapshot_producer_schema_version }
+					set_variable = { fallout_pretransition_air_winter_source_generation = air_winter_fallout_snapshot_producer_generation }
+					set_variable = { fallout_pretransition_air_winter_phase = air_winter_phase }
+					set_variable = { fallout_pretransition_air_winter_exposure = air_winter_exposure }
+					set_variable = { fallout_pretransition_air_winter_recovery = air_winter_recovery }
+					set_variable = { fallout_pretransition_air_winter_adaptation = air_winter_adaptation }
+					set_variable = { fallout_pretransition_air_winter_food_reserve = air_winter_food_reserve }
+					set_variable = { fallout_pretransition_air_winter_shelter_capacity = air_winter_shelter_capacity }
+					set_variable = { fallout_pretransition_air_winter_reclamation = air_winter_reclamation }
+					set_variable = { fallout_pretransition_air_winter_water_security = air_winter_water_security }
+					set_variable = { fallout_pretransition_air_winter_original_category = air_winter_original_category }
+					set_state_flag = fallout_pretransition_air_winter_provenance_recorded
 				}
-				set_variable = { fallout_pretransition_air_winter_original_category = air_winter_original_category }
+			}
+			else = {
+				if = {
+					limit = {
+						has_state_flag = air_winter_original_category_recorded
+						has_variable = air_winter_original_category
+						has_variable = global.fallout_pretransition_air_winter_ledger_schema_version
+						has_variable = global.fallout_pretransition_air_winter_ledger_generation
+					}
+					set_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable }
+					set_variable = { fallout_pretransition_air_winter_source_schema_version = global.fallout_pretransition_air_winter_ledger_schema_version }
+					set_variable = { fallout_pretransition_air_winter_source_generation = global.fallout_pretransition_air_winter_ledger_generation }
+					set_variable = { fallout_pretransition_air_winter_phase = constant:air_winter_fallout_snapshot_not_applicable.phase }
+					set_variable = { fallout_pretransition_air_winter_exposure = constant:air_winter_fallout_snapshot_not_applicable.exposure }
+					set_variable = { fallout_pretransition_air_winter_recovery = constant:air_winter_fallout_snapshot_not_applicable.recovery }
+					set_variable = { fallout_pretransition_air_winter_adaptation = constant:air_winter_fallout_snapshot_not_applicable.adaptation }
+					set_variable = { fallout_pretransition_air_winter_food_reserve = constant:air_winter_fallout_snapshot_not_applicable.food_reserve }
+					set_variable = { fallout_pretransition_air_winter_shelter_capacity = constant:air_winter_fallout_snapshot_not_applicable.shelter_capacity }
+					set_variable = { fallout_pretransition_air_winter_reclamation = constant:air_winter_fallout_snapshot_not_applicable.reclamation }
+					set_variable = { fallout_pretransition_air_winter_water_security = constant:air_winter_fallout_snapshot_not_applicable.water_security }
+					set_variable = { fallout_pretransition_air_winter_original_category = air_winter_original_category }
+					set_state_flag = fallout_pretransition_air_winter_provenance_recorded
+				}
 			}
 			if = {
 				limit = { is_capital = yes }
@@ -914,7 +964,7 @@ fallout_take_world_snapshot = {
 		set_variable = { global.fallout_pretransition_air_contamination_bp = global.air_contamination_bp }
 		set_variable = { global.fallout_pretransition_date = global.fallout_snapshot_epoch_date }
 		if = {
-			limit = { fallout_world_snapshot_rows_are_current = yes }
+			limit = { fallout_world_snapshot_capture_rows_are_current = yes }
 			set_global_flag = fallout_world_snapshot_complete
 		}
 		else = {
@@ -928,15 +978,30 @@ fallout_take_world_snapshot = {
 # Supported scope: COUNTRY. Player and world rows are always rebuilt in one
 # effect-chain epoch. No caller may retry only one half of the frozen ledger.
 fallout_rebuild_complete_snapshot_epoch = {
-	fallout_clear_recoverable_player_snapshot_error = yes
-	fallout_clear_recoverable_snapshot_error = yes
-	clr_global_flag = fallout_player_snapshot_complete
-	clr_global_flag = fallout_world_snapshot_complete
-	clr_global_flag = fallout_transition_snapshot_applied
-	set_variable = { global.fallout_snapshot_epoch_generation = global.fallout_transition_generation }
-	set_variable = { global.fallout_snapshot_epoch_date = global.date }
-	fallout_capture_player_countries = yes
-	fallout_take_world_snapshot = yes
+	if = {
+		limit = { fallout_snapshot_epoch_rebuild_is_allowed = yes }
+		fallout_clear_recoverable_player_snapshot_error = yes
+		fallout_clear_recoverable_snapshot_error = yes
+		clr_global_flag = fallout_player_snapshot_complete
+		clr_global_flag = fallout_world_snapshot_complete
+		set_variable = { global.fallout_snapshot_epoch_generation = global.fallout_transition_generation }
+		set_variable = { global.fallout_snapshot_epoch_date = global.date }
+		clear_variable = global.fallout_pretransition_air_winter_ledger_schema_version
+		clear_variable = global.fallout_pretransition_air_winter_ledger_generation
+		air_winter_begin_fallout_snapshot_production = yes
+		if = {
+			limit = { air_winter_fallout_snapshot_generation_is_open = yes }
+			set_variable = { global.fallout_pretransition_air_winter_ledger_schema_version = global.air_winter_fallout_snapshot_producer_schema_version }
+			set_variable = { global.fallout_pretransition_air_winter_ledger_generation = global.air_winter_fallout_snapshot_producer_generation }
+		}
+		fallout_capture_player_countries = yes
+		fallout_take_world_snapshot = yes
+	}
+	else = {
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.snapshot_incomplete }
+		fallout_register_transition_error_if_unowned = yes
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+	}
 }
 
 # Supported scope: STATE. Output is the temporary variable

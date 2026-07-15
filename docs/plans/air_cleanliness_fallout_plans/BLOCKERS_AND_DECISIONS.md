@@ -113,7 +113,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema 7 fail-closed policy implemented, full transition still blocked
+Status: schema 8 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -125,13 +125,15 @@ Potential old save states:
 Implemented policy:
 
 - completed Fallout saves are promoted to the current schema without restarting destruction
-- only the exact schema-3 map-return-error signature is recovered into schema 7
-- every other incomplete schema 1 through 3 transition fails closed under blackout
+- completed legacy saves are marked as lacking row-level Air Winter provenance and receive no fabricated receipts
+- an active schema-7 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- every other incomplete legacy transition fails closed under blackout
 - an incomplete terminal save with no schema also fails closed under blackout
-- migration does not infer safety from `fallout_transition_destructive_started` because schemas 1 through 3 never guaranteed that marker
+- the former schema-3 map-return-error promotion is removed because consumed rows cannot acquire trustworthy Air Winter receipts after the fact
+- migration does not infer safety from a missing `fallout_transition_destructive_started` marker
 - no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The exact recoverable schema-3 signature requires the map-return phase, map return blocked, transition error set, `map_postcondition_failed`, and an error count of one. Any ambiguity remains blocked.
+The schema-7 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. Any ambiguity remains blocked.
 
 Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
 
@@ -203,7 +205,7 @@ Missing release work:
 
 - the schema and nine resource identities are reserved, but the required state and country receipt transaction is not implemented
 - survivor-allocation advancement and map return do not yet enforce the required ledger after final allocation and before player continuation
-- the frozen Fallout snapshot must distinguish a real zero Air Winter value from an absent producer before survival initialization
+- the frozen Fallout snapshot now distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
 - no active arc reservation, delayed-result ticket, bilateral reservation, target-loss policy, hidden AI resolution, cleanup recovery, or bounded candidate selection exists
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
 - the five orientation receipts have no implemented Fallout orientation event content
