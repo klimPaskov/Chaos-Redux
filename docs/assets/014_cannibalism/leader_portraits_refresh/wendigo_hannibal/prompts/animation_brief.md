@@ -1,25 +1,12 @@
-# Transformed Wendigo Hannibal portrait animation brief
+# Wendigo Hannibal canonical portrait animation brief
 
-- Asset: `leader_ZZZ_hannibal_wendigo`
-- In-game use: revealed alternate-history fictional leader portrait and animated portrait overlay.
-- Gameplay surface: existing Event 014 character portrait and registered animated portrait sprite. This package does not edit GFX or GUI.
-- Subject classification: fictional alternate-history transformation; no real-person or actor likeness.
-- Target frame size: 156x210.
-- Frame count: 16 real imagegen-created or imagegen-edited source frames.
-- Sheet size: 2496x210, one horizontal row.
-- Static fallback: separately generated source, processed to `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_static.dds`.
-- Animated sheet: `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds`.
-- Preserved archival file: `gfx/leaders/014_cannibalism/hannibal_wendigo.dds`; inspect but do not modify.
-- Existing static sprite: `GFX_portrait_ZZZ_hannibal_wendigo` and `GFX_cannibalism_wendigo_portrait_static`.
-- Existing animated sprite: `GFX_cannibalism_wendigo_portrait_animated`.
-- Timing: 6 fps.
-- Loop: yes; frame 015 returns to the frontal rest registration of frame 000 without duplicating it.
-- `play_on_show`: yes.
-- Anchor: bottom-centre torso anchor, with eyes held in the upper-middle portrait band.
-- Motion: genuine redrawn shallow breathing, jaw opening beyond human range, frost fissures changing across skin, condensation changing position, brief head turn away, then a turn back toward the viewer and a locked feral stare.
-- Source mode: built-in imagegen for the independent static master and a separate built-in imagegen edit for every frame.
-- Reference inspection: project `assets/leader_portraits/contact_sheet.png`; vanilla portraits in `gfx/leaders/`; existing Event 014 static, legacy, and 16-frame sheet; offline `Graphical asset modding` page; existing `interface/014_cannibalism.gfx` contract.
-- Visual direction: subdued vanilla-HOI4 painted bust, cold neutral open command/battlefield haze, restrained 1930s-1940s grading, readable face at native size.
-- Identity direction: Hannibal Lecter as an alternate-history conceptual identity only, communicated through calculating direct attention and a ruined command coat; never copy any actor or film still.
-- Creature design: bald, emaciated, elongated predatory jaw and teeth, frost-split scarred skin with at most tiny dried dark-red stains, insane eyes, nonhuman silhouette, scavenged 1940s command coat fused with invented ice and bone-like growths.
-- Exclusions: no prison, cells, bars, cages, barred windows, restraints, confinement imagery, antlers, culturally specific motifs, living Indigenous traditions, borrowed sacred imagery, text, insignia, watermark, modern clothing, actor likeness, or wide action scene.
+- Canonical user-supplied portrait: `gfx/leaders/014_cannibalism/hannibal_wendigo.dds`.
+- The live static fallback is the canonical `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` file itself.
+- The decoded canonical PNG binds the black-and-white graphic style, red accents, skull-mask face, branching crown silhouette, crop, and registration.
+- Frame `000` is the exact decoded canonical portrait. Frames `001` through `015` are separate built-in image-generation edits of that identity.
+- Frame size: 156x210. Sheet size: 2496x210. Frame count: 16.
+- Playback: 12 fps, looping, `play_on_show = yes`, `pause_on_loop = 0.0`.
+- Smoothing: `effectFile = "gfx/FX/buttonstate_blendframes.lua"`.
+- Action: the graphic skull jaw opens beyond human range, a black tongue coils around a red-streaked skull fragment, the mouth bites and crushes it, and the silhouette settles back into the supplied portrait.
+- Every frame must contain newly redrawn semantic motion. No shipped frame may be a transform-only, filter-only, recolour-only, warp-only, overlay-only, or optical-flow result.
+- Treat the imagery as wholly fictional graphic horror. Add no cultural label, sacred motif, real-world ritual sign, prison imagery, text, watermark, modern object, or extra person.

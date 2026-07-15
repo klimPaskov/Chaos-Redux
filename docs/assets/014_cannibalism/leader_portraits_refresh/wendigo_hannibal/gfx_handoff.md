@@ -1,22 +1,19 @@
 # Event 014 Wendigo Hannibal GFX handoff
 
-No interface edit is required. `interface/014_cannibalism.gfx` already contains the exact static and animated registrations at lines 547-549:
+The live registrations are in the consolidated `interface/014_cannibalism.gfx` file.
 
-```txt
-spriteType = { name = "GFX_portrait_ZZZ_hannibal_wendigo" texturefile = "gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_static.dds" }
-spriteType = { name = "GFX_cannibalism_wendigo_portrait_static" texturefile = "gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_static.dds" }
-frameAnimatedSpriteType = { name = "GFX_cannibalism_wendigo_portrait_animated" texturefile = "gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds" noOfFrames = 16 animation_rate_fps = 6 looping = yes play_on_show = yes pause_on_loop = 0.0 }
-```
+## Static bindings
 
-## Texture contract
+- `GFX_portrait_ZZZ_hannibal_wendigo` and `GFX_cannibalism_wendigo_portrait_static` use the exact canonical `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` file directly.
+- `GFX_cannibalism_wendigo_portrait_static` uses the same static DDS.
+- The transformed animated sheet begins with the exact decoded pixels of `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` as frame `000`.
 
-- Static: 156x210, opaque 32-bit BGRA DDS.
-- Sheet: 2496x210, opaque 32-bit BGRA DDS.
-- Layout: one horizontal row, frame 000 at x=0 through frame 015 at x=2340.
-- Frame width: 156.
-- Frame height: 210.
-- Frame count: 16.
-- Playback: 6 fps, looping, play on show.
-- Static and animated texture paths preserve the existing filenames.
+## Animated binding
 
-The archival `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` is not part of this sprite contract and remains untouched.
+- Sprite: `GFX_cannibalism_wendigo_portrait_animated`.
+- Texture: `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds`.
+- Layout: 16 horizontal 156x210 frames; total 2496x210.
+- Playback: 12 fps, looping, play on show, no loop pause.
+- Smoothing: `effectFile = "gfx/FX/buttonstate_blendframes.lua"`.
+
+The static fallback remains the exact user-supplied portrait while the animated sprite uses separately generated source states around that canonical frame.

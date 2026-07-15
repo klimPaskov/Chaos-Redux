@@ -1,6 +1,6 @@
 # Event 014 Warlord Focus Icon GFX Handoff
 
-All 68 current entries below are static, one-frame sprites. Their registrations belong in `interface/014_cannibalism_warlord_focus_assets.gfx` with `noOfFrames = 1`. The live textures already exist at the listed paths. This asset pass does not edit the GFX file.
+All 68 current entries below are static, one-frame sprites. Their live registrations are consolidated in `interface/014_cannibalism.gfx` with `noOfFrames = 1`, and the textures exist at the listed paths.
 
 | Sprite name | Texture file | Dimensions | Frames |
 |---|---|---:|---:|

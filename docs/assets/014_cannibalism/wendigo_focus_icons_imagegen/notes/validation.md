@@ -2,7 +2,7 @@
 
 ## Coverage
 
-- Focus IDs in `common/national_focus/014_cannibalism_wendigo_focus.txt`: 28 unique Wendigo overlay focuses.
+- Focus IDs in `common/national_focus/014_cannibalism_focus.txt`: 28 unique Wendigo overlay focuses.
 - Unique registered Wendigo texture paths in `interface/014_cannibalism.gfx`: 28.
 - Accepted imagegen source PNGs: 28.
 - Alpha-master PNGs: 28.

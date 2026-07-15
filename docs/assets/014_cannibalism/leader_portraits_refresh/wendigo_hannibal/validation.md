@@ -1,26 +1,25 @@
-# Event 014 Wendigo Hannibal validation
+# Event 014 Wendigo Hannibal portrait validation
 
-## Package checks
+## Canonical identity
 
-- Independent static source and processed master: present.
-- Animation source frames: 16 present, 16 unique SHA-256 hashes.
-- Processed frames: 16 present, 16 unique SHA-256 hashes, all 156x210.
-- Sheet PNG: 2496x210; all 16 sliced segments match their corresponding processed frame pixel-for-pixel.
-- Review GIF: 16 frames, infinite loop, 2,670 ms total duration, effective 5.993 fps; the in-game sprite remains exactly 6 fps.
-- Static and sheet DDS round trips decode pixel-identically to their processed PNG masters.
+- The exact live static portrait is `gfx/leaders/014_cannibalism/hannibal_wendigo.dds`.
+- It reports SHA-256 `26d7566f7b93d17c4d7fde5b262ab8b6e4b04fba0b862315404d6a33abe34717`.
+- The decoded static master and frame `000` preserve the supplied 156x210 portrait exactly.
 
-## Motion checks
+## Frame and package checks
 
-Adjacent-frame mean absolute pixel differences are all nonzero, confirming that no frame is duplicated. The measured range is 3.258-21.780. The final two transitions measure 15.369 for 014→015 and 21.780 for 015→000, distributing the return-to-rest change across the generated bridge instead of concentrating it in one snap. The aggregate source and final contact sheets were visually reviewed and accepted.
+- Source frames: 16 present and 16 unique SHA-256 hashes.
+- Processed frames: 16 present and 16 unique SHA-256 hashes; every frame is 156x210.
+- Sheet: 2496x210 with all 16 frames in exact `000`-`015` order.
+- Preview GIF: 16 frames, 1,330 ms total, approximately 12 fps, infinite loop.
+- The contact sheets were reviewed at final portrait scale. The supplied black, bone-white, and red graphic identity remains registered while the eyes, jaw, tongue, fragment, bite, chew, and recovery states change.
+- There is no prison, cell, bar, cage, restraint, cultural or sacred motif, extra person, text, or watermark.
 
-## DDS checks
+## Live texture and registration checks
 
-- Static DDS: `DDS ` magic, 124-byte legacy header, 156x210, uncompressed 32-bit colour, opaque alpha, 131,168 bytes.
-- Sheet DDS: `DDS ` magic, 124-byte legacy header, 2496x210, uncompressed 32-bit colour, opaque alpha, 2,096,768 bytes.
-- Static SHA-256: `bb9e1fcb96c63b064a7432f03810ac8dfef103ef335b6f5e9470e44b0ab7bd16`.
-- Sheet SHA-256: `54cce739991daf690ed1d077a6da510a52e4404020e1197aa7373f0c87d356af`.
-- Preserved legacy SHA-256 before and after delivery: `26d7566f7b93d17c4d7fde5b262ab8b6e4b04fba0b862315404d6a33abe34717`.
+- Static DDS: the exact supplied 156x210 `hannibal_wendigo.dds`, including its original mip chain.
+- Sheet DDS: 2496x210, 16 horizontal 156x210 frames, SHA-256 `f0dfa61ea29293f8393711f97eb67524d336cb6c2a2d55734c0c38484219d18b`.
+- `interface/014_cannibalism.gfx` points both static bindings directly to the exact canonical file.
+- The animated binding declares 16 frames at 12 fps and uses the vanilla blend-frames effect.
 
-## Registration checks
-
-`interface/014_cannibalism.gfx` retains two static sprite names and one 16-frame animated sprite pointing to the delivered filenames. No GFX or GUI source was edited.
+No placeholder, substitute static, reused portrait, or transform-only animation frame is present in this package.

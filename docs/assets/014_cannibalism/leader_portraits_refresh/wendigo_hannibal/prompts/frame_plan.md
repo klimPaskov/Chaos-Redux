@@ -1,24 +1,36 @@
-# Wendigo Hannibal 16-frame plan
+# Wendigo Hannibal canonical 16-frame plan
 
-Every shipped row is a separate built-in imagegen edit and a separate source PNG. Frame 000 was edited from the independently generated static master. Frames 001-014 were edited from the immediately previous source frame. Frame 015 was generated from a temporary midpoint registration guide built from frames 014 and 000, then redrawn into one coherent bridge frame; the guide is not part of the shipped package.
+## Shared image-generation edit instruction
 
-Shared invariants for all frames: the same fictional subject, same head-size band, same coat silhouette, same cold palette, same vertical camera, same painted HOI4 bust crop, same bottom-centre torso anchor, same open snowy command/battlefield backdrop, no text, no actor likeness, no prison or confinement imagery, no bars or barred windows, no antlers, and no culturally specific or sacred motifs.
+Treat the decoded `hannibal_wendigo.dds` as binding. Preserve the exact graphic black, bone-white, and red palette; central skull-mask identity; branching black crown silhouette; abstract white branch field; crop; camera; and flat painted texture. Redraw only the specified jaw, tongue, skull-fragment, eye, and branching motion. Keep the subject centred and readable as a 156x210 HOI4 portrait. Do not turn the portrait into a photograph, film still, prison scene, landscape, culturally specific ritual image, or generic monster bust.
 
-| Frame | Motion state | Real generated source-art change | Anchor/loop note |
-| --- | --- | --- | --- |
-| 000 | Frontal rest | Shallow post-exhale posture; elongated jaw sealed; thin condensation; settled frost fissures; direct calculating stare. | Establishes the rest registration and lower-torso anchor. |
-| 001 | Turn begins | Head begins a small turn toward his left; shoulders start a shallow inhale; collar frost lifts; condensation shifts. | Torso stays registered; the anatomical drawing changes. |
-| 002 | Deeper inhale | Turn and inhale deepen; neck tension increases; a fine frost crack changes under one eye. | Eye-line remains in the same portrait band. |
-| 003 | Turn-away crest | Head reaches the turn crest; shoulders hold the inhale; frost flakes separate from the collar; pupils still track the viewer. | Extreme of the head arc. |
-| 004 | Return and unseal | Head begins returning; the jaw seam opens slightly; the first exhale curl appears. | Transition into the opening arc. |
-| 005 | Jaw 20 percent | More teeth appear; cheek frost branches; throat tendons stretch; condensation thickens. | Stable coat hem and shoulders. |
-| 006 | Jaw 35 percent | Jaw length increases visibly; temple frost divides into new plates; chest rises again. | Head continues returning toward front. |
-| 007 | Jaw 55 percent | Lower jaw drops farther; rear teeth and mouth depth are redrawn; eyes widen. | Face approaches frontal registration. |
-| 008 | Maximum gape | Fully frontal nonhuman jaw opens to its widest readable state; collar frost flexes; frost chips lift. | Peak motion frame. |
-| 009 | Maximum hold | Jaw remains fully open, but tongue, rear teeth, cheek fissure, recoil, and breath plume change. | Distinct generated hold, not a duplicate of 008. |
-| 010 | Closing 70 percent | Lower jaw rises; head draws forward; shoulders begin settling; breath narrows. | Starts the closing arc. |
-| 011 | Closing 50 percent | Jaw and cheeks close farther; neck relaxes; condensation separates into uneven wisps. | Direct stare remains fixed. |
-| 012 | Closing 30 percent | Mouth narrows; cheek plates settle; head lowers slightly; the final exhale flows down-right. | Returns toward rest. |
-| 013 | Nearly shut | Only a narrow gap remains; pupils contract; collar frost settles; condensation fades. | Close to the final lock. |
-| 014 | Locked stare | Mouth is almost closed; shoulders steady; eye focus hardens; small frost motes settle. | Penultimate endpoint before the bridge. |
-| 015 | Midpoint bridge | Mouth seals; chin and shoulders move halfway toward frame 000; eye glint softens; a thin condensation thread is redrawn. | Shares the remaining registration change across 014→015 and 015→000; not a duplicate. |
+| Frame | Motion state | Required generated state |
+| --- | --- | --- |
+| `000` | Canonical rest | Exact decoded canonical DDS; no generated alteration. |
+| `001` | Eye ignition | Red eye accents brighten and the white jaw seam begins to separate. |
+| `002` | Jaw unseals | Lower skull plate drops slightly; black mouth depth and a tongue tip are newly visible. |
+| `003` | First gape | Jaw opens farther; the tongue curls toward lower camera-right and the branching silhouette flexes. |
+| `004` | Reach | Tongue extends toward a small red-streaked white skull fragment entering at lower camera-right. |
+| `005` | Coil | Tongue wraps once around the same fragment; jaw opens to half height. |
+| `006` | Draw inward | Fragment moves toward the mouth under the tongue's pull; red accents flare along the jaw. |
+| `007` | Maximum gape | Skull jaw opens beyond human range, fully exposing the abstract black maw while the fragment reaches the teeth. |
+| `008` | Bite begins | Upper and lower white teeth close onto the fragment; the branching crown recoils. |
+| `009` | Crush | Fragment visibly cracks into several painted white pieces with restrained red streaks. |
+| `010` | First chew | Jaw rises and shifts; fragments move inside the black mouth and the tongue retracts halfway. |
+| `011` | Second chew | Jaw closes farther; one last white fragment disappears behind the teeth. |
+| `012` | Swallow | Mouth narrows, red throat accent descends, and the branching silhouette settles. |
+| `013` | Jaw recovery | Lower skull plate returns toward its canonical position; tongue is no longer visible. |
+| `014` | Locked stare | Jaw is nearly sealed; red eyes fix the viewer and remaining motion becomes minimal. |
+| `015` | Loop bridge | Face, crown, jaw, and red accents settle very close to frame `000` for a clean blended return. |
+
+## Output contract
+
+- Canonical decoded source: `source_png/leader_ZZZ_hannibal_wendigo_static_source.png`.
+- Source frames: `source_png/frames/leader_ZZZ_hannibal_wendigo_000_source.png` through `_015_source.png`.
+- Processed frames: `processed_png/frames/leader_ZZZ_hannibal_wendigo_000.png` through `_015.png`.
+- Static PNG: `processed_png/leader_ZZZ_hannibal_wendigo_static.png`.
+- Sheet PNG: `processed_png/leader_ZZZ_hannibal_wendigo_sheet.png`.
+- Static DDS: `gfx/leaders/014_cannibalism/hannibal_wendigo.dds`.
+- Sheet DDS: `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds`.
+- Preview: `previews/leader_ZZZ_hannibal_wendigo_preview.gif` at 12 fps.
+- Contact sheets: source and processed under `contact_sheets/`.

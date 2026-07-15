@@ -2,7 +2,7 @@
 
 Date: 2026-07-12
 
-The current Event 014 campaign set has 18 purpose-built generated masters and 54 exact runtime states. The authoritative IDs are derived from `interface/014_cannibalism_achievements.gfx`; the processor refuses anything other than 18 complete registered triplets.
+The current Event 014 campaign set has 18 purpose-built generated masters and 54 exact runtime states. The authoritative IDs are derived from `interface/014_cannibalism.gfx`; the processor refuses anything other than 18 complete registered triplets.
 
 ## Output contract
 
@@ -33,4 +33,4 @@ The processor refuses to run if the mandated overlay is missing, is not 64x64, o
 
 The former 13-ID package under `static_icons_imagegen/achievements/` is superseded and inactive. Its unrelated IDs are not registered by the current Event 014 achievement GFX file, and its overlapping `no_second_table` runtime triplet has been replaced by this package's newly generated master.
 
-Runtime cleanup removed the twelve obsolete triplets on 2026-07-12. `gfx/achievements/` now contains exactly the 54 Event 014 textures registered by `interface/014_cannibalism_achievements.gfx`, with no unregistered historical Event 014 triplets.
+Runtime cleanup removed the twelve obsolete triplets on 2026-07-12. `gfx/achievements/` now contains exactly the 54 Event 014 textures registered by `interface/014_cannibalism.gfx`, with no unregistered historical Event 014 triplets.

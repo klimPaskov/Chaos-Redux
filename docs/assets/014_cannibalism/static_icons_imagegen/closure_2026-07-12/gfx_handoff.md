@@ -4,9 +4,9 @@ All 21 textures were preregistered before production. No GFX edit is required an
 
 ## Existing registration ownership
 
-- interface/014_cannibalism_objectives.gfx owns the 13 objective/mission decision sprites.
-- interface/014_cannibalism_achievement_tracker.gfx owns the early-safe tracker category icon and category picture.
-- interface/014_cannibalism_focus_closure.gfx owns the six winter focus-closure decision sprites.
+- interface/014_cannibalism.gfx owns the 13 objective/mission decision sprites.
+- interface/014_cannibalism.gfx owns the early-safe tracker category icon and category picture.
+- interface/014_cannibalism.gfx owns the six winter focus-closure decision sprites.
 
 ## Exact runtime handoff
 

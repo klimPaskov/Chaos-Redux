@@ -1,5 +1,7 @@
 # Event 014 Final Completion Reaudit
 
+> Superseded as current specialist authority by the 2026-07-15 consolidation re-audit set. This pre-consolidation completion checkpoint remains historical evidence only and must not override the current package specifications or consolidation reports.
+
 Date: 2026-07-15
 
 Audit basis: the live shared working tree. Current files, including uncommitted Event 014 closure work, were treated as the implementation authority. Historical reports were used only as navigation and were not accepted as proof without checking the current source, assets, documentation, or workbook.
@@ -82,7 +84,7 @@ The required offline Paradox wiki pages were consulted for data structures, trig
 | Flags | 195 TGA files; 65 per tier; 82x52, 41x26, and 10x7; 195 unique hashes |
 | Regional portraits | 56 DDS files; all 156x210; 56 unique hashes |
 | Nonportrait animations | 12 packages; 114 source frames and 114 processed frames; every package has sheet, fallback, preview, manifest, and unique frames |
-| Leader animations | Ordinary 12 unique source and processed frames; Wendigo 16 unique source and processed frames; live 12/16-frame declarations at 6 FPS |
+| Leader animations | Ordinary 12 unique source and processed frames; Wendigo 16 unique source and processed frames; live 12/16-frame declarations at 12 FPS |
 | Super-event images | 4 unique registered 457x328 DDS files |
 | Audio | 4 OGG plus 4 WAV; all stereo 44.1 kHz; 8 unique hashes; IDs 49, 50, 52, and 53 |
 
@@ -101,6 +103,8 @@ The audio registry assigns six settings-aware variants to each of IDs 49, 50, 52
 ## Current specialist audit cross-check
 
 The current 2026-07-15 country-package, decision/mission, focus-tree, localisation/asset, spreadsheet, super-event visual, documentation, improvement-loop, and integration/catalog audits were read after the independent checks. Each reports P0/P1/P2/P3 at zero in its assigned scope. Their inventories and dispositions agree with the live tree and with this audit.
+
+This report is superseded as the current completion authority by the forthcoming Event 014 consolidation completion audit. Its animation-rate statement above was reconciled to the live 12 FPS GFX declarations during the consolidation improvement-loop pass.
 
 ## Validation boundary
 

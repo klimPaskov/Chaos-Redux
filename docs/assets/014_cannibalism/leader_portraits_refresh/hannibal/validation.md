@@ -1,32 +1,25 @@
-# Event 014 Portrait Refresh Validation
+# Event 014 Hannibal Lecter portrait validation
 
-## Visual review
+## Canonical identity
 
-- The labelled CBA-CBD contact sheet was reviewed at final 156x210 scale: 28 distinct identities, readable faces and silhouettes, no prison, cell, bars, cage, restraints, detention corridor, or other confinement imagery.
-- The enlarged `cba_cbd_baldness_audit_contact_sheet.png` was reviewed across all 28 source crops: every approved scalp is smooth and bald, with no visible hair, follicles, hair shadow, stubble, buzz cut, fringe, or sideburns. Nine first-set violations were rejected and replaced before final approval.
-- `leader_CBA_warlord_south_america` visibly presses his tongue to the temple of a single weathered skull.
-- The Hannibal source and processed contact sheets were reviewed frame by frame: the same scars, eye asymmetry, ear damage, coat, shoulder piece, map, shelves, palette, and camera remain coherent across the sequence.
-- Hannibal frames `006`, `007`, and `008` show clear tongue-to-skull contact; `005` retains a visible pre-contact gap.
-- The static fallback has no skull. The animation studio reads as a map-and-shelf command room, never as confinement.
+- The exact live static portrait is `gfx/leaders/014_cannibalism/hannibal.dds`.
+- It reports SHA-256 `5c48c9a5b503c3185dcb38ee1aabc403d7668094079b78a20010323930d10b88`.
+- The decoded static master and frame `000` preserve the supplied 156x210 portrait exactly.
 
-## Package checks
+## Frame and package checks
 
-- Warlord sources: 28 files and 28 unique SHA-256 hashes.
-- Warlord processed PNGs: 28 files and 28 unique SHA-256 hashes, all 156x210.
-- Hannibal frame sources: 12 files and 12 unique SHA-256 hashes.
-- Hannibal processed frames: 12 files and 12 unique SHA-256 hashes, all 156x210.
-- Static PNG: 156x210.
-- Sheet PNG: 1872x210; every 156-pixel slice is pixel-identical to its corresponding processed frame.
-- GIF: 12 frames with repeating `170, 170, 160` millisecond timing; total loop duration is exactly 2,000 milliseconds, averaging 6 fps.
+- Source frames: 12 present and 12 unique SHA-256 hashes.
+- Processed frames: 12 present and 12 unique SHA-256 hashes; every frame is 156x210.
+- Sheet: 1872x210 with all 12 frames in exact `000`-`011` order.
+- Preview GIF: 12 frames, 1,000 ms total, 12 fps stream rate, infinite loop.
+- The contact sheets were reviewed at final portrait scale. Hannibal's face, formal clothing, red backdrop, and black branching silhouette remain registered while the fork, tongue, bite, chew, and recovery states change.
+- There is no prison, cell, bar, cage, restraint, extra person, text, or watermark.
 
-## Live texture checks
+## Live texture and registration checks
 
-- 28 warlord DDS files and the Hannibal static DDS report valid `DDS ` magic, 124-byte headers, 156x210 dimensions, 32-bit BGRA masks, and exact 131,168-byte file lengths.
-- The Hannibal sheet DDS reports valid `DDS ` magic, a 124-byte header, 1872x210 dimensions, 32-bit BGRA masks, and the exact 1,572,608-byte file length.
-- All 30 DDS pixel payloads are byte-for-byte identical BGRA encodings of their corresponding packaged PNG masters.
-- Existing GFX wiring still declares 12 frames at 6 fps and points to the two replaced live files.
-- `gfx/leaders/014_cannibalism/hannibal.dds` remains unchanged at SHA-256 `5C48C9A5B503C3185DCB38EE1AABC403D7668094079B78A20010323930D10B88`.
+- Static DDS: the exact supplied 156x210 `hannibal.dds`, including its original mip chain.
+- Sheet DDS: 1872x210, 12 horizontal 156x210 frames, SHA-256 `f67a1b33a1d4f9b9b1b5ec0d6fb716ad1f2342083e9992550b5dd7356f590587`.
+- `interface/014_cannibalism.gfx` points both static bindings directly to the exact canonical file.
+- The animated binding declares 12 frames at 12 fps and uses the vanilla blend-frames effect.
 
-## Scope
-
-The installed change set is limited to the 28 CBA-CBD warlord DDS files, the Hannibal static DDS, the Hannibal sheet DDS, and this self-contained source/processed/review/documentation package. No fallback, placeholder, or transform-only animation was used.
+No placeholder, substitute static, reused portrait, or transform-only animation frame is present in this package.

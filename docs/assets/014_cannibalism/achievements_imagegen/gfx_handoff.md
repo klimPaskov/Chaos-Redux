@@ -1,6 +1,6 @@
 # Event 014 Achievement GFX Handoff
 
-Target registry: `interface/014_cannibalism_achievements.gfx`.
+Target registry: `interface/014_cannibalism.gfx`.
 
 For each current `<achievement_id>`:
 

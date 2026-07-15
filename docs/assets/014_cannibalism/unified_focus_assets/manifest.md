@@ -1,6 +1,6 @@
 # Event 014 Unified Focus Icon Manifest
 
-All 108 focuses in `common/national_focus/014_cannibalism_unified_focus.txt` have a distinct generated icon package and a final runtime texture.
+All 108 focuses in `common/national_focus/014_cannibalism_focus.txt` have a distinct generated icon package and a final runtime texture.
 
 ## Contract
 

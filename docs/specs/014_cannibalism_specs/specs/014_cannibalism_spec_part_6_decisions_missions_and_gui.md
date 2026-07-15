@@ -679,18 +679,20 @@ GUI buttons must use the same balance logic as decisions. They cannot bypass cos
 
 ### Hannibal portrait
 
-- 12 source frames
+- exact supplied `hannibal.dds` as frame `000` plus 11 image-generated motion frames
 - 156 by 210 each
 - 1872 by 210 horizontal sheet
-- complete feral skull-licking action with jaw, tongue, fingers, wrists, eyes, skull angle, blood, shoulders, and cloth independently redrawn across the sequence
+- complete fork raise, lick, bite, chew, and return action with jaw, tongue, fingers, eyes, fork, morsel, blood, shoulders, and clothing redrawn across the generated states
+- 12 fps playback with the vanilla blend-frames effect
 - no transform-only motion
 
 ### Wendigo Hannibal portrait
 
-- 16 source frames
+- exact supplied `hannibal_wendigo.dds` as frame `000` plus 15 image-generated motion frames
 - 156 by 210 each
 - 2496 by 210 sheet
-- separate asymmetric predatory crouch, lunge, claw reach, jaw-unhinging apex, recoil, swallow spasm, and tense return with anatomy, ice, breath, flesh, blood, and shadow independently redrawn
+- separate jaw opening, tongue reach, skull-fragment coil, bite, crush, chew, swallow, and closed-mouth return with the black, bone-white, and red graphic anatomy redrawn
+- 12 fps playback with the vanilla blend-frames effect
 - preserve identity across frames
 - no merely recolored or ice-skinned human portrait
 

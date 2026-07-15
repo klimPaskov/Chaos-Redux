@@ -99,7 +99,7 @@ The four ordinary Last Table packages are hard gates rather than focus-completio
 - Expansion: prepare 5 campaigns, complete 3 postwar integrations, and complete 5 cell operations.
 - Counterwar: complete 5 paid counterwar operations.
 
-Final Global Mobilization and Dismantle the Ordinary World retain the strict global Chaos requirement of greater than 1000 in addition to all four operational packages. The exact 208-flag consumer proof is recorded in `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_focus_remediation_2026-07-12.md`.
+Final Global Mobilization and Dismantle the Ordinary World retain the strict global Chaos requirement of greater than 1000 in addition to all four operational packages. The consolidated focus audit records 316 distinct country flags set by focus-prefixed helpers across the three trees, with at least one live consumer for every flag.
 
 ### Unified target selection and icon coverage
 
@@ -135,7 +135,7 @@ Before terminal lock, the world can defeat the revealed command or break the Wen
 
 ## Scenario, achievements, AI, and integrations
 
-Scenario `SCN-010` supports five launch types: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, and Convergence. Each manual launch first builds a mutation-free manifest of every required actor, opening-state capacity, island node, origin state, and reusable CBA-CBH slot. Planned origin states exclude every planned actor country, so canonical actor initialization cannot consume a later warlord state. The commit begins only when the manifest exactly matches the selected type and intensity; a failed preflight records setup failure without initializing the Event 014 runtime, actors, nodes, evolutions, warlords, or launch history. Automatic pre-fire convergence keeps its existing dynamic selection path.
+Scenario `SCN-010` supports five launch types: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, and Convergence. Each manual launch first builds a mutation-free manifest of every required actor, opening-state capacity, island node, origin state, and reusable CBA-CBH slot. Planned origin states exclude every planned actor country, so canonical actor initialization cannot consume a later warlord state. The commit begins only when the manifest exactly matches the selected type and intensity. A failed preflight records setup failure without initializing the Event 014 runtime, actors, nodes, evolutions, warlords, or launch history. Automatic pre-fire convergence keeps its existing dynamic selection path.
 
 The event catalog row at `Events!A15:M15` records Cannibalism as `Minor Fire-Once` with an empty cluster field. Its Event Details text, three evolution entries, and both terminal descriptions mirror the corresponding in-game localisation. After the public reveal, The World Is the Larder and No Thaw Will Come appear as separate clickable world-end rows with independent automatic-selection checkboxes. `Events!M15` and `Scenarios!F10` both record `Fully Functional` after the final audit and catalog promotion.
 
@@ -153,18 +153,20 @@ Ordinary governments, foreign responders, the three warlord origins, unified com
 
 The event log records the opening host, evolution changes, node and warlord milestones, local containment, reinfection, reveal, unification, terminal routes, global defeat, and cleanup. Event Details shows the current actor, stage, meters, response posture, network state, and legal aftermath. Pre-reveal entries use neutral language and neutral imagery. Reveal-gated surfaces switch atomically when the public flag is set.
 
-The scripted GUI presents the early crisis meters, network alerts, selected targets, cannibal command values, convergence warning, revealed command, and Wendigo transformation. Twelve non-portrait animated packages have independently authored source frames, sheet DDS files, static fallbacks, preview GIFs, contact sheets, manifests, and `.gfx`/`.gui` handoffs. The two animated leader packages are real frame sequences: 12 independently generated ordinary reveal frames and 16 independently generated transformed frames. Neither portrait is transform-only motion.
+The scripted GUI presents the early crisis meters, network alerts, selected targets, cannibal command values, convergence warning, revealed command, and Wendigo transformation. Twelve non-portrait animated packages have independently authored source frames, sheet DDS files, static fallbacks, preview GIFs, contact sheets, manifests, and `.gfx`/`.gui` handoffs. The live ordinary and transformed character sprites use `gfx/leaders/014_cannibalism/hannibal.dds` and `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` directly. Each leader animation begins with that exact supplied portrait as frame `000`. The ordinary sheet adds 11 image-generated action states and the transformed sheet adds 15. Both play at 12 fps with `gfx/FX/buttonstate_blendframes.lua`. The complete package therefore contains exactly 14 semantic animation packages and 142 genuine source plus 142 processed frames. No package is transform-only motion.
 
 ## Visual and audio inventory
 
-The exhaustive filename-level inventory is maintained in `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md` and the production packages under `docs/assets/014_cannibalism/`. Live sprites are registered in `interface/014_cannibalism.gfx`, `interface/014_cannibalism_achievements.gfx`, `interface/014_cannibalism_aftermath_pictures.gfx`, and `interface/014_cannibalism_warlord_focus_assets.gfx`.
+The exhaustive filename-level inventory is maintained in `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md` and the production packages under `docs/assets/014_cannibalism/`. Exactly one dedicated Event 014 registry, `interface/014_cannibalism.gfx`, holds the consolidated event sprites. The two required shared registries are `interface/chaosx_pictures.gfx` for reports and news and `interface/chaosx_super_events.gfx` for super-events, so exactly three GFX files reference Event 014 textures.
+
+The Event 014 runtime surface is consolidated from 93 dedicated script, GUI, and localisation loader files to 23 merge-safe files. The 23-file result is the practical minimum of one dedicated file per incompatible HOI4 loader schema, including separate `.gui` and `.gfx` files. Per-tag country/history files, engine-required flag ladders, binary assets, and shared global registries remain structurally separate and were not counted or falsely described as merged.
 
 | Asset family | Runtime location | Stable code-facing names |
 |---|---|---|
 | Decision categories, panels, and action icons | `gfx/interface/decisions/014_cannibalism/` | `GFX_decision_category_cannibalism_*`, `GFX_cannibalism_*_category_panel`, `GFX_decision_cannibalism_*` |
 | Ideas and dynamic modifiers | `gfx/interface/ideas/014_cannibalism/` | `GFX_idea_cannibalism_*` |
 | Unified, warlord, and Wendigo focuses | `gfx/interface/goals/014_cannibalism/` | `GFX_goal_CBL_*`, `GFX_goal_cannibalism_warlord_*`, `GFX_goal_ZZZ_wendigo_*` |
-| Achievements | `gfx/achievements/` | the 18 `GFX_achievement_014_cannibalism_*` triplets registered in `interface/014_cannibalism_achievements.gfx` |
+| Achievements | `gfx/achievements/` | the 18 `GFX_achievement_014_cannibalism_*` triplets registered in `interface/014_cannibalism.gfx` |
 | Reports and news | `gfx/event_pictures/014_cannibalism/` | `GFX_report_event_cannibalism_*`, `GFX_news_cannibalism_*` |
 | Warlord and revealed portraits | `gfx/leaders/014_cannibalism/` | `GFX_portrait_CBA_warlord_europe` through regional `CBH` variants, `GFX_portrait_CBL_hannibal`, `GFX_portrait_ZZZ_hannibal_wendigo` |
 | Flags | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` | CBA-CBH, CBL, and the registered cosmetic-tag flag set |
@@ -174,23 +176,23 @@ The exhaustive filename-level inventory is maintained in `docs/specs/014_canniba
 
 The four super-event images are action scenes rather than posed tableaux. The reveal shows a violent convergence breaking barricades and chasing civilians under Lecter's command. The ordinary world end shows a capital overrun in motion. Global defeat shows a kinetic coalition breakthrough, opened cages, and escaping civilians. The Wendigo world end shows the transformed command leading a distorted frozen pack through a collapsing defense. Generated victims are fictional adults, and no image uses real atrocity photography or identifiable people.
 
-The final closure asset pass adds 21 distinct preregistered surfaces: 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt icons, the receipt-backed Pack icon, and the inherited winter-cell icon. The full runtime asset tree contains 56 regional warlord portraits, 204 focus icons, 18 achievement triplets, four super-event images, and the two real-frame leader portrait sheets. The current portrait and flag refresh preserves the registered runtime paths while replacing their image content and provenance packages.
+The final closure asset pass adds 21 distinct preregistered surfaces: 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt icons, the receipt-backed Pack icon, and the inherited winter-cell icon. The full runtime asset tree contains 56 unique regional warlord portraits, 204 focus icons, 18 achievement triplets, four super-event images, two real-frame leader portrait sheets, and 195 unique runtime flags derived from 65 separate built-in ImageGen masters. The current portrait and flag refresh preserves the registered runtime paths while replacing their image content and provenance packages.
 
 Event 014 adds no custom subunit or equipment identifiers. Its scripted formations retain existing battalion and equipment surfaces, so no bespoke unit counter, subunit icon, or equipment art is required. This is a verified scope disposition, not a fallback.
 
 ## Principal implementation files
 
-- Entry events and escalation: `events/014_cannibalism.txt`, `events/014_cannibalism_aftermath.txt`, and the Event 014 news and super-event files.
-- Selection, meters, staging, population, spread, unification, Wendigo, aftermath, GUI, achievements, and integrations: `common/scripted_effects/014_cannibalism_*.txt` and `common/scripted_triggers/014_cannibalism_*.txt`.
-- Player actions: `common/decisions/014_cannibalism_*.txt` and `common/decisions/categories/014_cannibalism_categories.txt`.
+- Entry events, escalation, aftermath, news, and super-event dispatch: `events/014_cannibalism.txt`.
+- Selection, meters, staging, population, spread, unification, Wendigo, aftermath, GUI, achievements, and integrations: `common/scripted_effects/014_cannibalism_effects.txt` and `common/scripted_triggers/014_cannibalism_triggers.txt`.
+- Player actions: `common/decisions/014_cannibalism_decisions.txt` and `common/decisions/categories/014_cannibalism_categories.txt`.
 - Country packages: `common/country_tags/014_cannibalism_countries.txt`, `common/characters/014_cannibalism_characters.txt`, Event 014 ideas, leader traits, dynamic modifiers, dormant history, flags, and name lists.
-- Focus trees: `common/national_focus/014_cannibalism_warlord_focus.txt`, `common/national_focus/014_cannibalism_unified_focus.txt`, and `common/national_focus/014_cannibalism_wendigo_focus.txt`.
-- UI and localisation: `common/scripted_guis/014_cannibalism_scripted_gui.txt`, `interface/014_cannibalism_frontline_hunger.gui`, Event 014 `.gfx` files, and the two Event 014 English localisation files.
-- Central tuning: `common/script_constants/014_cannibalism_*.txt` and `common/mtth/014_cannibalism_mtth.txt`.
+- Focus trees: all three tree roots live in `common/national_focus/014_cannibalism_focus.txt`.
+- UI and localisation: `common/scripted_guis/014_cannibalism_scripted_gui.txt`, `interface/014_cannibalism_frontline_hunger.gui`, `interface/014_cannibalism.gfx`, and `localisation/english/014_cannibalism_l_english.yml`.
+- Central tuning: `common/script_constants/014_cannibalism_constants.txt` and `common/mtth/014_cannibalism_mtth.txt`.
 
 ## Validation boundary
 
-The current country-package, decision/mission, focus-tree, and documentation re-audits dated 2026-07-15 report P0/P1/P2/P3 all at zero. They cover the three-origin package, player-safe unification, exact-balance paid actions, exact 14-mission reset, atomic manual-scenario preflight, 68/108/28 focus surfaces, and the current asset inventory. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint. Documentation and filesystem validation confirm the identifiers, file sets, trigger/effect paths, asset registration, catalog promotion, and audit dispositions described above. No in-game runtime session is claimed by this documentation reconciliation.
+The current country-package, decision/mission, focus-tree, localisation/asset, spreadsheet, improvement-loop, and documentation consolidation re-audits dated 2026-07-15 report P0/P1/P2/P3 all at zero. They cover the three-origin package, player-safe unification, exact-balance paid actions, exact 14-mission reset, atomic manual-scenario preflight, 68/108/28 focus surfaces, accepted addenda, and the current asset inventory. Older same-day audits and `event014_final_completion_audit_2026-07-13.md` are preserved only as superseded checkpoints. Documentation and filesystem validation confirm the identifiers, file sets, trigger/effect paths, asset registration, catalog promotion, and audit dispositions described above. No in-game runtime session is claimed by this documentation reconciliation.
 
 ## Future plans and extension ideas
 

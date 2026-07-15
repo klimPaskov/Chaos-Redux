@@ -2,17 +2,11 @@
 
 Date: 2026-07-15
 
-The game-facing registrations are distributed across the following files:
+The game-facing registrations use exactly one dedicated Event 014 registry plus two required shared registries:
 
 | Registration file | Event 014 responsibility |
 | --- | --- |
-| `interface/014_cannibalism.gfx` | Core ideas, decisions, categories, portraits, GUI art, ordinary and Wendigo portrait fallbacks/sheets |
-| `interface/014_cannibalism_achievement_tracker.gfx` | Achievement tracker presentation |
-| `interface/014_cannibalism_achievements.gfx` | Eighteen achievement icon triplets |
-| `interface/014_cannibalism_aftermath_pictures.gfx` | Eligible global-defeat aftermath pictures |
-| `interface/014_cannibalism_focus_closure.gfx` | Unified and Wendigo focus icon closure |
-| `interface/014_cannibalism_objectives.gfx` | Timed logistics, unit, convergence, terminal, and containment objective art |
-| `interface/014_cannibalism_warlord_focus_assets.gfx` | Sixty-eight warlord focus icons |
+| `interface/014_cannibalism.gfx` | Consolidated Event 014 registry: ideas, decisions, categories, portraits, GUI art, all three focus trees, achievement tracker, 18 achievement triplets, aftermath pictures, objective art, and every static fallback or animation sheet |
 | `interface/chaosx_pictures.gfx` | Event 014 report/news picture registrations |
 | `interface/chaosx_super_events.gfx` | Reveal, ordinary world end, Wendigo world end, and global-defeat super-events |
 
@@ -20,15 +14,18 @@ The game-facing registrations are distributed across the following files:
 
 | Sprite | Runtime sheet | Frames | Static fallback |
 | --- | --- | ---: | --- |
-| `GFX_cannibalism_revealed_portrait_animated` | `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds` | 12 | `GFX_cannibalism_revealed_portrait_static` |
-| `GFX_cannibalism_wendigo_portrait_animated` | `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds` | 16 | `GFX_cannibalism_wendigo_portrait_static` |
+| `GFX_cannibalism_revealed_portrait_animated` | `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds` | 12 at 12 FPS with `gfx/FX/buttonstate_blendframes.lua` | `GFX_cannibalism_revealed_portrait_static`, directly bound to `gfx/leaders/014_cannibalism/hannibal.dds` |
+| `GFX_cannibalism_wendigo_portrait_animated` | `gfx/leaders/014_cannibalism/leader_ZZZ_hannibal_wendigo_sheet.dds` | 16 at 12 FPS with `gfx/FX/buttonstate_blendframes.lua` | `GFX_cannibalism_wendigo_portrait_static`, directly bound to `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` |
 
-Both sheets are frame-authored imagegen sequences rather than transforms of one still. Source frames, previews, static fallbacks, manifests, and validation are under `leader_portraits_refresh/`.
+Both sheets use the supplied portrait as exact frame `000`, followed by separately image-generated action states rather than transforms of one still. Source frames, previews, static fallbacks, manifests, and validation are under `leader_portraits_refresh/`.
+
+Together with the twelve non-portrait GUI packages, Event 014 has exactly 14 semantic animation packages and 142 genuine source plus 142 processed frames.
 
 ## Registration closure
 
 - 812 Event 014 texture references
 - 598 unique texture paths
+- 598 unique texture hashes
 - 0 missing runtime paths
 - 204 focus DDS files
 - 135 decision/category DDS files

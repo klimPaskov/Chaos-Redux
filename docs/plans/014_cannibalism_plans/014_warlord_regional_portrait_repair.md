@@ -29,14 +29,15 @@ Each runtime portrait is 156 by 210, uncompressed one-mip 32-bit BGRA DDS. Its g
 
 ## Animated leader refresh
 
-- Ordinary Hannibal: 12 independently generated source frames, 156 by 210 static fallback, 1872 by 210 BGRA sheet, preview GIF, contact sheet, manifest, and GFX handoff. The loop includes the skull-in-hand licking action without relying on transform-only motion.
-- Transformed Hannibal: 16 independently generated source frames, 156 by 210 static fallback, 2496 by 210 BGRA sheet, preview GIF, contact sheet, manifest, and GFX handoff. It preserves facial continuity, remains fictional, and uses invented cold body-horror anatomy without borrowed sacred or Indigenous motifs.
+- Ordinary Hannibal: the canonical `gfx/leaders/014_cannibalism/hannibal.dds` static is frame `000` of a 12-frame source package. Eleven separately image-generated fork, lick, bite, chew, and reset states complete the 1872 by 210 BGRA sheet, preview GIF, contact sheet, manifest, and GFX handoff.
+- Transformed Hannibal: the canonical `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` static is frame `000` of a 16-frame source package. Fifteen separately image-generated jaw, tongue, crush, chew, swallow, and reset states complete the 2496 by 210 BGRA sheet, preview GIF, contact sheet, manifest, and GFX handoff.
+- Both portrait sheets play at 12 FPS through `gfx/FX/buttonstate_blendframes.lua`. Neither animation relies on transform-only motion.
 - Neither animation or static fallback is exposed before `cannibalism_reveal_complete`.
 
 ## Acceptance proof
 
 - 56 unique generated source images and 56 exact-size runtime DDS files.
-- 28 independent source frames across the two animations, with matching sheets, static fallbacks, previews, contact sheets, manifests, and runtime sprite handoff.
+- 28 genuine source frames across the two animations: two canonical static frame `000` images plus 26 separately image-generated action states. Matching sheets, static fallbacks, previews, contact sheets, manifests, and runtime sprite handoffs are present.
 - Pixel-decoded comparison proving every DDS matches its processed PNG.
 - Manual visual review for HOI4 portrait framing, distinct faces, regional compatibility, feral presentation, period compatibility, requested skull action, and absence of prohibited settings or motifs.
 
@@ -45,7 +46,7 @@ Each runtime portrait is 156 by 210, uncompressed one-mip 32-bit BGRA DDS. Its g
 - `docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/manifest.md` and `cbe_cbh/manifest.md` account for all 56 independently generated warlord sources and final 156 by 210 DDS files.
 - Their matching `gfx_handoff.md` files record the stable CBA-CBH regional sprite and runtime paths.
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/portrait_regen_a_handoff.md` and `portrait_regen_b_handoff.md` record the two completed production tranches.
-- `docs/assets/014_cannibalism/leader_portraits_refresh/hannibal/manifest.md` closes the ordinary 12-frame package, and `wendigo_hannibal/manifest.md` closes the transformed 16-frame package. Both have matching GFX handoffs, static fallbacks, sheets, previews, contact sheets, and independently generated source frames.
-- `event014_country_package_reaudit_2026-07-15.md` reports 56 live portrait files, 56 valid dimensions, 56 unique hashes, correct regional selection, the required skull-lick composition, and no prison setting in CBG or CBH.
+- `docs/assets/014_cannibalism/leader_portraits_refresh/hannibal/manifest.md` closes the ordinary 12-frame package, and `wendigo_hannibal/manifest.md` closes the transformed 16-frame package. Both have matching GFX handoffs, static fallbacks, sheets, previews, contact sheets, canonical frame `000` sources, and separately generated action states.
+- `audits/event014_country_package_consolidation_reaudit_2026-07-15.md` reports 56 live portrait files, 56 valid dimensions, 56 unique hashes, correct regional selection, the required skull-lick composition, and no prison setting in CBG or CBH.
 
 No fallback, reused portrait, transform-only animation, missing regional variant, or unwired runtime path remains in this repair scope.

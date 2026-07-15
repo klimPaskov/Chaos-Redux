@@ -4,6 +4,8 @@ Date: 2026-07-15
 Mode: final targeted audit with one narrow localisation repair
 Verdict: completion-ready for the audited scope
 
+Superseded for current consolidation facts by `event014_localisation_asset_consolidation_reaudit_2026-07-15.md`. The live portrait animation declarations were consolidated at 12 FPS with `buttonstate_blendframes.lua`; the corrected values below replace the earlier pre-consolidation 6 FPS prose.
+
 ## Final priority counts
 
 | Priority | Remaining findings |
@@ -85,8 +87,8 @@ Regional warlord portraits:
 
 Animations:
 
-- Ordinary Hannibal has 12 unique generated source frames and 12 unique processed frames, a 1872x210 sheet DDS, a 156x210 static fallback, GIF, source and processed contact sheets, manifest, validation, and GFX handoff. Its live `frameAnimatedSpriteType` declares 12 frames at 6 FPS.
-- Wendigo Hannibal has 16 unique generated source frames and 16 unique processed frames, a 2496x210 sheet DDS, a 156x210 static fallback, GIF, source and processed contact sheets, manifest, hashes, validation, and GFX handoff. Its live declaration has 16 frames at 6 FPS.
+- Ordinary Hannibal has 12 unique generated source frames and 12 unique processed frames, a 1872x210 sheet DDS, a 156x210 static fallback, GIF, source and processed contact sheets, manifest, validation, and GFX handoff. Its live `frameAnimatedSpriteType` declares 12 frames at 12 FPS with `buttonstate_blendframes.lua`.
+- Wendigo Hannibal has 16 unique generated source frames and 16 unique processed frames, a 2496x210 sheet DDS, a 156x210 static fallback, GIF, source and processed contact sheets, manifest, hashes, validation, and GFX handoff. Its live declaration has 16 frames at 12 FPS with `buttonstate_blendframes.lua`.
 - The 12 non-portrait packages contain 114 unique source frames and 114 unique processed frames. Their counts are 8, 8, 8, 8, 8, 12, 12, 6, 12, 8, 12, and 12. Every package has source and processed frames, PNG/DDS sheet, PNG/DDS static fallback, GIF, contact sheet, manifest, frame inventory, brief, frame plan, live DDS pair, and GFX handoff.
 - Contact-sheet inspection confirms semantic artwork progression inside each package. None is a transform-only animation of one still.
 

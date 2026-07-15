@@ -2,7 +2,7 @@
 
 ## Scope
 
-This package contains all 68 current static warlord-route national-focus icons referenced by `common/national_focus/014_cannibalism_warlord_focus.txt`. Each focus has distinct imagegen source art, a transparent processed PNG, a local BGRA8 DDS copy, and the exact live DDS file expected by the focus sprite handoff.
+This package contains all 68 current static warlord-route national-focus icons referenced by `common/national_focus/014_cannibalism_focus.txt`. Each focus has distinct imagegen source art, a transparent processed PNG, a local BGRA8 DDS copy, and the exact live DDS file expected by the focus sprite handoff.
 
 The package deliberately excludes Hannibal, the Wendigo, the unified-command burden, portraits, decision art, idea art, report-event art, and the retired Prison Host origin focus family. The current generic containment focuses `secure_the_prisoner_ledger` and `seize_prisons_and_depots` remain in scope. No animation package is required because all 68 surfaces are registered as one-frame static focus sprites.
 
@@ -16,7 +16,7 @@ The package deliberately excludes Hannibal, the Wendigo, the unified-command bur
 - DDS format: uncompressed BGRA8, one mip, alpha preserved.
 - Validation: `validation/warlord_focus_icon_validation.tsv`.
 - Contact sheets: source, processed checkerboard, and decoded live DDS sheets under `contact_sheets/`.
-- GFX registration target: `interface/014_cannibalism_warlord_focus_assets.gfx`; registration is intentionally left to the owning implementation agent.
+- GFX registration target: `interface/014_cannibalism.gfx`; registration is intentionally left to the owning implementation agent.
 - Origin-specialist motif contract: exactly the Island Host naval grapnel/landing rope, Siege Commune entrenching shovel/masonry, and March Host wheel/mount/road gear; no Prison Host motif.
 
 ## Complete inventory
@@ -91,4 +91,3 @@ The package deliberately excludes Hannibal, the Wendigo, the unified-command bur
 | 66 | `goal_cannibalism_warlord_execute_the_couriers` | Execute the Couriers | `GFX_goal_cannibalism_warlord_execute_the_couriers` | `source_png/goal_cannibalism_warlord_execute_the_couriers_source.png` | `processed_png/goal_cannibalism_warlord_execute_the_couriers.png` | `gfx/interface/goals/014_cannibalism/goal_cannibalism_warlord_execute_the_couriers.dds` |
 | 67 | `goal_cannibalism_warlord_fortify_independent_ground` | Fortify Independent Ground | `GFX_goal_cannibalism_warlord_fortify_independent_ground` | `source_png/goal_cannibalism_warlord_fortify_independent_ground_source.png` | `processed_png/goal_cannibalism_warlord_fortify_independent_ground.png` | `gfx/interface/goals/014_cannibalism/goal_cannibalism_warlord_fortify_independent_ground.dds` |
 | 68 | `goal_cannibalism_warlord_independent_regional_host` | Independent Regional Host | `GFX_goal_cannibalism_warlord_independent_regional_host` | `source_png/goal_cannibalism_warlord_independent_regional_host_source.png` | `processed_png/goal_cannibalism_warlord_independent_regional_host.png` | `gfx/interface/goals/014_cannibalism/goal_cannibalism_warlord_independent_regional_host.dds` |
-

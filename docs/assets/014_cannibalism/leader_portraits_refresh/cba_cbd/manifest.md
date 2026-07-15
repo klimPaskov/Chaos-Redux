@@ -1,24 +1,25 @@
 # Event 014 CBA-CBD Warlord Portrait Manifest
 
-Status: visually approved and installed in the existing live DDS paths.
+Status: visually reviewed, processed, and installed in the existing live DDS paths on 2026-07-15.
 
 ## Package contents
 
-- 28 distinct image-generation source masters under `source_png/`.
+- 28 independently generated fictional source masters under `source_png/`.
 - 28 deterministic 156x210 HOI4 portrait PNGs under `processed_png/`.
 - 28 processor metadata records under `metadata/`.
 - 28 per-portrait comparison sheets under `review_sheets/`.
-- One labelled final review sheet at `contact_sheets/cba_cbd_warlords_contact_sheet.png`.
-- One enlarged 28-portrait scalp review sheet at `contact_sheets/cba_cbd_baldness_audit_contact_sheet.png`.
-- Explicit 28/28 review checklist at `baldness_audit.md`.
-- Prompt and source-review record at `prompts/warlord_prompts.md`.
-- Exact live-file and sprite registration record at `gfx_handoff.md`.
+- Labelled final sheet at `contact_sheets/cba_cbd_warlords_contact_sheet.png`.
+- Enlarged scalp, face, and silhouette sheet at `contact_sheets/cba_cbd_baldness_audit_contact_sheet.png`.
+- Explicit 28/28 visual checklist at `baldness_audit.md`.
+- Prompt, action, generated-output, and source-hash record at `prompts/warlord_prompts.md`.
+- Live-file and sprite registration record at `gfx_handoff.md`.
+- Mechanical verification record at `validation.md`.
 
-Every source is a separately generated fictional person with a smooth hairless scalp. Source and processed SHA-256 sets both contain 28 unique hashes. No portrait was created by recolouring, mirroring, warping, filtering, or otherwise transforming another portrait.
+The selected source, processed, and DDS sets each contain 28 unique SHA-256 hashes. Every portrait came from its own built-in ImageGen result; none was created by recolouring, mirroring, warping, filtering, or transforming another portrait. The visual sheet confirms distinct anatomy, expression, clothing, hand action, prop, background, and silhouette across all 28 slots.
 
 ## Asset map
 
-Each identifier below has the three matching files `source_png/<identifier>_source.png`, `processed_png/<identifier>.png`, and `gfx/leaders/014_cannibalism/<identifier>.dds`.
+Each identifier below has the matching files `source_png/<identifier>_source.png`, `processed_png/<identifier>.png`, `metadata/<identifier>.json`, `review_sheets/<identifier>_review.png`, and `gfx/leaders/014_cannibalism/<identifier>.dds`.
 
 | Tag | Europe/default | Africa | Asia | Middle East | North America | Oceania | South America |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -27,22 +28,24 @@ Each identifier below has the three matching files `source_png/<identifier>_sour
 | CBC | `leader_CBC_warlord` | `leader_CBC_warlord_africa` | `leader_CBC_warlord_asia` | `leader_CBC_warlord_middle_east` | `leader_CBC_warlord_north_america` | `leader_CBC_warlord_oceania` | `leader_CBC_warlord_south_america` |
 | CBD | `leader_CBD_warlord` | `leader_CBD_warlord_africa` | `leader_CBD_warlord_asia` | `leader_CBD_warlord_middle_east` | `leader_CBD_warlord_north_america` | `leader_CBD_warlord_oceania` | `leader_CBD_warlord_south_america` |
 
-`leader_CBA_warlord_south_america` is the required regional skull-lick portrait: one skull is held at cheek height and the tongue visibly contacts its temple.
+`leader_CBA_warlord_south_america` is the set's sole skull-prop licking portrait. The tongue-to-temple contact is readable in both the final portrait and contact sheet. Other bone- or tooth-like objects are differentiated by action and, where moderation-safe reinterpretation was needed, are visibly artificial carved, resin, paper, or wooden props.
 
 ## Provenance and processing
 
-- Source type: fictional built-in image generation; no real-person or actor likeness requested.
-- Visual references: Chaos Redux `assets/leader_portraits/contact_sheet.png`, its six source references, and vanilla leader portraits under the HOI4 installation.
-- Finish: `.tools/process_hoi4_portrait.py leader`, full approved source crop, fictional source mode, 156x210 output.
-- DDS conversion: `.tools/convert_to_dds.py`, uncompressed 32-bit BGRA with alpha.
-- Review decision: all 28 final portraits approved against both contact sheets for smooth bald scalps, readable faces, distinct identities, restrained HOI4 treatment, and absence of prison/cell/confinement imagery.
+- Source type: fictional built-in ImageGen; no real-person or actor likeness requested.
+- Style-only references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png`.
+- Finish: `.tools/process_hoi4_portrait.py leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
+- DDS conversion: `.tools/convert_to_dds.py --width 156 --height 210`, producing uncompressed 32-bit RGBA/BGRA-compatible DDS files.
+- Visual decision: 28/28 approved as bald or severely shorn fictional adult men, with readable faces and actions, distinct silhouettes, restrained HOI4 treatment, and no prison, cell, bars, cage, restraint, or confinement imagery.
 
 ## Image-generation accounting
 
-- Warlord invocations: 45.
-- Selected warlord source masters: 28.
-- Initial four-invocation batch: no outputs persisted after moderation rejection of overly graphic wording.
-- Rejected visible-hair sources preserved under `source_png/rejected/visible_hair/`: 9.
-- Rejected smooth-bald but over-composed first-pass replacements preserved under `source_png/rejected/baldness_pass1_mild/`: 4.
-- The final enlarged scalp audit confirms 28/28 approved sources have no visible scalp hair, follicles, hair shadow, stubble, buzz cut, fringe, or sideburns.
-- Selected calls used the moderation-safe production wording recorded in `prompts/warlord_prompts.md` without reducing the requested feral character direction.
+- Selected successful built-in outputs: 28, one independent selected output per portrait.
+- Superseded successful outputs: 10. The first CBA Asia, CBB default/Asia/Oceania/South America, CBC default/Africa, and CBD North America/Oceania/South America results were rejected during native-size whole-sheet review because hair or action readability did not meet the brief. Each was independently regenerated and fully reprocessed.
+- Additional moderation-blocked attempts: 5 portrait attempts, all retried once with less graphic but visually equivalent artificial-prop or non-graphic wording.
+- Total portrait invocations including blocked and visually superseded attempts: 43. The generated-output directory contains 38 persisted PNGs: 28 selected plus 10 superseded.
+- Initial blocked group: CBA North America, South America, and Oceania; request ID `6613135f-0ec8-449e-8903-1aa8a1d4c5b8`.
+- Later partially persisted group: CBD default and Africa outputs persisted and were selected; CBD Asia and Middle East did not persist and were retried; request ID `7e5fbfb6-958a-4c58-8fb5-c81e963485e9`.
+- No moderation retry exceeded one additional attempt, no requested slot remains unresolved, and no CLI, local procedural, alternate model, or derivative-image fallback was used.
+
+The selected generated-output filenames, actions, source hashes, and moderation-safe prompt deltas are recorded in `prompts/warlord_prompts.md`.

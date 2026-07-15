@@ -1,67 +1,76 @@
 # Event 014 CBE-CBH leader portrait manifest
 
-## Package
+## Package contract
 
-- Status: handed off.
-- Subject class: 28 original fictional male cannibal warlords.
-- Source mode: built-in image generation, one final source PNG per portrait.
-- Final format: 156x210, opaque 32-bit BGRA DDS.
+- Related event: 014, Cannibalism.
+- Asset type: fictional country-leader portrait.
+- Intended use: dynamically selected regional warlord portraits for CBE, CBF, CBG, and CBH.
+- Source mode: built-in `imagegen`; generation fits because every subject is an original fictional alternate-history warlord rather than a real historical person.
+- Apparent presentation: male-presenting; compatible with the existing masculine warlord name pools.
+- Source status: 28 accepted generated masters; 27 first-attempt safe prompts and one second-attempt safe prompt.
+- Era fit: invented damaged 1930s-1940s field clothing, webbing, armour scraps, smoke, dust, and period props, without readable insignia or modern equipment.
+- Source-license field: not applicable to generated fictional artwork.
+- Prompt record: `prompts/prompt_matrix.md`, with every complete accepted prompt preserved under `prompts/generated/`.
+- Source-generation provenance: `source_generation_metadata.md`.
 - Source root: `source_png/`.
 - Processed root: `processed_png/`.
-- Per-portrait processing metadata: `metadata/`.
-- Per-portrait review sheets: `contact_sheets/reviews/`.
-- Aggregate source review: `contact_sheets/source_contact_sheet.png`.
+- Per-portrait crop and processor metadata: `metadata/`.
+- Per-portrait reference comparison sheets: `contact_sheets/reviews/`.
+- Aggregate source-crop review: `contact_sheets/source_contact_sheet.png`.
 - Aggregate final review: `contact_sheets/processed_contact_sheet.png`.
+- Target format: 156x210, opaque uncompressed 32-bit BGRA legacy DDS.
 - Live DDS root: `gfx/leaders/014_cannibalism/`.
-- Existing registration file: `interface/014_cannibalism.gfx`; no GFX edit was required.
+- Existing registration file: `interface/014_cannibalism.gfx`, lines 199-230.
+- Localisation key: not applicable; portrait selection uses existing sprite names and existing character-name localisation.
+- Package status: wired.
 
-The final source set contains 28 unique files. Thirty-four successful source-generation calls were used: the original 28-file pass plus six strict hairless replacements for CBE default, CBE North America, CBF Asia, CBG default, CBG Asia, and CBG North America. One earlier non-graphic prompt attempt was rejected before producing a file and is not part of the package.
+The default/Europe sprite alias intentionally shares each tag's base DDS. The 28 files therefore serve 32 registered sprite names.
 
-## Asset map
+## Asset inventory
 
-The source and processed filenames use the DDS stem with `_source.png` and `.png`, respectively.
+Common path abbreviations in the table are relative to this package for source, processed, metadata, prompt, and review files. Final paths are repository-relative.
 
-| Tag | Region | Final DDS | Existing sprite registration |
-| --- | --- | --- | --- |
-| CBE | Europe/default | `leader_CBE_warlord.dds` | `GFX_portrait_CBE_warlord`, `GFX_portrait_CBE_warlord_europe` |
-| CBE | Africa | `leader_CBE_warlord_africa.dds` | `GFX_portrait_CBE_warlord_africa` |
-| CBE | Asia | `leader_CBE_warlord_asia.dds` | `GFX_portrait_CBE_warlord_asia` |
-| CBE | Middle East | `leader_CBE_warlord_middle_east.dds` | `GFX_portrait_CBE_warlord_middle_east` |
-| CBE | North America | `leader_CBE_warlord_north_america.dds` | `GFX_portrait_CBE_warlord_north_america` |
-| CBE | South America | `leader_CBE_warlord_south_america.dds` | `GFX_portrait_CBE_warlord_south_america` |
-| CBE | Oceania | `leader_CBE_warlord_oceania.dds` | `GFX_portrait_CBE_warlord_oceania` |
-| CBF | Europe/default | `leader_CBF_warlord.dds` | `GFX_portrait_CBF_warlord`, `GFX_portrait_CBF_warlord_europe` |
-| CBF | Africa | `leader_CBF_warlord_africa.dds` | `GFX_portrait_CBF_warlord_africa` |
-| CBF | Asia | `leader_CBF_warlord_asia.dds` | `GFX_portrait_CBF_warlord_asia` |
-| CBF | Middle East | `leader_CBF_warlord_middle_east.dds` | `GFX_portrait_CBF_warlord_middle_east` |
-| CBF | North America | `leader_CBF_warlord_north_america.dds` | `GFX_portrait_CBF_warlord_north_america` |
-| CBF | South America | `leader_CBF_warlord_south_america.dds` | `GFX_portrait_CBF_warlord_south_america` |
-| CBF | Oceania | `leader_CBF_warlord_oceania.dds` | `GFX_portrait_CBF_warlord_oceania` |
-| CBG | Europe/default | `leader_CBG_warlord.dds` | `GFX_portrait_CBG_warlord`, `GFX_portrait_CBG_warlord_europe` |
-| CBG | Africa | `leader_CBG_warlord_africa.dds` | `GFX_portrait_CBG_warlord_africa` |
-| CBG | Asia | `leader_CBG_warlord_asia.dds` | `GFX_portrait_CBG_warlord_asia` |
-| CBG | Middle East | `leader_CBG_warlord_middle_east.dds` | `GFX_portrait_CBG_warlord_middle_east` |
-| CBG | North America | `leader_CBG_warlord_north_america.dds` | `GFX_portrait_CBG_warlord_north_america` |
-| CBG | South America | `leader_CBG_warlord_south_america.dds` | `GFX_portrait_CBG_warlord_south_america` |
-| CBG | Oceania | `leader_CBG_warlord_oceania.dds` | `GFX_portrait_CBG_warlord_oceania` |
-| CBH | Europe/default | `leader_CBH_warlord.dds` | `GFX_portrait_CBH_warlord`, `GFX_portrait_CBH_warlord_europe` |
-| CBH | Africa | `leader_CBH_warlord_africa.dds` | `GFX_portrait_CBH_warlord_africa` |
-| CBH | Asia | `leader_CBH_warlord_asia.dds` | `GFX_portrait_CBH_warlord_asia` |
-| CBH | Middle East | `leader_CBH_warlord_middle_east.dds` | `GFX_portrait_CBH_warlord_middle_east` |
-| CBH | North America | `leader_CBH_warlord_north_america.dds` | `GFX_portrait_CBH_warlord_north_america` |
-| CBH | South America | `leader_CBH_warlord_south_america.dds` | `GFX_portrait_CBH_warlord_south_america` |
-| CBH | Oceania | `leader_CBH_warlord_oceania.dds` | `GFX_portrait_CBH_warlord_oceania` |
+| Tag | Region | Asset and source record | Existing sprite registration | Status |
+| --- | --- | --- | --- | --- |
+| CBE | Europe/default | **leader_CBE_warlord**<br>Prompt: `prompts/generated/leader_CBE_warlord.txt`<br>Source: `source_png/leader_CBE_warlord_source.png`<br>Processed: `processed_png/leader_CBE_warlord.png`<br>Metadata: `metadata/leader_CBE_warlord.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord.dds` | `GFX_portrait_CBE_warlord`, `GFX_portrait_CBE_warlord_europe` | wired |
+| CBE | Africa | **leader_CBE_warlord_africa**<br>Prompt: `prompts/generated/leader_CBE_warlord_africa.txt`<br>Source: `source_png/leader_CBE_warlord_africa_source.png`<br>Processed: `processed_png/leader_CBE_warlord_africa.png`<br>Metadata: `metadata/leader_CBE_warlord_africa.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_africa_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_africa.dds` | `GFX_portrait_CBE_warlord_africa` | wired |
+| CBE | Asia | **leader_CBE_warlord_asia**<br>Prompt: `prompts/generated/leader_CBE_warlord_asia.txt`<br>Source: `source_png/leader_CBE_warlord_asia_source.png`<br>Processed: `processed_png/leader_CBE_warlord_asia.png`<br>Metadata: `metadata/leader_CBE_warlord_asia.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_asia_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_asia.dds` | `GFX_portrait_CBE_warlord_asia` | wired |
+| CBE | Middle East | **leader_CBE_warlord_middle_east**<br>Prompt: `prompts/generated/leader_CBE_warlord_middle_east.txt`<br>Source: `source_png/leader_CBE_warlord_middle_east_source.png`<br>Processed: `processed_png/leader_CBE_warlord_middle_east.png`<br>Metadata: `metadata/leader_CBE_warlord_middle_east.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_middle_east_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_middle_east.dds` | `GFX_portrait_CBE_warlord_middle_east` | wired |
+| CBE | North America | **leader_CBE_warlord_north_america**<br>Prompt: `prompts/generated/leader_CBE_warlord_north_america.txt`<br>Source: `source_png/leader_CBE_warlord_north_america_source.png`<br>Processed: `processed_png/leader_CBE_warlord_north_america.png`<br>Metadata: `metadata/leader_CBE_warlord_north_america.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_north_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_north_america.dds` | `GFX_portrait_CBE_warlord_north_america` | wired |
+| CBE | South America | **leader_CBE_warlord_south_america**<br>Prompt: `prompts/generated/leader_CBE_warlord_south_america.txt`<br>Source: `source_png/leader_CBE_warlord_south_america_source.png`<br>Processed: `processed_png/leader_CBE_warlord_south_america.png`<br>Metadata: `metadata/leader_CBE_warlord_south_america.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_south_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_south_america.dds` | `GFX_portrait_CBE_warlord_south_america` | wired |
+| CBE | Oceania | **leader_CBE_warlord_oceania**<br>Prompt: `prompts/generated/leader_CBE_warlord_oceania.txt`<br>Source: `source_png/leader_CBE_warlord_oceania_source.png`<br>Processed: `processed_png/leader_CBE_warlord_oceania.png`<br>Metadata: `metadata/leader_CBE_warlord_oceania.json`<br>Review: `contact_sheets/reviews/leader_CBE_warlord_oceania_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBE_warlord_oceania.dds` | `GFX_portrait_CBE_warlord_oceania` | wired |
+| CBF | Europe/default | **leader_CBF_warlord**<br>Prompt: `prompts/generated/leader_CBF_warlord.txt`<br>Source: `source_png/leader_CBF_warlord_source.png`<br>Processed: `processed_png/leader_CBF_warlord.png`<br>Metadata: `metadata/leader_CBF_warlord.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord.dds` | `GFX_portrait_CBF_warlord`, `GFX_portrait_CBF_warlord_europe` | wired |
+| CBF | Africa | **leader_CBF_warlord_africa**<br>Prompt: `prompts/generated/leader_CBF_warlord_africa.txt`<br>Source: `source_png/leader_CBF_warlord_africa_source.png`<br>Processed: `processed_png/leader_CBF_warlord_africa.png`<br>Metadata: `metadata/leader_CBF_warlord_africa.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_africa_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_africa.dds` | `GFX_portrait_CBF_warlord_africa` | wired |
+| CBF | Asia | **leader_CBF_warlord_asia**<br>Prompt: `prompts/generated/leader_CBF_warlord_asia.txt`<br>Source: `source_png/leader_CBF_warlord_asia_source.png`<br>Processed: `processed_png/leader_CBF_warlord_asia.png`<br>Metadata: `metadata/leader_CBF_warlord_asia.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_asia_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_asia.dds` | `GFX_portrait_CBF_warlord_asia` | wired |
+| CBF | Middle East | **leader_CBF_warlord_middle_east**<br>Prompt: `prompts/generated/leader_CBF_warlord_middle_east.txt`<br>Source: `source_png/leader_CBF_warlord_middle_east_source.png`<br>Processed: `processed_png/leader_CBF_warlord_middle_east.png`<br>Metadata: `metadata/leader_CBF_warlord_middle_east.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_middle_east_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_middle_east.dds` | `GFX_portrait_CBF_warlord_middle_east` | wired |
+| CBF | North America | **leader_CBF_warlord_north_america**<br>Prompt: `prompts/generated/leader_CBF_warlord_north_america.txt`<br>Source: `source_png/leader_CBF_warlord_north_america_source.png`<br>Processed: `processed_png/leader_CBF_warlord_north_america.png`<br>Metadata: `metadata/leader_CBF_warlord_north_america.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_north_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_north_america.dds` | `GFX_portrait_CBF_warlord_north_america` | wired |
+| CBF | South America | **leader_CBF_warlord_south_america**<br>Prompt: `prompts/generated/leader_CBF_warlord_south_america.txt`<br>Source: `source_png/leader_CBF_warlord_south_america_source.png`<br>Processed: `processed_png/leader_CBF_warlord_south_america.png`<br>Metadata: `metadata/leader_CBF_warlord_south_america.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_south_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_south_america.dds` | `GFX_portrait_CBF_warlord_south_america` | wired |
+| CBF | Oceania | **leader_CBF_warlord_oceania**<br>Prompt: `prompts/generated/leader_CBF_warlord_oceania.txt`<br>Source: `source_png/leader_CBF_warlord_oceania_source.png`<br>Processed: `processed_png/leader_CBF_warlord_oceania.png`<br>Metadata: `metadata/leader_CBF_warlord_oceania.json`<br>Review: `contact_sheets/reviews/leader_CBF_warlord_oceania_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBF_warlord_oceania.dds` | `GFX_portrait_CBF_warlord_oceania` | wired |
+| CBG | Europe/default | **leader_CBG_warlord**<br>Prompt: `prompts/generated/leader_CBG_warlord.txt`<br>Source: `source_png/leader_CBG_warlord_source.png`<br>Processed: `processed_png/leader_CBG_warlord.png`<br>Metadata: `metadata/leader_CBG_warlord.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord.dds` | `GFX_portrait_CBG_warlord`, `GFX_portrait_CBG_warlord_europe` | wired |
+| CBG | Africa | **leader_CBG_warlord_africa**<br>Prompt: `prompts/generated/leader_CBG_warlord_africa.txt`<br>Source: `source_png/leader_CBG_warlord_africa_source.png`<br>Processed: `processed_png/leader_CBG_warlord_africa.png`<br>Metadata: `metadata/leader_CBG_warlord_africa.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_africa_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_africa.dds` | `GFX_portrait_CBG_warlord_africa` | wired |
+| CBG | Asia | **leader_CBG_warlord_asia**<br>Prompt: `prompts/generated/leader_CBG_warlord_asia.txt`<br>Source: `source_png/leader_CBG_warlord_asia_source.png`<br>Processed: `processed_png/leader_CBG_warlord_asia.png`<br>Metadata: `metadata/leader_CBG_warlord_asia.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_asia_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_asia.dds` | `GFX_portrait_CBG_warlord_asia` | wired |
+| CBG | Middle East | **leader_CBG_warlord_middle_east**<br>Prompt: `prompts/generated/leader_CBG_warlord_middle_east.txt`<br>Source: `source_png/leader_CBG_warlord_middle_east_source.png`<br>Processed: `processed_png/leader_CBG_warlord_middle_east.png`<br>Metadata: `metadata/leader_CBG_warlord_middle_east.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_middle_east_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_middle_east.dds` | `GFX_portrait_CBG_warlord_middle_east` | wired |
+| CBG | North America | **leader_CBG_warlord_north_america**<br>Prompt: `prompts/generated/leader_CBG_warlord_north_america.txt`<br>Source: `source_png/leader_CBG_warlord_north_america_source.png`<br>Processed: `processed_png/leader_CBG_warlord_north_america.png`<br>Metadata: `metadata/leader_CBG_warlord_north_america.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_north_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_north_america.dds` | `GFX_portrait_CBG_warlord_north_america` | wired |
+| CBG | South America | **leader_CBG_warlord_south_america**<br>Prompt: `prompts/generated/leader_CBG_warlord_south_america.txt`<br>Source: `source_png/leader_CBG_warlord_south_america_source.png`<br>Processed: `processed_png/leader_CBG_warlord_south_america.png`<br>Metadata: `metadata/leader_CBG_warlord_south_america.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_south_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_south_america.dds` | `GFX_portrait_CBG_warlord_south_america` | wired |
+| CBG | Oceania | **leader_CBG_warlord_oceania**<br>Prompt: `prompts/generated/leader_CBG_warlord_oceania.txt`<br>Source: `source_png/leader_CBG_warlord_oceania_source.png`<br>Processed: `processed_png/leader_CBG_warlord_oceania.png`<br>Metadata: `metadata/leader_CBG_warlord_oceania.json`<br>Review: `contact_sheets/reviews/leader_CBG_warlord_oceania_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBG_warlord_oceania.dds` | `GFX_portrait_CBG_warlord_oceania` | wired |
+| CBH | Europe/default | **leader_CBH_warlord**<br>Prompt: `prompts/generated/leader_CBH_warlord.txt`<br>Source: `source_png/leader_CBH_warlord_source.png`<br>Processed: `processed_png/leader_CBH_warlord.png`<br>Metadata: `metadata/leader_CBH_warlord.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord.dds` | `GFX_portrait_CBH_warlord`, `GFX_portrait_CBH_warlord_europe` | wired |
+| CBH | Africa | **leader_CBH_warlord_africa**<br>Prompt: `prompts/generated/leader_CBH_warlord_africa.txt`<br>Source: `source_png/leader_CBH_warlord_africa_source.png`<br>Processed: `processed_png/leader_CBH_warlord_africa.png`<br>Metadata: `metadata/leader_CBH_warlord_africa.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_africa_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_africa.dds` | `GFX_portrait_CBH_warlord_africa` | wired |
+| CBH | Asia | **leader_CBH_warlord_asia**<br>Prompt: `prompts/generated/leader_CBH_warlord_asia.txt`<br>Source: `source_png/leader_CBH_warlord_asia_source.png`<br>Processed: `processed_png/leader_CBH_warlord_asia.png`<br>Metadata: `metadata/leader_CBH_warlord_asia.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_asia_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_asia.dds` | `GFX_portrait_CBH_warlord_asia` | wired |
+| CBH | Middle East | **leader_CBH_warlord_middle_east**<br>Prompt: `prompts/generated/leader_CBH_warlord_middle_east.txt`<br>Source: `source_png/leader_CBH_warlord_middle_east_source.png`<br>Processed: `processed_png/leader_CBH_warlord_middle_east.png`<br>Metadata: `metadata/leader_CBH_warlord_middle_east.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_middle_east_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_middle_east.dds` | `GFX_portrait_CBH_warlord_middle_east` | wired |
+| CBH | North America | **leader_CBH_warlord_north_america**<br>Prompt: `prompts/generated/leader_CBH_warlord_north_america.txt`<br>Source: `source_png/leader_CBH_warlord_north_america_source.png`<br>Processed: `processed_png/leader_CBH_warlord_north_america.png`<br>Metadata: `metadata/leader_CBH_warlord_north_america.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_north_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_north_america.dds` | `GFX_portrait_CBH_warlord_north_america` | wired |
+| CBH | South America | **leader_CBH_warlord_south_america**<br>Prompt: `prompts/generated/leader_CBH_warlord_south_america.txt`<br>Source: `source_png/leader_CBH_warlord_south_america_source.png`<br>Processed: `processed_png/leader_CBH_warlord_south_america.png`<br>Metadata: `metadata/leader_CBH_warlord_south_america.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_south_america_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_south_america.dds` | `GFX_portrait_CBH_warlord_south_america` | wired |
+| CBH | Oceania | **leader_CBH_warlord_oceania**<br>Prompt: `prompts/generated/leader_CBH_warlord_oceania.txt`<br>Source: `source_png/leader_CBH_warlord_oceania_source.png`<br>Processed: `processed_png/leader_CBH_warlord_oceania.png`<br>Metadata: `metadata/leader_CBH_warlord_oceania.json`<br>Review: `contact_sheets/reviews/leader_CBH_warlord_oceania_review.png`<br>Final: `gfx/leaders/014_cannibalism/leader_CBH_warlord_oceania.dds` | `GFX_portrait_CBH_warlord_oceania` | wired |
 
 ## Visual and provenance review
 
-- Every final portrait is a unique generated fictional person; no portrait, source, or final DDS is reused.
-- All 28 final subjects are bald and hairless.
-- Every image is a tightly framed leader bust, not an action scene.
-- CBG and CBH remain origin-agnostic feral warlords; none uses prison, cell, bar, cage, restraint, or prisoner-uniform imagery.
-- No actor or public-figure likeness, antlers, sacred symbols, culturally specific ritual motifs, readable insignia, or modern equipment appears.
-- Regional variants use restrained skin tone, weathering, clothing, and atmosphere variation without cultural caricature.
-- Apparent gender matches the requested male character use.
+- Every source is a separate built-in image-generation output and a unique fictional person; no portrait, source, or final DDS is reused.
+- The SHA-256 audit found 28 unique source masters, 28 unique processed PNGs, and 28 unique live DDS files; each live DDS matches its same-stem processed master pixel-for-pixel.
+- All 28 subjects are visibly bald or hairless and remain readable at native 156x210 scale.
+- Each portrait has a distinct macabre but non-graphic action, prop, face construction, clothing silhouette, pose, light, and regional atmosphere.
+- CBG and CBH remain origin-agnostic feral warlords; no prison, cell, bar, cage, restraint, or prisoner-uniform imagery appears.
+- No actor or public-figure likeness, antlers, living sacred motif, copied portrait, readable insignia, or modern equipment appears.
+- The canonical vanilla leader references were used only for framing, value range, and painted finish.
 
 ## Simplifications, omissions, and blockers
 
-None. All 28 requested source masters, processed PNGs, metadata records, review sheets, live DDS files, and existing sprite mappings are present.
+None. All 28 exact source masters, accepted prompts, source provenance records, processed PNGs, crop metadata files, reference sheets, live DDS files, and preserved sprite mappings are present. No fallback or placeholder was used.

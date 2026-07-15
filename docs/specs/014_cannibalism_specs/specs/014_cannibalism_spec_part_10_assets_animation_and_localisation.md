@@ -151,39 +151,40 @@ The manifest records apparent gender presentation and requires male regional nam
 
 ### Ordinary static portrait
 
-- final 156 by 210 DDS
-- gaunt, pallid, bloodshot, feral, visibly crazed expression
-- unique mantle and scars
-- severe wet gore, irregular stained teeth, torn lips, and human-origin facial damage
-- Hannibal Lecter without a specific screen actor likeness
+- `gfx/leaders/014_cannibalism/hannibal.dds` is the binding 156 by 210 source
+- the supplied DDS itself is the directly registered live static fallback
+- frame `000` is the exact decoded supplied portrait
+- no replacement static identity or actor imitation is generated
 
 ### Ordinary animated portrait
 
-- 12 separate source frames
+- 12 separate source states: exact canonical frame `000` and 11 image-generated motion frames
 - 12 processed frames at 156 by 210
 - 1872 by 210 horizontal sheet
 - static fallback
 - review GIF
 - contact sheet
-- a real skull-handling action beat in which Hannibal Lecter raises a human skull and progressively licks blood from it
-- jaw, tongue, fingers, eyes, wet gore, posture, and expression change through separately generated source frames
+- a fork-handling action beat in which Hannibal Lecter raises a blood-darkened dinner fork, licks the tines, bites the morsel, chews, and lowers the utensil
+- jaw, tongue, fingers, eyes, fork, morsel, wet gore, posture, and expression change through separately generated motion frames
+- 12 fps playback with the vanilla blend-frames effect
 
 ### Wendigo static portrait
 
-- transformed Hannibal
-- maintain facial identity
-- dramatically less-human, distorted, frenzied anatomy with stronger gore and cold body horror
+- `gfx/leaders/014_cannibalism/hannibal_wendigo.dds` is the binding 156 by 210 source and exact live static fallback
+- maintain the supplied black, bone-white, and red graphic identity
+- dramatically less-human, distorted, frenzied anatomy in the generated action states
 - no borrowed cultural regalia
 
 ### Wendigo animated portrait
 
-- 16 separate source frames
+- 16 separate source states: exact canonical frame `000` and 15 image-generated motion frames
 - 16 processed frames at 156 by 210
 - 2496 by 210 sheet
 - static fallback
 - review GIF
 - contact sheet
-- a distinct predatory action beat with asymmetrical jaw, limbs, eyes, frost, breath, flesh, gore, and shadow progression drawn in separate source frames
+- a distinct jaw, tongue, skull-fragment, bite, crush, chew, and recovery action beat drawn in separate generated states
+- 12 fps playback with the vanilla blend-frames effect
 
 ## Flags
 
@@ -201,7 +202,7 @@ Design rules:
 
 - fictional image-generated source art, followed by deterministic flat-color processing for runtime
 - front-facing vexillological layouts only: no fabric, folds, poles, scenery, perspective, texture, gradients, bevels, shadows, lighting, or presentation mockups
-- two to four opaque colors with crisp geometric boundaries
+- three to five opaque colors with crisp geometric boundaries
 - readable at 10 by 7
 - bone, tooth, hand, jaw, blade, bowl, chain, island, rail, or siege motifs
 - no text
@@ -518,16 +519,16 @@ The implemented runtime package contains:
 - 29 report and news DDS files
 - four distinct action super-event DDS files
 - 56 regional warlord portraits
-- one 12-frame ordinary reveal portrait and one 16-frame transformed portrait, both built from independently generated source frames
-- 195 current Event 014 flag TGAs
+- one 12-frame ordinary reveal portrait and one 16-frame transformed portrait, each anchored by its exact supplied frame `000` and completed with separately generated action states
+- 65 built-in ImageGen flag masters and 195 unique current Event 014 flag TGAs
 - 204 focus icons
 - 62 idea and modifier icons
 - 135 decision and category textures, including 38 distinct unified decision icons
 - 18 achievement triplets
-- 12 non-portrait animation packages plus exact static GUI surfaces
+- 12 non-portrait animation packages plus the two leader portrait packages, for exactly 14 semantic animation packages and 142 genuine source plus 142 processed frames
 - eight unique 44.1 kHz super-event runtime audio files, four OGG and four WAV
 - the final 21-surface closure package.
 
 The closure package covers 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt textures, the receipt-backed Pack icon, and the inherited winter-cell icon. Every closure composition has independent generated source art, processed output, runtime DDS, hash ledger, validation report, and contact-sheet evidence.
 
-A current scan across the nine `.gfx` files that reference Event 014 found 812 texture references, 598 unique paths, and zero missing runtime files. The two leader animations are real-frame sequences. No completion claim relies on transform-only portrait motion, an absent static fallback, a missing texture, or reused unified decision art.
+A current scan covers exactly three Event 014-referencing GFX files: the dedicated `interface/014_cannibalism.gfx` registry plus the shared `interface/chaosx_pictures.gfx` and `interface/chaosx_super_events.gfx` registries. Their 812 texture references resolve to 598 unique existing paths with 598 unique hashes and no missing runtime file. The two leader animations are real-frame sequences. No completion claim relies on transform-only portrait motion, an absent static fallback, a missing texture, or reused unified decision art.

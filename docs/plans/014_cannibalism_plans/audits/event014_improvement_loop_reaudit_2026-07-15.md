@@ -1,5 +1,7 @@
 # Event 014 Improvement-Loop Final Reaudit
 
+> Superseded for current authority by `event014_improvement_loop_consolidation_reaudit_2026-07-15.md`. This same-day checkpoint remains historical evidence only.
+
 Date: 2026-07-15
 
 Mode: documentation and accepted-depth closure reaudit after authority reconciliation and package-manifest regeneration

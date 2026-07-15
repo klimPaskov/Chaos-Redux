@@ -1,52 +1,57 @@
 # Event 014 CBE-CBH warlord portrait prompt matrix
 
-## Shared prompt contract
+## Source contract
 
-Use case: `stylized-concept`
+Every row was a separate built-in image-generation call and produced a separate fictional source master. The complete accepted call text is preserved verbatim under `prompts/generated/`; this matrix is the review index.
 
-Asset type: fictional Hearts of Iron IV country-leader portrait source, processed to 156x210.
+All prompts shared these constraints:
 
-Primary request: create one completely original fictional male cannibal warlord. He is completely bald and hairless, weathered and scarred, feral, visibly unhinged, and subtly less than human while remaining a readable leader. Give him predatory eyes, strained facial anatomy, unhealthy pallor or regionally plausible weathering, broken or unnaturally crowded teeth, small non-graphic dried dark-red stains where useful, and a disturbing expression. Do not copy a real person, actor, public figure, or an existing game portrait.
+- Original fictional adult male-presenting macabre warlord, visibly crazed, feral, and uncannily less human while remaining a unique invented individual.
+- Entirely bald or severely shorn, with no visible hairline, scalp hair, fringe, sideburns, beard, moustache, or scalp stubble.
+- Vanilla HOI4 country-leader portrait language: muted 1930s-1940s oil-painted finish, restrained semi-realism, aged brush texture, controlled contrast, and period field gear without readable insignia.
+- Tight head-and-shoulders or restrained upper-torso composition with the face, hands, and unique non-graphic prop readable after the 156x210 crop.
+- Regional differentiation through complexion, weathering, facial construction, period clothing, pose, backdrop, lighting, and lens choice without cultural stereotype or sacred motif.
+- No prison, cell, bars, cage, restraints, prisoner uniform, confinement imagery, actor likeness, public-figure likeness, fantasy species, antlers, modern equipment, text, logos, watermarks, or wide action scenes.
+- Macabre gestures remain symbolic and clean: no active combat or explicit depiction.
 
-Style/medium: vanilla Hearts of Iron IV painted leader-portrait treatment; subdued hand-painted finish, restrained realism, muted 1930s-1940s grading, controlled contrast, aged brush texture, not glossy modern concept art and not a photograph.
+The three supplied vanilla portraits were references only for paint finish, framing, and value range. Their identities, faces, clothing, poses, and insignia were not copied.
 
-Composition/framing: vertical portrait; tightly framed head, shoulders, and upper torso filling the canvas; face large and readable; hands and weapons outside the frame; quiet neutral smoky studio, command-post haze, or very faint battlefield atmosphere only. This is a leader bust, never a wide action scene.
+## Distinct action matrix
 
-Clothing/gear: invented damaged 1930s-1940s field clothing, rough coats, improvised armour, webbing, or scavenged period gear without readable insignia. Vary silhouette, collar, straps, and materials for every portrait.
+| Tag | Region | Final DDS | Distinct non-graphic action | Accepted attempt | Verbatim prompt |
+| --- | --- | --- | --- | ---: | --- |
+| CBE | Europe/default | `leader_CBE_warlord.dds` | Licks the brow of a weathered theatrical bone-skull prop while watching the viewer. | 1 | `generated/leader_CBE_warlord.txt` |
+| CBE | Africa | `leader_CBE_warlord_africa.dds` | Grips a cracked brass compass between filed teeth and turns its needle with one finger. | 1 | `generated/leader_CBE_warlord_africa.txt` |
+| CBE | Asia | `leader_CBE_warlord_asia.dds` | Chews the corner of a cracked leather map case while holding it upright. | 1 | `generated/leader_CBE_warlord_asia.txt` |
+| CBE | Middle East | `leader_CBE_warlord_middle_east.dds` | Threads polished bone-like charms onto copper wire at his collar. | 1 | `generated/leader_CBE_warlord_middle_east.txt` |
+| CBE | North America | `leader_CBE_warlord_north_america.dds` | Presses an uncanny carved feast mask to his cheek and peers through its eye opening. | 1 | `generated/leader_CBE_warlord_north_america.txt` |
+| CBE | South America | `leader_CBE_warlord_south_america.dds` | Holds a tarnished ceremonial spoon between filed teeth and taps its bowl. | 1 | `generated/leader_CBE_warlord_south_america.txt` |
+| CBE | Oceania | `leader_CBE_warlord_oceania.dds` | Nibbles a scorched ration biscuit while staring straight ahead. | 1 | `generated/leader_CBE_warlord_oceania.txt` |
+| CBF | Europe/default | `leader_CBF_warlord.dds` | Kisses the filter of a cracked, empty 1930s gas mask. | 1 | `generated/leader_CBF_warlord.txt` |
+| CBF | Africa | `leader_CBF_warlord_africa.dds` | Balances a blunt ceremonial table utensil across his extended tongue. | 2 | `generated/leader_CBF_warlord_africa.txt` |
+| CBF | Asia | `leader_CBF_warlord_asia.dds` | Studies the scent of an old, empty stuffed leather glove relic. | 1 | `generated/leader_CBF_warlord_asia.txt` |
+| CBF | Middle East | `leader_CBF_warlord_middle_east.dds` | Plays a folded ration-tin harmonica with manic concentration. | 1 | `generated/leader_CBF_warlord_middle_east.txt` |
+| CBF | North America | `leader_CBF_warlord_north_america.dds` | Offers a polished ivory tooth-shaped charm to a pet rat on his shoulder. | 1 | `generated/leader_CBF_warlord_north_america.txt` |
+| CBF | South America | `leader_CBF_warlord_south_america.dds` | Uses a carved jaw-shaped relic like a telephone receiver. | 1 | `generated/leader_CBF_warlord_south_america.txt` |
+| CBF | Oceania | `leader_CBF_warlord_oceania.dds` | Rotates a cracked glass false eye beside his own eye. | 1 | `generated/leader_CBF_warlord_oceania.txt` |
+| CBG | Europe/default | `leader_CBG_warlord.dds` | Braids black cord around an inert spent brass cartridge while holding the cord end in his teeth. | 1 | `generated/leader_CBG_warlord.txt` |
+| CBG | Africa | `leader_CBG_warlord_africa.dds` | Studies the scent of the mud-dark heel of an old, empty field boot. | 1 | `generated/leader_CBG_warlord_africa.txt` |
+| CBG | Asia | `leader_CBG_warlord_asia.dds` | Smears rust-red sealing wax across a blank ledger page. | 1 | `generated/leader_CBG_warlord_asia.txt` |
+| CBG | Middle East | `leader_CBG_warlord_middle_east.dds` | Chews a blank corner of a captured field map. | 1 | `generated/leader_CBG_warlord_middle_east.txt` |
+| CBG | North America | `leader_CBG_warlord_north_america.dds` | Balances a clean porcelain skull-shaped board-game token on his tongue. | 1 | `generated/leader_CBG_warlord_north_america.txt` |
+| CBG | South America | `leader_CBG_warlord_south_america.dds` | Counts a necklace of mismatched polished tooth-shaped charms against his grin. | 1 | `generated/leader_CBG_warlord_south_america.txt` |
+| CBG | Oceania | `leader_CBG_warlord_oceania.dds` | Holds a brass uniform button between his teeth while pulling sewing thread taut. | 1 | `generated/leader_CBG_warlord_oceania.txt` |
+| CBH | Europe/default | `leader_CBH_warlord.dds` | Admires his filed smile in a cracked hand mirror. | 1 | `generated/leader_CBH_warlord.txt` |
+| CBH | Africa | `leader_CBH_warlord_africa.dds` | Polishes a row of ivory tooth-shaped charms on his coat sleeve. | 1 | `generated/leader_CBH_warlord_africa.txt` |
+| CBH | Asia | `leader_CBH_warlord_asia.dds` | Presses a glossy black leech-shaped wax charm to his lower lip. | 1 | `generated/leader_CBH_warlord_asia.txt` |
+| CBH | Middle East | `leader_CBH_warlord_middle_east.dds` | Polishes an ivory tooth-shaped charm against a pocket whetstone. | 1 | `generated/leader_CBH_warlord_middle_east.txt` |
+| CBH | North America | `leader_CBH_warlord_north_america.dds` | Rolls an empty spent brass cartridge casing along his tongue. | 1 | `generated/leader_CBH_warlord_north_america.txt` |
+| CBH | South America | `leader_CBH_warlord_south_america.dds` | Clicks an antique jaw-shaped nutcracker beside his cheek and mimics its grin. | 1 | `generated/leader_CBH_warlord_south_america.txt` |
+| CBH | Oceania | `leader_CBH_warlord_oceania.dds` | Sews a pale leather patch to his high collar while holding a curved needle between filed teeth. | 1 | `generated/leader_CBH_warlord_oceania.txt` |
 
-Hard exclusions: no text, watermark, logo, modern equipment, actor likeness, famous-person likeness, copied uniform, caricature, stereotype, sacred symbol, culturally specific ritual motif, antlers, supernatural antler shorthand, prison, cell, bars, cage, barred window, lockhouse, detention corridor, prisoner uniform, handcuffs, shackles, chains used as restraints, confinement imagery, or restraints. CBG and CBH are origin-agnostic feral warlords, not prison hosts.
+## Generation notes
 
-## Distinct subject deltas
-
-Each row is a separate built-in image-generation call and a separate source image. The shared contract is repeated in the live call together with the row delta.
-
-| Final filename | Region | Distinct subject delta |
-| --- | --- | --- |
-| `leader_CBE_warlord.dds` | Europe/default | Long narrow skull; ashen skin; smooth hairless scalp without stubble; diagonal scar from right temple through cheek; one amber eye and one clouded grey eye; lips pulled tight over crowded incisors; battered charcoal wool command coat with torn high collar, dented shoulder plate, and one broad canvas webbing strap; head angled slightly left; cold grey smoke backdrop. |
-| `leader_CBF_warlord.dds` | Europe/default | Broad squat skull; ruddy waxy skin; cauliflower ears; crudely stitched brow; crushed nose bleeding lightly; open ecstatic laugh showing broken molars; patched umber field jacket over a scavenged metal throat guard; shoulders turned slightly right; faint wet roadside haze behind him. |
-| `leader_CBG_warlord.dds` | Europe/default | Gaunt triangular face; smooth hairless scalp without stubble; pinched scarred nose; eyes held unnaturally wide; impossible sideways grin; patched slate greatcoat with mismatched tin chest scales and frayed wool scarf; front-facing rigid posture; neutral smoky canvas backdrop with no architecture. |
-| `leader_CBH_warlord.dds` | Europe/default | Older heavy-jowled face; bald scalp crossed by a crescent scar; one lower eyelid pulled down by old damage; irregular blackened teeth barely visible in a silent manic smile; oil-dark field coat, cracked leather map-case strap, and dull brass shoulder scrap; slight three-quarter right pose; faint snowy battlefield smoke. |
-| `leader_CBE_warlord_asia.dds` | Asia | Shaven oval skull; high cheekbones; thin scar across the bridge of the nose; one bloodshot eye and one unnaturally pale iris; clenched predatory half-smile with two broken front teeth; weathered quilted field jacket, plain webbing, and a torn canvas shoulder guard; three-quarter left; cool smoky command backdrop. |
-| `leader_CBF_warlord_asia.dds` | Asia | Lean long face; completely shaved scalp; torn left ear; dark jaw scar pulling the mouth into a crooked grin; narrow fever-bright eyes; faded collarless cotton field coat under a riveted scrap-metal shoulder plate; three-quarter right; faint night-road haze and no buildings. |
-| `leader_CBG_warlord_asia.dds` | Asia | Compact round skull; completely hairless scalp without a hairline; frost-split cheek; shortened scarred nose; pupils too small in pale irises; jaw held slightly too far open over uneven teeth; patchwork olive canvas coat and a loose period ammunition bandolier; square front pose; neutral blue-grey smoke. |
-| `leader_CBH_warlord_asia.dds` | Asia | Older wiry face; bald crown; deep weather lines; one eye bulging and the other narrowed; cracked teeth in a tense closed-lip grin; worn long dark field coat, functional wrapped wool neck scarf, and battered binocular strap; slight left angle; dusty-grey studio haze. |
-| `leader_CBE_warlord_africa.dds` | Africa | Deep-brown skin; narrow bald head; rough sutured cheek wound; burst vessels in both predatory eyes; torn lower lip exposing broken teeth; sun-faded khaki field jacket, cracked leather webbing, and improvised dull-steel collar plate; three-quarter left; warm smoky battlefield distance. |
-| `leader_CBF_warlord_africa.dds` | Africa | Broad powerful face; shaved scalp; missing tip of right ear; vertical forehead scar; fixed delighted grin with crushed teeth; weathered brown canvas coat and riveted iron gorget over plain webbing; shoulders turned right; muted dust and engine-smoke backdrop. |
-| `leader_CBG_warlord_africa.dds` | Africa | Very tall gaunt impression; elongated bald skull; sunken cheeks; mismatched dark and pale eyes; slack jaw with a second row-like crowding of broken teeth; rough olive rain cape over a torn field blouse and canvas bandolier; front-facing; neutral storm-grey haze. |
-| `leader_CBH_warlord_africa.dds` | Africa | Older compact face; close-shaved scalp; mottled burn and blade scars; mouth drawn into an unnaturally tense straight smile; watchful yellow-brown eyes; patched dark wool coat with a field-glasses strap and small scavenged shoulder plate; three-quarter right; faint red-brown dusk smoke. |
-| `leader_CBE_warlord_middle_east.dds` | Middle East | Olive weathered skin; bald narrow head; split left brow; one milky eye; predatory stare and compressed smile over chipped teeth; sand-worn field coat, plain wrapped dust scarf, and crossed canvas webbing; slight left pose; quiet ochre command haze. |
-| `leader_CBF_warlord_middle_east.dds` | Middle East | Broad angular jaw; shaved scalp with a burned temple; badly healed broken nose; teeth bared in a furious grin; torn khaki field tunic beneath one scavenged steel shoulder shell and rough leather strap; three-quarter right; faint windblown dust and smoke. |
-| `leader_CBG_warlord_middle_east.dds` | Middle East | Extremely gaunt sun-cracked face; smooth bald scalp; asymmetrical jaw hinge; bulging feverish eyes; thin impossible smile; long dust-coloured field coat with plain map-satchel strap and stitched canvas chest patch; square portrait pose; neutral smoky studio. |
-| `leader_CBH_warlord_middle_east.dds` | Middle East | Older deeply lined face; bald scalp; scar from chin to lower cheek; blood dried beneath one nostril; crooked knowing grin with missing canine; patched camel-coloured greatcoat and battered binocular strap; head angled left; distant cold desert-night smoke. |
-| `leader_CBE_warlord_north_america.dds` | North America | Pale freckled square face; clean-shaved scalp; deep cheek gouge; yellowed predatory eyes; jaw clenched around fractured incisors; torn olive herringbone field jacket, broad web belt, and dented shoulder scrap; three-quarter left; faint rain-dark battlefield haze. |
-| `leader_CBF_warlord_north_america.dds` | North America | Dark-brown broad face; bald scalp; flattened broken nose; lip scar creating an uneven grin; one eye wide and one narrowed; patched mechanic coverall under a heavy field overcoat with a loose respirator strap at the collar; three-quarter right; smoky motor-pool distance. |
-| `leader_CBG_warlord_north_america.dds` | North America | Long gaunt face and neck; smooth bald scalp without stubble; collapsed left temple; wide glassy eyes; hinge-like grin showing many small broken teeth; rough denim-lined field jacket, plain bandolier, and improvised chest plate; direct stare; neutral grey canvas haze. |
-| `leader_CBH_warlord_north_america.dds` | North America | Older heavy-browed face; bald crown; one cataract eye; branching forehead scar; lips curled in a restrained murderous smile; thick checked wool field coat under scavenged webbing and ammunition-pouch strap; slight right angle; faint snow and pine-smoke atmosphere without scenery. |
-| `leader_CBE_warlord_south_america.dds` | South America | Medium-brown angular face; shaved scalp; torn left earlobe; scar splitting the upper lip; needle-bright eyes; clenched half-grin exposing one long broken canine; faded olive field tunic and rough leather webbing; three-quarter left; humid smoky command backdrop. |
-| `leader_CBF_warlord_south_america.dds` | South America | Pale olive broad-cheeked face; bald head; deeply scarred chin; pupils fixed too wide; laughing grin with shattered molars; patched brown cavalry-cut field jacket without insignia and a canvas ammunition strap; shoulders right; faint dusty road haze. |
-| `leader_CBG_warlord_south_america.dds` | South America | Long narrow face; completely bald scalp; one swollen bloodshot eye; crooked nose; mouth stretched into an impossible hinge grin; weathered green canvas raincoat and a blunt riveted chest plate; front-facing; neutral humid blue-grey smoke. |
-| `leader_CBH_warlord_south_america.dds` | South America | Older copper-brown face; bald scalp; deep lines and scar from brow to cheek; fixed smile over irregular teeth; one eye reflecting an unhealthy pale glint; patched charcoal field coat, radio-operator shoulder strap, and canvas webbing; slight left pose; distant storm smoke. |
-| `leader_CBE_warlord_oceania.dds` | Oceania | Weather-beaten pale angular face; shaved scalp; sun-blistered scars; narrow predatory blue-grey eyes; split-lip snarl over broken teeth; salt-stiff khaki drill jacket and frayed webbing with one dull metal shoulder patch; three-quarter left; windy coastal smoke with no landmarks. |
-| `leader_CBF_warlord_oceania.dds` | Oceania | Deep-brown broad forehead; bald scalp with a diagonal scar; damaged right ear; delighted broken-tooth grin; patched tan canvas military shirt under a salvaged plate gorget and plain webbing; three-quarter right; warm storm-lit haze, no cultural symbols. |
-| `leader_CBG_warlord_oceania.dds` | Oceania | Lean medium-brown face; completely bald scalp; asymmetrical jaw; one lidless-looking eye and one narrowed eye; stretched closed-mouth grin; faded grey-green wool field blouse, binocular strap, and small improvised shoulder plate; direct pose; neutral rain haze. |
-| `leader_CBH_warlord_oceania.dds` | Oceania | Older stocky face; bald scalp with one large burn scar; left eye bulging; teeth held visibly together in a rigid smile; blackened oilskin field coat with crossed canvas equipment belts and a battered high collar; slight right pose; faint cold sea-smoke backdrop without scenery. |
+- Twenty-seven assets were accepted on the first safe wording.
+- `leader_CBF_warlord_africa` was accepted on the second wording after replacing an edged-object description with a blunt ceremonial table utensil.
+- A separate exploratory prompt before the safe pass was rejected and created no source file.
+- No local drawing, procedural substitute, sourced-photo fallback, or reused portrait was used.

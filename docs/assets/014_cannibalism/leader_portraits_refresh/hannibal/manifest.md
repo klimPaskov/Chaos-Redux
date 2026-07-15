@@ -1,53 +1,48 @@
-# Event 014 Revealed Hannibal Portrait Manifest
+# Event 014 Hannibal Lecter portrait manifest
 
-Status: visually approved, assembled, and installed in the existing static and animated DDS paths.
+Status: canonical static portrait directly registered, genuine source-frame animation installed, and live GFX registration updated.
 
-## Identity masters
+## Canonical portrait
 
-- Selected static source: `source_png/leader_CBL_hannibal_static_source.png`.
-- Selected static processed PNG: `sheets/leader_CBL_hannibal_static.png`, 156x210.
-- Rejected but retained review candidate: `source_png/rejected/leader_CBL_hannibal_static_rejected_composed.png`.
-- Identity direction: bald fictional commander, cloudy misaligned eye, damaged ear, dense scar web, irregular teeth, feral grin, and a map-and-shelf command studio with no confinement imagery.
+- Required input: `gfx/leaders/014_cannibalism/hannibal.dds`.
+- Live static fallback and character portrait: `gfx/leaders/014_cannibalism/hannibal.dds` (the exact user-supplied canonical file).
+- The canonical live file has SHA-256 `5c48c9a5b503c3185dcb38ee1aabc403d7668094079b78a20010323930d10b88`.
+- Decoded source for generation reference: `source_png/leader_CBL_hannibal_static_source.png`.
+- Decoded processed master: `sheets/leader_CBL_hannibal_static.png`, 156x210.
+- Frame `000` is the exact decoded canonical portrait. It is not a generated substitute.
 
 ## Animation package
 
-- 12 separately generated identity-preserving edit sources under `source_frames/`.
-- 12 deterministic 156x210 processed frames under `processed_frames/`.
+- Frames: 12 source states under `source_frames/`, ordered `000` through `011`.
+- Frame provenance: canonical frame `000`, followed by 11 separately generated identity-preserving image edits.
+- Processed frames: 12 files under `processed_frames/`, each 156x210.
 - Horizontal sheet: `sheets/leader_CBL_hannibal_sheet.png`, 1872x210.
-- Review GIF: `previews/leader_CBL_hannibal_preview.gif`, 12 frames over exactly 2 seconds, averaging 6 fps.
-- Source contact sheet: `previews/leader_CBL_hannibal_source_contact_sheet.png`.
-- Processed contact sheet: `previews/leader_CBL_hannibal_processed_contact_sheet.png`.
-- Per-frame processor metadata and comparison sheets: `metadata/` and `review_sheets/`.
+- Live sheet: `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds`.
+- Preview: `previews/leader_CBL_hannibal_preview.gif`, 12 frames, 1,000 ms, approximately 12 fps.
+- Review surfaces: source and processed contact sheets under `previews/`, plus individual review sheets under `review_sheets/`.
+- Playback smoothing: the live sprite uses the vanilla `gfx/FX/buttonstate_blendframes.lua` effect.
 
-The frames are real image-model edits derived from the selected static identity master. No frame is a transform-only, filter-only, recolour-only, or overlay-only derivative.
+Every motion frame after `000` is a real image-generation output. No accepted frame was manufactured by translating, scaling, warping, recolouring, filtering, or interpolating one still.
 
-## Frame content
+## Frame ledger
 
 | Frame | State |
 | --- | --- |
-| `000` | Skull barely enters at the lower edge; direct stare. |
-| `001` | Skull raised to lower chest. |
-| `002` | Skull lifted and turned toward Hannibal. |
-| `003` | Skull appraised beside the cheek. |
-| `004` | Tongue begins extending toward the skull. |
-| `005` | Tongue approaches with a visible gap. |
-| `006` | First tongue-to-skull contact. |
-| `007` | Peak deliberate lick. |
-| `008` | Contact completes at the cheekbone. |
-| `009` | Tongue retracts and eye contact returns. |
-| `010` | Skull lowers; broad feral grin. |
-| `011` | Skull returns to the lower edge for the loop. |
+| `000` | Exact supplied portrait; direct canonical stare. |
+| `001` | Eyes lower as the fork begins entering frame. |
+| `002` | Gloved hand raises the same fork and morsel to the chest. |
+| `003` | Fork reaches the mouth; tongue tip appears. |
+| `004` | Tongue extends toward the stained tines. |
+| `005` | Tongue makes first contact with the fork. |
+| `006` | Deliberate lick continues along the tines. |
+| `007` | Teeth close on the morsel. |
+| `008` | Fork withdraws as chewing begins. |
+| `009` | Chewing continues under direct eye contact. |
+| `010` | Fork lowers and the expression settles. |
+| `011` | Utensil leaves frame and the portrait returns close to canonical rest. |
 
-## Image-generation accounting
+## Live bindings
 
-- Hannibal invocations: 15.
-- Selected deliverables: one static identity master and 12 frame sources.
-- Additional successful output retained for review history: one rejected composed static candidate.
-- Failed/non-persisted Hannibal attempt: one first attempt at frame `005`, rejected by moderation before a successful safer retry.
-- Combined CBA-CBD plus Hannibal package: 60 built-in image-generation invocations, 41 selected deliverables, 14 preserved rejected review sources, and five failed/non-persisted attempts.
-
-## Live outputs
-
-- `gfx/leaders/014_cannibalism/leader_CBL_hannibal_static.dds`, 156x210.
-- `gfx/leaders/014_cannibalism/leader_CBL_hannibal_sheet.dds`, 1872x210, 12 horizontal frames.
-- Existing `gfx/leaders/014_cannibalism/hannibal.dds` is a separate asset and was not changed.
+- `GFX_portrait_CBL_hannibal` and `GFX_cannibalism_revealed_portrait_static` use the exact supplied static portrait file directly.
+- `GFX_cannibalism_revealed_portrait_animated` uses the 12-frame sheet at 12 fps.
+- All bindings are in the consolidated `interface/014_cannibalism.gfx` file.

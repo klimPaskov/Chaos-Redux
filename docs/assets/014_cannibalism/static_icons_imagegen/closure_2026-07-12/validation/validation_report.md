@@ -44,9 +44,9 @@ They do not show or imply a Hannibal Lecter name, face, silhouette, pronoun, com
 
 ## Runtime registration check
 
-- The 13 objective/mission paths match interface/014_cannibalism_objectives.gfx.
-- The tracker icon and panel paths match interface/014_cannibalism_achievement_tracker.gfx.
-- The six focus-closure paths match interface/014_cannibalism_focus_closure.gfx.
+- The 13 objective/mission paths match interface/014_cannibalism.gfx.
+- The tracker icon and panel paths match interface/014_cannibalism.gfx.
+- The six focus-closure paths match interface/014_cannibalism.gfx.
 - No GFX file was edited by this asset task.
 
 ## Review notes
