@@ -1,0 +1,807 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RHINELAND AND BAVARIA PACKAGE EFFECTS
+# ============================================================================
+# Overview:
+# - Builds exact IW-008 and IW-009 institutional rosters, politics, lifecycles,
+#   focus hooks, force packages, portrait hooks, and AI profiles.
+# - Uses guarded generated characters because these existing vanilla tags may
+#   not be given duplicate history recruitment or duplicate character tokens.
+# - Provides bounded setup, final-validation, and cleanup adapters for the
+#   parent-owned four-pass package transaction.
+# - Never sets package-content or implementation-readiness flags.
+# ============================================================================
+
+@rhi_command_skill = 3
+@rhi_command_attack = 2
+@rhi_command_defense = 4
+@rhi_command_planning = 3
+@rhi_command_logistics = 3
+@bay_command_skill = 3
+@bay_command_attack = 3
+@bay_command_defense = 4
+@bay_command_planning = 3
+@bay_command_logistics = 2
+
+# ---------------------------------------------------------------------------
+# Package idea lifecycles and visible values
+# ---------------------------------------------------------------------------
+
+independence_wave_remove_rhi_package_ideas = {
+	remove_ideas = {
+		rhi_divided_river_authority
+		rhi_rhine_civic_industrial_compact
+		rhi_constitutional_river_compact
+		rhi_workers_rhine_charter
+		rhi_emergency_corridor_command
+		rhi_patron_transit_mandate
+	}
+}
+
+independence_wave_remove_bay_package_ideas = {
+	remove_ideas = {
+		bay_disputed_state_inheritance
+		bay_estates_and_districts_settlement
+		bay_constitutional_state_compact
+		bay_workers_district_charter
+		bay_restoration_court_settlement
+		bay_emergency_mountain_guardians
+	}
+}
+
+independence_wave_remove_rhi_route_ideas = {
+	remove_ideas = {
+		rhi_constitutional_river_compact
+		rhi_workers_rhine_charter
+		rhi_emergency_corridor_command
+		rhi_patron_transit_mandate
+	}
+}
+
+independence_wave_remove_bay_route_ideas = {
+	remove_ideas = {
+		bay_constitutional_state_compact
+		bay_workers_district_charter
+		bay_restoration_court_settlement
+		bay_emergency_mountain_guardians
+	}
+}
+
+independence_wave_refresh_rhi_corridor_lifecycle = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes }
+		remove_ideas = { rhi_divided_river_authority rhi_rhine_civic_industrial_compact }
+		if = {
+			limit = { has_stable_independence_wave_rhi_corridor = yes }
+			add_ideas = rhi_rhine_civic_industrial_compact
+			set_country_flag = independence_wave_rhi_corridor_secured
+		}
+		else = {
+			add_ideas = rhi_divided_river_authority
+			clr_country_flag = independence_wave_rhi_corridor_secured
+		}
+	}
+}
+
+independence_wave_refresh_bay_state_lifecycle = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes }
+		remove_ideas = { bay_disputed_state_inheritance bay_estates_and_districts_settlement }
+		if = {
+			limit = { has_stable_independence_wave_bay_state = yes }
+			add_ideas = bay_estates_and_districts_settlement
+			set_country_flag = independence_wave_bay_state_secured
+		}
+		else = {
+			add_ideas = bay_disputed_state_inheritance
+			clr_country_flag = independence_wave_bay_state_secured
+		}
+	}
+}
+
+# Input: temporary independence_wave_rhi_authority_delta.
+independence_wave_change_rhi_corridor_authority = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes }
+		add_to_variable = { independence_wave_rhi_corridor_authority = independence_wave_rhi_authority_delta }
+		clamp_variable = {
+			var = independence_wave_rhi_corridor_authority
+			min = constant:independence_wave_rhine_bavaria_pressure.minimum
+			max = constant:independence_wave_rhine_bavaria_pressure.maximum
+		}
+		independence_wave_refresh_rhi_corridor_lifecycle = yes
+	}
+}
+
+# Inputs: temporary independence_wave_bay_civic_delta and
+# independence_wave_bay_security_delta.
+independence_wave_change_bay_civic_security = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes }
+		add_to_variable = { independence_wave_bay_civic_settlement = independence_wave_bay_civic_delta }
+		add_to_variable = { independence_wave_bay_mountain_security = independence_wave_bay_security_delta }
+		clamp_variable = {
+			var = independence_wave_bay_civic_settlement
+			min = constant:independence_wave_rhine_bavaria_pressure.minimum
+			max = constant:independence_wave_rhine_bavaria_pressure.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_bay_mountain_security
+			min = constant:independence_wave_rhine_bavaria_pressure.minimum
+			max = constant:independence_wave_rhine_bavaria_pressure.maximum
+		}
+		independence_wave_refresh_bay_state_lifecycle = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Shared decision outcomes
+# ---------------------------------------------------------------------------
+
+independence_wave_rhine_bavaria_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_rhine_bavaria_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_rhine_bavaria_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_rhine_bavaria_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_rhine_bavaria_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_rhine_bavaria_settle_former_host_ledgers = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_rhine_bavaria_reward_network_project = {
+	independence_wave_rhine_bavaria_apply_major_settlement = yes
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+}
+
+# ---------------------------------------------------------------------------
+# Guarded rosters and portrait hooks
+# ---------------------------------------------------------------------------
+
+independence_wave_prepare_rhi_roster_and_portrait = {
+	if = {
+		limit = { NOT = { has_character = RHI_independence_wave_provisional_directorate } }
+		generate_character = {
+			token_base = RHI_independence_wave_provisional_directorate
+			name = RHI_independence_wave_provisional_directorate
+			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+		}
+	}
+	if = {
+		limit = { has_character = RHI_independence_wave_provisional_directorate }
+		RHI_independence_wave_provisional_directorate = {
+			set_portraits = { civilian = { large = GFX_portrait_RHI_independence_wave_provisional_directorate } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_character = RHI_independence_wave_river_commandant } }
+		generate_character = {
+			token_base = RHI_independence_wave_river_commandant
+			name = RHI_independence_wave_river_commandant
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+			corps_commander = {
+				skill = @rhi_command_skill
+				attack_skill = @rhi_command_attack
+				defense_skill = @rhi_command_defense
+				planning_skill = @rhi_command_planning
+				logistics_skill = @rhi_command_logistics
+			}
+		}
+	}
+	if = {
+		limit = { has_character = RHI_independence_wave_river_commandant }
+		RHI_independence_wave_river_commandant = {
+			set_portraits = {
+				civilian = { large = GFX_portrait_RHI_independence_wave_river_commandant }
+				army = {
+					large = GFX_portrait_RHI_independence_wave_river_commandant
+					small = GFX_portrait_RHI_independence_wave_river_commandant_small
+				}
+			}
+		}
+	}
+	clr_country_flag = independence_wave_rhi_matthes_available
+	if = {
+		limit = { has_character = RHI_josef_friedrich_matthes }
+		RHI_josef_friedrich_matthes = {
+			set_portraits = { civilian = { large = GFX_portrait_RHI_josef_friedrich_matthes } }
+		}
+		set_country_flag = independence_wave_rhi_matthes_available
+	}
+}
+
+independence_wave_prepare_bay_roster_and_portrait = {
+	if = {
+		limit = { NOT = { has_character = BAY_independence_wave_state_council } }
+		generate_character = {
+			token_base = BAY_independence_wave_state_council
+			name = BAY_independence_wave_state_council
+			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+		}
+	}
+	if = {
+		limit = { has_character = BAY_independence_wave_state_council }
+		BAY_independence_wave_state_council = {
+			set_portraits = { civilian = { large = GFX_portrait_BAY_independence_wave_state_council } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_character = BAY_independence_wave_mountain_commandant } }
+		generate_character = {
+			token_base = BAY_independence_wave_mountain_commandant
+			name = BAY_independence_wave_mountain_commandant
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+			corps_commander = {
+				skill = @bay_command_skill
+				attack_skill = @bay_command_attack
+				defense_skill = @bay_command_defense
+				planning_skill = @bay_command_planning
+				logistics_skill = @bay_command_logistics
+			}
+		}
+	}
+	if = {
+		limit = { has_character = BAY_independence_wave_mountain_commandant }
+		BAY_independence_wave_mountain_commandant = {
+			set_portraits = {
+				civilian = { large = GFX_portrait_BAY_independence_wave_mountain_commandant }
+				army = {
+					large = GFX_portrait_BAY_independence_wave_mountain_commandant
+					small = GFX_portrait_BAY_independence_wave_mountain_commandant_small
+				}
+			}
+		}
+	}
+	clr_country_flag = independence_wave_bay_rupprecht_available
+	if = {
+		limit = {
+			has_character = BAY_rupprecht_of_bavaria
+			GER = { NOT = { has_character = BAY_rupprecht_of_bavaria } }
+		}
+		BAY_rupprecht_of_bavaria = {
+			set_portraits = { civilian = { large = GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria } }
+		}
+		set_country_flag = independence_wave_bay_rupprecht_available
+	}
+}
+
+independence_wave_restore_rhi_bay_vanilla_portraits = {
+	if = {
+		limit = { original_tag = RHI has_character = RHI_josef_friedrich_matthes }
+		RHI_josef_friedrich_matthes = {
+			set_portraits = { civilian = { large = GFX_portrait_RHI_josef_friedrich_matthes } }
+		}
+	}
+	else_if = {
+		limit = { original_tag = BAY has_character = BAY_rupprecht_of_bavaria }
+		BAY_rupprecht_of_bavaria = {
+			set_portraits = { civilian = { large = GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria } }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Politics and route-government installation
+# ---------------------------------------------------------------------------
+
+independence_wave_ensure_rhine_bavaria_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_set_rhine_bavaria_constitutional_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.constitutional_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.constitutional_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.constitutional_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.constitutional_fascism
+	}
+}
+
+independence_wave_set_rhine_bavaria_labor_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.labor_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.labor_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.labor_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.labor_fascism
+	}
+}
+
+independence_wave_set_rhine_bavaria_traditional_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.traditional_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.traditional_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.traditional_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.traditional_fascism
+	}
+}
+
+independence_wave_set_rhine_bavaria_emergency_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.emergency_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.emergency_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.emergency_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.emergency_fascism
+	}
+}
+
+independence_wave_set_rhine_bavaria_patron_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.patron_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.patron_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.patron_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.patron_fascism
+	}
+}
+
+independence_wave_initialize_rhi_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.rhi_start_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.rhi_start_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.rhi_start_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.rhi_start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = RHI_independence_wave_democratic_party_long name = RHI_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = RHI_independence_wave_communism_party_long name = RHI_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = RHI_independence_wave_neutrality_party_long name = RHI_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = RHI_independence_wave_fascism_party_long name = RHI_independence_wave_fascism_party }
+	promote_character = { character = RHI_independence_wave_provisional_directorate ideology = centrism }
+	set_country_flag = independence_wave_rhi_provisional_authority
+}
+
+independence_wave_initialize_bay_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_rhine_bavaria_politics.bay_start_democratic
+		communism = constant:independence_wave_rhine_bavaria_politics.bay_start_communism
+		neutrality = constant:independence_wave_rhine_bavaria_politics.bay_start_neutrality
+		fascism = constant:independence_wave_rhine_bavaria_politics.bay_start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = BAY_independence_wave_democratic_party_long name = BAY_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = BAY_independence_wave_communism_party_long name = BAY_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = BAY_independence_wave_neutrality_party_long name = BAY_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = BAY_independence_wave_fascism_party_long name = BAY_independence_wave_fascism_party }
+	promote_character = { character = BAY_independence_wave_state_council ideology = centrism }
+	set_country_flag = independence_wave_bay_provisional_authority
+}
+
+independence_wave_install_rhi_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		independence_wave_set_rhine_bavaria_constitutional_popularities = yes
+		set_party_name = { ideology = democratic long_name = RHI_independence_wave_constitutional_party_long name = RHI_independence_wave_constitutional_party }
+		promote_character = { character = RHI_independence_wave_provisional_directorate ideology = centrism }
+		independence_wave_remove_rhi_route_ideas = yes
+		add_ideas = rhi_constitutional_river_compact
+		set_country_flag = independence_wave_rhi_constitutional_government
+	}
+}
+
+independence_wave_install_rhi_labor_government = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		independence_wave_set_rhine_bavaria_labor_popularities = yes
+		set_party_name = { ideology = communism long_name = RHI_independence_wave_labor_party_long name = RHI_independence_wave_labor_party }
+		if = {
+			limit = { has_independence_wave_rhi_matthes_available = yes }
+			promote_character = { character = RHI_josef_friedrich_matthes ideology = socialism }
+		}
+		else = { promote_character = { character = RHI_independence_wave_provisional_directorate ideology = socialism } }
+		independence_wave_remove_rhi_route_ideas = yes
+		add_ideas = rhi_workers_rhine_charter
+		set_country_flag = independence_wave_rhi_labor_government
+	}
+}
+
+independence_wave_install_rhi_emergency_government = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_rhine_bavaria_emergency_popularities = yes
+		set_party_name = { ideology = neutrality long_name = RHI_independence_wave_emergency_party_long name = RHI_independence_wave_emergency_party }
+		promote_character = { character = RHI_independence_wave_river_commandant ideology = despotism }
+		independence_wave_remove_rhi_route_ideas = yes
+		add_ideas = rhi_emergency_corridor_command
+		set_country_flag = independence_wave_rhi_emergency_government
+	}
+}
+
+independence_wave_install_rhi_patron_government = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_independence_wave_patron_client_route = yes NOT = { has_independence_wave_rhi_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_rhine_bavaria_patron_popularities = yes
+		set_party_name = { ideology = neutrality long_name = RHI_independence_wave_patron_party_long name = RHI_independence_wave_patron_party }
+		promote_character = { character = RHI_independence_wave_provisional_directorate ideology = oligarchism }
+		independence_wave_remove_rhi_route_ideas = yes
+		add_ideas = rhi_patron_transit_mandate
+		set_country_flag = independence_wave_rhi_patron_government
+	}
+}
+
+independence_wave_install_bay_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		independence_wave_set_rhine_bavaria_constitutional_popularities = yes
+		set_party_name = { ideology = democratic long_name = BAY_independence_wave_constitutional_party_long name = BAY_independence_wave_constitutional_party }
+		promote_character = { character = BAY_independence_wave_state_council ideology = centrism }
+		independence_wave_remove_bay_route_ideas = yes
+		add_ideas = bay_constitutional_state_compact
+		set_country_flag = independence_wave_bay_constitutional_government
+	}
+}
+
+independence_wave_install_bay_labor_government = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		independence_wave_set_rhine_bavaria_labor_popularities = yes
+		set_party_name = { ideology = communism long_name = BAY_independence_wave_labor_party_long name = BAY_independence_wave_labor_party }
+		promote_character = { character = BAY_independence_wave_state_council ideology = socialism }
+		independence_wave_remove_bay_route_ideas = yes
+		add_ideas = bay_workers_district_charter
+		set_country_flag = independence_wave_bay_labor_government
+	}
+}
+
+independence_wave_install_bay_traditional_government = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_rhine_bavaria_traditional_popularities = yes
+		set_party_name = { ideology = neutrality long_name = BAY_independence_wave_traditional_party_long name = BAY_independence_wave_traditional_party }
+		if = {
+			limit = { has_independence_wave_bay_rupprecht_available = yes }
+			promote_character = { character = BAY_rupprecht_of_bavaria ideology = despotism }
+		}
+		else = { promote_character = { character = BAY_independence_wave_state_council ideology = despotism } }
+		independence_wave_remove_bay_route_ideas = yes
+		add_ideas = bay_restoration_court_settlement
+		set_country_flag = independence_wave_bay_traditional_government
+	}
+}
+
+independence_wave_install_bay_emergency_government = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_bay_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_rhine_bavaria_emergency_popularities = yes
+		set_party_name = { ideology = neutrality long_name = BAY_independence_wave_emergency_party_long name = BAY_independence_wave_emergency_party }
+		promote_character = { character = BAY_independence_wave_mountain_commandant ideology = despotism }
+		independence_wave_remove_bay_route_ideas = yes
+		add_ideas = bay_emergency_mountain_guardians
+		set_country_flag = independence_wave_bay_emergency_government
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact package setup and parent-owned transaction adapters
+# ---------------------------------------------------------------------------
+
+independence_wave_setup_iw_008_rhineland = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_008_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_008_package = yes }
+		independence_wave_prepare_rhi_roster_and_portrait = yes
+		country_event = { id = chaosx.nr6.10 }
+		independence_wave_ensure_rhine_bavaria_baseline_laws = yes
+		independence_wave_initialize_rhi_politics = yes
+		if = { limit = { has_independence_wave_rhi_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_rhi_corridor_authority = constant:independence_wave_rhine_bavaria_pressure.rhi_authority_start }
+		independence_wave_refresh_rhi_corridor_lifecycle = yes
+		set_country_flag = independence_wave_iw_008_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		clr_country_flag = independence_wave_route_traditional_available
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.civilians_vs_army }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.rhine_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		set_country_flag = independence_wave_rhi_form04_candidate
+		set_country_flag = independence_wave_rhine_corridor_ambition
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_rhi_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_rhi_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_008_package_setup = yes }
+			activate_decision = declare_germany_reunified_decision
+			remove_decision = declare_germany_reunified_decision
+			set_country_flag = independence_wave_rhi_german_reunification_closed
+			set_country_flag = independence_wave_iw_008_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_setup_iw_009_bavaria = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_009_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_009_package = yes }
+		independence_wave_prepare_bay_roster_and_portrait = yes
+		country_event = { id = chaosx.nr6.10 }
+		independence_wave_ensure_rhine_bavaria_baseline_laws = yes
+		independence_wave_initialize_bay_politics = yes
+		if = { limit = { has_independence_wave_bay_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_bay_civic_settlement = constant:independence_wave_rhine_bavaria_pressure.bay_civic_start }
+		set_variable = { independence_wave_bay_mountain_security = constant:independence_wave_rhine_bavaria_pressure.bay_security_start }
+		independence_wave_refresh_bay_state_lifecycle = yes
+		set_country_flag = independence_wave_iw_009_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		clr_country_flag = independence_wave_route_patron_client_available
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.restoration_court_vs_military_guardians }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_formable_family_registered
+		set_country_flag = independence_wave_bay_south_german_ambition
+		set_country_flag = independence_wave_bay_german_reunification_preserved
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_bay_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_bay_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_009_package_setup = yes }
+			set_country_flag = independence_wave_iw_009_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_rhineland_bavaria_package_setup = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_008 } }
+		independence_wave_setup_iw_008_rhineland = yes
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_009 } }
+		independence_wave_setup_iw_009_bavaria = yes
+	}
+}
+
+independence_wave_validate_iw_008_rhineland = {
+	if = {
+		limit = { has_complete_independence_wave_iw_008_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_validate_iw_009_bavaria = {
+	if = {
+		limit = { has_complete_independence_wave_iw_009_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_rhineland_bavaria_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_008 } }
+		independence_wave_validate_iw_008_rhineland = yes
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_009 } }
+		independence_wave_validate_iw_009_bavaria = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Package cleanup
+# ---------------------------------------------------------------------------
+
+independence_wave_cleanup_iw_008_rhineland = {
+	if = {
+		limit = { original_tag = RHI check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_008 } }
+		activate_decision = declare_germany_reunified_decision
+		remove_mission = independence_wave_rhi_keep_rhine_arteries_open
+		remove_decision = independence_wave_rhi_restore_bridge_dispatch
+		remove_decision = independence_wave_rhi_integrate_factory_rail_guards
+		remove_decision = independence_wave_rhi_settle_host_customs_ledgers
+		remove_decision = independence_wave_rhi_secure_river_crossings
+		remove_decision = independence_wave_rhi_ratify_constitutional_charter
+		remove_decision = independence_wave_rhi_entrust_workers_councils
+		remove_decision = independence_wave_rhi_establish_corridor_command
+		remove_decision = independence_wave_rhi_accept_patron_transit_mandate
+		remove_decision = independence_wave_rhi_codify_durable_independence
+		remove_decision = independence_wave_rhi_survey_rhine_federation_corridor
+		remove_decision = independence_wave_rhi_convene_rhine_congress
+		remove_decision = independence_wave_rhi_charter_network_transit
+		remove_decision = independence_wave_rhi_seize_corridor_authorities
+		independence_wave_remove_rhi_package_ideas = yes
+		independence_wave_restore_rhi_bay_vanilla_portraits = yes
+		clear_variable = independence_wave_rhi_corridor_authority
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_rhi_matthes_available
+		clr_country_flag = independence_wave_rhi_provisional_authority
+		clr_country_flag = independence_wave_rhi_corridor_secured
+		clr_country_flag = independence_wave_rhi_corridor_crisis_resolved
+		clr_country_flag = independence_wave_rhi_corridor_crisis_failed
+		clr_country_flag = independence_wave_rhi_constitutional_government
+		clr_country_flag = independence_wave_rhi_labor_government
+		clr_country_flag = independence_wave_rhi_emergency_government
+		clr_country_flag = independence_wave_rhi_patron_government
+		clr_country_flag = independence_wave_rhi_bridge_dispatch_restored
+		clr_country_flag = independence_wave_rhi_factory_rail_guards_integrated
+		clr_country_flag = independence_wave_rhi_host_ledgers_settled
+		clr_country_flag = independence_wave_rhi_crossings_secured
+		clr_country_flag = independence_wave_rhi_durable_independence
+		clr_country_flag = independence_wave_rhi_corridor_survey_complete
+		clr_country_flag = independence_wave_rhi_rhine_congress_complete
+		clr_country_flag = independence_wave_rhi_network_transit_chartered
+		clr_country_flag = independence_wave_rhi_high_chaos_corridor_seized
+		clr_country_flag = independence_wave_rhi_form04_candidate
+		clr_country_flag = independence_wave_rhine_corridor_ambition
+		clr_country_flag = independence_wave_rhi_german_reunification_closed
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_rhi_ai_profile
+		clr_country_flag = independence_wave_rhi_customs_administrator_active
+		clr_country_flag = independence_wave_rhi_rail_works_liaison_active
+		clr_country_flag = independence_wave_rhi_river_defense_planner_active
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_iw_008_setup_complete
+		clr_country_flag = independence_wave_iw_008_lifecycle_initialized
+		clr_country_flag = independence_wave_package_setup_complete
+	}
+}
+
+independence_wave_cleanup_iw_009_bavaria = {
+	if = {
+		limit = { original_tag = BAY check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_009 } }
+		if = {
+			limit = { has_country_flag = independence_wave_bay_south_german_choice }
+			activate_decision = declare_germany_reunified_decision
+		}
+		remove_mission = independence_wave_bay_hold_the_state_together
+		remove_decision = independence_wave_bay_reconcile_district_treasuries
+		remove_decision = independence_wave_bay_organize_mountain_passes
+		remove_decision = independence_wave_bay_settle_wittelsbach_host_ledgers
+		remove_decision = independence_wave_bay_integrate_mountain_companies
+		remove_decision = independence_wave_bay_ratify_constitutional_compact
+		remove_decision = independence_wave_bay_entrust_workers_districts
+		remove_decision = independence_wave_bay_restore_the_crown
+		remove_decision = independence_wave_bay_establish_mountain_guardians
+		remove_decision = independence_wave_bay_codify_durable_independence
+		remove_decision = independence_wave_bay_choose_south_german_restoration
+		remove_decision = independence_wave_bay_keep_german_reunification_claim
+		remove_decision = independence_wave_bay_convene_south_german_estates
+		remove_decision = independence_wave_bay_negotiate_alpine_supply_accord
+		remove_decision = independence_wave_bay_seize_south_german_protectorates
+		independence_wave_remove_bay_package_ideas = yes
+		independence_wave_restore_rhi_bay_vanilla_portraits = yes
+		clear_variable = independence_wave_bay_civic_settlement
+		clear_variable = independence_wave_bay_mountain_security
+		clr_country_flag = independence_wave_bay_rupprecht_available
+		clr_country_flag = independence_wave_bay_provisional_authority
+		clr_country_flag = independence_wave_bay_state_secured
+		clr_country_flag = independence_wave_bay_state_crisis_resolved
+		clr_country_flag = independence_wave_bay_state_crisis_failed
+		clr_country_flag = independence_wave_bay_constitutional_government
+		clr_country_flag = independence_wave_bay_labor_government
+		clr_country_flag = independence_wave_bay_traditional_government
+		clr_country_flag = independence_wave_bay_emergency_government
+		clr_country_flag = independence_wave_bay_treasuries_reconciled
+		clr_country_flag = independence_wave_bay_passes_organized
+		clr_country_flag = independence_wave_bay_host_ledgers_settled
+		clr_country_flag = independence_wave_bay_mountain_companies_integrated
+		clr_country_flag = independence_wave_bay_durable_independence
+		clr_country_flag = independence_wave_bay_south_german_choice
+		clr_country_flag = independence_wave_bay_german_reunification_choice
+		clr_country_flag = independence_wave_bay_south_german_estates_settlement
+		clr_country_flag = independence_wave_bay_alpine_supply_accord
+		clr_country_flag = independence_wave_bay_high_chaos_protectorates
+		clr_country_flag = independence_wave_bay_south_german_ambition
+		clr_country_flag = independence_wave_bay_german_reunification_preserved
+		clr_country_flag = independence_wave_bay_ai_profile
+		clr_country_flag = independence_wave_bay_finance_administrator_active
+		clr_country_flag = independence_wave_bay_estates_liaison_active
+		clr_country_flag = independence_wave_bay_alpine_supply_inspector_active
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_iw_009_setup_complete
+		clr_country_flag = independence_wave_iw_009_lifecycle_initialized
+		clr_country_flag = independence_wave_package_setup_complete
+	}
+}
+
+independence_wave_dispatch_rhineland_bavaria_package_cleanup = {
+	if = {
+		limit = { original_tag = RHI check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_008 } }
+		independence_wave_cleanup_iw_008_rhineland = yes
+	}
+	else_if = {
+		limit = { original_tag = BAY check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_009 } }
+		independence_wave_cleanup_iw_009_bavaria = yes
+	}
+}

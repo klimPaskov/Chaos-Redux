@@ -1,44 +1,81 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 RUNTIME PACKAGE DISPATCH TRIGGERS
 # ============================================================================
-# Exact adapter and pre-release history proofs for playable Event 006 packages.
-# A package enters this registry only when its complete gameplay and visual
-# audit has granted `independence_wave_package_content_ready` to the dormant
-# country history. No trigger performs a world iteration.
+# Exact adapter and pre-release static proofs for playable Event 006 packages.
+# This registry never mutates dormant vanilla histories. A package enters only
+# after its gameplay and visual audits pass. No trigger iterates the world.
 # ============================================================================
 
 # Input: temporary `independence_wave_execution_package_id`.
 has_independence_wave_runtime_package_adapter_for_execution_id = {
 	OR = {
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_001 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_002 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_006 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_007 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_008 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_009 }
+	}
+}
+
+# Compile-time content attestations. Every admitted package is listed by its
+# exact immutable package ID after its independent package audit is complete.
+# IW-001 depends on FORM-01/02, IW-002 on FORM-01, IW-006 and IW-007 on
+# FORM-03, and IW-008 on FORM-04. IW-009 has a South German ambition and no
+# formable family.
+has_independence_wave_runtime_package_content_attestation_for_execution_id = {
+	OR = {
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_009 }
 	}
 }
 
 # COUNTRY scope for the frozen target tag. Input: temporary
-# `independence_wave_execution_package_id`. This proof runs before release, so
-# every item checked here must come from the dormant country history or the
-# audited package registry rather than from post-release setup.
+# `independence_wave_execution_package_id`. This proof runs before release and
+# therefore validates only immutable package-ID/tag identity plus origin safety.
 is_independence_wave_runtime_package_preflight_ready = {
 	exists = no
-	has_country_flag = independence_wave_package_content_ready
 	has_independence_wave_runtime_package_adapter_for_execution_id = yes
+	has_independence_wave_runtime_package_content_attestation_for_execution_id = yes
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_active_origin }
 	OR = {
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_001 }
+			original_tag = SCO
+		}
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_002 }
+			original_tag = WLS
+		}
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_006 }
 			original_tag = AFX
-			has_idea = civilian_economy
-			has_idea = export_focus
-			has_idea = volunteer_only
-			has_independence_wave_afx_command_roster = yes
 		}
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_007 }
 			original_tag = AGX
-			has_idea = civilian_economy
-			has_idea = export_focus
-			has_idea = volunteer_only
-			has_independence_wave_agx_command_roster = yes
+		}
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_008 }
+			original_tag = RHI
+		}
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_009 }
+			original_tag = BAY
+		}
+	}
+}
+
+# COUNTRY scope for a scenario-loaded candidate. Each exact ID/tag pair is
+# admitted only after its full static attestation, including any package-mapped
+# formable dependency, is complete.
+# Input: temporary `independence_wave_scenario_dispatch_package_id`.
+is_independence_wave_scenario_package_preflight_ready = {
+	OR = {
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_009 }
+			is_independence_wave_exact_package_iw_009_tag_available = yes
 		}
 	}
 }

@@ -17,15 +17,11 @@ is_independence_wave_candidate_anchor_available = {
 	NOT = { is_liberation_release_current_protected_state = yes }
 }
 
-# COUNTRY scope. The package registry grants the content-ready flag only after
-# identity, setup, forces, command, mechanics, AI, focus/overlay, localisation,
-# and required assets are wired. Active provenance from another release system
-# makes the tag ineligible even when it is temporarily absent from the map. An
-# ended origin is cleared by that origin's cleanup path and may be created again
-# later.
-is_independence_wave_candidate_tag_available = {
+# COUNTRY scope. Shared absence, reservation, and origin-system proof. This is
+# intentionally separate from package readiness: reused vanilla tags cannot be
+# granted build flags through duplicate dormant-country history files.
+is_independence_wave_candidate_origin_available = {
 	exists = no
-	has_country_flag = independence_wave_package_content_ready
 	NOT = { is_liberation_release_current_reserved_country = yes }
 	NOT = {
 		has_variable = independence_wave_last_rejected_plan_id
@@ -38,6 +34,59 @@ is_independence_wave_candidate_tag_available = {
 	NOT = { has_country_flag = soviet_collapse_active_origin }
 	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
 	NOT = { has_country_flag = independence_wave_active_origin }
+}
+
+# Legacy content-flag gate retained for packages that have not yet passed the
+# exact static registry audit. No accepted package should gain this flag from
+# gameplay setup.
+is_independence_wave_candidate_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	has_country_flag = independence_wave_package_content_ready
+}
+
+# Exact immutable package-ID/tag entries. These are identity proofs, not
+# readiness grants; a package row must still use an explicitly attested wrapper
+# after every gameplay, visual, and formable dependency passes audit.
+is_independence_wave_exact_package_iw_001_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = SCO
+}
+
+is_independence_wave_exact_package_iw_002_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = WLS
+}
+
+is_independence_wave_exact_package_iw_006_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = AFX
+}
+
+is_independence_wave_exact_package_iw_007_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = AGX
+}
+
+is_independence_wave_exact_package_iw_008_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = RHI
+}
+
+is_independence_wave_exact_package_iw_009_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = BAY
+}
+
+# Static readiness attestations remain fail-closed until every accepted
+# dependency, including the package's formable lane, passes together. AFX and
+# AGX lost their earlier attestation when the shared FORM-03 registry exposed
+# that its identity and integration adapters are not yet certified.
+is_independence_wave_ready_package_iw_006_tag_available = {
+	always = no
+}
+
+is_independence_wave_ready_package_iw_007_tag_available = {
+	always = no
 }
 
 is_independence_wave_high_chaos_pool_open = {

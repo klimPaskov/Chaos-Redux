@@ -1,0 +1,803 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SCOTLAND AND WALES PACKAGE EFFECTS
+# ============================================================================
+# Overview:
+# - Builds guarded IW-001 and IW-002 institutional rosters without replacing
+#   any vanilla character, portrait, flag, or history file.
+# - Owns package politics, visible founding pressures, lifecycle ideas,
+#   government settlements, focus callbacks, force hooks, AI flags, and
+#   bounded setup/final-validation/cleanup adapters.
+# - Never sets package-content or implementation-readiness flags. Unique
+#   researched leader and commander visual approval remains a release gate.
+# ============================================================================
+
+@sco_command_skill = 3
+@sco_command_attack = 2
+@sco_command_defense = 3
+@sco_command_planning = 3
+@sco_command_logistics = 3
+@wls_command_skill = 3
+@wls_command_attack = 2
+@wls_command_defense = 4
+@wls_command_planning = 3
+@wls_command_logistics = 3
+
+# ---------------------------------------------------------------------------
+# Package ideas and founding-pressure lifecycles
+# ---------------------------------------------------------------------------
+
+independence_wave_remove_sco_package_ideas = {
+	remove_ideas = {
+		sco_divided_coastal_command
+		sco_north_atlantic_state_service
+		sco_constitutional_convention
+		sco_workers_commonwealth_charter
+		sco_crown_and_convention_settlement
+		sco_emergency_territorial_directorate
+	}
+}
+
+independence_wave_remove_wls_package_ideas = {
+	remove_ideas = {
+		wls_divided_valleys_administration
+		wls_bilingual_coal_and_rail_compact
+		wls_constitutional_national_council
+		wls_workers_valleys_charter
+		wls_cultural_guardians_settlement
+		wls_emergency_mountain_directorate
+	}
+}
+
+independence_wave_remove_sco_route_ideas = {
+	remove_ideas = {
+		sco_constitutional_convention
+		sco_workers_commonwealth_charter
+		sco_crown_and_convention_settlement
+		sco_emergency_territorial_directorate
+	}
+}
+
+independence_wave_remove_wls_route_ideas = {
+	remove_ideas = {
+		wls_constitutional_national_council
+		wls_workers_valleys_charter
+		wls_cultural_guardians_settlement
+		wls_emergency_mountain_directorate
+	}
+}
+
+independence_wave_refresh_sco_state_lifecycle = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes }
+		remove_ideas = { sco_divided_coastal_command sco_north_atlantic_state_service }
+		if = {
+			limit = { has_stable_independence_wave_sco_state = yes }
+			add_ideas = sco_north_atlantic_state_service
+			set_country_flag = independence_wave_sco_state_service_secured
+		}
+		else = {
+			add_ideas = sco_divided_coastal_command
+			clr_country_flag = independence_wave_sco_state_service_secured
+		}
+	}
+}
+
+independence_wave_refresh_wls_state_lifecycle = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes }
+		remove_ideas = { wls_divided_valleys_administration wls_bilingual_coal_and_rail_compact }
+		if = {
+			limit = { has_stable_independence_wave_wls_state = yes }
+			add_ideas = wls_bilingual_coal_and_rail_compact
+			set_country_flag = independence_wave_wls_state_compact_secured
+		}
+		else = {
+			add_ideas = wls_divided_valleys_administration
+			clr_country_flag = independence_wave_wls_state_compact_secured
+		}
+	}
+}
+
+# Input: temporary independence_wave_sco_shipping_delta.
+independence_wave_change_sco_shipping_authority = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes }
+		add_to_variable = { independence_wave_sco_shipping_authority = independence_wave_sco_shipping_delta }
+		clamp_variable = {
+			var = independence_wave_sco_shipping_authority
+			min = constant:independence_wave_scotland_wales_pressure.minimum
+			max = constant:independence_wave_scotland_wales_pressure.maximum
+		}
+		independence_wave_refresh_sco_state_lifecycle = yes
+	}
+}
+
+# Inputs: temporary independence_wave_wls_integration_delta and
+# independence_wave_wls_language_delta.
+independence_wave_change_wls_state_pressures = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes }
+		add_to_variable = { independence_wave_wls_north_south_integration = independence_wave_wls_integration_delta }
+		add_to_variable = { independence_wave_wls_bilingual_service = independence_wave_wls_language_delta }
+		clamp_variable = {
+			var = independence_wave_wls_north_south_integration
+			min = constant:independence_wave_scotland_wales_pressure.minimum
+			max = constant:independence_wave_scotland_wales_pressure.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_wls_bilingual_service
+			min = constant:independence_wave_scotland_wales_pressure.minimum
+			max = constant:independence_wave_scotland_wales_pressure.maximum
+		}
+		independence_wave_refresh_wls_state_lifecycle = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Shared decision and focus outcomes
+# ---------------------------------------------------------------------------
+
+independence_wave_scotland_wales_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_scotland_wales_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_scotland_wales_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_scotland_wales_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_scotland_wales_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_scotland_wales_settle_former_host_ledgers = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_scotland_wales_reward_network_project = {
+	independence_wave_scotland_wales_apply_major_settlement = yes
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+}
+
+# ---------------------------------------------------------------------------
+# Guarded institutional rosters
+# ---------------------------------------------------------------------------
+
+independence_wave_prepare_sco_institutional_roster = {
+	if = {
+		limit = { NOT = { has_character = SCO_independence_wave_civic_convention } }
+		generate_character = {
+			token_base = SCO_independence_wave_civic_convention
+			name = SCO_independence_wave_civic_convention
+			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
+		}
+	}
+	if = {
+		limit = { has_character = SCO_independence_wave_civic_convention }
+		SCO_independence_wave_civic_convention = {
+			set_portraits = { civilian = { large = GFX_portrait_SCO_independence_wave_civic_convention } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_character = SCO_independence_wave_territorial_commandant } }
+		generate_character = {
+			token_base = SCO_independence_wave_territorial_commandant
+			name = SCO_independence_wave_territorial_commandant
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+			corps_commander = {
+				skill = @sco_command_skill
+				attack_skill = @sco_command_attack
+				defense_skill = @sco_command_defense
+				planning_skill = @sco_command_planning
+				logistics_skill = @sco_command_logistics
+			}
+		}
+	}
+	if = {
+		limit = { has_character = SCO_independence_wave_territorial_commandant }
+		SCO_independence_wave_territorial_commandant = {
+			set_portraits = {
+				civilian = { large = GFX_portrait_SCO_independence_wave_territorial_commandant }
+				army = {
+					large = GFX_portrait_SCO_independence_wave_territorial_commandant
+					small = GFX_portrait_SCO_independence_wave_territorial_commandant_small
+				}
+			}
+		}
+	}
+}
+
+independence_wave_prepare_wls_institutional_roster = {
+	if = {
+		limit = { NOT = { has_character = WLS_independence_wave_national_council } }
+		generate_character = {
+			token_base = WLS_independence_wave_national_council
+			name = WLS_independence_wave_national_council
+			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
+			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
+		}
+	}
+	if = {
+		limit = { has_character = WLS_independence_wave_national_council }
+		WLS_independence_wave_national_council = {
+			set_portraits = { civilian = { large = GFX_portrait_WLS_independence_wave_national_council } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_character = WLS_independence_wave_mountain_commandant } }
+		generate_character = {
+			token_base = WLS_independence_wave_mountain_commandant
+			name = WLS_independence_wave_mountain_commandant
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+			corps_commander = {
+				skill = @wls_command_skill
+				attack_skill = @wls_command_attack
+				defense_skill = @wls_command_defense
+				planning_skill = @wls_command_planning
+				logistics_skill = @wls_command_logistics
+			}
+		}
+	}
+	if = {
+		limit = { has_character = WLS_independence_wave_mountain_commandant }
+		WLS_independence_wave_mountain_commandant = {
+			set_portraits = {
+				civilian = { large = GFX_portrait_WLS_independence_wave_mountain_commandant }
+				army = {
+					large = GFX_portrait_WLS_independence_wave_mountain_commandant
+					small = GFX_portrait_WLS_independence_wave_mountain_commandant_small
+				}
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Politics and route-government installation
+# ---------------------------------------------------------------------------
+
+independence_wave_ensure_scotland_wales_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_set_scotland_wales_constitutional_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.constitutional_democratic
+		communism = constant:independence_wave_scotland_wales_politics.constitutional_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.constitutional_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.constitutional_fascism
+	}
+}
+
+independence_wave_set_scotland_wales_labor_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.labor_democratic
+		communism = constant:independence_wave_scotland_wales_politics.labor_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.labor_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.labor_fascism
+	}
+}
+
+independence_wave_set_scotland_wales_traditional_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.traditional_democratic
+		communism = constant:independence_wave_scotland_wales_politics.traditional_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.traditional_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.traditional_fascism
+	}
+}
+
+independence_wave_set_scotland_wales_emergency_popularities = {
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.emergency_democratic
+		communism = constant:independence_wave_scotland_wales_politics.emergency_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.emergency_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.emergency_fascism
+	}
+}
+
+independence_wave_initialize_sco_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.sco_start_democratic
+		communism = constant:independence_wave_scotland_wales_politics.sco_start_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.sco_start_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.sco_start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = SCO_independence_wave_democratic_party_long name = SCO_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = SCO_independence_wave_communism_party_long name = SCO_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = SCO_independence_wave_neutrality_party_long name = SCO_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = SCO_independence_wave_fascism_party_long name = SCO_independence_wave_fascism_party }
+	promote_character = { character = SCO_independence_wave_civic_convention ideology = centrism }
+	set_country_flag = independence_wave_sco_provisional_authority
+}
+
+independence_wave_initialize_wls_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_scotland_wales_politics.wls_start_democratic
+		communism = constant:independence_wave_scotland_wales_politics.wls_start_communism
+		neutrality = constant:independence_wave_scotland_wales_politics.wls_start_neutrality
+		fascism = constant:independence_wave_scotland_wales_politics.wls_start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = WLS_independence_wave_democratic_party_long name = WLS_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = WLS_independence_wave_communism_party_long name = WLS_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = WLS_independence_wave_neutrality_party_long name = WLS_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = WLS_independence_wave_fascism_party_long name = WLS_independence_wave_fascism_party }
+	promote_character = { character = WLS_independence_wave_national_council ideology = centrism }
+	set_country_flag = independence_wave_wls_provisional_authority
+}
+
+independence_wave_install_sco_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_sco_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		independence_wave_set_scotland_wales_constitutional_popularities = yes
+		set_party_name = { ideology = democratic long_name = SCO_independence_wave_constitutional_party_long name = SCO_independence_wave_constitutional_party }
+		promote_character = { character = SCO_independence_wave_civic_convention ideology = centrism }
+		independence_wave_remove_sco_route_ideas = yes
+		add_ideas = sco_constitutional_convention
+		set_country_flag = independence_wave_sco_constitutional_government
+	}
+}
+
+independence_wave_install_sco_labor_government = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_sco_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		independence_wave_set_scotland_wales_labor_popularities = yes
+		set_party_name = { ideology = communism long_name = SCO_independence_wave_labor_party_long name = SCO_independence_wave_labor_party }
+		promote_character = { character = SCO_independence_wave_civic_convention ideology = socialism }
+		independence_wave_remove_sco_route_ideas = yes
+		add_ideas = sco_workers_commonwealth_charter
+		set_country_flag = independence_wave_sco_labor_government
+	}
+}
+
+independence_wave_install_sco_traditional_government = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_sco_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_scotland_wales_traditional_popularities = yes
+		set_party_name = { ideology = neutrality long_name = SCO_independence_wave_traditional_party_long name = SCO_independence_wave_traditional_party }
+		promote_character = { character = SCO_independence_wave_civic_convention ideology = oligarchism }
+		independence_wave_remove_sco_route_ideas = yes
+		add_ideas = sco_crown_and_convention_settlement
+		set_country_flag = independence_wave_sco_traditional_government
+	}
+}
+
+independence_wave_install_sco_emergency_government = {
+	if = {
+		limit = { is_independence_wave_sco_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_sco_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_scotland_wales_emergency_popularities = yes
+		set_party_name = { ideology = neutrality long_name = SCO_independence_wave_emergency_party_long name = SCO_independence_wave_emergency_party }
+		promote_character = { character = SCO_independence_wave_territorial_commandant ideology = despotism }
+		independence_wave_remove_sco_route_ideas = yes
+		add_ideas = sco_emergency_territorial_directorate
+		set_country_flag = independence_wave_sco_emergency_government
+	}
+}
+
+independence_wave_install_wls_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_wls_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		independence_wave_set_scotland_wales_constitutional_popularities = yes
+		set_party_name = { ideology = democratic long_name = WLS_independence_wave_constitutional_party_long name = WLS_independence_wave_constitutional_party }
+		promote_character = { character = WLS_independence_wave_national_council ideology = centrism }
+		independence_wave_remove_wls_route_ideas = yes
+		add_ideas = wls_constitutional_national_council
+		set_country_flag = independence_wave_wls_constitutional_government
+	}
+}
+
+independence_wave_install_wls_labor_government = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_wls_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		independence_wave_set_scotland_wales_labor_popularities = yes
+		set_party_name = { ideology = communism long_name = WLS_independence_wave_labor_party_long name = WLS_independence_wave_labor_party }
+		promote_character = { character = WLS_independence_wave_national_council ideology = socialism }
+		independence_wave_remove_wls_route_ideas = yes
+		add_ideas = wls_workers_valleys_charter
+		set_country_flag = independence_wave_wls_labor_government
+	}
+}
+
+independence_wave_install_wls_traditional_government = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_wls_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_scotland_wales_traditional_popularities = yes
+		set_party_name = { ideology = neutrality long_name = WLS_independence_wave_traditional_party_long name = WLS_independence_wave_traditional_party }
+		promote_character = { character = WLS_independence_wave_national_council ideology = oligarchism }
+		independence_wave_remove_wls_route_ideas = yes
+		add_ideas = wls_cultural_guardians_settlement
+		set_country_flag = independence_wave_wls_traditional_government
+	}
+}
+
+independence_wave_install_wls_emergency_government = {
+	if = {
+		limit = { is_independence_wave_wls_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_wls_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		independence_wave_set_scotland_wales_emergency_popularities = yes
+		set_party_name = { ideology = neutrality long_name = WLS_independence_wave_emergency_party_long name = WLS_independence_wave_emergency_party }
+		promote_character = { character = WLS_independence_wave_mountain_commandant ideology = despotism }
+		independence_wave_remove_wls_route_ideas = yes
+		add_ideas = wls_emergency_mountain_directorate
+		set_country_flag = independence_wave_wls_emergency_government
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Package focus callbacks
+# ---------------------------------------------------------------------------
+
+independence_wave_sco_focus_reconnect_central_belt = {
+	set_temp_variable = { independence_wave_sco_shipping_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	independence_wave_change_sco_shipping_authority = yes
+	independence_wave_scotland_wales_apply_administrative_progress = yes
+	set_country_flag = independence_wave_sco_central_belt_reconnected
+}
+
+independence_wave_sco_focus_charter_north_atlantic_shipping = {
+	set_temp_variable = { independence_wave_sco_shipping_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	independence_wave_change_sco_shipping_authority = yes
+	independence_wave_scotland_wales_apply_diplomatic_progress = yes
+	set_country_flag = independence_wave_sco_shipping_charter
+}
+
+independence_wave_sco_focus_settle_crown_and_convention = {
+	set_temp_variable = { independence_wave_sco_shipping_delta = constant:independence_wave_scotland_wales_focus.project_gain }
+	independence_wave_change_sco_shipping_authority = yes
+	independence_wave_scotland_wales_apply_major_settlement = yes
+	set_country_flag = independence_wave_sco_crown_convention_compromise
+}
+
+independence_wave_sco_focus_convene_celtic_maritime_conference = {
+	independence_wave_scotland_wales_reward_network_project = yes
+	set_country_flag = independence_wave_sco_maritime_conference_focus
+}
+
+independence_wave_sco_focus_found_state_service = {
+	set_temp_variable = { independence_wave_sco_shipping_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	independence_wave_change_sco_shipping_authority = yes
+	independence_wave_scotland_wales_apply_administrative_progress = yes
+	set_country_flag = independence_wave_sco_state_service_founded
+}
+
+independence_wave_wls_focus_reconnect_north_and_south = {
+	set_temp_variable = { independence_wave_wls_integration_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	set_temp_variable = { independence_wave_wls_language_delta = constant:independence_wave_scotland_wales_focus.project_gain }
+	independence_wave_change_wls_state_pressures = yes
+	independence_wave_scotland_wales_apply_administrative_progress = yes
+	set_country_flag = independence_wave_wls_north_south_reconnected
+}
+
+independence_wave_wls_focus_charter_coal_and_rail = {
+	set_temp_variable = { independence_wave_wls_integration_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	set_temp_variable = { independence_wave_wls_language_delta = constant:independence_wave_scotland_wales_focus.project_gain }
+	independence_wave_change_wls_state_pressures = yes
+	independence_wave_scotland_wales_apply_administrative_progress = yes
+	set_country_flag = independence_wave_wls_coal_rail_charter
+}
+
+independence_wave_wls_focus_establish_bilingual_service = {
+	set_temp_variable = { independence_wave_wls_integration_delta = constant:independence_wave_scotland_wales_focus.project_gain }
+	set_temp_variable = { independence_wave_wls_language_delta = constant:independence_wave_scotland_wales_focus.major_project_gain }
+	independence_wave_change_wls_state_pressures = yes
+	independence_wave_scotland_wales_apply_major_settlement = yes
+	set_country_flag = independence_wave_wls_bilingual_service_established
+}
+
+independence_wave_wls_focus_secure_mountain_corridors = {
+	set_temp_variable = { independence_wave_wls_integration_delta = constant:independence_wave_scotland_wales_focus.project_gain }
+	set_temp_variable = { independence_wave_wls_language_delta = constant:independence_wave_value.minimum }
+	independence_wave_change_wls_state_pressures = yes
+	independence_wave_scotland_wales_apply_security_progress = yes
+	set_country_flag = independence_wave_wls_mountain_corridors_secured
+}
+
+independence_wave_wls_focus_convene_celtic_council = {
+	independence_wave_scotland_wales_reward_network_project = yes
+	set_country_flag = independence_wave_wls_celtic_council_focus
+}
+
+# ---------------------------------------------------------------------------
+# Exact package setup and parent transaction adapters
+# ---------------------------------------------------------------------------
+
+independence_wave_setup_iw_001_scotland = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_001_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_001_package = yes }
+		independence_wave_prepare_sco_institutional_roster = yes
+		country_event = { id = chaosx.nr6.10 }
+		independence_wave_ensure_scotland_wales_baseline_laws = yes
+		independence_wave_initialize_sco_politics = yes
+		if = { limit = { has_independence_wave_sco_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_sco_shipping_authority = constant:independence_wave_scotland_wales_pressure.sco_shipping_start }
+		independence_wave_refresh_sco_state_lifecycle = yes
+		set_country_flag = independence_wave_iw_001_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		clr_country_flag = independence_wave_route_patron_client_available
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.celtic_cooperation_state }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		set_country_flag = independence_wave_sco_celtic_family_choice
+		set_country_flag = independence_wave_sco_form01_candidate
+		set_country_flag = independence_wave_sco_form02_candidate
+		set_country_flag = independence_wave_scottish_north_atlantic_ambition
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_sco_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_sco_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_001_package_setup = yes }
+			set_country_flag = independence_wave_iw_001_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_setup_iw_002_wales = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_002_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_002_package = yes }
+		independence_wave_prepare_wls_institutional_roster = yes
+		country_event = { id = chaosx.nr6.10 }
+		independence_wave_ensure_scotland_wales_baseline_laws = yes
+		independence_wave_initialize_wls_politics = yes
+		if = { limit = { has_independence_wave_wls_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_wls_north_south_integration = constant:independence_wave_scotland_wales_pressure.wls_integration_start }
+		set_variable = { independence_wave_wls_bilingual_service = constant:independence_wave_scotland_wales_pressure.wls_language_start }
+		independence_wave_refresh_wls_state_lifecycle = yes
+		set_country_flag = independence_wave_iw_002_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		clr_country_flag = independence_wave_route_patron_client_available
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.labor_councils_vs_ministries }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.celtic_cooperation_state }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		set_country_flag = independence_wave_wls_form01_candidate
+		set_country_flag = independence_wave_welsh_celtic_cooperation_ambition
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_wls_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_wls_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_002_package_setup = yes }
+			set_country_flag = independence_wave_iw_002_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_scotland_wales_package_setup = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_001 } }
+		independence_wave_setup_iw_001_scotland = yes
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_002 } }
+		independence_wave_setup_iw_002_wales = yes
+	}
+}
+
+independence_wave_validate_iw_001_scotland = {
+	if = {
+		limit = { has_complete_independence_wave_iw_001_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_validate_iw_002_wales = {
+	if = {
+		limit = { has_complete_independence_wave_iw_002_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_scotland_wales_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_001 } }
+		independence_wave_validate_iw_001_scotland = yes
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_002 } }
+		independence_wave_validate_iw_002_wales = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Package cleanup
+# ---------------------------------------------------------------------------
+
+independence_wave_cleanup_iw_001_scotland = {
+	if = {
+		limit = { original_tag = SCO check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
+		remove_decision = independence_wave_sco_reconnect_central_belt
+		remove_decision = independence_wave_sco_organize_firth_convoys
+		remove_decision = independence_wave_sco_settle_british_asset_ledgers
+		remove_decision = independence_wave_sco_unify_territorial_command
+		remove_decision = independence_wave_sco_ratify_constitutional_convention
+		remove_decision = independence_wave_sco_charter_workers_commonwealth
+		remove_decision = independence_wave_sco_settle_crown_and_convention
+		remove_decision = independence_wave_sco_establish_emergency_directorate
+		remove_decision = independence_wave_sco_choose_celtic_cooperation
+		remove_decision = independence_wave_sco_choose_north_atlantic_compact
+		remove_decision = independence_wave_sco_convene_maritime_conference
+		independence_wave_remove_sco_package_ideas = yes
+		clear_variable = independence_wave_sco_shipping_authority
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_sco_provisional_authority
+		clr_country_flag = independence_wave_sco_state_service_secured
+		clr_country_flag = independence_wave_sco_constitutional_government
+		clr_country_flag = independence_wave_sco_labor_government
+		clr_country_flag = independence_wave_sco_traditional_government
+		clr_country_flag = independence_wave_sco_emergency_government
+		clr_country_flag = independence_wave_sco_central_belt_reconnected
+		clr_country_flag = independence_wave_sco_shipping_charter
+		clr_country_flag = independence_wave_sco_host_ledgers_settled
+		clr_country_flag = independence_wave_sco_territorial_command_unified
+		clr_country_flag = independence_wave_sco_crown_convention_compromise
+		clr_country_flag = independence_wave_sco_celtic_family_choice
+		clr_country_flag = independence_wave_sco_north_atlantic_family_choice
+		clr_country_flag = independence_wave_sco_maritime_conference_complete
+		clr_country_flag = independence_wave_sco_maritime_conference_focus
+		clr_country_flag = independence_wave_sco_state_service_founded
+		clr_country_flag = independence_wave_sco_form01_candidate
+		clr_country_flag = independence_wave_sco_form02_candidate
+		clr_country_flag = independence_wave_scottish_north_atlantic_ambition
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_sco_ai_profile
+		clr_country_flag = independence_wave_sco_shipping_commissioner_active
+		clr_country_flag = independence_wave_sco_reconstruction_secretary_active
+		clr_country_flag = independence_wave_sco_territorial_planner_active
+		clr_country_flag = independence_wave_iw_001_setup_complete
+		clr_country_flag = independence_wave_iw_001_lifecycle_initialized
+		clr_country_flag = independence_wave_package_setup_complete
+	}
+}
+
+independence_wave_cleanup_iw_002_wales = {
+	if = {
+		limit = { original_tag = WLS check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_002 } }
+		remove_decision = independence_wave_wls_reconnect_north_south_rail
+		remove_decision = independence_wave_wls_settle_bilingual_services
+		remove_decision = independence_wave_wls_guard_coalfield_corridors
+		remove_decision = independence_wave_wls_settle_british_property_board
+		remove_decision = independence_wave_wls_ratify_national_council
+		remove_decision = independence_wave_wls_charter_workers_valleys
+		remove_decision = independence_wave_wls_settle_cultural_guardians
+		remove_decision = independence_wave_wls_establish_emergency_directorate
+		remove_decision = independence_wave_wls_convene_celtic_council
+		independence_wave_remove_wls_package_ideas = yes
+		clear_variable = independence_wave_wls_north_south_integration
+		clear_variable = independence_wave_wls_bilingual_service
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_wls_provisional_authority
+		clr_country_flag = independence_wave_wls_state_compact_secured
+		clr_country_flag = independence_wave_wls_constitutional_government
+		clr_country_flag = independence_wave_wls_labor_government
+		clr_country_flag = independence_wave_wls_traditional_government
+		clr_country_flag = independence_wave_wls_emergency_government
+		clr_country_flag = independence_wave_wls_north_south_reconnected
+		clr_country_flag = independence_wave_wls_bilingual_services_settled
+		clr_country_flag = independence_wave_wls_coalfield_corridors_guarded
+		clr_country_flag = independence_wave_wls_host_property_settled
+		clr_country_flag = independence_wave_wls_coal_rail_charter
+		clr_country_flag = independence_wave_wls_bilingual_service_established
+		clr_country_flag = independence_wave_wls_mountain_corridors_secured
+		clr_country_flag = independence_wave_wls_celtic_council_complete
+		clr_country_flag = independence_wave_wls_celtic_council_focus
+		clr_country_flag = independence_wave_wls_form01_candidate
+		clr_country_flag = independence_wave_welsh_celtic_cooperation_ambition
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_wls_ai_profile
+		clr_country_flag = independence_wave_wls_civil_service_commissioner_active
+		clr_country_flag = independence_wave_wls_coal_rail_organizer_active
+		clr_country_flag = independence_wave_wls_mountain_defense_planner_active
+		clr_country_flag = independence_wave_iw_002_setup_complete
+		clr_country_flag = independence_wave_iw_002_lifecycle_initialized
+		clr_country_flag = independence_wave_package_setup_complete
+	}
+}
+
+independence_wave_dispatch_scotland_wales_package_cleanup = {
+	if = {
+		limit = { original_tag = SCO check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
+		independence_wave_cleanup_iw_001_scotland = yes
+	}
+	else_if = {
+		limit = { original_tag = WLS check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_002 } }
+		independence_wave_cleanup_iw_002_wales = yes
+	}
+}

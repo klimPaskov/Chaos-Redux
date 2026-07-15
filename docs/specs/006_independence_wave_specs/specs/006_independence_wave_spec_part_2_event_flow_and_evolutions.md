@@ -522,7 +522,7 @@ The principle of sudden state creation becomes a weapon. High-chaos governments 
 
 ### Active-event evolution
 
-Existing countries gain:
+Eligible existing countries gain, subject to their accepted package route matrix:
 
 - radical government routes
 - hidden regional formables
