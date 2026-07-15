@@ -18,21 +18,26 @@ then create an original or properly sourced Chaos Redux asset.
 - Review format: lossless RGBA PNG decoded from the source DDS or TGA
 - Pixel policy: preserve the source texture canvas exactly; do not crop,
   stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 51 reference PNGs in 20 leaf folders, covering 18 distinct asset
-  categories, plus 4 contact sheets
+- Inventory: 87 reference PNGs in 38 leaf folders, plus 6 contact sheets
+- Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
 Every PNG and its exact vanilla source path are listed in [CATALOG.md](CATALOG.md).
 
 ## Contact sheets
 
-- `contact_sheets/portraits_and_flags.png` — leader portraits, advisor dossier
-  icons, and three flat flags across the normal/medium/small ladder
+- `contact_sheets/portraits_and_flags.png` — leader, commander, operative, and
+  advisor portrait treatments plus three flat flags across the complete ladder
 - `contact_sheets/icons.png` — focus, idea, decision, mission, decision-category,
   achievement, officer-corps, technology, special-project, and balance-of-power
   icon families
+- `contact_sheets/icons_extended.png` — intelligence agency and operation icons,
+  commander traits, medals, raids, state modifiers, MIOs, factions, buildings,
+  and modifier icons
 - `contact_sheets/event_art.png` — report-event and news-event image formats
-- `contact_sheets/units.png` — 2D equipment art, two-frame unit counters, and 3D
-  model material references
+- `contact_sheets/units.png` — equipment technology art, large two-frame land
+  counters, and land-model material references
+- `contact_sheets/units_expanded.png` — land map counters, division-template
+  emblems, air and naval counters, and air/naval model material references
 
 The checkerboard is a review background, not part of the extracted image.
 
@@ -42,7 +47,9 @@ Native vanilla texture dimensions are evidence, not a universal resize order.
 Always inspect the relevant vanilla `.gfx` definition and the existing Chaos
 Redux precedent before producing a final asset.
 
-- Leader portrait references are exactly `156x210`.
+- Leader, commander, and operative portrait references are exactly `156x210`.
+  Commander `small` sprite names do not prove a separate native 50x67 texture;
+  inspect the owning portrait definition instead of deriving one by assumption.
 - Advisor dossier references are exactly `65x67`; they are separately composed
   cards, not resized leader portraits.
 - Flags are shown at the full required ladder: `82x52`, `41x26`, and `10x7`.
@@ -55,11 +62,14 @@ Redux precedent before producing a final asset.
   validate against the owning sprite rather than forcing one blanket size.
 - Division counter references are `152x42` two-frame strips (`noOfFrames = 2`),
   giving two `76x42` frames.
+- Land map counter strips are `60x12` and may also use two frames. Air and naval
+  counters have their own white/inverted state conventions; preserve the owning
+  sprite's frame and state behavior rather than treating them as focus icons.
 - Equipment UI illustrations have variable native widths and are not division
   counters or map models.
-- `units/model_material_refs_3d/` contains UV diffuse textures used by model
-  meshes. These are material references, not 2D equipment icons, unit counters,
-  rendered concept art, or finished model previews.
+- `units/models_3d/` contains land, air, and naval UV diffuse textures used by
+  model meshes. These are material references, not 2D equipment icons, unit
+  counters, rendered concept art, or finished model previews.
 
 ## Maintenance rule
 

@@ -42,9 +42,13 @@ Use this skill for:
 - focus icons
 - achievement icons
 - flags
-- leader portraits
+- country leader, commander, and operative portraits
 - advisor and high-command dossier portraits
-- 2D equipment icons, unit counters, and 3D unit visual references
+- intelligence-agency and intelligence-operation icons
+- commander-trait, medal, military-raid, state-modifier, MIO, faction,
+  building, and modifier icons
+- land, naval, and air equipment art, counters, emblems, and 3D unit visual
+  references
 - faction emblems
 - UI panels
 - progression-state variants
@@ -69,9 +73,22 @@ The main agent decides which subagent to spawn, gives it a bounded asset prompt,
 
 Use:
 
-- `chaosx_asset_source_researcher` for real or archival image sourcing, real leader portraits, historical flags, historically attested symbols, user-provided source photos, and report/news/super-event images that must depict a real photographed person, place, object, or historical document
-- `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art
-- `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons
+- `chaosx_asset_source_researcher` for real or archival image sourcing, real
+  country-leader, commander, and operative portraits, historical flag-design
+  research, historically attested symbols, user-provided source photos, and
+  report/news/super-event images that must depict real photographed material
+- `chaosx_generated_event_art` for generated non-icon event art, including
+  fictional or alternate-history report images, news images, super-event
+  images, fictional portraits, ImageGen-created flat flag designs, faction
+  emblems, UI panels, dossier art, and progression-state base art
+- `chaosx_icon_artist` for focus, idea, national-spirit, officer-corps,
+  decision, decision-category, mission, achievement, technology,
+  intelligence-agency, intelligence-operation, commander-trait, medal,
+  military-raid, state-modifier, MIO, faction, building, and modifier icons
+
+Flags are a flat graphic-design pipeline, not event artwork. Historical flag
+research establishes the documented geometry, colours, and symbols; ImageGen
+still produces the final clean flat design under section 20.
 
 For animated work, route by asset type first. Then require the chosen asset subagent to follow `chaos-redux-frame-animation` for frame plans, per-frame source art, normalization, contact sheets, preview GIFs, frame sheets, static fallbacks, and animation handoffs.
 
@@ -182,7 +199,8 @@ For generated World War II-era report/news/super-event images:
 - avoid modern streets, uniforms, props, weapons, vehicles, signage, UI overlays, cinematic color grading, and readable generated text
 - keep the source PNG, processed preview, final DDS, prompt, and manifest entry
 - record the source mode as generated and explain why generation fit better than sourcing
-- never use generated images for real leader portraits or to fabricate a real person's likeness
+- never use generated images for any real-person portrait or to fabricate a
+  real person's likeness
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
@@ -190,26 +208,54 @@ For internet-sourced event photo assets that are meant to represent the World Wa
 
 Record the image source, source link, author or archive if available, license or public domain status if available, estimated date or date range, why the image fits the World War II era, and any uncertainty in the manifest.
 
-### Real leader portraits
+### Real-person portraits
 
-Do not generate a leader portrait for a real person.
+Do not generate a portrait for a real person. This applies to country leaders,
+commanders, operatives, and real people used as advisor or high-command portrait
+masters.
 
 For real people, use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
-Real leader portraits should be processed toward the HOI4 portrait style rather than left as raw photos: bust or upper-torso crop, face readable, subdued contrast, mild painterly or period texture, HOI4-like color grading, no modern UI artifacts, no hard white cutout halo, and no over-smoothed face. Do not change the person's identity or generate missing facial features.
+Use an explicit head-and-shoulders crop and an identity-preserving HOI4 painted
+finish rather than leaving a raw photograph. Preserve the person's face,
+expression, age, hair, clothing, and pose; use a quiet painted background,
+controlled contrast, restrained period texture, and readable silhouette. Do
+not replace, reconstruct, beautify, or generate missing facial features, and do
+not accept a generic oil-paint filter as an HOI4 finish.
 
 Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
 
-For generated or sourced one-person leader portraits, the asset handoff must identify the portrait's gender presentation and any matching leader-name pool requirement. Female-presenting portraits must not be paired with male names and should require `female = yes` where a country leader is created directly. Male-presenting portraits must not be paired with female names or `female = yes`. Council, board, office, crowd, and symbolic-institution portraits should keep institutional leader names instead of personal random-name pools.
+For generated or sourced one-person portraits, the asset handoff must identify
+the subject's role and gender presentation plus any matching name-pool or
+character-metadata requirement. Female-presenting portraits must not be paired
+with male names and should require `female = yes` where a country leader is
+created directly. Male-presenting portraits must not be paired with female
+names or `female = yes`. Council, board, office, crowd, and
+symbolic-institution portraits should keep institutional leader names instead
+of personal random-name pools.
 
 
-### Fictional leader portraits
+### Fictional portraits
 
-Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`.
+Fictional country leaders, commanders, operatives, invented councils,
+collective bodies, supernatural leaders, and symbolic regime portraits must
+use `$imagegen`.
 
-Generated leader portraits should follow HOI4 leader portrait conventions: 156x210 final DDS unless an existing sprite uses another size, bust or upper-torso framing, strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, transparent or HOI4-compatible portrait background as required by the existing asset pattern, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
+Generated country-leader and commander portraits should follow the full
+`156x210` HOI4 portrait convention. Generated operatives must follow the
+matching cataloged operative portrait and owning sprite. Use head-and-shoulders
+or restrained bust framing, a strong face or governing-body focal point,
+subdued painterly finish, period-appropriate uniform or civilian clothing, a
+HOI4-compatible background, and no text, labels, watermarks, modern UI, or
+meme-like exaggeration.
 
-For generated one-person leader portraits, record the portrait's apparent gender presentation in the manifest and handoff. Female-presenting portraits require female leader-name pools and female leader metadata where the implementation surface supports it. Male-presenting portraits require male leader-name pools and must not be paired with female metadata. Never hand off a portrait in a way that lets implementation randomly assign names from the opposite gender pool. Council, committee, junta, crowd, office, or symbolic-body portraits should be marked as institutional leaders and use institutional names instead of personal random-name pools.
+For generated one-person portraits, record the subject role and apparent gender
+presentation in the manifest and handoff. Where name pools or gender metadata
+apply, they must match the portrait. Never hand off a portrait in a way that
+lets implementation randomly assign names from the opposite gender pool.
+Council, committee, junta, crowd, office, or symbolic-body portraits should be
+marked as institutional leaders and use institutional names instead of
+personal random-name pools.
 
 For council or collective leaders, use one clear symbolic council portrait rather than a cluttered crowd. Keep the subject readable at leader portrait size and document that the leader is fictional or collective.
 
@@ -232,31 +278,78 @@ Start with:
 - library rules and contact sheets: `assets/vanilla_reference/README.md`
 - exact PNG-to-vanilla provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
 
-Canonical category paths:
+Canonical portrait paths:
 
-- leader portraits: `assets/vanilla_reference/portraits/leaders/`
-- advisor, theorist, high-command, and officer dossier portraits: `assets/vanilla_reference/portraits/advisors/`
-- flat flags: `assets/vanilla_reference/flags/normal/`, `assets/vanilla_reference/flags/medium/`, and `assets/vanilla_reference/flags/small/`
-- national focus icons: `assets/vanilla_reference/icons/national_focus/`
-- idea and national spirit icons: `assets/vanilla_reference/icons/ideas/`
-- decision icons: `assets/vanilla_reference/icons/decisions/`
-- mission icons: `assets/vanilla_reference/icons/missions/`
-- decision category icons: `assets/vanilla_reference/icons/decision_categories/`
-- achievement state triplets: `assets/vanilla_reference/icons/achievements/`
-- officer corps spirit icons: `assets/vanilla_reference/icons/officer_corps_spirits/`
-- technology icons: `assets/vanilla_reference/icons/technologies/`
-- special-project icons: `assets/vanilla_reference/icons/special_projects/`
-- balance-of-power icons: `assets/vanilla_reference/icons/balance_of_power/`
+- country leaders: `assets/vanilla_reference/portraits/leaders/`
+- army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
+- operatives: `assets/vanilla_reference/portraits/operatives/`
+- advisor, theorist, high-command, and officer dossier icons:
+  `assets/vanilla_reference/portraits/advisors/`
+
+Canonical flag and event-art paths:
+
+- flat flags: `assets/vanilla_reference/flags/normal/`,
+  `assets/vanilla_reference/flags/medium/`, and
+  `assets/vanilla_reference/flags/small/`
 - report-event art: `assets/vanilla_reference/event_art/report/`
 - news-event art: `assets/vanilla_reference/event_art/news/`
-- 2D equipment UI art: `assets/vanilla_reference/units/equipment_icons_2d/`
-- two-frame 2D unit counters: `assets/vanilla_reference/units/unit_icons_2d/`
-- 3D unit material references: `assets/vanilla_reference/units/model_material_refs_3d/`
 
-The older skill-local folders directly under `assets/` remain supplemental
-style examples, including `assets/super_event_images/`. When the supplemental
-examples and the canonical catalog disagree about vanilla dimensions or engine
-pipeline, follow the canonical catalog and inspect the cataloged vanilla source.
+Canonical gameplay-icon paths:
+
+- national focus: `assets/vanilla_reference/icons/national_focus/`
+- ideas and national spirits: `assets/vanilla_reference/icons/ideas/`
+- decisions: `assets/vanilla_reference/icons/decisions/`
+- missions: `assets/vanilla_reference/icons/missions/`
+- decision categories: `assets/vanilla_reference/icons/decision_categories/`
+- achievement state triplets: `assets/vanilla_reference/icons/achievements/`
+- officer corps spirits:
+  `assets/vanilla_reference/icons/officer_corps_spirits/`
+- technologies: `assets/vanilla_reference/icons/technologies/`
+- special projects: `assets/vanilla_reference/icons/special_projects/`
+- balance of power: `assets/vanilla_reference/icons/balance_of_power/`
+- intelligence agencies:
+  `assets/vanilla_reference/icons/intelligence_agency/`
+- intelligence operations:
+  `assets/vanilla_reference/icons/intelligence_operations/`
+- commander traits: `assets/vanilla_reference/icons/commander_traits/`
+- medals: `assets/vanilla_reference/icons/medals/`
+- military raids: `assets/vanilla_reference/icons/military_raids/`
+- state modifiers: `assets/vanilla_reference/icons/state_modifiers/`
+- military industrial organizations:
+  `assets/vanilla_reference/icons/military_industrial_organizations/`
+- factions: `assets/vanilla_reference/icons/factions/`
+- buildings: `assets/vanilla_reference/icons/buildings/`
+- modifiers: `assets/vanilla_reference/icons/modifiers/`
+
+Canonical unit-visual paths:
+
+- equipment and technology art:
+  `assets/vanilla_reference/units/equipment/technology_art/`
+- large land-unit counters:
+  `assets/vanilla_reference/units/land/counters_large/`
+- land map counters: `assets/vanilla_reference/units/land/map_counters/`
+- division-template emblems:
+  `assets/vanilla_reference/units/land/division_template_emblems/`
+- air map counters: `assets/vanilla_reference/units/air/map_counters/`
+- naval map counters: `assets/vanilla_reference/units/naval/map_counters/`
+- land model materials:
+  `assets/vanilla_reference/units/models_3d/land_materials/`
+- air model materials:
+  `assets/vanilla_reference/units/models_3d/air_materials/`
+- naval model materials:
+  `assets/vanilla_reference/units/models_3d/naval_materials/`
+
+The tree is semantic, not a bank of interchangeable pictures. Use the folder
+for the exact owning UI or model surface, then follow the cataloged source,
+native canvas, frame count, transparency, and owning definition.
+
+The older skill-local folders directly under `assets/` remain stable
+supplemental or compatibility paths for older manifests, prompts, and scripts,
+including `assets/super_event_images/`. Do not rename, move, delete, or silently
+repurpose them without first migrating every dependency. Do not add new
+canonical references there. When a supplemental example and the canonical
+catalog disagree about vanilla dimensions, style, or engine pipeline, follow
+the canonical catalog and inspect the cataloged vanilla source.
 
 Before generating, sourcing, processing, or wiring an asset, read the library
 rules, inspect the matching category and contact sheet, and follow the vanilla
@@ -294,7 +387,11 @@ Generated icon packages must keep visible `$imagegen` source evidence: save the 
 
 ## 5.2 Icon type separation rules
 
-Focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons are separate asset types.
+Focus, idea, national-spirit, officer-corps, decision, mission,
+decision-category, achievement, technology, special-project,
+balance-of-power, intelligence-agency, intelligence-operation,
+commander-trait, medal, military-raid, state-modifier, MIO, faction,
+building, and modifier icons are separate asset types.
 
 Never treat focus, idea, and decision icons as interchangeable.
 
@@ -310,6 +407,15 @@ Shared visual themes are allowed only when every icon is still designed for its 
 - decision category icons should be designed for the category button or scripted GUI surface, not derived from a focus icon
 - officer corps spirit icons should follow the vanilla officer corps spirit look and 45x45 transparent style
 - achievement icons should follow achievement presentation rules and variant rules
+- intelligence-agency and intelligence-operation icons must follow their own
+  agency or operation UI precedent rather than a generic decision treatment
+- commander traits, medals, military raids, state modifiers, MIOs, factions,
+  buildings, and modifier icons must follow the matching canonical folder and
+  owning vanilla definition; do not force these families onto a blanket 32x32
+  or 64x64 canvas
+- frame strips, indexed building sprites, and multi-state modifier art must
+  retain their frame order and frame count rather than being treated as a
+  single standalone icon
 
 If a mechanic needs matching focus, idea, and decision visuals, build them as a coordinated icon family. A coordinated family can share subject matter, symbols, colors, and lore cues, but each member still needs separate source art or a separate generated output designed for its target size and UI role.
 
@@ -322,7 +428,9 @@ For every asset package:
 1. Read the event spec, asset prompt, or implementation task.
 2. Identify every required visual asset.
 3. Group assets by usage type.
-4. Split focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons into separate asset-type work items. Never satisfy one icon type by resizing or lightly editing another icon type.
+4. Split every icon family named in section 5.2 into its own asset-type work
+   item. Never satisfy one UI surface by resizing, relabeling, or lightly
+   editing art created for another surface.
 5. Assign each asset a stable filename.
 6. Assign each asset a sprite name if it needs one.
 7. Identify the target size.
@@ -422,7 +530,13 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 
 - report event images: 210x176
 - news event images: 397x153, black and white
-- leader portraits: 156x210
+- country-leader portraits: 156x210
+- commander portraits: 156x210 full portrait textures, never a fabricated
+  50x67 source texture
+- operative portraits: 156x210 full portrait textures; still follow the
+  cataloged owning sprite
+- advisor, theorist, and high-command dossier icons: 65x67 independently
+  composed cards
 - flags small: 10x7
 - flags medium: 41x26
 - flags normal: 82x52
@@ -435,6 +549,11 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 - focus icons: 94x86
 
 Use other sizes when the event's UI or asset type requires it.
+
+For every icon, counter, emblem, strip, or model material not listed above,
+take the canvas and frame behavior from the matching canonical catalog entry
+and owning vanilla definition. Do not infer a universal size from the folder
+name or from a visually similar asset family.
 
 When unsure, inspect the existing Chaos Redux pattern and vanilla HOI4 assets before choosing.
 
@@ -454,7 +573,10 @@ Recommended filename prefixes:
 - news event images: `news_event_`
 - super-event images: `super_event_`
 - achievement icons: `achievement_`
-- leader portraits: `leader_`
+- country-leader portraits: `leader_`
+- commander portraits: `commander_`
+- operative portraits: `operative_`
+- advisor dossier icons: `advisor_`
 
 For event-specific assets, include the event id or slug where useful. For example, all idea assets related to an event should go into one folder of that event.
 
@@ -724,6 +846,27 @@ Inspect `assets/vanilla_reference/icons/decisions/`,
 generating or processing decision-system icons. Missions use the decision icon
 pipeline but still need mission-specific semantic readability.
 
+## 18.1 Additional gameplay icon families
+
+Route additional icon work by the exact UI surface:
+
+- intelligence identity and action:
+  `icons/intelligence_agency/` and `icons/intelligence_operations/`
+- commander progression and honours: `icons/commander_traits/` and
+  `icons/medals/`
+- operations and world state: `icons/military_raids/` and
+  `icons/state_modifiers/`
+- organizations and map/economy identity:
+  `icons/military_industrial_organizations/`, `icons/factions/`, and
+  `icons/buildings/`
+- generic or text-linked modifier presentation: `icons/modifiers/`
+
+Read the matching canonical catalog entries and inspect the owning `.gfx`,
+`.gui`, or database definition before choosing canvas, frame layout,
+transparency, or filename. These families are not reskinned decision or idea
+icons. When a source is a strip or contains several UI states, preserve its
+frame semantics and document them in the manifest and handoff.
+
 ## 19. Achievement icons
 
 Achievement icons should be compact and readable at 64x64.
@@ -818,26 +961,32 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 - no upside-down copies
 - no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants
 
-## 21. Leader portraits
+## 21. Country-leader, commander, and operative portraits
 
-For real people, do not generate leader portraits with `$imagegen`.
+For real people, do not generate portraits with `$imagegen`.
+
+Choose the canonical reference family by role before starting:
+
+- country leader: `assets/vanilla_reference/portraits/leaders/`
+- army or navy commander: `assets/vanilla_reference/portraits/commanders/`
+- operative: `assets/vanilla_reference/portraits/operatives/`
 
 Use an attributed real source image from the internet or a user-provided
-image. Inspect `assets/vanilla_reference/portraits/leaders/` first. Select and record
-an explicit head-and-shoulders crop, then apply an identity-preserving HOI4
-painted finish while retaining the person's face, expression, age, hair,
-clothing, pose, and other recognisable source details. A raw photograph,
-simple resize, generic oil-paint filter, face replacement, reconstructed face,
-or weak likeness is not a finished portrait.
+image. Select and record an explicit head-and-shoulders crop, then apply an
+identity-preserving HOI4 painted finish while retaining the person's face,
+expression, age, hair, clothing, pose, and other recognisable source details.
+Match the vanilla family's quiet painted background, controlled value range,
+restrained texture, period treatment, and readable silhouette. A raw
+photograph, simple resize, generic oil-paint filter, face replacement,
+reconstructed face, or weak likeness is not a finished portrait.
 
 Use `.tools/process_hoi4_portrait.py leader` for the deterministic crop,
-restrained finish, dimensions, metadata, and reference comparison sheet. The
-script is only a finishing tool. Its output remains a candidate until the
-contact sheet is visually compared with
-`assets/vanilla_reference/contact_sheets/portraits_and_flags.png` and the real
-person's source image. If the source
-cannot support a faithful head-and-shoulders likeness, find a better source;
-do not invent missing identity details.
+restrained finish, dimensions, metadata, and reference comparison sheet for
+full portrait textures. The script is only a finishing tool. Its output
+remains a candidate until it is compared with the matching canonical contact
+sheet and the real person's source image. If the source cannot support a
+faithful head-and-shoulders likeness, find a better source; do not invent
+missing identity details.
 
 Record:
 
@@ -848,24 +997,19 @@ Record:
 - processed PNG path
 - final DDS path
 
-For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait.
+For fictional people, non-human beings, supernatural entities, aliens,
+zombies, monsters, symbolic leaders, or other invented characters, `$imagegen`
+may be used to create the base portrait. Give the matching leader, commander,
+or operative references as style inputs and request the vanilla HOI4 painted
+portrait treatment, head-and-shoulders or restrained bust framing,
+period-appropriate clothing, a quiet painted background, controlled contrast,
+no text, and no photographic or modern concept-art finish.
 
-Leader portraits should match the intended Chaos Redux visual direction for the character or country.
-
-Target size:
-
-```text
-156x210
-```
-
-Inspect `assets/vanilla_reference/portraits/leaders/`, its catalog entries, and
-the original vanilla portraits before generating or processing every leader
-portrait, including fictional,
-collective, and non-human leaders. Imagegen prompts for fictional people must
-explicitly request the vanilla HOI4 painted portrait treatment, `156x210`
-head-and-shoulders or restrained bust framing, period-appropriate clothing,
-a quiet painted background, controlled contrast, no text, and no photographic
-or modern concept-art finish.
+Country-leader, commander, and operative portrait textures are `156x210`. A commander
+reference is a full `156x210` vanilla portrait, even if a particular UI view
+displays it at a smaller apparent size; never manufacture or document a 50x67
+commander source texture. Operatives also use the full portrait pipeline, not
+the dossier-card size; follow their cataloged owning sprite.
 
 ## 21.1 Advisor and high-command portrait icons
 
@@ -877,36 +1021,50 @@ head-and-shoulders portrait in the dark bevelled dossier-card presentation,
 with transparent outer corners and the small paper overlay used by vanilla.
 
 Do not satisfy an advisor icon by shrinking, padding, or directly wiring a
-`156x210` leader portrait. Start from the approved portrait master, choose a
-separate explicit crop, and run `.tools/process_hoi4_portrait.py advisor`.
-Retain the generated metadata and reference comparison sheet, inspect the
-result at native size and enlarged nearest-neighbour size, then convert the
-approved PNG with `.tools/convert_to_dds.py`. The processor's original frame
-and paper overlay are presentation layers; the depicted person must still be
-real sourced or imagegen-created artwork under the leader rules above.
+`156x210` country-leader, commander, or operative portrait. Start from the
+approved portrait master, choose a separate explicit head-and-shoulders crop,
+and independently compose the subject inside the `65x67` dossier card before
+running `.tools/process_hoi4_portrait.py advisor`. The crop, subject scale,
+background treatment, bevelled frame, transparent outer corners, and paper
+overlay belong to this dossier composition. Retain the generated metadata and
+reference comparison sheet, inspect the result at native size and enlarged
+nearest-neighbour size, then convert the approved PNG with
+`.tools/convert_to_dds.py`. The depicted person must still be real sourced or
+imagegen-created artwork under the portrait rules above.
 
 ## 21.2 Unit visual references
 
-Treat unit visuals as separate pipelines. Inspect
-`assets/vanilla_reference/contact_sheets/units.png` and the matching catalog
-entries before deciding what the task needs.
+Treat every unit visual as a domain-and-surface-specific pipeline. Inspect the
+matching catalog entries, contact sheet, and owning vanilla definition before
+deciding what the task needs.
 
-- `assets/vanilla_reference/units/equipment_icons_2d/` contains flat UI
-  illustrations used by equipment and technology sprites. Their canvas widths
-  vary; follow the owning `interface/*.gfx` sprite instead of inventing one
-  universal equipment-icon size.
-- `assets/vanilla_reference/units/unit_icons_2d/` contains division-designer
-  counter strips. The cataloged `152x42` examples use `noOfFrames = 2`, so do
-  not treat the entire strip as one icon or replace it with equipment artwork.
-- `assets/vanilla_reference/units/model_material_refs_3d/` contains UV diffuse
-  materials paired with cataloged `.mesh` and entity definitions. These are
-  not 2D icons, finished renders, or concept sheets. A 3D unit task must keep
-  model geometry, materials, entity wiring, and any separately produced
-  concept reference distinct.
+- `assets/vanilla_reference/units/equipment/technology_art/` contains flat 2D
+  equipment illustrations used by equipment and technology sprites. Native
+  canvases vary; follow the owning `interface/*.gfx` sprite.
+- `assets/vanilla_reference/units/land/counters_large/` contains large
+  frame-aware land-unit strips. Preserve the cataloged `noOfFrames`, frame
+  order, per-frame footprint, and transparent bounds.
+- `assets/vanilla_reference/units/land/map_counters/` contains land map-counter
+  art. It is not a large division-designer strip.
+- `assets/vanilla_reference/units/land/division_template_emblems/` contains
+  division-template identity emblems. It is not equipment art or map-counter
+  art.
+- `assets/vanilla_reference/units/air/map_counters/` and
+  `assets/vanilla_reference/units/naval/map_counters/` contain domain-specific
+  map-counter art. Do not substitute land counters or resized equipment art.
+- `assets/vanilla_reference/units/models_3d/land_materials/`,
+  `assets/vanilla_reference/units/models_3d/air_materials/`, and
+  `assets/vanilla_reference/units/models_3d/naval_materials/` contain UV model
+  materials paired with cataloged `.mesh`, `.asset`, and entity definitions.
+  They are not 2D icons, finished renders, or concept sheets.
 
-Do not derive one unit pipeline by resizing another. When a feature needs both
-a 2D icon and a 3D model, plan, source, process, and validate them as separate
-deliverables with separate final paths and handoff notes.
+Classify the requested deliverable before creating art: equipment/technology
+illustration, large land counter, land/air/naval map counter,
+division-template emblem, or land/air/naval 3D model package. Give each class
+its own brief, source art, native canvas or UV layout, frame metadata, final
+path, and handoff. A 3D task must keep model geometry, materials, entity wiring,
+and any separately produced concept reference distinct. Do not derive one unit
+pipeline by resizing, relabeling, or recoloring another.
 
 ## Animated leader portraits
 
@@ -1142,7 +1300,7 @@ Do not invent a substitute asset unless the user explicitly approves it.
 Before finishing, confirm:
 
 1. Every required asset from the event spec is accounted for.
-2. Every asset uses the correct source mode: `$imagegen` for every flag and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for real leader portraits.
+2. Every asset uses the correct source mode: `$imagegen` for every flat flag design and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for every real-person portrait.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
@@ -1156,10 +1314,11 @@ Before finishing, confirm:
 13. Docs are updated where relevant.
 14. The event implementation or parent handoff knows which sprite names to use.
 15. No final asset remains only in a temporary folder.
-16. Focus, idea, national spirit, officer corps spirit, decision, decision category, achievement, and tech icons were treated as separate asset types. No idea or decision icon is only a resized, cropped, recolored, padded, or lightly edited focus icon.
+16. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-19. Every real leader portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison against `assets/vanilla_reference/portraits/leaders/`.
-20. Every advisor or high-command portrait icon is a separately composed `65x67` dossier icon with its own crop and comparison against `assets/vanilla_reference/portraits/advisors/`, not a resized leader portrait.
+19. Every real country-leader, commander, and operative portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison against its matching canonical portrait family. Commander textures are full `156x210` portraits, never fabricated 50x67 sources.
+20. Every advisor or high-command portrait icon is an independently composed `65x67` dossier card with its own crop and comparison against `assets/vanilla_reference/portraits/advisors/`, not a resized country-leader, commander, or operative portrait.
 21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
-22. Every unit visual is classified and delivered as 2D equipment UI art, a frame-aware 2D unit counter, or a 3D model/concept package; one pipeline was not resized or relabeled to substitute for another.
+22. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
+23. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
