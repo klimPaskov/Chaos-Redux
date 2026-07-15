@@ -43,6 +43,8 @@ Use this skill for:
 - achievement icons
 - flags
 - leader portraits
+- advisor and high-command dossier portraits
+- 2D equipment icons, unit counters, and 3D unit visual references
 - faction emblems
 - UI panels
 - progression-state variants
@@ -221,45 +223,48 @@ Still crop, resize, convert, place, wire, and document it like any other source 
 
 ## 4. Reference asset examples
 
-This skill includes reference images that show how different Chaos Redux asset types should look.
+This skill owns its canonical vanilla visual-reference library. All paths in
+this section are relative to the `chaos-redux-event-assets/` skill directory;
+do not route reference work through project-root asset folders.
 
-Before generating, sourcing, processing, or wiring an asset, inspect the relevant reference folder for that asset type. Use the examples to match style, framing, contrast, readability, scale, texture, and HOI4 presentation.
+Start with:
 
-```text
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/tech_icons
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/special_projects
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/leader_portraits
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/advisor_icons
-```
+- library rules and contact sheets: `assets/vanilla_reference/README.md`
+- exact PNG-to-vanilla provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
 
-Reference mapping:
+Canonical category paths:
 
-- idea and national spirit icons: `assets/ideas`
-- officer corps spirit icons: inspect vanilla `gfx/interface/officer_corp/spirits/`. Final assets should be 45x45 DDS files with transparent backgrounds, no frames, no painted backdrop, no full-canvas opaque pixels, a readable dark or black outline, and a slight drop shadow. Wire them as `GFX_idea_<spirit_id>` sprites from a `.gfx` file.
-- news event images: `assets/news_event_images`
-- report event images: `assets/report_event_images`
-- super-event images: `assets/super_event_images`
-- tech icons: `assets/tech_icons`
-- achievement icons: `assets/achievements`
-- decision and decision category icons: `assets/decisions`
-- flags: `assets/flags`
-- focus icons: `assets/focuses`
-- leader portraits: project-root `assets/leader_portraits`
-- advisor, political-advisor, theorist, and high-command portrait icons: project-root `assets/advisor_icons`
+- leader portraits: `assets/vanilla_reference/portraits/leaders/`
+- advisor, theorist, high-command, and officer dossier portraits: `assets/vanilla_reference/portraits/advisors/`
+- flat flags: `assets/vanilla_reference/flags/normal/`, `assets/vanilla_reference/flags/medium/`, and `assets/vanilla_reference/flags/small/`
+- national focus icons: `assets/vanilla_reference/icons/national_focus/`
+- idea and national spirit icons: `assets/vanilla_reference/icons/ideas/`
+- decision icons: `assets/vanilla_reference/icons/decisions/`
+- mission icons: `assets/vanilla_reference/icons/missions/`
+- decision category icons: `assets/vanilla_reference/icons/decision_categories/`
+- achievement state triplets: `assets/vanilla_reference/icons/achievements/`
+- officer corps spirit icons: `assets/vanilla_reference/icons/officer_corps_spirits/`
+- technology icons: `assets/vanilla_reference/icons/technologies/`
+- special-project icons: `assets/vanilla_reference/icons/special_projects/`
+- balance-of-power icons: `assets/vanilla_reference/icons/balance_of_power/`
+- report-event art: `assets/vanilla_reference/event_art/report/`
+- news-event art: `assets/vanilla_reference/event_art/news/`
+- 2D equipment UI art: `assets/vanilla_reference/units/equipment_icons_2d/`
+- two-frame 2D unit counters: `assets/vanilla_reference/units/unit_icons_2d/`
+- 3D unit material references: `assets/vanilla_reference/units/model_material_refs_3d/`
 
-If a relevant reference folder exists, do not generate, source, crop, process, or wire new artwork until you have inspected it.
+The older skill-local folders directly under `assets/` remain supplemental
+style examples, including `assets/super_event_images/`. When the supplemental
+examples and the canonical catalog disagree about vanilla dimensions or engine
+pipeline, follow the canonical catalog and inspect the cataloged vanilla source.
 
-Never copy reference assets directly. Use them as style and formatting guidance.
-
-If the needed asset type has no matching reference folder, inspect the closest relevant folder and existing Chaos Redux or vanilla assets before choosing a style.
+Before generating, sourcing, processing, or wiring an asset, read the library
+rules, inspect the matching category and contact sheet, and follow the vanilla
+source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh`
+definition when engine behavior matters. Reference PNGs are never final assets:
+do not copy, wire, recolor, trace, or ship them. If no category matches, inspect
+the closest skill-local category plus a direct vanilla or established Chaos
+Redux precedent before choosing a style.
 
 ## 5. Generated artwork rules
 
@@ -640,7 +645,9 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas` before generating or processing idea icons.
+Inspect `assets/vanilla_reference/icons/ideas/` and the matching row in
+`assets/vanilla_reference/CATALOG.md` before generating or processing idea
+icons.
 
 ## 17. Focus icons
 
@@ -674,7 +681,10 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses` before generating or processing focus icons.
+Inspect `assets/vanilla_reference/icons/national_focus/` and the matching row
+in `assets/vanilla_reference/CATALOG.md` before generating or processing focus
+icons. Do not force every focus source onto an older nominal canvas when the
+owning sprite and current vanilla precedent use a different native canvas.
 
 ## 18. Decision icons
 
@@ -708,7 +718,11 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions` before generating or processing decision icons.
+Inspect `assets/vanilla_reference/icons/decisions/`,
+`assets/vanilla_reference/icons/missions/`, or
+`assets/vanilla_reference/icons/decision_categories/` as appropriate before
+generating or processing decision-system icons. Missions use the decision icon
+pipeline but still need mission-specific semantic readability.
 
 ## 19. Achievement icons
 
@@ -719,7 +733,8 @@ Generate the completed achievement icon first with `$imagegen`.
 Then create:
 
 - grey variant (simply black and white)
-- not-eligible variant by copying the grey variant and compositing `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png` on top
+- not-eligible variant by copying the grey variant and compositing
+  `assets/achievements/overlay.png` on top
 
 The variants may be created after the completed icon exists.
 
@@ -743,11 +758,21 @@ gfx/achievements/<achievement_id>_not_eligible.dds
 
 When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, the three DDS variants in `gfx/achievements/`, and any docs or manifests that list the final DDS paths. If the achievement registry owns a single `unique_id`, keep it as one root-level registry file and group event-owned achievements by event section inside the file instead of splitting it into per-event achievement files.
 
-Inspect `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements` before generating or processing achievement icons.
+Inspect `assets/vanilla_reference/icons/achievements/` before generating or
+processing achievement icons. The reference set includes a completed, grey,
+and not-eligible triplet; keep all three states aligned to the exact achievement
+id.
 
 ## 20. Flags
 
 Flags should use clean symbolic designs that look like intentional flag art, not simple-shape placeholders, palette swaps, ugly filters, or flipped/recolored variants.
+
+Inspect the complete flat flag ladders in
+`assets/vanilla_reference/flags/normal/`,
+`assets/vanilla_reference/flags/medium/`, and
+`assets/vanilla_reference/flags/small/` before creating or processing flags.
+Compare all three sizes together in
+`assets/vanilla_reference/contact_sheets/portraits_and_flags.png`.
 
 They must remain readable at HOI4 sizes.
 
@@ -798,7 +823,7 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 For real people, do not generate leader portraits with `$imagegen`.
 
 Use an attributed real source image from the internet or a user-provided
-image. Inspect project-root `assets/leader_portraits` first. Select and record
+image. Inspect `assets/vanilla_reference/portraits/leaders/` first. Select and record
 an explicit head-and-shoulders crop, then apply an identity-preserving HOI4
 painted finish while retaining the person's face, expression, age, hair,
 clothing, pose, and other recognisable source details. A raw photograph,
@@ -808,8 +833,9 @@ or weak likeness is not a finished portrait.
 Use `.tools/process_hoi4_portrait.py leader` for the deterministic crop,
 restrained finish, dimensions, metadata, and reference comparison sheet. The
 script is only a finishing tool. Its output remains a candidate until the
-contact sheet is visually compared with project-root
-`assets/leader_portraits` and the real person's source image. If the source
+contact sheet is visually compared with
+`assets/vanilla_reference/contact_sheets/portraits_and_flags.png` and the real
+person's source image. If the source
 cannot support a faithful head-and-shoulders likeness, find a better source;
 do not invent missing identity details.
 
@@ -832,8 +858,9 @@ Target size:
 156x210
 ```
 
-Inspect project-root `assets/leader_portraits` and existing vanilla portraits
-before generating or processing every leader portrait, including fictional,
+Inspect `assets/vanilla_reference/portraits/leaders/`, its catalog entries, and
+the original vanilla portraits before generating or processing every leader
+portrait, including fictional,
 collective, and non-human leaders. Imagegen prompts for fictional people must
 explicitly request the vanilla HOI4 painted portrait treatment, `156x210`
 head-and-shoulders or restrained bust framing, period-appropriate clothing,
@@ -843,7 +870,8 @@ or modern concept-art finish.
 ## 21.1 Advisor and high-command portrait icons
 
 Advisor, theorist, military-high-command, and officer-corps portrait icons are
-a separate asset type. Inspect project-root `assets/advisor_icons` before
+a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/`
+before
 work. The final target is `65x67`: a recognisable HOI4-styled
 head-and-shoulders portrait in the dark bevelled dossier-card presentation,
 with transparent outer corners and the small paper overlay used by vanilla.
@@ -856,6 +884,29 @@ result at native size and enlarged nearest-neighbour size, then convert the
 approved PNG with `.tools/convert_to_dds.py`. The processor's original frame
 and paper overlay are presentation layers; the depicted person must still be
 real sourced or imagegen-created artwork under the leader rules above.
+
+## 21.2 Unit visual references
+
+Treat unit visuals as separate pipelines. Inspect
+`assets/vanilla_reference/contact_sheets/units.png` and the matching catalog
+entries before deciding what the task needs.
+
+- `assets/vanilla_reference/units/equipment_icons_2d/` contains flat UI
+  illustrations used by equipment and technology sprites. Their canvas widths
+  vary; follow the owning `interface/*.gfx` sprite instead of inventing one
+  universal equipment-icon size.
+- `assets/vanilla_reference/units/unit_icons_2d/` contains division-designer
+  counter strips. The cataloged `152x42` examples use `noOfFrames = 2`, so do
+  not treat the entire strip as one icon or replace it with equipment artwork.
+- `assets/vanilla_reference/units/model_material_refs_3d/` contains UV diffuse
+  materials paired with cataloged `.mesh` and entity definitions. These are
+  not 2D icons, finished renders, or concept sheets. A 3D unit task must keep
+  model geometry, materials, entity wiring, and any separately produced
+  concept reference distinct.
+
+Do not derive one unit pipeline by resizing another. When a feature needs both
+a 2D icon and a 3D model, plan, source, process, and validate them as separate
+deliverables with separate final paths and handoff notes.
 
 ## Animated leader portraits
 
@@ -1108,6 +1159,7 @@ Before finishing, confirm:
 16. Focus, idea, national spirit, officer corps spirit, decision, decision category, achievement, and tech icons were treated as separate asset types. No idea or decision icon is only a resized, cropped, recolored, padded, or lightly edited focus icon.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-19. Every real leader portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison sheet against project-root `assets/leader_portraits`.
-20. Every advisor or high-command portrait icon is a separately composed `65x67` dossier icon with its own crop and comparison sheet against project-root `assets/advisor_icons`, not a resized leader portrait.
+19. Every real leader portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison against `assets/vanilla_reference/portraits/leaders/`.
+20. Every advisor or high-command portrait icon is a separately composed `65x67` dossier icon with its own crop and comparison against `assets/vanilla_reference/portraits/advisors/`, not a resized leader portrait.
 21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
+22. Every unit visual is classified and delivered as 2D equipment UI art, a frame-aware 2D unit counter, or a 3D model/concept package; one pipeline was not resized or relabeled to substitute for another.

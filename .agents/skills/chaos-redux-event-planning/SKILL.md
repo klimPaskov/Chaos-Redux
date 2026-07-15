@@ -929,9 +929,13 @@ Historical or real leaders should not be generated. The spec should identify
 likely real portrait needs and instruct the asset agent to source real images,
 document source and license status, choose an explicit head-and-shoulders
 crop, apply an identity-preserving HOI4 painted finish, and compare the result
-with project-root `assets/leader_portraits`. Advisor, theorist, and
+with
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+Advisor, theorist, and
 high-command portraits must be separately planned as `65x67` dossier icons
-using project-root `assets/advisor_icons`; they are not resized leader
+using
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`;
+they are not resized leader
 portraits. Fictional leaders, council portraits, cult leaders, alternate
 invented officers, and symbolic committee portraits can use `$imagegen` when
 generated art is appropriate.
@@ -1335,8 +1339,8 @@ C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chao
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/leader_portraits
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/advisor_icons
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors
 ```
 
 Reference mapping:
@@ -1350,8 +1354,8 @@ Reference mapping:
 - decision and decision category icons: `assets/decisions`
 - flags: `assets/flags`
 - focus icons: `assets/focuses`
-- leader portraits: project-root `assets/leader_portraits`
-- advisor, theorist, and high-command portrait icons: project-root `assets/advisor_icons`
+- leader portraits: `assets/vanilla_reference/portraits/leaders/` in the event-assets skill
+- advisor, theorist, and high-command portrait icons: `assets/vanilla_reference/portraits/advisors/` in the event-assets skill
 - and others if needed
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
