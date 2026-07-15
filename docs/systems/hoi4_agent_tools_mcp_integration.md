@@ -2,22 +2,20 @@
 
 ## Registration
 
-- Server: `hoi4-agent-tools` 1.2.0 (`io.github.klimPaskov/hoi4-agent-tools`).
+- Server: `hoi4-agent-tools` (`io.github.klimPaskov/hoi4-agent-tools`).
 - Codex registration: `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.codex\config.toml`.
-- Server configuration: `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.codex\hoi4-agent-tools-chaos-redux.json`.
-- Startup: the project config starts the globally installed `hoi4-agent-tools.cmd` over stdio. Restart Codex after installing or changing the registration.
-- Workspace ID: `chaos_redux`.
+- Startup: the project config starts the globally installed `hoi4-agent-tools.cmd` over stdio with Chaos Redux as its working directory. The server detects that mod directly; no per-mod JSON or selection call is needed. Restart Codex after installing or changing the registration.
 
-Install or upgrade the published package with `npm install --global hoi4-agent-tools@1.2.0`. For another checkout, copy the JSON shape, replace the absolute mod and game paths, and print a client entry with `hoi4-agent-tools-setup --print-client-config --config PATH`.
+Install or upgrade the published package with `npm install --global hoi4-agent-tools`. For another mod checkout, register the same server command with that mod as `cwd`; the server detects the current mod automatically. Use `hoi4-agent-tools-setup --init` only for a persistent multi-mod or remote configuration.
 
 ## Roots and generated data
 
-Only the Chaos Redux mod root is a writable source root. The configured game root is read-only. Workshop mods, other mod folders, the standalone MCP repository, and unrelated directories are not registered. Generated state, artifacts, and cache are outside gameplay files:
+The mod containing the MCP working directory is the writable source root. The installed game is read-only. Other mods, the standalone MCP repository, and unrelated directories are not treated as the current source. Generated state, artifacts, and cache are outside gameplay files:
 
-- state: `C:\Users\klimp\AppData\Local\hoi4-agent-tools\chaos-redux\state`
-- artifacts and cache: `C:\Users\klimp\AppData\Local\hoi4-agent-tools\chaos-redux\workspace-data\chaos_redux\{artifacts,cache}`
+- state: the per-user `hoi4-agent-tools` state directory
+- artifacts and cache: the per-user `hoi4-agent-tools` workspace-data directory
 
-The JSON contains no credentials. Keep HTTP bearer tokens in environment variables, never in tracked config.
+The registration contains no credentials. Keep HTTP bearer tokens in environment variables, never in tracked config.
 
 ## Available tools
 
@@ -27,7 +25,7 @@ The JSON contains no credentials. Keep HTTP bearer tokens in environment variabl
 | Scripted GUI Studio | `hoi4.gui_inspect`, `hoi4.gui_render`, `hoi4.gui_rewrite` | inspect/render do not write source (they produce artifacts); rewrite writes the configured mod |
 | Agent Nudger | `hoi4.map_inspect`, `hoi4.map_render`, `hoi4.map_rewrite` | inspect/render do not write source (they produce artifacts); rewrite writes the configured mod |
 | Event Chain Viewer | `hoi4.event_inspect`, `hoi4.event_render`, `hoi4.event_compare` | read-only |
-| Technology Tree Viewer | none in installed 1.2.0 | unavailable; do not invent a wrapper or claim this check passed |
+| Technology Tree Viewer | none in the installed package | unavailable; do not invent a wrapper or claim this check passed |
 
 Large JSON, SVG, PNG, HTML, diagnostics, plans, and diffs are linked through `hoi4-agent://` MCP resources. Source files remain authoritative.
 
@@ -47,4 +45,4 @@ Focus, GUI, map, and event renders are deterministic offline evidence, not game 
 
 Use stdio for local agents. For a separate process, run `hoi4-agent-tools-http --config PATH` with loopback binding, a long bearer token supplied through the configured environment variable, an exact origin allowlist, and explicit workspace grants. Non-loopback deployments need HTTPS, OAuth/OIDC, isolation, and the package limits described in the standalone `docs/http.md`.
 
-If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, run `hoi4-agent-tools-setup --diagnose --config PATH`, confirm the project is trusted, and restart Codex. Call `hoi4.mods` first; it should return only `chaos_redux` for this project configuration. Re-run the Inspector or the package integration tests after upgrades. The current Technology Tree Viewer gap is a package limitation, not a Chaos Redux workflow rule.
+If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, confirm the project is trusted, and restart Codex. Call the domain tool you need directly; omit `workspaceId` while the MCP cwd is the target mod. Re-run the Inspector or the package integration tests after upgrades. The current Technology Tree Viewer gap is a package limitation, not a Chaos Redux workflow rule.
