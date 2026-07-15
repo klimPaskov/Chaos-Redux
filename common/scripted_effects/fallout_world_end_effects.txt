@@ -271,6 +271,11 @@ fallout_world_end_migrate_save = {
 						value = constant:fallout_world_end_schema.previous_live_category_version
 						compare = equals
 					}
+					check_variable = {
+						var = global.fallout_transition_schema_version
+						value = constant:fallout_world_end_schema.previous_market_access_reset_version
+						compare = equals
+					}
 				}
 				check_variable = {
 					var = global.fallout_transition_phase
@@ -1972,7 +1977,10 @@ fallout_reset_old_world_diplomacy = {
 	clr_global_flag = fallout_transition_embargoes_reset_complete
 	clr_global_flag = fallout_transition_docking_rights_reset_applied
 	clr_global_flag = fallout_transition_docking_rights_reset_verified
+	clr_global_flag = fallout_transition_market_access_reset_applied
 	clr_global_flag = fallout_transition_market_access_reset_verified
+	clear_variable = global.fallout_transition_market_access_reset_generation
+	clear_variable = global.fallout_transition_market_access_verification_generation
 	clr_global_flag = fallout_transition_lend_lease_reset_verified
 	clr_global_flag = fallout_transition_trade_routes_reset_verified
 	clr_global_flag = fallout_transition_intelligence_reset_verified
@@ -2077,6 +2085,14 @@ fallout_reset_old_world_diplomacy = {
 					active = no
 				}
 				if = {
+					limit = { has_market_access_with = PREV }
+					diplomatic_relation = {
+						country = PREV
+						relation = market_access_rights
+						active = no
+					}
+				}
+				if = {
 					limit = { has_non_aggression_pact_with = PREV }
 					diplomatic_relation = {
 						country = PREV
@@ -2095,6 +2111,8 @@ fallout_reset_old_world_diplomacy = {
 			}
 		}
 		set_global_flag = fallout_transition_docking_rights_reset_applied
+		set_global_flag = fallout_transition_market_access_reset_applied
+		set_variable = { global.fallout_transition_market_access_reset_generation = global.fallout_transition_generation }
 
 		if = {
 			limit = { fallout_old_world_diplomacy_proven_surfaces_are_clean = yes }
@@ -2127,10 +2145,12 @@ fallout_reset_old_world_diplomacy = {
 				}
 			}
 			set_global_flag = fallout_transition_market_access_reset_verified
+			set_variable = { global.fallout_transition_market_access_verification_generation = global.fallout_transition_generation }
 			clr_global_flag = fallout_transition_market_access_reset_blocked
 		}
 		else = {
 			clr_global_flag = fallout_transition_market_access_reset_verified
+			clear_variable = global.fallout_transition_market_access_verification_generation
 			set_global_flag = fallout_transition_market_access_reset_blocked
 		}
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-World transition schema 9 closes the stale-zero defect in the frozen Air Winter payload and the stale-category defect in grading and rewrite. Fallout no longer treats a missing Air Winter producer as a real phase or resource value. It also does not use Air Winter's historical restoration category as the live transition category. The request coordinator withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
+World transition schema 10 closes the stale-zero defect in the frozen Air Winter payload and the stale-category defect in grading and rewrite. Fallout no longer treats a missing Air Winter producer as a real phase or resource value. It also does not use Air Winter's historical restoration category as the live transition category. The request coordinator withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
 
 This is static source proof. Hearts of Iron IV was not launched.
 
@@ -51,7 +51,7 @@ The synchronous capture proof compares every produced frozen value, schema, gene
 
 ## Transactional blackout lock
 
-`fallout_lock_transition` prepares schema 9 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
+`fallout_lock_transition` prepares schema 10 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
 
 - the pre-lock authorization flag is active on the request coordinator, or
 - a current-schema active Fallout transition remains in the snapshot phase on the coordinator
@@ -72,7 +72,7 @@ If a nonmanual source fails before lock, its pending envelope remains available 
 
 ## Migration
 
-Schema 7 and schema 8 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-9 epoch through the Air Winter producer and live category capture. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
+Schema 7, schema 8, and schema 9 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-10 epoch through the Air Winter producer and live category capture. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
 
 Completed legacy Fallout saves are promoted without replaying destruction. They receive `fallout_transition_legacy_completed_without_current_schema_receipts` and no fabricated state receipts.
 
