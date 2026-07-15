@@ -1327,35 +1327,35 @@ report/news/super-event images unless the user says otherwise.
 
 When a spec or asset brief asks for generated or sourced assets, tell the asset agent to inspect the matching reference examples before creating anything.
 
-Use Linux project paths:
+Use the canonical skill-local catalog and category paths:
 
 ```text
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/tech_icons
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors
 ```
 
 Reference mapping:
 
-- idea and national spirit icons: `assets/ideas`
-- news event images: `assets/news_event_images`
-- report event images: `assets/report_event_images`
-- super-event images: `assets/super_event_images`
-- tech icons: `assets/tech_icons`
-- achievement icons: `assets/achievements`
-- decision and decision category icons: `assets/decisions`
-- flags: `assets/flags`
-- focus icons: `assets/focuses`
+- idea and national spirit icons: `assets/vanilla_reference/icons/ideas/`
+- news event images: `assets/vanilla_reference/event_art/news/`
+- report event images: `assets/vanilla_reference/event_art/report/`
+- super-event images: supplemental `assets/super_event_images/` plus the live Chaos Redux super-event UI
+- technology icons: `assets/vanilla_reference/icons/technologies/`
+- special-project icons: `assets/vanilla_reference/icons/special_projects/`
+- achievement states: `assets/vanilla_reference/icons/achievements/`; the reusable not-eligible overlay remains `assets/achievements/overlay.png`
+- decisions, missions, and decision categories: their separate folders under `assets/vanilla_reference/icons/`
+- flags: the complete normal/medium/small ladder under `assets/vanilla_reference/flags/`
+- focus icons: `assets/vanilla_reference/icons/national_focus/`
+- officer corps spirits and balance-of-power icons: their separate folders under `assets/vanilla_reference/icons/`
 - leader portraits: `assets/vanilla_reference/portraits/leaders/` in the event-assets skill
 - advisor, theorist, and high-command portrait icons: `assets/vanilla_reference/portraits/advisors/` in the event-assets skill
+- 2D equipment, two-frame unit counters, and 3D material references: their separate pipelines under `assets/vanilla_reference/units/`
 - and others if needed
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
