@@ -2765,6 +2765,7 @@ fallout_classify_country_government = {
 # Supported scope: COUNTRY. Clears only derived post-allocation proof fields.
 # The frozen pre-allocation inventory has its own independent reset.
 fallout_reset_successor_allocation_ledger = {
+	fallout_reset_uncommitted_survival_ledger = yes
 	clr_global_flag = fallout_successor_allocation_initialized
 	clr_global_flag = fallout_successor_preallocation_consumed
 	clr_global_flag = fallout_successor_assignment_ledger_built
@@ -2834,6 +2835,7 @@ fallout_begin_successor_allocation_transaction = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
 			NOT = { has_global_flag = fallout_successor_allocation_initialized }
+			NOT = { has_global_flag = fallout_survival_ledger_ready }
 			fallout_physical_collapse_rows_are_durable = yes
 			has_global_flag = fallout_player_allocation_reservation_ledger_complete
 			fallout_player_allocation_reservation_ledger_is_current = yes
@@ -4225,6 +4227,20 @@ fallout_apply_transition_phase_survivor_allocation = {
 			NOT = { has_global_flag = fallout_transition_error }
 			fallout_player_planning_ledger_is_current = yes
 			fallout_successor_allocation_is_current = yes
+			NOT = { has_global_flag = fallout_survival_ledger_ready }
+		}
+		set_variable = { global.fallout_event_initialization_status = constant:fallout_event_initialization_status.survival_ledger_pending }
+		if = {
+			limit = { NOT = { has_global_flag = fallout_survival_ledger_identity_staged } }
+			fallout_stage_survival_ledger_identity_transaction = yes
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			fallout_player_planning_ledger_is_current = yes
+			fallout_successor_allocation_is_current = yes
+			fallout_survival_ledger_transition_barrier_is_current = yes
 		}
 		set_global_flag = fallout_transition_survivor_allocation_applied
 	}
@@ -4233,6 +4249,7 @@ fallout_apply_transition_phase_survivor_allocation = {
 			NOT = { has_global_flag = fallout_transition_error }
 			has_global_flag = fallout_transition_survivor_allocation_applied
 			fallout_successor_allocation_is_current = yes
+			fallout_survival_ledger_transition_barrier_is_current = yes
 		}
 		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.player_continuation }
 		fallout_advance_transition_phase = yes
@@ -4256,11 +4273,22 @@ fallout_apply_transition_phase_player_continuation = {
 	}
 	if = {
 		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			fallout_successor_allocation_is_current = yes
+			NOT = { fallout_survival_ledger_transition_barrier_is_current = yes }
+		}
+		set_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.survival_ledger_incomplete }
+		add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+	}
+	if = {
+		limit = {
 			OR = {
 				NOT = { has_global_flag = fallout_transition_error }
 				fallout_recoverable_player_commit_error_is_active = yes
 			}
 			fallout_successor_allocation_is_current = yes
+			fallout_survival_ledger_transition_barrier_is_current = yes
 		}
 		fallout_clear_recoverable_player_commit_errors = yes
 		if = {
@@ -4282,6 +4310,7 @@ fallout_apply_transition_phase_player_continuation = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
 			fallout_successor_allocation_is_current = yes
+			fallout_survival_ledger_transition_barrier_is_current = yes
 			has_global_flag = fallout_player_continuation_ledger_complete
 			has_global_flag = fallout_player_continuation_commit_complete
 		}

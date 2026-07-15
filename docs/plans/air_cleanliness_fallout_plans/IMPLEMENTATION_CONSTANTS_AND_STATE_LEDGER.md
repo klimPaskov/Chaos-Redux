@@ -46,13 +46,33 @@ New global values:
 | `global.fallout_event_registry_countries` | scope array | stable ordered post-allocation scheduler identities | frozen after successor allocation proves current |
 | `global.fallout_event_registry_generation_entries` | numeric array | transition generation aligned to each registry country | frozen with the registry payload |
 | `global.fallout_event_registry_index_entries` | numeric array | exact stable zero-based position for each registry country | frozen with the registry payload |
+| `global.fallout_event_registry_schema_version` | variable | living-world registry header schema | schema 2 after commit or guarded binding migration |
+| `global.fallout_event_registry_source_count` | variable | exact finalized allocation count copied into the registry | immutable after registry commit |
 | `global.fallout_event_registry_cursor` | variable | round-robin index for one primary frozen registry country per coordinator date | wraps to zero after the final row |
+| `global.fallout_event_registry_initialized_date` | variable | engine date of the registry commit | immutable after registry commit |
+| `global.fallout_event_registry_initialized_day` | variable | arithmetic day of the registry commit | immutable after registry commit |
 | `global.fallout_event_schema_version` | variable | living-world runtime and transaction schema | schema 2 after a new registry commit or guarded dormant promotion |
 | `global.fallout_event_ticket_generation` | variable | binds the ticket allocator to the active transition generation | reset only with an uncommitted registry rebuild |
 | `global.fallout_event_next_ticket_id` | variable | next monotonic arc, delayed, or bilateral transaction ticket | incremented before a row commit and never decremented |
-| `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | future producer writes before commit |
-| `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | future producer writes before commit |
-| `global.fallout_survival_ledger_country_count` | variable | exact finalized successor-assignment row count | future producer writes before commit |
+| `global.fallout_event_registry_survival_schema` | variable | survival schema bound to the scheduler registry | written by registry commit or guarded migration |
+| `global.fallout_event_registry_survival_generation` | variable | survival generation bound to the scheduler registry | written by registry commit or guarded migration |
+| `global.fallout_event_registry_survival_country_count` | variable | exact survival-country count bound to the scheduler registry | written by registry commit or guarded migration |
+| `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | formula-neutral identity stage writes before numerical work |
+| `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | formula-neutral identity stage writes before numerical work |
+| `global.fallout_survival_ledger_source_allocation_schema` | variable | finalized allocation schema captured by the survival stage | cleared only with an uncommitted rebuild |
+| `global.fallout_survival_ledger_source_allocation_generation` | variable | finalized allocation generation captured by the survival stage | cleared only with an uncommitted rebuild |
+| `global.fallout_survival_ledger_source_country_count` | variable | source assignment count before scope-array construction | must equal the staged country count |
+| `global.fallout_survival_ledger_source_state_count` | variable | source all-state inventory count before scope-array construction | must equal the staged state count |
+| `global.fallout_survival_ledger_country_count` | variable | exact finalized successor-assignment row count | staged from the aligned country array |
+| `global.fallout_survival_ledger_state_count` | variable | exact all-state row count | staged from the aligned state array |
+| `global.fallout_survival_ledger_countries` | scope array | frozen finalized successor identities | staged after allocation proves current |
+| `global.fallout_survival_ledger_country_generation_entries` | numeric array | survival generation aligned to each country scope | staged with country identities |
+| `global.fallout_survival_ledger_country_index_entries` | numeric array | physical zero-based index aligned to each country scope | staged with country identities |
+| `global.fallout_survival_ledger_states` | scope array | frozen all-and-only included state identities | staged after allocation proves current |
+| `global.fallout_survival_ledger_state_generation_entries` | numeric array | survival generation aligned to each state scope | staged with state identities |
+| `global.fallout_survival_ledger_state_index_entries` | numeric array | physical zero-based index aligned to each state scope | staged with state identities |
+| `global.fallout_survival_ledger_identity_staged_date` | variable | engine date of identity staging | written before the identity-staged flag |
+| `global.fallout_survival_ledger_identity_staged_day` | variable | arithmetic day of identity staging | written before the identity-staged flag |
 | `global.fallout_survival_ledger_committed_date` | variable | immutable commit date receipt | future producer writes once |
 | `global.fallout_survival_ledger_committed_day` | variable | immutable arithmetic commit-day receipt | future producer writes once |
 | `global.fallout_rewrite_batch_index` | variable | persistent batch cursor | cleared on completion |
@@ -79,9 +99,21 @@ Global flags:
 | `fallout_synthetic_strike_batch` | suppresses per-strike log and diplomatic spam | clear immediately after strike pass |
 | `fallout_event_scheduler_initialization_pending` | a current map return may initialize the dormant living-world registry | clear only after a successful registry commit or proven dormant schema promotion |
 | `fallout_event_scheduler_registry_ready` | the aligned country registry payload passed its commit proof | clear only when an uncommitted payload is rebuilt |
-| `fallout_survival_ledger_ready` | all nine-resource rows passed schema, generation, and count proof | no setter until numeric initialization is accepted |
+| `fallout_survival_ledger_building` | the identity payload is being staged | clear only after identity proof or uncommitted reset |
+| `fallout_survival_ledger_identity_staged` | all identity and provenance rows passed the transition-only proof | clear only with an uncommitted reset |
+| `fallout_survival_ledger_ready` | all nine-resource rows passed the future reviewed arithmetic, aggregation, range, and initialization proof | no setter until numeric initialization is accepted |
 | `fallout_event_scheduler_activation_approved` | manual review approved gameplay scheduling | no setter until the pilot passes review |
 | `fallout_event_scheduler_active` | ordinary living-world dispatch is live | no setter until all activation gates pass |
+
+## Survival row inventory
+
+Each staged country row carries `fallout_survival_country_identity_staged`, `fallout_survival_country_schema_version`, `fallout_survival_country_generation`, `fallout_survival_country_index`, `fallout_survival_country_source_allocation_schema`, `fallout_survival_country_source_allocation_generation`, `fallout_survival_country_state_count`, `fallout_survival_country_source_region`, `fallout_survival_country_source_archetype`, `fallout_survival_country_source_memory`, and `fallout_survival_country_resource_id_entries`.
+
+The future numerical country contract reserves `fallout_survival_country_row_committed`, `fallout_survival_raw_numerator_entries`, `fallout_survival_raw_denominator_entries`, `fallout_survival_initial_entries`, and `fallout_survival_current_entries`. No current effect writes or commits those numerical arrays.
+
+Each staged state row carries `fallout_survival_state_identity_staged`, `fallout_survival_state_schema_version`, `fallout_survival_state_generation`, `fallout_survival_state_index`, `fallout_survival_state_owner`, `fallout_survival_state_source_snapshot_generation`, `fallout_survival_state_source_air_winter_schema`, `fallout_survival_state_source_air_winter_generation`, `fallout_survival_state_source_air_winter_kind`, `fallout_survival_state_source_grading_generation`, `fallout_survival_state_source_population_generation`, `fallout_survival_state_source_rewrite_generation`, `fallout_survival_state_source_supply_generation`, and `fallout_survival_state_resource_id_entries`.
+
+The future numerical state contract reserves `fallout_survival_state_row_committed`, `fallout_survival_state_raw_numerator_entries`, `fallout_survival_state_raw_denominator_entries`, and `fallout_survival_state_equal_share_entries`. No current effect writes or commits those numerical arrays.
 
 ## Transition ledger schemas
 
@@ -93,12 +125,12 @@ Global flags:
 | Successor allocation output | 2 | consumed source receipt, reciprocal conflict links, unique assignments, package layers, capitals, and cleanup |
 | Manual province sweep runtime | 2 | generation-bound batch, verifier, and exact seven-day callback provenance |
 | Fallout living-world scheduler | 2 | exact reveal timeline, country runtime receipts, transaction history, and structural routing envelopes |
-| Fallout living-world registry | 1 | aligned country, generation, and stable-index commit payload |
+| Fallout living-world registry | 2 | aligned country, generation, stable-index, and committed-survival binding payload |
 | Fallout orientation | 1 | five independent current-generation orientation receipts |
 | Fallout arc, delayed queue, and bilateral ledgers | 2 | dormant aligned transaction rows, reservation APIs, cancellation, cleanup handoff, and mutation-bounded reconciliation |
-| Fallout survival ledger | 1 | reserved schema and nine resource identities only, with no row contract or producer |
+| Fallout survival ledger | 1 | formula-neutral identity and row-shape contract, with no numerical producer or global commit setter |
 
-Living-world schema 1 contained initialization-only rows and no transaction producer. It may promote to schema 2 only while the map-return receipt is current, both activation flags are absent, the scheduler has no error, every preserved runtime field passes its current invariant, and every arc, delayed, bilateral, cleanup, history, ticket, and dispatch surface is absent or empty as required. A partially populated, corrupt, or active schema-1 row fails closed before mutation.
+Paired living-world runtime-schema-1 and registry-schema-1 rows contained initialization-only data and no transaction producer. They may promote to schema 2 only while the map-return receipt and a fully current committed survival ledger are current, both activation flags are absent, the scheduler has no error, every preserved runtime field passes its current invariant, and every arc, delayed, bilateral, cleanup, history, ticket, and dispatch surface is absent or empty as required. A separate guarded migration can bind a current runtime schema to a schema-1 registry only while the registry is ready, both activation flags are absent, no scheduler error exists, the map-return receipts and full survival ledger are current, and every indexed registry, allocation, and survival row agrees. A partially populated, corrupt, or active legacy row fails closed before mutation.
 
 The region enum has nine live values: North America, Europe, Eurasian Interior, East Asia, South Asia, Middle East and North Africa, Sub-Saharan Africa, Latin America and the Caribbean, and Oceania and Remote Islands.
 
