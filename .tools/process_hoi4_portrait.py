@@ -3,8 +3,9 @@
 
 This tool is a deterministic finishing and presentation step. It does not
 invent a person's face and it is not a substitute for source research or the
-required visual review against ``assets/leader_portraits`` and
-``assets/advisor_icons``.
+required visual review against the canonical event-assets skill references in
+``assets/vanilla_reference/portraits/leaders`` and
+``assets/vanilla_reference/portraits/advisors``.
 
 Real people must start from an attributed archival image. Pass an explicit
 head-and-shoulders crop, preserve the person's recognisable features, and
@@ -25,7 +26,10 @@ from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageOp
 
 LEADER_SIZE = (156, 210)
 ADVISOR_SIZE = (65, 67)
-PROCESSOR_VERSION = "1.0"
+PROCESSOR_VERSION = "1.1"
+REFERENCE_ROOT = Path(
+	".agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits"
+)
 
 
 def parse_crop(values: list[int], image: Image.Image) -> tuple[int, int, int, int]:
@@ -185,11 +189,11 @@ def make_review_sheet(
 	output: Path,
 ) -> None:
 	if mode == "leader":
-		reference_names = ("vanilla_den_thorvald_stauning.png", "vanilla_fin_carl_mannerheim.png")
+		reference_names = ("den_thorvald_stauning.png", "fin_carl_mannerheim.png")
 		display_size = LEADER_SIZE
 		scale = 2
 	else:
-		reference_names = ("vanilla_advisor_europe_1.png", "vanilla_high_command_fevzi_cakmak.png")
+		reference_names = ("generic_europe_1.png", "generic_asia_1.png")
 		display_size = ADVISOR_SIZE
 		scale = 4
 
@@ -253,10 +257,10 @@ def main() -> None:
 	seed_text = f"{args.source.resolve()}:{crop_box}:{args.source_kind}:{PROCESSOR_VERSION}"
 	if args.mode == "leader":
 		finished = make_leader(source_crop, args.source_kind, seed_text)
-		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / "assets/leader_portraits"
+		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / REFERENCE_ROOT / "leaders"
 	else:
 		finished = make_advisor(source_crop, args.source_kind, seed_text)
-		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / "assets/advisor_icons"
+		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / REFERENCE_ROOT / "advisors"
 
 	args.output.parent.mkdir(parents=True, exist_ok=True)
 	finished.save(args.output)

@@ -78,8 +78,12 @@ Before completion, check every visible asset named or implied by the spec: flags
 Do not generate real historical leaders as invented people. Source them,
 document source and license status when possible, explicitly crop them to
 head-and-shoulders, preserve their identity while applying the HOI4 painted
-finish, and compare leader and advisor outputs with project-root
-`assets/leader_portraits` and `assets/advisor_icons`. Every new flag uses
+finish, and compare leader and advisor outputs with the canonical skill-local
+references in
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
+and
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
+Every new flag uses
 imagegen. Historical flags and well-attested real symbols first require cited
 design research, then a strict flat reconstruction with no fabric scene,
 painterly flag artwork, fake lettering, or invented heraldry.

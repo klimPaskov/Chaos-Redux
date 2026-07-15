@@ -228,8 +228,10 @@ in vanilla. A conflicting new tag must be remapped; a vanilla country identity
 must reuse the vanilla tag and preserve its meaningful content. Pass the
 locked tag and audit evidence into the context-free subagent prompt.
 
-Portrait prompts must name project-root `assets/leader_portraits` and
-`assets/advisor_icons`. Real people require an attributed source, explicit
+Portrait prompts must name the canonical skill-local leader and advisor
+references under
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`.
+Real people require an attributed source, explicit
 head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop
 metadata, and comparison sheet. Fictional portraits require imagegen with the
 leader references as style inputs. Advisor, theorist, and high-command icons
