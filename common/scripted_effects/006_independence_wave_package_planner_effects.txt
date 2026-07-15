@@ -870,11 +870,13 @@ independence_wave_clear_plan_contribution = {
 	clr_global_flag = independence_wave_plan_optional_expansion_failed
 	for_each_scope_loop = {
 		array = global.liberation_plan_countries
-		limit = {
-			has_country_flag = independence_wave_pending_package
-			check_variable = { var = independence_wave_pending_plan_id value = global.liberation_plan_id compare = equals }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_pending_package
+				check_variable = { var = independence_wave_pending_plan_id value = global.liberation_plan_id compare = equals }
+			}
+			independence_wave_clear_pending_package_metadata = yes
 		}
-		independence_wave_clear_pending_package_metadata = yes
 	}
 	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
 	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }

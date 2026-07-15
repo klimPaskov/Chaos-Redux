@@ -75,12 +75,14 @@ independence_wave_select_evolution_actor = {
 		limit = { independence_wave_evolution_registry_is_ready = yes }
 		for_each_scope_loop = {
 			array = global.independence_wave_active_countries
-			limit = {
-				check_variable = { events_log_evolution_has_actor = constant:independence_wave_value.minimum }
-				is_independence_wave_active_country = yes
+			if = {
+				limit = {
+					check_variable = { events_log_evolution_has_actor = constant:independence_wave_value.minimum }
+					is_independence_wave_active_country = yes
+				}
+				save_event_target_as = events_log_evolution_actor
+				set_temp_variable = { events_log_evolution_has_actor = constant:independence_wave_plan.loop_increment }
 			}
-			save_event_target_as = events_log_evolution_actor
-			set_temp_variable = { events_log_evolution_has_actor = constant:independence_wave_plan.loop_increment }
 		}
 	}
 }

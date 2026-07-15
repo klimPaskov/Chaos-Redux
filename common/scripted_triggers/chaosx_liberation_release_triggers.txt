@@ -17,6 +17,10 @@ is_liberation_release_plan_active = {
 		is_liberation_release_plan_open = yes
 		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
 		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalizing }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rolling_back }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalization_failed }
 	}
 }
 
@@ -27,6 +31,20 @@ is_liberation_release_plan_locked = {
 
 is_liberation_release_plan_executing = {
 	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+}
+
+is_liberation_release_plan_finalizing = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalizing }
+	has_global_flag = liberation_release_finalizer_started
+}
+
+has_liberation_release_plan_finalization_failed = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalization_failed }
+	has_global_flag = liberation_release_plan_finalization_failed
+}
+
+is_liberation_release_plan_rolling_back = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rolling_back }
 }
 
 can_liberation_release_reset_plan = {
@@ -126,6 +144,18 @@ is_liberation_release_state_available_for_reservation = {
 	NOT = { is_liberation_release_current_protected_state = yes }
 }
 
+# STATE scope. A protected remnant must never be the mandatory anchor currently
+# being evaluated for release. Event 005 supplies the alias before host
+# protection; callers without an anchor retain the ordinary protection rules.
+is_liberation_release_host_protection_candidate = {
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
+	OR = {
+		NOT = { has_event_target = liberation_candidate_anchor }
+		NOT = { state = event_target:liberation_candidate_anchor }
+	}
+}
+
 liberation_release_country_arrays_are_aligned = {
 	check_variable = { var = global.liberation_plan_country_owners^num value = global.liberation_plan_package_ids^num compare = equals }
 	check_variable = { var = global.liberation_plan_countries^num value = global.liberation_plan_package_ids^num compare = equals }
@@ -161,6 +191,26 @@ liberation_release_all_plan_arrays_are_aligned = {
 	liberation_release_rejection_arrays_are_aligned = yes
 }
 
+# Every mutation row must carry the exact facts required for compensation
+# before the plan can cross the lock barrier.
+liberation_release_recovery_snapshots_are_complete = {
+	all_of_scopes = {
+		array = global.liberation_plan_states
+		has_state_flag = liberation_release_core_snapshot_recorded
+		has_variable = liberation_release_original_owner
+		has_variable = liberation_release_original_controller
+		has_variable = liberation_release_target_country
+		var:liberation_release_original_owner = { exists = yes }
+		var:liberation_release_original_controller = { exists = yes }
+	}
+	all_of_scopes = {
+		array = global.liberation_plan_hosts
+		exists = yes
+		has_variable = liberation_release_protected_state
+		has_variable = liberation_release_original_capital
+	}
+}
+
 can_liberation_release_lock_plan = {
 	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
 	check_variable = {
@@ -169,6 +219,7 @@ can_liberation_release_lock_plan = {
 		compare = greater_than
 	}
 	liberation_release_all_plan_arrays_are_aligned = yes
+	liberation_release_recovery_snapshots_are_complete = yes
 	check_variable = {
 		var = global.liberation_plan_package_ids^num
 		value = global.liberation_plan_expected_country_count
@@ -184,9 +235,87 @@ liberation_release_locked_plan_is_valid = {
 		compare = greater_than
 	}
 	liberation_release_all_plan_arrays_are_aligned = yes
+	liberation_release_recovery_snapshots_are_complete = yes
 	check_variable = {
 		var = global.liberation_plan_package_ids^num
 		value = global.liberation_plan_expected_country_count
 		compare = equals
+	}
+}
+
+# Exact live footprint proof after instantiation and transfer, before any
+# event-specific package finalizer may create durable origin state.
+liberation_release_execution_matches_frozen_ownership = {
+	is_liberation_release_plan_executing = yes
+	liberation_release_all_plan_arrays_are_aligned = yes
+	all_of_scopes = {
+		array = global.liberation_plan_states
+		has_variable = liberation_release_target_country
+		var:liberation_release_target_country = { exists = yes }
+		is_owned_by = var:liberation_release_target_country
+		is_controlled_by = var:liberation_release_target_country
+	}
+	all_of_scopes = {
+		array = global.liberation_plan_hosts
+		exists = yes
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+}
+
+liberation_release_rollback_ledger_is_valid = {
+	is_liberation_release_plan_rolling_back = yes
+	has_global_flag = liberation_release_execution_started
+	liberation_release_all_plan_arrays_are_aligned = yes
+	liberation_release_recovery_snapshots_are_complete = yes
+}
+
+# Exact compensation proof. The two event-specific cleanup flags are asserted
+# only by their owning rollback adapters; a participant cannot be silently
+# cleared by the shared coordinator.
+liberation_release_rollback_matches_frozen_ledger = {
+	liberation_release_rollback_ledger_is_valid = yes
+	all_of_scopes = {
+		array = global.liberation_plan_states
+		is_owned_by = var:liberation_release_original_owner
+		is_controlled_by = var:liberation_release_original_controller
+		OR = {
+			AND = {
+				has_state_flag = liberation_release_original_owner_had_core
+				is_core_of = var:liberation_release_original_owner
+			}
+			AND = {
+				NOT = { has_state_flag = liberation_release_original_owner_had_core }
+				NOT = { is_core_of = var:liberation_release_original_owner }
+			}
+		}
+		OR = {
+			AND = {
+				has_state_flag = liberation_release_target_had_core
+				is_core_of = var:liberation_release_target_country
+			}
+			AND = {
+				NOT = { has_state_flag = liberation_release_target_had_core }
+				NOT = { is_core_of = var:liberation_release_target_country }
+			}
+		}
+	}
+	all_of_scopes = {
+		array = global.liberation_plan_countries
+		exists = no
+	}
+	all_of_scopes = {
+		array = global.liberation_plan_hosts
+		exists = yes
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+		capital_scope = { state = var:PREV.liberation_release_original_capital }
+	}
+	OR = {
+		NOT = { has_global_flag = liberation_release_plan_includes_event5 }
+		has_global_flag = liberation_release_event5_rollback_cleanup_validated
+	}
+	OR = {
+		NOT = { has_global_flag = liberation_release_plan_includes_event6 }
+		has_global_flag = liberation_release_event6_rollback_cleanup_validated
 	}
 }

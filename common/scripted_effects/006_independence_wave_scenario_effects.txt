@@ -384,7 +384,7 @@ independence_wave_scenario_attempt_ranked_packages = {
 		if = {
 			limit = {
 				has_event_target = liberation_candidate_country
-				event_target:liberation_candidate_country = { has_country_flag = independence_wave_package_content_ready }
+				event_target:liberation_candidate_country = { is_independence_wave_scenario_package_preflight_ready = yes }
 			}
 			set_temp_variable = { independence_wave_scenario_rejection_count_before = global.liberation_plan_rejected_package_ids^num }
 			independence_wave_scenario_reserve_dispatch_package = yes
@@ -1182,6 +1182,7 @@ independence_wave_trigger_scenario = {
 	independence_wave_scenario_reset_summary = yes
 	clr_global_flag = independence_wave_scenario_committed
 	clr_global_flag = independence_wave_scenario_failed
+	clr_global_flag = independence_wave_scenario_finalization_failed
 	clear_variable = global.independence_wave_scenario_last_plan_id
 	clear_variable = global.independence_wave_scenario_last_failure
 	clear_variable = global.independence_wave_execution_last_failure
@@ -1238,16 +1239,30 @@ independence_wave_trigger_scenario = {
 		independence_wave_scenario_set_intensity_tuning = yes
 		independence_wave_scenario_freeze_summary = yes
 		if = {
+			limit = { has_liberation_release_plan_finalization_failed = yes }
+			set_global_flag = independence_wave_scenario_finalization_failed
+		}
+		else_if = {
+			limit = { has_global_flag = liberation_release_execution_started }
+			liberation_release_execute_compensating_rollback = yes
+		}
+		else_if = {
 			limit = {
 				OR = {
 					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
 					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
 					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
 				}
 				NOT = { has_global_flag = liberation_release_execution_started }
 			}
-			independence_wave_clear_plan_contribution = yes
-			liberation_release_abort_plan = yes
+			liberation_release_restore_host_capitals_before_execution = yes
+			if = {
+				limit = { NOT = { has_global_flag = liberation_release_capital_restore_failed } }
+				independence_wave_clear_plan_contribution = yes
+				liberation_release_abort_plan = yes
+			}
+			else = { liberation_release_abort_plan = yes }
 		}
 		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
 	}

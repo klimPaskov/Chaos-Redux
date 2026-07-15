@@ -5657,6 +5657,7 @@ soviet_collapse_record_dominant_release_cause = {
 }
 
 soviet_collapse_setup_breakaway_country = {
+	clr_country_flag = soviet_collapse_breakaway_setup_complete
 	if = {
 		limit = {
 			NOT = { has_country_flag = independence_wave_active_origin }
@@ -5685,6 +5686,11 @@ soviet_collapse_setup_breakaway_country = {
 			soviet_collapse_load_event_created_focus_tree = yes
 			set_country_flag = soviet_collapse_regional_focus_tree_loaded
 		}
+		set_country_flag = soviet_collapse_breakaway_setup_complete
+		if = {
+			limit = { NOT = { has_completed_soviet_collapse_breakaway_setup = yes } }
+			clr_country_flag = soviet_collapse_breakaway_setup_complete
+		}
 	}
 }
 
@@ -5709,6 +5715,7 @@ soviet_collapse_mark_active_origin = {
 
 soviet_collapse_clear_active_origin = {
 	clr_country_flag = soviet_collapse_active_origin
+	clr_country_flag = soviet_collapse_breakaway_setup_complete
 	if = {
 		limit = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
 		set_variable = { liberation_origin = constant:liberation_origin.none }

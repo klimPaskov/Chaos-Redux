@@ -1,5 +1,7 @@
 # Event 005 / Event 006 Joint Collision Implementation Handoff
 
+> Transaction correction, 2026-07-15: the historical limitations in this handoff that describe post-release ownership as non-compensable are superseded by `006_transaction_architecture_resolution_2026_07_15.md`. The current coordinator has a frozen owner/controller/core/capital recovery ledger, exact compensating rollback before finalization, and a separate terminal finalization-failure phase. This file remains as the original implementation record.
+
 ## Status
 
 The synchronous Event 005 / Event 006 Liberations-cluster transaction is implemented. Event 005 freezes its opening republic tags, anchors, exact states, hosts, and protected host remnants first. Event 006 then allocates its exact wave count against those reservations, rerolling collisions. Both contributions lock, revalidate, instantiate, transfer, initialize their own mechanics, and commit in one effect chain before the cluster queues either presentation.
