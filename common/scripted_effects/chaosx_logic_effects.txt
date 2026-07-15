@@ -511,6 +511,19 @@ evaluate_random_event_active_pool_candidate = {
 	# Output: temp variable event_active_pool_candidate_is_valid
 	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
 	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+	set_temp_variable = { independence_wave_direct_availability_context_injected = 0 }
+	if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			NOT = { check_variable = { event_cluster_liberations_member_availability_context > 0 } }
+		}
+		set_temp_variable = { independence_wave_direct_availability_saved_cluster_id = event_cluster_id }
+		set_temp_variable = { independence_wave_direct_availability_saved_member_id = event_cluster_member_event_id }
+		set_temp_variable = { event_cluster_id = constant:event_cluster_id.liberations }
+		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
+		set_temp_variable = { independence_wave_direct_availability_context_injected = 1 }
+	}
 	get_event_type = yes
 
 	if = {
@@ -561,7 +574,10 @@ evaluate_random_event_active_pool_candidate = {
 					check_variable = { event_id = constant:resources_found_event.id }
 					NOT = { resources_found_is_eligible_discovery_owner = yes }
 				}
-				check_variable = { event_id = 6 }
+				AND = {
+					check_variable = { event_id = constant:independence_wave_event.id }
+					NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
+				}
 				check_variable = { event_id = 12 }
 				AND = {
 					is_in_array = { global.fired_events = event_id }
@@ -570,6 +586,12 @@ evaluate_random_event_active_pool_candidate = {
 			}
 		}
 		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+	}
+	if = {
+		limit = { check_variable = { independence_wave_direct_availability_context_injected > 0 } }
+		set_temp_variable = { event_cluster_id = independence_wave_direct_availability_saved_cluster_id }
+		set_temp_variable = { event_cluster_member_event_id = independence_wave_direct_availability_saved_member_id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 0 }
 	}
 }
 
