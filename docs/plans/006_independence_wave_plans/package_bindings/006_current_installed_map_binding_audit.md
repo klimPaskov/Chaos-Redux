@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-This is the authoritative planning audit for binding all 206 accepted Event 006 candidate packages to the currently installed Hearts of Iron IV map. It does not edit the accepted specification, workbook, or gameplay files.
+This is the authoritative planning audit for binding all 206 accepted Event 006 package rows to the currently installed Hearts of Iron IV map. The later vanilla-identity reconciliation separates 193 selectable release packages from 13 non-selectable route overlays; it does not erase the geographic evidence recorded here.
 
 The machine-readable source of truth for each package is:
 
@@ -50,19 +50,23 @@ The Event 006 candidate registry, package research resolution, sensitive-package
 | Result | Count |
 | --- | ---: |
 | Packages audited | 206 |
-| Bound packages | 149 |
-| Unbound packages | 57 |
+| Geographically bound rows in the original map audit | 149 |
+| Geographically unbound rows in the original map audit | 57 |
+| Selectable bound release packages | 138 |
+| Selectable unbound release packages | 55 |
+| Non-selectable vanilla route overlays | 13 |
 | Distinct installed states referenced | 205 |
-| `ready_automatic` | 10 |
+| `ready_automatic` | 8 |
 | `ready_if_tag_not_living` | 44 |
-| `ready_unique_state_confirmed` | 53 |
-| `ready_high_chaos` | 28 |
-| `route_only_bound` | 9 |
+| `ready_unique_state_confirmed` | 51 |
+| `ready_high_chaos` | 23 |
+| `route_only_bound` | 7 |
 | `scenario_only_bound` | 1 |
 | `specific_variant_only_bound` | 4 |
-| Automatic or high-chaos packages disabled for no unique current state | 29 |
+| Automatic or high-chaos packages disabled for no unique current state | 27 |
 | Specific-community packages left unbound | 26 |
 | Scenario packages left unbound | 2 |
+| `overlay_nonselectable` | 13 |
 | Reservation groups | 111 |
 | State collision rows | 14 |
 | Cross-group automatic blockers | 1 |
@@ -75,6 +79,7 @@ The Event 006 candidate registry, package research resolution, sensitive-package
 - `choose_one_host_safe`: test each listed alternative independently and use only a state that passes capital and remnant protection.
 - `choose_one_host_branch`: select one branch-compatible state; never grant both cross-border alternatives automatically.
 - `unbound`: the package has no authoritative current-map state and is not selectable.
+- `overlay_carrier_route`: the row documents territory associated with an exact vanilla route or carrier. It is not a release candidate and reserves no country or state in the Event 6 allocator.
 
 Every anchor is contained in its compact set. No compact state is duplicated in an extended set. Extended territory is never an entitlement.
 
@@ -131,9 +136,11 @@ Notable stale baseline findings include:
 
 ## Packages disabled for no unique current state
 
-These 29 automatic or high-chaos candidates are excluded from selection:
+These 27 automatic or high-chaos candidates are excluded from selection:
 
-`IW-003 Cornwall`; `IW-032 Slavonia`; `IW-049 Mordovia`; `IW-061 Luristan`; `IW-063 Bakhtiari`; `IW-075 Jabal Shammar`; `IW-084 Kabylia`; `IW-087 Fezzan`; `IW-090 Wadai`; `IW-094 Fante`; `IW-096 Benin Kingdom`; `IW-102 Kuba`; `IW-103 Luba`; `IW-104 Lunda`; `IW-105 Loango`; `IW-109 Bunyoro`; `IW-112 Ankole`; `IW-117 Kilwa restoration`; `IW-122 Ndebele`; `IW-123 Xhosa`; `IW-124 Basotho`; `IW-125 Eswatini`; `IW-165 Wa state`; `IW-176 Tonga`; `IW-181 Acadia`; `IW-186 Cherokee state`; `IW-188 Lakota state`; `IW-189 Dine state`; `IW-194 Miskito state`.
+`IW-003 Cornwall`; `IW-032 Slavonia`; `IW-049 Mordovia`; `IW-061 Luristan`; `IW-063 Bakhtiari`; `IW-075 Jabal Shammar`; `IW-084 Kabylia`; `IW-087 Fezzan`; `IW-090 Wadai`; `IW-094 Fante`; `IW-096 Benin Kingdom`; `IW-103 Luba`; `IW-104 Lunda`; `IW-109 Bunyoro`; `IW-112 Ankole`; `IW-117 Kilwa restoration`; `IW-122 Ndebele`; `IW-123 Xhosa`; `IW-124 Basotho`; `IW-125 Eswatini`; `IW-165 Wa state`; `IW-176 Tonga`; `IW-181 Acadia`; `IW-186 Cherokee state`; `IW-188 Lakota state`; `IW-189 Dine state`; `IW-194 Miskito state`.
+
+`IW-102 Kuba` and `IW-105 Loango` retain their no-unique-state geographic findings, but they are no longer selectable candidates: they are additive `COG` cosmetic-route overlays. The complete overlay set is `IW-005`, `IW-022`, `IW-025`, `IW-035`, `IW-059`, `IW-085`, `IW-101`, `IW-102`, `IW-105`, `IW-156`, `IW-196`, `IW-197`, and `IW-204`.
 
 These 26 specific-community packages remain deliberately unbound until their accepted named community, district, institution, or member package exists:
 
@@ -202,11 +209,12 @@ The optional HOI4 map inspection tool was attempted. It returned `MAP_MODEL_BUDG
 The final artifacts independently confirm:
 
 - exactly 206 unique package IDs with no gaps;
-- 149 bound and 57 unbound packages;
+- 149 geographically bound and 57 geographically unbound rows in the original map audit;
+- 138 selectable bound packages, 55 selectable unbound packages, and 13 non-selectable overlays after vanilla-identity reconciliation;
 - 205 distinct referenced current states, all present in the installed state history;
 - every bound anchor is in its compact set and no compact/extended overlap exists;
 - all 111 reservation groups cover all 206 packages exactly once;
 - 14 collision rows recomputed exactly from the package CSV;
 - no empty readiness verdict or binding reason.
 
-The Trabzon mutex and Kashmir per-state route exclusion are implemented. The 57 unbound packages must remain unavailable until an accepted spec change or a future installed-map state supplies exact geography. Do not substitute a nearby broad state.
+The Trabzon mutex and Kashmir per-state route exclusion are implemented. The 55 selectable unbound packages must remain unavailable until an accepted spec change or a future installed-map state supplies exact geography. The 13 overlays activate only through their vanilla carriers and never enter this allocator. Do not substitute a nearby broad state.

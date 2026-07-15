@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-14
+Updated: 2026-07-15
 
 ## Read first
 
@@ -16,13 +16,15 @@ The accepted seven-part specification remains binding. The source-of-truth map e
 ## Frozen dated facts
 
 - Packages: 206.
-- Current map result: 149 bound, 57 unbound.
+- Current geographic map audit: 149 bound, 57 unbound before representation reconciliation.
+- Selectable release registry: 138 bound, 55 unbound; 13 vanilla-route overlays are outside both lists.
 - Current states referenced: 205, all present.
 - Reservation groups: 111, covering every package exactly once.
 - Collision rows: 14.
-- Reserved new tags: 128, all ending in `X`, no current registry or cosmetic-key collision.
-- Reused registered tags: 78, all present.
-- Original dispositions remain 11 automatic, 44 if not living, 77 if unique, 32 high-chaos, 9 route-only, 30 specific-community, and 3 scenario.
+- Reserved new tags: 102, all ending in `X`, with zero collision across vanilla, 122 Workshop directories, sibling mods, aliases, cosmetic calls, localisation, history, and flags.
+- Reused registered tags: 91, all present. Shared resolved tags are limited to the package-gated `BIA` and `CHU` pairs.
+- Non-selectable vanilla route overlays: 13.
+- Current dispositions are 9 automatic, 44 if not living, 73 if unique, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 overlay-only.
 - Event 005 exact shared tags: 20.
 - Asset-research tranche: 167 packages. Final assets are not produced.
 - `6001`: blocked recording rights.
@@ -48,7 +50,7 @@ Recheck this workspace snapshot before editing because concurrent agents may adv
 ## Recommended implementation sequence
 
 1. Review the shared release-coordinator foundation against the architecture handoff and installed documentation.
-2. Compile the 149 bound packages and 57 explicit unbound outcomes from the current binding CSV. Preserve each accepted disposition.
+2. Compile the 138 selectable bound packages and 55 explicit selectable-unbound outcomes from the current binding CSV. Keep all 13 vanilla-route overlays out of the allocator.
 3. Implement the Trabzon and Kashmir state-level collision gates.
 4. Integrate Event 005's 20 shared tags, exact provisional footprints, origin exclusions, and focus-replacement guard into the joint Liberations preflight.
 5. Implement Event 6 planning, lock validation, synchronous execution, and result presentation without whole-world periodic iteration.
@@ -60,7 +62,7 @@ Recheck this workspace snapshot before editing because concurrent agents may adv
 ## Do not repeat unless inputs change
 
 - Do not redo the 2026-07-14 installed-map scan unless the installed build or map overrides change.
-- Do not redo the tag scan unless country-tag or cosmetic-tag registries change.
+- Rerun the installed tag scan before any later tag migration or final completion audit; a newly installed mod can consume a previously safe value.
 - Do not reopen accepted package identities or dispositions to make an unbound package fit.
 - Do not treat the explorer's old claim that no release foundation exists as current.
 - Do not treat the optional map-tool budget error as evidence.

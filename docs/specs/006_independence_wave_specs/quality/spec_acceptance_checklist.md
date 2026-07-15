@@ -21,8 +21,9 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 | Legitimacy, recognition, foreign support, patron influence, league cooperation, claims, instability, and formables are represented | Parts 3 and 6 | Complete in source design | Script constants, variables, UI, and cleanup |
 | Shared content adapts across all candidates | Part 4 shared framework, Part 5 overlays, registries | Complete in source design | Prove country-specific play in audit |
 | Strong packages receive signature ambitions | Part 5 signature modules and candidate registry | Complete in source design | Historical leaders, routes, symbols, and state mapping |
-| New Event 6 tags end in X | Candidate registry, Part 1 tag rule, 2026-07-14 installed-registry scan | Complete in source design and current snapshot | Repeat the collision scan if either registry changes |
-| Existing registered tags can be reused | Part 1 tag policy, 2026-07-14 installed-registry scan | Complete in source design and current snapshot | Confirm package identity compatibility at content assignment |
+| New Event 6 tags end in X | Candidate registry, Part 1 tag rule, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Repeat the collision scan if either registry changes |
+| Existing registered tags can be reused | Part 1 tag policy, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Implement and validate all thirteen package compatibility adapters |
+| Vanilla route identities remain non-selectable overlays | Part 1 representation architecture, tag audit, candidate registry | Complete in source design and current snapshot | Implement and validate all thirteen exact additive overlay hooks |
 | Regional formables use data-driven families | Part 6 and formable registry | Complete in source design | Final state groups and tag or cosmetic-tag choices |
 | Formables require territory, politics, recognition, or league proof | Part 6 formation methods and discovery | Complete in source design | Implement readable requirements and staged integration |
 | A league or coalition can form among released countries | Part 6 network and league | Complete in source design | Implement faction, charter, goals, AI, and cleanup |
@@ -51,8 +52,9 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 
 ## Research closure
 
-- [x] All 206 candidate packages have a resolved tag and disposition.
-- [x] All new Event 6 tags are unique and end in `X`.
+- [x] All 206 candidate packages have a resolved representation and disposition.
+- [x] The 102 custom Event 6 tags are unique and end in `X`.
+- [x] The 91 registered reuses and 13 non-selectable route overlays are identified exactly.
 - [x] State anchors and overlap reservation groups are recorded.
 - [x] The ten signature packages have period institutions, leadership, territory, and symbol rules.
 - [x] Broad and sensitive packages are converted into explicit automatic, conditional, formable, community-specific, or scenario outcomes.
@@ -65,7 +67,10 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 ## Dated reconciliation gates
 
 - [x] All 206 packages were evaluated against the installed 2026-07-14 map.
-- [x] The result contains 149 bound and 57 unbound packages across all 111 accepted reservation groups.
+- [x] The superseded all-row map ledger contains 149 bound and 57 unbound rows across all 111 accepted reservation groups.
+- [x] The current selectable country pool contains 138 bound and 55 unbound packages after all 13 overlay rows are excluded.
 - [x] All 14 collision rows were independently recomputed.
+- [ ] All thirteen registered-tag compatibility adapters are implemented and route-preservation audited, including the `IW-153 POK` preservation obligations.
+- [ ] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector.
 - [ ] Parent chooses an explicit state-level mutual exclusion for the Trabzon cross-group automatic conflict.
 - [ ] Parent requires the Himalayan confederation route to consume or exclude the Kashmir reservation.

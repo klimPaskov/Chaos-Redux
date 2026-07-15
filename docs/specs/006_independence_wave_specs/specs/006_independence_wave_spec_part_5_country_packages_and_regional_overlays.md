@@ -9,7 +9,7 @@ Every released country is assembled from a package registry. A package is more t
 Every package must define:
 
 - candidate identity
-- existing tag reuse policy or provisional `X` tag
+- registered tag reuse, custom `X` tag, or exact vanilla route-overlay policy
 - region and overlay
 - earliest candidate pool layer
 - unique anchor territory
@@ -957,7 +957,7 @@ Every package has a binding research row in `research/006_package_research_resol
 
 A package marked `specific_community_variant_only`, `formable_or_route_only`, or `scenario_variant_only` is fully resolved by that restriction. It cannot be promoted into the automatic pool merely to fill a wave. A conditional package enters only when the installed map provides the named unique state and the host survival planner succeeds.
 
-The current 2026-07-14 installed-map binding is recorded under `../../../plans/006_independence_wave_plans/package_bindings/`. It preserves the seven accepted disposition totals of 11 automatic, 44 automatic if not living, 77 automatic if unique, 32 high-chaos, 9 route-only, 30 specific-community, and 3 scenario packages. Current geography yields 149 bound and 57 unbound packages. An unbound row is unavailable, not permission to use nearby broad geography. The 29 automatic or high-chaos packages without a unique current state remain disabled, while the 26 unbound specific-community packages and 2 unbound scenario packages retain their accepted restrictions.
+The current architecture records 9 automatic, 44 automatic if not living, 73 automatic if unique, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 vanilla-route-overlay-only packages. The dated 2026-07-14 all-row map audit under `../../../plans/006_independence_wave_plans/package_bindings/` recorded 149 bound and 57 unbound rows before overlay classification. Eleven overlays were bound and two were unbound in that ledger. The selectable country pool is therefore 138 bound and 55 unbound packages. An unbound row is unavailable, not permission to use nearby broad geography. An overlay row is also unavailable to the release selector because it activates only through its exact vanilla carrier or route.
 
 ## Candidate selection equity
 
@@ -973,13 +973,13 @@ Implementation targets:
 
 ## Candidate package validation
 
-Before a package is marked ready, verify:
+Before a selectable country package is marked ready, verify:
 
 - unique anchor territory
 - host survival
 - no overlap with another selected package
 - plausible capital
-- complete tag or reuse path
+- complete custom-tag or registered-tag reuse path
 - country name and adjective direction
 - party and government direction
 - leader mode
@@ -997,3 +997,5 @@ Before a package is marked ready, verify:
 - documentation
 
 The package must be skipped at runtime or disabled in the registry when any blocking surface is missing.
+
+Before an overlay package is marked ready, verify its exact carrier or route, one-time activation hook, package flag, route-state gate, origin separation, AI access, localisation, documentation, and preservation of the carrier's existing focus tree, history, cores, autonomy, state transfers, and formable effects. An overlay must not register a country, create a standalone history package, or enter the selectable release pool. The thirteen overlay adapters remain implementation obligations until those hooks and preservation rules are present in gameplay.

@@ -1,18 +1,20 @@
 # Candidate country registry summary
 
 - Total candidate packages: **206**
-- Registered tag or shared family reuse: **78**
-- New Event 6 `X` tags: **128**
+- Registered vanilla-tag reuse: **91**
+- New Event 6 `X` tags: **102**
+- Non-selectable vanilla route overlays: **13**
 
 ## Dispositions
 
-- `automatic_pool_ready`: **11**
+- `automatic_pool_ready`: **9**
 - `automatic_pool_ready_if_not_living`: **44**
-- `automatic_pool_ready_if_unique_state_exists`: **77**
-- `formable_or_route_only`: **9**
-- `high_chaos_only`: **32**
+- `automatic_pool_ready_if_unique_state_exists`: **73**
+- `formable_or_route_only`: **7**
+- `high_chaos_only`: **27**
 - `scenario_variant_only`: **3**
 - `specific_community_variant_only`: **30**
+- `vanilla_route_overlay_only`: **13**
 
 ## Depth levels
 
@@ -37,4 +39,4 @@
 - Volga, Urals, Siberia, and Far East: **15**
 - West and Central Africa: **15**
 
-The binding per-package research is in `research/006_package_research_resolution.csv`. Numeric state IDs are a dated public baseline and must be rebound to the installed game.
+The binding per-package research is in `research/006_package_research_resolution.csv`. Installed-map bindings are recorded in `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`. Overlay rows are additive route packages, not release candidates.

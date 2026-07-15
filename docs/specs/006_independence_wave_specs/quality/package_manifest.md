@@ -2,30 +2,42 @@
 
 Generated: 2026-07-14
 
-- Files excluding this manifest: **48**
-- Lines excluding this manifest: **9,561**
+Architecture aligned: 2026-07-15
+
+## Current architecture
+
 - Candidate packages: **206**
 - Research resolution rows: **206**
-- Registered tag reuse: **78**
-- New Event 6 tags ending in `X`: **128**
+- Registered vanilla-tag reuse: **91**
+- New Event 6 tags ending in `X`: **102**
+- Non-selectable vanilla route overlays: **13**
 - Reservation groups: **111**
 - Source register entries: **74**
-- Goal prompt characters: **3,986**
 - Baseline targeted research validation checks passed on 2026-07-10: **258**
-- Current installed-map result: **149 bound, 57 unbound**
-- Current collision rows: **14**
-- Current reserved-tag collisions: **0**
+- Current selectable installed-map pool: **138 bound, 55 unbound**
+- Superseded 2026-07-14 all-row map result: **149 bound, 57 unbound**
+- All-row state collision ledger: **14**
+- Current accepted custom-tag collisions: **0**
 - Blocked exact recording: **6001**
 
-## Research dispositions
+## Current research dispositions
 
-- `automatic_pool_ready`: **11**
+- `automatic_pool_ready`: **9**
 - `automatic_pool_ready_if_not_living`: **44**
-- `automatic_pool_ready_if_unique_state_exists`: **77**
-- `high_chaos_only`: **32**
-- `formable_or_route_only`: **9**
+- `automatic_pool_ready_if_unique_state_exists`: **73**
+- `high_chaos_only`: **27**
+- `formable_or_route_only`: **7**
 - `specific_community_variant_only`: **30**
 - `scenario_variant_only`: **3**
+- `vanilla_route_overlay_only`: **13**
+
+## Archived 2026-07-14 package metrics
+
+The following file, line, and prompt counts are preserved as superseded packaging evidence. They are not current after the 2026-07-15 tag-architecture alignment.
+
+- Files excluding this manifest: **48**
+- Lines excluding this manifest: **9,561**
+- Goal prompt characters: **3,986**
 
 ## Research completion entry points
 
@@ -44,9 +56,11 @@ Generated: 2026-07-14
 
 ## Package boundary
 
-This is a source specification, research, and dated implementation-reconciliation package. The 2026-07-14 map and tag snapshots close their earlier version-binding placeholders for the current checkout. Final visual provenance, the `6001` recording-rights blocker, `6002` audio conversion, localisation, Clausewitz implementation, and gameplay validation remain production work.
+This is a source specification, research, and dated implementation-reconciliation package. The 2026-07-14 map snapshot and 2026-07-15 tag-architecture audit close their earlier identifier placeholders for the current checkout. The thirteen registered-tag compatibility adapters and thirteen vanilla route-overlay hooks remain unimplemented obligations until gameplay evidence proves otherwise. Final visual provenance, the `6001` recording-rights blocker, `6002` audio conversion, localisation, Clausewitz implementation, and gameplay validation remain production work.
 
-## File checksums
+## Superseded 2026-07-14 file checksum snapshot
+
+This table is retained as historical packaging evidence. Its byte counts, line counts, and hashes predate the 2026-07-15 documentation and tag-alignment edits and are not current integrity values.
 
 | File | Bytes | Lines | SHA-256 |
 | --- | ---: | ---: | --- |
