@@ -74,6 +74,18 @@ fallout_event_bilateral_schema = {
 	previous_empty_version = 1
 }
 
+# Backward-compatible fixed receipt added outside the compact transaction
+# arrays. Existing dormant runtime rows may promote an absent receipt to this
+# empty schema without rewriting arc, delayed, or bilateral rows.
+fallout_event_ordinary_receipt_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
 fallout_event_subject_type = {
 	schema = {
 		any_key = yes
@@ -97,7 +109,22 @@ fallout_event_dispatch_source = {
 	none = 0
 	delayed_ticket = 1
 	bilateral_response = 2
-	upper_bound = 3
+	ordinary_event = 3
+	upper_bound = 4
+}
+
+fallout_event_transaction_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	major_arc = 1
+	delayed_result = 2
+	bilateral = 3
+	ordinary_event = 4
+	upper_bound = 5
 }
 
 fallout_event_dispatch_mode = {
@@ -394,7 +421,8 @@ fallout_event_scheduler_error = {
 	invalid_target = 23
 	cleanup_retry_exhausted = 24
 	dispatch_issue_receipt_mismatch = 25
-	upper_bound = 26
+	ordinary_receipt_mismatch = 26
+	upper_bound = 27
 }
 
 fallout_event_runtime = {
@@ -481,6 +509,10 @@ fallout_event_id = {
 	rail_crew_cleanup = 120
 	river_intake_foreign_testing_result = 121
 	rail_crew_neighbor_access_result = 122
+	last_inventory_public_result_ai = 123
+	last_inventory_household_result_ai = 124
+	last_inventory_seizure_result_ai = 125
+	last_inventory_callback_ai = 126
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but

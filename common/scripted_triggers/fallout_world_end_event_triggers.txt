@@ -3,8 +3,8 @@
 # ============================================================================
 # Dormant scheduler contracts for the exact reveal timeline, stable country
 # registry, country runtime rows, five-part orientation, anti-repetition, and
-# generation-bound arc, delayed-result, and bilateral transaction receipts.
-# No trigger in this file activates an event block.
+# generation-bound ordinary-opening, arc, delayed-result, and bilateral
+# transaction receipts. No trigger in this file activates an event block.
 # ============================================================================
 
 # Supported scope: COUNTRY. This proves a current-transition map return with an
@@ -224,6 +224,17 @@ fallout_event_registry_country_row_is_current = {
 	fallout_event_country_runtime_row_is_current = yes
 }
 
+# Supported scope: COUNTRY. The global receipt proves that every frozen
+# registry row either initialized or backward-compatibly promoted the empty
+# ordinary opening schema for this generation.
+fallout_event_ordinary_receipt_registry_header_is_current = {
+	has_global_flag = fallout_event_ordinary_receipt_registry_ready
+	has_variable = global.fallout_event_ordinary_receipt_registry_generation
+	has_variable = global.fallout_event_ordinary_receipt_registry_day
+	check_variable = { var = global.fallout_event_ordinary_receipt_registry_generation value = global.fallout_event_registry_generation compare = equals }
+	check_variable = { var = global.fallout_event_ordinary_receipt_registry_day value = global.num_days compare = less_than_or_equals }
+}
+
 # Supported scope: COUNTRY. This validates the constant-cost header shared by
 # uncommitted payload validation and bounded country eligibility checks.
 fallout_event_registry_header_payload_is_current = {
@@ -240,6 +251,7 @@ fallout_event_registry_header_payload_is_current = {
 	has_variable = global.fallout_event_registry_initialized_day
 	has_variable = global.fallout_event_ticket_generation
 	has_variable = global.fallout_event_next_ticket_id
+	fallout_event_ordinary_receipt_registry_header_is_current = yes
 	check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
 	check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
 	fallout_survival_ledger_header_is_current = yes
@@ -522,6 +534,117 @@ fallout_event_subject_is_current = {
 			# No generic engine liveness surface exists for an opaque institution
 			# token. Future content must add a generation-bound registry first.
 			always = no
+		}
+	}
+}
+
+# Supported scope: COUNTRY. One fixed receipt owns at most one ordinary event
+# opening. The pending flag is the commit marker and is written only after all
+# immutable payload fields exist. The receipt is separate from major arcs and
+# does not consume one of their three slots.
+fallout_event_ordinary_receipt_is_consistent = {
+	OR = {
+		AND = {
+			has_variable = fallout_event_ordinary_receipt_schema_version
+			check_variable = { fallout_event_ordinary_receipt_schema_version = constant:fallout_event_ordinary_receipt_schema.version }
+			NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+			NOT = { has_variable = fallout_event_ordinary_ticket }
+			NOT = { has_variable = fallout_event_ordinary_transaction_key }
+			NOT = { has_variable = fallout_event_ordinary_generation }
+			NOT = { has_variable = fallout_event_ordinary_human_event_token }
+			NOT = { has_variable = fallout_event_ordinary_ai_event_token }
+			NOT = { has_variable = fallout_event_ordinary_branch }
+			NOT = { has_variable = fallout_event_ordinary_due_day }
+			NOT = { has_variable = fallout_event_ordinary_primary_family }
+			NOT = { has_variable = fallout_event_ordinary_cooldown_family }
+			NOT = { has_variable = fallout_event_ordinary_target_type }
+			NOT = { has_variable = fallout_event_ordinary_target }
+		}
+		AND = {
+			has_country_flag = fallout_event_ordinary_receipt_pending
+			has_variable = fallout_event_ordinary_receipt_schema_version
+			has_variable = fallout_event_ordinary_ticket
+			has_variable = fallout_event_ordinary_transaction_key
+			has_variable = fallout_event_ordinary_generation
+			has_variable = fallout_event_ordinary_human_event_token
+			has_variable = fallout_event_ordinary_ai_event_token
+			has_variable = fallout_event_ordinary_branch
+			has_variable = fallout_event_ordinary_due_day
+			has_variable = fallout_event_ordinary_primary_family
+			has_variable = fallout_event_ordinary_cooldown_family
+			has_variable = fallout_event_ordinary_target_type
+			has_variable = fallout_event_ordinary_target
+			check_variable = { fallout_event_ordinary_receipt_schema_version = constant:fallout_event_ordinary_receipt_schema.version }
+			check_variable = { fallout_event_ordinary_ticket > constant:fallout_event_runtime.no_ticket }
+			check_variable = { var = fallout_event_ordinary_ticket value = global.fallout_event_next_ticket_id compare = less_than }
+			check_variable = { fallout_event_ordinary_transaction_key > constant:fallout_event_runtime.zero }
+			check_variable = { var = fallout_event_ordinary_generation value = fallout_event_runtime_generation compare = equals }
+			check_variable = { fallout_event_ordinary_human_event_token > constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_ordinary_ai_event_token > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { var = fallout_event_ordinary_human_event_token value = fallout_event_ordinary_ai_event_token compare = equals } }
+			check_variable = { fallout_event_ordinary_branch > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { var = fallout_event_ordinary_due_day value = global.fallout_event_timeline_start_day compare = less_than } }
+			check_variable = { fallout_event_ordinary_primary_family > constant:fallout_event_primary_family.none }
+			check_variable = { fallout_event_ordinary_primary_family < constant:fallout_event_primary_family.upper_bound }
+			check_variable = { fallout_event_ordinary_cooldown_family > constant:fallout_event_cooldown_family.none }
+			check_variable = { fallout_event_ordinary_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+			NOT = { is_in_array = { array = fallout_event_arc_ticket_entries value = fallout_event_ordinary_ticket } }
+			NOT = { is_in_array = { array = fallout_event_delayed_ticket_entries value = fallout_event_ordinary_ticket } }
+			NOT = { is_in_array = { array = fallout_event_bilateral_ticket_entries value = fallout_event_ordinary_ticket } }
+			NOT = { is_in_array = { array = fallout_event_delayed_key_entries value = fallout_event_ordinary_transaction_key } }
+			NOT = { is_in_array = { array = fallout_event_bilateral_key_entries value = fallout_event_ordinary_transaction_key } }
+			set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_ordinary_target_type }
+			set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_ordinary_target }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+					check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+				}
+				fallout_event_subject_shape_is_valid = yes
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Runtime rows created before the fixed ordinary
+# receipt existed can promote only an exactly absent receipt while production
+# remains disabled. Existing transaction arrays and envelopes are untouched.
+fallout_event_empty_ordinary_receipt_can_promote = {
+	has_country_flag = fallout_event_registry_member
+	has_country_flag = fallout_event_runtime_initialized
+	NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
+	NOT = { has_global_flag = fallout_event_scheduler_active }
+	NOT = { has_variable = fallout_event_ordinary_receipt_schema_version }
+	NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+	NOT = { has_variable = fallout_event_ordinary_ticket }
+	NOT = { has_variable = fallout_event_ordinary_transaction_key }
+	NOT = { has_variable = fallout_event_ordinary_generation }
+	NOT = { has_variable = fallout_event_ordinary_human_event_token }
+	NOT = { has_variable = fallout_event_ordinary_ai_event_token }
+	NOT = { has_variable = fallout_event_ordinary_branch }
+	NOT = { has_variable = fallout_event_ordinary_due_day }
+	NOT = { has_variable = fallout_event_ordinary_primary_family }
+	NOT = { has_variable = fallout_event_ordinary_cooldown_family }
+	NOT = { has_variable = fallout_event_ordinary_target_type }
+	NOT = { has_variable = fallout_event_ordinary_target }
+	has_variable = fallout_event_runtime_schema_version
+	has_variable = fallout_event_runtime_generation
+	check_variable = { fallout_event_runtime_schema_version = constant:fallout_event_schema.version }
+	check_variable = { var = fallout_event_runtime_generation value = global.fallout_event_registry_generation compare = equals }
+}
+
+# Supported scope: COUNTRY. Input: requested transaction key. Compact queue
+# producers use this before appending so a pending ordinary opening keeps sole
+# ownership of its stable request identity.
+fallout_event_requested_key_differs_from_ordinary_receipt = {
+	OR = {
+		NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+		NOT = {
+			check_variable = {
+				var = fallout_event_requested_transaction_key
+				value = fallout_event_ordinary_transaction_key
+				compare = equals
+			}
 		}
 	}
 }
@@ -1137,6 +1260,27 @@ fallout_event_dispatch_envelope_matches_transaction = {
 		NOT = { has_country_flag = fallout_event_dispatch_ready }
 		AND = {
 			has_country_flag = fallout_event_dispatch_ready
+			has_country_flag = fallout_event_ordinary_receipt_pending
+			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.ordinary_event }
+			check_variable = { var = fallout_event_ordinary_ticket value = fallout_event_dispatch_ticket compare = equals }
+			check_variable = { var = fallout_event_ordinary_generation value = fallout_event_dispatch_generation compare = equals }
+			check_variable = { var = fallout_event_ordinary_branch value = fallout_event_dispatch_branch compare = equals }
+			check_variable = { var = fallout_event_ordinary_target_type value = fallout_event_dispatch_target_type compare = equals }
+			check_variable = { var = fallout_event_ordinary_target value = fallout_event_dispatch_target compare = equals }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+					check_variable = { var = fallout_event_ordinary_human_event_token value = fallout_event_dispatch_event_token compare = equals }
+				}
+				AND = {
+					check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+					check_variable = { var = fallout_event_ordinary_ai_event_token value = fallout_event_dispatch_event_token compare = equals }
+				}
+			}
+			fallout_event_ordinary_receipt_is_consistent = yes
+		}
+		AND = {
+			has_country_flag = fallout_event_dispatch_ready
 			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.delayed_ticket }
 			set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.zero }
 			set_temp_variable = { fallout_event_dispatch_match_index = constant:fallout_event_runtime.first_array_index }
@@ -1224,6 +1368,57 @@ fallout_event_dispatch_envelope_matches_transaction = {
 	}
 }
 
+# Supported scope: COUNTRY. These content-facing gates authenticate the exact
+# issued transaction before an event mutates gameplay or terminalizes a row.
+fallout_event_issued_ordinary_receipt_is_current = {
+	fallout_event_ordinary_receipt_is_consistent = yes
+	has_country_flag = fallout_event_ordinary_receipt_pending
+	fallout_event_dispatch_issue_receipt_is_current = yes
+	fallout_event_dispatch_envelope_matches_transaction = yes
+	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.ordinary_event }
+	OR = {
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+}
+
+# Supported scope: COUNTRY. A matching issued ordinary event is already in the
+# engine event queue. Its fixed receipt must remain as a blocking tombstone
+# until that event consumes or cancels itself through the issued wrapper.
+fallout_event_ordinary_receipt_has_issued_dispatch = {
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_ticket value = fallout_event_ordinary_ticket compare = equals }
+}
+
+# Supported scope: COUNTRY. This proves any exact issued delayed envelope before
+# a mode-specific wrapper authenticates the event token.
+fallout_event_issued_delayed_dispatch_is_current = {
+	fallout_event_dispatch_issue_receipt_is_current = yes
+	fallout_event_dispatch_envelope_matches_transaction = yes
+	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.delayed_ticket }
+}
+
+fallout_event_issued_delayed_result_is_current = {
+	fallout_event_issued_delayed_dispatch_is_current = yes
+	OR = {
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+}
+
+fallout_event_issued_delayed_cleanup_is_current = {
+	fallout_event_issued_delayed_dispatch_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
+}
+
+# Supported scope: COUNTRY. Input: requested ticket. Public unissued
+# terminalizers use this veto so an engine-issued delayed event can be consumed
+# only by the exact token-authenticated wrapper.
+fallout_event_requested_delayed_ticket_has_issued_dispatch = {
+	fallout_event_issued_delayed_dispatch_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_ticket value = fallout_event_requested_ticket compare = equals }
+}
+
 fallout_event_cleanup_flags_are_consistent = {
 	OR = {
 		AND = {
@@ -1294,6 +1489,7 @@ fallout_event_transaction_history_receipts_are_consistent = {
 		AND = {
 			check_variable = { fallout_event_cancellation_count = constant:fallout_event_runtime.zero }
 			NOT = { has_variable = fallout_event_last_cancelled_ticket }
+			NOT = { has_variable = fallout_event_last_cancellation_source }
 			NOT = { has_variable = fallout_event_last_cancellation_reason }
 			NOT = { has_variable = fallout_event_last_cancellation_generation }
 			NOT = { has_variable = fallout_event_last_cancellation_day }
@@ -1301,10 +1497,13 @@ fallout_event_transaction_history_receipts_are_consistent = {
 		AND = {
 			check_variable = { fallout_event_cancellation_count > constant:fallout_event_runtime.zero }
 			has_variable = fallout_event_last_cancelled_ticket
+			has_variable = fallout_event_last_cancellation_source
 			has_variable = fallout_event_last_cancellation_reason
 			has_variable = fallout_event_last_cancellation_generation
 			has_variable = fallout_event_last_cancellation_day
 			check_variable = { fallout_event_last_cancelled_ticket > constant:fallout_event_runtime.no_ticket }
+			check_variable = { fallout_event_last_cancellation_source > constant:fallout_event_transaction_source.none }
+			check_variable = { fallout_event_last_cancellation_source < constant:fallout_event_transaction_source.upper_bound }
 			check_variable = { fallout_event_last_cancellation_reason > constant:fallout_event_cancellation_reason.none }
 			check_variable = { fallout_event_last_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
 			check_variable = { var = fallout_event_last_cancellation_generation value = fallout_event_runtime_generation compare = equals }
@@ -1355,6 +1554,7 @@ fallout_event_ticket_ledger_is_current = {
 fallout_event_transaction_production_is_approved = {
 	has_global_flag = fallout_event_scheduler_activation_approved
 	has_global_flag = fallout_event_scheduler_active
+	fallout_event_ordinary_receipt_registry_header_is_current = yes
 	exists = yes
 	fallout_event_registry_header_is_current = yes
 	NOT = { has_global_flag = fallout_event_scheduler_error }
@@ -1512,6 +1712,7 @@ fallout_event_legacy_empty_transaction_row_can_migrate = {
 	NOT = { has_variable = fallout_event_last_transaction_reconcile_generation }
 	NOT = { has_variable = fallout_event_last_transaction_reconcile_day }
 	NOT = { has_variable = fallout_event_last_cancelled_ticket }
+	NOT = { has_variable = fallout_event_last_cancellation_source }
 	NOT = { has_variable = fallout_event_last_cancellation_reason }
 	NOT = { has_variable = fallout_event_last_cancellation_generation }
 	NOT = { has_variable = fallout_event_last_cancellation_day }
@@ -1765,6 +1966,7 @@ fallout_event_country_runtime_row_is_current = {
 	has_variable = fallout_event_arc_schema_version
 	has_variable = fallout_event_delayed_queue_schema_version
 	has_variable = fallout_event_bilateral_schema_version
+	has_variable = fallout_event_ordinary_receipt_schema_version
 	has_variable = fallout_event_runtime_generation
 	has_variable = fallout_event_active_major_arc_count
 	has_variable = fallout_event_last_cooldown_family
@@ -1780,6 +1982,7 @@ fallout_event_country_runtime_row_is_current = {
 	check_variable = { fallout_event_arc_schema_version = constant:fallout_event_arc_schema.version }
 	check_variable = { fallout_event_delayed_queue_schema_version = constant:fallout_event_delayed_queue_schema.version }
 	check_variable = { fallout_event_bilateral_schema_version = constant:fallout_event_bilateral_schema.version }
+	check_variable = { fallout_event_ordinary_receipt_schema_version = constant:fallout_event_ordinary_receipt_schema.version }
 	NOT = { check_variable = { fallout_event_active_major_arc_count < constant:fallout_event_runtime.zero } }
 	NOT = { check_variable = { fallout_event_active_major_arc_count > constant:fallout_event_runtime.maximum_major_arcs } }
 	NOT = { check_variable = { fallout_event_last_cooldown_family < constant:fallout_event_cooldown_family.none } }
@@ -1831,6 +2034,7 @@ fallout_event_country_runtime_row_is_current = {
 	fallout_event_arc_cursor_is_valid = yes
 	fallout_event_delayed_cursor_is_valid = yes
 	fallout_event_bilateral_cursor_is_valid = yes
+	fallout_event_ordinary_receipt_is_consistent = yes
 	fallout_event_dispatch_envelope_is_consistent = yes
 	fallout_event_dispatch_envelope_matches_transaction = yes
 	fallout_event_cleanup_flags_are_consistent = yes

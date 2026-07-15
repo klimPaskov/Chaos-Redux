@@ -194,7 +194,7 @@ Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`
 
 ## B9: living-world scheduler activation
 
-Status: schema-2 dormant transaction integrity implemented, gameplay activation blocked
+Status: schema-2 dormant transaction integrity and ordinary-opening receipt implemented, gameplay activation blocked
 
 Implemented structural proof:
 
@@ -202,21 +202,26 @@ Implemented structural proof:
 - the existing at-most-once project coordinator owns scheduler reconciliation
 - initial registry construction requires a current successor-allocation transaction
 - aligned country, generation, and stable-index arrays reject missing, extra, stale, and duplicate rows
-- country runtime rows have separate schema receipts for orientation, arcs, delayed queue, and bilateral data
+- country runtime rows have separate schema receipts for orientation, arcs, delayed queue, bilateral data, and one fixed ordinary opening
 - five independent orientation components gate ordinary events
 - per-country fatigue slots are initialized, while the last cooldown family provides the hard immediate-repeat veto
-- one generation-bound global allocator issues monotonic arc, delayed-result, and bilateral tickets
+- one generation-bound global allocator issues monotonic ordinary-opening, arc, delayed-result, and bilateral tickets
+- the ordinary receipt owns at most one crisis opening per country, has distinct human and AI tokens, does not consume a major-arc slot, and commits its pending flag last
+- an issued ordinary receipt remains as a blocking tombstone after subject loss. Generic reconciliation cannot clear it or admit a second opening. The exact issued event must consume it or cancel it through the token-authenticated issued wrapper
+- an issued delayed row follows the same rule. Public ticket-only terminalizers reject it, and reconciliation retains it until its exact token-authenticated result, cancellation, or cleanup wrapper runs
+- shared cancellation history records the transaction source, so an ordinary retry cannot authenticate a cancellation from another transaction family
+- old schema-2 rows promote only an exactly absent ordinary receipt while production remains disabled. Promotion accepts registry schema 1 or 2 only while dormant, walks the numeric frozen-registry index array, and commits only when every matching country context loads and the proven count equals the registry count. The schema-1 binding transaction then writes schema 2, reruns promotion, and requires the full current payload
 - compact aligned rows support idempotent reservation, payload-before-status updates, typed owner and subject cancellation, exact cleanup release, and aligned rollback or removal
 - bilateral reservation writes one ticket to two opposite-role rows and proves the exact reciprocal country and initiator cleanup owner before commit
-- structural human, hidden AI, and hidden-cleanup envelopes must match their source row and token
+- structural human, hidden AI, and hidden-cleanup envelopes must match their ordinary, delayed, or bilateral source transaction and exact token
 - the selected-country consumer copies the complete envelope identity, records engine date and day, writes its issued flag last, and emits the tokenized `chaosx.fallout` country event only after that receipt proves current
-- a persisted issued receipt prevents a later coordinator pass from emitting the same ready envelope again. Event acknowledgement requires that exact receipt and clears it with the envelope
+- a persisted issued receipt prevents a later coordinator pass from emitting the same ready envelope again. The ordinary consume and issued cancellation wrappers release the fixed receipt atomically. Issued delayed terminalizer wrappers consume their envelope internally, so no second acknowledgement is valid. The bilateral contract retains exact acknowledgement. No event block calls the content-facing wrappers in this tranche
 - one primary frozen registry country reconciles per date and selects one primary row from each family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring structural and selected-identity reads remain linear in those two local ledgers
 - production-only full uniqueness gates are quadratic in each uncapped local ledger. Delayed and bilateral queue caps remain absent
 - paired runtime-schema-1 and registry-schema-1 rows promote to schema 2 only while dormant, after the map-return, a fully current committed survival ledger, and all preserved runtime fields pass, and only when every later transaction, ticket, history, cleanup, and envelope surface is absent or empty as required
 - a current runtime schema can bind a schema-1 registry only while registry-ready and dormant, with no scheduler error, after the map-return and full survival ledger pass, and after every indexed registry, allocation, and survival row agrees
 - successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
-- no daily global candidate pool, candidate selector, event producer, event definition, or activation setter exists
+- no daily global candidate pool, candidate selector, call to the ordinary reservation API, event definition, or activation setter exists
 - the formula-neutral identity transaction stages exact successor and state rows with generation, allocation, region, archetype, country-memory, destructive-phase, and resource-index provenance
 - survivor-allocation advancement, player continuation, map return, and scheduler initialization require the committed ledger
 - the frozen Fallout snapshot distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
@@ -225,9 +230,10 @@ Missing release work:
 
 - numerical state rows, country aggregation, value validation, row commits, and the global ready setter remain absent because the numerical contract is not accepted
 - no candidate selection, event definition, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
+- bilateral issued-response and cleanup paths still require exact token-authenticated reciprocal terminalizers and issued orphan retention before activation
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
 - the five orientation receipts have no implemented Fallout orientation event content
-- reserved suffixes `100` through `122` have no event definitions and count as zero release-floor blocks
+- reserved suffixes `100` through `126` have no event definitions and count as zero release-floor blocks. Suffixes `123` through `126` are the distinct hidden AI result and callback companions required by the delayed queue contract
 - literal lobby-host authority, schema-2 runtime save-load preservation, and multiplayer behavior remain unproven
 
 Both activation flags remain unset. No ordinary Fallout living-world event can pass its eligibility trigger. Full evidence is recorded in `FALLOUT_EVENT_SCHEDULER_PROOF.md`.
