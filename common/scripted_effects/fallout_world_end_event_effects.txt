@@ -3,9 +3,9 @@
 # ============================================================================
 # Dormant, idempotent scheduler initialization for the reveal timeline, stable
 # successor registry, country runtime rows, orientation receipts, cooldown
-# slots, a hard family-repeat veto, and generation-bound arc, delayed-result,
-# bilateral, cancellation, cleanup, and exact dispatch-issuance receipts. It
-# does not select or schedule an ordinary event.
+# slots, a hard family-repeat veto, and generation-bound ordinary-opening, arc,
+# delayed-result, bilateral, cancellation, cleanup, and exact dispatch-issuance
+# receipts. No gameplay caller selects a candidate or reserves an event.
 # ============================================================================
 
 # Engine contract for public transaction APIs: the outer caller must create
@@ -57,6 +57,111 @@ fallout_event_clear_dispatch_envelope = {
 	clear_variable = fallout_event_dispatch_target_type
 	clear_variable = fallout_event_dispatch_target
 	fallout_event_clear_dispatch_issue_receipt = yes
+}
+
+# Supported scope: COUNTRY. This clears only the fixed ordinary opening
+# payload. The schema receipt remains so an empty row is still provable.
+fallout_event_clear_ordinary_receipt = {
+	clr_country_flag = fallout_event_ordinary_receipt_pending
+	clear_variable = fallout_event_ordinary_ticket
+	clear_variable = fallout_event_ordinary_transaction_key
+	clear_variable = fallout_event_ordinary_generation
+	clear_variable = fallout_event_ordinary_human_event_token
+	clear_variable = fallout_event_ordinary_ai_event_token
+	clear_variable = fallout_event_ordinary_branch
+	clear_variable = fallout_event_ordinary_due_day
+	clear_variable = fallout_event_ordinary_primary_family
+	clear_variable = fallout_event_ordinary_cooldown_family
+	clear_variable = fallout_event_ordinary_target_type
+	clear_variable = fallout_event_ordinary_target
+}
+
+# Supported scope: COUNTRY
+fallout_event_initialize_empty_ordinary_receipt = {
+	fallout_event_clear_ordinary_receipt = yes
+	set_variable = { fallout_event_ordinary_receipt_schema_version = constant:fallout_event_ordinary_receipt_schema.version }
+}
+
+# Supported scope: COUNTRY. This backward-compatible promotion writes only an
+# empty fixed-receipt schema while ordinary production remains disabled.
+fallout_event_promote_empty_ordinary_receipt = {
+	if = {
+		limit = { fallout_event_empty_ordinary_receipt_can_promote = yes }
+		fallout_event_initialize_empty_ordinary_receipt = yes
+	}
+}
+
+# Supported scope: COUNTRY coordinator. This bounded one-time pass touches only
+# the frozen registry and never constructs a game-wide country pool.
+fallout_event_promote_registry_empty_ordinary_receipts = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_event_ordinary_receipt_registry_ready }
+			NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
+			NOT = { has_global_flag = fallout_event_scheduler_active }
+			NOT = { has_global_flag = fallout_event_scheduler_error }
+			has_variable = global.fallout_transition_generation
+			has_variable = global.fallout_event_schema_version
+			has_variable = global.fallout_event_registry_schema_version
+			has_variable = global.fallout_event_registry_generation
+			has_variable = global.fallout_event_registry_count
+			check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+			OR = {
+				check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.version }
+				check_variable = { global.fallout_event_registry_schema_version = constant:fallout_event_registry_schema.previous_without_survival_binding }
+			}
+			check_variable = { var = global.fallout_event_registry_generation value = global.fallout_transition_generation compare = equals }
+			check_variable = { global.fallout_event_registry_count > constant:fallout_event_runtime.zero }
+			check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_countries^num compare = equals }
+			check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_generation_entries^num compare = equals }
+			check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_index_entries^num compare = equals }
+		}
+		set_temp_variable = { fallout_event_ordinary_promotion_proven_count = constant:fallout_event_runtime.zero }
+		for_each_loop = {
+			array = global.fallout_event_registry_index_entries
+			value = fallout_event_ordinary_promotion_stored_index
+			index = fallout_event_ordinary_promotion_index
+			set_temp_variable = { fallout_event_ordinary_promotion_context_loaded = constant:fallout_event_runtime.zero }
+			if = {
+				limit = {
+					check_variable = { var = fallout_event_ordinary_promotion_stored_index value = fallout_event_ordinary_promotion_index compare = equals }
+					check_variable = { var = global.fallout_event_registry_generation_entries^fallout_event_ordinary_promotion_index value = global.fallout_event_registry_generation compare = equals }
+				}
+				var:global.fallout_event_registry_countries^fallout_event_ordinary_promotion_index = {
+					if = {
+						limit = {
+							has_country_flag = fallout_event_registry_member
+							has_country_flag = fallout_event_runtime_initialized
+							check_variable = { var = fallout_event_registry_index value = fallout_event_ordinary_promotion_index compare = equals }
+							check_variable = { var = fallout_event_registry_generation value = global.fallout_event_registry_generation compare = equals }
+							check_variable = { var = fallout_event_runtime_generation value = global.fallout_event_registry_generation compare = equals }
+						}
+						fallout_event_promote_empty_ordinary_receipt = yes
+						if = {
+							limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+							set_temp_variable = { fallout_event_ordinary_promotion_context_loaded = constant:fallout_event_runtime.one }
+						}
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { fallout_event_ordinary_promotion_context_loaded = constant:fallout_event_runtime.one } }
+				add_to_temp_variable = { fallout_event_ordinary_promotion_proven_count = constant:fallout_event_runtime.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = fallout_event_ordinary_promotion_proven_count value = global.fallout_event_registry_count compare = equals }
+			}
+			set_variable = { global.fallout_event_ordinary_receipt_registry_generation = global.fallout_event_registry_generation }
+			set_variable = { global.fallout_event_ordinary_receipt_registry_day = global.num_days }
+			set_global_flag = fallout_event_ordinary_receipt_registry_ready
+		}
+		else = {
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.ordinary_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
 }
 
 # Supported scope: COUNTRY. Inputs use the fallout_event_requested_dispatch_*
@@ -114,7 +219,8 @@ fallout_event_write_dispatch_envelope = {
 
 # Supported scope: COUNTRY. Inputs: requested dispatch source and ticket.
 # Output: fallout_event_transaction_accepted. The outer caller must pre-seed
-# that output. Consumers acknowledge only the exact generation-bound envelope.
+# that output. This helper accepts only a bilateral-response source. Future
+# ordinary and delayed consumers must use their atomic issued wrappers.
 fallout_event_acknowledge_dispatch_envelope = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	if = {
@@ -123,6 +229,7 @@ fallout_event_acknowledge_dispatch_envelope = {
 			fallout_event_dispatch_envelope_is_consistent = yes
 			has_country_flag = fallout_event_dispatch_ready
 			fallout_event_dispatch_issue_receipt_is_current = yes
+			check_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
 			check_variable = { var = fallout_event_dispatch_source value = fallout_event_requested_dispatch_source compare = equals }
 			check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
 			check_variable = { var = fallout_event_dispatch_generation value = fallout_event_runtime_generation compare = equals }
@@ -135,8 +242,9 @@ fallout_event_acknowledge_dispatch_envelope = {
 # Supported scope: COUNTRY. Output: fallout_event_dispatch_issue_accepted. The
 # outer caller must pre-seed that output. The immutable envelope identity is
 # copied first and its issued flag is written last. The dynamic event command
-# runs only after that receipt proves current. Event content acknowledges the
-# exact envelope after resolving or completing its own cleanup.
+# runs only after that receipt proves current. Future delayed and ordinary
+# consumers must use atomic issued wrappers. The bilateral contract retains
+# explicit acknowledgement until its reciprocal terminalizers gain that wrapper.
 fallout_event_issue_dispatch_envelope = {
 	set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
 	if = {
@@ -176,16 +284,19 @@ fallout_event_issue_dispatch_envelope = {
 	}
 }
 
-# Supported scope: COUNTRY. Inputs: fallout_event_cancelled_ticket and
-# fallout_event_cancellation_reason_to_record.
+# Supported scope: COUNTRY. Inputs: fallout_event_cancelled_ticket,
+# fallout_event_cancellation_source_to_record, and cancellation reason.
 fallout_event_record_cancellation = {
 	if = {
 		limit = {
 			check_variable = { fallout_event_cancelled_ticket > constant:fallout_event_runtime.no_ticket }
+			check_variable = { fallout_event_cancellation_source_to_record > constant:fallout_event_transaction_source.none }
+			check_variable = { fallout_event_cancellation_source_to_record < constant:fallout_event_transaction_source.upper_bound }
 			check_variable = { fallout_event_cancellation_reason_to_record > constant:fallout_event_cancellation_reason.none }
 			check_variable = { fallout_event_cancellation_reason_to_record < constant:fallout_event_cancellation_reason.upper_bound }
 		}
 		set_variable = { fallout_event_last_cancelled_ticket = fallout_event_cancelled_ticket }
+		set_variable = { fallout_event_last_cancellation_source = fallout_event_cancellation_source_to_record }
 		set_variable = { fallout_event_last_cancellation_reason = fallout_event_cancellation_reason_to_record }
 		set_variable = { fallout_event_last_cancellation_generation = fallout_event_runtime_generation }
 		set_variable = { fallout_event_last_cancellation_day = global.num_days }
@@ -222,6 +333,7 @@ fallout_event_initialize_empty_transaction_ledgers = {
 	clr_country_flag = fallout_event_delayed_cleanup_pending
 	clr_country_flag = fallout_event_bilateral_cleanup_pending
 	fallout_event_clear_dispatch_envelope = yes
+	fallout_event_initialize_empty_ordinary_receipt = yes
 	clear_array = fallout_event_arc_ticket_entries
 	clear_array = fallout_event_arc_identity_entries
 	clear_array = fallout_event_arc_generation_entries
@@ -298,6 +410,7 @@ fallout_event_migrate_dormant_transaction_schema = {
 		set_variable = { global.fallout_event_registry_survival_country_count = global.fallout_survival_ledger_country_count }
 		set_variable = { global.fallout_event_ticket_generation = global.fallout_transition_generation }
 		set_variable = { global.fallout_event_next_ticket_id = constant:fallout_event_runtime.first_ticket_id }
+		fallout_event_promote_registry_empty_ordinary_receipts = yes
 		if = {
 			limit = { fallout_event_registry_payload_is_current = yes }
 			set_variable = { global.fallout_event_registry_cursor = constant:fallout_event_runtime.first_array_index }
@@ -327,6 +440,7 @@ fallout_event_migrate_registry_survival_binding = {
 		set_variable = { global.fallout_event_registry_survival_schema = global.fallout_survival_ledger_schema_version }
 		set_variable = { global.fallout_event_registry_survival_generation = global.fallout_survival_ledger_generation }
 		set_variable = { global.fallout_event_registry_survival_country_count = global.fallout_survival_ledger_country_count }
+		fallout_event_promote_registry_empty_ordinary_receipts = yes
 		if = {
 			limit = { fallout_event_registry_payload_is_current = yes }
 			clr_global_flag = fallout_event_scheduler_initialization_pending
@@ -386,6 +500,7 @@ fallout_event_clear_country_runtime = {
 	clr_country_flag = fallout_event_delayed_cleanup_pending
 	clr_country_flag = fallout_event_bilateral_cleanup_pending
 	fallout_event_clear_dispatch_envelope = yes
+	fallout_event_clear_ordinary_receipt = yes
 	clr_country_flag = fallout_event_transaction_schema_migrated
 	fallout_event_reset_orientation_receipts = yes
 	clear_array = fallout_event_family_fatigue_entries
@@ -435,6 +550,7 @@ fallout_event_clear_country_runtime = {
 	clear_variable = fallout_event_arc_schema_version
 	clear_variable = fallout_event_delayed_queue_schema_version
 	clear_variable = fallout_event_bilateral_schema_version
+	clear_variable = fallout_event_ordinary_receipt_schema_version
 	clear_variable = fallout_event_runtime_generation
 	clear_variable = fallout_event_active_major_arc_count
 	clear_variable = fallout_event_last_cooldown_family
@@ -449,6 +565,7 @@ fallout_event_clear_country_runtime = {
 	clear_variable = fallout_event_last_transaction_reconcile_generation
 	clear_variable = fallout_event_last_transaction_reconcile_day
 	clear_variable = fallout_event_last_cancelled_ticket
+	clear_variable = fallout_event_last_cancellation_source
 	clear_variable = fallout_event_last_cancellation_reason
 	clear_variable = fallout_event_last_cancellation_generation
 	clear_variable = fallout_event_last_cancellation_day
@@ -496,6 +613,7 @@ fallout_event_reset_uncommitted_registry = {
 	clear_array = global.fallout_event_registry_generation_entries
 	clear_array = global.fallout_event_registry_index_entries
 	clr_global_flag = fallout_event_scheduler_registry_ready
+	clr_global_flag = fallout_event_ordinary_receipt_registry_ready
 	clear_variable = global.fallout_event_schema_version
 	clear_variable = global.fallout_event_registry_schema_version
 	clear_variable = global.fallout_event_registry_generation
@@ -509,6 +627,8 @@ fallout_event_reset_uncommitted_registry = {
 	clear_variable = global.fallout_event_registry_initialized_day
 	clear_variable = global.fallout_event_ticket_generation
 	clear_variable = global.fallout_event_next_ticket_id
+	clear_variable = global.fallout_event_ordinary_receipt_registry_generation
+	clear_variable = global.fallout_event_ordinary_receipt_registry_day
 }
 
 # Supported scope: COUNTRY. The source allocation array is frozen in its exact
@@ -538,6 +658,7 @@ fallout_event_build_initial_registry = {
 		add_to_temp_variable = { fallout_event_registry_build_index = constant:fallout_event_runtime.one }
 	}
 	set_variable = { global.fallout_event_registry_count = global.fallout_event_registry_countries^num }
+	fallout_event_promote_registry_empty_ordinary_receipts = yes
 	set_variable = { global.fallout_event_registry_cursor = constant:fallout_event_runtime.first_array_index }
 	set_variable = { global.fallout_event_registry_initialized_date = global.date }
 	set_variable = { global.fallout_event_registry_initialized_day = global.num_days }
@@ -610,6 +731,85 @@ fallout_event_update_timeline_phase = {
 # ---------------------------------------------------------------------------
 # Bounded dormant transaction reconciliation
 # ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. One fixed ordinary opening receipt is reconciled
+# before compact transaction rows. It writes only a data envelope and leaves
+# dynamic event issuance to the single host-owned coordinator.
+fallout_event_reconcile_ordinary_receipt = {
+	if = {
+		limit = { has_country_flag = fallout_event_ordinary_receipt_pending }
+		if = {
+			limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+			set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_ordinary_target_type }
+			set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_ordinary_target }
+			set_temp_variable = { fallout_event_reconciled_ordinary_target_is_current = constant:fallout_event_runtime.zero }
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+							check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+						}
+						fallout_event_subject_is_current = yes
+					}
+				}
+				set_temp_variable = { fallout_event_reconciled_ordinary_target_is_current = constant:fallout_event_runtime.one }
+			}
+			if = {
+				limit = { NOT = { exists = yes } }
+				if = {
+					limit = { NOT = { fallout_event_ordinary_receipt_has_issued_dispatch = yes } }
+					set_temp_variable = { fallout_event_requested_ticket = fallout_event_ordinary_ticket }
+					set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.owner_lost }
+					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+					fallout_event_cancel_ordinary_receipt = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { fallout_event_reconciled_ordinary_target_is_current = constant:fallout_event_runtime.zero } }
+				if = {
+					limit = { NOT = { fallout_event_ordinary_receipt_has_issued_dispatch = yes } }
+					set_temp_variable = { fallout_event_requested_ticket = fallout_event_ordinary_ticket }
+					set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+					fallout_event_cancel_ordinary_receipt = yes
+				}
+			}
+			else_if = {
+				limit = {
+					exists = yes
+					NOT = { has_country_flag = fallout_event_dispatch_ready }
+					check_variable = { var = fallout_event_ordinary_due_day value = global.num_days compare = less_than_or_equals }
+				}
+				set_temp_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.ordinary_event }
+				set_temp_variable = { fallout_event_requested_dispatch_ticket = fallout_event_ordinary_ticket }
+				if = {
+					limit = { is_ai = yes }
+					set_temp_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+					set_temp_variable = { fallout_event_requested_dispatch_event_token = fallout_event_ordinary_ai_event_token }
+				}
+				else = {
+					set_temp_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+					set_temp_variable = { fallout_event_requested_dispatch_event_token = fallout_event_ordinary_human_event_token }
+				}
+				set_temp_variable = { fallout_event_requested_dispatch_branch = fallout_event_ordinary_branch }
+				set_temp_variable = { fallout_event_requested_dispatch_target_type = fallout_event_ordinary_target_type }
+				set_temp_variable = { fallout_event_requested_dispatch_target = fallout_event_ordinary_target }
+				set_temp_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero }
+				fallout_event_write_dispatch_envelope = yes
+				if = {
+					limit = { check_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero } }
+					set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.ordinary_receipt_mismatch }
+					fallout_event_register_scheduler_error_if_unowned = yes
+				}
+			}
+		}
+		else = {
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.ordinary_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+}
 
 fallout_event_advance_arc_reconcile_cursor = {
 	if = {
@@ -727,17 +927,23 @@ fallout_event_reconcile_one_delayed_row = {
 				}
 				if = {
 					limit = { NOT = { exists = yes } }
-					set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.owner_lost }
-					set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
-					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-					fallout_event_cancel_delayed_result = yes
+					if = {
+						limit = { NOT = { fallout_event_requested_delayed_ticket_has_issued_dispatch = yes } }
+						set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.owner_lost }
+						set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+						set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+						fallout_event_cancel_delayed_result = yes
+					}
 				}
 				else_if = {
 					limit = { check_variable = { fallout_event_reconciled_delayed_target_is_current = constant:fallout_event_runtime.zero } }
-					set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
-					set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
-					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-					fallout_event_cancel_delayed_result = yes
+					if = {
+						limit = { NOT = { fallout_event_requested_delayed_ticket_has_issued_dispatch = yes } }
+						set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+						set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+						set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+						fallout_event_cancel_delayed_result = yes
+					}
 				}
 				else_if = {
 					limit = {
@@ -846,6 +1052,7 @@ fallout_event_cancel_orphaned_bilateral_row = {
 				fallout_event_clear_dispatch_envelope = yes
 			}
 			set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_requested_ticket }
+			set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.bilateral }
 			set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
 			fallout_event_record_cancellation = yes
 			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
@@ -1002,7 +1209,11 @@ fallout_event_reconcile_country_transactions = {
 				NOT = { check_variable = { var = fallout_event_last_transaction_reconcile_day value = global.num_days compare = equals } }
 			}
 		}
-		fallout_event_reconcile_one_arc_row = yes
+		fallout_event_reconcile_ordinary_receipt = yes
+		if = {
+			limit = { NOT = { has_global_flag = fallout_event_scheduler_error } }
+			fallout_event_reconcile_one_arc_row = yes
+		}
 		if = {
 			limit = { NOT = { has_global_flag = fallout_event_scheduler_error } }
 			fallout_event_reconcile_one_delayed_row = yes
@@ -1044,9 +1255,17 @@ fallout_event_reconcile_next_registry_country = {
 		set_temp_variable = { fallout_event_registry_reconcile_country_context_loaded = constant:fallout_event_runtime.zero }
 		var:global.fallout_event_registry_countries^fallout_event_registry_reconcile_index = {
 			set_temp_variable = { fallout_event_registry_reconcile_country_context_loaded = constant:fallout_event_runtime.one }
-			fallout_event_reconcile_country_transactions = yes
-			set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
-			fallout_event_issue_dispatch_envelope = yes
+			fallout_event_promote_empty_ordinary_receipt = yes
+			if = {
+				limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+				fallout_event_reconcile_country_transactions = yes
+				set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
+				fallout_event_issue_dispatch_envelope = yes
+			}
+			else = {
+				set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.ordinary_receipt_mismatch }
+				fallout_event_register_scheduler_error_if_unowned = yes
+			}
 		}
 		if = {
 			limit = {
@@ -1084,6 +1303,16 @@ fallout_event_scheduler_reconcile = {
 			has_global_flag = fallout_active
 			has_global_flag = fallout_transition_complete
 			NOT = { has_global_flag = fallout_event_scheduler_error }
+		}
+		if = {
+			limit = {
+				has_global_flag = fallout_event_scheduler_registry_ready
+				has_variable = global.fallout_event_schema_version
+				check_variable = { global.fallout_event_schema_version = constant:fallout_event_schema.version }
+				NOT = { has_global_flag = fallout_event_ordinary_receipt_registry_ready }
+				NOT = { has_global_flag = fallout_event_scheduler_error }
+			}
+			fallout_event_promote_registry_empty_ordinary_receipts = yes
 		}
 		if = {
 			limit = {
@@ -1518,6 +1747,218 @@ fallout_event_remove_bilateral_row_at_index = {
 }
 
 # ---------------------------------------------------------------------------
+# Ordinary opening reservation, cancellation, and atomic consumption
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. Inputs: transaction key, distinct human and AI
+# event tokens, opening branch, due day, primary family, cooldown family, and
+# optional typed target. Outputs: accepted, created, and ticket receipts.
+fallout_event_schedule_ordinary_receipt = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_created = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_ticket = constant:fallout_event_runtime.no_ticket }
+	if = {
+		limit = {
+			fallout_event_transaction_production_is_approved = yes
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_ordinary_receipt_is_consistent = yes
+			fallout_event_ticket_ledger_is_current = yes
+			check_variable = { fallout_event_requested_transaction_key > constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_requested_human_event_token > constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_requested_ai_event_token > constant:fallout_event_runtime.zero }
+			NOT = { check_variable = { var = fallout_event_requested_human_event_token value = fallout_event_requested_ai_event_token compare = equals } }
+			check_variable = { fallout_event_requested_branch > constant:fallout_event_runtime.zero }
+			check_variable = { var = fallout_event_requested_due_day value = global.fallout_event_timeline_start_day compare = greater_than_or_equals }
+			check_variable = { fallout_event_requested_primary_family > constant:fallout_event_primary_family.none }
+			check_variable = { fallout_event_requested_primary_family < constant:fallout_event_primary_family.upper_bound }
+			check_variable = { fallout_event_requested_cooldown_family > constant:fallout_event_cooldown_family.none }
+			check_variable = { fallout_event_requested_cooldown_family < constant:fallout_event_cooldown_family.upper_bound }
+			NOT = { is_in_array = { array = fallout_event_delayed_key_entries value = fallout_event_requested_transaction_key } }
+			NOT = { is_in_array = { array = fallout_event_bilateral_key_entries value = fallout_event_requested_transaction_key } }
+		}
+		set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_requested_target_type }
+		set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_requested_target }
+		set_temp_variable = { fallout_event_requested_target_shape_is_valid = constant:fallout_event_runtime.zero }
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+						check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+					}
+					fallout_event_subject_shape_is_valid = yes
+				}
+			}
+			set_temp_variable = { fallout_event_requested_target_shape_is_valid = constant:fallout_event_runtime.one }
+		}
+		if = {
+			limit = {
+				check_variable = { fallout_event_requested_target_shape_is_valid = constant:fallout_event_runtime.one }
+				has_country_flag = fallout_event_ordinary_receipt_pending
+				check_variable = { var = fallout_event_ordinary_transaction_key value = fallout_event_requested_transaction_key compare = equals }
+				check_variable = { var = fallout_event_ordinary_human_event_token value = fallout_event_requested_human_event_token compare = equals }
+				check_variable = { var = fallout_event_ordinary_ai_event_token value = fallout_event_requested_ai_event_token compare = equals }
+				check_variable = { var = fallout_event_ordinary_branch value = fallout_event_requested_branch compare = equals }
+				check_variable = { var = fallout_event_ordinary_due_day value = fallout_event_requested_due_day compare = equals }
+				check_variable = { var = fallout_event_ordinary_primary_family value = fallout_event_requested_primary_family compare = equals }
+				check_variable = { var = fallout_event_ordinary_cooldown_family value = fallout_event_requested_cooldown_family compare = equals }
+				check_variable = { var = fallout_event_ordinary_target_type value = fallout_event_requested_target_type compare = equals }
+				check_variable = { var = fallout_event_ordinary_target value = fallout_event_requested_target compare = equals }
+			}
+			set_temp_variable = { fallout_event_transaction_ticket = fallout_event_ordinary_ticket }
+			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_event_requested_target_shape_is_valid = constant:fallout_event_runtime.one }
+				NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+				check_variable = { var = fallout_event_requested_due_day value = global.num_days compare = greater_than_or_equals }
+				OR = {
+					AND = {
+						check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+						check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+					}
+					fallout_event_subject_is_current = yes
+				}
+			}
+			fallout_event_allocate_transaction_ticket = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_ticket > constant:fallout_event_runtime.no_ticket } }
+				set_variable = { fallout_event_ordinary_ticket = fallout_event_transaction_ticket }
+				set_variable = { fallout_event_ordinary_transaction_key = fallout_event_requested_transaction_key }
+				set_variable = { fallout_event_ordinary_generation = fallout_event_runtime_generation }
+				set_variable = { fallout_event_ordinary_human_event_token = fallout_event_requested_human_event_token }
+				set_variable = { fallout_event_ordinary_ai_event_token = fallout_event_requested_ai_event_token }
+				set_variable = { fallout_event_ordinary_branch = fallout_event_requested_branch }
+				set_variable = { fallout_event_ordinary_due_day = fallout_event_requested_due_day }
+				set_variable = { fallout_event_ordinary_primary_family = fallout_event_requested_primary_family }
+				set_variable = { fallout_event_ordinary_cooldown_family = fallout_event_requested_cooldown_family }
+				set_variable = { fallout_event_ordinary_target_type = fallout_event_requested_target_type }
+				set_variable = { fallout_event_ordinary_target = fallout_event_requested_target }
+				set_country_flag = fallout_event_ordinary_receipt_pending
+				if = {
+					limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+					set_temp_variable = { fallout_event_transaction_created = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+				}
+				else = {
+					fallout_event_clear_ordinary_receipt = yes
+					set_temp_variable = { fallout_event_transaction_ticket = constant:fallout_event_runtime.no_ticket }
+					set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.ordinary_receipt_mismatch }
+					fallout_event_register_scheduler_error_if_unowned = yes
+				}
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: requested ticket and cancellation reason.
+# This never clears an issued engine event. Exact retries are source-bound to
+# the generation-bound cancellation receipt.
+fallout_event_cancel_ordinary_receipt = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_ordinary_receipt_is_consistent = yes
+			has_country_flag = fallout_event_ordinary_receipt_pending
+			check_variable = { var = fallout_event_ordinary_ticket value = fallout_event_requested_ticket compare = equals }
+			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+			NOT = { fallout_event_ordinary_receipt_has_issued_dispatch = yes }
+		}
+		if = {
+			limit = {
+				has_country_flag = fallout_event_dispatch_ready
+				check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.ordinary_event }
+				check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
+			}
+			fallout_event_clear_dispatch_envelope = yes
+		}
+		set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_requested_ticket }
+		set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.ordinary_event }
+		set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
+		fallout_event_clear_ordinary_receipt = yes
+		fallout_event_record_cancellation = yes
+		if = {
+			limit = {
+				fallout_event_ordinary_receipt_is_consistent = yes
+				fallout_event_transaction_history_receipts_are_consistent = yes
+			}
+			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+		}
+	}
+	else_if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+			has_variable = fallout_event_last_cancelled_ticket
+			has_variable = fallout_event_last_cancellation_source
+			has_variable = fallout_event_last_cancellation_reason
+			has_variable = fallout_event_last_cancellation_generation
+			check_variable = { var = fallout_event_last_cancelled_ticket value = fallout_event_requested_ticket compare = equals }
+			check_variable = { fallout_event_last_cancellation_source = constant:fallout_event_transaction_source.ordinary_event }
+			check_variable = { var = fallout_event_last_cancellation_reason value = fallout_event_requested_cancellation_reason compare = equals }
+			check_variable = { var = fallout_event_last_cancellation_generation value = fallout_event_runtime_generation compare = equals }
+			fallout_event_ordinary_receipt_is_consistent = yes
+		}
+		set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: expected event token and cancellation
+# reason. This is the only cancellation path for an ordinary event already
+# issued by the engine. Event content must revalidate its target before calling
+# this wrapper. The active event clears its envelope before releasing the fixed
+# receipt.
+fallout_event_cancel_issued_ordinary_receipt = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_ordinary_receipt_has_issued_dispatch = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+		}
+		set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.ordinary_event }
+		set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
+		fallout_event_clear_dispatch_envelope = yes
+		fallout_event_clear_ordinary_receipt = yes
+		fallout_event_record_cancellation = yes
+		if = {
+			limit = {
+				fallout_event_ordinary_receipt_is_consistent = yes
+				fallout_event_dispatch_envelope_is_consistent = yes
+				fallout_event_transaction_history_receipts_are_consistent = yes
+			}
+			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Input: expected event token. This consumes only the
+# exact issued ordinary opening. It clears the envelope first, then the fixed
+# receipt, so no stale transaction can authenticate a second delivery.
+fallout_event_consume_issued_ordinary_receipt = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_ordinary_receipt_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+		}
+		fallout_event_clear_dispatch_envelope = yes
+		fallout_event_clear_ordinary_receipt = yes
+		if = {
+			limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Major-arc reservation, advancement, cancellation, and cleanup
 # ---------------------------------------------------------------------------
 
@@ -1719,6 +2160,7 @@ fallout_event_cancel_major_arc = {
 				set_country_flag = fallout_event_arc_cleanup_pending
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
 				set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_requested_ticket }
+				set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.major_arc }
 				set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
 				fallout_event_record_cancellation = yes
 			}
@@ -1812,6 +2254,7 @@ fallout_event_schedule_delayed_result = {
 			fallout_event_arc_receipts_are_current = yes
 			fallout_event_ticket_ledger_is_current = yes
 			check_variable = { fallout_event_requested_transaction_key > constant:fallout_event_runtime.zero }
+			fallout_event_requested_key_differs_from_ordinary_receipt = yes
 			NOT = { check_variable = { fallout_event_requested_parent_arc_ticket < constant:fallout_event_runtime.no_ticket } }
 			check_variable = { fallout_event_requested_human_event_token > constant:fallout_event_runtime.zero }
 			check_variable = { fallout_event_requested_ai_event_token > constant:fallout_event_runtime.zero }
@@ -1902,8 +2345,20 @@ fallout_event_schedule_delayed_result = {
 	}
 }
 
-# Inputs: requested ticket and requested non-zero outcome.
+# Supported scope: COUNTRY. Inputs: requested ticket and non-zero outcome. This
+# public path accepts only an unissued row. An issued engine event must use the
+# exact token-authenticated wrapper below.
 fallout_event_resolve_delayed_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { NOT = { fallout_event_requested_delayed_ticket_has_issued_dispatch = yes } }
+		fallout_event_resolve_delayed_result_internal = yes
+	}
+}
+
+# Internal terminalizer. Call only from the unissued gate above or from the
+# exact issued wrapper after token authentication.
+fallout_event_resolve_delayed_result_internal = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
@@ -1962,8 +2417,19 @@ fallout_event_resolve_delayed_result = {
 	}
 }
 
-# Inputs: requested ticket, cancellation reason, and either cancelled outcome.
+# Supported scope: COUNTRY. Inputs: requested ticket, cancellation reason, and
+# either cancelled outcome. This public path accepts only an unissued row.
 fallout_event_cancel_delayed_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { NOT = { fallout_event_requested_delayed_ticket_has_issued_dispatch = yes } }
+		fallout_event_cancel_delayed_result_internal = yes
+	}
+}
+
+# Internal terminalizer. Call only from the unissued gate above or from the
+# exact issued wrapper after token authentication.
+fallout_event_cancel_delayed_result_internal = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
@@ -2004,6 +2470,7 @@ fallout_event_cancel_delayed_result = {
 					fallout_event_clear_dispatch_envelope = yes
 				}
 				set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_requested_ticket }
+				set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.delayed_result }
 				set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
 				fallout_event_record_cancellation = yes
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
@@ -2080,9 +2547,19 @@ fallout_event_prepare_delayed_cleanup = {
 	}
 }
 
-# Inputs: requested ticket and exact cleanup token. The content-owned cleanup
-# effect calls this only after clearing the memories owned by that token.
+# Supported scope: COUNTRY. Inputs: requested ticket and exact cleanup token.
+# This public path accepts only an unissued cleanup row.
 fallout_event_release_delayed_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { NOT = { fallout_event_requested_delayed_ticket_has_issued_dispatch = yes } }
+		fallout_event_release_delayed_result_internal = yes
+	}
+}
+
+# Internal remover. Call only from the unissued gate above or from the exact
+# issued cleanup wrapper after the content-owned memories are cleared.
+fallout_event_release_delayed_result_internal = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
@@ -2108,6 +2585,63 @@ fallout_event_release_delayed_result = {
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
 			}
 		}
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: expected event token and non-zero outcome.
+# The wrapper authenticates the issued receipt before delegating to the row
+# terminalizer. The terminalizer consumes the matching envelope atomically, so
+# callers must not acknowledge it a second time.
+fallout_event_resolve_issued_delayed_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_delayed_result_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			check_variable = { fallout_event_requested_outcome > constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_requested_outcome < constant:fallout_event_outcome_type.aborted_after_choice }
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		fallout_event_resolve_delayed_result_internal = yes
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: expected event token, cancellation reason,
+# and either cancelled outcome. This is the issued-event stale-path consumer.
+fallout_event_cancel_issued_delayed_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_delayed_result_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+			OR = {
+				check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+				check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+			}
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		fallout_event_cancel_delayed_result_internal = yes
+	}
+}
+
+# Supported scope: COUNTRY. Input: expected cleanup event token. The wrapper
+# derives the exact ticket and cleanup token from the issued receipt, removes
+# the matching row, and consumes the envelope in the same transaction.
+fallout_event_release_issued_delayed_cleanup = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_delayed_cleanup_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_requested_cleanup_token = fallout_event_dispatch_issued_event_token }
+		fallout_event_release_delayed_result_internal = yes
 	}
 }
 
@@ -2180,6 +2714,10 @@ fallout_event_reserve_bilateral_transaction = {
 			fallout_event_arc_receipts_are_current = yes
 			fallout_event_ticket_ledger_is_current = yes
 			check_variable = { fallout_event_requested_transaction_key > constant:fallout_event_runtime.zero }
+			fallout_event_requested_key_differs_from_ordinary_receipt = yes
+			event_target:fallout_event_requested_bilateral_partner = {
+				fallout_event_requested_key_differs_from_ordinary_receipt = yes
+			}
 			check_variable = { fallout_event_requested_initiator_response_token > constant:fallout_event_runtime.zero }
 			check_variable = { fallout_event_requested_initiator_ai_response_token > constant:fallout_event_runtime.zero }
 			NOT = { check_variable = { var = fallout_event_requested_initiator_response_token value = fallout_event_requested_initiator_ai_response_token compare = equals } }
@@ -2453,6 +2991,7 @@ fallout_event_update_bilateral_pair = {
 				if = {
 					limit = { check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled } }
 					set_temp_variable = { fallout_event_cancelled_ticket = fallout_event_requested_ticket }
+					set_temp_variable = { fallout_event_cancellation_source_to_record = constant:fallout_event_transaction_source.bilateral }
 					set_temp_variable = { fallout_event_cancellation_reason_to_record = fallout_event_requested_cancellation_reason }
 					fallout_event_record_cancellation = yes
 					event_target:fallout_event_bilateral_loaded_partner = { fallout_event_record_cancellation = yes }

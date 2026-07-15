@@ -46,6 +46,9 @@ Use these dedicated system files unless local repository precedent proves a narr
 - `common/scripted_effects/fallout_world_end_effects.txt`
 - `common/scripted_triggers/fallout_world_end_triggers.txt`
 - `common/script_constants/fallout_world_end_constants.txt`
+- `common/scripted_effects/fallout_world_end_event_effects.txt`
+- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
+- `common/script_constants/fallout_world_end_event_constants.txt`
 - `common/on_actions/fallout_world_end_on_actions.txt` only for narrowly scoped Fallout lifecycle hooks
 - `common/scripted_guis/fallout_world_end_scripted_gui.txt`
 - `common/scripted_localisation/fallout_world_end_scripted_localisation.txt`
