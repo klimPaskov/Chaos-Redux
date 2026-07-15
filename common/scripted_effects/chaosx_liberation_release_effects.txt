@@ -27,6 +27,9 @@ liberation_release_clear_plan_scope_marks = {
 		clear_variable = liberation_release_original_owner
 		clear_variable = liberation_release_original_controller
 		clear_variable = liberation_release_target_country
+		clr_state_flag = liberation_release_core_snapshot_recorded
+		clr_state_flag = liberation_release_original_owner_had_core
+		clr_state_flag = liberation_release_target_had_core
 	}
 	for_each_scope_loop = {
 		array = global.liberation_plan_host_protected_states
@@ -40,6 +43,7 @@ liberation_release_clear_plan_scope_marks = {
 		clear_variable = liberation_release_plan_id
 		clear_variable = liberation_release_planned_loss_count
 		clear_variable = liberation_release_protected_state
+		clear_variable = liberation_release_original_capital
 	}
 	for_each_scope_loop = {
 		array = global.liberation_plan_countries
@@ -84,6 +88,16 @@ liberation_release_reset_plan = {
 		clr_global_flag = liberation_release_joint_plan_executed
 		clr_global_flag = liberation_release_execution_started
 		clr_global_flag = liberation_release_capital_restore_failed
+		clr_global_flag = liberation_release_plan_rollback_completed
+		clr_global_flag = liberation_release_plan_rollback_failed
+		clr_global_flag = liberation_release_event5_rollback_cleanup_validated
+		clr_global_flag = liberation_release_event6_rollback_cleanup_validated
+		clr_global_flag = liberation_release_event5_finalizer_started
+		clr_global_flag = liberation_release_finalizer_started
+		clr_global_flag = liberation_release_plan_finalization_failed
+		clr_global_flag = liberation_release_event5_finalization_validated
+		clr_global_flag = liberation_release_event6_finalization_validated
+		clr_global_flag = liberation_release_event6_origin_commit_started
 		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.idle }
 		clear_variable = global.liberation_plan_id
 		clear_variable = global.liberation_plan_mode
@@ -93,6 +107,8 @@ liberation_release_reset_plan = {
 		clear_variable = global.liberation_plan_committed_date
 		clear_variable = global.liberation_plan_source_country
 		clear_variable = global.liberation_plan_last_failure
+		clear_variable = global.liberation_plan_rollback_failure
+		clear_variable = global.liberation_plan_finalization_failure
 	}
 	else = {
 		set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.stale_plan }
@@ -114,6 +130,18 @@ liberation_release_begin_plan = {
 		clr_global_flag = liberation_release_joint_plan_executed
 		clr_global_flag = liberation_release_execution_started
 		clr_global_flag = liberation_release_capital_restore_failed
+		clr_global_flag = liberation_release_plan_rollback_completed
+		clr_global_flag = liberation_release_plan_rollback_failed
+		clr_global_flag = liberation_release_event5_rollback_cleanup_validated
+		clr_global_flag = liberation_release_event6_rollback_cleanup_validated
+		clr_global_flag = liberation_release_event5_finalizer_started
+		clr_global_flag = liberation_release_finalizer_started
+		clr_global_flag = liberation_release_plan_finalization_failed
+		clr_global_flag = liberation_release_event5_finalization_validated
+		clr_global_flag = liberation_release_event6_finalization_validated
+		clr_global_flag = liberation_release_event6_origin_commit_started
+		clear_variable = global.liberation_plan_rollback_failure
+		clear_variable = global.liberation_plan_finalization_failure
 		clear_variable = global.liberation_plan_last_failure
 		if = {
 			limit = { NOT = { has_variable = global.liberation_next_plan_id } }
@@ -203,7 +231,8 @@ liberation_release_measure_candidate_host_loss_capacity = {
 # ---------------------------------------------------------------------------
 
 # COUNTRY scope. Selects the accepted host-survival priority (existing row,
-# owned/controlled capital, owned core, then owned state) and reserves it.
+# owned/controlled capital, controlled core, controlled state, uncontrolled
+# core, then any owned state) and reserves it.
 # Output: liberation_candidate_reject_reason.
 liberation_release_select_first_host_state_candidate = {
 	set_temp_variable = { liberation_host_state_selection_complete = constant:liberation_release_limit.minimum }
@@ -223,6 +252,7 @@ liberation_release_select_and_reserve_host_state = {
 			is_in_array = { array = global.liberation_plan_hosts value = THIS }
 			has_variable = liberation_release_protected_state
 			check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+			var:liberation_release_protected_state = { is_liberation_release_host_protection_candidate = yes }
 		}
 		var:liberation_release_protected_state = { save_event_target_as = liberation_candidate_protected_state }
 		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.existing }
@@ -232,8 +262,7 @@ liberation_release_select_and_reserve_host_state = {
 			capital_scope = {
 				is_owned_by = PREV
 				is_controlled_by = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		capital_scope = { save_event_target_as = liberation_candidate_protected_state }
@@ -244,8 +273,7 @@ liberation_release_select_and_reserve_host_state = {
 			any_owned_state = {
 				is_core_of = PREV
 				is_controlled_by = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		clear_temp_array = liberation_host_state_candidates
@@ -253,29 +281,7 @@ liberation_release_select_and_reserve_host_state = {
 			limit = {
 				is_core_of = PREV
 				is_controlled_by = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
-			}
-			add_to_temp_array = { liberation_host_state_candidates = THIS }
-		}
-		liberation_release_select_first_host_state_candidate = yes
-		clear_temp_array = liberation_host_state_candidates
-		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
-	}
-	else_if = {
-		limit = {
-			any_owned_state = {
-				is_core_of = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
-			}
-		}
-		clear_temp_array = liberation_host_state_candidates
-		every_owned_state = {
-			limit = {
-				is_core_of = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
@@ -287,16 +293,14 @@ liberation_release_select_and_reserve_host_state = {
 		limit = {
 			any_owned_state = {
 				is_controlled_by = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		clear_temp_array = liberation_host_state_candidates
 		every_owned_state = {
 			limit = {
 				is_controlled_by = PREV
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
@@ -307,15 +311,32 @@ liberation_release_select_and_reserve_host_state = {
 	else_if = {
 		limit = {
 			any_owned_state = {
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_core_of = PREV
+				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		clear_temp_array = liberation_host_state_candidates
 		every_owned_state = {
 			limit = {
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_core_of = PREV
+				is_liberation_release_host_protection_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_liberation_release_host_protection_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				is_liberation_release_host_protection_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
@@ -351,6 +372,10 @@ liberation_release_reserve_host_state = {
 			event_target:liberation_candidate_protected_state = {
 				is_owned_by = event_target:liberation_candidate_host
 				is_liberation_release_current_protected_state = yes
+				OR = {
+					NOT = { has_event_target = liberation_candidate_anchor }
+					NOT = { state = event_target:liberation_candidate_anchor }
+				}
 			}
 		}
 		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
@@ -366,8 +391,7 @@ liberation_release_reserve_host_state = {
 			}
 			event_target:liberation_candidate_protected_state = {
 				is_owned_by = event_target:liberation_candidate_host
-				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		event_target:liberation_candidate_host = {
@@ -380,7 +404,9 @@ liberation_release_reserve_host_state = {
 			add_to_array = { array = global.liberation_plan_host_protected_states value = event_target:liberation_candidate_protected_state }
 			capital_scope = {
 				add_to_array = { array = global.liberation_plan_host_original_capitals value = THIS }
+				save_event_target_as = liberation_candidate_original_capital
 			}
+			set_variable = { liberation_release_original_capital = event_target:liberation_candidate_original_capital }
 			set_country_flag = liberation_release_plan_host
 			set_variable = { liberation_release_plan_id = global.liberation_plan_id }
 			set_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.minimum }
@@ -538,6 +564,17 @@ liberation_release_add_state_reservation = {
 		set_variable = { liberation_release_original_owner = event_target:liberation_candidate_state_host }
 		set_variable = { liberation_release_original_controller = CONTROLLER }
 		set_variable = { liberation_release_target_country = event_target:liberation_candidate_country }
+		set_state_flag = liberation_release_core_snapshot_recorded
+		clr_state_flag = liberation_release_original_owner_had_core
+		clr_state_flag = liberation_release_target_had_core
+		if = {
+			limit = { is_core_of = event_target:liberation_candidate_state_host }
+			set_state_flag = liberation_release_original_owner_had_core
+		}
+		if = {
+			limit = { is_core_of = event_target:liberation_candidate_country }
+			set_state_flag = liberation_release_target_had_core
+		}
 		event_target:liberation_candidate_state_host = {
 			add_to_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.one }
 		}
@@ -588,6 +625,9 @@ liberation_release_rollback_last_state_reservation = {
 				clear_variable = liberation_release_original_owner
 				clear_variable = liberation_release_original_controller
 				clear_variable = liberation_release_target_country
+				clr_state_flag = liberation_release_core_snapshot_recorded
+				clr_state_flag = liberation_release_original_owner_had_core
+				clr_state_flag = liberation_release_target_had_core
 			}
 		}
 		if = {
@@ -705,6 +745,7 @@ liberation_release_cleanup_unused_host_reservations = {
 				clear_variable = liberation_release_plan_id
 				clear_variable = liberation_release_planned_loss_count
 				clear_variable = liberation_release_protected_state
+				clear_variable = liberation_release_original_capital
 			}
 			if = {
 				limit = { has_event_target = liberation_rollback_protected_state }
@@ -1028,11 +1069,13 @@ liberation_release_validate_country_rows = {
 			set_temp_variable = { liberation_validation_anchor_count = constant:liberation_release_limit.minimum }
 			for_each_scope_loop = {
 				array = global.liberation_plan_states
-				limit = {
-					check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
-					check_variable = { var = liberation_release_state_role value = constant:liberation_plan_state_role.anchor compare = equals }
+				if = {
+					limit = {
+						check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
+						check_variable = { var = liberation_release_state_role value = constant:liberation_plan_state_role.anchor compare = equals }
+					}
+					add_to_temp_variable = { liberation_validation_anchor_count = constant:liberation_release_limit.one }
 				}
-				add_to_temp_variable = { liberation_validation_anchor_count = constant:liberation_release_limit.one }
 			}
 			if = {
 				limit = {
@@ -1149,10 +1192,12 @@ liberation_release_validate_host_rows = {
 			set_temp_variable = { liberation_validation_computed_losses = constant:liberation_release_limit.minimum }
 			for_each_scope_loop = {
 				array = global.liberation_plan_states
-				limit = {
-					check_variable = { var = liberation_release_original_owner value = event_target:liberation_validation_host compare = equals }
+				if = {
+					limit = {
+						check_variable = { var = liberation_release_original_owner value = event_target:liberation_validation_host compare = equals }
+					}
+					add_to_temp_variable = { liberation_validation_computed_losses = constant:liberation_release_limit.one }
 				}
-				add_to_temp_variable = { liberation_validation_computed_losses = constant:liberation_release_limit.one }
 			}
 			if = {
 				limit = {
@@ -1230,6 +1275,13 @@ liberation_release_validate_plan = {
 		limit = {
 			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 			NOT = { liberation_release_all_plan_arrays_are_aligned = yes }
+		}
+		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+	}
+	if = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			NOT = { liberation_release_recovery_snapshots_are_complete = yes }
 		}
 		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
 	}
@@ -1419,19 +1471,400 @@ liberation_release_begin_execution = {
 	}
 }
 
+# Crosses the point of no return only after every ownership/controller row has
+# matched the frozen ledger. Event-specific finalizers may create forces,
+# inherit technology, transfer host assets, and publish durable origin data, so
+# a plan in this phase is never eligible for compensating rollback.
+liberation_release_begin_finalization = {
+	set_temp_variable = { liberation_release_finalization_begin_success = constant:liberation_release_limit.minimum }
+	if = {
+		limit = {
+			is_liberation_release_plan_executing = yes
+			liberation_release_execution_matches_frozen_ownership = yes
+		}
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalizing }
+		set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.none }
+		set_global_flag = liberation_release_finalizer_started
+		clr_global_flag = liberation_release_plan_finalization_failed
+		clr_global_flag = liberation_release_event5_finalization_validated
+		clr_global_flag = liberation_release_event6_finalization_validated
+		if = {
+			limit = { has_global_flag = liberation_release_plan_includes_event5 }
+			set_global_flag = liberation_release_event5_finalizer_started
+		}
+		set_temp_variable = { liberation_release_finalization_begin_success = constant:liberation_release_limit.one }
+	}
+	else = {
+		set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
+	}
+}
+
+# Terminal diagnostic state for an unexpected failure after the first
+# irreversible finalizer mutation. The frozen ledger and all scope marks remain
+# intact; callers must not present the incident as committed and must not route
+# this state into the compensating rollback.
+liberation_release_mark_finalization_failed = {
+	if = {
+		limit = {
+			is_liberation_release_plan_finalizing = yes
+			has_global_flag = liberation_release_finalizer_started
+		}
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.finalization_failed }
+		clr_global_flag = liberation_release_plan_valid
+		set_global_flag = liberation_release_plan_finalization_failed
+		if = {
+			limit = { check_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.none } }
+			set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.invalid_phase }
+		}
+	}
+}
+
+# Starts or retries compensation without discarding any frozen row. A malformed
+# ledger is retained in rollback_failed so a later repair can use the same
+# owner, controller, core, country, and capital snapshots.
+liberation_release_begin_plan_rollback = {
+	clr_global_flag = liberation_release_plan_rollback_completed
+	clr_global_flag = liberation_release_plan_rollback_failed
+	clr_global_flag = liberation_release_event5_rollback_cleanup_validated
+	clr_global_flag = liberation_release_event6_rollback_cleanup_validated
+	set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+	if = {
+		limit = {
+			has_global_flag = liberation_release_execution_started
+			OR = {
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rolling_back }
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+			}
+		}
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rolling_back }
+		clr_global_flag = liberation_release_plan_valid
+	}
+	else = {
+		set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.invalid_ledger }
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+		set_global_flag = liberation_release_plan_rollback_failed
+	}
+}
+
+# Restores the two country-core facts whose values were snapshotted for every
+# reserved state. This runs before ownership restoration while all newly
+# instantiated country scopes are still guaranteed to be addressable.
+liberation_release_restore_reserved_state_core_facts = {
+	for_each_scope_loop = {
+		array = global.liberation_plan_states
+		save_event_target_as = liberation_rollback_core_state
+		if = {
+			limit = {
+				has_state_flag = liberation_release_core_snapshot_recorded
+				has_variable = liberation_release_original_owner
+				has_variable = liberation_release_target_country
+			}
+			var:liberation_release_original_owner = { save_event_target_as = liberation_rollback_original_owner }
+			var:liberation_release_target_country = { save_event_target_as = liberation_rollback_target_country }
+			if = {
+				limit = { has_state_flag = liberation_release_original_owner_had_core }
+				add_core_of = event_target:liberation_rollback_original_owner
+			}
+			else = { remove_core_of = event_target:liberation_rollback_original_owner }
+			if = {
+				limit = { has_state_flag = liberation_release_target_had_core }
+				add_core_of = event_target:liberation_rollback_target_country
+			}
+			else = { remove_core_of = event_target:liberation_rollback_target_country }
+			if = {
+				limit = {
+					check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+					OR = {
+						AND = {
+							has_state_flag = liberation_release_original_owner_had_core
+							NOT = { is_core_of = event_target:liberation_rollback_original_owner }
+						}
+						AND = {
+							NOT = { has_state_flag = liberation_release_original_owner_had_core }
+							is_core_of = event_target:liberation_rollback_original_owner
+						}
+						AND = {
+							has_state_flag = liberation_release_target_had_core
+							NOT = { is_core_of = event_target:liberation_rollback_target_country }
+						}
+						AND = {
+							NOT = { has_state_flag = liberation_release_target_had_core }
+							is_core_of = event_target:liberation_rollback_target_country
+						}
+					}
+				}
+				set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.core_restore }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none } }
+			set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.state_scope }
+		}
+	}
+}
+
+# Restores each state to its exact pre-plan owner and controller. Ownership and
+# occupation are separate engine facts, so both are written and verified.
+liberation_release_restore_reserved_state_ownership = {
+	for_each_scope_loop = {
+		array = global.liberation_plan_states
+		if = {
+			limit = {
+				has_variable = liberation_release_original_owner
+				has_variable = liberation_release_original_controller
+				var:liberation_release_original_owner = { exists = yes }
+				var:liberation_release_original_controller = { exists = yes }
+			}
+			var:liberation_release_original_owner = { save_event_target_as = liberation_rollback_original_owner }
+			var:liberation_release_original_controller = { save_event_target_as = liberation_rollback_original_controller }
+			set_state_owner_to = event_target:liberation_rollback_original_owner
+			set_state_controller_to = event_target:liberation_rollback_original_controller
+			if = {
+				limit = {
+					check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+					NOT = { is_owned_by = event_target:liberation_rollback_original_owner }
+				}
+				set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.owner_restore }
+			}
+			if = {
+				limit = {
+					check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+					NOT = { is_controlled_by = event_target:liberation_rollback_original_controller }
+				}
+				set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.controller_restore }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none } }
+			set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.state_scope }
+		}
+	}
+}
+
+# All plan countries were proven absent before lock. After their states and
+# package-local data are restored, annexing a state-less temporary country with
+# troop transfer disabled removes its transient units and living-country state.
+liberation_release_deinstantiate_created_countries = {
+	set_temp_variable = { liberation_rollback_country_index = constant:liberation_release_limit.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = liberation_rollback_country_index value = global.liberation_plan_countries^num compare = less_than }
+		}
+		var:global.liberation_plan_countries^liberation_rollback_country_index = { save_event_target_as = liberation_rollback_country }
+		var:global.liberation_plan_primary_hosts^liberation_rollback_country_index = { save_event_target_as = liberation_rollback_primary_host }
+		if = {
+			limit = {
+				event_target:liberation_rollback_country = { exists = yes }
+				event_target:liberation_rollback_primary_host = { exists = yes }
+				event_target:liberation_rollback_country = { NOT = { any_owned_state = { always = yes } } }
+			}
+			event_target:liberation_rollback_primary_host = {
+				annex_country = {
+					target = event_target:liberation_rollback_country
+					transfer_troops = no
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+				event_target:liberation_rollback_country = { exists = yes }
+			}
+			set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.country_deinstantiation }
+		}
+		add_to_temp_variable = { liberation_rollback_country_index = constant:liberation_release_limit.one }
+	}
+}
+
+# Ownership restoration makes every original capital eligible again. The
+# aligned host snapshot is verified before any ledger row may be cleared.
+liberation_release_restore_host_capitals_after_execution = {
+	set_temp_variable = { liberation_rollback_host_index = constant:liberation_release_limit.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = liberation_rollback_host_index value = global.liberation_plan_hosts^num compare = less_than }
+		}
+		var:global.liberation_plan_hosts^liberation_rollback_host_index = { save_event_target_as = liberation_rollback_host }
+		var:global.liberation_plan_host_original_capitals^liberation_rollback_host_index = { save_event_target_as = liberation_rollback_original_capital }
+		if = {
+			limit = {
+				event_target:liberation_rollback_host = { exists = yes }
+				event_target:liberation_rollback_original_capital = { is_owned_by = event_target:liberation_rollback_host }
+			}
+			event_target:liberation_rollback_host = {
+				set_capital = {
+					state = event_target:liberation_rollback_original_capital
+					remember_old_capital = no
+				}
+				if = {
+					limit = { capital_scope = { state = event_target:liberation_rollback_original_capital } }
+					clear_variable = liberation_release_last_protected_capital
+					clear_variable = liberation_release_last_capital_relocation_date
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+				OR = {
+					NOT = { event_target:liberation_rollback_host = { exists = yes } }
+					NOT = { event_target:liberation_rollback_original_capital = { is_owned_by = event_target:liberation_rollback_host } }
+					NOT = { event_target:liberation_rollback_host = { capital_scope = { state = event_target:liberation_rollback_original_capital } } }
+				}
+			}
+			set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.host_capital_restore }
+		}
+		add_to_temp_variable = { liberation_rollback_host_index = constant:liberation_release_limit.one }
+	}
+}
+
+liberation_release_finish_verified_plan_rollback = {
+	if = {
+		limit = { liberation_release_rollback_matches_frozen_ledger = yes }
+		if = {
+			limit = { has_global_flag = liberation_release_plan_includes_event6 }
+			independence_wave_clear_plan_contribution = yes
+		}
+		if = {
+			limit = { has_global_flag = liberation_release_plan_includes_event5 }
+			SOV = { soviet_collapse_joint_clear_plan_contribution = yes }
+		}
+		liberation_release_clear_plan_scope_marks = yes
+		liberation_release_clear_plan_arrays = yes
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+		set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+		clr_global_flag = liberation_release_execution_started
+		clr_global_flag = liberation_release_plan_valid
+		clr_global_flag = liberation_release_plan_rollback_failed
+		clr_global_flag = liberation_release_finalizer_started
+		clr_global_flag = liberation_release_plan_finalization_failed
+		clr_global_flag = liberation_release_event5_finalization_validated
+		clr_global_flag = liberation_release_event6_finalization_validated
+		clr_global_flag = liberation_release_event5_finalizer_started
+		clr_global_flag = liberation_release_event6_origin_commit_started
+		clear_variable = global.liberation_plan_finalization_failure
+		set_global_flag = liberation_release_plan_rollback_completed
+	}
+}
+
+liberation_release_mark_plan_rollback_failed = {
+	set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+	clr_global_flag = liberation_release_plan_valid
+	set_global_flag = liberation_release_plan_rollback_failed
+	clr_global_flag = liberation_release_plan_rollback_completed
+	if = {
+		limit = { check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none } }
+		set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.invalid_ledger }
+	}
+}
+
+# Shared post-mutation failure path. Event-specific reversible state is cleaned
+# first; then cores, ownership, countries, and capitals are restored. Any failed
+# assertion leaves the complete ledger available for an idempotent retry.
+liberation_release_execute_compensating_rollback = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = liberation_release_finalizer_started }
+			NOT = { is_liberation_release_plan_finalizing = yes }
+			NOT = { has_liberation_release_plan_finalization_failed = yes }
+		}
+		liberation_release_begin_plan_rollback = yes
+	}
+	if = {
+		limit = { is_liberation_release_plan_rolling_back = yes }
+		if = {
+			limit = { liberation_release_rollback_ledger_is_valid = yes }
+			if = {
+				limit = { has_global_flag = liberation_release_plan_includes_event6 }
+				independence_wave_rollback_reversible_frozen_country_packages = yes
+			}
+			else = { set_global_flag = liberation_release_event6_rollback_cleanup_validated }
+			if = {
+				limit = {
+					has_global_flag = liberation_release_plan_includes_event5
+					NOT = { has_global_flag = liberation_release_event5_finalizer_started }
+				}
+				set_global_flag = liberation_release_event5_rollback_cleanup_validated
+			}
+			else_if = {
+				limit = {
+					has_global_flag = liberation_release_plan_includes_event5
+					check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+				}
+				set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.event5_package_cleanup }
+			}
+			else = { set_global_flag = liberation_release_event5_rollback_cleanup_validated }
+			liberation_release_restore_reserved_state_core_facts = yes
+			liberation_release_restore_reserved_state_ownership = yes
+			liberation_release_deinstantiate_created_countries = yes
+			liberation_release_restore_host_capitals_after_execution = yes
+			if = {
+				limit = { liberation_release_rollback_matches_frozen_ledger = yes }
+				liberation_release_finish_verified_plan_rollback = yes
+			}
+			else = { liberation_release_mark_plan_rollback_failed = yes }
+		}
+		else = {
+			set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.invalid_ledger }
+			liberation_release_mark_plan_rollback_failed = yes
+		}
+	}
+}
+
 liberation_release_commit_plan = {
 	if = {
-		limit = { is_liberation_release_plan_executing = yes }
+		limit = {
+			is_liberation_release_plan_finalizing = yes
+			OR = {
+				NOT = { has_global_flag = liberation_release_plan_includes_event5 }
+				has_global_flag = liberation_release_event5_finalization_validated
+			}
+			OR = {
+				NOT = { has_global_flag = liberation_release_plan_includes_event6 }
+				has_global_flag = liberation_release_event6_finalization_validated
+			}
+		}
 		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
 		set_variable = { global.liberation_plan_committed_date = global.date }
+		set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.none }
 		set_global_flag = liberation_release_joint_plan_executed
+		clr_global_flag = liberation_release_execution_started
+		clr_global_flag = liberation_release_finalizer_started
+		clr_global_flag = liberation_release_plan_finalization_failed
+		clr_global_flag = liberation_release_event5_finalization_validated
+		clr_global_flag = liberation_release_event6_finalization_validated
+		clr_global_flag = liberation_release_event5_finalizer_started
+		clr_global_flag = liberation_release_event6_origin_commit_started
 		liberation_release_clear_plan_scope_marks = yes
 	}
 }
 
 liberation_release_abort_plan = {
-	set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
-	clr_global_flag = liberation_release_plan_valid
-	clr_global_flag = liberation_release_execution_started
-	liberation_release_clear_plan_scope_marks = yes
+	if = {
+		limit = {
+			has_global_flag = liberation_release_finalizer_started
+			is_liberation_release_plan_finalizing = yes
+		}
+		liberation_release_mark_finalization_failed = yes
+	}
+	else_if = {
+		limit = { has_liberation_release_plan_finalization_failed = yes }
+	}
+	else_if = {
+		limit = { has_global_flag = liberation_release_execution_started }
+		liberation_release_execute_compensating_rollback = yes
+	}
+	else_if = {
+		limit = { has_global_flag = liberation_release_capital_restore_failed }
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+		set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.host_capital_restore }
+		clr_global_flag = liberation_release_plan_valid
+		set_global_flag = liberation_release_plan_rollback_failed
+	}
+	else = {
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+		clr_global_flag = liberation_release_plan_valid
+		liberation_release_clear_plan_scope_marks = yes
+	}
 }

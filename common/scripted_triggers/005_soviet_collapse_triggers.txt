@@ -8869,3 +8869,62 @@ can_pay_soviet_collapse_republic_settlement_compromise_cost = {
 has_soviet_collapse_uwr_contamination_aftermath = {
 	has_state_flag = soviet_collapse_uwr_contamination_aftermath
 }
+# COUNTRY scope. Terminal proof for the Event 005 breakaway setup finalizer.
+# The setup effect clears its completion flag before work and restores it only
+# after the origin, equipment, component, category, breakaway-registry, and
+# focus-tree contracts all exist.
+has_completed_soviet_collapse_breakaway_setup = {
+	has_country_flag = soviet_collapse_breakaway_setup_complete
+	is_soviet_collapse_active_origin_country = yes
+	OR = {
+		has_country_flag = soviet_collapse_event_created_republic
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+	has_country_flag = soviet_collapse_breakaway
+	has_country_flag = soviet_collapse_emergency_equipment_variants_registered
+	is_in_array = { array = global.soviet_collapse_breakaway_countries value = THIS }
+	has_variable = soviet_collapse_recognition_progress
+	has_variable = soviet_collapse_selected_foreign_patron_country
+	has_variable = soviet_collapse_selected_foreign_patron_influence
+	has_variable = soviet_collapse_menu_selected_target_country
+	has_variable = soviet_collapse_menu_selected_target_influence
+	has_variable = soviet_collapse_dynamic_sponsor_country
+	has_variable = soviet_collapse_dynamic_sponsor_influence
+	has_variable = soviet_collapse_influence_total
+	has_variable = soviet_collapse_influence_moscow
+	has_variable = soviet_collapse_influence_arms_total
+	has_variable = soviet_collapse_influence_logistics_total
+	has_variable = soviet_collapse_influence_recognition_total
+	has_variable = soviet_collapse_influence_ideology_total
+	has_variable = soviet_collapse_influence_industry_total
+	has_variable = soviet_collapse_influence_advisers_total
+	has_variable = soviet_collapse_influence_intelligence_total
+	has_variable = soviet_collapse_influence_volunteers_total
+	has_variable = soviet_collapse_republic_institution_strength
+	has_variable = soviet_collapse_depot_control
+	has_variable = soviet_collapse_league_support_strength
+	has_variable = soviet_collapse_independence_resilience
+	has_variable = soviet_collapse_influence_patronage_risk
+	has_variable = soviet_collapse_local_authority_pressure
+	has_variable = soviet_collapse_liaison_reach
+	has_variable = soviet_collapse_league_member_gate
+	has_variable = soviet_collapse_league_recognition_gate
+	has_variable = soviet_collapse_league_threat_gate
+	has_variable = soviet_collapse_league_foreign_gate
+	has_variable = soviet_collapse_league_failed_objective_gate
+	has_variable = soviet_collapse_league_found_pp_cost
+	has_variable = soviet_collapse_league_found_cp_cost
+	has_variable = soviet_collapse_release_cause
+	has_variable = soviet_collapse_release_sponsor_interest
+	OR = {
+		has_country_flag = soviet_collapse_high_chaos_successor
+		has_country_flag = soviet_collapse_regional_focus_tree_loaded
+		NOT = {
+			OR = {
+				is_soviet_collapse_base_republic_tag = yes
+				is_soviet_collapse_internal_republic_focus_tree_tag = yes
+				tag = MOL
+			}
+		}
+	}
+}

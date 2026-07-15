@@ -47,6 +47,8 @@ independence_wave_validate_execution_metadata = {
 			var:global.liberation_plan_anchor_states^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_anchor }
 			var:global.liberation_plan_primary_hosts^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_former_host }
 			set_temp_variable = { independence_wave_execution_package_id = global.independence_wave_plan_selected_package_ids^independence_wave_execution_package_index }
+			set_temp_variable = { independence_wave_setup_package_id = independence_wave_execution_package_id }
+			independence_wave_probe_force_package_mapping = yes
 			if = {
 				limit = {
 					OR = {
@@ -56,10 +58,10 @@ independence_wave_validate_execution_metadata = {
 						NOT = { check_variable = { var = global.liberation_plan_country_owners^independence_wave_execution_country_row value = constant:liberation_plan_owner.independence_wave compare = equals } }
 						NOT = { check_variable = { var = global.liberation_plan_package_ids^independence_wave_execution_country_row value = independence_wave_execution_package_id compare = equals } }
 						NOT = { has_independence_wave_runtime_package_adapter_for_execution_id = yes }
+						NOT = { has_ready_independence_wave_force_package_mapping_probe = yes }
 						NOT = {
 							event_target:independence_wave_execution_country = {
 								exists = no
-								has_country_flag = independence_wave_package_content_ready
 								is_liberation_release_current_reserved_country = yes
 								is_independence_wave_runtime_package_preflight_ready = yes
 							}
@@ -118,28 +120,30 @@ independence_wave_release_one_frozen_country = {
 	}
 	for_each_scope_loop = {
 		array = global.liberation_plan_states
-		limit = {
-			check_variable = {
-				var = liberation_release_plan_owner
-				value = constant:liberation_plan_owner.independence_wave
-				compare = equals
-			}
-			check_variable = {
-				var = liberation_release_package_id
-				value = independence_wave_execution_package_id
-				compare = equals
-			}
-			check_variable = {
-				var = liberation_release_target_country
-				value = event_target:independence_wave_execution_country
-				compare = equals
-			}
-		}
 		if = {
-			limit = { NOT = { is_core_of = event_target:independence_wave_execution_country } }
-			add_to_array = { array = global.independence_wave_execution_added_plan_cores value = THIS }
+			limit = {
+				check_variable = {
+					var = liberation_release_plan_owner
+					value = constant:liberation_plan_owner.independence_wave
+					compare = equals
+				}
+				check_variable = {
+					var = liberation_release_package_id
+					value = independence_wave_execution_package_id
+					compare = equals
+				}
+				check_variable = {
+					var = liberation_release_target_country
+					value = event_target:independence_wave_execution_country
+					compare = equals
+				}
+			}
+			if = {
+				limit = { NOT = { is_core_of = event_target:independence_wave_execution_country } }
+				add_to_array = { array = global.independence_wave_execution_added_plan_cores value = THIS }
+			}
+			add_core_of = event_target:independence_wave_execution_country
 		}
-		add_core_of = event_target:independence_wave_execution_country
 	}
 	event_target:independence_wave_execution_former_host = {
 		release = event_target:independence_wave_execution_country
@@ -247,8 +251,9 @@ independence_wave_load_frozen_country_execution_context = {
 	event_target:independence_wave_execution_anchor = { save_event_target_as = independence_wave_setup_anchor_state }
 }
 
-# Pass 1: prepare reversible origin state, then apply the exact package. Package
-# setup must prove before any shared Event 006 registry or history row is opened.
+# Pass 1: prepare origin state, then apply the exact package after the shared
+# finalization barrier. Package setup must prove before any durable Event 006
+# history row is opened.
 independence_wave_prepare_frozen_country_packages = {
 	set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
@@ -279,7 +284,8 @@ independence_wave_prepare_frozen_country_packages = {
 	}
 }
 
-# Pass 2: publish only reversible active, network, and former-host registry rows.
+# Pass 2: publish active, network, and former-host registry rows inside the
+# point-of-no-return finalizer.
 independence_wave_activate_frozen_country_origins = {
 	set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
@@ -339,69 +345,55 @@ independence_wave_commit_frozen_country_origins = {
 	}
 }
 
-# Used only before the durable origin-commit pass. Ownership cannot be rolled
-# back after release, but package, registry, and pending metadata can still be
-# removed without leaving a false Event 006 origin record.
-independence_wave_cleanup_uncommitted_frozen_country_origins = {
-	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
-	while_loop_effect = {
-		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
-		independence_wave_load_frozen_country_execution_context = yes
-		event_target:independence_wave_execution_country = {
-			if = {
-				limit = {
-					OR = {
-						has_country_flag = independence_wave_origin_prepared
-						has_country_flag = independence_wave_origin_activation_ready
-						has_country_flag = independence_wave_package_setup_complete
-					}
-				}
-				independence_wave_reset_current_generation = yes
-			}
-			independence_wave_clear_pending_package_metadata = yes
-		}
-		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
-	}
-}
-
-# Four-pass synchronized initializer used by standalone, joint-cluster, and
-# all-countries scenario execution. A durable commit begins only after every
-# exact package has prepared, activated, and validated.
-independence_wave_initialize_frozen_countries = {
-	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
+# Package setup includes politics, technology inheritance, units, stockpiles,
+# and bounded transfers of host air and naval assets. It therefore runs only
+# after the shared coordinator enters `finalizing`; no package mutation is part
+# of the compensating ownership rollback.
+independence_wave_prepare_finalizer_frozen_country_origins = {
 	set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
-	set_temp_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.no_candidates }
-	set_temp_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.no_candidates }
 	if = {
-		limit = { has_variable = global.independence_wave_next_generation_id }
-		set_temp_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.selected }
-		set_temp_variable = { independence_wave_execution_generation_snapshot = global.independence_wave_next_generation_id }
-	}
-
-	independence_wave_prepare_frozen_country_packages = yes
-	if = {
-		limit = { check_variable = { var = independence_wave_execution_prepared_count value = global.independence_wave_plan_selected_count compare = equals } }
-		independence_wave_activate_frozen_country_origins = yes
-	}
-	if = {
-		limit = { check_variable = { var = independence_wave_execution_activated_count value = global.independence_wave_plan_selected_count compare = equals } }
-		independence_wave_validate_frozen_country_packages = yes
-	}
-	if = {
-		limit = { check_variable = { var = independence_wave_execution_validated_count value = global.independence_wave_plan_selected_count compare = equals } }
-		set_temp_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.selected }
-		independence_wave_commit_frozen_country_origins = yes
-	}
-	if = {
-		limit = { check_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.no_candidates } }
-		independence_wave_cleanup_uncommitted_frozen_country_origins = yes
+		limit = { is_liberation_release_plan_finalizing = yes }
+		independence_wave_prepare_frozen_country_packages = yes
 		if = {
-			limit = { check_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.selected } }
-			set_variable = { global.independence_wave_next_generation_id = independence_wave_execution_generation_snapshot }
+			limit = { check_variable = { var = independence_wave_execution_prepared_count value = global.independence_wave_plan_selected_count compare = equals } }
+			independence_wave_activate_frozen_country_origins = yes
 		}
-		else = { clear_variable = global.independence_wave_next_generation_id }
+		if = {
+			limit = { check_variable = { var = independence_wave_execution_activated_count value = global.independence_wave_plan_selected_count compare = equals } }
+			independence_wave_validate_frozen_country_packages = yes
+		}
+	}
+}
+
+# Durable Event 006 history is appended only after every package setup and live
+# registry assertion has succeeded. The caller still verifies the initialized
+# count before it may commit the shared plan.
+independence_wave_finalize_frozen_country_origins = {
+	set_global_flag = liberation_release_event6_origin_commit_started
+	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
+	independence_wave_commit_frozen_country_origins = yes
+}
+
+# Event-owned rollback acknowledgement. The execution pipeline performs no
+# Event 006 package or force mutation before finalization, so a pre-finalizer
+# ownership rollback has no Event 006 registry state to unwind.
+independence_wave_rollback_reversible_frozen_country_packages = {
+	clr_global_flag = liberation_release_event6_rollback_cleanup_validated
+	if = {
+		limit = {
+			NOT = { has_global_flag = liberation_release_finalizer_started }
+			NOT = { has_global_flag = liberation_release_event6_origin_commit_started }
+		}
+		set_global_flag = liberation_release_event6_rollback_cleanup_validated
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = liberation_release_event6_rollback_cleanup_validated }
+			check_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.none }
+		}
+		set_variable = { global.liberation_plan_rollback_failure = constant:liberation_rollback_failure.event6_package_cleanup }
 	}
 }
 
@@ -425,6 +417,11 @@ independence_wave_execute_standalone_frozen_plan = {
 				liberation_release_begin_execution = yes
 				if = {
 					limit = { is_liberation_release_plan_executing = yes }
+					set_temp_variable = { independence_wave_execution_instantiated_count = constant:independence_wave_planner.no_candidates }
+					set_temp_variable = { independence_wave_execution_expected_state_count = constant:independence_wave_planner.no_candidates }
+					set_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_planner.no_candidates }
+					set_temp_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+					set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
 					if = {
 						limit = {
 							check_variable = {
@@ -444,24 +441,54 @@ independence_wave_execute_standalone_frozen_plan = {
 							}
 						}
 						independence_wave_transfer_frozen_states = yes
-						if = {
-							limit = {
-								check_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
-								check_variable = { var = independence_wave_execution_transferred_state_count value = independence_wave_execution_expected_state_count compare = equals }
-							}
-							independence_wave_initialize_frozen_countries = yes
-						}
 					}
 					if = {
 						limit = {
 							check_variable = { var = independence_wave_execution_instantiated_count value = global.independence_wave_plan_selected_count compare = equals }
+							check_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
 							check_variable = { var = independence_wave_execution_transferred_state_count value = independence_wave_execution_expected_state_count compare = equals }
-							check_variable = { var = independence_wave_execution_initialized_count value = global.independence_wave_plan_selected_count compare = equals }
+							liberation_release_execution_matches_frozen_ownership = yes
 						}
-						independence_wave_commit_wave_history = yes
-						liberation_release_commit_plan = yes
+						liberation_release_begin_finalization = yes
 					}
-					else = {
+					if = {
+						limit = { is_liberation_release_plan_finalizing = yes }
+						independence_wave_prepare_finalizer_frozen_country_origins = yes
+						if = {
+							limit = {
+								check_variable = { var = independence_wave_execution_validated_count value = global.independence_wave_plan_selected_count compare = equals }
+							}
+							independence_wave_finalize_frozen_country_origins = yes
+							if = {
+								limit = {
+									check_variable = { var = independence_wave_execution_initialized_count value = global.independence_wave_plan_selected_count compare = equals }
+								}
+								set_global_flag = liberation_release_event6_finalization_validated
+								independence_wave_commit_wave_history = yes
+								liberation_release_commit_plan = yes
+								if = {
+									limit = { NOT = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed } } }
+									set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.invalid_phase }
+									liberation_release_mark_finalization_failed = yes
+								}
+							}
+							else = {
+								set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.event6_origin_commit }
+								liberation_release_mark_finalization_failed = yes
+							}
+						}
+						else = {
+							set_variable = { global.liberation_plan_finalization_failure = constant:liberation_finalization_failure.event6_package_setup }
+							liberation_release_mark_finalization_failed = yes
+						}
+					}
+					if = {
+						limit = { is_liberation_release_plan_executing = yes }
+						set_global_flag = independence_wave_execution_failed
+						set_variable = { global.independence_wave_execution_last_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
+					}
+					else_if = {
+						limit = { has_liberation_release_plan_finalization_failed = yes }
 						set_global_flag = independence_wave_execution_failed
 						set_variable = { global.independence_wave_execution_last_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
 					}
@@ -487,12 +514,14 @@ independence_wave_execute_standalone_frozen_plan = {
 # Complete standalone Event 006 transaction. Presentation is deliberately
 # outside this effect so a failed allocation can never display a release that
 # did not happen. Pre-mutation failures restore host capitals and clear the
-# Event 006 contribution; failures after the execution barrier are recorded as
-# non-rollbackable and never presented as success.
+# Event 006 contribution; failures after the execution barrier run the exact
+# compensating ledger before any reservation metadata can be discarded.
 independence_wave_prepare_and_execute_standalone_incident = {
 	clr_global_flag = independence_wave_standalone_incident_committed
 	clr_global_flag = independence_wave_standalone_incident_cancelled_before_mutation
 	clr_global_flag = independence_wave_standalone_incident_failed_after_mutation
+	clr_global_flag = independence_wave_standalone_incident_failed_during_finalization
+	clr_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation
 	set_temp_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.no_candidates }
 
 	independence_wave_capture_wave_tuning = yes
@@ -536,22 +565,36 @@ independence_wave_prepare_and_execute_standalone_incident = {
 	else_if = {
 		limit = {
 			check_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.selected }
+			has_liberation_release_plan_finalization_failed = yes
+		}
+		set_global_flag = independence_wave_standalone_incident_failed_after_mutation
+		set_global_flag = independence_wave_standalone_incident_failed_during_finalization
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.selected }
 			has_global_flag = liberation_release_execution_started
 		}
 		set_global_flag = independence_wave_standalone_incident_failed_after_mutation
-		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
-		clr_global_flag = liberation_release_plan_valid
-		liberation_release_clear_plan_scope_marks = yes
+		liberation_release_execute_compensating_rollback = yes
+		if = {
+			limit = { has_global_flag = liberation_release_plan_rollback_completed }
+			set_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation
+		}
 	}
 	else_if = {
 		limit = { check_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.selected } }
 		liberation_release_restore_host_capitals_before_execution = yes
-		independence_wave_clear_plan_contribution = yes
-		clr_global_flag = independence_wave_plan_contribution_ready
-		clr_global_flag = independence_wave_plan_exact_count_failed
-		clr_global_flag = independence_wave_plan_pool_exhausted
-		clr_global_flag = independence_wave_plan_optional_expansion_failed
-		liberation_release_abort_plan = yes
-		set_global_flag = independence_wave_standalone_incident_cancelled_before_mutation
+		if = {
+			limit = { NOT = { has_global_flag = liberation_release_capital_restore_failed } }
+			independence_wave_clear_plan_contribution = yes
+			clr_global_flag = independence_wave_plan_contribution_ready
+			clr_global_flag = independence_wave_plan_exact_count_failed
+			clr_global_flag = independence_wave_plan_pool_exhausted
+			clr_global_flag = independence_wave_plan_optional_expansion_failed
+			liberation_release_abort_plan = yes
+			set_global_flag = independence_wave_standalone_incident_cancelled_before_mutation
+		}
+		else = { liberation_release_abort_plan = yes }
 	}
 }
