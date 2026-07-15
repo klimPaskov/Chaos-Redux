@@ -33,9 +33,9 @@ Fallout remains an unnumbered system package with dedicated ownership of:
 
 The live Air system includes global contamination basis points, monthly host-owned updates, chemical and nuclear state inputs, low capped natural smoke and ash pressure, threshold behavior, winter pressure, legacy treaty hooks, nuclear fallout state intensity, UI read models, and a request path into the dedicated Fallout coordinator.
 
-Air Winter has phases 0 through 6, exposure and survival ledgers, Deaths integration, building and supply damage, category degradation, disease, state movement and attrition, three map modes, reviewed regional ordinary-map visuals, response decisions, and a 33-block event pilot. All three mapmode tooltips use four viewer-specific monitoring levels. A foreign state exposes only its current phase. Ownership, control, or treaty reports add the one-month trend. Roof sampling creates a national Atmospheric Office. Terminal atmospheric classification appears at 90 percent global contamination or for a monitored major power. It does not write the committed Fallout grade.
+Air Winter has phases 0 through 6, exposure and survival ledgers, Deaths integration, building and supply damage, category degradation, disease, state movement and attrition, three map modes, reviewed regional ordinary-map visuals, response decisions, and a 35-block event pilot. The event scheduler carries durable first-frost, dark-harvest, ash-thaw, second-winter, and terminal-season markers through cooldowns and calendar boundaries. Annual receipts and nine regional severe-year memories keep recurrence deterministic. All three mapmode tooltips use four viewer-specific monitoring levels. A foreign state exposes only its current phase. Ownership, control, or treaty reports add the one-month trend. Roof sampling creates a national Atmospheric Office. Terminal atmospheric classification appears at 90 percent global contamination or for a monitored major power. It does not write the committed Fallout grade.
 
-Air Winter remains incomplete. The live monthly cleanup disables the legacy treaty lifecycle, so relief routes and the broader treaty package have no active owner. Air-operation modifiers, combat and strategic-bombing pressure, and recurring seasonal event ledgers are absent. Tooltip rendering, viewer scope, and normal-map visuals remain runtime observation gates.
+Air Winter remains incomplete. The live monthly cleanup disables the legacy treaty lifecycle, so relief routes and the broader treaty package have no active owner. Air-operation modifiers and local winter pressure from active combat and strategic bombing are absent. Tooltip rendering, viewer scope, normal-map visuals, event dispatch, and seasonal save persistence remain runtime observation gates.
 
 ### Fallout request and blackout skeleton
 
@@ -163,6 +163,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Transition ordering and postconditions: `FALLOUT_TRANSITION_ARCHITECTURE.md`
 - Trade, force-transfer, and intelligence reset proof: `FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md`
 - Air Winter snapshot provenance and transactional lock: `FALLOUT_AIR_WINTER_SNAPSHOT_PROVENANCE_PROOF.md`
+- Air Winter seasonal recurrence and calendar contract: `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`
 - Province supply-network collapse and migration proof: `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md`
 - Source-of-truth routing: `SOURCE_OF_TRUTH_RECONCILIATION.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`

@@ -406,7 +406,19 @@ During the monthly state pass, build candidate arrays for:
 - local government breakdown
 - fictional mutant emergence
 
-After the pass, dispatch at most one candidate per eligible owner. Each owner has a 46-day cooldown and each state competes through a deterministic severity score with the lowest state id resolving equal scores. This prevents one event per affected state while preserving independent human and AI country pacing. The human campaign target remains 90 to 180 meaningful events across the full Fallout scheduler over ten years, not 90 to 180 Air Winter phase popups alone.
+After the pass, dispatch at most one candidate per eligible owner. Each owner has a 46-day cooldown. Ordinary phase candidates use severity score with the lowest state id resolving equal scores. Seasonal candidates add typed family priority and earliest origin cycle before frozen severity score and state id. This prevents one event per affected state while preserving independent human and AI country pacing. The human campaign target remains 90 to 180 meaningful events across the full Fallout scheduler over ten years, not 90 to 180 Air Winter phase popups alone.
+
+The live recurring seasonal layer uses the same monthly state pass and bounded owner array. The cycle opener snapshots the documented current engine year once. State processing captures complete durable marker rows before the cooldown gate, so an observed condition does not disappear while its country is cooling down. A marker retains its origin year, origin cycle, origin owner, presentation class, score, and typed event id until a validated dispatch consumes it.
+
+The implemented seasonal families are:
+
+- first frost when a state enters Phase 2
+- dark harvest when a Phase 4 or worse state matches the food-state classifier
+- ash thaw when a state falls from Phase 3 or 4 to a lower phase
+- second winter when the same presentation class reaches a severe winter in a later engine year
+- terminal season when a Phase 6 state is observed above the terminal contamination threshold
+
+Country receipts make each family at most once for its recorded year. Nine regional severe-year memories seed the first severe year and advance only after a validated later-year second-winter dispatch. Prior-year markers remain valid when their receipt is still earlier than the marker year. No seasonal family adds a world iterator. Full ordering, cleanup, and engine-boundary proof is recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
 Player priority:
 

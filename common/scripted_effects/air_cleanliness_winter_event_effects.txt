@@ -9,8 +9,8 @@
 #   air_winter_event_apply_deaths = yes    (STATE with temp death percent)
 #
 # The scheduler adds no country or state scan. It records candidates during the
-# existing monthly state pass, compares them by score and state id, then uses a
-# bounded owner array for post-pass dispatch.
+# existing monthly state pass, compares typed priority, origin cycle, score,
+# and state id, then uses a bounded owner array for post-pass dispatch.
 # ============================================================================
 
 # Timed flag durations reject script-constant and variable tokens on some
@@ -48,6 +48,9 @@ air_winter_event_cancel_pending_chain = {
 	clr_state_flag = air_winter_thaw_chain_fields
 	clr_state_flag = air_winter_thaw_chain_roads
 	clr_state_flag = air_winter_thaw_chain_water
+	clr_state_flag = air_winter_second_chain_rations
+	clr_state_flag = air_winter_second_chain_withdrawal
+	clr_state_flag = air_winter_second_chain_military
 	clr_state_flag = air_winter_pending_delayed_result
 	clear_variable = air_winter_pending_event_owner
 }
@@ -125,10 +128,29 @@ air_winter_event_clear_country_memory = {
 	clr_country_flag = air_winter_event_seen_phase_6
 	clr_country_flag = air_winter_memory_abandonment_refused
 	clear_variable = air_winter_recovery_event_count
+	clear_variable = air_winter_first_frost_event_year
+	clear_variable = air_winter_dark_harvest_event_year
+	clear_variable = air_winter_ash_thaw_event_year
+	clear_variable = air_winter_second_winter_event_year
+	clear_variable = air_winter_terminal_season_event_year
+	clear_variable = air_winter_boreal_last_severe_year
+	clear_variable = air_winter_maritime_last_severe_year
+	clear_variable = air_winter_mediterranean_last_severe_year
+	clear_variable = air_winter_arid_last_severe_year
+	clear_variable = air_winter_tropical_last_severe_year
+	clear_variable = air_winter_equatorial_last_severe_year
+	clear_variable = air_winter_highland_last_severe_year
+	clear_variable = air_winter_oceanic_last_severe_year
+	clear_variable = air_winter_polar_last_severe_year
 	clear_variable = air_winter_event_candidate_state
 	clear_variable = air_winter_event_candidate_id
 	clear_variable = air_winter_event_candidate_score
 	clear_variable = air_winter_event_candidate_cycle_id
+	clear_variable = air_winter_event_candidate_family
+	clear_variable = air_winter_event_candidate_priority
+	clear_variable = air_winter_event_candidate_year
+	clear_variable = air_winter_event_candidate_region
+	clear_variable = air_winter_event_candidate_origin_cycle_id
 }
 
 # Supported scope: STATE
@@ -218,6 +240,20 @@ air_winter_event_clear_state_memory = {
 	clr_state_flag = air_winter_memory_false_thaw
 	clr_state_flag = air_winter_memory_decontamination_succeeded
 	clr_state_flag = air_winter_memory_decontamination_failed
+	clr_state_flag = air_winter_memory_second_rations
+	clr_state_flag = air_winter_memory_second_rations_held
+	clr_state_flag = air_winter_memory_second_rations_failed
+	clr_state_flag = air_winter_memory_second_withdrawal
+	clr_state_flag = air_winter_memory_second_withdrawal_settled
+	clr_state_flag = air_winter_memory_second_withdrawal_scattered
+	clr_state_flag = air_winter_memory_second_military
+	clr_state_flag = air_winter_memory_second_military_held
+	clr_state_flag = air_winter_memory_second_military_fractured
+	air_winter_event_clear_first_frost_marker = yes
+	air_winter_event_clear_dark_harvest_marker = yes
+	air_winter_event_clear_ash_thaw_marker = yes
+	air_winter_event_clear_second_winter_marker = yes
+	air_winter_event_clear_terminal_season_marker = yes
 }
 
 # Supported scope: STATE
@@ -248,10 +284,471 @@ air_winter_event_apply_deaths = {
 	set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_runtime.zero }
 }
 
+# Supported scope: STATE. The value is frozen when a seasonal observation is
+# recorded, so later pressure changes cannot reorder old observations.
+air_winter_event_calculate_candidate_score = {
+	set_temp_variable = { air_winter_marker_score = air_winter_phase }
+	multiply_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.candidate_phase_weight }
+	set_temp_variable = { air_winter_marker_pressure_score = air_winter_pressure }
+	multiply_temp_variable = { air_winter_marker_pressure_score = constant:air_winter_event_runtime.candidate_pressure_weight }
+	add_to_temp_variable = { air_winter_marker_score = air_winter_marker_pressure_score }
+}
+
+# Supported scope: STATE. Output is temporary air_winter_selected_event_id.
+air_winter_event_select_phase_2_route = {
+	if = {
+		limit = { air_winter_response_is_city = yes }
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_city }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				air_winter_presentation_is_maritime = yes
+				air_winter_presentation_is_oceanic = yes
+				air_winter_presentation_is_tropical = yes
+			}
+		}
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_coast }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				air_winter_presentation_is_arid = yes
+				air_winter_presentation_is_mediterranean = yes
+			}
+		}
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_arid }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				air_winter_presentation_is_highland = yes
+				air_winter_presentation_is_polar = yes
+			}
+		}
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_highland }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				air_winter_presentation_is_boreal = yes
+				air_winter_presentation_is_equatorial = yes
+			}
+		}
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_food }
+	}
+}
+
+# Supported scope: STATE. Output is temporary air_winter_selected_event_id.
+air_winter_event_select_unseen_phase_route = {
+	if = {
+		limit = {
+			air_winter_is_phase_1 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_1 } }
+		}
+		if = {
+			limit = { OR = { air_winter_presentation_is_boreal = yes air_winter_presentation_is_polar = yes } }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_boreal }
+		}
+		else_if = {
+			limit = { OR = { air_winter_presentation_is_maritime = yes air_winter_presentation_is_oceanic = yes } }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_maritime }
+		}
+		else_if = {
+			limit = { OR = { air_winter_presentation_is_arid = yes air_winter_presentation_is_mediterranean = yes } }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_arid }
+		}
+		else_if = {
+			limit = { OR = { air_winter_presentation_is_tropical = yes air_winter_presentation_is_equatorial = yes } }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_tropical }
+		}
+		else_if = {
+			limit = { air_winter_presentation_is_highland = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_highland }
+		}
+	}
+	else_if = {
+		limit = {
+			air_winter_is_phase_2 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_2 } }
+		}
+		air_winter_event_select_phase_2_route = yes
+	}
+	else_if = {
+		limit = {
+			air_winter_is_phase_3 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_3 } }
+		}
+		if = {
+			limit = { air_winter_response_is_transport_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_transport }
+		}
+		else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_clinics } }
+	}
+	else_if = {
+		limit = {
+			air_winter_is_phase_4 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_4 } }
+		}
+		if = {
+			limit = { air_winter_response_is_city = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_city }
+		}
+		else_if = {
+			limit = { air_winter_response_is_food_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_food }
+		}
+		else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_shelter } }
+	}
+	else_if = {
+		limit = {
+			air_winter_is_phase_5 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_5 } }
+		}
+		if = {
+			limit = { air_winter_response_is_city = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_city }
+		}
+		else_if = {
+			limit = { air_winter_has_low_shelter = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_abandonment }
+		}
+		else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_archive } }
+	}
+	else_if = {
+		limit = {
+			air_winter_is_phase_6 = yes
+			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_6 } }
+		}
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_6_terminal }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_clear_first_frost_marker = {
+	clr_state_flag = air_winter_first_frost_marker
+	clear_variable = air_winter_first_frost_origin_year
+	clear_variable = air_winter_first_frost_origin_cycle_id
+	clear_variable = air_winter_first_frost_origin_owner
+	clear_variable = air_winter_first_frost_origin_region
+	clear_variable = air_winter_first_frost_origin_score
+	clear_variable = air_winter_first_frost_origin_event_id
+}
+
+# Supported scope: STATE
+air_winter_event_clear_dark_harvest_marker = {
+	clr_state_flag = air_winter_dark_harvest_marker
+	clear_variable = air_winter_dark_harvest_origin_year
+	clear_variable = air_winter_dark_harvest_origin_cycle_id
+	clear_variable = air_winter_dark_harvest_origin_owner
+	clear_variable = air_winter_dark_harvest_origin_region
+	clear_variable = air_winter_dark_harvest_origin_score
+	clear_variable = air_winter_dark_harvest_origin_event_id
+}
+
+# Supported scope: STATE
+air_winter_event_clear_ash_thaw_marker = {
+	clr_state_flag = air_winter_ash_thaw_marker
+	clear_variable = air_winter_ash_thaw_origin_year
+	clear_variable = air_winter_ash_thaw_origin_cycle_id
+	clear_variable = air_winter_ash_thaw_origin_owner
+	clear_variable = air_winter_ash_thaw_origin_region
+	clear_variable = air_winter_ash_thaw_origin_score
+	clear_variable = air_winter_ash_thaw_origin_event_id
+}
+
+# Supported scope: STATE
+air_winter_event_clear_second_winter_marker = {
+	clr_state_flag = air_winter_second_winter_marker
+	clear_variable = air_winter_second_winter_origin_year
+	clear_variable = air_winter_second_winter_origin_cycle_id
+	clear_variable = air_winter_second_winter_origin_owner
+	clear_variable = air_winter_second_winter_origin_region
+	clear_variable = air_winter_second_winter_origin_score
+	clear_variable = air_winter_second_winter_origin_event_id
+}
+
+# Supported scope: STATE
+air_winter_event_clear_terminal_season_marker = {
+	clr_state_flag = air_winter_terminal_season_marker
+	clear_variable = air_winter_terminal_season_origin_year
+	clear_variable = air_winter_terminal_season_origin_cycle_id
+	clear_variable = air_winter_terminal_season_origin_owner
+	clear_variable = air_winter_terminal_season_origin_region
+	clear_variable = air_winter_terminal_season_origin_score
+	clear_variable = air_winter_terminal_season_origin_event_id
+}
+
+# Supported scope: STATE. PREV is the dispatching country. An ordinary phase
+# event may be the exact authored route stored by first frost or dark harvest.
+# Consume that matching observation once so one physical incident cannot open
+# the same event twice under two family labels.
+air_winter_event_coalesce_matching_seasonal_marker = {
+	if = {
+		limit = {
+			air_winter_first_frost_marker_is_valid = yes
+			check_variable = {
+				var = air_winter_first_frost_origin_event_id
+				value = PREV.air_winter_event_candidate_id
+				compare = equals
+			}
+		}
+		OWNER = { set_variable = { air_winter_first_frost_event_year = PREV.air_winter_first_frost_origin_year } }
+		air_winter_event_clear_first_frost_marker = yes
+	}
+	if = {
+		limit = {
+			air_winter_dark_harvest_marker_is_valid = yes
+			check_variable = {
+				var = air_winter_dark_harvest_origin_event_id
+				value = PREV.air_winter_event_candidate_id
+				compare = equals
+			}
+		}
+		OWNER = { set_variable = { air_winter_dark_harvest_event_year = PREV.air_winter_dark_harvest_origin_year } }
+		air_winter_event_clear_dark_harvest_marker = yes
+	}
+}
+
+# Supported scope: STATE. Invalid, transferred, partial, or obsolete rows are
+# removed lazily during the existing state pass.
+air_winter_event_reconcile_seasonal_markers = {
+	if = {
+		limit = { air_winter_event_cycle_year_is_valid = yes }
+		if = { limit = { NOT = { air_winter_first_frost_marker_is_valid = yes } } air_winter_event_clear_first_frost_marker = yes }
+		if = { limit = { NOT = { air_winter_dark_harvest_marker_is_valid = yes } } air_winter_event_clear_dark_harvest_marker = yes }
+		if = { limit = { NOT = { air_winter_ash_thaw_marker_is_valid = yes } } air_winter_event_clear_ash_thaw_marker = yes }
+		if = { limit = { NOT = { air_winter_second_winter_marker_is_valid = yes } } air_winter_event_clear_second_winter_marker = yes }
+		if = { limit = { NOT = { air_winter_terminal_season_marker_is_valid = yes } } air_winter_event_clear_terminal_season_marker = yes }
+	}
+}
+
+# Supported scope: STATE. Output is temporary
+# air_winter_second_winter_region_due.
+air_winter_event_prepare_second_winter_region = {
+	set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.zero }
+	if = {
+		limit = { air_winter_presentation_is_boreal = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_boreal_last_severe_year } } set_variable = { air_winter_boreal_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_boreal_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_maritime = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_maritime_last_severe_year } } set_variable = { air_winter_maritime_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_maritime_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_mediterranean = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_mediterranean_last_severe_year } } set_variable = { air_winter_mediterranean_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_mediterranean_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_arid = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_arid_last_severe_year } } set_variable = { air_winter_arid_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_arid_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_tropical = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_tropical_last_severe_year } } set_variable = { air_winter_tropical_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_tropical_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_equatorial = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_equatorial_last_severe_year } } set_variable = { air_winter_equatorial_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_equatorial_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_highland = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_highland_last_severe_year } } set_variable = { air_winter_highland_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_highland_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_oceanic = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_oceanic_last_severe_year } } set_variable = { air_winter_oceanic_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_oceanic_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_polar = yes }
+		OWNER = {
+			if = { limit = { NOT = { has_variable = air_winter_polar_last_severe_year } } set_variable = { air_winter_polar_last_severe_year = global.air_winter_event_cycle_year } }
+			else_if = { limit = { check_variable = { var = air_winter_polar_last_severe_year value = global.air_winter_event_cycle_year compare = less_than } } set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one } }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. The validated candidate region selects one of the
+# nine fixed regional receipts without meta-generated variable names.
+air_winter_event_commit_second_winter_region = {
+	if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.boreal_continental } } set_variable = { air_winter_boreal_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.temperate_maritime } } set_variable = { air_winter_maritime_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.mediterranean } } set_variable = { air_winter_mediterranean_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.desert_arid_plateau } } set_variable = { air_winter_arid_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.tropical_coast_monsoon } } set_variable = { air_winter_tropical_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.equatorial_rainforest } } set_variable = { air_winter_equatorial_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.mountain_highland } } set_variable = { air_winter_highland_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.island_oceanic } } set_variable = { air_winter_oceanic_last_severe_year = air_winter_event_candidate_year } }
+	else_if = { limit = { check_variable = { air_winter_event_candidate_region = constant:air_winter_presentation_class.polar_subpolar } } set_variable = { air_winter_polar_last_severe_year = air_winter_event_candidate_year } }
+}
+
+# Supported scope: STATE. All five observations are stored before the owner
+# cooldown gate so a transient transition or threshold cannot be lost.
+air_winter_event_capture_seasonal_markers = {
+	air_winter_event_reconcile_seasonal_markers = yes
+	if = {
+		limit = {
+			air_winter_event_cycle_year_is_valid = yes
+			OWNER = { exists = yes }
+			NOT = { air_winter_presentation_is_unclassified = yes }
+		}
+		if = {
+			limit = {
+				NOT = { has_state_flag = air_winter_first_frost_marker }
+				has_state_flag = air_winter_phase_changed_this_tick
+				check_variable = { air_winter_previous_phase < constant:air_winter_phase.crop_shock }
+				check_variable = { var = air_winter_phase value = constant:air_winter_phase.crop_shock compare = greater_than_or_equals }
+				OWNER = {
+					OR = {
+						NOT = { has_variable = air_winter_first_frost_event_year }
+						check_variable = { var = air_winter_first_frost_event_year value = global.air_winter_event_cycle_year compare = less_than }
+					}
+				}
+			}
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
+			air_winter_event_select_phase_2_route = yes
+			if = {
+				limit = { check_variable = { air_winter_selected_event_id > constant:air_winter_event_id.none } }
+				air_winter_event_calculate_candidate_score = yes
+				set_variable = { air_winter_first_frost_origin_year = global.air_winter_event_cycle_year }
+				set_variable = { air_winter_first_frost_origin_cycle_id = global.air_winter_cycle_id }
+				set_variable = { air_winter_first_frost_origin_owner = OWNER }
+				set_variable = { air_winter_first_frost_origin_region = air_winter_presentation_class }
+				set_variable = { air_winter_first_frost_origin_score = air_winter_marker_score }
+				set_variable = { air_winter_first_frost_origin_event_id = air_winter_selected_event_id }
+				set_state_flag = air_winter_first_frost_marker
+			}
+		}
+
+		if = {
+			limit = {
+				NOT = { has_state_flag = air_winter_dark_harvest_marker }
+				air_winter_is_severe = yes
+				air_winter_response_is_food_state = yes
+				OWNER = {
+					OR = {
+						NOT = { has_variable = air_winter_dark_harvest_event_year }
+						check_variable = { var = air_winter_dark_harvest_event_year value = global.air_winter_event_cycle_year compare = less_than }
+					}
+				}
+			}
+			air_winter_event_calculate_candidate_score = yes
+			set_variable = { air_winter_dark_harvest_origin_year = global.air_winter_event_cycle_year }
+			set_variable = { air_winter_dark_harvest_origin_cycle_id = global.air_winter_cycle_id }
+			set_variable = { air_winter_dark_harvest_origin_owner = OWNER }
+			set_variable = { air_winter_dark_harvest_origin_region = air_winter_presentation_class }
+			set_variable = { air_winter_dark_harvest_origin_score = air_winter_marker_score }
+			set_variable = { air_winter_dark_harvest_origin_event_id = constant:air_winter_event_id.phase_4_food }
+			set_state_flag = air_winter_dark_harvest_marker
+		}
+
+		if = {
+			limit = {
+				NOT = { has_state_flag = air_winter_ash_thaw_marker }
+				has_state_flag = air_winter_phase_changed_this_tick
+				check_variable = { var = air_winter_previous_phase value = constant:air_winter_phase.hard_freeze compare = greater_than_or_equals }
+				check_variable = { var = air_winter_previous_phase value = constant:air_winter_phase.black_harvest compare = less_than_or_equals }
+				check_variable = { var = air_winter_phase value = air_winter_previous_phase compare = less_than }
+				OWNER = {
+					OR = {
+						NOT = { has_variable = air_winter_ash_thaw_event_year }
+						check_variable = { var = air_winter_ash_thaw_event_year value = global.air_winter_event_cycle_year compare = less_than }
+					}
+				}
+			}
+			air_winter_event_calculate_candidate_score = yes
+			set_variable = { air_winter_ash_thaw_origin_year = global.air_winter_event_cycle_year }
+			set_variable = { air_winter_ash_thaw_origin_cycle_id = global.air_winter_cycle_id }
+			set_variable = { air_winter_ash_thaw_origin_owner = OWNER }
+			set_variable = { air_winter_ash_thaw_origin_region = air_winter_presentation_class }
+			set_variable = { air_winter_ash_thaw_origin_score = air_winter_marker_score }
+			set_variable = { air_winter_ash_thaw_origin_event_id = constant:air_winter_event_id.recovery }
+			set_state_flag = air_winter_ash_thaw_marker
+		}
+
+		if = {
+			limit = { air_winter_is_severe = yes }
+			air_winter_event_prepare_second_winter_region = yes
+			if = {
+				limit = {
+					NOT = { has_state_flag = air_winter_second_winter_marker }
+					check_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.one }
+					OWNER = {
+						OR = {
+							NOT = { has_variable = air_winter_second_winter_event_year }
+							check_variable = { var = air_winter_second_winter_event_year value = global.air_winter_event_cycle_year compare = less_than }
+						}
+					}
+				}
+				air_winter_event_calculate_candidate_score = yes
+				set_variable = { air_winter_second_winter_origin_year = global.air_winter_event_cycle_year }
+				set_variable = { air_winter_second_winter_origin_cycle_id = global.air_winter_cycle_id }
+				set_variable = { air_winter_second_winter_origin_owner = OWNER }
+				set_variable = { air_winter_second_winter_origin_region = air_winter_presentation_class }
+				set_variable = { air_winter_second_winter_origin_score = air_winter_marker_score }
+				set_variable = { air_winter_second_winter_origin_event_id = constant:air_winter_event_id.second_winter }
+				set_state_flag = air_winter_second_winter_marker
+			}
+		}
+
+		if = {
+			limit = {
+				NOT = { has_state_flag = air_winter_terminal_season_marker }
+				air_winter_is_terminal = yes
+				has_variable = global.air_winter_cycle_contamination_bp_snapshot
+				check_variable = { global.air_winter_cycle_contamination_bp_snapshot > constant:air_winter_monitoring.terminal_contamination_bp }
+				OWNER = {
+					OR = {
+						NOT = { has_variable = air_winter_terminal_season_event_year }
+						check_variable = { var = air_winter_terminal_season_event_year value = global.air_winter_event_cycle_year compare = less_than }
+					}
+				}
+			}
+			air_winter_event_calculate_candidate_score = yes
+			set_variable = { air_winter_terminal_season_origin_year = global.air_winter_event_cycle_year }
+			set_variable = { air_winter_terminal_season_origin_cycle_id = global.air_winter_cycle_id }
+			set_variable = { air_winter_terminal_season_origin_owner = OWNER }
+			set_variable = { air_winter_terminal_season_origin_region = air_winter_presentation_class }
+			set_variable = { air_winter_terminal_season_origin_score = air_winter_marker_score }
+			set_variable = { air_winter_terminal_season_origin_event_id = constant:air_winter_event_id.phase_6_terminal }
+			set_state_flag = air_winter_terminal_season_marker
+		}
+	}
+	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
+	set_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_marker_pressure_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.zero }
+}
+
 # Supported scope: COUNTRY. Clears the bounded dispatch ledger before the
 # existing monthly state pass begins.
 air_winter_event_prepare_candidate_cycle = {
 	clear_array = global.air_winter_event_candidate_countries
+	set_variable = { global.air_winter_event_cycle_year = global.year }
 }
 
 # Supported scope: COUNTRY
@@ -260,238 +757,189 @@ air_winter_event_clear_candidate = {
 	clear_variable = air_winter_event_candidate_id
 	clear_variable = air_winter_event_candidate_score
 	clear_variable = air_winter_event_candidate_cycle_id
+	clear_variable = air_winter_event_candidate_family
+	clear_variable = air_winter_event_candidate_priority
+	clear_variable = air_winter_event_candidate_year
+	clear_variable = air_winter_event_candidate_region
+	clear_variable = air_winter_event_candidate_origin_cycle_id
 }
 
 # Supported scope: STATE. Called once from the existing monthly state pass.
 # It records one deterministic candidate per owner and never fires directly.
 air_winter_schedule_phase_event = {
+	# Nested scripted effects write these temporary outputs. Define them in the
+	# caller before capture so every helper return has a live destination.
+	set_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_marker_pressure_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_second_winter_region_due = constant:air_winter_event_runtime.zero }
+
+	# Marker capture is deliberately outside the country cooldown gate.
+	air_winter_event_capture_seasonal_markers = yes
+
 	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
+	set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.none }
+	set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.none }
+	set_temp_variable = { air_winter_selected_year = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_selected_region = constant:air_winter_presentation_class.unclassified }
+	set_temp_variable = { air_winter_selected_origin_cycle_id = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_selected_score = constant:air_winter_event_runtime.zero }
+
 	if = {
 		limit = {
+			air_winter_event_cycle_year_is_valid = yes
+			NOT = { air_winter_presentation_is_unclassified = yes }
 			OWNER = {
 				exists = yes
 				NOT = { has_country_flag = air_winter_event_cooldown }
 			}
 		}
+
 		if = {
-			limit = {
-				air_winter_is_active = yes
-				NOT = { air_winter_presentation_is_unclassified = yes }
+			limit = { air_winter_terminal_season_marker_is_valid = yes }
+			set_temp_variable = { air_winter_selected_event_id = air_winter_terminal_season_origin_event_id }
+			set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.terminal_season }
+			set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.terminal_season }
+			set_temp_variable = { air_winter_selected_year = air_winter_terminal_season_origin_year }
+			set_temp_variable = { air_winter_selected_region = air_winter_terminal_season_origin_region }
+			set_temp_variable = { air_winter_selected_origin_cycle_id = air_winter_terminal_season_origin_cycle_id }
+			set_temp_variable = { air_winter_selected_score = air_winter_terminal_season_origin_score }
+		}
+		else = {
+			if = {
+				limit = { air_winter_is_active = yes }
+				air_winter_event_select_unseen_phase_route = yes
 			}
 			if = {
-				limit = {
-					air_winter_is_phase_1 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_1 } }
-				}
-				if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_boreal = yes
-							air_winter_presentation_is_polar = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_boreal }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_maritime = yes
-							air_winter_presentation_is_oceanic = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_maritime }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_arid = yes
-							air_winter_presentation_is_mediterranean = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_arid }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_tropical = yes
-							air_winter_presentation_is_equatorial = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_tropical }
-				}
-				else_if = {
-					limit = { air_winter_presentation_is_highland = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_1_highland }
-				}
+				limit = { check_variable = { air_winter_selected_event_id > constant:air_winter_event_id.none } }
+				air_winter_event_calculate_candidate_score = yes
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.ordinary_phase }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.ordinary_phase }
+				set_temp_variable = { air_winter_selected_year = global.air_winter_event_cycle_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_presentation_class }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = global.air_winter_cycle_id }
+				set_temp_variable = { air_winter_selected_score = air_winter_marker_score }
+			}
+			else_if = {
+				limit = { air_winter_second_winter_marker_is_valid = yes }
+				set_temp_variable = { air_winter_selected_event_id = air_winter_second_winter_origin_event_id }
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.second_winter }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.second_winter }
+				set_temp_variable = { air_winter_selected_year = air_winter_second_winter_origin_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_second_winter_origin_region }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = air_winter_second_winter_origin_cycle_id }
+				set_temp_variable = { air_winter_selected_score = air_winter_second_winter_origin_score }
+			}
+			else_if = {
+				limit = { air_winter_dark_harvest_marker_is_valid = yes }
+				set_temp_variable = { air_winter_selected_event_id = air_winter_dark_harvest_origin_event_id }
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.dark_harvest }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.dark_harvest }
+				set_temp_variable = { air_winter_selected_year = air_winter_dark_harvest_origin_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_dark_harvest_origin_region }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = air_winter_dark_harvest_origin_cycle_id }
+				set_temp_variable = { air_winter_selected_score = air_winter_dark_harvest_origin_score }
+			}
+			else_if = {
+				limit = { air_winter_first_frost_marker_is_valid = yes }
+				set_temp_variable = { air_winter_selected_event_id = air_winter_first_frost_origin_event_id }
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.first_frost }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.first_frost }
+				set_temp_variable = { air_winter_selected_year = air_winter_first_frost_origin_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_first_frost_origin_region }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = air_winter_first_frost_origin_cycle_id }
+				set_temp_variable = { air_winter_selected_score = air_winter_first_frost_origin_score }
+			}
+			else_if = {
+				limit = { air_winter_ash_thaw_marker_is_valid = yes }
+				set_temp_variable = { air_winter_selected_event_id = air_winter_ash_thaw_origin_event_id }
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.ash_thaw }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.ash_thaw }
+				set_temp_variable = { air_winter_selected_year = air_winter_ash_thaw_origin_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_ash_thaw_origin_region }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = air_winter_ash_thaw_origin_cycle_id }
+				set_temp_variable = { air_winter_selected_score = air_winter_ash_thaw_origin_score }
 			}
 			else_if = {
 				limit = {
-					air_winter_is_phase_2 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_2 } }
-				}
-				if = {
-					limit = { air_winter_response_is_city = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_city }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_maritime = yes
-							air_winter_presentation_is_oceanic = yes
-							air_winter_presentation_is_tropical = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_coast }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_arid = yes
-							air_winter_presentation_is_mediterranean = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_arid }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_highland = yes
-							air_winter_presentation_is_polar = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_highland }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							air_winter_presentation_is_boreal = yes
-							air_winter_presentation_is_equatorial = yes
-						}
-					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_food }
-				}
-			}
-			else_if = {
-				limit = {
-					air_winter_is_phase_3 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_3 } }
-				}
-				if = {
-					limit = { air_winter_response_is_transport_state = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_transport }
-				}
-				else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_clinics } }
-			}
-			else_if = {
-				limit = {
-					air_winter_is_phase_4 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_4 } }
-				}
-				if = {
-					limit = { air_winter_response_is_city = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_city }
-				}
-				else_if = {
-					limit = { air_winter_response_is_food_state = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_food }
-				}
-				else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_4_shelter } }
-			}
-			else_if = {
-				limit = {
-					air_winter_is_phase_5 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_5 } }
-				}
-				if = {
-					limit = { air_winter_response_is_city = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_city }
-				}
-				else_if = {
-					limit = { air_winter_has_low_shelter = yes }
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_abandonment }
-				}
-				else = { set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_archive } }
-			}
-			else_if = {
-				limit = {
-					air_winter_is_phase_6 = yes
-					OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_6 } }
-				}
-				set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_6_terminal }
-			}
-		}
-		if = {
-			limit = {
-				check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
-				NOT = { air_winter_presentation_is_unclassified = yes }
-				has_state_flag = air_winter_phase_changed_this_tick
-				check_variable = {
-					var = air_winter_phase
-					value = air_winter_previous_phase
-					compare = less_than
-				}
-			}
-			OWNER = {
-				if = {
-					limit = {
+					has_state_flag = air_winter_phase_changed_this_tick
+					check_variable = { var = air_winter_phase value = air_winter_previous_phase compare = less_than }
+					OWNER = {
 						OR = {
 							NOT = { has_variable = air_winter_recovery_event_count }
 							check_variable = { air_winter_recovery_event_count < constant:air_winter_event_runtime.recovery_arc_cap }
 						}
 					}
-					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery }
 				}
+				air_winter_event_calculate_candidate_score = yes
+				set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery }
+				set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.recovery }
+				set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.recovery }
+				set_temp_variable = { air_winter_selected_year = global.air_winter_event_cycle_year }
+				set_temp_variable = { air_winter_selected_region = air_winter_presentation_class }
+				set_temp_variable = { air_winter_selected_origin_cycle_id = global.air_winter_cycle_id }
+				set_temp_variable = { air_winter_selected_score = constant:air_winter_event_runtime.candidate_recovery_base }
+				add_to_temp_variable = { air_winter_selected_score = air_winter_marker_pressure_score }
 			}
 		}
 
 		if = {
-			limit = { check_variable = { air_winter_selected_event_id > constant:air_winter_event_id.none } }
-			set_temp_variable = { air_winter_event_candidate_state_id = THIS.id }
-			set_temp_variable = { air_winter_event_candidate_score_value = air_winter_phase }
-			multiply_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.candidate_phase_weight }
-			set_temp_variable = { air_winter_event_candidate_pressure_score = air_winter_pressure }
-			multiply_temp_variable = { air_winter_event_candidate_pressure_score = constant:air_winter_event_runtime.candidate_pressure_weight }
-			add_to_temp_variable = { air_winter_event_candidate_score_value = air_winter_event_candidate_pressure_score }
-			if = {
-				limit = { check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery } }
-				set_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.candidate_recovery_base }
-				add_to_temp_variable = { air_winter_event_candidate_score_value = air_winter_event_candidate_pressure_score }
+			limit = {
+				check_variable = { air_winter_selected_event_id > constant:air_winter_event_id.none }
+				check_variable = { air_winter_selected_family > constant:air_winter_event_family.none }
+				check_variable = { air_winter_selected_priority > constant:air_winter_event_priority.none }
+				check_variable = { air_winter_selected_year > constant:air_winter_event_runtime.zero }
+				check_variable = { air_winter_selected_region > constant:air_winter_presentation_class.unclassified }
+				check_variable = { air_winter_selected_origin_cycle_id > constant:air_winter_event_runtime.zero }
+				check_variable = { air_winter_selected_score > constant:air_winter_event_runtime.zero }
 			}
+			set_temp_variable = { air_winter_event_candidate_state_id = THIS.id }
 			OWNER = {
 				if = {
 					limit = {
 						OR = {
+							NOT = { has_variable = air_winter_event_candidate_state }
+							NOT = { has_variable = air_winter_event_candidate_id }
+							NOT = { has_variable = air_winter_event_candidate_score }
 							NOT = { has_variable = air_winter_event_candidate_cycle_id }
-							NOT = {
-								check_variable = {
-									var = air_winter_event_candidate_cycle_id
-									value = global.air_winter_cycle_id
-									compare = equals
-								}
-							}
-							check_variable = {
-								var = air_winter_event_candidate_score_value
-								value = air_winter_event_candidate_score
-								compare = greater_than
-							}
+							NOT = { check_variable = { var = air_winter_event_candidate_cycle_id value = global.air_winter_cycle_id compare = equals } }
+							NOT = { has_variable = air_winter_event_candidate_family }
+							NOT = { has_variable = air_winter_event_candidate_priority }
+							NOT = { has_variable = air_winter_event_candidate_year }
+							NOT = { has_variable = air_winter_event_candidate_region }
+							NOT = { has_variable = air_winter_event_candidate_origin_cycle_id }
+							check_variable = { var = air_winter_selected_priority value = air_winter_event_candidate_priority compare = greater_than }
 							AND = {
-								check_variable = {
-									var = air_winter_event_candidate_score_value
-									value = air_winter_event_candidate_score
-									compare = equals
-								}
-								check_variable = {
-									var = air_winter_event_candidate_state_id
-									value = air_winter_event_candidate_state
-									compare = less_than
+								check_variable = { var = air_winter_selected_priority value = air_winter_event_candidate_priority compare = equals }
+								OR = {
+									NOT = { has_variable = air_winter_event_candidate_origin_cycle_id }
+									check_variable = { var = air_winter_selected_origin_cycle_id value = air_winter_event_candidate_origin_cycle_id compare = less_than }
+									AND = {
+										check_variable = { var = air_winter_selected_origin_cycle_id value = air_winter_event_candidate_origin_cycle_id compare = equals }
+										OR = {
+											NOT = { has_variable = air_winter_event_candidate_score }
+											check_variable = { var = air_winter_selected_score value = air_winter_event_candidate_score compare = greater_than }
+											AND = {
+												check_variable = { var = air_winter_selected_score value = air_winter_event_candidate_score compare = equals }
+												OR = {
+													NOT = { has_variable = air_winter_event_candidate_state }
+													check_variable = { var = air_winter_event_candidate_state_id value = air_winter_event_candidate_state compare = less_than }
+												}
+											}
+										}
+									}
 								}
 							}
 						}
 					}
 					set_variable = { air_winter_event_candidate_state = air_winter_event_candidate_state_id }
 					set_variable = { air_winter_event_candidate_id = air_winter_selected_event_id }
-					set_variable = { air_winter_event_candidate_score = air_winter_event_candidate_score_value }
+					set_variable = { air_winter_event_candidate_score = air_winter_selected_score }
 					set_variable = { air_winter_event_candidate_cycle_id = global.air_winter_cycle_id }
+					set_variable = { air_winter_event_candidate_family = air_winter_selected_family }
+					set_variable = { air_winter_event_candidate_priority = air_winter_selected_priority }
+					set_variable = { air_winter_event_candidate_year = air_winter_selected_year }
+					set_variable = { air_winter_event_candidate_region = air_winter_selected_region }
+					set_variable = { air_winter_event_candidate_origin_cycle_id = air_winter_selected_origin_cycle_id }
 				}
 				if = {
 					limit = {
@@ -507,12 +955,18 @@ air_winter_schedule_phase_event = {
 			}
 		}
 	}
-	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
-	set_temp_variable = { air_winter_event_candidate_state_id = constant:air_winter_event_runtime.zero }
-	set_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.zero }
-	set_temp_variable = { air_winter_event_candidate_pressure_score = constant:air_winter_event_runtime.zero }
-}
 
+	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
+	set_temp_variable = { air_winter_selected_family = constant:air_winter_event_family.none }
+	set_temp_variable = { air_winter_selected_priority = constant:air_winter_event_priority.none }
+	set_temp_variable = { air_winter_selected_year = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_selected_region = constant:air_winter_presentation_class.unclassified }
+	set_temp_variable = { air_winter_selected_origin_cycle_id = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_selected_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_event_candidate_state_id = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_marker_pressure_score = constant:air_winter_event_runtime.zero }
+}
 # Supported scope: COUNTRY (the existing host country). Iterates only the
 # bounded country array collected during the existing state pass.
 air_winter_dispatch_phase_events = {
@@ -520,31 +974,60 @@ air_winter_dispatch_phase_events = {
 		array = global.air_winter_event_candidate_countries
 		if = {
 			limit = {
-				has_global_flag = air_winter_cycle_open
 				exists = yes
 				NOT = { has_country_flag = air_winter_event_cooldown }
-				has_variable = air_winter_event_candidate_state
-				has_variable = air_winter_event_candidate_id
-				has_variable = air_winter_event_candidate_cycle_id
-				check_variable = {
-					var = air_winter_event_candidate_cycle_id
-					value = global.air_winter_cycle_id
-					compare = equals
-				}
-				check_variable = { air_winter_event_candidate_id > constant:air_winter_event_id.none }
-				var:air_winter_event_candidate_state = {
-					air_winter_state_is_valid = yes
-					is_owned_by = PREV
-				}
+				air_winter_event_candidate_is_dispatchable = yes
 			}
 			save_event_target_as = air_winter_event_country
 			var:air_winter_event_candidate_state = { save_event_target_as = air_winter_event_state }
+
 			if = {
-				limit = { check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.recovery } }
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.first_frost } }
+				set_variable = { air_winter_first_frost_event_year = air_winter_event_candidate_year }
+				var:air_winter_event_candidate_state = { air_winter_event_clear_first_frost_marker = yes }
+				set_country_flag = air_winter_event_seen_phase_2
+			}
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.dark_harvest } }
+				set_variable = { air_winter_dark_harvest_event_year = air_winter_event_candidate_year }
+				var:air_winter_event_candidate_state = { air_winter_event_clear_dark_harvest_marker = yes }
+				set_country_flag = air_winter_event_seen_phase_4
+			}
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.ash_thaw } }
+				set_variable = { air_winter_ash_thaw_event_year = air_winter_event_candidate_year }
+				var:air_winter_event_candidate_state = { air_winter_event_clear_ash_thaw_marker = yes }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = air_winter_recovery_event_count }
+							check_variable = { air_winter_recovery_event_count < constant:air_winter_event_runtime.recovery_arc_cap }
+						}
+					}
+					add_to_variable = { air_winter_recovery_event_count = constant:air_winter_event_runtime.one }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.second_winter } }
+				set_variable = { air_winter_second_winter_event_year = air_winter_event_candidate_year }
+				air_winter_event_commit_second_winter_region = yes
+				var:air_winter_event_candidate_state = { air_winter_event_clear_second_winter_marker = yes }
+				set_country_flag = air_winter_event_seen_phase_4
+			}
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.terminal_season } }
+				set_variable = { air_winter_terminal_season_event_year = air_winter_event_candidate_year }
+				var:air_winter_event_candidate_state = { air_winter_event_clear_terminal_season_marker = yes }
+				set_country_flag = air_winter_event_seen_phase_6
+			}
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.recovery } }
 				add_to_variable = { air_winter_recovery_event_count = constant:air_winter_event_runtime.one }
 			}
-			else = {
+			else_if = {
+				limit = { check_variable = { air_winter_event_candidate_family = constant:air_winter_event_family.ordinary_phase } }
 				var:air_winter_event_candidate_state = {
+					air_winter_event_coalesce_matching_seasonal_marker = yes
 					if = { limit = { air_winter_is_phase_1 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_1 } }
 					else_if = { limit = { air_winter_is_phase_2 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_2 } }
 					else_if = { limit = { air_winter_is_phase_3 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_3 } }
@@ -553,6 +1036,7 @@ air_winter_dispatch_phase_events = {
 					else_if = { limit = { air_winter_is_phase_6 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_6 } }
 				}
 			}
+
 			set_country_flag = {
 				flag = air_winter_event_cooldown
 				days = @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS

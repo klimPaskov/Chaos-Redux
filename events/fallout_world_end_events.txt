@@ -2710,6 +2710,495 @@ country_event = {
 }
 
 # ---------------------------------------------------------------------------
+# Air Winter recurring second-winter chain
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.60
+	title = chaosx.fallout.60.t
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_boreal = yes } }
+		text = chaosx.fallout.60.boreal.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_maritime = yes } }
+		text = chaosx.fallout.60.maritime.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_mediterranean = yes } }
+		text = chaosx.fallout.60.mediterranean.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_arid = yes } }
+		text = chaosx.fallout.60.arid.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_tropical = yes } }
+		text = chaosx.fallout.60.tropical.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_equatorial = yes } }
+		text = chaosx.fallout.60.equatorial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_highland = yes } }
+		text = chaosx.fallout.60.highland.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_oceanic = yes } }
+		text = chaosx.fallout.60.oceanic.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_presentation_is_polar = yes } }
+		text = chaosx.fallout.60.polar.d
+	}
+	picture = GFX_report_event_air_winter_phase_5
+	is_triggered_only = yes
+	trigger = { air_winter_event_targets_are_valid = yes }
+
+	option = {
+		name = chaosx.fallout.60.a
+		ai_chance = {
+			base = constant:air_winter_event_ai.primary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = {
+					check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ration_ai_food_minimum }
+					check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ration_ai_shelter_minimum }
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = {
+					NOT = {
+						AND = {
+							check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ration_ai_food_minimum }
+							check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ration_ai_shelter_minimum }
+						}
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_targets_are_valid = yes }
+				event_target:air_winter_event_state = {
+					subtract_from_variable = { air_winter_food_reserve = constant:air_winter_event_ledger.food_major }
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_moderate }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_moderate }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_ration_percent }
+					air_winter_event_apply_deaths = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					set_state_flag = air_winter_second_chain_rations
+					set_state_flag = air_winter_memory_second_rations
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_long_days }
+				country_event = { id = chaosx.fallout.61 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.60.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.60.b
+		ai_chance = {
+			base = constant:air_winter_event_ai.secondary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_stability < constant:air_winter_event_ai.low_stability
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = {
+					check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+					check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = {
+					NOT = {
+						AND = {
+							check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+							check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+						}
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_targets_are_valid = yes }
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_major }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_major }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_major }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_withdrawal_percent }
+					air_winter_event_apply_deaths = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					set_state_flag = air_winter_second_chain_withdrawal
+					set_state_flag = air_winter_memory_second_withdrawal
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor_loss
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_long_days }
+				country_event = { id = chaosx.fallout.61 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.60.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.60.c
+		trigger = {
+			NOT = { command_power < constant:air_winter_event_country.command_power_major }
+		}
+		ai_chance = {
+			base = constant:air_winter_event_ai.risky
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_war = yes
+					has_government = fascism
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = {
+					check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_military_ai_pressure_ceiling }
+					check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_military_ai_shelter_minimum }
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+					event_target:air_winter_event_state = {
+					OR = {
+						NOT = { check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_military_ai_pressure_ceiling } }
+						NOT = { check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_military_ai_shelter_minimum } }
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					NOT = { command_power < constant:air_winter_event_country.command_power_major }
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_major }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_severe }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_military_percent }
+					air_winter_event_apply_deaths = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					set_state_flag = air_winter_second_chain_military
+					set_state_flag = air_winter_memory_second_military
+					air_winter_event_refresh_state = yes
+				}
+				add_command_power = constant:air_winter_event_country.command_power_major_cost
+				add_war_support = constant:air_winter_event_country.war_support_moderate
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_long_days }
+				country_event = { id = chaosx.fallout.61 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.60.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.61
+	title = chaosx.fallout.61.t
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_rations
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+				check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		text = chaosx.fallout.61.rations_held.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_rations
+				NOT = { AND = { check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		text = chaosx.fallout.61.rations_failed.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_withdrawal
+				check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		text = chaosx.fallout.61.withdrawal_settled.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_withdrawal
+				NOT = { AND = { check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		text = chaosx.fallout.61.withdrawal_scattered.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_military
+				check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling }
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		text = chaosx.fallout.61.military_held.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_military
+				NOT = { AND = { check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		text = chaosx.fallout.61.military_fractured.d
+	}
+	picture = GFX_report_event_air_winter_phase_5
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = {
+			OR = {
+				has_state_flag = air_winter_second_chain_rations
+				has_state_flag = air_winter_second_chain_withdrawal
+				has_state_flag = air_winter_second_chain_military
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.fallout.61.a
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_rations
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+				check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_rations
+						check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+						check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+					}
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_food_reserve = constant:air_winter_event_ledger.food_minor }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					subtract_from_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_recovery }
+					clr_state_flag = air_winter_second_chain_rations
+					set_state_flag = air_winter_memory_second_rations_held
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.61.b
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_rations
+				NOT = { AND = { check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_rations
+						NOT = { AND = { check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+					}
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_moderate }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_failure_percent }
+					air_winter_event_apply_deaths = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					clr_state_flag = air_winter_second_chain_rations
+					set_state_flag = air_winter_memory_second_rations_failed
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.61.c
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_withdrawal
+				check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_withdrawal
+						check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+						check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+					}
+				}
+				event_target:air_winter_event_state = {
+					subtract_from_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_moderate }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					subtract_from_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_recovery }
+					clr_state_flag = air_winter_second_chain_withdrawal
+					set_state_flag = air_winter_memory_second_withdrawal_settled
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.c.tt
+	}
+
+	option = {
+		name = chaosx.fallout.61.d
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_withdrawal
+				NOT = { AND = { check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_withdrawal
+						NOT = { AND = { check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.second_winter_ledger_threshold } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+					}
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_major }
+					subtract_from_variable = { air_winter_food_reserve = constant:air_winter_event_ledger.food_minor }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_moderate }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_failure_percent }
+					air_winter_event_apply_deaths = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					clr_state_flag = air_winter_second_chain_withdrawal
+					set_state_flag = air_winter_memory_second_withdrawal_scattered
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.d.tt
+	}
+
+	option = {
+		name = chaosx.fallout.61.e
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_military
+				check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling }
+				check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_military
+						check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling }
+						check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold }
+					}
+				}
+				event_target:air_winter_event_state = {
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_major }
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					clr_state_flag = air_winter_second_chain_military
+					set_state_flag = air_winter_memory_second_military_held
+					air_winter_event_refresh_state = yes
+				}
+				add_war_support = constant:air_winter_event_country.war_support_minor
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.e.tt
+	}
+
+	option = {
+		name = chaosx.fallout.61.f
+		trigger = {
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_second_chain_military
+				NOT = { AND = { check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						has_state_flag = air_winter_second_chain_military
+						NOT = { AND = { check_variable = { air_winter_building_damage_pressure < constant:air_winter_event_outcome.second_winter_building_pressure_ceiling } check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.second_winter_ledger_threshold } } }
+					}
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_major }
+					add_to_variable = { air_winter_category_damage = constant:air_winter_event_ledger.category_damage_major }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.second_winter_failure_percent }
+					air_winter_event_apply_deaths = yes
+					air_winter_update_building_damage = yes
+					if = { limit = { air_winter_state_category_can_degrade = yes } air_winter_degrade_state_category = yes }
+					clr_state_flag = air_winter_second_chain_military
+					set_state_flag = air_winter_memory_second_military_fractured
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor_loss
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.61.f.tt
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Air Winter terminal response results
 # ---------------------------------------------------------------------------
 

@@ -142,19 +142,23 @@ The abandonment vote fires `chaosx.fallout.201`. Mass decontamination fires `cha
 
 ## Event pilot and scheduler
 
-`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 33 manually authored event blocks:
+`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 35 manually authored event blocks:
 
-- 30 phase, regional, crisis, delayed-result, government, and recovery blocks.
+- 32 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
 - 2 terminal response result blocks for abandonment and decontamination.
 - 1 stale-choice recovery block.
 
-The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, government continuity, recovery, and several delayed deterministic results. Event text uses state names and government-aware authority terms.
+The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, government continuity, recovery, and several delayed deterministic results. The recurring seasonal layer records first frost, dark harvest, ash thaw, second winter, and terminal season. Event text uses state names and government-aware authority terms.
 
-`air_winter_schedule_phase_event` runs from the existing monthly state update. It records one deterministic candidate per owner using score and lowest-state-id tie resolution. A bounded post-pass owner array dispatches one country event per worsening phase, a 46-day country cooldown, one recovery arc cap, and reviewed regional routing. A missed phase remains eligible after the cooldown expires. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event ID. No second country-wide or state-wide iterator is introduced.
+`air_winter_event_prepare_candidate_cycle` snapshots the documented current engine year once when the existing monthly cycle opens. `air_winter_schedule_phase_event` then runs from the existing monthly state update. Before the country cooldown gate, it can freeze a complete state marker for each of the five seasonal families. A marker records origin year, origin cycle, origin owner, presentation class, score, and typed event id. Markers remain eligible across cooldowns and year boundaries until a validated dispatch consumes them.
+
+The owning country records one deterministic candidate through typed family priority, earliest origin cycle, highest frozen score, and lowest state id. The bounded post-pass owner array dispatches one event per eligible country, applies a 46-day cooldown, preserves the existing one-recovery-arc cap, and uses reviewed regional routing. Annual country receipts prevent a seasonal family from firing twice for the same recorded year. Second winter also uses nine presentation-class memories. The first severe year seeds that regional memory, while a later severe year can create the recurring event. The regional year advances only after a validated second-winter dispatch.
+
+First frost reuses the five Phase 2 regional routes. Dark harvest reuses the food-collapse opening and result. Ash thaw reuses the recovery opening and result. Terminal season reuses the Phase 6 terminal incident and its delayed result. Second winter uses the dedicated `chaosx.fallout.60` choice event and deterministic `chaosx.fallout.61` result. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event id. No second country-wide or state-wide iterator is introduced.
 
 Delayed events retain their originating state target through the event chain. Their event triggers require the saved state to remain owned by the saved country and require a live branch flag. State reset or ownership change cancels the branch and its stored owner. Country phase memories, cooldown flags, and recovery counts are cleared separately through `air_winter_reset_country`.
 
-This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`.
+This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`. The seasonal marker and annual receipt proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
 ## Map modes and normal-map proof
 
@@ -212,9 +216,9 @@ Sources, processed PNGs, contact sheets, provenance, and handoffs live under `do
 ## Cleanup and reset
 
 - `air_winter_suspend_state` removes runtime phase pressure while preserving long-term state ledgers.
-- `air_winter_reset_state` removes runtime variables, response state, phase modifiers, event memories, and state flags. It preserves the reviewed numeric presentation assignment.
-- `air_winter_reset_country` clears the calling country's bounded reception-state array, Atmospheric Office capability, and country event memory without a world iterator.
-- `air_winter_reset_global` resets the existing host and every country retained in the bounded owner registry. It clears transient candidate arrays and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
+- `air_winter_reset_state` removes runtime variables, response state, phase modifiers, event memories, seasonal marker rows, and state flags. It preserves the reviewed numeric presentation assignment.
+- `air_winter_reset_country` clears the calling country's bounded reception-state array, Atmospheric Office capability, annual seasonal receipts, nine regional severe-year memories, and country event memory without a world iterator.
+- `air_winter_reset_global` resets the existing host and every country retained in the bounded owner registry. It clears the current-year snapshot, transient candidate arrays, and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
 - Category restoration is explicit and must run before reset when the caller has confirmed category ownership.
 
 ## Engine-sensitive proof status
@@ -225,6 +229,7 @@ The proof set is:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_STATE_LEDGER_INTEGRATION_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MONTHLY_DETERMINISM_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MODIFIER_AND_DEATHS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MAPMODE_MONITORING_PROOF.md`
@@ -243,7 +248,7 @@ Implemented in the Air Winter tranche:
 - Exact 1081-state regional classification.
 - Three winter map modes.
 - Four monitoring levels across every winter mapmode tooltip.
-- Thirty-three manually authored Air Winter pilot events.
+- Thirty-five manually authored Air Winter pilot events, including five durable seasonal recurrence families.
 - Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
 - Dedicated modifier, report-event, map-mode, and response-decision assets.
 - Dedicated nine-class regional ground, two-channel weather, vegetation, frozen-water, and thaw assets with a synchronized five-slot lifecycle.
@@ -253,7 +258,6 @@ Incomplete and not claimed:
 
 - Treaty relief routes, pooled decontamination, and forecast sharing beyond the existing membership flag. The live monthly cleanup currently disables the legacy treaty lifecycle.
 - Air-operation modifiers and local winter pressure or deaths from active combat and strategic bombing.
-- Annual first-frost, dark-harvest, second-winter, thaw, and terminal-season recurrence ledgers.
 - Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
 - The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.

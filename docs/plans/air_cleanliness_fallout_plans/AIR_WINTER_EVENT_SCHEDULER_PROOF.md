@@ -4,23 +4,62 @@
 
 The Air Winter pilot scheduler has three entry points in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`:
 
-- `air_winter_event_prepare_candidate_cycle` clears the bounded owner array before the existing monthly state pass
-- `air_winter_schedule_phase_event` evaluates one state during that existing pass and records an owner candidate
+- `air_winter_event_prepare_candidate_cycle` clears the bounded owner array and snapshots the documented current engine year before the existing monthly state pass
+- `air_winter_schedule_phase_event` evaluates one state during that existing pass, captures durable seasonal observations, and records one owner candidate
 - `air_winter_dispatch_phase_events` iterates only the bounded owner array after the pass
 
-`air_contamination_monthly_update` calls dispatch before Air Winter finalization. No new state-wide or country-wide periodic scan was added.
+`air_contamination_monthly_update` calls dispatch before Air Winter finalization. No new state-wide or country-wide periodic scan was added. Seasonal capture occurs before the country cooldown gate, so a transition observed during cooldown remains available for a later cycle.
 
-The scheduler tracks one country flag for each worsening phase. A country phase remains eligible when its first qualifying month was blocked by cooldown. Recovery requires an actual phase decrease and respects `constant:air_winter_event_runtime.recovery_arc_cap`. A 46-day country cooldown is one day longer than the longest 45-day delayed result.
+The scheduler retains the original one-time worsening-phase memories. A country phase remains eligible when its first qualifying month was blocked by cooldown. Generic recovery still requires an actual phase decrease and respects `constant:air_winter_event_runtime.recovery_arc_cap`. A 46-day country cooldown is one day longer than the longest 45-day delayed result.
+
+## Calendar snapshot
+
+The cycle opener assigns `global.year` once to `global.air_winter_event_cycle_year`. The installed `dynamic_variables_documentation.md` defines `global.year` as the current year. State capture, candidate validation, regional recurrence, and annual receipts read only the stored snapshot for that cycle.
+
+The validator requires the snapshot to exist and be positive. Reset clears it. No seasonal marker mutation, owner candidate write, or receipt write occurs when the snapshot is absent or invalid.
+
+## Durable seasonal observations
+
+Five state marker families use the same complete row shape:
+
+- marker flag
+- origin year
+- origin Air Winter cycle id
+- origin owner
+- origin presentation class
+- frozen candidate score
+- typed event id
+
+The families are first frost, dark harvest, ash thaw, second winter, and terminal season. Marker reconciliation runs during the existing state pass only after the calendar contract passes. A partial row, transferred row, unclassified row, invalid event id, impossible year, invalid origin cycle, or already receipted row is cleared without adding another iterator.
+
+Valid prior-year rows remain eligible when their origin year is no later than the current snapshot and the country receipt is earlier than that origin year. This preserves an observation across a cooldown and across a calendar boundary. Each state can hold one row per family.
+
+The exact capture rules and event routes are recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
 ## Deterministic candidate selection
 
-Every selectable event number comes from the typed `air_winter_event_id` script-constant table. Presentation class, state role, shelter, phase, and recovery direction choose the id through ordered conditions. No random effect, random list, MTTH roll, or unordered first-match country search is used.
+Every selectable event number comes from the typed `air_winter_event_id` script-constant table. Presentation class, state role, shelter, phase, recovery direction, and seasonal family choose the id through ordered conditions. No random effect, random list, MTTH roll, or unordered first-match country search is used.
 
-Each eligible state calculates a candidate score from phase and pressure. Recovery uses its own typed base. The owning country keeps the higher score. Equal scores select the lower numeric state id. This makes the selected state independent of `every_state` iterator order.
+Each eligible state calculates a candidate score from phase and pressure. Seasonal rows freeze that score at observation time. The owning country compares candidates in this order:
 
-Unclassified presentation states cannot select a phase or recovery event. A missing regional route leaves the phase eligible for another classified state and does not write a seen flag.
+1. higher typed family priority
+2. earlier origin cycle
+3. higher frozen score
+4. lower numeric state id
 
-The state pass adds each owner to `global.air_winter_event_candidate_countries` at most once. Post-pass dispatch validates owner existence, cooldown, current cycle id, selected state, selected event id, and current ownership. It writes the phase seen flag or recovery count only after those checks pass.
+The family order is terminal season, ordinary unseen phase, second winter, dark harvest, first frost, ash thaw, and generic recovery. The ordinary and recovery candidates use the current cycle as their origin cycle. This makes the winner independent of state iterator order.
+
+Unclassified presentation states cannot select a phase, recovery, or seasonal event. A missing regional route leaves the phase eligible for another classified state and does not write a seen flag or receipt.
+
+The state pass adds each owner to `global.air_winter_event_candidate_countries` at most once. A partial current-cycle candidate is replaced before lexicographic comparison. Post-pass dispatch validates owner existence, cooldown, current cycle id, positive year snapshot, selected state, selected family, selected priority, typed event id, current ownership, presentation class, origin year, origin cycle, and the winning marker row when a seasonal family is selected.
+
+## Receipt ordering
+
+The five seasonal country receipts store the marker origin year. A receipt is written only inside the final dispatch branch after `air_winter_event_candidate_is_dispatchable` passes. The winning state marker is then cleared, the relevant phase memory is committed when required, the cooldown is applied, and the typed event is fired.
+
+An ordinary worsening-phase event normally writes no seasonal receipt. First frost and dark harvest reuse exact ordinary routes, so a validated ordinary dispatch coalesces a marker only when the same winning state stores the same typed event id. It writes that marker's origin year and clears that one row. This prevents one physical incident from opening the same authored event twice while preserving unrelated seasonal rows. A failed dispatch clears only the transient owner candidate. It does not clear a valid seasonal marker.
+
+Second winter has nine additional regional severe-year memories. The first severe observation for a presentation class seeds its year without firing the recurring event. A severe state in a later year can create a marker. The regional severe-year memory advances to the marker origin year only after final second-winter dispatch validation.
 
 ## Event dispatch syntax
 
@@ -37,35 +76,40 @@ Before firing an event, dispatch saves:
 
 The offline Data structures page states that a regular event target carries into events fired by the same effect chain, including delayed child events. The pilot uses regular targets so simultaneous countries cannot overwrite a shared global target.
 
-Every initial event validates both typed targets before opening. Every visible option repeats ownership and target validation at click time. A stale click calls `air_winter_event_reject_stale_choice`, which cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice.
+Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice itself has one effect-free acknowledgement.
 
 Delayed result blocks require their own pending branch flag and the stored original owner. Monthly reconciliation cancels a branch when ownership changes or the branch ledger is incomplete. The stored owner uses a regular scope-valued variable and `var:` entry, matching the documented variable-target pattern and the reviewed vanilla ownership precedent.
 
+The dedicated second-winter opening has three weighted choices. Its military-heating choice also checks exact Command Power affordability both when the option is shown and when the click resolves. Its delayed result exposes one of six deterministic outcome options and repeats the exact outcome thresholds inside the click guard.
+
 ## AI and cleanup
 
-Every player-choice block has explicit AI weights with state or country conditions. AI countries resolve ordinary country events without a separate visible-only scheduler.
+Every non-deterministic player-choice opening has explicit AI weights with state or country conditions. Delayed deterministic results expose only the option matching the stored pending branch and outcome. AI countries therefore use the same mechanical chain without a second visible-only scheduler.
 
-Result blocks expose only the option matching the stored pending branch or deterministic outcome. Eighty-five event options have click-time guards. Twenty-nine delayed-result branches validate their pending state before applying effects.
-
-`air_winter_event_clear_state_memory` clears state arc and delayed-result memory on state reset. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, and candidate data only in country scope. Completed delayed results clear their pending flag and stored owner immediately.
+`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. `air_winter_reset_global` clears the calendar snapshot.
 
 ## Static validation
 
 Static review establishes:
 
-1. one candidate record per owner per cycle
-2. score-first and lowest-state-id tie resolution
-3. one dispatch attempt per candidate owner
-4. no phase memory before successful dispatch validation
-5. typed initial-event target validation
-6. click-time choice validation
-7. delayed-result branch validation
-8. ownership-change cleanup
-9. candidate cleanup after dispatch
-10. country and state reset cleanup
+1. one bounded candidate record per owner per cycle
+2. one documented year snapshot per opened cycle
+3. cooldown-independent seasonal capture
+4. complete marker rows for all five families
+5. iterator-order-independent candidate selection
+6. one dispatch attempt per candidate owner
+7. receipt and marker mutation only after final dispatch validation
+8. prior-year carryover only while the family receipt is earlier
+9. later-year regional comparison for second winter
+10. typed initial-event target validation
+11. click-time choice validation
+12. delayed-result branch validation
+13. ownership-change cleanup
+14. candidate cleanup after dispatch
+15. complete country, state, and global reset coverage
 
-The 33 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. This pilot is separate from the future Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor.
+The 35 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 95 options. Ninety-four effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor.
 
 ## Unobserved engine boundary
 
-The installed documentation supports the meta-effect text, scope-valued variables, array iteration, regular event targets, and delayed event syntax. A live session has not observed generated event dispatch, delayed regular-target retention, popup ordering, or save-resume behavior. HOI4 was not launched. These surfaces are not claimed as runtime proven.
+The installed documentation supports the current-year dynamic variable, meta-effect text, scope-valued variables, array iteration, regular event targets, and delayed event syntax. A live session has not observed the year snapshot assignment, generated event dispatch, delayed regular-target retention, popup ordering, AI resolution, annual receipt persistence, or save-resume behavior. HOI4 was not launched. These surfaces are not claimed as runtime proven.

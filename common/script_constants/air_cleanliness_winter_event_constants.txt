@@ -24,6 +24,42 @@ air_winter_event_runtime = {
 	candidate_recovery_base = 500
 }
 
+air_winter_event_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ordinary_phase = 1
+	recovery = 2
+	first_frost = 3
+	dark_harvest = 4
+	ash_thaw = 5
+	second_winter = 6
+	terminal_season = 7
+	maximum = 7
+}
+
+# Higher values win before origin cycle, pressure score, and state id are
+# compared. Terminal seasons remain urgent, while unseen phase stories keep
+# precedence over later recurring families.
+air_winter_event_priority = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	recovery = 1
+	ash_thaw = 2
+	first_frost = 3
+	dark_harvest = 4
+	second_winter = 5
+	ordinary_phase = 6
+	terminal_season = 7
+}
+
 air_winter_event_id = {
 	schema = {
 		any_key = yes
@@ -51,6 +87,7 @@ air_winter_event_id = {
 	phase_5_archive = 42
 	phase_6_terminal = 43
 	recovery = 50
+	second_winter = 60
 }
 
 air_winter_event_ledger = {
@@ -93,6 +130,10 @@ air_winter_event_ledger = {
 	building_pressure_minor = 8
 	building_pressure_moderate = 15
 	building_pressure_major = 25
+	category_damage_recovery = 8
+	category_damage_moderate = 12
+	category_damage_major = 18
+	category_damage_severe = 24
 }
 
 air_winter_event_country = {
@@ -138,6 +179,10 @@ air_winter_event_deaths = {
 	failed_convoy_percent = 0.00020
 	terminal_order_percent = 0.00035
 	decontamination_failure_percent = 0.00015
+	second_winter_ration_percent = 0.00020
+	second_winter_withdrawal_percent = 0.00015
+	second_winter_military_percent = 0.00030
+	second_winter_failure_percent = 0.00010
 }
 
 air_winter_event_outcome = {
@@ -152,6 +197,14 @@ air_winter_event_outcome = {
 	rail_phase_ceiling = 5
 	shelter_threshold = 25
 	recovery_exposure_ceiling = 55
+	second_winter_ledger_threshold = 25
+	second_winter_building_pressure_ceiling = 65
+	# Pre-choice AI boundaries mirror the strict delayed thresholds after the
+	# opening route applies its food, shelter, or building-pressure change.
+	second_winter_ration_ai_food_minimum = 31
+	second_winter_ration_ai_shelter_minimum = 21
+	second_winter_military_ai_pressure_ceiling = 40
+	second_winter_military_ai_shelter_minimum = 19
 	rail_damage = 0.50
 	infrastructure_damage = 0.50
 }
