@@ -2,7 +2,7 @@
 # CHAOS REDUX - FALLOUT WORLD END EFFECTS
 # ============================================================================
 # One idempotent request coordinator owns Fallout entry, blackout sequencing,
-# save reconciliation, deterministic state grading, and the first rewrite pass.
+# save reconciliation, generation-bound state receipts, and the rewrite pass.
 # Public callers provide temporary request source and intensity variables.
 # ============================================================================
 
@@ -137,9 +137,10 @@ fallout_toggle_system_scenario_disabled = {
 # Supported scope: COUNTRY
 fallout_lock_transition = {
 	set_variable = { global.fallout_transition_generation = global.date }
-	fallout_capture_player_countries = yes
-	fallout_take_world_snapshot = yes
-	set_global_flag = fallout_transition_snapshot_applied
+	clr_global_flag = fallout_transition_error
+	set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+	fallout_rebuild_complete_snapshot_epoch = yes
 	clr_global_flag = fallout_request_pending
 	set_global_flag = fallout_request_locked
 	set_global_flag = fallout_transition_active
@@ -215,95 +216,6 @@ fallout_play_blackout_audio = {
 # ---------------------------------------------------------------------------
 # Save migration and coordinator recovery
 # ---------------------------------------------------------------------------
-
-# Supported scope: COUNTRY. Schema 1 through 3 briefly represented altered
-# biospheres as grade 6. Preserve that memory before the derived state reset.
-fallout_capture_legacy_altered_grade_memory = {
-	every_state = {
-		if = {
-			limit = {
-				has_variable = fallout_state_grade
-				check_variable = {
-					var = fallout_state_grade
-					value = constant:fallout_world_end_schema.legacy_altered_grade
-					compare = equals
-				}
-			}
-			set_state_flag = fallout_legacy_altered_grade_memory
-		}
-	}
-}
-
-# Supported scope: COUNTRY. This reset is permitted only before population or
-# physical destruction begins. It removes derived transaction state so a newer
-# schema cannot be mixed with an older snapshot or phase ledger.
-fallout_reset_pre_destructive_transition_derived_state = {
-	clr_global_flag = fallout_player_snapshot_complete
-	clr_global_flag = fallout_world_snapshot_complete
-	clr_global_flag = fallout_transition_snapshot_applied
-	clr_global_flag = fallout_transition_state_grading_applied
-	clr_global_flag = fallout_state_grading_complete
-	clr_global_flag = fallout_transition_population_loss_applied
-	clr_global_flag = fallout_population_loss_complete
-	clr_global_flag = fallout_transition_physical_collapse_applied
-	clr_global_flag = fallout_physical_collapse_complete
-	clr_global_flag = fallout_transition_government_sorting_applied
-	clr_global_flag = fallout_government_sorting_complete
-	clr_global_flag = fallout_transition_survivor_allocation_applied
-	fallout_reset_successor_allocation_ledger = yes
-	clr_global_flag = fallout_transition_player_continuation_applied
-	clr_global_flag = fallout_player_continuation_ledger_complete
-	clr_global_flag = fallout_player_continuation_commit_complete
-	clr_global_flag = fallout_player_commit_preflight_complete
-	clr_global_flag = fallout_player_assignment_uniqueness_verified
-	clr_global_flag = fallout_transition_map_return_applied
-	clr_global_flag = fallout_transition_map_return_blocked
-	clr_global_flag = fallout_transition_complete
-	fallout_reset_successor_conflict_inventory = yes
-	clr_global_flag = fallout_player_continuation_planning_initialized
-	clr_global_flag = fallout_player_continuation_planning_blocked
-	clr_global_flag = fallout_player_materialization_required
-	clr_global_flag = fallout_transition_error
-	clr_global_flag = fallout_transition_schema_migration_blocked
-	set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
-	set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
-	set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.snapshot }
-	set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
-	clr_global_flag = fallout_transition_phase_event_scheduled
-	every_country = {
-		fallout_reset_country_government_classification = yes
-	}
-	every_state = {
-		clr_state_flag = fallout_state_graded
-		clr_state_flag = fallout_altered_biosphere
-		clr_state_flag = fallout_population_loss_evaluated
-		clr_state_flag = fallout_population_loss_applied
-		clr_state_flag = fallout_population_loss_zero
-		clr_state_flag = fallout_building_damage_evaluated
-		clr_state_flag = fallout_building_damage_applied
-		clr_state_flag = fallout_category_conversion_evaluated
-		clr_state_flag = fallout_category_conversion_applied
-		clr_state_flag = fallout_grade_modifier_evaluated
-		clr_state_flag = fallout_grade_modifier_applied
-		clr_state_flag = fallout_altered_biosphere_modifier_applied
-		clr_state_flag = fallout_supply_collapsed
-		clear_variable = fallout_grade_score
-		clear_variable = fallout_state_grade
-		clear_variable = fallout_state_grade_date
-		clear_variable = fallout_state_subtype
-		clear_variable = fallout_survival_value
-		clear_variable = fallout_population_loss_memory
-		clear_variable = fallout_building_damage_levels_applied
-		clear_variable = fallout_state_rewrite_generation
-		remove_dynamic_modifier = { modifier = fallout_grade_1_state }
-		remove_dynamic_modifier = { modifier = fallout_grade_2_state }
-		remove_dynamic_modifier = { modifier = fallout_grade_3_state }
-		remove_dynamic_modifier = { modifier = fallout_grade_4_state }
-		remove_dynamic_modifier = { modifier = fallout_grade_5_state }
-		remove_dynamic_modifier = { modifier = fallout_grade_6_state }
-		remove_dynamic_modifier = { modifier = fallout_altered_biosphere_state }
-	}
-}
 
 # Supported scope: COUNTRY
 fallout_world_end_migrate_save = {
@@ -455,22 +367,18 @@ fallout_world_end_migrate_save = {
 	}
 }
 
-# Supported scope: COUNTRY. Called from the existing single host daily pulse.
+# Supported scope: COUNTRY. Called from the existing project-coordinator pulse.
+# Authority-pointer repair may occur after a same-date host transfer. Manual,
+# migration, transition scheduling, and request work remain once per date.
 fallout_reconcile_coordinator = {
 	if = {
 		limit = { has_country_flag = is_global_host }
-		fallout_manual_reconcile = yes
-		fallout_world_end_migrate_save = yes
 		if = {
 			limit = {
-				has_global_flag = fallout_request_pending
-				NOT = { has_event_target = fallout_transition_coordinator }
-			}
-			save_global_event_target_as = fallout_transition_coordinator
-		}
-		if = {
-			limit = {
-				has_global_flag = fallout_transition_active
+				OR = {
+					has_global_flag = fallout_request_pending
+					has_global_flag = fallout_transition_active
+				}
 				NOT = { has_event_target = fallout_transition_coordinator }
 			}
 			save_global_event_target_as = fallout_transition_coordinator
@@ -478,7 +386,10 @@ fallout_reconcile_coordinator = {
 		}
 		else_if = {
 			limit = {
-				has_global_flag = fallout_transition_active
+				OR = {
+					has_global_flag = fallout_request_pending
+					has_global_flag = fallout_transition_active
+				}
 				NOT = {
 					event_target:fallout_transition_coordinator = {
 						exists = yes
@@ -491,24 +402,41 @@ fallout_reconcile_coordinator = {
 			clr_global_flag = fallout_transition_phase_event_scheduled
 		}
 		if = {
-			limit = { has_global_flag = fallout_transition_active }
-			fallout_dispatch_blackout_audio = yes
-		}
-		if = {
 			limit = {
-				has_global_flag = fallout_transition_active
-				fallout_current_country_is_coordinator = yes
-				NOT = { has_global_flag = fallout_transition_schema_migration_blocked }
-				NOT = { has_global_flag = fallout_transition_phase_event_scheduled }
+				OR = {
+					NOT = { has_variable = global.fallout_coordinator_last_reconcile_date }
+					NOT = {
+						check_variable = {
+							var = global.fallout_coordinator_last_reconcile_date
+							value = global.date
+							compare = equals
+						}
+					}
+				}
 			}
-			fallout_schedule_current_transition_phase = yes
-		}
-		if = {
-			limit = {
-				has_global_flag = fallout_request_pending
-				fallout_current_country_is_coordinator = yes
+			set_variable = { global.fallout_coordinator_last_reconcile_date = global.date }
+			fallout_manual_reconcile = yes
+			fallout_world_end_migrate_save = yes
+			if = {
+				limit = { has_global_flag = fallout_transition_active }
+				fallout_dispatch_blackout_audio = yes
 			}
-			fallout_validate_pending_request = yes
+			if = {
+				limit = {
+					has_global_flag = fallout_transition_active
+					fallout_current_country_is_coordinator = yes
+					NOT = { has_global_flag = fallout_transition_schema_migration_blocked }
+					NOT = { has_global_flag = fallout_transition_phase_event_scheduled }
+				}
+				fallout_schedule_current_transition_phase = yes
+			}
+			if = {
+				limit = {
+					has_global_flag = fallout_request_pending
+					fallout_current_country_is_coordinator = yes
+				}
+				fallout_validate_pending_request = yes
+			}
 		}
 	}
 }
@@ -569,14 +497,17 @@ fallout_schedule_current_transition_phase = {
 
 # Supported scope: COUNTRY
 fallout_capture_player_countries = {
+	fallout_clear_recoverable_player_snapshot_error = yes
 	if = {
 		limit = { NOT = { has_global_flag = fallout_player_snapshot_complete } }
+		clr_global_flag = fallout_player_allocation_reservation_ledger_complete
 		clr_global_flag = fallout_player_continuation_planning_initialized
 		clr_global_flag = fallout_player_continuation_planning_blocked
 		clr_global_flag = fallout_player_materialization_required
-		every_country = {
+		every_possible_country = {
 			clr_country_flag = fallout_pretransition_player_country
 			clr_country_flag = fallout_player_source_anchor_preserved
+			clr_country_flag = fallout_player_source_landless
 			clr_country_flag = fallout_player_primary_capital_reserved
 			clr_country_flag = fallout_player_continuation_preserved
 			clr_country_flag = fallout_player_continues_old_country
@@ -590,6 +521,7 @@ fallout_capture_player_countries = {
 			clear_variable = fallout_pretransition_country_scope
 			clear_variable = fallout_pretransition_country_id
 			clear_variable = fallout_pretransition_capital_state
+			clear_variable = fallout_player_snapshot_generation
 			clear_variable = fallout_player_source_anchor_state
 			clear_variable = fallout_player_primary_capital_state
 			clear_variable = fallout_player_primary_target
@@ -609,8 +541,6 @@ fallout_capture_player_countries = {
 		set_variable = { global.fallout_player_snapshot_count = constant:fallout_runtime.zero }
 		set_variable = { global.fallout_player_planned_count = constant:fallout_runtime.zero }
 		set_variable = { global.fallout_player_committed_count = constant:fallout_runtime.zero }
-		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
-		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
 		every_state = {
 			clr_state_flag = fallout_player_origin_state
 			clr_state_flag = fallout_player_source_anchor
@@ -618,6 +548,7 @@ fallout_capture_player_countries = {
 			clr_state_flag = fallout_player_primary_capital_reserved
 			clear_variable = fallout_player_origin_scope
 			clear_variable = fallout_player_origin_id
+			clear_variable = fallout_player_origin_generation
 			clear_variable = fallout_player_reservation_origin
 			clear_variable = fallout_player_reservation_generation
 		}
@@ -656,7 +587,8 @@ fallout_capture_player_countries = {
 			every_owned_state = {
 				set_state_flag = fallout_player_origin_state
 				set_variable = { fallout_player_origin_scope = PREV }
-				set_variable = { fallout_player_origin_id = PREV.id }
+				set_variable = { fallout_player_origin_id = THIS.id }
+				set_variable = { fallout_player_origin_generation = global.fallout_transition_generation }
 				set_temp_variable = { fallout_snapshot_candidate_state_id = THIS.id }
 				if = {
 					limit = {
@@ -686,20 +618,20 @@ fallout_capture_player_countries = {
 				}
 			}
 			else = {
-				set_country_flag = fallout_player_continuation_error
-				set_variable = { fallout_player_continuation_status = constant:fallout_player_continuation_status.error }
-				set_variable = { fallout_player_error_code = constant:fallout_transition_error_code.player_source_anchor_missing }
-				add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
-				set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.player_source_anchor_missing }
+				set_country_flag = fallout_player_source_landless
 			}
 			add_to_array = { array = global.fallout_pretransition_player_countries value = THIS }
 			add_to_variable = { global.fallout_player_snapshot_count = constant:fallout_runtime.one }
 		}
 		if = {
-			limit = { check_variable = { global.fallout_transition_error_count > constant:fallout_runtime.zero } }
-			set_global_flag = fallout_transition_error
+			limit = { fallout_player_snapshot_ledger_is_current = yes }
+			set_global_flag = fallout_player_snapshot_complete
 		}
-		set_global_flag = fallout_player_snapshot_complete
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.player_snapshot_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
 	}
 }
 
@@ -714,9 +646,10 @@ fallout_record_bilateral_memory = {
 
 # Supported scope: COUNTRY
 fallout_take_world_snapshot = {
+	fallout_clear_recoverable_snapshot_error = yes
 	if = {
 		limit = { NOT = { has_global_flag = fallout_world_snapshot_complete } }
-		every_country = {
+		every_possible_country = {
 			clr_country_flag = fallout_pretransition_country
 			clr_country_flag = fallout_pretransition_had_war
 			clr_country_flag = fallout_pretransition_was_in_faction
@@ -727,7 +660,12 @@ fallout_take_world_snapshot = {
 			clr_country_flag = fallout_pretransition_government_fascism
 			clr_country_flag = fallout_pretransition_government_neutrality
 			clr_country_flag = fallout_pretransition_had_purchase_contract
+			clr_country_flag = fallout_pretransition_machine_continuity
+			clr_country_flag = fallout_pretransition_machine_command_network
+			clr_country_flag = fallout_pretransition_machine_emp_survival
+			clr_country_flag = fallout_pretransition_religious_refuge_identity
 			clear_variable = fallout_pretransition_country_scope
+			clear_variable = fallout_pretransition_snapshot_generation
 			clear_variable = fallout_pretransition_overlord
 		}
 		clear_array = global.fallout_pretransition_countries
@@ -739,6 +677,7 @@ fallout_take_world_snapshot = {
 			limit = { exists = yes }
 			set_country_flag = fallout_pretransition_country
 			set_variable = { fallout_pretransition_country_scope = THIS }
+			set_variable = { fallout_pretransition_snapshot_generation = global.fallout_snapshot_epoch_generation }
 			add_to_array = { array = global.fallout_pretransition_countries value = THIS }
 			if = { limit = { has_war = yes } set_country_flag = fallout_pretransition_had_war }
 			if = { limit = { is_in_faction = yes } set_country_flag = fallout_pretransition_was_in_faction }
@@ -752,6 +691,10 @@ fallout_take_world_snapshot = {
 			else_if = { limit = { has_government = communism } set_country_flag = fallout_pretransition_government_communism }
 			else_if = { limit = { has_government = fascism } set_country_flag = fallout_pretransition_government_fascism }
 			else = { set_country_flag = fallout_pretransition_government_neutrality }
+			if = { limit = { has_country_flag = brilliant_scientist_kruger_continuity_machine } set_country_flag = fallout_pretransition_machine_continuity }
+			if = { limit = { has_country_flag = brilliant_scientist_singularity_live_command_network } set_country_flag = fallout_pretransition_machine_command_network }
+			if = { limit = { has_country_flag = fallout_machine_emp_survival_verified } set_country_flag = fallout_pretransition_machine_emp_survival }
+			if = { limit = { is_holy_realm_country = yes } set_country_flag = fallout_pretransition_religious_refuge_identity }
 		}
 		every_country = {
 			limit = { exists = yes }
@@ -873,19 +816,24 @@ fallout_take_world_snapshot = {
 			clr_state_flag = fallout_pretransition_player_owned_state
 			clr_state_flag = fallout_pretransition_chemical_contamination
 			clr_state_flag = fallout_pretransition_biological_contamination
+			clr_state_flag = fallout_pretransition_direct_manual_target
+			clr_state_flag = fallout_pretransition_coastal
 			clear_variable = fallout_pretransition_capital_country
 			clear_variable = fallout_pretransition_player_owner
-			clear_variable = fallout_pretransition_nuclear_fallout_intensity
-			clear_variable = fallout_pretransition_air_winter_phase
-			clear_variable = fallout_pretransition_air_winter_exposure
-			clear_variable = fallout_pretransition_air_winter_recovery
-			clear_variable = fallout_pretransition_air_winter_adaptation
-			clear_variable = fallout_pretransition_air_winter_food_reserve
-			clear_variable = fallout_pretransition_air_winter_shelter_capacity
-			clear_variable = fallout_pretransition_air_winter_reclamation
+			set_variable = { fallout_pretransition_nuclear_fallout_intensity = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_phase = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_exposure = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_recovery = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_adaptation = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_food_reserve = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_shelter_capacity = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_reclamation = constant:fallout_runtime.zero }
+			set_variable = { fallout_pretransition_air_winter_water_security = constant:fallout_runtime.zero }
 			clear_variable = fallout_pretransition_air_winter_original_category
+			air_winter_record_original_category = yes
 			set_variable = { fallout_original_owner_scope = OWNER }
 			set_variable = { fallout_original_controller_scope = CONTROLLER }
+			set_variable = { fallout_pretransition_snapshot_generation = global.fallout_snapshot_epoch_generation }
 			set_variable = { fallout_pretransition_population_k = state_population_k }
 			set_variable = { fallout_pretransition_infrastructure = building_level@infrastructure }
 			set_variable = { fallout_pretransition_industrial_complex = building_level@industrial_complex }
@@ -901,6 +849,13 @@ fallout_take_world_snapshot = {
 			set_variable = { fallout_pretransition_damaged_dockyard = damaged_building_level@dockyard }
 			set_variable = { fallout_pretransition_damaged_supply_node = damaged_building_level@supply_node }
 			set_variable = { fallout_pretransition_damaged_rail_way = damaged_building_level@rail_way }
+			set_variable = { fallout_pretransition_non_damaged_infrastructure = non_damaged_building_level@infrastructure }
+			set_variable = { fallout_pretransition_non_damaged_industrial_complex = non_damaged_building_level@industrial_complex }
+			set_variable = { fallout_pretransition_non_damaged_arms_factory = non_damaged_building_level@arms_factory }
+			set_variable = { fallout_pretransition_non_damaged_air_base = non_damaged_building_level@air_base }
+			set_variable = { fallout_pretransition_non_damaged_dockyard = non_damaged_building_level@dockyard }
+			set_variable = { fallout_pretransition_non_damaged_supply_node = non_damaged_building_level@supply_node }
+			set_variable = { fallout_pretransition_non_damaged_rail_way = non_damaged_building_level@rail_way }
 			set_variable = { fallout_pretransition_resource_oil = resource@oil }
 			set_variable = { fallout_pretransition_resource_aluminium = resource@aluminium }
 			set_variable = { fallout_pretransition_resource_rubber = resource@rubber }
@@ -916,6 +871,7 @@ fallout_take_world_snapshot = {
 			if = { limit = { has_variable = air_winter_food_reserve } set_variable = { fallout_pretransition_air_winter_food_reserve = air_winter_food_reserve } }
 			if = { limit = { has_variable = air_winter_shelter_capacity } set_variable = { fallout_pretransition_air_winter_shelter_capacity = air_winter_shelter_capacity } }
 			if = { limit = { has_variable = air_winter_reclamation } set_variable = { fallout_pretransition_air_winter_reclamation = air_winter_reclamation } }
+			if = { limit = { has_variable = air_winter_water_security } set_variable = { fallout_pretransition_air_winter_water_security = air_winter_water_security } }
 			if = {
 				limit = {
 					has_state_flag = air_winter_original_category_recorded
@@ -933,6 +889,8 @@ fallout_take_world_snapshot = {
 				set_state_flag = fallout_pretransition_player_owned_state
 				set_variable = { fallout_pretransition_player_owner = OWNER }
 			}
+			if = { limit = { fallout_state_is_direct_manual_target = yes } set_state_flag = fallout_pretransition_direct_manual_target }
+			if = { limit = { is_coastal = yes } set_state_flag = fallout_pretransition_coastal }
 			if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } set_state_flag = fallout_pretransition_chemical_contamination }
 			if = {
 				limit = {
@@ -948,104 +906,107 @@ fallout_take_world_snapshot = {
 			}
 			set_state_flag = fallout_original_owner_recorded
 			set_state_flag = fallout_original_controller_recorded
-			air_winter_record_original_category = yes
 		}
+		set_variable = { global.fallout_pretransition_request_source = global.fallout_request_source }
+		set_variable = { global.fallout_pretransition_request_intensity = global.fallout_request_intensity }
+		set_variable = { global.fallout_pretransition_chaos_meter_value = global.chaos_meter_value }
 		set_variable = { global.fallout_pretransition_air_contamination_bp = global.air_contamination_bp }
-		set_variable = { global.fallout_pretransition_date = global.date }
-		set_global_flag = fallout_world_snapshot_complete
+		set_variable = { global.fallout_pretransition_date = global.fallout_snapshot_epoch_date }
+		if = {
+			limit = { fallout_world_snapshot_rows_are_current = yes }
+			set_global_flag = fallout_world_snapshot_complete
+		}
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.snapshot_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
 	}
+}
+
+# Supported scope: COUNTRY. Player and world rows are always rebuilt in one
+# effect-chain epoch. No caller may retry only one half of the frozen ledger.
+fallout_rebuild_complete_snapshot_epoch = {
+	fallout_clear_recoverable_player_snapshot_error = yes
+	fallout_clear_recoverable_snapshot_error = yes
+	clr_global_flag = fallout_player_snapshot_complete
+	clr_global_flag = fallout_world_snapshot_complete
+	clr_global_flag = fallout_transition_snapshot_applied
+	set_variable = { global.fallout_snapshot_epoch_generation = global.fallout_transition_generation }
+	set_variable = { global.fallout_snapshot_epoch_date = global.date }
+	fallout_capture_player_countries = yes
+	fallout_take_world_snapshot = yes
+}
+
+# Supported scope: STATE. Output is the temporary variable
+# fallout_expected_grade_score, calculated only from frozen snapshot inputs.
+fallout_calculate_expected_grade_score = {
+	set_temp_variable = { fallout_expected_grade_score = constant:fallout_runtime.zero }
+	set_temp_variable = { fallout_grade_request_component = global.fallout_pretransition_request_intensity }
+	multiply_temp_variable = { fallout_grade_request_component = constant:fallout_grade_weight.request_intensity }
+	add_to_temp_variable = { fallout_expected_grade_score = fallout_grade_request_component }
+
+	if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.final_silence } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.final_silence } }
+	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.chemical_saturation } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.chemical_saturation } }
+	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.biological_follow_through } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.biological_follow_through } }
+	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.mixed_terminal } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.mixed_terminal } }
+
+	if = { limit = { has_state_flag = fallout_pretransition_direct_manual_target } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.manual_native_strike } }
+	if = {
+		limit = {
+			has_variable = fallout_pretransition_nuclear_fallout_intensity
+			check_variable = { fallout_pretransition_nuclear_fallout_intensity > constant:fallout_runtime.zero }
+		}
+		add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.nuclear_fallout_base }
+		set_temp_variable = { fallout_grade_nuclear_component = fallout_pretransition_nuclear_fallout_intensity }
+		multiply_temp_variable = { fallout_grade_nuclear_component = constant:fallout_grade_weight.nuclear_fallout_intensity }
+		add_to_temp_variable = { fallout_expected_grade_score = fallout_grade_nuclear_component }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_phase }
+		set_temp_variable = { fallout_grade_winter_component = fallout_pretransition_air_winter_phase }
+		multiply_temp_variable = { fallout_grade_winter_component = constant:fallout_grade_weight.air_winter_phase }
+		add_to_temp_variable = { fallout_expected_grade_score = fallout_grade_winter_component }
+	}
+	if = { limit = { has_state_flag = fallout_pretransition_chemical_contamination } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.chemical_state } }
+	if = { limit = { has_state_flag = fallout_pretransition_biological_contamination } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.biological_state } }
+
+	if = { limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.city } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.city } }
+	else_if = { limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_city } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.large_city } }
+	else_if = { limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.metropolis } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.metropolis } }
+	else_if = { limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.megalopolis } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.megalopolis } }
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.enclave }
+				check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.tiny_island }
+				check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.small_island }
+			}
+		}
+		add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.remote_category_relief }
+	}
+
+	set_temp_variable = { fallout_grade_factory_count = fallout_pretransition_industrial_complex }
+	add_to_temp_variable = { fallout_grade_factory_count = fallout_pretransition_arms_factory }
+	if = {
+		limit = { check_variable = { var = fallout_grade_factory_count value = constant:fallout_grade_trigger.industrial_center_factories compare = greater_than } }
+		add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.industrial_center }
+	}
+	if = {
+		limit = { check_variable = { var = fallout_grade_factory_count value = constant:fallout_grade_trigger.major_industrial_center_factories compare = greater_than } }
+		add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.major_industrial_center }
+	}
+	if = { limit = { check_variable = { fallout_pretransition_air_winter_adaptation > constant:fallout_grade_trigger.high_adaptation } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.high_adaptation_relief } }
+	if = { limit = { check_variable = { fallout_pretransition_air_winter_shelter_capacity > constant:fallout_grade_trigger.high_shelter } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.high_shelter_relief } }
+	clamp_temp_variable = { var = fallout_expected_grade_score min = constant:fallout_runtime.zero max = constant:fallout_grade_threshold.maximum_score }
 }
 
 # Supported scope: STATE
 fallout_grade_state = {
 	if = {
 		limit = { NOT = { has_state_flag = fallout_state_graded } }
-		set_variable = { fallout_grade_score = constant:fallout_runtime.zero }
-		set_temp_variable = { fallout_grade_request_component = global.fallout_request_intensity }
-		multiply_temp_variable = { fallout_grade_request_component = constant:fallout_grade_weight.request_intensity }
-		add_to_variable = { fallout_grade_score = fallout_grade_request_component }
-
-		if = { limit = { ROOT = { fallout_request_source_is_final_silence = yes } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.final_silence } }
-		else_if = { limit = { ROOT = { fallout_request_source_is_chemical = yes } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.chemical_saturation } }
-		else_if = { limit = { ROOT = { fallout_request_source_is_biological = yes } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.biological_follow_through } }
-		else_if = { limit = { ROOT = { fallout_request_source_is_mixed = yes } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.mixed_terminal } }
-
-		if = { limit = { fallout_state_is_direct_manual_target = yes } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.manual_native_strike } }
-		if = {
-			limit = { fallout_state_has_live_nuclear_fallout = yes }
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.nuclear_fallout_base }
-			set_temp_variable = { fallout_grade_nuclear_component = nuclear_fallout_intensity }
-			multiply_temp_variable = { fallout_grade_nuclear_component = constant:fallout_grade_weight.nuclear_fallout_intensity }
-			add_to_variable = { fallout_grade_score = fallout_grade_nuclear_component }
-		}
-		if = {
-			limit = { has_variable = air_winter_phase }
-			set_temp_variable = { fallout_grade_winter_component = air_winter_phase }
-			multiply_temp_variable = { fallout_grade_winter_component = constant:fallout_grade_weight.air_winter_phase }
-			add_to_variable = { fallout_grade_score = fallout_grade_winter_component }
-		}
-		if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.chemical_state } }
-		if = {
-			limit = {
-				OR = {
-					has_state_flag = bioweapon_contaminated
-					has_state_flag = bio_agent_1_active
-					has_state_flag = bio_agent_2_active
-					has_state_flag = bio_agent_3_active
-					has_state_flag = bio_agent_4_active
-				}
-			}
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.biological_state }
-		}
-
-		if = { limit = { has_state_category = city } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.city } }
-		else_if = { limit = { has_state_category = large_city } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.large_city } }
-		else_if = { limit = { has_state_category = metropolis } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.metropolis } }
-		else_if = { limit = { has_state_category = megalopolis } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.megalopolis } }
-		else_if = { limit = { OR = { has_state_category = enclave has_state_category = tiny_island has_state_category = small_island } } add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.remote_category_relief } }
-
-		set_temp_variable = { fallout_grade_factory_count = building_level@industrial_complex }
-		add_to_temp_variable = { fallout_grade_factory_count = building_level@arms_factory }
-		if = {
-			limit = {
-				check_variable = {
-					var = fallout_grade_factory_count
-					value = constant:fallout_grade_trigger.industrial_center_factories
-					compare = greater_than
-				}
-			}
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.industrial_center }
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = fallout_grade_factory_count
-					value = constant:fallout_grade_trigger.major_industrial_center_factories
-					compare = greater_than
-				}
-			}
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.major_industrial_center }
-		}
-		if = {
-			limit = {
-				has_variable = air_winter_adaptation
-				check_variable = { air_winter_adaptation > constant:fallout_grade_trigger.high_adaptation }
-			}
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.high_adaptation_relief }
-		}
-		if = {
-			limit = {
-				has_variable = air_winter_shelter_capacity
-				check_variable = { air_winter_shelter_capacity > constant:fallout_grade_trigger.high_shelter }
-			}
-			add_to_variable = { fallout_grade_score = constant:fallout_grade_weight.high_shelter_relief }
-		}
-
-		clamp_variable = {
-			var = fallout_grade_score
-			min = constant:fallout_runtime.zero
-			max = constant:fallout_grade_threshold.maximum_score
-		}
+		fallout_calculate_expected_grade_score = yes
+		set_variable = { fallout_grade_score = fallout_expected_grade_score }
 
 		set_variable = { fallout_state_grade = constant:fallout_state_grade.remote_refuge }
 		if = {
@@ -1073,123 +1034,182 @@ fallout_grade_state = {
 		if = {
 			limit = {
 				OR = {
-					has_state_flag = fallout_legacy_altered_grade_memory
-					AND = {
-						OR = {
-							ROOT = { fallout_request_source_is_biological = yes }
-							ROOT = { fallout_request_source_is_mixed = yes }
-						}
-						check_variable = {
-							var = fallout_grade_score
-							value = constant:fallout_grade_threshold.altered_biosphere
-							compare = greater_than_or_equals
-						}
-					}
+					check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.biological_follow_through }
+					check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.mixed_terminal }
+				}
+				check_variable = {
+					var = fallout_grade_score
+					value = constant:fallout_grade_threshold.altered_biosphere
+					compare = greater_than_or_equals
 				}
 			}
 			set_variable = { fallout_state_subtype = constant:fallout_state_subtype.altered_biosphere }
 			set_state_flag = fallout_altered_biosphere
-			clr_state_flag = fallout_legacy_altered_grade_memory
 		}
 		fallout_calculate_state_survival_value = yes
 		set_state_flag = fallout_state_graded
 		set_variable = { fallout_state_grade_date = global.date }
+		set_variable = { fallout_state_grading_generation = global.fallout_transition_generation }
+		fallout_reconcile_state_grading_receipt = yes
 	}
+}
+
+# Supported scope: STATE. Output is the temporary variable
+# fallout_expected_survival_value, calculated only from frozen snapshot inputs
+# and the already reconciled grade.
+fallout_calculate_expected_state_survival_value = {
+	set_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.maximum }
+	set_temp_variable = { fallout_survival_grade_penalty = fallout_state_grade }
+	multiply_temp_variable = { fallout_survival_grade_penalty = constant:fallout_survival_value.grade_penalty }
+	subtract_from_temp_variable = { fallout_expected_survival_value = fallout_survival_grade_penalty }
+
+	if = { limit = { has_state_flag = fallout_pretransition_direct_manual_target } subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.manual_strike_penalty } }
+	if = { limit = { has_variable = fallout_pretransition_nuclear_fallout_intensity check_variable = { fallout_pretransition_nuclear_fallout_intensity > constant:fallout_runtime.zero } } subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.nuclear_fallout_penalty } }
+	if = { limit = { has_state_flag = fallout_pretransition_chemical_contamination } subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.chemical_penalty } }
+	if = {
+		limit = { has_state_flag = fallout_pretransition_biological_contamination }
+		subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.biological_penalty }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_exposure }
+		set_temp_variable = { fallout_survival_winter_penalty = fallout_pretransition_air_winter_exposure }
+		multiply_temp_variable = { fallout_survival_winter_penalty = constant:fallout_survival_value.winter_exposure_factor }
+		subtract_from_temp_variable = { fallout_expected_survival_value = fallout_survival_winter_penalty }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_adaptation }
+		set_temp_variable = { fallout_survival_adaptation_bonus = fallout_pretransition_air_winter_adaptation }
+		multiply_temp_variable = { fallout_survival_adaptation_bonus = constant:fallout_survival_value.adaptation_factor }
+		add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_adaptation_bonus }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_shelter_capacity }
+		set_temp_variable = { fallout_survival_shelter_bonus = fallout_pretransition_air_winter_shelter_capacity }
+		multiply_temp_variable = { fallout_survival_shelter_bonus = constant:fallout_survival_value.shelter_factor }
+		add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_shelter_bonus }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_food_reserve }
+		set_temp_variable = { fallout_survival_food_bonus = fallout_pretransition_air_winter_food_reserve }
+		multiply_temp_variable = { fallout_survival_food_bonus = constant:fallout_survival_value.food_factor }
+		add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_food_bonus }
+	}
+	if = {
+		limit = { has_variable = fallout_pretransition_air_winter_reclamation }
+		set_temp_variable = { fallout_survival_reclamation_bonus = fallout_pretransition_air_winter_reclamation }
+		multiply_temp_variable = { fallout_survival_reclamation_bonus = constant:fallout_survival_value.reclamation_factor }
+		add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_reclamation_bonus }
+	}
+	if = { limit = { has_state_flag = fallout_pretransition_coastal } add_to_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.coastal_bonus } }
+	if = {
+		limit = { check_variable = { fallout_pretransition_supply_node > constant:fallout_runtime.zero } }
+		add_to_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.supply_node_bonus }
+	}
+	set_temp_variable = { fallout_survival_infrastructure_bonus = fallout_pretransition_infrastructure }
+	multiply_temp_variable = { fallout_survival_infrastructure_bonus = constant:fallout_survival_value.infrastructure_per_level }
+	add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_infrastructure_bonus }
+	set_temp_variable = { fallout_survival_railway_bonus = fallout_pretransition_rail_way }
+	multiply_temp_variable = { fallout_survival_railway_bonus = constant:fallout_survival_value.railway_per_level }
+	add_to_temp_variable = { fallout_expected_survival_value = fallout_survival_railway_bonus }
+
+	set_temp_variable = { fallout_survival_damaged_factory_penalty = fallout_pretransition_damaged_industrial_complex }
+	add_to_temp_variable = { fallout_survival_damaged_factory_penalty = fallout_pretransition_damaged_arms_factory }
+	multiply_temp_variable = { fallout_survival_damaged_factory_penalty = constant:fallout_survival_value.damaged_factory_penalty }
+	subtract_from_temp_variable = { fallout_expected_survival_value = fallout_survival_damaged_factory_penalty }
+	if = {
+		limit = { check_variable = { fallout_pretransition_population_k > constant:fallout_survival_value.very_high_population_threshold_k } }
+		subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.very_high_population_penalty }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_population_k > constant:fallout_survival_value.high_population_threshold_k } }
+		subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.high_population_penalty }
+	}
+	if = {
+		limit = { var:fallout_original_controller_scope = { has_country_flag = fallout_pretransition_had_war } }
+		subtract_from_temp_variable = { fallout_expected_survival_value = constant:fallout_survival_value.active_war_penalty }
+	}
+	clamp_temp_variable = {
+		var = fallout_expected_survival_value
+		min = constant:fallout_survival_value.minimum
+		max = constant:fallout_survival_value.maximum
+	}
+	round_temp_variable = fallout_expected_survival_value
 }
 
 # Supported scope: STATE. This 0 to 100 ledger is intentionally independent
 # from the damage grade and is used by continuation and successor selection.
 fallout_calculate_state_survival_value = {
-	set_variable = { fallout_survival_value = constant:fallout_survival_value.maximum }
-	set_temp_variable = { fallout_survival_grade_penalty = fallout_state_grade }
-	multiply_temp_variable = { fallout_survival_grade_penalty = constant:fallout_survival_value.grade_penalty }
-	subtract_from_variable = { fallout_survival_value = fallout_survival_grade_penalty }
+	fallout_calculate_expected_state_survival_value = yes
+	set_variable = { fallout_survival_value = fallout_expected_survival_value }
+	set_variable = { fallout_survival_value_date = global.date }
+}
 
-	if = { limit = { fallout_state_is_direct_manual_target = yes } subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.manual_strike_penalty } }
-	if = { limit = { fallout_state_has_live_nuclear_fallout = yes } subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.nuclear_fallout_penalty } }
-	if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.chemical_penalty } }
+# Supported scope: STATE. Safe before destruction. A bad grading row is fully
+# rebuilt from its frozen source instead of calling a writer blocked by flags.
+fallout_reset_state_grading_receipt_for_retry = {
+	clr_state_flag = fallout_state_graded
+	clr_state_flag = fallout_altered_biosphere
+	clr_state_flag = fallout_grade_score_reconciled
+	clr_state_flag = fallout_survival_value_reconciled
+	clear_variable = fallout_grade_score
+	clear_variable = fallout_state_grade
+	clear_variable = fallout_state_grade_date
+	clear_variable = fallout_state_grading_generation
+	clear_variable = fallout_state_subtype
+	clear_variable = fallout_survival_value
+	clear_variable = fallout_survival_value_date
+}
+
+# Supported scope: STATE. Recompute both derived values from the frozen row.
+fallout_reconcile_state_grading_receipt = {
+	clr_state_flag = fallout_grade_score_reconciled
+	clr_state_flag = fallout_survival_value_reconciled
+	fallout_calculate_expected_grade_score = yes
 	if = {
 		limit = {
-			OR = {
-				has_state_flag = bioweapon_contaminated
-				has_state_flag = bio_agent_1_active
-				has_state_flag = bio_agent_2_active
-				has_state_flag = bio_agent_3_active
-				has_state_flag = bio_agent_4_active
-			}
+			has_variable = fallout_grade_score
+			check_variable = { var = fallout_grade_score value = fallout_expected_grade_score compare = equals }
 		}
-		subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.biological_penalty }
+		set_state_flag = fallout_grade_score_reconciled
 	}
+	fallout_calculate_expected_state_survival_value = yes
 	if = {
-		limit = { has_variable = air_winter_exposure }
-		set_temp_variable = { fallout_survival_winter_penalty = air_winter_exposure }
-		multiply_temp_variable = { fallout_survival_winter_penalty = constant:fallout_survival_value.winter_exposure_factor }
-		subtract_from_variable = { fallout_survival_value = fallout_survival_winter_penalty }
+		limit = {
+			has_variable = fallout_survival_value
+			check_variable = { var = fallout_survival_value value = fallout_expected_survival_value compare = equals }
+		}
+		set_state_flag = fallout_survival_value_reconciled
 	}
-	if = {
-		limit = { has_variable = air_winter_adaptation }
-		set_temp_variable = { fallout_survival_adaptation_bonus = air_winter_adaptation }
-		multiply_temp_variable = { fallout_survival_adaptation_bonus = constant:fallout_survival_value.adaptation_factor }
-		add_to_variable = { fallout_survival_value = fallout_survival_adaptation_bonus }
-	}
-	if = {
-		limit = { has_variable = air_winter_shelter_capacity }
-		set_temp_variable = { fallout_survival_shelter_bonus = air_winter_shelter_capacity }
-		multiply_temp_variable = { fallout_survival_shelter_bonus = constant:fallout_survival_value.shelter_factor }
-		add_to_variable = { fallout_survival_value = fallout_survival_shelter_bonus }
-	}
-	if = {
-		limit = { has_variable = air_winter_food_reserve }
-		set_temp_variable = { fallout_survival_food_bonus = air_winter_food_reserve }
-		multiply_temp_variable = { fallout_survival_food_bonus = constant:fallout_survival_value.food_factor }
-		add_to_variable = { fallout_survival_value = fallout_survival_food_bonus }
-	}
-	if = {
-		limit = { has_variable = air_winter_reclamation }
-		set_temp_variable = { fallout_survival_reclamation_bonus = air_winter_reclamation }
-		multiply_temp_variable = { fallout_survival_reclamation_bonus = constant:fallout_survival_value.reclamation_factor }
-		add_to_variable = { fallout_survival_value = fallout_survival_reclamation_bonus }
-	}
-	if = { limit = { is_coastal = yes } add_to_variable = { fallout_survival_value = constant:fallout_survival_value.coastal_bonus } }
-	if = {
-		limit = { check_variable = { building_level@supply_node > constant:fallout_runtime.zero } }
-		add_to_variable = { fallout_survival_value = constant:fallout_survival_value.supply_node_bonus }
-	}
-	set_temp_variable = { fallout_survival_infrastructure_bonus = building_level@infrastructure }
-	multiply_temp_variable = { fallout_survival_infrastructure_bonus = constant:fallout_survival_value.infrastructure_per_level }
-	add_to_variable = { fallout_survival_value = fallout_survival_infrastructure_bonus }
-	set_temp_variable = { fallout_survival_railway_bonus = building_level@rail_way }
-	multiply_temp_variable = { fallout_survival_railway_bonus = constant:fallout_survival_value.railway_per_level }
-	add_to_variable = { fallout_survival_value = fallout_survival_railway_bonus }
-
-	set_temp_variable = { fallout_survival_damaged_factory_penalty = damaged_building_level@industrial_complex }
-	add_to_temp_variable = { fallout_survival_damaged_factory_penalty = damaged_building_level@arms_factory }
-	multiply_temp_variable = { fallout_survival_damaged_factory_penalty = constant:fallout_survival_value.damaged_factory_penalty }
-	subtract_from_variable = { fallout_survival_value = fallout_survival_damaged_factory_penalty }
-	if = {
-		limit = { check_variable = { state_population_k > constant:fallout_survival_value.very_high_population_threshold_k } }
-		subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.very_high_population_penalty }
-	}
-	else_if = {
-		limit = { check_variable = { state_population_k > constant:fallout_survival_value.high_population_threshold_k } }
-		subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.high_population_penalty }
-	}
-	if = {
-		limit = { CONTROLLER = { has_war = yes } }
-		subtract_from_variable = { fallout_survival_value = constant:fallout_survival_value.active_war_penalty }
-	}
-	clamp_variable = {
-		var = fallout_survival_value
-		min = constant:fallout_survival_value.minimum
-		max = constant:fallout_survival_value.maximum
-	}
-	round_variable = fallout_survival_value
-	set_variable = { fallout_survival_value_date = global.date }
 }
 
 # ---------------------------------------------------------------------------
 # Population, buildings, supply, and category conversion
 # ---------------------------------------------------------------------------
+
+# Supported scope: STATE. Outputs are temporary intent values derived from the
+# frozen population and reconciled grade.
+fallout_calculate_population_loss_intent = {
+	set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.remote_refuge }
+		if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.scarred_province } }
+		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.ash_zone } }
+		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.dead_city } }
+		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.wasteland } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.wasteland } }
+		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.vitrified_zone } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.vitrified_zone } }
+
+	set_temp_variable = { fallout_expected_population_before_loss = fallout_pretransition_population_k }
+	multiply_temp_variable = { fallout_expected_population_before_loss = constant:fallout_runtime.population_scale }
+	round_temp_variable = fallout_expected_population_before_loss
+	set_temp_variable = { fallout_expected_population_requested_loss = fallout_expected_population_before_loss }
+	multiply_temp_variable = { fallout_expected_population_requested_loss = fallout_state_loss_percent }
+	multiply_temp_variable = { fallout_expected_population_requested_loss = constant:fallout_runtime.percentage_scale }
+	round_temp_variable = fallout_expected_population_requested_loss
+	set_temp_variable = { fallout_expected_population_available = fallout_expected_population_before_loss }
+	subtract_from_temp_variable = { fallout_expected_population_available = constant:fallout_runtime.minimum_remaining_population }
+	clamp_temp_variable = { var = fallout_expected_population_available min = constant:fallout_runtime.zero }
+	set_temp_variable = { fallout_expected_population_loss = fallout_expected_population_requested_loss }
+	clamp_temp_variable = { var = fallout_expected_population_loss min = constant:fallout_runtime.zero max = fallout_expected_population_available }
+	round_temp_variable = fallout_expected_population_loss
+}
 
 # Supported scope: STATE
 fallout_apply_state_population_loss = {
@@ -1198,28 +1218,36 @@ fallout_apply_state_population_loss = {
 			has_state_flag = fallout_state_graded
 			NOT = { has_state_flag = fallout_population_loss_evaluated }
 		}
-		set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.remote_refuge }
-		if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.scarred_province } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.ash_zone } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.dead_city } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.wasteland } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.wasteland } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.vitrified_zone } } set_temp_variable = { fallout_state_loss_percent = constant:fallout_population_loss_percent.vitrified_zone } }
-
-		set_temp_variable = { state_civilian_population_loss_requested = state_population_k }
-		multiply_temp_variable = { state_civilian_population_loss_requested = constant:fallout_runtime.population_scale }
-		multiply_temp_variable = { state_civilian_population_loss_requested = fallout_state_loss_percent }
-		multiply_temp_variable = { state_civilian_population_loss_requested = constant:fallout_runtime.percentage_scale }
-		round_temp_variable = state_civilian_population_loss_requested
+		fallout_calculate_population_loss_intent = yes
+		set_temp_variable = { state_civilian_population_loss_requested = fallout_expected_population_requested_loss }
+		set_variable = { fallout_population_loss_percent_applied = fallout_state_loss_percent }
+		set_variable = { fallout_population_loss_requested_memory = fallout_expected_population_requested_loss }
+		set_variable = { fallout_population_before_loss_people = state_population_k }
+		multiply_variable = { fallout_population_before_loss_people = constant:fallout_runtime.population_scale }
+		round_variable = fallout_population_before_loss_people
+		set_variable = { fallout_population_available_before_loss = fallout_expected_population_available }
+		set_variable = { fallout_population_expected_loss = fallout_expected_population_loss }
 		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_runtime.minimum_remaining_population }
 		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
 		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_runtime.one }
-		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_target_country = var:fallout_original_owner_scope }
 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_runtime.one }
 		set_temp_variable = { state_civilian_population_loss_applied = constant:fallout_runtime.zero }
 		set_temp_variable = { state_civilian_population_loss_result = constant:fallout_runtime.zero }
 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_runtime.one }
 		apply_exact_state_civilian_population_loss = yes
 		set_variable = { fallout_population_loss_memory = state_civilian_population_loss_applied }
+		set_variable = { fallout_population_after_loss_people = state_population_k }
+		set_variable = { fallout_population_after_loss_k = state_population_k }
+		multiply_variable = { fallout_population_after_loss_people = constant:fallout_runtime.population_scale }
+		round_variable = fallout_population_after_loss_people
+		set_variable = { fallout_population_reconciled_loss = fallout_population_before_loss_people }
+		subtract_from_variable = { fallout_population_reconciled_loss = fallout_population_after_loss_people }
+		clamp_variable = {
+			var = fallout_population_reconciled_loss
+			min = constant:fallout_runtime.zero
+		}
+		round_variable = fallout_population_reconciled_loss
 		if = {
 			limit = { check_variable = { state_civilian_population_loss_result > constant:fallout_runtime.zero } }
 			set_state_flag = fallout_population_loss_applied
@@ -1229,6 +1257,8 @@ fallout_apply_state_population_loss = {
 			set_state_flag = fallout_population_loss_zero
 		}
 		set_state_flag = fallout_population_loss_evaluated
+		set_variable = { fallout_population_loss_generation = global.fallout_transition_generation }
+		fallout_reconcile_population_loss_receipt = yes
 
 		set_temp_variable = { chaos_deaths_change = constant:fallout_runtime.zero }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.unknown }
@@ -1242,94 +1272,192 @@ fallout_apply_state_population_loss = {
 	}
 }
 
-# Supported scope: STATE
+# Supported scope: STATE. This never applies population loss. It recomputes the
+# intent from the frozen row, observes current population, and heals only a
+# matching Deaths-system receipt.
+fallout_reconcile_population_loss_receipt = {
+	clr_state_flag = fallout_population_loss_reconciled
+	fallout_calculate_population_loss_intent = yes
+	set_variable = { fallout_population_after_loss_people = state_population_k }
+	set_variable = { fallout_population_after_loss_k = state_population_k }
+	multiply_variable = { fallout_population_after_loss_people = constant:fallout_runtime.population_scale }
+	round_variable = fallout_population_after_loss_people
+	set_variable = { fallout_population_reconciled_loss = fallout_population_before_loss_people }
+	subtract_from_variable = { fallout_population_reconciled_loss = fallout_population_after_loss_people }
+	clamp_variable = { var = fallout_population_reconciled_loss min = constant:fallout_runtime.zero }
+	round_variable = fallout_population_reconciled_loss
+	if = {
+		limit = {
+			has_state_flag = fallout_population_loss_evaluated
+			check_variable = { var = fallout_population_loss_percent_applied value = fallout_state_loss_percent compare = equals }
+			check_variable = { var = fallout_population_loss_requested_memory value = fallout_expected_population_requested_loss compare = equals }
+			check_variable = { var = fallout_population_before_loss_people value = fallout_expected_population_before_loss compare = equals }
+			check_variable = { var = fallout_population_available_before_loss value = fallout_expected_population_available compare = equals }
+			check_variable = { var = fallout_population_expected_loss value = fallout_expected_population_loss compare = equals }
+			check_variable = { var = fallout_population_loss_memory value = fallout_expected_population_loss compare = equals }
+			check_variable = { var = fallout_population_reconciled_loss value = fallout_expected_population_loss compare = equals }
+		}
+		set_state_flag = fallout_population_loss_reconciled
+	}
+}
+
+# Supported scope: STATE. Output is the temporary damage fraction selected by
+# the reconciled deterministic grade.
+fallout_calculate_building_damage_fraction = {
+	set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.remote_refuge }
+	if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.scarred_province } }
+	else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.ash_zone } }
+	else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.dead_city } }
+	else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.wasteland } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.wasteland } }
+	else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.vitrified_zone } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.vitrified_zone } }
+}
+
+# Supported scope: STATE. Province buildings are excluded because a state-only
+# damage_building call can select only the first matching province. Supply
+# collapse is handled by its exact state receipt until a province registry is
+# available.
 fallout_apply_building_damage = {
 	if = {
 		limit = {
 			has_state_flag = fallout_state_graded
 			NOT = { has_state_flag = fallout_building_damage_evaluated }
 		}
-		set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.remote_refuge }
-		if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.scarred_province } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.ash_zone } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.dead_city } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.wasteland } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.wasteland } }
-		else_if = { limit = { check_variable = { fallout_state_grade = constant:fallout_state_grade.vitrified_zone } } set_temp_variable = { fallout_building_damage_fraction = constant:fallout_building_damage.vitrified_zone } }
-		set_variable = { fallout_building_damage_levels_applied = constant:fallout_runtime.zero }
+		fallout_calculate_building_damage_fraction = yes
+		set_variable = { fallout_building_damage_before_infrastructure = damaged_building_level@infrastructure }
+		set_variable = { fallout_building_damage_before_industrial_complex = damaged_building_level@industrial_complex }
+		set_variable = { fallout_building_damage_before_arms_factory = damaged_building_level@arms_factory }
+		set_variable = { fallout_building_damage_before_air_base = damaged_building_level@air_base }
+		set_variable = { fallout_building_damage_before_dockyard = damaged_building_level@dockyard }
+		set_variable = { fallout_building_damage_available_infrastructure = non_damaged_building_level@infrastructure }
+		set_variable = { fallout_building_damage_available_industrial_complex = non_damaged_building_level@industrial_complex }
+		set_variable = { fallout_building_damage_available_arms_factory = non_damaged_building_level@arms_factory }
+		set_variable = { fallout_building_damage_available_air_base = non_damaged_building_level@air_base }
+		set_variable = { fallout_building_damage_available_dockyard = non_damaged_building_level@dockyard }
 
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@infrastructure }
+		set_temp_variable = { fallout_building_damage_levels = fallout_building_damage_available_infrastructure }
 		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
 		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = infrastructure damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@industrial_complex }
+		set_variable = { fallout_building_damage_requested_infrastructure = fallout_building_damage_levels }
+		if = { limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } } meta_effect = { text = { damage_building = { type = infrastructure damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" } }
+
+		set_temp_variable = { fallout_building_damage_levels = fallout_building_damage_available_industrial_complex }
 		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
 		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = industrial_complex damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@arms_factory }
+		set_variable = { fallout_building_damage_requested_industrial_complex = fallout_building_damage_levels }
+		if = { limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } } meta_effect = { text = { damage_building = { type = industrial_complex damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" } }
+
+		set_temp_variable = { fallout_building_damage_levels = fallout_building_damage_available_arms_factory }
 		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
 		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = arms_factory damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@air_base }
+		set_variable = { fallout_building_damage_requested_arms_factory = fallout_building_damage_levels }
+		if = { limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } } meta_effect = { text = { damage_building = { type = arms_factory damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" } }
+
+		set_temp_variable = { fallout_building_damage_levels = fallout_building_damage_available_air_base }
 		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
 		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = air_base damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@dockyard }
+		set_variable = { fallout_building_damage_requested_air_base = fallout_building_damage_levels }
+		if = { limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } } meta_effect = { text = { damage_building = { type = air_base damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" } }
+
+		set_temp_variable = { fallout_building_damage_levels = fallout_building_damage_available_dockyard }
 		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
 		round_temp_variable = fallout_building_damage_levels
+		set_variable = { fallout_building_damage_requested_dockyard = fallout_building_damage_levels }
+		if = { limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } } meta_effect = { text = { damage_building = { type = dockyard damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" } }
+
+		set_temp_variable = { fallout_building_damage_requested_total = fallout_building_damage_requested_infrastructure }
+		add_to_temp_variable = { fallout_building_damage_requested_total = fallout_building_damage_requested_industrial_complex }
+		add_to_temp_variable = { fallout_building_damage_requested_total = fallout_building_damage_requested_arms_factory }
+		add_to_temp_variable = { fallout_building_damage_requested_total = fallout_building_damage_requested_air_base }
+		add_to_temp_variable = { fallout_building_damage_requested_total = fallout_building_damage_requested_dockyard }
 		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = dockyard damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@supply_node }
-		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
-		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = supply_node damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
-			set_global_flag = fallout_transition_destructive_started
-		}
-		set_temp_variable = { fallout_building_damage_levels = non_damaged_building_level@rail_way }
-		multiply_temp_variable = { fallout_building_damage_levels = fallout_building_damage_fraction }
-		round_temp_variable = fallout_building_damage_levels
-		if = {
-			limit = { check_variable = { fallout_building_damage_levels > constant:fallout_runtime.zero } }
-			meta_effect = { text = { damage_building = { type = rail_way damage = [DAMAGE] } } DAMAGE = "[?fallout_building_damage_levels|.0]" }
-			add_to_variable = { fallout_building_damage_levels_applied = fallout_building_damage_levels }
-			set_state_flag = fallout_building_damage_applied
+			limit = { check_variable = { fallout_building_damage_requested_total > constant:fallout_runtime.zero } }
 			set_global_flag = fallout_transition_destructive_started
 		}
 		set_state_flag = fallout_building_damage_evaluated
-		set_temp_variable = { fallout_building_damage_fraction = constant:fallout_runtime.zero }
-		set_temp_variable = { fallout_building_damage_levels = constant:fallout_runtime.zero }
+		fallout_reconcile_building_damage_receipt = yes
+	}
+}
+
+# Supported scope: STATE. This never damages a building. It supports delayed
+# engine visibility by rebuilding observed deltas from the stored immediate
+# baselines and only accepts exact per-family matches.
+fallout_reconcile_building_damage_receipt = {
+	clr_state_flag = fallout_building_damage_reconciled
+	fallout_calculate_building_damage_fraction = yes
+	set_variable = { fallout_building_damage_levels_requested = constant:fallout_runtime.zero }
+	set_variable = { fallout_building_damage_levels_observed = constant:fallout_runtime.zero }
+
+	set_temp_variable = { fallout_expected_building_damage_infrastructure = fallout_building_damage_available_infrastructure }
+	multiply_temp_variable = { fallout_expected_building_damage_infrastructure = fallout_building_damage_fraction }
+	round_temp_variable = fallout_expected_building_damage_infrastructure
+	set_variable = { fallout_building_damage_after_infrastructure = damaged_building_level@infrastructure }
+	set_variable = { fallout_building_damage_observed_infrastructure = fallout_building_damage_after_infrastructure }
+	subtract_from_variable = { fallout_building_damage_observed_infrastructure = fallout_building_damage_before_infrastructure }
+	clamp_variable = { var = fallout_building_damage_observed_infrastructure min = constant:fallout_runtime.zero }
+	add_to_variable = { fallout_building_damage_levels_requested = fallout_building_damage_requested_infrastructure }
+	add_to_variable = { fallout_building_damage_levels_observed = fallout_building_damage_observed_infrastructure }
+
+	set_temp_variable = { fallout_expected_building_damage_industrial_complex = fallout_building_damage_available_industrial_complex }
+	multiply_temp_variable = { fallout_expected_building_damage_industrial_complex = fallout_building_damage_fraction }
+	round_temp_variable = fallout_expected_building_damage_industrial_complex
+	set_variable = { fallout_building_damage_after_industrial_complex = damaged_building_level@industrial_complex }
+	set_variable = { fallout_building_damage_observed_industrial_complex = fallout_building_damage_after_industrial_complex }
+	subtract_from_variable = { fallout_building_damage_observed_industrial_complex = fallout_building_damage_before_industrial_complex }
+	clamp_variable = { var = fallout_building_damage_observed_industrial_complex min = constant:fallout_runtime.zero }
+	add_to_variable = { fallout_building_damage_levels_requested = fallout_building_damage_requested_industrial_complex }
+	add_to_variable = { fallout_building_damage_levels_observed = fallout_building_damage_observed_industrial_complex }
+
+	set_temp_variable = { fallout_expected_building_damage_arms_factory = fallout_building_damage_available_arms_factory }
+	multiply_temp_variable = { fallout_expected_building_damage_arms_factory = fallout_building_damage_fraction }
+	round_temp_variable = fallout_expected_building_damage_arms_factory
+	set_variable = { fallout_building_damage_after_arms_factory = damaged_building_level@arms_factory }
+	set_variable = { fallout_building_damage_observed_arms_factory = fallout_building_damage_after_arms_factory }
+	subtract_from_variable = { fallout_building_damage_observed_arms_factory = fallout_building_damage_before_arms_factory }
+	clamp_variable = { var = fallout_building_damage_observed_arms_factory min = constant:fallout_runtime.zero }
+	add_to_variable = { fallout_building_damage_levels_requested = fallout_building_damage_requested_arms_factory }
+	add_to_variable = { fallout_building_damage_levels_observed = fallout_building_damage_observed_arms_factory }
+
+	set_temp_variable = { fallout_expected_building_damage_air_base = fallout_building_damage_available_air_base }
+	multiply_temp_variable = { fallout_expected_building_damage_air_base = fallout_building_damage_fraction }
+	round_temp_variable = fallout_expected_building_damage_air_base
+	set_variable = { fallout_building_damage_after_air_base = damaged_building_level@air_base }
+	set_variable = { fallout_building_damage_observed_air_base = fallout_building_damage_after_air_base }
+	subtract_from_variable = { fallout_building_damage_observed_air_base = fallout_building_damage_before_air_base }
+	clamp_variable = { var = fallout_building_damage_observed_air_base min = constant:fallout_runtime.zero }
+	add_to_variable = { fallout_building_damage_levels_requested = fallout_building_damage_requested_air_base }
+	add_to_variable = { fallout_building_damage_levels_observed = fallout_building_damage_observed_air_base }
+
+	set_temp_variable = { fallout_expected_building_damage_dockyard = fallout_building_damage_available_dockyard }
+	multiply_temp_variable = { fallout_expected_building_damage_dockyard = fallout_building_damage_fraction }
+	round_temp_variable = fallout_expected_building_damage_dockyard
+	set_variable = { fallout_building_damage_after_dockyard = damaged_building_level@dockyard }
+	set_variable = { fallout_building_damage_observed_dockyard = fallout_building_damage_after_dockyard }
+	subtract_from_variable = { fallout_building_damage_observed_dockyard = fallout_building_damage_before_dockyard }
+	clamp_variable = { var = fallout_building_damage_observed_dockyard min = constant:fallout_runtime.zero }
+	add_to_variable = { fallout_building_damage_levels_requested = fallout_building_damage_requested_dockyard }
+	add_to_variable = { fallout_building_damage_levels_observed = fallout_building_damage_observed_dockyard }
+
+	if = {
+		limit = {
+			has_state_flag = fallout_building_damage_evaluated
+			check_variable = { var = fallout_building_damage_requested_infrastructure value = fallout_expected_building_damage_infrastructure compare = equals }
+			check_variable = { var = fallout_building_damage_observed_infrastructure value = fallout_expected_building_damage_infrastructure compare = equals }
+			check_variable = { var = fallout_building_damage_requested_industrial_complex value = fallout_expected_building_damage_industrial_complex compare = equals }
+			check_variable = { var = fallout_building_damage_observed_industrial_complex value = fallout_expected_building_damage_industrial_complex compare = equals }
+			check_variable = { var = fallout_building_damage_requested_arms_factory value = fallout_expected_building_damage_arms_factory compare = equals }
+			check_variable = { var = fallout_building_damage_observed_arms_factory value = fallout_expected_building_damage_arms_factory compare = equals }
+			check_variable = { var = fallout_building_damage_requested_air_base value = fallout_expected_building_damage_air_base compare = equals }
+			check_variable = { var = fallout_building_damage_observed_air_base value = fallout_expected_building_damage_air_base compare = equals }
+			check_variable = { var = fallout_building_damage_requested_dockyard value = fallout_expected_building_damage_dockyard compare = equals }
+			check_variable = { var = fallout_building_damage_observed_dockyard value = fallout_expected_building_damage_dockyard compare = equals }
+		}
+		set_state_flag = fallout_building_damage_reconciled
+		if = {
+			limit = { check_variable = { fallout_building_damage_levels_requested > constant:fallout_runtime.zero } }
+			set_state_flag = fallout_building_damage_applied
+			set_global_flag = fallout_transition_destructive_started
+		}
+		else = { clr_state_flag = fallout_building_damage_applied }
 	}
 }
 
@@ -1377,6 +1505,61 @@ fallout_apply_state_grade_modifier = {
 	}
 }
 
+# Supported scope: STATE. Dynamic modifiers are safe to rebuild because the
+# effect first removes every Fallout-owned grade surface.
+fallout_reset_state_grade_modifier_receipt_for_retry = {
+	clr_state_flag = fallout_grade_modifier_evaluated
+	clr_state_flag = fallout_grade_modifier_applied
+	clr_state_flag = fallout_altered_biosphere_modifier_applied
+	remove_dynamic_modifier = { modifier = fallout_grade_1_state }
+	remove_dynamic_modifier = { modifier = fallout_grade_2_state }
+	remove_dynamic_modifier = { modifier = fallout_grade_3_state }
+	remove_dynamic_modifier = { modifier = fallout_grade_4_state }
+	remove_dynamic_modifier = { modifier = fallout_grade_5_state }
+	remove_dynamic_modifier = { modifier = fallout_grade_6_state }
+	remove_dynamic_modifier = { modifier = fallout_altered_biosphere_state }
+}
+
+# Supported scope: STATE
+fallout_apply_snapshot_category_degradation = {
+	clr_state_flag = air_winter_category_degraded_this_tick
+	if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.megalopolis } }
+		set_state_category = metropolis
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.metropolis } }
+		set_state_category = large_city
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_city } }
+		set_state_category = city
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.city } }
+		set_state_category = large_town
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_town } }
+		set_state_category = town
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.town } }
+		set_state_category = rural
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+	else_if = {
+		limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.rural } }
+		set_state_category = pastoral
+		set_state_flag = air_winter_category_degraded_this_tick
+	}
+}
+
 # Supported scope: STATE
 fallout_convert_state_category = {
 	if = {
@@ -1401,8 +1584,9 @@ fallout_convert_state_category = {
 					value = constant:fallout_state_grade.ash_zone
 					compare = greater_than_or_equals
 				}
+				check_variable = { fallout_state_grade < constant:fallout_state_grade.wasteland }
 			}
-			air_winter_degrade_state_category = yes
+			fallout_apply_snapshot_category_degradation = yes
 			if = {
 				limit = { has_state_flag = air_winter_category_degraded_this_tick }
 				set_state_flag = fallout_category_conversion_applied
@@ -1423,13 +1607,165 @@ fallout_convert_state_category = {
 	}
 }
 
+# Supported scope: STATE. This repairs receipt flags only when the live category
+# already matches the deterministic frozen-category result. It never applies a
+# second category conversion.
+fallout_reconcile_state_category_receipt = {
+	if = {
+		limit = { check_variable = { fallout_state_grade < constant:fallout_state_grade.ash_zone } }
+		if = { limit = { fallout_state_category_matches_frozen_original = yes } clr_state_flag = fallout_category_conversion_applied }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.wasteland
+				compare = greater_than_or_equals
+			}
+			has_state_category = wasteland
+		}
+		if = {
+			limit = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.wasteland } }
+			clr_state_flag = fallout_category_conversion_applied
+		}
+		else = { set_state_flag = fallout_category_conversion_applied }
+	}
+	else = {
+		if = {
+			limit = {
+				OR = {
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.megalopolis } has_state_category = metropolis }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.metropolis } has_state_category = large_city }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_city } has_state_category = city }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.city } has_state_category = large_town }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_town } has_state_category = town }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.town } has_state_category = rural }
+					AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.rural } has_state_category = pastoral }
+				}
+			}
+			set_state_flag = fallout_category_conversion_applied
+		}
+		else_if = {
+			limit = { fallout_state_category_matches_frozen_original = yes }
+			clr_state_flag = fallout_category_conversion_applied
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = fallout_supply_collapsed
+	}
+	else = { clr_state_flag = fallout_supply_collapsed }
+	set_state_flag = fallout_category_conversion_evaluated
+}
+
 # ---------------------------------------------------------------------------
 # Government, successor candidate, and player ledgers
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Input is the temporary variable
+# fallout_transition_error_to_register. The first owned failure retains the
+# global code and count until its exact recovery contract clears it.
+fallout_register_transition_error_if_unowned = {
+	if = {
+		limit = { NOT = { has_global_flag = fallout_transition_error } }
+		set_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = fallout_transition_error_to_register }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+	}
+}
+
+# Supported scope: COUNTRY. Clear only the exact pre-destruction snapshot
+# failure before rebuilding the frozen ledger.
+fallout_clear_recoverable_snapshot_error = {
+	if = {
+		limit = { fallout_recoverable_snapshot_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_player_snapshot_error = {
+	if = {
+		limit = { fallout_recoverable_player_snapshot_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_player_reservation_error = {
+	if = {
+		limit = { fallout_recoverable_player_reservation_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY. Phase-row recovery clears only its own exact
+# one-error signature. Already current state rows remain idempotent.
+fallout_clear_recoverable_state_grading_error = {
+	if = {
+		limit = { fallout_recoverable_state_grading_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_population_loss_error = {
+	if = {
+		limit = { fallout_recoverable_population_loss_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_physical_collapse_error = {
+	if = {
+		limit = { fallout_recoverable_physical_collapse_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_map_postcondition_error = {
+	if = {
+		limit = { fallout_recoverable_map_postcondition_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_clear_recoverable_peace_conference_error = {
+	if = {
+		limit = { fallout_recoverable_peace_conference_error_is_active = yes }
+		clr_global_flag = fallout_transition_error
+		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
+		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.zero }
+	}
+}
+
 # Supported scope: COUNTRY. This is a one-time coordinator transaction. It is
 # safe to retry after a peace conference or a partially applied save.
 fallout_reset_old_world_diplomacy = {
+	fallout_clear_recoverable_peace_conference_error = yes
 	clr_global_flag = fallout_transition_diplomacy_validation_failed
 	clr_global_flag = fallout_transition_diplomacy_reset_applied
 	clr_global_flag = fallout_transition_old_world_diplomacy_proven_complete
@@ -1462,7 +1798,8 @@ fallout_reset_old_world_diplomacy = {
 	if = {
 		limit = { any_country = { is_in_peace_conference = yes } }
 		set_global_flag = fallout_transition_peace_conference_reset_blocked
-		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.peace_conference_active }
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.peace_conference_active }
+		fallout_register_transition_error_if_unowned = yes
 	}
 	else = {
 		clr_global_flag = fallout_transition_peace_conference_reset_blocked
@@ -1588,7 +1925,8 @@ fallout_reset_old_world_diplomacy = {
 		}
 		else = {
 			set_global_flag = fallout_transition_diplomacy_validation_failed
-			set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.old_world_diplomacy_incomplete }
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.old_world_diplomacy_incomplete }
+			fallout_register_transition_error_if_unowned = yes
 		}
 
 		if = {
@@ -1633,8 +1971,10 @@ fallout_reset_old_world_diplomacy = {
 		set_global_flag = fallout_transition_trade_routes_reset_blocked
 		set_global_flag = fallout_transition_intelligence_reset_blocked
 		set_global_flag = fallout_transition_unprovable_diplomacy_surface
-		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.unprovable_diplomacy_surface }
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.unprovable_diplomacy_surface }
+		fallout_register_transition_error_if_unowned = yes
 	}
+	set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
 }
 
 # Supported scope: COUNTRY. Clears only derived classification fields.
@@ -1644,7 +1984,7 @@ fallout_reset_country_government_classification = {
 	clr_country_flag = fallout_dead_tag_memory
 	clr_country_flag = fallout_emergency_government
 	clr_country_flag = fallout_government_archetype_unresolved
-	clear_variable = fallout_government_archetype
+	clear_variable = fallout_government_origin_archetype
 	clear_variable = fallout_government_classifier_generation
 	clear_variable = fallout_government_classifier_schema_version
 	clear_variable = fallout_archetype_hostable_state_count
@@ -1661,58 +2001,77 @@ fallout_reset_country_government_classification = {
 	clear_variable = fallout_archetype_military_state_count
 }
 
-# Supported scope: STATE. OWNER receives deterministic origin signal counts.
+# Supported scope: COUNTRY. Clears and initializes the derived signal row for
+# one country in the frozen pretransition country array.
+fallout_prepare_country_government_classification = {
+	fallout_reset_country_government_classification = yes
+	set_variable = { fallout_archetype_hostable_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_surviving_capital_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_remote_refuge_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_bunker_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_food_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_maritime_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_quarantine_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_scavenger_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_mobility_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_technate_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_altered_state_count = constant:fallout_runtime.zero }
+	set_variable = { fallout_archetype_military_state_count = constant:fallout_runtime.zero }
+}
+
+# Supported scope: STATE. The frozen original owner receives deterministic
+# origin signal counts even if current ownership changes before classification.
 fallout_record_state_government_origin_signals = {
 	if = {
 		limit = { fallout_state_can_host_government = yes }
-		OWNER = { add_to_variable = { fallout_archetype_hostable_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_hostable_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_is_surviving_pretransition_capital = yes }
-		OWNER = { add_to_variable = { fallout_archetype_surviving_capital_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_surviving_capital_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = {
 			fallout_state_can_host_government = yes
 			check_variable = { fallout_state_grade = constant:fallout_state_grade.remote_refuge }
 		}
-		OWNER = { add_to_variable = { fallout_archetype_remote_refuge_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_remote_refuge_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_bunker_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_bunker_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_bunker_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_food_compact_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_food_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_food_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_maritime_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_maritime_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_maritime_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_quarantine_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_quarantine_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_quarantine_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_scavenger_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_scavenger_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_scavenger_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_nomad_mobility_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_mobility_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_mobility_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_technate_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_technate_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_technate_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_mutant_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_altered_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_altered_state_count = constant:fallout_runtime.one } }
 	}
 	if = {
 		limit = { fallout_state_supports_warlord_origin = yes }
-		OWNER = { add_to_variable = { fallout_archetype_military_state_count = constant:fallout_runtime.one } }
+		var:fallout_original_owner_scope = { add_to_variable = { fallout_archetype_military_state_count = constant:fallout_runtime.one } }
 	}
 }
 
@@ -1721,22 +2080,10 @@ fallout_record_state_government_origin_signals = {
 # packages, focuses, leaders, units, and AI remain allocation-owned surfaces.
 fallout_classify_country_government = {
 	if = {
-		limit = { NOT = { fallout_country_government_classification_is_current = yes } }
-		fallout_reset_country_government_classification = yes
-		set_variable = { fallout_archetype_hostable_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_surviving_capital_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_remote_refuge_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_bunker_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_food_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_maritime_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_quarantine_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_scavenger_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_mobility_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_technate_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_altered_state_count = constant:fallout_runtime.zero }
-		set_variable = { fallout_archetype_military_state_count = constant:fallout_runtime.zero }
-
-		every_owned_state = { fallout_record_state_government_origin_signals = yes }
+		limit = {
+			has_country_flag = fallout_pretransition_country
+			NOT = { fallout_country_government_classification_is_current = yes }
+		}
 		set_variable = { fallout_government_classifier_generation = global.fallout_transition_generation }
 		set_variable = { fallout_government_classifier_schema_version = constant:fallout_government_classifier_schema.version }
 
@@ -1745,7 +2092,7 @@ fallout_classify_country_government = {
 			set_country_flag = fallout_country_survives
 			if = {
 				limit = { fallout_country_is_machine_protocol_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.machine_protocol }
 			}
 			else_if = {
 				limit = { fallout_country_has_machine_protocol_claim = yes }
@@ -1753,55 +2100,55 @@ fallout_classify_country_government = {
 			}
 			else_if = {
 				limit = { fallout_country_is_mutant_polity_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.mutant_polity }
 			}
 			else_if = {
 				limit = { fallout_country_is_religious_refuge_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.religious_refuge }
 			}
 			else_if = {
 				limit = { fallout_country_is_quarantine_state_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.quarantine_state }
 			}
 			else_if = {
 				limit = { fallout_country_is_bunker_authority_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.bunker_authority }
 			}
 			else_if = {
 				limit = { fallout_country_is_warlord_command_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.warlord_command }
 			}
 			else_if = {
 				limit = { fallout_country_is_technate_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.technate }
 			}
 			else_if = {
 				limit = { fallout_country_is_food_compact_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.food_compact }
 			}
 			else_if = {
 				limit = { fallout_country_is_maritime_remnant_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.maritime_remnant }
 			}
 			else_if = {
 				limit = { fallout_country_is_scavenger_syndicate_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.scavenger_syndicate }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.scavenger_syndicate }
 			}
 			else_if = {
 				limit = { fallout_country_is_nomad_convoy_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.nomad_convoy }
 			}
 			else_if = {
 				limit = { fallout_country_is_continuity_government_eligible = yes }
-				set_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government }
+				set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.continuity_government }
 			}
 			else = {
 				set_country_flag = fallout_government_archetype_unresolved
 			}
 			if = {
 				limit = {
-					has_variable = fallout_government_archetype
-					NOT = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } }
+					has_variable = fallout_government_origin_archetype
+					NOT = { check_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.continuity_government } }
 				}
 				set_country_flag = fallout_emergency_government
 			}
@@ -1812,7 +2159,7 @@ fallout_classify_country_government = {
 		if = {
 			limit = {
 				OR = {
-					has_variable = fallout_government_archetype
+					has_variable = fallout_government_origin_archetype
 					has_country_flag = fallout_dead_tag_memory
 				}
 			}
@@ -1835,17 +2182,30 @@ fallout_reset_successor_allocation_ledger = {
 	clear_variable = global.fallout_successor_allocation_generation
 	clear_variable = global.fallout_successor_allocation_schema_version
 	clear_variable = global.fallout_successor_assignment_count
-	every_country = {
+	every_possible_country = {
 		clr_country_flag = fallout_live_tag_conflict_resolved
+		if = {
+			limit = { has_country_flag = fallout_live_tag_conflict_recorded }
+			set_country_flag = fallout_live_tag_conflict_allocation_pending
+		}
+		else = { clr_country_flag = fallout_live_tag_conflict_allocation_pending }
 		clr_country_flag = fallout_successor_assignment_committed
 		clr_country_flag = fallout_country_package_applied
 		clr_country_flag = fallout_focus_package_applied
 		clr_country_flag = fallout_archetype_package_applied
 		clr_country_flag = fallout_regional_package_applied
 		clr_country_flag = fallout_country_memory_package_applied
+		clr_country_flag = fallout_existing_tag_conversion_committed
+		clr_country_flag = fallout_releasable_release_committed
+		clr_country_flag = fallout_dynamic_country_materialization_committed
 		clear_variable = fallout_live_tag_conflict_resolution_generation
 		clear_variable = fallout_live_tag_conflict_resolution
 		clear_variable = fallout_live_tag_conflict_cleanup_owner
+		clear_variable = fallout_live_tag_conflict_cleanup_generation
+		clear_variable = fallout_live_tag_conflict_output_country
+		clear_variable = fallout_existing_tag_conversion_generation
+		clear_variable = fallout_releasable_release_generation
+		clear_variable = fallout_dynamic_country_materialization_generation
 		clear_variable = fallout_successor_assignment_generation
 		clear_variable = fallout_successor_assignment_count
 		clear_variable = fallout_successor_assignment_capital_state
@@ -1855,9 +2215,11 @@ fallout_reset_successor_allocation_ledger = {
 		clear_variable = fallout_archetype_package_generation
 		clear_variable = fallout_regional_package_generation
 		clear_variable = fallout_country_memory_package_generation
+		clear_variable = fallout_government_archetype
 		clear_variable = fallout_government_archetype_generation
 		clear_variable = fallout_region_id
 		clear_variable = fallout_country_memory_id
+		clear_variable = fallout_successor_conflict_source_country
 		clear_variable = fallout_successor_conflict_result
 		clear_variable = fallout_successor_conflict_resolution_generation
 		clear_variable = fallout_successor_cleanup_owner
@@ -1878,6 +2240,8 @@ fallout_begin_successor_allocation_transaction = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
 			NOT = { has_global_flag = fallout_successor_allocation_initialized }
+			has_global_flag = fallout_player_allocation_reservation_ledger_complete
+			fallout_player_allocation_reservation_ledger_is_current = yes
 			has_global_flag = fallout_successor_conflict_ledger_built
 			fallout_successor_conflict_ledger_is_current = yes
 		}
@@ -1909,7 +2273,6 @@ fallout_reset_successor_conflict_inventory = {
 	clr_global_flag = fallout_successor_conflict_ledger_built
 	clr_global_flag = fallout_successor_conflict_ledger_invalid
 	clear_array = global.fallout_successor_candidate_states
-	clear_array = global.fallout_successor_candidate_owners
 	clear_array = global.fallout_player_reserved_states
 	clear_array = global.fallout_live_tag_conflict_countries
 	clear_array = global.fallout_all_possible_country_scopes
@@ -1920,7 +2283,7 @@ fallout_reset_successor_conflict_inventory = {
 	clear_variable = global.fallout_successor_inventory_state_count
 	clear_variable = global.fallout_successor_conflict_ledger_generation
 	clear_variable = global.fallout_successor_conflict_ledger_schema_version
-	every_country = {
+	every_possible_country = {
 		clr_country_flag = fallout_live_tag_conflict_recorded
 		clr_country_flag = fallout_live_tag_conflict_alive
 		clr_country_flag = fallout_live_tag_conflict_land_holding
@@ -2088,7 +2451,6 @@ fallout_record_successor_state_inventory_row = {
 		limit = { fallout_successor_state_is_candidate = yes }
 		set_state_flag = fallout_successor_candidate_queued
 		add_to_array = { array = global.fallout_successor_candidate_states value = THIS }
-		add_to_array = { array = global.fallout_successor_candidate_owners value = OWNER }
 		add_to_variable = { global.fallout_successor_candidate_state_count = constant:fallout_runtime.one }
 	}
 	add_to_variable = { global.fallout_successor_inventory_state_count = constant:fallout_runtime.one }
@@ -2152,6 +2514,27 @@ fallout_build_successor_conflict_ledger = {
 	}
 }
 
+# Supported scope: COUNTRY. Reserve every state that belonged to this human at
+# snapshot time before the general successor inventory is frozen.
+fallout_reserve_player_origin_states = {
+	every_state = {
+		limit = {
+			has_state_flag = fallout_player_origin_state
+			has_variable = fallout_player_origin_scope
+			has_variable = fallout_player_origin_generation
+			check_variable = {
+				var = fallout_player_origin_generation
+				value = global.fallout_transition_generation
+				compare = equals
+			}
+			var:fallout_player_origin_scope = { tag = PREV.PREV }
+		}
+		set_state_flag = fallout_player_continuation_reserved
+		set_variable = { fallout_player_reservation_origin = PREV }
+		set_variable = { fallout_player_reservation_generation = global.fallout_transition_generation }
+	}
+}
+
 # Supported scope: COUNTRY. The former capital wins when it is still hostable.
 # Otherwise the highest survival value wins with the lowest state id as the
 # deterministic final tie breaker.
@@ -2164,7 +2547,9 @@ fallout_select_player_primary_capital = {
 		var:fallout_pretransition_capital_state = {
 			if = {
 				limit = {
-					is_owned_by = PREV
+					has_state_flag = fallout_player_origin_state
+					has_variable = fallout_player_origin_scope
+					var:fallout_player_origin_scope = { tag = PREV.PREV }
 					fallout_state_can_host_government = yes
 				}
 				set_temp_variable = { fallout_player_primary_capital_scope = THIS }
@@ -2174,8 +2559,19 @@ fallout_select_player_primary_capital = {
 	}
 	if = {
 		limit = { check_variable = { fallout_player_capital_found = constant:fallout_runtime.zero } }
-		every_owned_state = {
-			limit = { fallout_state_can_host_government = yes }
+		every_state = {
+			limit = {
+				has_state_flag = fallout_player_origin_state
+				has_variable = fallout_player_origin_scope
+				has_variable = fallout_player_origin_generation
+				check_variable = {
+					var = fallout_player_origin_generation
+					value = global.fallout_transition_generation
+					compare = equals
+				}
+				var:fallout_player_origin_scope = { tag = PREV.PREV }
+				fallout_state_can_host_government = yes
+			}
 			set_temp_variable = { fallout_player_candidate_survival = fallout_survival_value }
 			set_temp_variable = { fallout_player_candidate_state_id = THIS.id }
 			if = {
@@ -2613,8 +3009,43 @@ fallout_rebuild_player_commit_ledger = {
 	}
 }
 
-# Supported scope: COUNTRY
-fallout_resolve_player_continuation_ledger = {
+# Supported scope: COUNTRY. Rebuild the planning array from durable source rows
+# so retries cannot duplicate targets or inflate the planned count.
+fallout_rebuild_player_planning_ledger = {
+	clear_array = global.fallout_player_primary_targets
+	set_variable = { global.fallout_player_planned_count = constant:fallout_runtime.zero }
+	clr_global_flag = fallout_player_continuation_ledger_complete
+	for_each_scope_loop = {
+		array = global.fallout_pretransition_player_countries
+		if = {
+			limit = { fallout_player_planning_row_is_current = yes }
+			var:fallout_player_primary_target = {
+				add_to_array = { array = global.fallout_player_primary_targets value = THIS }
+			}
+			add_to_variable = { global.fallout_player_planned_count = constant:fallout_runtime.one }
+		}
+	}
+	if = {
+		limit = { fallout_player_planning_rows_are_current = yes }
+		set_global_flag = fallout_player_continuation_ledger_complete
+		clr_global_flag = fallout_player_continuation_planning_blocked
+		clr_global_flag = fallout_player_materialization_required
+	}
+	else = {
+		set_global_flag = fallout_player_continuation_planning_blocked
+		set_global_flag = fallout_player_materialization_required
+	}
+}
+
+# Supported scope: COUNTRY. Called only by the guarded public resolver before
+# the successor allocation transaction consumes the reservation ledger.
+fallout_resolve_player_continuation_ledger_before_allocation = {
+	if = {
+		limit = { fallout_recoverable_player_reservation_error_is_active = yes }
+		fallout_clear_recoverable_player_reservation_error = yes
+		clr_global_flag = fallout_player_continuation_planning_initialized
+	}
+	else = { fallout_clear_recoverable_player_reservation_error = yes }
 	if = {
 		limit = { NOT = { has_global_flag = fallout_player_continuation_planning_initialized } }
 		clear_array = global.fallout_player_primary_targets
@@ -2622,6 +3053,7 @@ fallout_resolve_player_continuation_ledger = {
 		set_variable = { global.fallout_player_planned_count = constant:fallout_runtime.zero }
 		set_variable = { global.fallout_player_committed_count = constant:fallout_runtime.zero }
 		clr_global_flag = fallout_player_continuation_ledger_complete
+		clr_global_flag = fallout_player_allocation_reservation_ledger_complete
 		clr_global_flag = fallout_player_continuation_planning_blocked
 		clr_global_flag = fallout_player_materialization_required
 		every_state = {
@@ -2632,6 +3064,7 @@ fallout_resolve_player_continuation_ledger = {
 		}
 		for_each_scope_loop = {
 			array = global.fallout_pretransition_player_countries
+			fallout_reserve_player_origin_states = yes
 			if = {
 				limit = { fallout_player_persisted_assignment_can_rebuild_reservation = yes }
 				set_country_flag = fallout_player_primary_capital_reserved
@@ -2653,7 +3086,6 @@ fallout_resolve_player_continuation_ledger = {
 				}
 				set_country_flag = fallout_player_continuation_planned
 				var:fallout_player_final_target = {
-					add_to_array = { array = global.fallout_player_primary_targets value = THIS }
 					add_to_array = { array = global.fallout_player_committed_targets value = THIS }
 					capital_scope = {
 						set_state_flag = fallout_player_continuation_reserved
@@ -2662,7 +3094,6 @@ fallout_resolve_player_continuation_ledger = {
 						set_variable = { fallout_player_reservation_generation = global.fallout_transition_generation }
 					}
 				}
-				add_to_variable = { global.fallout_player_planned_count = constant:fallout_runtime.one }
 				add_to_variable = { global.fallout_player_committed_count = constant:fallout_runtime.one }
 			}
 			else_if = {
@@ -2693,7 +3124,7 @@ fallout_resolve_player_continuation_ledger = {
 			limit = {
 				NOT = { has_country_flag = fallout_player_continuation_planned }
 				NOT = { has_country_flag = fallout_player_continuation_committed }
-				fallout_country_has_survivable_state = yes
+				fallout_player_source_has_survivable_origin_state = yes
 				has_country_flag = fallout_player_source_anchor_preserved
 			}
 			fallout_select_player_primary_capital = yes
@@ -2710,8 +3141,6 @@ fallout_resolve_player_continuation_ledger = {
 			set_variable = { fallout_player_primary_target = THIS }
 			set_variable = { fallout_player_continuation_branch = constant:fallout_player_continuation_branch.surviving_tag }
 			set_variable = { fallout_player_continuation_status = constant:fallout_player_continuation_status.primary_reserved }
-			add_to_array = { array = global.fallout_player_primary_targets value = THIS }
-			add_to_variable = { global.fallout_player_planned_count = constant:fallout_runtime.one }
 		}
 		else_if = {
 			limit = {
@@ -2722,7 +3151,10 @@ fallout_resolve_player_continuation_ledger = {
 			set_variable = { fallout_player_continuation_status = constant:fallout_player_continuation_status.choice_pending }
 			if = {
 				limit = {
-					any_owned_state = {
+					any_state = {
+						has_state_flag = fallout_player_origin_state
+						has_variable = fallout_player_origin_scope
+						var:fallout_player_origin_scope = { tag = PREV.PREV }
 						has_variable = fallout_state_subtype
 						check_variable = { fallout_state_subtype = constant:fallout_state_subtype.altered_biosphere }
 					}
@@ -2731,15 +3163,24 @@ fallout_resolve_player_continuation_ledger = {
 			}
 			else_if = {
 				limit = {
-					any_owned_state = {
-						is_coastal = yes
-						check_variable = { building_level@naval_base > constant:fallout_runtime.zero }
+					any_state = {
+						has_state_flag = fallout_player_origin_state
+						has_variable = fallout_player_origin_scope
+						var:fallout_player_origin_scope = { tag = PREV.PREV }
+						has_state_flag = fallout_pretransition_coastal
+						check_variable = { fallout_pretransition_dockyard > constant:fallout_runtime.zero }
 					}
 				}
 				set_variable = { fallout_player_continuation_branch = constant:fallout_player_continuation_branch.refuge_government }
 			}
 			else_if = {
-				limit = { any_owned_state = { has_state_flag = fallout_player_origin_state } }
+				limit = {
+					any_state = {
+						has_state_flag = fallout_player_origin_state
+						has_variable = fallout_player_origin_scope
+						var:fallout_player_origin_scope = { tag = PREV.PREV }
+					}
+				}
 				set_variable = { fallout_player_continuation_branch = constant:fallout_player_continuation_branch.fragmented_tag }
 			}
 			else = {
@@ -2748,21 +3189,46 @@ fallout_resolve_player_continuation_ledger = {
 		}
 	}
 	if = {
-		limit = {
-			check_variable = {
-				var = global.fallout_player_snapshot_count
-				value = global.fallout_player_planned_count
-				compare = equals
-			}
-		}
-		set_global_flag = fallout_player_continuation_ledger_complete
-		clr_global_flag = fallout_player_continuation_planning_blocked
-		clr_global_flag = fallout_player_materialization_required
+		limit = { fallout_player_allocation_reservation_ledger_is_current = yes }
+		set_global_flag = fallout_player_allocation_reservation_ledger_complete
 	}
 	else = {
-		set_global_flag = fallout_player_continuation_planning_blocked
-		set_global_flag = fallout_player_materialization_required
+		clr_global_flag = fallout_player_allocation_reservation_ledger_complete
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.player_reservation_incomplete }
+		fallout_register_transition_error_if_unowned = yes
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
 	}
+	fallout_rebuild_player_planning_ledger = yes
+}
+
+# Supported scope: COUNTRY
+fallout_register_changed_player_reservation_after_allocation = {
+	if = {
+		limit = { fallout_recoverable_player_reservation_error_is_active = yes }
+		fallout_clear_recoverable_player_reservation_error = yes
+	}
+	set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.player_reservation_changed_after_allocation }
+	fallout_register_transition_error_if_unowned = yes
+	set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+}
+
+# Supported scope: COUNTRY. Consumed reservation inputs are immutable. A
+# changed row after allocation begins owns an exact fail-closed error instead
+# of rebuilding player targets or state reservations.
+fallout_resolve_player_continuation_ledger = {
+	if = {
+		limit = { has_global_flag = fallout_successor_allocation_initialized }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_global_flag = fallout_player_allocation_reservation_ledger_complete }
+					NOT = { fallout_player_allocation_reservation_ledger_is_current = yes }
+				}
+			}
+			fallout_register_changed_player_reservation_after_allocation = yes
+		}
+	}
+	else = { fallout_resolve_player_continuation_ledger_before_allocation = yes }
 }
 
 # ---------------------------------------------------------------------------
@@ -2792,58 +3258,261 @@ fallout_advance_transition_phase = {
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_snapshot = {
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_snapshot_applied } }
-		set_global_flag = fallout_transition_snapshot_applied
-		fallout_take_world_snapshot = yes
+		limit = {
+			has_global_flag = fallout_player_snapshot_complete
+			NOT = { fallout_player_snapshot_ledger_is_current = yes }
+		}
+		clr_global_flag = fallout_player_snapshot_complete
 	}
-	set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.state_grading }
-	fallout_advance_transition_phase = yes
+	if = {
+		limit = {
+			has_global_flag = fallout_world_snapshot_complete
+			NOT = { fallout_world_snapshot_rows_are_current = yes }
+		}
+		clr_global_flag = fallout_world_snapshot_complete
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_player_snapshot_error_is_active = yes
+				fallout_recoverable_snapshot_error_is_active = yes
+			}
+			OR = {
+				NOT = { has_global_flag = fallout_player_snapshot_complete }
+				NOT = { fallout_player_snapshot_ledger_is_current = yes }
+				NOT = { has_global_flag = fallout_world_snapshot_complete }
+				NOT = { fallout_world_snapshot_rows_are_current = yes }
+			}
+		}
+		fallout_rebuild_complete_snapshot_epoch = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			has_global_flag = fallout_player_snapshot_complete
+			fallout_player_snapshot_ledger_is_current = yes
+			has_global_flag = fallout_world_snapshot_complete
+			fallout_world_snapshot_rows_are_current = yes
+		}
+		set_global_flag = fallout_transition_snapshot_applied
+		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.state_grading }
+		fallout_advance_transition_phase = yes
+	}
+	else = {
+		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
+	}
 }
 
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_state_grading = {
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_state_grading_applied } }
-		set_global_flag = fallout_transition_state_grading_applied
-		every_state = { fallout_grade_state = yes }
-		set_global_flag = fallout_state_grading_complete
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_state_grading_error_is_active = yes
+			}
+		}
+		fallout_clear_recoverable_state_grading_error = yes
+		if = {
+			limit = {
+				has_global_flag = fallout_state_grading_complete
+				NOT = { fallout_state_grading_rows_are_current = yes }
+			}
+			clr_global_flag = fallout_transition_state_grading_applied
+			clr_global_flag = fallout_state_grading_complete
+		}
+		if = {
+			limit = { NOT = { fallout_state_grading_rows_are_current = yes } }
+			every_state = {
+				limit = { NOT = { fallout_state_grading_row_is_current = yes } }
+				fallout_reset_state_grading_receipt_for_retry = yes
+				fallout_grade_state = yes
+				fallout_reconcile_state_grading_receipt = yes
+				if = {
+					limit = { fallout_state_grading_components_are_current = yes }
+					set_variable = { fallout_state_grading_generation = global.fallout_transition_generation }
+				}
+			}
+		}
+		if = {
+			limit = {
+				fallout_world_snapshot_rows_are_current = yes
+				fallout_state_grading_rows_are_current = yes
+			}
+			set_global_flag = fallout_transition_state_grading_applied
+			set_global_flag = fallout_state_grading_complete
+		}
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.state_grading_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
 	}
-	set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.population_loss }
-	fallout_advance_transition_phase = yes
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			has_global_flag = fallout_transition_state_grading_applied
+			has_global_flag = fallout_state_grading_complete
+			fallout_world_snapshot_rows_are_current = yes
+			fallout_state_grading_rows_are_current = yes
+		}
+		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.population_loss }
+		fallout_advance_transition_phase = yes
+	}
+	else = {
+		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
+	}
 }
 
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_population_loss = {
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_population_loss_applied } }
-		set_global_flag = fallout_transition_population_loss_applied
-		every_state = { fallout_apply_state_population_loss = yes }
-		set_global_flag = fallout_population_loss_complete
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_population_loss_error_is_active = yes
+			}
+		}
+		fallout_clear_recoverable_population_loss_error = yes
+		if = {
+			limit = {
+				has_global_flag = fallout_population_loss_complete
+				NOT = { fallout_population_loss_rows_are_current = yes }
+			}
+			clr_global_flag = fallout_transition_population_loss_applied
+			clr_global_flag = fallout_population_loss_complete
+		}
+		if = {
+			limit = { NOT = { fallout_population_loss_rows_are_current = yes } }
+			every_state = {
+				limit = { NOT = { fallout_population_loss_row_is_current = yes } }
+				if = {
+					limit = { NOT = { has_state_flag = fallout_population_loss_evaluated } }
+					fallout_apply_state_population_loss = yes
+				}
+				else = { fallout_reconcile_population_loss_receipt = yes }
+				if = {
+					limit = { fallout_population_loss_components_are_current = yes }
+					set_variable = { fallout_population_loss_generation = global.fallout_transition_generation }
+				}
+			}
+		}
+		if = {
+			limit = { fallout_population_loss_rows_are_current = yes }
+			set_global_flag = fallout_transition_population_loss_applied
+			set_global_flag = fallout_population_loss_complete
+		}
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.population_loss_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
 	}
-	set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.physical_collapse }
-	fallout_advance_transition_phase = yes
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			has_global_flag = fallout_transition_population_loss_applied
+			has_global_flag = fallout_population_loss_complete
+			fallout_population_loss_rows_are_current = yes
+		}
+		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.physical_collapse }
+		fallout_advance_transition_phase = yes
+	}
+	else = {
+		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
+	}
 }
 
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_physical_collapse = {
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_physical_collapse_applied } }
-		set_global_flag = fallout_transition_physical_collapse_applied
-		every_state = {
-			fallout_apply_building_damage = yes
-			fallout_convert_state_category = yes
-			fallout_apply_state_grade_modifier = yes
-			set_variable = { fallout_state_rewrite_generation = global.fallout_transition_generation }
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_physical_collapse_error_is_active = yes
+			}
 		}
-		set_global_flag = fallout_physical_collapse_complete
+		fallout_clear_recoverable_physical_collapse_error = yes
+		if = {
+			limit = {
+				has_global_flag = fallout_physical_collapse_complete
+				NOT = { fallout_physical_collapse_rows_are_current = yes }
+			}
+			clr_global_flag = fallout_transition_physical_collapse_applied
+			clr_global_flag = fallout_physical_collapse_complete
+		}
+		if = {
+			limit = { NOT = { fallout_physical_collapse_rows_are_current = yes } }
+			every_state = {
+				limit = { NOT = { fallout_physical_collapse_row_is_current = yes } }
+				if = {
+					limit = { NOT = { has_state_flag = fallout_building_damage_evaluated } }
+					fallout_apply_building_damage = yes
+				}
+				else = { fallout_reconcile_building_damage_receipt = yes }
+				if = {
+					limit = { NOT = { has_state_flag = fallout_category_conversion_evaluated } }
+					fallout_convert_state_category = yes
+				}
+				else = { fallout_reconcile_state_category_receipt = yes }
+				if = {
+					limit = {
+						OR = {
+							NOT = { fallout_state_grade_modifier_receipt_is_current = yes }
+							NOT = { fallout_state_subtype_modifier_receipt_is_current = yes }
+						}
+					}
+					fallout_reset_state_grade_modifier_receipt_for_retry = yes
+					fallout_apply_state_grade_modifier = yes
+				}
+				if = {
+					limit = { fallout_physical_collapse_components_are_current = yes }
+					set_variable = { fallout_state_rewrite_generation = global.fallout_transition_generation }
+				}
+			}
+		}
+		if = {
+			limit = { fallout_physical_collapse_rows_are_current = yes }
+			set_global_flag = fallout_transition_physical_collapse_applied
+			set_global_flag = fallout_physical_collapse_complete
+		}
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.physical_collapse_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
 	}
-	set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.government_sorting }
-	fallout_advance_transition_phase = yes
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			has_global_flag = fallout_transition_physical_collapse_applied
+			has_global_flag = fallout_physical_collapse_complete
+			fallout_physical_collapse_rows_are_current = yes
+		}
+		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.government_sorting }
+		fallout_advance_transition_phase = yes
+	}
+	else = {
+		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
+	}
 }
 
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_government_sorting = {
-	fallout_reset_old_world_diplomacy = yes
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_peace_conference_error_is_active = yes
+			}
+		}
+		fallout_reset_old_world_diplomacy = yes
+	}
 	if = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
@@ -2851,15 +3520,26 @@ fallout_apply_transition_phase_government_sorting = {
 			fallout_old_world_diplomacy_full_reset_is_verified = yes
 		}
 		random_faction_cleanup_after_world_end = yes
-		every_country = {
-			limit = { exists = yes }
+		for_each_scope_loop = {
+			array = global.fallout_pretransition_countries
+			fallout_prepare_country_government_classification = yes
+		}
+		every_state = {
+			limit = {
+				has_variable = fallout_original_owner_scope
+				var:fallout_original_owner_scope = { has_country_flag = fallout_pretransition_country }
+			}
+			fallout_record_state_government_origin_signals = yes
+		}
+		for_each_scope_loop = {
+			array = global.fallout_pretransition_countries
 			fallout_classify_country_government = yes
 		}
 		if = {
 			limit = {
 				NOT = { has_global_flag = fallout_transition_error }
-				any_country = {
-					exists = yes
+				any_of_scopes = {
+					array = global.fallout_pretransition_countries
 					has_country_flag = fallout_government_archetype_unresolved
 				}
 			}
@@ -2896,8 +3576,25 @@ fallout_apply_transition_phase_government_sorting = {
 fallout_apply_transition_phase_survivor_allocation = {
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_transition_error }
-			NOT = { has_global_flag = fallout_player_continuation_ledger_complete }
+			has_global_flag = fallout_successor_allocation_initialized
+			OR = {
+				NOT = { has_global_flag = fallout_player_allocation_reservation_ledger_complete }
+				NOT = { fallout_player_allocation_reservation_ledger_is_current = yes }
+			}
+		}
+		fallout_register_changed_player_reservation_after_allocation = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_successor_allocation_initialized }
+			OR = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_recoverable_player_reservation_error_is_active = yes
+			}
+			OR = {
+				NOT = { has_global_flag = fallout_player_allocation_reservation_ledger_complete }
+				NOT = { fallout_player_allocation_reservation_ledger_is_current = yes }
+			}
 		}
 		fallout_resolve_player_continuation_ledger = yes
 	}
@@ -2908,7 +3605,8 @@ fallout_apply_transition_phase_survivor_allocation = {
 				fallout_recoverable_successor_inventory_error_is_active = yes
 			}
 			NOT = { has_global_flag = fallout_successor_allocation_initialized }
-			has_global_flag = fallout_player_continuation_ledger_complete
+			has_global_flag = fallout_player_allocation_reservation_ledger_complete
+			fallout_player_allocation_reservation_ledger_is_current = yes
 			OR = {
 				NOT = { has_global_flag = fallout_successor_conflict_ledger_built }
 				NOT = { fallout_successor_conflict_ledger_is_current = yes }
@@ -2919,7 +3617,7 @@ fallout_apply_transition_phase_survivor_allocation = {
 	if = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
-			has_global_flag = fallout_player_continuation_ledger_complete
+			fallout_player_planning_ledger_is_current = yes
 			fallout_successor_allocation_is_current = yes
 		}
 		set_global_flag = fallout_transition_survivor_allocation_applied
@@ -2993,6 +3691,7 @@ fallout_apply_transition_phase_player_continuation = {
 
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_map_return = {
+	fallout_clear_recoverable_map_postcondition_error = yes
 	if = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_map_return_applied }
@@ -3003,6 +3702,7 @@ fallout_apply_transition_phase_map_return = {
 		set_global_flag = fallout_active
 		set_global_flag = fallout_transition_complete
 		set_global_flag = fallout_scheduler_initialization_pending
+		set_variable = { global.fallout_event_timeline_start_date = global.date }
 		set_variable = { global.fallout_cause_memory_source = global.fallout_request_source }
 		set_variable = { global.fallout_cause_memory_intensity = global.fallout_request_intensity }
 		set_variable = { global.fallout_cause_memory_date = global.fallout_request_date }
@@ -3029,6 +3729,9 @@ fallout_apply_transition_phase_map_return = {
 	}
 	else = {
 		set_global_flag = fallout_transition_map_return_blocked
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.map_postcondition_failed }
+		fallout_register_transition_error_if_unowned = yes
+		set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
 		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
 		fallout_mark_blackout_gui_dirty = yes
 	}

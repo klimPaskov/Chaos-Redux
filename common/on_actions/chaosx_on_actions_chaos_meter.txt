@@ -13,7 +13,10 @@ on_actions = {
 				limit = { # Ensure it runs only once
 					any_country = { has_country_flag = is_global_host }
 					has_country_flag = is_global_host
-					is_ai = no
+				}
+				every_other_country = {
+					limit = { has_country_flag = is_global_host }
+					clr_country_flag = is_global_host
 				}
 				if = {
 					limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
@@ -23,7 +26,10 @@ on_actions = {
 			}
 			else_if = { # In case tag switch was made
 				limit = {
-					any_country = { has_country_flag = is_global_host }
+					any_country = {
+						has_country_flag = is_global_host
+						is_ai = yes
+					}
 					NOT = { has_country_flag = is_global_host }
 					is_ai = no
 				}
