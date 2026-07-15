@@ -1419,6 +1419,38 @@ fallout_event_requested_delayed_ticket_has_issued_dispatch = {
 	check_variable = { var = fallout_event_dispatch_issued_ticket value = fallout_event_requested_ticket compare = equals }
 }
 
+# Supported scope: COUNTRY. This proves any exact issued reciprocal envelope
+# before a mode-specific wrapper authenticates the event token.
+fallout_event_issued_bilateral_dispatch_is_current = {
+	fallout_event_dispatch_issue_receipt_is_current = yes
+	fallout_event_dispatch_envelope_matches_transaction = yes
+	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.bilateral_response }
+}
+
+fallout_event_issued_bilateral_response_is_current = {
+	fallout_event_issued_bilateral_dispatch_is_current = yes
+	OR = {
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+}
+
+fallout_event_issued_bilateral_cleanup_is_current = {
+	fallout_event_issued_bilateral_dispatch_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
+}
+
+# Supported scope: COUNTRY. Input: requested ticket. Public bilateral
+# terminalizers use this veto so an engine-issued response or cleanup event can
+# be consumed only by the exact token-authenticated wrapper.
+fallout_event_requested_bilateral_ticket_has_issued_dispatch = {
+	has_country_flag = fallout_event_dispatch_issued
+	has_variable = fallout_event_dispatch_issued_source
+	has_variable = fallout_event_dispatch_issued_ticket
+	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.bilateral_response }
+	check_variable = { var = fallout_event_dispatch_issued_ticket value = fallout_event_requested_ticket compare = equals }
+}
+
 fallout_event_cleanup_flags_are_consistent = {
 	OR = {
 		AND = {

@@ -217,34 +217,11 @@ fallout_event_write_dispatch_envelope = {
 	}
 }
 
-# Supported scope: COUNTRY. Inputs: requested dispatch source and ticket.
-# Output: fallout_event_transaction_accepted. The outer caller must pre-seed
-# that output. This helper accepts only a bilateral-response source. Future
-# ordinary and delayed consumers must use their atomic issued wrappers.
-fallout_event_acknowledge_dispatch_envelope = {
-	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-	if = {
-		limit = {
-			fallout_event_registry_country_row_is_current = yes
-			fallout_event_dispatch_envelope_is_consistent = yes
-			has_country_flag = fallout_event_dispatch_ready
-			fallout_event_dispatch_issue_receipt_is_current = yes
-			check_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
-			check_variable = { var = fallout_event_dispatch_source value = fallout_event_requested_dispatch_source compare = equals }
-			check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
-			check_variable = { var = fallout_event_dispatch_generation value = fallout_event_runtime_generation compare = equals }
-		}
-		fallout_event_clear_dispatch_envelope = yes
-		set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
-	}
-}
-
 # Supported scope: COUNTRY. Output: fallout_event_dispatch_issue_accepted. The
 # outer caller must pre-seed that output. The immutable envelope identity is
 # copied first and its issued flag is written last. The dynamic event command
-# runs only after that receipt proves current. Future delayed and ordinary
-# consumers must use atomic issued wrappers. The bilateral contract retains
-# explicit acknowledgement until its reciprocal terminalizers gain that wrapper.
+# runs only after that receipt proves current. Every issued source uses an exact
+# token-authenticated terminalizer. No detached acknowledgement API exists.
 fallout_event_issue_dispatch_envelope = {
 	set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
 	if = {
@@ -1016,31 +993,84 @@ fallout_event_reconcile_one_delayed_row = {
 }
 
 # Inputs: current bilateral reconcile index, requested ticket, and cancellation
-# reason. This terminalizes a local row whose owner or reciprocal was lost.
+# reason. Reconciliation cannot terminalize a row whose response event is
+# already in the engine queue.
 fallout_event_cancel_orphaned_bilateral_row = {
+	set_temp_variable = { fallout_event_transaction_row_index = fallout_event_bilateral_reconcile_cursor }
+	set_temp_variable = { fallout_event_bilateral_issued_orphan_cancellation_authorized = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_status_entries^fallout_event_transaction_row_index = constant:fallout_event_bilateral_status.reserved } }
+		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+	}
+	else = {
+		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+	}
+	fallout_event_cancel_local_bilateral_row_internal = yes
+}
+
+# Internal local terminalizer for a pair whose reciprocal proof has already
+# failed. Inputs: row index, ticket, cancellation reason, issued authorization,
+# and expected event token. The exact issued wrapper is the only caller allowed
+# to set the authorization token.
+fallout_event_cancel_local_bilateral_row_internal = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_orphan_transition_allowed = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_bilateral_orphan_dispatch_clear_authorized = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+		set_temp_variable = { fallout_event_bilateral_orphan_transition_allowed = constant:fallout_event_runtime.zero }
+		if = {
+			limit = {
+				check_variable = { fallout_event_bilateral_issued_orphan_cancellation_authorized = constant:fallout_event_runtime.one }
+				fallout_event_issued_bilateral_response_is_current = yes
+				check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			}
+			set_temp_variable = { fallout_event_bilateral_orphan_transition_allowed = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_bilateral_orphan_dispatch_clear_authorized = constant:fallout_event_runtime.one }
+		}
+	}
+	set_temp_variable = { fallout_event_bilateral_orphan_partner_has_issued_dispatch = constant:fallout_event_runtime.zero }
 	if = {
 		limit = {
-			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
-			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
-			OR = {
-				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_status.reserved }
-				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_status.response_pending }
+			check_variable = { var = fallout_event_transaction_row_index value = fallout_event_bilateral_ticket_entries^num compare = less_than }
+			check_variable = { var = fallout_event_bilateral_ticket_entries^fallout_event_transaction_row_index value = fallout_event_requested_ticket compare = equals }
+		}
+		var:fallout_event_bilateral_partner_entries^fallout_event_transaction_row_index = {
+			if = {
+				limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+				set_temp_variable = { fallout_event_bilateral_orphan_partner_has_issued_dispatch = constant:fallout_event_runtime.one }
 			}
 		}
-		set_temp_variable = { fallout_event_bilateral_orphan_previous_status = fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor }
-		set_temp_variable = { fallout_event_bilateral_orphan_previous_outcome = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_reconcile_cursor }
-		set_temp_variable = { fallout_event_bilateral_orphan_previous_cancellation = fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_reconcile_cursor }
-		if = {
-			limit = { check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_status.reserved } }
-			set_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_outcome_type.cancelled_before_choice }
+	}
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_orphan_partner_has_issued_dispatch = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_bilateral_orphan_transition_allowed = constant:fallout_event_runtime.zero }
+	}
+	if = {
+		limit = {
+			check_variable = { fallout_event_bilateral_orphan_transition_allowed = constant:fallout_event_runtime.one }
+			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+			check_variable = { var = fallout_event_transaction_row_index value = fallout_event_bilateral_ticket_entries^num compare = less_than }
+			check_variable = { var = fallout_event_bilateral_ticket_entries^fallout_event_transaction_row_index value = fallout_event_requested_ticket compare = equals }
+			OR = {
+				AND = {
+					check_variable = { fallout_event_bilateral_status_entries^fallout_event_transaction_row_index = constant:fallout_event_bilateral_status.reserved }
+					check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+				}
+				AND = {
+					check_variable = { fallout_event_bilateral_status_entries^fallout_event_transaction_row_index = constant:fallout_event_bilateral_status.response_pending }
+					check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+				}
+			}
 		}
-		else = {
-			set_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_outcome_type.aborted_after_choice }
-		}
-		set_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_reconcile_cursor = fallout_event_requested_cancellation_reason }
-		set_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_status.cancelled }
-		set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_bilateral_reconcile_cursor }
+		set_temp_variable = { fallout_event_bilateral_orphan_previous_status = fallout_event_bilateral_status_entries^fallout_event_transaction_row_index }
+		set_temp_variable = { fallout_event_bilateral_orphan_previous_outcome = fallout_event_bilateral_outcome_entries^fallout_event_transaction_row_index }
+		set_temp_variable = { fallout_event_bilateral_orphan_previous_cancellation = fallout_event_bilateral_cancellation_reason_entries^fallout_event_transaction_row_index }
+		set_variable = { fallout_event_bilateral_outcome_entries^fallout_event_transaction_row_index = fallout_event_requested_outcome }
+		set_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_transaction_row_index = fallout_event_requested_cancellation_reason }
+		set_variable = { fallout_event_bilateral_status_entries^fallout_event_transaction_row_index = constant:fallout_event_bilateral_status.cancelled }
+		set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_transaction_row_index }
 		if = {
 			limit = { fallout_event_bilateral_row_at_index_is_structurally_current = yes }
 			if = {
@@ -1048,6 +1078,10 @@ fallout_event_cancel_orphaned_bilateral_row = {
 					has_country_flag = fallout_event_dispatch_ready
 					check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
 					check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
+					OR = {
+						fallout_event_dispatch_issue_receipt_is_absent = yes
+						check_variable = { fallout_event_bilateral_orphan_dispatch_clear_authorized = constant:fallout_event_runtime.one }
+					}
 				}
 				fallout_event_clear_dispatch_envelope = yes
 			}
@@ -1058,9 +1092,9 @@ fallout_event_cancel_orphaned_bilateral_row = {
 			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
 		}
 		else = {
-			set_variable = { fallout_event_bilateral_outcome_entries^fallout_event_bilateral_reconcile_cursor = fallout_event_bilateral_orphan_previous_outcome }
-			set_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_reconcile_cursor = fallout_event_bilateral_orphan_previous_cancellation }
-			set_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_reconcile_cursor = fallout_event_bilateral_orphan_previous_status }
+			set_variable = { fallout_event_bilateral_outcome_entries^fallout_event_transaction_row_index = fallout_event_bilateral_orphan_previous_outcome }
+			set_variable = { fallout_event_bilateral_cancellation_reason_entries^fallout_event_transaction_row_index = fallout_event_bilateral_orphan_previous_cancellation }
+			set_variable = { fallout_event_bilateral_status_entries^fallout_event_transaction_row_index = fallout_event_bilateral_orphan_previous_status }
 			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.bilateral_reciprocal_mismatch }
 			fallout_event_register_scheduler_error_if_unowned = yes
 		}
@@ -1698,10 +1732,25 @@ fallout_event_remove_delayed_row_at_index = {
 	}
 }
 
-# Inputs: fallout_event_transaction_row_index and fallout_event_requested_ticket.
+# Inputs: row index and requested ticket. An issued cleanup also requires the
+# exact authorization and expected event token before deletion can begin.
 fallout_event_remove_bilateral_row_at_index = {
+	set_temp_variable = { fallout_event_bilateral_row_removal_allowed = constant:fallout_event_runtime.one }
+	if = {
+		limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+		set_temp_variable = { fallout_event_bilateral_row_removal_allowed = constant:fallout_event_runtime.zero }
+		if = {
+			limit = {
+				check_variable = { fallout_event_bilateral_issued_cleanup_authorized = constant:fallout_event_runtime.one }
+				fallout_event_issued_bilateral_cleanup_is_current = yes
+				check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			}
+			set_temp_variable = { fallout_event_bilateral_row_removal_allowed = constant:fallout_event_runtime.one }
+		}
+	}
 	if = {
 		limit = {
+			check_variable = { fallout_event_bilateral_row_removal_allowed = constant:fallout_event_runtime.one }
 			check_variable = { var = fallout_event_transaction_row_index value = fallout_event_bilateral_ticket_entries^num compare = less_than }
 			check_variable = { var = fallout_event_bilateral_ticket_entries^fallout_event_transaction_row_index value = fallout_event_requested_ticket compare = equals }
 		}
@@ -1728,6 +1777,7 @@ fallout_event_remove_bilateral_row_at_index = {
 				has_country_flag = fallout_event_dispatch_ready
 				check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
 				check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
+				fallout_event_dispatch_issue_receipt_is_absent = yes
 			}
 			fallout_event_clear_dispatch_envelope = yes
 		}
@@ -2865,9 +2915,40 @@ fallout_event_reserve_bilateral_transaction = {
 	}
 }
 
-# Inputs: requested ticket, bilateral status, outcome, and cancellation reason.
-# Both rows are updated inside one effect chain. Status is written after payload.
-fallout_event_update_bilateral_pair = {
+# Supported scope: COUNTRY. Input: requested ticket. Outputs the loaded pair
+# receipts plus a flag proving neither country has issued this ticket.
+fallout_event_load_unissued_bilateral_pair = {
+	set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_bilateral_partner_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
+	fallout_event_load_current_bilateral_pair = yes
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.one } }
+		if = {
+			limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+			set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.one }
+		}
+		event_target:fallout_event_bilateral_loaded_partner = {
+			if = {
+				limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+				set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero } }
+			set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.one }
+		}
+	}
+}
+
+# Internal pair terminalizer. Inputs: requested ticket, status, outcome,
+# cancellation reason, issued authorization, and expected event token. Both
+# rows commit before an authenticated response envelope is cleared.
+fallout_event_update_bilateral_pair_internal = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
@@ -2877,6 +2958,31 @@ fallout_event_update_bilateral_pair = {
 	fallout_event_load_current_bilateral_pair = yes
 	if = {
 		limit = { check_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_bilateral_origin_dispatch_clear_authorized = constant:fallout_event_runtime.zero }
+		if = {
+			limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+			set_temp_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.zero }
+			if = {
+				limit = {
+					check_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.one }
+					fallout_event_issued_bilateral_response_is_current = yes
+					check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+					OR = {
+						check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.resolved }
+						check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled }
+					}
+				}
+				set_temp_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_bilateral_origin_dispatch_clear_authorized = constant:fallout_event_runtime.one }
+			}
+		}
+		event_target:fallout_event_bilateral_loaded_partner = {
+			if = {
+				limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+				set_temp_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.zero }
+			}
+		}
 		set_temp_variable = { fallout_event_bilateral_current_status = fallout_event_bilateral_status_entries^fallout_event_bilateral_origin_row_index }
 		set_temp_variable = { fallout_event_bilateral_origin_previous_outcome = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_origin_row_index }
 		set_temp_variable = { fallout_event_bilateral_origin_previous_cancellation = fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_origin_row_index }
@@ -2888,6 +2994,7 @@ fallout_event_update_bilateral_pair = {
 		set_temp_variable = { fallout_event_bilateral_transition_is_valid = constant:fallout_event_runtime.zero }
 		if = {
 			limit = {
+				check_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.one }
 				check_variable = { var = fallout_event_bilateral_current_status value = fallout_event_requested_bilateral_status compare = equals }
 				check_variable = { var = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_origin_row_index value = fallout_event_requested_outcome compare = equals }
 				check_variable = { var = fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_origin_row_index value = fallout_event_requested_cancellation_reason compare = equals }
@@ -2896,6 +3003,7 @@ fallout_event_update_bilateral_pair = {
 		}
 		else_if = {
 			limit = {
+				check_variable = { fallout_event_bilateral_transition_dispatch_is_authorized = constant:fallout_event_runtime.one }
 				OR = {
 					AND = {
 						check_variable = { fallout_event_bilateral_current_status = constant:fallout_event_bilateral_status.reserved }
@@ -2974,16 +3082,21 @@ fallout_event_update_bilateral_pair = {
 							has_country_flag = fallout_event_dispatch_ready
 							check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
 							check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
+							OR = {
+								fallout_event_dispatch_issue_receipt_is_absent = yes
+								check_variable = { fallout_event_bilateral_origin_dispatch_clear_authorized = constant:fallout_event_runtime.one }
+							}
 						}
 						fallout_event_clear_dispatch_envelope = yes
 					}
 					event_target:fallout_event_bilateral_loaded_partner = {
 						if = {
 							limit = {
-								has_country_flag = fallout_event_dispatch_ready
-								check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
-								check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
-							}
+									has_country_flag = fallout_event_dispatch_ready
+									check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
+									check_variable = { var = fallout_event_dispatch_ticket value = fallout_event_requested_ticket compare = equals }
+									fallout_event_dispatch_issue_receipt_is_absent = yes
+								}
 							fallout_event_clear_dispatch_envelope = yes
 						}
 					}
@@ -3021,43 +3134,142 @@ fallout_event_update_bilateral_pair = {
 	}
 }
 
-# Input: requested ticket.
+# Input: requested ticket. This public route accepts only an unissued pair.
 fallout_event_mark_bilateral_response_pending = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-	set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
-	set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
-	set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
-	fallout_event_update_bilateral_pair = yes
-}
-
-# Inputs: requested ticket and non-zero outcome.
-fallout_event_resolve_bilateral_transaction = {
-	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-	set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.resolved }
-	set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
-	fallout_event_update_bilateral_pair = yes
-}
-
-# Inputs: requested ticket, cancelled outcome, and cancellation reason.
-fallout_event_cancel_bilateral_transaction = {
-	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-	set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled }
-	fallout_event_update_bilateral_pair = yes
-}
-
-# Input: requested ticket. Outcome and reason are copied from the exact
-# reciprocal terminal receipt before both rows enter cleanup.
-fallout_event_prepare_bilateral_cleanup = {
-	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
 	set_temp_variable = { fallout_event_bilateral_partner_row_index = constant:fallout_event_runtime.first_array_index }
 	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
-	fallout_event_load_current_bilateral_pair = yes
+	fallout_event_load_unissued_bilateral_pair = yes
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
+		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
+		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+		fallout_event_update_bilateral_pair_internal = yes
+	}
+}
+
+# Inputs: requested ticket and non-zero outcome. This public route accepts only
+# an unissued pair.
+fallout_event_resolve_bilateral_transaction = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_bilateral_partner_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
+	fallout_event_load_unissued_bilateral_pair = yes
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.resolved }
+		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+		fallout_event_update_bilateral_pair_internal = yes
+	}
+}
+
+# Inputs: requested ticket, cancelled outcome, and cancellation reason. This
+# public route accepts only an unissued pair.
+fallout_event_cancel_bilateral_transaction = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_bilateral_partner_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
+	fallout_event_load_unissued_bilateral_pair = yes
+	if = {
+		limit = { check_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled }
+		fallout_event_update_bilateral_pair_internal = yes
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: expected event token and non-zero outcome.
+# This atomically resolves both reciprocal rows and consumes the exact issued
+# response envelope only after the pair commit proves current.
+fallout_event_resolve_issued_bilateral_response = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	if = {
 		limit = {
-			check_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.one }
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_bilateral_response_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			check_variable = { fallout_event_requested_outcome > constant:fallout_event_outcome_type.none }
+			check_variable = { fallout_event_requested_outcome < constant:fallout_event_outcome_type.aborted_after_choice }
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.resolved }
+		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+		set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.one }
+		fallout_event_update_bilateral_pair_internal = yes
+	}
+}
+
+# Supported scope: COUNTRY. Inputs: expected event token, aborted outcome, and
+# cancellation reason. A current reciprocal pair is cancelled atomically. If
+# the reciprocal proof is already lost, only the authenticated local tombstone
+# is terminalized.
+fallout_event_cancel_issued_bilateral_response = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_bilateral_response_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+			check_variable = { fallout_event_requested_cancellation_reason > constant:fallout_event_cancellation_reason.none }
+			check_variable = { fallout_event_requested_cancellation_reason < constant:fallout_event_cancellation_reason.upper_bound }
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
+		fallout_event_load_current_bilateral_pair = yes
+		if = {
+			limit = { check_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled }
+			set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.one }
+			fallout_event_update_bilateral_pair_internal = yes
+		}
+		else = {
+			set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
+			fallout_event_find_bilateral_ticket_index = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.one } }
+				set_temp_variable = { fallout_event_bilateral_issued_orphan_cancellation_authorized = constant:fallout_event_runtime.one }
+				fallout_event_cancel_local_bilateral_row_internal = yes
+			}
+		}
+	}
+}
+
+# Input: requested ticket. Outcome and reason are copied from the exact
+# reciprocal terminal receipt before both unissued rows enter cleanup.
+fallout_event_prepare_bilateral_cleanup = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_has_issued_dispatch = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_pair_is_current = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_origin_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_bilateral_partner_row_index = constant:fallout_event_runtime.first_array_index }
+	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
+	fallout_event_load_unissued_bilateral_pair = yes
+	if = {
+		limit = {
+			check_variable = { fallout_event_bilateral_pair_is_unissued = constant:fallout_event_runtime.one }
 			OR = {
 				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_origin_row_index = constant:fallout_event_bilateral_status.resolved }
 				check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_origin_row_index = constant:fallout_event_bilateral_status.cancelled }
@@ -3067,18 +3279,45 @@ fallout_event_prepare_bilateral_cleanup = {
 		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cleanup_pending }
 		set_temp_variable = { fallout_event_requested_outcome = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_origin_row_index }
 		set_temp_variable = { fallout_event_requested_cancellation_reason = fallout_event_bilateral_cancellation_reason_entries^fallout_event_bilateral_origin_row_index }
-		fallout_event_update_bilateral_pair = yes
+		fallout_event_update_bilateral_pair_internal = yes
 	}
 }
 
 # Inputs: requested ticket and exact cleanup token. Each country releases its
-# own row only after its content-owned cleanup is complete.
+# own unissued row only after its content-owned cleanup is complete.
 fallout_event_release_bilateral_transaction = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_cleanup_authorized = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { NOT = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes } }
+		fallout_event_release_bilateral_transaction_internal = yes
+	}
+}
+
+# Internal local cleanup remover. The issued wrapper is the only caller allowed
+# to provide cleanup authorization and an expected event token.
+fallout_event_release_bilateral_transaction_internal = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_cleanup_release_allowed = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_bilateral_cleanup_dispatch_clear_authorized = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { fallout_event_requested_bilateral_ticket_has_issued_dispatch = yes }
+		set_temp_variable = { fallout_event_bilateral_cleanup_release_allowed = constant:fallout_event_runtime.zero }
+		if = {
+			limit = {
+				check_variable = { fallout_event_bilateral_issued_cleanup_authorized = constant:fallout_event_runtime.one }
+				fallout_event_issued_bilateral_cleanup_is_current = yes
+				check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+			}
+			set_temp_variable = { fallout_event_bilateral_cleanup_release_allowed = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_bilateral_cleanup_dispatch_clear_authorized = constant:fallout_event_runtime.one }
+		}
+	}
 	set_temp_variable = { fallout_event_transaction_row_found = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_transaction_row_index = constant:fallout_event_runtime.first_array_index }
 	if = {
 		limit = {
+			check_variable = { fallout_event_bilateral_cleanup_release_allowed = constant:fallout_event_runtime.one }
 			fallout_event_registry_country_row_is_current = yes
 			fallout_event_bilateral_receipts_are_current = yes
 			check_variable = { fallout_event_requested_ticket > constant:fallout_event_runtime.no_ticket }
@@ -3097,7 +3336,29 @@ fallout_event_release_bilateral_transaction = {
 			if = {
 				limit = { NOT = { is_in_array = { array = fallout_event_bilateral_ticket_entries value = fallout_event_requested_ticket } } }
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+				if = {
+					limit = { check_variable = { fallout_event_bilateral_cleanup_dispatch_clear_authorized = constant:fallout_event_runtime.one } }
+					fallout_event_clear_dispatch_envelope = yes
+				}
 			}
 		}
+	}
+}
+
+# Supported scope: COUNTRY. Input: expected cleanup event token. The wrapper
+# derives the exact ticket and cleanup token, removes the local row, and consumes
+# the issued cleanup envelope in one effect chain.
+fallout_event_release_issued_bilateral_cleanup = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_bilateral_cleanup_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+		}
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_requested_cleanup_token = fallout_event_dispatch_issued_event_token }
+		set_temp_variable = { fallout_event_bilateral_issued_cleanup_authorized = constant:fallout_event_runtime.one }
+		fallout_event_release_bilateral_transaction_internal = yes
 	}
 }
