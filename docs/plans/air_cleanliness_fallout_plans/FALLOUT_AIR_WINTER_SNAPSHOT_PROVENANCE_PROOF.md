@@ -2,7 +2,7 @@
 
 ## Status
 
-World transition schema 8 closes the stale-zero defect in the frozen Air Winter payload. Fallout no longer treats a missing Air Winter producer as a real phase or resource value. The request coordinator also withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
+World transition schema 9 closes the stale-zero defect in the frozen Air Winter payload and the stale-category defect in grading and rewrite. Fallout no longer treats a missing Air Winter producer as a real phase or resource value. It also does not use Air Winter's historical restoration category as the live transition category. The request coordinator withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
 
 This is static source proof. Hearts of Iron IV was not launched.
 
@@ -34,7 +34,7 @@ For each valid Air Winter state, `air_winter_prepare_fallout_snapshot_source`:
 4. Proves the original category, phase 0 through 6, and all seven percentage values in the range 0 through 100.
 5. Writes the state producer schema and generation only after the complete payload passes.
 
-The canonical values are phase, exposure, recovery, adaptation, food reserve, shelter capacity, reclamation, and water security. The original category is a separate mandatory classification field.
+The canonical values are phase, exposure, recovery, adaptation, food reserve, shelter capacity, reclamation, and water security. The original category is a separate mandatory historical classification field.
 
 ## Frozen source kinds
 
@@ -47,11 +47,11 @@ Every accepted Fallout state row has one source kind and one matching frozen pro
 
 A valid state that fails production receives neither kind. Its missing receipt causes the complete world snapshot proof to fail. It cannot enter the N/A branch.
 
-The synchronous capture proof compares every produced frozen value, schema, generation, and category to the live Air Winter source. After capture, the durable structural trigger reads only the frozen source kind, frozen schema and generation, frozen payload, and frozen global receipt. Later Air Winter updates and ownership changes cannot rewrite the accepted history.
+The synchronous capture proof compares every produced frozen value, schema, generation, and historical category to the live Air Winter source. The same state row records `fallout_pretransition_state_category` from the live `has_state_category` result and proves that match during capture. Grading and category rewrite use this second field. After capture, the durable structural trigger reads only the frozen source kind, frozen schema and generation, frozen payload, frozen live category, and frozen global receipt. Later ownership changes cannot rewrite the accepted history.
 
 ## Transactional blackout lock
 
-`fallout_lock_transition` now prepares schema 8 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
+`fallout_lock_transition` prepares schema 9 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
 
 - the pre-lock authorization flag is active on the request coordinator, or
 - a current-schema active Fallout transition remains in the snapshot phase on the coordinator
@@ -66,13 +66,15 @@ The coordinator sets `fallout_request_locked`, `fallout_transition_active`, `wor
 
 Blackout dirty state, dramatic audio, and phase-event scheduling occur only inside that successful commit branch.
 
+Once the lock is active, the existing Air monthly pass skips Air Winter cycle opening, state mutation, response refresh, event dispatch, and finalization. Contamination collection continues. This pause prevents the frozen category and climate inputs from drifting during the multi-event rewrite and adds no iterator.
+
 If a nonmanual source fails before lock, its pending envelope remains available to the existing once-per-date coordinator retry. If the manual source fails, the pending envelope is cleared so the manual scenario's synchronous caller reports rejection and cannot leave a request that locks unexpectedly on a later date.
 
 ## Migration
 
-Schema 7 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-8 epoch through the Air Winter producer. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
+Schema 7 and schema 8 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-9 epoch through the Air Winter producer and live category capture. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
 
-Completed legacy Fallout saves are promoted without replaying destruction. They receive `fallout_transition_legacy_completed_without_air_winter_provenance` and no fabricated state receipts.
+Completed legacy Fallout saves are promoted without replaying destruction. They receive `fallout_transition_legacy_completed_without_current_schema_receipts` and no fabricated state receipts.
 
 All later active legacy phases fail closed. The former schema-3 map-return-error promotion is removed because its consumed rows cannot gain trustworthy Air Winter provenance after the fact.
 

@@ -113,7 +113,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema 8 fail-closed policy implemented, full transition still blocked
+Status: schema 9 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -125,15 +125,15 @@ Potential old save states:
 Implemented policy:
 
 - completed Fallout saves are promoted to the current schema without restarting destruction
-- completed legacy saves are marked as lacking row-level Air Winter provenance and receive no fabricated receipts
-- an active schema-7 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- completed legacy saves are marked as lacking current-schema row receipts and receive no fabricated receipts
+- an active schema-7 or schema-8 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
 - every other incomplete legacy transition fails closed under blackout
 - an incomplete terminal save with no schema also fails closed under blackout
 - the former schema-3 map-return-error promotion is removed because consumed rows cannot acquire trustworthy Air Winter receipts after the fact
 - migration does not infer safety from a missing `fallout_transition_destructive_started` marker
 - no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The schema-7 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. Any ambiguity remains blocked.
+The schema-7 and schema-8 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-9 row freezes the live state category separately from the historical Air Winter category. Any ambiguity remains blocked.
 
 Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
 
@@ -234,7 +234,7 @@ Fallout uses a dedicated blackout scripted GUI. It does not use a super-event sl
 
 Resolved for the exact state rewrite:
 
-State-scoped `damage_building` is not accepted as aggregate rail or supply-node loss because the official documentation promises only the first matching province. The live receipt covers infrastructure, civilian factories, military factories, air bases, and dockyards per family. Supply collapse remains a proven state flag and modifier. Province-level rail and supply-node damage stays blocked until a deterministic province registry and per-province receipt are implemented.
+State-scoped `remove_building` is accepted for exact permanent loss of infrastructure, civilian factory, military factory, air base, and dockyard levels. Each family stores total levels before and after, and the observed decrease must equal the rounded request. Historical receipt identifiers containing `building_damage` are compatibility names only. State scope does not recursively find province buildings, so literal rail and supply-node loss remains blocked until a deterministic province registry and per-province receipt are implemented. The current supply-collapse flag and grade modifier prove gameplay pressure, not physical network destruction.
 
 ### D2: treaty disposition
 
@@ -258,7 +258,9 @@ The 99 matrix rows are candidates. The rewrite selects a coherent subset. No req
 
 Resolved:
 
-All winter and Fallout population loss uses the shared Deaths pipeline.
+All winter and Fallout population loss uses the shared Deaths pipeline. Fallout issues the bounded population mutation first, reads the observed state delta, and submits only that amount to Deaths with population application disabled. The enabled path proves global total movement, one log-sequence step, and matching state-map ledger movement. The user-disabled and zero-loss paths have distinct receipts.
+
+The official engine surface still provides no population-only mutation. Recruitable-manpower neutrality depends on immediate `manpower_k` observation and correction in the shared population helper. Immediate population and building-level read timing is also not documented. No Hearts of Iron IV run was authorized, so both remain runtime acceptance blockers and are not reported as proven.
 
 ### D6: periodic loop ownership
 

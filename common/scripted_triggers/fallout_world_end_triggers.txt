@@ -329,6 +329,45 @@ fallout_pretransition_air_winter_source_matches_capture = {
 	}
 }
 
+# Supported scope: STATE. The live transition category is independent from Air
+# Winter's historical original-category provenance.
+fallout_state_category_matches_frozen_snapshot = {
+	OR = {
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.wasteland } has_state_category = wasteland }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.enclave } has_state_category = enclave }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.tiny_island } has_state_category = tiny_island }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.small_island } has_state_category = small_island }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.pastoral } has_state_category = pastoral }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.rural } has_state_category = rural }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.town } has_state_category = town }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.large_town } has_state_category = large_town }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.city } has_state_category = city }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.large_city } has_state_category = large_city }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.metropolis } has_state_category = metropolis }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.megalopolis } has_state_category = megalopolis }
+		AND = { check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.large_island } has_state_category = large_island }
+	}
+}
+
+# Supported scope: STATE
+fallout_state_category_matches_conversion_target = {
+	OR = {
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.wasteland } has_state_category = wasteland }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.enclave } has_state_category = enclave }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.tiny_island } has_state_category = tiny_island }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.small_island } has_state_category = small_island }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.pastoral } has_state_category = pastoral }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.rural } has_state_category = rural }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.town } has_state_category = town }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.large_town } has_state_category = large_town }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.city } has_state_category = city }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.large_city } has_state_category = large_city }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.metropolis } has_state_category = metropolis }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.megalopolis } has_state_category = megalopolis }
+		AND = { check_variable = { fallout_category_conversion_target = constant:air_winter_state_category.large_island } has_state_category = large_island }
+	}
+}
+
 # Supported scope: COUNTRY
 fallout_pretransition_country_snapshot_row_is_current = {
 	has_country_flag = fallout_pretransition_country
@@ -374,6 +413,7 @@ fallout_pretransition_country_snapshot_row_is_current = {
 fallout_pretransition_state_snapshot_row_is_structurally_current = {
 	has_state_flag = fallout_original_owner_recorded
 	has_state_flag = fallout_original_controller_recorded
+	has_state_flag = fallout_pretransition_state_category_recorded
 	has_variable = fallout_original_owner_scope
 	has_variable = fallout_original_controller_scope
 	has_variable = fallout_pretransition_snapshot_generation
@@ -407,8 +447,19 @@ fallout_pretransition_state_snapshot_row_is_structurally_current = {
 	has_variable = fallout_pretransition_resource_steel
 	has_variable = fallout_pretransition_days_since_bombing
 	has_variable = fallout_pretransition_nuclear_fallout_intensity
+	has_variable = fallout_pretransition_state_category
 	fallout_pretransition_air_winter_source_is_structurally_current = yes
 	check_variable = { fallout_pretransition_population_k > constant:fallout_runtime.negative_one }
+	check_variable = {
+		var = fallout_pretransition_state_category
+		value = constant:air_winter_state_category.wasteland
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_pretransition_state_category
+		value = constant:air_winter_state_category.large_island
+		compare = less_than_or_equals
+	}
 	check_variable = {
 		var = fallout_pretransition_snapshot_generation
 		value = global.fallout_snapshot_epoch_generation
@@ -423,6 +474,7 @@ fallout_pretransition_state_snapshot_row_is_structurally_current = {
 fallout_pretransition_state_snapshot_row_is_current = {
 	fallout_pretransition_state_snapshot_row_is_structurally_current = yes
 	fallout_pretransition_air_winter_source_matches_capture = yes
+	fallout_state_category_matches_frozen_snapshot = yes
 	OWNER = { tag = var:PREV.fallout_original_owner_scope }
 	CONTROLLER = { tag = var:PREV.fallout_original_controller_scope }
 }
@@ -690,10 +742,56 @@ fallout_state_grading_rows_are_current = {
 	}
 }
 
-# Supported scope: STATE. This durable receipt proves the Deaths-system
-# transaction from stored deterministic inputs and observed output.
+# Supported scope: STATE. Deaths and state-map totals are observed after the
+# population mutation. Disabled and zero-loss paths are explicit receipts.
+fallout_population_deaths_accounting_receipt_is_durable = {
+	has_state_flag = fallout_population_loss_deaths_evaluated
+	has_variable = fallout_population_deaths_accounting_status
+	has_variable = fallout_population_deaths_total_before
+	has_variable = fallout_population_deaths_total_after
+	has_variable = fallout_population_deaths_total_delta
+	has_variable = fallout_population_deaths_sequence_before
+	has_variable = fallout_population_deaths_sequence_after
+	has_variable = fallout_population_deaths_sequence_delta
+	has_variable = fallout_population_state_deaths_before
+	has_variable = fallout_population_state_deaths_after
+	has_variable = fallout_population_state_deaths_delta
+	check_variable = { fallout_population_deaths_total_before > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_deaths_total_after > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_deaths_sequence_before > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_deaths_sequence_after > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_state_deaths_before > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_state_deaths_after > constant:fallout_runtime.negative_one }
+	OR = {
+		AND = {
+			check_variable = { fallout_population_loss_memory = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.zero_loss }
+			check_variable = { fallout_population_deaths_total_delta = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_deaths_sequence_delta = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_state_deaths_delta = constant:fallout_runtime.zero }
+		}
+		AND = {
+			check_variable = { fallout_population_loss_memory > constant:fallout_runtime.zero }
+			check_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.registered }
+			check_variable = { var = fallout_population_deaths_total_delta value = fallout_population_loss_memory compare = equals }
+			check_variable = { fallout_population_deaths_sequence_delta = constant:fallout_runtime.one }
+			check_variable = { var = fallout_population_state_deaths_delta value = fallout_population_loss_memory compare = equals }
+		}
+		AND = {
+			check_variable = { fallout_population_loss_memory > constant:fallout_runtime.zero }
+			check_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.disabled }
+			check_variable = { fallout_population_deaths_total_delta = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_deaths_sequence_delta = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_state_deaths_delta = constant:fallout_runtime.zero }
+		}
+	}
+}
+
+# Supported scope: STATE. This durable receipt proves the post-mutation Deaths
+# transaction from stored deterministic intent and an observed live delta.
 fallout_population_loss_receipt_is_durable = {
 	fallout_state_grading_row_is_current = yes
+	has_state_flag = fallout_population_loss_mutation_issued
 	has_state_flag = fallout_population_loss_evaluated
 	has_state_flag = fallout_population_loss_reconciled
 	has_variable = fallout_population_loss_percent_applied
@@ -705,6 +803,7 @@ fallout_population_loss_receipt_is_durable = {
 	has_variable = fallout_population_after_loss_k
 	has_variable = fallout_population_reconciled_loss
 	has_variable = fallout_population_loss_memory
+	fallout_population_deaths_accounting_receipt_is_durable = yes
 	check_variable = { fallout_population_loss_requested_memory > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_population_before_loss_people > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_population_available_before_loss > constant:fallout_runtime.negative_one }
@@ -715,6 +814,16 @@ fallout_population_loss_receipt_is_durable = {
 	check_variable = {
 		var = fallout_population_expected_loss
 		value = fallout_population_loss_requested_memory
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = fallout_population_available_before_loss
+		value = fallout_population_before_loss_people
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = fallout_population_expected_loss
+		value = fallout_population_available_before_loss
 		compare = less_than_or_equals
 	}
 	check_variable = {
@@ -789,14 +898,10 @@ fallout_population_loss_components_are_current = {
 	}
 }
 
-# Supported scope: STATE
+# Supported scope: STATE. A finalized row remains current after unrelated later
+# demographic change because its live observation is stored in the receipt.
 fallout_population_loss_row_is_current = {
 	fallout_population_loss_row_is_durable = yes
-	check_variable = {
-		var = fallout_population_after_loss_k
-		value = state_population_k
-		compare = equals
-	}
 }
 
 # Supported scope: COUNTRY
@@ -934,9 +1039,10 @@ fallout_state_subtype_modifier_receipt_is_current = {
 	}
 }
 
-# Supported scope: STATE. This durable transaction receipt is independent of
-# later normal repair ticks.
+# Supported scope: STATE. Historical damage identifiers record permanently
+# removed building levels in transition schema 9.
 fallout_state_building_damage_receipt_is_durable = {
+	has_state_flag = fallout_building_damage_mutation_issued
 	has_state_flag = fallout_building_damage_evaluated
 	has_state_flag = fallout_building_damage_reconciled
 	has_variable = fallout_building_damage_levels_requested
@@ -966,6 +1072,16 @@ fallout_state_building_damage_receipt_is_durable = {
 	has_variable = fallout_building_damage_after_arms_factory
 	has_variable = fallout_building_damage_after_air_base
 	has_variable = fallout_building_damage_after_dockyard
+	check_variable = { var = fallout_building_damage_available_infrastructure value = fallout_building_damage_before_infrastructure compare = equals }
+	check_variable = { var = fallout_building_damage_available_industrial_complex value = fallout_building_damage_before_industrial_complex compare = equals }
+	check_variable = { var = fallout_building_damage_available_arms_factory value = fallout_building_damage_before_arms_factory compare = equals }
+	check_variable = { var = fallout_building_damage_available_air_base value = fallout_building_damage_before_air_base compare = equals }
+	check_variable = { var = fallout_building_damage_available_dockyard value = fallout_building_damage_before_dockyard compare = equals }
+	check_variable = { fallout_building_damage_after_infrastructure > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_industrial_complex > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_arms_factory > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_air_base > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_dockyard > constant:fallout_runtime.negative_one }
 	check_variable = { var = fallout_building_damage_observed_infrastructure value = fallout_building_damage_requested_infrastructure compare = equals }
 	check_variable = { var = fallout_building_damage_observed_industrial_complex value = fallout_building_damage_requested_industrial_complex compare = equals }
 	check_variable = { var = fallout_building_damage_observed_arms_factory value = fallout_building_damage_requested_arms_factory compare = equals }
@@ -991,116 +1107,55 @@ fallout_state_building_damage_receipt_is_durable = {
 }
 
 # Supported scope: STATE. This phase-local observation proves that the engine
-# exposed the requested damage before the physical-collapse phase advances.
+# exposed the requested permanent level loss before the row finalized.
 fallout_state_building_damage_receipt_is_current = {
 	fallout_state_building_damage_receipt_is_durable = yes
-	check_variable = { var = fallout_building_damage_after_infrastructure value = damaged_building_level@infrastructure compare = equals }
-	check_variable = { var = fallout_building_damage_after_industrial_complex value = damaged_building_level@industrial_complex compare = equals }
-	check_variable = { var = fallout_building_damage_after_arms_factory value = damaged_building_level@arms_factory compare = equals }
-	check_variable = { var = fallout_building_damage_after_air_base value = damaged_building_level@air_base compare = equals }
-	check_variable = { var = fallout_building_damage_after_dockyard value = damaged_building_level@dockyard compare = equals }
+	check_variable = { var = fallout_building_damage_after_infrastructure value = building_level@infrastructure compare = equals }
+	check_variable = { var = fallout_building_damage_after_industrial_complex value = building_level@industrial_complex compare = equals }
+	check_variable = { var = fallout_building_damage_after_arms_factory value = building_level@arms_factory compare = equals }
+	check_variable = { var = fallout_building_damage_after_air_base value = building_level@air_base compare = equals }
+	check_variable = { var = fallout_building_damage_after_dockyard value = building_level@dockyard compare = equals }
 }
 
-# Supported scope: STATE
-fallout_state_category_matches_frozen_original = {
-	OR = {
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.wasteland } has_state_category = wasteland }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.enclave } has_state_category = enclave }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.tiny_island } has_state_category = tiny_island }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.small_island } has_state_category = small_island }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.pastoral } has_state_category = pastoral }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.rural } has_state_category = rural }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.town } has_state_category = town }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_town } has_state_category = large_town }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.city } has_state_category = city }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_city } has_state_category = large_city }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.metropolis } has_state_category = metropolis }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.megalopolis } has_state_category = megalopolis }
-		AND = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_island } has_state_category = large_island }
-	}
-}
-
-# Supported scope: STATE
+# Supported scope: STATE. The stored target is recomputed from the frozen live
+# category and can never rank above that frozen baseline.
 fallout_state_category_receipt_is_current = {
+	has_state_flag = fallout_category_conversion_mutation_issued
 	has_state_flag = fallout_category_conversion_evaluated
+	has_state_flag = fallout_category_conversion_target_reconciled
+	has_variable = fallout_category_conversion_target
+	check_variable = {
+		var = fallout_category_conversion_target
+		value = constant:air_winter_state_category.wasteland
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_category_conversion_target
+		value = constant:air_winter_state_category.large_island
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = fallout_category_conversion_target
+		value = fallout_pretransition_state_category
+		compare = less_than_or_equals
+	}
+	fallout_state_category_matches_conversion_target = yes
 	OR = {
 		AND = {
-			check_variable = { fallout_state_grade < constant:fallout_state_grade.ash_zone }
 			NOT = { has_state_flag = fallout_category_conversion_applied }
-			fallout_state_category_matches_frozen_original = yes
-		}
-		AND = {
 			check_variable = {
-				var = fallout_state_grade
-				value = constant:fallout_state_grade.wasteland
-				compare = greater_than_or_equals
-			}
-			has_state_category = wasteland
-			OR = {
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.wasteland }
-					NOT = { has_state_flag = fallout_category_conversion_applied }
-				}
-				AND = {
-					NOT = { check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.wasteland } }
-					has_state_flag = fallout_category_conversion_applied
-				}
+				var = fallout_category_conversion_target
+				value = fallout_pretransition_state_category
+				compare = equals
 			}
 		}
 		AND = {
-			check_variable = {
-				var = fallout_state_grade
-				value = constant:fallout_state_grade.ash_zone
-				compare = greater_than_or_equals
-			}
-			check_variable = { fallout_state_grade < constant:fallout_state_grade.wasteland }
-			OR = {
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.megalopolis }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = metropolis
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.metropolis }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = large_city
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_city }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = city
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.city }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = large_town
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_town }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = town
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.town }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = rural
-				}
-				AND = {
-					check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.rural }
-					has_state_flag = fallout_category_conversion_applied
-					has_state_category = pastoral
-				}
-				AND = {
-					OR = {
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.wasteland }
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.enclave }
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.tiny_island }
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.small_island }
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.pastoral }
-						check_variable = { fallout_pretransition_air_winter_original_category = constant:air_winter_state_category.large_island }
-					}
-					NOT = { has_state_flag = fallout_category_conversion_applied }
-					fallout_state_category_matches_frozen_original = yes
+			has_state_flag = fallout_category_conversion_applied
+			NOT = {
+				check_variable = {
+					var = fallout_category_conversion_target
+					value = fallout_pretransition_state_category
+					compare = equals
 				}
 			}
 		}
@@ -1124,14 +1179,14 @@ fallout_state_category_receipt_is_current = {
 # Supported scope: STATE
 fallout_physical_collapse_components_are_current = {
 	fallout_population_loss_row_is_durable = yes
-	fallout_state_building_damage_receipt_is_current = yes
+	fallout_state_building_damage_receipt_is_durable = yes
 	fallout_state_category_receipt_is_current = yes
 	fallout_state_grade_modifier_receipt_is_current = yes
 	fallout_state_subtype_modifier_receipt_is_current = yes
 }
 
 # Supported scope: STATE. Population and building transaction receipts remain
-# valid after normal demographic change and building repair. Category and
+# valid after normal demographic change and later construction. Category and
 # Fallout modifier state remain live final-world postconditions.
 fallout_physical_collapse_components_are_durable = {
 	fallout_population_loss_row_is_durable = yes
@@ -3384,10 +3439,11 @@ fallout_state_rewrite_postconditions_are_met = {
 					}
 				}
 				NOT = { has_state_flag = fallout_state_graded }
-				NOT = { has_state_flag = fallout_population_loss_evaluated }
-				NOT = { has_state_flag = fallout_building_damage_evaluated }
-				NOT = { has_state_flag = fallout_category_conversion_evaluated }
-				NOT = { has_state_flag = fallout_grade_modifier_evaluated }
+				NOT = { fallout_population_loss_row_is_durable = yes }
+				NOT = { fallout_state_building_damage_receipt_is_durable = yes }
+				NOT = { fallout_state_category_receipt_is_current = yes }
+				NOT = { fallout_state_grade_modifier_receipt_is_current = yes }
+				NOT = { fallout_state_subtype_modifier_receipt_is_current = yes }
 				NOT = { OWNER = { exists = yes } }
 				NOT = { CONTROLLER = { exists = yes } }
 				AND = {

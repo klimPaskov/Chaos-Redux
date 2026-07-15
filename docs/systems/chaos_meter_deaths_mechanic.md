@@ -26,7 +26,7 @@ Deaths are currently registered from:
 5. Nuclear and thermonuclear strikes.
 6. Genocide crisis camp, gulag, experiment-site, biowarfare experiment-site, and restricted chemical site monthly processing.
 7. Event 20 Black Plague state mortality through the exact state-population transaction.
-8. Fallout's one-time grade-based state loss through the same exact state-population transaction.
+8. Fallout's one-time grade-based state loss through an observed post-mutation Deaths transaction.
 
 Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
 
@@ -35,6 +35,8 @@ Nuclear and thermonuclear strikes also add direct chaos through the shared nucle
 When a death source is marked as civilian/state-linked, the shared transaction applies one negative state-scope `add_manpower` delta. Because the engine also credits recruitable manpower when this effect is negative, the transaction snapshots the state's owner and distinct controller, measures their actual `manpower_k` change, and removes only an observed positive credit. This decreases real state population without deliberately granting military reserves and remains safe for occupied states without assuming which country the engine credits.
 
 The official effect surface exposes no population-only replacement. If an engine build does not expose its recruitable credit through `manpower_k` in the same effect chain, the script does not guess an amount or recipient; this residual engine behavior remains a validation risk rather than a hidden compensation assumption.
+
+Fallout uses a stricter order because its world rewrite must be idempotent across phase-event retries. It calculates intent from frozen population and grade, clamps the commit against live population, writes a mutation-issued flag, and calls the population-only helper once. It then reads the live population difference. Only an exact observed result is registered through `chaos_meter_register_deaths`, with `chaos_deaths_apply_state_pop` set to zero. The optional `chaos_deaths_record_state_ledger` input records that observed amount in the state Deaths map ledger without mutating population again. A mismatch leaves the Fallout blackout active and never receives a Deaths entry.
 
 ## UI Integration (Chaos Meter)
 
@@ -61,6 +63,7 @@ Primary scripted effects:
 - `chaos_meter_register_deaths`
 - `record_chaos_meter_deaths_log_entry`
 - `chaos_meter_sync_chaos_from_deaths_delta`
+- `chaos_meter_record_state_civilian_deaths_from_deaths_change`
 - `rebuild_chaos_meter_deaths_view`
 - `process_chaos_meter_country_deaths_totals_rebuild`
 - `apply_state_population_loss_without_recruitable_manpower_gain`
@@ -88,7 +91,7 @@ Genocide crisis helpers:
 
 These helpers route state population loss through the same Chaos Meter Deaths pipeline used by chemical and biological contamination systems.
 
-Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. The exact transaction still removes state population when the optional Deaths display is disabled.
+Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. Stored before, after, and delta receipts cover the global Deaths total, Deaths log sequence, and state Deaths ledger. When the optional Deaths display is disabled, the exact state mutation still occurs and the receipt records a disabled accounting outcome with zero Deaths-ledger movement.
 
 ## Icons and GFX Wiring
 
