@@ -202,17 +202,23 @@ This rule applies to:
 - new puppet or client variants that require a registered tag
 - new high-chaos transformations
 
-Existing vanilla tags and already registered Chaos Redux tags may be reused without renaming.
+Existing vanilla tags and already registered Chaos Redux tags may be reused without renaming. Reuse must preserve the registered country's vanilla files and behavior whenever the Event 6 package flag is absent.
 
-All `X` tags in the candidate registry are provisional. The implementation pass must check the complete tag registry, cosmetic tag registry, and other event plans before final assignment.
+The 102 accepted custom `X` tags are locked by the 2026-07-15 installed-registry audit. A later migration still requires a new complete scan of country tags, aliases, cosmetic identities, and other event plans before assignment. Retired values are not recycled.
 
 The event should prefer cosmetic identity changes and shared package data over consuming a new tag for every route. A new tag is justified when the country must exist independently, preserve a distinct history package, coexist with the source tag, or carry a formable identity that cannot be expressed safely through a cosmetic change.
 
 ## Resolved tag, map, and research baseline
 
-The candidate registry and `research/006_package_research_resolution.csv` bind every package to one of five implementation outcomes: automatic release, automatic release only when a unique current-map state exists, high-chaos release, negotiated formable or route, or scenario and specific-community variant. The planner never treats an unready broad label as a valid automatic candidate.
+The candidate registry and `research/006_package_research_resolution.csv` bind every package to one of three representations: 102 custom Event 6 countries, 91 registered vanilla-tag reuses, or 13 non-selectable vanilla route overlays. The same files assign one of eight current dispositions: 9 automatic, 44 automatic if not living, 73 automatic if a unique state exists, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 vanilla-route-overlay-only packages. The planner never treats an overlay row or an unready broad label as a selectable country candidate.
 
-Registered tags are reused where their identity fits. New Event 6 country, formable, cosmetic, and route tags use the reserved `X` ending. The dated collision audit found no duplicate new tags and no collision with the current Chaos Redux custom registry or the public vanilla baseline. `BIA` is reserved for the Biafran regional package, while the Edo Kingdom of Benin uses `DRX`. Their territorial overlap is handled by the Nigeria reservation group, not by tag sharing.
+Registered tags are reused where their identity fits. New Event 6 country, formable, cosmetic, and route tags use the reserved `X` ending. The dated collision audit found no duplicate accepted custom tag, no collision in the installed vanilla, Workshop, local-mod, or Chaos Redux tag and alias universe, and no use of the engine-reserved `GFX` graphics namespace. Stable registered-tag migrations are `IW-038 RUT`, `IW-042 GAL`, `IW-043 CHU`, `IW-096 BIA`, `IW-133 BAN`, `IW-150 ATJ`, `IW-153 POK`, `IW-155 BLI`, `IW-157 WPG`, `IW-167 CHM`, `IW-171 OKN`, `IW-172 ANU`, and `IW-178 PNG`. Stable custom remaps are `IW-087 HYX`, `IW-124 HZX`, `IW-161 IAX`, and `IW-162 IBX`.
+
+`IW-153` Dayak Federation reuses vanilla `POK`, the Dayak Republic of West Borneo, instead of retired `FWX`. Its compatibility adapter must preserve registered `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior. The package remains `specific_community_variant_only` and unbound, and the adapter must preserve that restriction.
+
+`CHU` is intentionally shared by `IW-043` Volga Bulgaria and `IW-046` Chuvashia. `BIA` is intentionally shared by `IW-096` Edo Kingdom of Benin and `IW-107` Biafra. Package flags distinguish each identity, and tag plus reservation-group allocation must make each pair mutually exclusive within one wave. Tag identity alone never selects content.
+
+The thirteen overlay-only rows are `IW-005 BEL_flanders`, `IW-022 CRO` with the dynamic `dalmatia` identity, `IW-025 HUN` with the dynamic `vojvodina` identity, `IW-035 LIT` with `LIVONIA`, `IW-059 neo_mesopotamia`, `IW-085 LBA` under the Cyrenaica autonomy identity, `IW-101 COG_kingdom_of_kongo`, `IW-102 COG_kingdom_of_kuba`, `IW-105 COG_kingdom_of_loango`, `IW-156` on democratic `TNE`, `IW-196 antilles`, `IW-197 CHL_mapuche_state`, and `IW-204 kingdom_of_araucania_and_patagonia`. These rows are additive route packages. They receive no custom country registration and never enter the selectable release pool.
 
 The state anchor matrix uses a public 763-state baseline and named reservation groups. Numeric IDs are implementation aids. The installed game and mod state files remain the engine authority. When a named package has no unique current-map anchor, it is not selected automatically. It remains a later secession, formable, route, or scenario candidate.
 
@@ -220,11 +226,11 @@ The source and identity decision remains binding when an ID changes. State rebin
 
 ### Current installed-map binding layer, 2026-07-14
 
-The dated implementation layer in `../../../plans/006_independence_wave_plans/package_bindings/` evaluates all 206 accepted packages against the installed 1,081-state map. It binds 149 packages, leaves 57 unbound, references 205 existing state IDs, and preserves all 111 accepted reservation groups. The package CSV, reservation-group CSV, collision CSV, and audit are the current numeric binding authority for that installed snapshot. The accepted identity, disposition, and map rules in this specification remain the design authority.
+The dated implementation layer in `../../../plans/006_independence_wave_plans/package_bindings/` evaluates all 206 accepted packages against the installed 1,081-state map. Its original all-row ledger records 149 bound and 57 unbound packages, references 205 existing state IDs, and preserves all 111 accepted reservation groups. That `149/57` result is superseded for country selection because it includes 13 overlay rows. Eleven overlays were in the bound list and two overlays were in the unbound list. Excluding them leaves a selectable country pool of 138 bound and 55 unbound packages. The package CSV, reservation-group CSV, collision CSV, and audit remain the numeric state-binding evidence for that installed snapshot. The accepted representation, identity, disposition, and map rules in this specification remain the design authority.
 
 The 14 collision rows contain 12 same-group overlaps already governed by maximum-one and trimming rules. Two cross-group findings remain unresolved implementation gates. Lazistan and Pontus both claim state 354 Trabzon while retaining distinct accepted reservation groups. Their automatic selection needs an explicit state-level mutual exclusion. The route-only Himalayan confederation overlaps the automatic Kashmir package on state 441, so that route must consume or exclude the active Kashmir reservation. Neither finding authorizes a silent group merge or a broader map grant.
 
-The current registry scan confirms all 78 reused tags are registered and all 128 reserved new `X` tags remain collision-free in the installed and mod registries. That result must be repeated if the relevant registries change.
+The current registry scan confirms that all 91 reuse rows resolve to registered tags and all 102 custom Event 6 `X` tags remain collision-free in the installed and mod registries. The scan locks identifiers and representations. It does not implement the thirteen compatibility adapters or thirteen additive overlay hooks. That result must be repeated if the relevant registries change.
 
 ## Repeatable memory
 

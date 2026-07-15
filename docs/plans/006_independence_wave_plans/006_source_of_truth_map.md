@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Curated: 2026-07-14
+Curated: 2026-07-15
 
 Scope: documentation reconciliation only. This file does not change gameplay, localisation, assets, the event workbook, or accepted Event 006 design.
 
@@ -20,8 +20,11 @@ When these layers disagree, preserve the accepted design and record the implemen
 | --- | ---: |
 | Accepted packages | 206 |
 | Unique package IDs | 206, `IW-001` through `IW-206` |
-| Bound packages | 149 |
-| Unbound packages | 57 |
+| Geographically bound rows in the 2026-07-14 map audit | 149 |
+| Geographically unbound rows in the 2026-07-14 map audit | 57 |
+| Selectable bound release packages after vanilla-identity reconciliation | 138 |
+| Selectable unbound release packages after vanilla-identity reconciliation | 55 |
+| Non-selectable vanilla route overlays | 13, comprising 11 previously bound rows and 2 previously unbound rows |
 | Distinct current state IDs referenced | 205 |
 | Installed state files | 1,081, IDs 1 through 1081 |
 | Accepted reservation groups | 111 |
@@ -30,8 +33,8 @@ When these layers disagree, preserve the accepted design and record the implemen
 | Same-group collision rows | 12 |
 | Cross-group automatic blockers | 1 |
 | Cross-group route exclusions | 1 |
-| Reused registered tags | 78, all present |
-| Reserved new Event 6 tags | 128, all ending in `X` |
+| Reused registered tags | 91, all present |
+| Reserved new Event 6 tags | 102, all ending in `X` |
 | Reserved-tag registry collisions | 0 |
 | Reserved-tag cosmetic-key collisions | 0 |
 
@@ -43,30 +46,32 @@ Collision state IDs: `42`, `249`, `256`, `354`, `425`, `427`, `432`, `441`, `764
 
 | Accepted disposition | Count |
 | --- | ---: |
-| `automatic_pool_ready` | 11 |
+| `automatic_pool_ready` | 9 |
 | `automatic_pool_ready_if_not_living` | 44 |
-| `automatic_pool_ready_if_unique_state_exists` | 77 |
-| `high_chaos_only` | 32 |
-| `formable_or_route_only` | 9 |
+| `automatic_pool_ready_if_unique_state_exists` | 73 |
+| `high_chaos_only` | 27 |
+| `formable_or_route_only` | 7 |
 | `specific_community_variant_only` | 30 |
 | `scenario_variant_only` | 3 |
+| `vanilla_route_overlay_only` | 13 |
 
 ### Current readiness result
 
 | Current verdict | Count |
 | --- | ---: |
-| `ready_automatic` | 10 |
+| `ready_automatic` | 8 |
 | `ready_if_tag_not_living` | 44 |
-| `ready_unique_state_confirmed` | 53 |
-| `ready_high_chaos` | 28 |
-| `route_only_bound` | 9 |
+| `ready_unique_state_confirmed` | 51 |
+| `ready_high_chaos` | 23 |
+| `route_only_bound` | 7 |
 | `scenario_only_bound` | 1 |
 | `specific_variant_only_bound` | 4 |
-| `disabled_no_unique_current_state` | 29 |
+| `disabled_no_unique_current_state` | 27 |
 | `specific_variant_only_unbound` | 26 |
 | `scenario_only_unbound` | 2 |
+| `overlay_nonselectable` | 13 |
 
-The 57 unbound packages remain unavailable until an accepted design change or a future installed map supplies exact geography. A nearby broad state is not an authorized substitute.
+The 55 selectable unbound packages remain unavailable until an accepted design change or a future installed map supplies exact geography. A nearby broad state is not an authorized substitute. The thirteen overlays sit outside both selectable lists and activate only on their exact vanilla carriers or routes.
 
 ## Machine-readable binding layer
 
@@ -74,6 +79,7 @@ The 57 unbound packages remain unavailable until an accepted design change or a 
 - `package_bindings/006_current_map_reservation_groups.csv`: all 111 accepted groups with bound and unbound members.
 - `package_bindings/006_current_map_state_collisions.csv`: all 14 recomputed shared-state rows.
 - `package_bindings/006_current_installed_map_binding_audit.md`: evidence, semantics, rebindings, disabled packages, collision gates, and host-survival implications.
+- `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`: final 102-custom/91-reuse installed-tag and vanilla-identity evidence.
 
 ## Decisions that remain unresolved
 

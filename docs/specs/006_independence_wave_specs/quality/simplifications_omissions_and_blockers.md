@@ -26,11 +26,13 @@ The following items are implementation or production work. Their design and sour
 
 ### Tags
 
-Every candidate has a resolved registered or reserved tag in the tag audit and package resolution matrix. All new Event 6 tags are unique and end in `X`. The 2026-07-14 scan found all 78 reused tags registered and no collision for any of the 128 reserved new tags. This result is binding for that registry snapshot and must be repeated if the installed or mod registries change.
+Every candidate has a resolved representation in the tag audit and package resolution matrix. The architecture contains 102 custom Event 6 countries, 91 registered vanilla-tag reuses, and 13 non-selectable vanilla route overlays. Every custom Event 6 tag is unique and ends in `X`. The 2026-07-15 scan found that all 91 reuse rows resolve to registered tags and found no collision for any of the 102 accepted custom tags. This result is binding for that scan universe and must be repeated if the installed or mod registries change.
+
+The tag audit locks identifiers only. The thirteen registered-tag compatibility adapters and thirteen additive overlay hooks remain implementation blockers. The `IW-153 POK` adapter must preserve registered history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior while retaining the named-community restriction. No source document may describe those adapters or overlays as implemented without gameplay evidence and route-preservation validation.
 
 ### State IDs and borders
 
-Every package has a public-baseline state ID or an explicit no-unique-state outcome, a named anchor, and a reservation group. Coarse-map packages are restricted to conditional, formable, specific-community, or scenario use. The 2026-07-14 installed-map binding leaves 149 packages bound and 57 unbound. Its 14 collision rows include one unresolved automatic conflict at Trabzon and one required route exclusion at Kashmir. Runtime capital and host-remnant protection still must be calculated from the live world state.
+Every package has a public-baseline state ID or an explicit no-unique-state outcome, a named anchor, and a reservation group. Coarse-map packages are restricted to conditional, formable, specific-community, or scenario use. The 2026-07-14 installed-map audit originally recorded 149 bound and 57 unbound rows across all 206 packages. That split is superseded for selection because 13 overlays are non-selectable. Removing 11 bound overlays and 2 unbound overlays leaves 138 bound and 55 unbound selectable country packages. The all-row ledger's 14 collision rows remain map evidence. Runtime capital and host-remnant protection still must be calculated from the live world state.
 
 ### Final focus count and layout
 
@@ -62,7 +64,7 @@ No Clausewitz files were edited. No parser, game load, live scenario, focus-tree
 
 ## Research status
 
-Every package has a final research disposition and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding and the current tag scan are complete for the 2026-07-14 snapshot. Final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
+Every package has a final representation, research disposition, and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding is complete for the 2026-07-14 snapshot and the accepted tag scan is complete for the 2026-07-15 scan universe. Compatibility adapters, overlay hooks, final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 
 ## Subagent status
 

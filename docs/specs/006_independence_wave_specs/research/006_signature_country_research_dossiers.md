@@ -6,7 +6,7 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-043, Volga Bulgaria
 
-**Resolved tag and release role:** `BQX`, a new Event 6 tag. It is a high-chaos restoration package. Tatarstan, Bashkiria, Chuvashia, Mari El, and Udmurtia retain their own registered or separate packages.
+**Resolved tag and release role:** Reuse registered `CHU` for this high-chaos restoration package. `CHU` is shared with `IW-046` Chuvashia, so an Event 6 package flag must distinguish the two identities and the allocator must make them mutually exclusive within one wave. The registered-tag compatibility adapter remains implementation work. Tatarstan, Bashkiria, Mari El, and Udmurtia retain their own registered or separate packages.
 
 **Modern political bridge:** The opening authority is a Middle Volga congress rooted in autonomous-republic institutions, cultural associations, municipal administration, Islamic institutions, labor, rail and industrial bodies, and regional national delegates. The route can borrow from Idel-Ural federal thought without declaring that every Volga people accepts one national identity.
 
@@ -32,13 +32,13 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-059, Mesopotamia
 
-**Resolved tag and release role:** `CGX`, a new Event 6 tag. It is a high-chaos civic or federal alternative anchored on `291 Baghdad`.
+**Resolved tag and release role:** Use the non-selectable vanilla `neo_mesopotamia` formable overlay. This package has no standalone Event 6 tag and does not enter the release pool. It activates additively on a carrier that completed the vanilla formable, and the overlay adapter remains implementation work.
 
 **Modern political bridge:** The package is a modern Mesopotamian civic federation, not an ancient empire. Baghdad municipal and ministerial administration, the al-Ahali reform milieu, labor, students, river provinces, army officers, tribal and customary authorities where specifically sourced, and minority guarantees compete over the constitution.
 
 **Political routes:** A constitutional river federation, social reform republic, military developmental state, pluralist league state, patron client, and high-chaos ancient-symbol route are available. Ancient imagery never replaces the baseline institutions.
 
-**Map resolution:** Baghdad is the anchor. Mosul, Kurdish regions, Basra, tribal districts, and minority areas require consent, federal settlement, or later expansion. If the current Iraqi host cannot retain a valid state, this package becomes a formable or scenario route instead of deleting the host.
+**Map resolution:** Baghdad remains the route's territorial center. Mosul, Kurdish regions, Basra, tribal districts, and minority areas require consent, federal settlement, or later expansion. Event 6 must preserve the carrier and the completed vanilla formable rather than create another Mesopotamian country.
 
 ## IW-093, Asante
 
@@ -54,7 +54,7 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-096, Edo Kingdom of Benin
 
-**Resolved tag and release role:** Use the new Event 6 tag `DRX`. Registered `BIA` remains exclusive to the Biafran regional package. The two packages still share the coarse Nigeria reservation group and cannot both release automatically without distinct current-map substates.
+**Resolved tag and release role:** Reuse registered `BIA`. `BIA` is shared with `IW-107` Biafra, so an Event 6 package flag must distinguish the two identities and the allocator must make them mutually exclusive in `RG-NIGERIA-COARSE`. The registered-tag compatibility adapter remains implementation work.
 
 **Period leadership:** Akenzua II, Oba from 1933, is the period leader. His education policy and 1936 campaign for return of looted court objects provide modern state-building and cultural property routes.
 
@@ -86,7 +86,7 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-150, Aceh
 
-**Resolved tag and release role:** `FTX`, a new Event 6 tag. It is a high-chaos signature package on `672 Sumatra`, with Banda Aceh required as the capital location.
+**Resolved tag and release role:** Reuse registered `ATJ` for this high-chaos signature package. The tag is eligible only while it is not living, and the Indonesian compatibility adapter must preserve the normal vanilla route whenever the Event 6 Aceh package flag is absent. That adapter remains implementation work.
 
 **Period institutions:** The 1936 authority combines uleebalang, ulama, merchants, district notables, schools, veterans, and port administration. Daud Beureueh can appear through education and religious reform content.
 
@@ -96,7 +96,7 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-161, Mon State
 
-**Resolved tag and release role:** `GEX`, a new Event 6 tag. It is a high-chaos signature package that requires a Lower Burma, Tenasserim, or other distinct Mon anchor.
+**Resolved tag and release role:** Use the collision-free custom Event 6 tag `IAX`. This replaces retired `GEX`, which conflicts with a German-exile alias in installed Kaiserreich-family content. It remains a high-chaos signature package that requires a Lower Burma, Tenasserim, or other distinct Mon anchor.
 
 **Period institutions:** Monasteries, language and cultural associations, municipal notables, merchants, river and coastal communities, veterans, and a provisional federal council provide the 1936 bridge.
 
@@ -106,16 +106,16 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 ## IW-197, Mapuche Federation
 
-**Resolved tag and release role:** `HOX`, a new Event 6 tag. It is a high-chaos signature package. The opening public identity is a Mapuche federation. Wallmapu is reserved for a negotiated formable or route after internal and cross-border settlement.
+**Resolved tag and release role:** Use the non-selectable `CHL_mapuche_state` cosmetic overlay on `CHL`. This package has no standalone Event 6 tag and does not enter the release pool. The opening route identity is a Mapuche federation. Wallmapu remains reserved for a negotiated formable or route after internal and cross-border settlement. The additive overlay adapter remains implementation work.
 
 **Period leadership:** Manuel Aburto Panguilef and the Federación Araucana are direct period anchors. The organization proposed an Indigenous Republic in 1931, held a congress in 1935, and Aburto was repressed in 1936. Herminia Aburto Colihueque supports civic, electoral, archival, and women's organization content. Later groups are date-gated.
 
 **Internal structure:** Mapuche, Lafkenche, Williche, Pehuenche, and other represented territorial identities receive seats, autonomy rules, land and language policy, and distinct economic and military concerns. The state cannot use one undifferentiated council.
 
-**Map resolution:** Use one south-central Chile or current-map Araucanía anchor. Argentine and wider Chilean territories require local support, diplomacy, plebiscites, or a later formable. `IW-197`, Patagonian, and Araucania and Patagonia restoration packages share `RG-SOUTHERN-CONE`.
+**Map resolution:** Activate the overlay only through the exact `CHL` Mapuche route and its south-central Chile or Araucanía conditions. Argentine and wider Chilean territories require local support, diplomacy, plebiscites, or a later formable. `IW-197`, Patagonian, and Araucania and Patagonia restoration packages share `RG-SOUTHERN-CONE`.
 
 **Symbols:** Use period organization or territorial-identity symbols only after attribution review. No single ceremonial motif is treated as a universal Mapuche flag.
 
 ## Binding outcome
 
-All ten signature packages now have a release role, tag decision, modern political bridge, leadership rule, compact territorial rule, symbol rule, chronology constraints, and source packet. Their final portraits, flags, and exact installed-map state files remain asset and implementation work, not unresearched design.
+All ten signature packages have a representation decision, modern political bridge, leadership rule, compact territorial rule, symbol rule, chronology constraints, and source packet. The Mesopotamian and Mapuche dossiers are route overlays rather than releases. Their compatibility adapters, overlay hooks, final portraits, flags, and exact installed-map state files remain implementation and asset work, not unresearched design.

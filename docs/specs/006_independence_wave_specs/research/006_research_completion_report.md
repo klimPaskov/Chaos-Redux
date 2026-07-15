@@ -4,12 +4,14 @@ Completion date: 2026-07-10
 
 Implementation reconciliation: 2026-07-14
 
+Tag architecture alignment: 2026-07-15
+
 ## Completed scope
 
 The package identity, disposition, historical, and text research gates are closed. The exact `6001` recording-rights gate remains explicit.
 
-- All **206** candidate packages have a resolved tag, tag policy, automatic-pool disposition, baseline state anchor or explicit no-anchor outcome, reservation group, modern political bridge, leadership rule, symbol rule, sensitivity rule, and source packet.
-- The tag audit binds **78** packages to registered tags or tag families and reserves **128** new Event 6 tags. Every new tag is unique and ends in `X`.
+- All **206** candidate packages have a resolved representation, tag or route policy, automatic-pool disposition, baseline state anchor or explicit no-anchor outcome, reservation group, modern political bridge, leadership rule, symbol rule, sensitivity rule, and source packet.
+- The tag audit resolves **102** packages as custom Event 6 countries, **91** as registered vanilla-tag reuses, and **13** as non-selectable vanilla route overlays. Every custom Event 6 tag is unique, collision-free in the accepted scan universe, and ends in `X`.
 - The public 763-state index is converted into anchor and reservation groups. Coarse states no longer support several simultaneous automatic releases without a map split.
 - All ten Level 3 packages have signature dossiers.
 - Broad and community-sensitive packages have explicit automatic, conditional, formable, or scenario dispositions.
@@ -18,13 +20,14 @@ The package identity, disposition, historical, and text research gates are close
 
 ## Candidate disposition totals
 
-- `automatic_pool_ready`: 11
+- `automatic_pool_ready`: 9
 - `automatic_pool_ready_if_not_living`: 44
-- `automatic_pool_ready_if_unique_state_exists`: 77
-- `formable_or_route_only`: 9
-- `high_chaos_only`: 32
+- `automatic_pool_ready_if_unique_state_exists`: 73
+- `formable_or_route_only`: 7
+- `high_chaos_only`: 27
 - `scenario_variant_only`: 3
 - `specific_community_variant_only`: 30
+- `vanilla_route_overlay_only`: 13
 
 ## Binding research files
 
@@ -44,7 +47,7 @@ The accepted identity, disposition, and reservation decisions in those files rem
 - `../../../plans/006_independence_wave_plans/package_bindings/006_current_map_state_collisions.csv`
 - `../../../plans/006_independence_wave_plans/package_bindings/006_current_installed_map_binding_audit.md`
 
-That layer records a current binding or explicit unbound result for all 206 accepted packages on the installed 2026-07-14 map. It records 149 bound packages, 57 unbound packages, 205 referenced states, all 111 accepted reservation groups, and 14 collision rows. It does not broaden an accepted disposition or supply fallback geography.
+That layer records a binding or explicit unbound result for all 206 accepted packages on the installed 2026-07-14 map. Its original all-row ledger contains 149 bound packages, 57 unbound packages, 205 referenced states, all 111 accepted reservation groups, and 14 collision rows. The `149/57` split is superseded for country selection because it includes 13 overlay rows. Eleven overlays were bound and two were unbound. The current selectable country pool therefore contains 138 bound and 55 unbound packages. The state-binding evidence does not broaden an accepted disposition or supply fallback geography.
 
 ## What remains implementation work
 
@@ -53,6 +56,8 @@ The following work remains:
 - add the explicit state-level exclusion required by the Trabzon automatic conflict
 - make the Himalayan confederation route consume or exclude the Kashmir reservation
 - rerun the map and tag snapshots only if the installed build or relevant registries change
+- implement and validate the thirteen registered-tag compatibility adapters, including preservation of `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior for `IW-153`
+- implement and validate the thirteen exact additive overlay hooks without adding them to the release pool
 - writing Clausewitz country, state, focus, decision, AI, GUI, event, and localisation files
 - sourcing or producing final flags, portraits, icons, super-event images, and other visual assets
 - obtain permission or a waiver for the accepted `6001` recording, or ask the user before reopening selection
@@ -60,8 +65,8 @@ The following work remains:
 - live balance, map safety, AI, scenario, and UI validation
 - writing final localisation for ordinary event surfaces from the existing direction
 
-The map and tag snapshot is complete for 2026-07-14. The two cross-group collisions and the `6001` recording right are explicit blockers, not permission to simplify the package.
+The map snapshot is complete for 2026-07-14 and the accepted tag architecture is locked for the 2026-07-15 scan universe. Identifier resolution does not mean that compatibility adapters or overlays are implemented. Those obligations, the two cross-group collision gates, and the `6001` recording right are explicit blockers, not permission to simplify the package.
 
 ## Honest boundary
 
-The package does not claim that a public third-party state index is more authoritative than the installed game files. The dated current-map CSVs record the installed 2026-07-14 bindings. When a future installed build differs, the implementation agent binds the same named geographic anchor to the current state file and records the difference. The political, identity, tag-family, source, and reservation decisions remain in force.
+The package does not claim that a public third-party state index is more authoritative than the installed game files. The dated current-map CSVs record the installed 2026-07-14 state evidence, while the 2026-07-15 tag audit records the accepted representation architecture. When a future installed build differs, the implementation agent binds the same named geographic anchor to the current state file and records the difference. The political, identity, representation, source, and reservation decisions remain in force.

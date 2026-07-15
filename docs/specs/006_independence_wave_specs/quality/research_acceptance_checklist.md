@@ -9,8 +9,9 @@ Implementation reconciliation: 2026-07-14
 - [x] 206 candidate rows exist in the original and expanded registry.
 - [x] 206 research resolution rows exist.
 - [x] Every row has a resolved public-name direction.
-- [x] Every row has a resolved tag and tag policy.
-- [x] Every new Event 6 tag matches `[A-Z][A-Z]X`.
+- [x] Every row has a resolved representation and tag or route policy.
+- [x] Every custom or reused country row has a resolved tag, while all 13 overlay rows intentionally keep `resolved_tag` blank.
+- [x] Every custom Event 6 tag matches `[A-Z][A-Z]X`.
 - [x] Every row has an automatic-pool disposition.
 - [x] Every row has a named anchor or an explicit no-unique-state result.
 - [x] Every row has a reservation group.
@@ -18,10 +19,13 @@ Implementation reconciliation: 2026-07-14
 
 ## Tag and origin coverage
 
-- [x] Current Chaos Redux custom tags were checked at the recorded repository commit.
-- [x] Public vanilla and DLC tag baseline was checked.
-- [x] Known public `X`-ending tags do not collide with new Event 6 tags.
-- [x] `BIA` is reserved for the Biafran package, while Edo Benin uses the distinct Event 6 tag `DRX`.
+- [x] Installed vanilla, Workshop, local-mod, and Chaos Redux tags and aliases were checked in the 2026-07-15 scan universe.
+- [x] All 102 custom Event 6 tags are collision-free in that scan universe.
+- [x] Registered-tag migrations and the `HYX`, `HZX`, `IAX`, and `IBX` custom remaps are locked; no country consumes the engine-reserved `GFX` namespace.
+- [x] `IW-153` reuses registered `POK` and retires `FWX`.
+- [x] `CHU` is shared by `IW-043` and `IW-046`, with package flags and mutual exclusion required.
+- [x] `BIA` is shared by `IW-096` and `IW-107`, with package flags and mutual exclusion required.
+- [x] All 13 exact vanilla route overlays are non-selectable and require no standalone Event 6 tag.
 - [x] Event 5 overlap uses release-origin content separation.
 
 ## Map and identity coverage
@@ -47,6 +51,9 @@ Implementation reconciliation: 2026-07-14
 
 - [x] Reconcile all 206 packages against the installed game and current mod overrides. The dated result is in `../../../plans/006_independence_wave_plans/package_bindings/006_current_installed_map_binding_audit.md`.
 - [x] Rerun the repository and installed-game tag scan. The dated result is recorded in `../research/006_tag_collision_and_reuse_audit.md`.
+- [x] Reconcile the selectable map pool to 138 bound and 55 unbound country packages after excluding all 13 overlay rows.
+- [ ] Implement and validate the thirteen registered-tag compatibility adapters, including `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` preservation.
+- [ ] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries.
 - [ ] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
 - [ ] Obtain permission or a waiver for `6001`, or obtain user approval before reopening its recording selection.
