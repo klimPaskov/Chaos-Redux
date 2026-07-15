@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""Build and validate the missing Event 015 ideology flag variants.
+"""Finish and validate the corrected Event 015 cosmetic flag package.
 
-The source PNGs are independent OpenAI image_gen masters.  This script performs
-only deterministic crop/resize, bottom-left-origin 32-bit TGA export, package
-mirroring, decoded review output, contact-sheet assembly, and checksum/format
-validation.  It does not synthesize substitute artwork.
+Every independent composition consumed here is an OpenAI ImageGen source PNG.
+This script performs deterministic solid-fill normalization, crop/resize,
+bottom-left-origin TGA export, decoded review output, contact-sheet assembly,
+checksum recording, and optional targeted merging into ``asset_records.json``.
+It never draws substitute motifs or creates palette-swap compositions.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import shutil
 import struct
 import subprocess
+from collections import Counter
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
@@ -35,43 +38,101 @@ SIZES = {
     "small": (10, 7),
 }
 
-VARIANTS = {
-    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_communism": (
-        "Five equal households share a curved common foundation beneath the sprouting table."
-    ),
-    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_neutrality": (
-        "Five households form a sheltered diamond around the sprouting table."
-    ),
-    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_fascism": (
-        "Five households form a stepped hierarchy between rigid side braces."
-    ),
-    "UTOPIA_MANIFESTO_COUNCIL_UNION_democratic": (
-        "Six tools face an open deliberative chamber and low common table."
-    ),
-    "UTOPIA_MANIFESTO_COUNCIL_UNION_neutrality": (
-        "Six tools occupy two balanced register rows around a measured center."
-    ),
-    "UTOPIA_MANIFESTO_COUNCIL_UNION_fascism": (
-        "Six tools rise in regimented ranks behind a command chevron."
-    ),
-    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_democratic": (
-        "The survey compass spans three equal open civic frames and broken corner rules."
-    ),
-    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_communism": (
-        "The survey compass measures five equal work nodes on a common planning table."
-    ),
-    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_fascism": (
-        "The survey compass is locked into a strict vertical measurement monument."
-    ),
-    "UTOPIA_MANIFESTO_CLOSED_ISLAND_democratic": (
-        "The island is protected by separated civic gateway brackets and an open bridge."
-    ),
-    "UTOPIA_MANIFESTO_CLOSED_ISLAND_communism": (
-        "The island rests within equal boundary segments joined by a common foundation."
-    ),
-    "UTOPIA_MANIFESTO_CLOSED_ISLAND_neutrality": (
-        "The island sits between balanced half-arcs and a controlled passage channel."
-    ),
+# One built-in ImageGen call produced every composition in this mapping.
+COMPOSITIONS = {
+    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_democratic": {
+        "handle": "exec-d221430b-6b27-4ee3-86d9-ce9b79ef8471",
+        "note": "Five equal households gather around a shared sprouting table.",
+    },
+    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_communism": {
+        "handle": "exec-637487dd-a5a2-4ffd-98e3-e5095026979a",
+        "note": "Household roofs, grain, and a broad common table form one shared foundation.",
+    },
+    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_neutrality": {
+        "handle": "exec-e2e2e1b7-94f4-42a7-8dec-2dc2b8d4a7dc",
+        "note": "Households shelter a central sprout within a balanced diamond.",
+    },
+    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_fascism": {
+        "handle": "exec-4bfd5bd2-6634-4f2b-b06a-27a81723c8d7",
+        "note": "A dominant household and two lesser roofs stand inside rigid command braces.",
+    },
+    "UTOPIA_MANIFESTO_COUNCIL_UNION_democratic": {
+        "handle": "exec-166408fb-5532-49a1-98a9-7931534ce029",
+        "note": "Tools and wheat open around a round deliberative table.",
+    },
+    "UTOPIA_MANIFESTO_COUNCIL_UNION_communism": {
+        "handle": "exec-a213e972-6856-429d-9b8d-a47a37d6ac06",
+        "note": "Four equal callings face inward around a common round table.",
+    },
+    "UTOPIA_MANIFESTO_COUNCIL_UNION_neutrality": {
+        "handle": "exec-18384790-b692-41fc-82f8-2c3caba11393",
+        "note": "Six registered callings occupy two measured rows around a central mark.",
+    },
+    "UTOPIA_MANIFESTO_COUNCIL_UNION_fascism": {
+        "handle": "exec-d90ef2e5-098f-44c9-8ed8-893d4052cb73",
+        "note": "Regimented tools rise behind a sharp command chevron.",
+    },
+    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_democratic": {
+        "handle": "exec-eabafa44-47d8-45c9-98de-7a8a0fbedde2",
+        "note": "A drafting divider spans three equal open civic frames.",
+    },
+    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_communism": {
+        "handle": "exec-6bb7fe09-3064-4e3a-9a82-9a8c1d1770a2",
+        "note": "A drafting divider measures five equal work nodes on a common planning table.",
+    },
+    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_neutrality": {
+        "handle": "exec-456c432e-2b37-4ae7-a380-52d7733a500c",
+        "note": "A single drafting divider is registered to one square and two measured guide lines.",
+    },
+    "UTOPIA_MANIFESTO_PLANNED_UTOPIA_fascism": {
+        "handle": "exec-51695f4d-df59-4963-9802-28b774cc60d3",
+        "note": "A drafting divider is locked into a strict vertical measurement monument.",
+    },
+    "UTOPIA_MANIFESTO_CLOSED_ISLAND_democratic": {
+        "handle": "exec-a2424d89-6954-42f7-bb42-7ff1e047be13",
+        "note": "An island remains open through separated gateways and a civic bridge.",
+    },
+    "UTOPIA_MANIFESTO_CLOSED_ISLAND_communism": {
+        "handle": "exec-9ebdee8a-a027-4499-aa3e-8b737e0c145e",
+        "note": "An island rests inside equal boundary segments joined to one foundation.",
+    },
+    "UTOPIA_MANIFESTO_CLOSED_ISLAND_neutrality": {
+        "handle": "exec-91acc487-c80c-4436-a40c-330d7c2a1609",
+        "note": "An island sits between balanced half-rings and a controlled causeway.",
+    },
+    "UTOPIA_MANIFESTO_CLOSED_ISLAND_fascism": {
+        "handle": "exec-d3bea27e-81b9-4edb-990d-4f1e8cd5a674",
+        "note": "An island is enclosed by a hard ring and four inward locking teeth.",
+    },
+    "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH": {
+        "handle": "exec-912fb135-9772-4900-acce-20bc32f1fc66",
+        "note": "A handshake and sprout sit beneath two broad civic arches.",
+    },
+    "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_democratic": {
+        "handle": "exec-74a82e3c-4309-4148-b459-1c2dbf753ecb",
+        "note": "Three open arches share a civic lamp above a turquoise bridge.",
+    },
+    "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_communism": {
+        "handle": "exec-acee6c41-999a-403f-bd38-07c60ea9691e",
+        "note": "Four delegates share one table, doorway, and civic lamp.",
+    },
+    "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_neutrality": {
+        "handle": "exec-5bc343f9-6007-4b76-9943-1de4da3c7802",
+        "note": "Crossed civic bands carry a central service light over a practical bridge.",
+    },
+    "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_fascism": {
+        "handle": "exec-4e4f5847-f124-4dcb-9ab2-798e90a69bbd",
+        "note": "A broken enclosure channels one streetlight and path through ordered blocks.",
+    },
+}
+
+# These are the only intentional aliases. They do not consume extra generation
+# calls; their source and final files are exact byte copies of the canonical art.
+ALIASES = {
+    "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH": "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_democratic",
+    "UTOPIA_MANIFESTO_COUNCIL_UNION": "UTOPIA_MANIFESTO_COUNCIL_UNION_communism",
+    "UTOPIA_MANIFESTO_PLANNED_UTOPIA": "UTOPIA_MANIFESTO_PLANNED_UTOPIA_neutrality",
+    "UTOPIA_MANIFESTO_CLOSED_ISLAND": "UTOPIA_MANIFESTO_CLOSED_ISLAND_fascism",
 }
 
 ROUTE_STEMS = {
@@ -81,7 +142,6 @@ ROUTE_STEMS = {
     "closed_island": "UTOPIA_MANIFESTO_CLOSED_ISLAND",
     "practical_commonwealth": "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH",
 }
-
 IDEOLOGIES = ("democratic", "communism", "neutrality", "fascism")
 
 
@@ -97,79 +157,63 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def dimensions(path: Path) -> list[int]:
-    with Image.open(path) as image:
-        return [image.width, image.height]
-
-
-def alpha_range(image: Image.Image) -> list[int]:
-    alpha = image.convert("RGBA").getchannel("A")
-    extrema = alpha.getextrema()
-    return [int(extrema[0]), int(extrema[1])]
-
-
 def font(size: int) -> ImageFont.ImageFont:
-    candidates = (
-        Path(r"C:/Windows/Fonts/arial.ttf"),
-        Path(r"C:/Windows/Fonts/segoeui.ttf"),
-    )
-    for candidate in candidates:
+    for candidate in (Path(r"C:/Windows/Fonts/arial.ttf"), Path(r"C:/Windows/Fonts/segoeui.ttf")):
         if candidate.is_file():
             return ImageFont.truetype(str(candidate), size=size)
     return ImageFont.load_default()
 
 
 def ensure_directories() -> None:
-    for root in (PROCESSED, FINAL, DECODED):
+    for root in (PROCESSED, FINAL, DECODED, RUNTIME):
         root.mkdir(parents=True, exist_ok=True)
         (root / "medium").mkdir(parents=True, exist_ok=True)
         (root / "small").mkdir(parents=True, exist_ok=True)
     CONTACT.mkdir(parents=True, exist_ok=True)
-    RUNTIME.mkdir(parents=True, exist_ok=True)
-    (RUNTIME / "medium").mkdir(parents=True, exist_ok=True)
-    (RUNTIME / "small").mkdir(parents=True, exist_ok=True)
 
 
 def path_for(root: Path, stem: str, size_name: str, suffix: str) -> Path:
-    if size_name == "main":
-        return root / f"{stem}{suffix}"
-    return root / size_name / f"{stem}{suffix}"
+    return root / f"{stem}{suffix}" if size_name == "main" else root / size_name / f"{stem}{suffix}"
+
+
+def flatten_to_size(image: Image.Image, size: tuple[int, int], colors: int) -> Image.Image:
+    fitted = ImageOps.fit(image, size, method=Image.Resampling.LANCZOS, centering=(0.5, 0.5)).convert("RGB")
+    quantized = fitted.quantize(
+        colors=colors,
+        method=Image.Quantize.MAXCOVERAGE,
+        dither=Image.Dither.NONE,
+    ).convert("RGB")
+    # Collapse low-level generated background shading to the modal border fill.
+    border = []
+    width, height = quantized.size
+    for x in range(width):
+        border.extend((quantized.getpixel((x, 0)), quantized.getpixel((x, height - 1))))
+    for y in range(height):
+        border.extend((quantized.getpixel((0, y)), quantized.getpixel((width - 1, y))))
+    background = Counter(border).most_common(1)[0][0]
+    pixels = list(quantized.getdata())
+    collapsed = []
+    for pixel in pixels:
+        distance = sum((int(pixel[index]) - int(background[index])) ** 2 for index in range(3)) ** 0.5
+        collapsed.append(background if distance < 48 else pixel)
+    quantized.putdata(collapsed)
+    return quantized.convert("RGBA")
 
 
 def process_source(source: Path) -> dict[str, Image.Image]:
     with Image.open(source) as opened:
         image = ImageOps.exif_transpose(opened).convert("RGB")
-        main = ImageOps.fit(
-            image,
-            SIZES["main"],
-            method=Image.Resampling.LANCZOS,
-            centering=(0.5, 0.5),
-        ).convert("RGBA")
     return {
-        "main": main,
-        "medium": main.resize(SIZES["medium"], Image.Resampling.LANCZOS),
-        "small": main.resize(SIZES["small"], Image.Resampling.LANCZOS),
+        "main": flatten_to_size(image, SIZES["main"], 6),
+        "medium": flatten_to_size(image, SIZES["medium"], 6),
+        "small": flatten_to_size(image, SIZES["small"], 5),
     }
 
 
 def write_tga_bottom_left(image: Image.Image, path: Path) -> None:
     image = image.convert("RGBA")
     width, height = image.size
-    header = struct.pack(
-        "<BBBHHBHHHHBB",
-        0,
-        0,
-        2,
-        0,
-        0,
-        0,
-        0,
-        0,
-        width,
-        height,
-        32,
-        8,
-    )
+    header = struct.pack("<BBBHHBHHHHBB", 0, 0, 2, 0, 0, 0, 0, 0, width, height, 32, 8)
     rgba = image.tobytes()
     row_bytes = width * 4
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -189,20 +233,7 @@ def validate_tga(path: Path, expected: tuple[int, int]) -> dict[str, object]:
     if len(data) < 18:
         raise ValueError(f"short TGA: {path}")
     header = struct.unpack("<BBBHHBHHHHBB", data[:18])
-    (
-        id_length,
-        color_map_type,
-        image_type,
-        color_map_first,
-        color_map_length,
-        color_map_depth,
-        x_origin,
-        y_origin,
-        width,
-        height,
-        depth,
-        descriptor,
-    ) = header
+    id_length, color_map_type, image_type, color_map_first, color_map_length, color_map_depth, x_origin, y_origin, width, height, depth, descriptor = header
     expected_length = 18 + width * height * 4
     contract = (
         id_length == 0
@@ -220,19 +251,15 @@ def validate_tga(path: Path, expected: tuple[int, int]) -> dict[str, object]:
     )
     if not contract:
         raise ValueError(f"invalid bottom-left 32-bit TGA contract: {path}")
-    alpha_bytes = data[21::4]
-    if not alpha_bytes:
-        raise ValueError(f"missing alpha bytes: {path}")
-    alpha = [min(alpha_bytes), max(alpha_bytes)]
+    alpha = [min(data[21::4]), max(data[21::4])]
     if alpha != [255, 255]:
         raise ValueError(f"flag alpha is not fully opaque: {path}: {alpha}")
     with Image.open(path) as decoded:
         decoded.load()
-        decoded_dimensions = decoded.size
-    if decoded_dimensions != expected:
-        raise ValueError(f"Pillow decode dimensions mismatch: {path}")
+        if decoded.size != expected:
+            raise ValueError(f"decoded size mismatch: {path}")
     return {
-        "dimensions": [width, height],
+        "dimensions": list(expected),
         "bit_depth": depth,
         "descriptor": descriptor,
         "top_origin": bool(descriptor & 0x20),
@@ -242,275 +269,188 @@ def validate_tga(path: Path, expected: tuple[int, int]) -> dict[str, object]:
     }
 
 
-def validate_dds(path: Path, expected: tuple[int, int]) -> dict[str, object]:
-    data = path.read_bytes()
-    if len(data) < 128 or data[:4] != b"DDS ":
-        raise ValueError(f"invalid DDS magic/header: {path}")
-    header_size = int.from_bytes(data[4:8], "little")
-    height = int.from_bytes(data[12:16], "little")
-    width = int.from_bytes(data[16:20], "little")
-    mipmaps = int.from_bytes(data[28:32], "little")
-    pixel_format_size = int.from_bytes(data[76:80], "little")
-    pixel_format_flags = int.from_bytes(data[80:84], "little")
-    fourcc = data[84:88]
-    bit_count = int.from_bytes(data[88:92], "little")
-    masks = tuple(int.from_bytes(data[offset : offset + 4], "little") for offset in (92, 96, 100, 104))
-    caps = int.from_bytes(data[108:112], "little")
-    expected_length = 128 + width * height * 4
-    contract = (
-        header_size == 124
-        and (width, height) == expected
-        and mipmaps in (0, 1)
-        and pixel_format_size == 32
-        and pixel_format_flags == 65
-        and fourcc == b"\x00\x00\x00\x00"
-        and bit_count == 32
-        and masks == (0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000)
-        and caps == 0x1000
-        and len(data) == expected_length
-    )
-    if not contract:
-        raise ValueError(f"invalid one-level BGRA DDS contract: {path}")
-    with Image.open(path) as decoded:
-        decoded_rgba = decoded.convert("RGBA")
-    return {
-        "dimensions": [width, height],
-        "alpha_range": alpha_range(decoded_rgba),
-        "byte_length": len(data),
-        "sha256": sha256(path),
-    }
+def file_description(path: Path) -> str:
+    if not FILE_EXE.is_file():
+        raise FileNotFoundError(FILE_EXE)
+    result = subprocess.run([str(FILE_EXE), "-b", str(path)], check=True, capture_output=True, text=True)
+    description = result.stdout.strip()
+    if "Targa image data" not in description or " - top" in description:
+        raise ValueError(f"unexpected file(1) output for {path}: {description}")
+    return description
 
 
-def decode_and_compare(final: Path, processed: Path, decoded: Path) -> None:
-    with Image.open(final) as opened:
-        decoded_image = opened.convert("RGBA")
-    with Image.open(processed) as opened:
-        processed_image = opened.convert("RGBA")
-    if ImageChops.difference(decoded_image, processed_image).getbbox() is not None:
-        raise ValueError(f"decoded pixels differ from processed PNG: {final}")
-    decoded.parent.mkdir(parents=True, exist_ok=True)
-    decoded_image.save(decoded)
+def copy_alias_sources() -> None:
+    for alias, canonical in ALIASES.items():
+        shutil.copyfile(SOURCE / f"{canonical}_source.png", SOURCE / f"{alias}_source.png")
 
 
-def build_variants() -> list[dict[str, object]]:
-    records: list[dict[str, object]] = []
-    for stem, note in VARIANTS.items():
-        source = SOURCE / f"{stem}_source.png"
-        if not source.is_file():
-            raise FileNotFoundError(source)
-        source_dimensions = dimensions(source)
-        source_hash = sha256(source)
-        images = process_source(source)
-        for size_name, expected in SIZES.items():
-            processed = path_for(PROCESSED, stem, size_name, ".png")
-            package_final = path_for(FINAL, stem, size_name, ".tga")
-            runtime_final = path_for(RUNTIME, stem, size_name, ".tga")
-            decoded = path_for(DECODED, stem, size_name, ".png")
-            processed.parent.mkdir(parents=True, exist_ok=True)
-            images[size_name].save(processed)
-            write_tga_bottom_left(images[size_name], package_final)
-            runtime_final.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(package_final, runtime_final)
-            if package_final.read_bytes() != runtime_final.read_bytes():
-                raise ValueError(f"package/runtime TGA mismatch: {stem} {size_name}")
-            validation = validate_tga(runtime_final, expected)
-            decode_and_compare(runtime_final, processed, decoded)
-            records.append(
-                {
-                    "kind": f"flag_{size_name}",
-                    "identifier": stem,
-                    "source": rel(source),
-                    "source_dimensions": source_dimensions,
-                    "source_sha256": source_hash,
-                    "processed": rel(processed),
-                    "processed_dimensions": list(expected),
-                    "processed_sha256": sha256(processed),
-                    "package_final": rel(package_final),
-                    "runtime_final": rel(runtime_final),
-                    "runtime_sha256": sha256(runtime_final),
-                    "validation": {
-                        "dimensions": list(expected),
-                        "alpha_range": validation["alpha_range"],
-                        "sha256": validation["sha256"],
-                    },
-                    "provenance": "OpenAI image_gen original; deterministic local crop, resize, and bottom-left TGA export",
-                    "license": "Original generated fictional asset; no third-party source or character reference",
-                    "notes": note,
-                }
-            )
+def export_composition(stem: str, details: dict[str, str]) -> list[dict[str, object]]:
+    source = SOURCE / f"{stem}_source.png"
+    if not source.is_file():
+        raise FileNotFoundError(source)
+    with Image.open(source) as opened:
+        source_dimensions = [opened.width, opened.height]
+    images = process_source(source)
+    records = []
+    for size_name, expected in SIZES.items():
+        processed = path_for(PROCESSED, stem, size_name, ".png")
+        package_final = path_for(FINAL, stem, size_name, ".tga")
+        runtime_final = path_for(RUNTIME, stem, size_name, ".tga")
+        decoded = path_for(DECODED, stem, size_name, ".png")
+        processed.parent.mkdir(parents=True, exist_ok=True)
+        images[size_name].save(processed)
+        write_tga_bottom_left(images[size_name], package_final)
+        shutil.copyfile(package_final, runtime_final)
+        validation = validate_tga(runtime_final, expected)
+        with Image.open(runtime_final) as opened:
+            decoded_image = opened.convert("RGBA")
+        if ImageChops.difference(decoded_image, images[size_name]).getbbox() is not None:
+            raise ValueError(f"decoded pixels differ from processed PNG: {runtime_final}")
+        decoded.parent.mkdir(parents=True, exist_ok=True)
+        decoded_image.save(decoded)
+        records.append(
+            {
+                "kind": f"flag_{size_name}",
+                "identifier": stem,
+                "source": rel(source),
+                "source_dimensions": source_dimensions,
+                "source_sha256": sha256(source),
+                "imagegen_handle": details["handle"],
+                "processed": rel(processed),
+                "processed_dimensions": list(expected),
+                "processed_sha256": sha256(processed),
+                "package_final": rel(package_final),
+                "runtime_final": rel(runtime_final),
+                "runtime_sha256": sha256(runtime_final),
+                "validation": validation,
+                "provenance": "OpenAI built-in ImageGen source; deterministic flat-fill normalization, crop/resize, and bottom-left TGA export",
+                "license": "Original generated fictional asset; no third-party source or character reference",
+                "notes": details["note"],
+            }
+        )
     return records
 
 
-def merge_asset_records(new_records: list[dict[str, object]]) -> list[dict[str, object]]:
-    path = BASE / "asset_records.json"
-    existing = json.loads(path.read_text(encoding="utf-8"))
-    existing = [row for row in existing if row.get("identifier") not in VARIANTS]
-    first_non_flag = next(
-        (index for index, row in enumerate(existing) if not str(row.get("kind", "")).startswith("flag_")),
-        len(existing),
-    )
-    merged = existing[:first_non_flag] + new_records + existing[first_non_flag:]
-    path.write_text(json.dumps(merged, indent=2) + "\n", encoding="utf-8")
-    return merged
+def export_alias(alias: str, canonical: str, records_by_key: dict[tuple[str, str], dict[str, object]]) -> list[dict[str, object]]:
+    source = SOURCE / f"{alias}_source.png"
+    records = []
+    for size_name, expected in SIZES.items():
+        canonical_processed = path_for(PROCESSED, canonical, size_name, ".png")
+        canonical_final = path_for(FINAL, canonical, size_name, ".tga")
+        canonical_decoded = path_for(DECODED, canonical, size_name, ".png")
+        processed = path_for(PROCESSED, alias, size_name, ".png")
+        package_final = path_for(FINAL, alias, size_name, ".tga")
+        runtime_final = path_for(RUNTIME, alias, size_name, ".tga")
+        decoded = path_for(DECODED, alias, size_name, ".png")
+        for original, target in (
+            (canonical_processed, processed),
+            (canonical_final, package_final),
+            (canonical_final, runtime_final),
+            (canonical_decoded, decoded),
+        ):
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(original, target)
+        validation = validate_tga(runtime_final, expected)
+        canonical_record = records_by_key[(canonical, size_name)]
+        record = dict(canonical_record)
+        record.update(
+            {
+                "identifier": alias,
+                "source": rel(source),
+                "source_sha256": sha256(source),
+                "processed": rel(processed),
+                "processed_sha256": sha256(processed),
+                "package_final": rel(package_final),
+                "runtime_final": rel(runtime_final),
+                "runtime_sha256": sha256(runtime_final),
+                "validation": validation,
+                "alias_of": canonical,
+                "provenance": f"Intentional documented alias of {canonical}; source and final files are exact byte copies",
+                "notes": f"Intentional unsuffixed alias of {canonical}.",
+            }
+        )
+        records.append(record)
+    return records
 
 
-def expected_flag_stems() -> list[str]:
-    stems: list[str] = []
+def expected_stems() -> list[str]:
+    stems = []
     for base in ROUTE_STEMS.values():
         stems.append(base)
         stems.extend(f"{base}_{ideology}" for ideology in IDEOLOGIES)
     return stems
 
 
-def validate_coverage() -> dict[str, object]:
-    expected = expected_flag_stems()
-    by_size: dict[str, object] = {}
-    for size_name in SIZES:
-        root = RUNTIME if size_name == "main" else RUNTIME / size_name
-        present = sorted(path.stem for path in root.glob("UTOPIA_MANIFESTO_*.tga"))
-        missing = sorted(set(expected) - set(present))
-        unexpected = sorted(set(present) - set(expected))
-        if missing:
-            raise ValueError(f"missing {size_name} flag stems: {missing}")
-        by_size[size_name] = {
-            "expected": len(expected),
-            "present": len(set(expected) & set(present)),
-            "missing": missing,
-            "unexpected_event_015_stems": unexpected,
-        }
-    return by_size
-
-
-def file_description(path: Path) -> str:
-    if not FILE_EXE.is_file():
-        raise FileNotFoundError(FILE_EXE)
-    result = subprocess.run(
-        [str(FILE_EXE), "-b", str(path)],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    description = result.stdout.strip()
-    if "Targa image data" not in description or description.endswith("- top") or " - top" in description:
-        raise ValueError(f"unexpected file(1) output for {path}: {description}")
-    return description
-
-
-def rebuild_validation(records: list[dict[str, object]]) -> dict[str, object]:
-    files: list[dict[str, object]] = []
-    file_descriptions: dict[str, str] = {}
-    for row in records:
-        runtime = REPO / str(row["runtime_final"])
-        expected = tuple(int(value) for value in row["validation"]["dimensions"])
-        kind = str(row["kind"])
-        if kind.startswith("flag_"):
-            result = validate_tga(runtime, expected)
-            size_name = kind.removeprefix("flag_")
+def validate_package(records: list[dict[str, object]]) -> dict[str, object]:
+    stems = expected_stems()
+    if set(stems) != set(COMPOSITIONS) | set(ALIASES):
+        raise ValueError("composition and alias declarations do not cover the 25 wired stems")
+    files = []
+    by_key = {(str(row["identifier"]), str(row["kind"]).removeprefix("flag_")): row for row in records}
+    for stem in stems:
+        for size_name, expected in SIZES.items():
+            row = by_key[(stem, size_name)]
+            runtime = REPO / str(row["runtime_final"])
             processed = REPO / str(row["processed"])
-            decoded = path_for(DECODED, str(row["identifier"]), size_name, ".png")
-            decode_and_compare(runtime, processed, decoded)
-            description = file_description(runtime)
-            if str(row["identifier"]) in VARIANTS:
-                file_descriptions[rel(runtime)] = description
+            result = validate_tga(runtime, expected)
+            with Image.open(processed) as opened:
+                palette = opened.convert("RGBA").getcolors(maxcolors=256)
+            if palette is None:
+                raise ValueError(f"processed flag exceeds the flat-palette review ceiling: {processed}")
+            unique_colors = len(palette)
+            ceiling = 5 if size_name == "small" else 6
+            if unique_colors > ceiling:
+                raise ValueError(f"processed flag has {unique_colors} colors; expected at most {ceiling}: {processed}")
             files.append(
                 {
-                    "kind": "flag_tga",
-                    "identifier": row["identifier"],
+                    "identifier": stem,
                     "size": size_name,
                     "path": rel(runtime),
-                    "dimensions": result["dimensions"],
+                    "dimensions": list(expected),
                     "alpha_range": result["alpha_range"],
+                    "unique_solid_colors": unique_colors,
                     "sha256": result["sha256"],
+                    "file_description": file_description(runtime),
                 }
             )
-        else:
-            result = validate_dds(runtime, expected)
-            kind_map = {
-                "institutional_portrait": "institutional_portrait_dds",
-                "advisor_portrait": "advisor_portrait_dds",
-                "league_emblem": "league_emblem_dds",
-            }
-            files.append(
-                {
-                    "kind": kind_map.get(kind, f"{kind}_dds"),
-                    "identifier": row["identifier"],
-                    "path": rel(runtime),
-                    "dimensions": result["dimensions"],
-                    "alpha_range": result["alpha_range"],
-                    "sha256": result["sha256"],
-                }
-            )
-
-    main_hashes = {
-        str(row["identifier"]): str(row["processed_sha256"])
-        for row in records
-        if row["kind"] == "flag_main"
-    }
-    route_distinctness: dict[str, str] = {}
+    main_hashes = {str(row["identifier"]): str(row["processed_sha256"]) for row in records if row["kind"] == "flag_main"}
+    independent = [main_hashes[stem] for stem in COMPOSITIONS]
+    if len(set(independent)) != 21:
+        raise ValueError("the 21 independent compositions do not have unique processed hashes")
+    for alias, canonical in ALIASES.items():
+        for size_name in SIZES:
+            if by_key[(alias, size_name)]["runtime_sha256"] != by_key[(canonical, size_name)]["runtime_sha256"]:
+                raise ValueError(f"alias mismatch: {alias} != {canonical} ({size_name})")
+    route_distinctness = {}
     for route, base in ROUTE_STEMS.items():
         ideology_hashes = [main_hashes[f"{base}_{ideology}"] for ideology in IDEOLOGIES]
         if len(set(ideology_hashes)) != 4:
             raise ValueError(f"ideology variants are not unique for {route}")
         route_distinctness[route] = "4 of 4 ideology variants have unique processed hashes"
-    new_hashes = [main_hashes[stem] for stem in VARIANTS]
-    if len(set(new_hashes)) != len(new_hashes):
-        raise ValueError("new ideology variant processed hashes are not all unique")
-
     validation = {
         "status": "passed",
-        "validated_runtime_files": len(files),
-        "counts": {
-            "flag_tga_files": sum(1 for item in files if item["kind"] == "flag_tga"),
-            "institutional_portrait_dds_files": sum(1 for item in files if item["kind"] == "institutional_portrait_dds"),
-            "advisor_portrait_dds_files": sum(1 for item in files if item["kind"] == "advisor_portrait_dds"),
-            "league_emblem_dds_files": sum(1 for item in files if item["kind"] == "league_emblem_dds"),
-        },
-        "coverage": validate_coverage(),
-        "distinctness": {
-            "route_ideology_families": route_distinctness,
-            "new_ideology_variants": "12 of 12 unique processed hashes",
-            "institutional_portraits": "4 of 4 unique processed hashes",
-            "advisor_portraits": "16 of 16 unique processed hashes",
-            "league_emblems": "5 of 5 unique processed hashes",
-            "intentional_unsuffixed_aliases": [
-                "VOLUNTARY_COMMONWEALTH -> VOLUNTARY_COMMONWEALTH_democratic",
-                "COUNCIL_UNION -> COUNCIL_UNION_communism",
-                "PLANNED_UTOPIA -> PLANNED_UTOPIA_neutrality",
-                "CLOSED_ISLAND -> CLOSED_ISLAND_fascism",
-            ],
-        },
+        "source_mode": "OpenAI built-in ImageGen",
+        "independent_imagegen_compositions": len(COMPOSITIONS),
+        "documented_aliases": ALIASES,
+        "wired_stems": len(stems),
+        "runtime_tga_files": len(files),
+        "solid_fill_normalization": "maximum six colors, no dithering; low-level border shading collapsed",
+        "route_ideology_distinctness": route_distinctness,
         "checks": [
-            "runtime filename coverage for all five route stems and four ideologies at every size",
-            "uncompressed bottom-left-origin 32-bit TGA header contract",
-            "file(1) descriptions contain no top-origin marker",
-            "uncompressed one-level BGRA DDS contract for unchanged package DDS files",
-            "Pillow decode",
+            "exact 25-stem coverage at 82x52, 41x26, and 10x7",
+            "21 unique independent main-flag hashes",
+            "four documented aliases are byte-identical at every size",
+            "uncompressed bottom-left-origin 32-bit TGA contract",
             "decoded pixel equality with processed PNG",
-            "fully opaque flag alpha range",
-            "exact runtime file length",
-            "SHA-256 checksum recording",
-            "route-family ideology distinctness",
+            "fully opaque alpha",
+            "maximum six solid colors without dithering (five at 10x7)",
+            "file(1) reports no top-origin marker",
         ],
-        "new_variant_file_descriptions": file_descriptions,
         "files": files,
     }
-    (BASE / "validation.json").write_text(json.dumps(validation, indent=2) + "\n", encoding="utf-8")
-    (BASE / "ideology_flag_variant_validation.json").write_text(
-        json.dumps(
-            {
-                "status": "passed",
-                "new_stems": list(VARIANTS),
-                "new_runtime_tga_files": 36,
-                "coverage": validation["coverage"],
-                "distinctness": validation["distinctness"]["route_ideology_families"],
-                "file_descriptions": file_descriptions,
-                "files": [item for item in files if item.get("identifier") in VARIANTS],
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    validation_text = json.dumps(validation, indent=2) + "\n"
+    (BASE / "flag_identity_validation_2026_07_15.json").write_text(validation_text, encoding="utf-8")
+    (BASE / "ideology_flag_variant_validation.json").write_text(validation_text, encoding="utf-8")
     return validation
 
 
@@ -521,40 +461,44 @@ def fit_preview(path: Path, size: tuple[int, int]) -> Image.Image:
 
 
 def make_source_contact_sheet() -> None:
+    stems = list(COMPOSITIONS)
     columns = 3
     cell_width, cell_height = 460, 330
-    rows = (len(VARIANTS) + columns - 1) // columns
+    rows = (len(stems) + columns - 1) // columns
     sheet = Image.new("RGB", (columns * cell_width, rows * cell_height), (30, 32, 34))
     draw = ImageDraw.Draw(sheet)
     label_font = font(14)
-    for index, stem in enumerate(VARIANTS):
+    for index, stem in enumerate(stems):
         x = (index % columns) * cell_width
         y = (index // columns) * cell_height
-        preview = fit_preview(SOURCE / f"{stem}_source.png", (420, 266))
-        sheet.paste(preview, (x + 20, y + 16))
-        label = stem.replace("UTOPIA_MANIFESTO_", "")
-        draw.text((x + 20, y + 292), label, font=label_font, fill=(235, 235, 232))
-    sheet.save(CONTACT / "ideology_flag_variants_source_contact_sheet.png")
+        sheet.paste(fit_preview(SOURCE / f"{stem}_source.png", (420, 266)), (x + 20, y + 16))
+        draw.text((x + 20, y + 292), stem.replace("UTOPIA_MANIFESTO_", ""), font=label_font, fill=(235, 235, 232))
+    output = CONTACT / "flags_corrected_imagegen_source_contact_sheet.png"
+    sheet.save(output)
+    shutil.copyfile(output, CONTACT / "ideology_flag_variants_source_contact_sheet.png")
 
 
-def make_decoded_contact_sheet(stems: list[str], output: Path, columns: int) -> None:
-    cell_width, cell_height = 360, 180
+def make_decoded_contact_sheet(stems: list[str]) -> None:
+    columns = 5
+    cell_width, cell_height = 300, 190
     rows = (len(stems) + columns - 1) // columns
     sheet = Image.new("RGB", (columns * cell_width, rows * cell_height), (44, 46, 48))
     draw = ImageDraw.Draw(sheet)
-    label_font = font(13)
+    label_font = font(11)
     for index, stem in enumerate(stems):
         x = (index % columns) * cell_width
         y = (index // columns) * cell_height
         with Image.open(DECODED / f"{stem}.png") as opened:
             flag = opened.convert("RGB").resize((246, 156), Image.Resampling.NEAREST)
-        sheet.paste(flag, (x + 57, y + 8))
-        label = stem.replace("UTOPIA_MANIFESTO_", "")
-        draw.text((x + 8, y + 164), label, font=label_font, fill=(235, 235, 232))
+        sheet.paste(flag, (x + 27, y + 8))
+        draw.text((x + 6, y + 169), stem.replace("UTOPIA_MANIFESTO_", ""), font=label_font, fill=(235, 235, 232))
+    output = CONTACT / "flags_corrected_decoded_contact_sheet.png"
     sheet.save(output)
+    shutil.copyfile(output, CONTACT / "flags_decoded_contact_sheet.png")
+    shutil.copyfile(output, CONTACT / "ideology_flag_variants_decoded_contact_sheet.png")
 
 
-def make_size_ladder(stems: list[str], output: Path) -> None:
+def make_size_ladder(stems: list[str]) -> None:
     width, row_height = 760, 150
     sheet = Image.new("RGB", (width, row_height * len(stems)), (44, 46, 48))
     draw = ImageDraw.Draw(sheet)
@@ -574,39 +518,79 @@ def make_size_ladder(stems: list[str], output: Path) -> None:
                 flag = opened.convert("RGB")
             shown = flag.resize((flag.width * scale, flag.height * scale), Image.Resampling.NEAREST)
             sheet.paste(shown, (x, y + image_y))
-            draw.text(
-                (x, y + 132),
-                f"{size_name}: {flag.width}x{flag.height}",
-                font=size_font,
-                fill=(190, 196, 198),
-            )
+            draw.text((x, y + 132), f"{size_name}: {flag.width}x{flag.height}", font=size_font, fill=(190, 196, 198))
         draw.line((0, y + row_height - 1, width, y + row_height - 1), fill=(72, 75, 78), width=1)
+    output = CONTACT / "flag_size_ladder_decoded_contact_sheet.png"
     sheet.save(output)
+    shutil.copyfile(output, CONTACT / "ideology_flag_variants_size_ladder_decoded_contact_sheet.png")
 
 
-def write_checksum_ledger(records: list[dict[str, object]]) -> None:
-    lines = []
-    for row in records:
-        if row.get("identifier") in VARIANTS:
-            lines.append(f"{row['runtime_sha256']}  {row['runtime_final']}")
-    (BASE / "ideology_flag_variant_checksums.sha256").write_text("\n".join(lines) + "\n", encoding="utf-8")
+def make_small_readability_sheet(stems: list[str]) -> None:
+    columns = 5
+    cell_width, cell_height = 260, 175
+    rows = (len(stems) + columns - 1) // columns
+    sheet = Image.new("RGB", (columns * cell_width, rows * cell_height), (44, 46, 48))
+    draw = ImageDraw.Draw(sheet)
+    label_font = font(11)
+    for index, stem in enumerate(stems):
+        x = (index % columns) * cell_width
+        y = (index // columns) * cell_height
+        with Image.open(DECODED / "small" / f"{stem}.png") as opened:
+            flag = opened.convert("RGB").resize((200, 140), Image.Resampling.NEAREST)
+        sheet.paste(flag, (x + 30, y + 8))
+        draw.text((x + 6, y + 153), stem.replace("UTOPIA_MANIFESTO_", ""), font=label_font, fill=(235, 235, 232))
+    sheet.save(CONTACT / "flags_corrected_small_10x7_readability_contact_sheet.png")
+
+
+def write_records(records: list[dict[str, object]]) -> None:
+    (BASE / "flag_identity_asset_records.json").write_text(json.dumps(records, indent=2) + "\n", encoding="utf-8")
+    lines = [f"{row['runtime_sha256']}  {row['runtime_final']}" for row in records]
+    ledger = "\n".join(lines) + "\n"
+    (BASE / "flag_identity_checksums.sha256").write_text(ledger, encoding="utf-8")
+    (BASE / "ideology_flag_variant_checksums.sha256").write_text(ledger, encoding="utf-8")
+
+
+def merge_shared_records(records: list[dict[str, object]]) -> None:
+    path = BASE / "asset_records.json"
+    existing = json.loads(path.read_text(encoding="utf-8"))
+    identifiers = set(expected_stems())
+    remaining = [row for row in existing if row.get("identifier") not in identifiers]
+    first_non_flag = next(
+        (index for index, row in enumerate(remaining) if not str(row.get("kind", "")).startswith("flag_")),
+        len(remaining),
+    )
+    merged = remaining[:first_non_flag] + records + remaining[first_non_flag:]
+    path.write_text(json.dumps(merged, indent=2) + "\n", encoding="utf-8")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--merge-shared-records", action="store_true", help="Replace only the 25 Event 015 flag identifiers in asset_records.json")
+    return parser.parse_args()
 
 
 def main() -> None:
+    args = parse_args()
     ensure_directories()
-    new_records = build_variants()
-    records = merge_asset_records(new_records)
-    validation = rebuild_validation(records)
-    write_checksum_ledger(new_records)
-    all_stems = expected_flag_stems()
+    copy_alias_sources()
+    records = []
+    for stem, details in COMPOSITIONS.items():
+        records.extend(export_composition(stem, details))
+    records_by_key = {(str(row["identifier"]), str(row["kind"]).removeprefix("flag_")): row for row in records}
+    for alias, canonical in ALIASES.items():
+        records.extend(export_alias(alias, canonical, records_by_key))
+    validation = validate_package(records)
+    write_records(records)
+    stems = expected_stems()
     make_source_contact_sheet()
-    make_decoded_contact_sheet(list(VARIANTS), CONTACT / "ideology_flag_variants_decoded_contact_sheet.png", 3)
-    make_size_ladder(list(VARIANTS), CONTACT / "ideology_flag_variants_size_ladder_decoded_contact_sheet.png")
-    make_decoded_contact_sheet(all_stems, CONTACT / "flags_decoded_contact_sheet.png", 4)
-    make_size_ladder(all_stems, CONTACT / "flag_size_ladder_decoded_contact_sheet.png")
+    make_decoded_contact_sheet(stems)
+    make_small_readability_sheet(stems)
+    make_size_ladder(stems)
+    if args.merge_shared_records:
+        merge_shared_records(records)
     print(
-        f"Built {len(VARIANTS)} ideology stems / {len(new_records)} TGAs; "
-        f"validated {validation['validated_runtime_files']} package runtime files."
+        f"Built {len(COMPOSITIONS)} ImageGen compositions plus {len(ALIASES)} aliases; "
+        f"validated {validation['runtime_tga_files']} runtime TGAs."
     )
 
 
