@@ -2,9 +2,9 @@
 
 ## Package scope
 
-This package contains only the dedicated Fallout blackout tile and the dedicated Fallout state-grade modifier icon requested for the transition UI. It does not add or change gameplay script, `.gfx`, `.gui`, localisation, audio, or shared asset manifests.
+This package contains only the dedicated Fallout blackout tile and the dedicated Fallout state-grade modifier icon requested for the transition UI. Both sprites are registered in `interface/fallout_world_end.gfx` and referenced by their dedicated Fallout consumers.
 
-Package status: `handed_off`
+Package status: `registered_and_referenced_runtime_gui_pending`
 
 Reference review:
 
@@ -25,13 +25,13 @@ Reference review:
 - Processed PNG path: not retained because the requested deliverable is the DDS utility tile only
 - Final DDS path: `gfx/interface/fallout_world_end/fallout_blackout_tile.dds`
 - Target size: `10x10`
-- Proposed sprite name: `GFX_fallout_blackout_tile`
+- Registered sprite name: `GFX_fallout_blackout_tile`
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`
 - Localisation key: not needed
 - Source note: a temporary `10x10` RGBA raster with pixel value `(0, 0, 0, 255)` was converted through `.tools/convert_to_dds.py` and removed after conversion
 - DDS format: legacy one-level uncompressed 32-bit BGRA, equivalent to `B8G8R8A8`, with no mipmaps
 - Alpha result: all `100` pixels have alpha `255`
-- Asset status: `handed_off`
+- Asset status: `registered_and_referenced_runtime_gui_pending`
 
 ## Asset 2: Fallout state-grade modifier icon
 
@@ -48,11 +48,11 @@ Reference review:
 - Contact sheet: `docs/assets/fallout_world_end/contact_sheets/fallout_ui_asset_contact_sheet.png`
 - Source size: `1254x1254`
 - Target size: `64x64`
-- Proposed sprite name: `GFX_idea_fallout_state_grade`
+- Registered sprite name: `GFX_idea_fallout_state_grade`
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`
 - Localisation key: not needed for the asset itself
 - Source rationale: Fallout is fictional and symbolic, so original generated artwork fits better than a historical source image
-- Asset status: `handed_off`
+- Asset status: `registered_and_referenced`
 
 ### Image generation prompt
 
@@ -101,7 +101,8 @@ The modifier icon is original fictional artwork created with the Codex built-in 
 
 ## Risks and remaining wiring
 
-- The main agent still needs to register both proposed sprites in `interface/fallout_world_end.gfx` and reference them from the dedicated Fallout UI.
+- `GFX_fallout_blackout_tile` is referenced by `interface/fallout_world_end.gui`. Structural all-resolution binding, drawing order, and input blocking remain unresolved engine-sensitive GUI work.
+- `GFX_idea_fallout_state_grade` is referenced by all seven Fallout grade dynamic modifiers.
 - The literal full-screen draw order and input-blocking behavior remain properties of the future `.gui` and scripted GUI implementation. The tile itself is fully opaque and suitable for that layer.
 - The icon is a shared state-grade visual. If distinct grade-specific icons are later required, they need separate source artwork and separate manifest entries.
 

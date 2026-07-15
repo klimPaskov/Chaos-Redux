@@ -2,11 +2,11 @@
 
 ## Scope
 
-This handoff covers two dedicated Fallout textures. No `.gfx`, `.gui`, gameplay, localisation, audio, or shared manifest file was edited by the asset task.
+This handoff covers two dedicated Fallout textures. Both sprites are registered in `interface/fallout_world_end.gfx` and retain dedicated Fallout paths.
 
-Suggested target file: `interface/fallout_world_end.gfx`
+Registration file: `interface/fallout_world_end.gfx`
 
-## Proposed sprite definitions
+## Registered sprite definitions
 
 ```text
 spriteTypes = {
@@ -56,4 +56,4 @@ Use `docs/assets/fallout_world_end/contact_sheets/fallout_ui_asset_contact_sheet
 
 ## Remaining uncertainty
 
-The exact GUI element names, draw order, and scripted GUI visibility conditions are outside this asset-only handoff. The proposed sprite names are stable and ready for the dedicated Fallout GFX file.
+The blackout sprite is referenced by `interface/fallout_world_end.gui`. Its exact all-resolution binding, draw order, and input-blocking behavior remain unresolved GUI proof obligations. The state-grade sprite is referenced by the seven Fallout grade dynamic modifiers.

@@ -42,7 +42,7 @@ The scan found existing Fallout suffixes in the request, transition, manual stri
 
 The ordinary scheduler remains locked until the ash-week orientation package has all five required parts: national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution.
 
-The three pilot report assets exist but remain unwired. Event counting cannot begin until the corresponding gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and asset references pass manual review.
+The three pilot report assets exist and their sprites are registered in `interface/fallout_world_end.gfx`. They remain unattached because the corresponding event roots are not defined. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
 
 The typed constants for suffixes `100` through `122` are identity reservations only. Primary ownership is `global survival and society`. Food, water, and transport are cooldown families and do not own release-floor counts.
 

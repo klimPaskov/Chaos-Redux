@@ -2,7 +2,7 @@
 
 ## Handoff status
 
-Three dedicated Fallout report-event textures are ready for registration. Asset production is complete inside the approved asset-only scope. No `.gfx`, `.gui`, event, gameplay, localisation, or spreadsheet file was edited.
+Three dedicated Fallout report-event textures are registered in `interface/fallout_world_end.gfx`. Asset production and sprite registration are complete. Event attachment remains pending because the reserved event roots are not implemented.
 
 Suggested target file: `interface/fallout_world_end.gfx`
 
@@ -23,7 +23,7 @@ Suggested target file: `interface/fallout_world_end.gfx`
 
 All three verbatim ImageGen prompts, source-mode rationales, provenance records, rights notes, hashes, processing parameters, and per-image risks are embedded in `manifest.md`.
 
-## Ready-to-copy sprite definitions
+## Registered sprite definitions
 
 ```text
 spriteTypes = {
@@ -44,11 +44,11 @@ spriteTypes = {
 }
 ```
 
-If `interface/fallout_world_end.gfx` already has a `spriteTypes = { ... }` root, add only the three inner `spriteType` blocks.
+These three inner `spriteType` blocks are present in the existing `spriteTypes = { ... }` root.
 
 ## Exact asset map
 
-| Accepted anchor | Final identity | Proposed sprite | Final DDS | Size | Format | Intended event binding |
+| Accepted anchor | Final identity | Registered sprite | Final DDS | Size | Format | Intended event binding |
 | --- | --- | --- | --- | --- | --- | --- |
 | The Last Inventory | `report_event_fallout_last_inventory` | `GFX_report_event_fallout_last_inventory` | `gfx/event_pictures/fallout_world_end/report_event_fallout_last_inventory.dds` | `210x176` | legacy one-level uncompressed 32-bit BGRA DDS | `chaosx.fallout.100`, opening food inventory and ration-law chain |
 | River Intake at Dawn | `report_event_fallout_river_intake_at_dawn` | `GFX_report_event_fallout_river_intake_at_dawn` | `gfx/event_pictures/fallout_world_end/report_event_fallout_river_intake_at_dawn.dds` | `210x176` | legacy one-level uncompressed 32-bit BGRA DDS | `chaosx.fallout.107`, water intake closure, filter rationing, upstream control, or testing chain |
@@ -89,6 +89,6 @@ DDS review findings for all three files:
 - The distant rail vehicle is secondary and not model-identifiable at the final crop.
 - The accepted anchor names are planning labels, not final localisation.
 - `texconv` was not available on `PATH`; the repository converter used its supported ffmpeg raw-BGRA backend. The complete header, size, alpha, and visual decode checks passed. If the parent requires DirectXTex provenance specifically, rerun the same processed PNGs with `TEXCONV_PATH` set; no art regeneration is needed.
-- After sprite registration, the main agent should confirm the three exact sprite names are used by the final Fallout event blocks and then promote manifest status from `handed_off` to `wired` or `complete` as appropriate.
+- The main agent must confirm the three exact sprite names are used by the final Fallout event blocks before promoting the manifest to event-wired or complete.
 
 No cross-feature asset reuse, placeholder, alternate image, or content simplification was used.

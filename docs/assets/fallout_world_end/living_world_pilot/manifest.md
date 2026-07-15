@@ -1,6 +1,6 @@
 # Fallout Living World Pilot Report Event Asset Manifest
 
-Status: `handed_off`
+Status: `registered_event_attachment_pending`
 
 Production date: 2026-07-15
 
@@ -43,7 +43,7 @@ The report-event references under `.agents/skills/chaos-redux-event-assets/asset
 - Asset type: report event image.
 - Intended use: the opening food-inventory and ration-law anchor when orientation finds less than one month of food.
 - Final identity: `report_event_fallout_last_inventory`.
-- Proposed sprite: `GFX_report_event_fallout_last_inventory`.
+- Registered sprite: `GFX_report_event_fallout_last_inventory`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
 - Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
 - Source mode: OpenAI built-in ImageGen.
@@ -58,7 +58,7 @@ The report-event references under `.agents/skills/chaos-redux-event-assets/asset
 - SHA-256 source: `10c1f19be3c14322dd261bc8b80e923c5897207a646296def16abf73d7b82f8a`.
 - SHA-256 processed: `27906ce566c4484b17b8c39171cc529085fb371b2defdbed5a7872a6ec4f7f90`.
 - SHA-256 DDS: `6c4089ca59e27be9dfae102fcfb0de99f1b521cc5ee7f74a61c4fbf8449eb8c2`.
-- Status: `handed_off`.
+- Status: `registered_event_attachment_pending`.
 - Risk: the image is fictional generated documentary art, not historical evidence. The anonymous clerks use generic mid-century civilian clothing rather than a country-specific uniform, which keeps the global anchor reusable but should not be described as a named historical institution.
 
 ### Generation prompt
@@ -86,7 +86,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern tactical gear, modern re
 - Asset type: report event image.
 - Intended use: the water-intake anchor when ash, contamination, or upstream control threatens the main source.
 - Final identity: `report_event_fallout_river_intake_at_dawn`.
-- Proposed sprite: `GFX_report_event_fallout_river_intake_at_dawn`.
+- Registered sprite: `GFX_report_event_fallout_river_intake_at_dawn`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
 - Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
 - Source mode: OpenAI built-in ImageGen.
@@ -101,7 +101,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern tactical gear, modern re
 - SHA-256 source: `fbc446066aa0e554c23221882b01938fc623a24ea2d3f551cf05b9e973e303df`.
 - SHA-256 processed: `9bdcda16d09063a0e654cb3a15c74632880c978168dc457a5a237f3b5f10ad7a`.
 - SHA-256 DDS: `9052a344237e64903d9cab3ec0d9db86a364a4935912b35104a46584fd2cea94`.
-- Status: `handed_off`.
+- Status: `registered_event_attachment_pending`.
 - Risk: the generated pump and respirators are period-plausible generic industrial equipment, not verified models from a particular country. The image should remain attached to a global fictional anchor rather than a claim about a named real waterworks.
 
 ### Generation prompt
@@ -129,7 +129,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern hazmat suits, modern tac
 - Asset type: report event image.
 - Intended use: the protected rail-repair anchor on a critical frozen or contaminated corridor.
 - Final identity: `report_event_fallout_rail_crew_twenty_seven`.
-- Proposed sprite: `GFX_report_event_fallout_rail_crew_twenty_seven`.
+- Registered sprite: `GFX_report_event_fallout_rail_crew_twenty_seven`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
 - Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
 - Source mode: OpenAI built-in ImageGen.
@@ -144,7 +144,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern hazmat suits, modern tac
 - SHA-256 source: `99f4cadd9b958b84f2db72f6bcaabd611474e2ee0ae216a37ecbdb56e8b0e370`.
 - SHA-256 processed: `874511450181e12f082101faa840c972dccb513e71972a5584248a32eaf123bb`.
 - SHA-256 DDS: `29f9e6ff523d9883df34cc617692c711ff84de5cca082ae0cad7302a10120b5f`.
-- Status: `handed_off`.
+- Status: `registered_event_attachment_pending`.
 - Risk: the distant rail vehicle is intentionally secondary and is not model-identifiable at the final crop. The workers' generic industrial protection should not be described as one named railway's exact issued equipment.
 
 ### Generation prompt
@@ -168,6 +168,6 @@ Avoid: Fallout franchise imagery, retrofuturism, modern high-visibility vests, h
 
 All three source PNGs, processed PNGs, final DDS files, and the contact sheet exist. Each DDS decodes at `210x176`, uses the required header layout, retains transparent card corners, and matches its processed PNG.
 
-The main agent still needs to register the three proposed sprites and attach them to reserved Fallout roots `chaosx.fallout.100`, `chaosx.fallout.107`, and `chaosx.fallout.114`. The package is therefore `handed_off`, not `wired` or `complete`.
+The three sprites are registered in `interface/fallout_world_end.gfx`. The reserved Fallout roots `chaosx.fallout.100`, `chaosx.fallout.107`, and `chaosx.fallout.114` are not defined, so event attachment remains pending. The package is registered, not event-wired or complete.
 
 No visual placeholder, cross-feature reuse, generic-ruins substitution, or content simplification was used.
