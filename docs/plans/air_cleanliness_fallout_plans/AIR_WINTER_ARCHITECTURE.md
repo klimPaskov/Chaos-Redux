@@ -364,7 +364,16 @@ The tooltip should show:
 9. active relief or mitigation
 10. available response category direction
 
-At low monitoring, the forecast is a broad band. At high monitoring, it shows the calculated target phase and main factors.
+The live tooltip contract derives access for the viewing country instead of storing one universal monitoring value on the state.
+
+| Monitoring level | Live access rule | Live report |
+| --- | --- | --- |
+| None | Foreign state without shared reports | Current phase only |
+| Basic sampling | Owned or controlled state, or treaty membership | Current phase and one-month trend |
+| Atmospheric office | Country completed one roof-sampler project | Exact cause readings and likely phase next season |
+| Terminal modelling | World at 90 percent contamination, or monitored major power | Possible Fallout classification from atmospheric evidence |
+
+Every winter mapmode layer uses the same gate. The terminal range is not a committed Fallout grade. Direct-strike and blast evidence remain owned by the later grading transaction. Static scope and cleanup proof is recorded in `AIR_WINTER_MAPMODE_MONITORING_PROOF.md`.
 
 ### Frame registration gate
 

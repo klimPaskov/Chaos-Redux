@@ -30,7 +30,6 @@ The implementation is distributed across:
 3. `air_winter_response_refresh_evacuation_cache_cycle = yes` after the block.
 4. `air_winter_dispatch_phase_events = yes` after quote refresh.
 5. `air_winter_finalize_monthly_cycle = yes` after bounded dispatch.
-6. `air_winter_refresh_normal_map_proof_entity = yes` after finalization.
 
 The Air Winter helpers do not create another state-wide or country-wide iterator. Post-pass work enters only owner arrays assembled during the existing state pass. The monotonic cycle id, per-state cycle id, and finalization cycle id make repeated calls idempotent. Global pressure reads a snapshot of the completed contamination-state counts from the preceding monthly pass before the host rebuilds those counts. Severe-neighbor pressure reads the opening state of every neighbor regardless of iterator order.
 
@@ -99,7 +98,7 @@ The exact-cover review and integration proof live in:
 
 ### Phase and disease modifiers
 
-Phases 1 through 6 apply one mutually exclusive state modifier. Each phase changes local manpower, supply, controller and enemy movement, controller and enemy attrition, building speed, state repair speed, resources, and air operations. Environmental movement and attrition effects apply to both operational sides.
+Phases 1 through 6 apply one mutually exclusive state modifier. Each phase changes local manpower, supply, controller and enemy movement, controller and enemy attrition, building speed, state repair speed, and resources. Environmental movement and attrition effects apply to both operational sides. A supported air-operation modifier and direct pressure from combat or strategic bombing remain absent.
 
 Disease pressure is calculated separately so food, shelter, exposure, adaptation, water, and reclamation remain meaningful within a phase. The disease modifier reads bounded state variables for attrition and local manpower.
 
@@ -159,11 +158,14 @@ This pilot is not the Fallout living-world scheduler. It does not count toward a
 
 ## Map modes and normal-map proof
 
-Three registered map modes expose:
+Three registered map modes expose information through four viewer-specific monitoring levels:
 
-- Current phase, target phase, trend, regional class, damage, and death pressure.
-- Immediate exposure and expected monthly exposure movement.
-- Survival value and all major survival inputs.
+- None reveals only the current phase.
+- Basic sampling reveals the current phase and one-month trend to the state owner, controller, and treaty members.
+- An Atmospheric Office reveals exact cause readings and the likely phase next season after one roof-sampler project completes.
+- Terminal Modelling reveals a possible Fallout classification after global contamination reaches 90 percent, or to a major power with an Atmospheric Office.
+
+The phase, exposure, and survival layers all use the same gate. Terminal text calls the result an atmospheric classification and warns that direct strikes or blast history can change the final grade. It does not commit the Fallout grading ledger.
 
 Their files are:
 
@@ -211,7 +213,7 @@ Sources, processed PNGs, contact sheets, provenance, and handoffs live under `do
 
 - `air_winter_suspend_state` removes runtime phase pressure while preserving long-term state ledgers.
 - `air_winter_reset_state` removes runtime variables, response state, phase modifiers, event memories, and state flags. It preserves the reviewed numeric presentation assignment.
-- `air_winter_reset_country` clears the calling country's bounded reception-state array and country event memory without a world iterator.
+- `air_winter_reset_country` clears the calling country's bounded reception-state array, Atmospheric Office capability, and country event memory without a world iterator.
 - `air_winter_reset_global` resets the existing host and every country retained in the bounded owner registry. It clears transient candidate arrays and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
 - Category restoration is explicit and must run before reset when the caller has confirmed category ownership.
 
@@ -225,10 +227,11 @@ The proof set is:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MODIFIER_AND_DEATHS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MAPMODE_MONITORING_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 
-Static documentation and vanilla precedents support the implemented script surfaces. Runtime behavior remains unobserved for normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, timed response decisions, state-population migration side effects, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
+Static documentation and vanilla precedents support the implemented script surfaces. Runtime behavior remains unobserved for normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, timed response decisions, state-population migration side effects, viewer-specific monitoring scope, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
 
 ## Current completion boundary
 
@@ -239,6 +242,7 @@ Implemented in the Air Winter tranche:
 - Building, supply, operations, disease, and category consequences.
 - Exact 1081-state regional classification.
 - Three winter map modes.
+- Four monitoring levels across every winter mapmode tooltip.
 - Thirty-three manually authored Air Winter pilot events.
 - Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
 - Dedicated modifier, report-event, map-mode, and response-decision assets.
@@ -247,15 +251,15 @@ Implemented in the Air Winter tranche:
 
 Incomplete and not claimed:
 
+- Treaty relief routes, pooled decontamination, and forecast sharing beyond the existing membership flag. The live monthly cleanup currently disables the legacy treaty lifecycle.
+- Air-operation modifiers and local winter pressure or deaths from active combat and strategic bombing.
+- Annual first-frost, dark-harvest, second-winter, thaw, and terminal-season recurrence ledgers.
 - Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
-- Fallout request coordinator and request ownership cleanup.
-- Fallout full-screen blackout, input blocking, recovery, authority, and sound.
-- Manual thermonuclear scenario and exact every-valid-province strike ledger.
-- Seven-day post-strike handoff.
-- Deterministic Fallout rewrite, government change, successor allocation, player continuation, conflict ledger, and migration.
-- Fallout living-world scheduler and the 660 manually reviewed event floor.
-- Survivor focus content, decisions, leaders, units, diplomacy, and AI layers.
-- Fallout audio, blackout, successor, focus, character, and living-world asset packages.
+- The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
+- The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.
+- The dormant manual scenario substrate has an exact province manifest and seven-day ledger, but the native every-valid-province sweep is not proven and the scenario is not live.
+- The Fallout scheduler contracts exist without living-world event content or progress toward the 660-block release floor.
+- Survivor focus content, decisions, leaders, units, diplomacy, AI layers, and their remaining dedicated assets are incomplete.
 
 ## Future plans and extension suggestions
 

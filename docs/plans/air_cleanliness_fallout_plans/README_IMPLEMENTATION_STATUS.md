@@ -31,7 +31,11 @@ Fallout remains an unnumbered system package with dedicated ownership of:
 
 ### Air Cleanliness
 
-The live Air system includes global contamination basis points, monthly host-owned updates, chemical and nuclear state inputs, natural smoke and ash pressure, threshold behavior, winter pressure, treaty behavior, nuclear fallout state intensity, UI read models, and a request path into the dedicated Fallout coordinator.
+The live Air system includes global contamination basis points, monthly host-owned updates, chemical and nuclear state inputs, low capped natural smoke and ash pressure, threshold behavior, winter pressure, legacy treaty hooks, nuclear fallout state intensity, UI read models, and a request path into the dedicated Fallout coordinator.
+
+Air Winter has phases 0 through 6, exposure and survival ledgers, Deaths integration, building and supply damage, category degradation, disease, state movement and attrition, three map modes, reviewed regional ordinary-map visuals, response decisions, and a 33-block event pilot. All three mapmode tooltips use four viewer-specific monitoring levels. A foreign state exposes only its current phase. Ownership, control, or treaty reports add the one-month trend. Roof sampling creates a national Atmospheric Office. Terminal atmospheric classification appears at 90 percent global contamination or for a monitored major power. It does not write the committed Fallout grade.
+
+Air Winter remains incomplete. The live monthly cleanup disables the legacy treaty lifecycle, so relief routes and the broader treaty package have no active owner. Air-operation modifiers, combat and strategic-bombing pressure, and recurring seasonal event ledgers are absent. Tooltip rendering, viewer scope, and normal-map visuals remain runtime observation gates.
 
 ### Fallout request and blackout skeleton
 

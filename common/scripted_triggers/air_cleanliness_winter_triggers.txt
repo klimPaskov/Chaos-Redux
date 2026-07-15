@@ -22,6 +22,46 @@ air_winter_state_is_valid = {
 	NOT = { has_state_flag = air_winter_excluded }
 }
 
+# Supported scope: STATE. In scripted mapmode localisation ROOT is the viewing
+# player country and the checked scope is the hovered state, matching the
+# official scripted-mapmode scope contract and the existing plague precedent.
+air_winter_mapmode_player_has_basic_sampling = {
+	ROOT = { exists = yes }
+	OR = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		ROOT = { has_country_flag = air_cleanliness_treaty_member }
+	}
+}
+
+# Supported scope: STATE. Completing one reviewed roof-sampler project creates
+# a national atmospheric office. The capability is country-wide and persists
+# across later state ownership changes until Air Winter is reset.
+air_winter_mapmode_player_has_atmospheric_office = {
+	ROOT = {
+		exists = yes
+		has_country_flag = air_winter_atmospheric_office
+	}
+}
+
+# Supported scope: STATE. Terminal modelling becomes public after ninety
+# percent global contamination. Before then, a major power must have invested
+# in an atmospheric office.
+air_winter_mapmode_player_has_terminal_modelling = {
+	ROOT = { exists = yes }
+	OR = {
+		check_variable = {
+			var = global.air_contamination_bp
+			value = constant:air_winter_monitoring.terminal_contamination_bp
+			compare = greater_than_or_equals
+		}
+		ROOT = {
+			is_major = yes
+			has_country_flag = air_winter_atmospheric_office
+		}
+	}
+}
+
 # Supported scope: any. One global generation is opened for each complete
 # Fallout snapshot attempt, including retries on the same date.
 air_winter_fallout_snapshot_generation_is_open = {
