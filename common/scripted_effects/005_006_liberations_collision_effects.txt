@@ -25,6 +25,7 @@ soviet_collapse_joint_clear_pending_country_metadata = {
 }
 
 soviet_collapse_joint_clear_plan_contribution = {
+	clr_global_flag = soviet_collapse_joint_optional_expansion_failed
 	for_each_scope_loop = {
 		array = global.soviet_collapse_joint_plan_selected_countries
 		soviet_collapse_joint_clear_pending_country_metadata = yes
@@ -308,43 +309,6 @@ soviet_collapse_joint_reserve_current_candidate = {
 						limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
 						set_temp_variable = { soviet_collapse_joint_candidate_reserved = constant:liberations_joint_planner.yes }
 						set_temp_variable = { soviet_collapse_joint_candidate_highest_territory = constant:liberation_territory_level.anchor }
-						event_target:soviet_collapse_joint_candidate_country = {
-							every_core_state = {
-								limit = {
-									is_owned_by = event_target:soviet_collapse_joint_candidate_host
-									NOT = { state = event_target:soviet_collapse_joint_candidate_anchor }
-								}
-								if = {
-									limit = { is_liberation_release_state_available_for_reservation = yes }
-									event_target:soviet_collapse_joint_candidate_host = { save_event_target_as = liberation_candidate_state_host }
-									liberation_release_measure_candidate_host_loss_capacity = yes
-									if = {
-										limit = { check_variable = { liberation_candidate_host_has_loss_capacity = constant:liberation_release_limit.one } }
-										set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
-										set_temp_variable = { liberation_candidate_state_role = constant:liberation_plan_state_role.compact }
-										liberation_release_add_state_reservation = yes
-									}
-									else = {
-										set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
-									}
-									if = {
-										limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
-										set_temp_variable = { soviet_collapse_joint_candidate_highest_territory = constant:liberation_territory_level.compact }
-									}
-									else = { soviet_collapse_joint_record_optional_state_trim = yes }
-								}
-								else = {
-									if = {
-										limit = { is_liberation_release_current_protected_state = yes }
-										set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
-									}
-									else = {
-										set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.state_reserved }
-									}
-									soviet_collapse_joint_record_optional_state_trim = yes
-								}
-							}
-						}
 						set_temp_variable = { soviet_collapse_joint_candidate_country_row = global.liberation_plan_countries^num }
 						subtract_from_temp_variable = { soviet_collapse_joint_candidate_country_row = constant:liberations_joint_planner.loop_increment }
 						set_variable = {
@@ -798,6 +762,143 @@ soviet_collapse_joint_allocate_opening_republics = {
 	}
 }
 
+# Event 005 freezes only one anchor per selected republic during its candidate
+# draw. This second pass runs after Event 006 has also frozen every anchor, so
+# additional Soviet-republic cores are genuinely optional and can never force
+# Event 006 to drop an otherwise viable country.
+soviet_collapse_joint_expand_selected_compact_territory = {
+	clr_global_flag = soviet_collapse_joint_optional_expansion_failed
+	set_temp_variable = { soviet_collapse_joint_optional_index = constant:liberations_joint_planner.first_array_index }
+	while_loop_effect = {
+		limit = {
+			NOT = { has_global_flag = soviet_collapse_joint_optional_expansion_failed }
+			check_variable = {
+				var = soviet_collapse_joint_optional_index
+				value = global.soviet_collapse_joint_plan_selected_count
+				compare = less_than
+			}
+		}
+		set_temp_variable = {
+			soviet_collapse_joint_optional_country_row = global.soviet_collapse_joint_plan_country_row_indices^soviet_collapse_joint_optional_index
+		}
+		set_temp_variable = {
+			soviet_collapse_joint_candidate_package_id = global.soviet_collapse_joint_plan_selected_package_ids^soviet_collapse_joint_optional_index
+		}
+		if = {
+			limit = {
+				liberation_release_country_arrays_are_aligned = yes
+				check_variable = {
+					var = soviet_collapse_joint_optional_country_row
+					value = constant:liberations_joint_planner.first_array_index
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = soviet_collapse_joint_optional_country_row
+					value = global.liberation_plan_countries^num
+					compare = less_than
+				}
+			}
+			var:global.liberation_plan_countries^soviet_collapse_joint_optional_country_row = {
+				save_event_target_as = soviet_collapse_joint_candidate_country
+			}
+			var:global.liberation_plan_anchor_states^soviet_collapse_joint_optional_country_row = {
+				save_event_target_as = soviet_collapse_joint_candidate_anchor
+			}
+			var:global.liberation_plan_primary_hosts^soviet_collapse_joint_optional_country_row = {
+				save_event_target_as = soviet_collapse_joint_candidate_host
+			}
+			if = {
+				limit = {
+					has_event_target = soviet_collapse_joint_candidate_country
+					has_event_target = soviet_collapse_joint_candidate_anchor
+					has_event_target = soviet_collapse_joint_candidate_host
+					check_variable = {
+						var = global.liberation_plan_country_owners^soviet_collapse_joint_optional_country_row
+						value = constant:liberation_plan_owner.soviet_collapse
+						compare = equals
+					}
+					check_variable = {
+						var = global.liberation_plan_package_ids^soviet_collapse_joint_optional_country_row
+						value = soviet_collapse_joint_candidate_package_id
+						compare = equals
+					}
+					event_target:soviet_collapse_joint_candidate_country = {
+						is_liberation_release_current_reserved_country = yes
+						check_variable = { liberation_release_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+						check_variable = { var = liberation_release_package_id value = soviet_collapse_joint_candidate_package_id compare = equals }
+					}
+					event_target:soviet_collapse_joint_candidate_anchor = {
+						is_liberation_release_current_reserved_state = yes
+						check_variable = { liberation_release_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+						check_variable = { var = liberation_release_package_id value = soviet_collapse_joint_candidate_package_id compare = equals }
+					}
+					event_target:soviet_collapse_joint_candidate_host = {
+						has_country_flag = liberation_release_plan_host
+						check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+					}
+				}
+				set_temp_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+				set_temp_variable = { liberation_candidate_package_id = soviet_collapse_joint_candidate_package_id }
+				event_target:soviet_collapse_joint_candidate_country = {
+					save_event_target_as = liberation_candidate_country
+					every_core_state = {
+						limit = {
+							is_owned_by = event_target:soviet_collapse_joint_candidate_host
+							NOT = { state = event_target:soviet_collapse_joint_candidate_anchor }
+						}
+						if = {
+							limit = { is_liberation_release_state_available_for_reservation = yes }
+							event_target:soviet_collapse_joint_candidate_host = {
+								save_event_target_as = liberation_candidate_state_host
+							}
+							liberation_release_measure_candidate_host_loss_capacity = yes
+							if = {
+								limit = { check_variable = { liberation_candidate_host_has_loss_capacity = constant:liberation_release_limit.one } }
+								set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+								set_temp_variable = { liberation_candidate_state_role = constant:liberation_plan_state_role.compact }
+								liberation_release_add_state_reservation = yes
+							}
+							else = {
+								set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+							}
+							if = {
+								limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+								set_variable = {
+									global.liberation_plan_territory_levels^soviet_collapse_joint_optional_country_row = constant:liberation_territory_level.compact
+								}
+							}
+							else = { soviet_collapse_joint_record_optional_state_trim = yes }
+						}
+						else = {
+							if = {
+								limit = { is_liberation_release_current_protected_state = yes }
+								set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+							}
+							else = {
+								set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.state_reserved }
+							}
+							soviet_collapse_joint_record_optional_state_trim = yes
+						}
+					}
+				}
+			}
+			else = {
+				set_global_flag = soviet_collapse_joint_optional_expansion_failed
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+			}
+		}
+		else = {
+			set_global_flag = soviet_collapse_joint_optional_expansion_failed
+			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+		}
+		add_to_temp_variable = { soviet_collapse_joint_optional_index = constant:liberations_joint_planner.loop_increment }
+	}
+	if = {
+		limit = { has_global_flag = soviet_collapse_joint_optional_expansion_failed }
+		clr_global_flag = soviet_collapse_joint_plan_contribution_ready
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Event 005 frozen execution
 # ---------------------------------------------------------------------------
@@ -1001,6 +1102,7 @@ soviet_collapse_joint_transfer_frozen_states = {
 	set_temp_variable = { soviet_collapse_joint_execution_state_index = constant:liberations_joint_planner.first_array_index }
 	set_temp_variable = { soviet_collapse_joint_execution_expected_state_count = constant:liberations_joint_planner.no }
 	set_temp_variable = { soviet_collapse_joint_execution_transferred_state_count = constant:liberations_joint_planner.no }
+	set_temp_variable = { soviet_collapse_joint_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
 	while_loop_effect = {
 		limit = {
 			check_variable = {
@@ -1024,8 +1126,17 @@ soviet_collapse_joint_transfer_frozen_states = {
 			var:global.liberation_plan_states^soviet_collapse_joint_execution_state_index = {
 				set_state_owner_to = event_target:soviet_collapse_joint_execution_state_target
 				set_state_controller_to = event_target:soviet_collapse_joint_execution_state_target
+				if = {
+					limit = {
+						is_owned_by = event_target:soviet_collapse_joint_execution_state_target
+						is_controlled_by = event_target:soviet_collapse_joint_execution_state_target
+					}
+					add_to_temp_variable = { soviet_collapse_joint_execution_transferred_state_count = constant:liberations_joint_planner.loop_increment }
+				}
+				else = {
+					set_temp_variable = { soviet_collapse_joint_execution_transfer_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
+				}
 			}
-			add_to_temp_variable = { soviet_collapse_joint_execution_transferred_state_count = constant:liberations_joint_planner.loop_increment }
 		}
 		add_to_temp_variable = { soviet_collapse_joint_execution_state_index = constant:liberations_joint_planner.loop_increment }
 	}
@@ -1055,7 +1166,10 @@ soviet_collapse_joint_initialize_frozen_countries = {
 		set_temp_variable = { soviet_collapse_pressure_class_override_major = global.soviet_collapse_joint_plan_pressure_major_classes^soviet_collapse_joint_execution_index }
 		set_temp_variable = { soviet_collapse_pressure_class_override_regional = global.soviet_collapse_joint_plan_pressure_regional_classes^soviet_collapse_joint_execution_index }
 		event_target:soviet_collapse_joint_execution_country = {
-			set_capital = event_target:soviet_collapse_joint_execution_anchor
+			set_capital = {
+				state = event_target:soviet_collapse_joint_execution_anchor
+				remember_old_capital = no
+			}
 			set_country_flag = soviet_collapse_event_created_republic
 			if = {
 				limit = {
@@ -1145,6 +1259,22 @@ liberations_joint_prepare_and_execute_incident = {
 			limit = {
 				has_global_flag = soviet_collapse_joint_plan_contribution_ready
 				has_global_flag = independence_wave_plan_contribution_ready
+			}
+			SOV = { soviet_collapse_joint_expand_selected_compact_territory = yes }
+		}
+		if = {
+			limit = {
+				has_global_flag = soviet_collapse_joint_plan_contribution_ready
+				has_global_flag = independence_wave_plan_contribution_ready
+			}
+			independence_wave_expand_selected_optional_territory = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = soviet_collapse_joint_plan_contribution_ready
+				has_global_flag = independence_wave_plan_contribution_ready
+				NOT = { has_global_flag = soviet_collapse_joint_optional_expansion_failed }
+				NOT = { has_global_flag = independence_wave_plan_optional_expansion_failed }
 				check_variable = {
 					var = global.independence_wave_plan_selected_count
 					value = global.independence_wave_plan_target_count
@@ -1193,8 +1323,16 @@ liberations_joint_prepare_and_execute_incident = {
 				}
 				soviet_collapse_joint_transfer_frozen_states = yes
 				independence_wave_transfer_frozen_states = yes
-				soviet_collapse_joint_initialize_frozen_countries = yes
-				independence_wave_initialize_frozen_countries = yes
+				if = {
+					limit = {
+						check_variable = { soviet_collapse_joint_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+						check_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+						check_variable = { var = soviet_collapse_joint_execution_transferred_state_count value = soviet_collapse_joint_execution_expected_state_count compare = equals }
+						check_variable = { var = independence_wave_execution_transferred_state_count value = independence_wave_execution_expected_state_count compare = equals }
+					}
+					soviet_collapse_joint_initialize_frozen_countries = yes
+					independence_wave_initialize_frozen_countries = yes
+				}
 			}
 			if = {
 				limit = {

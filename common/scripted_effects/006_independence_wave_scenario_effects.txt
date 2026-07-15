@@ -428,6 +428,7 @@ independence_wave_allocate_scenario_packages = {
 		set_variable = { global.independence_wave_plan_chaos_band = independence_wave_wave_chaos_band }
 		independence_wave_scenario_rebuild_ranked_registry = yes
 		independence_wave_scenario_attempt_ranked_packages = yes
+		independence_wave_expand_selected_optional_territory = yes
 
 		set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
 		set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
@@ -438,13 +439,20 @@ independence_wave_allocate_scenario_packages = {
 					value = constant:independence_wave_scenario_registry.no_packages
 					compare = greater_than
 				}
+				NOT = { has_global_flag = independence_wave_plan_optional_expansion_failed }
 				independence_wave_plan_metadata_arrays_are_aligned = yes
 			}
 			set_global_flag = independence_wave_plan_contribution_ready
 		}
 		else = {
 			set_global_flag = independence_wave_plan_exact_count_failed
-			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+			if = {
+				limit = { has_global_flag = independence_wave_plan_optional_expansion_failed }
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+			}
+			else = {
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+			}
 		}
 	}
 	else = {
@@ -828,6 +836,7 @@ independence_wave_scenario_start_all_host_wars = {
 independence_wave_scenario_start_neighbor_release_war = {
 	save_event_target_as = independence_wave_scenario_war_actor
 	save_event_target_as = independence_wave_scenario_war_target
+	set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.no_packages }
 	random_neighbor_country = {
 		limit = {
 			exists = yes
@@ -843,7 +852,10 @@ independence_wave_scenario_start_neighbor_release_war = {
 			has_event_target = independence_wave_scenario_war_target
 			event_target:independence_wave_scenario_war_target = { NOT = { tag = event_target:independence_wave_scenario_war_actor } }
 		}
-		event_target:independence_wave_scenario_war_target = { set_country_flag = independence_wave_scenario_belligerence_targeted }
+		event_target:independence_wave_scenario_war_target = {
+			set_country_flag = independence_wave_scenario_belligerence_targeted
+			add_to_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
+		}
 		event_target:independence_wave_scenario_war_actor = {
 			declare_war_on = {
 				target = event_target:independence_wave_scenario_war_target
@@ -852,6 +864,17 @@ independence_wave_scenario_start_neighbor_release_war = {
 			if = {
 				limit = { has_war_with = event_target:independence_wave_scenario_war_target }
 				add_to_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.one }
+				set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one }
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one } } }
+			event_target:independence_wave_scenario_war_target = {
+				clr_country_flag = independence_wave_scenario_belligerence_targeted
+				remove_from_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
+			}
+		event_target:independence_wave_scenario_war_actor = {
+				set_country_flag = independence_wave_scenario_regional_threat_mission
 			}
 		}
 	}
@@ -861,6 +884,7 @@ independence_wave_scenario_start_neighbor_release_war = {
 independence_wave_scenario_start_nearby_nonleague_war = {
 	save_event_target_as = independence_wave_scenario_war_actor
 	save_event_target_as = independence_wave_scenario_war_target
+	set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.no_packages }
 	var:independence_wave_anchor_state = { save_event_target_as = independence_wave_scenario_war_anchor }
 	random_country = {
 		limit = {
@@ -886,8 +910,11 @@ independence_wave_scenario_start_nearby_nonleague_war = {
 			has_event_target = independence_wave_scenario_war_target
 			event_target:independence_wave_scenario_war_target = { NOT = { tag = event_target:independence_wave_scenario_war_actor } }
 		}
-		event_target:independence_wave_scenario_war_target = { set_country_flag = independence_wave_scenario_belligerence_targeted }
-		event_target:independence_wave_scenario_war_actor = {
+		event_target:independence_wave_scenario_war_target = {
+			set_country_flag = independence_wave_scenario_belligerence_targeted
+			add_to_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
+		}
+			event_target:independence_wave_scenario_war_actor = {
 			declare_war_on = {
 				target = event_target:independence_wave_scenario_war_target
 				type = annex_everything
@@ -895,13 +922,36 @@ independence_wave_scenario_start_nearby_nonleague_war = {
 			if = {
 				limit = { has_war_with = event_target:independence_wave_scenario_war_target }
 				add_to_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.one }
+				set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one }
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one } } }
+			event_target:independence_wave_scenario_war_target = {
+				clr_country_flag = independence_wave_scenario_belligerence_targeted
+				remove_from_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
+			}
+			event_target:independence_wave_scenario_war_actor = {
+				set_country_flag = independence_wave_scenario_regional_threat_mission
 			}
 		}
 	}
 	else = { set_country_flag = independence_wave_scenario_regional_threat_mission }
 }
 
+independence_wave_scenario_clear_belligerence_target_marks = {
+	for_each_scope_loop = {
+		array = global.independence_wave_scenario_belligerence_targets
+		clr_country_flag = independence_wave_scenario_belligerence_targeted
+	}
+	clear_array = global.independence_wave_scenario_belligerence_targets
+}
+
 independence_wave_scenario_start_universal_belligerence = {
+	# The target flag prevents two actors in this one launch from selecting the
+	# same country. The aligned scope array makes the mark bounded and ensures it
+	# is cleared after successful wars, failed declarations, and repeat launches.
+	independence_wave_scenario_clear_belligerence_target_marks = yes
 	if = {
 		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts } }
 		independence_wave_scenario_start_all_host_wars = yes
@@ -920,6 +970,7 @@ independence_wave_scenario_start_universal_belligerence = {
 			independence_wave_scenario_start_nearby_nonleague_war = yes
 		}
 	}
+	independence_wave_scenario_clear_belligerence_target_marks = yes
 }
 
 independence_wave_scenario_apply_type = {
@@ -944,6 +995,7 @@ independence_wave_scenario_apply_type = {
 }
 
 independence_wave_scenario_reset_summary = {
+	independence_wave_scenario_clear_belligerence_target_marks = yes
 	clear_array = global.independence_wave_scenario_released_package_ids
 	clear_array = global.independence_wave_scenario_blocked_package_ids
 	clear_array = global.independence_wave_scenario_blocked_reasons

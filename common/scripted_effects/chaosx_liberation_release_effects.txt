@@ -205,6 +205,16 @@ liberation_release_measure_candidate_host_loss_capacity = {
 # COUNTRY scope. Selects the accepted host-survival priority (existing row,
 # owned/controlled capital, owned core, then owned state) and reserves it.
 # Output: liberation_candidate_reject_reason.
+liberation_release_select_first_host_state_candidate = {
+	set_temp_variable = { liberation_host_state_selection_complete = constant:liberation_release_limit.minimum }
+	for_each_scope_loop = {
+		array = liberation_host_state_candidates
+		break = liberation_host_state_selection_complete
+		save_event_target_as = liberation_candidate_protected_state
+		set_temp_variable = { liberation_host_state_selection_complete = constant:liberation_release_limit.one }
+	}
+}
+
 liberation_release_select_and_reserve_host_state = {
 	save_event_target_as = liberation_candidate_host
 	set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.none }
@@ -233,19 +243,66 @@ liberation_release_select_and_reserve_host_state = {
 		limit = {
 			any_owned_state = {
 				is_core_of = PREV
+				is_controlled_by = PREV
 				NOT = { is_liberation_release_current_reserved_state = yes }
 				NOT = { is_liberation_release_current_protected_state = yes }
 			}
 		}
-		random_owned_state = {
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				is_core_of = PREV
+				is_controlled_by = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_core_of = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
 			limit = {
 				is_core_of = PREV
 				NOT = { is_liberation_release_current_reserved_state = yes }
 				NOT = { is_liberation_release_current_protected_state = yes }
 			}
-			save_event_target_as = liberation_candidate_protected_state
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
 		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				is_controlled_by = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
 	}
 	else_if = {
 		limit = {
@@ -254,13 +311,16 @@ liberation_release_select_and_reserve_host_state = {
 				NOT = { is_liberation_release_current_protected_state = yes }
 			}
 		}
-		random_owned_state = {
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
 			limit = {
 				NOT = { is_liberation_release_current_reserved_state = yes }
 				NOT = { is_liberation_release_current_protected_state = yes }
 			}
-			save_event_target_as = liberation_candidate_protected_state
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
 		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
 	}
 	if = {

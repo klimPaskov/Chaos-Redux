@@ -755,11 +755,19 @@ Required temporary inputs for `liberation_release_begin_plan`:
 - `liberation_call_expected_country_count`: the exact combined country-row count; zero and partial plans fail closed.
 - `liberation_call_plan_owner`: Event 005, Event 006, or the joint owner enum.
 
-Candidate publishers supply `liberation_candidate_package_id`, `liberation_candidate_plan_owner`, `liberation_candidate_reservation_group`, `liberation_candidate_territory_level`, `liberation_candidate_force_level`, and the regular event targets `liberation_candidate_country`, `liberation_candidate_anchor`, and `liberation_candidate_primary_host`. State rows additionally use `liberation_candidate_state_host` and `liberation_candidate_state_role`. Before appending a candidate's state rows, save `global.liberation_plan_states^num` as temporary `liberation_candidate_state_row_start` so `liberation_release_rollback_candidate_reservation` can remove only that tail.
+Candidate publishers supply `liberation_candidate_package_id`, `liberation_candidate_plan_owner`, `liberation_candidate_reservation_group`, `liberation_candidate_territory_level`, `liberation_candidate_force_level`, and the regular event targets `liberation_candidate_country`, `liberation_candidate_anchor`, and `liberation_candidate_primary_host`. State rows additionally use `liberation_candidate_state_host` and `liberation_candidate_state_role`. Before appending a provisional candidate's anchor row, save `global.liberation_plan_states^num` as temporary `liberation_candidate_state_row_start` so `liberation_release_rollback_candidate_reservation` can remove only that tail.
 
 Outputs: temporary `liberation_candidate_reject_reason` after host, country, or state reservation; global `liberation_plan_last_failure` after validation; aligned global country, state, host, and rejection ledgers; and phase/validity flags read by the execution barrier. There are no permissive defaults: a missing owner, event target, anchor, positive expected count, participant flag, or array alignment rejects or aborts the plan.
 
-Side effects: reserves one surviving state for each host, marks absent target tags and exact states with the current plan ID, records original owners/controllers, increments per-host planned losses, and clears every transient scope mark on commit or abort. It does not select packages, release a country, transfer a state, create units, or apply Event 005/Event 006 content. Candidate rollback is valid only while that candidate owns the aligned array tail.
+Side effects: reserves one surviving state for each host, marks absent target tags and exact states with the current plan ID, records original owners/controllers, increments per-host planned losses, and clears every transient scope mark on commit or abort. It does not select packages, release a country, transfer a state, create units, or apply Event 005/Event 006 content. Candidate rollback is valid only while that provisional anchor candidate owns the aligned array tail.
+
+`liberation_release_select_and_reserve_host_state` is the reusable country-scope host-survival selector. It has no permissive input: the current country is the host. It reuses an existing plan row or chooses the owned/controlled capital, first owned/controlled core, first owned core, first owned/controlled state, or first owned state in that order. It outputs `liberation_candidate_reject_reason`, saves `liberation_candidate_protected_state`, and appends aligned host snapshot, protected-state, and original-capital rows when successful. `liberation_release_select_first_host_state_candidate` is its internal deterministic array helper and must not be called without a populated temporary `liberation_host_state_candidates` array.
+
+Event 006's subsystem effects `independence_wave_expand_selected_packages_for_current_phase` and `independence_wave_expand_selected_optional_territory` live in `006_independence_wave_package_planner_effects.txt`. They require an open plan plus aligned Event 006 selected-package and country-row arrays. The dispatcher reuses each stable package publisher after rehydrating its frozen country, anchor, host, owner, and package ID. The public expansion effect runs every compact pass before any extended pass, records optional-state trims, restores the anchor phase when finished, and sets `independence_wave_plan_optional_expansion_failed` only for structural row corruption. It never selects or drops a country.
+
+`independence_wave_scenario_clear_belligerence_target_marks` lives in `006_independence_wave_scenario_effects.txt`. It has no inputs beyond `global.independence_wave_scenario_belligerence_targets`, clears the temporary per-country selection flag from each bounded scope row, and empties the array. Universal Belligerence calls it before and after target selection so repeated launches and failed declarations cannot leave persistent exclusions.
+
+The event-owned execution effects `independence_wave_transfer_frozen_states` and `soviet_collapse_joint_transfer_frozen_states` consume only locked aligned state rows. After applying the documented owner and controller effects, each state must satisfy both `is_owned_by` and `is_controlled_by` for its frozen target before the transferred count advances. A failed proof publishes the shared `unsafe_instantiation` reason, blocks all subsequent country initialization in that incident, and prevents the release plan from committing.
 
 Example:
 
@@ -769,7 +777,8 @@ set_temp_variable = { liberation_call_expected_country_count = combined_release_
 set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.joint }
 liberation_release_begin_plan = yes
 liberation_release_enter_allocation_phase = yes
-# Event 005 publishes its frozen rows, then Event 006 publishes and rerolls.
+# Event 005 and Event 006 publish tags and anchors, then both add optional rows.
+# The package-specific planners must finish compact/extended passes here.
 liberation_release_lock_plan = yes
 liberation_release_begin_execution = yes
 ```
