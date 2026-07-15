@@ -1,0 +1,478 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-03 LOW COUNTRIES TRIGGERS
+# ============================================================================
+# Overview:
+# - Binds FORM-03 exclusively to the AFX or AGX Event 006 carrier packages.
+# - Requires a second consenting core delegation and a verified border,
+#   faction, access, guarantee, or non-aggression connection.
+# - Restricts the carrier to the accepted constitutional or Development
+#   Compact route family.
+# - Admits only living BEL with the BEL_flanders identity to the founding
+#   congress; HOL and LUX remain post-charter autonomous associates.
+# - Never authorizes state 6, 7, 8, 35, 977, or 980 for transfer or coring.
+# ============================================================================
+
+is_independence_wave_form03_registered_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.low_countries_federation }
+	has_country_flag = independence_wave_low_countries_federation_candidate
+	OR = {
+		AND = {
+			original_tag = AFX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_006 }
+		}
+		AND = {
+			original_tag = AGX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_007 }
+		}
+	}
+}
+
+has_independence_wave_form03_exact_carrier_anchor = {
+	is_independence_wave_form03_registered_carrier = yes
+	has_variable = independence_wave_anchor_state
+	OR = {
+		AND = {
+			original_tag = AFX
+			var:independence_wave_anchor_state = {
+				state = 34
+				is_owned_and_controlled_by = PREV
+			}
+			capital_scope = { state = 34 }
+		}
+		AND = {
+			original_tag = AGX
+			var:independence_wave_anchor_state = {
+				state = 36
+				is_owned_and_controlled_by = PREV
+			}
+			capital_scope = { state = 36 }
+		}
+	}
+}
+
+is_independence_wave_form03_eligible_belgian_delegation = {
+	exists = yes
+	original_tag = BEL
+	has_cosmetic_tag = BEL_flanders
+	owns_state = 6
+	controls_state = 6
+}
+
+has_independence_wave_form03_compatible_route = {
+	OR = {
+		has_independence_wave_constitutional_route = yes
+		AND = {
+			has_country_flag = independence_wave_league_member
+			check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.development_compact }
+		}
+	}
+}
+
+has_independence_wave_form03_declared_consent = {
+	has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+	check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.low_countries_federation }
+}
+
+has_independence_wave_form03_belgian_declared_consent = {
+	is_independence_wave_form03_eligible_belgian_delegation = yes
+	has_independence_wave_form03_declared_consent = yes
+}
+
+# Country scope. ROOT is the prospective carrier. This verifies an actual
+# controlled border or a bilateral treaty link; mere regional proximity is not
+# enough to move an integrated anchor or admit an autonomous member.
+has_independence_wave_form03_connection_to_root = {
+	exists = yes
+	NOT = { has_war_with = ROOT }
+	OR = {
+		tag = ROOT
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+		has_non_aggression_pact_with = ROOT
+		has_military_access_to = ROOT
+		gives_military_access_to = ROOT
+		has_guaranteed = ROOT
+		is_guaranteed_by = ROOT
+	}
+}
+
+has_independence_wave_form03_connection_to_inviting_carrier = {
+	has_variable = independence_wave_formable_inviting_carrier
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	OR = {
+		is_neighbor_of = var:independence_wave_formable_inviting_carrier
+		is_in_faction_with = var:independence_wave_formable_inviting_carrier
+		has_non_aggression_pact_with = var:independence_wave_formable_inviting_carrier
+		has_military_access_to = var:independence_wave_formable_inviting_carrier
+		gives_military_access_to = var:independence_wave_formable_inviting_carrier
+		has_guaranteed = var:independence_wave_formable_inviting_carrier
+		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
+	}
+}
+
+has_independence_wave_form03_connected_core_partner = {
+	is_independence_wave_form03_registered_carrier = yes
+	OR = {
+		AND = {
+			original_tag = AFX
+			AGX = {
+				has_independence_wave_form03_exact_carrier_anchor = yes
+				has_independence_wave_form03_connection_to_root = yes
+			}
+		}
+		AND = {
+			original_tag = AGX
+			AFX = {
+				has_independence_wave_form03_exact_carrier_anchor = yes
+				has_independence_wave_form03_connection_to_root = yes
+			}
+		}
+		BEL = {
+			is_independence_wave_form03_eligible_belgian_delegation = yes
+			has_independence_wave_form03_connection_to_root = yes
+		}
+	}
+}
+
+has_independence_wave_form03_prospective_carrier = {
+	has_pending_independence_wave_formable_founding_invitation = yes
+	check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.low_countries_federation }
+}
+
+has_independence_wave_form03_prospective_carrier_connection = {
+	has_independence_wave_form03_prospective_carrier = yes
+	has_independence_wave_form03_connection_to_inviting_carrier = yes
+}
+
+has_independence_wave_form03_additional_consent = {
+	is_independence_wave_form03_registered_carrier = yes
+	OR = {
+		AND = {
+			original_tag = AFX
+			AGX = {
+				has_independence_wave_form03_exact_carrier_anchor = yes
+				has_independence_wave_form03_declared_consent = yes
+				has_independence_wave_form03_connection_to_root = yes
+			}
+		}
+		AND = {
+			original_tag = AGX
+			AFX = {
+				has_independence_wave_form03_exact_carrier_anchor = yes
+				has_independence_wave_form03_declared_consent = yes
+				has_independence_wave_form03_connection_to_root = yes
+			}
+		}
+		BEL = {
+			has_independence_wave_form03_belgian_declared_consent = yes
+			has_independence_wave_form03_connection_to_root = yes
+		}
+	}
+}
+
+has_independence_wave_form03_all_consenting_members_connected = {
+	OR = {
+		NOT = {
+			AGX = {
+				is_independence_wave_form03_registered_carrier = yes
+				has_independence_wave_form03_declared_consent = yes
+				NOT = { tag = ROOT }
+			}
+		}
+		AGX = { has_independence_wave_form03_connection_to_root = yes }
+	}
+	OR = {
+		NOT = {
+			AFX = {
+				is_independence_wave_form03_registered_carrier = yes
+				has_independence_wave_form03_declared_consent = yes
+				NOT = { tag = ROOT }
+			}
+		}
+		AFX = { has_independence_wave_form03_connection_to_root = yes }
+	}
+	OR = {
+		NOT = { BEL = { has_independence_wave_form03_belgian_declared_consent = yes } }
+		BEL = { has_independence_wave_form03_connection_to_root = yes }
+	}
+}
+
+has_independence_wave_form03_readiness_attestation = {
+	is_independence_wave_form03_registered_carrier = yes
+	has_country_flag = independence_wave_form03_readiness_attested
+	has_country_flag = independence_wave_form03_progression_attested
+	has_variable = independence_wave_formable_readiness_family
+	check_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.low_countries_federation }
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_x_tag_reserved
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+	has_country_flag = independence_wave_formable_integration_adapter_ready
+	has_country_flag = independence_wave_formable_member_policy_audited
+}
+
+has_independence_wave_form03_runtime_commit_proof = {
+	has_independence_wave_form03_exact_carrier_anchor = yes
+	has_independence_wave_form03_readiness_attestation = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_form03_compatible_route_tt
+		has_independence_wave_form03_compatible_route = yes
+	}
+	has_independence_wave_form03_additional_consent = yes
+	has_independence_wave_form03_all_consenting_members_connected = yes
+	NOT = { has_global_flag = independence_wave_form03_lcx_identity_in_use }
+}
+
+is_independence_wave_form03_active_carrier = {
+	is_independence_wave_form03_registered_carrier = yes
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_cosmetic_tag = LCX
+	has_global_flag = independence_wave_form03_lcx_identity_in_use
+}
+
+has_independence_wave_form03_active_carrier_connection = {
+	OR = {
+		AFX = {
+			is_independence_wave_form03_active_carrier = yes
+			has_independence_wave_form03_connection_to_root = yes
+		}
+		AGX = {
+			is_independence_wave_form03_active_carrier = yes
+			has_independence_wave_form03_connection_to_root = yes
+		}
+	}
+}
+
+can_independence_wave_form03_join_as_autonomous_member = {
+	exists = yes
+	is_subject = no
+	OR = {
+		AND = {
+			original_tag = BEL
+			has_cosmetic_tag = BEL_flanders
+		}
+		original_tag = HOL
+		original_tag = LUX
+	}
+	NOT = { has_country_flag = independence_wave_form03_autonomous_member }
+	NOT = { has_country_flag = independence_wave_form03_withdrawal_recorded }
+	has_independence_wave_form03_active_carrier_connection = yes
+}
+
+# ---------------------------------------------------------------------------
+# Post-charter lifecycle and action locks
+# ---------------------------------------------------------------------------
+
+has_independence_wave_form03_post_charter_progression = {
+	is_independence_wave_form03_active_carrier = yes
+	has_country_flag = independence_wave_form03_post_charter_active
+}
+
+has_independence_wave_form03_active_language_action = {
+	OR = {
+		has_decision = independence_wave_form03_convene_language_convention
+		has_decision = independence_wave_form03_open_multilingual_service_examinations
+		has_decision = independence_wave_form03_publish_member_language_codes
+		has_decision = independence_wave_form03_establish_federal_language_appeals
+		has_decision = independence_wave_form03_extend_protected_local_services
+		has_decision = independence_wave_form03_repair_language_settlement
+	}
+}
+
+has_independence_wave_form03_active_state_works = {
+	OR = {
+		has_decision = independence_wave_form03_reconnect_sambre_meuse_corridor
+		has_decision = independence_wave_form03_coordinate_frisian_waterway_standards
+	}
+}
+
+has_independence_wave_form03_active_industrial_administration = {
+	OR = {
+		has_decision = independence_wave_form03_standardize_rail_and_customs_manifests
+		has_decision = independence_wave_form03_request_development_compact_technical_mission
+		has_decision = independence_wave_form03_invite_sovereign_corridor_partners
+		has_decision = independence_wave_form03_repair_industrial_compact
+		has_decision = independence_wave_form03_resubmit_confederal_charter
+		has_decision = independence_wave_form03_reopen_charter_talks
+	}
+}
+
+has_independence_wave_form03_resolved_constitutional_status = {
+	has_country_flag = independence_wave_form03_autonomous_member
+	NOT = { has_country_flag = independence_wave_form03_language_vote_pending }
+	OR = {
+		has_country_flag = independence_wave_form03_language_guarantees_ratified
+		has_country_flag = independence_wave_form03_limited_associate
+		has_country_flag = independence_wave_form03_language_guarantees_withheld
+	}
+}
+
+has_independence_wave_form03_all_constitutional_statuses_resolved = {
+	NOT = { has_country_flag = independence_wave_form03_belgian_full_accession_pending }
+	NOT = { has_country_flag = independence_wave_form03_dutch_full_accession_pending }
+	NOT = { has_country_flag = independence_wave_form03_luxembourgish_full_accession_pending }
+	OR = {
+		NOT = { BEL = { exists = yes has_country_flag = independence_wave_form03_autonomous_member } }
+		BEL = { has_independence_wave_form03_resolved_constitutional_status = yes }
+	}
+	OR = {
+		NOT = { HOL = { exists = yes has_country_flag = independence_wave_form03_autonomous_member } }
+		HOL = { has_independence_wave_form03_resolved_constitutional_status = yes }
+	}
+	OR = {
+		NOT = { LUX = { exists = yes has_country_flag = independence_wave_form03_autonomous_member } }
+		LUX = { has_independence_wave_form03_resolved_constitutional_status = yes }
+	}
+}
+
+has_independence_wave_form03_federal_language_scope = {
+	OR = {
+		AND = {
+			owns_state = 34
+			controls_state = 34
+			owns_state = 36
+			controls_state = 36
+		}
+		BEL = {
+			exists = yes
+			has_country_flag = independence_wave_form03_autonomous_member
+			has_country_flag = independence_wave_form03_language_guarantees_ratified
+		}
+		HOL = {
+			exists = yes
+			has_country_flag = independence_wave_form03_autonomous_member
+			has_country_flag = independence_wave_form03_language_guarantees_ratified
+		}
+		LUX = {
+			exists = yes
+			has_country_flag = independence_wave_form03_autonomous_member
+			has_country_flag = independence_wave_form03_language_guarantees_ratified
+		}
+	}
+}
+
+has_independence_wave_form03_full_ratification_gate = {
+	has_independence_wave_form03_post_charter_progression = yes
+	NOT = { has_country_flag = independence_wave_form03_foundational_member_lost }
+	check_variable = {
+		var = independence_wave_form03_federal_accommodation
+		value = constant:independence_wave_form03_value.ratified
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_form03_industrial_integration
+		value = constant:independence_wave_form03_value.ratified
+		compare = greater_than_or_equals
+	}
+	has_independence_wave_form03_all_constitutional_statuses_resolved = yes
+	has_independence_wave_form03_federal_language_scope = yes
+}
+
+is_independence_wave_form03_sovereign_associate = {
+	exists = yes
+	has_country_flag = independence_wave_form03_autonomous_member
+	OR = {
+		AND = { original_tag = BEL has_cosmetic_tag = BEL_flanders }
+		original_tag = HOL
+		original_tag = LUX
+	}
+	OR = {
+		AFX = { is_independence_wave_form03_active_carrier = yes }
+		AGX = { is_independence_wave_form03_active_carrier = yes }
+	}
+}
+
+# State scope. The exact owner and controller checks make the project legal in
+# sovereign territory without permitting state 980 or any generic target.
+is_independence_wave_form03_associate_corridor_state = {
+	OR = {
+		AND = {
+			OR = { state = 6 state = 977 }
+			owner = { exists = yes original_tag = BEL has_country_flag = independence_wave_form03_autonomous_member }
+			controller = { original_tag = BEL }
+		}
+		AND = {
+			OR = { state = 7 state = 35 }
+			owner = { exists = yes original_tag = HOL has_country_flag = independence_wave_form03_autonomous_member }
+			controller = { original_tag = HOL }
+		}
+		AND = {
+			state = 8
+			owner = { exists = yes original_tag = LUX has_country_flag = independence_wave_form03_autonomous_member }
+			controller = { original_tag = LUX }
+		}
+	}
+}
+
+can_pay_independence_wave_form03_sambre_meuse_project_cost = {
+	has_independence_wave_form03_post_charter_progression = yes
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_major
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_major }
+	owns_state = 34
+	controls_state = 34
+}
+
+can_pay_independence_wave_form03_frisian_waterway_project_cost = {
+	has_independence_wave_form03_post_charter_progression = yes
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_major
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+	owns_state = 36
+	controls_state = 36
+}
+
+can_pay_independence_wave_form03_compact_technical_mission_cost = {
+	has_independence_wave_form03_post_charter_progression = yes
+	has_country_flag = independence_wave_league_member
+	check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.development_compact }
+	check_variable = {
+		var = global.independence_wave_league_shared_reserve
+		value = constant:independence_wave_form03_league.technical_mission_minimum_reserve
+		compare = greater_than_or_equals
+	}
+	can_pay_independence_wave_administration_light_cost = yes
+	NOT = { has_country_flag = independence_wave_form03_compact_reserve_committed }
+	NOT = { has_country_flag = independence_wave_form03_compact_technical_mission_complete }
+}
+
+can_pay_independence_wave_form03_repair_industrial_cost = {
+	has_independence_wave_form03_post_charter_progression = yes
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_major
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_major }
+}
+
+can_independence_wave_form03_implement_member_language_guarantees = {
+	is_independence_wave_form03_sovereign_associate = yes
+	has_country_flag = independence_wave_form03_full_accession_requested
+	has_country_flag = independence_wave_form03_language_vote_pending
+	NOT = { has_country_flag = independence_wave_form03_language_guarantees_ratified }
+	can_pay_independence_wave_administration_light_cost = yes
+}
+
+can_independence_wave_form03_fund_associate_corridor_share = {
+	is_independence_wave_form03_sovereign_associate = yes
+	has_country_flag = independence_wave_form03_corridor_invitation_pending
+	has_independence_wave_form03_resolved_constitutional_status = yes
+	NOT = { has_country_flag = independence_wave_form03_corridor_project_complete }
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_light
+	can_pay_independence_wave_diplomatic_light_cost = yes
+	any_owned_state = {
+		is_controlled_by = ROOT
+		is_independence_wave_form03_associate_corridor_state = yes
+	}
+}
+
+can_independence_wave_form03_withdraw_from_autonomous_membership = {
+	is_independence_wave_form03_sovereign_associate = yes
+	NOT = { has_country_flag = independence_wave_form03_withdrawal_recorded }
+	NOT = { has_decision = independence_wave_form03_implement_member_language_guarantees }
+	NOT = { has_decision = independence_wave_form03_fund_associate_corridor_share }
+}

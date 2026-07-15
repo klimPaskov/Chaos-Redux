@@ -6,10 +6,10 @@ This package layer implements the playable country content for two accepted Even
 
 | Package | Tag | Anchor | Depth | Economy | Opening force |
 | --- | --- | ---: | --- | --- | --- |
-| IW-006 Wallonia | AFX | State 34 | Regional | Industrial breakaway | Industrial security, score 61 |
-| IW-007 Frisia | AGX | State 36 | Standard | Port or island | Coastal maritime, score 44 |
+| IW-006 Wallonia | AFX | State 34 | Regional | Industrial breakaway | Industrial security, score 60 |
+| IW-007 Frisia | AGX | State 36 | Standard | Port or island | Coastal maritime, score 45 |
 
-The implementation is isolated from the shared allocator and executor. Regional setup, final-validation, and cleanup adapters are registered through the parent-owned generic dispatchers. The combined gameplay, transaction, localisation, and asset audit passed, so the dormant AFX and AGX histories carry `independence_wave_package_content_ready` and the pre-release registry may select these two exact adapters.
+The implementation is isolated from the shared allocator and executor. Regional setup, final-validation, and cleanup adapters are registered through the parent-owned generic dispatchers. Readiness is a static exact-ID/tag attestation rather than a mutable dormant-history flag. The Low Countries formable identity, flag, territory, member policy, integration adapter, and post-charter progression passed their independent audits; the AFX and AGX automatic/scenario release wrappers remain separate package-level preflight gates.
 
 ## Runtime setup sequence
 
@@ -182,6 +182,19 @@ Vanilla documentation consulted includes `documentation/effects_documentation.md
 
 ## Integration status and blockers
 
-The isolated gameplay package files are implemented. The shared generic dispatchers register the setup, final-validation, and cleanup adapters; the four-pass transaction owns reversible preparation, activation, exact live validation, durable commit, rollback, and successful origin-end cleanup. The parallel art tranche's validated portrait and flag files are present, and all six AFX and AGX portrait sprites are registered in `interface/006_independence_wave_region_01_portraits.gfx`. The unsuffixed flag triplets require no `.gfx` registration.
+The isolated gameplay package files and LCX identity/integration adapters are
+implemented. The shared transaction retains reversible preparation and
+pre-commit rollback, while the post-commit FORM-03 consumer owns the language
+and industrial state machine. AFX carrier work in state 34 feeds the existing
+industrial-continuity value; AGX carrier work in state 36 feeds the existing
+waterline and coastal-security values. An absorbed non-carrier package is not
+reinitialized.
 
-The independent country-package audit and parent integration review granted `independence_wave_package_content_ready` to the dormant AFX and AGX histories after confirming exact setup/live proofs, generation-safe cleanup, complete localisation, six registered portraits, and both flag triplets. No gameplay fallback, placeholder leader, generic commander, generic route, or substitute flag was used.
+The package portrait and flag files remain registered. FORM-03 has a dedicated
+six-focus, six-idea, six-decision icon set and a charter-convention report scene.
+BEL, HOL, and LUX member work remains sovereign and never modifies the AFX/AGX
+package identity contract. The audited FORM-03 base and progression
+attestations are restored. Automatic and SCN-008 release readiness remain
+closed only until the separate package-level host-survival, collision, and
+scenario preflight checks pass. No gameplay fallback, placeholder leader,
+generic commander, generic route, or substitute flag is introduced.

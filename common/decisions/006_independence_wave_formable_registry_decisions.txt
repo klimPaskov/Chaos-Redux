@@ -1,0 +1,229 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORMABLE TRANSACTION DECISIONS
+# ============================================================================
+# One shared method-and-consent surface for FORM-01 through FORM-48. Family
+# membership, territorial proof, tags, flags, and integration remain adapter
+# responsibilities and are never inferred here.
+# ============================================================================
+
+independence_wave_formable_transaction_category = {
+	independence_wave_select_negotiated_formation_method = {
+		name = independence_wave_select_negotiated_formation_method
+		desc = independence_wave_select_negotiated_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_negotiated_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_negotiated_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.negotiated_federation }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_route_constitutional_republic }
+		}
+	}
+
+	independence_wave_select_dynastic_formation_method = {
+		name = independence_wave_select_dynastic_formation_method
+		desc = independence_wave_select_dynastic_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_dynastic_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_dynastic_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.dynastic_traditional_union }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_route_traditional_restoration }
+		}
+	}
+
+	independence_wave_select_revolutionary_formation_method = {
+		name = independence_wave_select_revolutionary_formation_method
+		desc = independence_wave_select_revolutionary_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_revolutionary_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_revolutionary_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.revolutionary_union }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_route_popular_council }
+		}
+	}
+
+	independence_wave_select_military_formation_method = {
+		name = independence_wave_select_military_formation_method
+		desc = independence_wave_select_military_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_military_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_military_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.military_settlement }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_route_emergency_military }
+		}
+	}
+
+	independence_wave_select_league_formation_method = {
+		name = independence_wave_select_league_formation_method
+		desc = independence_wave_select_league_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_league_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_league_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.league_transformation }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_league_member }
+		}
+	}
+
+	independence_wave_select_hidden_formation_method = {
+		name = independence_wave_select_hidden_formation_method
+		desc = independence_wave_select_hidden_formation_method_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			independence_wave_formable_profile_matches_selected_family = yes
+			supports_independence_wave_formable_hidden_method = yes
+			NOT = { has_country_flag = independence_wave_formable_method_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+		}
+		available = { supports_independence_wave_formable_hidden_method = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_selected_method_input = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+			independence_wave_formable_select_method = yes
+		}
+		ai_will_do = { base = constant:independence_wave_value.minimum }
+	}
+
+	independence_wave_choose_voluntary_membership = {
+		name = independence_wave_choose_voluntary_membership
+		desc = independence_wave_choose_voluntary_membership_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			has_country_flag = independence_wave_formable_method_selected
+			NOT = { has_country_flag = independence_wave_formable_consent_rule_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.dynastic_traditional_union }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.revolutionary_union }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+			}
+		}
+		available = { independence_wave_formable_profile_matches_selected_family = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_consent_rule_input = constant:independence_wave_formable_consent_rule.voluntary_membership }
+			independence_wave_formable_select_consent_rule = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+		}
+	}
+
+	independence_wave_choose_unanimous_compact = {
+		name = independence_wave_choose_unanimous_compact
+		desc = independence_wave_choose_unanimous_compact_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			has_country_flag = independence_wave_formable_method_selected
+			NOT = { has_country_flag = independence_wave_formable_consent_rule_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.dynastic_traditional_union }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+			}
+		}
+		available = { independence_wave_formable_profile_matches_selected_family = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_consent_rule_input = constant:independence_wave_formable_consent_rule.unanimous_compact }
+			independence_wave_formable_select_consent_rule = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				check_variable = { independence_wave_formable_ai_willingness = constant:independence_wave_formable_ai_willingness.high }
+			}
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+		}
+	}
+
+	independence_wave_choose_controlled_settlement = {
+		name = independence_wave_choose_controlled_settlement
+		desc = independence_wave_choose_controlled_settlement_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			has_country_flag = independence_wave_formable_method_selected
+			NOT = { has_country_flag = independence_wave_formable_consent_rule_selected }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.military_settlement }
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+			}
+		}
+		available = { independence_wave_formable_profile_matches_selected_family = yes }
+		complete_effect = {
+			set_temp_variable = { independence_wave_formable_consent_rule_input = constant:independence_wave_formable_consent_rule.controlled_settlement }
+			independence_wave_formable_select_consent_rule = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+		}
+	}
+
+	independence_wave_issue_founding_invitations = {
+		name = independence_wave_issue_founding_invitations
+		desc = independence_wave_issue_founding_invitations_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { can_issue_independence_wave_formable_founding_invitations = yes }
+		available = { can_issue_independence_wave_formable_founding_invitations = yes }
+		complete_effect = { independence_wave_formable_issue_founding_invitations = yes }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ai_pursue_selected_formable = yes } }
+		}
+	}
+}

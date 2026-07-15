@@ -104,6 +104,31 @@ Final source, processed PNG, DDS, provenance, contact-sheet, and animation recor
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
+## FORM-03 LCX post-charter progression
+
+A fully committed AFX or AGX LCX carrier opens events `chaosx.nr6.300` through
+`.308` and a six-focus constitutional/industrial branch. Federal accommodation
+and industrial integration begin at 15, use model-specific and project-specific
+paid actions, and converge through a 360-day ratification mission. Full compact,
+three compromise forms, and rupture each have an exclusive national spirit and
+bounded five-value consequences.
+
+BEL, HOL, and LUX participate only as sovereign associates. Each receives
+explicit constitutional and corridor choices, pays for its own language or
+corridor work, may withdraw once, and keeps its tag, territory, capital, focus
+tree, armies, diplomacy, and sovereignty. Member dispatch uses exact fixed tags;
+no on-action iterates countries. State 980 is not a project target, and state 36
+is not described as uniformly Frisian.
+
+Implementation and cleanup details are in
+`docs/systems/006_independence_wave_form03_progression.md`. The six focus icons,
+six idea icons, six decision icons, and charter-convention report scene are the
+dedicated FORM-03 package recorded under
+`docs/assets/006_independence_wave/low_countries_form03_progression/`.
+Progression attestation is restored after the independent operational and
+promotion audits. The AFX and AGX automatic/scenario package wrappers remain a
+separate preflight gate until their package-level release tests pass.
+
 ## Implementation surfaces
 
 - Shared transaction: `common/scripted_effects/chaosx_liberation_release_effects.txt` and matching triggers/constants.
