@@ -9,8 +9,13 @@ sprites in `interface/006_independence_wave_region_01_portraits.gfx`, retaining
 the names and paths below.
 
 The flag triplets require no `spriteType` registration. HOI4 discovers the
-unsuffixed `ACX`, `AEX`, `AFX`, `AGX`, and `AJX` files by exact path under
+unsuffixed `ACX`, `AFX`, `AGX`, and `AJX` files by exact path under
 `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
+
+There is no standalone AEX flag family. AEX remains a vanilla `BEL_flanders`
+cosmetic overlay; the retired AEX runtime triplet and generated previews must
+not be recreated. Retained AEX portrait staging below does not change that flag
+boundary.
 
 ## Copy-ready sprite registrations
 
@@ -282,6 +287,8 @@ The actual post-conversion runtime portraits are shown in
 `contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png` and
 `contact_sheets/006_nwe_generated_officer_small_dds_decoded_contact_sheet.png`.
 The actual TGA files at all three engine sizes are shown in
-`contact_sheets/006_nwe_generated_flags_contact_sheet.png`. Full asset identity,
-prompts, route boundaries, reproduction steps, and hashes are in
+`contact_sheets/006_nwe_generated_flags_contact_sheet.png`; cited-design versus
+ImageGen versus flat-master evidence is shown in
+`contact_sheets/006_nwe_generated_historical_flags_raw_vs_flat_contact_sheet.png`.
+Full asset identity, prompts, route boundaries, reproduction steps, and hashes are in
 `northern_western_europe_generated_art_manifest.md`.

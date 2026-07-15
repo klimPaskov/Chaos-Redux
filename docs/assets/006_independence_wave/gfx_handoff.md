@@ -156,11 +156,11 @@ contract.
 
 ## Northern and western Europe portrait handoff
 
-Three source-backed, route-owned portrait DDS files for BRI, RHI, and BAY are
+Two approved source-backed, route-owned portrait DDS files for RHI and BAY are
 documented in `northern_western_europe_gfx_handoff.md`. That handoff owns the
-proposed sprite names, exact texture paths, route locks, low-resolution BRI
-acceptance record, and the warning that ACX/AEX/AFX/AGX/AJX motif previews are
-not runtime flag sprites.
+sprite names, exact texture paths, route locks, the blocked BRI identity record,
+and the warning that historical symbol previews are provenance inputs rather
+than runtime flag sprites.
 
 The generated companion registration and character portrait fragments for ACX,
 AEX, AFX, AGX, and AJX are in

@@ -3,26 +3,24 @@
 ## Scope and status
 
 This package is the generated-art successor to
-`northern_western_europe_source_manifest.md` for the five new northern/western
-Event 006 tags:
+`northern_western_europe_source_manifest.md`. Its live flag scope contains four
+northern/western Event 006 tags:
 
 - ACX Cornwall;
-- AEX Flanders;
 - AFX Wallonia;
 - AGX Friesland;
 - AJX Saar.
 
-It delivers five fictional civic baseline flag triplets, five fictional
-institutional council portraits, five independently generated fictional officer
-portraits, the five matching officer thumbnails required by vanilla's army
-portrait block, processed PNGs, decoded DDS review files, contact sheets, stable
-identifiers, prompts, and SHA-256 hashes.
+It delivers four official-ImageGen-derived historical flag triplets, five
+fictional institutional council portraits, five independently generated
+fictional officer portraits, the five matching officer thumbnails required by
+vanilla's army portrait block, processed PNGs, decoded DDS review files, contact
+sheets, stable identifiers, prompts, and SHA-256 hashes. The retained AEX
+portrait family does not create an AEX flag or standalone-country identity.
 
-Every generated image is explicitly alternate-history art. None of the five
-flags is asserted to be an authentic 1936 state flag, and none of the ten
-portrait sources depicts or imitates a real historical person. Historical and
-community symbols were used only as bounded motif research documented in the
-source manifest.
+The flags reproduce cited historical/community designs; their historical
+function and limits are recorded in `006_nwe_historical_flag_comparison.md`.
+None of the ten portrait sources depicts or imitates a real historical person.
 
 ## Flag ownership and route boundary
 
@@ -31,17 +29,20 @@ variant has an approved route-to-filename mapping, so no
 `<TAG>_democratic.tga`, `<TAG>_communism.tga`, `<TAG>_fascism.tga`,
 `<TAG>_neutrality.tga`, or cosmetic-tag flag has been invented.
 
-| Tag | Fictional baseline direction | Runtime triplet | Route and content boundary |
+| Tag | Historical design | Runtime triplet | Route and content boundary |
 |---|---|---|---|
-| ACX | austere St Piran-derived black/white civic cross | `gfx/flags/ACX.tga`, `gfx/flags/medium/ACX.tga`, `gfx/flags/small/ACX.tga` | universal ACX civic baseline only; ACX still lacks unique Cornwall geography/state ownership, so the country package is not content-ready |
-| AEX | black-hoist, gold-fly civil-industrial lion composition | `gfx/flags/AEX.tga`, `gfx/flags/medium/AEX.tga`, `gfx/flags/small/AEX.tga` | universal AEX civic baseline only; AEX still lacks a protected Brussels/Flanders anchor, so the country package is not content-ready |
-| AFX | burgundy-hoist and gold-field provisional rooster composition | `gfx/flags/AFX.tga`, `gfx/flags/medium/AFX.tga`, `gfx/flags/small/AFX.tga` | universal AFX civic baseline; route-specific variants remain unapproved |
-| AGX | bounded West Frisian blue/white diagonals with three red pompeblêden | `gfx/flags/AGX.tga`, `gfx/flags/medium/AGX.tga`, `gfx/flags/small/AGX.tga` | universal AGX civic baseline for Friesland only, never a pan-Frisian claim |
-| AJX | blue hoist with white/black municipal commission fly | `gfx/flags/AJX.tga`, `gfx/flags/medium/AJX.tga`, `gfx/flags/small/AJX.tga` | universal AJX civic baseline; the exact 1920–1935 commission tricolor is not assigned to `AJX_neutrality` or another route |
+| ACX | St Piran's Cross: white upright cross on black | `gfx/flags/ACX.tga`, `gfx/flags/medium/ACX.tga`, `gfx/flags/small/ACX.tga` | unsuffixed ACX identity; no ideology variant is inferred |
+| AFX | 1913 Walloon coq hardi: one red rooster on yellow | `gfx/flags/AFX.tga`, `gfx/flags/medium/AFX.tga`, `gfx/flags/small/AFX.tga` | unsuffixed AFX identity; no ideology variant is inferred |
+| AGX | Friesland provincial flag: seven diagonal bands and seven red pompeblêden | `gfx/flags/AGX.tga`, `gfx/flags/medium/AGX.tga`, `gfx/flags/small/AGX.tga` | unsuffixed AGX identity for Friesland; no pan-Frisian variant is inferred |
+| AJX | Saar Territory 1920–1935 blue-white-black horizontal tricolour | `gfx/flags/AJX.tga`, `gfx/flags/medium/AJX.tga`, `gfx/flags/small/AJX.tga` | unsuffixed AJX identity; no ideology variant is inferred |
 
-All fifteen TGAs are uncompressed 32-bit BGRA/RGBA with eight-bit alpha and a
+All twelve TGAs are uncompressed 32-bit BGRA with eight-bit alpha and a
 bottom-left origin. The normal, medium, and small dimensions are 82×52, 41×26,
 and 10×7 respectively.
+
+AEX is deliberately absent. Its former generated civic master, processed PNGs,
+and runtime TGA triplet are retired. The Lion of Flanders source remains only as
+evidence for vanilla `BEL_flanders`, never as an AEX country flag.
 
 ## Institutional portraits
 
@@ -108,6 +109,8 @@ Runtime DDS decode evidence:
 
 - `contact_sheets/006_nwe_generated_flags_contact_sheet.png` reopens and shows
   the actual TGA triplets at every engine size;
+- `contact_sheets/006_nwe_generated_historical_flags_raw_vs_flat_contact_sheet.png`
+  compares cited designs, unchanged ImageGen outputs, and flat masters;
 - `contact_sheets/006_nwe_generated_institutional_portraits_contact_sheet.png`;
 - `contact_sheets/006_nwe_generated_command_portraits_contact_sheet.png`;
 - `contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png` reopens
@@ -119,12 +122,14 @@ Runtime DDS decode evidence:
 
 - All production prompts and negative constraints are recorded in
   `prompts/006_nwe_generated_art.md`.
-- `_tooling/build_nwe_generated_art.py` performs deterministic crop, resize,
-  palette normalization, portrait finishing, TGA/DDS conversion, header
-  validation, actual-runtime decode, contact-sheet assembly, and hashing.
-- `generated_nwe_hashes.sha256` is the exact 95-file SHA-256 inventory for every
-  generated source, processed output, decoded review PNG, contact sheet, and
-  runtime TGA/DDS in this package.
+- `_tooling/build_nwe_generated_art.py` performs deterministic flag
+  normalization and resizing, preserves the externally approved AFX/AGX
+  portrait PNGs, finishes only the remaining legacy portrait set, performs
+  TGA/DDS conversion and header validation, checks runtime decodes, assembles
+  contact sheets, and refreshes the hash inventory.
+- `generated_nwe_hashes.sha256` inventories every cited flag input, canonical
+  vanilla ladder input, generated source, processed output, decoded review PNG,
+  contact sheet, and runtime TGA/DDS in this package.
 
 The hash ledger uses repository-relative forward-slash paths and can be checked
 from the repository root with any SHA-256 verification tool.
@@ -136,16 +141,17 @@ history, localisation, or spreadsheet file is edited by this package. Exact
 copy-ready sprite and character portrait blocks are in
 `northern_western_europe_generated_art_gfx_handoff.md`.
 
-The assets remove the art blocker for all five tags, but they do not remove
-content blockers. ACX remains blocked by missing unique Cornwall geography and
-state ownership. AEX remains blocked by the missing protected Brussels/Flanders
-anchor. No country is to be described as content-ready merely because its art
-exists.
+The assets remove the flag-art blocker for the four live flag tags, but they do
+not remove content blockers. ACX remains blocked by missing unique Cornwall
+geography and state ownership. AEX remains a vanilla cosmetic overlay and is
+outside the standalone flag scope. No country is to be described as
+content-ready merely because its art exists.
 
 ## Simplifications and fallbacks
 
 No fallback art, historical-person substitution, shared portrait, transform-only
-replacement, placeholder flag, or unapproved route variant was used. Ideology
-and cosmetic variants are intentionally absent because the accepted design does
-not own exact mappings for them; producing them would be an unsupported design
-expansion rather than completion work.
+replacement, placeholder flag, or unapproved route variant was used. No live
+flag design was simplified or replaced. Ideology and cosmetic variants are
+intentionally absent because the accepted design does not own exact mappings
+for them; producing them would be an unsupported design expansion rather than
+completion work.

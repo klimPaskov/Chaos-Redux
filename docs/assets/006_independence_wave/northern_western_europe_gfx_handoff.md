@@ -2,28 +2,23 @@
 
 ## Ownership boundary
 
-The source-asset worker produced three route-owned final-form DDS portraits and
-did not edit `.gfx`, character, gameplay, localisation, GUI, or country-history
-files. The main agent visually accepted the archival Brittany crop and
-registered all three sprites in `interface/006_independence_wave.gfx` on
-2026-07-14. Character and route wiring remains package-owned.
+The real-portrait tranche produced two approved route-owned DDS portraits and
+updated only their asset registration surface. Character, gameplay,
+localisation, GUI, and country-history wiring remain package-owned. The
+rejected low-fidelity Brittany portrait, runtime DDS, and sprite registration
+were removed; its identifier remains reserved pending a stronger source.
 
 ## Proposed sprite registrations
 
 ```txt
 spriteTypes = {
 	spriteType = {
-		name = "GFX_portrait_BRI_francois_debeauvais"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_BRI_francois_debeauvais.dds"
-	}
-
-	spriteType = {
 		name = "GFX_portrait_RHI_josef_friedrich_matthes"
 		texturefile = "gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds"
 	}
 
 	spriteType = {
-		name = "GFX_portrait_BAY_rupprecht_of_bavaria"
+		name = "GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria"
 		texturefile = "gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds"
 	}
 }
@@ -37,14 +32,14 @@ finds an actual identifier collision.
 
 | Sprite | Allowed use | Forbidden use |
 |---|---|---|
-| `GFX_portrait_BRI_francois_debeauvais` | François Debeauvais on an explicitly Breton nationalist route | universal BRI opening, neutral commission, constitutional cabinet, labor route, or another person |
+| `GFX_portrait_BRI_francois_debeauvais` (reserved; not registered) | none until an identity-safe, dual-jurisdiction source is approved | every runtime use while content-readiness is unset |
 | `GFX_portrait_RHI_josef_friedrich_matthes` | Josef Friedrich Matthes on the 1923 Rhenish separatist/republic direction | generic neutral corridor, military cabinet, labor government, or another person |
-| `GFX_portrait_BAY_rupprecht_of_bavaria` | Rupprecht on the Bavarian traditional-crown/restoration direction | republican, labor, military-emergency, or generic constitutional opening |
+| `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` | Rupprecht on the Event 6 Bavarian traditional-crown/restoration direction, assigned to the existing vanilla character with `set_portraits` | republican, labor, military-emergency, generic constitutional opening, or any non-Event 6 origin |
 
-The BRI portrait is a low-resolution crop from an identified 1928 group
-photograph. The parent must review the decoded sheet before wiring it. If the
-quality is rejected, leave the portrait blocked; do not silently substitute the
-rights-uncertain 1932 image.
+The BRI portrait is explicitly blocked. The rights-cleared 1928 group crop is
+too weak for identity-preserving editing; sharper 1932/1933 candidates fail the
+United States rights review. Do not recreate the removed fallback or silently
+substitute either rejected candidate.
 
 ## Explicitly non-runtime symbol previews
 
@@ -56,17 +51,19 @@ Do not register these processed review files as flag or UI sprites:
 - `processed_png/country_symbols/agx_west_frisian_flag.png`;
 - `processed_png/country_symbols/ajx_saar_territory_1920_1935.png`.
 
-They are provenance-backed motif inputs for a separate generated period-civic
-flag pass. No ACX, AEX, AFX, AGX, or AJX TGA exists in this source-only
-handoff; the final fictional baseline triplets and fictional portrait sprites
-are documented in
-`northern_western_europe_generated_art_gfx_handoff.md`.
+ACX, AFX, AGX, and AJX are provenance-backed exact historical design inputs for
+the separate official ImageGen flag pass. Their final unsuffixed runtime
+triplets are documented in
+`northern_western_europe_generated_art_gfx_handoff.md`. The AEX lion preview is
+retained only as evidence for vanilla `BEL_flanders`: no AEX runtime triplet,
+generated flag source, or processed generated-flag preview may be recreated.
 
 ## Validation evidence
 
-All three DDS files reopen as 156x210 RGBA images and have the expected
-uncompressed BGRA file length of 131,168 bytes. Visual decode proof is in
-`contact_sheets/006_northern_western_europe_final_dds_decoded.png`.
+Both approved DDS files reopen as 156x210 RGBA images, use uncompressed 32-bit
+BGRA masks, and have the expected 131,168-byte file length. Decoded runtime
+proof is present in each per-person source/candidate/canonical sheet under
+`contact_sheets/portraits/`.
 
 Full provenance, licenses, hashes, route distinctions, and blocked sources are
 in `northern_western_europe_source_manifest.md`.

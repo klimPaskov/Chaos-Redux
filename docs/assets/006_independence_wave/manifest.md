@@ -201,18 +201,18 @@ not by reusing the processed PNGs.
 The bounded IW-001 through IW-010 plus IW-012 northern/western Europe source
 package is documented separately in
 `northern_western_europe_source_manifest.md`. It contains sourced historical
-motifs, three route-owned real-person portrait DDS files, vanilla reuse
+motifs, two approved route-owned real-person portrait DDS files, vanilla reuse
 boundaries, provenance and license notes, contact sheets, hashes, and explicit
-blockers. Its five Group B motif previews are not runtime flags and remain
-separate from generated fictional/civic route art.
+blockers. Its historical symbol references are retained as provenance inputs or
+overlay evidence according to the package-specific handoff.
 
 ## Related northern and western Europe generated-art package
 
-The five fictional Group B civic baseline flag triplets, five fictional
+The four official-ImageGen-derived historical flag triplets, five fictional
 institutional council portraits, five independently generated fictional officer
 portraits, army thumbnails, prompts, decoded runtime review sheets, and exact
 hash inventory are documented in
-`northern_western_europe_generated_art_manifest.md`. ACX and AEX remain blocked
-at the country-content layer by geography/anchor ownership even though their art
-files are complete. No ideology or cosmetic flag variants were produced without
-an approved route mapping.
+`northern_western_europe_generated_art_manifest.md`. ACX remains blocked at the
+country-content layer by geography ownership. AEX is a vanilla `BEL_flanders`
+overlay and has no standalone Event 006 flag family. No ideology or cosmetic
+flag variants were produced without an approved route mapping.

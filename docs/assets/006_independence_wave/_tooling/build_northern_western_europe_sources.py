@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Build Event 006 northern/western Europe source previews and portraits.
+"""Build Event 006 northern/western Europe source previews.
 
-The script performs only documentary image processing: fixed crops, tonal
-normalisation, resizing, and a contact sheet. It does not generate, redraw, or
-invent any flag, symbol, face, uniform, or route variant.
+The script performs documentary symbol processing and assembles contact sheets
+from separately approved real-person portrait outputs. Real portraits are
+finished only through ``.tools/process_hoi4_portrait.py``; this helper must not
+reconstruct a face or overwrite those reviewed outputs with archival crops.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 from textwrap import wrap
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -23,20 +24,14 @@ PROCESSED_SYMBOLS = ASSET_ROOT / "processed_png" / "country_symbols"
 CONTACT_SHEETS = ASSET_ROOT / "contact_sheets"
 DDS_ROOT = ROOT / "gfx" / "leaders" / "006_independence_wave"
 
-PORTRAITS = {
-    "bri_francois_debeauvais": {
-        "source": "bri_francois_debeauvais_group_source.jpg",
-        "crop": (246, 54, 392, 251),
-    },
-    "rhi_josef_friedrich_matthes": {
-        "source": "rhi_josef_friedrich_matthes_source.jpg",
-        "crop": (174, 57, 558, 574),
-    },
-    "bay_rupprecht_of_bavaria": {
-        "source": "bay_rupprecht_of_bavaria_source.jpg",
-        "crop": (410, 145, 1762, 1967),
-    },
-}
+# Debeauvais is deliberately absent: the identified 1928 group photograph is
+# too weak for an identity-safe final, while sharper candidates lack defensible
+# United States rights. Keep his sprite id reserved in the handoff, but do not
+# restore the rejected low-fidelity processed PNG or runtime DDS here.
+PORTRAITS = (
+    "rhi_josef_friedrich_matthes",
+    "bay_rupprecht_of_bavaria",
+)
 
 SYMBOLS = {
     "acx_st_pirans_cross": "Cornwall: historical community motif only",
@@ -68,20 +63,6 @@ def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.Im
 def prepare_directories() -> None:
     for directory in (PROCESSED_PORTRAITS, PROCESSED_SYMBOLS, CONTACT_SHEETS):
         directory.mkdir(parents=True, exist_ok=True)
-
-
-def process_portrait(stem: str, config: dict[str, object]) -> Path:
-    source = Image.open(SOURCE_PORTRAITS / str(config["source"])).convert("RGB")
-    crop = source.crop(tuple(config["crop"]))
-    crop = ImageOps.fit(crop, (156, 210), method=Image.Resampling.LANCZOS)
-    grey = ImageOps.grayscale(crop)
-    grey = ImageOps.autocontrast(grey, cutoff=1)
-    toned = ImageOps.colorize(grey, black="#17191a", white="#e7dfcf")
-    toned = ImageEnhance.Contrast(toned).enhance(1.04)
-    toned = ImageEnhance.Sharpness(toned).enhance(1.18)
-    output = PROCESSED_PORTRAITS / f"portrait_{stem}.png"
-    toned.convert("RGBA").save(output)
-    return output
 
 
 def process_symbol(stem: str) -> Path:
@@ -131,7 +112,7 @@ def build_contact_sheet(symbol_paths: dict[str, Path], portrait_paths: dict[str,
     sheet = Image.new("RGBA", (card_w * cols, header_h + card_h * rows), "#171b21")
     draw = ImageDraw.Draw(sheet)
     draw.text((28, 18), "Event 006 - Northern & Western Europe sourced assets", fill="#f4f0e8", font=font(28, bold=True))
-    draw.text((29, 51), "Historical evidence and route-owned portraits; no generated route variants", fill="#b8c1cc", font=font(16))
+    draw.text((29, 51), "Historical evidence and approved route-owned real portraits; BRI remains blocked", fill="#b8c1cc", font=font(16))
 
     for index, (_, path, label) in enumerate(cards):
         col = index % cols
@@ -158,7 +139,7 @@ def build_dds_contact_sheet() -> Path | None:
 
     card_w, card_h = 360, 320
     header_h = 76
-    sheet = Image.new("RGBA", (card_w * 3, header_h + card_h), "#171b21")
+    sheet = Image.new("RGBA", (card_w * len(dds_paths), header_h + card_h), "#171b21")
     draw = ImageDraw.Draw(sheet)
     draw.text((28, 16), "Event 006 - Final portrait DDS decode", fill="#f4f0e8", font=font(28, bold=True))
     draw.text((29, 49), "156x210 uncompressed BGRA runtime files", fill="#b8c1cc", font=font(16))
@@ -178,7 +159,15 @@ def build_dds_contact_sheet() -> Path | None:
 
 def main() -> None:
     prepare_directories()
-    portrait_paths = {stem: process_portrait(stem, config) for stem, config in PORTRAITS.items()}
+    portrait_paths: dict[str, Path] = {}
+    for stem in PORTRAITS:
+        output = PROCESSED_PORTRAITS / f"portrait_{stem}.png"
+        if not output.exists():
+            raise FileNotFoundError(
+                f"Missing approved portrait output: {output}. Run the required "
+                ".tools/process_hoi4_portrait.py workflow first."
+            )
+        portrait_paths[stem] = output
     symbol_paths = {stem: process_symbol(stem) for stem in SYMBOLS}
     build_contact_sheet(symbol_paths, portrait_paths)
     build_dds_contact_sheet()

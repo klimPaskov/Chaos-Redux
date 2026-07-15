@@ -474,7 +474,7 @@ The following is the minimum complete tranche surface. Exact names may be folded
 
 - Complete country-party, provisional-authority, commander, biography, route, idea, decision, mission, ambition, formable, tooltip, and AI-visible text in UTF-8 BOM localisation files without `:0`.
 - Keep `localisation/english/006_independence_wave_countries_l_english.yml` for stable country identities and add a bounded region-01 file for package text.
-- Add final flag files for `AEX`, `AFX`, `AGX`, and `AJX` under `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`; add route/cosmetic variants only when actually used and sourced.
+- Add final flag files for `ACX`, `AFX`, `AGX`, and `AJX` under `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`; add route/cosmetic variants only when actually used and sourced. Do not add AEX: Flanders remains the vanilla `BEL_flanders` cosmetic overlay.
 - Preserve vanilla flags for the registered tags unless the route explicitly changes identity.
 - Register portrait, idea, decision, and focus sprites in `.gfx` files before final asset production. Country flags themselves are selected by filename and do not need `.gfx` registration.
 - Update `docs/assets/006_independence_wave/gfx_handoff.md`, package asset coverage, provenance/source register, contact sheets, and manifests through `chaos-redux-event-assets` before readiness.
@@ -697,7 +697,7 @@ Flag files under vanilla `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small
 
 - `SCO`, `WLS`, `RHI`, and `BAY`: `_democratic`, `_communism`, `_fascism`, and `_neutrality` variants; no unsuffixed base flag.
 - `BRI` and `ICE`: unsuffixed base flag plus `_communism`, `_fascism`, and `_neutrality`; the base file supplies the democratic display.
-- `ACX`, `AEX`, `AFX`, `AGX`, and `AJX`: no vanilla flags. No Chaos Redux final flag set was found for these tags during this audit.
+- `ACX`, `AFX`, `AGX`, and `AJX`: the later live-flag repair supplies complete Chaos Redux historical flag triplets. AEX is deliberately absent because Flanders remains the vanilla `BEL_flanders` cosmetic overlay.
 
 ### 12.6 Exact cosmetic and cross-content references
 

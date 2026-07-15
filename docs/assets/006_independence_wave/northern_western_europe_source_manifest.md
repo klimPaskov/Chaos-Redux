@@ -10,7 +10,7 @@ republic:
 - WLS Wales;
 - ACX Cornwall;
 - BRI Brittany;
-- AEX Flanders;
+- Flanders (`BEL_flanders` vanilla cosmetic overlay; legacy AEX source label);
 - AFX Wallonia;
 - AGX Frisia;
 - RHI Rhineland;
@@ -18,16 +18,18 @@ republic:
 - AJX Saar;
 - ICE Icelandic emergency republic.
 
-Every new tag in this tranche ends in `X`: ACX, AEX, AFX, AGX, and AJX.
+The live standalone tags in this source tranche are ACX, AFX, AGX, and AJX.
+The legacy AEX label survives only on retained overlay evidence and portrait
+staging; it does not define a standalone Flanders flag family.
 
 The files in this source package are historical or community-source evidence.
 No generated route flag, fictional council portrait, or generated leader is
-included here. The five Group B generated civic baselines, institutional
-councils, and officers are delivered in the separate
-`northern_western_europe_generated_art_manifest.md` package. The source and
-processed symbol PNGs in this manifest were motif inputs for that generated-art
-pass; they are not runtime flags and must not be presented as authentic 1936
-state flags.
+included here. Four official-ImageGen-derived historical flag families, plus
+the institutional councils and officers, are delivered in the separate
+`northern_western_europe_generated_art_manifest.md` package. ACX, AFX, AGX, and
+AJX source PNGs are exact historical design inputs; the AEX lion remains
+evidence for vanilla `BEL_flanders` only. These source-package review PNGs are
+not runtime flags and must not be registered as final sprites.
 
 Registered vanilla flags are inspected in place and are not copied into the mod.
 This avoids duplicating proprietary game art and preserves the accepted
@@ -35,13 +37,27 @@ registered-tag reuse rule.
 
 ## Review artifacts
 
-- `contact_sheets/006_northern_western_europe_sourced_assets.png` shows all five
-  sourced motifs and all three route-owned portrait candidates.
-- `contact_sheets/006_northern_western_europe_final_dds_decoded.png` was built by
-  reopening the actual runtime DDS files, not by reusing the processed PNGs.
-- `_tooling/build_northern_western_europe_sources.py` records the fixed portrait
-  crops, non-generative tonal processing, symbol preview normalisation, and
-  contact-sheet layout.
+- `contact_sheets/portraits/portrait_rhi_josef_friedrich_matthes_source_candidate_canonical.png`
+  shows the attributed archival frame and identity crop, retained ImageGen
+  master, processed final, decoded runtime DDS, and canonical vanilla leaders.
+- `contact_sheets/portraits/portrait_bay_rupprecht_of_bavaria_source_candidate_canonical.png`
+  shows the attributed source, rejected first pass, corrected master, processed
+  final, decoded runtime DDS, and canonical vanilla leaders.
+- `contact_sheets/portraits/portrait_bri_francois_debeauvais_source_candidate_canonical_blocked.png`
+  records the weak but rights-cleared 1928 identity crop and the sharper 1932
+  and 1933 candidates rejected on United States rights evidence.
+- `contact_sheets/portraits/process_review/` and
+  `processed_png/portraits/metadata/` retain the required deterministic
+  processor review sheets and exact `(5, 0, 1075, 1440)` edit-master crops.
+- `prompts/006_real_portrait_imagegen_provenance_2026_07_15.md` retains the
+  complete prompts, input roles, correction history, and no-fallback record.
+- `_tooling/build_real_portrait_comparisons.py` assembles evidence only.
+  `_tooling/build_northern_western_europe_sources.py` consumes the two approved
+  processor outputs and cannot recreate the rejected BRI fallback.
+
+The current combined sourced-assets and DDS sheets show only the two approved
+runtime portraits. The rejected earlier BRI approval is retained solely through
+the blocker comparison and research record, never as a runtime asset.
 
 ## Package disposition
 
@@ -49,25 +65,25 @@ registered-tag reuse rule.
 |---|---|---|---|
 | IW-001 Scotland / SCO | Reuse the installed SCO ideology triplets. The Saltire is the civic/national identity. The Lion Rampant is a royal banner and is route-owned, not a neutral substitute. | No mod-owned real portrait delivered. | No rights-cleared, period-appropriate portrait for a supported 1936 Scottish nationalist leader was found. Roland Muirhead material at the National Library of Scotland is subject to copyright restrictions. |
 | IW-002 Wales / WLS | Reuse the installed WLS family only under the accepted registered-tag rule. | No mod-owned real portrait delivered. | The familiar red-dragon-on-green-and-white layout was officially adopted in 1959. Its dragon is historical, but the installed flag must not be described as an authentic 1936 Welsh state flag. The only cleared Saunders Lewis portrait found is from 1973 and is excluded by the period rule. |
-| IW-003 Cornwall / ACX | St Piran's Cross source and processed motif delivered. No TGA produced in this source-only tranche. | Institutional council remains the accepted opening mode. | This is a historical Cornish community flag, not evidence of a 1936 Cornish state flag. The fictional civic baseline is delivered separately in the generated-art package. |
-| IW-004 Brittany / BRI | Reuse the installed BRI base family. The Gwenn-ha-du is a period regional identity, adopted as a Breton symbol in 1923. | François Debeauvais portrait DDS delivered for a nationalist route only. | Debeauvais must not be assigned to a constitutional, neutral, or universal opening government. The crop is from an identified 1928 party-congress photograph and is low fidelity. A sharper 1932 portrait was rejected because its page does not establish United States public-domain status. |
-| IW-005 Flanders / AEX | Historical Lion of Flanders arms source and processed motif delivered. No TGA produced in this source-only tranche. | Institutional council remains the accepted opening mode. | The current official Flemish flag is postwar. The delivered arms are a historical motif for generated civic design, not a backdated modern state flag. |
-| IW-006 Wallonia / AFX | CC0 rooster vector source and processed motif delivered. No TGA produced in this source-only tranche. | Institutional council remains the accepted opening mode. | The rooster was selected and validated by the Walloon Assembly in 1913. The delivered vector follows the 1998 legal form; Pierre Paulus's original watercolor was not copied because the museum/province rights notice is restrictive. |
-| IW-007 Frisia / AGX | West Frisian provincial flag source and processed motif delivered. No TGA produced in this source-only tranche. | Institutional council remains the accepted opening mode. | The seven stripes and seven pompeblêden are attested for Friesland and recognized provincially in 1897. They are not proof of one pan-Frisian state flag and cannot be universalized across every Frisian coast. |
-| IW-008 Rhineland / RHI | Reuse installed RHI triplets. The green-white-red democratic variant belongs to the 1923 separatist-republic direction, not every Rhineland route. | Josef Friedrich Matthes portrait DDS delivered for the separatist/republic route. | Matthes was the leading figure and minister-president of the short-lived 1923 Rhenish Republic. Do not use him for a generic neutral corridor, military cabinet, or universal constitutional opening. |
-| IW-009 Bavaria / BAY | Reuse installed BAY triplets. White-blue civic state colors and royal/crowned variants must remain route-distinct. | Rupprecht portrait DDS delivered for a traditional restoration route. | Rupprecht was the last Bavarian crown prince. Do not use this portrait for a republican or labor opening. |
-| IW-010 Saar / AJX | Exact 1920-1935 Territory of the Saar Basin flag source and processed motif delivered. No TGA produced in this source-only tranche. | Institutional neutral commission remains the accepted opening mode. | The blue-white-black tricolor ended with the territory on 1 March 1935. It is strong source material for a neutral-commission route, but no ideology/cosmetic mapping is approved, so creating `AJX_neutrality.tga` would be an unsupported design decision. The fictional unsuffixed civic baseline is delivered separately in the generated-art package. |
+| IW-003 Cornwall / ACX | St Piran's Cross source delivered; the downstream package uses it as the exact design input for the live ACX historical triplet. | Institutional council remains the accepted opening mode. | This is a historical Cornish community flag, not evidence of a sovereign 1936 Cornish state. |
+| IW-004 Brittany / BRI | Reuse the installed BRI base family. The Gwenn-ha-du is a period regional identity, adopted as a Breton symbol in 1923. | Francois Debeauvais portrait blocked; no processed final, runtime DDS, or sprite registration is retained. | The rights-cleared 1928 group source is too weak for identity-preserving editing. Sharper 1932/1933 candidates do not establish defensible United States public-domain status. Content-readiness remains unset; do not invent or stylize a fallback. |
+| IW-005 Flanders / AEX | Historical Lion of Flanders arms source retained as overlay evidence. No standalone AEX TGA exists. | Any retained portrait staging does not create a standalone country flag. | Flanders remains the vanilla `BEL_flanders` cosmetic overlay. The current official flag is postwar; the lion source must not be routed back into AEX flag production. |
+| IW-006 Wallonia / AFX | CC0 rooster vector delivered; the downstream package uses it as the distributable flat reference for the 1913 coq hardi identity. | Institutional council remains the accepted opening mode. | Pierre Paulus's restricted original watercolor was not copied; the live triplet preserves the cited red-on-yellow single-charge design. |
+| IW-007 Frisia / AGX | West Frisian provincial flag source delivered; the downstream package uses its seven bands and seven pompeblêden as the exact live design. | Institutional council remains the accepted opening mode. | The flag is bounded to Friesland and is not universalized across every Frisian coast. |
+| IW-008 Rhineland / RHI | Reuse installed RHI triplets. The green-white-red democratic variant belongs to the 1923 separatist-republic direction, not every Rhineland route. | Josef Friedrich Matthes identity-preserving painted portrait DDS delivered for the separatist/republic route. | The edit preserves the attributed 1923 Bain photograph's face, beret, bow tie, tweed suit, pose, and breast card. Do not use him for a generic neutral corridor, military cabinet, or universal constitutional opening. |
+| IW-009 Bavaria / BAY | Reuse installed BAY triplets. White-blue civic state colors and royal/crowned variants must remain route-distinct. | Rupprecht identity-preserving painted portrait DDS delivered for a traditional restoration route. | The corrected edit preserves the attributed c.1916 Grainer face, thin moustache, hairline, expression, uniform, and source-visible orders. Do not use this portrait for a republican or labor opening. |
+| IW-010 Saar / AJX | Exact 1920–1935 Territory of the Saar Basin source delivered; the downstream package uses it as the exact unsuffixed live design. | Institutional neutral commission remains the accepted opening mode. | The blue-white-black tricolour ended with the territory on 1 March 1935. No ideology/cosmetic variant is inferred. |
 | IW-012 Iceland / ICE | Reuse the installed ICE family. The cross design was specified by royal decree in 1915 and became the national maritime flag in 1918. | No new mod-owned portrait delivered. | Hermann Jónasson's AAT portrait is an installed-DLC option only if the implementation permits that dependency. The exact-period 1937 Swedish-calendar photograph lacks a United States public-domain tag, so it was not copied. |
 
 ## Sourced symbol provenance
 
 | Package | Delivered source | Creator or institution | Date and rights | Historical function and allowed use |
 |---|---|---|---|---|
-| ACX Cornwall | [Flag of Cornwall SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Cornwall.svg); [Flag Institute history](https://www.flaginstitute.org/wp/flags/cornwall-flag/) | Jon Harald Søby; Flag Institute for history | Commons public-domain dedication | St Piran's Cross, a Cornish community flag with nineteenth-century/traditional use. Motif input only. |
-| AEX Flanders | [Arms of Flanders SVG](https://commons.wikimedia.org/wiki/File:Arms_of_Flanders.svg); [Flemish Parliament symbol history](https://www.vlaamsparlement.be/nl/parlementair-werk/dossiers/dossiers/vlaamse-symbolen) | Tom Lemmens; Flemish Parliament for history | CC0 1.0, vector dated 2010 | Generic historical arms of Flanders. Use the lion motif; do not backdate the postwar official flag as a 1936 state flag. |
-| AFX Wallonia | [Flag of Wallonia SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Wallonia.svg); [1913 Walloon Assembly history](https://connaitrelawallonie.wallonie.be/histoire/timeline/3-juillet-1913-officialisation-du-coq-wallon-de-pierre-paulus-suivie-de-sa) | Tom Lemmens; Walloon history portal | CC0 1.0, vector follows the 23 July 1998 decree | Modern rights-cleared vector of the rooster motif selected in 1913. It is not a copy of Paulus's restricted original watercolor. |
-| AGX Frisia | [Frisian flag SVG](https://commons.wikimedia.org/wiki/File:Frisian_flag.svg); [Province of Fryslân history](https://www.fryslan.frl/fy/fryske-flagge) | P. H. Wagemakers and Joh. Koopmans; Province of Fryslân for history | Public domain; current vector revision dated 2026 | West Frisian provincial flag; the design was recognized by the provincial executive in 1897. Motif input only for the bounded Friesland package. |
-| AJX Saar | [Territory of Saar Basin flag SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Saar_1920-1935.svg); [historical source summary](https://www.crwflags.com/fotw/flags/de-sl920.html) | Thommy / Thommy9; historical summary cites Saar Governing Commission reporting | Public-domain dedication | Exact flag of the League-governed Saar territory, 28 July 1920 to 1 March 1935. Candidate only for a route explicitly owning that commission legacy. |
+| ACX Cornwall | [Flag of Cornwall SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Cornwall.svg); [Flag Institute history](https://www.flaginstitute.org/wp/flags/cornwall-flag/) | Jon Harald Søby; Flag Institute for history | Commons public-domain dedication | St Piran's Cross, a Cornish community flag with nineteenth-century/traditional use; exact design input for the live ACX triplet. |
+| AEX Flanders | [Arms of Flanders SVG](https://commons.wikimedia.org/wiki/File:Arms_of_Flanders.svg); [Flemish Parliament symbol history](https://www.vlaamsparlement.be/nl/parlementair-werk/dossiers/dossiers/vlaamse-symbolen) | Tom Lemmens; Flemish Parliament for history | CC0 1.0, vector dated 2010 | Historical arms retained only as `BEL_flanders` overlay evidence. It is not an AEX flag input. |
+| AFX Wallonia | [Flag of Wallonia SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Wallonia.svg); [1913 Walloon Assembly history](https://connaitrelawallonie.wallonie.be/histoire/timeline/3-juillet-1913-officialisation-du-coq-wallon-de-pierre-paulus-suivie-de-sa) | Tom Lemmens; Walloon history portal | CC0 1.0, vector follows the 23 July 1998 decree | Rights-cleared flat representation of the coq hardi identity selected in 1913; exact distributable design input for the live AFX triplet. It is not a copy of Paulus's restricted original watercolor. |
+| AGX Frisia | [Frisian flag SVG](https://commons.wikimedia.org/wiki/File:Frisian_flag.svg); [Province of Fryslân history](https://www.fryslan.frl/fy/fryske-flagge) | P. H. Wagemakers and Joh. Koopmans; Province of Fryslân for history | Public domain; current vector revision dated 2026 | West Frisian provincial flag recognized in 1897; exact design input for the bounded live AGX triplet. |
+| AJX Saar | [Territory of Saar Basin flag SVG](https://commons.wikimedia.org/wiki/File:Flag_of_Saar_1920-1935.svg); [Saarland State Chancellery history](https://artsandculture.google.com/story/saarhundert-das-saargebiet-ein-kind-der-internationalen-v%C3%B6lkergemeinschaft-staatskanzlei-saarland/kQWBBjUfmhpHJA?hl=en) | Thommy / Thommy9; Saarland State Chancellery for institutional corroboration | Public-domain dedication | Exact flag of the League-governed Saar territory, 28 July 1920 to 1 March 1935; exact design input for the live unsuffixed AJX triplet. |
 
 The source SVG and source PNG render are retained for each motif. Processed PNGs
 are neutral 600x400 review cards, not flag masters.
@@ -76,13 +92,16 @@ are neutral 600x400 review cards, not flag masters.
 
 | Runtime stem | Source and identity evidence | Creator, date, rights | Processing | Route lock |
 |---|---|---|---|---|
-| `portrait_BRI_francois_debeauvais` | [Breiz Atao party-congress photograph](https://commons.wikimedia.org/wiki/File:Breiz_Atao_-_2_septembre_1928_-_le_comit%C3%A9_directeur_et_les_d%C3%A9l%C3%A9gu%C3%A9s_alsaciens_et_corses.jpg); [CRBC authority record](https://crbc.huma-num.fr/prelib/personne/378/) | Anonymous `Breiz Atao`, 2 September 1928; PD anonymous-expired in the United States and source-country terms | Fixed crop around the Commons-identified Debeauvais annotation, grayscale autocontrast, mild sharpening, 156x210 resize | Breton nationalist route only; archival low fidelity accepted by the main agent on 2026-07-14 |
-| `portrait_RHI_josef_friedrich_matthes` | [Library of Congress item](https://www.loc.gov/pictures/item/2014695969/); [Deutsche Biographie identity record](https://www.deutsche-biographie.de/dbo100308-7.html?language=de) | Bain News Service, 22 November 1923; Library of Congress rights advisory: no known restrictions on publication | Fixed head-and-torso crop, grayscale autocontrast, mild sharpening, 156x210 resize | 1923 Rhenish separatist/republic route only |
-| `portrait_BAY_rupprecht_of_bavaria` | [Franz Grainer portrait](https://commons.wikimedia.org/wiki/File:Rupprecht_von_Bayern_01.jpg); [Munich NS Documentation Center biography](https://www.nsdoku.de/lexikon/artikel/rupprecht-von-bayern-723) | Franz Grainer, circa 1916; PD-Art / PD-old-auto-1923, author died 1948, United States term expired | Fixed head-and-torso crop, grayscale autocontrast, mild sharpening, 156x210 resize | Bavarian traditional crown/restoration route only |
+| `portrait_BRI_francois_debeauvais` (reserved; no runtime file) | [Breiz Atao party-congress photograph](https://commons.wikimedia.org/wiki/File:Breiz_Atao_-_2_septembre_1928_-_le_comit%C3%A9_directeur_et_les_d%C3%A9l%C3%A9gu%C3%A9s_alsaciens_et_corses.jpg); [CRBC authority record](https://crbc.huma-num.fr/prelib/personne/378/) | Anonymous *Breiz Atao*, 2 September 1928; dual-jurisdiction public-domain rationale is defensible | Face detail is too weak for identity-preserving editing; no ImageGen operation, processed final, DDS, or sprite registration | Blocked; content-readiness unset pending a stronger attributable dual-jurisdiction source |
+| `portrait_RHI_josef_friedrich_matthes` | [Library of Congress item](https://www.loc.gov/pictures/item/2014695969/); [Deutsche Biographie identity record](https://www.deutsche-biographie.de/dbo100308-7.html?language=de) | Bain News Service, 22 November 1923; Library of Congress rights advisory: no known restrictions on publication | Built-in ImageGen identity-preserving edit with canonical vanilla finish references; official leader processor crop `(5, 0, 1075, 1440)`; 156x210 final | 1923 Rhenish separatist/republic route only |
+| `portrait_BAY_rupprecht_of_bavaria` | [Franz Grainer portrait](https://commons.wikimedia.org/wiki/File:Rupprecht_von_Bayern_01.jpg); [Munich NS Documentation Center biography](https://www.nsdoku.de/lexikon/artikel/rupprecht-von-bayern-723) | Franz Grainer, circa 1916; PD-Art / author died 1948; source-country and pre-1929 United States terms expired | Built-in ImageGen identity-preserving edit; first pass rejected, thin-moustache correction retained; official leader processor crop `(5, 0, 1075, 1440)`; 156x210 final | Bavarian traditional crown/restoration route only |
 
-No face was generated, reconstructed, colorized with invented detail, or replaced.
-The processing script performs conventional crop, tonal normalization, resize,
-and mild sharpening only.
+No person was generated without a real source. Matthes and Rupprecht were
+edited from their attributed archival photographs with explicit identity,
+clothing, pose, and route-detail invariants; canonical vanilla portraits were
+finish/framing references only. Debeauvais was not edited because the cleared
+source could not support identity preservation. Prompt provenance, exact crops,
+processor metadata, and visual approval are retained in this package.
 
 ## Rejected and blocked sources
 
@@ -90,8 +109,10 @@ and mild sharpening only.
 |---|---|---|
 | SCO | [Roland Muirhead papers and related portrait research at the National Library of Scotland](https://manuscripts.nls.uk/repositories/2/resources/9259) | Rejected for asset production: the archive record warns that access and reuse are subject to copyright restrictions; no cleared period portrait was identified. |
 | WLS | [Saunders Lewis, 4 October 1973](https://commons.wikimedia.org/wiki/File:Saunders_Lewis_(1520394).jpg) | Rejected for this 1936 package despite CC BY-SA 4.0: it is a postwar 1973 portrait and no approval exists to use later imagery. |
-| BRI | [François Debeauvais in Ouest-Eclair, 10 August 1932](https://commons.wikimedia.org/wiki/File:Debeauvais.png) | Rejected for final production: the page supplies a France public-domain rationale but no United States public-domain rationale. The lower-quality 1928 dual-jurisdiction source is used instead and disclosed. |
-| AEX | [Current official Flemish flag](https://commons.wikimedia.org/wiki/File:Flag_of_Flanders.svg) | Not used as a 1936 state flag. The source is CC0, but official adoption is postwar; only the historical lion-arms motif is retained. |
+| BRI | [François Debeauvais in Ouest-Eclair, 10 August 1932](https://commons.wikimedia.org/wiki/File:Debeauvais.png) | Rejected: the face is stronger, but the page supplies a France public-domain rationale without a defensible United States public-domain basis. A 1932 foreign publication can remain in the 95-year US term through 2027. |
+| BRI | [François Debeauvais in Breiz Atao, 17 September 1933](https://commons.wikimedia.org/wiki/File:19330917_Fran%C3%A7ois_Debeauvais_bless%C3%A9_par_les_Camelots_du_Roi_lors_du_rassemblement_de_Saint-Goazec_dans_Breiz_Atao.png) | Rejected: the record dates the work to 1933 but uses a US rationale asserting publication before 1 January 1931. That contradiction is not defensible. |
+| BRI | [Olier Mordrel and François Debeauvais, 30 July 1939](https://commons.wikimedia.org/wiki/File:Breiz_Atao_-_30_juillet_1939_-_Olier_Mordrel_%26_Fran%C3%A7ois_Debeauvais.jpg) | Rejected: the Commons record lacks a sufficient United States public-domain tag. |
+| AEX | [Current official Flemish flag](https://commons.wikimedia.org/wiki/File:Flag_of_Flanders.svg) | Not used as an Event 006 standalone flag. AEX is retired from flag production; only the historical lion arms remain as evidence for vanilla `BEL_flanders`. |
 | AFX | [Original Pierre Paulus rooster history and watercolor](https://connaitrelawallonie.wallonie.be/histoire-et-symboles/symboles/le-drapeau-wallon) | Original watercolor not copied. The official history page identifies museum/province rights; the CC0 modern vector is used only to evidence the 1913 motif. |
 | ICE | [Hermann Jónasson in Nordens kalender, 1937](https://commons.wikimedia.org/wiki/File:Herman_Jonass%C3%B3n.jpg) | Rejected for final production: exact-period identity is strong, but the Commons page lacks a United States public-domain tag. |
 
@@ -141,12 +162,14 @@ the route locks above.
 
 | Proposed sprite | Texture file | Status |
 |---|---|---|
-| `GFX_portrait_BRI_francois_debeauvais` | `gfx/leaders/006_independence_wave/portrait_BRI_francois_debeauvais.dds` | registered; nationalist route only; archival low fidelity accepted with the route lock retained |
+| `GFX_portrait_BRI_francois_debeauvais` | none | reserved identifier only; not registered; content-readiness blocked/unset |
 | `GFX_portrait_RHI_josef_friedrich_matthes` | `gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds` | registered; separatist/republic route only |
-| `GFX_portrait_BAY_rupprecht_of_bavaria` | `gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds` | registered; restoration route only |
+| `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` | `gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds` | registered; assigned to the existing vanilla Rupprecht character only on the Event 6 restoration route with `set_portraits` |
 
-All three runtime files are 156x210, one-mip, uncompressed BGRA DDS. The main
-agent owns `.gfx` registration and character wiring.
+The two approved runtime files are 156x210, one-mip, uncompressed BGRA DDS.
+Their sprite names remain registered. The BRI texture and registration were
+removed with the rejected fallback. Character and route wiring remains outside
+this asset tranche.
 
 ## Delivered-file hashes
 
@@ -168,33 +191,43 @@ and runtime DDS in this package.
 | `source_png/portraits/bay_rupprecht_of_bavaria_source.jpg` | `143a06bc3703fb6bf7da61d1e1f04a99a4f4afdcf11f940ba7b2c30cae9b9148` |
 | `source_png/portraits/bri_francois_debeauvais_group_source.jpg` | `47d35fa91749eeda405105c4df7c2a90f87c29d691b6efdbccc916a3df96ec11` |
 | `source_png/portraits/rhi_josef_friedrich_matthes_source.jpg` | `230c415ea7d94cc4725c2435a52376c1724475b3f6cfabdfcda6562240b19dcd` |
+| `source_png/portraits/candidates/bri_francois_debeauvais_1932_ouest_eclair_rejected_us_rights.png` | `fec7e2f8ae7d38d714776a40d8eac98c3e1758c5e04c7b7c0750ed9e688a8de4` |
+| `source_png/portraits/candidates/bri_francois_debeauvais_1933_breiz_atao_rejected_rights_record.png` | `974acbb5607efc711c871ecf3406d85782398bef059bf77dec6d8036369c3d92` |
+| `source_png/portraits/imagegen_edits/portrait_rhi_josef_friedrich_matthes_imagegen_master.png` | `a1ba1a9a6138d9053ed76a408a3ac54b80e7fdd22f06db9b4b6a41edb7bea6f5` |
+| `source_png/portraits/imagegen_edits/portrait_bay_rupprecht_of_bavaria_imagegen_candidate_01.png` | `51a2eab19554c68e6dcfbdcaa96c86b06ba729fca06573b1e45904959056a437` |
+| `source_png/portraits/imagegen_edits/portrait_bay_rupprecht_of_bavaria_imagegen_master.png` | `321c5d6101d1fb5c2d13748d76aea00b2ffc0f485ec8e3e2c4ff76b50b5dc98b` |
 | `processed_png/country_symbols/acx_st_pirans_cross.png` | `489bf36c1296e9cd0a4b1e81426f6c7e85d7cbf47b9b56c0c3a5323d63122af8` |
 | `processed_png/country_symbols/aex_flemish_lion_arms.png` | `78116c68ad77dc84e1d7040e194fe35e4a6073c21a68eb91bc15e2174d76fae0` |
 | `processed_png/country_symbols/afx_walloon_rooster.png` | `421817b5aa3cc9401385ba78a7794bc2a17d6fea7afc1167381a5075244c858a` |
 | `processed_png/country_symbols/agx_west_frisian_flag.png` | `71b1e1b433a2acbceb5d0515ea78bbc1211068e2c2980477bf41bc60c514d7cf` |
 | `processed_png/country_symbols/ajx_saar_territory_1920_1935.png` | `ea6cf5e133a6255df14ecbbbd59f680992225434cfaee3d133c47d6ac7aee08f` |
-| `processed_png/portraits/portrait_bay_rupprecht_of_bavaria.png` | `c54415e0c45a450b18271cb41b08db10112573e141ad219338b2d579d8d160b0` |
-| `processed_png/portraits/portrait_bri_francois_debeauvais.png` | `d9dc4e8456deef9828ee1cb3d58cf6577d0c74ca348f28ad67ec6f5cbc888540` |
-| `processed_png/portraits/portrait_rhi_josef_friedrich_matthes.png` | `ea3ea5e94e72753d01de93a7b350e582145a4dff217bfe820022ecefa4f5a154` |
-| `contact_sheets/006_northern_western_europe_sourced_assets.png` | `17986da7fbc8873197bb09beae5af75e88b4d90447226e9efc227d19ce8c1d6f` |
-| `contact_sheets/006_northern_western_europe_final_dds_decoded.png` | `f3eda364195e534e02a3aed53ec77309fd5133c396ee33168a32fa876a8db370` |
-| `gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds` | `103ca2bc1e9290c712ae8548050a2a5cc9cd61c0e9eec4acdc213b24eeece423` |
-| `gfx/leaders/006_independence_wave/portrait_BRI_francois_debeauvais.dds` | `2d480b6b240c4a31da7a66f70e69042de8a8ddfaed954107eccda4efcb76ef4e` |
-| `gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds` | `ad724ee9adb2f7be5daedf6654a41fbb52f0e1ce16f24ca6f9fbef0f45b523f2` |
+| `processed_png/portraits/portrait_bay_rupprecht_of_bavaria.png` | `739a16b27abd20b5a9515cf7988557aed5d0ab31591a3c20fa3cf33974dc882e` |
+| `processed_png/portraits/portrait_rhi_josef_friedrich_matthes.png` | `700dad9e2cf5eb50837eed0f338ac82944d94a5470b9a8cd8cfe666b7d1dd450` |
+| `processed_png/portraits/metadata/portrait_bay_rupprecht_of_bavaria.json` | `c8e5dea77c6fbfb3f0143fbb19659162552e4c2df55695d5ac25fcf3082a8f58` |
+| `processed_png/portraits/metadata/portrait_rhi_josef_friedrich_matthes.json` | `c1fd555ddc4f22d07e5ff79e9a2fbc1cf977753568bfaf188f5d61d7078c6353` |
+| `contact_sheets/portraits/process_review/portrait_bay_rupprecht_of_bavaria_process_review.png` | `21c25103f8b07265174dcfaf22415ca91bf7a5c5a4c38324ac630b8c18bd1e92` |
+| `contact_sheets/portraits/process_review/portrait_rhi_josef_friedrich_matthes_process_review.png` | `f7969a6de625809af149701b4012966afa0223fd0a2bd3e77c9d75e067195470` |
+| `contact_sheets/portraits/portrait_bay_rupprecht_of_bavaria_source_candidate_canonical.png` | `e8db7046e6df6c1824bc7d3fb81871f3296b530130b0fd5bfb0327052008d92d` |
+| `contact_sheets/portraits/portrait_bri_francois_debeauvais_source_candidate_canonical_blocked.png` | `5a69ab6820790338e692c1ea7e0830852020d96f2ed4fdc6bcafb278981f085d` |
+| `contact_sheets/portraits/portrait_rhi_josef_friedrich_matthes_source_candidate_canonical.png` | `7b0c83973d58480311ef6a102d173c7d3465d9e25064d6d41547a7d8330c4676` |
+| `contact_sheets/006_northern_western_europe_sourced_assets.png` | `d5988197861e7f0dd1d6a3152624387008c82f1a44746962f54b899a843e3110` |
+| `contact_sheets/006_northern_western_europe_final_dds_decoded.png` | `8b809e18e3794bcb5d452842b86f1873fe98191f61125a563166c61402b8069f` |
+| `gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds` | `7f0af64fdf4fecd49df454d1198935bb3ce6a8f74afc1ac82f8223704eaaad2b` |
+| `gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds` | `aa61cc3a12fb6670b690c7685feb9383383ce58599c9e6d6e7c14f20fab3bce2` |
 
 ## Remaining blockers and omissions
 
-This source tranche does not complete the package art:
+This source tranche alone does not complete the package art:
 
-- ACX, AEX, AFX, AGX, and AJX still require separately labeled generated civic
-  baseline flag triplets after the generated artist consumes the motif and route
-  distinctions above.
+- the downstream generated-art package completes the ACX, AFX, AGX, and AJX
+  live historical triplets; AEX is deliberately absent as a standalone flag;
 - Institutional council portraits for those five packages remain generated-art
   work.
 - SCO, WLS, and ICE have no new rights-cleared real portrait in this package.
-- BRI has a legally cleared, route-locked archival portrait whose low fidelity
-  was accepted by the main agent; the sharper 1932 image remains rejected.
-- No ideology-specific or cosmetic flag filename was guessed for any Group B
+- BRI remains blocked: the legally cleared 1928 face is too weak for
+  identity-preserving editing, while sharper 1932/1933 candidates fail the
+  United States rights review. No processed final, DDS, or sprite is retained.
+- No ideology-specific or cosmetic flag filename was guessed for any live flag
   package.
 
 No fallback, invented historical symbol, or unlicensed substitute was produced.

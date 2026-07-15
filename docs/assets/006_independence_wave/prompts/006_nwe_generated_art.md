@@ -2,70 +2,127 @@
 
 ## Production rules shared by every prompt
 
-Every raster in this package was generated as a new image with ImageGen. No
-historical portrait, living person, named historical figure, copyrighted game
-asset, or generated image from another tag was supplied as an image reference.
-The country-symbol research in
-`../northern_western_europe_source_manifest.md` informed the flag directions,
-but the final compositions are explicitly fictional alternate-history civic
-designs rather than authentic historical state flags.
+The four live country flags were generated in four separate official ImageGen
+calls. Each call received one rights-cleared historical flat-design reference
+and one canonical vanilla HOI4 normal/medium/small flag ladder as visual inputs.
+The historical reference controls the design; the vanilla ladder controls only
+flat presentation and small-size readability. The prompts forbid fabric,
+lighting, perspective, decoration, text, watermarks, and alternate redesigns.
 
-Shared negative direction: no lettering, numbers, captions, watermark,
-photographic border, modern logo, ideology emblem, swastika, hammer and sickle,
-royal crown, recognizable real person, or imitation of an existing HOI4 asset.
+The portrait prompts below remain independent portrait-generation records. No
+historical portrait, living person, named historical figure, or generated image
+from another tag was supplied as a portrait reference.
 
-## Civic baseline flag prompts
+## Live historical flag prompts and provenance
 
-Each flag was generated separately as a flat, front-facing flag master with no
-pole, fold, fabric simulation, shadow, scene, or perspective. The final engine
-sizes were then palette-normalized and resized deterministically.
+Every call requested a 3:2, front-facing, edge-to-edge orthographic flag. Raw
+ImageGen outputs are retained unchanged in `../source_png/generated_nwe/flags/`.
+The build tool maps those raw pixels to the documented exact palette without
+dithering, never imports a reference mask, and never traces or redraws a symbol.
+For ACX only, it deterministically promotes one almost-solid noisy cross-edge
+scanline to the adjacent white field. The normal flag is resized from that flat
+master; medium and small are resized from normal with no bespoke redesign.
 
-### ACX Cornwall
+### ACX Cornwall — St Piran's Cross
 
-> Create a fictional, period-plausible 1930s Cornish emergency civic flag for
-> an alternate-history local authority. Use the researched St Piran black field
-> and white cross only as a community-identity direction, then give it austere
-> civil-defense proportions suitable for a newly improvised administration.
-> Flat vector-like heraldic construction, very high contrast, readable at ten
-> pixels, black and warm white only. This must not be presented as an authentic
-> 1936 Cornish state flag.
+Historical input: `../source_png/country_symbols/acx_st_pirans_cross_source.png`
+([Wikimedia Commons source](https://commons.wikimedia.org/wiki/File:Flag_of_Cornwall.svg),
+public domain); identity and proportion check:
+[Flag Institute UK Flag Registry](https://www.flaginstitute.org/wp/flags/cornwall-flag/).
+Canonical presentation input: `arm.png` at all three vanilla-reference sizes.
 
-### AEX Flanders
+> Reproduce the attached historical St Piran's Cross design exactly as a clean
+> flat flag: one plain white upright cross on a solid black field, with the same
+> centered geometry and no added charge. Output one edge-to-edge 3:2
+> orthographic flag master. No pole, border, folds, fabric texture, lighting,
+> shadow, depth, gradient, weathering, caption, lettering, watermark, mockup,
+> modern logo, or alternate redesign. Use the attached canonical vanilla HOI4
+> flag ladder only as a reference for flat graphic clarity at small size.
 
-> Create a fictional, period-plausible 1930s Flemish civil-industrial authority
-> flag. Use a broad black hoist and a gold fly carrying a compact black lion
-> with restrained red claws and tongue, drawing only on the historical Lion of
-> Flanders motif. Keep the silhouette bold and civic rather than dynastic,
-> fascist, or monarchical. Flat vector-like heraldry, black, gold, and dark red,
-> readable at ten pixels. Do not reproduce or claim the postwar official
-> Flemish flag.
+Raw ImageGen output:
+`C:/Users/klimp/.codex/generated_images/019f64f5-0142-7ea2-9be6-3b919c017427/exec-7f7bae87-7c21-433f-bf73-adbbdaca7976.png`.
+Repo copy: `../source_png/generated_nwe/flags/ACX_st_pirans_cross_imagegen_raw.png`.
+Flat master: `../source_png/generated_nwe/flags/ACX_st_pirans_cross_imagegen_flat_master.png`.
+Exact output palette: `#000000`, `#FFFFFF`.
 
-### AFX Wallonia
+### AEX retirement boundary
 
-> Create a fictional, period-plausible 1930s Walloon provisional-government
-> flag. Use a deep burgundy hoist panel and a gold fly with a forceful compact
-> red rooster, informed by the Walloon rooster selected in 1913 but not copying
-> Pierre Paulus's restricted watercolor or a modern legal flag. The result
-> should feel like an industrial valley's emergency civic banner. Flat
-> vector-like heraldry, burgundy and gold only, readable at ten pixels.
+AEX is a vanilla `BEL_flanders` cosmetic overlay, not a standalone Event 006
+country. No AEX flag prompt is active. The obsolete generated AEX civic master,
+processed previews, and runtime TGA triplet are retired and the build validator
+requires them to remain absent. The historical Lion of Flanders arms source is
+retained only as evidence for the existing vanilla cosmetic overlay.
 
-### AGX Friesland
+### AFX Wallonia — 1913 coq hardi
 
-> Create a fictional, period-plausible civic flag for a bounded 1930s Friesland
-> coastal authority, not a pan-Frisian state. Use dark blue and warm-white
-> diagonal bands, plus a narrow hoist device containing three simplified red
-> pompeblêden. Preserve the researched West Frisian visual language while
-> clearly recomposing it as an alternate-history administration flag. Flat
-> vector-like heraldry, blue, white, and red, readable at ten pixels.
+Historical input: `../source_png/country_symbols/afx_walloon_rooster_source.png`
+([Wikimedia Commons source](https://commons.wikimedia.org/wiki/File:Flag_of_Wallonia.svg),
+CC0); historical identity check:
+[Wallonia Public Service](https://connaitrelawallonie.wallonie.be/histoire-et-symboles/symboles/un-embleme-le-coq-hardi).
+Canonical presentation input: `isr.png` at all three vanilla-reference sizes.
 
-### AJX Saar
+> Reproduce the attached Walloon coq hardi flag design exactly as a clean flat
+> flag: one red coq hardi, beak closed and dexter leg raised, centered on one
+> solid yellow field. Preserve its single-charge arrangement and orientation.
+> Output one edge-to-edge 3:2 orthographic flag master. No pole, border, folds,
+> fabric texture, lighting, shadow, depth, gradient, weathering, caption,
+> lettering, watermark, mockup, modern logo, or alternate redesign. Use the
+> attached canonical vanilla HOI4 flag ladder only as a reference for flat
+> graphic clarity at small size.
 
-> Create a fictional, period-plausible 1930s Saar municipal neutral-commission
-> civic flag. Use the former blue-white-black commission palette only as a
-> historical direction: a blue vertical hoist with a white upper fly and black
-> lower fly, separated cleanly. It should suggest municipal neutrality and
-> industrial administration without copying the exact 1920–1935 territory
-> tricolor. Flat geometric design, readable at ten pixels.
+Raw ImageGen output:
+`C:/Users/klimp/.codex/generated_images/019f64f5-0142-7ea2-9be6-3b919c017427/exec-96127640-0f4b-4a81-b6db-f17f28e66008.png`.
+Repo copy: `../source_png/generated_nwe/flags/AFX_walloon_coq_hardi_1913_imagegen_raw.png`.
+Flat master: `../source_png/generated_nwe/flags/AFX_walloon_coq_hardi_1913_imagegen_flat_master.png`.
+Exact output palette: `#FFD100`, `#E4002B`.
+
+### AGX Friesland — provincial flag
+
+Historical input: `../source_png/country_symbols/agx_west_frisian_flag_source.png`
+([Wikimedia Commons source](https://commons.wikimedia.org/wiki/File:Frisian_flag.svg),
+public domain); official design check:
+[Province of Fryslân](https://www.fryslan.frl/friese-vlag).
+Canonical presentation input: `ice.png` at all three vanilla-reference sizes.
+
+> Reproduce the attached Friesland provincial flag design exactly as a clean
+> flat flag: seven alternating diagonal bands, four blue and three white, with
+> exactly seven red pompeblêden in the documented arrangement. Preserve the
+> diagonal direction, symbol count, and orientation. Output one edge-to-edge
+> 3:2 orthographic flag master. No pole, border, folds, fabric texture,
+> lighting, shadow, depth, gradient, weathering, caption, lettering, watermark,
+> mockup, modern logo, extra symbols, or alternate redesign. Use the attached
+> canonical vanilla HOI4 flag ladder only as a reference for flat graphic
+> clarity at small size.
+
+Raw ImageGen output:
+`C:/Users/klimp/.codex/generated_images/019f64f5-0142-7ea2-9be6-3b919c017427/exec-8553e19e-c7ad-4591-95f2-845eeaddcc52.png`.
+Repo copy: `../source_png/generated_nwe/flags/AGX_friesland_provincial_imagegen_raw.png`.
+Flat master: `../source_png/generated_nwe/flags/AGX_friesland_provincial_imagegen_flat_master.png`.
+Exact output palette: `#244994`, `#FFFFFF`, `#E72326`.
+
+### AJX Saar — Territory flag, 1920–1935
+
+Historical input:
+`../source_png/country_symbols/ajx_saar_territory_1920_1935_source.png`
+([Wikimedia Commons source](https://commons.wikimedia.org/wiki/File:Flag_of_Saar_1920-1935.svg),
+public domain); institutional check:
+[Saarland State Chancellery](https://artsandculture.google.com/story/saarhundert-das-saargebiet-ein-kind-der-internationalen-v%C3%B6lkergemeinschaft-staatskanzlei-saarland/kQWBBjUfmhpHJA?hl=en).
+Canonical presentation input: `arm.png` at all three vanilla-reference sizes.
+
+> Reproduce the attached Saar Territory 1920–1935 flag design exactly as a
+> clean flat flag: three equal horizontal bands in blue, white, and black from
+> top to bottom. Preserve the stripe order, equal geometry, and orientation.
+> Output one edge-to-edge 3:2 orthographic flag master. No pole, border, folds,
+> fabric texture, lighting, shadow, depth, gradient, weathering, caption,
+> lettering, watermark, mockup, modern logo, emblem, or alternate redesign. Use
+> the attached canonical vanilla HOI4 flag ladder only as a reference for flat
+> graphic clarity at small size.
+
+Raw ImageGen output:
+`C:/Users/klimp/.codex/generated_images/019f64f5-0142-7ea2-9be6-3b919c017427/exec-801f7d89-ac0f-4f24-845a-19118f40caa2.png`.
+Repo copy: `../source_png/generated_nwe/flags/AJX_saar_territory_1920_1935_imagegen_raw.png`.
+Flat master: `../source_png/generated_nwe/flags/AJX_saar_territory_1920_1935_imagegen_flat_master.png`.
+Exact output palette: `#00209F`, `#FFFFFF`, `#000000`.
 
 ## Institutional council portrait prompts
 

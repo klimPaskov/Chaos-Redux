@@ -2,13 +2,19 @@
 """Build the generated Event 006 northern/western Europe art package.
 
 The source rasters in ``source_png/generated_nwe`` were created independently
-with ImageGen.  This script only performs deterministic crops, palette
-normalisation, resizing, tonal finishing, format conversion, validation, hash
-inventory generation, and contact-sheet assembly.
+with ImageGen. Historical flag generation used cited flat design references and
+the canonical vanilla HOI4 flag ladder. This script only performs deterministic
+palette normalisation, a recorded minimal scanline cleanup on ImageGen pixels,
+resizing, legacy portrait finishing, format conversion, validation, hash
+inventory generation, and contact-sheet assembly. Portraits approved through
+the dedicated HOI4 portrait processor are preserved byte-for-byte at the PNG
+stage and only reconverted or decoded here. The script never imports masks,
+traces reference art, redraws flag geometry, or invents small-size variants.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import struct
 import subprocess
@@ -29,35 +35,73 @@ FLAGS_ROOT = ROOT / "gfx" / "flags"
 PORTRAITS_ROOT = ROOT / "gfx" / "leaders" / "006_independence_wave"
 DDS_CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
 HASH_LEDGER = ASSET_ROOT / "generated_nwe_hashes.sha256"
+VANILLA_FLAG_REFERENCE_ROOT = (
+    ROOT
+    / ".agents"
+    / "skills"
+    / "chaos-redux-event-assets"
+    / "assets"
+    / "vanilla_reference"
+    / "flags"
+)
+
+
+def vanilla_flag_ladder(stem: str) -> tuple[Path, Path, Path]:
+    return tuple(
+        VANILLA_FLAG_REFERENCE_ROOT / size_name / f"{stem}.png"
+        for size_name in ("normal", "medium", "small")
+    )
 
 
 FLAGS = {
     "ACX": {
-        "label": "Cornish civic baseline",
-        "source": "ACX_civic_baseline_generated_source.png",
-        "palette": ((7, 8, 9), (247, 246, 239)),
-    },
-    "AEX": {
-        "label": "Flemish civic-industrial baseline",
-        "source": "AEX_civic_baseline_generated_source.png",
-        "palette": ((10, 10, 10), (238, 184, 0), (188, 20, 30)),
+        "label": "St Piran's Cross",
+        "raw_source": "ACX_st_pirans_cross_imagegen_raw.png",
+        "flat_master": "ACX_st_pirans_cross_imagegen_flat_master.png",
+        "design_reference": ASSET_ROOT / "source_png" / "country_symbols" / "acx_st_pirans_cross_source.png",
+        "vanilla_ladder": vanilla_flag_ladder("arm"),
+        "palette": ((0, 0, 0), (255, 255, 255)),
+        "majority_scanline_cleanup": ((255, 255, 255), 0.65),
     },
     "AFX": {
-        "label": "Walloon provisional baseline",
-        "source": "AFX_civic_baseline_generated_source.png",
-        "palette": ((151, 9, 43), (242, 188, 24)),
+        "label": "1913 Walloon coq hardi",
+        "raw_source": "AFX_walloon_coq_hardi_1913_imagegen_raw.png",
+        "flat_master": "AFX_walloon_coq_hardi_1913_imagegen_flat_master.png",
+        "design_reference": ASSET_ROOT / "source_png" / "country_symbols" / "afx_walloon_rooster_source.png",
+        "vanilla_ladder": vanilla_flag_ladder("isr"),
+        "palette": ((255, 209, 0), (228, 0, 43)),
     },
     "AGX": {
-        "label": "West Frisian civic baseline",
-        "source": "AGX_civic_baseline_generated_source.png",
-        "palette": ((31, 77, 144), (245, 244, 237), (194, 28, 42)),
+        "label": "Friesland provincial flag",
+        "raw_source": "AGX_friesland_provincial_imagegen_raw.png",
+        "flat_master": "AGX_friesland_provincial_imagegen_flat_master.png",
+        "design_reference": ASSET_ROOT / "source_png" / "country_symbols" / "agx_west_frisian_flag_source.png",
+        "vanilla_ladder": vanilla_flag_ladder("ice"),
+        "palette": ((36, 73, 148), (255, 255, 255), (231, 35, 38)),
     },
     "AJX": {
-        "label": "Saar municipal baseline",
-        "source": "AJX_civic_baseline_generated_source.png",
-        "palette": ((21, 51, 145), (246, 245, 240), (8, 9, 10)),
+        "label": "Saar Territory, 1920-1935",
+        "raw_source": "AJX_saar_territory_1920_1935_imagegen_raw.png",
+        "flat_master": "AJX_saar_territory_1920_1935_imagegen_flat_master.png",
+        "design_reference": ASSET_ROOT / "source_png" / "country_symbols" / "ajx_saar_territory_1920_1935_source.png",
+        "vanilla_ladder": vanilla_flag_ladder("arm"),
+        "palette": ((0, 32, 159), (255, 255, 255), (0, 0, 0)),
     },
 }
+
+OBSOLETE_CIVIC_FLAG_SOURCES = tuple(
+    SOURCE_ROOT / "flags" / f"{tag}_civic_baseline_generated_source.png"
+    for tag in ("ACX", "AEX", "AFX", "AGX", "AJX")
+)
+
+RETIRED_AEX_FLAG_PATHS = (
+    PROCESSED_ROOT / "flags" / "normal" / "AEX.png",
+    PROCESSED_ROOT / "flags" / "medium" / "AEX.png",
+    PROCESSED_ROOT / "flags" / "small" / "AEX.png",
+    FLAGS_ROOT / "AEX.tga",
+    FLAGS_ROOT / "medium" / "AEX.tga",
+    FLAGS_ROOT / "small" / "AEX.tga",
+)
 
 FLAG_SIZES = {
     "normal": (82, 52),
@@ -112,6 +156,17 @@ PORTRAITS = {
     },
 }
 
+# These masters were separately finished, compared with canonical vanilla
+# portraits, and approved through .tools/process_hoi4_portrait.py. Rebuilding
+# this broader package must never replace those reviewed PNGs with the older
+# generic finish_portrait path.
+EXTERNALLY_APPROVED_PORTRAIT_STEMS = {
+    "portrait_AFX_walloon_provisional_assembly",
+    "portrait_AFX_walloon_reserve_commander",
+    "portrait_AGX_friesland_coastal_council",
+    "portrait_AGX_friesland_coastal_commander",
+}
+
 
 def font(size: int, *, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     filename = "arialbd.ttf" if bold else "arial.ttf"
@@ -135,6 +190,7 @@ def prepare_directories() -> None:
     ]
     directories.extend(
         [
+            SOURCE_ROOT / "flags",
             PROCESSED_ROOT / "institutional_portraits",
             PROCESSED_ROOT / "command_portraits",
             PROCESSED_ROOT / "command_portraits_small",
@@ -149,6 +205,12 @@ def prepare_directories() -> None:
     )
     for directory in directories:
         directory.mkdir(parents=True, exist_ok=True)
+
+
+def retire_obsolete_flag_artifacts() -> None:
+    """Remove only the superseded civic masters and retired AEX runtime family."""
+    for path in (*OBSOLETE_CIVIC_FLAG_SOURCES, *RETIRED_AEX_FLAG_PATHS):
+        path.unlink(missing_ok=True)
 
 
 def fixed_palette_image(colors: tuple[tuple[int, int, int], ...]) -> Image.Image:
@@ -166,6 +228,49 @@ def quantize_to_palette(image: Image.Image, colors: tuple[tuple[int, int, int], 
     palette = fixed_palette_image(colors)
     quantized = image.convert("RGB").quantize(palette=palette, dither=Image.Dither.NONE)
     return quantized.convert("RGBA")
+
+
+def clean_majority_scanlines(
+    image: Image.Image,
+    target: tuple[int, int, int],
+    threshold: float,
+) -> Image.Image:
+    """Promote almost-solid scanlines left by ImageGen edge noise.
+
+    The rule uses only the quantized ImageGen pixels. It neither imports a mask
+    nor traces/reconstructs geometry from the cited design reference.
+    """
+    cleaned = image.convert("RGBA")
+    pixels = cleaned.load()
+    target_rgba = (*target, 255)
+    for y in range(cleaned.height):
+        matches = sum(pixels[x, y][:3] == target for x in range(cleaned.width))
+        if threshold < matches / cleaned.width < 1.0:
+            for x in range(cleaned.width):
+                pixels[x, y] = target_rgba
+    for x in range(cleaned.width):
+        matches = sum(pixels[x, y][:3] == target for y in range(cleaned.height))
+        if threshold < matches / cleaned.height < 1.0:
+            for y in range(cleaned.height):
+                pixels[x, y] = target_rgba
+    return cleaned
+
+
+def normalize_imagegen_flag_source(
+    raw_source: Path,
+    flat_master: Path,
+    colors: tuple[tuple[int, int, int], ...],
+    majority_scanline_cleanup: tuple[tuple[int, int, int], float] | None = None,
+) -> Image.Image:
+    """Flatten one ImageGen raster without redrawing or replacing its geometry."""
+    image = Image.open(raw_source).convert("RGBA")
+    if image.width * 2 != image.height * 3:
+        raise ValueError(f"ImageGen flag source is not exactly 3:2: {raw_source} ({image.size})")
+    flat = quantize_to_palette(image, colors)
+    if majority_scanline_cleanup is not None:
+        flat = clean_majority_scanlines(flat, *majority_scanline_cleanup)
+    flat.save(flat_master)
+    return flat
 
 
 def write_bottom_origin_tga(image: Image.Image, output: Path) -> None:
@@ -202,15 +307,21 @@ def write_bottom_origin_tga(image: Image.Image, output: Path) -> None:
 def process_flags() -> dict[str, dict[str, Path]]:
     outputs: dict[str, dict[str, Path]] = {}
     for tag, config in FLAGS.items():
-        source = Image.open(SOURCE_ROOT / "flags" / str(config["source"])).convert("RGB")
-        normal = ImageOps.fit(
-            source,
-            FLAG_SIZES["normal"],
-            method=Image.Resampling.LANCZOS,
-            centering=(0.5, 0.5),
+        raw_source = SOURCE_ROOT / "flags" / str(config["raw_source"])
+        flat_master = SOURCE_ROOT / "flags" / str(config["flat_master"])
+        source = normalize_imagegen_flag_source(
+            raw_source,
+            flat_master,
+            config["palette"],
+            config.get("majority_scanline_cleanup"),
         )
+        normal = source.resize(FLAG_SIZES["normal"], Image.Resampling.LANCZOS)
         normal = quantize_to_palette(normal, config["palette"])
-        outputs[tag] = {}
+        outputs[tag] = {
+            "raw": raw_source,
+            "flat_master": flat_master,
+            "design_reference": config["design_reference"],
+        }
         for size_name, size in FLAG_SIZES.items():
             if size_name == "normal":
                 image = normal
@@ -282,14 +393,33 @@ def process_portraits() -> dict[str, dict[str, dict[str, Path]]]:
         decoded_directory = DECODED_ROOT / f"{category}_portraits"
         for tag, record in records.items():
             stem = str(record["stem"])
-            source = Image.open(source_directory / f"{stem}_source.png")
-            large = finish_portrait(source, (156, 210))
             png_output = processed_directory / f"{stem}.png"
-            large.save(png_output)
+            if stem in EXTERNALLY_APPROVED_PORTRAIT_STEMS:
+                if not png_output.exists():
+                    raise FileNotFoundError(
+                        f"Missing externally approved portrait PNG: {png_output}"
+                    )
+                large = Image.open(png_output).convert("RGBA")
+                if large.size != (156, 210):
+                    raise ValueError(
+                        f"Unexpected approved portrait dimensions: {png_output} ({large.size})"
+                    )
+            else:
+                source = Image.open(source_directory / f"{stem}_source.png")
+                large = finish_portrait(source, (156, 210))
+                large.save(png_output)
             dds_output = PORTRAITS_ROOT / f"{stem}.dds"
             convert_dds(png_output, dds_output, (156, 210))
             decoded_output = decoded_directory / f"{stem}.png"
-            decode_bgra_dds(dds_output).save(decoded_output)
+            decoded = decode_bgra_dds(dds_output)
+            if stem in EXTERNALLY_APPROVED_PORTRAIT_STEMS and decoded_output.exists():
+                retained_decode = Image.open(decoded_output).convert("RGBA")
+                if retained_decode.size != decoded.size or retained_decode.tobytes() != decoded.tobytes():
+                    raise ValueError(
+                        f"Approved decoded portrait no longer matches runtime DDS: {decoded_output}"
+                    )
+            else:
+                decoded.save(decoded_output)
             outputs[category][tag] = {
                 "source": source_directory / f"{stem}_source.png",
                 "processed": png_output,
@@ -298,13 +428,36 @@ def process_portraits() -> dict[str, dict[str, dict[str, Path]]]:
             }
 
             if category == "command":
-                small = finish_portrait(large, (50, 67))
                 small_png = PROCESSED_ROOT / "command_portraits_small" / f"{stem}_small.png"
-                small.save(small_png)
+                if stem in EXTERNALLY_APPROVED_PORTRAIT_STEMS:
+                    if not small_png.exists():
+                        raise FileNotFoundError(
+                            f"Missing externally approved army-thumbnail PNG: {small_png}"
+                        )
+                    small = Image.open(small_png).convert("RGBA")
+                    if small.size != (50, 67):
+                        raise ValueError(
+                            f"Unexpected approved army-thumbnail dimensions: {small_png} ({small.size})"
+                        )
+                else:
+                    small = finish_portrait(large, (50, 67))
+                    small.save(small_png)
                 small_dds = PORTRAITS_ROOT / f"{stem}_small.dds"
                 convert_dds(small_png, small_dds, (50, 67))
                 small_decoded = DECODED_ROOT / "command_portraits_small" / f"{stem}_small.png"
-                decode_bgra_dds(small_dds).save(small_decoded)
+                decoded_small = decode_bgra_dds(small_dds)
+                if stem in EXTERNALLY_APPROVED_PORTRAIT_STEMS and small_decoded.exists():
+                    retained_small_decode = Image.open(small_decoded).convert("RGBA")
+                    if (
+                        retained_small_decode.size != decoded_small.size
+                        or retained_small_decode.tobytes() != decoded_small.tobytes()
+                    ):
+                        raise ValueError(
+                            "Approved decoded army thumbnail no longer matches "
+                            f"runtime DDS: {small_decoded}"
+                        )
+                else:
+                    decoded_small.save(small_decoded)
                 outputs[category][tag].update(
                     {
                         "small_processed": small_png,
@@ -327,6 +480,21 @@ def validate_tga(path: Path, size: tuple[int, int]) -> None:
         raise ValueError(f"Top-origin TGA is not permitted: {path}")
     if descriptor & 0x0F != 8:
         raise ValueError(f"TGA alpha descriptor is not 8-bit: {path}")
+
+
+def validate_flat_flag_png(
+    path: Path,
+    size: tuple[int, int],
+    colors: tuple[tuple[int, int, int], ...],
+) -> None:
+    image = Image.open(path).convert("RGBA")
+    if image.size != size:
+        raise ValueError(f"Unexpected flat flag size: {path} ({image.size})")
+    pixels = set(image.getdata())
+    expected = {(*color, 255) for color in colors}
+    if not pixels or not pixels.issubset(expected):
+        unexpected = sorted(pixels - expected)[:8]
+        raise ValueError(f"Unexpected colors or alpha in flat flag: {path}: {unexpected}")
 
 
 def validate_dds(path: Path) -> None:
@@ -390,10 +558,10 @@ def draw_centered_lines(
 def build_flag_contact_sheet() -> Path:
     card_w, card_h = 390, 390
     header_h = 88
-    sheet = Image.new("RGBA", (card_w * 5, header_h + card_h), "#161b22")
+    sheet = Image.new("RGBA", (card_w * len(FLAGS), header_h + card_h), "#161b22")
     draw = ImageDraw.Draw(sheet)
-    draw.text((28, 18), "Event 006 — generated civic baseline flags", font=font(29, bold=True), fill="#f4f0e8")
-    draw.text((29, 53), "Final bottom-origin 32-bit TGA triplets; designs are fictional, not historical state flags", font=font(16), fill="#b8c1cc")
+    draw.text((28, 18), "Event 006 — live historical country flags", font=font(29, bold=True), fill="#f4f0e8")
+    draw.text((29, 53), "Actual bottom-origin uncompressed 32-bit TGA triplets; no small-size redesign", font=font(16), fill="#b8c1cc")
     for index, (tag, config) in enumerate(FLAGS.items()):
         left = index * card_w
         top = header_h
@@ -405,9 +573,77 @@ def build_flag_contact_sheet() -> Path:
         draw_contain(sheet, normal.resize((296, 188), Image.Resampling.NEAREST), (left + 46, top + 64, left + 344, top + 254), nearest=True)
         draw_contain(sheet, medium.resize((164, 104), Image.Resampling.NEAREST), (left + 35, top + 264, left + 205, top + 346), nearest=True)
         draw_contain(sheet, small.resize((100, 70), Image.Resampling.NEAREST), (left + 238, top + 264, left + 345, top + 346), nearest=True)
+        draw.text((left + 151, top + 246), "82×52", font=font(13), fill="#aeb9c6")
         draw.text((left + 41, top + 350), "41×26", font=font(13), fill="#aeb9c6")
         draw.text((left + 269, top + 350), "10×7", font=font(13), fill="#aeb9c6")
     output = CONTACT_ROOT / "006_nwe_generated_flags_contact_sheet.png"
+    sheet.convert("RGB").save(output, quality=95)
+    return output
+
+
+def build_flag_raw_flat_comparison_sheet(
+    flag_outputs: dict[str, dict[str, Path]],
+) -> Path:
+    card_w, card_h = 470, 340
+    header_h = 92
+    sheet = Image.new("RGBA", (card_w * len(FLAGS), header_h + card_h), "#161b22")
+    draw = ImageDraw.Draw(sheet)
+    draw.text(
+        (28, 18),
+        "Event 006 — ImageGen provenance and flat normalization",
+        font=font(29, bold=True),
+        fill="#f4f0e8",
+    )
+    draw.text(
+        (29, 53),
+        "Cited design reference | official ImageGen raw | deterministic flat master; geometry is never redrawn",
+        font=font(16),
+        fill="#b8c1cc",
+    )
+    for index, (tag, config) in enumerate(FLAGS.items()):
+        left = index * card_w
+        top = header_h
+        draw.rounded_rectangle(
+            (left + 10, top + 10, left + card_w - 10, top + card_h - 10),
+            radius=10,
+            fill="#252c35",
+            outline="#5b6878",
+            width=2,
+        )
+        draw_centered_lines(
+            draw,
+            f"{tag} — {config['label']}",
+            (left + 20, top + 22, left + card_w - 20, top + 55),
+            size=17,
+            bold=True,
+            wrap_width=38,
+        )
+        images = (
+            ("cited design", Image.open(flag_outputs[tag]["design_reference"]).convert("RGBA")),
+            ("ImageGen raw", Image.open(flag_outputs[tag]["raw"]).convert("RGBA")),
+            ("flat master", Image.open(flag_outputs[tag]["flat_master"]).convert("RGBA")),
+        )
+        for column, (label, image) in enumerate(images):
+            box_left = left + 22 + column * 148
+            draw_contain(sheet, image, (box_left, top + 72, box_left + 134, top + 246))
+            label_font = font(13, bold=True)
+            label_bounds = draw.textbbox((0, 0), label, font=label_font)
+            label_width = label_bounds[2] - label_bounds[0]
+            draw.text(
+                (box_left + (134 - label_width) // 2, top + 255),
+                label,
+                font=label_font,
+                fill="#d5dbe3",
+            )
+        draw_centered_lines(
+            draw,
+            "Flat master uses nearest-palette cleanup; ACX also promotes one noisy cross-edge scanline. No masks or tracing.",
+            (left + 24, top + 282, left + card_w - 24, top + card_h - 18),
+            size=13,
+            fill="#aeb9c6",
+            wrap_width=58,
+        )
+    output = CONTACT_ROOT / "006_nwe_generated_historical_flags_raw_vs_flat_contact_sheet.png"
     sheet.convert("RGB").save(output, quality=95)
     return output
 
@@ -487,11 +723,26 @@ def runtime_portrait_paths() -> list[Path]:
     return paths
 
 
-def validate_outputs() -> None:
-    for tag in FLAGS:
+def validate_flag_outputs() -> None:
+    for tag, config in FLAGS.items():
+        flat_master = SOURCE_ROOT / "flags" / str(config["flat_master"])
+        validate_flat_flag_png(flat_master, (1536, 1024), config["palette"])
+        for size_name, size in FLAG_SIZES.items():
+            validate_flat_flag_png(
+                PROCESSED_ROOT / "flags" / size_name / f"{tag}.png",
+                size,
+                config["palette"],
+            )
         validate_tga(FLAGS_ROOT / f"{tag}.tga", FLAG_SIZES["normal"])
         validate_tga(FLAGS_ROOT / "medium" / f"{tag}.tga", FLAG_SIZES["medium"])
         validate_tga(FLAGS_ROOT / "small" / f"{tag}.tga", FLAG_SIZES["small"])
+
+    for path in RETIRED_AEX_FLAG_PATHS:
+        if path.exists():
+            raise ValueError(f"Retired standalone AEX flag artifact still exists: {path}")
+
+
+def validate_portrait_outputs() -> None:
     for path in runtime_portrait_paths():
         validate_dds(path)
 
@@ -500,6 +751,9 @@ def write_hash_ledger() -> None:
     paths: list[Path] = []
     for directory in (SOURCE_ROOT, PROCESSED_ROOT, DECODED_ROOT):
         paths.extend(path for path in directory.rglob("*") if path.is_file())
+    for config in FLAGS.values():
+        paths.append(config["design_reference"])
+        paths.extend(config["vanilla_ladder"])
     paths.extend(CONTACT_ROOT.glob("006_nwe_generated_*.png"))
     paths.extend(runtime_flag_paths())
     paths.extend(runtime_portrait_paths())
@@ -510,17 +764,42 @@ def write_hash_ledger() -> None:
     HASH_LEDGER.write_text("\n".join(rows) + "\n", encoding="utf-8")
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--scope",
+        choices=("all", "flags", "portraits"),
+        default="all",
+        help="Build all assets or restrict the run to one non-overlapping package surface.",
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
     prepare_directories()
-    process_flags()
-    portrait_outputs = process_portraits()
-    validate_outputs()
-    build_flag_contact_sheet()
-    build_portrait_contact_sheet("institutional", portrait_outputs)
-    build_portrait_contact_sheet("command", portrait_outputs)
-    build_decoded_contact_sheet(portrait_outputs)
+    retire_obsolete_flag_artifacts()
+
+    if args.scope in ("all", "flags"):
+        flag_outputs = process_flags()
+        validate_flag_outputs()
+        build_flag_contact_sheet()
+        build_flag_raw_flat_comparison_sheet(flag_outputs)
+
+    if args.scope in ("all", "portraits"):
+        portrait_outputs = process_portraits()
+        validate_portrait_outputs()
+        build_portrait_contact_sheet("institutional", portrait_outputs)
+        build_portrait_contact_sheet("command", portrait_outputs)
+        build_decoded_contact_sheet(portrait_outputs)
+
     write_hash_ledger()
-    print("Built 5 flag triplets, 10 large portraits, and 5 officer thumbnails.")
+    if args.scope == "flags":
+        print("Built 4 live historical flag triplets; retired standalone AEX flag artifacts.")
+    elif args.scope == "portraits":
+        print("Built 10 large portraits and 5 officer thumbnails; retired standalone AEX flag artifacts.")
+    else:
+        print("Built 4 live historical flag triplets, 10 large portraits, and 5 officer thumbnails; retired standalone AEX flag artifacts.")
     print(f"Hash ledger: {HASH_LEDGER.relative_to(ROOT).as_posix()}")
     return 0
 
