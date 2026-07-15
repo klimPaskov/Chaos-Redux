@@ -37,6 +37,14 @@ approved portrait master, but their crop, subject scale, background, frame,
 corners, and paper overlay must be composed independently at `65x67`; never
 shrink a leader, commander, or operative portrait into a dossier card.
 
+Reusable generated dossier components live under
+`advisor_dossier_overlays/`. Read
+`advisor_dossier_overlays/advisor_dossier_overlay_manifest.json` before use.
+The frame and paper/seal are original ImageGen outputs with transparent
+derivatives; they are compositing inputs, not permission to recreate visible
+card art with rectangles, polygons, lines, ellipses, procedural patina, or
+other primitive drawing.
+
 ### Flags and event art
 
 - `vanilla_reference/flags/normal/`, `flags/medium/`, and `flags/small/` — flat
