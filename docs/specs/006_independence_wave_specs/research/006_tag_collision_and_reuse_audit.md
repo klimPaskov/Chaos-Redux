@@ -24,7 +24,7 @@ The decisive audit scanned:
 - the sibling local mods `agentic_hoi4_modding`, `chaos_redux_music`, and `slop_redux`;
 - Chaos Redux country tags, aliases, cosmetic calls, country history, base country localisation, and flags.
 
-The scan parsed 7,981 literal country-tag registration records representing 2,262 unique tags and 986 top-level alias records representing 840 unique aliases. It also checked literal `set_cosmetic_tag` calls, exact three-character base localisation keys, flag filenames, and country-history filenames. All 206 provisional Event 6 reservations remain excluded from the replacement pool even when their package later became a vanilla reuse or overlay.
+The scan parsed 7,981 literal country-tag registration records and 69,484 alias, cosmetic, history, localisation, and flag surfaces. It also scanned eight embedded ZIP archives in memory; one archive contributed ten cosmetic-tag call sites and none contributed a country registration. The audit fails closed if an installed `.7z` or `.rar` archive cannot be inspected. All 206 provisional Event 6 reservations remain excluded from the replacement pool even when their package later became a vanilla reuse or overlay.
 
 No accepted custom Event 6 tag overlaps a tag or alias found in that installed universe, consumes the engine-reserved `GFX` graphics namespace, or uses a Windows-reserved device basename. The post-migration identity comparison found `IW-153` Dayak federation equivalent to vanilla `POK`'s Dayak Republic of West Borneo identity; `FWX` was therefore retired and `IW-153` now reuses `POK`. A later installed mod can still consume a tag, so the audit must be rerun immediately before any later tag migration or final completion audit.
 
@@ -93,6 +93,24 @@ Overlay rows are not selectable release candidates and receive no custom country
 | `IW-204` Araucania and Patagonia | Carrier with `kingdom_of_araucania_and_patagonia` cosmetic |
 
 An overlay activates once per carrier through a narrow route completion or package hook. It must preserve the carrier's existing focus tree, history, cores, state transfers, autonomy, global flags, and formable effects. Merely setting the cosmetic tag is not an implementation of a vanilla formable. A global daily, weekly, or monthly country iteration is neither required nor authorised.
+
+## Fuzzy-name manual dispositions
+
+The installed-universe comparison deliberately over-reports similar names. The nine packages below were inspected manually and are not vanilla-country duplicates:
+
+| Package | Automated comparison | Accepted disposition |
+| --- | --- | --- |
+| `IW-037` Polesia | Polynesia cosmetics | Lexical similarity only. Polesia is an Eastern European historical-geographic identity; Polynesia is an unrelated Pacific identity. |
+| `IW-061` Luristan | `KUR` and Iraqi Kurdistan cosmetics | Distinct Lur polity and anchor. It does not represent Kurdistan and must not reuse `KUR` or the Iraqi cosmetic route. |
+| `IW-100` Hausa Federation | Russian Federation | The shared word “Federation” is generic. The relevant Hausa/Sokoto distinction is researched separately and remains binding. |
+| `IW-117` Kilwa restoration | Showa Restoration | The shared word “Restoration” is generic; the countries, regions, and historical projects are unrelated. |
+| `IW-144` Dravidian federation | Arabian Federation | The shared federal suffix is generic; the identities and territory do not overlap. |
+| `IW-159` Shan federation | Russian Federation | The shared federal suffix is generic; the identities and territory do not overlap. |
+| `IW-163` Chin state | China and Chinese route names | Substring similarity only. This is the restricted Chin/Zo community package, not a Chinese state or Chinese route. |
+| `IW-205` Amazonian confederation | Danubian and Antillean confederations | The shared confederal suffix is generic; all three are geographically and historically distinct. |
+| `IW-206` Maroon republic | Roman and Oromo republics | “Republic” is generic and “Maroon” is not “Roman” or “Oromo”; the package represents researched Maroon communities. |
+
+None of these fuzzy hits changes the locked representation. A later registry rename, territory redesign, or newly installed mod requires the audit and these dispositions to be reviewed again.
 
 ## Distinct identities retained as custom countries
 

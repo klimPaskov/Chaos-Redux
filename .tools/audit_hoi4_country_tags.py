@@ -17,6 +17,7 @@ import re
 import shutil
 import subprocess
 import unicodedata
+import zipfile
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
@@ -92,14 +93,17 @@ class TagDefinition:
 	country_path: str
 
 
-def decode_text(path: Path) -> str:
-	data = path.read_bytes()
+def decode_bytes(data: bytes) -> str:
 	for encoding in ("utf-8-sig", "utf-8", "cp1252"):
 		try:
 			return data.decode(encoding)
 		except UnicodeDecodeError:
 			continue
 	return data.decode("utf-8", errors="replace")
+
+
+def decode_text(path: Path) -> str:
+	return decode_bytes(path.read_bytes())
 
 
 def file_sha256(path: Path) -> str:
@@ -249,6 +253,194 @@ def scan_extended_tag_surfaces(root: Path, root_kind: str, root_name: str) -> li
 			definitions.append(TagDefinition(tag, root_kind, root_name, "flag_asset", str(path), "HOI4 flag asset"))
 
 	return definitions
+
+
+def scan_zip_tag_surfaces(
+	archive_path: Path,
+	root_kind: str,
+	root_name: str,
+) -> tuple[list[TagDefinition], list[TagDefinition]]:
+	"""Scan standard HOI4 tag-bearing paths inside one ZIP without extraction."""
+	country_definitions: list[TagDefinition] = []
+	extended_definitions: list[TagDefinition] = []
+	seen: set[tuple[str, str, str]] = set()
+
+	def in_tree(member_path: str, tree: str) -> bool:
+		return member_path.startswith(f"{tree}/") or f"/{tree}/" in member_path
+
+	def add_extended(tag: str, use_kind: str, member_file: str, detail: str) -> None:
+		key = (tag, use_kind, member_file)
+		if key in seen:
+			return
+		seen.add(key)
+		extended_definitions.append(
+			TagDefinition(tag, root_kind, root_name, use_kind, member_file, detail)
+		)
+
+	with zipfile.ZipFile(archive_path) as archive:
+		for info in archive.infolist():
+			if info.is_dir():
+				continue
+			member_name = info.filename.replace("\\", "/").lstrip("/")
+			member_lower = member_name.lower()
+			member_file = f"{archive_path}!/{member_name}"
+			is_txt = member_lower.endswith(".txt")
+			is_yml = member_lower.endswith((".yml", ".yaml"))
+			needs_text = (
+				is_txt
+				and (
+					in_tree(member_lower, "common/country_tags")
+					or in_tree(member_lower, "common/country_tag_aliases")
+					or in_tree(member_lower, "common/countries")
+					or in_tree(member_lower, "common")
+					or in_tree(member_lower, "events")
+					or in_tree(member_lower, "history")
+				)
+			) or (
+				is_yml
+				and (
+					in_tree(member_lower, "localisation")
+					or in_tree(member_lower, "localization")
+				)
+			)
+			data = archive.read(info) if needs_text else b""
+			text = decode_bytes(data) if data else ""
+
+			if is_txt and in_tree(member_lower, "common/country_tags"):
+				for match in TAG_DEFINITION_RE.finditer(text):
+					country_definitions.append(
+						TagDefinition(
+							tag=match.group(1),
+							root_kind=root_kind,
+							root_name=root_name,
+							use_kind="country_tag_definition",
+							file=member_file,
+							country_path=match.group(2).replace("\\", "/"),
+						)
+					)
+
+			if is_txt and in_tree(member_lower, "common/country_tag_aliases"):
+				for match in ALIAS_RE.finditer(text):
+					add_extended(match.group(1), "country_tag_alias", member_file, "archived alias block")
+
+			if is_txt and in_tree(member_lower, "common/countries"):
+				for match in COSMETIC_DEFINITION_RE.finditer(text):
+					tag = match.group(1)
+					if re.fullmatch(r"[A-Z0-9]{3}", tag):
+						add_extended(tag, "cosmetic_country_definition", member_file, "archived top-level country cosmetic block")
+
+			if is_txt and (
+				in_tree(member_lower, "common")
+				or in_tree(member_lower, "events")
+				or in_tree(member_lower, "history")
+			):
+				for match in COSMETIC_BYTES_RE.finditer(data):
+					add_extended(
+						match.group(1).decode("ascii"),
+						"set_cosmetic_tag",
+						member_file,
+						"archived effect call site",
+					)
+
+			if is_yml and (
+				in_tree(member_lower, "localisation")
+				or in_tree(member_lower, "localization")
+			):
+				for match in BASE_LOC_BYTES_RE.finditer(data):
+					add_extended(
+						match.group(1).decode("ascii"),
+						"base_localisation_key",
+						member_file,
+						"archived three-character base localisation key",
+					)
+
+			if is_txt and in_tree(member_lower, "history/countries"):
+				match = HISTORY_COUNTRY_RE.fullmatch(Path(member_name).name)
+				if match:
+					add_extended(
+						match.group(1).upper(),
+						"country_history_filename",
+						member_file,
+						"archived HOI4 country history file",
+					)
+
+			if in_tree(member_lower, "gfx/flags"):
+				match = FLAG_RE.fullmatch(Path(member_name).name)
+				if match:
+					add_extended(
+						match.group(1).upper(),
+						"flag_asset",
+						member_file,
+						"archived HOI4 flag asset",
+					)
+
+	return country_definitions, extended_definitions
+
+
+def scan_archives_under_root(
+	root: Path,
+	root_kind: str,
+	root_name: str,
+) -> tuple[list[Path], int, list[TagDefinition], list[TagDefinition]]:
+	"""Scan ZIP archives and fail closed when an unsupported archive is present."""
+	rg = shutil.which("rg")
+	if rg:
+		result = subprocess.run(
+			[
+				rg,
+				"--files",
+				"-g",
+				"*.zip",
+				"-g",
+				"*.ZIP",
+				"-g",
+				"*.7z",
+				"-g",
+				"*.7Z",
+				"-g",
+				"*.rar",
+				"-g",
+				"*.RAR",
+				str(root),
+			],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE,
+			text=True,
+			encoding="utf-8",
+			errors="replace",
+		)
+		if result.returncode not in (0, 1):
+			raise RuntimeError(f"ripgrep failed while locating archives under {root}: {result.stderr}")
+		archive_candidates = [Path(line) for line in result.stdout.splitlines() if line.strip()]
+	else:
+		archive_candidates = [
+			path
+			for path in root.rglob("*")
+			if path.is_file() and path.suffix.lower() in {".zip", ".7z", ".rar"}
+		]
+	zip_paths = sorted(path for path in archive_candidates if path.suffix.lower() == ".zip")
+	unsupported_paths = sorted(path for path in archive_candidates if path.suffix.lower() != ".zip")
+	if unsupported_paths:
+		raise RuntimeError(
+			"Unsupported installed-mod archives prevent a complete tag audit: "
+			+ ", ".join(str(path) for path in unsupported_paths)
+		)
+
+	country_definitions: list[TagDefinition] = []
+	extended_definitions: list[TagDefinition] = []
+	archives_with_tag_surfaces = 0
+	for archive_path in zip_paths:
+		archive_country_definitions, archive_extended_definitions = scan_zip_tag_surfaces(
+			archive_path,
+			root_kind,
+			root_name,
+		)
+		if archive_country_definitions or archive_extended_definitions:
+			archives_with_tag_surfaces += 1
+		country_definitions.extend(archive_country_definitions)
+		extended_definitions.extend(archive_extended_definitions)
+
+	return zip_paths, archives_with_tag_surfaces, country_definitions, extended_definitions
 
 
 def scan_current_repo_non_event6(repo_root: Path, event6_tag_file: Path) -> list[TagDefinition]:
@@ -448,6 +640,14 @@ def markdown_report(data: dict[str, object]) -> str:
 		f"- Engine- or OS-reserved three-character namespaces excluded: **{', '.join(data['engine_reserved_namespaces'])}**.",
 		f"- Installed Workshop directories scanned: **{data['workshop_directory_count']}**.",
 		f"- Workshop directories containing country-tag definitions: **{data['workshop_roots_with_tags']}**.",
+		f"- Embedded ZIP archives scanned without extraction: **{data['archive_file_count']}**.",
+		f"- Embedded ZIP archives containing tag-bearing surfaces: **{data['archive_files_with_tag_surfaces']}**.",
+		f"- Country-tag definitions parsed from embedded ZIP archives: **{data['archive_definition_count']}**.",
+		f"- Alias/cosmetic/history/localisation/flag surfaces parsed from embedded ZIP archives: **{data['archive_extended_surface_count']}**.",
+		f"- Sibling local mod directories scanned: **{data['local_mod_directory_count']}** ({', '.join(data['local_mod_directory_names']) or 'none'}).",
+		f"- Sibling local mods containing country-tag or extended tag surfaces: **{data['local_mod_roots_with_tag_surfaces']}**.",
+		f"- Literal country-tag definitions parsed from sibling local mods: **{data['local_mod_definition_count']}**.",
+		f"- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **{data['local_mod_extended_surface_count']}**.",
 		f"- External and vanilla country-tag definitions parsed: **{data['external_definition_count']}**.",
 		f"- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **{data['external_alias_cosmetic_definition_count']}**.",
 		f"- Other Chaos Redux country-tag definitions parsed: **{data['chaos_redux_non_event6_definition_count']}**.",
@@ -518,7 +718,8 @@ def markdown_report(data: dict[str, object]) -> str:
 			"",
 			"- The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.",
 			"- Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.",
-			"- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods.",
+			"- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.",
+			"- ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.",
 			"- Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.",
 			"- Cosmetic tags have no single engine registry, so call sites, localisation, and flags are treated as collision evidence. A localisation-only hit can be over-inclusive but is safer than silently taking another mod's route identity.",
 			"- Tags constructed dynamically through meta effects, scripted localisation, non-text archives, or filenames outside the standard HOI4 folders require manual review; no such construction should be assumed collision-free.",
@@ -592,19 +793,55 @@ def main() -> None:
 	external_extended_defs: list[TagDefinition] = list(vanilla_extended_defs)
 	workshop_dirs = sorted(path for path in args.workshop_root.iterdir() if path.is_dir()) if args.workshop_root.is_dir() else []
 	workshop_roots_with_tags = 0
+	archive_file_count = 0
+	archive_files_with_tag_surfaces = 0
+	archive_definition_count = 0
+	archive_extended_surface_count = 0
 	for mod_root in workshop_dirs:
-		definitions = scan_tag_directory(mod_root, "workshop", mod_root.name)
+		archive_paths, archive_surface_count, archive_definitions, archive_extended_definitions = scan_archives_under_root(
+			mod_root,
+			"workshop_archive",
+			mod_root.name,
+		)
+		archive_file_count += len(archive_paths)
+		archive_files_with_tag_surfaces += archive_surface_count
+		archive_definition_count += len(archive_definitions)
+		archive_extended_surface_count += len(archive_extended_definitions)
+		definitions = scan_tag_directory(mod_root, "workshop", mod_root.name) + archive_definitions
+		extended_definitions = scan_extended_tag_surfaces(mod_root, "workshop", mod_root.name) + archive_extended_definitions
 		if definitions:
 			workshop_roots_with_tags += 1
 		external_defs.extend(definitions)
-		external_extended_defs.extend(scan_extended_tag_surfaces(mod_root, "workshop", mod_root.name))
+		external_extended_defs.extend(extended_definitions)
 
+	local_mod_dirs: list[Path] = []
+	local_mod_roots_with_tag_surfaces = 0
+	local_mod_definition_count = 0
+	local_mod_extended_surface_count = 0
 	if local_mod_root.is_dir():
-		for mod_root in sorted(path for path in local_mod_root.iterdir() if path.is_dir()):
-			if mod_root.resolve() == repo_root:
-				continue
-			external_defs.extend(scan_tag_directory(mod_root, "local_mod", mod_root.name))
-			external_extended_defs.extend(scan_extended_tag_surfaces(mod_root, "local_mod", mod_root.name))
+		local_mod_dirs = [
+			path
+			for path in sorted(local_mod_root.iterdir())
+			if path.is_dir() and path.resolve() != repo_root
+		]
+		for mod_root in local_mod_dirs:
+			archive_paths, archive_surface_count, archive_definitions, archive_extended_definitions = scan_archives_under_root(
+				mod_root,
+				"local_mod_archive",
+				mod_root.name,
+			)
+			archive_file_count += len(archive_paths)
+			archive_files_with_tag_surfaces += archive_surface_count
+			archive_definition_count += len(archive_definitions)
+			archive_extended_surface_count += len(archive_extended_definitions)
+			definitions = scan_tag_directory(mod_root, "local_mod", mod_root.name) + archive_definitions
+			extended_definitions = scan_extended_tag_surfaces(mod_root, "local_mod", mod_root.name) + archive_extended_definitions
+			if definitions or extended_definitions:
+				local_mod_roots_with_tag_surfaces += 1
+			local_mod_definition_count += len(definitions)
+			local_mod_extended_surface_count += len(extended_definitions)
+			external_defs.extend(definitions)
+			external_extended_defs.extend(extended_definitions)
 
 	non_event6_defs = scan_current_repo_non_event6(repo_root, event6_tag_file)
 	non_event6_extended_defs = scan_current_repo_non_event6_extended(repo_root, parsed_event6_tags)
@@ -676,6 +913,15 @@ def main() -> None:
 		"engine_reserved_namespaces": sorted(ENGINE_RESERVED_THREE_CHARACTER_NAMESPACES),
 		"workshop_directory_count": len(workshop_dirs),
 		"workshop_roots_with_tags": workshop_roots_with_tags,
+		"archive_file_count": archive_file_count,
+		"archive_files_with_tag_surfaces": archive_files_with_tag_surfaces,
+		"archive_definition_count": archive_definition_count,
+		"archive_extended_surface_count": archive_extended_surface_count,
+		"local_mod_directory_count": len(local_mod_dirs),
+		"local_mod_directory_names": [path.name for path in local_mod_dirs],
+		"local_mod_roots_with_tag_surfaces": local_mod_roots_with_tag_surfaces,
+		"local_mod_definition_count": local_mod_definition_count,
+		"local_mod_extended_surface_count": local_mod_extended_surface_count,
 		"external_definition_count": len(external_defs),
 		"external_alias_cosmetic_definition_count": len(external_extended_defs),
 		"chaos_redux_non_event6_definition_count": len(non_event6_defs),

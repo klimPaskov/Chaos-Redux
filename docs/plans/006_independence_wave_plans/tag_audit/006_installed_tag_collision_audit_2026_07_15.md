@@ -11,17 +11,22 @@ Audit date: 2026-07-15
 - Engine- or OS-reserved three-character namespaces excluded: **AUX, CON, GFX, NUL, PRN**.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
-- Sibling local mod directories scanned: **3** (`agentic_hoi4_modding`, `chaos_redux_music`, and `slop_redux`).
-- Sibling local mod directories containing country-tag or cosmetic-tag definitions: **0**.
-- Literal three-character tag definitions parsed from sibling local mods: **0**.
+- Embedded ZIP archives scanned without extraction: **8**.
+- Embedded ZIP archives containing tag-bearing surfaces: **1**.
+- Country-tag definitions parsed from embedded ZIP archives: **0**.
+- Alias/cosmetic/history/localisation/flag surfaces parsed from embedded ZIP archives: **10**.
+- Sibling local mod directories scanned: **3** (agentic_hoi4_modding, chaos_redux_music, slop_redux).
+- Sibling local mods containing country-tag or extended tag surfaces: **0**.
+- Literal country-tag definitions parsed from sibling local mods: **0**.
+- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **0**.
 - External and vanilla country-tag definitions parsed: **7981**.
-- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69474**.
+- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69484**.
 - Other Chaos Redux country-tag definitions parsed: **48**.
-- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **962**.
+- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **965**.
 - Reserved-tag collisions: **0**.
 - Packages with exact or state-word-normalized vanilla identity matches requiring reuse review: **0**.
 - Packages with fuzzy identity matches requiring manual review: **9**.
-- Collision-free unused `??X` replacement candidates: **452**.
+- Collision-free unused `??X` replacement candidates: **451**.
 
 ## Reserved-tag collisions
 
@@ -81,13 +86,14 @@ Shared tags require mutually exclusive package reservation and package-specific 
 
 The following tags end in `X` and were unused by vanilla, Chaos Redux, and every scanned installed mod at audit time. They are candidates only; a remap must update every gameplay, localisation, history, asset, manifest, scenario, specification, documentation, and catalog reference together.
 
-`IDX IEX IFX IGX IHX IIX IJX IKX ILX IMX INX IOX IPX IQX IRX ISX ITX IUX IVX IWX IXX IYX IZX JAX JBX JCX JDX JEX JFX JHX JIX JJX JKX JLX JMX JNX JOX JPX JQX JRX JSX JTX JUX JVX JWX JXX JYX JZX KAX KBX KCX KDX KEX KFX KGX KHX KIX KJX KKX KLX KMX KNX KOX KPX KQX KRX KSX KUX KVX KWX KXX KYX KZX LAX LBX LCX LDX LEX LFX LGX LHX LIX LJX LKX LLX LMX LNX LOX LPX LQX LRX LSX LTX LVX LWX LXX LYX LZX MBX MCX MDX MFX MGX MHX MIX MJX MKX MLX MMX MNX MOX MPX MQX MRX MSX MTX MUX MVX MWX MXX MYX MZX NBX NCX NDX NEX NFX NGX NHX NIX NJX NKX NLX NMX NNX NOX NPX NQX NRX NSX NTX NUX NVX NWX NXX NYX NZX OAX OBX OCX ODX OEX OFX OGX OHX OIX OJX OKX OLX OMX ONX OOX OPX OQX ORX OSX OTX OUX OVX OWX OXX OYX OZX PAX PBX PCX PDX PEX PFX PGX PIX PJX PKX PLX PMX PNX POX PPX PQX PRX PSX PTX PUX PVX PWX PXX PYX PZX QAX QBX QCX QDX QEX QFX QGX QHX QIX QJX QKX QLX QMX QNX QOX QPX QQX QRX QSX QTX QUX QVX QWX QXX QYX QZX RAX RBX RCX RDX REX RFX RGX RHX RIX RJX RKX RLX RMX RNX ROX RPX RQX RRX RSX RTX RUX RVX RWX RXX RYX RZX SBX SCX SDX SFX SGX SIX SJX SKX SLX SMX SNX SOX SPX SQX SRX SSX STX SUX SVX SWX SXX SYX SZX TAX TBX TCX TDX TFX TGX THX TIX TJX TKX TLX TNX TOX TPX TQX TRX TSX TTX TUX TVX TWX TXX TYX TZX UAX UBX UCX UDX UEX UFX UGX UHX UIX UJX UKX ULX UMX UNX UOX UPX UQX URX USX UTX UUX UVX UWX UXX UYX UZX VAX VBX VCX VDX VEX VFX VGX VHX VJX VKX VLX VMX VNX VOX VPX VQX VRX VSX VTX VUX VVX VWX VXX VYX VZX WAX WBX WCX WDX WEX WFX WGX WHX WIX WJX WKX WLX WMX WNX WOX WPX WQX WRX WSX WTX WUX WVX WWX WXX WYX WZX XAX XBX XCX XDX XEX XFX XGX XHX XIX XJX XKX XLX XMX XNX XOX XPX XQX XRX XSX XTX XUX XVX XWX XXX XYX XZX YAX YBX YCX YDX YEX YFX YGX YHX YIX YJX YKX YLX YMX YNX YOX YPX YQX YRX YSX YTX YUX YVX YWX YXX YYX YZX ZAX ZBX ZCX ZDX ZEX ZFX ZGX ZHX ZIX ZJX ZKX ZLX ZMX ZNX ZOX ZPX ZQX ZRX ZSX ZTX ZUX ZVX ZWX ZXX ZYX ZZX`
+`IDX IEX IFX IGX IHX IIX IJX IKX ILX IMX INX IOX IPX IQX IRX ISX ITX IUX IVX IWX IXX IYX IZX JAX JBX JCX JDX JEX JFX JHX JIX JJX JKX JLX JMX JNX JOX JPX JQX JRX JSX JTX JUX JVX JWX JXX JYX JZX KAX KBX KCX KDX KEX KFX KGX KHX KIX KJX KKX KLX KMX KNX KOX KPX KQX KRX KSX KUX KVX KWX KXX KYX KZX LAX LBX LDX LEX LFX LGX LHX LIX LJX LKX LLX LMX LNX LOX LPX LQX LRX LSX LTX LVX LWX LXX LYX LZX MBX MCX MDX MFX MGX MHX MIX MJX MKX MLX MMX MNX MOX MPX MQX MRX MSX MTX MUX MVX MWX MXX MYX MZX NBX NCX NDX NEX NFX NGX NHX NIX NJX NKX NLX NMX NNX NOX NPX NQX NRX NSX NTX NUX NVX NWX NXX NYX NZX OAX OBX OCX ODX OEX OFX OGX OHX OIX OJX OKX OLX OMX ONX OOX OPX OQX ORX OSX OTX OUX OVX OWX OXX OYX OZX PAX PBX PCX PDX PEX PFX PGX PIX PJX PKX PLX PMX PNX POX PPX PQX PRX PSX PTX PUX PVX PWX PXX PYX PZX QAX QBX QCX QDX QEX QFX QGX QHX QIX QJX QKX QLX QMX QNX QOX QPX QQX QRX QSX QTX QUX QVX QWX QXX QYX QZX RAX RBX RCX RDX REX RFX RGX RHX RIX RJX RKX RLX RMX RNX ROX RPX RQX RRX RSX RTX RUX RVX RWX RXX RYX RZX SBX SCX SDX SFX SGX SIX SJX SKX SLX SMX SNX SOX SPX SQX SRX SSX STX SUX SVX SWX SXX SYX SZX TAX TBX TCX TDX TFX TGX THX TIX TJX TKX TLX TNX TOX TPX TQX TRX TSX TTX TUX TVX TWX TXX TYX TZX UAX UBX UCX UDX UEX UFX UGX UHX UIX UJX UKX ULX UMX UNX UOX UPX UQX URX USX UTX UUX UVX UWX UXX UYX UZX VAX VBX VCX VDX VEX VFX VGX VHX VJX VKX VLX VMX VNX VOX VPX VQX VRX VSX VTX VUX VVX VWX VXX VYX VZX WAX WBX WCX WDX WEX WFX WGX WHX WIX WJX WKX WLX WMX WNX WOX WPX WQX WRX WSX WTX WUX WVX WWX WXX WYX WZX XAX XBX XCX XDX XEX XFX XGX XHX XIX XJX XKX XLX XMX XNX XOX XPX XQX XRX XSX XTX XUX XVX XWX XXX XYX XZX YAX YBX YCX YDX YEX YFX YGX YHX YIX YJX YKX YLX YMX YNX YOX YPX YQX YRX YSX YTX YUX YVX YWX YXX YYX YZX ZAX ZBX ZCX ZDX ZEX ZFX ZGX ZHX ZIX ZJX ZKX ZLX ZMX ZNX ZOX ZPX ZQX ZRX ZSX ZTX ZUX ZVX ZWX ZXX ZYX ZZX`
 
 ## Scope and limitations
 
 - The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
 - Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.
-- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, and every sibling local mod directory beside Chaos Redux.
+- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.
+- ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.
 - Cosmetic tags have no single engine registry, so call sites, localisation, and flags are treated as collision evidence. A localisation-only hit can be over-inclusive but is safer than silently taking another mod's route identity.
 - Tags constructed dynamically through meta effects, scripted localisation, non-text archives, or filenames outside the standard HOI4 folders require manual review; no such construction should be assumed collision-free.
