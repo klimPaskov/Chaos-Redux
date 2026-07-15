@@ -75,7 +75,14 @@ If the spec defines achievements, implement the full achievement surface: tracki
 
 Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, and static fallbacks. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
 
-Do not generate real historical leaders, historical flags, or well-attested real symbols as fictional art. Source them, document source and license status when possible, and convert them to the required HOI4 format. Generated art is for fictional, symbolic, alternate, supernatural, or invented identities unless the user says otherwise.
+Do not generate real historical leaders as invented people. Source them,
+document source and license status when possible, explicitly crop them to
+head-and-shoulders, preserve their identity while applying the HOI4 painted
+finish, and compare leader and advisor outputs with project-root
+`assets/leader_portraits` and `assets/advisor_icons`. Every new flag uses
+imagegen. Historical flags and well-attested real symbols first require cited
+design research, then a strict flat reconstruction with no fabric scene,
+painterly flag artwork, fake lettering, or invented heraldry.
 
 Any new, released, restored, transformed, or event-managed country that is expected to fight needs starting forces and a reinforcement pathway. Implement dynamic starting units, templates, equipment and manpower assumptions, commander or officer handling when relevant, and later unit growth through decisions, focuses, depots, objectives, volunteers, foreign support, mobilisation, or special mechanics. Do not leave a serious fighting country as an empty tag unless the spec says so and explains why.
 
@@ -612,6 +619,16 @@ Visible dynamic values often display decimal places unless their localisation fo
 If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
 
 When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
+
+Before registering any new country, cosmetic, formable, or route tag, audit it
+against vanilla, Chaos Redux, every installed Workshop mod, and other local
+mods. Do not add a duplicate new country for a national identity that already
+exists in vanilla: reuse the vanilla tag, preserve the living country and its
+meaningful content, and add only safely gated Event content. If a proposed new
+tag conflicts anywhere in the installed set, remap it and update every script,
+history, localisation, asset, manifest, scenario, documentation, and catalog
+reference together. Apply any event-specific suffix convention only after the
+collision-free tag is locked.
 
 When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup; put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists; it is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
 

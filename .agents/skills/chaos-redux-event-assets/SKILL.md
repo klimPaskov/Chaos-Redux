@@ -236,6 +236,8 @@ C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chao
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
 C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/special_projects
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/leader_portraits
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/assets/advisor_icons
 ```
 
 Reference mapping:
@@ -250,6 +252,8 @@ Reference mapping:
 - decision and decision category icons: `assets/decisions`
 - flags: `assets/flags`
 - focus icons: `assets/focuses`
+- leader portraits: project-root `assets/leader_portraits`
+- advisor, political-advisor, theorist, and high-command portrait icons: project-root `assets/advisor_icons`
 
 If a relevant reference folder exists, do not generate, source, crop, process, or wire new artwork until you have inspected it.
 
@@ -759,7 +763,16 @@ Avoid overly detailed symbols.
 
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
 
-Always use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags.
+Always use `$imagegen` for every new flag, including historically attested and
+real-world designs. Historical research still comes first: save and cite a
+reliable design reference, then use it as an image input and strict design
+constraint for imagegen. The generated result must be a clean, flat flag
+reconstruction, not an illustration of a flag. Reject waving fabric, folds,
+flagpoles, skies, lighting, gradients, painterly texture, vignettes, fake
+lettering, invented seals, perspective, shadows, or any scene around the flag.
+Manually compare geometry, colour fields, symbol count, symbol orientation,
+and heraldic details with the cited reference before resizing it. Imagegen is
+not permission to reinterpret a documented historical design.
 
 For existing countries that already have game-provided or repository-approved base flags, do not replace the no-suffix base flag as part of an ideology pass. Keep the base flag unchanged, or restore it from the approved prior asset if an asset pass damaged it, unless the user explicitly asks for that base flag to be redone or the country receives a deliberate focus/event/cosmetic-tag transformation. Ideology variants should be separate assets for `_communism`, `_democratic`, `_fascism`, and `_neutrality`, not mutations of the base flag with one small shape, a palette swap, a color filter, a vertical flip, or a copied emblem.
 
@@ -784,7 +797,21 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 
 For real people, do not generate leader portraits with `$imagegen`.
 
-Use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it.
+Use an attributed real source image from the internet or a user-provided
+image. Inspect project-root `assets/leader_portraits` first. Select and record
+an explicit head-and-shoulders crop, then apply an identity-preserving HOI4
+painted finish while retaining the person's face, expression, age, hair,
+clothing, pose, and other recognisable source details. A raw photograph,
+simple resize, generic oil-paint filter, face replacement, reconstructed face,
+or weak likeness is not a finished portrait.
+
+Use `.tools/process_hoi4_portrait.py leader` for the deterministic crop,
+restrained finish, dimensions, metadata, and reference comparison sheet. The
+script is only a finishing tool. Its output remains a candidate until the
+contact sheet is visually compared with project-root
+`assets/leader_portraits` and the real person's source image. If the source
+cannot support a faithful head-and-shoulders likeness, find a better source;
+do not invent missing identity details.
 
 Record:
 
@@ -805,7 +832,30 @@ Target size:
 156x210
 ```
 
-Inspect the closest relevant reference folder and existing Chaos Redux portraits before generating or processing fictional leader portraits.
+Inspect project-root `assets/leader_portraits` and existing vanilla portraits
+before generating or processing every leader portrait, including fictional,
+collective, and non-human leaders. Imagegen prompts for fictional people must
+explicitly request the vanilla HOI4 painted portrait treatment, `156x210`
+head-and-shoulders or restrained bust framing, period-appropriate clothing,
+a quiet painted background, controlled contrast, no text, and no photographic
+or modern concept-art finish.
+
+## 21.1 Advisor and high-command portrait icons
+
+Advisor, theorist, military-high-command, and officer-corps portrait icons are
+a separate asset type. Inspect project-root `assets/advisor_icons` before
+work. The final target is `65x67`: a recognisable HOI4-styled
+head-and-shoulders portrait in the dark bevelled dossier-card presentation,
+with transparent outer corners and the small paper overlay used by vanilla.
+
+Do not satisfy an advisor icon by shrinking, padding, or directly wiring a
+`156x210` leader portrait. Start from the approved portrait master, choose a
+separate explicit crop, and run `.tools/process_hoi4_portrait.py advisor`.
+Retain the generated metadata and reference comparison sheet, inspect the
+result at native size and enlarged nearest-neighbour size, then convert the
+approved PNG with `.tools/convert_to_dds.py`. The processor's original frame
+and paper overlay are presentation layers; the depicted person must still be
+real sourced or imagegen-created artwork under the leader rules above.
 
 ## Animated leader portraits
 
@@ -1041,7 +1091,7 @@ Do not invent a substitute asset unless the user explicitly approves it.
 Before finishing, confirm:
 
 1. Every required asset from the event spec is accounted for.
-2. Every asset uses the correct source mode: `$imagegen` for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets. internet or user-provided source images for real historical materials. and real source images for real leader portraits.
+2. Every asset uses the correct source mode: `$imagegen` for every flag and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for real leader portraits.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
@@ -1058,3 +1108,6 @@ Before finishing, confirm:
 16. Focus, idea, national spirit, officer corps spirit, decision, decision category, achievement, and tech icons were treated as separate asset types. No idea or decision icon is only a resized, cropped, recolored, padded, or lightly edited focus icon.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
+19. Every real leader portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison sheet against project-root `assets/leader_portraits`.
+20. Every advisor or high-command portrait icon is a separately composed `65x67` dossier icon with its own crop and comparison sheet against project-root `assets/advisor_icons`, not a resized leader portrait.
+21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
