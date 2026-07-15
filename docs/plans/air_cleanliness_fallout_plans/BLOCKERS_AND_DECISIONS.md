@@ -238,7 +238,7 @@ Resource rights use the official country-scoped `remove_resource_rights` effect 
 
 Map return still fails closed on these unresolved surfaces:
 
-- expeditionary forces have a documented detector, but no exact return effect was found
+- expeditionary forces have a documented detector, but no exact return effect was found. Template-based deletion and whole-force fractional transfer cannot isolate the received divisions and restore them to each sender
 - active lend lease has an exact official ordered-pair detector, but no documented scripted inverse. The transaction verifies and receipts an empty surface, while any active lease remains blocked
 - ordinary resource imports have a creation effect, but no complete scripted enumerator and inverse pair. Resource rights are handled separately and are no longer part of this blocker
 - intelligence has partial detectors and destructive operative effects, but no complete agency, upgrade, network, decryption, capture, and static-intel reset
