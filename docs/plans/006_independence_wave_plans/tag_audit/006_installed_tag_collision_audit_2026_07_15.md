@@ -11,6 +11,9 @@ Audit date: 2026-07-15
 - Engine- or OS-reserved three-character namespaces excluded: **AUX, CON, GFX, NUL, PRN**.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
+- Sibling local mod directories scanned: **3** (`agentic_hoi4_modding`, `chaos_redux_music`, and `slop_redux`).
+- Sibling local mod directories containing country-tag or cosmetic-tag definitions: **0**.
+- Literal three-character tag definitions parsed from sibling local mods: **0**.
 - External and vanilla country-tag definitions parsed: **7981**.
 - External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69474**.
 - Other Chaos Redux country-tag definitions parsed: **48**.
@@ -84,7 +87,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 
 - The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
 - Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.
-- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods.
+- The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, and every sibling local mod directory beside Chaos Redux.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.
 - Cosmetic tags have no single engine registry, so call sites, localisation, and flags are treated as collision evidence. A localisation-only hit can be over-inclusive but is safer than silently taking another mod's route identity.
 - Tags constructed dynamically through meta effects, scripted localisation, non-text archives, or filenames outside the standard HOI4 folders require manual review; no such construction should be assumed collision-free.
