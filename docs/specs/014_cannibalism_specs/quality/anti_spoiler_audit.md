@@ -16,7 +16,7 @@ Before that flag, every visible surface uses only current evidence: supply failu
 | Evolution I and II | Ritual and network language remains impersonal and uncertain |
 | Event Details | Baseline premise before reveal. Named command only after reveal |
 | Terminal Event Details | Scenario IDs 6 and 7 are absent from the visible list before reveal |
-| Warlord focus tree | 72 of 72 title/description/tooltip sets contain no Hannibal, Lecter, or Wendigo leak |
+| Warlord focus tree | 68 of 68 title/description/tooltip sets contain no Hannibal, Lecter, or Wendigo leak |
 | Decisions and missions | Pre-reveal actions use network and convergence language |
 | Scripted GUI | Early and network windows exclude revealed portrait and name selectors |
 | Achievement tracker | Five baseline rows open at system start. Late rows open only at exploitation, Island Host, Evolution II, convergence, reveal, merge, or aftermath |
@@ -36,11 +36,11 @@ The Career Profile achievement schema provides static hiding only. Five baseline
 ## Visual and cultural boundary
 
 - No actor or celebrity likeness.
-- No ancient-general, Carthaginian, Punic, Barca, Roman-rival, laurel, toga, elephant, or classical-command framing.
+- No actor likeness or borrowed living ceremonial, sacred, tribal, or authenticity framing.
 - No living Indigenous ceremonial clothing, regalia, sacred motif, ritual object, tribal shorthand, language, name, or authenticity claim.
 - The internal Wendigo identifier does not license borrowed folklore presentation.
 - Generated victims are fictional adults. Real atrocity photography and identifiable victims are excluded.
 
-## Remaining audit dependency
+## Audit disposition
 
-The known source/route, indirect-foreshadowing, dynamic-value, implementation-terminology, punctuation, and staged-achievement visibility defects were remediated. The final dedicated localisation verdict remains pending in package status until the final localisation handoff is delivered. This document does not claim an in-game runtime review.
+The known source/route, indirect-foreshadowing, dynamic-value, implementation-terminology, punctuation, and staged-achievement visibility defects were remediated. The final dedicated localisation re-audit is recorded in package status. This document does not claim an in-game runtime review.

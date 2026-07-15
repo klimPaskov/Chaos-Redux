@@ -4,7 +4,7 @@
 
 **Completion-ready from the localisation, scripted-localisation, terminology, and secrecy scope.**
 
-The live Event 014 implementation has no remaining P0, P1, P2, or P3 localisation findings. Pre-reveal text does not expose Hannibal Lecter, the Wendigo merge, the final portrait, or terminal-route wording. Post-reveal public text consistently identifies the leader as **Hannibal Lecter** without an ancient-general disclaimer. Event Details terminal rows and the staged achievement tracker use the required public-state gates.
+The live Event 014 implementation has no remaining P0, P1, P2, or P3 localisation findings. Pre-reveal text does not expose Hannibal Lecter, the Wendigo merge, the final portrait, or terminal-route wording. Post-reveal public text consistently identifies the leader as **Hannibal Lecter**. Event Details terminal rows and the staged achievement tracker use the required public-state gates.
 
 This was a read-only audit. The only file written by this auditor is `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_localisation_final_reaudit_2026-07-12.md`.
 
@@ -139,7 +139,7 @@ No pre-reveal visible string names Hannibal Lecter, Wendigo, a hidden master, a 
 - `common/scripted_guis/014_cannibalism_scripted_gui.txt:239` requires `cannibalism_reveal_complete`, the Wendigo route, and the Hannibal-Wendigo country identity for the transformed panel.
 - `common/national_focus/014_cannibalism_wendigo_focus.txt:18` and `common/national_focus/014_cannibalism_wendigo_focus.txt:46` gate the Wendigo focus overlay behind the revealed transformed country.
 
-Post-reveal event, news, super-event, achievement, country, leader, world-tension, focus, idea, and GUI text consistently uses Hannibal Lecter or a clear subsequent reference to Lecter/Hannibal. No ancient-general disclaimer appears.
+Post-reveal event, news, super-event, achievement, country, leader, world-tension, focus, idea, and GUI text consistently uses Hannibal Lecter or a clear subsequent reference to Lecter/Hannibal.
 
 ## Achievement Tracker Evidence
 

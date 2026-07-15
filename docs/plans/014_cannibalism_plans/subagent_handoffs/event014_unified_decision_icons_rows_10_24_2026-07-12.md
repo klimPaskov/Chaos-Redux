@@ -1,5 +1,7 @@
 # Event 014 Unified Decision Icons — Rows 10–24 Handoff
 
+> **CURRENT DISPOSITION (2026-07-15):** Fourteen icons from this tranche remain live. `cannibalism_unified_recruit_lockhouse_column` and its icon were retired with the fourth origin. The dated production body below records the original 15-icon tranche; the current subset manifest contains the 14 retained rows. Together with rows 01-09 and 25-39, the live package contains 38 unified decision icons.
+
 ## Outcome
 
 Completed all 15 assigned unified-decision icons. Each asset has an independent built-in `$imagegen` source, a transparent `32x32` processed PNG, and an exact registered-path DDS. No gameplay, `.gfx`, `.gui`, localisation, spec, spreadsheet, or non-owned asset was edited.

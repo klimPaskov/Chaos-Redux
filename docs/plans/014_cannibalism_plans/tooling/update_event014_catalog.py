@@ -5,6 +5,7 @@ from copy import copy
 from pathlib import Path
 
 from openpyxl import load_workbook
+from openpyxl.workbook.properties import CalcProperties
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -24,7 +25,7 @@ EVENT_ROW = [
 	"Minor Fire-Once",
 	None,
 	None,
-	"Implemented",
+	"Fully Functional",
 ]
 
 
@@ -34,7 +35,7 @@ SCENARIO_ROW = [
 	"Discipline Collapse: A wartime supply crisis has broken discipline inside selected formations. Field Hunger rises while damaged commands attempt containment before predation spreads beyond the first theaters.\n\nRitual Cells: Officer circles and hidden field kitchens have become organized ritual cells. Cult Cohesion is already visible, and several countries may begin with compromised commands.\n\nSilent Islands: Remote ports and island garrisons have fallen quiet behind broken convoy schedules. Communes begin with mature cells, exposed sea routes, and a growing risk of armed island hosts.\n\nWarlord States: Armed host countries emerge from occupied feeding grounds. Each begins with a regional command, an origin doctrine, scavenged stores, and forces raised from the territory it has seized.\n\nConvergence: Several mature host countries answer a common signal. A public convergence warning begins after launch, leaving the world time to destroy the likely hosts and sever their routes before a final authority emerges.",
 	"Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, Convergence",
 	"Low: A narrow crisis begins with limited territory and forces. Containment remains possible, but delay will strengthen the cells.\n\nMedium: Several formations or theaters enter the crisis. Supply pressure, concealment, and foreign routes will demand an organized response.\n\nHigh: Mature cells and armed hosts begin with strong cohesion, severe command damage, and multiple routes across the map.\n\nMaximum: A broad international network begins with numerous theaters and host countries. Escalation is immediate, but its supply lines, leaders, territories, and convergence routes can still be attacked.",
-	"Implemented",
+	"Fully Functional",
 ]
 
 
@@ -65,10 +66,15 @@ def main() -> None:
 	for column, value in enumerate(SCENARIO_ROW, 1):
 		scenarios.cell(10, column).value = value
 	scenarios.row_dimensions[10].height = 400
-	scenarios.tables["Manual_Scenarios"].ref = "A1:F10"
+	scenario_last_row = max(scenarios.max_row, 10)
+	scenarios.tables["Manual_Scenarios"].ref = f"A1:F{scenario_last_row}"
 	for validation in scenarios.data_validations.dataValidation:
-		if validation.formula1 == '"Implemented,New,In progress,To Be Reworked,Buggy,Needs Testing"':
-			validation.sqref = "F2:F10"
+		if validation.formula1 in {
+			'"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"',
+			'"Implemented,New,In progress,To Be Reworked,Buggy,Needs Testing"',
+		}:
+			validation.formula1 = '"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"'
+			validation.sqref = f"F2:F{scenario_last_row}"
 	conditional_ranges = {str(item.sqref) for item in scenarios.conditional_formatting}
 	if "F9:F10" not in conditional_ranges:
 		for conditional_range in list(scenarios.conditional_formatting):
@@ -76,6 +82,8 @@ def main() -> None:
 				for rule in scenarios.conditional_formatting._cf_rules[conditional_range]:
 					scenarios.conditional_formatting.add("F9:F10", copy(rule))
 
+	if workbook.calculation is None:
+		workbook.calculation = CalcProperties()
 	workbook.calculation.fullCalcOnLoad = True
 	workbook.calculation.forceFullCalc = True
 	workbook.calculation.calcMode = "auto"

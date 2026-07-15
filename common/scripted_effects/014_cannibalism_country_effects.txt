@@ -30,10 +30,6 @@ cannibalism_select_warlord_candidate_state = {
 			}
 			add_to_temp_variable = { cannibalism_warlord_candidate_score = cannibalism_warlord_candidate_component }
 			if = {
-				limit = { cannibalism_state_can_form_prison_host = yes }
-				add_to_temp_variable = { cannibalism_warlord_candidate_score = constant:cannibalism_warlord_creation.candidate_prison_bonus }
-			}
-			else_if = {
 				limit = { cannibalism_state_can_form_island_host = yes }
 				add_to_temp_variable = { cannibalism_warlord_candidate_score = constant:cannibalism_warlord_creation.candidate_island_bonus }
 			}
@@ -60,35 +56,25 @@ cannibalism_select_warlord_candidate_state = {
 	}
 }
 
-# State scope. The selected origin classification uses a strict priority so a
-# prison island remains a Prison Host rather than changing identity on reload.
+# State scope. Origins are derived from geography and operational conditions;
+# all eight dormant tags are origin-agnostic reusable slots.
 cannibalism_prepare_warlord_creation_context = {
 	set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.none }
 	if = {
 		limit = {
-			cannibalism_state_can_form_prison_host = yes
-			OR = { cannibalism_slot_cbg_available = yes cannibalism_slot_cbh_available = yes }
-		}
-		set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.prison_host }
-	}
-	else_if = {
-		limit = {
 			cannibalism_state_can_form_island_host = yes
-			OR = { cannibalism_slot_cba_available = yes cannibalism_slot_cbb_available = yes }
 		}
 		set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.island_host }
 	}
 	else_if = {
 		limit = {
 			cannibalism_state_can_form_siege_commune = yes
-			OR = { cannibalism_slot_cbc_available = yes cannibalism_slot_cbd_available = yes }
 		}
 		set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.siege_commune }
 	}
 	else_if = {
 		limit = {
 			cannibalism_state_can_form_march_host = yes
-			OR = { cannibalism_slot_cbe_available = yes cannibalism_slot_cbf_available = yes }
 		}
 		set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.march_host }
 	}
@@ -259,9 +245,6 @@ cannibalism_create_current_warlord_leader = {
 		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } }
 		add_country_leader_trait = cannibalism_warlord_march_predator
 	}
-	else = {
-		add_country_leader_trait = cannibalism_warlord_prison_breaker
-	}
 	cannibalism_assign_current_warlord_personality = yes
 }
 
@@ -386,21 +369,6 @@ cannibalism_create_current_warlord_templates = {
 		}
 	}
 	if = {
-		limit = { NOT = { has_template = "Lockhouse Column" } }
-		division_template = {
-			name = "Lockhouse Column"
-			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
-				cavalry = { x = 1 y = 2 }
-			}
-			support = { military_police = { x = 0 y = 0 } }
-		}
-	}
-	if = {
 		limit = { NOT = { has_template = "Network Cadre" } }
 		division_template = {
 			name = "Network Cadre"
@@ -420,7 +388,6 @@ cannibalism_create_current_warlord_templates = {
 	set_division_template_lock = { division_template = "Island Reavers" is_locked = yes }
 	set_division_template_lock = { division_template = "Siege Eaters" is_locked = yes }
 	set_division_template_lock = { division_template = "March Predation Column" is_locked = yes }
-	set_division_template_lock = { division_template = "Lockhouse Column" is_locked = yes }
 	set_division_template_lock = { division_template = "Network Cadre" is_locked = yes }
 	set_division_force_allow_recruiting = { division_template = "Scavenger Warband" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Feast Guard" force_allow_recruiting = no }
@@ -429,7 +396,6 @@ cannibalism_create_current_warlord_templates = {
 	set_division_force_allow_recruiting = { division_template = "Island Reavers" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Siege Eaters" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "March Predation Column" force_allow_recruiting = no }
-	set_division_force_allow_recruiting = { division_template = "Lockhouse Column" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Network Cadre" force_allow_recruiting = no }
 }
 
@@ -585,15 +551,6 @@ cannibalism_spawn_origin_specialist_3 = {
 	}
 }
 
-cannibalism_spawn_origin_specialist_4 = {
-	meta_effect = {
-		text = { create_unit = { division = "name = \"Lockhouse Column\" division_template = \"Lockhouse Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = var:cannibalism_new_warlord_country allow_spawning_on_enemy_provs = no } }
-		START_EXPERIENCE = "[?cannibalism_warlord_starting_experience]"
-		START_EQUIPMENT = "[?cannibalism_warlord_starting_equipment_factor]"
-		START_MANPOWER = "[?cannibalism_warlord_starting_manpower_factor]"
-	}
-}
-
 # ---------------------------------------------------------------------------
 # Country setup, coherent territory transfer, and slot allocation
 # ---------------------------------------------------------------------------
@@ -602,7 +559,6 @@ cannibalism_apply_current_warlord_origin_package = {
 	clr_country_flag = cannibalism_origin_island_host
 	clr_country_flag = cannibalism_origin_siege_commune
 	clr_country_flag = cannibalism_origin_march_host
-	clr_country_flag = cannibalism_origin_prison_host
 	if = {
 		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } }
 		set_country_flag = cannibalism_origin_island_host
@@ -617,10 +573,6 @@ cannibalism_apply_current_warlord_origin_package = {
 		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } }
 		set_country_flag = cannibalism_origin_march_host
 		add_ideas = cannibalism_march_host_origin
-	}
-	else = {
-		set_country_flag = cannibalism_origin_prison_host
-		add_ideas = cannibalism_prison_host_origin
 	}
 }
 
@@ -779,11 +731,9 @@ cannibalism_rollback_current_warlord_creation = {
 		cannibalism_island_host_origin
 		cannibalism_siege_commune_origin
 		cannibalism_march_host_origin
-		cannibalism_prison_host_origin
 		cannibalism_archipelago_hunt
 		cannibalism_city_that_eats
 		cannibalism_moving_front
-		cannibalism_lockhouse_network
 	}
 	delete_unit_template_and_units = { division_template = "Scavenger Warband" disband = no }
 	delete_unit_template_and_units = { division_template = "Feast Guard" disband = no }
@@ -792,7 +742,6 @@ cannibalism_rollback_current_warlord_creation = {
 	delete_unit_template_and_units = { division_template = "Island Reavers" disband = no }
 	delete_unit_template_and_units = { division_template = "Siege Eaters" disband = no }
 	delete_unit_template_and_units = { division_template = "March Predation Column" disband = no }
-	delete_unit_template_and_units = { division_template = "Lockhouse Column" disband = no }
 	delete_unit_template_and_units = { division_template = "Network Cadre" disband = no }
 	every_owned_state = {
 		limit = { has_state_flag = cannibalism_warlord_transfer_selected }
@@ -816,7 +765,6 @@ cannibalism_rollback_current_warlord_creation = {
 	clr_country_flag = cannibalism_origin_island_host
 	clr_country_flag = cannibalism_origin_siege_commune
 	clr_country_flag = cannibalism_origin_march_host
-	clr_country_flag = cannibalism_origin_prison_host
 	set_country_flag = cannibalism_warlord_slot_release_pending
 	set_variable = { cannibalism_warlord_slot_reference_count = 0 }
 }
@@ -996,26 +944,14 @@ cannibalism_allocate_slot_cbh = {
 }
 
 cannibalism_allocate_warlord_slot_for_current_state = {
-	if = {
-		limit = { check_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.island_host } }
-		if = { limit = { cannibalism_slot_cba_available = yes } cannibalism_allocate_slot_cba = yes }
-		else_if = { limit = { cannibalism_slot_cbb_available = yes } cannibalism_allocate_slot_cbb = yes }
-	}
-	else_if = {
-		limit = { check_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.siege_commune } }
-		if = { limit = { cannibalism_slot_cbc_available = yes } cannibalism_allocate_slot_cbc = yes }
-		else_if = { limit = { cannibalism_slot_cbd_available = yes } cannibalism_allocate_slot_cbd = yes }
-	}
-	else_if = {
-		limit = { check_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.march_host } }
-		if = { limit = { cannibalism_slot_cbe_available = yes } cannibalism_allocate_slot_cbe = yes }
-		else_if = { limit = { cannibalism_slot_cbf_available = yes } cannibalism_allocate_slot_cbf = yes }
-	}
-	else_if = {
-		limit = { check_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.prison_host } }
-		if = { limit = { cannibalism_slot_cbg_available = yes } cannibalism_allocate_slot_cbg = yes }
-		else_if = { limit = { cannibalism_slot_cbh_available = yes } cannibalism_allocate_slot_cbh = yes }
-	}
+	if = { limit = { cannibalism_slot_cba_available = yes } cannibalism_allocate_slot_cba = yes }
+	else_if = { limit = { cannibalism_slot_cbb_available = yes } cannibalism_allocate_slot_cbb = yes }
+	else_if = { limit = { cannibalism_slot_cbc_available = yes } cannibalism_allocate_slot_cbc = yes }
+	else_if = { limit = { cannibalism_slot_cbd_available = yes } cannibalism_allocate_slot_cbd = yes }
+	else_if = { limit = { cannibalism_slot_cbe_available = yes } cannibalism_allocate_slot_cbe = yes }
+	else_if = { limit = { cannibalism_slot_cbf_available = yes } cannibalism_allocate_slot_cbf = yes }
+	else_if = { limit = { cannibalism_slot_cbg_available = yes } cannibalism_allocate_slot_cbg = yes }
+	else_if = { limit = { cannibalism_slot_cbh_available = yes } cannibalism_allocate_slot_cbh = yes }
 }
 
 cannibalism_try_form_warlord_country = {
@@ -1136,11 +1072,9 @@ cannibalism_begin_current_warlord_slot_release = {
 			cannibalism_island_host_origin
 			cannibalism_siege_commune_origin
 			cannibalism_march_host_origin
-			cannibalism_prison_host_origin
 			cannibalism_archipelago_hunt
 			cannibalism_city_that_eats
 			cannibalism_moving_front
-			cannibalism_lockhouse_network
 		}
 		delete_unit_template_and_units = { division_template = "Scavenger Warband" disband = no }
 		delete_unit_template_and_units = { division_template = "Feast Guard" disband = no }
@@ -1149,7 +1083,6 @@ cannibalism_begin_current_warlord_slot_release = {
 		delete_unit_template_and_units = { division_template = "Island Reavers" disband = no }
 		delete_unit_template_and_units = { division_template = "Siege Eaters" disband = no }
 		delete_unit_template_and_units = { division_template = "March Predation Column" disband = no }
-		delete_unit_template_and_units = { division_template = "Lockhouse Column" disband = no }
 		delete_unit_template_and_units = { division_template = "Network Cadre" disband = no }
 		if = {
 			limit = { is_in_array = { array = global.cannibalism_convergence_actor_countries value = THIS } }
@@ -1235,7 +1168,6 @@ cannibalism_finalize_current_warlord_slot_release = {
 		clr_country_flag = cannibalism_origin_island_host
 		clr_country_flag = cannibalism_origin_siege_commune
 		clr_country_flag = cannibalism_origin_march_host
-		clr_country_flag = cannibalism_origin_prison_host
 		set_country_flag = cannibalism_warlord_slot_release_verified
 		clear_variable = cannibalism_warlord_slot_reference_count
 	}

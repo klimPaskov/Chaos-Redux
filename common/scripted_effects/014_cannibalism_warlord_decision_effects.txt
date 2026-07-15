@@ -144,15 +144,6 @@ cannibalism_spawn_warlord_recruitment_template_13 = {
 	}
 }
 
-cannibalism_spawn_warlord_recruitment_template_14 = {
-	meta_effect = {
-		text = { create_unit = { division = "name = \"Lockhouse Column\" division_template = \"Lockhouse Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_warlord_recruitment_actor allow_spawning_on_enemy_provs = no } }
-		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
-		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
-		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
-	}
-}
-
 cannibalism_prepare_current_warlord_origin_specialist_template = {
 	if = {
 		limit = { has_country_flag = cannibalism_origin_island_host }
@@ -165,9 +156,6 @@ cannibalism_prepare_current_warlord_origin_specialist_template = {
 	else_if = {
 		limit = { has_country_flag = cannibalism_origin_march_host }
 		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.march_column }
-	}
-	else = {
-		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.prison_column }
 	}
 }
 
@@ -219,13 +207,6 @@ cannibalism_prepare_warlord_recruitment_contract = {
 		limit = {
 			has_country_flag = cannibalism_warlord_leader_protection_open
 			check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
-		}
-		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
-	}
-	if = {
-		limit = {
-			has_country_flag = cannibalism_warlord_penal_column_actions_open
-			check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist }
 		}
 		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
 	}
@@ -603,6 +584,17 @@ cannibalism_prepare_warlord_origin_operation_contract = {
 		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_small }
 	}
 	if = {
+		limit = { has_country_flag = cannibalism_warlord_neighboring_state_raids_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_small }
+		add_to_temp_variable = { cannibalism_origin_operation_infantry_recovery = constant:cannibalism_warlord_contract.operation_infantry_recovery }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_battlefield_harvest_upgraded }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_small }
+		add_to_temp_variable = { cannibalism_origin_operation_support_recovery = constant:cannibalism_warlord_contract.operation_support_recovery }
+	}
+	if = {
 		limit = { has_country_flag = cannibalism_warlord_predatory_corridors_open }
 		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
 	}
@@ -648,7 +640,7 @@ cannibalism_prepare_warlord_origin_operation_contract = {
 		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_large }
 	}
 	if = {
-		limit = { has_country_flag = cannibalism_warlord_prison_depot_raids_open }
+		limit = { has_country_flag = cannibalism_warlord_detention_depot_raids_open }
 		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_medium }
 		add_to_temp_variable = { cannibalism_origin_operation_infantry_recovery = constant:cannibalism_warlord_contract.workshop_recovery_infantry }
 	}
@@ -703,6 +695,12 @@ cannibalism_record_warlord_major_victory_harvest = {
 		add_to_variable = { cannibalism_larder = constant:cannibalism_warlord_contract.major_victory_larder_gain }
 		set_temp_variable = { cannibalism_warlord_major_victory_infantry = constant:cannibalism_warlord_contract.major_victory_infantry_recovery }
 		set_temp_variable = { cannibalism_warlord_major_victory_support = constant:cannibalism_warlord_contract.major_victory_support_recovery }
+		if = {
+			limit = { has_country_flag = cannibalism_warlord_battlefield_harvest_upgraded }
+			add_to_variable = { cannibalism_larder = constant:cannibalism_warlord_contract.major_victory_larder_bonus }
+			add_to_temp_variable = { cannibalism_warlord_major_victory_infantry = constant:cannibalism_warlord_contract.major_victory_infantry_bonus }
+			add_to_temp_variable = { cannibalism_warlord_major_victory_support = constant:cannibalism_warlord_contract.major_victory_support_bonus }
+		}
 		add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_warlord_major_victory_infantry }
 		add_equipment_to_stockpile = { type = support_equipment_1 amount = cannibalism_warlord_major_victory_support }
 		add_to_variable = { cannibalism_warlord_major_victory_count = constant:cannibalism_warlord_contract.major_victory_count_increment }
@@ -749,60 +747,5 @@ cannibalism_begin_march_supply_raid_operation = {
 		add_to_temp_variable = { cannibalism_origin_operation_days = cannibalism_origin_operation_duration_bonus }
 		add_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation days = cannibalism_origin_operation_days }
 		cannibalism_apply_warlord_origin_operation_recovery = yes
-	}
-}
-
-cannibalism_infiltrate_selected_prisoner_transfer = {
-	set_temp_variable = { cannibalism_prison_transfer_result = 0 }
-	set_temp_variable = { cannibalism_prison_transfer_source_found = 0 }
-	if = {
-		limit = {
-			has_event_target = cannibalism_spread_target_state
-			cannibalism_warlord_can_pay_prison_operation_cost = yes
-			event_target:cannibalism_spread_target_state = { cannibalism_state_has_prisoner_transfer_route_from_root = yes }
-		}
-		save_event_target_as = cannibalism_spread_source_country
-		event_target:cannibalism_spread_target_state = {
-			CONTROLLER = { save_event_target_as = cannibalism_spread_target_country }
-			random_neighbor_state = {
-				limit = { is_controlled_by = ROOT }
-				save_event_target_as = cannibalism_spread_source_state
-				set_temp_variable = { cannibalism_prison_transfer_source_found = 1 }
-			}
-		}
-		if = {
-			limit = { check_variable = { cannibalism_prison_transfer_source_found > 0 } }
-			cannibalism_prepare_warlord_origin_operation_contract = yes
-			set_temp_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.prisoner_transfer }
-			cannibalism_enqueue_spread_entry = yes
-			if = {
-				limit = { check_variable = { cannibalism_spread_enqueue_result > 0 } }
-				set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.prison_operation_larder_cost }
-				set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.prison_operation_command_spend }
-				cannibalism_pay_warlord_operation_cost = yes
-				cannibalism_apply_warlord_origin_operation_recovery = yes
-				if = {
-					limit = { has_country_flag = cannibalism_warlord_transfer_infiltration_open }
-					add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_warlord_contract.operation_network_reach_gain }
-				}
-				if = {
-					limit = { has_country_flag = cannibalism_warlord_prison_endgame_open }
-					add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_warlord_contract.operation_network_reach_gain }
-					add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_small }
-				}
-				if = {
-					limit = {
-						has_country_flag = cannibalism_warlord_officer_corruption_open
-						has_event_target = cannibalism_spread_target_country
-					}
-					event_target:cannibalism_spread_target_country = {
-						add_stability = constant:cannibalism_warlord_contract.officer_corruption_stability
-					}
-				}
-				clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_network.min max = constant:cannibalism_network.max }
-				clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
-				set_temp_variable = { cannibalism_prison_transfer_result = 1 }
-			}
-		}
 	}
 }

@@ -1,3 +1,7 @@
+> **HISTORICAL / SUPERSEDED CHECKPOINT (2026-07-13)**
+>
+> This audit predates the 2026-07-15 removal of the fourth origin. Its four-origin, 72/108/28 focus, 208-focus-icon, 816-reference, and accepted-P3 statements are preserved below as checkpoint evidence only. Current authority is the 2026-07-15 country-package, decision/mission, focus-tree, improvement-loop, asset, and documentation re-audit set. Do not use this file as current completion proof.
+
 # Event 014 final completion audit — 2026-07-13
 
 ## Verdict
@@ -13,7 +17,7 @@
 
 No fallback, placeholder, omitted route, generic substitute, unapproved simplification, missing AI equivalent, missing localisation, missing runtime texture, or stale accepted-plan disposition remains in the audited scope.
 
-Post-audit promotion confirmation, 2026-07-13: the authoritative workbook records `Events!M15` and `Scenarios!F10` as `Implemented`. The matching `EVENT_ROW` and `SCENARIO_ROW` helper literals are also `Implemented`, and `docs/plans/014_cannibalism_plans/spreadsheet_audit/event014_catalog_final_reaudit_2026-07-12.md` records the completed two-cell promotion and confirms that no promotion remains pending. The canonical event document and current package-status, validation, README, and spreadsheet-report surfaces agree. Earlier handoffs that mention `Needs Testing` are historical checkpoint records rather than current status.
+Current catalog note, 2026-07-15: the authoritative workbook and matching helper record `Events!M15` and `Scenarios!F10` as `Fully Functional`. The preserved 2026-07-12 promotion report and older body text below use the catalog vocabulary that was current at that checkpoint; they are historical evidence rather than current status. The canonical event document and current package-status, validation, README, and integration-audit surfaces use the live vocabulary.
 
 ## Audit boundary and required references
 
@@ -109,4 +113,4 @@ This behavior is explicitly accepted in `docs/specs/014_cannibalism_specs/specs/
 
 ## Simplifications, omissions, and blockers
 
-None. The single P3 item is an accepted engine-limited behavior in the frozen source contract, not an undisclosed simplification. The workbook promotion is complete, both authoritative status cells and helper literals read `Implemented`, and no remaining action or blocker exists in the audited scope.
+None at the historical checkpoint. The single P3 item described in this preserved audit is superseded by the 2026-07-15 improvement-loop reaudit. The authoritative status cells and helper now use `Fully Functional`; current completion disposition belongs to the 2026-07-15 audit set.

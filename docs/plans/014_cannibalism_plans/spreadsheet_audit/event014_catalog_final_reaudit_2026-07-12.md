@@ -1,5 +1,7 @@
 # Event 014 Catalog Final Re-audit - 2026-07-12
 
+> Historical checkpoint. The catalog status vocabulary was subsequently standardized to `Fully Functional`. Current workbook/helper evidence belongs to `docs/plans/014_cannibalism_plans/audits/event014_integration_catalog_reaudit_2026-07-15.md`; the preserved `Implemented` wording below records the 2026-07-12 state only.
+
 ## Scope and authoritative sources
 
 This re-audit checked `docs/spreadsheets/chaos_redux_events_catalog.xlsx` against the live Event 014 player-facing localisation and current event documentation. The workbook is the authoritative catalog artifact.

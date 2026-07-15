@@ -34,7 +34,7 @@ Each decision has its own built-in image-generation call, selected source PNG, k
 - Nine exact runtime files under `gfx/interface/decisions/014_cannibalism/decision_cannibalism_unified_*.dds`, limited to the ids above.
 - This handoff.
 
-The master `prompts/icon_briefs.tsv` and `prompts/common_prompt.md` were created before the parent split the 39-icon job. The master TSV therefore records all 39 planned briefs, but this handoff claims generated and finalized work only for rows 01-09.
+The master `prompts/icon_briefs.tsv` and `prompts/common_prompt.md` were created before the parent split the original 39-icon job. The retired fourth-origin icon is no longer live, leaving 38 current icons. This handoff claims generated and finalized work only for the nine retained rows 01-09.
 
 ## Before and after
 

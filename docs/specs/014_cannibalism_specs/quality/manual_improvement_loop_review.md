@@ -45,7 +45,7 @@ Reusable tag slots and one base tree could erase country identity.
 
 Resolution:
 
-Four origin archetypes receive distinct starting problems, units, decisions, AI, idea lifecycles, and visible overlay branches. Hierarchy, Larder, network, and expansion routes interact with origin.
+Three origin archetypes receive distinct starting problems, units, decisions, AI, idea lifecycles, and visible overlay branches. All eight country slots can receive any qualifying origin package. Hierarchy, Larder, network, and expansion routes interact with origin.
 
 ### Hannibal risk: reveal driven only by chaos
 
@@ -138,4 +138,4 @@ These additions would increase maintenance without creating a distinct player de
 
 The design proceeded to implementation without the broad expansions rejected above. Repository exploration confirmed the original-ZZZ Wendigo identity, reusable tags, GUI precedents, and state-selection helpers.
 
-Implementation, asset production, super-event research, catalog alignment, and the accepted focus-closure remediation are represented in the current package. Final repository completion status belongs to `package_status.md` and `event014_final_completion_audit_2026-07-13.md` rather than this historical review.
+Implementation, asset production, super-event research, catalog alignment, and the accepted focus-closure remediation are represented in the current package. Current disposition belongs to `package_status.md` and the 2026-07-15 country-package, decision/mission, focus-tree, asset, improvement-loop, and documentation re-audits rather than this historical review. `event014_final_completion_audit_2026-07-13.md` is only a historical pre-origin-removal checkpoint.

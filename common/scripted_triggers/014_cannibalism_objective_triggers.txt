@@ -10,48 +10,56 @@
 # ---------------------------------------------------------------------------
 
 cannibalism_can_pay_officer_chain_cost = {
-	has_manpower > constant:cannibalism_objective_cost.officer_manpower
-	command_power > constant:cannibalism_objective_cost.officer_command
+	has_manpower > constant:cannibalism_objective_cost.officer_manpower_gate
+	command_power > constant:cannibalism_objective_cost.officer_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.officer_support } }
 }
 
 cannibalism_can_pay_ritual_infiltration_cost = {
-	has_manpower > constant:cannibalism_objective_cost.infiltration_manpower
-	command_power > constant:cannibalism_objective_cost.infiltration_command
+	has_manpower > constant:cannibalism_objective_cost.infiltration_manpower_gate
+	command_power > constant:cannibalism_objective_cost.infiltration_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.infiltration_support } }
 }
 
 cannibalism_can_pay_ritual_economy_cost = {
-	has_manpower > constant:cannibalism_objective_cost.ritual_economy_manpower
-	command_power > constant:cannibalism_objective_cost.ritual_economy_command
+	has_manpower > constant:cannibalism_objective_cost.ritual_economy_manpower_gate
+	command_power > constant:cannibalism_objective_cost.ritual_economy_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.ritual_economy_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.ritual_economy_support } }
 }
 
 cannibalism_can_pay_island_recon_cost = {
-	command_power > constant:cannibalism_objective_cost.island_recon_command
-	has_navy_experience > constant:cannibalism_objective_cost.island_recon_navy_experience
+	command_power > constant:cannibalism_objective_cost.island_recon_command_gate
+	has_navy_experience > constant:cannibalism_objective_cost.island_recon_navy_experience_gate
 	NOT = { has_equipment = { convoy_1 < constant:cannibalism_objective_cost.island_recon_convoys } }
 }
 
 cannibalism_can_pay_feeding_state_liberation_cost = {
-	has_manpower > constant:cannibalism_objective_cost.liberation_manpower
-	command_power > constant:cannibalism_objective_cost.liberation_command
+	has_manpower > constant:cannibalism_objective_cost.liberation_manpower_gate
+	command_power > constant:cannibalism_objective_cost.liberation_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.liberation_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.liberation_support } }
 }
 
 cannibalism_can_pay_network_submission_cost = {
 	is_cannibalism_warlord_country = yes
-	check_variable = { cannibalism_larder > constant:cannibalism_objective_cost.submission_larder }
-	command_power > constant:cannibalism_objective_cost.submission_command
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_objective_cost.submission_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_objective_cost.submission_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.submission_support } }
 }
 
 cannibalism_can_pay_network_resistance_cost = {
 	is_cannibalism_warlord_country = yes
-	check_variable = { cannibalism_larder > constant:cannibalism_objective_cost.resistance_larder }
-	command_power > constant:cannibalism_objective_cost.resistance_command
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_objective_cost.resistance_larder
+		compare = greater_than_or_equals
+	}
+	command_power > constant:cannibalism_objective_cost.resistance_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_objective_cost.resistance_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_objective_cost.resistance_support } }
 }

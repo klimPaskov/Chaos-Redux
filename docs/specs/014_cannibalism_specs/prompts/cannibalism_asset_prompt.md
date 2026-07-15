@@ -77,13 +77,11 @@ These must be separate compositions, not recolors or crop variants. Every scene 
 
 ### Generic warlords
 
-Produce exactly 56 male-presenting portraits at 156 by 210, covering all eight slots across the seven supported visual regions:
+Produce exactly 56 male-presenting portraits at 156 by 210, covering all eight origin-agnostic slots across the seven supported visual regions. Every slot can represent an Island Host, Siege Commune, or March Host and therefore cannot use origin-specific room dressing:
 
-- two Island Host leaders
-- two Siege Commune leaders
-- two March Host leaders
-- two Prison Host leaders
+- all CBA through CBH slot identities
 - all Europe, Asia, Africa, Middle East, North America, South America, and Oceania variants
+- no prison, cell, bars, detention corridor, prisoner uniform, or confinement setting
 
 Record apparent gender presentation and require matching male regional name pools. Every portrait needs a unique face, pose, prop, expression, clothing silhouette, crop, and background. At least one holds a human skull in one hand and licks blood from it. Others use non-repeated active behaviors such as gnawing a bone, biting a bloodied glove, laughing through a damaged jaw, gripping a ration cleaver, clutching dog tags, or dragging a torn ration sack. Each portrait must remain distinct and must not resemble Hannibal Lecter.
 
@@ -129,11 +127,13 @@ Produce normal, medium, and small TGA files for:
 
 Keep existing Wendigo base flags unchanged unless the transformation uses an explicit cosmetic tag. Validate dimensions and TGA orientation.
 
+Every flag begins with its own image-generated source composition. Runtime masters must then be flattened to two to four opaque colors with crisp edges. They show only the front-facing flag graphic: no cloth, folds, poles, scenery, perspective, texture, gradients, bevels, shadows, lighting, or mockup framing. Preserve both source and final-runtime contact sheets so the flattening is verifiable.
+
 ## Icon package
 
 Produce focus-specific art for the final implemented trees:
 
-- 60 to 72 local warlord focuses
+- exactly 68 local warlord focuses
 - 96 to 120 unified Hannibal focuses
 - 24 to 32 Wendigo overlay focuses
 

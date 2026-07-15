@@ -394,6 +394,8 @@ Icon direction:
 
 Stable catalog ID: `SCN-010`.
 
+Current catalog status: `Fully Functional`.
+
 Working public direction:
 
 - a neutral scenario name about a wartime hunger network
@@ -519,6 +521,12 @@ Setup responsibilities:
 - open relevant decisions and focus trees
 - record scenario history according to shared scenario rules
 - clear bypass flags
+
+## Implemented atomic scenario preflight
+
+Manual launch first builds a mutation-free temporary plan for the exact selected type and intensity. The plan freezes every ordinary actor, each actor's required opening-state capacity, the external Island, Siege, and March state arrays, the required origin distribution, and the deterministic reusable CBA-CBH slot array. Planned destructive states exclude every planned actor country.
+
+Commit begins only after every planned count exactly matches its required count. The launch then consumes the frozen actor, state, and slot arrays rather than reselecting them. A failed preflight changes only the launcher's setup-failure marker and clears temporary planning state. It does not initialize Event 014 runtime, actors, nodes, evolutions, warlords, achievements, scheduling, or launch history. Automatic Evolution III prefire keeps its separate dynamic selection path.
 
 ## Implemented staged achievement tracker
 

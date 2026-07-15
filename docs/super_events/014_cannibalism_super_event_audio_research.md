@@ -195,6 +195,18 @@ The `0.099 s` duration difference on ID 52 is Vorbis end padding; the decoded mu
 | `docs/assets/014_cannibalism/source_audio/wendigo_world_end_death_of_aase_musopen_symphony_source.flac` | `43,766,391` | `b7abad25034bc4dce173af0feea99c12b4e9d419` | `5010b1911dd02d63731c21cb6ecd7914a7cdb17acf844a6418264716ce562335` |
 | `docs/assets/014_cannibalism/source_audio/global_defeat_aftermath_faure_elegie_goldstein_kalman_source.ogg` | `10,821,110` | `6d57244d2133c2968ab96508441ed08a134f240e` | `f4256bdccdc7d7ac0e547f571c6e8137b8de8cbdd604bada417a7cb89ab5ccc0` |
 
+### Preserved rights evidence
+
+The four cited Wikimedia Commons rights pages and the CC BY-SA 2.0 legal code were saved on 2026-07-15 under `docs/assets/014_cannibalism/source_audio/evidence/`. These snapshots supplement the canonical live links above; the source recordings also remain verified by the published hashes recorded in the preceding table.
+
+| Evidence path | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_danse_macabre_rights.html` | `84,712` | `b929234bae7997b88350d8987ccfa4648dd6dc5aa62257ab2f5a5cb9fe2ad9ef` |
+| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_siegfried_funeral_march_rights.html` | `98,950` | `da5df2d69367250b9231942ad9ee4ba53da5c82892709a21d7135fd0b0164bc5` |
+| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_death_of_aase_rights.html` | `109,871` | `35dfbe8442d3c70fe1220cabeb84fbb9b189294f15f0ca55ab27ce89cf6c770e` |
+| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_faure_elegie_rights.html` | `81,859` | `c0430c0296e7d92be2bb038d5c77ac01353c2edc9b127c2c2d6f5f45919937db` |
+| `docs/assets/014_cannibalism/source_audio/evidence/cc_by_sa_2_0_legalcode.html` | `37,479` | `63ad02be63620f298b54a9381535f75fd85c84f9ef5711471ecc09b2c3f43dd3` |
+
 ### Final derivative hashes
 
 | ID | OGG SHA-256 | WAV SHA-256 |

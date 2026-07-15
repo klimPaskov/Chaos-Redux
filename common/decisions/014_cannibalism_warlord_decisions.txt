@@ -411,33 +411,4 @@ cannibalism_warlord_command_category = {
 		ai_will_do = { base = constant:cannibalism_decision_ai.high modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes } }
 	}
 
-	cannibalism_prison_infiltrate_transfers = {
-		icon = GFX_decision_cannibalism_prison_infiltrate_transfers
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_is_open = yes
-			has_global_flag = cannibalism_evolution_ii_active
-			has_country_flag = cannibalism_origin_prison_host
-			has_country_flag = cannibalism_warlord_prison_actions_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_prison_operation_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_has_prisoner_transfer_route_from_root = yes } }
-		available = { cannibalism_warlord_can_pay_prison_operation_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_prison_operation_cost = yes } }
-		custom_cost_text = cannibalism_prison_infiltrate_transfers_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_prison_infiltrate_transfers_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = cannibalism_spread_target_state }
-				cannibalism_infiltrate_selected_prisoner_transfer = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cannibalism_decision_ai.medium
-			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_country_flag = cannibalism_network_route_manipulation }
-			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_stable } }
-		}
-	}
 }

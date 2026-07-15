@@ -269,7 +269,6 @@ cannibalism_country_has_convoy_pressure = {
 
 cannibalism_state_has_prison_or_camp = {
 	OR = {
-		has_state_flag = cannibalism_scenario_prison_compound
 		extermination_camp > 0
 		gulag_labor_camp_network > 0
 		has_state_flag = genocide_active_atrocity_site
@@ -488,23 +487,11 @@ cannibalism_state_can_form_march_host = {
 	NOT = { cannibalism_state_is_unusable_larder = yes }
 }
 
-cannibalism_state_can_form_prison_host = {
-	cannibalism_state_has_active_cell = yes
-	cannibalism_state_has_prison_or_camp = yes
-	check_variable = {
-		var = state_population_k
-		value = constant:cannibalism_warlord_start.weak_population_k
-		compare = greater_than_or_equals
-	}
-	NOT = { cannibalism_state_is_unusable_larder = yes }
-}
-
 cannibalism_state_can_form_any_warlord_origin = {
 	OR = {
 		cannibalism_state_can_form_island_host = yes
 		cannibalism_state_can_form_siege_commune = yes
 		cannibalism_state_can_form_march_host = yes
-		cannibalism_state_can_form_prison_host = yes
 	}
 }
 
@@ -543,24 +530,8 @@ cannibalism_state_can_emerge_as_warlord = {
 		NOT = { is_actual_nonhuman_country = yes }
 		NOT = { is_cannibalism_country = yes }
 	}
-	OR = {
-		AND = {
-			cannibalism_state_can_form_prison_host = yes
-			OR = { cannibalism_slot_cbg_available = yes cannibalism_slot_cbh_available = yes }
-		}
-		AND = {
-			cannibalism_state_can_form_island_host = yes
-			OR = { cannibalism_slot_cba_available = yes cannibalism_slot_cbb_available = yes }
-		}
-		AND = {
-			cannibalism_state_can_form_siege_commune = yes
-			OR = { cannibalism_slot_cbc_available = yes cannibalism_slot_cbd_available = yes }
-		}
-		AND = {
-			cannibalism_state_can_form_march_host = yes
-			OR = { cannibalism_slot_cbe_available = yes cannibalism_slot_cbf_available = yes }
-		}
-	}
+	cannibalism_state_can_form_any_warlord_origin = yes
+	cannibalism_has_free_warlord_slot = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -1180,8 +1151,8 @@ cannibalism_rotation_hold_complete = {
 }
 
 cannibalism_can_pay_ration_audit_cost = {
-	has_manpower > constant:cannibalism_decision_cost.ration_audit_manpower
-	command_power > constant:cannibalism_decision_cost.ration_audit_command
+	has_manpower > constant:cannibalism_decision_cost.ration_audit_manpower_gate
+	command_power > constant:cannibalism_decision_cost.ration_audit_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.ration_audit_support } }
 	OR = {
 		var:cannibalism_primary_theater_state = { is_island_state = yes }
@@ -1194,8 +1165,8 @@ cannibalism_can_pay_ration_audit_cost = {
 }
 
 cannibalism_can_pay_logistics_cost = {
-	has_manpower > constant:cannibalism_decision_cost.logistics_manpower
-	command_power > constant:cannibalism_decision_cost.logistics_command
+	has_manpower > constant:cannibalism_decision_cost.logistics_manpower_gate
+	command_power > constant:cannibalism_decision_cost.logistics_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.logistics_support } }
 	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_decision_cost.logistics_trucks } }
 	OR = {
@@ -1209,26 +1180,26 @@ cannibalism_can_pay_logistics_cost = {
 }
 
 cannibalism_can_pay_rotation_cost = {
-	has_manpower > constant:cannibalism_decision_cost.rotation_manpower
-	has_army_experience > constant:cannibalism_decision_cost.rotation_army_experience
+	has_manpower > constant:cannibalism_decision_cost.rotation_manpower_gate
+	has_army_experience > constant:cannibalism_decision_cost.rotation_army_experience_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_decision_cost.rotation_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.rotation_support } }
 }
 
 cannibalism_can_pay_forensics_cost = {
-	has_manpower > constant:cannibalism_decision_cost.forensics_manpower
-	command_power > constant:cannibalism_decision_cost.forensics_command
+	has_manpower > constant:cannibalism_decision_cost.forensics_manpower_gate
+	command_power > constant:cannibalism_decision_cost.forensics_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.forensics_support } }
 }
 
 cannibalism_can_pay_burial_protection_cost = {
-	has_manpower > constant:cannibalism_decision_cost.burial_manpower
-	command_power > constant:cannibalism_decision_cost.burial_command
+	has_manpower > constant:cannibalism_decision_cost.burial_manpower_gate
+	command_power > constant:cannibalism_decision_cost.burial_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.burial_support } }
 }
 
 cannibalism_can_pay_trial_cost = {
-	command_power > constant:cannibalism_decision_cost.trial_command
+	command_power > constant:cannibalism_decision_cost.trial_command_gate
 	check_variable = {
 		var = cannibalism_evidence
 		value = constant:cannibalism_decision_result.trial_evidence_threshold
@@ -1239,7 +1210,7 @@ cannibalism_can_pay_trial_cost = {
 cannibalism_can_pay_amnesty_cost = {
 	has_global_flag = cannibalism_evolution_i_active
 	NOT = { has_country_flag = cannibalism_terror_program_active }
-	has_manpower > constant:cannibalism_decision_cost.amnesty_manpower
+	has_manpower > constant:cannibalism_decision_cost.amnesty_manpower_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.amnesty_support } }
 	check_variable = {
 		var = cannibalism_evidence
@@ -1250,7 +1221,7 @@ cannibalism_can_pay_amnesty_cost = {
 
 cannibalism_can_pay_concealment_cost = {
 	has_country_flag = cannibalism_policy_concealment
-	command_power > constant:cannibalism_decision_cost.concealment_command
+	command_power > constant:cannibalism_decision_cost.concealment_command_gate
 	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_decision_cost.concealment_trains } }
 }
 
@@ -1260,8 +1231,8 @@ cannibalism_can_pay_terror_cost = {
 		has_country_flag = cannibalism_ritual_response_appropriation
 		has_country_flag = cannibalism_network_response_exploitation
 	}
-	has_manpower > constant:cannibalism_decision_cost.terror_manpower
-	command_power > constant:cannibalism_decision_cost.terror_command
+	has_manpower > constant:cannibalism_decision_cost.terror_manpower_gate
+	command_power > constant:cannibalism_decision_cost.terror_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_decision_cost.terror_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.terror_support } }
 }

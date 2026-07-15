@@ -67,6 +67,16 @@ cannibalism_scenario_prepare_scale = {
 		else_if = { limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.high } } set_temp_variable = { cannibalism_scenario_target_warlords = constant:cannibalism_scenario_scale.high_convergence_warlords } }
 		else = { set_temp_variable = { cannibalism_scenario_target_warlords = constant:cannibalism_scenario_scale.maximum_convergence_warlords } }
 	}
+	if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_scenario_selected_type
+				value = constant:cannibalism_scenario.type_ritual_cells
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
+	}
 
 	set_temp_variable = { cannibalism_prefire_evolution = 0 }
 	set_temp_variable = { cannibalism_prefire_evolution_i_enabled = 0 }
@@ -93,7 +103,7 @@ cannibalism_scenario_prepare_scale = {
 cannibalism_scenario_select_source_country = {
 	set_temp_variable = { cannibalism_scenario_source_found = 0 }
 	if = {
-		limit = { cannibalism_scenario_valid_source_country = yes }
+		limit = { cannibalism_scenario_valid_preflight_source_country = yes }
 		save_event_target_as = cannibalism_scenario_source_country
 		set_temp_variable = { cannibalism_scenario_source_found = 1 }
 	}
@@ -102,10 +112,260 @@ cannibalism_scenario_select_source_country = {
 			limit = {
 				check_variable = { cannibalism_scenario_source_found < 1 }
 				is_ai = yes
-				cannibalism_scenario_valid_source_country = yes
+				cannibalism_scenario_valid_preflight_source_country = yes
 			}
 			save_event_target_as = cannibalism_scenario_source_country
 			set_temp_variable = { cannibalism_scenario_source_found = 1 }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Atomic manual-launch preflight
+# ---------------------------------------------------------------------------
+
+cannibalism_scenario_prepare_preflight_requirements = {
+	set_temp_variable = { cannibalism_scenario_required_island_states = 0 }
+	set_temp_variable = { cannibalism_scenario_required_island_warlord_states = 0 }
+	set_temp_variable = { cannibalism_scenario_required_siege_states = 0 }
+	set_temp_variable = { cannibalism_scenario_required_march_states = 0 }
+	set_temp_variable = { cannibalism_scenario_required_warlord_slots = 0 }
+
+	if = {
+		limit = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_silent_islands } }
+		set_temp_variable = { cannibalism_scenario_required_island_states = cannibalism_scenario_target_states }
+		set_temp_variable = { cannibalism_scenario_required_island_warlord_states = cannibalism_scenario_target_silent_hosts }
+		set_temp_variable = { cannibalism_scenario_required_warlord_slots = cannibalism_scenario_target_silent_hosts }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_warlord_states } }
+		set_temp_variable = { cannibalism_scenario_required_warlord_slots = cannibalism_scenario_target_warlords }
+		if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.low } }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else_if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.medium } }
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.low_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else_if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.high } }
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.low_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else = {
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.medium_states }
+		}
+		set_temp_variable = { cannibalism_scenario_required_island_warlord_states = cannibalism_scenario_required_island_states }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_convergence } }
+		set_temp_variable = { cannibalism_scenario_required_warlord_slots = cannibalism_scenario_target_warlords }
+		if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.low } }
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.low_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.low_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else_if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.medium } }
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.low_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else_if = {
+			limit = { check_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.high } }
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.low_states }
+		}
+		else = {
+			set_temp_variable = { cannibalism_scenario_required_island_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_siege_states = constant:cannibalism_scenario_scale.medium_states }
+			set_temp_variable = { cannibalism_scenario_required_march_states = constant:cannibalism_scenario_scale.medium_states }
+		}
+		set_temp_variable = { cannibalism_scenario_required_island_warlord_states = cannibalism_scenario_required_island_states }
+	}
+}
+
+cannibalism_scenario_plan_available_warlord_slots = {
+	set_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 0 }
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cba_available = yes
+		}
+		CBA = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbb_available = yes
+		}
+		CBB = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbc_available = yes
+		}
+		CBC = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbd_available = yes
+		}
+		CBD = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbe_available = yes
+		}
+		CBE = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbf_available = yes
+		}
+		CBF = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbg_available = yes
+		}
+		CBG = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_warlord_slot_count < cannibalism_scenario_required_warlord_slots }
+			cannibalism_slot_cbh_available = yes
+		}
+		CBH = { add_to_temp_array = { cannibalism_scenario_planned_warlord_slots = THIS } }
+		add_to_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 1 }
+	}
+}
+
+cannibalism_scenario_build_manual_preflight_plan = {
+	set_temp_variable = { cannibalism_scenario_preflight_result = 0 }
+	set_temp_variable = { cannibalism_scenario_use_preflight_plan = 0 }
+	clear_temp_array = cannibalism_scenario_planned_actor_countries
+	clear_temp_array = cannibalism_scenario_planned_island_states
+	clear_temp_array = cannibalism_scenario_planned_siege_states
+	clear_temp_array = cannibalism_scenario_planned_march_states
+	clear_temp_array = cannibalism_scenario_planned_warlord_slots
+	set_temp_variable = { cannibalism_scenario_planned_actor_count = 0 }
+	cannibalism_scenario_select_source_country = yes
+	if = {
+		limit = {
+			cannibalism_scenario_can_launch = yes
+			check_variable = { cannibalism_scenario_source_found > 0 }
+			has_event_target = cannibalism_scenario_source_country
+		}
+		event_target:cannibalism_scenario_source_country = {
+			add_to_temp_array = { cannibalism_scenario_planned_actor_countries = THIS }
+		}
+		add_to_temp_variable = { cannibalism_scenario_planned_actor_count = 1 }
+		every_country = {
+			limit = {
+				check_variable = { cannibalism_scenario_planned_actor_count < cannibalism_scenario_target_countries }
+				is_ai = yes
+				cannibalism_scenario_valid_preflight_additional_actor = yes
+				NOT = { tag = event_target:cannibalism_scenario_source_country }
+			}
+			add_to_temp_array = { cannibalism_scenario_planned_actor_countries = THIS }
+			add_to_temp_variable = { cannibalism_scenario_planned_actor_count = 1 }
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_scenario_planned_actor_count
+				value = cannibalism_scenario_target_countries
+				compare = equals
+			}
+		}
+		cannibalism_scenario_prepare_preflight_requirements = yes
+		set_temp_variable = { cannibalism_scenario_planned_island_count = 0 }
+		set_temp_variable = { cannibalism_scenario_planned_island_warlord_count = 0 }
+		set_temp_variable = { cannibalism_scenario_planned_siege_count = 0 }
+		set_temp_variable = { cannibalism_scenario_planned_march_count = 0 }
+
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_planned_island_warlord_count < cannibalism_scenario_required_island_warlord_states }
+				cannibalism_scenario_preflight_island_warlord_state = yes
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_island_states value = THIS } }
+			}
+			add_to_temp_array = { cannibalism_scenario_planned_island_states = THIS }
+			add_to_temp_variable = { cannibalism_scenario_planned_island_count = 1 }
+			add_to_temp_variable = { cannibalism_scenario_planned_island_warlord_count = 1 }
+		}
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_planned_island_count < cannibalism_scenario_required_island_states }
+				cannibalism_scenario_preflight_island_node_state = yes
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_island_states value = THIS } }
+			}
+			add_to_temp_array = { cannibalism_scenario_planned_island_states = THIS }
+			add_to_temp_variable = { cannibalism_scenario_planned_island_count = 1 }
+		}
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_planned_siege_count < cannibalism_scenario_required_siege_states }
+				cannibalism_scenario_preflight_siege_warlord_state = yes
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_island_states value = THIS } }
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_siege_states value = THIS } }
+			}
+			add_to_temp_array = { cannibalism_scenario_planned_siege_states = THIS }
+			add_to_temp_variable = { cannibalism_scenario_planned_siege_count = 1 }
+		}
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_planned_march_count < cannibalism_scenario_required_march_states }
+				cannibalism_scenario_preflight_march_warlord_state = yes
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_island_states value = THIS } }
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_siege_states value = THIS } }
+				NOT = { is_in_array = { array = cannibalism_scenario_planned_march_states value = THIS } }
+			}
+			add_to_temp_array = { cannibalism_scenario_planned_march_states = THIS }
+			add_to_temp_variable = { cannibalism_scenario_planned_march_count = 1 }
+		}
+		cannibalism_scenario_plan_available_warlord_slots = yes
+
+		if = {
+			limit = {
+				check_variable = { var = cannibalism_scenario_planned_island_count value = cannibalism_scenario_required_island_states compare = equals }
+				check_variable = { var = cannibalism_scenario_planned_island_warlord_count value = cannibalism_scenario_required_island_warlord_states compare = equals }
+				check_variable = { var = cannibalism_scenario_planned_siege_count value = cannibalism_scenario_required_siege_states compare = equals }
+				check_variable = { var = cannibalism_scenario_planned_march_count value = cannibalism_scenario_required_march_states compare = equals }
+				check_variable = { var = cannibalism_scenario_planned_warlord_slot_count value = cannibalism_scenario_required_warlord_slots compare = equals }
+				OR = {
+					NOT = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_convergence } }
+					AND = {
+						NOT = { has_global_flag = cannibalism_convergence_active }
+						NOT = { has_global_flag = cannibalism_reveal_complete }
+						NOT = { has_global_flag = cannibalism_convergence_broken }
+					}
+				}
+			}
+			set_temp_variable = { cannibalism_scenario_preflight_result = 1 }
+			set_temp_variable = { cannibalism_scenario_use_preflight_plan = 1 }
 		}
 	}
 }
@@ -249,6 +509,7 @@ cannibalism_scenario_authorize_requested_evolutions = {
 
 cannibalism_scenario_initialize_required_actors = {
 	set_temp_variable = { cannibalism_scenario_actor_count = 0 }
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
 	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	set_temp_variable = { cannibalism_scenario_source_was_new = 0 }
 	event_target:cannibalism_scenario_source_country = {
@@ -271,24 +532,47 @@ cannibalism_scenario_initialize_required_actors = {
 	}
 	cannibalism_scenario_authorize_requested_evolutions = yes
 
-	every_country = {
-		limit = {
-			check_variable = {
-				var = cannibalism_scenario_actor_count
-				value = cannibalism_scenario_target_countries
-				compare = less_than
-			}
-			is_ai = yes
-			cannibalism_scenario_valid_source_country = yes
-			NOT = { tag = event_target:cannibalism_scenario_source_country }
-		}
-		cannibalism_scenario_initialize_current_country = yes
-		if = {
-			limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
-			add_to_temp_variable = { cannibalism_scenario_actor_count = 1 }
+	if = {
+		limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
+		for_each_scope_loop = {
+			array = cannibalism_scenario_planned_actor_countries
 			if = {
-				limit = { check_variable = { cannibalism_scenario_actor_was_new > 0 } }
-				cannibalism_scenario_record_new_actor_nodes = yes
+				limit = {
+					check_variable = { cannibalism_scenario_actor_count < cannibalism_scenario_target_countries }
+					NOT = { tag = event_target:cannibalism_scenario_source_country }
+				}
+				cannibalism_scenario_initialize_current_country = yes
+				if = {
+					limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
+					add_to_temp_variable = { cannibalism_scenario_actor_count = 1 }
+					if = {
+						limit = { check_variable = { cannibalism_scenario_actor_was_new > 0 } }
+						cannibalism_scenario_record_new_actor_nodes = yes
+					}
+				}
+			}
+		}
+	}
+	else = {
+		every_country = {
+			limit = {
+				check_variable = {
+					var = cannibalism_scenario_actor_count
+					value = cannibalism_scenario_target_countries
+					compare = less_than
+				}
+				is_ai = yes
+				cannibalism_scenario_valid_source_country = yes
+				NOT = { tag = event_target:cannibalism_scenario_source_country }
+			}
+			cannibalism_scenario_initialize_current_country = yes
+			if = {
+				limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
+				add_to_temp_variable = { cannibalism_scenario_actor_count = 1 }
+				if = {
+					limit = { check_variable = { cannibalism_scenario_actor_was_new > 0 } }
+					cannibalism_scenario_record_new_actor_nodes = yes
+				}
 			}
 		}
 	}
@@ -377,61 +661,185 @@ cannibalism_scenario_seed_additional_source_states = {
 
 cannibalism_scenario_select_island_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
-	every_state = {
-		limit = {
-			check_variable = { cannibalism_scenario_state_found < 1 }
-			cannibalism_scenario_state_can_seed_island_host = yes
+	if = {
+		limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
+		for_each_scope_loop = {
+			array = cannibalism_scenario_planned_island_states
+			if = {
+				limit = { check_variable = { cannibalism_scenario_state_found < 1 } }
+				set_state_flag = cannibalism_scenario_reserved_state
+				save_event_target_as = cannibalism_scenario_selected_state
+				set_temp_variable = { cannibalism_scenario_state_found = 1 }
+			}
 		}
-		set_state_flag = cannibalism_scenario_reserved_state
-		save_event_target_as = cannibalism_scenario_selected_state
-		set_temp_variable = { cannibalism_scenario_state_found = 1 }
+		if = {
+			limit = { check_variable = { cannibalism_scenario_state_found > 0 } }
+			remove_from_temp_array = { array = cannibalism_scenario_planned_island_states index = 0 }
+		}
+	}
+	else = {
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_state_found < 1 }
+				cannibalism_scenario_state_can_seed_island_host = yes
+			}
+			set_state_flag = cannibalism_scenario_reserved_state
+			save_event_target_as = cannibalism_scenario_selected_state
+			set_temp_variable = { cannibalism_scenario_state_found = 1 }
+		}
 	}
 }
 
 cannibalism_scenario_select_siege_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
-	every_state = {
-		limit = {
-			check_variable = { cannibalism_scenario_state_found < 1 }
-			cannibalism_scenario_state_can_seed_siege_commune = yes
+	if = {
+		limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
+		for_each_scope_loop = {
+			array = cannibalism_scenario_planned_siege_states
+			if = {
+				limit = { check_variable = { cannibalism_scenario_state_found < 1 } }
+				set_state_flag = cannibalism_scenario_reserved_state
+				save_event_target_as = cannibalism_scenario_selected_state
+				set_temp_variable = { cannibalism_scenario_state_found = 1 }
+			}
 		}
-		set_state_flag = cannibalism_scenario_reserved_state
-		save_event_target_as = cannibalism_scenario_selected_state
-		set_temp_variable = { cannibalism_scenario_state_found = 1 }
+		if = {
+			limit = { check_variable = { cannibalism_scenario_state_found > 0 } }
+			remove_from_temp_array = { array = cannibalism_scenario_planned_siege_states index = 0 }
+		}
+	}
+	else = {
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_state_found < 1 }
+				cannibalism_scenario_state_can_seed_siege_commune = yes
+			}
+			set_state_flag = cannibalism_scenario_reserved_state
+			save_event_target_as = cannibalism_scenario_selected_state
+			set_temp_variable = { cannibalism_scenario_state_found = 1 }
+		}
 	}
 }
 
 cannibalism_scenario_select_march_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
-	every_state = {
-		limit = {
-			check_variable = { cannibalism_scenario_state_found < 1 }
-			cannibalism_scenario_state_can_seed_march_host = yes
+	if = {
+		limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
+		for_each_scope_loop = {
+			array = cannibalism_scenario_planned_march_states
+			if = {
+				limit = { check_variable = { cannibalism_scenario_state_found < 1 } }
+				set_state_flag = cannibalism_scenario_reserved_state
+				set_state_flag = cannibalism_scenario_march_column
+				save_event_target_as = cannibalism_scenario_selected_state
+				set_temp_variable = { cannibalism_scenario_state_found = 1 }
+			}
 		}
-		set_state_flag = cannibalism_scenario_reserved_state
-		set_state_flag = cannibalism_scenario_march_column
-		save_event_target_as = cannibalism_scenario_selected_state
-		set_temp_variable = { cannibalism_scenario_state_found = 1 }
+		if = {
+			limit = { check_variable = { cannibalism_scenario_state_found > 0 } }
+			remove_from_temp_array = { array = cannibalism_scenario_planned_march_states index = 0 }
+		}
 	}
-}
-
-cannibalism_scenario_select_prison_state = {
-	set_temp_variable = { cannibalism_scenario_state_found = 0 }
-	every_state = {
-		limit = {
-			check_variable = { cannibalism_scenario_state_found < 1 }
-			cannibalism_scenario_state_can_seed_prison_host = yes
+	else = {
+		every_state = {
+			limit = {
+				check_variable = { cannibalism_scenario_state_found < 1 }
+				cannibalism_scenario_state_can_seed_march_host = yes
+			}
+			set_state_flag = cannibalism_scenario_reserved_state
+			set_state_flag = cannibalism_scenario_march_column
+			save_event_target_as = cannibalism_scenario_selected_state
+			set_temp_variable = { cannibalism_scenario_state_found = 1 }
 		}
-		set_state_flag = cannibalism_scenario_reserved_state
-		set_state_flag = cannibalism_scenario_prison_compound
-		save_event_target_as = cannibalism_scenario_selected_state
-		set_temp_variable = { cannibalism_scenario_state_found = 1 }
 	}
 }
 
 # ---------------------------------------------------------------------------
 # Canonical warlord formation
 # ---------------------------------------------------------------------------
+
+cannibalism_scenario_allocate_next_planned_warlord_slot = {
+	set_temp_variable = { cannibalism_scenario_planned_slot_found = 0 }
+	set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.none }
+	for_each_scope_loop = {
+		array = cannibalism_scenario_planned_warlord_slots
+		if = {
+			limit = { check_variable = { cannibalism_scenario_planned_slot_found < 1 } }
+			if = { limit = { tag = CBA } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cba } }
+			else_if = { limit = { tag = CBB } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbb } }
+			else_if = { limit = { tag = CBC } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbc } }
+			else_if = { limit = { tag = CBD } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbd } }
+			else_if = { limit = { tag = CBE } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbe } }
+			else_if = { limit = { tag = CBF } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbf } }
+			else_if = { limit = { tag = CBG } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbg } }
+			else_if = { limit = { tag = CBH } set_temp_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbh } }
+			if = {
+				limit = { check_variable = { cannibalism_scenario_planned_slot_index > constant:cannibalism_slot.none } }
+				set_temp_variable = { cannibalism_scenario_planned_slot_found = 1 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cba }
+			cannibalism_slot_cba_available = yes
+		}
+		cannibalism_allocate_slot_cba = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbb }
+			cannibalism_slot_cbb_available = yes
+		}
+		cannibalism_allocate_slot_cbb = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbc }
+			cannibalism_slot_cbc_available = yes
+		}
+		cannibalism_allocate_slot_cbc = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbd }
+			cannibalism_slot_cbd_available = yes
+		}
+		cannibalism_allocate_slot_cbd = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbe }
+			cannibalism_slot_cbe_available = yes
+		}
+		cannibalism_allocate_slot_cbe = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbf }
+			cannibalism_slot_cbf_available = yes
+		}
+		cannibalism_allocate_slot_cbf = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbg }
+			cannibalism_slot_cbg_available = yes
+		}
+		cannibalism_allocate_slot_cbg = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbh }
+			cannibalism_slot_cbh_available = yes
+		}
+		cannibalism_allocate_slot_cbh = yes
+	}
+	if = {
+		limit = { check_variable = { cannibalism_warlord_creation_result > 0 } }
+		remove_from_temp_array = { array = cannibalism_scenario_planned_warlord_slots index = 0 }
+	}
+}
 
 cannibalism_scenario_form_selected_warlord = {
 	set_temp_variable = { cannibalism_scenario_warlord_formation_result = 0 }
@@ -452,7 +860,11 @@ cannibalism_scenario_form_selected_warlord = {
 			if = {
 				limit = { check_variable = { cannibalism_scenario_node_setup_result > 0 } }
 				cannibalism_prepare_warlord_creation_context = yes
-				cannibalism_allocate_warlord_slot_for_current_state = yes
+				if = {
+					limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
+					cannibalism_scenario_allocate_next_planned_warlord_slot = yes
+				}
+				else = { cannibalism_allocate_warlord_slot_for_current_state = yes }
 			}
 		}
 		if = {
@@ -479,7 +891,6 @@ cannibalism_scenario_form_selected_warlord = {
 		event_target:cannibalism_scenario_selected_state = {
 			clr_state_flag = cannibalism_scenario_reserved_state
 			clr_state_flag = cannibalism_scenario_march_column
-			clr_state_flag = cannibalism_scenario_prison_compound
 		}
 	}
 }
@@ -499,11 +910,6 @@ cannibalism_scenario_form_next_march_warlord = {
 	cannibalism_scenario_form_selected_warlord = yes
 }
 
-cannibalism_scenario_form_next_prison_warlord = {
-	cannibalism_scenario_select_prison_state = yes
-	cannibalism_scenario_form_selected_warlord = yes
-}
-
 cannibalism_scenario_create_warlord_states_distribution = {
 	set_temp_variable = { cannibalism_scenario_warlord_formation_required = 1 }
 	if = {
@@ -520,7 +926,7 @@ cannibalism_scenario_create_warlord_states_distribution = {
 		cannibalism_scenario_form_next_island_warlord = yes
 		cannibalism_scenario_form_next_siege_warlord = yes
 		cannibalism_scenario_form_next_march_warlord = yes
-		cannibalism_scenario_form_next_prison_warlord = yes
+		cannibalism_scenario_form_next_siege_warlord = yes
 	}
 	else = {
 		cannibalism_scenario_form_next_island_warlord = yes
@@ -528,7 +934,7 @@ cannibalism_scenario_create_warlord_states_distribution = {
 		cannibalism_scenario_form_next_siege_warlord = yes
 		cannibalism_scenario_form_next_siege_warlord = yes
 		cannibalism_scenario_form_next_march_warlord = yes
-		cannibalism_scenario_form_next_prison_warlord = yes
+		cannibalism_scenario_form_next_march_warlord = yes
 	}
 }
 
@@ -539,15 +945,15 @@ cannibalism_scenario_create_convergence_distribution = {
 	cannibalism_scenario_form_next_march_warlord = yes
 	if = {
 		limit = { check_variable = { cannibalism_scenario_selected_intensity > constant:triggerable_scenario_intensity.low } }
-		cannibalism_scenario_form_next_prison_warlord = yes
-	}
-	if = {
-		limit = { check_variable = { cannibalism_scenario_selected_intensity > constant:triggerable_scenario_intensity.medium } }
 		cannibalism_scenario_form_next_island_warlord = yes
 	}
 	if = {
-		limit = { check_variable = { cannibalism_scenario_selected_intensity > constant:triggerable_scenario_intensity.high } }
+		limit = { check_variable = { cannibalism_scenario_selected_intensity > constant:triggerable_scenario_intensity.medium } }
 		cannibalism_scenario_form_next_siege_warlord = yes
+	}
+	if = {
+		limit = { check_variable = { cannibalism_scenario_selected_intensity > constant:triggerable_scenario_intensity.high } }
+		cannibalism_scenario_form_next_march_warlord = yes
 	}
 }
 
@@ -701,6 +1107,7 @@ cannibalism_scenario_setup_convergence = {
 cannibalism_setup_prefire_evolution_iii_opening = {
 	set_temp_variable = { cannibalism_scenario_setup_failed = 0 }
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_use_preflight_plan = 0 }
 	set_temp_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_convergence }
 	set_temp_variable = { cannibalism_scenario_selected_intensity = constant:triggerable_scenario_intensity.low }
 	set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
@@ -730,12 +1137,10 @@ cannibalism_setup_prefire_evolution_iii_opening = {
 			OR = {
 				has_state_flag = cannibalism_scenario_reserved_state
 				has_state_flag = cannibalism_scenario_march_column
-				has_state_flag = cannibalism_scenario_prison_compound
 			}
 		}
 		clr_state_flag = cannibalism_scenario_reserved_state
 		clr_state_flag = cannibalism_scenario_march_column
-		clr_state_flag = cannibalism_scenario_prison_compound
 	}
 }
 
@@ -746,17 +1151,15 @@ cannibalism_setup_prefire_evolution_iii_opening = {
 trigger_cannibalism_scenario = {
 	set_temp_variable = { cannibalism_scenario_setup_failed = 0 }
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
-	clr_country_flag = cannibalism_manual_scenario_setup_failed
-	set_global_flag = cannibalism_scenario_launch_active
-	set_country_flag = cannibalism_manual_scenario_launcher
 	cannibalism_scenario_prepare_scale = yes
-	cannibalism_scenario_select_source_country = yes
+	cannibalism_scenario_build_manual_preflight_plan = yes
 	if = {
 		limit = {
-			cannibalism_scenario_can_launch = yes
-			check_variable = { cannibalism_scenario_source_found > 0 }
+			check_variable = { cannibalism_scenario_preflight_result > 0 }
 			has_event_target = cannibalism_scenario_source_country
 		}
+		clr_country_flag = cannibalism_manual_scenario_setup_failed
+		set_global_flag = cannibalism_scenario_launch_active
 		cannibalism_scenario_prepare_runtime = yes
 		if = {
 			limit = { check_variable = { cannibalism_scenario_selected_type = constant:cannibalism_scenario.type_discipline_collapse } }
@@ -782,6 +1185,7 @@ trigger_cannibalism_scenario = {
 
 	if = {
 		limit = { check_variable = { cannibalism_scenario_setup_result > 0 } }
+		set_country_flag = cannibalism_manual_scenario_launcher
 		set_global_flag = cannibalism_manual_scenario_ever_launched
 		set_variable = { global.cannibalism_scenario_last_type = cannibalism_scenario_selected_type }
 		set_variable = { global.cannibalism_scenario_last_intensity = cannibalism_scenario_selected_intensity }
@@ -796,19 +1200,25 @@ trigger_cannibalism_scenario = {
 		set_country_flag = cannibalism_manual_scenario_setup_failed
 	}
 
-	every_state = {
-		limit = {
-			OR = {
-				has_state_flag = cannibalism_scenario_reserved_state
-				has_state_flag = cannibalism_scenario_march_column
-				has_state_flag = cannibalism_scenario_prison_compound
+	if = {
+		limit = { check_variable = { cannibalism_scenario_preflight_result > 0 } }
+		every_state = {
+			limit = {
+				OR = {
+					has_state_flag = cannibalism_scenario_reserved_state
+					has_state_flag = cannibalism_scenario_march_column
+				}
 			}
+			clr_state_flag = cannibalism_scenario_reserved_state
+			clr_state_flag = cannibalism_scenario_march_column
 		}
-		clr_state_flag = cannibalism_scenario_reserved_state
-		clr_state_flag = cannibalism_scenario_march_column
-		clr_state_flag = cannibalism_scenario_prison_compound
+		clr_global_flag = cannibalism_scenario_launch_active
 	}
-	clr_global_flag = cannibalism_scenario_launch_active
+	clear_temp_array = cannibalism_scenario_planned_actor_countries
+	clear_temp_array = cannibalism_scenario_planned_island_states
+	clear_temp_array = cannibalism_scenario_planned_siege_states
+	clear_temp_array = cannibalism_scenario_planned_march_states
+	clear_temp_array = cannibalism_scenario_planned_warlord_slots
 	set_temp_variable = { cannibalism_prefire_evolution = 0 }
 	set_temp_variable = { cannibalism_prefire_evolution_i_enabled = 0 }
 	set_temp_variable = { cannibalism_prefire_evolution_ii_enabled = 0 }

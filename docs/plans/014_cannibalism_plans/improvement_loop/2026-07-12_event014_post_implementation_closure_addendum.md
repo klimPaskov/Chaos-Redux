@@ -6,7 +6,7 @@ Status: accepted, implemented, and promoted into the Event 014 source specificat
 
 Scope: one improvement-loop pass after the country package and unified focus remediation
 
-Disposition: the constituent technology union and 39 unique unified decision icons are implemented. Their final behavior is recorded in spec parts 7, 8, 10, and 12, the current matrices, and `docs/events/014_cannibalism.md`. Optional ideas A through C remain queued and unaccepted.
+Disposition: the constituent technology union and 38 unique unified decision icons remain implemented after the 2026-07-15 removal of the fourth origin package. Their final behavior is recorded in spec parts 7, 8, 10, and 12, the current matrices, and `docs/events/014_cannibalism.md`. Optional ideas A through C remain queued and unaccepted.
 
 This addendum records the bounded closure tranche that was later implemented. It does not authorize a new route, country package, focus branch, currency, faction, super-event, evolution, or scripted GUI. Historical implementation instructions below are retained as design provenance. Current status is controlled by the disposition above and the promoted source specifications.
 
@@ -15,7 +15,7 @@ This addendum records the bounded closure tranche that was later implemented. It
 Both accepted-required items are closed within this addendum's scope:
 
 1. The shared constituent technology helper and all three call sites are present. They transfer compatible researched technology tokens additively into CBL and transformed ZZZ while preserving the recipient's established mutually exclusive industry branch. Completed special-project state remains outside this technology-token contract.
-2. All 39 unified decisions have distinct registered source artwork and final DDS files. The current `.gfx` closure scan reports zero missing Event 014 texture paths.
+2. All 38 retained unified decisions have distinct registered source artwork and final DDS files. The current `.gfx` closure scan reports zero missing Event 014 texture paths.
 
 These were compliance repairs rather than optional depth additions. No fallback, reused icon, placeholder, silent technology-family exclusion, or weaker substitute was used.
 
@@ -23,10 +23,16 @@ The optional ideas at the end of this document remain queued and unaccepted. The
 
 ## Source-of-truth boundary
 
-The following remain authoritative:
+Current authority is:
 
 - `docs/specs/014_cannibalism_specs/`
 - `docs/events/014_cannibalism.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_country_package_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_reaudit_2026-07-15.md`
+- `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-15.md`
+
+Historical implementation evidence includes:
+
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_country_package_audit_2026-07-12.md`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_focus_remediation_2026-07-12.md`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_wendigo_preservation_audit.md`
@@ -45,7 +51,7 @@ The prior country-package audit found several serious defects. The current live 
 | CBL had no usable research slots | `cannibalism_create_unified_country_from_selected_host` applies `set_research_slots = constant:cannibalism_unification.starting_research_slots` immediately after the initial host technology-union helper | Closed in live code |
 | Completed local route and origin identity did not affect the unified state | Inherited route and origin flags now have consumers across unified focus, decision, trigger, and effect files | Closed in live code |
 | Later absorbed origins did not accumulate | `cannibalism_apply_absorbed_warlord_inheritance_to_unified_host` accumulates the origin contract for the destination | Closed in live code |
-| Origin-specialist formations were not independently recruitable | Four paid origin-specialist recruitment decisions exist in `common/decisions/014_cannibalism_unified_decisions.txt` | Closed in live code |
+| Origin-specialist formations were not independently recruitable | Three paid origin-specialist recruitment decisions exist in `common/decisions/014_cannibalism_unified_decisions.txt` | Closed in live code |
 | Integrated warlords lost meaningful character identity | Named commander personality is preserved and the surrender route creates a servant character through the unified integration effects | Closed in live code |
 | Reused tags could accumulate runtime AI strategy injections | Event 014 origin behavior is routed through static, self-removing profiles in `common/ai_strategy/014_cannibalism_warlords.txt` | Closed in live code |
 | Host selection lacked hard map and logistics checks | Host eligibility includes capital, controlled supply, population, and coherence requirements in the Event 014 host-selection triggers | Closed in live code |
@@ -62,7 +68,7 @@ Every accepted-required repair and every future idea must preserve this boundary
 
 - Hannibal Lecter is public only after `cannibalism_reveal_complete` is set.
 - Before that flag, no player-facing event, decision, focus, idea, scripted GUI, country name, cosmetic tag, character, portrait, achievement, Event Details entry, event log entry, evolution row, scenario text, super-event, report image, news image, audio title, audio metadata, tooltip, or localisation may expose his name, identity, face, silhouette, personal pronouns, or command title.
-- The reveal must not use ancient-general, Carthaginian, Punic, Roman-rival, classical commander, laurel, toga, elephant, Barca, or Mediterranean-antiquity framing.
+- The reveal must use the established fictional horror identity without actor or real-person likeness.
 - No portrait, icon, report image, news image, flag, animation frame, or promotional image may copy an actor, celebrity, screen adaptation, or recognizable performance likeness.
 - No visual or written surface may borrow living Indigenous ceremonial clothing, sacred motifs, ritual objects, regalia, names, language, or authenticity claims. The existing internal Wendigo identifier does not license those motifs.
 - Generated regional identity may use ordinary period clothing, geography, architecture, equipment, and non-sacred material culture. It must not use living ceremonial, tribal, sacred, Indigenous, African ceremonial, or Pacific ceremonial dress as shorthand for violence or monstrosity.
@@ -76,7 +82,7 @@ Current live evidence supports the boundary:
 - `history/countries/CBL - Cannibal Unified Host.txt` leaves CBL dormant before the public transaction.
 - The reveal portrait, flag, report, news, and super-event handoffs under `docs/plans/014_cannibalism_plans/subagent_handoffs/` state the no-likeness and no-borrowed-motif rules.
 
-The unified decision icons are post-reveal assets, but the same no-actor, no-ancient-general, and no-living-Indigenous rules still apply. Their subjects should be objects, infrastructure, unit silhouettes, logistics, operational damage, and abstract host symbols. Hannibal's face is not needed for any of them.
+The unified decision icons are post-reveal assets, but the same no-actor, no-real-person-likeness, and no-living-Indigenous rules still apply. Their subjects should be objects, infrastructure, unit silhouettes, logistics, operational damage, and abstract host symbols. Hannibal's face is not needed for any of them.
 
 ## Accepted-required item 1: constituent technology union
 
@@ -187,25 +193,25 @@ Implementation is accepted only after evidence covers all of these scenarios:
 9. A mutually exclusive technology fixture proves that the receiver keeps its established branch and still gains every unrelated compatible donor technology.
 10. The in-place Wendigo transformation proves that original ZZZ keeps its existing special-project state while donor researched technology tokens are added.
 
-## Accepted-required item 2: 39 unified decision icon assets
+## Accepted-required item 2: 38 unified decision icon assets
 
 ### Final live state
 
-`common/decisions/014_cannibalism_unified_decisions.txt` contains 39 unified decisions and 39 distinct icon tokens. Each token follows this deterministic contract:
+`common/decisions/014_cannibalism_unified_decisions.txt` contains 38 unified decisions and 38 distinct icon tokens. Each token follows this deterministic contract:
 
 - decision: `<decision_id>`
 - sprite: `GFX_decision_<decision_id>`
 - final file: `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`
 
-`interface/014_cannibalism.gfx` declares all 39 sprite names and all 39 deterministic DDS paths.
+`interface/014_cannibalism.gfx` declares all 38 retained sprite names and all 38 deterministic DDS paths.
 
-Registration and asset production are complete. All 39 referenced DDS files have dedicated generated sources, processed PNGs, manifest rows, decoded-DDS contact sheets, and a completion handoff. `docs/events/014_cannibalism.md` records the distinct live icon package.
+Registration and asset production are complete. All 38 retained DDS files have dedicated generated sources, processed PNGs, manifest rows, decoded-DDS contact sheets, and one of three row-range handoffs. `docs/events/014_cannibalism.md` records the distinct live icon package.
 
 ### Production contract
 
 Use `chaos-redux-event-assets` and route production to `chaosx_icon_artist`. Do not route these small static icons to the frame-animation workflow.
 
-Each of the 39 decisions needs independently generated source artwork. Shared palette, outline weight, lighting, and UI treatment are allowed. Shared source art, cropped focus art, recolored duplicates, mirrored duplicates, one base icon with small overlays, and resized existing icons are not allowed.
+Each of the 38 retained decisions needs independently generated source artwork. Shared palette, outline weight, lighting, and UI treatment are allowed. Shared source art, cropped focus art, recolored duplicates, mirrored duplicates, one base icon with small overlays, and resized existing icons are not allowed.
 
 Required visual format:
 
@@ -216,23 +222,23 @@ Required visual format:
 - dark outline and restrained drop shadow
 - rust, old brass, dirty steel, dried red, bone, soot, and desaturated field-cloth palette
 - no text, letters, numbers, flags with readable writing, watermarks, fake transparency, white halos, or opaque square backgrounds
-- no actor likeness, ancient-general framing, Carthaginian or Punic motifs, living Indigenous motifs, sacred regalia, or claims of cultural authenticity
+- no actor or real-person likeness, living Indigenous motifs, sacred regalia, or claims of cultural authenticity
 - no real atrocity photography or identifiable victim likeness
 
 The icons may be gore-heavy when the decision subject calls for it, but gore must support the silhouette and remain legible at final size.
 
 Recommended source package:
 
-- source PNGs: `docs/assets/014_cannibalism/unified_decision_icons_imagegen/source_png/`
-- processed transparent PNGs: `docs/assets/014_cannibalism/unified_decision_icons_imagegen/alpha_png/`
-- contact sheets: `docs/assets/014_cannibalism/unified_decision_icons_imagegen/contact_sheets/`
-- package manifest: `docs/assets/014_cannibalism/unified_decision_icons_imagegen/manifest.md`
+- source PNGs: `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/source_png/`
+- processed PNGs: `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/processed_png/` and `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/alpha_png/`
+- contact sheets: `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/contact_sheets/` and `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/subsets/rows_10_24/rows_10_24_contact_sheet.png`
+- package manifests: `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/manifest_rows_01_09.md`, `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/subsets/rows_10_24/manifest.md`, and `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/manifest_rows_25_39.md`
 - final DDS files: `gfx/interface/decisions/014_cannibalism/`
-- subagent handoff: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_decision_icons_2026-07-12.md`
+- subagent handoffs: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_decision_icons_rows_01_09_2026-07-12.md`, `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_decision_icons_rows_10_24_2026-07-12.md`, and `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_decision_icons_rows_25_39_2026-07-12.md`
 
-The package manifest must record the exact prompt, generation provenance, source PNG, processed PNG, final DDS, sprite name, alpha handling, dimensions, and visual distinction for every icon. The final contact sheet must include the processed icons and decoded DDS results so wiring and alpha can be compared visually.
+The three row-range manifests record the prompt, generation provenance, source PNG, processed PNG, final DDS, sprite name, alpha handling, dimensions, and visual distinction for every retained icon. Their contact sheets include the processed icons or decoded DDS results needed to compare wiring, alpha, and visual distinction.
 
-### Frozen 39-icon ledger
+### Frozen 38-icon ledger
 
 The labels in the visual-direction column are production directions, not final localisation.
 
@@ -258,7 +264,6 @@ The labels in the visual-direction column are production directions, not final l
 | `cannibalism_unified_recruit_island_reavers` | `GFX_decision_cannibalism_unified_recruit_island_reavers` and `decision_cannibalism_unified_recruit_island_reavers.dds` | Landing-boat hook and butcher blade cutting across a black wave crest |
 | `cannibalism_unified_recruit_siege_eaters` | `GFX_decision_cannibalism_unified_recruit_siege_eaters` and `decision_cannibalism_unified_recruit_siege_eaters.dds` | Breached masonry block split by a compact demolition charge and assault hook |
 | `cannibalism_unified_recruit_march_predation_column` | `GFX_decision_cannibalism_unified_recruit_march_predation_column` and `decision_cannibalism_unified_recruit_march_predation_column.dds` | Truck wheel and rail spur beneath a long marching column pennant |
-| `cannibalism_unified_recruit_lockhouse_column` | `GFX_decision_cannibalism_unified_recruit_lockhouse_column` and `decision_cannibalism_unified_recruit_lockhouse_column.dds` | Oversized prison key above shackled marching boots |
 | `cannibalism_unified_raise_bone_guard` | `GFX_decision_cannibalism_unified_raise_bone_guard` and `decision_cannibalism_unified_raise_bone_guard.dds` | Bone-plated steel shield with a narrow barred eye slit |
 | `cannibalism_unified_launch_continental_hunt` | `GFX_decision_cannibalism_unified_launch_continental_hunt` and `decision_cannibalism_unified_launch_continental_hunt.dds` | Field binoculars tracking fresh boot prints across a torn operations chart |
 | `cannibalism_unified_collapse_enemy_front` | `GFX_decision_cannibalism_unified_collapse_enemy_front` and `decision_cannibalism_unified_collapse_enemy_front.dds` | Fractured defensive line with three enemy chevrons falling into the breach |
@@ -287,28 +292,28 @@ The identifiers and paths are already frozen in:
 
 Asset production and documentation must update:
 
-- `gfx/interface/decisions/014_cannibalism/` with all 39 final DDS files
-- `docs/assets/014_cannibalism/unified_decision_icons_imagegen/` with source PNGs, processed PNGs, manifest, and contact sheets
+- `gfx/interface/decisions/014_cannibalism/` with all 38 retained final DDS files
+- `docs/assets/014_cannibalism/static_icons_imagegen/unified_decisions/` with source PNGs, processed PNGs, three row-range manifests, and contact sheets
 - `docs/assets/014_cannibalism/manifest.md`
 - `docs/assets/014_cannibalism/gfx_handoff.md`
 - `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`
 - `docs/events/014_cannibalism.md`
-- `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_decision_icons_2026-07-12.md`
+- the three row-range handoffs named in the production contract above
 
-The final wiring audit must compare the 39 decision IDs, 39 sprite names, 39 declared DDS paths, 39 final files, 39 source files, and 39 manifest rows as exact one-to-one sets.
+The final wiring audit must compare the 38 retained decision IDs, 38 sprite names, 38 declared DDS paths, 38 final files, 38 source files, and 38 manifest rows as exact one-to-one sets.
 
 ### Acceptance proof
 
 The icon package is accepted only when all of these conditions hold:
 
-1. All 39 deterministic DDS paths exist.
+1. All 38 deterministic DDS paths exist.
 2. Every final DDS decodes with the expected 32 by 32 dimensions and usable alpha.
 3. Every final DDS has one independently generated source PNG and one processed transparent PNG.
-4. The 39 processed icons are visually distinct at final size. No two icons share the same primary silhouette and no icon is a crop, recolor, mirror, or overlay variant of another.
+4. The 38 processed icons are visually distinct at final size. No two icons share the same primary silhouette and no icon is a crop, recolor, mirror, or overlay variant of another.
 5. Every decision's live `icon =` token resolves to its matching `spriteType` and exact file.
 6. The decoded-DDS contact sheet shows no opaque squares, white halos, clipping, invisible silhouettes, illegible micro-detail, or accidental text.
-7. The package contains no actor likeness, ancient-general or Carthaginian framing, living Indigenous motif, ceremonial regalia, real victim likeness, or pre-reveal identity leak.
-8. `docs/events/014_cannibalism.md` records the 39 distinct unified decision icons.
+7. The package contains no actor or real-person likeness, living Indigenous motif, ceremonial regalia, real victim likeness, or pre-reveal identity leak.
+8. `docs/events/014_cannibalism.md` records the 38 retained distinct unified decision icons.
 9. The asset inventory, Event 014 manifest, `.gfx` handoff, and subagent handoff agree on all names and paths.
 10. No placeholder or fallback icon remains in the package.
 
@@ -325,7 +330,7 @@ After the technology helper and icon package land, run one bounded Event 014 clo
 - reveal-gate ordering on both unification branches
 - public identity wording and art boundary
 - no pre-reveal identity leak
-- no ancient-general or Carthaginian framing
+- no actor or real-person likeness
 - no actor likeness
 - no living Indigenous motif or authenticity claim
 - alignment of specs, `docs/events/014_cannibalism.md`, asset documentation, and the final completion handoff
@@ -340,7 +345,7 @@ These ideas are intentionally queued rather than accepted. They require parent a
 
 Working label, not final localisation: Composite Hunt Groups
 
-Use pairs of already accumulated origin-knowledge flags to alter existing paid operations. Island and occupation knowledge could improve an existing naval landing operation. Prison and rail knowledge could improve an existing cell or postwar integration operation. The purpose is to make multiple absorbed origins interact rather than remain four isolated recruitment unlocks.
+Use pairs of already accumulated origin-knowledge flags to alter existing paid operations. Island and occupation knowledge could improve an existing naval landing operation. Siege and rail knowledge could improve an existing cell or postwar integration operation. The purpose is to make multiple absorbed origins interact rather than remain three isolated recruitment unlocks.
 
 Hard boundary:
 
@@ -432,7 +437,7 @@ Any later expansion must begin from a new bounded plan that explains what player
 
 No simplification or fallback was used for the two accepted requirements.
 
-Both former blockers are closed. The additive constituent technology union is wired through the shared helper and all three recipient paths. All 39 unique unified decision source, processed, DDS, manifest, and contact-sheet records are present.
+Both former blockers are closed. The additive constituent technology union is wired through the shared helper and all three recipient paths. All 38 retained unified decision source, processed, DDS, manifest, and contact-sheet records are present.
 
 Queued optional ideas are omissions by design and do not block this tranche.
 

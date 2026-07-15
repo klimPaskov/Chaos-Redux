@@ -120,7 +120,7 @@ All constants below belong in `014_cannibalism_constants.txt` unless marked scen
 | `cannibalism_consumption_context` | `feeding_state = 1`, `raid = 2`, `prisoner = 3`, `battlefield = 4`, `anchor = 5`, `terminal = 6` |
 | `cannibalism_consumption_result` | `invalid_scope = 0`, `blocked = 1`, `duplicate = 2`, `applied = 3`, `exhausted = 4` |
 | `state_population_loss_result` | `no_loss = 0`, `applied = 1` |
-| `cannibalism_warlord_origin` | `island_host = 1`, `siege_commune = 2`, `march_host = 3`, `prison_host = 4` |
+| `cannibalism_warlord_origin` | `island_host = 1`, `siege_commune = 2`, `march_host = 3` |
 | `cannibalism_unification_response` | `pending = 0`, `submit = 1`, `autonomy = 2`, `resist = 3`, `challenge = 4` |
 | `cannibalism_scenario_type` | `discipline_collapse = 1`, `ritual_cells = 2`, `silent_islands = 3`, `warlord_states = 4`, `convergence = 5` |
 
@@ -593,7 +593,7 @@ Reserve these eight currently free tags.
 
 The scripted localisation key is `GetCannibalismWarlordSlotTag`. A meta effect injects the selected tag into static tag fields such as `add_core_of`, `release`, and tag scope blocks.
 
-The eight warlord tags use fixed origin-paired country files: `CBA` and `CBB` are Island Hosts, `CBC` and `CBD` are Siege Communes, `CBE` and `CBF` are March Hosts, and `CBG` and `CBH` are Prison Hosts. Their regional identity comes from scripted localisation, character setup, ideas, origin variables, and one distinct flag family per reusable slot. No additional warlord cosmetic tags are required.
+The eight warlord tags are origin-agnostic reusable country slots. `CBA` through `CBH` may each receive an Island Host, Siege Commune, or March Host package according to the selected state's geography and the current generation. Their regional identity comes from scripted localisation, character setup, ideas, origin variables, and one distinct flat flag family per reusable slot. No additional warlord cosmetic tags are required.
 
 `CBL` is not a reusable slot. It is the dedicated ordinary unified host. After Hannibal's reveal, its hierarchy focus applies exactly one of `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, or `CBL_RITUAL_STATE`; the base `CBL` identity remains visible before that post-reveal choice. The ordinary route transfers the selected source country's player and inherited state into CBL before annexation. The Wendigo route does not use CBL as its host. It keeps dynamic `ZZZ` and applies `ZZZ_CANNIBALISM_HANNIBAL` only during the public merge.
 
