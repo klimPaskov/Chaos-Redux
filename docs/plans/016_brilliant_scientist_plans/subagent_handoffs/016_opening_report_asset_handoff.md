@@ -2,6 +2,8 @@
 
 Date: 2026-07-14
 
+Parent integration status: resolved. `interface/016_brilliant_scientist.gfx` registers `GFX_report_event_016_brilliant_scientist_appointment`, and `chaosx.nr16.2` plus `chaosx.nr16.3` use it.
+
 ## Scope
 
 This bounded asset tranche completes one static opening report picture for Event 016. It uses only the approved Stage-0 Doctor Warren Kruger identity, applies the repository report-card treatment, produces a runtime BGRA DDS, records the sprite contract, and leaves all source wiring to the parent.
@@ -72,8 +74,6 @@ The change is safe and bounded because it adds one event-scoped texture and docu
 
 ## Remaining parent work
 
-- Add the sprite definition from `docs/assets/016_brilliant_scientist/gfx_handoff.md` to `interface/016_brilliant_scientist.gfx`.
-- Replace the current picture reference in `chaosx.nr16.2` and `chaosx.nr16.3` with `GFX_report_event_016_brilliant_scientist_appointment`.
 - Reconcile the opening-report status in any broader Event 016 completion audit after wiring.
 - Preserve the existing licensing note: internal Event 016 use is approved, while external redistribution rights for the Stage-0 source remain unresolved.
 

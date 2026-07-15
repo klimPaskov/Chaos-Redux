@@ -103,7 +103,7 @@ Text and audio research is complete for all six packages. Six role-distinct Even
 
 Five severe Kruger portrait animation packages are planned for clone, machine, temporal, xenobiological or alien, and synthesis outcomes. Every animated package requires separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff.
 
-Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`, and the character definition consumes both. A dedicated `210x176` opening report composition derived from the same approved identity is being finalized for `chaosx.nr16.2` and `.3`; the portrait sprite itself is not treated as a report-event substitute. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
+Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`, and the character definition consumes both. A dedicated `210x176` opening report composition derived from the same approved identity is registered as `GFX_report_event_016_brilliant_scientist_appointment` and used by `chaosx.nr16.2` and `.3`. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
 
 Exactly seventeen achievements require completed, grey, and not-eligible icons, for 51 final DDS files.
 
@@ -136,7 +136,7 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 ## Current blockers
 
 - Gameplay beyond the opening incident, AI beyond the opening choice, Directorate completion, project completion, evolutions, foreign operations, containment, country, focus, terminal, and achievement implementation remain incomplete, so Event 016 remains default-disabled.
-- Stage I through IV portrait assets, every severe animation package, flags, icons, UI art, report art, news art, super-event images, and visual state wiring remain absent.
+- Stage I through IV portrait assets, every severe animation package, flags, icons, UI art, later report art, news art, super-event images, and visual state wiring remain absent.
 - Super-event text and Event 016-owned audio are complete, but final descriptions, images, localisation, triggers, shared playback definitions, and presentation wiring are absent.
 - Workbook alignment is blocked on final in-game wording.
 
