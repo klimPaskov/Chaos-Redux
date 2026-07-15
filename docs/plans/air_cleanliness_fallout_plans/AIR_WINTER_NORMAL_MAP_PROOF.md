@@ -28,7 +28,7 @@ The dedicated route now supplies:
 - deterministic state ids, schema migration, save reconstruction, state reset, and deferred global cleanup
 - one synchronized call inside the existing monthly state pass
 
-The detailed engine and collision evidence is in `AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. Asset ownership, matrices, counts, source frames, and final paths are in `docs/assets/air_cleanliness_fallout/regional_map_visuals/`.
+The detailed engine, collision, post-wire resolver, hash, DDS, and contact-sheet evidence is in `AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. Asset ownership, matrices, counts, source frames, and final paths are in `docs/assets/air_cleanliness_fallout/regional_map_visuals/`.
 
 ## Remaining runtime observation gate
 
