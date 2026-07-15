@@ -12,7 +12,8 @@ fallout_event_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
+	previous_initialization_only_version = 1
 }
 
 fallout_event_registry_schema = {
@@ -48,7 +49,8 @@ fallout_event_arc_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
+	previous_empty_version = 1
 }
 
 fallout_event_delayed_queue_schema = {
@@ -57,7 +59,8 @@ fallout_event_delayed_queue_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
+	previous_empty_version = 1
 }
 
 fallout_event_bilateral_schema = {
@@ -66,7 +69,63 @@ fallout_event_bilateral_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
+	previous_empty_version = 1
+}
+
+fallout_event_subject_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	country = 1
+	state = 2
+	character = 3
+	institution = 4
+	upper_bound = 5
+}
+
+fallout_event_dispatch_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	delayed_ticket = 1
+	bilateral_response = 2
+	upper_bound = 3
+}
+
+fallout_event_dispatch_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	human_visible = 1
+	hidden_ai = 2
+	hidden_cleanup = 3
+	upper_bound = 4
+}
+
+fallout_event_cancellation_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	actor_lost = 1
+	target_lost = 2
+	reciprocal_lost = 3
+	generation_changed = 4
+	caller_cancelled = 5
+	owner_lost = 6
+	upper_bound = 7
 }
 
 # The accepted nine-resource identity set. Numeric initialization and
@@ -344,7 +403,10 @@ fallout_event_runtime = {
 
 	zero = 0
 	one = 1
+	two = 2
 	first_array_index = 0
+	first_ticket_id = 1
+	no_ticket = 0
 	maximum_major_arcs = 3
 	days_8_30_small_cooldown_days = 14
 	days_8_30_medium_cooldown_days = 12

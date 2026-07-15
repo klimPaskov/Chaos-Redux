@@ -46,6 +46,10 @@ New global values:
 | `global.fallout_event_registry_countries` | scope array | stable ordered post-allocation scheduler identities | frozen after successor allocation proves current |
 | `global.fallout_event_registry_generation_entries` | numeric array | transition generation aligned to each registry country | frozen with the registry payload |
 | `global.fallout_event_registry_index_entries` | numeric array | exact stable zero-based position for each registry country | frozen with the registry payload |
+| `global.fallout_event_registry_cursor` | variable | round-robin index for one primary frozen registry country per coordinator date | wraps to zero after the final row |
+| `global.fallout_event_schema_version` | variable | living-world runtime and transaction schema | schema 2 after a new registry commit or guarded dormant promotion |
+| `global.fallout_event_ticket_generation` | variable | binds the ticket allocator to the active transition generation | reset only with an uncommitted registry rebuild |
+| `global.fallout_event_next_ticket_id` | variable | next monotonic arc, delayed, or bilateral transaction ticket | incremented before a row commit and never decremented |
 | `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | future producer writes before commit |
 | `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | future producer writes before commit |
 | `global.fallout_survival_ledger_country_count` | variable | exact finalized successor-assignment row count | future producer writes before commit |
@@ -73,7 +77,7 @@ Global flags:
 | `world_end_fallout` | Fallout terminal branch marker | persistent |
 | `fallout_manual_scenario_active` | manual launch owns the current request | clear after transition begins |
 | `fallout_synthetic_strike_batch` | suppresses per-strike log and diplomatic spam | clear immediately after strike pass |
-| `fallout_event_scheduler_initialization_pending` | a current map return may initialize the dormant living-world registry | retained while post-reveal orientation and scheduler work remains incomplete |
+| `fallout_event_scheduler_initialization_pending` | a current map return may initialize the dormant living-world registry | clear only after a successful registry commit or proven dormant schema promotion |
 | `fallout_event_scheduler_registry_ready` | the aligned country registry payload passed its commit proof | clear only when an uncommitted payload is rebuilt |
 | `fallout_survival_ledger_ready` | all nine-resource rows passed schema, generation, and count proof | no setter until numeric initialization is accepted |
 | `fallout_event_scheduler_activation_approved` | manual review approved gameplay scheduling | no setter until the pilot passes review |
@@ -88,11 +92,13 @@ Global flags:
 | Successor pre-allocation inventory | 1 | live countries, possible-country scopes, states, reservations, and package conflicts |
 | Successor allocation output | 2 | consumed source receipt, reciprocal conflict links, unique assignments, package layers, capitals, and cleanup |
 | Manual province sweep runtime | 2 | generation-bound batch, verifier, and exact seven-day callback provenance |
-| Fallout living-world scheduler | 1 | exact reveal timeline and country runtime schemas |
+| Fallout living-world scheduler | 2 | exact reveal timeline, country runtime receipts, transaction history, and structural routing envelopes |
 | Fallout living-world registry | 1 | aligned country, generation, and stable-index commit payload |
 | Fallout orientation | 1 | five independent current-generation orientation receipts |
-| Fallout arc, delayed queue, and bilateral ledgers | 1 | dormant row schemas only, with no scheduling producer |
+| Fallout arc, delayed queue, and bilateral ledgers | 2 | dormant aligned transaction rows, reservation APIs, cancellation, cleanup handoff, and mutation-bounded reconciliation |
 | Fallout survival ledger | 1 | reserved schema and nine resource identities only, with no row contract or producer |
+
+Living-world schema 1 contained initialization-only rows and no transaction producer. It may promote to schema 2 only while the map-return receipt is current, both activation flags are absent, the scheduler has no error, every preserved runtime field passes its current invariant, and every arc, delayed, bilateral, cleanup, history, ticket, and dispatch surface is absent or empty as required. A partially populated, corrupt, or active schema-1 row fails closed before mutation.
 
 The region enum has nine live values: North America, Europe, Eurasian Interior, East Asia, South Asia, Middle East and North Africa, Sub-Saharan Africa, Latin America and the Caribbean, and Oceania and Remote Islands.
 
@@ -212,6 +218,97 @@ Do not store true or false state as numeric variables unless an engine surface r
 | `fallout_releasable_release_generation` | variable | proves an absent frozen possible-country scope was actually released in this transition |
 | `fallout_dynamic_country_materialization_generation` | variable | proves a dynamic output was actually materialized in this transition |
 
+### Live schema-2 living-world transaction row
+
+Every frozen registry country owns the following persistent scheduler receipts. The three compact ledgers use aligned arrays. A physical removal always deletes the same index from every array in that family.
+
+| Name | Role |
+| --- | --- |
+| `fallout_event_runtime_schema_version` | country runtime schema 2 |
+| `fallout_event_runtime_generation` | transition generation shared by every local transaction row |
+| `fallout_event_registry_generation` | generation of the frozen registry membership |
+| `fallout_event_registry_index` | stable zero-based registry identity |
+| `fallout_event_arc_schema_version` | compact arc schema 2 |
+| `fallout_event_delayed_queue_schema_version` | delayed-result schema 2 |
+| `fallout_event_bilateral_schema_version` | reciprocal bilateral schema 2 |
+| `fallout_event_active_major_arc_count` | derived compact arc count with a maximum of three |
+| `fallout_event_arc_reconcile_cursor` | next compact arc index inspected for this country |
+| `fallout_event_delayed_reconcile_cursor` | next delayed index inspected for this country |
+| `fallout_event_bilateral_reconcile_cursor` | next bilateral index inspected for this country |
+| `fallout_event_last_transaction_reconcile_generation` | generation of the most recent bounded reconciliation |
+| `fallout_event_last_transaction_reconcile_day` | arithmetic day of the most recent bounded reconciliation |
+| `fallout_event_cancellation_count` | nonnegative count of typed cancellations recorded for this country |
+| `fallout_event_last_cancelled_ticket` | most recent cancelled transaction ticket when the count is positive |
+| `fallout_event_last_cancellation_reason` | typed owner, actor, target, reciprocal, generation, or caller reason |
+| `fallout_event_last_cancellation_generation` | generation of the most recent cancellation |
+| `fallout_event_last_cancellation_day` | arithmetic day of the most recent cancellation |
+| `fallout_event_transaction_schema_migration_generation` | generation authenticated by a successful dormant schema-1 promotion |
+| `fallout_event_transaction_schema_migration_day` | arithmetic day of that promotion |
+
+Major-arc arrays:
+
+| Aligned array | Stored field |
+| --- | --- |
+| `fallout_event_arc_ticket_entries` | globally allocated ticket |
+| `fallout_event_arc_identity_entries` | content-owned stable arc identity |
+| `fallout_event_arc_generation_entries` | runtime generation |
+| `fallout_event_arc_primary_family_entries` | release-floor ownership family |
+| `fallout_event_arc_cooldown_family_entries` | anti-repetition family |
+| `fallout_event_arc_stage_entries` | opening through cleanup stage |
+| `fallout_event_arc_actor_type_entries` | typed actor identity kind |
+| `fallout_event_arc_actor_entries` | actor scope or institution token |
+| `fallout_event_arc_outcome_entries` | typed outcome |
+| `fallout_event_arc_cancellation_reason_entries` | typed reason for an aborted or cancelled arc |
+| `fallout_event_arc_cleanup_token_entries` | content-owned cleanup identity |
+| `fallout_event_arc_cleanup_owner_entries` | stable registry index that owns cleanup |
+
+Delayed-result arrays:
+
+| Aligned array | Stored field |
+| --- | --- |
+| `fallout_event_delayed_ticket_entries` | globally allocated ticket |
+| `fallout_event_delayed_key_entries` | idempotent content transaction key |
+| `fallout_event_delayed_generation_entries` | runtime generation |
+| `fallout_event_delayed_parent_arc_ticket_entries` | optional parent arc ticket |
+| `fallout_event_delayed_human_event_token_entries` | token reserved for a visible human result |
+| `fallout_event_delayed_ai_event_token_entries` | distinct token reserved for hidden AI handling |
+| `fallout_event_delayed_branch_entries` | selected content branch token |
+| `fallout_event_delayed_due_day_entries` | earliest arithmetic dispatch day |
+| `fallout_event_delayed_status_entries` | scheduled, resolved, cancelled, or cleanup status |
+| `fallout_event_delayed_target_type_entries` | optional typed target kind |
+| `fallout_event_delayed_target_entries` | optional target scope or institution token |
+| `fallout_event_delayed_cleanup_token_entries` | content-owned cleanup identity |
+| `fallout_event_delayed_cleanup_owner_entries` | stable local registry index |
+| `fallout_event_delayed_outcome_entries` | typed result or cancellation outcome |
+| `fallout_event_delayed_cancellation_reason_entries` | typed cancellation reason |
+
+Bilateral arrays:
+
+| Aligned array | Stored field |
+| --- | --- |
+| `fallout_event_bilateral_partner_entries` | exact reciprocal registry country |
+| `fallout_event_bilateral_ticket_entries` | one ticket shared by both countries |
+| `fallout_event_bilateral_key_entries` | one idempotent content key shared by both countries |
+| `fallout_event_bilateral_generation_entries` | shared runtime generation |
+| `fallout_event_bilateral_role_entries` | opposite initiator and responder roles |
+| `fallout_event_bilateral_response_token_entries` | participant-specific visible response token |
+| `fallout_event_bilateral_ai_response_token_entries` | participant-specific hidden AI token |
+| `fallout_event_bilateral_due_date_entries` | shared arithmetic due day |
+| `fallout_event_bilateral_status_entries` | reciprocal reservation and terminal status |
+| `fallout_event_bilateral_cleanup_owner_entries` | initiator registry index shared by both rows |
+| `fallout_event_bilateral_parent_arc_ticket_entries` | optional initiator arc ticket |
+| `fallout_event_bilateral_cleanup_token_entries` | shared content-owned cleanup identity |
+| `fallout_event_bilateral_outcome_entries` | shared typed outcome |
+| `fallout_event_bilateral_cancellation_reason_entries` | shared typed cancellation reason |
+
+The structural dispatch envelope uses `fallout_event_dispatch_source`, `fallout_event_dispatch_ticket`, `fallout_event_dispatch_generation`, `fallout_event_dispatch_mode`, `fallout_event_dispatch_event_token`, `fallout_event_dispatch_branch`, `fallout_event_dispatch_target_type`, and `fallout_event_dispatch_target`. `fallout_event_dispatch_ready` is written last. Validation requires a living owner, the exact current delayed or bilateral row, and the token appropriate to human, hidden AI, or hidden cleanup mode. Human and hidden AI bilateral responses require the responder role. The envelope does not fire an event.
+
+Public transaction effects return acceptance, ticket, row, or pair receipts through temporary variables. An outer caller must create every output temporary variable before invoking the scripted effect. Internal calls follow this pre-seed contract. This is required because a temporary variable first created inside a nested scripted effect is not a persistent return value.
+
+Recurring reconciliation validates full row shape linearly and performs a constant number of selected identity scans. When a delayed or bilateral dispatch envelope is ready, its exact candidate lookup and selected structural uniqueness proof add another constant number of linear passes over that source family. Exact reciprocal proof performs one partner lookup and one selected partner identity scan. A bilateral transaction may mutate that exact partner row. Reservation production alone runs full local uniqueness scans, which are quadratic in each uncapped local delayed or bilateral ledger. No delayed or bilateral queue cap exists.
+
+Scheduler-owned country flags are `fallout_event_runtime_initialized`, `fallout_event_transaction_schema_migrated`, `fallout_event_arc_slot_1_active`, `fallout_event_arc_slot_2_active`, `fallout_event_arc_slot_3_active`, `fallout_event_arc_cleanup_pending`, `fallout_event_delayed_cleanup_pending`, `fallout_event_bilateral_cleanup_pending`, and `fallout_event_dispatch_ready`. Arc-slot and cleanup flags are derived caches. Their source arrays remain authoritative.
+
 Country flags:
 
 - `fallout_surviving_old_government`
@@ -287,10 +384,14 @@ Altered biosphere is subtype 1, not grade 6. It is fictional high-Chaos content 
 7. Every Fallout state is processed exactly once per transition version.
 8. Every active successor receives exactly one country package version.
 9. Every human source and every snapshot-origin player state is reserved before the general successor inventory is frozen. A landless human receives an explicit materialization row instead of a fabricated state anchor.
-10. Transition flags and cursors survive save-load.
+10. Transition flags, arrays, and cursors use persistent script state intended for save-load. Runtime preservation has not been observed because HOI4 was not launched.
 11. No inferred abort or partial map return is permitted. An unresolved postcondition keeps the blackout active and records the owning blocker.
 12. Manual synthetic strikes suppress repeated global event logs and apply one aggregate history entry.
 13. Player reservations become immutable when successor allocation initialization consumes them. Later drift records its own fail-closed error and never rebuilds the consumed ledger.
 14. The living-world registry commits only after successor allocation proves current and each stored country index equals its exact array position.
 15. Ordinary living-world events remain ineligible until all five orientation receipts are current and both scheduler activation flags are explicitly set by reviewed future work.
 16. The future nine-resource ledger must cover every finalized successor after allocation and before player continuation. Survivor-allocation advancement and map return must gain that barrier in the same complete implementation tranche.
+17. Arc, delayed-result, and bilateral tickets bind to one transition generation. Compact row removal deletes the same index from every aligned array in its family.
+18. Arc occupancy flags derive from the compact array count and cannot exceed three active rows.
+19. One primary frozen registry country reconciles per coordinator date and one primary row is selected from each transaction family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring identity reads remain linear in the selected country and partner ledgers. Production-only full uniqueness gates are quadratic in each local ledger. Delayed and bilateral queue caps remain absent.
+20. Dispatch and cleanup envelopes are data contracts. They neither schedule nor fire an event, and they do not execute content-owned cleanup.

@@ -188,7 +188,7 @@ Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`
 
 ## B9: living-world scheduler activation
 
-Status: dormant registry and timeline substrate implemented, gameplay activation blocked
+Status: schema-2 dormant transaction integrity implemented, gameplay activation blocked
 
 Implemented structural proof:
 
@@ -199,18 +199,26 @@ Implemented structural proof:
 - country runtime rows have separate schema receipts for orientation, arcs, delayed queue, and bilateral data
 - five independent orientation components gate ordinary events
 - per-country fatigue slots are initialized, while the last cooldown family provides the hard immediate-repeat veto
-- no daily global candidate pool, event dispatch, or activation setter exists
+- one generation-bound global allocator issues monotonic arc, delayed-result, and bilateral tickets
+- compact aligned rows support idempotent reservation, payload-before-status updates, typed owner and subject cancellation, exact cleanup release, and aligned rollback or removal
+- bilateral reservation writes one ticket to two opposite-role rows and proves the exact reciprocal country and initiator cleanup owner before commit
+- structural human, hidden AI, and hidden-cleanup envelopes must match their source row and token
+- one primary frozen registry country reconciles per date and selects one primary row from each family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring structural and selected-identity reads remain linear in those two local ledgers
+- production-only full uniqueness gates are quadratic in each uncapped local ledger. Delayed and bilateral queue caps remain absent
+- schema-1 rows promote only while dormant, after the map-return and all preserved runtime fields pass, and only when every later transaction, ticket, history, cleanup, and envelope surface is absent or empty as required
+- successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
+- no daily global candidate pool, event firing, dispatch-envelope consumer, or activation setter exists
 
 Missing release work:
 
 - the schema and nine resource identities are reserved, but the required state and country receipt transaction is not implemented
 - survivor-allocation advancement and map return do not yet enforce the required ledger after final allocation and before player continuation
 - the frozen Fallout snapshot now distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
-- no active arc reservation, delayed-result ticket, bilateral reservation, target-loss policy, hidden AI resolution, cleanup recovery, or bounded candidate selection exists
+- no candidate selection, event definition, actual human dispatch consumption, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
 - the five orientation receipts have no implemented Fallout orientation event content
 - reserved suffixes `100` through `122` have no event definitions and count as zero release-floor blocks
-- literal lobby-host authority and runtime save or multiplayer behavior remain unproven
+- literal lobby-host authority, schema-2 runtime save-load preservation, and multiplayer behavior remain unproven
 
 Both activation flags remain unset. No ordinary Fallout living-world event can pass its eligibility trigger. Full evidence is recorded in `FALLOUT_EVENT_SCHEDULER_PROOF.md`.
 
