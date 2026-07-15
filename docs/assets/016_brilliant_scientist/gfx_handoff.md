@@ -9,7 +9,7 @@ Date: 2026-07-14
 - Target GFX file: `interface/016_brilliant_scientist.gfx`
 - Target events: `chaosx.nr16.2` and `chaosx.nr16.3`
 - Target size: `210x176`
-- Asset status: `handed_off`
+- Asset status: `wired`
 - Naming or placement uncertainty: none
 
 Ready-to-copy sprite definition:
@@ -21,13 +21,13 @@ spriteType = {
 }
 ```
 
-After registering the sprite, use this event-picture reference in both visible opening appointment events:
+The registered event-picture reference used by both visible opening appointment events is:
 
 ```text
 picture = GFX_report_event_016_brilliant_scientist_appointment
 ```
 
-Both events currently point directly at `GFX_portrait_KRG_doctor_warren_kruger_stage_0`. Replacing those two picture references with the report sprite gives the opening a dedicated sepia dossier or report-card presentation while preserving the approved Stage-0 identity. The persistent character portrait sprites remain unchanged.
+Both events use the dedicated sepia dossier or report-card presentation while preserving the approved Stage-0 identity. The persistent character portrait sprites remain unchanged.
 
 ## Review evidence
 

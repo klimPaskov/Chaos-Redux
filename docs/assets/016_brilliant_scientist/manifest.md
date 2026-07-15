@@ -4,7 +4,7 @@ Date: 2026-07-14
 
 ## Status
 
-This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and registered in `interface/016_brilliant_scientist.gfx`. Their final character assignment remains part of the incomplete gameplay lifecycle. The opening appointment report card is produced, converted, and handed off, but its sprite and event references remain parent-owned and unwired. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All remaining Event 016 visual assets remain unproduced and unwired.
+This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced, registered, and assigned to the fixed character in `common/characters/016_brilliant_scientist_characters.txt`. The opening appointment report card is produced, converted, registered, and used by both visible opening events. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All remaining Event 016 visual assets remain unproduced and unwired.
 
 Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Commit `0e8c6f8e` performed the role-preserving rename to those IDs. Shared music definitions, sound wrappers, settings-aware playback, event triggers, GUI, and localisation remain parent-owned and unwired.
 
@@ -18,12 +18,12 @@ Super-event text and audio research are complete for all six packages. Six final
 | Achievement not-eligible icons | 17 | 0 | Unwired |
 | Severe Kruger portrait animation families | 5 | 0 | Sprite contracts registered, assets and state wiring missing |
 | Severe Kruger static fallbacks | 5 | 0 | Sprite contracts registered, assets and state wiring missing |
-| Kruger stage-0 scientist or leader portrait | 1 | 1 | Registered, character assignment pending |
-| Kruger stage-0 advisor portrait | 1 | 1 | Registered, character assignment pending |
+| Kruger stage-0 scientist or leader portrait | 1 | 1 | Registered and assigned to the fixed character |
+| Kruger stage-0 advisor portrait | 1 | 1 | Registered and assigned to the fixed character |
 | Kruger stages I through III portrait states | Specification-defined | 0 | Sprite contracts registered, assets and state wiring missing |
 | Kruger State base and route flag triplets | Specification-defined | 0 | Unwired |
 | Directorate UI art | Specification-defined | 0 | Unwired |
-| Report and news images | Specification-defined | 1 report / 0 news | Opening appointment report handed off; all remaining images unwired |
+| Report and news images | Specification-defined | 1 report / 0 news | Opening appointment report wired; all remaining images unwired |
 | Focus, idea, decision, category, project, technology, unit, and equipment icons | Specification-defined | 0 | Unwired |
 
 ## Doctor Warren Kruger stage-0 source package
@@ -69,7 +69,7 @@ GFX and character wiring details are in `docs/plans/016_brilliant_scientist_plan
 | Proposed sprite | `GFX_report_event_016_brilliant_scientist_appointment` |
 | Target GFX | `interface/016_brilliant_scientist.gfx` |
 | Localisation | Not applicable; the image is shared by the existing `chaosx.nr16.2` and `chaosx.nr16.3` text surfaces |
-| Status | `handed_off` |
+| Status | `wired` |
 
 ### Source and identity provenance
 
@@ -152,7 +152,7 @@ Every final audio package needs source URL, author or performer, work and record
 ## Blockers
 
 - Visible super-event IDs 90 to 95 and world-end scenario IDs 11 and 12 are reserved. Their live shared-registry entries are not implemented.
-- The opening appointment report is handed off but not wired. All later report and news images, super-event images, Stage I through IV portrait art, and animation packages remain unproduced.
+- The opening appointment report is wired. All later report and news images, super-event images, Stage I through IV portrait art, and animation packages remain unproduced.
 - Final OGGs are ready, but parent-owned shared music and optional sound-channel wiring remain absent.
-- Stage-0 GFX registration is complete, and later portrait contracts are pre-registered. Character assignment, later portrait files, GUI state wiring, achievement wiring, shared music and sound wiring, localisation, and gameplay wiring remain absent.
+- Stage-0 GFX registration and character assignment are complete, and later portrait contracts are pre-registered. Later portrait files, GUI state wiring, achievement wiring, shared music and sound wiring, localisation, and gameplay wiring remain absent.
 - External redistribution rights for the copied stage-0 base remain unresolved. Internal Event 016 use is explicitly user-authorized.
