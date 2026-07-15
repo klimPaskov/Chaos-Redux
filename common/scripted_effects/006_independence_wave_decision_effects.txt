@@ -364,16 +364,159 @@ independence_wave_decision_integrate_formable_member_state = {
 	}
 }
 
-# State scope. The wave planner consumes this bounded array on its next plan.
+# State scope. Publishes the complete frozen DM-57 record. Selection does not
+# consume this queue; only a confirmed shared-plan commit may do so.
 independence_wave_decision_publish_breakaway_sponsorship = {
 	if = {
 		limit = { is_valid_independence_wave_breakaway_sponsorship_state = yes }
 		set_state_flag = independence_wave_dm57_sponsorship_active
 		set_variable = { independence_wave_sponsoring_country = ROOT }
 		set_variable = { independence_wave_sponsorship_generation = ROOT.independence_wave_generation_id }
+		set_variable = { independence_wave_sponsored_opening_strength = constant:independence_wave_decision_gate.sponsorship_opening_strength }
+		set_variable = { independence_wave_sponsored_route = constant:independence_wave_government_route.radical_sovereignty }
 		if = {
 			limit = { NOT = { is_in_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS } } }
 			add_to_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
+		}
+	}
+}
+
+# State scope. Used by bounded stale-record reconciliation and the successful
+# post-commit consumer. It is never called merely because a candidate was not
+# selected or ceased to be currently eligible.
+independence_wave_clear_breakaway_sponsorship_record = {
+	remove_from_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
+	clr_state_flag = independence_wave_dm57_sponsorship_active
+	clear_variable = independence_wave_sponsoring_country
+	clear_variable = independence_wave_sponsorship_generation
+	clear_variable = independence_wave_sponsored_opening_strength
+	clear_variable = independence_wave_sponsored_route
+}
+
+# Country scope. Clears only plan-local sponsorship metadata. The durable
+# committed sponsorship record is generation state and is cleaned separately.
+independence_wave_clear_pending_breakaway_sponsorship_metadata = {
+	clr_country_flag = independence_wave_pending_breakaway_sponsorship
+	clear_variable = independence_wave_pending_sponsorship_plan_id
+	clear_variable = independence_wave_pending_sponsorship_state
+	clear_variable = independence_wave_pending_sponsor_country
+	clear_variable = independence_wave_pending_sponsor_generation
+	clear_variable = independence_wave_pending_sponsorship_opening_strength
+	clear_variable = independence_wave_pending_sponsorship_route
+}
+
+# Bounded queue reconciliation. Only structurally stale contracts are removed:
+# missing metadata, a dead/ended sponsor, or a sponsor-generation mismatch.
+# Candidate ownership and current package eligibility are intentionally ignored.
+independence_wave_reconcile_breakaway_sponsorship_queue = {
+	clear_temp_array = independence_wave_stale_sponsorship_states
+	for_each_scope_loop = {
+		array = global.independence_wave_sponsored_breakaway_states
+		if = {
+			limit = { NOT = { has_valid_independence_wave_breakaway_sponsorship_record = yes } }
+			add_to_temp_array = { independence_wave_stale_sponsorship_states = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = independence_wave_stale_sponsorship_states
+		independence_wave_clear_breakaway_sponsorship_record = yes
+	}
+	clear_temp_array = independence_wave_stale_sponsorship_states
+}
+
+# Country scope. Called after origin reset and before package setup. It copies
+# the exact pending record into generation state without consuming the queue.
+independence_wave_apply_pending_breakaway_sponsorship = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_pending_breakaway_sponsorship
+			has_variable = independence_wave_pending_sponsorship_plan_id
+			has_variable = independence_wave_pending_sponsorship_state
+			has_variable = independence_wave_pending_sponsor_country
+			has_variable = independence_wave_pending_sponsor_generation
+			has_variable = independence_wave_pending_sponsorship_opening_strength
+			has_variable = independence_wave_pending_sponsorship_route
+			check_variable = { var = independence_wave_pending_sponsorship_plan_id value = global.liberation_plan_id compare = equals }
+			var:independence_wave_pending_sponsorship_state = {
+				has_valid_independence_wave_breakaway_sponsorship_record = yes
+				check_variable = { var = independence_wave_sponsoring_country value = PREV.independence_wave_pending_sponsor_country compare = equals }
+				check_variable = { var = independence_wave_sponsorship_generation value = PREV.independence_wave_pending_sponsor_generation compare = equals }
+				check_variable = { var = independence_wave_sponsored_opening_strength value = PREV.independence_wave_pending_sponsorship_opening_strength compare = equals }
+				check_variable = { var = independence_wave_sponsored_route value = PREV.independence_wave_pending_sponsorship_route compare = equals }
+			}
+		}
+		var:independence_wave_pending_sponsorship_state = { save_event_target_as = independence_wave_pending_sponsorship_state_target }
+		var:independence_wave_pending_sponsor_country = { save_event_target_as = independence_wave_pending_sponsor_country_target }
+		set_country_flag = independence_wave_sponsored_release
+		set_country_flag = independence_wave_sponsorship_commit_pending
+		set_variable = { independence_wave_sponsorship_commit_plan_id = global.liberation_plan_id }
+		set_variable = { independence_wave_sponsored_origin_state = event_target:independence_wave_pending_sponsorship_state_target }
+		set_variable = { independence_wave_sponsor_country = event_target:independence_wave_pending_sponsor_country_target }
+		set_variable = { independence_wave_sponsor_generation = independence_wave_pending_sponsor_generation }
+		set_variable = { independence_wave_sponsorship_opening_strength = independence_wave_pending_sponsorship_opening_strength }
+		set_variable = { independence_wave_sponsorship_route = independence_wave_pending_sponsorship_route }
+	}
+}
+
+# Post-commit consumer. The helper is idempotent: each row must still match the
+# frozen state record and a country-local commit-pending marker before the queue
+# entry is cleared and the successful-release counter advances.
+independence_wave_consume_committed_breakaway_sponsorships = {
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+			independence_wave_plan_metadata_arrays_are_aligned = yes
+		}
+		if = {
+			limit = { NOT = { has_variable = global.independence_wave_successful_sponsored_releases } }
+			set_variable = { global.independence_wave_successful_sponsored_releases = constant:independence_wave_planner.no_candidates }
+		}
+		set_temp_variable = { independence_wave_sponsorship_commit_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = independence_wave_sponsorship_commit_index
+					value = global.independence_wave_plan_sponsorship_count
+					compare = less_than
+				}
+			}
+			set_temp_variable = { independence_wave_sponsorship_commit_country_row = global.independence_wave_plan_sponsorship_country_rows^independence_wave_sponsorship_commit_index }
+			set_temp_variable = { independence_wave_sponsorship_commit_generation = global.independence_wave_plan_sponsorship_generations^independence_wave_sponsorship_commit_index }
+			set_temp_variable = { independence_wave_sponsorship_commit_opening_strength = global.independence_wave_plan_sponsorship_opening_strengths^independence_wave_sponsorship_commit_index }
+			set_temp_variable = { independence_wave_sponsorship_commit_route = global.independence_wave_plan_sponsorship_routes^independence_wave_sponsorship_commit_index }
+			var:global.liberation_plan_countries^independence_wave_sponsorship_commit_country_row = { save_event_target_as = independence_wave_sponsorship_commit_country }
+			var:global.independence_wave_plan_sponsorship_states^independence_wave_sponsorship_commit_index = { save_event_target_as = independence_wave_sponsorship_commit_state }
+			var:global.independence_wave_plan_sponsorship_sponsors^independence_wave_sponsorship_commit_index = { save_event_target_as = independence_wave_sponsorship_commit_sponsor }
+			if = {
+				limit = {
+					event_target:independence_wave_sponsorship_commit_country = {
+						exists = yes
+						has_country_flag = independence_wave_origin_committed
+						has_country_flag = independence_wave_sponsored_release
+						has_country_flag = independence_wave_sponsorship_commit_pending
+						check_variable = { var = independence_wave_sponsorship_commit_plan_id value = global.liberation_plan_id compare = equals }
+						check_variable = { var = independence_wave_sponsored_origin_state value = event_target:independence_wave_sponsorship_commit_state compare = equals }
+						check_variable = { var = independence_wave_sponsor_country value = event_target:independence_wave_sponsorship_commit_sponsor compare = equals }
+						check_variable = { var = independence_wave_sponsor_generation value = independence_wave_sponsorship_commit_generation compare = equals }
+						check_variable = { var = independence_wave_sponsorship_opening_strength value = independence_wave_sponsorship_commit_opening_strength compare = equals }
+						check_variable = { var = independence_wave_sponsorship_route value = independence_wave_sponsorship_commit_route compare = equals }
+					}
+					event_target:independence_wave_sponsorship_commit_state = {
+						has_valid_independence_wave_breakaway_sponsorship_record = yes
+						check_variable = { var = independence_wave_sponsoring_country value = event_target:independence_wave_sponsorship_commit_sponsor compare = equals }
+						check_variable = { var = independence_wave_sponsorship_generation value = independence_wave_sponsorship_commit_generation compare = equals }
+						check_variable = { var = independence_wave_sponsored_opening_strength value = independence_wave_sponsorship_commit_opening_strength compare = equals }
+						check_variable = { var = independence_wave_sponsored_route value = independence_wave_sponsorship_commit_route compare = equals }
+					}
+				}
+				event_target:independence_wave_sponsorship_commit_state = { independence_wave_clear_breakaway_sponsorship_record = yes }
+				event_target:independence_wave_sponsorship_commit_country = {
+					clr_country_flag = independence_wave_sponsorship_commit_pending
+					clear_variable = independence_wave_sponsorship_commit_plan_id
+				}
+				add_to_variable = { global.independence_wave_successful_sponsored_releases = constant:independence_wave_plan.loop_increment }
+			}
+			add_to_temp_variable = { independence_wave_sponsorship_commit_index = constant:independence_wave_plan.loop_increment }
 		}
 	}
 }

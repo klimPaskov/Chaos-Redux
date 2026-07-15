@@ -1134,7 +1134,19 @@ focus_tree = {
 		allow_branch = { can_reveal_independence_wave_radical_sovereignty = yes }
 		available = { can_lock_independence_wave_radical_sovereignty_route = yes }
 		completion_reward = { custom_effect_tooltip = independence_wave_reject_inherited_borders_tt hidden_effect = { independence_wave_focus_lock_radical_sovereignty_route = yes independence_wave_focus_reward_radicalization = yes } }
-		ai_will_do = { base = constant:independence_wave_focus_ai.cautious modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_world_collapse_mandate = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.cautious
+			modifier = {
+				factor = constant:independence_wave_focus_ai.strong_preference_factor
+				OR = {
+					has_independence_wave_world_collapse_mandate = yes
+					AND = {
+						has_country_flag = independence_wave_sponsored_release
+						check_variable = { independence_wave_sponsorship_route = constant:independence_wave_government_route.radical_sovereignty }
+					}
+				}
+			}
+		}
 	}
 
 	focus = {

@@ -55,10 +55,12 @@ independence_wave_capture_wave_tuning = {
 }
 
 independence_wave_begin_plan_contribution = {
+	independence_wave_reconcile_breakaway_sponsorship_queue = yes
 	independence_wave_capture_wave_tuning = yes
 	set_temp_variable = { independence_wave_reservation_phase = constant:independence_wave_reservation_phase.anchors }
 	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
 	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_plan_sponsorship_count = constant:independence_wave_planner.no_candidates }
 	set_variable = { global.independence_wave_plan_country_row_start = global.liberation_plan_countries^num }
 	set_variable = { global.independence_wave_plan_state_row_start = global.liberation_plan_states^num }
 	set_variable = { global.independence_wave_plan_target_count = independence_wave_wave_target_count }
@@ -74,6 +76,12 @@ independence_wave_begin_plan_contribution = {
 	clear_array = global.independence_wave_plan_selected_archetypes
 	clear_array = global.independence_wave_plan_selected_dispositions
 	clear_array = global.independence_wave_plan_selected_registered_tag_statuses
+	clear_array = global.independence_wave_plan_sponsorship_country_rows
+	clear_array = global.independence_wave_plan_sponsorship_states
+	clear_array = global.independence_wave_plan_sponsorship_sponsors
+	clear_array = global.independence_wave_plan_sponsorship_generations
+	clear_array = global.independence_wave_plan_sponsorship_opening_strengths
+	clear_array = global.independence_wave_plan_sponsorship_routes
 }
 
 # Inputs: event targets `liberation_candidate_country`,
@@ -499,6 +507,13 @@ independence_wave_calculate_candidate_allocation_weight = {
 		}
 		set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.base }
 		if = {
+			limit = {
+				has_event_target = liberation_candidate_anchor
+				event_target:liberation_candidate_anchor = { has_valid_independence_wave_breakaway_sponsorship_record = yes }
+			}
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.sponsored_candidate }
+		}
+		if = {
 			limit = { check_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.selected } }
 			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.registered_tag }
 		}
@@ -653,6 +668,7 @@ independence_wave_finish_package_reservation = {
 		subtract_from_temp_variable = { independence_wave_candidate_country_row = constant:independence_wave_plan.loop_increment }
 		set_variable = { global.liberation_plan_territory_levels^independence_wave_candidate_country_row = independence_wave_candidate_highest_territory }
 		event_target:liberation_candidate_country = {
+			independence_wave_clear_pending_breakaway_sponsorship_metadata = yes
 			set_country_flag = independence_wave_pending_package
 			clear_variable = independence_wave_last_rejected_plan_id
 			set_variable = { independence_wave_pending_plan_id = global.liberation_plan_id }
@@ -677,6 +693,40 @@ independence_wave_finish_package_reservation = {
 			if = { limit = { has_global_flag = independence_wave_plan_armed_birth } set_country_flag = independence_wave_pending_armed_birth }
 			if = { limit = { has_global_flag = independence_wave_plan_sovereign_congress } set_country_flag = independence_wave_pending_sovereign_congress }
 			if = { limit = { has_global_flag = independence_wave_plan_open_sovereignty } set_country_flag = independence_wave_pending_open_sovereignty }
+		}
+		set_temp_variable = { independence_wave_candidate_has_sponsorship = constant:independence_wave_planner.no_candidates }
+		if = {
+			limit = {
+				has_event_target = liberation_candidate_anchor
+				event_target:liberation_candidate_anchor = { has_valid_independence_wave_breakaway_sponsorship_record = yes }
+			}
+			event_target:liberation_candidate_anchor = {
+				save_event_target_as = independence_wave_candidate_sponsorship_state
+				var:independence_wave_sponsoring_country = { save_event_target_as = independence_wave_candidate_sponsorship_sponsor }
+				set_temp_variable = { independence_wave_candidate_sponsorship_generation = independence_wave_sponsorship_generation }
+				set_temp_variable = { independence_wave_candidate_sponsorship_opening_strength = independence_wave_sponsored_opening_strength }
+				set_temp_variable = { independence_wave_candidate_sponsorship_route = independence_wave_sponsored_route }
+			}
+			set_temp_variable = { independence_wave_candidate_has_sponsorship = constant:independence_wave_planner.selected }
+		}
+		if = {
+			limit = { check_variable = { independence_wave_candidate_has_sponsorship = constant:independence_wave_planner.selected } }
+			event_target:liberation_candidate_country = {
+				set_country_flag = independence_wave_pending_breakaway_sponsorship
+				set_variable = { independence_wave_pending_sponsorship_plan_id = global.liberation_plan_id }
+				set_variable = { independence_wave_pending_sponsorship_state = event_target:independence_wave_candidate_sponsorship_state }
+				set_variable = { independence_wave_pending_sponsor_country = event_target:independence_wave_candidate_sponsorship_sponsor }
+				set_variable = { independence_wave_pending_sponsor_generation = independence_wave_candidate_sponsorship_generation }
+				set_variable = { independence_wave_pending_sponsorship_opening_strength = independence_wave_candidate_sponsorship_opening_strength }
+				set_variable = { independence_wave_pending_sponsorship_route = independence_wave_candidate_sponsorship_route }
+			}
+			add_to_variable = { global.independence_wave_plan_sponsorship_count = constant:independence_wave_plan.loop_increment }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_country_rows value = independence_wave_candidate_country_row }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_states value = event_target:independence_wave_candidate_sponsorship_state }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_sponsors value = event_target:independence_wave_candidate_sponsorship_sponsor }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_generations value = independence_wave_candidate_sponsorship_generation }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_opening_strengths value = independence_wave_candidate_sponsorship_opening_strength }
+			add_to_array = { array = global.independence_wave_plan_sponsorship_routes value = independence_wave_candidate_sponsorship_route }
 		}
 		add_to_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_plan.loop_increment }
 		add_to_array = { array = global.independence_wave_plan_selected_package_ids value = independence_wave_candidate_package_id }
@@ -740,6 +790,7 @@ independence_wave_finish_package_reservation = {
 }
 
 independence_wave_clear_pending_package_metadata = {
+	independence_wave_clear_pending_breakaway_sponsorship_metadata = yes
 	clr_country_flag = independence_wave_pending_package
 	clear_variable = independence_wave_pending_plan_id
 	clear_variable = independence_wave_pending_package_id
@@ -880,6 +931,7 @@ independence_wave_clear_plan_contribution = {
 	}
 	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
 	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_plan_sponsorship_count = constant:independence_wave_planner.no_candidates }
 	clear_array = global.independence_wave_plan_trimmed_package_ids
 	clear_array = global.independence_wave_plan_trimmed_states
 	clear_array = global.independence_wave_plan_trim_reasons
@@ -891,5 +943,11 @@ independence_wave_clear_plan_contribution = {
 	clear_array = global.independence_wave_plan_selected_archetypes
 	clear_array = global.independence_wave_plan_selected_dispositions
 	clear_array = global.independence_wave_plan_selected_registered_tag_statuses
+	clear_array = global.independence_wave_plan_sponsorship_country_rows
+	clear_array = global.independence_wave_plan_sponsorship_states
+	clear_array = global.independence_wave_plan_sponsorship_sponsors
+	clear_array = global.independence_wave_plan_sponsorship_generations
+	clear_array = global.independence_wave_plan_sponsorship_opening_strengths
+	clear_array = global.independence_wave_plan_sponsorship_routes
 	independence_wave_clear_frozen_evolution_plan_state = yes
 }
