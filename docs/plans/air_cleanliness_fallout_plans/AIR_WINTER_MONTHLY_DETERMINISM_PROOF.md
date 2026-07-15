@@ -18,6 +18,8 @@ The live order is:
 6. dispatch phase events from the bounded event-owner array
 7. finalize global Air Winter aggregates
 
+When `fallout_transition_active` is set, steps 2, 4, 5, 6, and 7 are skipped for Air Winter. The same monthly pass still collects Air Contamination inputs. This keeps the Fallout snapshot stable through its multi-event rewrite without adding a second state iterator. Air Winter resumes through its normal next monthly cycle after the transition flag clears.
+
 ## Opening snapshot
 
 `air_winter_begin_monthly_cycle` compares `global.air_winter_last_prepare_date` with `global.date`. A new date increments `global.air_winter_cycle_id` exactly once and opens `air_winter_cycle_open`.

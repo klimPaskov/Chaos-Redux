@@ -116,7 +116,7 @@ The initialization and transaction effects record one owned error for reveal, al
 The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are not accepted. Cohesion and Reclamation remain separate mechanics. The full state and country receipt transaction is not implemented.
-- Schema 8 authenticates frozen Air Winter rows with an Air-owned producer schema and generation. Valid rows use exact produced values. Invalid rows use a typed N/A payload. Survival initialization may consume only this frozen provenance contract.
+- Schema 9 authenticates frozen Air Winter rows with an Air-owned producer schema and generation. Valid rows use exact produced values. Invalid rows use a typed N/A payload. A separate frozen live category is proven at capture. Survival initialization may consume only this frozen provenance contract.
 - Structural arc, delayed-result, bilateral, cancellation, and cleanup-envelope transactions are implemented but dormant. Candidate selection, event scheduling, event firing, actual human routing, hidden AI mechanical resolution, content-owned cleanup execution, and scheduler debug presentation are not implemented.
 - The five orientation components have receipts but no Fallout orientation event content.
 - Literal multiplayer lobby-host identity remains unavailable in the documented script surface. The live authority is the project coordinator.

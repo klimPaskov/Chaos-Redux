@@ -8,7 +8,7 @@ Create one reusable aftermath framework that can be called by gradual Air collap
 
 This document records both the required architecture and the current implementation boundary. The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain design authority.
 
-The live foundation includes the request envelope, once-per-date project coordinator, schema-8 migration gate, transactional blackout lock, Air Winter-owned snapshot provenance, blackout phase events, row-proven snapshot, grading, population-loss, and physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
+The live foundation includes the request envelope, once-per-date project coordinator, schema-9 migration gate, transactional blackout lock, Air Winter-owned snapshot provenance, frozen live category capture, blackout phase events, row-proven snapshot, grading, population-loss, and physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
 
 The transition is not complete. General successor allocation, country-package producers, focus-package producers, player-successor materialization, and candidate-choice UI are not implemented. A player can be committed only to an already existing target with current-transition packages and an exact valid reservation. Immediate `is_ai` observation after `change_tag_from` remains statically unresolved. The old-world diplomacy proof gate is also unresolved. Map return therefore remains intentionally fail closed.
 
@@ -118,7 +118,7 @@ Capture before changing the world:
 - country ownership and controller memory needed for survival scoring
 - current wars, factions, subjects, guarantees, access, and exile state
 - global Air state and winter phase counts
-- state population, category, buildings, supply, resources, and contamination memory
+- state population, live category, historical Air Winter category, buildings, supply, resources, and contamination memory
 - current active terminal cause
 - feature-managed countries that require special cleanup
 - global systems that must stop during the rewrite
@@ -157,7 +157,7 @@ Calculates grade and survival value for every valid state. The state pass can be
 
 ### `fallout_apply_state_rewrite`
 
-Applies one-time population, building, category, resource, supply, and province memory effects from the stored grade.
+Applies one-time population mutation, permanent state-building level loss, category conversion, resource, supply, and province memory effects from the stored grade.
 
 ### `fallout_classify_country_government`
 
@@ -228,18 +228,18 @@ After destructive rewrite begins, the system must finish or enter a dedicated re
 
 ## Live save migration boundary
 
-The current schema is version 8 and migration is deliberately fail closed.
+The current schema is version 9 and migration is deliberately fail closed.
 
-- A completed old Fallout save is promoted non-destructively and marked as lacking row-level Air Winter provenance. No state receipt is fabricated.
-- An active schema-7 transition may rebuild only in the snapshot phase, before snapshot application or destruction, and when no unrelated error owns the ledger.
-- The schema-7 rebuild discards and recreates both snapshot halves through the schema-8 producer contract.
+- A completed old Fallout save is promoted non-destructively and marked as lacking current-schema row receipts. No state receipt is fabricated.
+- An active schema-7 or schema-8 transition may rebuild only in the snapshot phase, before snapshot application or destruction, and when no unrelated error owns the ledger.
+- The schema-7 and schema-8 rebuild discards and recreates both snapshot halves through the schema-9 producer and live-category contract.
 - Every later active legacy state remains under blackout with schema migration blocked.
 - An incomplete terminal save with no schema also remains under blackout with schema migration blocked.
 - The former schema-3 map-return-error promotion is removed because its consumed rows cannot receive trustworthy provenance retrospectively.
 - Migration does not treat a missing `fallout_transition_destructive_started` flag as proof that a legacy state is safe to restart.
 - No generic pre-destructive restart and no legacy altered-grade replay are active behavior.
 
-Schema 8 makes snapshot and destructive-phase completion proof results. Player and world rows are captured and retried as one epoch. Air Winter opens a distinct producer generation for every attempt. Valid states must pass canonical initialization, normalization, and exact live-to-frozen comparison. Invalid states receive a typed N/A row without initialization. Exact live owner, controller, and Air Winter equality is required only while capture is being accepted. The request coordinator commits blackout and world-end ownership only after both snapshot halves pass. Durable grading and rewrite receipts retain the frozen owner, controller, source kind, producer schema, producer generation, and payload after valid allocation changes ownership or live climate changes. Grading cannot begin unless both snapshot ledgers pass their structural current-row proofs. Grading failures rebuild safe derived rows. Population and building failures reconcile existing destructive receipts without applying loss again. Their phase-local checks require the engine's current population and damaged-building observations to match the new result before the phase advances. Map return uses the generation-bound durable transaction receipts, so later normal demographic change or building repair does not invalidate completed destruction. Category recovery repairs flags only when the live category already matches the required result. Modifier recovery removes and rebuilds Fallout-owned modifiers. Each phase can re-enter only with its matching one-error signature.
+Schema 9 makes snapshot and destructive-phase completion proof results. Player and world rows are captured and retried as one epoch. Air Winter opens a distinct producer generation for every attempt. Valid states must pass canonical initialization, normalization, and exact live-to-frozen comparison. Invalid states receive a typed N/A row without initialization. Every state also freezes its live category through a separate enum and `has_state_category` match. The historical Air Winter category is retained for provenance and classification only. Exact live owner, controller, Air Winter payload, and live category equality are required while capture is being accepted. The request coordinator commits blackout and world-end ownership only after both snapshot halves pass. Air Winter mutation then pauses while the transition is active. Grading cannot begin unless both snapshot ledgers pass their structural current-row proofs. Grading failures rebuild safe derived rows. Population, building, and category issue flags are written before their one permitted mutation. Recovery observes and reconciles those transactions without applying loss again. Map return uses generation-bound durable receipts, so later normal demographic or construction change does not invalidate completed destruction. Modifier recovery removes and rebuilds Fallout-owned modifiers. Each phase can re-enter only with its matching one-error signature.
 
 This narrow recovery rule prevents the current transition from mixing its snapshot and phase ledgers with an ambiguous legacy rewrite.
 
@@ -382,7 +382,7 @@ For each grade, define one-time consequences.
 ### Grades 0 and 1
 
 - moderate population loss
-- repairable building damage
+- permanent loss of a small share of state-building levels
 - preserved state category or one conditional step
 - strong old-government survival chance
 - high successor viability
@@ -390,7 +390,7 @@ For each grade, define one-time consequences.
 ### Grades 2 and 3
 
 - major population loss
-- broad infrastructure and industrial damage
+- broad permanent infrastructure and industrial level loss
 - category loss based on sustained damage
 - likely fragmentation or local successor
 - contested resource and supply systems
@@ -410,9 +410,9 @@ For each grade, define one-time consequences.
 - salvage, expedition, and sealed-zone content
 - special fictional packages only under explicit gates
 
-All state population loss goes through the shared Deaths system with reason `chaos_meter_deaths_reason.fallout_aftermath`, numeric reason `19`, and state-level records.
+All state population loss goes through the shared Deaths system with reason `chaos_meter_deaths_reason.fallout_aftermath`, numeric reason `19`, and state-level records. Fallout first applies its bounded state mutation, observes the exact live delta, and only then registers that observed amount. The Deaths call is told not to apply population again. It still writes the state Deaths map ledger when Deaths tracking is enabled.
 
-The three destructive rewrite phases use separate proof ledgers. Grading proves the deterministic score band, grade, subtype, survival range, and generation for every state. Population loss stores the grade-derived percentage, requested Deaths amount, applied Deaths amount, exclusive applied-or-zero result, and generation. Physical collapse proves the building receipt, exact grade modifier, altered-biosphere modifier when applicable, state-category result, supply-collapse flag, and rewrite generation. A stale completion flag is cleared when its ledger is no longer current. Missing idempotent rows can re-enter only through the exact error signature owned by their current phase.
+The three destructive rewrite phases use separate proof ledgers. Grading proves the deterministic score band, grade, subtype, survival range, and generation for every state. Population loss stores frozen intent, live availability, committed loss, observed loss, Deaths totals, Deaths sequence movement, state-ledger movement, exclusive applied-or-zero result, and generation. Physical collapse proves exact permanent level removal across five state-building families, exact grade modifier, altered-biosphere modifier when applicable, a category target no higher than the frozen live category, the supply-collapse flag, and rewrite generation. A stale completion flag is cleared when its ledger is no longer current. Missing idempotent rows can re-enter only through the exact error signature owned by their current phase.
 
 ## Old-world diplomacy reset
 

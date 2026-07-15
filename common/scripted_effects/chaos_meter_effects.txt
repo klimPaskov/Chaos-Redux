@@ -2581,6 +2581,10 @@ chaos_meter_register_deaths = {
         limit = { NOT = { has_variable = chaos_deaths_has_target_country } }
         set_temp_variable = { chaos_deaths_has_target_country = 0 }
     }
+	if = {
+		limit = { NOT = { has_variable = chaos_deaths_record_state_ledger } }
+		set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
+	}
     round_temp_variable = chaos_deaths_change
 
     if = {
@@ -2616,6 +2620,10 @@ chaos_meter_register_deaths = {
 				}
 				chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
 			}
+			else_if = {
+				limit = { check_variable = { chaos_deaths_record_state_ledger > 0 } }
+				chaos_meter_record_state_civilian_deaths_from_deaths_change = yes
+			}
 		}
         else = {
             add_to_variable = { global.chaos_meter_deaths_military_total = chaos_deaths_change }
@@ -2632,6 +2640,7 @@ chaos_meter_register_deaths = {
 
     set_temp_variable = { chaos_deaths_target_country = 0 }
     set_temp_variable = { chaos_deaths_has_target_country = 0 }
+	set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
 }
 
 chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = {
@@ -2641,11 +2650,20 @@ chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = {
 		set_temp_variable = { state_population_transaction_reconciled_gain = constant:chaos_meter_deaths.zero }
 		set_temp_variable = { state_population_transaction_contract_supplied = constant:chaos_meter_deaths.one }
 		apply_state_population_loss_without_recruitable_manpower_gain = yes
+		chaos_meter_record_state_civilian_deaths_from_deaths_change = yes
+	}
+}
+
+# Supported scope: STATE. Records an already observed civilian loss in the
+# state Deaths ledger without changing state population a second time.
+chaos_meter_record_state_civilian_deaths_from_deaths_change = {
+	if = {
+		limit = { check_variable = { chaos_deaths_change > 0 } }
 		add_to_variable = { chaos_state_civilian_deaths_total = chaos_deaths_change }
 
 		if = {
 			limit = { NOT = { has_variable = global.chaos_state_civilian_deaths_map_max } }
-			set_variable = { global.chaos_state_civilian_deaths_map_max = 0 }
+			set_variable = { global.chaos_state_civilian_deaths_map_max = constant:chaos_meter_deaths.zero }
 		}
 		if = {
 			limit = {
@@ -5092,7 +5110,10 @@ air_contamination_monthly_update = {
 
 	# Air Winter consumes the completed contamination-state counts from the
 	# previous monthly pass before this pass rebuilds them below.
-	air_winter_begin_monthly_cycle = yes
+	if = {
+		limit = { NOT = { has_global_flag = fallout_transition_active } }
+		air_winter_begin_monthly_cycle = yes
+	}
 	if = {
 		limit = { has_global_flag = air_contamination_winter }
 		clr_global_flag = air_contamination_winter
@@ -5235,12 +5256,20 @@ air_contamination_monthly_update = {
         }
 
 		# Reuse this existing world pass. Air Winter performs no second state scan.
-		air_winter_update_state = yes
+		# The frozen Fallout rewrite owns state climate and category inputs while
+		# its blackout transaction is active.
+		if = {
+			limit = { NOT = { has_global_flag = fallout_transition_active } }
+			air_winter_update_state = yes
+		}
 	}
 
-	air_winter_response_refresh_evacuation_cache_cycle = yes
-	air_winter_dispatch_phase_events = yes
-	air_winter_finalize_monthly_cycle = yes
+	if = {
+		limit = { NOT = { has_global_flag = fallout_transition_active } }
+		air_winter_response_refresh_evacuation_cache_cycle = yes
+		air_winter_dispatch_phase_events = yes
+		air_winter_finalize_monthly_cycle = yes
+	}
 
     if = {
         limit = {

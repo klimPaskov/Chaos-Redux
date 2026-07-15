@@ -104,7 +104,7 @@ The region enum has nine live values: North America, Europe, Eurasian Interior, 
 
 The tag-conflict resolution enum distinguishes continuation in place, conversion of an existing tag, release of a releasable, dynamic creation, retirement as a landless memory, preservation of another event package, and player reservation. A surviving assignment cannot use the landless-retirement result. Every non-retired frozen source must link to exactly one committed output country. The output must link back to the same source and carry the same resolution, generation, and cleanup owner. Converted outputs require a current conversion receipt. Released outputs require a current release receipt in addition to frozen possible-country membership. Dynamically created outputs require a current materialization receipt and absence from both frozen country collections. A retired source must own no state and must not name an output.
 
-World transition schema 8 records request source and intensity, Chaos and Air Contamination values, every live country scope and government-memory row, and every state owner, controller, population, category, building, damage, resource, nuclear, Air Winter, coastal, contamination, and manual-strike input used by the rewrite. Player and world capture share one epoch generation and date. Air Winter producer schema 1 opens one distinct generation per complete snapshot attempt. Valid states receive a produced source kind only after canonical initialization, normalization, range proof, and exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and Air-owned zero payload without initialization. Snapshot completion is written only after every row passes the synchronous capture proof, exact live owner and controller checks, and all-and-only player-origin checks. Blackout and world-end ownership remain uncommitted until both snapshot halves pass. Exact live ownership and live Air Winter equality are capture-time proofs. Later grading and rewrite receipts validate the frozen scope and provenance payload without requiring ownership or live climate values to remain unchanged. Grading cannot start when either half is incomplete. The same schema binds grading, population-loss, and physical-collapse receipts to the active transition generation. Phase-local population and building checks require current engine observations before advancing. Map return validates durable transaction receipts, so later population changes or normal repair do not invalidate completed destructive work.
+World transition schema 9 records request source and intensity, Chaos and Air Contamination values, every live country scope and government-memory row, and every state owner, controller, population, live category, historical Air Winter category, building, damage, resource, nuclear, Air Winter, coastal, contamination, and manual-strike input used by the rewrite. Player and world capture share one epoch generation and date. Air Winter producer schema 1 opens one distinct generation per complete snapshot attempt. Valid states receive a produced source kind only after canonical initialization, normalization, range proof, and exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and Air-owned zero payload without initialization. Snapshot completion is written only after every row passes the synchronous capture proof, exact live owner and controller checks, live category equality, and all-and-only player-origin checks. Blackout and world-end ownership remain uncommitted until both snapshot halves pass. Air Winter mutation pauses while the transition is active. Later grading and rewrite receipts validate the frozen scope, live category, and provenance payload without requiring ownership or live climate values to remain unchanged. Grading cannot start when either half is incomplete. The same schema binds grading, population-loss, and physical-collapse receipts to the active transition generation. Mutation issue flags prevent a retry from applying population, building, or category loss twice. Map return validates durable transaction receipts, so later population or construction changes do not invalidate completed destructive work.
 
 The country-memory enum assigns ids 1 through 99 in the exact accepted row order from `matrices/baseline/fallout_successor_country_matrix.md`. The enum is an identity ledger only. It does not activate a candidate or approve a source tag, state package, fallback package, leader, focus tree, or asset set.
 
@@ -130,7 +130,8 @@ The country-memory enum assigns ids 1 through 99 in the exact accepted row order
 | `fallout_state_survival_value` | variable | 0 to 100 | successor viability and player choice score |
 | `fallout_state_direct_strike_count` | variable | 0 and above | manual or live direct-strike memory |
 | `fallout_state_cause_mask` | variable or flags | implementation-defined | cause memory for regional content |
-| `fallout_pretransition_air_winter_original_category` | variable | Air Winter category enum | frozen category memory for Fallout classification |
+| `fallout_pretransition_air_winter_original_category` | variable | Air Winter category enum | frozen historical category provenance for classification and restoration memory |
+| `fallout_pretransition_state_category` | variable | Air Winter category enum | live category frozen for grading and rewrite |
 
 Live destructive-phase receipt values:
 
@@ -148,28 +149,38 @@ Live destructive-phase receipt values:
 | `fallout_state_grading_generation` | transition generation | binds grade and survival results to the current rewrite |
 | `fallout_grade_score_reconciled` | state flag | proves the persisted grade score matches a fresh calculation from frozen inputs |
 | `fallout_survival_value_reconciled` | state flag | proves the persisted survival value matches a fresh calculation from frozen inputs |
-| `fallout_population_loss_percent_applied` | grade loss table | records the exact grade-derived Deaths percentage |
-| `fallout_population_loss_requested_memory` | 0 and above | records the rounded Deaths request before the population floor |
-| `fallout_population_before_loss_people` | 0 and above | records observed state population immediately before the Deaths transaction |
+| `fallout_population_loss_percent_applied` | grade loss table | records the exact grade-derived intent percentage |
+| `fallout_population_loss_requested_memory` | 0 and above | records the rounded request from frozen population before the live floor |
+| `fallout_population_before_loss_people` | 0 and above | records live state population immediately before the one issued mutation |
 | `fallout_population_available_before_loss` | 0 and above | records population available above the protected one-person floor |
-| `fallout_population_expected_loss` | 0 to requested amount | records the request after the observed population floor is applied |
-| `fallout_population_after_loss_people` | 0 and above | records observed state population immediately after the Deaths transaction |
+| `fallout_population_expected_loss` | 0 to requested amount | records the committed amount after the live population floor is applied |
+| `fallout_population_after_loss_people` | 0 and above | records observed state population after the one issued mutation |
 | `fallout_population_after_loss_k` | 0 and above | preserves the engine population value used by the phase-local observation check |
 | `fallout_population_reconciled_loss` | 0 and above | records the observed before-and-after population difference |
-| `fallout_population_loss_memory` | 0 to requested amount | records the population actually removed by the shared Deaths transaction |
+| `fallout_population_loss_memory` | 0 to requested amount | records the exact observed amount submitted to Deaths after mutation |
 | `fallout_population_loss_generation` | transition generation | binds the Deaths receipt to the current rewrite |
-| `fallout_population_loss_reconciled` | state flag | proves the stored request, observed transaction output, and recalculated expected loss agree without applying Deaths again |
-| `fallout_building_damage_levels_requested` | 0 and above | records the total requested building-damage levels |
-| `fallout_building_damage_levels_observed` | 0 and above | records the observed increase across five state-building ledgers |
-| `fallout_building_damage_before_<family>` | 0 and above | freezes immediate damaged levels for infrastructure, industrial complex, arms factory, air base, and dockyard |
-| `fallout_building_damage_available_<family>` | 0 and above | freezes the undamaged levels available to the grade-derived request for each proven state-building family |
-| `fallout_building_damage_requested_<family>` | 0 and above | records the independently calculated request for each proven state-building family |
-| `fallout_building_damage_observed_<family>` | 0 and above | records the observed damaged-level increase for each proven state-building family |
-| `fallout_building_damage_after_<family>` | 0 and above | records the engine level accepted by the phase-local observation check for each proven state-building family |
-| `fallout_building_damage_reconciled` | state flag | proves every stored per-family request and observed delta agree without issuing another destructive effect |
+| `fallout_population_loss_mutation_issued` | state flag | prevents any retry from applying the state population mutation twice |
+| `fallout_population_loss_deaths_evaluated` | state flag | proves the exact observed result received one Deaths accounting decision |
+| `fallout_population_deaths_accounting_status` | accounting enum | distinguishes zero loss, registered loss, and user-disabled tracking |
+| `fallout_population_deaths_total_<before/after/delta>` | 0 and above | proves the global Deaths total moved by the observed loss when enabled |
+| `fallout_population_deaths_sequence_<before/after/delta>` | 0 and above | proves one Deaths log entry was written when enabled |
+| `fallout_population_state_deaths_<before/after/delta>` | 0 and above | proves the state Deaths map ledger moved by the observed loss when enabled |
+| `fallout_population_loss_reconciled` | state flag | proves frozen intent, live bound, observed mutation, and Deaths accounting agree without applying population again |
+| `fallout_building_damage_levels_requested` | 0 and above | compatibility name recording total requested permanent building-level loss |
+| `fallout_building_damage_levels_observed` | 0 and above | compatibility name recording total observed permanent level loss |
+| `fallout_building_damage_before_<family>` | 0 and above | freezes immediate total levels for infrastructure, industrial complex, arms factory, air base, and dockyard |
+| `fallout_building_damage_available_<family>` | 0 and above | equals the immediate total levels available for permanent removal |
+| `fallout_building_damage_requested_<family>` | 0 to available | records the rounded grade-derived permanent loss for one building family |
+| `fallout_building_damage_observed_<family>` | 0 and above | records the observed decrease in total levels for each proven family |
+| `fallout_building_damage_after_<family>` | 0 and above | records total levels observed after removal |
+| `fallout_building_damage_mutation_issued` | state flag | prevents any retry from removing another building level |
+| `fallout_building_damage_reconciled` | state flag | proves every stored per-family request and observed permanent loss agree |
+| `fallout_category_conversion_target` | Air Winter category enum | stores the grade-derived target calculated from the frozen live category |
+| `fallout_category_conversion_mutation_issued` | state flag | prevents any retry from applying another category effect |
+| `fallout_category_conversion_target_reconciled` | state flag | proves the stored target recomputes and never ranks above the frozen live category |
 | `fallout_state_rewrite_generation` | transition generation | binds building, category, supply, and modifier receipts to the current rewrite |
 
-Province-scoped `supply_node` and `rail_way` damage are not part of this exact receipt. The documented state scope resolves only a matching province and cannot prove a complete state-wide network rewrite.
+Province-scoped `supply_node` and `rail_way` removal are not part of this exact receipt. The documented state scope does not recursively find province buildings and cannot prove a complete state-wide network rewrite. The current supply-collapse flag and modifier are semantic pressure, not literal network destruction.
 
 State flags:
 
