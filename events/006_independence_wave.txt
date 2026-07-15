@@ -47,3 +47,40 @@ country_event = {
 		set_variable = { global.independence_wave_last_presentation_date = global.date }
 	}
 }
+
+# Internal synchronous character handoff for the audited northern/western
+# European regional packages. Static characters are recruited from an event,
+# never from a scripted effect or on action. The calling setup effect validates
+# the complete roster before it can publish package success.
+country_event = {
+	id = chaosx.nr6.10
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { is_independence_wave_sco_package = yes }
+			if = { limit = { NOT = { has_character = SCO_independence_wave_shipping_authority_commissioner } } recruit_character = SCO_independence_wave_shipping_authority_commissioner }
+			if = { limit = { NOT = { has_character = SCO_independence_wave_industrial_reconstruction_secretary } } recruit_character = SCO_independence_wave_industrial_reconstruction_secretary }
+			if = { limit = { NOT = { has_character = SCO_independence_wave_territorial_defense_planner } } recruit_character = SCO_independence_wave_territorial_defense_planner }
+		}
+		else_if = {
+			limit = { is_independence_wave_wls_package = yes }
+			if = { limit = { NOT = { has_character = WLS_independence_wave_bilingual_civil_service_commissioner } } recruit_character = WLS_independence_wave_bilingual_civil_service_commissioner }
+			if = { limit = { NOT = { has_character = WLS_independence_wave_coal_rail_organizer } } recruit_character = WLS_independence_wave_coal_rail_organizer }
+			if = { limit = { NOT = { has_character = WLS_independence_wave_mountain_defense_planner } } recruit_character = WLS_independence_wave_mountain_defense_planner }
+		}
+		else_if = {
+			limit = { is_independence_wave_rhi_package = yes }
+			if = { limit = { NOT = { has_character = RHI_independence_wave_municipal_customs_administrator } } recruit_character = RHI_independence_wave_municipal_customs_administrator }
+			if = { limit = { NOT = { has_character = RHI_independence_wave_rail_works_liaison } } recruit_character = RHI_independence_wave_rail_works_liaison }
+			if = { limit = { NOT = { has_character = RHI_independence_wave_river_defense_planner } } recruit_character = RHI_independence_wave_river_defense_planner }
+		}
+		else_if = {
+			limit = { is_independence_wave_bay_package = yes }
+			if = { limit = { NOT = { has_character = BAY_independence_wave_district_finance_administrator } } recruit_character = BAY_independence_wave_district_finance_administrator }
+			if = { limit = { NOT = { has_character = BAY_independence_wave_estates_constitutional_liaison } } recruit_character = BAY_independence_wave_estates_constitutional_liaison }
+			if = { limit = { NOT = { has_character = BAY_independence_wave_alpine_supply_inspector } } recruit_character = BAY_independence_wave_alpine_supply_inspector }
+		}
+	}
+}

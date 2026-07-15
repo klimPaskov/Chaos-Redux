@@ -9,9 +9,13 @@ advisor/officer interface.
 An advisor icon is not a shrunken `156x210` leader portrait. Build it from the
 approved portrait master with its own crop and use
 `.tools/process_hoi4_portrait.py advisor` to create the dossier presentation.
-The script creates an original frame and paper overlay; it never copies a
-vanilla advisor frame. Compare every candidate with this folder before DDS
-conversion and wiring.
+Advisor mode requires separately generated, alpha-processed frame and paper
+overlays. The script only crops, grades, angles, derives shadows from existing
+alpha, composites, validates, and exports those approved sources. It does not
+draw a frame, paper, seal, faux writing, bevel, patina, or any other visible
+card element from primitive geometry, and it never copies a vanilla advisor
+frame. Compare every candidate with this folder at native size and enlarged
+nearest-neighbour size before DDS conversion and wiring.
 
 | Review file | Vanilla source |
 | --- | --- |
