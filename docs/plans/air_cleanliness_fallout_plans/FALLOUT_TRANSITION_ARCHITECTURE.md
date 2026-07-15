@@ -8,7 +8,7 @@ Create one reusable aftermath framework that can be called by gradual Air collap
 
 This document records both the required architecture and the current implementation boundary. The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain design authority.
 
-The live foundation includes the request envelope, host coordinator, schema-v4 migration gate, blackout phase events, world snapshot, state grading, population loss, physical collapse helpers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first reservation planning, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
+The live foundation includes the request envelope, once-per-date project coordinator, schema-7 migration gate, blackout phase events, row-proven snapshot, grading, population-loss, and physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
 
 The transition is not complete. General successor allocation, country-package producers, focus-package producers, player-successor materialization, and candidate-choice UI are not implemented. A player can be committed only to an already existing target with current-transition packages and an exact valid reservation. Immediate `is_ai` observation after `change_tag_from` remains statically unresolved. The old-world diplomacy proof gate is also unresolved. Map return therefore remains intentionally fail closed.
 
@@ -137,7 +137,7 @@ Behavior:
 6. Increment the GUI dirty variable.
 7. Schedule the next beat.
 
-No normal super-event flag or audio id is set.
+No normal super-event flag or shared global audio id is set. Dedicated Fallout dramatic audio still plays through Fallout-owned wrappers that honor the super-event audio mode and volume settings.
 
 ### `fallout_advance_blackout_beat`
 
@@ -161,7 +161,7 @@ Applies one-time population, building, category, resource, supply, and province 
 
 ### `fallout_classify_country_government`
 
-Classifier schema 1 assigns one deterministic provisional origin archetype before ownership changes. State signals come from the Fallout snapshot and the completed state rewrite. The fixed specificity order resolves eleven live archetypes. Machine Protocol stays future-only until its machine-survival inputs have real producers. A partial machine claim or any unmatched surviving country raises error 16 and keeps the blackout active.
+Classifier schema 2 assigns one deterministic provisional origin archetype before ownership changes. State signals come from the Fallout snapshot and the completed state rewrite, and aggregate into the frozen original owner rather than the mutable live owner. The result is stored separately from the final applied archetype package. The fixed specificity order resolves eleven live archetypes. Machine Protocol stays future-only until its machine-survival inputs have real producers. A partial machine claim or any unmatched surviving country raises error 16 and keeps the blackout active.
 
 This step does not change politics or activate successor content. A future allocator must still choose and apply the final archetype package, regional layer, country-memory layer, focus content, leaders, units, decisions, diplomacy, and AI.
 
@@ -173,7 +173,7 @@ Ends or remaps incompatible relationships only after snapshot capture and before
 
 Builds candidate pools from state clusters, old governments, tag availability, matrix rules, and player reservation.
 
-Live boundary: `fallout_build_successor_conflict_ledger` implements the generation-bound inventory that must precede this helper. It records every live country, every possible country scope, every state, player reservations, known event-package ownership, and exact safe-candidate membership. A separate schema-1 output contract consumes that frozen inventory, requires a resolution for every input conflict, and validates unique assigned countries, unique capitals, exact live-landholder coverage, current package layers, origin states, and cleanup ownership. The guarded finalizer is the only setter for `fallout_successor_allocation_complete`.
+Live boundary: `fallout_build_successor_conflict_ledger` implements the generation-bound inventory that must precede this helper. It records every live country, every possible country scope, every state, player reservations, known event-package ownership, and exact safe-candidate membership. A separate schema-2 output contract consumes that frozen inventory. Every non-retired source and committed output must link to each other and match result, generation, and cleanup owner. Continued, converted, released, dynamically created, retired, protected-package, and player-reserved outcomes each have a distinct provenance contract. Releasing a possible-country scope requires a current release receipt. Membership in `game:all_possible_countries` is not availability proof. Retired sources must be landless and must not name an output. The contract also validates unique assigned countries, unique capitals, exact live-landholder coverage, current package layers, and origin states. The guarded finalizer is the only setter for `fallout_successor_allocation_complete`.
 
 No allocator calls the transaction initializer or finalizer. No assignment or package producer exists. The transition therefore remains in survivor allocation.
 
@@ -184,6 +184,8 @@ Applies country identity, politics, ideas, units, focus tree, AI, and starting m
 ### `fallout_select_player_continuation`
 
 Keeps the player in a valid surviving government when possible. Otherwise opens a controlled successor selection surface.
+
+The live pre-allocation barrier separates reservation from destination materialization. It reserves every snapshot-origin player state before the general inventory, preserves landless human sources, and records one explicit materialization branch when no in-place target is ready. The future allocator must supply the missing target, capital, packages, and reciprocal assignment row, rebuild the player planning ledger, then finalize general allocation. Once allocation initialization consumes the reservation ledger, those inputs become immutable. Any later reservation drift records `player_reservation_changed_after_allocation` and remains fail closed. This removes the earlier circular dependency without pretending the missing allocator exists.
 
 ### `fallout_finish_transition`
 
@@ -220,14 +222,16 @@ After destructive rewrite begins, the system must finish or enter a dedicated re
 
 ## Live save migration boundary
 
-The current schema is version 4 and migration is deliberately fail closed.
+The current schema is version 7 and migration is deliberately fail closed.
 
-- A completed old Fallout save is promoted non-destructively to the completed schema-v4 state.
+- A completed old Fallout save is promoted non-destructively to the completed schema-7 state.
 - Only the exact schema-3 map-return-error signature is recovered. It must already be in the map-return phase with map return blocked, transition error set, error code `map_postcondition_failed`, and error count one.
 - Every other incomplete schema 1 through 3 state remains under blackout with schema migration blocked.
 - An incomplete terminal save with no schema also remains under blackout with schema migration blocked.
 - Migration does not treat a missing `fallout_transition_destructive_started` flag as proof that a legacy state is safe to restart.
 - No generic pre-destructive restart and no legacy altered-grade replay are active behavior.
+
+Schema 7 makes snapshot and destructive-phase completion proof results. Player and world rows are captured and retried as one epoch. Exact live owner and controller equality is required only while capture is being accepted. Durable grading and rewrite receipts retain the frozen owner and controller scopes after valid allocation changes ownership. Grading cannot begin unless both snapshot ledgers pass their current-row proofs. Grading failures rebuild safe derived rows. Population and building failures reconcile existing destructive receipts without applying loss again. Their phase-local checks require the engine's current population and damaged-building observations to match the new result before the phase advances. Map return uses the generation-bound durable transaction receipts, so later normal demographic change or building repair does not invalidate completed destruction. Category recovery repairs flags only when the live category already matches the required result. Modifier recovery removes and rebuilds Fallout-owned modifiers. Each phase can re-enter only with its matching one-error signature.
 
 This narrow recovery rule prevents the current transition from mixing its snapshot and phase ledgers with an ambiguous legacy rewrite.
 
@@ -304,7 +308,7 @@ Pacing constants should allow:
 
 ## Sound direction
 
-Fallout does not use the super-event audio system.
+Fallout does not enter the ordinary super-event queue or claim its shared audio id. Fallout-owned audio wrappers still play the dedicated dramatic sound while honoring the super-event audio preference and volume controls.
 
 A separate transition sound package may use:
 
@@ -400,6 +404,8 @@ For each grade, define one-time consequences.
 
 All state population loss goes through the shared Deaths system with reason `chaos_meter_deaths_reason.fallout_aftermath`, numeric reason `19`, and state-level records.
 
+The three destructive rewrite phases use separate proof ledgers. Grading proves the deterministic score band, grade, subtype, survival range, and generation for every state. Population loss stores the grade-derived percentage, requested Deaths amount, applied Deaths amount, exclusive applied-or-zero result, and generation. Physical collapse proves the building receipt, exact grade modifier, altered-biosphere modifier when applicable, state-category result, supply-collapse flag, and rewrite generation. A stale completion flag is cleared when its ledger is no longer current. Missing idempotent rows can re-enter only through the exact error signature owned by their current phase.
+
 ## Old-world diplomacy reset
 
 The rewrite must explicitly handle:
@@ -461,13 +467,13 @@ The player is never silently assigned to a dead or invalid tag.
 
 ### Live commit path and blockers
 
-The snapshot records each human country, original identity, source anchor, former capital, and owned-state origin memory. Player reservation planning runs before the generation-bound conflict inventory is built, so reserved player states are excluded before any successor allocation is permitted. The inventory also excludes every state with human ownership or control and every state whose owner or controller has known live event-package ownership.
+The snapshot records each human country, original identity, optional source anchor, former capital, and owned-state origin memory. Every origin state is reserved before the generation-bound conflict inventory is built. A landless human is retained as an emergency-materialization source rather than rejected. Reserved player states are excluded before any successor allocation is permitted. The inventory also excludes every state with human ownership or control and every state whose owner or controller has known live event-package ownership.
 
 `fallout_player_primary_target_is_commit_ready` allows only an existing same-country or AI target with country and focus packages from the current transition generation. The target must own survivable territory. Its actual capital must be the exact state reserved for that player, remain owned and controlled by the target, remain able to host a government, and retain the matching reservation origin and generation.
 
-`fallout_preflight_player_commit_targets` performs a global two-pass preflight over existing commits and proposed targets before any switch occurs. It proves that every snapshotted player has one ready and unique target. `fallout_commit_current_player_primary_target` then writes the final target, commit generation, durable assignment origin, and durable assignment generation before an optional `change_tag_from`. Retry logic permits re-entry only for an exact single recoverable error signature, clears only those errors, can rebuild a cleared reservation from the durable assignment ledger, and revalidates every commit and cross-player assignment before map return.
+`fallout_preflight_player_commit_targets` performs a global two-pass preflight over existing commits and proposed targets before any switch occurs. It proves that every snapshotted player has one ready and unique target. The source's `player_reserved` conflict output must equal that same primary target. `fallout_commit_current_player_primary_target` then writes the final target, commit generation, durable assignment origin, and durable assignment generation before an optional `change_tag_from`. Retry logic permits re-entry only for an exact single recoverable error signature, clears only those errors, and revalidates every commit and cross-player assignment before map return. A cleared reservation may be rebuilt from a durable assignment only before allocation initialization. Consumed reservations are never rebuilt.
 
-This is a real commit path for already materialized, current-generation targets. It is not a materialization or package-production path. No active effect creates a missing player successor, applies the required country and focus packages with their transition generations, fills a candidate list, presents a candidate-choice UI, or completes general successor allocation. When planning cannot preserve a valid existing country, `fallout_player_materialization_required` is set and the transition remains blocked.
+This is a real commit path for already materialized, current-generation targets. It is not a materialization or package-production path. No active effect creates a missing player successor, applies the required country and focus packages with their transition generations, fills a candidate list, presents a candidate-choice UI, or completes general successor allocation. The source-reservation ledger can safely reach the allocator when a destination is missing. `fallout_player_materialization_required` remains set until that allocator supplies and proves the destination.
 
 Static inspection cannot prove that `change_tag_from` makes the destination observe `is_ai = no` immediately in the same effect chain. The commit effect checks that condition immediately after the switch and fails closed if it is not yet visible. No Hearts of Iron IV run was authorized, so this timing remains unresolved.
 
@@ -492,7 +498,9 @@ The choice must not reveal hidden focus routes or secret mutant outcomes.
 
 ## Multiplayer
 
-Host owns all effects and arrays.
+The project coordinator owns all effects and arrays. The existing daily host flag is deduplicated, transfer to another human occurs only when the flagged country is AI, and the Fallout reconciler records the current global date before gameplay work. Additional calls on that date cannot repeat manual, migration, phase-scheduling, or request transactions. They may only repair the persistent coordinator target after a valid host-flag transfer.
+
+The documented script surface does not identify the literal multiplayer lobby host. `is_global_host` remains a project simulation coordinator on synchronized state. Literal network-host authority is an open engine blocker.
 
 Clients receive:
 
@@ -515,7 +523,7 @@ The ordering exists in the live phase skeleton. General successor assignment, pa
 
 ## Post-transition handoff
 
-The transition ends with a short stabilization period:
+The transition records `global.fallout_event_timeline_start_date` on the successful map-return transaction, then ends with a short stabilization period:
 
 - ordinary random events remain stopped
 - Fallout survival decisions become visible
@@ -529,7 +537,8 @@ Do not start every war, focus event, and flavour incident on the reveal day.
 ## Acceptance checks
 
 - no normal super-event appears
-- no super-event audio id is set
+- no ordinary super-event or shared global audio id is set
+- dedicated Fallout dramatic audio plays once per transition audio generation when the configured audio mode permits it
 - blackout cannot be closed during processing
 - text beats advance through scripted events
 - save-load resumes the correct beat

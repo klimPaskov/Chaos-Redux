@@ -37,20 +37,21 @@ The live Air system includes global contamination basis points, monthly host-own
 The live Fallout package includes:
 
 - `fallout_request_aftermath` and request validation
-- one host-owned reconciliation path
-- a versioned transition envelope with schema 4
+- one project-coordinator reconciliation path with an at-most-once global-date receipt
+- a versioned transition envelope with schema 7
 - blackout GUI state and phase events
 - player and world snapshots
 - deterministic state grading and survival values
-- population-loss, building-damage, category-conversion, and grade-modifier helpers
+- generation-bound grading, Deaths, building-damage, category-conversion, and grade-modifier receipts
 - partial old-world diplomacy cleanup
 - deterministic provisional classification for eleven live government archetypes, with Machine Protocol fail closed
-- player-first reservation planning
+- player-first source and state reservation planning, including landless-human materialization rows
 - generation-bound successor conflict inventory with country, possible-country, state, reservation, and known package-ownership rows
-- schema-1 post-allocation proof contract with unique country and capital checks, exact landholder coverage, package layers, conflict receipts, and cleanup ownership
+- schema-2 post-allocation proof contract with reciprocal source-output conflict links, unique country and capital checks, exact landholder coverage, package layers, and cleanup ownership
 - two-pass player commit preflight for existing current-generation targets
 - durable assignment recording, retry recovery, commit reconstruction, and collision validation
 - strict map-return postconditions
+- an exact event-timeline start date written only by a successful current-schema map return
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 
@@ -87,7 +88,7 @@ Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback
 
 ## Transition and migration boundary
 
-Schema-v4 migration is fail closed:
+Schema-7 migration is fail closed:
 
 - completed saves are promoted non-destructively
 - only the exact schema-3 map-return-error signature is recovered
@@ -96,15 +97,19 @@ Schema-v4 migration is fail closed:
 - migration does not infer that a missing `fallout_transition_destructive_started` marker means an old transition is safe
 - no generic pre-destructive restart and no legacy altered-grade replay are active behavior
 
-Player reservations are calculated before the successor conflict inventory and before any successor allocation is permitted. Derived inventory schema 1 binds every row to the active transition generation. The validator checks every live country, every possible country scope, every state, exact candidate and reservation membership, human ownership and control, known overlapping event-package ownership, and capital consistency. A proposed target is commit-ready only when it already exists, has country and focus packages from the current transition generation, owns survivable territory, and owns and controls the exact capital reserved for that player. A global two-pass preflight validates all existing commits and proposed targets before any player switch. Exact single-error signatures can re-enter the inventory builder or player commit path for a clean retry. Other errors retain ownership of the transition ledger.
+Completed legacy Fallout saves have no proven reveal date. Migration does not invent an event-timeline start date or request scheduler initialization for them. That policy remains blocked pending approval.
 
-The government classifier aggregates frozen Fallout snapshot inputs before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The classifier does not change politics or activate content.
+Player source reservation is separate from final destination materialization. Every snapshot-origin human state is reserved before the successor inventory is frozen. A landless human is retained as an explicit emergency-materialization source instead of raising a false missing-anchor error. Derived inventory schema 1 binds every row to the active transition generation. The validator checks every live country, every possible country scope, every state, exact candidate and reservation membership, human ownership and control, known overlapping event-package ownership, and capital consistency. A proposed target is commit-ready only when it already exists, has country and focus packages from the current transition generation, owns survivable territory, and owns and controls the exact capital reserved for that player. A global two-pass preflight validates all existing commits and proposed targets before any player switch. Exact single-error signatures can re-enter snapshot, reservation, inventory, peace-conference, or player-commit paths without taking ownership from another failure. Once allocation initialization consumes the reservation ledger, later drift records its own fail-closed error and cannot rebuild those rows.
 
-The conflict inventory is not an allocator. It does not choose tags, final package layers, conflict results, or cleanup owners. Its known package-ownership helper must be reviewed again against the live repository before ownership changes begin. The separate post-allocation proof requires unique assigned countries and capitals, exact live-landholder coverage, current package generations, and conflict and cleanup receipts. Its guarded finalizer is the only setter for `fallout_successor_allocation_complete`, but no active allocator calls it or produces the required rows.
+World transition schema 7 makes the snapshot, grading, population-loss, and physical-collapse ledgers hard phase barriers. One epoch freezes every player, state, and country input used by grading, survival, population targeting, category conversion, and provisional government classification. Exact live owner and controller equality is checked at capture. Later durable rows retain the frozen scopes without requiring ownership to remain unchanged. Grading rows recompute score and survival from frozen inputs. Population rows recompute the grade request and reconcile the Deaths result without calling it twice. Physical rows prove five state-building families independently, unchanged or converted state category, supply collapse, exact grade and subtype modifiers, and rewrite generation. Phase-local population and building checks require current engine observations before advancing. Map return uses durable transaction receipts, so later normal population change or repair does not invalidate completed destruction. Province rail and supply-node damage is excluded until per-province selection can be proved. Each phase advances only after every state row passes. Government classifier schema 2 aggregates the frozen rows before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The provisional result is stored separately from the final package archetype. The classifier does not change politics or activate content.
+
+The conflict inventory is not an allocator. It does not choose tags, final package layers, conflict results, or cleanup owners. Its known package-ownership helper must be reviewed again against the live repository before ownership changes begin. Successor allocation schema 2 requires each input row to retain its frozen generation, leave the pending state, and own current resolution and cleanup generations. Each non-retired input row and output assignment must name each other, match resolution and generation, and share the same cleanup owner. Converted, released, and dynamically created outputs require distinct current-generation provenance receipts. Frozen possible-country membership is not release proof. A retired input must be landless and cannot name an output. The proof also cross-links every player-reserved source to the same continuation target, requires unique assigned countries and capitals, exact live-landholder coverage, and current package generations. Its guarded finalizer is the only setter for `fallout_successor_allocation_complete`, but no active allocator calls it or produces the required rows.
+
+The 99 accepted candidate rows have stable `fallout_country_memory` ids in their source-matrix order. This closes the numeric identity gap only. The exact twelve-country proof roster, primary state packages, capital order, tag coexistence, cosmetic ids, and Machine Protocol identity remain unapproved.
 
 The commit path writes a durable assignment origin and generation before an optional `change_tag_from`, commits only after the target appears human controlled, and rebuilds and revalidates persisted commits on retry. This can commit an uncommitted player to an already materialized, current-generation target.
 
-Actual successor materialization, country and focus package producers, candidate-choice UI, and general successor allocation are not implemented. The code can set `fallout_player_materialization_required`, but it cannot resolve it. Package and focus generations remain mandatory for every commit and map-return validation.
+Actual successor materialization, country and focus package producers, candidate-choice UI, and general successor allocation are not implemented. The pre-allocation barrier can retain fragmented, refugee, altered, emergency, and landless player sources without pretending their destination exists. The code can set `fallout_player_materialization_required`, but it cannot resolve it. Package and focus generations remain mandatory for every commit and map-return validation.
 
 Static inspection cannot prove that `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. No Hearts of Iron IV run was authorized, so this immediate observation remains a runtime blocker.
 
@@ -120,6 +125,7 @@ The old-world diplomacy proof gate also remains unresolved. Map return must stay
 6. Complete and prove the old-world diplomacy reset surfaces.
 7. Close the tracked blackout input, scripted-GUI binding, all-resolution drawing-order, and mapmode frame gates.
 8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
+9. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
 
 ## Resume map
 

@@ -39,6 +39,8 @@ New global values:
 | `global.fallout_request_date` | variable | audit and countdown date | set on request |
 | `global.fallout_transition_phase` | variable | blackout and rewrite state | set during transition, cleared after finish |
 | `global.fallout_transition_dirty` | variable | scripted GUI update marker | increment on visible phase change |
+| `global.fallout_coordinator_last_reconcile_date` | variable | at-most-once project coordinator receipt | written before daily Fallout reconciliation |
+| `global.fallout_event_timeline_start_date` | variable | exact successful map-return date | written once by the current map-return transaction |
 | `global.fallout_rewrite_batch_index` | variable | persistent batch cursor | cleared on completion |
 | `global.fallout_rewrite_error_count` | variable | safety counter for failed assignments | cleared on completion |
 | `global.fallout_surviving_country_count` | variable | final survivor count | set after rewrite |
@@ -66,11 +68,19 @@ Global flags:
 
 | Ledger | Live schema | Contract |
 | --- | --- | --- |
-| Fallout world transition | 4 | fail-closed save recovery and phase ownership |
-| Government classifier | 1 | frozen-input signal aggregation and provisional archetype |
+| Fallout world transition | 7 | fail-closed snapshot and destructive-phase receipt recovery |
+| Government classifier | 2 | frozen-input signal aggregation and provisional archetype |
 | Successor pre-allocation inventory | 1 | live countries, possible-country scopes, states, reservations, and package conflicts |
-| Successor allocation output | 1 | consumed source receipt, unique assignments, package layers, conflicts, capitals, and cleanup |
+| Successor allocation output | 2 | consumed source receipt, reciprocal conflict links, unique assignments, package layers, capitals, and cleanup |
 | Manual province sweep runtime | 2 | generation-bound batch, verifier, and exact seven-day callback provenance |
+
+The region enum has nine live values: North America, Europe, Eurasian Interior, East Asia, South Asia, Middle East and North Africa, Sub-Saharan Africa, Latin America and the Caribbean, and Oceania and Remote Islands.
+
+The tag-conflict resolution enum distinguishes continuation in place, conversion of an existing tag, release of a releasable, dynamic creation, retirement as a landless memory, preservation of another event package, and player reservation. A surviving assignment cannot use the landless-retirement result. Every non-retired frozen source must link to exactly one committed output country. The output must link back to the same source and carry the same resolution, generation, and cleanup owner. Converted outputs require a current conversion receipt. Released outputs require a current release receipt in addition to frozen possible-country membership. Dynamically created outputs require a current materialization receipt and absence from both frozen country collections. A retired source must own no state and must not name an output.
+
+World transition schema 7 records request source and intensity, Chaos and Air Contamination values, every live country scope and government-memory row, and every state owner, controller, population, category, building, damage, resource, nuclear, Air Winter, coastal, contamination, and manual-strike input used by the rewrite. Player and world capture share one epoch generation and date. Snapshot completion is written only after every row passes the current-generation proof, exact live owner and controller checks, and all-and-only player-origin checks. Exact live ownership is a capture-time proof. Later grading and rewrite receipts validate the frozen scope payload without requiring ownership to remain unchanged. Grading cannot start when either half is incomplete. The same schema binds grading, population-loss, and physical-collapse receipts to the active transition generation. Phase-local population and building checks require current engine observations before advancing. Map return validates durable transaction receipts, so later population changes or normal repair do not invalidate completed destructive work.
+
+The country-memory enum assigns ids 1 through 99 in the exact accepted row order from `matrices/baseline/fallout_successor_country_matrix.md`. The enum is an identity ledger only. It does not activate a candidate or approve a source tag, state package, fallback package, leader, focus tree, or asset set.
 
 ## State winter values
 
@@ -95,6 +105,40 @@ Global flags:
 | `fallout_state_direct_strike_count` | variable | 0 and above | manual or live direct-strike memory |
 | `fallout_state_cause_mask` | variable or flags | implementation-defined | cause memory for regional content |
 | `fallout_pretransition_air_winter_original_category` | variable | Air Winter category enum | frozen category memory for Fallout classification |
+
+Live destructive-phase receipt values:
+
+| Name | Range | Proof role |
+| --- | --- | --- |
+| `global.fallout_snapshot_epoch_generation` | transition generation | establishes the single frozen world and player snapshot epoch |
+| `global.fallout_snapshot_epoch_date` | current date value | proves both snapshot halves were captured during the same effect chain |
+| `fallout_pretransition_snapshot_generation` | snapshot epoch generation | binds every frozen country and state row to the current snapshot epoch |
+| `fallout_grade_score` | 0 to 100 | deterministic grade-band receipt |
+| `fallout_state_grading_generation` | transition generation | binds grade and survival results to the current rewrite |
+| `fallout_grade_score_reconciled` | state flag | proves the persisted grade score matches a fresh calculation from frozen inputs |
+| `fallout_survival_value_reconciled` | state flag | proves the persisted survival value matches a fresh calculation from frozen inputs |
+| `fallout_population_loss_percent_applied` | grade loss table | records the exact grade-derived Deaths percentage |
+| `fallout_population_loss_requested_memory` | 0 and above | records the rounded Deaths request before the population floor |
+| `fallout_population_before_loss_people` | 0 and above | records observed state population immediately before the Deaths transaction |
+| `fallout_population_available_before_loss` | 0 and above | records population available above the protected one-person floor |
+| `fallout_population_expected_loss` | 0 to requested amount | records the request after the observed population floor is applied |
+| `fallout_population_after_loss_people` | 0 and above | records observed state population immediately after the Deaths transaction |
+| `fallout_population_after_loss_k` | 0 and above | preserves the engine population value used by the phase-local observation check |
+| `fallout_population_reconciled_loss` | 0 and above | records the observed before-and-after population difference |
+| `fallout_population_loss_memory` | 0 to requested amount | records the population actually removed by the shared Deaths transaction |
+| `fallout_population_loss_generation` | transition generation | binds the Deaths receipt to the current rewrite |
+| `fallout_population_loss_reconciled` | state flag | proves the stored request, observed transaction output, and recalculated expected loss agree without applying Deaths again |
+| `fallout_building_damage_levels_requested` | 0 and above | records the total requested building-damage levels |
+| `fallout_building_damage_levels_observed` | 0 and above | records the observed increase across five state-building ledgers |
+| `fallout_building_damage_before_<family>` | 0 and above | freezes immediate damaged levels for infrastructure, industrial complex, arms factory, air base, and dockyard |
+| `fallout_building_damage_available_<family>` | 0 and above | freezes the undamaged levels available to the grade-derived request for each proven state-building family |
+| `fallout_building_damage_requested_<family>` | 0 and above | records the independently calculated request for each proven state-building family |
+| `fallout_building_damage_observed_<family>` | 0 and above | records the observed damaged-level increase for each proven state-building family |
+| `fallout_building_damage_after_<family>` | 0 and above | records the engine level accepted by the phase-local observation check for each proven state-building family |
+| `fallout_building_damage_reconciled` | state flag | proves every stored per-family request and observed delta agree without issuing another destructive effect |
+| `fallout_state_rewrite_generation` | transition generation | binds building, category, supply, and modifier receipts to the current rewrite |
+
+Province-scoped `supply_node` and `rail_way` damage are not part of this exact receipt. The documented state scope resolves only a matching province and cannot prove a complete state-wide network rewrite.
 
 State flags:
 
@@ -129,12 +173,19 @@ Do not store true or false state as numeric variables unless an engine surface r
 | `fallout_country_region_overlay` | variable | regional enum |
 | `fallout_country_memory_overlay` | variable | memory package enum |
 | `fallout_country_package_version` | variable | migration and audit version |
-| `fallout_government_archetype` | variable | provisional classifier identity and later final package identity |
+| `fallout_government_origin_archetype` | variable | frozen provisional identity assigned before ownership changes |
+| `fallout_government_archetype` | variable | final reviewed archetype package applied to the successor |
 | `fallout_government_classifier_generation` | variable | binds classification to the active transition |
-| `fallout_government_classifier_schema_version` | variable | binds classification to classifier schema 1 |
+| `fallout_government_classifier_schema_version` | variable | binds classification to classifier schema 2 |
 | `fallout_successor_assignment_generation` | variable | binds the final assignment row to the active transition |
+| `fallout_successor_conflict_source_country` | scope variable | links a committed output to its frozen input country |
 | `fallout_successor_conflict_result` | variable | records the reviewed tag-conflict outcome |
 | `fallout_successor_cleanup_owner` | scope variable | records the country that owns assignment cleanup |
+| `fallout_successor_cleanup_generation` | variable | binds output cleanup ownership to the active transition |
+| `fallout_live_tag_conflict_output_country` | scope variable | links a non-retired frozen input country to its committed output |
+| `fallout_live_tag_conflict_cleanup_generation` | variable | binds source cleanup ownership to the active transition |
+| `fallout_releasable_release_generation` | variable | proves an absent frozen possible-country scope was actually released in this transition |
+| `fallout_dynamic_country_materialization_generation` | variable | proves a dynamic output was actually materialized in this transition |
 
 Country flags:
 
@@ -151,22 +202,25 @@ Country flags:
 - `fallout_focus_tree_loaded`
 - `fallout_player_candidate`
 - `fallout_ai_package_initialized`
+- `fallout_existing_tag_conversion_committed`
+- `fallout_releasable_release_committed`
+- `fallout_dynamic_country_materialization_committed`
 
 Actual archetype flags should follow the final accepted archetype identifiers from the matrix.
 
 ## Cause enum
 
-Proposed stable enum values:
+Live stable enum values:
 
 | Value | Cause |
 | --- | --- |
 | 1 | gradual Air Contamination collapse |
-| 2 | concentrated nuclear exchange |
-| 3 | Final Silence or another scripted terminal strike |
-| 4 | chemical atmosphere collapse |
-| 5 | biological and agricultural systems collapse |
+| 2 | Final Silence |
+| 3 | chemical saturation |
+| 4 | biological follow-through |
+| 5 | mixed terminal cause |
 | 6 | manual Fallout scenario |
-| 7 | mixed or unknown terminal cause |
+| 7 | legacy Fallout request |
 
 The enum affects state grading, regional flavour, successor package weighting, achievements, and post-rewrite memory. It does not replace detailed cause flags when several causes coexist.
 
@@ -188,13 +242,14 @@ These are working labels only. Final player-facing names are written during impl
 
 | Grade | Working label | Rewrite role |
 | --- | --- | --- |
-| 0 | intact enclave | old government or strong successor can survive |
-| 1 | damaged administration | state remains governable with severe penalties |
-| 2 | fractured zone | local successor or contested ownership likely |
-| 3 | collapse belt | warlord, commune, military district, or refuge package likely |
-| 4 | dead infrastructure | sparse survivor identity, technical enclave, or abandoned ownership |
-| 5 | irradiated wasteland | no normal state package, special access and salvage only |
-| 6 | terminal exclusion zone | sealed wasteland with extreme entry and population rules |
+| 0 | remote refuge | strongest administration and successor viability |
+| 1 | scarred province | governable with lasting damage |
+| 2 | ash zone | severe local loss and one-step category degradation |
+| 3 | dead city | supply collapse and emergency-government pressure |
+| 4 | wasteland | category conversion to wasteland |
+| 5 | vitrified zone | highest physical-damage class |
+
+Altered biosphere is subtype 1, not grade 6. It is fictional high-Chaos content with its own eligibility proof and modifier.
 
 ## Lifecycle invariants
 
@@ -206,7 +261,8 @@ These are working labels only. Final player-facing names are written during impl
 6. Population loss is registered once through the shared death pipeline.
 7. Every Fallout state is processed exactly once per transition version.
 8. Every active successor receives exactly one country package version.
-9. No player state is transferred before player-continuation reservation is resolved.
+9. Every human source and every snapshot-origin player state is reserved before the general successor inventory is frozen. A landless human receives an explicit materialization row instead of a fabricated state anchor.
 10. Transition flags and cursors survive save-load.
-11. Any abort path clears the blackout and leaves the pre-transition world intact or reports an unrecoverable blocker.
+11. No inferred abort or partial map return is permitted. An unresolved postcondition keeps the blackout active and records the owning blocker.
 12. Manual synthetic strikes suppress repeated global event logs and apply one aggregate history entry.
+13. Player reservations become immutable when successor allocation initialization consumes them. Later drift records its own fail-closed error and never rebuilds the consumed ledger.

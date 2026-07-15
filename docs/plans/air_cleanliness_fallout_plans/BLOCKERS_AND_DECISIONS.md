@@ -113,7 +113,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema v4 fail-closed policy implemented, full transition still blocked
+Status: schema 7 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -125,7 +125,7 @@ Potential old save states:
 Implemented policy:
 
 - completed Fallout saves are promoted to the current schema without restarting destruction
-- only the exact schema-3 map-return-error signature is recovered into schema v4
+- only the exact schema-3 map-return-error signature is recovered into schema 7
 - every other incomplete schema 1 through 3 transition fails closed under blackout
 - an incomplete terminal save with no schema also fails closed under blackout
 - migration does not infer safety from `fallout_transition_destructive_started` because schemas 1 through 3 never guaranteed that marker
@@ -133,23 +133,28 @@ Implemented policy:
 
 The exact recoverable schema-3 signature requires the map-return phase, map return blocked, transition error set, `map_postcondition_failed`, and an error count of one. Any ambiguity remains blocked.
 
+Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
+
 ## B7: player continuation and successor commit
 
 Status: commit and proof contracts implemented for ready targets, allocation, materialization, and package production blocked
 
 Implemented commit path:
 
-- human countries and source anchors are snapshotted
-- surviving-player capital reservations are resolved before the successor conflict inventory is built
+- human countries, optional source anchors, and every snapshot-origin state are snapshotted
+- all player origin states are reserved before the successor conflict inventory is built, while landless humans receive an explicit emergency-materialization row
 - derived inventory schema 1 records and validates every live country, possible country scope, state, reservation, safe candidate, and known overlapping event-package owner for the active transition generation
 - commit readiness requires an existing target with current-transition country and focus packages, survivable territory, and the exact reserved capital under its ownership and control
 - a two-pass preflight validates every existing commit and proposed target before any player switch, including cross-player collision checks
 - the durable assignment origin and generation ledger is written before an optional `change_tag_from`
-- recoverable commit errors can be retried, and persisted assignments can rebuild cleared reservations before strict validation
+- recoverable commit errors can be retried, and persisted assignments can rebuild cleared reservations before allocation initialization
 - committed targets are reconstructed and revalidated against package generations, human control, exact capital reservation, durable origin, durable generation, and assignment uniqueness
-- provisional government classifier schema 1 deterministically resolves eleven live archetypes and fails closed on partial Machine Protocol claims or unmatched survivors
-- successor allocation schema 1 separates the frozen input inventory from post-mutation output proof
-- output proof requires unique assigned country scopes, unique capital states, exact live-landholder coverage, current package layers, conflict receipts, and cleanup ownership
+- provisional government classifier schema 2 deterministically resolves eleven live archetypes from frozen owner rows and fails closed on partial Machine Protocol claims or unmatched survivors
+- successor allocation schema 2 separates the frozen input inventory from post-mutation output proof
+- output proof requires reciprocal frozen-source and committed-output links, equal conflict results and cleanup owners, current source and cleanup generations, resolved and non-pending source lifecycle, valid landless retirement, unique assigned country scopes, unique capital states, exact live-landholder coverage, and current package layers
+- converted, released, and dynamically created outputs require distinct current-generation provenance receipts. Frozen possible-country membership does not prove that a releasable was released
+- every player source must point to the same country in its continuation target and `player_reserved` conflict output
+- reservations are immutable after allocation initialization. Later drift records `player_reservation_changed_after_allocation` and cannot rebuild consumed rows
 - the guarded allocation finalizer is the only effect that can set the completion flag
 
 Missing release work:
@@ -159,15 +164,25 @@ Missing release work:
 - no candidate-choice UI assigns a materialized successor to a player
 - no active allocator begins or finalizes general successor allocation
 - no active allocator chooses a Fallout package, regional package, final archetype package, conflict result, or cleanup owner
+- no active allocator writes the conversion, releasable-release, or dynamic-materialization provenance receipts
 - no producer populates the post-allocation assignment and package rows
 - Machine Protocol lacks complete live producers for its command-network and EMP-survival requirements
+- the accepted 99 candidates have stable numeric memory ids, but no exact twelve-country proof roster, state package, capital order, cosmetic identity, or Machine Protocol source identity is approved
 - the known event-package ownership registry requires another live producer audit before any state or tag mutation
 
-The commit effect can finish an uncommitted player only when the selected target already exists and satisfies every current-generation readiness check. The code can set `fallout_player_materialization_required`, but it cannot resolve that state.
+The reservation barrier no longer requires a missing player destination to exist before the general inventory can be built. The commit effect can still finish an uncommitted player only when the selected target exists and satisfies every current-generation readiness check. The code can set `fallout_player_materialization_required`, but it cannot resolve that state.
 
 Static inspection cannot prove whether `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. The commit effect checks that condition immediately after the switch. No Hearts of Iron IV run was authorized, so this timing remains a runtime blocker.
 
 The blackout and map-return postconditions must remain blocked until materialization, package and focus producers, target selection, general successor allocation, and the tag-switch timing proof exist.
+
+## B8: literal multiplayer host authority
+
+Status: one scripted coordinator is bounded to one Fallout reconciliation per global date, literal lobby-host identity remains unproven
+
+The shared daily pulse removes duplicate `is_global_host` flags. A human can take the coordinator flag only when the current flagged country has become AI. The Fallout reconciler writes `global.fallout_coordinator_last_reconcile_date` before any manual, migration, transition, or request work. Later calls on the same date cannot repeat those transactions. They may repair the persistent coordinator target and invalidate a stale scheduled recipient after a host-flag transfer.
+
+Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`, or `is_local_player` surface. The live flag therefore identifies a deterministic project coordinator on synchronized game state. It is not proof of the actual network lobby host. Literal host authority remains an engine blocker and must not be claimed.
 
 ## Design decisions already resolved
 
@@ -175,7 +190,13 @@ The blackout and map-return postconditions must remain blocked until materializa
 
 Resolved:
 
-Fallout uses a dedicated blackout scripted GUI. It does not use a super-event slot, quote, reaction button, or super-event audio id.
+Fallout uses a dedicated blackout scripted GUI. It does not use a super-event slot, quote, reaction button, or shared global super-event audio id. Dedicated Fallout dramatic audio still plays through Fallout-owned wrappers and honors the super-event audio settings.
+
+### D1A: provincial network damage proof
+
+Resolved for the exact state rewrite:
+
+State-scoped `damage_building` is not accepted as aggregate rail or supply-node loss because the official documentation promises only the first matching province. The live receipt covers infrastructure, civilian factories, military factories, air bases, and dockyards per family. Supply collapse remains a proven state flag and modifier. Province-level rail and supply-node damage stays blocked until a deterministic province registry and per-province receipt are implemented.
 
 ### D2: treaty disposition
 

@@ -12,10 +12,9 @@ fallout_world_end_schema = {
 		data = int
 	}
 
-	version = 4
+	version = 7
 	legacy_map_return_error_version = 3
 	audio_generation = 1
-	legacy_altered_grade = 6
 }
 
 # The conflict inventory is derived and can be rebuilt without migrating the
@@ -37,7 +36,7 @@ fallout_government_classifier_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
 }
 
 # Post-allocation proof is separate from the frozen pre-allocation conflict
@@ -48,7 +47,7 @@ fallout_successor_allocation_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
 }
 
 fallout_transition_error_code = {
@@ -74,6 +73,12 @@ fallout_transition_error_code = {
 	player_tag_switch_failed = 14
 	successor_inventory_invalid = 15
 	government_archetype_unresolved = 16
+	snapshot_incomplete = 17
+	player_snapshot_incomplete = 18
+	player_reservation_incomplete = 19
+	state_grading_incomplete = 20
+	population_loss_incomplete = 21
+	physical_collapse_incomplete = 22
 }
 
 fallout_player_continuation_branch = {
@@ -104,6 +109,42 @@ fallout_player_continuation_status = {
 	choice_submitted = 5
 	committed = 6
 	error = 7
+}
+
+fallout_tag_conflict_resolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	continued_in_place = 1
+	converted_existing = 2
+	released_releasable = 3
+	created_dynamic = 4
+	retired_landless = 5
+	preserved_event_package = 6
+	player_reserved = 7
+	upper_bound = 8
+}
+
+fallout_region = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	north_america = 1
+	europe = 2
+	eurasian_interior = 3
+	east_asia = 4
+	south_asia = 5
+	middle_east_north_africa = 6
+	sub_saharan_africa = 7
+	latin_america_caribbean = 8
+	oceania_remote_islands = 9
+	upper_bound = 10
 }
 
 fallout_diplomacy_memory_type = {
@@ -426,6 +467,117 @@ fallout_government_archetype = {
 	mutant_polity = 11
 	religious_refuge = 12
 	upper_bound = 13
+}
+
+# Stable ids follow the accepted row order in
+# matrices/baseline/fallout_successor_country_matrix.md.
+fallout_country_memory = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	federal_continuity_zone = 1
+	atlantic_congressional_remnant = 2
+	appalachian_tunnel_compact = 3
+	great_lakes_ice_authority = 4
+	cascadian_hydro_league = 5
+	california_aqueduct_republic = 6
+	texan_oil_fortresses = 7
+	sonoran_water_board = 8
+	northern_shield_shelters = 9
+	quebec_winter_republic = 10
+	prairie_grain_authority = 11
+	alaska_listening_command = 12
+	caribbean_port_chain = 13
+	yucatan_cenote_compact = 14
+	british_emergency_isles = 15
+	scottish_hydro_parliament = 16
+	irish_maritime_refuge = 17
+	alpine_redoubt = 18
+	rhine_dead_cities = 19
+	bavarian_shelter_state = 20
+	french_loire_continuity = 21
+	breton_port_league = 22
+	iberian_sun_shelters = 23
+	catalan_emergency_commune = 24
+	scandinavian_cold_councils = 25
+	finnish_forest_army = 26
+	polish_ash_republics = 27
+	danube_ration_league = 28
+	balkan_mountain_wards = 29
+	greek_island_synods = 30
+	italian_apennine_communes = 31
+	baltic_forest_brotherhoods = 32
+	low_countries_polder_authority = 33
+	ural_continuity_directorate = 34
+	siberian_rail_spine = 35
+	arctic_listening_posts = 36
+	volga_ash_host = 37
+	caucasus_shelter_states = 38
+	don_steppe_hetmanates = 39
+	ukrainian_bread_bunkers = 40
+	steppe_convoy_republics = 41
+	baikal_monastic_line = 42
+	vladivostok_radio_port = 43
+	japanese_shelter_archipelago = 44
+	hokkaido_snow_administration = 45
+	manchurian_reactor_keeps = 46
+	korean_tunnel_armies = 47
+	yellow_river_famine_councils = 48
+	sichuan_interior_shelter = 49
+	canton_port_commune = 50
+	shanghai_glasshouse_syndicate = 51
+	mongolian_nomad_grid = 52
+	mekong_greenhouse_compact = 53
+	philippine_island_radio_kingdoms = 54
+	indonesian_rice_archipelago = 55
+	malayan_strait_board = 56
+	taiwan_shelter_command = 57
+	himalayan_shelter_belt = 58
+	indo_gangetic_relief_authority = 59
+	indus_water_commands = 60
+	deccan_greenhouse_states = 61
+	bengal_delta_raft_republic = 62
+	persian_tunnel_ministries = 63
+	mesopotamian_water_courts = 64
+	arabian_fuel_emirates = 65
+	levant_quarantine_cities = 66
+	anatolian_plateau_remnant = 67
+	nile_food_command = 68
+	upper_nile_cattle_federation = 69
+	maghreb_solar_forts = 70
+	ethiopian_highland_refuge = 71
+	congo_green_basin = 72
+	east_african_rail_union = 73
+	west_african_port_confederacies = 74
+	sahel_caravan_wards = 75
+	south_african_continuity_mines = 76
+	madagascar_isolation_state = 77
+	great_lakes_mutant_marsh = 78
+	cape_verde_radio_anchor = 79
+	andean_sky_republics = 80
+	patagonian_food_haven = 81
+	brazilian_interior_leagues = 82
+	amazon_altered_basin = 83
+	la_plata_port_compact = 84
+	venezuelan_fuel_remnant = 85
+	colombian_mountain_corridors = 86
+	guiana_rain_stations = 87
+	atacama_observatory_state = 88
+	paraguay_river_holdfast = 89
+	australian_grain_shield = 90
+	new_zealand_lifeboat_state = 91
+	pacific_radio_chain = 92
+	antarctic_listening_government = 93
+	papua_highlands_shelters = 94
+	hawaiian_relay_kingdom = 95
+	micronesian_storm_ports = 96
+	kerguelen_weather_state = 97
+	indian_ocean_island_arc = 98
+	polynesian_lifeboat_confederacy = 99
+	upper_bound = 100
 }
 
 fallout_government_classifier_threshold = {
