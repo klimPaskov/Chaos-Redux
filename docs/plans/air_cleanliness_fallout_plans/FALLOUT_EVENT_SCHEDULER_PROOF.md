@@ -2,7 +2,7 @@
 
 ## Status
 
-The living-world scheduler has a schema-2 dormant transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry, initializes country runtime rows, and exposes five-part orientation, anti-repetition, arc, delayed-result, bilateral, cancellation, cleanup, and routing contracts. It does not select a candidate, schedule an event, or fire an event.
+The living-world scheduler has a schema-2 dormant transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry, initializes country runtime rows, and exposes five-part orientation, anti-repetition, arc, delayed-result, bilateral, cancellation, cleanup, routing, and exact dispatch-issuance contracts. It does not select a candidate or schedule an event. Visible and hidden AI issuance remain unreachable because both activation flags have no setter. Hidden cleanup has no committed row producer or living-world event definition.
 
 The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `122` are typed reservations only. Defined event blocks in that range: `0`. Countable blocks toward the 660-block release floor: `0`.
 
@@ -74,15 +74,32 @@ Each committed registry member receives versioned runtime receipts for the sched
 - a generation-bound global ticket allocator with no ticket reuse
 - cancellation history receipts
 - one structural dispatch envelope with a ready flag written last
+- one exact dispatch-issuance receipt with its issued flag written last
 - cleanup tokens, cleanup owners, and derived cleanup-pending flags
 
 The five orientation components are national orientation, capital condition, immediate resource crisis, government archetype, and first character or institution. Ordinary-event eligibility requires all five current-generation receipts.
 
 The ordinary cooldown helper and the three reservation APIs are unreachable from gameplay because every producer requires both activation flags and a living owner, no file sets those flags, and no event calls the APIs. Mutable actor, target, parent, and due-day checks apply only when a row is first created. An exact retry is authenticated from its existing immutable payload even after time advances or its subject is lost. Major arcs use derived occupancy for three compact slots. Arc stages advance one step at a time. Typed cancellation outcomes carry an aligned cancellation reason and exact retries do not duplicate history. Delayed rows retain separate human and AI tokens, a due day, target identity, outcome, cancellation reason, and cleanup token. Bilateral reservation writes one ticket to both countries, proves opposite roles, exact back-references, and the initiator cleanup owner, then rolls both rows back when the second commit cannot be proven. Bilateral status changes snapshot both rows, write both payloads before either status, prove both reciprocal directions, and restore both snapshots before recording an error when commit proof fails. Fatigue slots are structural only. The accepted specs do not define mutation, decay, or score magnitudes, so no fatigue producer is implemented. Survival-ledger effects are not implemented by this tranche.
 
-Terminalization and cleanup remain callable without the activation gate so a disabled scheduler can recover existing rows. Public mutation and release APIs require the current frozen country identity, complete aligned family receipts, a current ticket, and exact cleanup tokens where applicable. Invalid arc actors, invalid delayed targets, lost bilateral reciprocals, and annexed transaction owners receive typed cancellation receipts. A country that no longer exists cannot receive a new reservation or dispatch envelope. Resolved rows accept only success, partial, or failure. Cancellation outcomes require a typed nonzero reason through cleanup. A cleanup-pending row may publish a hidden-cleanup envelope only while its owner still exists, but that envelope is data only. No effect consumes its token or executes content-owned cleanup.
+Terminalization and cleanup remain callable without the activation gate so a disabled scheduler can recover existing rows. Public mutation and release APIs require the current frozen country identity, complete aligned family receipts, a current ticket, and exact cleanup tokens where applicable. Invalid arc actors, invalid delayed targets, lost bilateral reciprocals, and annexed transaction owners receive typed cancellation receipts. A country that no longer exists cannot receive a new reservation or dispatch envelope. Resolved rows accept only success, partial, or failure. Cancellation outcomes require a typed nonzero reason through cleanup.
+
+The selected country consumer accepts only a current registry row whose envelope still matches its exact delayed or bilateral transaction. Visible and hidden AI envelopes require both activation flags. Exact hidden-cleanup envelopes remain issuable after deactivation so committed rows can finish cleanup. The consumer copies source, ticket, generation, mode, event token, branch, target type, and target into an issuance receipt, records the engine date and day, and writes `fallout_event_dispatch_issued` last. Only then does a `meta_effect` construct and run `country_event = { id = chaosx.fallout.[FALLOUT_EVENT_ID] }`. Later coordinator passes accept the persisted receipt as current and do not emit that envelope again. Event content may acknowledge only an issued envelope with the same source, ticket, and generation. Acknowledgement clears the envelope and its issuance receipt together after content resolution or cleanup.
+
+This is a compatible extension of schema 2. An empty envelope and an unissued ready envelope require every issuance field to be absent. Existing schema-2 rows therefore retain their original empty or unissued meaning. No pre-existing consumer could have emitted an event without the receipt. A receipt mismatch clears the partial receipt, preserves the original envelope, and records the owned `dispatch_issue_receipt_mismatch` scheduler error. The static proof establishes command issuance and at-most-once coordinator behavior. It does not claim that an event popup was displayed.
 
 Every public scripted effect that returns a temporary receipt requires the outer caller to create that temporary variable first. This follows the documented temporary-variable lifetime rule. All internal callers pre-seed outputs before they inspect them. No external gameplay caller exists in this tranche.
+
+## Dispatch issuance state proof
+
+| State | Envelope commit | Issuance commit | Valid next action |
+| --- | --- | --- | --- |
+| Empty | ready flag absent and all payload fields absent | issued flag and all receipt fields absent | a reconciled transaction may publish one envelope |
+| Ready, unissued | ready flag present with an exact current transaction payload | issued flag and all receipt fields absent | the selected-country consumer may issue once |
+| Ready, issued | ready flag present with the same payload | issued flag present with the complete mirrored identity and non-future date and day | event content may resolve and acknowledge |
+| Acknowledged | envelope and issuance data cleared together | absent | the transaction may advance to its next distinct status |
+| Partial or mismatched | any mixed shape | any mixed shape | fail the country row and preserve the transaction for diagnosis |
+
+The ready flag and issued flag are separate commit markers. This distinction is what makes a save between command issuance and event resolution recover without a second command. The coordinator advances its registry cursor after the issue attempt only when no owned scheduler error exists.
 
 ## Required future survival ledger
 
@@ -103,11 +120,11 @@ Reservation production uses stronger full-ledger uniqueness gates. These scan ea
 The installed official documentation is the primary syntax reference:
 
 - `documentation/triggers_documentation.md` documents `all_of`, the matched value and index outputs of `any_of`, temporary-variable operations inside trigger evaluation, and the country-only scope of `exists`.
-- `documentation/effects_documentation.md` documents `for_each_scope_loop` and `for_loop_effect`.
+- `documentation/effects_documentation.md` documents `for_each_scope_loop`, `for_loop_effect`, `country_event`, and `meta_effect`.
 - `documentation/script_concept_documentation.md` and `common/script_constants/documentation.md` document typed script constants.
 - the offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` documents arrays, numeric array indexes, scope arrays, and temporary-variable lifetime.
 
-Repository precedents are `006_independence_wave_effects.txt` and `006_independence_wave_triggers.txt` for aligned scope registries and reciprocal row validation, plus `020_black_plague_effects.txt` for delayed scheduler state. The Fallout substrate retains separate schema and identifier ownership.
+Repository precedents are `006_independence_wave_effects.txt` and `006_independence_wave_triggers.txt` for aligned scope registries and reciprocal row validation, plus `020_black_plague_effects.txt` for delayed scheduler state. Dynamic event dispatch precedents are `013_natural_disasters_effects.txt`, `air_cleanliness_winter_event_effects.txt`, and `fallout_manual_scenario_effects.txt`. Each formats an integer variable into a namespaced `country_event` id through `meta_effect`. The Fallout substrate retains separate schema and identifier ownership.
 
 ## Fail-closed boundaries
 
@@ -117,7 +134,7 @@ The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are not accepted. Cohesion and Reclamation remain separate mechanics. The full state and country receipt transaction is not implemented.
 - Schema 9 authenticates frozen Air Winter rows with an Air-owned producer schema and generation. Valid rows use exact produced values. Invalid rows use a typed N/A payload. A separate frozen live category is proven at capture. Survival initialization may consume only this frozen provenance contract.
-- Structural arc, delayed-result, bilateral, cancellation, and cleanup-envelope transactions are implemented but dormant. Candidate selection, event scheduling, event firing, actual human routing, hidden AI mechanical resolution, content-owned cleanup execution, and scheduler debug presentation are not implemented.
+- Structural arc, delayed-result, bilateral, cancellation, cleanup-envelope, and exact dispatch-issuance transactions are implemented but dormant. Candidate selection, event scheduling, event definitions, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, and scheduler debug presentation are not implemented.
 - The five orientation components have receipts but no Fallout orientation event content.
 - Literal multiplayer lobby-host identity remains unavailable in the documented script surface. The live authority is the project coordinator.
 - No runtime observation was performed. HOI4 was not launched.

@@ -205,18 +205,20 @@ Implemented structural proof:
 - compact aligned rows support idempotent reservation, payload-before-status updates, typed owner and subject cancellation, exact cleanup release, and aligned rollback or removal
 - bilateral reservation writes one ticket to two opposite-role rows and proves the exact reciprocal country and initiator cleanup owner before commit
 - structural human, hidden AI, and hidden-cleanup envelopes must match their source row and token
+- the selected-country consumer copies the complete envelope identity, records engine date and day, writes its issued flag last, and emits the tokenized `chaosx.fallout` country event only after that receipt proves current
+- a persisted issued receipt prevents a later coordinator pass from emitting the same ready envelope again. Event acknowledgement requires that exact receipt and clears it with the envelope
 - one primary frozen registry country reconciles per date and selects one primary row from each family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring structural and selected-identity reads remain linear in those two local ledgers
 - production-only full uniqueness gates are quadratic in each uncapped local ledger. Delayed and bilateral queue caps remain absent
 - schema-1 rows promote only while dormant, after the map-return and all preserved runtime fields pass, and only when every later transaction, ticket, history, cleanup, and envelope surface is absent or empty as required
 - successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
-- no daily global candidate pool, event firing, dispatch-envelope consumer, or activation setter exists
+- no daily global candidate pool, candidate selector, event producer, event definition, or activation setter exists
 
 Missing release work:
 
 - the schema and nine resource identities are reserved, but the required state and country receipt transaction is not implemented
 - survivor-allocation advancement and map return do not yet enforce the required ledger after final allocation and before player continuation
 - the frozen Fallout snapshot now distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
-- no candidate selection, event definition, actual human dispatch consumption, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
+- no candidate selection, event definition, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
 - the five orientation receipts have no implemented Fallout orientation event content
 - reserved suffixes `100` through `122` have no event definitions and count as zero release-floor blocks

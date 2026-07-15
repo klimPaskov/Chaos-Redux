@@ -966,6 +966,58 @@ fallout_event_bilateral_all_row_identities_are_unique = {
 	}
 }
 
+# Supported scope: COUNTRY
+fallout_event_dispatch_issue_receipt_is_absent = {
+	NOT = { has_country_flag = fallout_event_dispatch_issued }
+	NOT = { has_variable = fallout_event_dispatch_issued_source }
+	NOT = { has_variable = fallout_event_dispatch_issued_ticket }
+	NOT = { has_variable = fallout_event_dispatch_issued_generation }
+	NOT = { has_variable = fallout_event_dispatch_issued_mode }
+	NOT = { has_variable = fallout_event_dispatch_issued_event_token }
+	NOT = { has_variable = fallout_event_dispatch_issued_branch }
+	NOT = { has_variable = fallout_event_dispatch_issued_target_type }
+	NOT = { has_variable = fallout_event_dispatch_issued_target }
+	NOT = { has_variable = fallout_event_dispatch_issued_date }
+	NOT = { has_variable = fallout_event_dispatch_issued_day }
+}
+
+# Supported scope: COUNTRY. This proves the exact immutable envelope identity
+# whose dynamic country_event command has already been issued.
+fallout_event_dispatch_issue_receipt_is_current = {
+	has_country_flag = fallout_event_dispatch_ready
+	has_country_flag = fallout_event_dispatch_issued
+	has_variable = fallout_event_dispatch_source
+	has_variable = fallout_event_dispatch_ticket
+	has_variable = fallout_event_dispatch_generation
+	has_variable = fallout_event_dispatch_mode
+	has_variable = fallout_event_dispatch_event_token
+	has_variable = fallout_event_dispatch_branch
+	has_variable = fallout_event_dispatch_target_type
+	has_variable = fallout_event_dispatch_target
+	has_variable = fallout_event_dispatch_issued_source
+	has_variable = fallout_event_dispatch_issued_ticket
+	has_variable = fallout_event_dispatch_issued_generation
+	has_variable = fallout_event_dispatch_issued_mode
+	has_variable = fallout_event_dispatch_issued_event_token
+	has_variable = fallout_event_dispatch_issued_branch
+	has_variable = fallout_event_dispatch_issued_target_type
+	has_variable = fallout_event_dispatch_issued_target
+	has_variable = fallout_event_dispatch_issued_date
+	has_variable = fallout_event_dispatch_issued_day
+	check_variable = { var = fallout_event_dispatch_issued_source value = fallout_event_dispatch_source compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_ticket value = fallout_event_dispatch_ticket compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_generation value = fallout_event_dispatch_generation compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_generation value = fallout_event_runtime_generation compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = fallout_event_dispatch_mode compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_dispatch_event_token compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = fallout_event_dispatch_branch compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = fallout_event_dispatch_target_type compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = fallout_event_dispatch_target compare = equals }
+	NOT = { check_variable = { var = fallout_event_dispatch_issued_date value = global.date compare = greater_than } }
+	NOT = { check_variable = { var = fallout_event_dispatch_issued_day value = global.num_days compare = greater_than } }
+	NOT = { check_variable = { var = fallout_event_dispatch_issued_day value = global.fallout_event_timeline_start_day compare = less_than } }
+}
+
 fallout_event_dispatch_envelope_is_consistent = {
 	OR = {
 		AND = {
@@ -978,6 +1030,7 @@ fallout_event_dispatch_envelope_is_consistent = {
 			NOT = { has_variable = fallout_event_dispatch_branch }
 			NOT = { has_variable = fallout_event_dispatch_target_type }
 			NOT = { has_variable = fallout_event_dispatch_target }
+			fallout_event_dispatch_issue_receipt_is_absent = yes
 		}
 		AND = {
 			has_country_flag = fallout_event_dispatch_ready
@@ -1005,6 +1058,10 @@ fallout_event_dispatch_envelope_is_consistent = {
 					check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
 				}
 				fallout_event_subject_shape_is_valid = yes
+			}
+			OR = {
+				fallout_event_dispatch_issue_receipt_is_absent = yes
+				fallout_event_dispatch_issue_receipt_is_current = yes
 			}
 		}
 	}
@@ -1238,6 +1295,25 @@ fallout_event_transaction_production_is_approved = {
 	exists = yes
 	fallout_event_registry_header_is_current = yes
 	NOT = { has_global_flag = fallout_event_scheduler_error }
+}
+
+# Supported scope: COUNTRY. New visible and AI work requires the full production
+# gate. Exact hidden-cleanup envelopes remain issuable after deactivation so
+# already committed rows can finish their content-owned cleanup.
+fallout_event_dispatch_issuance_is_approved = {
+	exists = yes
+	fallout_event_registry_header_is_current = yes
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+	OR = {
+		AND = {
+			has_variable = fallout_event_dispatch_mode
+			check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
+		}
+		AND = {
+			has_global_flag = fallout_event_scheduler_activation_approved
+			has_global_flag = fallout_event_scheduler_active
+		}
+	}
 }
 
 # Supported scope: COUNTRY. Input: requested parent arc ticket. Ticket zero is
