@@ -285,10 +285,16 @@ Verify:
 Before reveal, verify:
 
 - old wars are ended or intentionally mapped
+- no old-world truce remains after war settlement
 - factions are removed or rebuilt
 - subjects and overlords are valid
 - guarantees and access are cleared
+- no ordered country pair has market access
+- docking-rights generation receipts prove exhaustive inverse application without claiming runtime readback
+- no observable resource-rights grant remains and the blind resource-free subset has a current exhaustive inverse receipt
 - volunteers and expeditionaries are handled
+- lend lease and expeditionaries either have exact empty-surface receipts or keep reveal blocked
+- ordinary trade and full intelligence remain blocked until exact reset routes exist
 - governments in exile are handled
 - no peace conference remains in a broken state
 - no invalid country target remains in arrays or event targets

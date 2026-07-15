@@ -44,7 +44,7 @@ The live Fallout package includes:
 - player and world snapshots
 - deterministic state grading and survival values
 - generation-bound grading, post-mutation Deaths, permanent state-building loss, province supply-network collapse, no-upgrade category-conversion, and grade-modifier receipts
-- partial old-world diplomacy cleanup with applied and verified market-access cancellation
+- partial old-world diplomacy cleanup with exact truce and market-access readback, exhaustive docking-rights inverse coverage, and exhaustive resource-rights inverse coverage
 - deterministic provisional classification for eleven live government archetypes, with Machine Protocol fail closed
 - player-first source and state reservation planning, including landless-human materialization rows
 - generation-bound successor conflict inventory with country, possible-country, state, reservation, and known package-ownership rows
@@ -134,7 +134,7 @@ Actual successor materialization, country and focus package producers, candidate
 
 Static inspection cannot prove that `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. No Hearts of Iron IV run was authorized, so this immediate observation remains a runtime blocker.
 
-The old-world diplomacy proof gate also remains unresolved. Docking rights have exhaustive generation-bound inverse application proof. Market access and resource rights are no longer missing surfaces. Lend lease has an official ordered-pair detector and current-generation proof when the surface is empty. Active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return still block map return until their required postconditions are genuinely satisfied.
+The old-world diplomacy proof gate also remains unresolved. Truces now use the official zero-day inverse after white peace and an exhaustive ordered-pair readback. Docking rights have exhaustive generation-bound inverse application proof. Market access and resource rights are no longer missing surfaces. Resource-rights readback covers observable grants, while the unconditional country-state inverse sweep covers the trigger's resource-free-state blind spot. Lend lease has an official ordered-pair detector and current-generation proof when the surface is empty. Ordinary imports have a documented aggregate positive-flow detector, but no route enumerator or inverse. Intelligence has partial detectors and narrow mutations, but no complete reset for agencies, upgrades, networks, operations, decryption, intel, candidates, and operative-slot locks. Active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return still block map return until their required postconditions are genuinely satisfied. The detailed proof matrix is [FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md](FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md).
 
 ## Hard release blockers
 
@@ -156,6 +156,7 @@ The old-world diplomacy proof gate also remains unresolved. Docking rights have 
 - Manual scenario contract and release gates: `MANUAL_FALLOUT_SCENARIO_PLAN.md`
 - Current hard blockers and accepted decisions: `BLOCKERS_AND_DECISIONS.md`
 - Transition ordering and postconditions: `FALLOUT_TRANSITION_ARCHITECTURE.md`
+- Trade, force-transfer, and intelligence reset proof: `FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md`
 - Air Winter snapshot provenance and transactional lock: `FALLOUT_AIR_WINTER_SNAPSHOT_PROVENANCE_PROOF.md`
 - Province supply-network collapse and migration proof: `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md`
 - Source-of-truth routing: `SOURCE_OF_TRUTH_RECONCILIATION.md`

@@ -423,6 +423,7 @@ The rewrite must explicitly handle:
 
 - wars
 - civil wars
+- truces
 - factions
 - guarantees
 - military access
@@ -446,7 +447,7 @@ Preferred policy:
 
 The exact effect order must follow official local documentation and vanilla precedents.
 
-Live status: `fallout_reset_old_world_diplomacy` handles a subset of the required relationships. Docking rights have an official inverse, vanilla cancellation precedents, an exhaustive ordered-country-pair sweep, and current-generation application proof. Market access has an applied receipt and global postcondition through an approved large-mod token precedent plus the official trigger. Resource rights have an official inverse, a global country-state sweep, and current-generation application and validation receipts. Lend lease has an official ordered-pair detector and a current-generation empty-surface receipt, but active leases remain blocked because no documented cancellation effect exists. Active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return remain unresolved. The transition must not advance through government sorting or reveal the map until every required diplomacy surface has a supported reset and validation route.
+Live status: `fallout_reset_old_world_diplomacy` handles a subset of the required relationships. Truces use the official zero-day inverse after white peace and an exhaustive ordered-pair `has_truce_with` postcondition. Docking rights have an official inverse, vanilla cancellation precedents, an exhaustive ordered-country-pair sweep, and current-generation application proof. Market access has an applied receipt and global postcondition through an approved large-mod token precedent plus the official trigger. Resource rights have an official inverse, a global country-state sweep, and current-generation application and validation receipts. The resource-rights trigger cannot observe grants on resource-free states, so exact coverage there comes from issuing the inverse to every country-state pair. Lend lease has an official ordered-pair detector and a current-generation empty-surface receipt, but active leases remain blocked because no documented cancellation effect exists. Ordinary imports have only an aggregate positive-flow detector. It does not identify routes, prove that zero-delivery routes are absent, or cancel them. Intelligence has partial detectors and narrow mutations, but no complete inverse for agencies, upgrades, networks, operations, decryption, intel, candidates, or operative-slot locks. Active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return remain unresolved. The transition must not advance through government sorting or reveal the map until every required diplomacy surface has a supported reset and validation route. The exact evidence boundary is recorded in [FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md](FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md).
 
 ## Country survival and fragmentation
 

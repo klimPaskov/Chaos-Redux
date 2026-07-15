@@ -234,24 +234,26 @@ Both activation flags remain unset. No ordinary Fallout living-world event can p
 
 ## B10: old-world diplomacy reset
 
-Status: docking rights and market access resolved by documented effects and precedents, four required active surfaces remain blocked
+Status: truces, docking rights, market access, and resource rights resolved by documented effects and precedents. Trade and intelligence remain unconditional blockers. Active lend lease and expeditionaries are conditional blockers
 
-The transaction clears wars, civil-war links, factions, subjects, exiles, guarantees, military access, non-aggression pacts, embargoes, volunteers, collaboration, purchase contracts, and resource rights with documented effects and documented postcondition triggers. It waits while a peace conference is active.
+The transaction clears wars, civil-war links, truces, factions, subjects, exiles, guarantees, military access, non-aggression pacts, embargoes, volunteers, collaboration, purchase contracts, and resource rights with documented effects. Truces use the vanilla zero-day cancellation pattern after white peace and an exhaustive ordered-pair readback. It waits while a peace conference is active.
 
 Market access uses the official generic `diplomatic_relation` cancellation contract, the vanilla `market_access_rights` relation identity, the approved Kaiserreich `clear_relations_with_PREV` cancellation precedent, and the official `has_market_access_with` trigger. The coordinator first dismantles factions and subjects, then applies the cancellation across every country pair, records current-generation application and validation receipts, and requires a global absence result. No Hearts of Iron IV run was performed, so this is static engine and precedent proof only.
 
-Docking rights use the same official cancellation contract with the officially enumerated `docking_rights` relation token. Vanilla cancels that exact relation with `active = no` in `events/AAT_Finland.txt` and `events/TAOG_Australia.txt`. The coordinator applies the inverse unconditionally to every ordered pair of live countries and records current-generation application and verification receipts after the loop. No documented trigger can read the relation back, so the proof is exhaustive inverse coverage rather than runtime query evidence.
+Docking rights use the same official cancellation contract with the officially enumerated `docking_rights` relation token. Vanilla cancels that exact relation with `active = no` in `events/AAT_Finland.txt` and `events/TAOG_Australia.txt`. The coordinator applies the inverse unconditionally to every ordered pair of live countries and records current-generation application and static inverse-completion receipts after the loop. No documented trigger can read the relation back, so the proof is exhaustive inverse coverage rather than runtime query evidence.
 
-Resource rights use the official country-scoped `remove_resource_rights` effect and `has_resources_rights` trigger. The coordinator unconditionally sweeps every live country-state pair so even resource-free states receive the inverse, then records current-generation application and validation receipts and requires global absence for every observable grant. Ordinary factory-for-resource imports remain outside this proven route.
+Resource rights use the official country-scoped `remove_resource_rights` effect and `has_resources_rights` trigger. The coordinator unconditionally sweeps every live country-state pair so even resource-free states receive the inverse, then records current-generation application and validation receipts and requires global absence for every observable grant. The documented trigger returns false on resource-free states, so exact coverage of that blind subset comes from the unconditional inverse sweep rather than readback. Ordinary factory-for-resource imports remain outside this proven route.
 
 Map return still fails closed on these unresolved surfaces:
 
 - expeditionary forces have a documented detector, but no exact return effect was found. Template-based deletion and whole-force fractional transfer cannot isolate the received divisions and restore them to each sender
 - active lend lease has an exact official ordered-pair detector, but no documented scripted inverse. The transaction verifies and receipts an empty surface, while any active lease remains blocked
-- ordinary resource imports have a creation effect, but no complete scripted enumerator and inverse pair. Resource rights are handled separately and are no longer part of this blocker
-- intelligence has partial detectors and destructive operative effects, but no complete agency, upgrade, network, decryption, capture, and static-intel reset
+- ordinary resource imports have a documented aggregate positive-flow detector for each installed resource, but no route enumerator and no inverse. A zero aggregate cannot prove that zero-delivery routes are absent. Resource rights are handled separately and are no longer part of this blocker
+- intelligence has partial detectors and narrow release and token-removal effects, but no complete agency, upgrade, network, operation, decryption, static-intel, candidate-pool, and operative-slot reset. Killing or turning operatives creates persistent death or slot-lock state and is not an inverse
 
 No fallback reset is active for any of these surfaces.
+
+The complete readback and inverse audit is recorded in [FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md](FALLOUT_DIPLOMACY_AND_INTELLIGENCE_RESET_MATRIX.md).
 
 ## B11: province supply-network runtime acceptance
 
