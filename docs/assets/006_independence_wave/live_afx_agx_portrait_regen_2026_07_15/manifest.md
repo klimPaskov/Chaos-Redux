@@ -9,7 +9,12 @@ masters and their existing runtime derivatives:
 - AFX Marcel Delcourt, reserve commander;
 - AGX Friesland Coastal Council;
 - AGX Sjoerd Hoekstra, coastal commander;
-- the existing 50×67 army thumbnails for Delcourt and Hoekstra.
+- the current `65x67` army-small dossier contracts for Delcourt and Hoekstra.
+
+This package's old small reductions and small-only comparisons are retained as
+pre-correction evidence. Current `_small` processed PNGs, retained DDS files,
+exact crops, vanilla army-small comparisons, and hashes are owned by
+`../army_small_dossier_correction_2026_07_15/`.
 
 No gameplay, localisation, character, tag, specification, `.gfx`, `.gui`, flag,
 advisor, or other-event file was edited. The runtime filenames and sprite names
@@ -58,14 +63,15 @@ source crop, processed candidate, and two canonical vanilla references.
 - Explicit large crop: `[0, 0, 1081, 1455]`.
 - Processed PNG: `processed_png/generated_nwe/command_portraits/portrait_AFX_walloon_reserve_commander.png` (`156×210`).
 - Runtime DDS: `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` (`156×210`).
-- Army-thumbnail derivation: crop `[0, 0, 156, 209]` from the approved large
-  processed portrait, then Lanczos resize to `50×67`.
-- Army-thumbnail PNG/DDS: `processed_png/generated_nwe/command_portraits_small/portrait_AFX_walloon_reserve_commander_small.png`; `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander_small.dds`.
+- Current army-small dossier: explicit crop `[270, 30, 1030, 964]` from the
+  approved regeneration master, composed with the project dossier overlays by
+  `.tools/process_hoi4_portrait.py advisor`.
+- Current army-small PNG/DDS: `../army_small_dossier_correction_2026_07_15/processed_png/portrait_AFX_walloon_reserve_commander_small.png`; `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander_small.dds`.
 - Sprites: `GFX_portrait_AFX_walloon_reserve_commander` and `GFX_portrait_AFX_walloon_reserve_commander_small` in `interface/006_independence_wave_region_01_portraits.gfx`.
-- Comparison: `comparisons/portrait_AFX_walloon_reserve_commander_source_final_canonical.png`; thumbnail review at `comparisons/portrait_AFX_walloon_reserve_commander_small_nearest_6x.png`.
-- Thumbnail role: army portrait only; it is not an advisor or high-command
-  dossier icon and has no advisor frame.
-- Status: complete and visually approved at `156×210`, native `50×67`, and 6× nearest-neighbour review size.
+- Comparison: `comparisons/portrait_AFX_walloon_reserve_commander_source_final_canonical.png` for the large portrait; current dossier review in `../army_small_dossier_correction_2026_07_15/review_sheets/portrait_AFX_walloon_reserve_commander_small_review.png`.
+- Dossier role: army portrait only; it is not political-advisor, theorist, or
+  high-command roster art.
+- Status: large portrait accepted at `156×210`; current small dossier accepted at `65x67` and 4x nearest-neighbour review size.
 
 ### AGX — Friesland Coastal Council
 
@@ -93,30 +99,39 @@ source crop, processed candidate, and two canonical vanilla references.
 - Explicit large crop: `[0, 0, 1080, 1456]`.
 - Processed PNG: `processed_png/generated_nwe/command_portraits/portrait_AGX_friesland_coastal_commander.png` (`156×210`).
 - Runtime DDS: `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds` (`156×210`).
-- Army-thumbnail derivation: crop `[0, 0, 156, 209]` from the approved large
-  processed portrait, then Lanczos resize to `50×67`.
-- Army-thumbnail PNG/DDS: `processed_png/generated_nwe/command_portraits_small/portrait_AGX_friesland_coastal_commander_small.png`; `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander_small.dds`.
+- Current army-small dossier: explicit crop `[170, 35, 1010, 1067]` from the
+  approved regeneration master, composed with the project dossier overlays by
+  `.tools/process_hoi4_portrait.py advisor`.
+- Current army-small PNG/DDS: `../army_small_dossier_correction_2026_07_15/processed_png/portrait_AGX_friesland_coastal_commander_small.png`; `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander_small.dds`.
 - Sprites: `GFX_portrait_AGX_friesland_coastal_commander` and `GFX_portrait_AGX_friesland_coastal_commander_small` in `interface/006_independence_wave_region_01_portraits.gfx`.
-- Comparison: `comparisons/portrait_AGX_friesland_coastal_commander_source_final_canonical.png`; thumbnail review at `comparisons/portrait_AGX_friesland_coastal_commander_small_nearest_6x.png`.
-- Thumbnail role: army portrait only; it is not an advisor or high-command
-  dossier icon and has no advisor frame.
-- Status: complete and visually approved at `156×210`, native `50×67`, and 6× nearest-neighbour review size.
+- Comparison: `comparisons/portrait_AGX_friesland_coastal_commander_source_final_canonical.png` for the large portrait; current dossier review in `../army_small_dossier_correction_2026_07_15/review_sheets/portrait_AGX_friesland_coastal_commander_small_review.png`.
+- Dossier role: army portrait only; it is not political-advisor, theorist, or
+  high-command roster art.
+- Status: large portrait accepted at `156×210`; current small dossier accepted at `65x67` and 4x nearest-neighbour review size.
 
 ## DDS conversion and review
 
-All six final DDS files were produced with the required
+The four large DDS files and two historical pre-correction small DDS files were produced with the required
 `.tools/convert_to_dds.py` command. In this environment the converter selected
 its ffmpeg raw-BGRA path and wrote the same canonical legacy DDS header used by
 its `write_bgra_dds` implementation. Every file is a one-level, uncompressed
 32-bit BGRA texture with `DDSCAPS_TEXTURE`, no FourCC, correct channel masks,
-and opaque alpha.
+and their recorded alpha behavior. The two current dossier DDS files instead
+have real alpha and transparent outer corners.
 
 `validation.json` records every header field, exact file length, alpha range,
 and raw-pixel SHA-256 comparison. Each DDS raw-pixel hash is identical to its
 processed PNG raw-pixel hash. The contact sheet at
 `contact_sheets/afx_agx_live_portraits_final_dds_contact_sheet.png` shows the
-actual decoded runtime DDS files, including native and 6× views of both army
-thumbnails.
+the four large decoded runtime DDS files plus historical views of the superseded
+small reductions. Current small review is in
+`../army_small_dossier_correction_2026_07_15/contact_sheets/`.
+
+`hashes.sha256` retains hashes for this package's historical source and review
+artifacts, but its six `gfx/leaders/006_independence_wave/` rows are reconciled
+to the current installed runtime textures. The current large portrait owner is
+`../portrait_regeneration_2026_07_15/`; the current small portrait owner is
+`../army_small_dossier_correction_2026_07_15/`.
 
 ## Wiring preservation
 

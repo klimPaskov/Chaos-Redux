@@ -11,11 +11,13 @@ northern/western Event 006 tags:
 - AGX Friesland;
 - AJX Saar.
 
-It delivers four official-ImageGen-derived historical flag triplets, five
-fictional institutional council portraits, five independently generated
-fictional officer portraits, the five matching officer thumbnails required by
-vanilla's army portrait block, processed PNGs, decoded DDS review files, contact
-sheets, stable identifiers, prompts, and SHA-256 hashes. The retained AEX
+It delivers four official-ImageGen-derived historical flag triplets, regional
+civic portrait masters, five independently generated fictional officer
+portraits, and their army-small portrait contracts, processed PNGs, decoded DDS
+review files, contact sheets, stable identifiers, prompts, and SHA-256 hashes.
+The current officer `_small` files are owned by
+`army_small_dossier_correction_2026_07_15/`; this earlier package remains
+authoritative for its five source masters and large portraits. The retained AEX
 portrait family does not create an AEX flag or standalone-country identity.
 
 The flags reproduce cited historical/community designs; their historical
@@ -56,11 +58,11 @@ leaders.
 | AEX | `AEX_flemish_civil_industrial_board` | Flemish Civil-Industrial Security Board | `GFX_portrait_AEX_flemish_civil_industrial_board` | `gfx/leaders/006_independence_wave/portrait_AEX_flemish_civil_industrial_board.dds` | rail, factory, municipal, and civil-security delegates |
 | AFX | `AFX_walloon_provisional_assembly` | Walloon Provisional Assembly | `GFX_portrait_AFX_walloon_provisional_assembly` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds` | mineworker, steel engineer, municipal magistrate, and reserve inspector |
 | AGX | `AGX_friesland_coastal_council` | Friesland Coastal Council | `GFX_portrait_AGX_friesland_coastal_council` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds` | municipal, harbor, dike-engineering, and coastal-constabulary delegates |
-| AJX | `AJX_saar_municipal_neutral_commission` | Saar Municipal Neutral Commission | `GFX_portrait_AJX_saar_municipal_neutral_commission` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | municipal, mine, rail, and industrial-security delegates |
+| AJX | `AJX_friedrich_hoffmann` | Friedrich Hoffmann | `GFX_portrait_AJX_friedrich_hoffmann` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | fictional municipal jurist and neutral-commission chair; identity superseded by `portrait_regeneration_2026_07_15/manifest.md` |
 
-The institutional images contain mixed-gender delegations. Do not assign an
-individual biography, individual gender metadata, or a real person's name to
-these group portraits.
+The ACX, AEX, AFX, and AGX rows retain their institutional handoff boundary.
+The regenerated AJX runtime portrait is a fictional human chair, not a group
+portrait, and is intentionally assigned to Friedrich Hoffmann.
 
 ## Officer portraits
 
@@ -75,12 +77,13 @@ default male setting and must not set `female = yes`.
 | AEX | `AEX_flemish_industrial_security_commander` | Hendrik Vermeulen | `GFX_portrait_AEX_flemish_industrial_security_commander`, `GFX_portrait_AEX_flemish_industrial_security_commander_small` | `gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander.dds`, `gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander_small.dds` |
 | AFX | `AFX_walloon_reserve_commander` | Marcel Delcourt | `GFX_portrait_AFX_walloon_reserve_commander`, `GFX_portrait_AFX_walloon_reserve_commander_small` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds`, `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander_small.dds` |
 | AGX | `AGX_friesland_coastal_commander` | Sjoerd Hoekstra | `GFX_portrait_AGX_friesland_coastal_commander`, `GFX_portrait_AGX_friesland_coastal_commander_small` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds`, `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander_small.dds` |
-| AJX | `AJX_saar_industrial_security_commissioner` | Karl Becker | `GFX_portrait_AJX_saar_industrial_security_commissioner`, `GFX_portrait_AJX_saar_industrial_security_commissioner_small` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds`, `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds` |
+| AJX | `AJX_karl_becker` | Karl Becker | `GFX_portrait_AJX_karl_becker`, `GFX_portrait_AJX_karl_becker_small` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds`, `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds` |
 
-Large portraits are 156×210 and army thumbnails are 50×67. All are one-mip,
-uncompressed BGRA DDS files. The small files are deterministic reductions of
-their own tag's independently generated officer master, not substitute art or a
-reused portrait from another tag.
+Large portraits are 156×210. The five current army-small textures are
+independently composed 65×67 dossier cards with transparent corners, built from
+their own tag's approved officer master. Their final hashes, exact crops,
+retained DDS files, decoded evidence, and vanilla comparisons are in
+`army_small_dossier_correction_2026_07_15/manifest.md`.
 
 ## Source, processed, and decoded layout
 
@@ -97,13 +100,16 @@ Deterministic processed PNGs:
 - `processed_png/generated_nwe/flags/small/`;
 - `processed_png/generated_nwe/institutional_portraits/`;
 - `processed_png/generated_nwe/command_portraits/`;
-- `processed_png/generated_nwe/command_portraits_small/`.
+- `processed_png/generated_nwe/command_portraits_small/` contains superseded
+  pre-correction reductions and is not a current runtime source.
 
 Runtime DDS decode evidence:
 
 - `dds_decoded_png/generated_nwe/institutional_portraits/`;
 - `dds_decoded_png/generated_nwe/command_portraits/`;
-- `dds_decoded_png/generated_nwe/command_portraits_small/`.
+- `dds_decoded_png/generated_nwe/command_portraits_small/` contains historical
+  pre-correction decode evidence only. Current decodes are in
+  `army_small_dossier_correction_2026_07_15/decoded_dds_png/`.
 
 ## Review artifacts
 
@@ -116,7 +122,9 @@ Runtime DDS decode evidence:
 - `contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png` reopens
   and shows all ten actual 156×210 runtime DDS files;
 - `contact_sheets/006_nwe_generated_officer_small_dds_decoded_contact_sheet.png`
-  reopens and shows the actual 50×67 officer DDS files.
+  is retained as pre-correction evidence and does not represent current runtime
+  files. Current native and enlarged comparisons are in
+  `army_small_dossier_correction_2026_07_15/contact_sheets/`.
 
 ## Prompts, build recipe, and hashes
 
@@ -126,13 +134,16 @@ Runtime DDS decode evidence:
   normalization and resizing, preserves the externally approved AFX/AGX
   portrait PNGs, finishes only the remaining legacy portrait set, performs
   TGA/DDS conversion and header validation, checks runtime decodes, assembles
-  contact sheets, and refreshes the hash inventory.
+  contact sheets, and refreshes the historical package hash inventory. It must
+  not be used to overwrite the current `_small` dossier textures.
 - `generated_nwe_hashes.sha256` inventories every cited flag input, canonical
   vanilla ladder input, generated source, processed output, decoded review PNG,
   contact sheet, and runtime TGA/DDS in this package.
 
 The hash ledger uses repository-relative forward-slash paths and can be checked
-from the repository root with any SHA-256 verification tool.
+from the repository root with any SHA-256 verification tool. Its `_small`
+entries are historical; the current `_small` ledger is
+`army_small_dossier_correction_2026_07_15/sha256_inventory.sha256`.
 
 ## Integration boundary and blockers
 

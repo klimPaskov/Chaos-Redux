@@ -12,9 +12,10 @@
   Matthes portraits are user-approved real-person assets and are not generated,
   processed, or overwritten by this package.
 - Final leader and commander size: `156x210` legacy uncompressed BGRA DDS.
-- Final commander thumbnail size: `50x67` legacy uncompressed BGRA DDS derived
-  from the approved full commander portrait; there is no fabricated small
-  source portrait.
+- Current commander small size: `65x67` legacy uncompressed BGRA DDS with
+  alpha. Each is an independently composed dossier card cropped from its
+  approved fictional source master. The current small-texture source of truth
+  is `../army_small_dossier_correction_2026_07_15/manifest.md`.
 
 ## Asset inventory
 
@@ -28,8 +29,8 @@
 | `portrait_AFX_walloon_reserve_commander` | Marcel Delcourt | replaced | replaced | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
 | `portrait_AGX_friesland_coastal_council` | fictional Frisian council magistrate | replaced | — | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
 | `portrait_AGX_friesland_coastal_commander` | Sjoerd Hoekstra | replaced | replaced | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
-| `portrait_AJX_saar_municipal_neutral_commission` | fictional Saar commission chair | replaced | — | readiness-pool asset; not currently sprite-registered |
-| `portrait_AJX_saar_industrial_security_commissioner` | Karl Becker | replaced | replaced | readiness-pool asset; not currently sprite-registered |
+| `portrait_AJX_saar_municipal_neutral_commission` | Friedrich Hoffmann | replaced | — | wired as `AJX_friedrich_hoffmann` through `interface/006_independence_wave_region_01_portraits.gfx` |
+| `portrait_AJX_saar_industrial_security_commissioner` | Karl Becker | replaced | replaced | wired as `AJX_karl_becker` through `interface/006_independence_wave_region_01_portraits.gfx` |
 | `portrait_RHI_independence_wave_provisional_directorate` | fictional Rhenish director | replaced | — | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
 | `portrait_RHI_independence_wave_river_commandant` | fictional Rhenish commandant | replaced | replaced | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
 | `portrait_BAY_independence_wave_state_council` | fictional Bavarian councillor | replaced | — | wired through `interface/006_independence_wave_region_01_portraits.gfx` |
@@ -52,9 +53,12 @@ Their accepted SHA-256 values are embedded as a write guard in
 
 - ImageGen masters: `source_png/`
 - deterministic `156x210` candidates: `processed_png/`
-- deterministic `50x67` commander derivatives: `processed_small_png/`
-- actual runtime DDS decodes: `dds_decoded_png/` and
-  `dds_decoded_small_png/`
+- `processed_small_png/` contains superseded pre-correction reductions and is
+  retained only as historical evidence
+- actual large runtime DDS decodes: `dds_decoded_png/`
+- `dds_decoded_small_png/` contains historical pre-correction decodes; current
+  small decodes are in
+  `../army_small_dossier_correction_2026_07_15/decoded_dds_png/`
 - vanilla comparison sheets: `review_sheets/`
 - processing metadata: `metadata/`
 - generation directions: `prompts.md`
@@ -63,12 +67,16 @@ Their accepted SHA-256 values are embedded as a write guard in
 - exact file hashes: `portrait_package_hashes.sha256`
 
 The builder invokes `.tools/process_hoi4_portrait.py` for the restrained HOI4
-finish and `.tools/convert_to_dds.py` for runtime export. It decodes every
-installed DDS and requires exact processed-PNG pixel equality before success.
+finish and `.tools/convert_to_dds.py` for runtime export. Its old small-output
+path is superseded and must not overwrite the current `_small` dossier
+textures. Current small reproduction and validation use
+`../army_small_dossier_correction_2026_07_15/_tooling/build_validation_evidence.py`
+plus the per-card processor arguments in that package's `metadata/`.
 
 ## Wiring boundary
 
 Existing sprite names and texture paths were retained, so the six currently
 playable package pairs did not need `.gfx` or character-script renaming. The
-ACX, AEX, and AJX pairs remain art-ready pool entries only; this manifest does
-not claim that their country packages or overlays are ready to release.
+ACX and AEX remain art-ready pool entries only. AJX is wired to its static
+fictional human leader and commander; that visual wiring is not a runtime
+content attestation or scenario-preflight readiness claim.

@@ -17,6 +17,11 @@ cosmetic overlay; the retired AEX runtime triplet and generated previews must
 not be recreated. Retained AEX portrait staging below does not change that flag
 boundary.
 
+The five officer `_small` texture paths below now resolve to independent
+`65x67` dossier cards. Their current source of truth is
+`army_small_dossier_correction_2026_07_15/gfx_handoff.md`; the names and paths
+in this copy-ready block remain valid.
+
 ## Copy-ready sprite registrations
 
 ```txt
@@ -74,15 +79,15 @@ spriteTypes = {
 	}
 
 	spriteType = {
-		name = "GFX_portrait_AJX_saar_municipal_neutral_commission"
+		name = "GFX_portrait_AJX_friedrich_hoffmann"
 		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds"
 	}
 	spriteType = {
-		name = "GFX_portrait_AJX_saar_industrial_security_commissioner"
+		name = "GFX_portrait_AJX_karl_becker"
 		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds"
 	}
 	spriteType = {
-		name = "GFX_portrait_AJX_saar_industrial_security_commissioner_small"
+		name = "GFX_portrait_AJX_karl_becker_small"
 		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds"
 	}
 }
@@ -132,11 +137,11 @@ AGX_friesland_coastal_council = {
 	}
 }
 
-AJX_saar_municipal_neutral_commission = {
-	name = AJX_saar_municipal_neutral_commission
+AJX_friedrich_hoffmann = {
+	name = AJX_friedrich_hoffmann
 	portraits = {
 		civilian = {
-			large = GFX_portrait_AJX_saar_municipal_neutral_commission
+			large = GFX_portrait_AJX_friedrich_hoffmann
 		}
 	}
 }
@@ -150,7 +155,7 @@ Required English localisation values for those character keys:
 | `AEX_flemish_civil_industrial_board` | Flemish Civil-Industrial Security Board |
 | `AFX_walloon_provisional_assembly` | Walloon Provisional Assembly |
 | `AGX_friesland_coastal_council` | Friesland Coastal Council |
-| `AJX_saar_municipal_neutral_commission` | Saar Municipal Neutral Commission |
+| `AJX_friedrich_hoffmann` | Friedrich Hoffmann |
 
 ## Officer character portrait fragments
 
@@ -200,12 +205,12 @@ AGX_friesland_coastal_commander = {
 	}
 }
 
-AJX_saar_industrial_security_commissioner = {
-	name = AJX_saar_industrial_security_commissioner
+AJX_karl_becker = {
+	name = AJX_karl_becker
 	portraits = {
 		army = {
-			large = GFX_portrait_AJX_saar_industrial_security_commissioner
-			small = GFX_portrait_AJX_saar_industrial_security_commissioner_small
+			large = GFX_portrait_AJX_karl_becker
+			small = GFX_portrait_AJX_karl_becker_small
 		}
 	}
 }
@@ -219,7 +224,7 @@ Required English localisation values for the officer keys:
 | `AEX_flemish_industrial_security_commander` | Hendrik Vermeulen |
 | `AFX_walloon_reserve_commander` | Marcel Delcourt |
 | `AGX_friesland_coastal_commander` | Sjoerd Hoekstra |
-| `AJX_saar_industrial_security_commissioner` | Karl Becker |
+| `AJX_karl_becker` | Karl Becker |
 
 ## Route-use locks
 
@@ -233,8 +238,8 @@ Required English localisation values for the officer keys:
 | `AFX_walloon_reserve_commander` | accepted AFX emergency military command and command roster | universal civil opening or a historical-person claim |
 | `AGX_friesland_coastal_council` | accepted AGX civil, cultural, labor, and patron openings | commander role or pan-Frisian authority |
 | `AGX_friesland_coastal_commander` | accepted AGX command roster and coastal-security role | universal civil opening or pan-Frisian authority |
-| `AJX_saar_municipal_neutral_commission` | AJX municipal/neutral commission opening | assignment to a named historical commission member |
-| `AJX_saar_industrial_security_commissioner` | AJX industrial-security command roster | assignment to a named historical officer |
+| `AJX_friedrich_hoffmann` | AJX constitutional, labor, patron, and municipal-neutral civil openings | military-government role or a historical-person claim |
+| `AJX_karl_becker` | AJX industrial-security command roster | country-leader role or a historical-officer claim |
 
 ## Handoff-only regional name-pool recommendations
 
@@ -283,9 +288,12 @@ AJX = {
 
 ## Validation and review references
 
-The actual post-conversion runtime portraits are shown in
-`contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png` and
-`contact_sheets/006_nwe_generated_officer_small_dds_decoded_contact_sheet.png`.
+The actual post-conversion large runtime portraits are shown in
+`contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png`. The old
+`contact_sheets/006_nwe_generated_officer_small_dds_decoded_contact_sheet.png`
+is pre-correction evidence only. Current native and enlarged `_small`
+comparisons, retained DDS files, decoded pixels, exact hashes, and header checks
+are in `army_small_dossier_correction_2026_07_15/`.
 The actual TGA files at all three engine sizes are shown in
 `contact_sheets/006_nwe_generated_flags_contact_sheet.png`; cited-design versus
 ImageGen versus flat-master evidence is shown in
