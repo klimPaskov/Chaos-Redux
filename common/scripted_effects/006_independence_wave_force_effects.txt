@@ -265,6 +265,18 @@ independence_wave_calculate_force_budget = {
 		limit = { has_country_flag = independence_wave_armed_birth_force_authorized }
 		add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_evolution_force.armed_birth_budget_bonus }
 	}
+	if = {
+		limit = {
+			has_country_flag = independence_wave_sponsored_release
+			has_variable = independence_wave_sponsorship_opening_strength
+			check_variable = {
+				var = independence_wave_sponsorship_opening_strength
+				value = constant:independence_wave_value.minimum
+				compare = greater_than
+			}
+		}
+		add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_sponsorship_opening_strength }
+	}
 
 	clamp_temp_variable = { var = independence_wave_force_budget_score min = constant:independence_wave_force_budget.minimum }
 	set_variable = { independence_wave_opening_force_budget = independence_wave_force_budget_score }

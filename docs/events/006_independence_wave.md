@@ -29,6 +29,10 @@ The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; 
 
 SCN-008 uses the same anchor-first transaction but attempts every viable ranked candidate at every intensity. Intensity selects anchor/compact/extended territory and fragile/viable/armed/high-chaos forces; scenario type independently selects league, host-war, belligerence, patron, and partition rules. Great Partition may advance the territory tier but never the candidate count. Universal Belligerence keeps a bounded target array only for the duration of its launch, preventing duplicate targets inside one incident while clearing every target mark after successful or failed war declarations.
 
+DM-57 sponsorship uses a bounded state queue and an aligned frozen-plan sub-ledger. A complete sponsorship record stores the sponsor country, sponsor generation, opening-strength grant, and route influence when the decision finishes. At plan start, reconciliation removes only structurally stale records; changed ownership, temporary ineligibility, rejection, and non-selection leave the sponsorship queued. A valid sponsored anchor receives one additional base allocation-weight band. Once selected, its exact state, sponsor, generation, strength, and route values are copied to pending country metadata and validated with the locked plan before ownership mutation.
+
+After origin reset and before package setup, the selected country receives the frozen opening-strength grant in its dynamic force budget and retains radical-sovereignty route influence for focus AI. Existing package and Evolution 5 route-availability gates remain authoritative, so sponsorship cannot reveal or force an excluded route. The source queue record is consumed and the successful-sponsored-release counter advances only after the shared plan reports `committed`, in both standalone and joint Event 5/Event 6 execution. Pre-mutation abort, compensating rollback, and terminal pre-commit failure preserve the queue record. The dangerous league milestone reads the successful-release counter rather than the number of pending sponsorships.
+
 ## Origin separation
 
 `liberation_origin` is the active-origin enum. Event 006 countries use `independence_wave_active_origin` and the Independence Wave enum value. Event 005-created republics and high-chaos successors use `soviet_collapse_active_origin` and the Soviet Collapse enum value. Historical creation flags remain available after annexation, while the active contract is cleared by the owning event's end path.
@@ -97,6 +101,8 @@ Runtime sprites are registered in `interface/006_independence_wave.gfx`. The ide
 Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
 Final source, processed PNG, DDS, provenance, contact-sheet, and animation records live under `docs/assets/006_independence_wave/`. Animated league, route, and high-chaos pieces require genuine frame sequences plus static fallbacks and are wired through the same interface file and the relevant scripted GUI surface.
+
+DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
 ## Implementation surfaces
 

@@ -293,6 +293,33 @@ is_valid_independence_wave_breakaway_sponsorship_state = {
 	NOT = { has_state_flag = independence_wave_dm57_sponsorship_active }
 }
 
+# State scope. This validates only the frozen sponsorship contract. Current
+# candidate eligibility is deliberately excluded so an unselected or temporarily
+# invalid candidate remains queued for a later wave.
+has_valid_independence_wave_breakaway_sponsorship_record = {
+	has_state_flag = independence_wave_dm57_sponsorship_active
+	is_in_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
+	has_variable = independence_wave_sponsoring_country
+	has_variable = independence_wave_sponsorship_generation
+	has_variable = independence_wave_sponsored_opening_strength
+	has_variable = independence_wave_sponsored_route
+	check_variable = {
+		var = independence_wave_sponsored_opening_strength
+		value = constant:independence_wave_value.minimum
+		compare = greater_than
+	}
+	check_variable = { independence_wave_sponsored_route = constant:independence_wave_government_route.radical_sovereignty }
+	var:independence_wave_sponsoring_country = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		check_variable = {
+			var = independence_wave_generation_id
+			value = PREV.independence_wave_sponsorship_generation
+			compare = equals
+		}
+	}
+}
+
 can_independence_wave_use_high_chaos_actions = {
 	is_independence_wave_regional_power = yes
 	has_country_flag = independence_wave_route_radical_sovereignty

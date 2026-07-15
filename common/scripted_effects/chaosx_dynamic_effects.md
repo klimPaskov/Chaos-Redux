@@ -765,6 +765,22 @@ Side effects: reserves one surviving state for each host, marks absent target ta
 
 Event 006's subsystem effects `independence_wave_expand_selected_packages_for_current_phase` and `independence_wave_expand_selected_optional_territory` live in `006_independence_wave_package_planner_effects.txt`. They require an open plan plus aligned Event 006 selected-package and country-row arrays. The dispatcher reuses each stable package publisher after rehydrating its frozen country, anchor, host, owner, and package ID. The public expansion effect runs every compact pass before any extended pass, records optional-state trims, restores the anchor phase when finished, and sets `independence_wave_plan_optional_expansion_failed` only for structural row corruption. It never selects or drops a country.
 
+Event 006's DM-57 sponsorship transaction helpers live in `006_independence_wave_decision_effects.txt`:
+
+- `independence_wave_reconcile_breakaway_sponsorship_queue` runs in the coordinating scope at the start of an Event 006 plan. Its only input is the bounded state-scope array `global.independence_wave_sponsored_breakaway_states`. It removes records only when their state flag or frozen sponsor/generation/strength/route metadata is structurally incomplete, the sponsor no longer has an active Event 006 origin, or the sponsor generation no longer matches. Current candidate ownership, package readiness, and selection are not inputs, so temporarily invalid and unselected candidates remain queued. The helper has no permissive default and never scans countries or states outside the queue.
+- `independence_wave_clear_pending_breakaway_sponsorship_metadata` is country scope. It clears only the plan-bound pending flag and sponsorship variables on an absent selected tag. It does not touch the source state's queue record or a committed country's durable sponsorship provenance.
+- `independence_wave_apply_pending_breakaway_sponsorship` is country scope and runs after generation reset but before package setup. It requires an exact current-plan ID plus matching pending state, sponsor, sponsor generation, opening strength, and route values. It publishes `independence_wave_sponsored_release`, the durable sponsor/state metadata, and `independence_wave_sponsorship_commit_pending`; it does not remove the source state from the queue.
+- `independence_wave_consume_committed_breakaway_sponsorships` runs in the coordinating scope only after `global.liberation_plan_phase` equals `committed`. It consumes the aligned Event 006 sponsorship sub-ledger, requires each live country to have an origin-committed and commit-pending record matching the frozen state and sponsor row, clears the exact source-state queue record, and increments `global.independence_wave_successful_sponsored_releases` once. Clearing the country commit-pending marker and source record makes repeat calls idempotent. Abort, rollback, rejection, and terminal pre-commit paths never call this helper.
+
+Example:
+
+```txt
+independence_wave_begin_plan_contribution = yes
+# Candidate selection freezes matching sponsorship rows with the release plan.
+independence_wave_execute_standalone_frozen_plan = yes
+# The executor calls the consumer only after the shared commit is confirmed.
+```
+
 `independence_wave_scenario_clear_belligerence_target_marks` lives in `006_independence_wave_scenario_effects.txt`. It has no inputs beyond `global.independence_wave_scenario_belligerence_targets`, clears the temporary per-country selection flag from each bounded scope row, and empties the array. Universal Belligerence calls it before and after target selection so repeated launches and failed declarations cannot leave persistent exclusions.
 
 The event-owned execution effects `independence_wave_transfer_frozen_states` and `soviet_collapse_joint_transfer_frozen_states` consume only locked aligned state rows. After applying the documented owner and controller effects, each state must satisfy both `is_owned_by` and `is_controlled_by` for its frozen target before the transferred count advances. A failed proof publishes the shared `unsafe_instantiation` reason, blocks all subsequent country initialization in that incident, and prevents the release plan from committing.
