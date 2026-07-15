@@ -130,7 +130,7 @@ Actual successor materialization, country and focus package producers, candidate
 
 Static inspection cannot prove that `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. No Hearts of Iron IV run was authorized, so this immediate observation remains a runtime blocker.
 
-The old-world diplomacy proof gate also remains unresolved. Market access and resource rights are no longer missing surfaces. Lend lease has an official ordered-pair detector and current-generation proof when the surface is empty. Docking validation, active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return still block map return until their required postconditions are genuinely satisfied.
+The old-world diplomacy proof gate also remains unresolved. Docking rights have exhaustive generation-bound inverse application proof. Market access and resource rights are no longer missing surfaces. Lend lease has an official ordered-pair detector and current-generation proof when the surface is empty. Active lend-lease cancellation, ordinary imports, intelligence, and expeditionary return still block map return until their required postconditions are genuinely satisfied.
 
 ## Hard release blockers
 
