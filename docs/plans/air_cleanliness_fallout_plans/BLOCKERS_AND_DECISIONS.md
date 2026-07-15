@@ -226,7 +226,7 @@ Both activation flags remain unset. No ordinary Fallout living-world event can p
 
 ## B10: old-world diplomacy reset
 
-Status: market access resolved by approved precedent, five required surfaces remain blocked
+Status: market access resolved by approved precedent, five required active surfaces remain blocked
 
 The transaction clears wars, civil-war links, factions, subjects, exiles, guarantees, military access, non-aggression pacts, embargoes, volunteers, collaboration, and purchase contracts with documented effects and documented postcondition triggers. It waits while a peace conference is active.
 
@@ -236,7 +236,7 @@ Map return still fails closed on these unresolved surfaces:
 
 - docking rights can be cancelled through an officially enumerated relation token, but no exact validation trigger was found
 - expeditionary forces have a documented detector, but no exact return effect was found
-- active lend lease has no complete scripted enumerator and inverse pair
+- active lend lease has an exact official ordered-pair detector, but no documented scripted inverse. The transaction verifies and receipts an empty surface, while any active lease remains blocked
 - ordinary resource trade has a creation effect, but no complete scripted enumerator and inverse pair
 - intelligence has partial detectors and destructive operative effects, but no complete agency, upgrade, network, decryption, capture, and static-intel reset
 
