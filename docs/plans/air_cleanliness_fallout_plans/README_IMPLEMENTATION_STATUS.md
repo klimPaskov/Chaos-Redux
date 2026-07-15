@@ -140,7 +140,7 @@ The old-world diplomacy proof gate also remains unresolved. Market access is no 
 4. Implement general successor allocation and the country and focus package producers, including current transition generation ledgers. Re-audit every live event-package producer before the first state transfer or tag materialization.
 5. Implement player-successor materialization, candidate selection and choice UI, and collision-safe multiplayer handling where the source spec requires them. Prove the immediate `change_tag_from` handoff observation in an authorized runtime pass.
 6. Complete and prove the old-world diplomacy reset surfaces.
-7. Close the tracked blackout input, scripted-GUI binding, all-resolution drawing-order, and mapmode frame gates.
+7. Close the tracked blackout input, scripted-GUI binding, and all-resolution drawing-order gates. The mapmode frame gate is resolved by `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
 8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
 9. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
 10. Implement and review the survival ledger, five-part orientation content, bounded candidate selection, actual dispatch consumers, hidden AI resolution, content-owned cleanup, fatigue behavior, and runtime persistence proof before enabling the living-world scheduler.

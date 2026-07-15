@@ -138,7 +138,7 @@ Implementation interpretation:
 - Research notes and implementation docs distinguish real fallout effects from invented mutation content.
 - Real-world public health or genetics claims are not used to justify fictional outcomes.
 
-## Live-code conflicts that require correction
+## Live-code conflicts and dispositions
 
 | Surface | Live state | Accepted state | Required action |
 | --- | --- | --- | --- |
@@ -147,9 +147,9 @@ Implementation interpretation:
 | Winter | global flag plus random states and generic fallout modifiers | persistent state phases and phase-specific effects | replace winter pulse with state model |
 | Treaty | helper code exists but monthly update removes old state | active severe-contamination diplomacy and mitigation layer | restore with performance-safe lifecycle |
 | Air docs | describe old recovery, old event id, normal super-event | must describe live and accepted implementation | rewrite after each tranche |
-| Scenario registry | the inspected snapshot assigns ids through 8, with Africa Is One at 8 | Fallout must use the next id in the live registry | scan all live assignments, set Fallout to current maximum plus one, and preserve every existing id |
-| Mapmode strip | `.gfx` says 19 frames and comments claim two appended slots | docs claim 20 frames and slots 19 and 20 | inspect texture and correct frame metadata before adding winter |
-| Province sweep | no verified repository precedent | every valid province receives thermonuclear strike | prove official engine route before implementation |
+| Scenario registry | the writable checkout reaches SCN-013 while raw id 12 remains separately reserved | Fallout must use the next id after the highest live assignment | SCN-014 is reserved in Fallout-owned constants without renumbering existing ids, and public activation waits for the sweep gate |
+| Mapmode strip | the selected and deselected strips are 380 by 18 with 19 exact 20-pixel frames | Deaths owns slot 18, contaminated states owns slot 19, and Air Winter uses dedicated per-mode sprites | resolved in `AIR_WINTER_MAPMODE_ICON_PROOF.md` without changing an asset |
+| Province sweep | 41 dormant batches expand the installed map into 10,154 native province calls | every valid province receives a thermonuclear strike before the seven-day clock | static route and ledger proven, with native acceptance and callback load retained as runtime blockers |
 
 ## Documentation disposition
 
