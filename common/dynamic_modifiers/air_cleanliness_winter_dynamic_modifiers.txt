@@ -1,11 +1,11 @@
 # ============================================================================
 # CHAOS REDUX - AIR CLEANLINESS WINTER DYNAMIC MODIFIERS
 # ============================================================================
-# State-scoped gameplay consequences for the seven-phase Air Winter ladder.
-# Phase 0 has no modifier. The state update effect removes every stale phase
-# modifier before applying exactly one of phases 1-6. Population deaths are
-# deliberately excluded here and are registered through the shared Deaths
-# pipeline by air_winter_apply_state_population_loss.
+# State consequences and the controller-level air burden for the seven-phase
+# Air Winter ladder. Phase 0 has no state modifier. The state update effect
+# removes every stale phase modifier before applying exactly one of phases 1-6.
+# Population deaths are registered through the shared Deaths pipeline by
+# air_winter_apply_state_population_loss.
 # ============================================================================
 
 air_winter_phase_1 = {
@@ -126,6 +126,18 @@ air_winter_phase_6 = {
 	state_repair_speed_dockyard_factor = constant:air_winter_phase_6_modifier.repair
 	state_repair_speed_supply_node_factor = constant:air_winter_phase_6_modifier.repair
 	local_resources_factor = constant:air_winter_phase_6_modifier.resources
+}
+
+# General air modifiers have no documented state or runtime strategic-region
+# scope. This country modifier reads a deterministic equal-state mean of the
+# current Air Winter phases in controlled states with a working air base.
+air_winter_air_operations_country = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	air_mission_efficiency = var:air_winter_air_mission_efficiency
+	air_detection = var:air_winter_air_detection
+	air_accidents_factor = var:air_winter_air_accidents_factor
+	air_weather_penalty = var:air_winter_air_weather_penalty
 }
 
 # Disease pressure is calculated and capped by the state update. Keeping it

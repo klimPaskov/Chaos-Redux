@@ -130,7 +130,7 @@ The opening choices have explicit AI weights. Their state modifiers favor routes
 
 State cleanup clears all five marker flags and all thirty marker payload fields. It also clears the three second-winter pending-route flags and their outcome memories through the existing event-memory cleanup.
 
-Country cleanup clears the five annual receipts, nine regional severe-year variables, and every seasonal candidate field. Global reset clears `global.air_winter_event_cycle_year`. The existing reset flow reaches country cleanup through its bounded owner registry and reaches state cleanup during the next existing Air Winter state pass.
+Country cleanup clears the five annual receipts, nine regional severe-year variables, and every seasonal candidate field. Global reset clears `global.air_winter_event_cycle_year`. The existing reset flow reaches country cleanup through its bounded owner and controller registry and reaches state cleanup during the next existing Air Winter state pass.
 
 ## Static proof results
 

@@ -89,6 +89,8 @@ Local resistance factors:
 - suitable climate and geography where supported
 - route-specific country mechanics
 
+The installed engine exposes recent strategic bombing as a state fact, but it does not expose the state of an active ordinary land battle through a documented state predicate or callback. Direct active-combat pressure has no exact state input. A strategic-bombing winter multiplier requires a balance decision that accounts for the existing strategic-bombing Deaths tick.
+
 The state pressure score determines the target phase. The current phase moves by at most one step per monthly update unless a direct terminal caller sets an emergency jump.
 
 ## Phase transition rules
@@ -135,6 +137,8 @@ Primary effects:
 - mild supply and construction friction
 - small stability or local confidence pressure through country aggregation
 - forecast uncertainty at low monitoring levels
+
+General air fields have documented country scope and no supported runtime state or strategic-region dynamic scope. The country modifier uses the equal-state mean Air Winter phase across controlled states with a working airbase. It also changes the accident rate and weather penalty. A cycle receipt, controller registry, and no-contribution cleanup keep the result deterministic without a new world pass. This is a national operational burden and does not claim local strategic-region confinement.
 
 Map behavior:
 

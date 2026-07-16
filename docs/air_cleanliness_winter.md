@@ -98,11 +98,29 @@ The exact-cover review and integration proof live in:
 
 ### Phase and disease modifiers
 
-Phases 1 through 6 apply one mutually exclusive state modifier. Each phase changes local manpower, supply, controller and enemy movement, controller and enemy attrition, building speed, state repair speed, and resources. Environmental movement and attrition effects apply to both operational sides. A supported air-operation modifier and direct pressure from combat or strategic bombing remain absent.
+Phases 1 through 6 apply one mutually exclusive state modifier. Each phase changes local manpower, supply, controller and enemy movement, controller and enemy attrition, building speed, state repair speed, and resources. Environmental movement and attrition effects apply to both operational sides.
 
 Disease pressure is calculated separately so food, shelter, exposure, adaptation, water, and reclamation remain meaningful within a phase. The disease modifier reads bounded state variables for attrition and local manpower.
 
 The repair fields use the documented `state_repair_speed_<Building>_factor` family for infrastructure, railways, civilian factories, military factories, air bases, dockyards, and supply nodes. Country-only industry repair fields are not used. Vanilla applies `attrition_for_controller` in state dynamic modifiers, but the generated modifier catalogue omits its state category. The unobserved runtime boundary is recorded in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MODIFIER_AND_DEATHS_PROOF.md`.
+
+### Air operations
+
+General air-operation modifiers have documented country scope, but no supported runtime state or strategic-region dynamic scope. The monthly state pass therefore builds a controller-owned national burden from working airfields. Each valid state with undamaged air-base capacity contributes its final Air Winter phase once. The country result is the mean phase divided by phase 6. Phase 0 airfields remain in the mean, while fully damaged or closed airfields do not contribute.
+
+The country modifier changes mission efficiency, detection, accident rate, and the weather penalty. The full-burden values are reached only when the mean phase across every contributing airfield state is 6.
+
+| Mean airfield phase | Mission efficiency | Base detection | Accident rate | Weather penalty |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | -5 percent | -0.0417 | +3.33 percent | +2.5 percent |
+| 3 | -15 percent | -0.125 | +10 percent | +7.5 percent |
+| 6 | -30 percent | -0.25 | +20 percent | +15 percent |
+
+`air_detection` changes the base detection value rather than multiplying the existing value. The table therefore records a flat value reduction for detection and percentage changes for the other three fields.
+
+The aggregate is commutative and uses the existing state pass. Controllers enter the persistent Air Winter country registry without duplication. A cycle-stamped finalizer removes stale burden when a country loses its last working airfield, loses control of every contributing state, reaches mean phase 0, or disables Air Cleanliness. The committed Fallout transition lock removes the country modifier through that bounded registry before blackout scheduling and before the monthly Air Winter pass pauses. Active snapshot retries keep it absent. A failed prelock snapshot does not remove it.
+
+This country result affects all air operations owned by the country. The engine exposes the required general air fields at country scope, so the modifier cannot be confined to the originating strategic regions through a runtime dynamic modifier. Exact state pressure from active ordinary land combat remains blocked by the absence of a documented state predicate or callback. Recent strategic bombing has a documented state trigger, but a second winter multiplier would compound the existing strategic-bombing Deaths tick and requires a separate balance decision.
 
 ### Survival output
 
@@ -203,6 +221,7 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Use | Sprite identifiers | Runtime path | Registry |
 | --- | --- | --- | --- |
 | Phase modifiers | `GFX_air_winter_phase_1` through `GFX_air_winter_phase_6` | `gfx/interface/air_cleanliness_winter/modifiers/` | `interface/air_cleanliness_winter.gfx` |
+| Country air operations | `GFX_air_winter_phase_2` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_phase_2.dds` | `interface/air_cleanliness_winter.gfx` |
 | Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/air_cleanliness_winter.gfx` |
 | Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, plus `GFX_report_event_air_winter_recovery` | `gfx/event_pictures/fallout/air_winter/` | `interface/air_cleanliness_winter.gfx` |
 | Map mode buttons | Selected and deselected sprites for phase, exposure, and survival | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
@@ -217,8 +236,8 @@ Sources, processed PNGs, contact sheets, provenance, and handoffs live under `do
 
 - `air_winter_suspend_state` removes runtime phase pressure while preserving long-term state ledgers.
 - `air_winter_reset_state` removes runtime variables, response state, phase modifiers, event memories, seasonal marker rows, and state flags. It preserves the reviewed numeric presentation assignment.
-- `air_winter_reset_country` clears the calling country's bounded reception-state array, Atmospheric Office capability, annual seasonal receipts, nine regional severe-year memories, and country event memory without a world iterator.
-- `air_winter_reset_global` resets the existing host and every country retained in the bounded owner registry. It clears the current-year snapshot, transient candidate arrays, and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
+- `air_winter_reset_country` removes the country air-operations modifier and clears its cycle receipt, airfield aggregate, bounded reception-state array, Atmospheric Office capability, annual seasonal receipts, nine regional severe-year memories, and country event memory without a world iterator.
+- `air_winter_reset_global` resets the existing host and every country retained in the bounded owner and controller registry. It clears the current-year snapshot, transient candidate arrays, and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
 - Category restoration is explicit and must run before reset when the caller has confirmed category ownership.
 
 ## Engine-sensitive proof status
@@ -236,7 +255,7 @@ The proof set is:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 
-Static documentation and vanilla precedents support the implemented script surfaces. Runtime behavior remains unobserved for normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, timed response decisions, state-population migration side effects, viewer-specific monitoring scope, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
+Static documentation and vanilla precedents support the script surfaces. Runtime behavior remains unobserved for the country air-operations modifier, normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, timed response decisions, state-population migration side effects, viewer-specific monitoring scope, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
 
 ## Current completion boundary
 
@@ -257,7 +276,7 @@ Implemented in the Air Winter tranche:
 Incomplete and not claimed:
 
 - Treaty relief routes, pooled decontamination, and forecast sharing beyond the existing membership flag. The live monthly cleanup currently disables the legacy treaty lifecycle.
-- Air-operation modifiers and local winter pressure or deaths from active combat and strategic bombing.
+- Additional local Air Winter pressure from active ordinary land combat and an additional winter multiplier on recent strategic-bombing pressure or deaths. Chaos already routes strategic-bombing deaths separately. General air operations use the documented country-scoped aggregate, while exact regional confinement remains unavailable through runtime dynamic modifiers.
 - Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
 - The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.

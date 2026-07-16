@@ -197,6 +197,13 @@ air_winter_finalize_monthly_cycle = {
 			divide_variable = { global.air_winter_severe_state_share = global.air_winter_valid_state_count }
 		}
 
+		# The persistent registry is bounded by countries observed in the existing
+		# state pass. Each row finalizes once for this cycle or removes stale burden.
+		for_each_scope_loop = {
+			array = global.air_winter_registered_countries
+			air_winter_finalize_country_air_operations = yes
+		}
+
 		if = {
 			limit = { check_variable = { global.air_winter_active_state_count > constant:air_winter_runtime.zero } }
 			set_global_flag = air_winter_active
@@ -430,6 +437,12 @@ air_winter_refresh_presentation_class_from_ledger = {
 # Supported scope: any. Each call opens a distinct producer generation so a
 # same-date Fallout retry cannot authenticate a stale state receipt.
 air_winter_begin_fallout_snapshot_production = {
+	# Active-transition retries keep the country air burden cleared. Prelock
+	# validation does not remove it before the Fallout request actually commits.
+	if = {
+		limit = { has_global_flag = fallout_transition_active }
+		air_winter_clear_all_country_air_operations_modifiers = yes
+	}
 	if = {
 		limit = { NOT = { has_variable = global.air_winter_fallout_snapshot_producer_generation } }
 		set_variable = { global.air_winter_fallout_snapshot_producer_generation = constant:air_winter_runtime.zero }
@@ -1630,13 +1643,153 @@ air_winter_aggregate_state = {
 	}
 }
 
+# Supported scope: COUNTRY. The first state contribution in a cycle resets the
+# commutative aggregate. The finalizer also calls this helper, which clears a
+# stale row for a country that lost its final controlled air base.
+air_winter_prepare_country_air_operations_cycle = {
+	if = {
+		limit = {
+			has_variable = global.air_winter_cycle_id
+			OR = {
+				NOT = { has_variable = air_winter_air_operations_cycle_id }
+				NOT = {
+					check_variable = {
+						var = air_winter_air_operations_cycle_id
+						value = global.air_winter_cycle_id
+						compare = equals
+					}
+				}
+			}
+		}
+		set_variable = { air_winter_air_operations_cycle_id = global.air_winter_cycle_id }
+		set_variable = { air_winter_controlled_airfield_state_count = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_controlled_airfield_phase_sum = constant:air_winter_runtime.zero }
+	}
+}
+
+# Supported scope: STATE. Only undamaged air-base capacity contributes. Every
+# eligible state contributes its final phase once, so traversal order cannot
+# change the country result.
+air_winter_aggregate_state_air_operations = {
+	set_temp_variable = { air_winter_airfield_phase_contribution = air_winter_phase }
+	set_temp_variable = { air_winter_operational_airfield_level = non_damaged_building_level@air_base }
+	if = {
+		limit = {
+			CONTROLLER = { exists = yes }
+			check_variable = { air_winter_operational_airfield_level > constant:air_winter_runtime.zero }
+		}
+		CONTROLLER = {
+			air_winter_prepare_country_air_operations_cycle = yes
+			add_to_variable = { air_winter_controlled_airfield_state_count = constant:air_winter_runtime.one }
+			add_to_variable = { air_winter_controlled_airfield_phase_sum = air_winter_airfield_phase_contribution }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. This receipt makes a repeated finalize for the same
+# monthly cycle inert. A country with no current contribution loses the modifier.
+air_winter_finalize_country_air_operations = {
+	air_winter_prepare_country_air_operations_cycle = yes
+	if = {
+		limit = {
+			has_variable = global.air_winter_cycle_id
+			OR = {
+				NOT = { has_variable = air_winter_air_operations_last_finalize_cycle_id }
+				NOT = {
+					check_variable = {
+						var = air_winter_air_operations_last_finalize_cycle_id
+						value = global.air_winter_cycle_id
+						compare = equals
+					}
+				}
+			}
+		}
+		set_variable = { air_winter_air_operations_last_finalize_cycle_id = global.air_winter_cycle_id }
+		set_variable = { air_winter_controlled_airfield_phase_average = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_air_operations_burden = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_air_mission_efficiency = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_air_detection = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_air_accidents_factor = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_air_weather_penalty = constant:air_winter_runtime.zero }
+
+		if = {
+			limit = {
+				exists = yes
+				air_winter_system_enabled = yes
+				check_variable = { air_winter_controlled_airfield_state_count > constant:air_winter_runtime.zero }
+			}
+			set_variable = { air_winter_controlled_airfield_phase_average = air_winter_controlled_airfield_phase_sum }
+			divide_variable = { air_winter_controlled_airfield_phase_average = air_winter_controlled_airfield_state_count }
+			set_variable = { air_winter_air_operations_burden = air_winter_controlled_airfield_phase_average }
+			divide_variable = { air_winter_air_operations_burden = constant:air_winter_phase.maximum }
+			clamp_variable = {
+				var = air_winter_air_operations_burden
+				min = constant:air_winter_runtime.zero
+				max = constant:air_winter_runtime.one
+			}
+
+			set_variable = { air_winter_air_mission_efficiency = air_winter_air_operations_burden }
+			multiply_variable = { air_winter_air_mission_efficiency = constant:air_winter_air_operations.full_burden_mission_efficiency }
+			set_variable = { air_winter_air_detection = air_winter_air_operations_burden }
+			multiply_variable = { air_winter_air_detection = constant:air_winter_air_operations.full_burden_detection }
+			set_variable = { air_winter_air_accidents_factor = air_winter_air_operations_burden }
+			multiply_variable = { air_winter_air_accidents_factor = constant:air_winter_air_operations.full_burden_accidents }
+			set_variable = { air_winter_air_weather_penalty = air_winter_air_operations_burden }
+			multiply_variable = { air_winter_air_weather_penalty = constant:air_winter_air_operations.full_burden_weather_penalty }
+		}
+
+		if = {
+			limit = { check_variable = { air_winter_air_operations_burden > constant:air_winter_runtime.zero } }
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = air_winter_air_operations_country } } }
+				add_dynamic_modifier = { modifier = air_winter_air_operations_country }
+			}
+			force_update_dynamic_modifier = yes
+		}
+		else = {
+			if = {
+				limit = { has_dynamic_modifier = { modifier = air_winter_air_operations_country } }
+				remove_dynamic_modifier = { modifier = air_winter_air_operations_country }
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Used by Fallout's Air-owned snapshot opener and by
+# administrative reset without changing the persistent country registry.
+air_winter_clear_country_air_operations_modifier = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = air_winter_air_operations_country } }
+		remove_dynamic_modifier = { modifier = air_winter_air_operations_country }
+	}
+	clear_variable = air_winter_air_operations_cycle_id
+	clear_variable = air_winter_air_operations_last_finalize_cycle_id
+	clear_variable = air_winter_controlled_airfield_state_count
+	clear_variable = air_winter_controlled_airfield_phase_sum
+	clear_variable = air_winter_controlled_airfield_phase_average
+	clear_variable = air_winter_air_operations_burden
+	clear_variable = air_winter_air_mission_efficiency
+	clear_variable = air_winter_air_detection
+	clear_variable = air_winter_air_accidents_factor
+	clear_variable = air_winter_air_weather_penalty
+}
+
+# Supported scope: any. Registry membership was produced by the existing state
+# pass, so this cleanup performs no country or state world iteration.
+air_winter_clear_all_country_air_operations_modifiers = {
+	for_each_scope_loop = {
+		array = global.air_winter_registered_countries
+		air_winter_clear_country_air_operations_modifier = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Public state update and cleanup contract
 # ---------------------------------------------------------------------------
 
 # Supported scope: COUNTRY. The persistent registry is populated only from the
 # existing monthly state pass and bounds full administrative reset work to
-# countries that have actually owned an Air Winter state.
+# countries that have actually owned or controlled an Air Winter state.
 air_winter_register_country_for_reset = {
 	if = {
 		limit = {
@@ -1674,6 +1827,10 @@ air_winter_update_state = {
 		if = {
 			limit = { owner = { exists = yes } }
 			OWNER = { air_winter_register_country_for_reset = yes }
+		}
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { air_winter_register_country_for_reset = yes }
 		}
 		air_winter_response_reconcile_state_project = yes
 
@@ -1722,6 +1879,7 @@ air_winter_update_state = {
 					air_winter_calculate_survival_value = yes
 				}
 				air_winter_aggregate_state = yes
+				air_winter_aggregate_state_air_operations = yes
 				set_variable = { air_winter_last_update_cycle_id = global.air_winter_cycle_id }
 				set_variable = { air_winter_last_update_date = global.date }
 			}
@@ -1898,6 +2056,7 @@ air_winter_reset_state = {
 # Supported scope: COUNTRY. Clears only the calling country's Air Winter
 # reception and event memory. This helper deliberately performs no iterator.
 air_winter_reset_country = {
+	air_winter_clear_country_air_operations_modifier = yes
 	if = {
 		limit = { has_variable = air_winter_response_active_project_state }
 		var:air_winter_response_active_project_state = { air_winter_response_cancel_state_project = yes }
