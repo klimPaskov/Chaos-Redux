@@ -44,8 +44,12 @@ The dedicated event file was scanned on 2026-07-15 before this reservation. Suff
 | ---: | --- | --- | --- | --- | --- | --- | --- |
 | 38 | Air Winter Phase 2 island refugees | Boats Beneath the Shore Lights | eligible engine-island receiver with a live foreign coastal source | Air Winter candidate dispatcher after bounded source selection | 39 after 30 days | `GFX_report_event_air_winter_island_refugee_harbor` | implemented with deferred scheduler commit, balanced migration, AI, memory, cleanup, localisation, and dedicated asset |
 | 39 | Air Winter Phase 2 island refugees | Thirty Days at the Island Shore | bound receiver and destination state | 38 after one of three positive transfers | none | `GFX_report_event_air_winter_island_refugee_harbor` | implemented with six exclusive results, Deaths on failures, matching memory, and cleanup |
+| 47 | Air Winter Phase 5 ruined major-city salvage | Lamps Beneath the Empty Blocks | eligible Phase 5 state with original major-city category, persistent loss receipt, current building damage, and owner control | Air Winter candidate dispatcher | 48 after 30 days | `GFX_report_event_air_winter_dead_city_salvage` | implemented with three competing authorities, exact affordability, AI, policy memory, owner-control validation, and dedicated asset |
+| 48 | Air Winter Phase 5 ruined major-city salvage | What Came Up from the Service Streets | bound original owner and controlled salvage state | 47 after one of three policies | none | `GFX_report_event_air_winter_dead_city_salvage` | implemented with nine exhaustive ordinary results, one narrow mixed-cause altered result, Deaths, concrete equipment, conditional repairable damage, exhausted-site memory, and cleanup |
 
 These identifiers belong to the Air Winter pilot. They are not Fallout living-world content and do not increase the countable 660-block release-floor total.
+
+Suffix `49` remains free. It is not reserved by this tranche.
 
 ## Collision boundary
 
