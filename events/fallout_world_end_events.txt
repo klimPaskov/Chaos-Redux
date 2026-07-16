@@ -763,6 +763,344 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = chaosx.fallout.16
+	title = chaosx.fallout.16.t
+	desc = chaosx.fallout.16.d
+	picture = GFX_report_event_air_winter_phase_2
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = { air_winter_presentation_is_highland = yes }
+	}
+
+	option = {
+		name = chaosx.fallout.16.a
+		trigger = {
+			NOT = { has_manpower < constant:air_winter_event_country.manpower_moderate }
+			NOT = { has_equipment = { support_equipment < constant:air_winter_event_country.support_equipment_engineer_cost } }
+		}
+		ai_chance = {
+			base = constant:air_winter_event_ai.primary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_has_low_shelter = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_tunnel_civic_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_tunnel_civic_ai_is_plausible = yes } }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					NOT = { has_manpower < constant:air_winter_event_country.manpower_moderate }
+					NOT = { has_equipment = { support_equipment < constant:air_winter_event_country.support_equipment_engineer_cost } }
+					event_target:air_winter_event_state = { air_winter_presentation_is_highland = yes }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_school_outcome_memory = yes
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_major }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_event_apply_tunnel_civic_industry = yes
+					set_state_flag = air_winter_tunnel_chain_civic
+					set_state_flag = air_winter_memory_tunnel_civic_schools
+					air_winter_event_refresh_state = yes
+				}
+				add_manpower = constant:air_winter_event_country.manpower_moderate_cost
+				set_temp_variable = { air_winter_response_payment = constant:air_winter_event_country.support_equipment_engineer_cost }
+				air_winter_response_pay_support_equipment = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.17 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.16.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.16.b
+		trigger = {
+			NOT = { has_manpower < constant:air_winter_event_country.manpower_minor }
+			NOT = { has_equipment = { support_equipment < constant:air_winter_event_country.support_equipment_crew_cost } }
+		}
+		ai_chance = {
+			base = constant:air_winter_event_ai.secondary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_government = neutrality
+					has_war = no
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = {
+					NOT = { air_winter_event_tunnel_civic_ai_is_plausible = yes }
+					NOT = { air_winter_event_tunnel_cellars_ai_is_plausible = yes }
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					NOT = { has_manpower < constant:air_winter_event_country.manpower_minor }
+					NOT = { has_equipment = { support_equipment < constant:air_winter_event_country.support_equipment_crew_cost } }
+					event_target:air_winter_event_state = { air_winter_presentation_is_highland = yes }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_school_outcome_memory = yes
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_moderate }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					air_winter_event_apply_tunnel_shift_industry = yes
+					set_state_flag = air_winter_tunnel_chain_shifts
+					set_state_flag = air_winter_memory_tunnel_shift_schools
+					air_winter_event_refresh_state = yes
+				}
+				add_manpower = constant:air_winter_event_country.manpower_minor_cost
+				set_temp_variable = { air_winter_response_payment = constant:air_winter_event_country.support_equipment_crew_cost }
+				air_winter_response_pay_support_equipment = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.17 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.16.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.16.c
+		ai_chance = {
+			base = constant:air_winter_event_ai.risky
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_war = yes
+					has_government = fascism
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = {
+					check_variable = { air_winter_building_damage_pressure > constant:air_winter_event_ai.high_ledger }
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_tunnel_cellars_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_tunnel_cellars_ai_is_plausible = yes } }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { air_winter_presentation_is_highland = yes }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_school_outcome_memory = yes
+					air_winter_event_clear_tunnel_industry = yes
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_major }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_tunnel_chain_cellars
+					set_state_flag = air_winter_memory_tunnel_cellar_schools
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.17 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.16.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.17
+	title = chaosx.fallout.17.t
+	desc = {
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic air_winter_event_tunnel_civic_succeeds = yes } }
+		text = chaosx.fallout.17.civic_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic NOT = { air_winter_event_tunnel_civic_succeeds = yes } } }
+		text = chaosx.fallout.17.civic_failure.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_shifts } }
+		text = chaosx.fallout.17.shifts.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars air_winter_event_tunnel_cellars_succeeds = yes } }
+		text = chaosx.fallout.17.cellars_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars NOT = { air_winter_event_tunnel_cellars_succeeds = yes } } }
+		text = chaosx.fallout.17.cellars_failure.d
+	}
+	picture = GFX_report_event_air_winter_phase_2
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = {
+			air_winter_presentation_is_highland = yes
+			OR = {
+				has_state_flag = air_winter_tunnel_chain_civic
+				has_state_flag = air_winter_tunnel_chain_shifts
+				has_state_flag = air_winter_tunnel_chain_cellars
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.fallout.17.a
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic air_winter_event_tunnel_civic_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic air_winter_event_tunnel_civic_succeeds = yes }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_industry = yes
+					clr_state_flag = air_winter_tunnel_chain_civic
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_moderate }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_memory_tunnel_civic_success
+					set_state_flag = air_winter_memory_tunnel_school_protection
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.17.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.17.b
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic NOT = { air_winter_event_tunnel_civic_succeeds = yes } } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_civic NOT = { air_winter_event_tunnel_civic_succeeds = yes } }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_industry = yes
+					clr_state_flag = air_winter_tunnel_chain_civic
+					subtract_from_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					clr_state_flag = air_winter_memory_tunnel_school_protection
+					set_state_flag = air_winter_memory_tunnel_civic_failure
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.17.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.17.c
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_shifts } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_shifts }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_industry = yes
+					clr_state_flag = air_winter_tunnel_chain_shifts
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_minor }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_memory_tunnel_shifts_settled
+					set_state_flag = air_winter_memory_tunnel_school_protection
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.17.c.tt
+	}
+
+	option = {
+		name = chaosx.fallout.17.d
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars air_winter_event_tunnel_cellars_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars air_winter_event_tunnel_cellars_succeeds = yes }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_industry = yes
+					clr_state_flag = air_winter_tunnel_chain_cellars
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_minor }
+					set_state_flag = air_winter_memory_tunnel_cellars_success
+					set_state_flag = air_winter_memory_tunnel_school_protection
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.17.d.tt
+	}
+
+	option = {
+		name = chaosx.fallout.17.e
+		trigger = { event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars NOT = { air_winter_event_tunnel_cellars_succeeds = yes } } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { has_state_flag = air_winter_tunnel_chain_cellars NOT = { air_winter_event_tunnel_cellars_succeeds = yes } }
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_tunnel_industry = yes
+					clr_state_flag = air_winter_tunnel_chain_cellars
+					subtract_from_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
+					clr_state_flag = air_winter_memory_tunnel_school_protection
+					set_state_flag = air_winter_memory_tunnel_cellars_failure
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.17.e.tt
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Air Winter phase 3 hard-freeze chains
 # ---------------------------------------------------------------------------

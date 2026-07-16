@@ -42,6 +42,8 @@ Every selectable event number comes from the typed `air_winter_event_id` script-
 
 Within a selected Phase 3 state, route selection checks reactor, hydroelectric, oil or refinery, transport, then clinic and heat. This is state-local routing. Country candidate selection still compares family priority, origin cycle, frozen score, and state id, so a higher-scoring transport state can defeat a reactor state elsewhere in the country. The shared Phase 3 seen flag permits one ordinary Phase 3 identity chain per country.
 
+Within a selected Phase 2 state, an exact highland and capital classifier runs before the generic city route. This prevents a mountain capital with an urban state category from being consumed by `chaosx.fallout.11`. The typed id `phase_2_mountain_capital` freezes that identity for ordinary and first-frost candidates. A later first-frost dispatch keeps the stored route even if the country moves its capital, while the original state, owner, and highland class must remain valid.
+
 Each eligible state calculates a candidate score from phase and pressure. Seasonal rows freeze that score at observation time. The owning country compares candidates in this order:
 
 1. higher typed family priority
@@ -86,11 +88,13 @@ The dedicated second-winter opening has three weighted choices. Its military-hea
 
 The three Phase 3 infrastructure openings repeat manpower, Command Power, support-equipment, and fuel affordability at click time. Their AI weights combine government and war preferences with derived pre-choice state-ledger thresholds for each delayed success. Reactor emergency pumping also checks the documented country energy ratio and applies a temporary state energy-demand modifier. Its AI uses a separate 60 percent pre-choice energy floor above the 50 percent result threshold, accounting for the route's own local demand increase and later live grid movement.
 
+The mountain-capital opening repeats manpower and support-equipment affordability at click time. Its AI combines government and war preferences with exact pre-choice ledger boundaries derived from the civic and cellar opening effects. Civic conversion and shared shifts apply temporary state `local_factories` penalties. Five result options expose only the stored branch and deterministic outcome. Successful outcomes write a state memory that reduces the established monthly Air Winter civilian death percentage by 10 percent.
+
 ## AI and cleanup
 
 Every non-deterministic player-choice opening has explicit AI weights with state or country conditions. Delayed deterministic results expose only the option matching the stored pending branch and outcome. AI countries therefore use the same mechanical chain without a second visible-only scheduler.
 
-`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, infrastructure memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary refinery or reactor modifiers. `air_winter_reset_global` clears the calendar snapshot.
+`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, infrastructure memory, tunnel-school memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary refinery, reactor, or tunnel-school modifiers. `air_winter_reset_global` clears the calendar snapshot.
 
 ## Static validation
 
@@ -114,8 +118,9 @@ Static review establishes:
 16. pending-owner validation across all delayed Air Winter branches
 17. Fallout snapshot capture before pending-branch cancellation
 18. exact Phase 3 infrastructure identity and state-local route precedence
+19. exact mountain-capital identity, city-route precedence, and first-frost typed-id retention
 
-The 41 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 119 options. One hundred eighteen effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. The infrastructure-specific engine proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`.
+The 43 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 127 options. One hundred twenty-six effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. Infrastructure-specific proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Mountain-capital proof is in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
 ## Unobserved engine boundary
 

@@ -156,6 +156,22 @@ air_winter_reactor_emergency_power_demand_state = {
 	local_factory_energy_consumption = constant:air_winter_event_outcome.reactor_power_demand
 }
 
+# Converting protected galleries into classrooms removes usable factory space
+# until the delayed engineering report closes the work order.
+air_winter_tunnel_school_civic_industry_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	local_factories = constant:air_winter_event_outcome.tunnel_civic_factory_penalty
+}
+
+# Alternating workshop and school shifts impose a smaller factory penalty for
+# the same thirty-day tunnel-school review period.
+air_winter_tunnel_school_shift_industry_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	local_factories = constant:air_winter_event_outcome.tunnel_shifts_factory_penalty
+}
+
 # Disease pressure is calculated and capped by the state update. Keeping it
 # separate makes shelter, food, exposure, and adaptation matter within a phase
 # without duplicating the deterministic civilian-death tick.

@@ -22,7 +22,12 @@
 air_winter_event_cancel_pending_chain = {
 	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
 	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
 	clr_state_flag = air_winter_deep_water_patrol
+	clr_state_flag = air_winter_tunnel_chain_civic
+	clr_state_flag = air_winter_tunnel_chain_shifts
+	clr_state_flag = air_winter_tunnel_chain_cellars
 	clr_state_flag = air_winter_route_chain_rail
 	clr_state_flag = air_winter_route_chain_roads
 	clr_state_flag = air_winter_route_chain_abandoned
@@ -194,6 +199,15 @@ air_winter_event_clear_state_memory = {
 	clr_state_flag = air_winter_memory_deep_water_patrol
 	clr_state_flag = air_winter_memory_deep_water_patrol_returned
 	clr_state_flag = air_winter_memory_deep_water_patrol_lost
+	clr_state_flag = air_winter_memory_tunnel_civic_schools
+	clr_state_flag = air_winter_memory_tunnel_shift_schools
+	clr_state_flag = air_winter_memory_tunnel_cellar_schools
+	clr_state_flag = air_winter_memory_tunnel_civic_success
+	clr_state_flag = air_winter_memory_tunnel_civic_failure
+	clr_state_flag = air_winter_memory_tunnel_shifts_settled
+	clr_state_flag = air_winter_memory_tunnel_cellars_success
+	clr_state_flag = air_winter_memory_tunnel_cellars_failure
+	clr_state_flag = air_winter_memory_tunnel_school_protection
 	clr_state_flag = air_winter_memory_municipal_cisterns
 	clr_state_flag = air_winter_memory_water_convoys
 	clr_state_flag = air_winter_memory_lower_valley_herds
@@ -432,9 +446,50 @@ air_winter_event_apply_reactor_failure_fallout = {
 	chaos_meter_apply_nuclear_fallout_to_state = yes
 }
 
+# Supported scope: STATE. A later owner can reopen the Phase 2 route, so the
+# newest delayed result replaces the older tunnel-school outcome contract.
+air_winter_event_clear_tunnel_school_outcome_memory = {
+	clr_state_flag = air_winter_memory_tunnel_civic_success
+	clr_state_flag = air_winter_memory_tunnel_civic_failure
+	clr_state_flag = air_winter_memory_tunnel_shifts_settled
+	clr_state_flag = air_winter_memory_tunnel_cellars_success
+	clr_state_flag = air_winter_memory_tunnel_cellars_failure
+	clr_state_flag = air_winter_memory_tunnel_school_protection
+}
+
+# Supported scope: STATE
+air_winter_event_apply_tunnel_civic_industry = {
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
+	set_temp_variable = { air_winter_tunnel_industry_days = constant:air_winter_event_outcome.tunnel_industry_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_tunnel_school_civic_industry_state
+		days = air_winter_tunnel_industry_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_apply_tunnel_shift_industry = {
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
+	set_temp_variable = { air_winter_tunnel_industry_days = constant:air_winter_event_outcome.tunnel_industry_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_tunnel_school_shift_industry_state
+		days = air_winter_tunnel_industry_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_clear_tunnel_industry = {
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
+	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
+}
+
 # Supported scope: STATE. Output is temporary air_winter_selected_event_id.
 air_winter_event_select_phase_2_route = {
 	if = {
+		limit = { air_winter_event_is_mountain_capital = yes }
+		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_mountain_capital }
+	}
+	else_if = {
 		limit = { air_winter_response_is_city = yes }
 		set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_city }
 	}

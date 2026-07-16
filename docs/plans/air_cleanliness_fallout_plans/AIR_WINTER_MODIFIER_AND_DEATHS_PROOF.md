@@ -208,6 +208,13 @@ memory from the helper's returned applied amount. Monthly pressure preserves
 its existing zero protected floor. Incident casualties preserve their 1,000
 person protected floor.
 
+A successful mountain-capital tunnel-school result writes
+`air_winter_memory_tunnel_school_protection`. The monthly route applies its
+constant-backed 0.90 multiplier after the ordinary exposure, food, shelter,
+infrastructure, occupation, and adaptation result. The same exact-loss helper,
+setting gate, reason, and returned applied amount remain in force. Failure and
+cancelled branches do not receive the protection memory.
+
 The shared exact-loss helper can be used by other systems that intentionally
 remove population even when Deaths display and logging are disabled. Air
 Winter does not use that independent mode. Changing the global setting
@@ -244,7 +251,8 @@ pre-seed its temporary outputs, and add only
 ## Runtime observation boundary
 
 Static evidence proves the repair-field categories, every building token, the
-Deaths setting gates, the documented state population mutation route, the
+Deaths setting gates, the tunnel-school protection multiplier, the documented
+state population mutation route, the
 recruitable-credit reconciliation contract, and vanilla state usage of
 controller attrition. It also proves country scope for the four air fields,
 country dynamic-modifier application, working-airfield input, bounded
