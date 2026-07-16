@@ -1,0 +1,1126 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NATIVE PROJECT PORTFOLIO
+# ============================================================================
+# Ten family prototypes and six Strategic Singularity components. Existing
+# radar, rocket, nuclear, and biological projects are bridged elsewhere and
+# are not cloned here.
+# ============================================================================
+
+sp_brilliant_scientist_computational_engine = {
+	specialization = specialization_land
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_computation_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_computation_prototype = yes } }
+	icon = GFX_sp_nuclear_radar
+	breakthrough_cost = { specialization_land = constant:brilliant_scientist_project_native.computational_engine_breakthrough }
+	prototype_time = sp_time.prototype.short
+	complexity = sp_complexity.small
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.computational_engine_steel
+			tungsten = constant:brilliant_scientist_project_native.computational_engine_tungsten
+			rubber = constant:brilliant_scientist_project_native.computational_engine_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_computation_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_computational_engine_reward_unreadable_notation = {
+			icon = GFX_sp_nuclear_radar
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_computational_engine_reward_unreadable_notation_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_computational_engine_reward_unreadable_notation_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_land_generic_reward_scientist_xp_1
+		sp_land_generic_reward_major_progress_1
+		sp_land_generic_reward_test_failure_1
+		sp_land_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_advanced_materials = {
+	specialization = specialization_land
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_materials_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_materials_prototype = yes } }
+	icon = GFX_sp_land_large_caliber_kinetic_energy_sabot
+	breakthrough_cost = { specialization_land = constant:brilliant_scientist_project_native.advanced_materials_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.advanced_materials_steel
+			tungsten = constant:brilliant_scientist_project_native.advanced_materials_tungsten
+			chromium = constant:brilliant_scientist_project_native.advanced_materials_chromium
+			rubber = constant:brilliant_scientist_project_native.advanced_materials_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_materials_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_advanced_materials_reward_self_propagating_batch = {
+			icon = GFX_sp_land_large_caliber_kinetic_energy_sabot
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_advanced_materials_reward_self_propagating_batch_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_advanced_materials_reward_self_propagating_batch_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_land_generic_reward_scientist_xp_1
+		sp_land_generic_reward_major_progress_1
+		sp_land_generic_reward_test_failure_1
+		sp_land_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_biomedical_acceleration = {
+	specialization = specialization_biowarfare
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_biomedical_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_biomedical_prototype = yes } }
+	icon = GFX_sp_zombie_cure_bomb
+	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.biomedical_acceleration_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.biomedical_acceleration_steel
+			tungsten = constant:brilliant_scientist_project_native.biomedical_acceleration_tungsten
+			chromium = constant:brilliant_scientist_project_native.biomedical_acceleration_chromium
+			rubber = constant:brilliant_scientist_project_native.biomedical_acceleration_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_biomedical_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_biomedical_acceleration_reward_unlicensed_trial = {
+			icon = GFX_sp_zombie_cure_bomb
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_biomedical_acceleration_reward_unlicensed_trial_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_biomedical_acceleration_reward_unlicensed_trial_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+		sp_biowarfare_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_quantum_transit = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_teleportation_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_teleportation_prototype = yes } }
+	icon = GFX_sp_nuclear_engines
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.quantum_transit_breakthrough }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.quantum_transit_steel
+			tungsten = constant:brilliant_scientist_project_native.quantum_transit_tungsten
+			chromium = constant:brilliant_scientist_project_native.quantum_transit_chromium
+			rubber = constant:brilliant_scientist_project_native.quantum_transit_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_teleportation_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_quantum_transit_reward_duplicate_transfer = {
+			icon = GFX_sp_nuclear_engines
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_quantum_transit_reward_duplicate_transfer_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_quantum_transit_reward_duplicate_transfer_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
+sp_brilliant_scientist_cloning = {
+	specialization = specialization_biowarfare
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_cloning_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_cloning_prototype = yes } }
+	icon = GFX_sp_zombie_cure_bomb
+	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.cloning_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.cloning_steel
+			chromium = constant:brilliant_scientist_project_native.cloning_chromium
+			rubber = constant:brilliant_scientist_project_native.cloning_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_cloning_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_cloning_reward_identity_conflict = {
+			icon = GFX_sp_zombie_cure_bomb
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_cloning_reward_identity_conflict_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_cloning_reward_identity_conflict_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+		sp_biowarfare_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_autonomous_cognition = {
+	specialization = specialization_land
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_robotics_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_robotics_prototype = yes } }
+	icon = GFX_sp_land_military_engineering_vehicles
+	breakthrough_cost = { specialization_land = constant:brilliant_scientist_project_native.autonomous_cognition_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.autonomous_cognition_steel
+			tungsten = constant:brilliant_scientist_project_native.autonomous_cognition_tungsten
+			chromium = constant:brilliant_scientist_project_native.autonomous_cognition_chromium
+			rubber = constant:brilliant_scientist_project_native.autonomous_cognition_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_robotics_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_autonomous_cognition_reward_hidden_instruction = {
+			icon = GFX_sp_land_military_engineering_vehicles
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_autonomous_cognition_reward_hidden_instruction_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_autonomous_cognition_reward_hidden_instruction_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_land_generic_reward_scientist_xp_1
+		sp_land_generic_reward_major_progress_1
+		sp_land_generic_reward_test_failure_1
+		sp_land_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_paleogenetics = {
+	specialization = specialization_biowarfare
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_paleogenetics_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_paleogenetics_prototype = yes } }
+	icon = GFX_sp_zombie_cure_bomb
+	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.paleogenetics_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.paleogenetics_steel
+			tungsten = constant:brilliant_scientist_project_native.paleogenetics_tungsten
+			chromium = constant:brilliant_scientist_project_native.paleogenetics_chromium
+			rubber = constant:brilliant_scientist_project_native.paleogenetics_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_paleogenetics_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_paleogenetics_reward_specimen_escape = {
+			icon = GFX_sp_zombie_cure_bomb
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_paleogenetics_reward_specimen_escape_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_paleogenetics_reward_specimen_escape_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+		sp_biowarfare_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_xenobiological_synthesis = {
+	specialization = specialization_biowarfare
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes } }
+	icon = GFX_sp_anthrax_bomb
+	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.xenobiological_synthesis_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.xenobiological_synthesis_steel
+			tungsten = constant:brilliant_scientist_project_native.xenobiological_synthesis_tungsten
+			chromium = constant:brilliant_scientist_project_native.xenobiological_synthesis_chromium
+			rubber = constant:brilliant_scientist_project_native.xenobiological_synthesis_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_xenobiological_synthesis_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_xenobiological_synthesis_reward_control_failure = {
+			icon = GFX_sp_anthrax_bomb
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_xenobiological_synthesis_reward_control_failure_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_xenobiological_synthesis_reward_control_failure_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+		sp_biowarfare_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_alien_arms = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_alien_arms_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_alien_arms_prototype = yes } }
+	icon = GFX_sp_nuclear_warheads
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.alien_arms_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.alien_arms_steel
+			tungsten = constant:brilliant_scientist_project_native.alien_arms_tungsten
+			chromium = constant:brilliant_scientist_project_native.alien_arms_chromium
+			rubber = constant:brilliant_scientist_project_native.alien_arms_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_alien_arms_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_alien_arms_reward_interface_breach = {
+			icon = GFX_sp_nuclear_warheads
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_alien_arms_reward_interface_breach_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_alien_arms_reward_interface_breach_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
+sp_brilliant_scientist_temporal_mechanics = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_temporal_prototype = yes } }
+	available = { FROM = { brilliant_scientist_can_research_temporal_prototype = yes } }
+	icon = GFX_sp_nuclear_reactor
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.temporal_mechanics_breakthrough }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.temporal_mechanics_steel
+			tungsten = constant:brilliant_scientist_project_native.temporal_mechanics_tungsten
+			chromium = constant:brilliant_scientist_project_native.temporal_mechanics_chromium
+			rubber = constant:brilliant_scientist_project_native.temporal_mechanics_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_temporal_prototype_complete_tt
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
+			brilliant_scientist_record_new_project_prototype = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_temporal_mechanics_reward_contradictory_record = {
+			icon = GFX_sp_nuclear_reactor
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_temporal_mechanics_reward_contradictory_record_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_temporal_mechanics_reward_contradictory_record_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
+sp_brilliant_scientist_singularity_command_core = {
+	specialization = specialization_air
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_air_intercontinental_bomber
+	breakthrough_cost = { specialization_air = constant:brilliant_scientist_project_native.singularity_command_core_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_command_core_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_command_core_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_command_core_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_command_core_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_command_core_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_command_core_reward_false_arming_order = {
+			icon = GFX_sp_air_intercontinental_bomber
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_command_core_reward_false_arming_order_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_command_core_reward_false_arming_order_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_air_generic_reward_scientist_xp_1
+		sp_air_generic_reward_air_xp_1
+		sp_air_generic_reward_major_progress_1
+		sp_air_political_interference_generic_reward
+	}
+}
+
+sp_brilliant_scientist_singularity_power_link = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_nuclear_engines
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.singularity_power_link_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_power_link_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_power_link_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_power_link_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_power_link_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_power_link_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_power_link_reward_power_cascade = {
+			icon = GFX_sp_nuclear_engines
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_power_link_reward_power_cascade_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_power_link_reward_power_cascade_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
+sp_brilliant_scientist_singularity_containment_lattice = {
+	specialization = specialization_land
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_land_stronghold_network
+	breakthrough_cost = { specialization_land = constant:brilliant_scientist_project_native.singularity_containment_lattice_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_containment_lattice_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_containment_lattice_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_containment_lattice_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_containment_lattice_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_containment_lattice_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_containment_lattice_reward_lattice_failure = {
+			icon = GFX_sp_land_stronghold_network
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_containment_lattice_reward_lattice_failure_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_containment_lattice_reward_lattice_failure_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_land_generic_reward_scientist_xp_1
+		sp_land_generic_reward_major_progress_1
+		sp_land_generic_reward_test_failure_1
+		sp_land_generic_reward_resource_scarcity
+	}
+}
+
+sp_brilliant_scientist_singularity_temporal_authenticator = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_nuclear_reactor
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.singularity_temporal_authenticator_breakthrough }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_temporal_authenticator_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_temporal_authenticator_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_temporal_authenticator_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_temporal_authenticator_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_temporal_authenticator_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_temporal_authenticator_reward_contradictory_authentication = {
+			icon = GFX_sp_nuclear_reactor
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_temporal_authenticator_reward_contradictory_authentication_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_temporal_authenticator_reward_contradictory_authentication_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
+sp_brilliant_scientist_singularity_delivery_architecture = {
+	specialization = specialization_air
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_air_supersonic_jet
+	breakthrough_cost = { specialization_air = constant:brilliant_scientist_project_native.singularity_delivery_architecture_breakthrough }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_delivery_architecture_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_delivery_architecture_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_delivery_architecture_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_delivery_architecture_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_delivery_architecture_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_delivery_architecture_reward_targeting_breach = {
+			icon = GFX_sp_air_supersonic_jet
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_delivery_architecture_reward_targeting_breach_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_delivery_architecture_reward_targeting_breach_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_air_generic_reward_scientist_xp_1
+		sp_air_generic_reward_air_xp_1
+		sp_air_generic_reward_major_progress_1
+		sp_air_political_interference_generic_reward
+	}
+}
+
+sp_brilliant_scientist_singularity_fail_deadly_governor = {
+	specialization = specialization_nuclear
+	allowed = { }
+	visible = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	available = { FROM = { brilliant_scientist_can_research_singularity_component = yes } }
+	icon = GFX_sp_nuclear_warheads
+	breakthrough_cost = { specialization_nuclear = constant:brilliant_scientist_project_native.singularity_fail_deadly_governor_breakthrough }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+			steel = constant:brilliant_scientist_project_native.singularity_fail_deadly_governor_steel
+			tungsten = constant:brilliant_scientist_project_native.singularity_fail_deadly_governor_tungsten
+			chromium = constant:brilliant_scientist_project_native.singularity_fail_deadly_governor_chromium
+			rubber = constant:brilliant_scientist_project_native.singularity_fail_deadly_governor_rubber
+		}
+	}
+	ai_will_do = {
+		base = constant:brilliant_scientist_project_ai.base
+		modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor FROM = { has_war = yes } }
+		modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor FROM = { brilliant_scientist_has_low_project_capacity = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = brilliant_scientist_singularity_fail_deadly_governor_complete_tt
+			set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor }
+			brilliant_scientist_register_singularity_component = yes
+		}
+	}
+	unique_prototype_rewards = {
+		sp_brilliant_scientist_singularity_fail_deadly_governor_reward_unauthorized_activation = {
+			icon = GFX_sp_nuclear_warheads
+			fire_only_once = yes
+			threshold = {
+				min = constant:brilliant_scientist_project_native.reward_threshold_minimum
+				max = constant:brilliant_scientist_project_native.reward_threshold_maximum
+			}
+			weight = { base = constant:brilliant_scientist_project_native.reward_weight }
+			option = {
+				token = sp_brilliant_scientist_singularity_fail_deadly_governor_reward_unauthorized_activation_cautious
+				default = yes
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_cautious_tt
+						FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+					}
+				}
+			}
+			option = {
+				token = sp_brilliant_scientist_singularity_fail_deadly_governor_reward_unauthorized_activation_risky
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+						brilliant_scientist_refresh_project_accident_pressure = yes
+						brilliant_scientist_dispatch_project_accident = yes
+					}
+				}
+			}
+		}
+	}
+	generic_prototype_rewards = {
+		sp_nuclear_scientist_xp_generic_reward
+		sp_nuclear_minor_progress_generic_reward
+		sp_nuclear_reactor_radioactive_leak_stabilized_reward
+		sp_nuclear_reactor_minor_explosion_reward
+	}
+}
+
