@@ -77,12 +77,12 @@ The following evidence must be updated in the same repaired package transaction:
 
 | File | Stale claim | Required correction |
 | --- | --- | --- |
-| `docs/006_independence_wave_brittany_package.md:107` | The package congress directly sets shared proof and requests commitment. | Describe custom preparation, shared resolution, `formation_ready`, and final DM-55 commitment. |
+| `docs/events/006_independence_wave/northern_western_europe_packages.md` (Brittany section) | The package congress directly sets shared proof and requests commitment. | Describe custom preparation, shared resolution, `formation_ready`, and final DM-55 commitment. |
 | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_implementation_2026_07_15.md:93` | Direct shared-state/FORM-01 handoff. | Replace with the repaired two-stage transaction. |
 | same file `:167-182` | `50x67`, hash `1BDD8718...`. | Record the independently composed `65x67` file and hash `12C1A20D2CC1234895E7AF557BDA9BAF7CDDCA58593527194B5EDAD3AF058684`. |
 | same file `:223-233` | Debeauvais, FORM-01, and independent-audit items are presented as open package blockers. | Preserve the provenance limitation as a future named-historical-expansion constraint, but record that distinctive fictional human roles are the accepted current package; mark FORM-01 and the independent package audit as resolved by the later evidence. |
 | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_audit_2026_07_15.md:9-11`, `:61-64`, `:69-79`, `:81-85` | The old mechanical small portrait and old FORM-01 audit are current; no call-site defect was found. | Supersede with `d0044b22e`, `98ec32e93`, and this newly proven congress defect. Update the old localisation count if retained. |
-| `docs/006_independence_wave_saar_package.md:135-148`, `:243-250` | FORM-04 is only an unresolved external consumer. | Record the promoted operational FORM-04 adapters while keeping AJX automatic/SCN admission separate. |
+| `docs/events/006_independence_wave/northern_western_europe_packages.md` (Saar section) | FORM-04 is only an unresolved external consumer. | Record the promoted operational FORM-04 adapters while keeping AJX automatic/SCN admission separate. |
 | same file `:211-216` | The commander thumbnail is `50x67`. | Record the current `65x67` dossier texture. |
 | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_ajx_country_package_implementation_2026_07_15.md:17-22`, `:114-121`, `:202-213` | FORM-04 consumer and asset work remain unresolved. | Supersede with the promoted formable and completed asset ledger; retain only genuinely closed admission gates. |
 | same file `:162-169` | AJX small hash `5B552E36...`. | Replace with `470C29FD6CC73F5B6A269969160F1F4D721F31D4197F3D070C8388765F269312`. |
@@ -242,7 +242,7 @@ common/ideas/006_independence_wave_brittany_ideas.txt
 common/script_constants/006_independence_wave_brittany_constants.txt
 common/scripted_effects/006_independence_wave_brittany_package_effects.txt
 common/scripted_triggers/006_independence_wave_brittany_package_triggers.txt
-docs/006_independence_wave_brittany_package.md
+docs/events/006_independence_wave/northern_western_europe_packages.md
 docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_audit_2026_07_15.md
 docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_implementation_2026_07_15.md
 localisation/english/006_independence_wave_brittany_l_english.yml
@@ -262,7 +262,7 @@ common/ideas/006_independence_wave_saar_ideas.txt
 common/script_constants/006_independence_wave_saar_constants.txt
 common/scripted_effects/006_independence_wave_saar_package_effects.txt
 common/scripted_triggers/006_independence_wave_saar_package_triggers.txt
-docs/006_independence_wave_saar_package.md
+docs/events/006_independence_wave/northern_western_europe_packages.md
 docs/assets/006_independence_wave/ajx_asset_completion_2026_07_15/ajx_asset_validation_2026_07_15.json
 docs/assets/006_independence_wave/ajx_asset_completion_2026_07_15/checksums.sha256
 docs/assets/006_independence_wave/ajx_asset_completion_2026_07_15/contact_sheets/advisor_portraits_decoded_contact_sheet.png

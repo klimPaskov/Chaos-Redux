@@ -69,7 +69,7 @@ and localisation files remain shared base files and were extended in place.
 - `localisation/english/006_independence_wave_formable_registry_l_english.yml`
 - `docs/events/006_independence_wave.md`
 - `docs/systems/006_independence_wave_formable_registry.md`
-- `docs/006_independence_wave_wallonia_frisia_packages.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - FORM-03 rows in the formable, decision/mission, and idea matrices
 
 ## Targeted validation evidence

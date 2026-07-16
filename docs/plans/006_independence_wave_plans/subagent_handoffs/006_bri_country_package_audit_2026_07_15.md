@@ -25,7 +25,7 @@ FORM-01/KCX passed its later operational re-audit and readiness promotion. The u
 
 ### `docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_implementation_2026_07_15.md`
 
-- Corrected the cleanup description. The live adapter does not retire the two generated characters; it leaves them registered behind exact package gates, matching `docs/006_independence_wave_brittany_package.md` and preserving guarded repeat initialization.
+- Corrected the cleanup description. The live adapter does not retire the two generated characters; it leaves them registered behind exact package gates, matching `docs/events/006_independence_wave/northern_western_europe_packages.md` and preserving guarded repeat initialization.
 
 The later parent repair adds the dormant exact BRI identity helpers required by the runtime adapter. It does not change an asset, FORM-01 readiness, content-attestation, or SCN-008 admission gate. No audit subagent commit was created.
 

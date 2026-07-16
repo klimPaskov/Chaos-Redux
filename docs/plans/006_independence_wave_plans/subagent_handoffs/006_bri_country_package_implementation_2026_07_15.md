@@ -124,7 +124,7 @@ Cleanup removes the mission/decision entries, package ideas, route ideas, packag
 
 ### Documentation
 
-- `docs/006_independence_wave_brittany_package.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_bri_country_package_implementation_2026_07_15.md`
 
 ### Final portrait assets

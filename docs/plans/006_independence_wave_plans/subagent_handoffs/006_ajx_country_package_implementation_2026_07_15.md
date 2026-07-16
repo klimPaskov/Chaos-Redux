@@ -142,7 +142,7 @@ localisation, and durable-sovereignty closure flag.
 - `common/decisions/006_independence_wave_saar_decisions.txt`
 - `common/ai_strategy/006_independence_wave_saar.txt`
 - `localisation/english/006_independence_wave_saar_l_english.yml`
-- `docs/006_independence_wave_saar_package.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - this handoff
 
 ## Existing files updated

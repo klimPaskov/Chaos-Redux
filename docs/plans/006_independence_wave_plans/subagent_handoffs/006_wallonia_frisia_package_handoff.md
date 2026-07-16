@@ -2,7 +2,9 @@
 
 ## Ownership and completion boundary
 
-This handoff covers only the isolated playable package implementation for AFX IW-006 and AGX IW-007. It does not edit the shared Event 006 executor, shared origin lifecycle, package allocator, Event 5, the shared focus framework, or any other package. After the independent audit passed, the parent integration review granted `independence_wave_package_content_ready` in both dormant country histories.
+> Parent reconciliation, 2026-07-15: this handoff records the isolated package state before the shared FORM-01–48 registry was integrated. Readiness is no longer carried by dormant-country history. The later review withdrew both AFX and AGX static execution attestations because their accepted FORM-03 Low Countries lane still lacks a certified X-ending identity, final public localisation, complete ImageGen flag package, exact territory/member policy, and operational identity/integration adapters. The package gameplay below remains implemented, but neither package is currently selectable.
+
+This handoff covers only the isolated playable package implementation for AFX IW-006 and AGX IW-007. It does not edit the shared Event 006 executor, shared origin lifecycle, package allocator, Event 5, the shared focus framework, or any other package.
 
 ## Shared integration contract
 
@@ -55,7 +57,7 @@ Do not grant `independence_wave_package_content_ready` from gameplay setup. The 
 - `common/decisions/006_independence_wave_wallonia_frisia_decisions.txt`
 - `common/ai_strategy/006_independence_wave_wallonia_frisia.txt`
 - `localisation/english/006_independence_wave_wallonia_frisia_l_english.yml`
-- `docs/006_independence_wave_wallonia_frisia_packages.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wallonia_frisia_package_handoff.md`
 
 ## Important identifiers

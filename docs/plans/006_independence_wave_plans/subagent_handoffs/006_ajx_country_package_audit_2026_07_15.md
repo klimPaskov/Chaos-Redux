@@ -71,7 +71,7 @@ The live package matches the accepted IW-010 rows in:
 - `docs/specs/006_independence_wave_specs/research/006_package_research_resolution.csv`
 - `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`
 - `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv`
-- `docs/006_independence_wave_saar_package.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 
 The resulting contract is a dormant custom tag at state 42, an
 `industrial_breakaway` package in Northern and Western Europe, standard focus

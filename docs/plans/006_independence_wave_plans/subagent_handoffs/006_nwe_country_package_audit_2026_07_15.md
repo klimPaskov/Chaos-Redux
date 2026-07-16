@@ -134,7 +134,7 @@ Current BAY setup additionally enables patron client and radical sovereignty:
 - installers: `independence_wave_install_bay_patron_government` at effect line 565 and `independence_wave_install_bay_sovereignty_government` at line 578;
 - AI includes those government flags at `common/ai_strategy/006_independence_wave_rhineland_bavaria.txt:101` and `:121`.
 
-`docs/006_independence_wave_rhineland_bavaria_packages.md` currently repeats the implemented extra routes rather than the accepted matrix, so it is not authority to preserve them.
+`docs/events/006_independence_wave/northern_western_europe_packages.md` currently repeats the implemented extra routes rather than the accepted matrix, so it is not authority to preserve them.
 
 Exact repair required:
 

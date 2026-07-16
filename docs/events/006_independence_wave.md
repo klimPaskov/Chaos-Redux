@@ -6,6 +6,8 @@ Independence Wave is the Minor Repeatable member of the Liberations cluster. It 
 
 The accepted design authority remains `docs/specs/006_independence_wave_specs/`. This file is the implementation-facing map for the live script surfaces and is updated as each plan tranche is completed.
 
+Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md).
+
 ## Release transaction
 
 The shared Liberations coordinator owns the transaction lifecycle:
@@ -103,7 +105,7 @@ integration, autonomous-member, and military-settlement adapters passed their
 independent operational audit; that formable certification does not by itself
 open AJX as a release candidate. Later-wave AJX/RHI coexistence supports the
 approved two-founder Rhenish League direction. The full package reference is
-`docs/006_independence_wave_saar_package.md`.
+the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md).
 
 ## Asset wiring
 
