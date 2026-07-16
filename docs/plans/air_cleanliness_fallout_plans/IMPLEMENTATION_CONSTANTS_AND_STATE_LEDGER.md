@@ -256,13 +256,17 @@ Do not store true or false state as numeric variables unless an engine surface r
 | `global.air_cleanliness_treaty_members` | country scopes | current live signatories |
 | `global.air_cleanliness_treaty_violators` | country scopes | persistent banned-country sanction targets |
 | `global.air_cleanliness_treaty_filter_convoy_donors` | country scopes | exact owners of active convoy projects |
+| `global.air_cleanliness_treaty_active_inspectors` | country scopes | exact secretariat owners of active verification transactions |
 | `global.air_cleanliness_treaty_relief_states` | state scopes | completed relief routes awaiting expiry or invalidation cleanup |
 | `global.air_cleanliness_treaty_member_removals` | country scopes | member cleanup work queue |
 | `global.air_cleanliness_treaty_violation_queue` | country scopes | violation work queue |
 | `global.air_cleanliness_treaty_filter_convoy_cancellations` | country scopes | donor-project cancellation work queue |
+| `global.air_cleanliness_treaty_verification_cancellations` | country scopes | verification transaction cancellation work queue |
 | `global.air_cleanliness_treaty_route_removals` | state scopes | route cleanup work queue |
 
-The four work queues are separate from the source ledgers they mutate. The treaty never removes an entry from a source array while iterating that same array.
+The five work queues are separate from the source ledgers they mutate. The treaty never removes an entry from a source array while iterating that same array.
+
+Verification operational receipts are paired across the secretariat and inspected member. The secretariat stores transaction, generation, subject, phase flags, and the pending outcome. The inspected member stores inspector, transaction, generation, request or response phase, and the same pending outcome. Completed last-partner, last-date, last-outcome, transaction, and generation memory survives operational cleanup.
 
 ## Country Fallout values
 

@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - AIR CLEANLINESS TREATY CONSTANTS
 # ============================================================================
-# Central tuning for the bounded treaty lifecycle and its two implemented
-# projects. Timed-flag literals in the treaty effects file mirror these values
+# Central tuning for the bounded treaty lifecycle and its implemented projects.
+# Timed-flag and delayed-event literals in the treaty effects file mirror these values
 # because the engine does not accept script constants in every days field.
 # ============================================================================
 
@@ -13,7 +13,7 @@ air_cleanliness_treaty_runtime = {
 	zero = 0
 	one = 1
 	basis_points_per_percentage_point = 100
-	schema_version = 1
+	schema_version = 2
 	member_condemnation_max = 0
 	invitation_delay_days = 2
 	invitation_window_days = 30
@@ -32,6 +32,26 @@ air_cleanliness_treaty_runtime = {
 	filter_convoy_support_cost = 120
 	filter_convoy_convoy_cost = 20
 	filter_convoy_civilian_factories = 2
+	verification_mission_duration_days = 14
+	verification_result_delay_days = 7
+	verification_sponsor_cooldown_days = 90
+	verification_subject_recency_days = 180
+	verification_support_cost = 60
+	verification_convoy_cost = 5
+	verification_civilian_factories = 1
+	verification_full_access_support_cost = 30
+	verification_full_access_train_cost = 5
+	verification_records_support_cost = 12
+	verification_records_train_cost = 2
+}
+
+air_cleanliness_treaty_verification_outcome = {
+	schema = { any_key = yes data = fixed_point }
+
+	none = 0
+	full_access = 1
+	records_only = 2
+	refused = 3
 }
 
 air_cleanliness_treaty_lifecycle_ai = {
@@ -57,4 +77,31 @@ air_cleanliness_treaty_lifecycle_ai = {
 	filter_convoy_phase_6_factor = 3
 	filter_convoy_critical_survival_factor = 2.5
 	filter_convoy_critical_survival_value = 25
+	verification_mission_base = 0.65
+	verification_mission_founder_democratic_factor = 1.4
+	verification_mission_war_factor = 0.5
+	verification_mission_new_subject_factor = 1.5
+	verification_mission_prior_refusal_factor = 2
+	verification_mission_fascist_subject_factor = 1.4
+	verification_full_access_base = 50
+	verification_full_access_democratic_factor = 2
+	verification_full_access_communist_factor = 1.4
+	verification_full_access_fascist_factor = 0.5
+	verification_full_access_neutral_factor = 0.8
+	verification_full_access_war_factor = 0.75
+	verification_records_base = 35
+	verification_records_democratic_factor = 0.75
+	verification_records_communist_factor = 1.2
+	verification_records_fascist_factor = 1.6
+	verification_records_neutral_factor = 1.4
+	verification_records_war_factor = 1.25
+	verification_refusal_base = 15
+	verification_refusal_democratic_factor = 0.35
+	verification_refusal_communist_factor = 0.8
+	verification_refusal_fascist_factor = 2
+	verification_refusal_neutral_factor = 1.3
+	verification_refusal_war_factor = 1.5
+	verification_refusal_memory_factor = 1.5
+	verification_result_acknowledge_base = 1
+	verification_recount_acknowledge_base = 1
 }

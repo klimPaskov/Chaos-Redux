@@ -86,7 +86,7 @@ Implementation interpretation:
 
 ### Treaty layer
 
-Accepted source design includes an Air Cleanliness Treaty at severe contamination. The live monthly host now calls one treaty coordinator around the existing state pass. It initializes the bounded member, violator, active-donor, and relief-route ledgers, removes invalid routes before winter pressure, resolves founder succession, issues retry-safe generation-bound invitations on a quarterly cadence, and maintains sanctions only on membership or violation edges. Fallout silently ends operational projects while preserving treaty memory.
+Accepted source design includes an Air Cleanliness Treaty at severe contamination. The live monthly host now calls one treaty coordinator around the existing state pass. It initializes the bounded member, violator, active-donor, active-inspector, and relief-route ledgers, removes invalid routes before winter pressure, resolves founder succession, issues retry-safe generation-bound invitations on a quarterly cadence, and maintains sanctions only on membership or violation edges. Fallout silently ends operational projects while preserving treaty memory.
 
 Decision for implementation planning:
 
@@ -94,7 +94,8 @@ Decision for implementation planning:
 - Use array-backed membership and explicit entry, exit, violation, donor-project, annexation, Fallout-pause, and route cleanup receipts.
 - Use Global Cleaning Day as a paid global cleanup project.
 - Use Joint Filter Convoy as a paid state-targeted project that creates a temporary Air Winter relief route.
-- Keep verification, evacuation corridors, Fallout-era successor memory, and the broader treaty event families as incomplete work.
+- Keep evacuation corridors, Fallout-era successor memory, relief votes, major-burner policy, and the broader treaty event families as incomplete work.
+- Treat inspection refusal as a distinct accepted member violation that reuses expulsion, treaty-owned embargoes, opinion penalties, and relief-loss consequences without claiming weapon use.
 - Do not restore broad repeated country-to-country opinion or embargo loops.
 
 ### Successor countries
@@ -147,7 +148,7 @@ Implementation interpretation:
 | Fallout event ownership | Fallout definitions live in `events/fallout_world_end_events.txt` under `chaosx.fallout`, and the stale non-Fallout block is absent | every Fallout event uses the dedicated file and namespace | keep future Fallout definitions, callers, assets, and audio inside the dedicated ownership boundary |
 | Fallout threshold | the normal Air Contamination route can request Fallout at 100 percent, and terminal callers use the same idempotent coordinator | eligibility begins at 100 percent and direct scripted callers exist | retain the request receipts and do not restore a Chaos-above-1000 requirement |
 | Winter | persistent phases 0 through 6 drive state ledgers, consequences, mapmodes, ordinary-map visuals, responses, and a reviewed event pilot | persistent state phases and phase-specific effects | finish the remaining treaty and event work while preserving the single monthly host |
-| Treaty | one host-owned bounded lifecycle, paid cleanup project, paid filter convoy, founder succession, violation sanctions, annex cleanup, pre-pressure route reconciliation, exact donor cleanup, and silent Fallout pause | active severe-contamination diplomacy and mitigation layer | expand verification, evacuation, direct successor memory, and manually reviewed treaty event families |
+| Treaty | one host-owned bounded lifecycle, paid cleanup project, paid filter convoy, paid verification mission, founder succession, cause-aware violation sanctions, annex cleanup, pre-pressure route reconciliation, exact donor and inspector cleanup, and silent Fallout pause | active severe-contamination diplomacy and mitigation layer | expand evacuation, relief votes, major-burner policy, direct successor memory, and manually reviewed treaty event families |
 | Air docs | current system docs describe the live partial implementation and identify remaining work | must describe live and accepted implementation | update the current system docs and proof index after each reviewed tranche |
 | Scenario registry | the writable checkout reaches SCN-013 while raw id 12 remains separately reserved | Fallout must use the next id after the highest live assignment | SCN-014 is reserved in Fallout-owned constants without renumbering existing ids, and public activation waits for the sweep gate |
 | Mapmode strip | the selected and deselected strips are 380 by 18 with 19 exact 20-pixel frames | Deaths owns slot 18, contaminated states owns slot 19, and Air Winter uses dedicated per-mode sprites | resolved in `AIR_WINTER_MAPMODE_ICON_PROOF.md` without changing an asset |
