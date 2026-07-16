@@ -134,58 +134,49 @@ country_event = {
 	picture = GFX_report_event_generic_sign_treaty2
 
 	is_triggered_only = yes
+	trigger = { air_cleanliness_treaty_pending_invitation_is_valid = yes }
+	immediate = { air_cleanliness_treaty_open_invitation = yes }
 
 	option = {
 		name = chaosx_contamination.9.a
-		trigger = {
-			NOT = { has_country_flag = air_cleanliness_treaty_member }
-			NOT = { has_country_flag = air_cleanliness_treaty_banned }
-			NOT = { has_used_unconventional_weapons = yes }
-			is_within_air_cleanliness_treaty_condemnation_limit = yes
-		}
+		trigger = { air_cleanliness_treaty_can_accept_invitation = yes }
 		ai_chance = {
-			base = constant:air_cleanliness_treaty_ai.join_base
+			base = constant:air_cleanliness_treaty_lifecycle_ai.join_base
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_democratic
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_democratic_factor
 				has_government = democratic
 			}
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_minor_no_stockpile
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_minor_without_stockpile_factor
 				is_major = no
 				NOT = { has_unconventional_weapon_stockpile = yes }
 			}
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_has_stockpile
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_stockpile_factor
 				has_unconventional_weapon_stockpile = yes
 			}
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_used_unconventional
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_used_unconventional_factor
 				has_used_unconventional_weapons = yes
 			}
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_at_war_with_founder
-				has_war_with = FROM
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_war_with_founder_factor
+				has_war_with = event_target:air_cleanliness_treaty_founder
 			}
 			modifier = {
-				factor = constant:air_cleanliness_treaty_ai.join_factor_major
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.join_major_factor
 				is_major = yes
 			}
 		}
-		set_country_flag = air_cleanliness_treaty_member
-		if = {
-			limit = { FROM = { exists = yes } }
-			add_opinion_modifier = {
-				target = FROM
-				modifier = air_cleanliness_treaty_member_respect
-			}
-		}
+		air_cleanliness_treaty_accept_invitation = yes
 	}
 
 	option = {
 		name = chaosx_contamination.9.b
 		ai_chance = {
-			base = 1
+			base = constant:air_cleanliness_treaty_lifecycle_ai.decline_base
 		}
+		air_cleanliness_treaty_decline_invitation = yes
 	}
 }
 

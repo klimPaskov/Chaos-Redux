@@ -58,16 +58,24 @@ A buffer variable (`global.air_contamination_chaos_buffer_bp`) preserves sub-1% 
 
 At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), the system activates a global treaty layer:
 
-- A major democratic country that has not used unconventional weapons forms the treaty and sends invitation events to countries globally.
-- Countries decide whether to join through `chaosx_contamination.9` (AI weighted toward democracies and minor countries without unconventional stockpiles).
-- Treaty members gain mutual respect opinion (`air_cleanliness_treaty_member_respect`).
-- Treaty members claim a broad native embargo against all non-members when By Blood Alone is active.
-- If a treaty member uses an unconventional weapon through a chemical, biological, or nuclear hook, it is expelled, marked banned, claimed for broad embargo by all other countries, and receives a violation opinion penalty (`air_cleanliness_treaty_violator`).
+- The lowest-id eligible major democratic country in the bounded Air Winter registry becomes founder. No random founder or world-country scan is used.
+- Generation-bound invitations use separate attempt and terminal receipts. Declines do not repeat in one treaty generation, while temporarily failed deliveries can retry on a later ninety-day bounded scan.
+- Countries decide whether to join through `chaosx_contamination.9`. Acceptance calls the idempotent member-registration wrapper.
+- Treaty members gain mutual respect opinion (`air_cleanliness_treaty_member_respect`) and shared basic Air Winter sampling.
+- Member relations refresh only at membership, violation, and cleanup edges.
+- If a treaty member uses an unconventional weapon through a chemical, biological, or nuclear hook, it is expelled, marked with permanent betrayal memory, and sanctioned only by current members.
+- Native embargo ownership is stored separately for the treaty. Non-members are not embargoed merely for remaining outside the treaty.
 - Treaty activation and violations fire news events (`chaosx_contamination.7` and `.8`).
 - Members also get treaty decisions:
   - `air_cleanliness_global_cleaning_day`
-  - `air_cleanliness_joint_decontamination_program`
+  - `air_cleanliness_joint_filter_convoy`
+- Global Cleaning Day is an equipment-funded atomic project with a global lock, sponsor receipt, transaction number, and six-month cooldown.
+- Joint Filter Convoy is a real country-targeted decision. It spends support equipment and convoys, records the donor in a dedicated active-project registry, reserves the recipient's exact Phase 3 or worse priority state, changes existing Air Winter ledgers, and opens an `air_winter_relief_route` for up to six months while its conditions hold.
+- A pre-winter treaty pulse removes invalid routes before monthly state pressure is calculated.
+- Fallout preserves treaty membership and betrayal memory while silently cancelling active projects, invitations, and relief routes.
 - A treaty-specific global event (`chaosx_contamination.11`) reports coordinated cleanup waves.
+
+The full lifecycle, tuning, cleanup behavior, and remaining treaty omissions are documented in `docs/systems/air_cleanliness_treaty.md`.
 
 ## Threshold Behavior
 
@@ -93,6 +101,14 @@ Treaty event IDs in the same file:
 - `chaosx_contamination.9` Country invitation/join event
 - `chaosx_contamination.10` Founder confirmation
 - `chaosx_contamination.11` Global Cleaning Day news
+
+Treaty project and succession reports live in `events/air_cleanliness_treaty_events.txt` under `chaosx_air_treaty`:
+
+- `.1` Filter Convoy dispatch
+- `.2` Filter Convoy arrival
+- `.3` Secretariat succession
+- `.4` Filter Convoy route failure
+- `.5` Cleaning charter cancellation
 
 Treaty embargo ownership is tracked separately from condemnation sanctions and the Great Embargo event. Removing one source releases the native relation only when no other owner remains and the relation was created by these systems. Without By Blood Alone, treaty state and opinion consequences still apply but no native embargo relation can be created.
 
@@ -141,7 +157,7 @@ The Fallout checkbox lives in the Miscellaneous settings panel. The shared world
 
 ### Current transition boundary
 
-The live transition schema is version 4. Completed old Fallout saves are promoted non-destructively. Only the exact schema-3 map-return-error signature is recovered. Every other incomplete schema 1 through 3 state and every incomplete no-schema terminal state fail closed under blackout. No generic pre-destructive restart and no legacy altered-grade replay are active migration behavior.
+The live transition schema is version 11. Completed schema-10 and older saves promote non-destructively and are marked as lacking current-schema receipts. Active schema-7 through schema-10 saves can rebuild only in the snapshot phase before snapshot application or destruction and without an unrelated error. A schema-10 phase 2 transition can promote before grading mutation. Schema-10 phases 3 through 6 require current grading and exact live-to-frozen supply-network equality before allocation. Later or ambiguous transitions fail closed under blackout. The former schema-3 map-return-error promotion is removed. No generic pre-destructive restart or altered-grade replay is active.
 
 Player reservations are planned before the successor conflict ledger and before any successor allocation is permitted. The live commit path requires an already existing target with current-transition country and focus packages, survivable territory, and the exact reserved capital under its ownership and control. A two-pass global preflight validates every existing commit and proposed target before any switch. The durable assignment ledger is written before an optional `change_tag_from`, and retry recovery can rebuild reservations and revalidate assignment uniqueness.
 
@@ -149,7 +165,7 @@ An uncommitted player can therefore be committed only when the selected target i
 
 ### Dormant manual Fallout scenario
 
-The manual scenario is a separate caller into the same transition. Its dormant installed-build substrate expands 10,154 valid assigned land targets across 1,081 states into 41 batches. Batches 0 through 39 contain 250 targets and batch 40 contains 154. The public scenario row and dispatch are absent because the live registry ends at SCN-011 while Event 20 reserves raw id 12 without a live SCN-012 row.
+The manual scenario is a separate caller into the same transition. Its dormant installed-build substrate expands 10,154 valid assigned land targets across 1,081 states into 41 batches. Batches 0 through 39 contain 250 targets and batch 40 contains 154. The public scenario row and dispatch are absent. The live registry reaches SCN-013, while Event 20 reserves raw id 12 without a live SCN-012 row. Fallout reserves SCN-014 as one greater than the highest live assignment without renumbering or reusing an existing id.
 
 Static control flow requires complete callback and state-count verification, applies aggregate Air and nuclear consequences once, and stores an exact seven-day countdown before requesting Fallout. Runtime behavior is not proven. In particular, `launch_nuke` with `use_nuke = no` callback occurrence and synchrony are unknown. If all calls emit `on_nuke_drop`, vanilla may schedule about 121,848 one-day nuclear news event attempts through its twelve repeated news-event branches. This is a release blocker.
 
@@ -168,13 +184,14 @@ Static control flow requires complete callback and state-count verification, app
 
 - `GFX_modifiers_radiation` (already defined in `interface/countrystateview.gfx`) is used for the global contamination state modifier icon.
 - Condemnation list and detail view use `GFX_flag_small2` and `GFX_diplo_countrylist_flag_frame` for country flags, plus `GFX_mini_tooltip` for the detail-view diplomacy button.
-- Treaty news event uses existing report image:
-  - `GFX_report_event_generic_sign_treaty2` (no new sprite required).
+- Treaty reports use existing `GFX_report_event_generic_sign_treaty1`, `GFX_report_event_generic_sign_treaty2`, `GFX_report_event_generic_factory`, and `GFX_news_event_chaosx_cbw_doom` images.
+- Treaty decisions use `GFX_decision_category_contamination_defense` from `interface/chaosx_decisions.gfx` and vanilla `GFX_decision_generic_operation`.
+- No new treaty sprite or texture is required by the implemented tranche.
 - Natural smoke and ash uses the existing monthly model line and requires no icon or sprite registration.
 
 ## Future Plans
 
 1. Add more contamination sources (reactor accidents, industrial disasters, strategic bombardment side effects).
 2. Add regional climate bands so winter effects scale by latitude/biome instead of global random spread only.
-3. Expand mitigation systems with deeper decontamination projects and adaptation technology before irreversible collapse.
+3. Complete pooled decontamination, seed archive, evacuation corridor, inspection, vote, and major-burner treaty projects.
 4. Expand the Fallout-owned blackout and winter transition art with additional air-tab iconography and threshold warning overlays.

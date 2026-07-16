@@ -240,7 +240,7 @@ State flags:
 | `air_winter_recent_phase_change` | gates phase-change flavour and map emphasis |
 | `air_winter_recent_building_loss` | prevents repeated incident spam |
 | `air_winter_recent_population_crisis` | prevents repeated incident spam |
-| `air_winter_relief_route_active` | current foreign or treaty relief project |
+| `air_winter_relief_route` | current foreign or treaty relief project |
 | `air_winter_evacuation_active` | current local evacuation action |
 | `fallout_state_processed` | state rewrite completed |
 | `fallout_state_reserved_for_player` | cannot be assigned away before player handoff |
@@ -248,6 +248,21 @@ State flags:
 | `fallout_state_mutant_candidate` | fictional high-chaos package may use this region |
 
 Do not store true or false state as numeric variables unless an engine surface requires it.
+
+### Live treaty scope ledgers
+
+| Name | Scope family | Role |
+| --- | --- | --- |
+| `global.air_cleanliness_treaty_members` | country scopes | current live signatories |
+| `global.air_cleanliness_treaty_violators` | country scopes | persistent banned-country sanction targets |
+| `global.air_cleanliness_treaty_filter_convoy_donors` | country scopes | exact owners of active convoy projects |
+| `global.air_cleanliness_treaty_relief_states` | state scopes | completed relief routes awaiting expiry or invalidation cleanup |
+| `global.air_cleanliness_treaty_member_removals` | country scopes | member cleanup work queue |
+| `global.air_cleanliness_treaty_violation_queue` | country scopes | violation work queue |
+| `global.air_cleanliness_treaty_filter_convoy_cancellations` | country scopes | donor-project cancellation work queue |
+| `global.air_cleanliness_treaty_route_removals` | state scopes | route cleanup work queue |
+
+The four work queues are separate from the source ledgers they mutate. The treaty never removes an entry from a source array while iterating that same array.
 
 ## Country Fallout values
 

@@ -536,6 +536,27 @@ Performance rule:
 - refresh relations only on membership change, violation, or a low-frequency treaty pulse
 - do not apply every member-to-member opinion modifier every month
 
+Implemented lifecycle:
+
+- the monthly Air host calls one idempotent treaty coordinator
+- bounded arrays own members, violators, active convoy donors, pending removals, pending violation changes, and active relief states
+- the lowest eligible country id founds the treaty when severe contamination begins
+- invitations carry a generation receipt and expire without leaving stale eligibility
+- entry, exit, violation, annexation, founder succession, and dissolution own explicit cleanup paths
+- Global Cleaning Day consumes equipment and convoys from its sponsor and reserves that sponsor's civilian factories before cleanup begins
+- Joint Filter Convoy targets a treaty member, reserves one eligible controlled state, consumes real equipment and convoys, and writes one temporary relief-route ledger
+- route completion, cancellation, ownership drift, annexation, expiry, and treaty dissolution reconcile through idempotent receipts
+- invalid routes reconcile before monthly state pressure
+- Fallout silently clears active projects, invitations, and routes while preserving membership and betrayal memory
+
+Remaining treaty work:
+
+- verification missions and inspection disputes
+- evacuation corridors and refugee allocation
+- treaty-owned Fallout memory and successor legitimacy
+- broader regional and government-aware treaty event families
+- runtime observation of decision target scope, delayed completion, route pressure, and sanctions
+
 ## Gradual Fallout evaluation
 
 After state aggregation, evaluate Fallout eligibility.
