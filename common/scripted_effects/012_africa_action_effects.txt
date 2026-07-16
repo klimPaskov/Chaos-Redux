@@ -2490,6 +2490,18 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			event_target:africa_action_target = { OR = { africa_is_valid_relationship_target = yes has_country_flag = africa_regional_economic_project_target } }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				NOT = { is_capital = yes }
+				is_controlled_by = event_target:africa_action_target
+				event_target:africa_action_target = {
+					can_build_railway = {
+						level = constant:africa_action_building.rail_level
+						start_state = THIS.capital
+						target_state = PREV
+					}
+				}
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2500,6 +2512,11 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			event_target:africa_action_target = { OR = { africa_is_valid_relationship_target = yes has_country_flag = africa_regional_economic_project_target } }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				is_controlled_by = event_target:africa_action_target
+				africa_state_is_registered_river_or_lake_project_site = yes
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2510,6 +2527,12 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			event_target:africa_action_target = { OR = { africa_is_valid_relationship_target = yes has_country_flag = africa_regional_economic_project_target } }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				is_controlled_by = event_target:africa_action_target
+				is_coastal = yes
+				naval_base > constant:africa_value.zero
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -5124,6 +5147,82 @@ africa_action_transition_to_autonomous_federal = {
 }
 
 # COUNTRY scope on the resolved target.
+# STATE scope inside an active action target's immutable state array. A rail
+# proof exists only when the engine can build and then observe a real
+# connection from that country's capital to the selected state.
+africa_build_selected_rail_spine_connection = {
+	if = {
+		limit = {
+			NOT = { is_capital = yes }
+			is_controlled_by = ROOT
+			ROOT = {
+				can_build_railway = {
+					level = constant:africa_action_building.rail_level
+					start_state = ROOT.capital
+					target_state = PREV
+				}
+			}
+		}
+		ROOT = {
+			build_railway = {
+				level = constant:africa_action_building.rail_level
+				start_state = ROOT.capital
+				target_state = PREV
+			}
+		}
+		if = {
+			limit = {
+				ROOT = {
+					has_railway_connection = {
+						start_state = ROOT.capital
+						target_state = PREV
+					}
+				}
+			}
+			set_state_flag = africa_rail_spine_connection_operational
+			ROOT = { set_country_flag = africa_regional_rail_spine_operational }
+		}
+	}
+}
+
+# STATE scope. River and lake routes are grounded in the curated map registry
+# above; the infrastructure represents quays, ferries, feeder roads, and cargo
+# handling attached to that actual waterway.
+africa_build_selected_river_or_lake_transport = {
+	if = {
+		limit = {
+			is_controlled_by = ROOT
+			africa_state_is_registered_river_or_lake_project_site = yes
+		}
+		add_building_construction = {
+			type = infrastructure
+			level = constant:africa_action_building.infrastructure_minor
+			instant_build = yes
+		}
+		set_state_flag = africa_river_or_lake_transport_operational
+		ROOT = { set_country_flag = africa_river_transport_operational }
+	}
+}
+
+# STATE scope. A port modernisation can only operate on an existing naval-base
+# site, preventing an inland selection from receiving a paper result.
+africa_build_selected_port_modernisation = {
+	if = {
+		limit = {
+			is_controlled_by = ROOT
+			is_coastal = yes
+			naval_base > constant:africa_value.zero
+		}
+		add_building_construction = {
+			type = naval_base
+			level = constant:africa_action_building.port_minor
+			instant_build = yes
+		}
+		set_state_flag = africa_port_modernisation_operational
+		ROOT = { set_country_flag = africa_continental_port_modernised }
+	}
+}
+
 africa_apply_action_full_semantics = {
 	# Protection: concrete guarantees, material corridors, rescue records, and
 	# bounded state or naval access projects.
@@ -5395,18 +5494,24 @@ africa_apply_action_full_semantics = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_regional_rail_spine } }
-		for_each_scope_loop = { array = africa_action_state_targets add_building_construction = { type = infrastructure level = constant:africa_action_building.infrastructure_major instant_build = yes } }
-		set_country_flag = africa_regional_rail_spine_operational
+		for_each_scope_loop = {
+			array = africa_action_state_targets
+			africa_build_selected_rail_spine_connection = yes
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.expand_river_transport } }
-		for_each_scope_loop = { array = africa_action_state_targets add_building_construction = { type = infrastructure level = constant:africa_action_building.infrastructure_minor instant_build = yes } }
-		set_country_flag = africa_river_transport_operational
+		for_each_scope_loop = {
+			array = africa_action_state_targets
+			africa_build_selected_river_or_lake_transport = yes
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.modernise_continental_port } }
-		for_each_scope_loop = { array = africa_action_state_targets limit = { is_coastal = yes } add_building_construction = { type = naval_base level = constant:africa_action_building.port_minor instant_build = yes } }
-		set_country_flag = africa_continental_port_modernised
+		for_each_scope_loop = {
+			array = africa_action_state_targets
+			africa_build_selected_port_modernisation = yes
+		}
 		if = {
 			limit = {
 				africa_is_current_host = yes
@@ -5414,7 +5519,7 @@ africa_apply_action_full_semantics = {
 				has_country_flag = africa_first_proof_active
 				any_of_scopes = {
 					array = africa_action_state_targets
-					is_coastal = yes
+					has_state_flag = africa_port_modernisation_operational
 				}
 			}
 			set_country_flag = africa_first_proof_comoros_transport_operational
@@ -6122,6 +6227,7 @@ africa_resolve_action = {
 		save_event_target_as = africa_action_result_target
 		event_target:africa_host = { country_event = { id = chaosx.nr12.220 } }
 		africa_cleanup_action = yes
+		event_target:africa_host = { africa_focus_ai_retry_pending_route_action = yes }
 	}
 }
 
@@ -6140,5 +6246,6 @@ africa_cancel_action = {
 		}
 		africa_handle_first_proof_action_resolution = yes
 		africa_cleanup_action = yes
+		event_target:africa_host = { africa_focus_ai_retry_pending_route_action = yes }
 	}
 }

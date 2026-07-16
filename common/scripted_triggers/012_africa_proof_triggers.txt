@@ -285,6 +285,131 @@ africa_first_proof_full_action_context_is_valid = {
 	check_variable = { africa_resolved_first_proof_full_context > constant:africa_value.zero }
 }
 
+# COUNTRY scope during resolution. These role predicates repeat the launch
+# contract so a marker left by a partial auxiliary action can never be cashed
+# by a different later action against the same country.
+africa_resolved_first_proof_action_supplies_outward_partner = {
+	OR = {
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.deploy_volunteers }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.open_aid_corridor }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.offer_rival_arbitration }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.guarantee_sovereignty }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.dispatch_charter_mission }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.offer_defence_charter }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.hold_accession_referendum }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.connect_member_capitals }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.contain_regional_secession_war }
+	}
+}
+
+africa_resolved_first_proof_action_supplies_corridor_partner = {
+	OR = {
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.open_aid_corridor }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.dispatch_charter_mission }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.offer_defence_charter }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.connect_member_capitals }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.contain_regional_secession_war }
+	}
+}
+
+africa_resolved_first_proof_action_supplies_domestic_settlement = {
+	OR = {
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.hold_accession_referendum }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.convene_regional_congress }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.settle_overlapping_claims }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.guarantee_regional_representation }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.resource_sovereignty_review }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.offer_rival_arbitration }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.contain_regional_secession_war }
+	}
+}
+
+africa_resolved_first_proof_action_supplies_reform = {
+	OR = {
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.settle_overlapping_claims }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.resource_sovereignty_review }
+	}
+}
+
+africa_resolved_first_proof_action_supplies_regional_consent = {
+	OR = {
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.convene_regional_congress }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.settle_overlapping_claims }
+		check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.guarantee_regional_representation }
+	}
+}
+
+# STATE scope during resolution, with ROOT equal to the active action target.
+# Generic state flags cannot certify physical transport: the matching project
+# must have produced a live railway, registered waterway route, or port.
+africa_first_proof_resolved_physical_state_is_valid = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.build_regional_rail_spine } }
+			NOT = { check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.expand_river_transport } }
+			NOT = { check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.modernise_continental_port } }
+		}
+		AND = {
+			check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.build_regional_rail_spine }
+			has_state_flag = africa_rail_spine_connection_operational
+			is_controlled_by = ROOT
+			ROOT = {
+				has_railway_connection = {
+					start_state = ROOT.capital
+					target_state = PREV
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.expand_river_transport }
+			has_state_flag = africa_river_or_lake_transport_operational
+			is_controlled_by = ROOT
+			africa_state_is_registered_river_or_lake_project_site = yes
+		}
+		AND = {
+			check_variable = { africa_resolved_first_proof_action_id = constant:africa_action.modernise_continental_port }
+			has_state_flag = africa_port_modernisation_operational
+			is_controlled_by = ROOT
+			is_coastal = yes
+			naval_base > constant:africa_value.zero
+		}
+	}
+}
+
+# STATE scope during later ledger refresh. Institutional evidence has no
+# physical project marker. Once a transport marker exists, however, its live
+# map fact must remain true rather than surviving as history alone.
+africa_first_proof_state_project_evidence_is_live = {
+	OR = {
+		AND = {
+			NOT = { has_state_flag = africa_rail_spine_connection_operational }
+			NOT = { has_state_flag = africa_river_or_lake_transport_operational }
+			NOT = { has_state_flag = africa_port_modernisation_operational }
+		}
+		AND = {
+			has_state_flag = africa_rail_spine_connection_operational
+			CONTROLLER = {
+				exists = yes
+				has_railway_connection = {
+					start_state = THIS.capital
+					target_state = PREV
+				}
+			}
+		}
+		AND = {
+			has_state_flag = africa_river_or_lake_transport_operational
+			africa_state_is_registered_river_or_lake_project_site = yes
+			CONTROLLER = { exists = yes }
+		}
+		AND = {
+			has_state_flag = africa_port_modernisation_operational
+			is_coastal = yes
+			naval_base > constant:africa_value.zero
+			CONTROLLER = { exists = yes }
+		}
+	}
+}
+
 # COUNTRY scope on the host. Every boolean proof fact is represented by a
 # durable role flag rather than a numeric zero-or-one variable.
 africa_first_proof_role_credits_are_met = {
@@ -340,8 +465,13 @@ africa_first_proof_distinct_credits_are_met = {
 		compare = greater_than_or_equals
 	}
 	check_variable = {
-		var = africa_first_proof_corridor_credit_count
-		value = africa_first_proof_required_corridor_credits
+		var = africa_first_proof_corridor_partner_credit_count
+		value = africa_first_proof_required_corridor_partner_credits
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_first_proof_corridor_state_credit_count
+		value = africa_first_proof_required_corridor_state_credits
 		compare = greater_than_or_equals
 	}
 }
