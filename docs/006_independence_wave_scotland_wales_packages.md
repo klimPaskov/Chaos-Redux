@@ -31,7 +31,7 @@ IW-001 verifies the existing p1 territorial-defense package with military tradit
 
 Scotland uses `SCO_independence_wave_civic_convention` as its multi-route civic institution and `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses `WLS_independence_wave_national_council` and `WLS_independence_wave_mountain_commandant` in the equivalent roles.
 
-These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `50x67` army thumbnails. All eight masters were generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from their installed DDS files, and reviewed against the canonical vanilla portrait references.
+These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `65x67` army dossiers. Each large portrait master was generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from its installed DDS file, and reviewed against the canonical vanilla portrait references.
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. Each advisor has a distinct `65x67` dossier card produced from its own ImageGen master by the advisor-card processor, a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
@@ -66,11 +66,11 @@ Scotland registers `traditional_authority_vs_assembly` as its internal power str
 
 Projects use the shared Event 006 cost and duration tables. Civil work consumes command power, manpower, and a civilian factory; security work consumes command power, equipment, manpower, or army experience according to its tier; diplomacy consumes command power and convoys or trains; regional congresses pay the strategic bundle. Package projects serialize, occupy time, cancel if the exact package or capital proof fails, and apply explicit failure pressure where work can collapse.
 
-Scotland reconnects the central belt, organizes Firth convoys, settles British asset ledgers, and unifies territorial command. Its regional choice can remain with the Celtic Cooperation State or pivot to the North Atlantic Compact before formable discovery. A later maritime conference publishes the shared formation request.
+Scotland reconnects the central belt, organizes Firth convoys, settles British asset ledgers, and unifies territorial command. Its regional choice can remain with the Celtic Cooperation State or pivot to the North Atlantic Compact before formable discovery. A later maritime conference prepares the selected-family transaction and leaves a successful congress ready for the final proclamation.
 
-Wales reconnects north-south rail, establishes bilingual services, guards coalfield corridors, and settles the British property board. Its accepted family is the Celtic Cooperation State, followed by a Celtic council and shared formation request.
+Wales reconnects north-south rail, establishes bilingual services, guards coalfield corridors, and settles the British property board. Its accepted family is the Celtic Cooperation State, followed by a Celtic council that prepares the shared transaction and leaves a successful congress ready for the final proclamation.
 
-The conference effects publish a bounded shared formable operation through the selected-family registry. The shared registry keeps FORM01 and FORM02 fail-closed until their exact X-ending identity adapters, complete flag triplets, territory policies, and integration transactions are certified; the package does not invent a fallback tag.
+The conference effects publish a bounded shared formable operation through the selected-family registry. FORM-01 and FORM-02 have certified exact X-ending identity adapters, complete flag triplets, strict territory and consent policies, and reversible integration transactions. Their final proclamations remain governed by the shared readiness and commit gates; the package does not invent a fallback tag.
 
 ## Package focus branches
 
@@ -110,6 +110,6 @@ Scotland and Wales retain their installed vanilla flag triplets because these ar
 
 ## Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander thumbnails, and complete advisor boards are implemented. Readiness remains intentionally withheld from the static package registry because FORM01 and FORM02 still require certified X-ending identity adapters, complete ImageGen flag triplets, exact territory policies, and operational integration transactions. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, complete advisor boards, and FORM-01/02 integration are implemented. The package transaction keeps IW-001 and IW-002 fail-closed until an independent promotion audit authorizes their compile-time content attestation and scenario admission. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
