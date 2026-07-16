@@ -151,6 +151,8 @@ Flavour families:
 - aviation and navigation disruption
 - local fuel and heating demand
 
+The implemented regional openings in `chaosx.fallout.1` through `.5` each write one owner-bound policy branch and schedule the shared `chaosx.fallout.6` return after 21 days. The return evaluates live ledgers and operational buildings even after ordinary phase movement. Ten success predicates and their direct inverses create twenty deterministic visible results. Casualty failures use the shared Deaths path. Phase 1 issues no direct building damage. Short factory-access and supply modifiers express disruption or relief for 21 days, remain through normal transaction finalization, and clear only through timed expiry or full Air Winter state reset.
+
 ### Phase 2
 
 Primary effects:
@@ -429,6 +431,8 @@ The implemented seasonal families are:
 - terminal season when a Phase 6 state is observed above the terminal contamination threshold
 
 Country receipts make each family at most once for its recorded year. Nine regional severe-year memories seed the first severe year and advance only after a validated later-year second-winter dispatch. Prior-year markers remain valid when their receipt is still earlier than the marker year. No seasonal family adds a world iterator. Full ordering, cleanup, and engine-boundary proof is recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
+
+The Phase 1 regional return transaction uses the same regular country and state event targets as dispatch. Opening validation rejects a generic pending row or any live Air Winter branch. Result validation independently proves the pending flag, stored original owner, current ownership, and exactly one of ten Phase 1 branches. Old opening popups use a notice-only rejection path that cannot clear a newer transaction. Each opening keeps one executable choice, while factory, port, manpower, Command Power, and transport gates constrain only their matching alternatives. Full proof is recorded in `AIR_WINTER_PHASE_1_REGIONAL_RETURN_EVENT_PROOF.md`.
 
 The implemented Phase 3 identity layer checks reactor, hydroelectric dam, oil or refinery, coal or heavy industry, transport, then clinic and heat inside the selected state. Coal or heavy industry requires positive coal or a combined total of at least four operational factories through a five-case ladder: at least four military, at least three military and one civilian, at least two military and two civilian, at least one military and three civilian, or at least four civilian. The country still chooses one candidate by family priority, origin cycle, phase and pressure score, then state id. The Phase 3 seen flag permits one ordinary Phase 3 route per country.
 

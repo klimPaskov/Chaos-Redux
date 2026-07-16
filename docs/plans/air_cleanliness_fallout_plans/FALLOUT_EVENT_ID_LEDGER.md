@@ -42,6 +42,7 @@ The dedicated event file was scanned on 2026-07-15 before this reservation. Suff
 
 | Suffix | Primary family | Final event | Ownership | Caller | Follow-up | Asset | Audit status |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
+| 6 | Air Winter Phase 1 regional return | Twenty regional policy results | bound original owner and one exact Phase 1 state branch | 1 through 5 after one of ten regional policies | none | `GFX_report_event_air_winter_phase_1` | implemented with regular targets, exact branch cardinality, ten success and inverse failure pairs, Deaths, timed result modifiers, AI projections, memory, stale handling, and cleanup |
 | 13 | Air Winter Phase 2 Desert City and regional fallback | The Frozen Main and the Ward Cisterns for the exact receipt, Ice in the District Pumps for the generic row | exact arid urban state through subtype `desert_city`, otherwise non-city arid or Mediterranean state through subtype `none` | Air Winter candidate dispatcher | 49 after 30 days only for one of three exact-receipt policies | exact receipt uses `GFX_report_event_air_winter_desert_water_convoy`, generic row uses `GFX_report_event_air_winter_phase_2` | implemented with route subtype, ordinary and first-frost persistence, exact and generic interface separation, exact affordability, AI, owner-bound receipt, and cleanup |
 | 38 | Air Winter Phase 2 island refugees | Boats Beneath the Shore Lights | eligible engine-island receiver with a live foreign coastal source | Air Winter candidate dispatcher after bounded source selection | 39 after 30 days | `GFX_report_event_air_winter_island_refugee_harbor` | implemented with deferred scheduler commit, balanced migration, AI, memory, cleanup, localisation, and dedicated asset |
 | 39 | Air Winter Phase 2 island refugees | Thirty Days at the Island Shore | bound receiver and destination state | 38 after one of three positive transfers | none | `GFX_report_event_air_winter_island_refugee_harbor` | implemented with six exclusive results, Deaths on failures, matching memory, and cleanup |
@@ -51,7 +52,9 @@ The dedicated event file was scanned on 2026-07-15 before this reservation. Suff
 
 These identifiers belong to the Air Winter pilot. They are not Fallout living-world content and do not increase the countable 660-block release-floor total.
 
-Suffix `49` is allocated to the implemented Desert City result and is no longer free.
+The current Air Winter pilot contains 52 event blocks, 191 options, 190 effect-bearing options, and 67 delayed-result schedules. The countable Fallout living-world release-floor total remains 0 of 660 blocks.
+
+Suffixes `6` and `49` are allocated to implemented Air Winter results and are no longer free.
 
 ## Collision boundary
 

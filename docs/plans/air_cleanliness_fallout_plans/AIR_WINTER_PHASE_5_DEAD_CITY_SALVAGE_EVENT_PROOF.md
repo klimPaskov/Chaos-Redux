@@ -164,7 +164,7 @@ The Air Winter pilot snapshot at the end of this dead-city tranche contained:
 - 54 delayed-result schedules
 - one effect-free stale-order acknowledgement
 
-Event ids 47 and 48 each occur once. Event id 49 was free at this snapshot and is now allocated to the later Desert City result recorded in `AIR_WINTER_PHASE_2_DESERT_CITY_EVENT_PROOF.md`. The current pilot totals are 51 blocks, 171 options, 170 effect-bearing options, and 57 delayed-result schedules. All 39 dead-city localisation references resolve. Script braces balance in the event, trigger, effect, constants, and sprite files. The dedicated source and runtime assets have distinct hashes from the other Air Winter report assets.
+Event ids 47 and 48 each occur once. Event id 49 was free at this snapshot and is now allocated to the later Desert City result recorded in `AIR_WINTER_PHASE_2_DESERT_CITY_EVENT_PROOF.md`. The current pilot totals are 52 blocks, 191 options, 190 effect-bearing options, and 67 delayed-result schedules. All 39 dead-city localisation references resolve. Script braces balance in the event, trigger, effect, constants, and sprite files. The dedicated source and runtime assets have distinct hashes from the other Air Winter report assets.
 
 A narrow refreshed `hoi4.event_inspect` lint request for `chaosx.fallout.47` reached the installed read-only service. It returned `ARTIFACT_STORAGE_LIMIT` before scanning or producing a diagnostic. No source conclusion relies on that failed optional artifact.
 

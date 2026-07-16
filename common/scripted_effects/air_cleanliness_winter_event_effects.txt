@@ -28,7 +28,144 @@ air_winter_event_refresh_country_cooldown = {
 }
 
 # Supported scope: STATE
+air_winter_phase_1_clear_pending_branch = {
+	clr_state_flag = air_winter_phase_1_chain_boreal_shifts
+	clr_state_flag = air_winter_phase_1_chain_boreal_full
+	clr_state_flag = air_winter_phase_1_chain_maritime_warehouses
+	clr_state_flag = air_winter_phase_1_chain_maritime_shipyards
+	clr_state_flag = air_winter_phase_1_chain_arid_cisterns
+	clr_state_flag = air_winter_phase_1_chain_arid_fountains
+	clr_state_flag = air_winter_phase_1_chain_tropical_drainage
+	clr_state_flag = air_winter_phase_1_chain_tropical_schools
+	clr_state_flag = air_winter_phase_1_chain_highland_markers
+	clr_state_flag = air_winter_phase_1_chain_highland_recall
+}
+
+# Supported scope: STATE
+air_winter_phase_1_clear_result_modifiers = {
+	remove_dynamic_modifier = { modifier = air_winter_phase_1_factory_access_disruption_state }
+	remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_disruption_state }
+	remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_relief_state }
+}
+
+# Supported scope: STATE
+air_winter_phase_1_clear_state_result_memory = {
+	clr_state_flag = air_winter_memory_phase_1_success
+	clr_state_flag = air_winter_memory_phase_1_failure
+	clr_state_flag = air_winter_memory_phase_1_casualties
+}
+
+# Supported scope: COUNTRY
+air_winter_phase_1_clear_country_result_memory = {
+	clr_country_flag = air_winter_memory_phase_1_success
+	clr_country_flag = air_winter_memory_phase_1_failure
+	clr_country_flag = air_winter_memory_phase_1_casualties
+}
+
+# Supported scope: STATE. Opening cleanup deliberately preserves a resolved
+# timed modifier that may belong to a former owner of the same state.
+air_winter_phase_1_clear_opening_memory = {
+	air_winter_phase_1_clear_pending_branch = yes
+	air_winter_phase_1_clear_state_result_memory = yes
+	clr_state_flag = air_winter_memory_boreal_shift_network
+	clr_state_flag = air_winter_memory_boreal_full_shifts
+	clr_state_flag = air_winter_memory_dry_warehouse_rooms
+	clr_state_flag = air_winter_memory_shipyard_coal_priority
+	clr_state_flag = air_winter_memory_cistern_rationing
+	clr_state_flag = air_winter_memory_open_fountains
+	clr_state_flag = air_winter_memory_cold_rain_drainage
+	clr_state_flag = air_winter_memory_school_shelters
+	clr_state_flag = air_winter_memory_route_markers
+	clr_state_flag = air_winter_memory_recalled_road_crews
+}
+
+# Supported scope: STATE
+air_winter_phase_1_clear_state_memory = {
+	air_winter_phase_1_clear_opening_memory = yes
+	air_winter_phase_1_clear_result_modifiers = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_phase_1_clear_country_memory = {
+	air_winter_phase_1_clear_country_result_memory = yes
+	clr_country_flag = air_winter_memory_boreal_shift_network
+	clr_country_flag = air_winter_memory_boreal_full_shifts
+	clr_country_flag = air_winter_memory_dry_warehouse_rooms
+	clr_country_flag = air_winter_memory_shipyard_coal_priority
+	clr_country_flag = air_winter_memory_cistern_rationing
+	clr_country_flag = air_winter_memory_open_fountains
+	clr_country_flag = air_winter_memory_cold_rain_drainage
+	clr_country_flag = air_winter_memory_school_shelters
+	clr_country_flag = air_winter_memory_route_markers
+	clr_country_flag = air_winter_memory_recalled_road_crews
+}
+
+# Supported scope: STATE. The validated current owner is the country that
+# scheduled the delayed return.
+air_winter_phase_1_record_success = {
+	air_winter_phase_1_clear_state_result_memory = yes
+	set_state_flag = air_winter_memory_phase_1_success
+	OWNER = {
+		air_winter_phase_1_clear_country_result_memory = yes
+		set_country_flag = air_winter_memory_phase_1_success
+	}
+}
+
+# Supported scope: STATE
+air_winter_phase_1_record_failure = {
+	air_winter_phase_1_clear_state_result_memory = yes
+	set_state_flag = air_winter_memory_phase_1_failure
+	OWNER = {
+		air_winter_phase_1_clear_country_result_memory = yes
+		set_country_flag = air_winter_memory_phase_1_failure
+	}
+}
+
+# Supported scope: STATE. Called after the failure memory has been written.
+air_winter_phase_1_record_casualties = {
+	set_state_flag = air_winter_memory_phase_1_casualties
+	OWNER = { set_country_flag = air_winter_memory_phase_1_casualties }
+}
+
+# Supported scope: STATE
+air_winter_phase_1_apply_factory_access_disruption = {
+	air_winter_phase_1_clear_result_modifiers = yes
+	set_temp_variable = { air_winter_phase_1_modifier_days = constant:air_winter_event_runtime.delayed_short_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_phase_1_factory_access_disruption_state
+		days = air_winter_phase_1_modifier_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_phase_1_apply_supply_disruption = {
+	air_winter_phase_1_clear_result_modifiers = yes
+	set_temp_variable = { air_winter_phase_1_modifier_days = constant:air_winter_event_runtime.delayed_short_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_phase_1_supply_disruption_state
+		days = air_winter_phase_1_modifier_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_phase_1_apply_supply_relief = {
+	air_winter_phase_1_clear_result_modifiers = yes
+	set_temp_variable = { air_winter_phase_1_modifier_days = constant:air_winter_event_runtime.delayed_short_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_phase_1_supply_relief_state
+		days = air_winter_phase_1_modifier_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_phase_1_finalize_result = {
+	air_winter_phase_1_clear_pending_branch = yes
+	air_winter_event_refresh_state = yes
+}
+
+# Supported scope: STATE
 air_winter_event_cancel_pending_chain = {
+	air_winter_phase_1_clear_pending_branch = yes
 	air_winter_island_refugee_clear_pending_branch = yes
 	air_winter_desert_city_clear_opening_receipt = yes
 	air_winter_desert_city_clear_pending_branch = yes
@@ -106,6 +243,11 @@ air_winter_event_reconcile_pending_chain = {
 	if = {
 		limit = {
 			OR = {
+				AND = {
+					air_winter_event_has_any_phase_1_branch = yes
+					NOT = { has_state_flag = air_winter_pending_delayed_result }
+				}
+				air_winter_event_has_malformed_phase_1_branches = yes
 				AND = {
 					air_winter_event_has_exact_desert_city_branch = yes
 					NOT = { has_state_flag = air_winter_pending_delayed_result }
@@ -185,6 +327,18 @@ air_winter_event_reject_stale_choice = {
 	}
 }
 
+# Supported scope: COUNTRY. An old Phase 1 opening popup may coexist with a
+# newer valid transaction, so this notice path never clears state data.
+air_winter_event_reject_stale_opening_choice = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		country_event = { id = chaosx.fallout.203 }
+	}
+}
+
 # Supported scope: STATE
 air_winter_event_refresh_state = {
 	air_winter_normalize_state_ledger = yes
@@ -202,6 +356,7 @@ air_winter_event_refresh_state = {
 
 # Supported scope: COUNTRY
 air_winter_event_clear_country_memory = {
+	air_winter_phase_1_clear_country_memory = yes
 	air_winter_island_refugee_clear_country_memory = yes
 	air_winter_desert_city_clear_country_memory = yes
 	air_winter_dead_city_clear_country_memory = yes
@@ -244,19 +399,10 @@ air_winter_event_clear_country_memory = {
 air_winter_event_clear_state_memory = {
 	clear_variable = air_winter_last_event_date
 	air_winter_event_cancel_pending_chain = yes
+	air_winter_phase_1_clear_state_memory = yes
 	air_winter_island_refugee_clear_state_memory = yes
 	air_winter_desert_city_clear_state_memory = yes
 	air_winter_dead_city_clear_state_memory = yes
-	clr_state_flag = air_winter_memory_boreal_shift_network
-	clr_state_flag = air_winter_memory_boreal_full_shifts
-	clr_state_flag = air_winter_memory_dry_warehouse_rooms
-	clr_state_flag = air_winter_memory_shipyard_coal_priority
-	clr_state_flag = air_winter_memory_cistern_rationing
-	clr_state_flag = air_winter_memory_open_fountains
-	clr_state_flag = air_winter_memory_cold_rain_drainage
-	clr_state_flag = air_winter_memory_school_shelters
-	clr_state_flag = air_winter_memory_route_markers
-	clr_state_flag = air_winter_memory_recalled_road_crews
 	clr_state_flag = air_winter_memory_seed_vaults
 	clr_state_flag = air_winter_memory_herd_slaughter
 	clr_state_flag = air_winter_memory_breeding_stock
