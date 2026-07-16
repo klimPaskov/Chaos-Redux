@@ -1,15 +1,203 @@
 add_namespace = chaosx.nr12
 
-# CHAOS REDUX - EVENT 012 PLACEHOLDER
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA
+# ============================================================================
+# The shared fire-once dispatcher resolves a weighted African-rooted host before
+# .1 fires. The entry preserves that country's public identity and opens a
+# protection-first continental project. Constitutional choice, accession, and
+# integration remain later focus/decision/event work rather than popup rewards.
+# ============================================================================
+
+# Canonical fire-once entry. ROOT is the validated prefire host.
 country_event = {
 	id = chaosx.nr12.1
 	title = chaosx.nr12.1.t
 	desc = chaosx.nr12.1.d
-	picture = GFX_report_event_generic_ruins
+	picture = GFX_report_event_generic_african_unity
 	is_triggered_only = yes
+
+	trigger = {
+		africa_is_eligible_host = yes
+	}
+
+	immediate = {
+		africa_initialize_selected_host = yes
+	}
 
 	option = {
 		name = chaosx.nr12.1.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# First contacts. Each visible choice selects a real regional country and writes
+# it to the capped target store. No branch grants membership or integration.
+country_event = {
+	id = chaosx.nr12.2
+	title = chaosx.nr12.2.t
+	desc = chaosx.nr12.2.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_first_proof_pending
+		NOT = { has_country_flag = africa_first_contact_selected }
+	}
+
+	immediate = {
+		africa_prepare_first_contact_targets = yes
+	}
+
+	option = {
+		name = chaosx.nr12.2.a
+		trigger = { has_event_target = africa_first_contact_threatened }
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 2
+				has_defensive_war = yes
+			}
+		}
+		africa_register_first_contact_threatened = yes
+	}
+
+	option = {
+		name = chaosx.nr12.2.b
+		trigger = { has_event_target = africa_first_contact_subject }
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 2
+				has_government = democratic
+			}
+			modifier = {
+				factor = 2
+				has_government = communism
+			}
+		}
+		africa_register_first_contact_subject = yes
+	}
+
+	option = {
+		name = chaosx.nr12.2.c
+		trigger = { has_event_target = africa_first_contact_regional_power }
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+		}
+		africa_register_first_contact_regional_power = yes
+	}
+
+	option = {
+		name = chaosx.nr12.2.no_contact
+		trigger = {
+			NOT = { has_event_target = africa_first_contact_threatened }
+			NOT = { has_event_target = africa_first_contact_subject }
+			NOT = { has_event_target = africa_first_contact_regional_power }
+		}
+		ai_chance = { base = 100 }
+		africa_begin_delegationless_first_proof = yes
+	}
+}
+
+# Shared accession/ecological offer response. The target can accept, negotiate a
+# partial settlement, or refuse. No opinion threshold promotes a relationship.
+country_event = {
+	id = chaosx.nr12.210
+	title = chaosx.nr12.210.t
+	desc = chaosx.nr12.210.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_action_record_active
+		check_variable = { africa_active_action_kernel = constant:africa_action_kernel.offer_response }
+	}
+
+	option = {
+		name = chaosx.nr12.210.a
+		ai_chance = {
+			base = 50
+			modifier = {
+				factor = 2
+				check_variable = {
+					var = africa_member_confidence
+					value = constant:africa_measure.high
+					compare = greater_than_or_equals
+				}
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					africa_relationship_is_protected = yes
+					africa_relationship_is_associate = yes
+					africa_relationship_is_chartered = yes
+				}
+			}
+		}
+		set_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+		africa_resolve_action = yes
+	}
+
+	option = {
+		name = chaosx.nr12.210.b
+		ai_chance = {
+			base = 30
+			modifier = {
+				factor = 2
+				OR = {
+					NOT = { has_variable = africa_member_confidence }
+					check_variable = {
+						var = africa_member_confidence
+						value = constant:africa_measure.high
+						compare = less_than
+					}
+				}
+			}
+		}
+		set_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial }
+		africa_resolve_action = yes
+	}
+
+	option = {
+		name = chaosx.nr12.210.c
+		ai_chance = {
+			base = 20
+			modifier = {
+				factor = 3
+				OR = {
+					africa_relationship_is_resistant = yes
+					africa_relationship_is_rival_bloc = yes
+					check_variable = {
+						var = africa_member_confidence
+						value = constant:africa_measure.low
+						compare = less_than
+					}
+				}
+			}
+		}
+		set_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+		africa_resolve_action = yes
+	}
+}
+
+# Host-facing result notice for the shared runtime.
+country_event = {
+	id = chaosx.nr12.220
+	title = chaosx.nr12.220.t
+	desc = chaosx.nr12.220.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = { africa_is_current_host = yes }
+
+	option = {
+		name = chaosx.nr12.220.a
 		ai_chance = { base = 100 }
 	}
 }
