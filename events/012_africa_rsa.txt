@@ -1,0 +1,223 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AFRICA ALLIED-RUPTURE EVENTS
+# ============================================================================
+# Presents both named governments, regional aid responses, Allied leadership
+# choices, the pairwise Cape settlement, loyalist suppression, and the one-use
+# exile continuation. Gameplay state is owned by 012_africa_rsa_effects.txt.
+# ============================================================================
+
+add_namespace = chaosx.nr12
+
+country_event = {
+	id = chaosx.nr12.1200
+	title = chaosx.nr12.1200.t
+	desc = chaosx.nr12.1200.d
+	picture = GFX_report_event_generic_african_unity
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1200.a
+		custom_effect_tooltip = africa_rsa_continental_coalition_opening_tt
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+	}
+}
+
+country_event = {
+	id = chaosx.nr12.1201
+	title = chaosx.nr12.1201.t
+	desc = chaosx.nr12.1201.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1201.a
+		custom_effect_tooltip = africa_rsa_allied_union_opening_tt
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+	}
+}
+
+# ROOT is the African country selected by the coalition. FROM is the coalition.
+country_event = {
+	id = chaosx.nr12.1202
+	title = chaosx.nr12.1202.t
+	desc = chaosx.nr12.1202.d
+	picture = GFX_report_event_generic_african_unity
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1202.a
+		trigger = {
+			has_event_target = africa_rsa_continental_coalition
+			event_target:africa_rsa_continental_coalition = {
+				exists = yes
+				has_global_flag = africa_rsa_civil_war_active
+			}
+		}
+		ai_chance = {
+			base = constant:africa_rsa_ai.option_normal
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				has_opinion = { target = FROM value > constant:africa_rsa_ai.support_opinion_gate }
+			}
+		}
+		custom_effect_tooltip = africa_rsa_regional_support_accept_tt
+		hidden_effect = {
+			send_equipment_fraction = {
+				target = event_target:africa_rsa_continental_coalition
+				value = constant:africa_rsa_ratio.regional_support_transfer
+			}
+			save_event_target_as = africa_rsa_support_actor
+			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_support = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr12.1202.b
+		ai_chance = { base = constant:africa_rsa_ai.option_minor }
+		custom_effect_tooltip = africa_rsa_regional_support_refuse_tt
+		hidden_effect = {
+			set_country_flag = africa_rsa_regional_support_refused
+			save_event_target_as = africa_rsa_support_actor
+			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_response = yes }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr12.1204
+	title = chaosx.nr12.1204.t
+	desc = chaosx.nr12.1204.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1204.a
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+		custom_effect_tooltip = africa_rsa_cape_convention_tt
+		hidden_effect = { africa_rsa_settle_cape_convention = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.1204.b
+		trigger = {
+			has_event_target = africa_rsa_allied_faction_leader
+			event_target:africa_rsa_allied_faction_leader = {
+				exists = yes
+				NOT = { tag = ROOT }
+				NOT = { has_capitulated = yes }
+				is_faction_leader = yes
+			}
+		}
+		ai_chance = {
+			base = constant:africa_rsa_ai.option_normal
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				has_war = yes
+			}
+		}
+		custom_effect_tooltip = africa_rsa_temporary_base_lease_tt
+		hidden_effect = { africa_rsa_settle_temporary_base_lease = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.1204.c
+		ai_chance = { base = constant:africa_rsa_ai.option_minor }
+		custom_effect_tooltip = africa_rsa_closed_ports_tt
+		hidden_effect = { africa_rsa_settle_closed_ports = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr12.1205
+	title = chaosx.nr12.1205.t
+	desc = chaosx.nr12.1205.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1205.a
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+		custom_effect_tooltip = africa_rsa_loyalist_suppression_tt
+		hidden_effect = { africa_rsa_finalize_loyalist_suppression = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr12.1206
+	title = chaosx.nr12.1206.t
+	desc = chaosx.nr12.1206.d
+	picture = GFX_report_event_generic_african_unity
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1206.a
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+		custom_effect_tooltip = africa_rsa_exile_custodian_tt
+		set_country_flag = africa_rsa_exile_council_received
+		set_country_flag = africa_rsa_exile_recovery_available
+	}
+}
+
+country_event = {
+	id = chaosx.nr12.1207
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { africa_rsa_end_temporary_base_lease = yes }
+}
+
+country_event = {
+	id = chaosx.nr12.1208
+	title = chaosx.nr12.1208.t
+	desc = chaosx.nr12.1208.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1208.a
+		ai_chance = { base = constant:africa_rsa_ai.option_major }
+		custom_effect_tooltip = africa_rsa_no_exile_patron_tt
+	}
+}
+
+# ROOT is the pre-war Allied faction leader. FROM is the coalition.
+country_event = {
+	id = chaosx.nr12.1209
+	title = chaosx.nr12.1209.t
+	desc = chaosx.nr12.1209.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr12.1209.a
+		ai_chance = {
+			base = constant:africa_rsa_ai.option_major
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				is_in_faction_with = event_target:africa_rsa_allied_union_government
+			}
+		}
+		custom_effect_tooltip = africa_rsa_allied_leader_support_tt
+		hidden_effect = {
+			send_equipment_fraction = {
+				target = event_target:africa_rsa_allied_union_government
+				value = constant:africa_rsa_ratio.regional_support_transfer
+			}
+			set_country_flag = africa_rsa_allied_leader_material_support
+			event_target:africa_rsa_allied_union_government = { set_country_flag = africa_rsa_allied_material_support_received }
+		}
+	}
+
+	option = {
+		name = chaosx.nr12.1209.b
+		ai_chance = { base = constant:africa_rsa_ai.option_normal }
+		custom_effect_tooltip = africa_rsa_allied_leader_mediate_tt
+		set_country_flag = africa_rsa_allied_leader_mediation
+	}
+
+	option = {
+		name = chaosx.nr12.1209.c
+		ai_chance = { base = constant:africa_rsa_ai.option_minor }
+		custom_effect_tooltip = africa_rsa_allied_leader_distance_tt
+		set_country_flag = africa_rsa_allied_leader_distanced
+	}
+}

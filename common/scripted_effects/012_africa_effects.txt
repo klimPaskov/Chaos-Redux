@@ -447,9 +447,12 @@ africa_initialize_selected_host = {
 		clear_array = africa_active_congress_regions
 		clear_array = africa_active_obligations
 		clear_array = africa_warning_ledger
+		clear_array = africa_peace_exemption_countries
+		clear_array = africa_peace_exemption_states
 
 		set_variable = { africa_constitution = constant:africa_constitution.uncommitted }
 		set_variable = { africa_current_phase = constant:africa_action_phase.opening }
+		set_variable = { africa_peace_exemption_days = constant:africa_continental_settlement.peace_exemption_days }
 		set_variable = { africa_selected_action_family = constant:africa_action_family.protection }
 		set_variable = { africa_selected_action_id = constant:africa_action.none }
 		set_variable = { africa_action_generation = constant:africa_action_capacity.action_generation_start }
@@ -506,6 +509,8 @@ africa_initialize_selected_host = {
 		}
 		africa_clamp_host_values = yes
 		africa_load_continental_focus_tree = yes
+		africa_achievement_initialize_normal_host = yes
+		africa_schedule_next_evolution_clock = yes
 
 		set_temp_variable_to_random = {
 			var = africa_first_contact_delay
@@ -968,8 +973,191 @@ africa_reconcile_relationship_counts_and_caps = {
 	}
 }
 
-# COUNTRY scope on a member. Applies the accepted confidence consequence and
-# records lifetime evidence after a successful relationship transition.
+# COUNTRY scope on a member. Only Event 12's two constitutional subject tiers
+# may be ended here; this protects unrelated subject arrangements.
+africa_release_member_from_continental_subject_status = {
+	if = {
+		limit = { africa_is_charter_subject_of_current_host = yes }
+		event_target:africa_host = { end_puppet = ROOT }
+	}
+	clr_country_flag = africa_member_settlement_term_locked
+	clr_country_flag = africa_member_under_common_command
+}
+
+# COUNTRY scope on a member after its relationship variable has changed. The
+# negotiated label and the engine subject status are one atomic settlement.
+africa_apply_member_autonomy_for_current_relationship = {
+	if = {
+		limit = { africa_relationship_is_autonomous_federal = yes }
+		set_country_flag = africa_member_autonomy_statute_accepted
+		set_country_flag = africa_member_continental_constitution_accepted
+		set_country_flag = africa_member_settlement_term_locked
+		clr_country_flag = africa_member_under_common_command
+		if = {
+			limit = { NOT = { has_autonomy_state = autonomy_africa_federal_member } }
+			event_target:africa_host = {
+				set_autonomy = {
+					target = ROOT
+					autonomy_state = autonomy_africa_federal_member
+					end_wars = no
+					end_civil_wars = no
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { africa_relationship_is_integrated_region = yes }
+		set_country_flag = africa_member_final_integration_consent
+		set_country_flag = africa_member_continental_constitution_accepted
+		set_country_flag = africa_member_settlement_term_locked
+		set_country_flag = africa_member_under_common_command
+		if = {
+			limit = { NOT = { has_autonomy_state = autonomy_africa_integrated_region } }
+			event_target:africa_host = {
+				set_autonomy = {
+					target = ROOT
+					autonomy_state = autonomy_africa_integrated_region
+					end_wars = no
+					end_civil_wars = no
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { africa_relationship_is_leaving = yes }
+		clr_country_flag = africa_member_settlement_term_locked
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_relationship_is_outside = yes
+				africa_relationship_is_protected = yes
+				africa_relationship_is_associate = yes
+				africa_relationship_is_chartered = yes
+				africa_relationship_is_resistant = yes
+				africa_relationship_is_rival_bloc = yes
+				africa_relationship_is_occupied_settlement = yes
+			}
+		}
+		africa_release_member_from_continental_subject_status = yes
+	}
+}
+
+# COUNTRY scope on a government that accepted an overlapping-claims accord.
+# The selected state array is copied into a durable, visible completion mission.
+africa_register_selected_continental_peace_exemption = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_continental_peace_completion_mission_active } }
+		clear_array = africa_continental_peace_exemption_states
+	}
+	set_country_flag = africa_continental_peace_terms_accepted
+	set_country_flag = africa_continental_peace_completion_mission_active
+	set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation }
+	for_each_scope_loop = {
+		array = africa_action_state_targets
+		limit = {
+			is_on_continent = africa
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
+		set_state_flag = africa_continental_peace_exemption_active
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_continental_peace_exemption_states value = PREV } } }
+				add_to_array = { array = africa_continental_peace_exemption_states value = PREV }
+			}
+		}
+		event_target:africa_host = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_peace_exemption_states value = PREV } } }
+				add_to_array = { array = africa_peace_exemption_states value = PREV }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_continental_peace_exemption_states^num > constant:africa_value.zero } }
+		event_target:africa_host = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_peace_exemption_countries value = PREV } } }
+				add_to_array = { array = africa_peace_exemption_countries value = PREV }
+			}
+		}
+	}
+	else = {
+		clr_country_flag = africa_continental_peace_terms_accepted
+		clr_country_flag = africa_continental_peace_completion_mission_active
+	}
+}
+
+# COUNTRY scope on the mission target. Clears both country and state indexes.
+africa_cleanup_continental_peace_exemption = {
+	for_each_scope_loop = {
+		array = africa_continental_peace_exemption_states
+		clr_state_flag = africa_continental_peace_exemption_active
+		event_target:africa_host = {
+			remove_from_array = { array = africa_peace_exemption_states value = PREV }
+		}
+	}
+	clear_array = africa_continental_peace_exemption_states
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			remove_from_array = { array = africa_peace_exemption_countries value = PREV }
+		}
+	}
+	clr_country_flag = africa_continental_peace_completion_mission_active
+	clr_country_flag = africa_continental_peace_terms_accepted
+}
+
+# COUNTRY scope on the mission target. A completion is accepted only when the
+# polity has reached one of the constitutional settlement forms; broken terms
+# create a real relationship consequence rather than silently disappearing.
+africa_close_continental_peace_exemption = {
+	if = {
+		limit = { africa_continental_peace_exemption_completion_is_ready = yes }
+		set_country_flag = africa_continental_peace_completion_succeeded
+		event_target:africa_host = {
+			add_to_variable = { africa_charter_authority = constant:africa_continental_settlement.peace_exemption_success_authority }
+			africa_clamp_host_values = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_flag = africa_event_active
+			has_event_target = africa_host
+			africa_member_host_generation_is_current = yes
+			event_target:africa_host = { africa_is_current_host = yes }
+		}
+		set_country_flag = africa_continental_peace_completion_failed
+		event_target:africa_host = {
+			add_to_variable = { africa_colonial_pressure = constant:africa_continental_settlement.peace_exemption_breach_pressure }
+			add_to_variable = { africa_integration_burden = constant:africa_continental_settlement.peace_exemption_breach_burden }
+			africa_clamp_host_values = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					africa_relationship_is_protected = yes
+					africa_relationship_is_associate = yes
+					africa_relationship_is_chartered = yes
+					africa_relationship_is_autonomous_federal = yes
+					africa_relationship_is_integrated_region = yes
+				}
+			}
+			set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.resistant }
+			africa_apply_relationship_transition = yes
+		}
+		else_if = {
+			limit = { africa_relationship_is_outside = yes }
+			set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.rival_bloc }
+			africa_apply_relationship_transition = yes
+		}
+	}
+	africa_cleanup_continental_peace_exemption = yes
+}
+
+# COUNTRY scope on a member. Applies the accepted confidence consequence,
+# engine autonomy consequence, and lifetime evidence after a transition.
 africa_apply_relationship_transition_consequence = {
 	if = { limit = { africa_relationship_is_outside = yes } add_to_variable = { africa_member_confidence = constant:africa_relationship_confidence.outside_delta } }
 	else_if = { limit = { africa_relationship_is_protected = yes } add_to_variable = { africa_member_confidence = constant:africa_relationship_confidence.protected_delta } set_country_flag = africa_lifetime_was_protected }
@@ -981,6 +1169,57 @@ africa_apply_relationship_transition_consequence = {
 	else_if = { limit = { africa_relationship_is_leaving = yes } add_to_variable = { africa_member_confidence = constant:africa_relationship_confidence.leaving_delta } set_country_flag = africa_lifetime_began_withdrawal }
 	else_if = { limit = { africa_relationship_is_rival_bloc = yes } add_to_variable = { africa_member_confidence = constant:africa_relationship_confidence.rival_bloc_delta } set_country_flag = africa_lifetime_joined_rival_bloc }
 	else_if = { limit = { africa_relationship_is_occupied_settlement = yes } add_to_variable = { africa_member_confidence = constant:africa_relationship_confidence.occupied_settlement_delta } set_country_flag = africa_lifetime_received_occupied_settlement }
+	africa_apply_member_autonomy_for_current_relationship = yes
+	if = {
+		limit = {
+			has_event_target = africa_host
+			event_target:africa_host = { has_country_flag = africa_constitutional_payoff_axes_active }
+			OR = {
+				africa_relationship_is_associate = yes
+				africa_relationship_is_chartered = yes
+				africa_relationship_is_autonomous_federal = yes
+				africa_relationship_is_integrated_region = yes
+			}
+		}
+		if = {
+			limit = { event_target:africa_host = { check_variable = { var = africa_constitutional_representation value = constant:africa_constitution_axis.high compare = greater_than_or_equals } } }
+			add_to_variable = { africa_member_confidence = constant:africa_constitution_axis.minor_gain }
+		}
+		else_if = {
+			limit = { event_target:africa_host = { check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } } }
+			subtract_from_variable = { africa_member_confidence = constant:africa_constitution_axis.choice_tradeoff }
+			set_country_flag = africa_member_underrepresentation_pressure
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = africa_host
+			event_target:africa_host = { has_country_flag = africa_constitutional_payoff_axes_active }
+			OR = {
+				africa_relationship_is_leaving = yes
+				africa_relationship_is_outside = yes
+			}
+		}
+		if = {
+			limit = { event_target:africa_host = { check_variable = { var = africa_constitutional_withdrawal_protection value = constant:africa_constitution_axis.high compare = greater_than_or_equals } } }
+			add_to_variable = { africa_member_confidence = constant:africa_constitution_axis.minor_gain }
+			set_country_flag = africa_member_withdrawal_right_honoured
+			event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { event_target:africa_host = { check_variable = { africa_constitutional_withdrawal_protection < constant:africa_constitution_axis.low } } }
+			subtract_from_variable = { africa_member_confidence = constant:africa_constitution_axis.choice_tradeoff }
+			set_country_flag = africa_member_withdrawal_obstructed
+			event_target:africa_host = {
+				add_to_variable = { africa_emergency_rule_debt = constant:africa_constitution_axis.choice_tradeoff }
+				add_to_variable = { africa_colonial_pressure = constant:africa_constitution_axis.choice_tradeoff }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = { africa_clamp_host_values = yes }
+	}
 	clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 }
 
@@ -1247,7 +1486,10 @@ africa_apply_opening_focus_reward = {
 		limit = { check_variable = { africa_focus_opening_step = constant:africa_focus_opening_step.convene_provisional_congress } }
 		set_country_flag = africa_provisional_congress_convened
 		set_country_flag = africa_league_congress_unlocked
-		set_variable = { africa_current_phase = constant:africa_action_phase.regional }
+		if = {
+			limit = { check_variable = { africa_current_phase < constant:africa_action_phase.regional } }
+			set_variable = { africa_current_phase = constant:africa_action_phase.regional }
+		}
 		add_to_variable = { africa_charter_authority = constant:africa_focus_tuning.congress_authority }
 		africa_reconcile_relationship_counts_and_caps = yes
 	}
@@ -1276,7 +1518,8 @@ africa_apply_overlay_focus_reward = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } }
-		set_country_flag = africa_overlay_corridor_operational
+		set_country_flag = africa_overlay_corridor_charter_written
+		africa_focus_authorise_overlay_corridor_project = yes
 		add_to_variable = { africa_continental_reach = constant:africa_focus_tuning.small_delta }
 		add_to_variable = { africa_integration_burden = constant:africa_focus_tuning.opening_burden }
 	}
@@ -1298,6 +1541,10 @@ africa_apply_overlay_focus_reward = {
 	else_if = {
 		limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } }
 		set_country_flag = africa_overlay_mandate_proven
+		set_country_flag = africa_overlay_corridor_project_completed
+		set_country_flag = africa_overlay_corridor_operational
+		clr_country_flag = africa_overlay_corridor_action_pending
+		clr_country_flag = africa_overlay_corridor_ai_contract_pending
 		add_to_variable = { africa_charter_authority = constant:africa_focus_tuning.overlay_mandate_authority }
 	}
 

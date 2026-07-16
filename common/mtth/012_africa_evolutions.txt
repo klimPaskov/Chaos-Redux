@@ -1,0 +1,52 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA EVOLUTION MTTH
+# ============================================================================
+# Sampled only by the current Event 12 host's private evolution clock. No
+# daily, weekly, monthly, or whole-world on_action consumes this entry.
+# ============================================================================
+
+africa_evolution_interval = {
+	base = constant:africa_evolution_clock.base_days
+
+	modifier = {
+		factor = constant:africa_evolution_clock.war_factor
+		has_war = yes
+	}
+	modifier = {
+		factor = constant:africa_evolution_clock.functioning_region_factor
+		has_country_flag = africa_overlay_mandate_proven
+		has_country_flag = africa_overlay_corridor_operational
+	}
+	modifier = {
+		factor = constant:africa_evolution_clock.high_authority_factor
+		check_variable = {
+			var = africa_charter_authority
+			value = constant:africa_measure.high
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:africa_evolution_clock.high_colonial_pressure_factor
+		check_variable = {
+			var = africa_colonial_pressure
+			value = constant:africa_measure.high
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:africa_evolution_clock.low_member_confidence_factor
+		any_of_scopes = {
+			array = africa_relationship_countries
+			has_variable = africa_member_confidence
+			check_variable = { africa_member_confidence < constant:africa_measure.low }
+		}
+	}
+	modifier = {
+		factor = constant:africa_evolution_clock.critical_burden_factor
+		check_variable = {
+			var = africa_integration_burden
+			value = constant:africa_measure.critical
+			compare = greater_than_or_equals
+		}
+	}
+}

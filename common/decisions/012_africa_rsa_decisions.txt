@@ -1,0 +1,217 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AFRICA ALLIED-RUPTURE DECISIONS
+# ============================================================================
+# Provides the civil-war civilian and corridor proof, two distinct regional
+# supporters, the post-war citizenship and sovereignty proof, temporary Cape
+# base control, and the one-use exile recovery. Every visible action has a full
+# player cost and an AI route using the same executable conditions.
+# ============================================================================
+
+africa_rsa_crisis_category = {
+	africa_rsa_protect_civilian_corridor = {
+		icon = GFX_decision_generic_industry
+		visible = {
+			has_global_flag = africa_rsa_civil_war_active
+			africa_rsa_is_continental_coalition = yes
+			NOT = { has_country_flag = africa_rsa_civilians_protected }
+		}
+		available = {
+			275 = { is_controlled_by = ROOT }
+		}
+		custom_cost_trigger = {
+			has_political_power > constant:africa_rsa_cost.relief_pp_gate
+			command_power > constant:africa_rsa_cost.relief_cp_gate
+			has_equipment = { train_equipment > constant:africa_rsa_cost.relief_trains_gate }
+			has_equipment = { support_equipment > constant:africa_rsa_cost.relief_support_equipment_gate }
+		}
+		custom_cost_text = africa_rsa_relief_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_protect_civilian_corridor_tt
+			hidden_effect = { africa_rsa_protect_civilian_corridor_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_rsa_ai.high
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				275 = { is_controlled_by = ROOT }
+			}
+		}
+	}
+
+	africa_rsa_seek_regional_support = {
+		icon = GFX_decision_generic_civil_support
+		target_array = africa_selected_targets
+		activation = {
+			has_global_flag = africa_rsa_civil_war_active
+			africa_rsa_is_continental_coalition = yes
+			check_variable = {
+				var = africa_rsa_external_support_count
+				value = constant:africa_rsa_count.required_external_supporters
+				compare = less_than
+			}
+		}
+		target_root_trigger = { africa_rsa_is_continental_coalition = yes }
+		target_trigger = { FROM = { africa_rsa_is_valid_regional_support_target = yes } }
+		available = {
+			has_political_power > constant:africa_rsa_cost.regional_request_pp_gate
+		}
+		custom_cost_trigger = {
+			has_political_power > constant:africa_rsa_cost.regional_request_pp_gate
+		}
+		custom_cost_text = africa_rsa_regional_request_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_seek_regional_support_tt
+			hidden_effect = {
+				africa_rsa_spend_regional_request_cost = yes
+				FROM = { country_event = { id = chaosx.nr12.1202 } }
+			}
+		}
+		ai_will_do = {
+			base = constant:africa_rsa_ai.high
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				FROM = { is_neighbor_of = ROOT }
+			}
+		}
+	}
+
+	africa_rsa_first_proof_mission = {
+		icon = GFX_decision_generic_civil_support
+		activation = { always = no }
+		days_mission_timeout = africa_rsa_first_proof_days
+		is_good = yes
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_rsa_first_proof_requirements_tt
+				africa_rsa_civil_war_corridor_is_secure = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_global_flag = africa_rsa_civil_war_active }
+				NOT = { africa_rsa_is_continental_coalition = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_first_proof_success_tt
+			hidden_effect = { africa_rsa_complete_civil_war_first_proof = yes }
+		}
+		cancel_effect = { africa_rsa_fail_civil_war_first_proof = yes }
+		timeout_effect = { africa_rsa_fail_civil_war_first_proof = yes }
+		ai_will_do = { base = constant:africa_rsa_ai.high }
+	}
+
+	africa_rsa_enact_citizenship_land_milestone = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			has_country_flag = africa_rsa_continental_victory
+			NOT = { has_country_flag = africa_rsa_citizenship_land_milestone }
+		}
+		available = {
+			africa_is_current_host = yes
+			has_political_power > constant:africa_rsa_cost.citizenship_pp_gate
+			has_stability > constant:africa_rsa_cost.citizenship_stability_gate
+		}
+		custom_cost_trigger = {
+			has_political_power > constant:africa_rsa_cost.citizenship_pp_gate
+			has_stability > constant:africa_rsa_cost.citizenship_stability_gate
+		}
+		custom_cost_text = africa_rsa_citizenship_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_citizenship_land_milestone_tt
+			hidden_effect = { africa_rsa_enact_citizenship_land_milestone_effect = yes }
+		}
+		ai_will_do = { base = constant:africa_rsa_ai.preferred }
+	}
+
+	africa_rsa_guarantee_neighbor_sovereignty = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = africa_selected_targets
+		activation = {
+			has_country_flag = africa_rsa_continental_victory
+			NOT = { has_country_flag = africa_rsa_neighbor_sovereignty_guaranteed }
+		}
+		target_root_trigger = {
+			africa_is_current_host = yes
+			has_country_flag = africa_rsa_continental_victory
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				is_subject = no
+				NOT = { original_tag = SAF }
+				NOT = { has_capitulated = yes }
+				any_core_state = { is_on_continent = africa }
+				capital_scope = { is_on_continent = africa }
+				is_neighbor_of = ROOT
+				NOT = { is_guaranteed_by = ROOT }
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		available = {
+			has_political_power > constant:africa_rsa_cost.sovereignty_guarantee_pp_gate
+			command_power > constant:africa_rsa_cost.sovereignty_guarantee_cp_gate
+		}
+		custom_cost_trigger = {
+			has_political_power > constant:africa_rsa_cost.sovereignty_guarantee_pp_gate
+			command_power > constant:africa_rsa_cost.sovereignty_guarantee_cp_gate
+		}
+		custom_cost_text = africa_rsa_sovereignty_guarantee_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_guarantee_neighbor_sovereignty_tt
+			hidden_effect = { africa_rsa_guarantee_neighbor_sovereignty_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_rsa_ai.preferred
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				FROM = { is_in_faction_with = ROOT }
+			}
+		}
+	}
+
+	africa_rsa_terminate_base_lease_early = {
+		icon = GFX_decision_generic_break_treaty
+		visible = { has_country_flag = africa_rsa_temporary_allied_base_lease }
+		available = { africa_is_current_host = yes }
+		cost = constant:africa_rsa_count.none
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_terminate_base_lease_tt
+			hidden_effect = { africa_rsa_end_temporary_base_lease = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_rsa_ai.low
+			modifier = {
+				factor = constant:africa_rsa_ai.modifier_double
+				has_war = no
+			}
+		}
+	}
+
+	africa_rsa_reconstitute_exile_council = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			has_country_flag = africa_rsa_exile_recovery_available
+			NOT = { has_country_flag = africa_rsa_exile_recovery_completed }
+		}
+		available = {
+			africa_rsa_exile_recovery_can_be_completed = yes
+			has_political_power > constant:africa_rsa_cost.exile_recovery_pp_gate
+			command_power > constant:africa_rsa_cost.exile_recovery_cp_gate
+		}
+		custom_cost_trigger = {
+			has_political_power > constant:africa_rsa_cost.exile_recovery_pp_gate
+			command_power > constant:africa_rsa_cost.exile_recovery_cp_gate
+		}
+		custom_cost_text = africa_rsa_exile_recovery_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = africa_rsa_reconstitute_exile_council_tt
+			hidden_effect = { africa_rsa_complete_exile_recovery = yes }
+		}
+		ai_will_do = { base = constant:africa_rsa_ai.preferred }
+	}
+}

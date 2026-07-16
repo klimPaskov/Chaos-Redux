@@ -831,6 +831,15 @@ africa_member_can_begin_integration = {
 		africa_relationship_is_occupied_settlement = yes
 	}
 	africa_member_host_generation_is_current = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			OVERLORD = { tag = event_target:africa_host }
+		}
+	}
 	has_country_flag = africa_member_integration_consent
 	has_country_flag = africa_member_representation_settled
 	has_country_flag = africa_member_administrative_dossier_complete
@@ -862,6 +871,15 @@ africa_member_can_enter_autonomous_federal = {
 		africa_relationship_is_occupied_settlement = yes
 	}
 	africa_member_host_generation_is_current = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			OVERLORD = { tag = event_target:africa_host }
+		}
+	}
 	has_country_flag = africa_member_integration_consent
 	has_country_flag = africa_member_representation_settled
 	has_country_flag = africa_member_administrative_dossier_complete
@@ -870,6 +888,64 @@ africa_member_can_enter_autonomous_federal = {
 		value = constant:africa_measure.medium
 		compare = greater_than_or_equals
 	}
+}
+
+# COUNTRY scope on a member. Only the two Event 12 autonomy tiers are released
+# by Charter withdrawal logic; unrelated vanilla or modded subject relations
+# are never overwritten.
+africa_is_charter_subject_of_current_host = {
+	is_subject = yes
+	OVERLORD = { tag = event_target:africa_host }
+	OR = {
+		has_autonomy_state = autonomy_africa_federal_member
+		has_autonomy_state = autonomy_africa_integrated_region
+	}
+}
+
+# COUNTRY scope on a government holding a temporary congress exemption. Every
+# registered state must remain both owned and controlled while the public
+# completion mission is active.
+africa_continental_peace_exemption_is_current = {
+	has_country_flag = africa_continental_peace_completion_mission_active
+	has_country_flag = africa_continental_peace_terms_accepted
+	africa_member_host_generation_is_current = yes
+	check_variable = { africa_continental_peace_exemption_states^num > constant:africa_value.zero }
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_resistant = yes }
+	NOT = { africa_relationship_is_rival_bloc = yes }
+	all_of_scopes = {
+		array = africa_continental_peace_exemption_states
+		is_on_continent = africa
+		has_state_flag = africa_continental_peace_exemption_active
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+africa_continental_peace_exemption_terms_are_breached = {
+	has_country_flag = africa_continental_peace_completion_mission_active
+	OR = {
+		has_civil_war = yes
+		has_war_with = event_target:africa_host
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_resistant = yes
+		africa_relationship_is_rival_bloc = yes
+		any_of_scopes = {
+			array = africa_continental_peace_exemption_states
+			OR = {
+				NOT = { has_state_flag = africa_continental_peace_exemption_active }
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_controlled_by = ROOT }
+			}
+		}
+	}
+}
+
+africa_continental_peace_exemption_completion_is_ready = {
+	africa_continental_peace_exemption_is_current = yes
+	africa_country_counts_as_continental_settlement = yes
 }
 
 # COUNTRY scope on a member. This is the final living-core recognition gate;
@@ -1011,6 +1087,18 @@ africa_active_action_generation_is_current = {
 
 # COUNTRY scope on the host. Phase ordering is explicit rather than inferred
 # from date, opinion, or the number of annexed states.
+africa_action_phase_has_reached_opening = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.opening compare = greater_than_or_equals }
+}
+
+africa_action_phase_has_reached_regional = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.regional compare = greater_than_or_equals }
+}
+
+africa_action_phase_has_reached_late = {
+	check_variable = { var = africa_current_phase value = constant:africa_action_phase.late compare = greater_than_or_equals }
+}
+
 africa_action_quote_phase_is_available = {
 	OR = {
 		AND = {
@@ -1027,44 +1115,35 @@ africa_action_quote_phase_is_available = {
 				check_variable = { africa_quote_phase = constant:africa_action_phase.any }
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.opening }
-					check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+					africa_action_phase_has_reached_opening = yes
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.regional }
-					OR = {
-						check_variable = { africa_current_phase = constant:africa_action_phase.regional }
-						check_variable = { africa_current_phase = constant:africa_action_phase.late }
-						check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
-					}
+					africa_action_phase_has_reached_regional = yes
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.late }
-					OR = {
-						check_variable = { africa_current_phase = constant:africa_action_phase.late }
-						check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
-					}
+					africa_action_phase_has_reached_late = yes
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.high_chaos }
 					has_global_flag = africa_evolution_iii_logged
-					OR = {
-						check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
-						check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
-						check_variable = { africa_current_phase = constant:africa_action_phase.terminal_approach }
-						check_variable = { africa_current_phase = constant:africa_action_phase.terminal }
-					}
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.high_chaos compare = greater_than_or_equals }
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.post_unification }
 					has_global_flag = africa_is_one
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.post_unification compare = greater_than_or_equals }
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal_approach }
 					has_global_flag = africa_world_order_open
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal_approach compare = greater_than_or_equals }
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal }
 					has_global_flag = africa_continental_wars_active
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal compare = greater_than_or_equals }
 				}
 			}
 		}

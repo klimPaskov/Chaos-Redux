@@ -1,0 +1,546 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Completion gates for all 44 Event 012 achievements. Current-state checks use
+# live route, relationship, confidence, package, war, and world-order evidence.
+# Lifetime facts come only from the narrow achievement ledger effects.
+# ============================================================================
+
+africa_achievement_normal_host_is_eligible = {
+	has_country_flag = africa_achievement_host_actor_eligible
+	has_global_flag = africa_achievement_normal_launch
+	NOT = { has_global_flag = africa_achievement_forced_scenario_used }
+}
+
+africa_achievement_event12_actor_is_eligible = {
+	OR = {
+		has_country_flag = africa_achievement_host_actor_eligible
+		has_country_flag = africa_achievement_priority_actor_eligible
+		has_country_flag = africa_priority_member_player_origin_validated
+	}
+	has_global_flag = africa_achievement_normal_launch
+	NOT = { has_global_flag = africa_achievement_forced_scenario_used }
+}
+
+africa_achievement_uses_grounded_constitution = {
+	has_variable = africa_constitution
+	NOT = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
+	NOT = { check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant } }
+	NOT = { has_global_flag = africa_achievement_terminal_high_chaos_route }
+}
+
+africa_achievement_uses_high_chaos = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+		has_global_flag = africa_evolution_iii_logged
+		has_global_flag = africa_achievement_high_chaos_host
+	}
+}
+
+africa_guardians_without_borders_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_grounded_constitution = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_achievement_africa_is_one_snapshot_captured
+	check_variable = { var = global.africa_achievement_protected_partner_count value = constant:africa_achievement_count.guardians_protected_partners compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_snapshot_protected_alive value = constant:africa_achievement_count.guardians_protected_partners compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_protection_wars_settled value = global.africa_achievement_protection_wars_started compare = equals }
+	NOT = { has_global_flag = africa_achievement_broken_guarantee }
+	NOT = { has_global_flag = africa_achievement_counted_partner_annexed }
+	NOT = { has_global_flag = africa_achievement_protected_partner_destroyed }
+}
+
+africa_last_convoy_home_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_last_convoy_completed
+	NOT = { has_global_flag = africa_achievement_last_convoy_partner_capitulated }
+	NOT = { has_global_flag = africa_achievement_last_convoy_corridor_abandoned }
+	NOT = { has_global_flag = africa_achievement_last_convoy_partner_annexed }
+}
+
+africa_no_empty_promises_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_grounded_constitution = yes
+	has_global_flag = africa_is_one
+	OR = {
+		has_global_flag = africa_achievement_voluntary_league_route
+		check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+	}
+	check_variable = { var = global.africa_achievement_guarantee_count value = constant:africa_achievement_count.guarantees_honoured compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_snapshot_guaranteed_high value = global.africa_achievement_guarantee_count compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_broken_guarantee }
+	NOT = { has_global_flag = africa_achievement_guaranteed_partner_coercively_annexed }
+}
+
+africa_the_interveners_left_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_scramble_coalition_defeated
+	check_variable = { var = global.africa_achievement_foreign_expeditions_defeated value = constant:africa_value.one compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_league_member_capitulated }
+	NOT = { has_global_flag = africa_achievement_partition_accepted }
+}
+
+africa_archive_of_the_living_state_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_archive_evacuation_count value = constant:africa_achievement_count.archives_restored compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_archive_restoration_count value = constant:africa_achievement_count.archives_restored compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_archive_permanently_destroyed }
+	NOT = { has_global_flag = africa_achievement_archive_sold_or_suppressed }
+	NOT = { has_global_flag = africa_achievement_archive_partner_annexed }
+}
+
+africa_twelve_empty_chairs_filled_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_snapshot_full_members value = constant:africa_achievement_count.congress_full_members compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_congress_all_agenda_completed
+	check_variable = { var = global.num_days value = global.africa_achievement_congress_retention_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_member_expelled_during_congress_window }
+	NOT = { has_global_flag = africa_achievement_coerced_accession_during_congress_window }
+}
+
+africa_the_clause_is_the_country_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	check_variable = { var = global.africa_achievement_snapshot_clause_members value = constant:africa_achievement_count.clause_members compare = greater_than_or_equals }
+	NOT = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
+	NOT = { has_global_flag = africa_achievement_protected_clause_cancelled }
+	NOT = { has_global_flag = africa_achievement_untracked_member_annexed }
+}
+
+africa_exit_without_war_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	OR = {
+		has_global_flag = africa_achievement_voluntary_league_route
+		check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+	}
+	has_global_flag = africa_achievement_peaceful_exit_completed
+	NOT = { has_global_flag = africa_achievement_exit_war_or_coup }
+	NOT = { has_global_flag = africa_achievement_exit_coerced_return }
+}
+
+africa_no_second_capital_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_rival_crises_resolved value = constant:africa_achievement_count.rival_crises_resolved compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_rival_crisis_overran_limit }
+	NOT = { has_global_flag = africa_achievement_rival_leader_annexed }
+	NOT = { has_global_flag = africa_achievement_terminal_rival_coercion }
+}
+
+africa_every_region_speaks_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	check_variable = { var = global.africa_achievement_represented_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_overlap_settled_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_region_unrepresented }
+	NOT = { has_global_flag = africa_achievement_region_overlap_unresolved }
+}
+
+africa_confidence_is_contagious_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_snapshot_high_confidence value = constant:africa_achievement_count.high_confidence_members compare = greater_than_or_equals }
+	check_variable = { var = africa_integration_burden value = constant:africa_measure.high compare = less_than }
+	check_variable = { var = global.num_days value = global.africa_achievement_confidence_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
+	NOT = { has_global_flag = africa_achievement_member_cascade }
+	NOT = { has_global_flag = africa_achievement_member_directly_annexed }
+}
+
+africa_federation_by_consent_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { africa_constitution = constant:africa_constitution.federal_union }
+	has_global_flag = africa_is_one
+	check_variable = { var = global.africa_achievement_snapshot_autonomous_federal value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_snapshot_federal_settled value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
+	NOT = { has_global_flag = africa_achievement_military_takeover }
+	NOT = { has_global_flag = africa_achievement_covenant_route_used }
+}
+
+africa_republic_of_many_capitals_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
+	check_variable = { var = global.africa_achievement_republic_institution_regions^num value = constant:africa_achievement_count.republic_institution_regions compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_republic_succession_active
+	check_variable = { var = global.num_days value = global.africa_achievement_republic_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_republic_suspended }
+	NOT = { has_global_flag = africa_achievement_republic_one_region_centralisation }
+	NOT = { has_global_flag = africa_achievement_military_transition }
+}
+
+africa_crowns_at_one_table_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_origin_monarchical_or_restored
+	check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
+	has_global_flag = africa_is_one
+	check_variable = { var = global.africa_achievement_snapshot_court_members value = constant:africa_achievement_count.crown_members compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_crown_succession_settled
+	NOT = { has_global_flag = africa_achievement_counted_court_deposed }
+	NOT = { has_global_flag = africa_achievement_counted_monarchy_abolished }
+	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
+}
+
+africa_union_of_work_and_land_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_origin_socialist_or_communist
+	check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
+	check_variable = { var = global.africa_achievement_worker_represented_regions^num value = constant:africa_achievement_count.union_represented_regions compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_union_socialised_projects value = constant:africa_achievement_count.union_socialised_projects compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_union_food_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_military_takeover }
+	NOT = { has_global_flag = africa_achievement_private_resource_concession }
+	NOT = { has_global_flag = africa_achievement_preventable_famine }
+}
+
+africa_order_without_partition_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_origin_military_or_authoritarian
+	check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
+	has_global_flag = africa_is_one
+	check_variable = { var = global.africa_achievement_major_interventions_defeated value = constant:africa_achievement_count.major_interventions_defeated compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_emergency_rule_reduced
+	has_global_flag = africa_achievement_representation_restored
+	NOT = { has_global_flag = africa_achievement_permanent_maximum_emergency_rule }
+	NOT = { has_global_flag = africa_achievement_member_genocide }
+	NOT = { has_global_flag = africa_achievement_region_partitioned }
+}
+
+africa_confederation_that_endured_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+	check_variable = { var = global.africa_achievement_snapshot_sovereign_members value = constant:africa_achievement_count.confederal_sovereign_members compare = greater_than_or_equals }
+	NOT = { check_variable = { var = africa_integration_burden value = constant:africa_achievement_ratio.confederal_integration_ceiling compare = greater_than } }
+	check_variable = { var = global.num_days value = global.africa_achievement_confederation_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_scramble_settled_or_won
+	NOT = { has_global_flag = africa_achievement_confederal_ceiling_breached }
+	NOT = { has_global_flag = africa_achievement_confederal_federal_annexation }
+	NOT = { has_global_flag = africa_achievement_member_cascade }
+}
+
+africa_covenant_with_the_impossible_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+	check_variable = { var = global.africa_achievement_snapshot_nonhuman_members value = constant:africa_achievement_count.covenant_nonhuman_members compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_covenant_peace_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_nonhuman_rights_violation }
+	NOT = { has_global_flag = africa_achievement_nonhuman_rampage }
+	NOT = { has_global_flag = africa_achievement_terminal_disease_outcome }
+}
+
+africa_kings_of_the_savanna_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	check_variable = { var = global.africa_achievement_savanna_court_count value = constant:africa_achievement_count.savanna_courts compare = greater_than_or_equals }
+	is_in_array = { array = global.africa_achievement_restoration_identities value = constant:africa_achievement_restoration_identity.luba }
+	is_in_array = { array = global.africa_achievement_restoration_identities value = constant:africa_achievement_restoration_identity.lunda }
+	is_in_array = { array = global.africa_achievement_restoration_identities value = constant:africa_achievement_restoration_identity.kuba }
+	has_global_flag = africa_achievement_savanna_overlap_settled
+	has_global_flag = africa_achievement_savanna_courts_same_order
+	NOT = { has_global_flag = africa_achievement_savanna_court_annexed }
+	NOT = { has_global_flag = africa_achievement_savanna_court_destroyed }
+}
+
+africa_nile_has_many_memories_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
+		has_country_flag = africa_priority_player_origin_nubia
+		has_country_flag = africa_priority_player_origin_aksum
+		has_country_flag = africa_priority_player_origin_harar
+	}
+	check_variable = { var = global.africa_achievement_nile_identity_count value = constant:africa_achievement_count.nile_identities compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_nile_overlaps_settled
+	has_global_flag = africa_achievement_nile_corridor_operational
+	NOT = { has_global_flag = africa_achievement_nile_identity_erased }
+	NOT = { has_global_flag = africa_achievement_nile_corridor_failed }
+	NOT = { has_global_flag = africa_achievement_nile_capital_dispute }
+}
+
+africa_ports_of_the_monsoon_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
+		check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
+		has_global_flag = africa_achievement_origin_coastal_host
+	}
+	check_variable = { var = global.africa_achievement_maritime_polity_count value = constant:africa_achievement_count.maritime_polities compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_maritime_port_count value = constant:africa_achievement_count.maritime_ports compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_maritime_access_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_two_ports_lost }
+	NOT = { has_global_flag = africa_achievement_inland_military_shortcut }
+}
+
+africa_walls_courts_and_caravans_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
+		has_country_flag = africa_priority_player_origin_aksum
+		has_country_flag = africa_priority_player_origin_harar
+	}
+	any_country = {
+		africa_priority_member_package_is_aksum = yes
+		has_country_flag = africa_priority_member_politics_settled
+		has_country_flag = africa_priority_aksum_heritage_consent_separated
+	}
+	any_country = {
+		africa_priority_member_package_is_harar = yes
+		has_country_flag = africa_priority_member_politics_settled
+		has_country_flag = africa_priority_harar_corridor_guarantees_diversified
+	}
+	check_variable = { var = global.num_days value = global.africa_achievement_horn_corridor_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_horn_package_war }
+	NOT = { has_global_flag = africa_achievement_horn_package_abolished }
+	NOT = { has_global_flag = africa_achievement_horn_corridor_lost }
+}
+
+africa_the_old_gold_roads_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa }
+		has_country_flag = africa_priority_player_origin_great_zimbabwe
+	}
+	check_variable = { var = global.africa_achievement_plateau_polity_count value = constant:africa_achievement_count.plateau_polities compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_processing_zone_count value = constant:africa_achievement_count.plateau_polities compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_plateau_ownership_deadline_day compare = greater_than_or_equals }
+	any_country = {
+		africa_priority_member_package_is_great_zimbabwe = yes
+		has_country_flag = africa_priority_great_zimbabwe_restoration_mandate_balanced
+		has_country_flag = africa_priority_great_zimbabwe_public_processing_programme_active
+	}
+	NOT = { has_global_flag = africa_achievement_foreign_resource_majority }
+	NOT = { has_global_flag = africa_achievement_plateau_polity_annexed }
+	NOT = { has_global_flag = africa_achievement_plateau_corridor_failed }
+}
+
+africa_member_who_said_no_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	has_country_flag = africa_priority_member_player_origin_validated
+	has_country_flag = africa_priority_member_league_offer_refused
+	has_country_flag = africa_priority_member_rival_bloc_victory
+	is_subject = no
+	check_variable = { var = global.africa_achievement_rival_bloc_member_count value = constant:africa_achievement_count.rival_bloc_members compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_recognised_african_confederation
+	NOT = { has_global_flag = africa_achievement_priority_member_colonial_puppet }
+	NOT = { has_global_flag = africa_achievement_league_destroyed }
+	NOT = { has_global_flag = africa_achievement_terminal_high_chaos_route }
+}
+
+africa_return_without_compulsion_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_voluntary_return_waves value = constant:africa_achievement_count.voluntary_return_waves compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_diaspora_origin_groups^num value = constant:africa_achievement_count.diaspora_origin_groups compare = greater_than_or_equals }
+	check_variable = { var = africa_diaspora_trust value = constant:africa_measure.high compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_returnee_citizenship_protected
+	NOT = { has_global_flag = africa_achievement_forced_relocation }
+	NOT = { has_global_flag = africa_achievement_diaspora_disaster_negligence }
+	NOT = { has_global_flag = africa_achievement_returnee_discrimination }
+}
+
+africa_tools_books_and_ballots_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_diaspora_skill_programmes^num value = constant:africa_achievement_count.diaspora_skill_programmes compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_diaspora_project_count value = constant:africa_achievement_count.diaspora_projects compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_returnee_representation_protected
+	NOT = { has_global_flag = africa_achievement_military_labor_only_programme }
+	NOT = { has_global_flag = africa_achievement_returnee_representation_denied }
+	NOT = { has_global_flag = africa_achievement_diaspora_trust_collapse }
+}
+
+africa_four_oceans_homeward_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_diaspora_origin_groups^num value = constant:africa_achievement_count.diaspora_origin_groups compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_catastrophic_return_loss }
+	NOT = { has_global_flag = africa_achievement_forced_relocation }
+}
+
+africa_capital_without_capture_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_diaspora_owned_project_count value = constant:africa_achievement_count.diaspora_owned_projects compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_local_ownership_share value = constant:africa_achievement_ratio.protected_local_ownership compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_foreign_government_capture }
+	NOT = { has_global_flag = africa_achievement_diaspora_government_capture }
+	NOT = { has_global_flag = africa_achievement_corruption_crisis_unresolved }
+}
+
+africa_rails_rivers_roads_and_ports_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_corridor_systems^num value = constant:africa_achievement_count.corridor_systems compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_connected_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_corridor_access_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_network_split }
+	NOT = { has_global_flag = africa_achievement_connected_region_lost }
+}
+
+africa_ore_leaves_as_machines_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_resource_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_processing_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_resource_concession_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_raw_export_dependency_crisis }
+	NOT = { has_global_flag = africa_achievement_foreign_concession_cap_breached }
+	NOT = { has_global_flag = africa_achievement_forced_resource_seizure }
+}
+
+africa_bread_before_banners_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_achievement_food_secured_before_unification
+	has_global_flag = africa_achievement_drought_or_famine_survived
+	has_global_flag = africa_achievement_food_reserve_ready
+	NOT = { has_global_flag = africa_achievement_formed_before_food_security }
+	NOT = { has_global_flag = africa_achievement_preventable_famine }
+	NOT = { has_global_flag = africa_achievement_maximum_ecological_wrath_against_civilians }
+}
+
+africa_development_without_overstretch_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_development_project_count value = constant:africa_achievement_count.development_projects compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_developed_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_development_stability_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_integration_burden_breached }
+	NOT = { has_global_flag = africa_achievement_region_confidence_collapsed }
+	NOT = { has_global_flag = africa_achievement_project_exploitation_scandal }
+}
+
+africa_common_reserve_answers_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	check_variable = { var = global.africa_achievement_reserve_wars_answered value = constant:africa_achievement_count.reserve_wars compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_reserve_deadline_missed }
+	NOT = { has_global_flag = africa_achievement_protected_capital_lost }
+	NOT = { has_global_flag = africa_achievement_reserve_offensive_abuse }
+}
+
+africa_no_foreign_boot_remains_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_scramble_coalition_defeated
+	has_global_flag = africa_achievement_no_hostile_foreign_control
+	check_variable = { global.africa_achievement_hostile_african_state_count = constant:africa_value.zero }
+	NOT = { has_global_flag = africa_achievement_african_core_ceded }
+	NOT = { has_global_flag = africa_achievement_member_capitulation_unreversed }
+	NOT = { has_global_flag = africa_achievement_external_puppet_in_africa }
+}
+
+africa_beasts_but_not_caricatures_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	check_variable = { var = global.africa_achievement_nonhuman_unit_families^num value = constant:africa_achievement_count.nonhuman_unit_families compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_nonhuman_great_power_war_won
+	has_global_flag = africa_achievement_nonhuman_actor_rights_preserved
+	NOT = { has_global_flag = africa_achievement_human_caricature_used }
+	NOT = { has_global_flag = africa_achievement_nonhuman_extermination }
+	NOT = { has_global_flag = africa_achievement_nonhuman_rights_violation }
+}
+
+africa_elephants_crossed_the_desert_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	OR = {
+		africa_achievement_uses_high_chaos = yes
+		has_global_flag = africa_evolution_ii_logged
+	}
+	is_in_array = { array = global.africa_achievement_nonhuman_unit_families value = constant:africa_achievement_nonhuman_family.elephant }
+	is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.desert }
+	check_variable = { var = global.africa_achievement_elephant_terrain_regions^num value = constant:africa_achievement_count.elephant_terrain_regions compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_elephant_supply_maintained
+	has_global_flag = africa_achievement_elephant_protection_war_won
+	NOT = { has_global_flag = africa_achievement_elephant_formation_destroyed }
+	NOT = { has_global_flag = africa_achievement_elephant_supply_failed }
+	NOT = { has_global_flag = africa_achievement_elephant_used_against_unthreatened_african }
+}
+
+africa_the_forest_kept_its_word_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	check_variable = { var = global.africa_achievement_ecological_bargains_honoured value = constant:africa_achievement_count.ecological_bargains compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_disasters_contained value = constant:africa_achievement_count.disasters_contained compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = global.africa_achievement_ecological_stability_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_ecological_bargain_broken }
+	NOT = { has_global_flag = africa_achievement_disaster_weaponised_against_civilians }
+	NOT = { has_global_flag = africa_achievement_forest_actor_rampage }
+}
+
+africa_rain_on_command_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	check_variable = { var = global.africa_achievement_weather_armies_defeated value = constant:africa_achievement_count.weather_armies_defeated compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_weather_war_won
+	NOT = { has_global_flag = africa_achievement_maximum_member_weather_disaster }
+	NOT = { has_global_flag = africa_achievement_weather_targeted_neutral_african }
+	NOT = { has_global_flag = africa_achievement_ecological_wrath_collapse }
+}
+
+africa_disease_made_and_unmade_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	has_global_flag = africa_achievement_disease_branch_unlocked
+	has_global_flag = africa_achievement_disease_route_created
+	has_global_flag = africa_achievement_disease_outbreak_occurred
+	check_variable = { global.africa_achievement_active_disease_outbreaks = constant:africa_value.zero }
+	check_variable = { var = global.africa_achievement_disease_outbreaks_contained value = constant:africa_value.one compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_disease_countermeasure_completed
+	NOT = { has_global_flag = africa_achievement_deliberate_uncontrolled_civilian_release }
+	NOT = { has_global_flag = africa_achievement_irreversible_disease_outcome }
+	NOT = { has_global_flag = africa_achievement_terminal_disease_outcome }
+}
+
+africa_stone_walks_into_parliament_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	africa_achievement_uses_high_chaos = yes
+	is_in_array = { array = global.africa_achievement_restoration_identities value = constant:africa_achievement_restoration_identity.stoneborn }
+	has_global_flag = africa_achievement_stoneborn_constitutional_status
+	check_variable = { var = global.num_days value = global.africa_achievement_stoneborn_peace_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_stoneborn_rights_violation }
+	NOT = { has_global_flag = africa_achievement_stoneborn_human_member_war }
+	NOT = { has_global_flag = africa_achievement_stoneborn_erased }
+}
+
+africa_another_continent_stood_up_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_achievement_sponsorship_opening_completed
+	has_global_flag = africa_achievement_sponsored_continent_identity_completed
+	check_variable = { var = global.num_days value = global.africa_achievement_sponsorship_friendship_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_sponsored_movement_collapsed }
+	NOT = { has_global_flag = africa_achievement_sponsored_continent_puppeted }
+	NOT = { has_global_flag = africa_achievement_sponsorship_betrayal }
+}
+
+africa_two_continents_one_name_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_achievement_two_continent_union_formed
+	has_global_flag = africa_achievement_two_continent_negotiated
+	has_global_flag = africa_achievement_two_continent_constitutional_integration
+	has_global_flag = africa_achievement_two_continent_military_integration
+	check_variable = { var = global.num_days value = global.africa_achievement_two_continent_stability_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_two_continent_conquest_only }
+	NOT = { has_global_flag = africa_achievement_two_continent_confidence_collapse }
+	NOT = { has_global_flag = africa_achievement_two_continent_union_civil_war }
+}
+
+africa_war_between_worlds_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		has_global_flag = africa_is_one
+		has_global_flag = africa_achievement_two_continent_union_formed
+	}
+	has_global_flag = africa_achievement_continental_war_victory
+	has_global_flag = africa_achievement_continental_settlement_complete
+	check_variable = { var = global.num_days value = global.africa_achievement_continental_settlement_deadline_day compare = greater_than_or_equals }
+	NOT = { has_global_flag = africa_achievement_debug_surrender_used }
+	NOT = { has_global_flag = africa_achievement_global_revolt_threshold_reached }
+}
+
+africa_the_world_is_one_is_complete = {
+	africa_achievement_event12_actor_is_eligible = yes
+	OR = {
+		has_global_flag = africa_is_one
+		has_global_flag = africa_achievement_two_continent_union_formed
+	}
+	has_global_flag = africa_achievement_last_eligible_continent
+	has_global_flag = africa_achievement_all_continent_rivals_resolved
+	has_global_flag = africa_achievement_world_identity_formed
+	has_global_flag = africa_achievement_world_terminal_super_event_fired
+	has_global_flag = africa_achievement_africa_owned_world_end
+	has_global_flag = world_end
+	NOT = { has_global_flag = africa_achievement_other_world_end_used }
+	NOT = { has_global_flag = africa_achievement_unresolved_continent_identity }
+}

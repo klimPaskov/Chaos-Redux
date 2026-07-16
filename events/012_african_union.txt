@@ -203,3 +203,454 @@ country_event = {
 		ai_chance = { base = 100 }
 	}
 }
+
+# A protected partner answers an invitation to become an associate. Focus
+# completion opens the exchange; the partner controls the relationship change.
+country_event = {
+	id = chaosx.nr12.300
+	title = chaosx.nr12.300.t
+	desc = chaosx.nr12.300.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_associate_invitation_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.300.a
+		custom_effect_tooltip = chaosx.nr12.300.a.tt
+		trigger = {
+			africa_relationship_is_protected = yes
+			africa_member_host_generation_is_current = yes
+		}
+		ai_chance = {
+			base = constant:africa_focus_negotiation.accept_weight
+			modifier = {
+				factor = constant:africa_focus_negotiation.favourable_factor
+				has_variable = africa_member_confidence
+				check_variable = {
+					var = africa_member_confidence
+					value = constant:africa_measure.high
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		set_country_flag = africa_member_associate_terms_accepted
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.300.b
+		custom_effect_tooltip = chaosx.nr12.300.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_associate_counterproposal
+		set_country_flag = africa_focus_negotiation_countered
+		if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
+		add_to_variable = { africa_member_confidence = constant:africa_action_result.partial_confidence }
+		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.300.c
+		custom_effect_tooltip = chaosx.nr12.300.c.tt
+		ai_chance = {
+			base = constant:africa_focus_negotiation.refuse_weight
+			modifier = {
+				factor = constant:africa_focus_negotiation.resistance_factor
+				OR = {
+					africa_relationship_is_resistant = yes
+					africa_relationship_is_rival_bloc = yes
+				}
+			}
+		}
+		set_country_flag = africa_member_associate_invitation_refused
+		set_country_flag = africa_focus_negotiation_refused
+		if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
+		add_to_variable = { africa_member_confidence = constant:africa_action_result.failure_confidence }
+		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# An associate government decides whether to sign the full Charter clauses.
+country_event = {
+	id = chaosx.nr12.301
+	title = chaosx.nr12.301.t
+	desc = chaosx.nr12.301.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_charter_admission_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.301.a
+		custom_effect_tooltip = chaosx.nr12.301.a.tt
+		trigger = {
+			africa_relationship_is_associate = yes
+			africa_member_host_generation_is_current = yes
+		}
+		ai_chance = {
+			base = constant:africa_focus_negotiation.accept_weight
+			modifier = {
+				factor = constant:africa_focus_negotiation.favourable_factor
+				has_variable = africa_member_confidence
+				check_variable = {
+					var = africa_member_confidence
+					value = constant:africa_measure.high
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		set_country_flag = africa_member_accession_clause_accepted
+		set_country_flag = africa_member_representation_settled
+		set_country_flag = africa_member_charter_admission_accepted
+		set_country_flag = africa_member_continental_constitution_accepted
+		if = {
+			limit = { event_target:africa_host = { check_variable = { africa_constitution = constant:africa_constitution.continental_confederation } } }
+			set_country_flag = africa_member_confederal_unity_recognised
+		}
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.301.b
+		custom_effect_tooltip = chaosx.nr12.301.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_charter_clause_counterproposal
+		set_country_flag = africa_focus_negotiation_countered
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.301.c
+		custom_effect_tooltip = chaosx.nr12.301.c.tt
+		ai_chance = { base = constant:africa_focus_negotiation.refuse_weight }
+		set_country_flag = africa_member_charter_admission_refused
+		set_country_flag = africa_focus_negotiation_refused
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# A chartered member answers an autonomy statute already supported by the
+# required consent, representation, dossier, and confidence evidence.
+country_event = {
+	id = chaosx.nr12.302
+	title = chaosx.nr12.302.t
+	desc = chaosx.nr12.302.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_autonomy_offer_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.302.a
+		custom_effect_tooltip = chaosx.nr12.302.a.tt
+		trigger = { africa_member_can_enter_autonomous_federal = yes }
+		ai_chance = { base = constant:africa_focus_negotiation.accept_weight }
+		set_country_flag = africa_member_autonomy_statute_accepted
+		set_country_flag = africa_member_continental_constitution_accepted
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.302.b
+		custom_effect_tooltip = chaosx.nr12.302.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_autonomy_counterproposal
+		set_country_flag = africa_focus_negotiation_countered
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.302.c
+		custom_effect_tooltip = chaosx.nr12.302.c.tt
+		ai_chance = { base = constant:africa_focus_negotiation.refuse_weight }
+		set_country_flag = africa_member_autonomy_offer_refused
+		set_country_flag = africa_focus_negotiation_refused
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# A fully proven member retains a final public choice over integration.
+country_event = {
+	id = chaosx.nr12.303
+	title = chaosx.nr12.303.t
+	desc = chaosx.nr12.303.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_integration_offer_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.303.a
+		custom_effect_tooltip = chaosx.nr12.303.a.tt
+		trigger = { africa_member_can_complete_core_recognition = yes }
+		ai_chance = { base = constant:africa_focus_negotiation.accept_weight }
+		set_country_flag = africa_member_final_integration_consent
+		set_country_flag = africa_member_continental_constitution_accepted
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.integrated_region }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.303.b
+		custom_effect_tooltip = chaosx.nr12.303.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_integration_timetable_counterproposal
+		set_country_flag = africa_focus_negotiation_countered
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.303.c
+		custom_effect_tooltip = chaosx.nr12.303.c.tt
+		ai_chance = { base = constant:africa_focus_negotiation.refuse_weight }
+		set_country_flag = africa_member_integration_offer_refused
+		set_country_flag = africa_focus_negotiation_refused
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# A departing member may rejoin at associate level, complete a lawful exit, or
+# leave the dispute unresolved. The host cannot cancel withdrawal by focus.
+country_event = {
+	id = chaosx.nr12.304
+	title = chaosx.nr12.304.t
+	desc = chaosx.nr12.304.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_departure_settlement_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.304.a
+		custom_effect_tooltip = chaosx.nr12.304.a.tt
+		trigger = {
+			africa_relationship_is_leaving = yes
+			africa_member_host_generation_is_current = yes
+		}
+		ai_chance = { base = constant:africa_focus_negotiation.accept_weight }
+		set_country_flag = africa_member_reassociation_terms_accepted
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.304.b
+		custom_effect_tooltip = chaosx.nr12.304.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_exit_terms_accepted
+		set_country_flag = africa_focus_negotiation_countered
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.outside }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.304.c
+		custom_effect_tooltip = chaosx.nr12.304.c.tt
+		ai_chance = { base = constant:africa_focus_negotiation.refuse_weight }
+		set_country_flag = africa_member_departure_talks_broken
+		set_country_flag = africa_focus_negotiation_refused
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# A rival bloc may merge peacefully, retain equal-status coexistence, or reject
+# the settlement. Rival identity is never deleted merely by completing a focus.
+country_event = {
+	id = chaosx.nr12.305
+	title = chaosx.nr12.305.t
+	desc = chaosx.nr12.305.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_focus_rival_settlement_pending
+		has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.305.a
+		custom_effect_tooltip = chaosx.nr12.305.a.tt
+		trigger = {
+			africa_relationship_is_rival_bloc = yes
+			africa_member_host_generation_is_current = yes
+		}
+		ai_chance = { base = constant:africa_focus_negotiation.accept_weight }
+		set_country_flag = africa_member_rival_merger_accepted
+		set_country_flag = africa_focus_negotiation_accepted
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.305.b
+		custom_effect_tooltip = chaosx.nr12.305.b.tt
+		ai_chance = { base = constant:africa_focus_negotiation.counter_weight }
+		set_country_flag = africa_member_rival_coexistence_treaty
+		set_country_flag = africa_focus_negotiation_countered
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+
+	option = {
+		name = chaosx.nr12.305.c
+		custom_effect_tooltip = chaosx.nr12.305.c.tt
+		ai_chance = {
+			base = constant:africa_focus_negotiation.refuse_weight
+			modifier = {
+				factor = constant:africa_focus_negotiation.resistance_factor
+				has_war_with = event_target:africa_host
+			}
+		}
+		set_country_flag = africa_member_rival_settlement_rejected
+		set_country_flag = africa_focus_negotiation_refused
+		event_target:africa_host = { add_to_variable = { africa_colonial_pressure = constant:africa_focus_route_tuning.tradeoff_cost } }
+		africa_focus_notify_host_of_negotiation_response = yes
+	}
+}
+
+# Host-facing notice. The selected government and the negotiated result remain
+# visible; acknowledging the notice closes only this focus-owned exchange.
+country_event = {
+	id = chaosx.nr12.306
+	title = chaosx.nr12.306.t
+	desc = {
+		trigger = { event_target:africa_focus_negotiation_target = { has_country_flag = africa_focus_negotiation_accepted } }
+		text = chaosx.nr12.306.accepted.d
+	}
+	desc = {
+		trigger = { event_target:africa_focus_negotiation_target = { has_country_flag = africa_focus_negotiation_countered } }
+		text = chaosx.nr12.306.countered.d
+	}
+	desc = {
+		trigger = { event_target:africa_focus_negotiation_target = { has_country_flag = africa_focus_negotiation_refused } }
+		text = chaosx.nr12.306.refused.d
+	}
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_event_target = africa_focus_negotiation_target
+	}
+
+	option = {
+		name = chaosx.nr12.306.a
+		ai_chance = { base = constant:africa_focus_negotiation.accept_weight }
+		event_target:africa_focus_negotiation_target = {
+			africa_focus_clear_negotiation_pending_flags = yes
+			africa_focus_clear_negotiation_response_flags = yes
+		}
+	}
+}
+
+# Bounded host-only retry loop for the regional overlay's physical AI project.
+# It touches no other country except the selected relationship/state arrays.
+country_event = {
+	id = chaosx.nr12.307
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = yes
+		africa_is_current_host = yes
+		has_country_flag = africa_overlay_corridor_ai_contract_pending
+	}
+
+	immediate = {
+		africa_focus_ai_retry_overlay_corridor_action = yes
+		if = {
+			limit = { has_country_flag = africa_overlay_corridor_ai_contract_pending }
+			country_event = { id = chaosx.nr12.307 days = constant:africa_focus_negotiation.overlay_ai_retry_days }
+		}
+	}
+}
+
+# The state-by-state continental settlement is public. This is a news event,
+# not the later super-event package; its dedicated role asset is wired in the
+# Event 12 visual tranche.
+news_event = {
+	id = chaosx.nr12.308
+	title = chaosx.nr12.308.t
+	desc = chaosx.nr12.308.d
+	picture = GFX_report_event_generic_african_unity
+	is_triggered_only = yes
+
+	trigger = { has_global_flag = africa_is_one }
+
+	option = {
+		name = chaosx.nr12.308.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Host-facing handoff from unification into the Scramble response. It exposes
+# the bounded external roster and response actions without opening world-order
+# play or manufacturing a foreign crisis outcome.
+country_event = {
+	id = chaosx.nr12.309
+	title = chaosx.nr12.309.t
+	desc = chaosx.nr12.309.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_global_flag = africa_is_one
+		has_global_flag = africa_scramble_response_pending
+	}
+
+	immediate = {
+		clr_global_flag = africa_scramble_response_pending
+		set_global_flag = africa_scramble_response_active
+		clr_country_flag = africa_scramble_response_pending
+		set_country_flag = africa_scramble_response_open
+		set_country_flag = africa_scramble_recognition_phase
+		set_variable = { africa_selected_action_family = constant:africa_action_family.scramble }
+		set_variable = { africa_selected_action_id = constant:africa_action.none }
+		africa_clear_action_quote = yes
+		africa_refresh_bounded_external_target_roster = yes
+	}
+
+	option = {
+		name = chaosx.nr12.309.a
+		custom_effect_tooltip = chaosx.nr12.309.a.tt
+		ai_chance = { base = 100 }
+	}
+}

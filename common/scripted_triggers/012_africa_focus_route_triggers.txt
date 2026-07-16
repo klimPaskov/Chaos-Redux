@@ -1,0 +1,705 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 CONTINENTAL FOCUS ROUTE TRIGGERS
+# ============================================================================
+# Country-scope predicates for constitutional branch visibility, action-backed
+# crises, route capstones, shared support lanes, and final relationship gates.
+# All target tests use Event 12 bounded arrays. No periodic world scan is used.
+# ============================================================================
+
+africa_focus_has_continental_tree = {
+	has_focus_tree = africa_continental_focus_tree
+}
+
+africa_focus_has_grounded_origin = {
+	OR = {
+		has_country_flag = africa_origin_route_federal_union
+		has_country_flag = africa_origin_route_continental_republic
+		has_country_flag = africa_origin_route_council_of_crowns
+		has_country_flag = africa_origin_route_peoples_union
+		has_country_flag = africa_origin_route_military_continentalism
+		has_country_flag = africa_origin_route_continental_confederation
+	}
+}
+
+africa_focus_shows_federal_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.federal_union }
+		has_country_flag = africa_origin_route_federal_union
+	}
+}
+
+africa_focus_shows_republic_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
+		has_country_flag = africa_origin_route_continental_republic
+	}
+}
+
+africa_focus_shows_crowns_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
+		has_country_flag = africa_origin_route_council_of_crowns
+	}
+}
+
+africa_focus_shows_union_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
+		has_country_flag = africa_origin_route_peoples_union
+	}
+}
+
+africa_focus_shows_command_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
+		has_country_flag = africa_origin_route_military_continentalism
+	}
+}
+
+africa_focus_shows_confederation_route = {
+	OR = {
+		check_variable = { africa_constitution = constant:africa_constitution.uncommitted }
+		check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+		has_country_flag = africa_origin_route_continental_confederation
+	}
+}
+
+africa_focus_can_continue_grounded_route = {
+	check_variable = { africa_constitution > constant:africa_constitution.uncommitted }
+	check_variable = { africa_constitution < constant:africa_constitution.ancestral_covenant }
+}
+
+africa_focus_shows_support_lanes = {
+	africa_focus_has_grounded_origin = yes
+}
+
+africa_focus_has_relationship_action_target = {
+	any_of_scopes = {
+		array = africa_relationship_countries
+		africa_action_target_is_usable = yes
+	}
+}
+
+africa_focus_has_selected_action_target = {
+	any_of_scopes = {
+		array = africa_selected_country_targets
+		africa_action_target_is_usable = yes
+	}
+}
+
+africa_focus_has_selected_covenant_actor = {
+	any_of_scopes = {
+		array = africa_selected_country_targets
+		africa_action_target_is_usable = yes
+		OR = {
+			has_country_flag = africa_registered_high_chaos_actor
+			has_country_flag = africa_ecological_bargain_site
+		}
+	}
+}
+
+africa_focus_has_covenant_actor = {
+	OR = {
+		any_of_scopes = {
+			array = africa_selected_country_targets
+			africa_action_target_is_usable = yes
+			OR = {
+				has_country_flag = africa_registered_high_chaos_actor
+				has_country_flag = africa_ecological_bargain_site
+			}
+		}
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_action_target_is_usable = yes
+			OR = {
+				has_country_flag = africa_registered_high_chaos_actor
+				has_country_flag = africa_ecological_bargain_site
+			}
+		}
+	}
+}
+
+africa_focus_can_reveal_covenant = {
+	africa_is_current_host = yes
+	africa_focus_has_grounded_origin = yes
+	has_global_flag = africa_evolution_iii_logged
+	africa_focus_has_covenant_actor = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+	NOT = { has_country_flag = africa_covenant_route_rejected }
+}
+
+africa_focus_shows_covenant_route = {
+	OR = {
+		has_country_flag = africa_covenant_route_revealed
+		check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+		africa_focus_can_reveal_covenant = yes
+	}
+}
+
+africa_focus_action_100_resolved = {
+	OR = {
+		has_country_flag = africa_action_hold_postwar_constitutional_review_full_recorded
+		has_country_flag = africa_action_hold_postwar_constitutional_review_partial_recorded
+		has_country_flag = africa_action_hold_postwar_constitutional_review_failure_recorded
+	}
+}
+
+# The focus tree is the sole authority that opens actions 093-100. This
+# predicate prevents a selector from exposing an unopened contract or replaying
+# one after its full, partial, or failure disposition has been recorded.
+africa_focus_pending_route_action_is_unresolved = {
+	OR = {
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.convene_federal_deadlock_conference }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_convene_federal_deadlock_conference_full_recorded
+					has_country_flag = africa_action_convene_federal_deadlock_conference_partial_recorded
+					has_country_flag = africa_action_convene_federal_deadlock_conference_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.conduct_first_continental_election }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_conduct_first_continental_election_full_recorded
+					has_country_flag = africa_action_conduct_first_continental_election_partial_recorded
+					has_country_flag = africa_action_conduct_first_continental_election_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.arbitrate_continental_succession }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_arbitrate_continental_succession_full_recorded
+					has_country_flag = africa_action_arbitrate_continental_succession_partial_recorded
+					has_country_flag = africa_action_arbitrate_continental_succession_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.balance_food_and_industrial_plan }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_balance_food_and_industrial_plan_full_recorded
+					has_country_flag = africa_action_balance_food_and_industrial_plan_partial_recorded
+					has_country_flag = africa_action_balance_food_and_industrial_plan_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.review_victorious_commander_loyalty }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_review_victorious_commander_loyalty_full_recorded
+					has_country_flag = africa_action_review_victorious_commander_loyalty_partial_recorded
+					has_country_flag = africa_action_review_victorious_commander_loyalty_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.ratify_confederal_emergency_action }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_ratify_confederal_emergency_action_full_recorded
+					has_country_flag = africa_action_ratify_confederal_emergency_action_partial_recorded
+					has_country_flag = africa_action_ratify_confederal_emergency_action_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.review_covenant_obligation }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_review_covenant_obligation_full_recorded
+					has_country_flag = africa_action_review_covenant_obligation_partial_recorded
+					has_country_flag = africa_action_review_covenant_obligation_failure_recorded
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.hold_postwar_constitutional_review }
+			NOT = {
+				OR = {
+					has_country_flag = africa_action_hold_postwar_constitutional_review_full_recorded
+					has_country_flag = africa_action_hold_postwar_constitutional_review_partial_recorded
+					has_country_flag = africa_action_hold_postwar_constitutional_review_failure_recorded
+				}
+			}
+		}
+	}
+}
+
+# Route capstones use action evidence plus a live off-tree proof. A completed
+# focus alone never manufactures the member, delivery, legitimacy, or command
+# evidence named by the constitutional settlement.
+africa_focus_can_complete_federal_route = {
+	OR = {
+		has_country_flag = africa_action_convene_federal_deadlock_conference_full_recorded
+		has_country_flag = africa_federal_deadlock_rewritten
+	}
+	africa_focus_first_proof_satisfied = yes
+	africa_focus_has_accession_candidate = yes
+}
+
+africa_focus_can_complete_republic_route = {
+	OR = {
+		has_country_flag = africa_action_conduct_first_continental_election_full_recorded
+		has_country_flag = africa_republic_election_correction_completed
+	}
+	africa_focus_first_proof_satisfied = yes
+	check_variable = {
+		var = africa_regional_equality
+		value = constant:africa_focus_route_threshold.minimum_route_equality
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_can_complete_crowns_route = {
+	OR = {
+		has_country_flag = africa_action_arbitrate_continental_succession_full_recorded
+		has_country_flag = africa_crowns_succession_correction_completed
+	}
+	africa_focus_first_proof_satisfied = yes
+	check_variable = {
+		var = africa_restoration_legitimacy
+		value = constant:africa_focus_route_threshold.minimum_route_consent
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_can_complete_union_route = {
+	OR = {
+		has_country_flag = africa_action_balance_food_and_industrial_plan_full_recorded
+		has_country_flag = africa_union_plan_correction_completed
+	}
+	africa_focus_first_proof_satisfied = yes
+	check_variable = {
+		var = africa_central_capacity
+		value = constant:africa_focus_route_threshold.minimum_route_capacity
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_can_complete_command_route = {
+	OR = {
+		has_country_flag = africa_action_review_victorious_commander_loyalty_full_recorded
+		has_country_flag = africa_command_loyalty_correction_completed
+	}
+	africa_focus_first_proof_satisfied = yes
+	check_variable = {
+		var = africa_continental_war_readiness
+		value = constant:africa_focus_route_threshold.minimum_route_capacity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_emergency_rule_debt
+		value = constant:africa_focus_route_threshold.maximum_capstone_emergency_debt
+		compare = less_than_or_equals
+	}
+}
+
+africa_focus_can_complete_confederation_route = {
+	OR = {
+		has_country_flag = africa_confederation_emergency_ratified
+		has_country_flag = africa_confederation_lawful_refusal_honoured
+		has_country_flag = africa_confederation_divergent_war_repaired
+	}
+	africa_focus_first_proof_satisfied = yes
+	africa_focus_has_relationship_action_target = yes
+	check_variable = {
+		var = africa_consent_commitment
+		value = constant:africa_focus_route_threshold.minimum_route_consent
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_can_complete_covenant_route = {
+	OR = {
+		has_country_flag = africa_covenant_breach_contained
+		has_country_flag = africa_covenant_bargain_renegotiated
+		has_country_flag = africa_covenant_member_withdrawal_protected
+	}
+	africa_focus_has_covenant_actor = yes
+	check_variable = {
+		var = africa_consent_commitment
+		value = constant:africa_focus_route_threshold.minimum_route_consent
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_has_route_capstone = {
+	OR = {
+		has_country_flag = africa_federal_route_capstone
+		has_country_flag = africa_republic_route_capstone
+		has_country_flag = africa_crowns_route_capstone
+		has_country_flag = africa_union_route_capstone
+		has_country_flag = africa_command_route_capstone
+		has_country_flag = africa_confederation_route_capstone
+		has_country_flag = africa_covenant_route_capstone
+	}
+}
+
+africa_focus_material_support_ready = {
+	has_country_flag = africa_support_common_passage_proven
+	has_country_flag = africa_support_survival_network_proven
+	has_country_flag = africa_support_civilian_military_framework
+}
+
+africa_focus_can_declare_charter_league = {
+	africa_focus_has_route_capstone = yes
+	africa_focus_material_support_ready = yes
+	check_variable = {
+		var = africa_charter_authority
+		value = constant:africa_focus_route_threshold.minimum_final_authority
+		compare = greater_than_or_equals
+	}
+}
+
+africa_focus_has_protected_member = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_protected_countries
+				africa_action_target_is_usable = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_relationship_is_protected = yes
+				africa_member_host_generation_is_current = yes
+			}
+		}
+	}
+}
+
+africa_focus_has_accession_candidate = {
+	OR = {
+		africa_focus_has_protected_member = yes
+		africa_focus_has_associate_member = yes
+	}
+}
+
+africa_focus_has_associate_member = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_associate_countries
+				africa_action_target_is_usable = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_relationship_is_associate = yes
+				africa_member_host_generation_is_current = yes
+			}
+		}
+	}
+}
+
+africa_focus_has_chartered_member = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_chartered_countries
+				africa_member_can_enter_autonomous_federal = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_relationship_is_chartered = yes
+				africa_member_can_enter_autonomous_federal = yes
+			}
+		}
+	}
+}
+
+africa_focus_has_integration_candidate = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_relationship_countries
+				africa_member_can_complete_core_recognition = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_member_can_complete_core_recognition = yes
+			}
+		}
+	}
+}
+
+africa_focus_has_leaving_member = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_leaving_countries
+				africa_action_target_is_usable = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_relationship_is_leaving = yes
+				africa_member_host_generation_is_current = yes
+			}
+		}
+	}
+}
+
+africa_focus_has_rival_bloc = {
+	OR = {
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = africa_rival_bloc_countries
+				africa_action_target_is_usable = yes
+			}
+		}
+		AND = {
+			is_ai = no
+			any_of_scopes = {
+				array = africa_selected_country_targets
+				africa_relationship_is_rival_bloc = yes
+				africa_member_host_generation_is_current = yes
+			}
+		}
+	}
+}
+
+# A regional overlay mandate needs one live partner in the matching regional
+# registry and full physical evidence from the corridor family authorised by
+# that overlay. The earlier host proof may count when it produced the same real
+# infrastructure; a focus flag by itself never satisfies the gate.
+africa_focus_overlay_has_live_partner = {
+	any_of_scopes = {
+		array = africa_relationship_countries
+		africa_matches_current_host_overlay = yes
+		OR = {
+			africa_relationship_is_protected = yes
+			africa_relationship_is_associate = yes
+			africa_relationship_is_chartered = yes
+			africa_relationship_is_autonomous_federal = yes
+			africa_relationship_is_integrated_region = yes
+		}
+	}
+}
+
+africa_focus_overlay_corridor_evidence_ready = {
+	has_country_flag = africa_overlay_corridor_project_authorised
+	OR = {
+		AND = {
+			check_variable = { africa_overlay_corridor_required_action = constant:africa_action.build_regional_rail_spine }
+			has_country_flag = africa_action_build_regional_rail_spine_full_recorded
+		}
+		AND = {
+			check_variable = { africa_overlay_corridor_required_action = constant:africa_action.expand_river_transport }
+			has_country_flag = africa_action_expand_river_transport_full_recorded
+		}
+		AND = {
+			check_variable = { africa_overlay_corridor_required_action = constant:africa_action.modernise_continental_port }
+			has_country_flag = africa_action_modernise_continental_port_full_recorded
+		}
+	}
+}
+
+africa_focus_can_prove_overlay_mandate = {
+	has_country_flag = africa_first_obligation_proved
+	has_country_flag = africa_overlay_local_terms_settled
+	has_country_flag = africa_overlay_council_convened
+	custom_trigger_tooltip = {
+		tooltip = africa_focus_overlay_partner_requirement_tt
+		africa_focus_overlay_has_live_partner = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = africa_focus_overlay_corridor_requirement_tt
+		africa_focus_overlay_corridor_evidence_ready = yes
+	}
+}
+
+# COUNTRY scope on a member. Federal and integrated settlements are genuine
+# Event 12 autonomy tiers, accepted by the member and locked for the current
+# constitutional term. A leaving, rival, resistant, or civil-war government
+# never counts as settled.
+africa_country_counts_as_federal_settlement = {
+	africa_member_host_generation_is_current = yes
+	has_country_flag = africa_member_continental_constitution_accepted
+	has_country_flag = africa_member_settlement_term_locked
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_resistant = yes }
+	NOT = { africa_relationship_is_rival_bloc = yes }
+	is_subject = yes
+	OVERLORD = { tag = event_target:africa_host }
+	OR = {
+		AND = {
+			africa_relationship_is_autonomous_federal = yes
+			has_autonomy_state = autonomy_africa_federal_member
+		}
+		AND = {
+			africa_relationship_is_integrated_region = yes
+			has_autonomy_state = autonomy_africa_integrated_region
+			has_country_flag = africa_member_final_integration_consent
+		}
+	}
+}
+
+# COUNTRY scope on an independent confederal member. This path exists only for
+# the confederation constitution and requires that government's own recorded
+# recognition of the common settlement.
+africa_country_counts_as_confederal_settlement = {
+	africa_member_host_generation_is_current = yes
+	is_subject = no
+	africa_relationship_is_chartered = yes
+	has_country_flag = africa_member_continental_constitution_accepted
+	has_country_flag = africa_member_confederal_unity_recognised
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	event_target:africa_host = {
+		check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+		has_country_flag = africa_confederation_route_capstone
+	}
+}
+
+# COUNTRY scope on a restored or priority polity whose own settlement accepted
+# the continental constitution. This does not infer consent from alliance or
+# opinion: the explicit package flags are mandatory.
+africa_country_counts_as_allied_restored_settlement = {
+	africa_member_host_generation_is_current = yes
+	has_country_flag = africa_member_continental_constitution_accepted
+	has_country_flag = africa_member_allied_settlement_accepted
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_resistant = yes }
+	NOT = { africa_relationship_is_rival_bloc = yes }
+	OR = {
+		has_country_flag = africa_restored_polity_member
+		has_country_flag = africa_priority_member_package_active
+		has_country_flag = africa_rsa_allied_settlement_complete
+	}
+	OR = {
+		africa_relationship_is_associate = yes
+		africa_relationship_is_chartered = yes
+		is_in_faction_with = event_target:africa_host
+	}
+}
+
+africa_country_counts_as_continental_settlement = {
+	OR = {
+		africa_country_counts_as_federal_settlement = yes
+		africa_country_counts_as_confederal_settlement = yes
+		africa_country_counts_as_allied_restored_settlement = yes
+	}
+}
+
+# STATE scope. Ownership and control must agree. Direct host land must be a
+# real core; all other cases point to an accepted country settlement or a
+# time-bounded congress exemption with a live completion mission.
+africa_state_counts_as_continentally_settled = {
+	is_on_continent = africa
+	is_controlled_by = OWNER
+	OR = {
+		AND = {
+			is_owned_by = event_target:africa_host
+			OR = {
+				is_core_of = event_target:africa_host
+				has_state_flag = africa_local_settlement_complete
+			}
+		}
+		owner = { africa_country_counts_as_continental_settlement = yes }
+		AND = {
+			has_state_flag = africa_continental_peace_exemption_active
+			owner = { africa_continental_peace_exemption_is_current = yes }
+		}
+	}
+}
+
+africa_all_african_states_are_settled = {
+	all_state = {
+		OR = {
+			NOT = { is_on_continent = africa }
+			africa_state_counts_as_continentally_settled = yes
+		}
+	}
+}
+
+africa_focus_has_no_unresolved_continental_relationship = {
+	NOT = {
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_member_host_generation_is_current = yes
+			OR = {
+				africa_relationship_is_resistant = yes
+				africa_relationship_is_leaving = yes
+				africa_relationship_is_rival_bloc = yes
+				africa_relationship_is_occupied_settlement = yes
+				has_country_flag = africa_focus_associate_invitation_pending
+				has_country_flag = africa_focus_charter_admission_pending
+				has_country_flag = africa_focus_autonomy_offer_pending
+				has_country_flag = africa_focus_integration_offer_pending
+				has_country_flag = africa_focus_departure_settlement_pending
+				has_country_flag = africa_focus_rival_settlement_pending
+				has_country_flag = africa_focus_negotiation_accepted
+				has_country_flag = africa_focus_negotiation_countered
+				has_country_flag = africa_focus_negotiation_refused
+			}
+		}
+	}
+}
+
+africa_focus_can_complete_continental_settlement = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = africa_is_one }
+	africa_focus_has_route_capstone = yes
+	has_country_flag = africa_charter_league_declared
+	has_country_flag = africa_continental_record_published
+	has_country_flag = africa_postwar_constitutional_review_settled
+	has_country_flag = africa_second_generation_settled
+	NOT = { has_global_flag = africa_rsa_civil_war_active }
+	NOT = { has_global_flag = africa_rsa_settlement_pending }
+	check_variable = { africa_active_action_count = constant:africa_value.zero }
+	check_variable = {
+		var = africa_continental_reach
+		value = constant:africa_focus_route_threshold.minimum_final_reach
+		compare = greater_than_or_equals
+	}
+	africa_focus_has_no_unresolved_continental_relationship = yes
+	custom_trigger_tooltip = {
+		tooltip = africa_continental_settlement_all_states_tt
+		africa_all_african_states_are_settled = yes
+	}
+}
+
+africa_focus_can_open_african_century = {
+	africa_is_current_host = yes
+	has_global_flag = africa_is_one
+	has_country_flag = africa_continental_settlement_complete
+	has_country_flag = africa_postwar_constitutional_review_settled
+	has_country_flag = africa_second_generation_settled
+}
