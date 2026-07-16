@@ -4,6 +4,10 @@ Date: 2026-07-16
 Parent verdict: **READY for exact-scope commit**
 Scope: IW-017 Corsica (`COR`), IW-018 Sardinia (`ARX`), IW-019 Sicily (`ASX`), and FORM-05 Mediterranean Island League (`MIX`).
 
+> Later status note: this bounded Mediterranean verdict predates the completed
+> slot-24/6002 runtime integration. Its statements that 6002 presentation is
+> pending are historical. Audio 6001 remains blocked.
+
 This is a bounded tranche verdict, not an Event 006 completion claim.
 
 ## Playable-package coverage
@@ -102,8 +106,8 @@ Evidence:
   eight lifecycle ideas, and one report card. FORM-05 adds seven decisions,
   three ideas, one emblem, and one report card. Every runtime texture is
   registered and has a live consumer.
-- This tranche adds no audio. Event 006 `6002` playback remains a separate
-  pending integration surface; `6001` remains blocked on exact recording rights.
+- This tranche added no audio. A later Event 006 tranche completed 6002
+  playback; 6001 remains blocked on exact recording rights.
 
 Evidence:
 
@@ -136,6 +140,6 @@ and no adviser-art claims. Both owned localisation files retain UTF-8 BOM.
 - This tranche was source-audited and asset-decoded; it is not represented as
   an in-engine playthrough.
 - Event 006 remains incomplete outside this tranche. FORM-06 through FORM-48,
-  remaining country packages, super-event presentation, animations,
-  achievements, catalog reconciliation, and the full completion audit remain
-  active work.
+  remaining country packages, animations, achievements, catalog reconciliation,
+  and the full completion audit remain active work. The later slot-24/6002
+  presentation tranche is complete with one dormant hidden-formable route.

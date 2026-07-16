@@ -37,9 +37,10 @@ Wiring identifiers:
 - sound wrappers: `chaosx_super_event_6002_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`;
 - one-shot playback; wrapper collision policy is `max_audible = 1` with `max_audible_behaviour = fail`.
 
-The gameplay firing effect must set `global.current_super_event_audio_id = 6002`
-only at the accepted dangerous coordinated-bloc threshold, immediately before
-the existing settings-aware super-event playback helper.
+The dangerous milestone submits audio ID 6002 with display slot 24 to the
+shared settings-aware super-event FIFO. The dispatcher assigns
+`global.current_super_event_audio_id` only when that entry owns the visible
+window, then calls the existing volume-mode playback helper for human players.
 
 ## Held production
 

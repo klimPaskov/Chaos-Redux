@@ -1,0 +1,214 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 DANGEROUS MILESTONE SUPER-EVENT
+# ============================================================================
+# Implements the five accepted qualification packages for super-event slot 24.
+# Every witness is transaction-bound and factual: a completed league action,
+# an actual opening claim, a successful war declaration, a committed hidden
+# formable, or a consumed league-sponsorship record. Presentation uses the
+# shared settings-aware FIFO so another active super-event is never replaced.
+# ============================================================================
+
+# Country scope. Publishes a single authoritative league leader as both a
+# scope-valued variable and a durable target/flag pair used by later audits.
+independence_wave_set_league_leader = {
+	if = {
+		limit = {
+			has_event_target = independence_wave_league_leader_target
+			event_target:independence_wave_league_leader_target = { exists = yes }
+		}
+		event_target:independence_wave_league_leader_target = {
+			clr_country_flag = independence_wave_league_current_leader
+		}
+	}
+	clear_global_event_target = independence_wave_league_leader_target
+	set_variable = { global.independence_wave_league_leader = THIS }
+	set_country_flag = independence_wave_league_current_leader
+	save_global_event_target_as = independence_wave_league_leader_target
+}
+
+# Any scope. A ten-country Totalen Chaos or World Collapse wave gives each
+# armed (or already radical) release at most one real claim on an adjacent
+# state still owned by its surviving former host. The exact successful actors
+# and distinct claimed states are frozen after the shared plan commits.
+independence_wave_prepare_high_chaos_opening_claims = {
+	set_variable = { global.independence_wave_presentation_immediate_claim_count = constant:independence_wave_value.minimum }
+	set_variable = { global.independence_wave_presentation_immediate_claim_plan_id = global.liberation_plan_id }
+	clear_global_event_target = independence_wave_first_opening_claim_actor
+	if = {
+		limit = {
+			independence_wave_plan_metadata_arrays_are_aligned = yes
+			check_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_danger_milestone.exact_high_chaos_wave_count }
+			check_variable = {
+				var = global.independence_wave_plan_chaos_band
+				value = constant:independence_wave_chaos_band.totalen_chaos
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_opening_claim_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = independence_wave_opening_claim_index
+					value = global.independence_wave_plan_selected_count
+					compare = less_than
+				}
+			}
+			set_temp_variable = { independence_wave_execution_package_index = independence_wave_opening_claim_index }
+			independence_wave_load_frozen_country_execution_context = yes
+			event_target:independence_wave_execution_country = {
+				clr_country_flag = independence_wave_opening_claim_actor
+				clear_variable = independence_wave_opening_claim_plan_id
+				save_event_target_as = independence_wave_opening_claim_actor
+				if = {
+					limit = {
+						is_independence_wave_active_country = yes
+						OR = {
+							check_variable = {
+								var = independence_wave_setup_force_level
+								value = constant:liberation_force_level.armed
+								compare = greater_than_or_equals
+							}
+							check_variable = { independence_wave_government_route = constant:independence_wave_government_route.radical_sovereignty }
+						}
+						has_event_target = independence_wave_execution_former_host
+						event_target:independence_wave_execution_former_host = {
+							exists = yes
+							NOT = { tag = event_target:independence_wave_opening_claim_actor }
+							any_owned_state = {
+								NOT = { check_variable = { independence_wave_opening_claim_state_plan_id = global.liberation_plan_id } }
+								NOT = { is_claimed_by = event_target:independence_wave_opening_claim_actor }
+								NOT = { is_core_of = event_target:independence_wave_opening_claim_actor }
+								any_neighbor_state = { is_owned_by = event_target:independence_wave_opening_claim_actor }
+							}
+						}
+					}
+					event_target:independence_wave_execution_former_host = {
+						random_owned_state = {
+							limit = {
+								NOT = { check_variable = { independence_wave_opening_claim_state_plan_id = global.liberation_plan_id } }
+								NOT = { is_claimed_by = event_target:independence_wave_opening_claim_actor }
+								NOT = { is_core_of = event_target:independence_wave_opening_claim_actor }
+								any_neighbor_state = { is_owned_by = event_target:independence_wave_opening_claim_actor }
+							}
+							add_claim_by = event_target:independence_wave_opening_claim_actor
+							if = {
+								limit = { is_claimed_by = event_target:independence_wave_opening_claim_actor }
+								set_variable = { independence_wave_opening_claim_state_plan_id = global.liberation_plan_id }
+								event_target:independence_wave_opening_claim_actor = {
+									set_country_flag = independence_wave_opening_claim_actor
+									set_variable = { independence_wave_opening_claim_plan_id = global.liberation_plan_id }
+									if = {
+										limit = { NOT = { has_event_target = independence_wave_first_opening_claim_actor } }
+										save_global_event_target_as = independence_wave_first_opening_claim_actor
+									}
+								}
+								add_to_variable = { global.independence_wave_presentation_immediate_claim_count = constant:independence_wave_plan.loop_increment }
+							}
+						}
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_opening_claim_index = constant:independence_wave_plan.loop_increment }
+		}
+	}
+}
+
+# Country scope. Appends the one-shot milestone to Event 6 history without
+# changing Event 6's repeatable firing counters or inventing a sixth evolution.
+independence_wave_record_danger_milestone_history = {
+	set_temp_variable = { independence_wave_history_previous_last_event_id = global.last_fired_event_id }
+	set_temp_variable = { events_log_history_payload_override = constant:independence_wave_danger_milestone.history_payload }
+	set_temp_variable = { events_log_history_payload_override_active = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { events_log_history_actor_override = THIS }
+	set_temp_variable = { events_log_history_actor_override_active = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { events_log_history_secondary_actor_override_active = constant:independence_wave_value.minimum }
+	set_variable = { global.last_fired_event_id = constant:independence_wave_event.id }
+	record_events_log_history_entry = yes
+	set_variable = { global.last_fired_event_id = independence_wave_history_previous_last_event_id }
+}
+
+# Country scope. The reason has already been selected in the temporary
+# `independence_wave_danger_selected_reason` variable.
+independence_wave_publish_danger_milestone = {
+	set_global_flag = independence_wave_danger_super_event_fired
+	set_variable = { global.independence_wave_danger_milestone_date = global.date }
+	set_variable = { global.independence_wave_danger_milestone_reason = independence_wave_danger_selected_reason }
+	clr_global_flag = independence_wave_danger_reason_radical_offensive_league
+	clr_global_flag = independence_wave_danger_reason_high_chaos_claim_wave
+	clr_global_flag = independence_wave_danger_reason_synchronized_former_host_wars
+	clr_global_flag = independence_wave_danger_reason_hidden_formable_bloc_center
+	clr_global_flag = independence_wave_danger_reason_league_sponsored_cascade
+	if = {
+		limit = { check_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.radical_offensive_league } }
+		set_global_flag = independence_wave_danger_reason_radical_offensive_league
+		set_global_flag = independence_wave_radical_bloc_qualification_recorded
+		set_country_flag = independence_wave_radical_bloc_qualified_actor
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.high_chaos_claim_wave } }
+		set_global_flag = independence_wave_danger_reason_high_chaos_claim_wave
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.synchronized_former_host_wars } }
+		set_global_flag = independence_wave_danger_reason_synchronized_former_host_wars
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.hidden_formable_bloc_center } }
+		set_global_flag = independence_wave_danger_reason_hidden_formable_bloc_center
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.league_sponsored_cascade } }
+		set_global_flag = independence_wave_danger_reason_league_sponsored_cascade
+	}
+	clear_global_event_target = independence_wave_danger_milestone_actor
+	save_global_event_target_as = independence_wave_danger_milestone_actor
+	independence_wave_record_danger_milestone_history = yes
+	set_temp_variable = { natural_disaster_super_event_slot = constant:independence_wave_danger_milestone.super_event_slot }
+	set_temp_variable = { natural_disaster_super_event_audio_id = constant:independence_wave_danger_milestone.audio_id }
+	set_temp_variable = { natural_disaster_super_event_scope_state = constant:independence_wave_value.minimum }
+	natural_disaster_emit_super_event = yes
+	clear_global_event_target = independence_wave_last_league_sponsor
+}
+
+# Any scope. Qualification priority is stable so simultaneous package witnesses
+# produce one reason, one actor, one history row, and one queued presentation.
+independence_wave_evaluate_danger_milestone = {
+	if = {
+		limit = { can_independence_wave_trigger_danger_milestone = yes }
+		set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.none }
+		if = {
+			limit = { has_independence_wave_danger_radical_offensive_league = yes }
+			set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.radical_offensive_league }
+			event_target:independence_wave_league_leader_target = { independence_wave_publish_danger_milestone = yes }
+		}
+		else_if = {
+			limit = { has_independence_wave_danger_high_chaos_claim_wave = yes }
+			set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.high_chaos_claim_wave }
+			event_target:independence_wave_first_opening_claim_actor = { independence_wave_publish_danger_milestone = yes }
+		}
+		else_if = {
+			limit = { has_independence_wave_danger_synchronized_former_host_wars = yes }
+			set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.synchronized_former_host_wars }
+			event_target:independence_wave_first_former_host_war_actor = { independence_wave_publish_danger_milestone = yes }
+		}
+		else_if = {
+			limit = { has_independence_wave_danger_hidden_formable_bloc_center = yes }
+			set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.hidden_formable_bloc_center }
+			event_target:independence_wave_league_leader_target = { independence_wave_publish_danger_milestone = yes }
+		}
+		else_if = {
+			limit = { has_independence_wave_danger_league_sponsored_cascade = yes }
+			set_temp_variable = { independence_wave_danger_selected_reason = constant:independence_wave_danger_reason.league_sponsored_cascade }
+			event_target:independence_wave_last_league_sponsor = { independence_wave_publish_danger_milestone = yes }
+		}
+	}
+}
+
+# Any scope. Package 2 may be evaluated only inside the successful shared-plan
+# commit transaction that produced its exact claims and force ledger.
+independence_wave_evaluate_committed_wave_danger = {
+	set_global_flag = independence_wave_danger_wave_transaction_open
+	independence_wave_evaluate_danger_milestone = yes
+	clr_global_flag = independence_wave_danger_wave_transaction_open
+	clear_global_event_target = independence_wave_first_opening_claim_actor
+}

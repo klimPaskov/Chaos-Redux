@@ -56,7 +56,7 @@ The following file, line, and prompt counts are preserved as superseded packagin
 
 ## Package boundary
 
-This is a source specification, research, and dated implementation-reconciliation package. The 2026-07-14 map snapshot and 2026-07-15 tag-architecture audit close their earlier identifier placeholders for the current checkout. The thirteen registered-tag compatibility adapters and thirteen vanilla route-overlay hooks remain unimplemented obligations until gameplay evidence proves otherwise. Final visual provenance, the `6001` recording-rights blocker, `6002` audio conversion, localisation, Clausewitz implementation, and gameplay validation remain production work.
+This is a source specification, research, and dated implementation-reconciliation package. The 2026-07-14 map snapshot and later tag audits close their earlier identifier placeholders for the current checkout. Registered-tag compatibility adapters, vanilla overlays, and most package gameplay remain subject to their current per-package audit evidence. Final visual provenance is tracked by the asset manifests. The `6001` recording-rights blocker remains open; the separate `6002` derivative, presentation, localisation, Clausewitz predicates, history row, and queued playback are implemented. Four of its five routes are reachable; the hidden-formable route remains dormant behind fail-closed FORM-42/48 carriers. Full Event 006 gameplay validation remains production work.
 
 ## Superseded 2026-07-14 file checksum snapshot
 

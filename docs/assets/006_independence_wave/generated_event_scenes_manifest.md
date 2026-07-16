@@ -12,15 +12,15 @@ All six scenes are generated fictional or alternate-history documentary art. Gen
 | ASSET-002 | Host crisis report | `source_png/event_pictures/report_event_006_asset_002_host_crisis_source.png` | `processed_png/event_pictures/report_event_006_asset_002_host_crisis.png` | `gfx/event_pictures/006_independence_wave/report_event_006_asset_002_host_crisis.dds` | 210x176 | `GFX_report_event_006_asset_002_host_crisis` | handed_off |
 | ASSET-003 | First recognition report | `source_png/event_pictures/report_event_006_asset_003_first_recognition_source.png` | `processed_png/event_pictures/report_event_006_asset_003_first_recognition.png` | `gfx/event_pictures/006_independence_wave/report_event_006_asset_003_first_recognition.dds` | 210x176 | `GFX_report_event_006_asset_003_first_recognition` | handed_off |
 | ASSET-004 | League congress news | `source_png/event_pictures/news_event_006_asset_004_league_congress_source.png` | `processed_png/event_pictures/news_event_006_asset_004_league_congress.png` | `gfx/event_pictures/006_independence_wave/news_event_006_asset_004_league_congress.dds` | 397x153 | `GFX_news_event_006_asset_004_league_congress` | handed_off |
-| ASSET-005 | League formation super-event | `source_png/super_events/super_event_006_asset_005_league_formation_source.png` | `processed_png/super_events/super_event_006_asset_005_league_formation.png` | `gfx/super_events/006_independence_wave/super_event_006_asset_005_league_formation.dds` | 457x328 | `GFX_super_event_006_asset_005_league_formation` | handed_off |
-| ASSET-006 | Revisionist milestone super-event | `source_png/super_events/super_event_006_asset_006_revisionist_milestone_source.png` | `processed_png/super_events/super_event_006_asset_006_revisionist_milestone.png` | `gfx/super_events/006_independence_wave/super_event_006_asset_006_revisionist_milestone.dds` | 457x328 | `GFX_super_event_006_asset_006_revisionist_milestone` | handed_off |
+| ASSET-005 | League formation super-event | `source_png/super_events/super_event_006_asset_005_league_formation_source.png` | `processed_png/super_events/super_event_006_asset_005_league_formation.png` | `gfx/super_events/006_independence_wave/super_event_006_asset_005_league_formation.dds` | 457x328 | `GFX_super_event_006_asset_005_league_formation` | registered, runtime held |
+| ASSET-006 | Revisionist milestone super-event | `source_png/super_events/super_event_006_asset_006_revisionist_milestone_source.png` | `processed_png/super_events/super_event_006_asset_006_revisionist_milestone.png` | `gfx/super_events/006_independence_wave/super_event_006_asset_006_revisionist_milestone.dds` | 457x328 | `GFX_super_event_006_asset_006_revisionist_milestone` | registered and wired to slot 24 |
 
 ## Processing record
 
 - ASSET-001 through ASSET-003 were processed with the prescribed repo-skill tool `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py`, using its standard 210x176 card treatment and deterministic seeds 6001, 6002, and 6003. The outputs are sepia black-and-white RGBA cards with subtle tilt, soft shadow, and transparent corners.
 - ASSET-004 was center-cropped to 397x153, converted to black and white, contrast-adjusted, and given deterministic period press grain with FFmpeg.
 - ASSET-005 and ASSET-006 were center-cropped to 457x328 with Lanczos resampling and restrained contrast/saturation normalization with FFmpeg.
-- All six final files were converted with `.tools/convert_to_dds.py` to one-level legacy uncompressed 32-bit BGRA DDS.
+- All six final files were converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` to one-level legacy uncompressed 32-bit BGRA DDS.
 - `contact_sheets/generated_event_scenes_source_contact_sheet.png` shows every source.
 - `contact_sheets/generated_event_scenes_final_dds_decoded_contact_sheet.png` shows every final DDS after decoding, with report transparency composited over a neutral paper color for review.
 - `dds_decoded_png/` contains the decoded review copies used for pixel comparison.
@@ -44,4 +44,4 @@ Visual review confirmed that the three report cards preserve their central subje
 
 ## Wiring state
 
-The final files are implementation-ready but deliberately unwired. The main agent owns sprite registration and gameplay references. Use `generated_event_scenes_gfx_handoff.md`; do not rename the files after registration without updating this manifest and the source/processed records.
+All six sprites are registered in `interface/006_independence_wave_event_pictures.gfx`. ASSET-001 is the committed wave report and ASSET-006 is the runtime image for dangerous milestone slot 24. ASSET-005 stays registered as the static final asset for the accepted league-formation package, but that package remains absent from runtime while audio 6001 is blocked. Do not rename the files without updating the interface registry, scripted-localisation dispatch, and source/processed records.

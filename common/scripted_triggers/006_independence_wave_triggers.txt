@@ -243,17 +243,91 @@ can_independence_wave_mark_league_durable = {
 	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
 }
 
-can_independence_wave_trigger_danger_milestone = {
+has_independence_wave_danger_radical_offensive_league = {
 	has_independence_wave_durable_league = yes
 	check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
 	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.danger_members compare = greater_than_or_equals }
 	check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.danger_common_cause compare = greater_than_or_equals }
 	check_variable = { var = global.independence_wave_league_shared_reserve value = constant:independence_wave_league.danger_shared_reserve compare = greater_than_or_equals }
-	OR = {
-		check_variable = { var = global.independence_wave_league_revisionist_actions value = constant:independence_wave_league.danger_revisionist_actions compare = greater_than_or_equals }
-		check_variable = { var = global.independence_wave_successful_sponsored_releases value = constant:independence_wave_league.danger_sponsored_releases compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_revisionist_actions value = constant:independence_wave_league.danger_revisionist_actions compare = greater_than_or_equals }
+	has_event_target = independence_wave_league_leader_target
+	event_target:independence_wave_league_leader_target = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_league_member
+		has_country_flag = independence_wave_league_current_leader
 	}
+}
+
+has_independence_wave_danger_high_chaos_claim_wave = {
+	has_global_flag = independence_wave_danger_wave_transaction_open
+	check_variable = { global.independence_wave_presentation_country_count = constant:independence_wave_danger_milestone.exact_high_chaos_wave_count }
+	check_variable = { var = global.independence_wave_presentation_chaos_band value = constant:independence_wave_chaos_band.totalen_chaos compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_presentation_immediate_claim_count value = constant:independence_wave_danger_milestone.several_actors compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_presentation_immediate_claim_plan_id value = global.liberation_plan_id compare = equals }
+	has_event_target = independence_wave_first_opening_claim_actor
+	event_target:independence_wave_first_opening_claim_actor = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_opening_claim_actor
+		check_variable = { var = independence_wave_opening_claim_plan_id value = global.independence_wave_presentation_immediate_claim_plan_id compare = equals }
+	}
+}
+
+has_independence_wave_danger_synchronized_former_host_wars = {
+	has_global_flag = independence_wave_danger_host_war_batch_open
+	check_variable = { var = global.independence_wave_danger_former_host_war_count value = constant:independence_wave_danger_milestone.several_actors compare = greater_than_or_equals }
+	has_event_target = independence_wave_first_former_host_war_actor
+	event_target:independence_wave_first_former_host_war_actor = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_danger_former_host_war_actor
+		check_variable = { var = independence_wave_danger_former_host_war_batch_id value = global.independence_wave_danger_former_host_war_batch_id compare = equals }
+	}
+}
+
+has_independence_wave_danger_hidden_formable_bloc_center = {
+	has_independence_wave_durable_league = yes
+	check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.danger_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.danger_common_cause compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_shared_reserve value = constant:independence_wave_league.danger_shared_reserve compare = greater_than_or_equals }
+	has_event_target = independence_wave_league_leader_target
+	event_target:independence_wave_league_leader_target = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_league_member
+		has_country_flag = independence_wave_league_current_leader
+		has_country_flag = independence_wave_formable_active
+		has_country_flag = independence_wave_formable_committed
+		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+		check_variable = { independence_wave_formable_discovery_mode = constant:independence_wave_formable_discovery.hidden_high_chaos }
+		check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	}
+}
+
+has_independence_wave_danger_league_sponsored_cascade = {
+	check_variable = {
+		var = global.independence_wave_successful_league_sponsored_releases
+		value = constant:independence_wave_league.danger_sponsored_releases
+		compare = greater_than_or_equals
+	}
+	has_event_target = independence_wave_last_league_sponsor
+	event_target:independence_wave_last_league_sponsor = {
+		exists = yes
+		is_independence_wave_active_country = yes
+	}
+}
+
+can_independence_wave_trigger_danger_milestone = {
 	NOT = { has_global_flag = independence_wave_danger_super_event_fired }
+	OR = {
+		has_independence_wave_danger_radical_offensive_league = yes
+		has_independence_wave_danger_high_chaos_claim_wave = yes
+		has_independence_wave_danger_synchronized_former_host_wars = yes
+		has_independence_wave_danger_hidden_formable_bloc_center = yes
+		has_independence_wave_danger_league_sponsored_cascade = yes
+	}
 }
 
 independence_wave_patron_arrays_are_aligned = {

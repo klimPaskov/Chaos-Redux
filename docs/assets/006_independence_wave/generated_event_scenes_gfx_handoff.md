@@ -21,7 +21,7 @@ spriteTypes = {
 - ASSET-002: consolidated host-crisis report.
 - ASSET-003: first-recognition milestone report.
 - ASSET-004: first league-congress proclamation news event.
-- ASSET-005: super-event titled `The League of New States`; the final super-event slot remains owned by the main implementation.
-- ASSET-006: super-event titled `Every Border a Casus Belli`; the final super-event slot remains owned by the main implementation.
+- ASSET-005: super-event titled `The League of New States`; its DDS and sprite registration are retained, but slot 23 has no runtime dispatch while audio 6001 remains blocked.
+- ASSET-006: super-event titled `Every Border a Casus Belli`; it is wired to runtime slot 24 and audio 6002.
 
-`chaosx.nr6.2` uses `GFX_report_event_006_asset_001_wave_summary`. The host, recognition, league-news, and two super-event sprites remain registered and await their owning gameplay incidents; registration does not claim that those later incidents are wired.
+`chaosx.nr6.2` uses `GFX_report_event_006_asset_001_wave_summary`. ASSET-006 is consumed by the implemented dangerous-milestone incident. The host, recognition, league-news, and ASSET-005 sprites remain registered without this handoff claiming that their later incidents are wired.

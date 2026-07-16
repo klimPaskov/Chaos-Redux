@@ -2,7 +2,7 @@
 
 ## Planning scope
 
-This package is a source specification. It does not contain complete gameplay implementation, final localisation, produced visual assets, final audio derivatives, or an edited event catalog workbook. The verified original `6002` source is preserved under the Event 6 documentation asset tree, but it is not a game-ready derivative.
+This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `6002` source has a produced game-ready derivative and runtime package. The catalog workbook still requires its final fact-based alignment pass.
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
@@ -46,9 +46,18 @@ Thresholds, formulas, gains, losses, durations, AI weights, starting unit ratios
 
 All titles and labels in the source specification are working labels. Event text, focus text, decision text, tooltips, GUI text, event-detail text, catalog wording, country names, party names, and achievements must be written during implementation and audited for coverage and tone.
 
+### Achievements
+
+Sixteen Event 006 achievements are accepted in design. None currently has a
+gameplay definition or localisation set. Fifteen have final normal, grey, and
+not-eligible DDS triplets; only `chaosx_006_assyria_survives` lacks its approved
+art package. Radical Bloc records only its dangerous-milestone prerequisite and
+does not award. Tracking, disqualifiers, containment survival, registry wiring,
+and localisation remain implementation work for all sixteen.
+
 ### Super-event production
 
-Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution. It must not be processed or wired without permission or a waiver. The `6002` United States Marine Band source is verified and preserved, but its OGG and WAV derivatives, super-event images, sound definitions, GFX, localisation wiring, and settings-aware playback remain production work.
+Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution and is absent from runtime. The `6002` United States Marine Band OGG/WAV derivatives, image, sound definitions, GFX, localisation, history row, five predicates, and settings-aware queued playback are implemented and documented in `docs/super_events/006_independence_wave_super_event_research.md`. Four qualification routes are reachable. The hidden-formable route remains dormant until the fail-closed FORM-42 or FORM-48 family and a valid carrier package are fully implemented and readiness-promoted. The accepted Radical Bloc achievement definition and containment-survival award path also remain implementation work.
 
 ### Visual assets
 

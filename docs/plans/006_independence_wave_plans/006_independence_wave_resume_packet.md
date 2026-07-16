@@ -86,9 +86,11 @@ truth map for current implementation status and handoff dispositions.
   super-event art, and final `6002` audio files materially exist. Gameplay
   advisor offices are asset-neutral after the user-directed withdrawal of all
   custom Event 006 advisor icons.
-- `6002` OGG, WAV, music wrappers, sound wrappers, and station entry are complete.
-  Event 006 gameplay still does not assign audio ID `6002` and fire the
-  settings-aware presentation path.
+- `6002` OGG, WAV, music wrappers, sound wrappers, zero-random station entry,
+  slot-24 localisation/image dispatch, five factual predicates, Event Log
+  payload, and settings-aware queued presentation are implemented. Packages 1,
+  2, 3, and 5 are reachable; package 4 is dormant behind fail-closed FORM-42
+  and FORM-48 carriers.
 - `6001` remains blocked on exact recording rights. No fallback is authorized.
 
 ## Current package gates
@@ -162,10 +164,13 @@ satisfy the synchronized frozen plan.
    so World Collapse can continue to attempt exactly ten releases.
 2. Rerun exact-ID audits
    whenever shared planner or dispatch logic changes.
-3. Wire Event 006 super-event presentation and settings-aware `6002` playback.
+3. Preserve and re-audit the implemented Event 006 slot-24/`6002` package as
+   later league, scenario, formable, sponsorship, and achievement work lands.
    Keep `6001` absent.
-4. Continue package and FORM-06 through FORM-48 implementation with bespoke
-   identities, gameplay, AI, localisation, assets, and audits.
+4. Implement the accepted FORM-48 plan with HBX as carrier, autonomous HAW/FSM
+   members, and collision-cleared PFX identity; keep FORM-42 and every other
+   unfinished family fail-closed. Then continue the remaining packages with
+   bespoke gameplay, AI, localisation, assets, and audits.
 5. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
    only after their GUI sizes, states, frame plans, and consumers are locked.
 6. Reconcile event logs, event details, documentation, asset manifests, and the
@@ -177,10 +182,14 @@ satisfy the synchronized frozen plan.
 
 - IW-003 has no legal current-map state binding.
 - `6001` lacks verified redistribution rights for the specified recording.
-- The Assyria survival achievement lacks an approved exact motif and ownership
-  decision.
+- All sixteen accepted Event 006 achievements remain without gameplay
+  definitions or localisation. Fifteen have complete three-state icon triplets;
+  the Assyria survival icon is the only missing art package. Radical Bloc has a
+  qualification record only and cannot yet award.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-06 through FORM-48 remain incomplete and fail-closed.
+- Super-event 6002's hidden-formable route cannot fire until FORM-42 or FORM-48
+  and a valid carrier package are fully implemented and readiness-promoted.
 - The event workbook and every event-log/detail surface have not been reconciled
   against the current implementation.
 - No final balance and Event 006 completion audit covers the whole accepted spec.

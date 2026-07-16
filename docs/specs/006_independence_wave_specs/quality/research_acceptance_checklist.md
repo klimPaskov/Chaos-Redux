@@ -57,7 +57,7 @@ Implementation reconciliation: 2026-07-14
 - [ ] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
 - [ ] Obtain permission or a waiver for `6001`, or obtain user approval before reopening its recording selection.
-- [ ] Trim, convert, checksum, and wire the verified `6002` source.
+- [x] Trim, convert, checksum, and wire the verified `6002` source.
 - [ ] Validate release safety, AI, focus, decision, scenario, and super-event behavior in the implemented mod.
 
 The unchecked items are implementation, production, or explicit rights gates. No replacement recording or fallback package is authorized by this checklist.
