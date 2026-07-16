@@ -6,7 +6,7 @@ This proof covers the five recurring Air Winter families carried by the existing
 
 | Family | Observation | Event route |
 | --- | --- | --- |
-| First frost | A state crosses into Phase 2 or worse from below Phase 2 | Existing regional Phase 2 routes, ids 10 through 14 and exact mountain-capital id 16. Seed route 10 can schedule result 18. |
+| First frost | A state crosses into Phase 2 or worse from below Phase 2 | Existing regional Phase 2 routes, ids 10 through 14, exact mountain-capital id 16, and exact engine-island id 38. Event 13 stores `desert_city` or `none` to separate its exact and generic routes. Seed route 10 can schedule result 18. |
 | Dark harvest | A classified food state is severe | Existing food-collapse opening 33 and result 32 |
 | Ash thaw | A state drops from Phase 3 or Phase 4 to a lower phase | Existing recovery opening 50 and result 51 |
 | Second winter | A presentation class is severe in a later engine year | Dedicated choice event 60 and result 61 |
@@ -41,7 +41,7 @@ Marker capture occurs inside `air_winter_schedule_phase_event` before its owner 
 
 ## Marker contract
 
-Each family has a separate state flag and six payload fields:
+Each family has a separate state flag and six base payload fields:
 
 - origin year
 - origin cycle id
@@ -50,7 +50,9 @@ Each family has a separate state flag and six payload fields:
 - frozen score
 - typed event id
 
-A validator proves every field, current ownership by the stored owner, a presentation class from 1 through 9, a positive score, a typed family route, an origin year no later than the current snapshot, an origin cycle no later than the current cycle, and an owner receipt earlier than the origin year.
+First frost adds a seventh field, `air_winter_first_frost_origin_route_subtype`. Its validator accepts `desert_city` only with event 13 and requires `none` for every other first-frost route.
+
+A validator proves every required field, current ownership by the stored owner, a presentation class from 1 through 9, a positive score, a typed family route, a valid subtype where required, an origin year no later than the current snapshot, an origin cycle no later than the current cycle, and an owner receipt earlier than the origin year.
 
 Reconciliation clears partial rows, transferred rows, impossible calendar rows, invalid routes, and rows already covered by a receipt. Valid prior-year rows remain queued. Each state holds at most one unresolved row for each family. That row preserves the earliest unconsumed observation while later observations of the same family wait for it to resolve.
 
@@ -58,7 +60,7 @@ Reconciliation clears partial rows, transferred rows, impossible calendar rows, 
 
 ### First frost
 
-The state must have changed phase during the current tick. Its previous phase is below Phase 2 and its new phase is Phase 2 or higher. Regional routing is resolved at capture time and stored in the row. Mountain-capital identity is checked before the generic city route. The typed id preserves that selection if the capital moves before dispatch, while the stored state, owner, and highland class must remain valid.
+The state must have changed phase during the current tick. Its previous phase is below Phase 2 and its new phase is Phase 2 or higher. Regional routing is resolved at capture time and stored in the row. The state-local order is mountain capital, engine island, exact arid urban state, generic city, coast, non-city arid or Mediterranean state, highland or polar state, then food state. The typed id preserves the mountain and island selection. Event 13 also preserves `desert_city` or `none`, so category movement cannot exchange its exact and generic interfaces before dispatch. The stored state and owner must remain valid.
 
 When the frozen route is seed event 10, each opening choice schedules event 18 after 45 days. The child result uses the same regular state and country targets and the shared pending-owner transaction. This continuation does not write a second seasonal receipt.
 
@@ -96,7 +98,7 @@ Within equal priority, candidate comparison uses:
 2. higher frozen score
 3. lower state id
 
-The country candidate stores family, priority, origin year, presentation class, and origin cycle alongside the existing state, event id, score, and cycle id. Final dispatch rechecks every stored field against the winning state row. State iterator order cannot change the result.
+The country candidate stores family, priority, origin year, presentation class, origin cycle, and route subtype alongside the existing state, event id, score, and cycle id. Final dispatch rechecks every stored field against the winning state row. State iterator order cannot change the result.
 
 ## Annual receipts and carryover
 
@@ -110,7 +112,7 @@ The five country receipts are:
 
 Each receipt stores the winning marker's origin year. A family cannot create another marker for that owner in the same year after the receipt is committed. A marker from a prior year remains valid only while its receipt is absent or earlier than the marker year.
 
-The dispatch effect writes the receipt only after the complete candidate contract passes. It then clears only the winning marker. First frost and dark harvest reuse ordinary phase routes. When a validated ordinary winner is the same state and exact event id stored by one of those markers, dispatch writes that marker's origin year and clears it as one coalesced incident. It does not consume a different state, route, or family. A cooldown failure or stale transient candidate does not consume the durable row.
+The dispatch effect writes the receipt only after the complete candidate contract passes. It then clears only the winning marker. First frost and dark harvest reuse ordinary phase routes. Dark harvest coalesces when a validated ordinary winner is the same state and exact event id stored by the marker. First frost additionally requires the route subtype to match. Dispatch then writes that marker's origin year and clears it as one coalesced incident. It does not consume a different state, exact event 13 interface, or family. A cooldown failure or stale transient candidate does not consume the durable row.
 
 Second winter also has nine fixed regional severe-year variables. They avoid a generated variable name and make each presentation class independently auditable. The first severe year is a seed. A later severe year is due. The regional year advances only when event 60 passes final dispatch validation.
 
@@ -147,7 +149,7 @@ Source inspection establishes:
 - replacement of incomplete transient owner candidates before comparison
 - nine explicit second-winter regional seed and commit branches
 - final row equality checks before every seasonal receipt
-- exact state and event-id coalescing for first-frost and dark-harvest routes shared with ordinary phase events
+- exact state, event-id, and first-frost route-subtype coalescing for seasonal routes shared with ordinary phase events
 - one-marker consumption after successful validation
 - no new world iterator or periodic on action
 - unique ids and matching localisation for events 60 and 61
@@ -165,4 +167,4 @@ A separate scope audit found two defects. Temporary helper outputs were not init
 
 ## Runtime boundary
 
-HOI4 was not launched. Static sources do not prove runtime assignment of `global.year`, regular event-target retention across the 45-day delay, popup order when several countries dispatch, AI event resolution, marker persistence through save and reload, or annual behavior across an observed year boundary. Those remain runtime observation gates and are not claimed as passing evidence.
+HOI4 was not launched. Static sources do not prove runtime assignment of `global.year`, regular event-target retention across the 45-day delay, exact Desert City subtype retention, popup order when several countries dispatch, AI event resolution, marker persistence through save and reload, or annual behavior across an observed year boundary. Those remain runtime observation gates and are not claimed as passing evidence.

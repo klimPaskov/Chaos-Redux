@@ -810,14 +810,49 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.13
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_valid = yes } }
+		text = chaosx.fallout.13.desert_city.t
+	}
 	title = chaosx.fallout.13.t
-	desc = chaosx.fallout.13.d
-	picture = GFX_report_event_air_winter_phase_2
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_valid = yes } }
+		text = chaosx.fallout.13.desert_city.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_desert_city_opening_receipt_is_absent = yes
+				air_winter_presentation_is_arid = yes
+			}
+		}
+		text = chaosx.fallout.13.arid.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_desert_city_opening_receipt_is_absent = yes
+				air_winter_presentation_is_mediterranean = yes
+			}
+		}
+		text = chaosx.fallout.13.mediterranean.d
+	}
+	desc = chaosx.fallout.13.arid.d
+	picture = [GetAirWinterEvent13Picture]
 	is_triggered_only = yes
-	trigger = { air_winter_event_targets_are_valid = yes }
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = {
+			OR = {
+				air_winter_event_desert_city_opening_receipt_is_valid = yes
+				air_winter_event_desert_city_opening_receipt_is_absent = yes
+			}
+		}
+	}
 
 	option = {
 		name = chaosx.fallout.13.a
+		trigger = { event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_absent = yes } }
 		ai_chance = {
 			base = constant:air_winter_event_ai.primary
 			modifier = {
@@ -827,7 +862,10 @@ country_event = {
 		}
 		hidden_effect = {
 			if = {
-				limit = { air_winter_event_targets_are_valid = yes }
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_absent = yes }
+				}
 				event_target:air_winter_event_state = {
 					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_major }
 					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
@@ -843,6 +881,7 @@ country_event = {
 
 	option = {
 		name = chaosx.fallout.13.b
+		trigger = { event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_absent = yes } }
 		ai_chance = {
 			base = constant:air_winter_event_ai.secondary
 			modifier = {
@@ -852,7 +891,10 @@ country_event = {
 		}
 		hidden_effect = {
 			if = {
-				limit = { air_winter_event_targets_are_valid = yes }
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { air_winter_event_desert_city_opening_receipt_is_absent = yes }
+				}
 				event_target:air_winter_event_state = {
 					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
 					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
@@ -865,6 +907,498 @@ country_event = {
 			else = { air_winter_event_reject_stale_choice = yes }
 		}
 		custom_effect_tooltip = chaosx.fallout.13.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.13.c
+		trigger = { air_winter_event_desert_city_opening_targets_are_valid = yes }
+		ai_chance = {
+			base = constant:air_winter_event_ai.primary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_desert_city_municipal_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_desert_city_municipal_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				NOT = { has_stability < constant:air_winter_event_ai.high_stability }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_stability < constant:air_winter_event_ai.low_stability
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_opening_targets_are_valid = yes }
+				air_winter_desert_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_desert_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_desert_city_clear_pending_branch = yes
+					air_winter_desert_city_clear_opening_receipt = yes
+				}
+				air_winter_desert_city_pay_municipal = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_major }
+					add_to_variable = { air_winter_shelter_capacity = constant:air_winter_event_ledger.shelter_minor }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_desert_city_apply_waterworks = yes
+					set_state_flag = air_winter_desert_city_chain_municipal
+					set_state_flag = air_winter_memory_desert_city_municipal
+					air_winter_event_refresh_state = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_municipal
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.49 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.13.c.tt
+	}
+
+	option = {
+		name = chaosx.fallout.13.d
+		trigger = {
+			air_winter_event_desert_city_opening_targets_are_valid = yes
+			air_winter_event_desert_city_can_pay_rail = yes
+			event_target:air_winter_event_state = { air_winter_event_desert_city_has_operational_railway = yes }
+		}
+		ai_chance = {
+			base = constant:air_winter_event_ai.secondary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_desert_city_rail_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_desert_city_rail_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_government = communism
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war = no
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_war = yes
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_desert_city_opening_targets_are_valid = yes
+					air_winter_event_desert_city_can_pay_rail = yes
+					event_target:air_winter_event_state = { air_winter_event_desert_city_has_operational_railway = yes }
+				}
+				air_winter_desert_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_desert_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_desert_city_clear_pending_branch = yes
+					air_winter_desert_city_clear_opening_receipt = yes
+				}
+				air_winter_desert_city_pay_rail = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_desert_city_chain_rail
+					set_state_flag = air_winter_memory_desert_city_rail
+					air_winter_event_refresh_state = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_rail
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.49 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.13.d.tt
+	}
+
+	option = {
+		name = chaosx.fallout.13.e
+		trigger = {
+			air_winter_event_desert_city_opening_targets_are_valid = yes
+			air_winter_event_desert_city_can_pay_motor = yes
+			event_target:air_winter_event_state = { air_winter_event_desert_city_has_operational_infrastructure = yes }
+		}
+		ai_chance = {
+			base = constant:air_winter_event_ai.risky
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_desert_city_motor_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_desert_city_motor_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				NOT = { has_war_support < constant:air_winter_event_ai.high_war_support }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_war_support < constant:air_winter_event_ai.low_war_support
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_desert_city_opening_targets_are_valid = yes
+					air_winter_event_desert_city_can_pay_motor = yes
+					event_target:air_winter_event_state = { air_winter_event_desert_city_has_operational_infrastructure = yes }
+				}
+				air_winter_desert_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_desert_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_desert_city_clear_pending_branch = yes
+					air_winter_desert_city_clear_opening_receipt = yes
+				}
+				air_winter_desert_city_pay_motor = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_desert_city_chain_motor
+					set_state_flag = air_winter_memory_desert_city_motor
+					air_winter_event_refresh_state = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_motor
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.49 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.13.e.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.49
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_succeeds = yes } }
+		text = chaosx.fallout.49.municipal_success.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_is_partial = yes } }
+		text = chaosx.fallout.49.municipal_partial.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_fails = yes } }
+		text = chaosx.fallout.49.municipal_failure.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_succeeds = yes } }
+		text = chaosx.fallout.49.rail_success.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_is_partial = yes } }
+		text = chaosx.fallout.49.rail_partial.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_fails = yes } }
+		text = chaosx.fallout.49.rail_failure.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_succeeds = yes } }
+		text = chaosx.fallout.49.motor_success.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_is_partial = yes } }
+		text = chaosx.fallout.49.motor_partial.t
+	}
+	title = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_fails = yes } }
+		text = chaosx.fallout.49.motor_failure.t
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_succeeds = yes } }
+		text = chaosx.fallout.49.municipal_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_is_partial = yes } }
+		text = chaosx.fallout.49.municipal_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_fails = yes } }
+		text = chaosx.fallout.49.municipal_failure.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_succeeds = yes } }
+		text = chaosx.fallout.49.rail_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_is_partial = yes } }
+		text = chaosx.fallout.49.rail_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_fails = yes } }
+		text = chaosx.fallout.49.rail_failure.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_succeeds = yes } }
+		text = chaosx.fallout.49.motor_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_is_partial = yes } }
+		text = chaosx.fallout.49.motor_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_fails = yes } }
+		text = chaosx.fallout.49.motor_failure.d
+	}
+	picture = GFX_report_event_air_winter_desert_water_convoy
+	is_triggered_only = yes
+	trigger = { air_winter_event_desert_city_result_targets_are_valid = yes }
+
+	option = {
+		name = chaosx.fallout.49.a
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_succeeds = yes } }
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_desert_city_apply_supply_relief = yes
+					set_state_flag = air_winter_memory_desert_city_success
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_success
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.b
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_is_partial = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_municipal_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_memory_desert_city_partial
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_partial
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.c
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_fails = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_municipal_branch = yes air_winter_event_desert_city_municipal_fails = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_municipal_failure_percent }
+					air_winter_event_apply_deaths = yes
+					subtract_from_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_severe }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_desert_city_damage_municipal_failure = yes
+					air_winter_desert_city_apply_supply_disruption = yes
+					set_state_flag = air_winter_memory_desert_city_failure
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_country_flag = air_winter_memory_desert_city_failure
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.c.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.d
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_succeeds = yes } }
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_major }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					air_winter_desert_city_apply_supply_relief = yes
+					set_state_flag = air_winter_memory_desert_city_success
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_success
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.d.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.e
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_is_partial = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_rail_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_memory_desert_city_partial
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_partial
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.e.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.f
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_fails = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_rail_branch = yes air_winter_event_desert_city_rail_fails = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_rail_failure_percent }
+					air_winter_event_apply_deaths = yes
+					subtract_from_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_severe }
+					add_to_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_desert_city_damage_rail_failure = yes
+					air_winter_desert_city_apply_supply_disruption = yes
+					set_state_flag = air_winter_memory_desert_city_failure
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				add_war_support = constant:air_winter_event_country.war_support_moderate_loss
+				set_country_flag = air_winter_memory_desert_city_failure
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.f.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.g
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_succeeds = yes } }
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_major }
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					air_winter_desert_city_apply_supply_relief = yes
+					set_state_flag = air_winter_memory_desert_city_success
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_success
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.g.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.h
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_is_partial = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_motor_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_minor }
+					add_to_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_moderate }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					set_state_flag = air_winter_memory_desert_city_partial
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_desert_city_partial
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.h.tt
+	}
+
+	option = {
+		name = chaosx.fallout.49.i
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_fails = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_desert_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_desert_city_motor_branch = yes air_winter_event_desert_city_motor_fails = yes } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.desert_city_motor_failure_percent }
+					air_winter_event_apply_deaths = yes
+					subtract_from_variable = { air_winter_water_security = constant:air_winter_event_ledger.water_moderate }
+					add_to_variable = { air_winter_refugee_pressure = constant:air_winter_event_ledger.refugees_extreme }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_severe }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_desert_city_damage_motor_failure = yes
+					air_winter_desert_city_apply_supply_disruption = yes
+					set_state_flag = air_winter_memory_desert_city_failure
+					set_state_flag = air_winter_memory_desert_city_casualties
+					air_winter_desert_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_country_flag = air_winter_memory_desert_city_failure
+				set_country_flag = air_winter_memory_desert_city_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.49.i.tt
 	}
 }
 
