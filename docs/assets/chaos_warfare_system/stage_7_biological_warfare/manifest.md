@@ -22,11 +22,11 @@ The icon depicts a sealed biological payload containment canister being transfer
 | Processed PNG | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/processed_png/bio_designate_strategic_raid_staging_state.png` |
 | Alpha-check preview | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/processed_png/bio_designate_strategic_raid_staging_state_alpha_checker.png` |
 | Final DDS | `gfx/interface/decisions/biowarfare/bio_designate_strategic_raid_staging_state.dds` |
-| `.gfx` file | Not modified; exact target registry remains for the main agent to select |
+| `.gfx` file | `interface/biological_warfare.gfx` |
 | Prompt/source record | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/prompts/bio_designate_strategic_raid_staging_state.md` |
 | Validation record | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/validation.md` |
 | GFX handoff | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/gfx_handoff.md` |
-| Status | `handed_off` |
+| Status | `complete` |
 
 ## Reference analysis
 
@@ -38,7 +38,7 @@ The generated composition follows the references' small-icon treatment: one domi
 
 ## Source note
 
-The source image is a fictional/generated symbolic asset. The chroma-key green background exists only in the preserved source PNG so the generation provenance remains inspectable; it is removed in the intermediate cutout and is not present in the processed PNG or runtime DDS.
+The source image is a fictional/generated symbolic asset. The chroma-key green background exists only in the preserved source PNG so the generation provenance remains inspectable. It is removed in the intermediate cutout and is not present in the processed PNG or runtime DDS.
 
 No real photograph, archival image, or copyrighted source image was used. No placeholder or cross-type substitute was used.
 

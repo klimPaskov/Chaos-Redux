@@ -1,1230 +1,261 @@
-@ANTI_ZOMBIE_BOMB_DAYS_TO_PREPARE = 10
-@ANTI_ZOMBIE_BOMB_COMMAND_POWER = 10
-@ANTI_ZOMBIE_BOMB_UNIT_MIN_TACTICAL_BOMBERS = 25
-@ANTI_ZOMBIE_BOMB_UNIT_MIN_STRATEGIC_BOMBERS = 10
-@ANTI_ZOMBIE_BOMB_PLANE_LOSS_FAILURE = 0.45
-@ANTI_ZOMBIE_BOMB_PLANE_LOSS_LIMITED = 0.25
-@ANTI_ZOMBIE_BOMB_PLANE_LOSS_SUCCESS = 0.10
-@ANTI_ZOMBIE_BOMB_RAID_XP_LIMITED = 0.10
-@ANTI_ZOMBIE_BOMB_RAID_XP_SUCCESS = 0.25
-@ANTI_ZOMBIE_BOMB_RAID_XP_CRITICAL = 0.35
+# ============================================================================
+# CHAOS REDUX - STRATEGIC ORDINARY-PATHOGEN AIR RAIDS
+# ============================================================================
+# Overview:
+# - Defines the Anthrax, Plague, Tularemia, and Smallpox strategic air raids.
+# - Native essential equipment reserves the exact agent model at raid creation.
+# - Every native outcome invokes bio_resolve_strategic_raid_outcome exactly once.
+# - The shared resolver owns consumption, protection/countermeasure context,
+#   lifecycle seeding, evidence, attribution, Condemnation, history, and refunds.
+# - Native state targeting keeps cooldowns and lifecycle writes on the exact
+#   same var:target_state.
+# - No launch-state estimator, aircraft-presence proxy, ordinary-air mission
+#   hook, or fallback contamination route exists in this file.
+# ============================================================================
+
+@BIO_RAID_TARGET_COOLDOWN_DAYS = 120
+@BIO_RAID_AI_MIN_SUCCESS_CHANCE = 0.35
+@BIO_RAID_AI_BASE = 1
+@BIO_RAID_AI_DISABLED = 0
+
+@BIO_RAID_ANTHRAX_DAYS = 28
+@BIO_RAID_ANTHRAX_CP = 10
+@BIO_RAID_ANTHRAX_TAC = 25
+@BIO_RAID_ANTHRAX_STRAT = 10
+@BIO_RAID_ANTHRAX_RESERVATION = 200
+@BIO_RAID_ANTHRAX_SUCCESS_BASE = 0.55
+@BIO_RAID_ANTHRAX_CRITICAL_BASE = 0.12
+@BIO_RAID_ANTHRAX_DISASTER_BASE = 0.08
+@BIO_RAID_ANTHRAX_FAILURE_LOSS = 0.75
+@BIO_RAID_ANTHRAX_LIMITED_LOSS = 0.50
+@BIO_RAID_ANTHRAX_SUCCESS_LOSS = 0.10
+
+@BIO_RAID_PLAGUE_DAYS = 35
+@BIO_RAID_PLAGUE_CP = 15
+@BIO_RAID_PLAGUE_TAC = 50
+@BIO_RAID_PLAGUE_STRAT = 20
+@BIO_RAID_PLAGUE_RESERVATION = 100
+@BIO_RAID_PLAGUE_SUCCESS_BASE = 0.45
+@BIO_RAID_PLAGUE_CRITICAL_BASE = 0.12
+@BIO_RAID_PLAGUE_DISASTER_BASE = 0.12
+@BIO_RAID_PLAGUE_FAILURE_LOSS = 0.80
+@BIO_RAID_PLAGUE_LIMITED_LOSS = 0.60
+@BIO_RAID_PLAGUE_SUCCESS_LOSS = 0.15
+
+@BIO_RAID_TULAREMIA_DAYS = 21
+@BIO_RAID_TULAREMIA_CP = 8
+@BIO_RAID_TULAREMIA_TAC = 15
+@BIO_RAID_TULAREMIA_STRAT = 5
+@BIO_RAID_TULAREMIA_RESERVATION = 100
+@BIO_RAID_TULAREMIA_SUCCESS_BASE = 0.60
+@BIO_RAID_TULAREMIA_CRITICAL_BASE = 0.15
+@BIO_RAID_TULAREMIA_DISASTER_BASE = 0.06
+@BIO_RAID_TULAREMIA_FAILURE_LOSS = 0.50
+@BIO_RAID_TULAREMIA_LIMITED_LOSS = 0.30
+@BIO_RAID_TULAREMIA_SUCCESS_LOSS = 0.05
+
+@BIO_RAID_SMALLPOX_DAYS = 45
+@BIO_RAID_SMALLPOX_CP = 25
+@BIO_RAID_SMALLPOX_TAC = 25
+@BIO_RAID_SMALLPOX_STRAT = 10
+@BIO_RAID_SMALLPOX_RESERVATION = 50
+@BIO_RAID_SMALLPOX_SUCCESS_BASE = 0.40
+@BIO_RAID_SMALLPOX_CRITICAL_BASE = 0.10
+@BIO_RAID_SMALLPOX_DISASTER_BASE = 0.15
+@BIO_RAID_SMALLPOX_FAILURE_LOSS = 0.90
+@BIO_RAID_SMALLPOX_LIMITED_LOSS = 0.70
+@BIO_RAID_SMALLPOX_SUCCESS_LOSS = 0.30
+@BIO_RAID_SMALLPOX_CRITICAL_LOSS = 0.10
+
+@BIO_RAID_XP_LIMITED = 0.10
+@BIO_RAID_XP_SUCCESS = 0.35
+@BIO_RAID_XP_CRITICAL = 0.50
+
+@BIO_RAID_EXPERIENCE_REFERENCE = 1
+@BIO_RAID_AIR_STAT_REFERENCE = 100
+@BIO_RAID_RELIABILITY_REFERENCE = 1
+@BIO_RAID_AIR_SUPERIORITY_REFERENCE = 1
+@BIO_RAID_INTERCEPTION_REFERENCE = 10
+@BIO_RAID_INTEL_REFERENCE = 100
+
+@BIO_RAID_SUCCESS_EXPERIENCE_WEIGHT = 0.10
+@BIO_RAID_SUCCESS_EXPERIENCE_START = -0.10
+@BIO_RAID_SUCCESS_AIR_DEFENCE_WEIGHT = 0.05
+@BIO_RAID_SUCCESS_AIR_DEFENCE_START = -0.05
+@BIO_RAID_SUCCESS_AIR_AGILITY_WEIGHT = 0.10
+@BIO_RAID_SUCCESS_AIR_AGILITY_START = -0.10
+@BIO_RAID_SUCCESS_RELIABILITY_WEIGHT = 0.10
+@BIO_RAID_SUCCESS_RELIABILITY_START = -0.10
+@BIO_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT = 0.25
+@BIO_RAID_SUCCESS_AIR_SUPERIORITY_START = -0.25
+@BIO_RAID_SUCCESS_INTERCEPTION_WEIGHT = -0.25
+@BIO_RAID_SUCCESS_ANTI_AIR_WEIGHT = -0.05
+@BIO_RAID_SUCCESS_RADAR_WEIGHT = -0.05
+@BIO_RAID_SUCCESS_INTEL_WEIGHT = 0.20
+
+@BIO_RAID_CRITICAL_EXPERIENCE_WEIGHT = 0.08
+@BIO_RAID_CRITICAL_INTEL_WEIGHT = 0.05
+
+@BIO_RAID_DISASTER_RELIABILITY_WEIGHT = 0
+@BIO_RAID_DISASTER_RELIABILITY_START = 0.12
+@BIO_RAID_DISASTER_INTERCEPTION_WEIGHT = 0.10
+@BIO_RAID_DISASTER_ANTI_AIR_WEIGHT = 0.05
+@BIO_RAID_DISASTER_RADAR_WEIGHT = 0.05
 
 types = {
-
-
-    ###############################################################################################################
-
-    #        ###    ##    ## ######## ########  ##     ##    ###    ##     ##
-    #       ## ##   ###   ##    ##    ##     ## ##     ##   ## ##    ##   ##
-    #      ##   ##  ####  ##    ##    ##     ## ##     ##  ##   ##    ## ##
-    #     ##     ## ## ## ##    ##    ########  ######### ##     ##    ###
-    #     ######### ##  ####    ##    ##   ##   ##     ## #########   ## ##
-    #     ##     ## ##   ###    ##    ##    ##  ##     ## ##     ##  ##   ##
-    #     ##     ## ##    ##    ##    ##     ## ##     ## ##     ## ##     ##
-
-    ###############################################################################################################
-
-
-    anthrax_strike = {
-        days_to_prepare = 10
-
-        category = biological_raids
-		custom_map_icon = GFX_raid_type_icon_anthrax_strike
-
-        equipment_icon = GFX_anthrax_bomb_equipment_medium
-
-        command_power = 10 # command power allocation cost
-
-        ai_will_do = {
-            base = 1
-            modifier = {
-                ROOT = { has_country_flag = air_cleanliness_treaty_member }
-                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-            }
-            modifier = {
-                # Don't target anyone who is not a potential enemy
-                factor = 0
-                NOT = {
-                    is_in_array = {
-                        array = potential_and_current_enemies
-                        value = FROM  # Target country
-                    }
-                }
-            }
-            modifier = {
-                factor = 2
-                FROM = {
-                    is_major = yes
-                }
-            }
-            modifier = {
-                factor = 2
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-            }
-            modifier = {
-                factor = 100
-                ROOT = {
-                    tag = ENG
-                }
-                FROM = {
-                    tag = JAP
-                    has_government = fascism
-                }
-            }
-            modifier = {
-                factor = 10
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-                FROM = {
-                    tag = CHI
-                }
-            }
-
-            modifier = {
-                factor = 0.25
-                NOT = { has_war_with = FROM }
-                FROM = { is_major = no }
-            }
-            modifier = {
-                factor = 5 # retaliation
-                FROM = { has_country_flag = used_bioweapon }
-            }
-            modifier = {
-                factor = 0.25
-                has_government = democratic
-            }
-        }
-
-        allowed = {
-
-        }
-        # Raid Type is visible
-        visible = {
-            is_special_project_completed = sp:anthrax_bomb
-        }
-        # Specific Target is visible
-        show_target = {
-            NOT = {
-                is_in_faction_with = FROM
-            }
-        }
-
-        # Can prepare
-        available = {
-            #has_war_with = FROM
-        }
-        launchable = {
-            has_war_with = FROM
-        }
-
-        launch_sound = raid_launch_nuclear_strike
-
-        target_type = {
-            province = any
-        }
-        target_icon = GFX_other_target_icon
-
-        # Multiple unit_requirements entries means that one has to be met to launch the raid
-        unit_requirements = {
-            equipment = {
-                type = { cas }
-                amount = { min = 50 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { strategic_bomber }
-                amount = { min = 10 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { tactical_bomber }
-                amount = { min = 25 }
-            }
-        }
-
-        essential_equipment = {
-            anthrax_bomb_equipment = 200
-        }
-
-        starting_point = {
-            types = { air_base }
-        }
-
-        arrow = {
-            type = air
-        }
-
-        success_factors = {
-            success = {
-                base = 0.5
-                experience = {
-                    weight = 0.1
-                    start_weight = -0.1
-                    reference = 1.0
-                }
-                air_defence = {
-                    reference = 100
-                    start_weight = -0.05
-                    weight = 0.05
-                }
-                air_agility = {
-                    reference = 100
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                reliability = {
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                air_superiority = {
-                    reference = 1.0
-                    start_weight = -0.25
-                    weight = 0.25
-                }
-                # Target
-                interception = {
-                    reference = 10
-                    weight = -0.25
-                }
-                anti_air = {
-                    weight = -0.05
-                }
-                radar = {
-                    weight = -0.05
-                }
-                intel = {
-                    weight = 0.2
-                    #start_reference = 50
-                    reference = 100
-                }
-            }
-        }
-
-        success_levels = {
-            failure = {
-                actor_effects = {
-                    var:actor_country = {
-                        custom_effect_tooltip = raid_aborted_tt
-                        add_political_power = -10
-                        add_war_support = -0.005
-                    }
-                    bio_refund_outbreak_strike_command_power = yes
-                    raid_damage_units = {
-                        plane_loss = 0.75
-                        ratio = yes
-                    }
-
-                }
-            }
-            limited_success = {
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.5
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.1
-
-                    # Apply national and diplomatic consequences
-                    apply_anthrax_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_anthrax_strike_tt
-                        set_temp_variable = { contamination_days = 90 }
-                        apply_anthrax_contamination = yes
-                    }
-                }
-                # visual_effect = {
-                #     entity = "air_raids_1_limited_success_entity"
-                #     animation = "attack"
-                # }
-            }
-            success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.1
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.35
-
-                    # Apply national and diplomatic consequences
-                    apply_anthrax_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_anthrax_strike_tt
-                        set_temp_variable = { contamination_days = 180 }
-                        apply_anthrax_contamination = yes
-                    }
-                }
-                # visual_effect = {
-                #     entity = "air_raids_1_limited_success_entity"
-                #     animation = "attack"
-                # }
-            }
-            critical_success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_add_unit_experience = 0.5
-
-                    # Apply national and diplomatic consequences
-                    apply_anthrax_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_anthrax_strike_tt
-                        set_temp_variable = { contamination_days = 360 }
-                        apply_anthrax_contamination = yes
-                    }
-
-                }
-                # visual_effect = {
-                #     entity = "air_raids_1_limited_success_entity"
-                #     animation = "attack"
-                # }
-            }
-        }
-
-    }
-
-    ###############################################################################################################
-
-    #          ########  ##          ###     ######   ##     ## ########
-    #          ##     ## ##         ## ##   ##    ##  ##     ## ##
-    #          ##     ## ##        ##   ##  ##        ##     ## ##
-    #          ########  ##       ##     ## ##   #### ##     ## ######
-    #          ##        ##       ######### ##    ##  ##     ## ##
-    #          ##        ##       ##     ## ##    ##  ##     ## ##
-    #          ##        ######## ##     ##  ######    #######  ########
-
-    ###############################################################################################################
-
-    plague_strike = {
-        days_to_prepare = 20
-
-        category = biological_raids
-		custom_map_icon = GFX_raid_type_icon_plague_strike
-
-        equipment_icon = GFX_plague_bomb_equipment_medium
-
-        command_power = 15 # command power allocation cost
-
-        ai_will_do = {
-            base = 1
-            modifier = {
-                ROOT = { has_country_flag = air_cleanliness_treaty_member }
-                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-            }
-            modifier = {
-                # Don't target anyone who is not a potential enemy
-                factor = 0
-                NOT = {
-                    is_in_array = {
-                        array = potential_and_current_enemies
-                        value = FROM  # Target country
-                    }
-                }
-            }
-            modifier = {
-                factor = 3
-                FROM = {
-                    is_major = yes
-                }
-            }
-            modifier = {
-                factor = 1.5
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-            }
-            modifier = {
-                factor = 0.1
-                NOT = { has_war_with = FROM }
-                FROM = { is_major = no }
-            }
-            modifier = {
-                factor = 100 # strong retaliation for plague use
-                FROM = { has_country_flag = used_bioweapon }
-            }
-            modifier = {
-                factor = 0.1
-                has_government = democratic
-            }
-            modifier = { # Historical use case
-                factor = 1000
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-                FROM = {
-                    tag = CHI
-                }
-            }
-        }
-
-        allowed = {
-
-        }
-        # Raid Type is visible
-        visible = {
-            is_special_project_completed = sp:plague_bomb
-        }
-        # Specific Target is visible
-        show_target = {
-            NOT = {
-                is_in_faction_with = FROM
-            }
-        }
-
-        # Can prepare
-        available = {
-            #has_war_with = FROM
-        }
-        launchable = {
-            has_war_with = FROM
-        }
-
-        launch_sound = raid_launch_nuclear_strike
-
-        target_type = {
-            province = any
-        }
-        target_icon = GFX_other_target_icon
-
-        # Multiple unit_requirements entries means that one has to be met to launch the raid
-        unit_requirements = {
-            equipment = {
-                type = { cas }
-                amount = { min = 100 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { strategic_bomber }
-                amount = { min = 20 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { tactical_bomber }
-                amount = { min = 50 }
-            }
-        }
-
-        essential_equipment = {
-            plague_bomb_equipment = 100
-        }
-
-        starting_point = {
-            types = { air_base }
-        }
-
-        arrow = {
-            type = air
-        }
-
-        success_factors = {
-            success = {
-                base = 0.4
-                experience = {
-                    weight = 0.1
-                    start_weight = -0.1
-                    reference = 1.0
-                }
-                air_defence = {
-                    reference = 100
-                    start_weight = -0.05
-                    weight = 0.05
-                }
-                air_agility = {
-                    reference = 100
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                reliability = {
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                air_superiority = {
-                    reference = 1.0
-                    start_weight = -0.25
-                    weight = 0.25
-                }
-                # Target
-                interception = {
-                    reference = 10
-                    weight = -0.25
-                }
-                anti_air = {
-                    weight = -0.05
-                }
-                radar = {
-                    weight = -0.05
-                }
-                intel = {
-                    weight = 0.2
-                    #start_reference = 50
-                    reference = 100
-                }
-            }
-        }
-
-        success_levels = {
-            failure = {
-                actor_effects = {
-                    var:actor_country = {
-                        custom_effect_tooltip = raid_aborted_tt
-                        add_political_power = -15
-                        add_war_support = -0.01
-                    }
-                    bio_refund_outbreak_strike_command_power = yes
-                    raid_damage_units = {
-                        plane_loss = 0.8
-                        ratio = yes
-                    }
-
-                }
-            }
-            limited_success = {
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.6
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.1
-
-                    # Apply national and diplomatic consequences
-                    apply_plague_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_plague_strike_tt
-                        set_temp_variable = { contamination_days = 365 } # 1 year
-                        apply_plague_contamination = yes
-                    }
-                }
-            }
-            success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.15
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.35
-
-                    # Apply national and diplomatic consequences
-                    apply_plague_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_plague_strike_tt
-                        set_temp_variable = { contamination_days = 730 } # 2 years
-                        apply_plague_contamination = yes
-                    }
-                }
-            }
-            critical_success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_add_unit_experience = 0.5
-
-                    # Apply national and diplomatic consequences
-                    apply_plague_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_plague_strike_tt
-                        set_temp_variable = { contamination_days = 1095 } # 3 years
-                        apply_plague_contamination = yes
-                    }
-
-                }
-            }
-        }
-
-    }
-
-    ###############################################################################################################
-
-    #       ######## ##     ## ##          ###    ########  ######## ##     ## ####    ###
-    #          ##    ##     ## ##         ## ##   ##     ## ##       ###   ###  ##    ## ##
-    #          ##    ##     ## ##        ##   ##  ##     ## ##       #### ####  ##   ##   ##
-    #          ##    ##     ## ##       ##     ## ########  ######   ## ### ##  ##  ##     ##
-    #          ##    ##     ## ##       ######### ##   ##   ##       ##     ##  ##  #########
-    #          ##    ##     ## ##       ##     ## ##    ##  ##       ##     ##  ##  ##     ##
-    #          ##     #######  ######## ##     ## ##     ## ######## ##     ## #### ##     ##
-
-    ###############################################################################################################
-
-
-
-    tularemia_strike = {
-        days_to_prepare = 5
-
-        category = biological_raids
-		custom_map_icon = GFX_raid_type_icon_tularemia_strike
-
-        equipment_icon = GFX_tularemia_bomb_equipment_medium
-
-        command_power = 8 # command power allocation cost
-
-        ai_will_do = {
-            base = 1
-            modifier = {
-                ROOT = { has_country_flag = air_cleanliness_treaty_member }
-                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-            }
-            modifier = {
-                # Don't target anyone who is not a potential enemy
-                factor = 0
-                NOT = {
-                    is_in_array = {
-                        array = potential_and_current_enemies
-                        value = FROM  # Target country
-                    }
-                }
-            }
-            modifier = {
-                factor = 2
-                FROM = {
-                    is_major = yes
-                }
-            }
-            modifier = {
-                factor = 10
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-            }
-            modifier = { # Historical use case in Stalingrad
-                factor = 100
-                ROOT = {
-                    has_government = communism
-                    tag = SOV
-                }
-                FROM = {
-                    tag = GER
-                    has_government = fascism
-                }
-            }
-            modifier = {
-                factor = 0.5
-                NOT = { has_war_with = FROM }
-                FROM = { is_major = no }
-            }
-            modifier = {
-                factor = 50 # retaliation for tularemia use
-                FROM = { has_country_flag = used_bioweapon }
-            }
-            modifier = {
-                factor = 0.25
-                has_government = democratic
-            }
-        }
-
-        allowed = {
-
-        }
-        # Raid Type is visible
-        visible = {
-            is_special_project_completed = sp:tularemia_bomb
-        }
-        # Specific Target is visible
-        show_target = {
-            NOT = {
-                is_in_faction_with = FROM
-            }
-        }
-
-        # Can prepare
-        available = {
-            #has_war_with = FROM
-        }
-        launchable = {
-            has_war_with = FROM
-        }
-
-        launch_sound = raid_launch_nuclear_strike
-
-        target_type = {
-            province = any
-        }
-        target_icon = GFX_other_target_icon
-
-        # Multiple unit_requirements entries means that one has to be met to launch the raid
-        unit_requirements = {
-            equipment = {
-                type = { cas }
-                amount = { min = 25 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { strategic_bomber }
-                amount = { min = 5 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { tactical_bomber }
-                amount = { min = 15 }
-            }
-        }
-
-        essential_equipment = {
-            tularemia_bomb_equipment = 100
-        }
-
-        starting_point = {
-            types = { air_base }
-        }
-
-        arrow = {
-            type = air
-        }
-
-        success_factors = {
-            success = {
-                base = 0.7  # Higher base success due to tactical nature
-                experience = {
-                    weight = 0.1
-                    start_weight = -0.1
-                    reference = 1.0
-                }
-                air_defence = {
-                    reference = 100
-                    start_weight = -0.05
-                    weight = 0.05
-                }
-                air_agility = {
-                    reference = 100
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                reliability = {
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                air_superiority = {
-                    reference = 1.0
-                    start_weight = -0.25
-                    weight = 0.25
-                }
-                # Target
-                interception = {
-                    reference = 10
-                    weight = -0.25
-                }
-                anti_air = {
-                    weight = -0.05
-                }
-                radar = {
-                    weight = -0.05
-                }
-                intel = {
-                    weight = 0.2
-                    #start_reference = 50
-                    reference = 100
-                }
-            }
-        }
-
-        success_levels = {
-            failure = {
-                actor_effects = {
-                    var:actor_country = {
-                        custom_effect_tooltip = raid_aborted_tt
-                        add_political_power = -5
-                        add_war_support = -0.003
-                    }
-                    bio_refund_outbreak_strike_command_power = yes
-                    raid_damage_units = {
-                        plane_loss = 0.5
-                        ratio = yes
-                    }
-
-                }
-            }
-            limited_success = {
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.3
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.15
-
-                    # Apply national and diplomatic consequences
-                    apply_tularemia_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_tularemia_strike_tt
-                        set_temp_variable = { contamination_days = 30 }
-                        apply_tularemia_contamination = yes
-                    }
-                }
-            }
-            success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.05
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.35
-
-                    # Apply national and diplomatic consequences
-                    apply_tularemia_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_tularemia_strike_tt
-                        set_temp_variable = { contamination_days = 90 }
-                        apply_tularemia_contamination = yes
-                    }
-                }
-            }
-            critical_success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_add_unit_experience = 0.5
-
-                    # Apply national and diplomatic consequences
-                    apply_tularemia_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_tularemia_strike_tt
-                        set_temp_variable = { contamination_days = 180 }
-                        apply_tularemia_contamination = yes
-                    }
-
-                }
-            }
-        }
-
-    }
-
-    ###############################################################################################################
-
-    #      ######  ##     ##    ###    ##       ##       ########   #######  ##     ##
-    #     ##    ## ###   ###   ## ##   ##       ##       ##     ## ##     ##  ##   ##
-    #     ##       #### ####  ##   ##  ##       ##       ##     ## ##     ##   ## ##
-    #      ######  ## ### ## ##     ## ##       ##       ########  ##     ##    ###
-    #           ## ##     ## ######### ##       ##       ##        ##     ##   ## ##
-    #     ##    ## ##     ## ##     ## ##       ##       ##        ##     ##  ##   ##
-    #      ######  ##     ## ##     ## ######## ######## ##         #######  ##     ##
-
-    ###############################################################################################################
-
-    smallpox_strike = {
-        days_to_prepare = 30  # Longest preparation time - strategic weapon
-
-        category = biological_raids
-		custom_map_icon = GFX_raid_type_icon_smallpox_strike
-
-        equipment_icon = GFX_smallpox_bomb_equipment_medium
-
-        command_power = 25 # Highest command power allocation cost
-
-        ai_will_do = {
-            base = 1  # Very low base chance - weapon of last resort
-            modifier = {
-                ROOT = { has_country_flag = air_cleanliness_treaty_member }
-                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-            }
-            modifier = {
-                # Don't target anyone who is not a potential enemy
-                factor = 0
-                NOT = {
-                    is_in_array = {
-                        array = potential_and_current_enemies
-                        value = FROM  # Target country
-                    }
-                }
-            }
-            modifier = {
-                factor = 100  # Only when truly desperate
-                FROM = {
-                    is_major = yes
-                    NOT = { has_government = democratic }
-                }
-                ROOT = {
-                    # Only when losing badly
-                    any_enemy_country = {
-                        strength_ratio = {
-                            tag = ROOT
-                            ratio > 3.0
-                        }
-                    }
-                }
-            }
-            modifier = {
-                factor = 1000  # Massive retaliation for smallpox use
-                FROM = { has_country_flag = used_smallpox_weapon }
-            }
-            modifier = {
-                factor = 0.05  # Extremely unlikely for democratic nations
-                has_government = democratic
-            }
-            modifier = { # Almost historical use case
-                factor = 100
-                ROOT = {
-                    tag = JAP
-                    has_government = fascism
-                }
-                FROM = {
-                    tag = CHI
-                }
-            }
-
-        }
-
-        allowed = {
-
-        }
-        # Raid Type is visible
-        visible = {
-            is_special_project_completed = sp:smallpox_bomb
-        }
-        # Specific Target is visible
-        show_target = {
-            NOT = {
-                is_in_faction_with = FROM
-            }
-        }
-
-        # Can prepare
-        available = {
-            #has_war_with = FROM
-        }
-        launchable = {
-            has_war_with = FROM
-        }
-
-        launch_sound = raid_launch_nuclear_strike
-
-        target_type = {
-            province = any
-        }
-        target_icon = GFX_other_target_icon
-
-        # Multiple unit_requirements entries means that one has to be met to launch the raid
-        unit_requirements = {
-            equipment = {
-                type = { cas }
-                amount = { min = 50 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { strategic_bomber }
-                amount = { min = 10 }
-            }
-        }
-        unit_requirements = {
-            equipment = {
-                type = { tactical_bomber }
-                amount = { min = 25 }
-            }
-        }
-
-        essential_equipment = {
-            smallpox_bomb_equipment = 50
-        }
-
-        starting_point = {
-            types = { air_base }
-        }
-
-        arrow = {
-            type = air
-        }
-
-        success_factors = {
-            success = {
-                base = 0.3  # Lower base success due to complexity and danger
-                experience = {
-                    weight = 0.1
-                    start_weight = -0.1
-                    reference = 1.0
-                }
-                air_defence = {
-                    reference = 100
-                    start_weight = -0.05
-                    weight = 0.05
-                }
-                air_agility = {
-                    reference = 100
-                    start_weight = -0.1
-                    weight = 0.1
-                }
-                reliability = {
-                    start_weight = -0.15  # Higher reliability importance
-                    weight = 0.15
-                }
-                air_superiority = {
-                    reference = 1.0
-                    start_weight = -0.35  # Critical air superiority requirement
-                    weight = 0.35
-                }
-                # Target
-                interception = {
-                    reference = 10
-                    weight = -0.35  # Heavy penalty for interception
-                }
-                anti_air = {
-                    weight = -0.1
-                }
-                radar = {
-                    weight = -0.1
-                }
-                intel = {
-                    weight = 0.25  # High intelligence requirement
-                    reference = 100
-                }
-            }
-        }
-
-        success_levels = {
-            failure = {
-                actor_effects = {
-                    var:actor_country = {
-                        custom_effect_tooltip = raid_aborted_tt
-                        add_political_power = -25  # Severe political cost
-                        add_war_support = -0.02
-                        add_stability = -0.03  # Population horrified by attempt
-                    }
-                    bio_refund_outbreak_strike_command_power = yes
-                    raid_damage_units = {
-                        plane_loss = 0.9  # Massive losses on failure
-                        ratio = yes
-                    }
-
-                }
-            }
-            limited_success = {
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.7  # Heavy losses even on partial success
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.1
-
-                    # Apply severe national and diplomatic consequences
-                    apply_smallpox_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_smallpox_strike_tt
-                        set_temp_variable = { contamination_days = 3652 } # Permanent - starts epidemic
-                        apply_smallpox_contamination = yes
-                    }
-                }
-            }
-            success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.3  # Moderate losses on success
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.35
-
-                    # Apply severe national and diplomatic consequences
-                    apply_smallpox_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_smallpox_strike_tt
-                        set_temp_variable = { contamination_days = 3652 } # Permanent - major epidemic
-                        apply_smallpox_contamination = yes
-
-                        # Trigger spreading to neighboring states
-                        every_neighbor_state = {
-                            limit = {
-                                NOT = { has_state_flag = smallpox_contaminated }
-                                is_controlled_by = PREV.controller
-                            }
-                            random_list = {
-                                30 = {
-                                    set_temp_variable = { contamination_days = 3652 }
-                                    apply_smallpox_contamination = yes
-                                }
-                                70 = { }
-                            }
-                        }
-                    }
-                }
-            }
-            critical_success = {
-                custom_sound = generic_bioweapon_aerosol
-                actor_effects = {
-                    raid_damage_units = {
-                        plane_loss = 0.1  # Minimal losses on critical success
-                        ratio = yes
-                    }
-                    raid_add_unit_experience = 0.5
-
-                    # Apply severe national and diplomatic consequences
-                    apply_smallpox_bioweapon_consequences = yes
-                    bio_refund_outbreak_strike_command_power = yes
-                }
-                victim_effects = {
-                    var:target_state = {
-                        custom_effect_tooltip = raid_smallpox_strike_tt
-                        set_temp_variable = { contamination_days = 3652 } # Permanent - massive epidemic
-                        apply_smallpox_contamination = yes
-
-                        # Trigger widespread contamination
-                        controller = {
-                            every_controlled_state = {
-                                limit = {
-                                    NOT = { has_state_flag = smallpox_contaminated }
-                                    OR = {
-                                        any_neighbor_state = { has_state_flag = smallpox_contaminated }
-                                        is_capital = yes  # Capital always at risk
-                                        industrial_complex > 2  # Major industrial centers
-                                    }
-                                }
-                                random_list = {
-                                    60 = {
-                                        set_temp_variable = { contamination_days = 3652 }
-                                        apply_smallpox_contamination = yes
-                                    }
-                                    40 = { }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-
-	zombie_cure_strike = {
-		days_to_prepare = @ANTI_ZOMBIE_BOMB_DAYS_TO_PREPARE
+	anthrax_strike = {
+		days_to_prepare = @BIO_RAID_ANTHRAX_DAYS
+		days_re_enable = @BIO_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @BIO_RAID_AI_MIN_SUCCESS_CHANCE
 
 		category = biological_raids
-		custom_map_icon = GFX_raid_type_icon_zombie_cure_strike
-
-		equipment_icon = GFX_zombie_cure_bomb_equipment_medium
-
-		command_power = @ANTI_ZOMBIE_BOMB_COMMAND_POWER
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_state
+		command_power = @BIO_RAID_ANTHRAX_CP
 
 		ai_will_do = {
-			base = 1
+			base = @BIO_RAID_AI_BASE
 			modifier = {
-				factor = 0
-				NOT = {
+				factor = @BIO_RAID_AI_DISABLED
+				ROOT = { NOT = { bio_strategic_raid_ai_may_target_from = yes } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				ROOT = { has_country_flag = air_cleanliness_treaty_member }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.retaliation_factor
+				ROOT = {
 					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						AND = {
-							FROM = { is_zombie_outbreak_country = yes }
-							has_war_with = FROM
-						}
+						has_country_flag = cbrn_retaliation_authorized
+						FROM = { has_country_flag = used_bioweapon }
 					}
 				}
 			}
 			modifier = {
-				factor = 4
+				factor = constant:bio_strategic_raid_ai.first_use_route_factor
+				ROOT = { cbrn_ai_route_allows_first_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.unrestricted_route_factor
+				ROOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.japan_china_factor
+				ROOT = { bio_strategic_raid_ai_is_japan_china_target = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.defensive_profile_factor
+				ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.prepared_program_factor
+				ROOT = { bio_strategic_raid_ai_has_safe_domestic_program = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.shared_border_factor
+				ROOT = { is_neighbor_of = FROM }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_surveillance_factor
+				FROM = { has_tech = bio_surveillance_networks }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_rapid_response_factor
+				FROM = { has_tech = rapid_outbreak_response }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_integrated_control_factor
+				FROM = { has_tech = integrated_epidemic_control }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_major_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.very_dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.very_dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.capital_target_factor
+				var:target_state = { is_capital = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.industrial_target_factor
 				var:target_state = {
-					is_zombie_controlled_state = yes
+					OR = {
+						industrial_complex > constant:bio_strategic_raid_ai.industrial_target_threshold
+						arms_factory > constant:bio_strategic_raid_ai.industrial_target_threshold
+						dockyard > constant:bio_strategic_raid_ai.industrial_target_threshold
+					}
 				}
 			}
 			modifier = {
-				factor = 2
-				tag = FROM
+				factor = constant:bio_strategic_raid_ai.active_outbreak_factor
+				var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes }
 			}
 			modifier = {
-				factor = 2
-				is_in_faction_with = FROM
-			}
-			modifier = {
-				factor = 0.25
-				has_government = fascism
+				factor = constant:bio_strategic_raid_ai.sanction_vulnerability_factor
+				ROOT = {
+					check_variable = { condemnation_total > constant:bio_strategic_raid_ai.high_condemnation_threshold }
+					check_variable = { condemnation_import_vulnerability > constant:bio_strategic_raid_ai.high_import_vulnerability_threshold }
+					NOT = { bio_strategic_raid_ai_is_desperate_route = yes }
+				}
 			}
 		}
 
-		allowed = { }
 		visible = {
-			has_country_flag = anti_zombie_bomb_available
+			is_special_project_completed = sp:anthrax_bomb
 		}
 		show_target = {
-			var:target_state = {
-				is_anti_zombie_bomb_target_state = yes
-			}
-			OR = {
-				tag = FROM
-				is_in_faction_with = FROM
-				AND = {
-					FROM = { is_zombie_outbreak_country = yes }
-					has_war_with = FROM
-				}
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_target_available_tt
+				hidden_trigger = { bio_strategic_raid_target_from_is_valid = yes }
 			}
 		}
 		available = {
 			custom_trigger_tooltip = {
-				hidden_trigger = {
-					has_active_zombie_cure = yes
-				}
-				tooltip = zombie_cure_raid_available_tooltip
+				tooltip = bio_strategic_raid_preparation_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
 			}
 		}
 		launchable = {
-			has_active_zombie_cure = yes
-			OR = {
-				tag = FROM
-				is_in_faction_with = FROM
-				AND = {
-					FROM = { is_zombie_outbreak_country = yes }
-					has_war_with = FROM
-				}
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_launch_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
 			}
 		}
 
 		launch_sound = raid_launch_air
 
 		target_type = {
-			province = any
+			state = {
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
 		}
-		target_icon = GFX_other_target_icon
 
 		unit_requirements = {
 			equipment = {
 				type = { tactical_bomber }
-				amount = { min = @ANTI_ZOMBIE_BOMB_UNIT_MIN_TACTICAL_BOMBERS }
+				amount = { min = @BIO_RAID_ANTHRAX_TAC }
 			}
 		}
 		unit_requirements = {
 			equipment = {
 				type = { strategic_bomber }
-				amount = { min = @ANTI_ZOMBIE_BOMB_UNIT_MIN_STRATEGIC_BOMBERS }
+				amount = { min = @BIO_RAID_ANTHRAX_STRAT }
 			}
+		}
+
+		essential_equipment = {
+			anthrax_bomb_equipment = @BIO_RAID_ANTHRAX_RESERVATION
 		}
 
 		starting_point = {
@@ -1237,105 +268,1438 @@ types = {
 
 		success_factors = {
 			success = {
-				base = 0.5
+				base = @BIO_RAID_ANTHRAX_SUCCESS_BASE
 				experience = {
-					weight = 0.1
-					start_weight = -0.1
-					reference = 1.0
+					weight = @BIO_RAID_SUCCESS_EXPERIENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_EXPERIENCE_START
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
 				}
 				air_defence = {
-					reference = 100
-					start_weight = -0.05
-					weight = 0.05
+					weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
 				}
 				air_agility = {
-					reference = 100
-					start_weight = -0.1
-					weight = 0.1
+					weight = @BIO_RAID_SUCCESS_AIR_AGILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_AGILITY_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
 				}
 				reliability = {
-					start_weight = -0.1
-					weight = 0.1
+					weight = @BIO_RAID_SUCCESS_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
 				}
 				air_superiority = {
-					reference = 1.0
-					start_weight = -0.25
-					weight = 0.25
+					weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_START
+					reference = @BIO_RAID_AIR_SUPERIORITY_REFERENCE
 				}
 				interception = {
-					reference = 10
-					weight = -0.25
+					weight = @BIO_RAID_SUCCESS_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
 				}
-				anti_air = {
-					weight = -0.05
+				anti_air = { weight = @BIO_RAID_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_SUCCESS_RADAR_WEIGHT }
+				intel = {
+					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
 				}
-				radar = {
-					weight = -0.05
+			}
+			critical = {
+				base = @BIO_RAID_ANTHRAX_CRITICAL_BASE
+				experience = {
+					weight = @BIO_RAID_CRITICAL_EXPERIENCE_WEIGHT
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
 				}
 				intel = {
-					weight = 0.2
-					reference = 100
+					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
 				}
+			}
+			disaster = {
+				base = @BIO_RAID_ANTHRAX_DISASTER_BASE
+				reliability = {
+					weight = @BIO_RAID_DISASTER_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_DISASTER_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_DISASTER_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
 			}
 		}
 
 		success_levels = {
 			failure = {
 				actor_effects = {
-					var:actor_country = {
-						custom_effect_tooltip = raid_aborted_tt
-						add_political_power = -5
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_failure_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
+						bio_resolve_strategic_raid_outcome = yes
 					}
 					raid_damage_units = {
-						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_FAILURE
+						plane_loss = @BIO_RAID_ANTHRAX_FAILURE_LOSS
 						ratio = yes
+					}
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_failure_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
 					}
 				}
 			}
 			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_limited_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
 					raid_damage_units = {
-						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_LIMITED
+						plane_loss = @BIO_RAID_ANTHRAX_LIMITED_LOSS
 						ratio = yes
 					}
-					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_LIMITED
+					raid_add_unit_experience = @BIO_RAID_XP_LIMITED
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_limited_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
 					}
 				}
 			}
 			success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
 					raid_damage_units = {
-						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_SUCCESS
+						plane_loss = @BIO_RAID_ANTHRAX_SUCCESS_LOSS
 						ratio = yes
 					}
-					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_SUCCESS
+					raid_add_unit_experience = @BIO_RAID_XP_SUCCESS
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
 					}
 				}
 			}
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_CRITICAL
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_critical_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_anthrax_critical_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
 					}
 				}
 			}
 		}
 	}
 
+	plague_strike = {
+		days_to_prepare = @BIO_RAID_PLAGUE_DAYS
+		days_re_enable = @BIO_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @BIO_RAID_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_state
+		command_power = @BIO_RAID_PLAGUE_CP
+
+		ai_will_do = {
+			base = @BIO_RAID_AI_BASE
+			modifier = {
+				factor = @BIO_RAID_AI_DISABLED
+				ROOT = { NOT = { bio_strategic_raid_ai_may_target_from = yes } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				ROOT = { has_country_flag = air_cleanliness_treaty_member }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.retaliation_factor
+				ROOT = {
+					OR = {
+						has_country_flag = cbrn_retaliation_authorized
+						FROM = { has_country_flag = used_bioweapon }
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.first_use_route_factor
+				ROOT = { cbrn_ai_route_allows_first_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.unrestricted_route_factor
+				ROOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.japan_china_factor
+				ROOT = { bio_strategic_raid_ai_is_japan_china_target = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.defensive_profile_factor
+				ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.prepared_program_factor
+				ROOT = { bio_strategic_raid_ai_has_safe_domestic_program = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.shared_border_factor
+				ROOT = { is_neighbor_of = FROM }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_surveillance_factor
+				FROM = { has_tech = bio_surveillance_networks }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_rapid_response_factor
+				FROM = { has_tech = rapid_outbreak_response }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_integrated_control_factor
+				FROM = { has_tech = integrated_epidemic_control }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_major_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.very_dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.very_dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.capital_target_factor
+				var:target_state = { is_capital = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.industrial_target_factor
+				var:target_state = {
+					OR = {
+						industrial_complex > constant:bio_strategic_raid_ai.industrial_target_threshold
+						arms_factory > constant:bio_strategic_raid_ai.industrial_target_threshold
+						dockyard > constant:bio_strategic_raid_ai.industrial_target_threshold
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.active_outbreak_factor
+				var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.sanction_vulnerability_factor
+				ROOT = {
+					check_variable = { condemnation_total > constant:bio_strategic_raid_ai.high_condemnation_threshold }
+					check_variable = { condemnation_import_vulnerability > constant:bio_strategic_raid_ai.high_import_vulnerability_threshold }
+					NOT = { bio_strategic_raid_ai_is_desperate_route = yes }
+				}
+			}
+		}
+
+		visible = {
+			is_special_project_completed = sp:plague_bomb
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_target_available_tt
+				hidden_trigger = { bio_strategic_raid_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_preparation_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_launch_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+
+		launch_sound = raid_launch_air
+
+		target_type = {
+			state = {
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
+		}
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = @BIO_RAID_PLAGUE_TAC }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = @BIO_RAID_PLAGUE_STRAT }
+			}
+		}
+
+		essential_equipment = {
+			plague_bomb_equipment = @BIO_RAID_PLAGUE_RESERVATION
+		}
+
+		starting_point = {
+			types = { air_base }
+		}
+
+		arrow = {
+			type = air
+		}
+
+		success_factors = {
+			success = {
+				base = @BIO_RAID_PLAGUE_SUCCESS_BASE
+				experience = {
+					weight = @BIO_RAID_SUCCESS_EXPERIENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_EXPERIENCE_START
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				air_defence = {
+					weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				air_agility = {
+					weight = @BIO_RAID_SUCCESS_AIR_AGILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_AGILITY_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				reliability = {
+					weight = @BIO_RAID_SUCCESS_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				air_superiority = {
+					weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_START
+					reference = @BIO_RAID_AIR_SUPERIORITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_SUCCESS_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_SUCCESS_RADAR_WEIGHT }
+				intel = {
+					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			critical = {
+				base = @BIO_RAID_PLAGUE_CRITICAL_BASE
+				experience = {
+					weight = @BIO_RAID_CRITICAL_EXPERIENCE_WEIGHT
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				intel = {
+					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			disaster = {
+				base = @BIO_RAID_PLAGUE_DISASTER_BASE
+				reliability = {
+					weight = @BIO_RAID_DISASTER_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_DISASTER_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_DISASTER_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_plague_failure_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_PLAGUE_FAILURE_LOSS
+						ratio = yes
+					}
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_plague_failure_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_plague_limited_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_PLAGUE_LIMITED_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_LIMITED
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_plague_limited_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_plague_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_PLAGUE_SUCCESS_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_SUCCESS
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_plague_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_plague_critical_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_plague_critical_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+		}
+	}
+
+	tularemia_strike = {
+		days_to_prepare = @BIO_RAID_TULAREMIA_DAYS
+		days_re_enable = @BIO_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @BIO_RAID_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_state
+		command_power = @BIO_RAID_TULAREMIA_CP
+
+		ai_will_do = {
+			base = @BIO_RAID_AI_BASE
+			modifier = {
+				factor = @BIO_RAID_AI_DISABLED
+				ROOT = { NOT = { bio_strategic_raid_ai_may_target_from = yes } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				ROOT = { has_country_flag = air_cleanliness_treaty_member }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.retaliation_factor
+				ROOT = {
+					OR = {
+						has_country_flag = cbrn_retaliation_authorized
+						FROM = { has_country_flag = used_bioweapon }
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.first_use_route_factor
+				ROOT = { cbrn_ai_route_allows_first_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.unrestricted_route_factor
+				ROOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.japan_china_factor
+				ROOT = { bio_strategic_raid_ai_is_japan_china_target = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.defensive_profile_factor
+				ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.prepared_program_factor
+				ROOT = { bio_strategic_raid_ai_has_safe_domestic_program = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.shared_border_factor
+				ROOT = { is_neighbor_of = FROM }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_surveillance_factor
+				FROM = { has_tech = bio_surveillance_networks }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_rapid_response_factor
+				FROM = { has_tech = rapid_outbreak_response }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_integrated_control_factor
+				FROM = { has_tech = integrated_epidemic_control }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_major_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.very_dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.very_dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.capital_target_factor
+				var:target_state = { is_capital = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.industrial_target_factor
+				var:target_state = {
+					OR = {
+						industrial_complex > constant:bio_strategic_raid_ai.industrial_target_threshold
+						arms_factory > constant:bio_strategic_raid_ai.industrial_target_threshold
+						dockyard > constant:bio_strategic_raid_ai.industrial_target_threshold
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.active_outbreak_factor
+				var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.sanction_vulnerability_factor
+				ROOT = {
+					check_variable = { condemnation_total > constant:bio_strategic_raid_ai.high_condemnation_threshold }
+					check_variable = { condemnation_import_vulnerability > constant:bio_strategic_raid_ai.high_import_vulnerability_threshold }
+					NOT = { bio_strategic_raid_ai_is_desperate_route = yes }
+				}
+			}
+		}
+
+		visible = {
+			is_special_project_completed = sp:tularemia_bomb
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_target_available_tt
+				hidden_trigger = { bio_strategic_raid_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_preparation_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_launch_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+
+		launch_sound = raid_launch_air
+
+		target_type = {
+			state = {
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
+		}
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = @BIO_RAID_TULAREMIA_TAC }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = @BIO_RAID_TULAREMIA_STRAT }
+			}
+		}
+
+		essential_equipment = {
+			tularemia_bomb_equipment = @BIO_RAID_TULAREMIA_RESERVATION
+		}
+
+		starting_point = {
+			types = { air_base }
+		}
+
+		arrow = {
+			type = air
+		}
+
+		success_factors = {
+			success = {
+				base = @BIO_RAID_TULAREMIA_SUCCESS_BASE
+				experience = {
+					weight = @BIO_RAID_SUCCESS_EXPERIENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_EXPERIENCE_START
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				air_defence = {
+					weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				air_agility = {
+					weight = @BIO_RAID_SUCCESS_AIR_AGILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_AGILITY_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				reliability = {
+					weight = @BIO_RAID_SUCCESS_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				air_superiority = {
+					weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_START
+					reference = @BIO_RAID_AIR_SUPERIORITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_SUCCESS_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_SUCCESS_RADAR_WEIGHT }
+				intel = {
+					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			critical = {
+				base = @BIO_RAID_TULAREMIA_CRITICAL_BASE
+				experience = {
+					weight = @BIO_RAID_CRITICAL_EXPERIENCE_WEIGHT
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				intel = {
+					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			disaster = {
+				base = @BIO_RAID_TULAREMIA_DISASTER_BASE
+				reliability = {
+					weight = @BIO_RAID_DISASTER_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_DISASTER_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_DISASTER_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_failure_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_TULAREMIA_FAILURE_LOSS
+						ratio = yes
+					}
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_failure_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_limited_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_TULAREMIA_LIMITED_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_LIMITED
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_limited_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_TULAREMIA_SUCCESS_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_SUCCESS
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_critical_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_tularemia_critical_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+		}
+	}
+
+	smallpox_strike = {
+		days_to_prepare = @BIO_RAID_SMALLPOX_DAYS
+		days_re_enable = @BIO_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @BIO_RAID_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_state
+		command_power = @BIO_RAID_SMALLPOX_CP
+
+		ai_will_do = {
+			base = @BIO_RAID_AI_BASE
+			modifier = {
+				factor = @BIO_RAID_AI_DISABLED
+				ROOT = { NOT = { bio_strategic_raid_ai_may_target_from = yes } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				ROOT = { has_country_flag = air_cleanliness_treaty_member }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.retaliation_factor
+				ROOT = {
+					OR = {
+						has_country_flag = cbrn_retaliation_authorized
+						FROM = { has_country_flag = used_bioweapon }
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.first_use_route_factor
+				ROOT = { cbrn_ai_route_allows_first_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.unrestricted_route_factor
+				ROOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.japan_china_factor
+				ROOT = { bio_strategic_raid_ai_is_japan_china_target = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.defensive_profile_factor
+				ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.prepared_program_factor
+				ROOT = { bio_strategic_raid_ai_has_safe_domestic_program = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.shared_border_factor
+				ROOT = { is_neighbor_of = FROM }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_surveillance_factor
+				FROM = { has_tech = bio_surveillance_networks }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_rapid_response_factor
+				FROM = { has_tech = rapid_outbreak_response }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_integrated_control_factor
+				FROM = { has_tech = integrated_epidemic_control }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.target_major_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.very_dense_target_factor
+				var:target_state = { state_population_k > constant:bio_strategic_raid_ai.very_dense_target_population_k }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.capital_target_factor
+				var:target_state = { is_capital = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.industrial_target_factor
+				var:target_state = {
+					OR = {
+						industrial_complex > constant:bio_strategic_raid_ai.industrial_target_threshold
+						arms_factory > constant:bio_strategic_raid_ai.industrial_target_threshold
+						dockyard > constant:bio_strategic_raid_ai.industrial_target_threshold
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.active_outbreak_factor
+				var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.sanction_vulnerability_factor
+				ROOT = {
+					check_variable = { condemnation_total > constant:bio_strategic_raid_ai.high_condemnation_threshold }
+					check_variable = { condemnation_import_vulnerability > constant:bio_strategic_raid_ai.high_import_vulnerability_threshold }
+					NOT = { bio_strategic_raid_ai_is_desperate_route = yes }
+				}
+			}
+		}
+
+		visible = {
+			is_special_project_completed = sp:smallpox_bomb
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_target_available_tt
+				hidden_trigger = { bio_strategic_raid_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_preparation_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_strategic_raid_launch_available_tt
+				hidden_trigger = { bio_strategic_raid_can_prepare_against_from = yes }
+			}
+		}
+
+		launch_sound = raid_launch_air
+
+		target_type = {
+			state = {
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
+		}
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = @BIO_RAID_SMALLPOX_TAC }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = @BIO_RAID_SMALLPOX_STRAT }
+			}
+		}
+
+		essential_equipment = {
+			smallpox_bomb_equipment = @BIO_RAID_SMALLPOX_RESERVATION
+		}
+
+		starting_point = {
+			types = { air_base }
+		}
+
+		arrow = {
+			type = air
+		}
+
+		success_factors = {
+			success = {
+				base = @BIO_RAID_SMALLPOX_SUCCESS_BASE
+				experience = {
+					weight = @BIO_RAID_SUCCESS_EXPERIENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_EXPERIENCE_START
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				air_defence = {
+					weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_DEFENCE_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				air_agility = {
+					weight = @BIO_RAID_SUCCESS_AIR_AGILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_AGILITY_START
+					reference = @BIO_RAID_AIR_STAT_REFERENCE
+				}
+				reliability = {
+					weight = @BIO_RAID_SUCCESS_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				air_superiority = {
+					weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT
+					start_weight = @BIO_RAID_SUCCESS_AIR_SUPERIORITY_START
+					reference = @BIO_RAID_AIR_SUPERIORITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_SUCCESS_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_SUCCESS_RADAR_WEIGHT }
+				intel = {
+					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			critical = {
+				base = @BIO_RAID_SMALLPOX_CRITICAL_BASE
+				experience = {
+					weight = @BIO_RAID_CRITICAL_EXPERIENCE_WEIGHT
+					reference = @BIO_RAID_EXPERIENCE_REFERENCE
+				}
+				intel = {
+					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
+					reference = @BIO_RAID_INTEL_REFERENCE
+				}
+			}
+			disaster = {
+				base = @BIO_RAID_SMALLPOX_DISASTER_BASE
+				reliability = {
+					weight = @BIO_RAID_DISASTER_RELIABILITY_WEIGHT
+					start_weight = @BIO_RAID_DISASTER_RELIABILITY_START
+					reference = @BIO_RAID_RELIABILITY_REFERENCE
+				}
+				interception = {
+					weight = @BIO_RAID_DISASTER_INTERCEPTION_WEIGHT
+					reference = @BIO_RAID_INTERCEPTION_REFERENCE
+				}
+				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
+				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_failure_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_SMALLPOX_FAILURE_LOSS
+						ratio = yes
+					}
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_failure_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_limited_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_SMALLPOX_LIMITED_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_LIMITED
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_limited_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_SMALLPOX_SUCCESS_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_SUCCESS
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_critical_success_actor_tt
+						}
+					}
+					else = {
+						var:actor_country = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_actor_tt
+						}
+					}
+					hidden_effect = {
+						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
+						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
+						bio_resolve_strategic_raid_outcome = yes
+					}
+					raid_damage_units = {
+						plane_loss = @BIO_RAID_SMALLPOX_CRITICAL_LOSS
+						ratio = yes
+					}
+					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
+				}
+				victim_effects = {
+					if = {
+						limit = {
+							hidden_trigger = { bio_strategic_raid_native_tooltip_context_is_valid = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_smallpox_critical_success_target_tt
+						}
+					}
+					else = {
+						var:target_state = {
+							custom_effect_tooltip = bio_strategic_raid_context_rejected_target_tt
+						}
+					}
+				}
+			}
+		}
+	}
 }

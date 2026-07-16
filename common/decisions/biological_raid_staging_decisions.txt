@@ -1,0 +1,117 @@
+# ============================================================================
+# CHAOS REDUX - STRATEGIC BIOLOGICAL RAID STAGING DECISION
+# ============================================================================
+# Overview:
+# - Designates one exact controlled state as the country's biological payload
+#   handling and raid-staging complex.
+# - The native raid API does not expose its selected launch airbase state to
+#   outcome script. This explicit facility state is therefore the sole valid
+#   location for an attacker handling accident. It is never inferred.
+# - Relocation has a real Political Power cost and a timed cooldown while the
+#   current complex remains valid. Loss of the state permits emergency
+#   redesignation so the country is not trapped behind a stale scope pointer.
+# ============================================================================
+
+# Timed country flags reject dynamic duration tokens in this engine path.
+# Keep this literal mirrored with
+# constant:bio_strategic_raid_staging.relocation_cooldown_days.
+@BIO_RAID_STAGING_RELOCATION_COOLDOWN_DAYS = 90
+
+cbrn_operations_category = {
+	bio_designate_strategic_raid_staging_state = {
+		icon = GFX_decision_bio_designate_strategic_raid_staging_state
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_strategic_raid_staging.decision_political_power_cost
+
+		visible = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+		}
+
+		target_root_trigger = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+			OR = {
+				NOT = { has_country_flag = bio_strategic_raid_staging_relocation_cooldown }
+				NOT = { bio_strategic_raid_actor_has_valid_staging_state = yes }
+			}
+		}
+
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = bio_designate_strategic_raid_staging_state_target_tt
+				hidden_trigger = {
+					FROM = {
+						bio_strategic_raid_state_is_valid_staging_candidate = yes
+						NOT = {
+							AND = {
+								has_variable = bio_strategic_raid_staging_actor
+								var:bio_strategic_raid_staging_actor = { tag = ROOT }
+							}
+						}
+					}
+				}
+			}
+		}
+
+		available = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+			OR = {
+				NOT = { has_country_flag = bio_strategic_raid_staging_relocation_cooldown }
+				NOT = { bio_strategic_raid_actor_has_valid_staging_state = yes }
+			}
+			FROM = { bio_strategic_raid_state_is_valid_staging_candidate = yes }
+		}
+
+		complete_effect = {
+			if = {
+				limit = { has_variable = bio_strategic_raid_staging_state }
+				var:bio_strategic_raid_staging_state = {
+					if = {
+						limit = {
+							has_variable = bio_strategic_raid_staging_actor
+							var:bio_strategic_raid_staging_actor = { tag = ROOT }
+						}
+						clr_state_flag = bio_strategic_raid_staging_complex
+						clear_variable = bio_strategic_raid_staging_actor
+					}
+				}
+			}
+			FROM = {
+				set_state_flag = bio_strategic_raid_staging_complex
+				set_variable = { bio_strategic_raid_staging_actor = ROOT }
+				set_variable = { bio_strategic_raid_staging_designated_date = global.num_days }
+			}
+			set_variable = { bio_strategic_raid_staging_state = FROM }
+			set_variable = { bio_last_strategic_raid_staging_designation_date = global.num_days }
+			set_country_flag = bio_strategic_raid_staging_designated_history
+			set_country_flag = {
+				flag = bio_strategic_raid_staging_relocation_cooldown
+				days = @BIO_RAID_STAGING_RELOCATION_COOLDOWN_DAYS
+			}
+		}
+
+		ai_will_do = {
+			base = constant:bio_strategic_raid_ai.staging_base
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.already_has_valid_staging_factor
+				bio_strategic_raid_actor_has_valid_staging_state = yes
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.core_state_factor
+				FROM = { is_core_of = ROOT }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.large_air_base_factor
+				FROM = { air_base > constant:bio_strategic_raid_ai.large_air_base_threshold }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.good_infrastructure_factor
+				FROM = { infrastructure > constant:bio_strategic_raid_ai.good_infrastructure_threshold }
+			}
+			modifier = {
+				factor = constant:bio_strategic_raid_ai.active_outbreak_factor
+				FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			}
+		}
+	}
+}

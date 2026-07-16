@@ -9,9 +9,9 @@
 - Alpha: real RGBA alpha preserved through PNG and legacy uncompressed BGRA DDS conversion
 - Related system: Stage 7 Chaos Warfare biological warfare
 
-## Suggested sprite definition
+## Registered sprite definition
 
-The following is a handoff snippet only. It has not been added to any interface file, per task scope:
+The following definition is registered in `interface/biological_warfare.gfx`:
 
 ```text
 spriteType = {
@@ -22,7 +22,7 @@ spriteType = {
 
 ## Target `.gfx` file
 
-No `.gfx` file was provided by the parent prompt, and this package intentionally does not inspect or edit interface wiring. Add the sprite definition to the existing Chaos Redux decision-sprite registry selected by the main agent. Do not create a parallel registry solely for this icon unless the existing project pattern requires it.
+`interface/biological_warfare.gfx`
 
 ## Visual notes
 
@@ -30,4 +30,4 @@ The icon is a decision-specific composition, not a resized focus or idea icon. A
 
 ## Remaining wiring risk
 
-The DDS is ready at the exact requested runtime path, but the game will not resolve the intended sprite until the main agent registers `GFX_decision_bio_designate_strategic_raid_staging_state` in the correct existing `.gfx` file.
+None. The stable sprite name, final DDS path, decision reference, and interface registry agree.

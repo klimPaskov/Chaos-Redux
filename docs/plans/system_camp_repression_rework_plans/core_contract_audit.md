@@ -11,7 +11,7 @@ The corrected shared-core snapshot passes `CR-CORE-01` through `CR-CORE-07`.
 - Remaining P2: 0
 - New regressions: none
 
-The final re-audit confirmed recurring restricted-method validation/consumption and fail-closed shortage cleanup; non-overwriting responsibility guards at effects and decision targets; a single exact Deaths adapter for Mengele; annex/dead-perpetrator cleanup and discovery; dynamic evidence severity based on camp-specific Deaths; exact biological availability/execution parity; and bare temporary-variable use for vaccination progress. The temporary Ledger performance regression found during the re-audit was corrected by restoring the `camp_repression_ledger_open` gate around monthly display-array rebuilding.
+The final re-audit confirmed recurring restricted-method validation/consumption and fail-closed shortage cleanup; non-overwriting responsibility guards at effects and decision targets; a single exact Deaths adapter for Mengele; annex/dead-perpetrator cleanup and discovery; dynamic evidence severity based on camp-specific Deaths; exact biological availability/execution parity; and the then-current bare temporary-variable remediation for vaccination progress. The current biological lifecycle supersedes that vaccination-helper remediation because the legacy weekly helper and its callers no longer exist. The temporary Ledger performance regression found during the re-audit was corrected by restoring the `camp_repression_ledger_open` gate around monthly display-array rebuilding.
 
 Final frozen SHA-256 values:
 
@@ -66,7 +66,7 @@ Exact line references below are against the following shared-file snapshot, froz
 | CR-CORE-04 | P1 | Annexed/dead perpetrators have no camp cleanup hook, remain in the global active-country registry, and can make unresolved evidence undiscoverable. | Camp on-actions lines 9-30; cleanup lines 1025-1048; discovery lines 791-818 |
 | CR-CORE-05 | P2 | Discovery severity still ignores dynamic evidence depth, actual deaths, reach, observer exposure, and foreign visibility. | `genocide_calculate_discovery_condemnation_from_prev_state`, lines 567-671 |
 | CR-CORE-06 | P2 | Biological decision availability is weaker than execution: facility plus tech is enough to pay for a decision that can resolve to tier zero without bomb stockpile. | Trigger lines 809-817 versus resolver lines 1998-2030 |
-| CR-CORE-07 | P2 | Smallpox weekly progress scopes a temporary variable as `ROOT.weekly_progress`; temporary variables have no scope. | `biowarfare_effects.txt`, lines 2784-2819 |
+| CR-CORE-07 | P2 | Resolved and superseded in the current implementation. The legacy weekly vaccination helper and its callers no longer exist. | Frozen snapshot evidence at `biowarfare_effects.txt`, lines 2784-2819 |
 
 ## Detailed findings
 
@@ -217,29 +217,25 @@ Create shared per-tier biological capacity triggers containing facility, exact t
 
 ### CR-CORE-07 — P2 — Scoped temporary variable breaks weekly vaccination progress
 
+**Current disposition: resolved and superseded.** `progress_smallpox_vaccination` and the legacy startup and weekly callers were removed. The ordinary lifecycle reads `smallpox_vaccination_program_idea` directly for agent-specific multipliers. The frozen evidence below is historical and does not describe a live helper.
+
 **Engine contract**
 
 `AGENTS.md:112` and the offline wiki's variable documentation state that temporary variables have no scope. `ROOT.temp_name`, `PREV.temp_name`, and `THIS.temp_name` do not access the temporary value.
 
 **Implementation evidence**
 
-- `progress_smallpox_vaccination` creates and modifies temporary `weekly_progress` at `common/scripted_effects/biowarfare_effects.txt:2784-2805`.
-- Inside `every_controlled_state`, line `2819` reads `ROOT.weekly_progress`.
-- `weekly_progress` has no normal-variable assignment anywhere in the repository.
+- In the frozen audited snapshot, `progress_smallpox_vaccination` created and modified temporary `weekly_progress` at `common/scripted_effects/biowarfare_effects.txt:2784-2805`.
+- In that snapshot, `every_controlled_state` read `ROOT.weekly_progress` at line `2819`.
+- In that snapshot, `weekly_progress` had no normal-variable assignment in the repository.
 
 **Impact**
 
-Controlled states read zero or an unrelated regular country variable instead of the computed weekly progress, so vaccination progression can stall or become stale.
+In the frozen snapshot, controlled states could read zero or an unrelated regular country variable instead of the computed weekly progress. The removed helper has no current runtime impact.
 
-**Suggested patch**
+**Superseded remediation**
 
-Use the bare temporary token inside the state loop:
-
-```txt
-add_to_variable = { smallpox_vaccination_progress = weekly_progress }
-```
-
-Alternatively, deliberately copy the value to a distinct normal country variable before entering the state scope and clear it afterward. The bare temporary is simpler and matches the current single-chain use.
+No temporary-variable patch remains queued. Removing the obsolete scan path resolved this finding without retaining a weekly vaccination helper.
 
 ## Contracts that currently pass
 
@@ -254,10 +250,10 @@ The following audited contracts were confirmed and should be preserved while pat
 - Chemical and biological target triggers are mutually exclusive at `common/scripted_triggers/camp_repression_rework_triggers.txt:819-840`, and their monthly multipliers use one `if`/`else_if` chain at `common/scripted_effects/camp_repression_rework_effects.txt:780-829`.
 - Chemical and biological activation each call one contamination path and then credit that output; no activation double-count was confirmed in `camp_repression_rework_effects.txt:2139-2179,2239-2295`.
 - Discovery blame is routed through the stored state responsibility pointer rather than the discoverer/current owner at `common/scripted_effects/genocide_crisis_effects.txt:791-818` when the responsible scope exists.
-- A mechanical scoped-temp scan of the requested effect/trigger files found no other confirmed `ROOT`/`PREV`/`THIS` temporary-variable misuse beyond CR-CORE-07.
+- In the frozen audit, a mechanical scoped-temp scan of the requested effect and trigger files found no other confirmed `ROOT`/`PREV`/`THIS` temporary-variable misuse beyond CR-CORE-07.
 
 ## Completion assessment
 
-The core contract cannot be marked complete until CR-CORE-01 through CR-CORE-04 are fixed and re-audited. CR-CORE-05 through CR-CORE-07 should be fixed in the same core tranche because they affect accepted outcome semantics and paid-action correctness.
+The frozen core contract could not be marked complete until CR-CORE-01 through CR-CORE-04 were fixed and re-audited. Its CR-CORE-05 and CR-CORE-06 findings also required correction in that tranche. CR-CORE-07 is resolved and superseded in the current implementation by removal of the legacy weekly vaccination helper.
 
 No fallback or gameplay simplification was introduced by this audit. The explicitly excluded Event 17 surface was not inspected.

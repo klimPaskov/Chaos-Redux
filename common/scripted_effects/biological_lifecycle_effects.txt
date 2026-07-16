@@ -36,6 +36,7 @@ bio_lifecycle_reset_seed_record = {
 	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 }
 
 # Input: bio_seed_agent. Outputs the current agent profile to temporary values.
@@ -205,6 +206,14 @@ bio_lifecycle_prepare_route_profile = {
 		set_temp_variable = { bio_seed_condemnation = constant:bio_lifecycle_route_profile.field_test_release.condemnation }
 		set_temp_variable = { bio_seed_friendly_spread_risk = constant:bio_lifecycle_route_profile.field_test_release.friendly_spread_risk }
 	}
+	else_if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid_attacker_accident compare = equals } }
+		set_temp_variable = { bio_seed_intensity = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.seed_intensity }
+		set_temp_variable = { bio_seed_exposed_share = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.exposed_share }
+		set_temp_variable = { bio_seed_evidence = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.evidence }
+		set_temp_variable = { bio_seed_condemnation = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.condemnation }
+		set_temp_variable = { bio_seed_friendly_spread_risk = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.friendly_spread_risk }
+	}
 
 	if = {
 		limit = { check_variable = { bio_seed_intensity_override > constant:bio_lifecycle_math.zero } }
@@ -322,8 +331,10 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 				clear_variable = bio_agent_[BIO_AGENT]_actor
 				clear_variable = bio_agent_[BIO_AGENT]_victim
 				clr_state_flag = bio_agent_[BIO_AGENT]_detected
+				clr_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
 				clr_state_flag = bio_agent_[BIO_AGENT]_probable_condemnation_released
 				clr_state_flag = bio_agent_[BIO_AGENT]_confirmed_condemnation_released
+				clr_state_flag = bio_agent_[BIO_AGENT]_accident_condemnation_released
 				set_state_flag = bio_agent_[BIO_AGENT]_incubating
 				set_state_flag = bio_agent_[BIO_AGENT]_episode_history
 				set_state_flag = bio_ordinary_pathogen_episode_history
@@ -376,6 +387,10 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 						has_event_target = bio_seed_victim
 					}
 					set_variable = { bio_agent_[BIO_AGENT]_victim = event_target:bio_seed_victim }
+				}
+				if = {
+					limit = { check_variable = { var = bio_seed_force_detection_on_activation value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					set_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
 				}
 			}
 			else = {
@@ -443,6 +458,13 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 				if = {
 					limit = { check_variable = { var = bio_seed_condemnation value = bio_agent_[BIO_AGENT]_condemnation_base compare = greater_than } }
 					set_variable = { bio_agent_[BIO_AGENT]_condemnation_base = bio_seed_condemnation }
+				}
+				if = {
+					limit = {
+						check_variable = { var = bio_seed_force_detection_on_activation value = constant:bio_lifecycle_proof.supplied compare = equals }
+						NOT = { has_state_flag = bio_agent_[BIO_AGENT]_detected }
+					}
+					set_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
 				}
 			}
 			clamp_variable = { var = bio_agent_[BIO_AGENT]_intensity min = constant:bio_lifecycle_bounds.intensity_min max = constant:bio_lifecycle_bounds.intensity_max }
@@ -592,6 +614,20 @@ bio_lifecycle_dispatch_seed = {
 	if = {
 		limit = { bio_lifecycle_seed_record_is_valid = yes }
 		bio_lifecycle_store_seed_in_current_agent_record = yes
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						has_state_flag = bio_agent_[BIO_AGENT]_active
+						has_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
+						NOT = { has_state_flag = bio_agent_[BIO_AGENT]_detected }
+					}
+					clr_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
+					bio_lifecycle_mark_current_agent_detected = yes
+				}
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
 		bio_lifecycle_schedule_incubation_for_current_agent = yes
 		if = {
 			limit = {
@@ -622,7 +658,14 @@ bio_lifecycle_activate_current_agent = {
 				set_state_flag = bio_agent_[BIO_AGENT]_active
 				set_variable = { bio_agent_[BIO_AGENT]_stage = constant:bio_lifecycle_stage.undetected_outbreak }
 				set_variable = { bio_agent_[BIO_AGENT]_activation_date = global.num_days }
-				bio_lifecycle_attempt_detection_for_current_agent = yes
+				if = {
+					limit = { has_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation }
+					clr_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
+					bio_lifecycle_mark_current_agent_detected = yes
+				}
+				else = {
+					bio_lifecycle_attempt_detection_for_current_agent = yes
+				}
 				bio_lifecycle_refresh_state_modifiers = yes
 				bio_lifecycle_schedule_tick_for_current_agent = yes
 			}
@@ -856,6 +899,20 @@ bio_lifecycle_mark_current_agent_detected = {
 bio_lifecycle_update_current_agent_attribution = {
 	set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.unknown_natural }
 	if = {
+		limit = {
+			check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+			check_variable = { var = bio_current_evidence value = constant:bio_lifecycle_evidence.confirmed_accident_threshold compare = greater_than_or_equals }
+		}
+		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.confirmed_accident }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+			check_variable = { var = bio_current_evidence value = constant:bio_lifecycle_evidence.suspicious_threshold compare = greater_than_or_equals }
+		}
+		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.suspicious }
+	}
+	else_if = {
 		limit = { check_variable = { var = bio_current_evidence value = constant:bio_lifecycle_evidence.confirmed_threshold compare = greater_than_or_equals } }
 		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
 	}
@@ -875,7 +932,7 @@ bio_lifecycle_update_current_agent_attribution = {
 	if = {
 		limit = {
 			check_variable = { var = bio_current_detected_status value = constant:bio_lifecycle_proof.supplied compare = equals }
-			check_variable = { var = bio_current_attribution value = constant:bio_lifecycle_attribution.probable_deliberate compare = greater_than_or_equals }
+			check_variable = { var = bio_current_attribution value = constant:bio_lifecycle_attribution.probable_deliberate compare = equals }
 		}
 		bio_lifecycle_release_probable_condemnation_if_due = yes
 	}
@@ -885,6 +942,13 @@ bio_lifecycle_update_current_agent_attribution = {
 			check_variable = { var = bio_current_attribution value = constant:bio_lifecycle_attribution.confirmed_attack compare = equals }
 		}
 		bio_lifecycle_release_confirmed_condemnation_if_due = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_current_detected_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_current_attribution value = constant:bio_lifecycle_attribution.confirmed_accident compare = equals }
+		}
+		bio_lifecycle_release_confirmed_accident_condemnation_if_due = yes
 	}
 }
 
@@ -928,6 +992,10 @@ bio_lifecycle_register_attribution_condemnation = {
 		add_war_support = constant:bio_lifecycle_political.probable_domestic_war_support
 	}
 	else_if = {
+		limit = { check_variable = { var = bio_condemnation_release_type value = constant:bio_lifecycle_attribution.confirmed_accident compare = equals } }
+		add_war_support = constant:bio_lifecycle_political.accident_domestic_war_support
+	}
+	else_if = {
 		limit = { check_variable = { var = bio_current_route value = constant:bio_lifecycle_route.doomsday_release compare = equals } }
 		add_war_support = constant:bio_lifecycle_political.doomsday_domestic_war_support
 	}
@@ -943,6 +1011,11 @@ bio_lifecycle_prepare_condemnation_release = {
 	if = {
 		limit = { check_variable = { var = bio_condemnation_release_type value = constant:bio_lifecycle_attribution.confirmed_attack compare = equals } }
 		set_temp_variable = { bio_condemnation_release_share = constant:bio_lifecycle_condemnation.confirmed_release_share }
+		set_temp_variable = { bio_condemnation_visibility = constant:condemnation_visibility.public }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_condemnation_release_type value = constant:bio_lifecycle_attribution.confirmed_accident compare = equals } }
+		set_temp_variable = { bio_condemnation_release_share = constant:bio_lifecycle_condemnation.accident_release_share }
 		set_temp_variable = { bio_condemnation_visibility = constant:condemnation_visibility.public }
 	}
 	set_temp_variable = { bio_condemnation_release_gain = bio_condemnation_total }
@@ -1009,6 +1082,10 @@ bio_lifecycle_release_probable_condemnation_if_due = {
 }
 
 bio_lifecycle_release_confirmed_condemnation_if_due = {
+	# Evidence can cross the confirmed threshold before a probable-attribution
+	# tick occurs. Settle the latent probable share first so rapid confirmation
+	# cannot erase forty percent of the consequence record.
+	bio_lifecycle_release_probable_condemnation_if_due = yes
 	meta_effect = {
 		text = {
 			if = {
@@ -1032,6 +1109,35 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 				if = {
 					limit = { has_variable = bio_agent_[BIO_AGENT]_victim }
 					var:bio_agent_[BIO_AGENT]_victim = { set_country_flag = bio_confirmed_attack_victim_history }
+				}
+			}
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+}
+
+# Confirmed accidents release their own public Condemnation and domestic cost.
+# They never set deliberate-use history or invoke unconventional-use treaties.
+bio_lifecycle_release_confirmed_accident_condemnation_if_due = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					NOT = { has_state_flag = bio_agent_[BIO_AGENT]_accident_condemnation_released }
+					has_variable = bio_agent_[BIO_AGENT]_actor
+					var:bio_agent_[BIO_AGENT]_actor = { exists = yes }
+				}
+				set_temp_variable = { bio_condemnation_release_type = constant:bio_lifecycle_attribution.confirmed_accident }
+				bio_lifecycle_prepare_condemnation_release = yes
+				var:bio_agent_[BIO_AGENT]_actor = {
+					bio_lifecycle_register_attribution_condemnation = yes
+					set_country_flag = bio_confirmed_accident_history
+				}
+				set_state_flag = bio_agent_[BIO_AGENT]_accident_condemnation_released
+				set_state_flag = bio_confirmed_accident_history
+				if = {
+					limit = { has_variable = bio_agent_[BIO_AGENT]_victim }
+					var:bio_agent_[BIO_AGENT]_victim = { set_country_flag = bio_confirmed_accident_victim_history }
 				}
 			}
 		}
@@ -1379,32 +1485,57 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 
 bio_lifecycle_remove_detected_modifier_for_current_agent = {
 	if = {
-		limit = {
-			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
-			has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+			remove_dynamic_modifier = { modifier = anthrax_contaminated_state }
 		}
-		remove_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		clear_variable = anthrax_manpower_modifier
+		clear_variable = anthrax_resources_modifier
+		clear_variable = anthrax_supplies_modifier
+		clear_variable = anthrax_production_modifier
+		clear_variable = anthrax_attrition_modifier
+		clear_variable = anthrax_speed_modifier
 	}
 	else_if = {
-		limit = {
-			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals }
-			has_dynamic_modifier = { modifier = plague_contaminated_state }
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+			remove_dynamic_modifier = { modifier = plague_contaminated_state }
 		}
-		remove_dynamic_modifier = { modifier = plague_contaminated_state }
+		clear_variable = plague_manpower_modifier
+		clear_variable = plague_resources_modifier
+		clear_variable = plague_supplies_modifier
+		clear_variable = plague_production_modifier
+		clear_variable = plague_attrition_modifier
+		clear_variable = plague_speed_modifier
 	}
 	else_if = {
-		limit = {
-			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
-			has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+			remove_dynamic_modifier = { modifier = tularemia_contaminated_state }
 		}
-		remove_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		clear_variable = tularemia_manpower_modifier
+		clear_variable = tularemia_resources_modifier
+		clear_variable = tularemia_supplies_modifier
+		clear_variable = tularemia_production_modifier
+		clear_variable = tularemia_attrition_modifier
+		clear_variable = tularemia_speed_modifier
+		clear_variable = tularemia_org_modifier
 	}
 	else_if = {
-		limit = {
-			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
-			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+			remove_dynamic_modifier = { modifier = smallpox_contaminated_state }
 		}
-		remove_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		clear_variable = smallpox_manpower_modifier
+		clear_variable = smallpox_resources_modifier
+		clear_variable = smallpox_supplies_modifier
+		clear_variable = smallpox_production_modifier
+		clear_variable = smallpox_attrition_modifier
+		clear_variable = smallpox_speed_modifier
 	}
 }
 
@@ -1637,6 +1768,7 @@ bio_lifecycle_cleanup_current_agent_if_recovered = {
 				clr_state_flag = bio_agent_[BIO_AGENT]_detected
 				clr_state_flag = bio_agent_[BIO_AGENT]_incubation_scheduled
 				clr_state_flag = bio_agent_[BIO_AGENT]_tick_scheduled
+				clr_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
 				clear_variable = bio_agent_[BIO_AGENT]_incubation_due_day
 				clear_variable = bio_agent_[BIO_AGENT]_tick_due_day
 				set_variable = { bio_agent_[BIO_AGENT]_stage = constant:bio_lifecycle_stage.recovered }
@@ -1650,6 +1782,61 @@ bio_lifecycle_cleanup_current_agent_if_recovered = {
 		set_state_flag = bio_recovered_ordinary_outbreak_history
 		set_temp_variable = { bio_cleanup_status = constant:bio_lifecycle_proof.supplied }
 		bio_lifecycle_remove_detected_modifier_for_current_agent = yes
+	}
+}
+
+bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = {
+	if = {
+		limit = { NOT = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+		clr_state_flag = anthrax_contaminated
+		clr_state_flag = plague_contaminated
+		clr_state_flag = tularemia_contaminated
+		clr_state_flag = smallpox_contaminated
+		clr_state_flag = bioweapon_contaminated
+		if = {
+			limit = { has_state_flag = field_hospitals_deployed }
+			clr_state_flag = field_hospitals_deployed
+			clear_variable = field_hospital_effectiveness
+		}
+		if = {
+			limit = { has_state_flag = quarantine_measures_active }
+			clr_state_flag = quarantine_measures_active
+			clear_variable = quarantine_effectiveness
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state } }
+			remove_dynamic_modifier = { modifier = quarantined_contaminated_state }
+		}
+		if = {
+			limit = { has_state_flag = anthrax_antibiotics_protection_active }
+			clr_state_flag = anthrax_antibiotics_protection_active
+			clear_variable = anthrax_antibiotics_protection_effectiveness
+		}
+		if = {
+			limit = { has_state_flag = plague_antibiotics_protection_active }
+			clr_state_flag = plague_antibiotics_protection_active
+			clear_variable = plague_antibiotics_protection_effectiveness
+		}
+		if = {
+			limit = { has_state_flag = tularemia_antibiotics_protection_active }
+			clr_state_flag = tularemia_antibiotics_protection_active
+			clear_variable = tularemia_antibiotics_protection_effectiveness
+		}
+		if = {
+			limit = { has_state_flag = smallpox_vaccination_protection_active }
+			clr_state_flag = smallpox_vaccination_protection_active
+			clear_variable = smallpox_vaccination_protection_effectiveness
+		}
+		clear_variable = smallpox_vaccination_progress
+		if = {
+			limit = {
+				CONTROLLER = {
+					exists = yes
+					NOT = { any_controlled_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+				}
+			}
+			CONTROLLER = { clr_country_flag = bioweapon_target }
+		}
 	}
 }
 
@@ -1677,6 +1864,7 @@ bio_lifecycle_process_current_agent_tick = {
 				bio_lifecycle_attempt_current_agent_spread = yes
 				bio_lifecycle_cleanup_current_agent_if_recovered = yes
 				bio_lifecycle_refresh_state_modifiers = yes
+				bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = yes
 				if = {
 					limit = { check_variable = { var = bio_cleanup_status value = constant:bio_lifecycle_proof.missing compare = equals } }
 					bio_lifecycle_schedule_tick_for_current_agent = yes

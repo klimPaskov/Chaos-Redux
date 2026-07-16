@@ -2,40 +2,40 @@
 
 ## Purpose
 
-Chaos Warfare is a conditional CBRN grand doctrine, not a universal attack tree. Adoption begins a national institution that must prove protective stock, fielded headquarters, and protected formations before offensive authority can expand. Four mastery tracks grant bounded unit, headquarters, logistics, and operation eligibility; actual chemical delivery remains equipment-backed and must use the shared exposure pipeline.
+Chaos Warfare is a conditional CBRN grand doctrine, not a universal attack tree. Adoption begins a national institution that must prove protective stock, fielded headquarters, and protected formations before offensive authority can expand. Four mastery tracks grant bounded unit, headquarters, logistics, and operation eligibility. Actual chemical delivery remains equipment-backed and must use the shared exposure pipeline.
 
 Doctrine may reduce the Condemnation impact of an accepted chemical or biological use. That reduction affects Condemnation only. It never discounts payload consumption, evidence, attribution, deaths, contamination, medical saturation, resistance trauma, domestic war-support penalties, use counters, confirmed-use history, or strategic and mass-casualty public-harm floors.
 
 The implementation is split across:
 
-- `common/doctrines/` for the grand doctrine and four mastery tracks;
-- `common/script_constants/cbrn_doctrine_constants.txt` for shared gameplay tuning, with the existing `chem_integrated_operations.condemnation_mult` table retained as the single migration-safe 0.90/0.80/0.70 Condemnation ladder for chemical and biological callers;
-- `common/scripted_triggers/cbrn_doctrine_triggers.txt` and `common/scripted_effects/cbrn_doctrine_effects.txt` for reusable gates and state changes;
-- `common/decisions/cbrn_doctrine_decisions.txt` for establishment, institutional claims, policy, training, commissions, and exact-state cleanup;
-- `common/ideas/cbw_spirits.txt`, `common/ideas/cbrn_high_command.txt`, and the leader-trait files for officer-corps content;
+- `common/doctrines/` for the grand doctrine and four mastery tracks
+- `common/script_constants/cbrn_doctrine_constants.txt` for shared gameplay tuning, with the existing `chem_integrated_operations.condemnation_mult` table retained as the single migration-safe 0.90/0.80/0.70 Condemnation ladder for chemical and biological callers
+- `common/scripted_triggers/cbrn_doctrine_triggers.txt` and `common/scripted_effects/cbrn_doctrine_effects.txt` for reusable gates and state changes
+- `common/decisions/cbrn_doctrine_decisions.txt` for establishment, institutional claims, policy, training, commissions, and exact-state cleanup
+- `common/ideas/cbw_spirits.txt`, `common/ideas/cbrn_high_command.txt`, and the leader-trait files for officer-corps content
 - `interface/cbrn_doctrine.gfx` and `interface/chaosx_traits.gfx` for final runtime assets.
 
 ## Adoption and establishment
 
 Chaos Warfare is visible to every country but available only when at least one accepted capability route exists:
 
-- Basic Gas Masks plus a supported chemical-agent technology;
-- a completed mapped chemical special project;
-- an established CBRN command flag;
-- a mapped historical CBRN program profile; or
+- Basic Gas Masks plus a supported chemical-agent technology
+- a completed mapped chemical special project
+- an established CBRN command flag
+- a mapped historical CBRN program profile
 - an explicit scenario override.
 
 Adoption costs 100 Army Experience. It initializes the shared CBRN model, records the post-adoption mask-production baseline, sets the Chemical Readiness cap to 39, raises readiness to at least 10, activates the Operations HQ Section and defensive support unlocks, grants doctrine-qualified technologies whose gates are already met, and starts a 90-day establishment mission.
 
 Establishment succeeds only while the country has all of the following:
 
-- 500 gas-mask equipment;
-- 50 decontamination equipment;
-- 100 support equipment;
-- at least one fielded CBRN Operations HQ Section; and
+- 500 gas-mask equipment
+- 50 decontamination equipment
+- 100 support equipment
+- at least one fielded CBRN Operations HQ Section
 - at least one fielded Gas Mask and Decontamination Detachment.
 
-Success records the institution, raises readiness to at least 20, and raises decontamination capacity to at least 20. Timeout leaves the doctrine active, closes offensive gates, caps readiness at 9, and exposes a 14-day remediation decision costing 35 Political Power and 10 Command Power. Remediation repeats the exact establishment proof; it does not waive missing stock or formations.
+Success records the institution, raises readiness to at least 20, and raises decontamination capacity to at least 20. Timeout leaves the doctrine active, closes offensive gates, caps readiness at 9, and exposes a 14-day remediation decision costing 35 Political Power and 10 Command Power. Remediation repeats the exact establishment proof. It does not waive missing stock or formations.
 
 ## Institutional milestones
 
@@ -43,25 +43,25 @@ Native grand-doctrine milestone blocks can record only their corresponding compl
 
 | Institution | Exact proof | Result |
 | --- | --- | --- |
-| Protective Foundation | establishment complete; cumulative gas-mask production increased after adoption; 500 live masks; fielded Operations HQ | readiness cap 59; readiness minimum 30; decontamination minimum 30 |
-| Delivery Integration | Protective Foundation; Hazard Assault, Contaminant Fire, or Toxic Armor at mastery 2; at least 100 of one supported payload; one successfully completed protected HQ order | readiness cap 74; readiness minimum 45; offensive HQ preparation eligibility |
-| Theater Exploitation | Delivery Integration; any two tracks at mastery 3; decontamination capacity 40; fielded Intelligence and Weather Cell | readiness cap 89; readiness minimum 65; exact-state decontamination and theater HQ gates |
-| Terminal CBRN Command | Theater Exploitation; all four tracks active; any track at mastery 5; Limited Battlefield Authority or higher; advanced protection technology or explicit equivalent project | readiness cap 100; readiness minimum 85; capstone command gates |
+| Protective Foundation | establishment complete<br>cumulative gas-mask production increased after adoption<br>500 live masks<br>fielded Operations HQ | readiness cap 59<br>readiness minimum 30<br>decontamination minimum 30 |
+| Delivery Integration | Protective Foundation<br>Hazard Assault, Contaminant Fire, or Toxic Armor at mastery 2<br>at least 100 of one supported payload<br>one successfully completed protected HQ order | readiness cap 74<br>readiness minimum 45<br>offensive HQ preparation eligibility |
+| Theater Exploitation | Delivery Integration<br>any two tracks at mastery 3<br>decontamination capacity 40<br>fielded Intelligence and Weather Cell | readiness cap 89<br>readiness minimum 65<br>exact-state decontamination and theater HQ gates |
+| Terminal CBRN Command | Theater Exploitation<br>all four tracks active<br>any track at mastery 5<br>Limited Battlefield Authority or higher<br>advanced protection technology or explicit equivalent project | readiness cap 100<br>readiness minimum 85<br>capstone command gates |
 
 The protected-order history flag is written only after Theater Protective Posture completes preparation successfully. Starting an order that later fails does not qualify.
 
 ## Mastery tracks
 
-Each track costs 100 Army Experience. Native mastery comes from fielded mapped units and uses the current doctrine system. Track modifiers are deliberately modest; strong outcomes are operation-, stock-, readiness-, and policy-gated.
+Each track costs 100 Army Experience. Native mastery comes from fielded mapped units and uses the current doctrine system. Track modifiers are deliberately modest. Strong outcomes are operation-, stock-, readiness-, and policy-gated.
 
 | Compatibility ID | Player-facing track | Mastery content |
 | --- | --- | --- |
-| `extermination_columns` | Hazard Assault Formations | Mask Discipline; contaminated-terrain movement; Chaos Assault Battalion qualification; shock exploitation; terminal hazard-operation eligibility |
-| `chemical_suppression` | Toxic Armored Warfare | sealed crews; armored agent delivery; costed nerve-suppression formation; protected breakthrough logistics; synchronized shock eligibility |
-| `contaminant_firebases` | Contaminant Fire Support | projector fire control; counterbattery coordination; Chemical Artillery Shells; persistent-agent shell commission; deep-contamination operation eligibility |
-| `integrated_chemical_operations` | Integrated CBRN Command | Intelligence and Weather Cell; Protective Logistics; Mobile Decontamination Columns; Chemical Air Interdiction and Biosecurity; Theater CBRN Headquarters |
+| `extermination_columns` | Hazard Assault Formations | Mask Discipline<br>contaminated-terrain movement<br>Chaos Assault Battalion qualification<br>shock exploitation<br>terminal hazard-operation eligibility |
+| `chemical_suppression` | Toxic Armored Warfare | sealed crews<br>armored agent delivery<br>costed nerve-suppression formation<br>protected breakthrough logistics<br>synchronized shock eligibility |
+| `contaminant_firebases` | Contaminant Fire Support | projector fire control<br>counterbattery coordination<br>Chemical Artillery Shells<br>persistent-agent shell commission<br>deep-contamination operation eligibility |
+| `integrated_chemical_operations` | Integrated CBRN Command | Intelligence and Weather Cell<br>Protective Logistics<br>Mobile Decontamination Columns<br>Chemical Air Interdiction and Biosecurity<br>Theater CBRN Headquarters |
 
-The legacy `chemical_suppression` track grants no camp, extermination-site, experiment-site, genocide, or Concentration occupation-law infrastructure. Nerve-agent suppression is only an eligibility path; its later operation must consume equipment and record deaths, contamination, resistance trauma, evidence, and severe diplomatic consequences.
+The legacy `chemical_suppression` track grants no camp, extermination-site, experiment-site, genocide, or Concentration occupation-law infrastructure. Nerve-agent suppression is only an eligibility path. Its later operation must consume equipment and record deaths, contamination, resistance trauma, evidence, and severe diplomatic consequences.
 
 ### Equipment-backed Hazard Assault Training
 
@@ -71,16 +71,16 @@ Hazard Assault Training requires Hazard Assault Formations, a fielded protected 
 
 The doctrine grants or commissions the following non-researchable technologies only after their exact mastery, institution, project, policy, and protection gates are met:
 
-- Hazard Pioneer Formation;
-- Chemical Artillery Shells;
-- Persistent Agent Shell Filling;
-- Armored Agent Delivery;
-- Sealed Tank Crews;
-- Nerve Agent Suppression Formation;
-- Chaos Assault Battalion and Improved Chaos Assault Equipment;
-- Mobile Decontamination Columns;
-- Chemical Air Interdiction;
-- Theater CBRN Headquarters; and
+- Hazard Pioneer Formation
+- Chemical Artillery Shells
+- Persistent Agent Shell Filling
+- Armored Agent Delivery
+- Sealed Tank Crews
+- Nerve Agent Suppression Formation
+- Chaos Assault Battalion and Improved Chaos Assault Equipment
+- Mobile Decontamination Columns
+- Chemical Air Interdiction
+- Theater CBRN Headquarters
 - Biological Security Assault Formation.
 
 Sealed Tank Crews, Persistent Agent Shell Filling, Nerve Agent Suppression, and Biological Security Assault use seven-day commissions costing 25 Political Power and 5 non-refundable Command Power. Losing the prerequisite before completion cancels the grant.
@@ -89,36 +89,36 @@ Chemical Air Interdiction is an eligibility marker only in this stage. It create
 
 ## Use policy
 
-Policy changes are decisions with a 90-day reassessment lock. Political Power is the native decision cost; Command Power, readiness, institution, and payload stock are checked and debited by the shared doctrine helpers.
+Policy changes are decisions with a 90-day reassessment lock. Political Power is the native decision cost. Command Power, readiness, institution, and payload stock are checked and debited by the shared doctrine helpers.
 
 | Policy | Political Power | Command Power | Readiness floor | Additional gate |
 | --- | ---: | ---: | ---: | --- |
 | Defensive Preparation | 15 | 0 | 0 | doctrine adopted |
 | Retaliation Authority | 25 | 5 | 10 | doctrine adopted |
-| Limited Battlefield Authority | 50 | 15 | 40 | Delivery Integration; 100 of one supported payload |
-| Strategic Release Authority | 75 | 25 | 65 | Theater Exploitation; 250 of one supported payload |
-| Unrestricted Chaos Warfare | 100 | 40 | 85 | Terminal CBRN Command; 500 of one supported payload |
+| Limited Battlefield Authority | 50 | 15 | 40 | Delivery Integration<br>100 of one supported payload |
+| Strategic Release Authority | 75 | 25 | 65 | Theater Exploitation<br>250 of one supported payload |
+| Unrestricted Chaos Warfare | 100 | 40 | 85 | Terminal CBRN Command<br>500 of one supported payload |
 
-Policy permits later adapters to pass authorization checks; it never spends a payload or creates exposure by itself. No Chaos Warfare use-policy tier grants nerve-suppression occupation authority. The later CBRN Coercive Security occupation policy is the sole owner of `cbrn_nerve_suppression_policy_authorized`, so the Nerve Agent Suppression Formation commission remains fail-closed until that distinct requirement is present.
+Policy permits later adapters to pass authorization checks. It never spends a payload or creates exposure by itself. No Chaos Warfare use-policy tier grants nerve-suppression occupation authority. The later CBRN Coercive Security occupation policy is the sole owner of `cbrn_nerve_suppression_policy_authorized`, so the Nerve Agent Suppression Formation commission remains fail-closed until that distinct requirement is present.
 
 ## Condemnation-only doctrine mitigation
 
 `cbrn_prepare_chemical_action_record` owns the doctrine lookup so every accepted chemical delivery route receives one consistent multiplier:
 
-- Operations mastery 1: 0.90;
-- Operations mastery 4: 0.80;
-- Operations mastery 5: 0.70;
+- Operations mastery 1: 0.90
+- Operations mastery 4: 0.80
+- Operations mastery 5: 0.70
 - otherwise: 1.00.
 
-The shared exposure calculation applies this value only to the Condemnation base before attribution/public-harm floors. Evidence and attribution are calculated independently. The legacy biological adapter uses the same 0.90/0.80/0.70 ladder only on its Condemnation base; outbreak potency and duration remain at 1.00, Command Power refunds remain zero, use counters increment fully, and domestic war-support penalties remain full-strength.
+The shared exposure calculation applies this value only to the Condemnation base before attribution and public-harm floors. Evidence and attribution are calculated independently. Strategic biological operations use the dedicated officer-corps postures instead of the legacy Integrated Operations adapter. Theater Contamination multiplies seed potency, growth, spread, deaths, duration, and medical pressure by 1.10 and refunds 10 percent of the Command Power cost after a resolved operation. Terminal Hazard applies stronger multipliers of 1.15 seed potency, 1.20 growth, 1.20 spread, 1.25 deaths, 1.15 duration, and 1.20 medical pressure, refunds 20 percent of Command Power, and applies its 0.80 Condemnation multiplier. Physical payload debit, evidence, attribution, deaths and death history, contamination and contamination history, medical saturation and medical history, confirmed-use history, domestic war-support penalties, biological-use counters, accident records, resistance trauma, and public-harm floors remain fully recorded.
 
 ## Exact-state decontamination assignment
 
 An active Army HQ Decontamination Corridor plus Theater Exploitation exposes a state-targeted assignment decision. It requires a controlled state with actual chemical contamination and permits one national assignment every 28 days. Cleanup output depends on the current contamination class:
 
-- Trace or Local: 10 points;
-- Serious: 8 points;
-- Severe: 5 points;
+- Trace or Local: 10 points
+- Serious: 8 points
+- Severe: 5 points
 - Catastrophic: 3 points.
 
 The Theater Contamination Doctrine spirit multiplies this output by 1.25. The effect calls the state contamination ledger and records only the amount actually removed. It does not erase evidence, attribution, deaths, Condemnation, or confirmed-use history. Current script cannot bind one active HQ order to several simultaneous state decisions safely, so the national 28-day assignment lock is the conservative exact-state boundary.
@@ -128,44 +128,44 @@ The Theater Contamination Doctrine spirit multiplies this output by 1.25. The ef
 The Army Command slot contains three mutually exclusive postures:
 
 - Controlled Retaliation Doctrine: +1 percent army organization, +10 maximum Command Power, 5 percent lower military mask/filter consumption, 15 percent lower friendly exposure risk for prepared actions, and 15 percent better evidence recovery when the country is the victim. It never suppresses attacker evidence.
-- Theater Contamination Doctrine: +5 percent planning speed, -5 percent attrition, +5 percent supply consumption, +10 percent prepared dose, +15 percent contamination points, +10 percent contamination duration, 10 percent faster offensive CBRN Headquarters preparation, and +25 percent exact-state cleanup output.
-- Terminal Hazard Doctrine: +5 percent army attack, +3 percent coordination, +10 percent supply consumption, +15 percent prepared operational effect, +25 percent resulting military and civilian deaths, +25 percent contamination points, +15 percent contamination duration, +20 percent medical saturation, 20 percent faster offensive CBRN Headquarters preparation, and a 0.80 Condemnation-impact multiplier before unchanged public-harm floors. Evidence and attribution remain unchanged.
+- Theater Contamination Doctrine: +5 percent planning speed, -5 percent attrition, +5 percent supply consumption, +10 percent prepared chemical dose, +15 percent chemical contamination points, +10 percent chemical contamination duration, +10 percent biological seed potency, growth, spread, deaths, duration, and medical pressure, a 10 percent resolved strategic biological raid Command Power refund, 10 percent faster offensive CBRN Headquarters preparation, and +25 percent exact-state cleanup output.
+- Terminal Hazard Doctrine: +5 percent army attack, +3 percent coordination, +10 percent supply consumption, +15 percent prepared chemical operational effect, +25 percent resulting chemical military and civilian deaths, +25 percent chemical contamination points, +15 percent chemical contamination duration, +20 percent chemical medical saturation, +15 percent biological seed potency, +20 percent biological growth and spread, +25 percent biological deaths, +15 percent biological duration, +20 percent biological medical pressure, a 20 percent resolved strategic biological raid Command Power refund, 20 percent faster offensive CBRN Headquarters preparation, and a 0.80 Condemnation-impact multiplier before unchanged public-harm floors. Evidence and attribution remain unchanged.
 
 Terminal Hazard also multiplies the already resolved death rate of an independently active camp network by 1.25 while Unrestricted Chaos Warfare remains authorized. The hook runs only inside the camp system's existing state death calculation and uses its stored responsible-country pointer. It does not create, reveal, authorize, or unlock a camp, extermination building, experiment site, restricted chemical site, or occupation law, and it does not alter camp evidence, discovery, resistance, trauma, Condemnation, or responsibility records.
 
 The Division Command slot contains three mutually exclusive postures:
 
-- Mask Discipline: +1 percent army organization, -5 percent organization loss while moving, and 10 percent lower military mask/filter consumption;
-- Hazard Assault Cadres: +2 percent special-forces cap, +3 percent army experience gain, and +5 percent attack/defence for Chaos Assault Battalions and Hazard Pioneers;
+- Mask Discipline: +1 percent army organization, -5 percent organization loss while moving, and 10 percent lower military mask/filter consumption
+- Hazard Assault Cadres: +2 percent special-forces cap, +3 percent army experience gain, and +5 percent attack/defence for Chaos Assault Battalions and Hazard Pioneers
 - Contaminant Fire Coordination: +3 percent artillery attack and +5 percent reliability for Livens and supported chemical payload equipment.
 
 Four generic institutional high-command offices avoid inventing historical personnel:
 
-- CBRN Operations Director: +3 percent planning speed and +5 maximum Command Power;
-- Civil Defence Coordinator: +2 percent stability and -1 percent consumer-goods factor;
-- Chemical Logistics Inspector: -3 percent attrition and -3 percent supply consumption;
+- CBRN Operations Director: +3 percent planning speed and +5 maximum Command Power
+- Civil Defence Coordinator: +2 percent stability and -1 percent consumer-goods factor
+- Chemical Logistics Inspector: -3 percent attrition and -3 percent supply consumption
 - Biological Security Director: +1 percent army organization and -2 percent resistance growth.
 
 The `chemical_operations_commander` leader trait costs 500 and requires Chaos Warfare, Protective Foundation, and a fielded Operations HQ Section. It reduces preparation time for the seven CBRN HQ abilities by 10 percent, after the ability's normal readiness and company adjustments. It grants no free release ability.
 
 ## AI behavior
 
-AI adoption and track preference use actual program profiles, industry, war, enemy chemical use, and explicit route flags. Ordinary defensive democracies receive a strong first-use penalty. Limited and strategic first-use policies start at zero weight unless an accepted aggressive route/profile adds weight; Theater Contamination adds further first-use weight only after those exact gates pass. Unrestricted policy starts at zero and requires an explicit unrestricted route; Terminal Hazard adds further unrestricted-use weight only within that route. The two offensive Headquarters abilities receive matching posture-specific weight only after their full activation trigger passes. Nonhuman countries receive zero weight.
+AI adoption and track preference use actual program profiles, industry, war, enemy chemical use, and explicit route flags. Ordinary defensive democracies receive a strong first-use penalty. Limited and strategic first-use policies start at zero weight unless an accepted aggressive route/profile adds weight. Theater Contamination adds further first-use weight only after those exact gates pass. Unrestricted policy starts at zero and requires an explicit unrestricted route. Terminal Hazard adds further unrestricted-use weight only within that route. The two offensive Headquarters abilities receive matching posture-specific weight only after their full activation trigger passes. Nonhuman countries receive zero weight.
 
 Officer-corps and high-command choices use the same defensive, battlefield, logistics, and outbreak profiles. Nonhuman AI receives zero selection weight for these institutional appointments and spirits. Every HQ ability retains the full player-equivalent composition, readiness, policy, stock, and Command Power gate. AI receives no hidden payload, readiness, or contamination shortcut.
 
 ## Compatibility and migration
 
-The grand doctrine and four track IDs remain stable for save/script compatibility. Legacy atrocity-facing names and broad permanent bonuses are replaced. The old academy and chemical-air spirit IDs remain hidden, unavailable, and AI-disabled so saves can resolve them without exposing a substitute mechanic. Random academy trait grants and the old cylinder abilities are removed. Legacy Integrated Operations biological potency, duration, and Command Power bonuses are neutralized; only the accepted Condemnation multiplier remains.
+The grand doctrine and four track IDs remain stable for save and script compatibility. Legacy atrocity-facing names and broad permanent bonuses are replaced. The old academy and chemical-air spirit IDs remain hidden, unavailable, and AI-disabled so saves can resolve them without exposing a substitute mechanic. Random academy trait grants and the old cylinder abilities are removed. Legacy Integrated Operations biological bonuses are neutralized. The dedicated Theater Contamination and Terminal Hazard spirits provide the accepted biological escalation, deployment refund, and Condemnation behavior.
 
-`on_startup` performs the migration for new campaigns but is not called when an existing save is loaded. A country that already has Chaos Warfare but lacks the institutional adoption flag therefore sees a one-time, zero-cost §YConvene CBRN Institutional Review§! decision. Human and AI countries can execute the same idempotent migration without a global periodic pulse. It reconstructs only native track/mastery facts, clears obsolete occupation-law authority, initializes the establishment review, and grants only independently eligible doctrine technologies; it never fabricates cross-track institutions, stock, fielded formations, protected orders, payload use, or consequences.
+`on_startup` performs the migration for new campaigns but is not called when an existing save is loaded. A country that already has Chaos Warfare but lacks the institutional adoption flag therefore sees a one-time, zero-cost §YConvene CBRN Institutional Review§! decision. Human and AI countries can execute the same idempotent migration without a global periodic pulse. It reconstructs only native track/mastery facts, clears obsolete occupation-law authority, initializes the establishment review, and grants only independently eligible doctrine technologies. It never fabricates cross-track institutions, stock, fielded formations, protected orders, payload use, or consequences.
 
 Static doctrine definitions use file-local `@` macros because current installed doctrine documentation does not declare global `constant:` support for those parser fields. The local values mirror the centralized `cbrn_doctrine_cost`, `cbrn_doctrine_mastery`, `cbrn_doctrine_modifier`, and `cbrn_doctrine_ai` tables. Scoped effects, triggers, decisions, ideas, and variables continue to use global script constants.
 
 ## Verified engine limits
 
-- Native grand-doctrine milestones map one-for-one to tracks and cannot express cross-track institutional proof; exact claim decisions provide that layer.
-- Native mastery measures eligible fielded units but exposes no exact per-unit equipment-fill check. Hazard Assault Training is the explicit equipment-backed mastery source; native combat mastery still relies on the doctrine engine's unit participation model.
+- Native grand-doctrine milestones map one-for-one to tracks and cannot express cross-track institutional proof. Exact claim decisions provide that layer.
+- Native mastery measures eligible fielded units but exposes no exact per-unit equipment-fill check. Hazard Assault Training is the explicit equipment-backed mastery source. Native combat mastery still relies on the doctrine engine's unit participation model.
 - Script exposes cumulative gas-mask production but no documented current production-line trigger. Protective Foundation therefore proves production after adoption plus a live reserve, without estimating factory assignment.
 - Combat tactics expose no verified activation effect that can reserve payload and dispatch the shared exposure record. Prepared Chemical Barrage remains weight zero and fail-closed until a payload-consuming adapter exists.
 - Chemical Air Interdiction has no continuous ordinary-air hook. No estimator or passive contamination fallback is retained.
@@ -174,7 +174,7 @@ Static doctrine definitions use file-local `@` macros because current installed 
 
 ## Assets and runtime wiring
 
-Final sources, processed PNGs, DDS files, contact sheets, validation inventory, and provenance prompts are under `docs/assets/chaos_warfare_system/stage_5_doctrine_officer_corps/`. Runtime sprites are registered in `interface/cbrn_doctrine.gfx`; the leader-trait sprite is registered in `interface/chaosx_traits.gfx`. All 45 DDS files use the standard 128-byte uncompressed BGRA header, texture caps, real alpha, exact declared dimensions, and no mipmaps.
+Final sources, processed PNGs, DDS files, contact sheets, validation inventory, and provenance prompts are under `docs/assets/chaos_warfare_system/stage_5_doctrine_officer_corps/`. Runtime sprites are registered in `interface/cbrn_doctrine.gfx`. The leader-trait sprite is registered in `interface/chaosx_traits.gfx`. All 45 DDS files use the standard 128-byte uncompressed BGRA header, texture caps, real alpha, exact declared dimensions, and no mipmaps.
 
 ### Doctrine, milestone, and technology sprites
 
@@ -214,7 +214,7 @@ Final sources, processed PNGs, DDS files, contact sheets, validation inventory, 
 
 ### Decision and category sprites
 
-Every decision icon below is an independent 32-by-32 concept in `gfx/interface/decisions/stage_5_chaos_warfare/`; the category is an independent 52-by-40 composition.
+Every decision icon below is an independent 32-by-32 concept in `gfx/interface/decisions/stage_5_chaos_warfare/`. The category is an independent 52-by-40 composition.
 
 | Sprite | Runtime DDS |
 | --- | --- |
@@ -244,12 +244,12 @@ No runtime asset is a placeholder, a cross-type resize, or a reused substitute.
 
 Required later package work:
 
-- implement the selected-state Chemical Air Interdiction operation through the shared payload/exposure pipeline;
-- connect doctrine operation flags to every ground, raid, and suppression delivery adapter without free contamination;
-- complete distinct-agent biological incubation, spread, detection, treatment, containment, accident, and attribution paths;
-- implement equipment-consuming nerve-agent suppression and its full resistance/evidence/consequence record;
-- add route-specific country profiles beyond the Stage 5 safe baseline;
-- integrate milestone sprites into the dedicated CBRN command UI;
+- implement the selected-state Chemical Air Interdiction operation through the shared payload/exposure pipeline
+- connect doctrine operation flags to every ground, raid, and suppression delivery adapter without free contamination
+- extend the ordinary-pathogen lifecycle to any later approved battlefield, sabotage, or doomsday delivery adapters with exact payload and state proof
+- implement equipment-consuming nerve-agent suppression and its full resistance/evidence/consequence record
+- add route-specific country profiles beyond the Stage 5 safe baseline
+- integrate milestone sprites into the dedicated CBRN command UI
 - run live doctrine, designer, shortage, policy, AI, cleanup, Condemnation-floor, and migration scenarios.
 
 Possible depth after the accepted package is complete includes after-action doctrine history, theater-specific staff reports, and a dedicated CBRN institutional summary. None may bypass exact payload, state, protection, evidence, or consequence accounting.

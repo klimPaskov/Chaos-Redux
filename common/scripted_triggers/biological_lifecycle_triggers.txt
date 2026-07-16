@@ -105,6 +105,19 @@ bio_lifecycle_accident_seed_record_is_valid = {
 			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.laboratory_accident compare = equals }
 		}
 		AND = {
+			check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.accident compare = equals }
+			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid_attacker_accident compare = equals }
+			has_event_target = bio_seed_actor
+			has_event_target = bio_seed_victim
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_seed_victim_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			CONTROLLER = { tag = event_target:bio_seed_victim }
+			check_variable = { var = bio_seed_payload_debit_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_seed_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+			check_variable = { var = bio_seed_payload_consumed value = constant:bio_lifecycle_math.zero compare = greater_than }
+			check_variable = { var = bio_seed_payload_consumed value = bio_seed_payload_required compare = less_than_or_equals }
+		}
+		AND = {
 			check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.captured_facility compare = equals }
 			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.captured_facility_release compare = equals }
 		}
