@@ -78,7 +78,7 @@ Use for real leaders, historical flags, historically attested symbols, and any r
 
 ### Prompt
 
-Read only the Event 6 asset prompt, the relevant source-mode sections of the asset skill, the candidate package IDs named by the parent, matching reference folders, and source pages. Source and document real leader portraits, historical flags, and attested symbols. Verify date, author or archive, license, era fit, and identity fit. Preserve sources, process PNGs, create final DDS or TGA files, update the Event 6 asset manifest, and write `gfx_handoff.md`. Do not edit gameplay or GFX files. Mark uncertain or blocked assets rather than substituting generated history.
+Read only the Event 6 asset prompt, the relevant source-mode sections of the asset skill, the candidate package IDs named by the parent, matching reference folders, and source pages. Source and document male real-leader portraits, historical flags, and attested symbols. Verify date, author or archive, license, era fit, and identity fit. Crop real portraits to head and shoulders, preserve identity through the HOI4 treatment, preserve sources, process PNGs, create final DDS or TGA files, update the Event 6 asset manifest, and write `gfx_handoff.md`. Do not edit gameplay or GFX files. Do not create advisor portrait icons. Mark uncertain or blocked assets rather than substituting generated history.
 
 ## 9. Generated event art
 
@@ -86,7 +86,7 @@ Use for fictional report and news scenes, super-event images, fictional portrait
 
 ### Prompt
 
-Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow. Produce final-source art for the exact assets named by the parent. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not generate real leaders or attested historical flags.
+Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow. Produce final-source art for the exact assets named by the parent. Event 6 leader, commander, and collective portrait subjects must all be male and must match the canonical vanilla HOI4 portrait family. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not create advisor portrait icons. Do not generate real leaders or attested historical flags.
 
 ## 10. Icon artist
 

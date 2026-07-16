@@ -102,7 +102,7 @@ Every delivered achievement has:
 All achievement files are 64x64 uncompressed BGRA DDS with alpha. The grey state
 is derived from the accepted completed icon. The not-eligible state uses the exact
 approved overlay from
-`.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`.
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`.
 Achievement files are engine-discovered by exact filename and do not need
 `spriteType` registration.
 
@@ -301,29 +301,19 @@ authoritative small-texture hashes are in
 `generated_nwe_hashes.sha256` remains the historical pre-regeneration ledger
 and is authoritative for the AJX flag triplet, not for the replaced portraits.
 
-## 2026-07-15 AJX advisor and neutral-commission asset handoff
+## 2026-07-15 AJX neutral-commission focus handoff
 
-The current IW-010 Saar advisor/focus source of truth is
-`ajx_asset_completion_2026_07_15/manifest.md`. It adds three distinct
-fictional-human `65x67` advisor dossiers and one original `94x86` Municipal
-Neutral Commission focus icon without changing Friedrich Hoffmann, Karl
-Becker, or either approved RHI/BAY historical leader portrait.
+The current IW-010 Saar focus source of truth is
+`ajx_asset_completion_2026_07_15/manifest.md`. It contains one original
+`94x86` Municipal Neutral Commission focus icon without changing Friedrich
+Hoffmann, Karl Becker, or either approved RHI/BAY historical leader portrait.
 
-The installed runtime files are:
-
-- `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_mine_rail_dispatch_superintendent.dds`;
-- `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_cross_border_accounts_comptroller.dds`;
-- `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_factory_security_inspector.dds`;
-- `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds`.
-
-The exact sprite, character-key, gender, focus-consumer, prompt, source,
-processing, contact-sheet, decoded-DDS, metadata, and SHA-256 contracts are in
-`ajx_asset_completion_2026_07_15/gfx_handoff.md` and its sibling evidence
-files. The assets are `wired_and_verified`: the parent-owned Saar character
-records, localisation, setup recruitment, advisor sprite registrations, focus
-sprite/shine registration, and neutral-commission entry-focus assignment are
-present. The asset tranche did not edit gameplay, localisation, interface, or
-readiness-gate files.
+The installed runtime file is
+`gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds`.
+Its exact prompt, source, processing, contact-sheet, decoded-DDS, metadata, and
+SHA-256 contracts remain in the focus-only package. Custom Event 006 advisor
+icons and their sprite registrations were removed by explicit user direction;
+the gameplay offices remain asset-neutral.
 
 ## 2026-07-15 BRI country-package portrait handoff
 

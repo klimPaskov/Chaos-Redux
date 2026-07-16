@@ -143,9 +143,17 @@ For every package selected for implementation:
 - validate orientation and TGA headers
 - use sourced portraits for real leaders
 - use generated portraits for fictional leaders and councils
-- record apparent gender presentation for one-person fictional portraits
-- require matching regional name pools and metadata
-- use institutional names and collective portraits for councils and committees
+- use only male subjects and male character metadata for Event 6 portraits
+- require matching male regional name pools and metadata
+- use institutional names and all-male collective portraits for councils and committees
+- match the canonical vanilla HOI4 painterly portrait treatment, framing, tonal
+  range, period clothing, and background language rather than a generic modern
+  portrait finish
+- keep the approved Rupprecht of Bavaria and Josef Friedrich Matthes DDS files
+  byte-identical and regenerate every other current Event 6 leader or commander
+  portrait
+- do not create or register custom Event 6 advisor portrait icons; advisor
+  offices retain their gameplay roles without Event 6 portrait sprites
 
 All newly registered Event 6 country, formable, cosmetic, and route tags end in `X`.
 
@@ -159,14 +167,14 @@ Final achievement filenames must match final achievement IDs under `gfx/achievem
 
 Inspect the matching reference folders before creating each asset type:
 
-- `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/focuses`
-- `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/achievements`
-- `.agents/skills/chaos-redux-event-assets/assets/flags`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
 
 ## Required outputs
 

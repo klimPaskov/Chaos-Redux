@@ -21,7 +21,8 @@ These facts do not add any of the three surfaces to a selectable release pool.
 7. `subagent_handoffs/006_iw003_cornwall_map_feasibility_2026_07_16.md`
 8. `subagent_handoffs/006_iw005_flanders_independent_audit_2026_07_16.md`
 9. `subagent_handoffs/006_bri_ajx_commit_readiness_reaudit_2026_07_16.md`
-10. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
+10. `subagent_handoffs/006_event6_advisor_icon_withdrawal_2026_07_16.md`
+11. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
 
 The seven specification parts remain the design authority. Use the source-of-
 truth map for current implementation status and handoff dispositions.
@@ -66,9 +67,10 @@ truth map for current implementation status and handoff dispositions.
   the repaired FORM transaction integration. Both exact immutable identity
   helpers and both runtime-preflight ID/tag branches are present. Neither exact
   ID has compile-time content attestation or a SCN-008 admission branch.
-- Static icon families, portraits, army-small dossiers, advisor dossiers,
-  country flags, FORM-01 through FORM-04 flags, report scenes, super-event art,
-  and final `6002` audio files materially exist.
+- Static icon families, portraits, army-small dossiers, country flags, FORM-01
+  through FORM-04 flags, report scenes, super-event art, and final `6002` audio
+  files materially exist. Gameplay advisor offices are asset-neutral after the
+  user-directed withdrawal of all custom Event 006 advisor icons.
 - `6002` OGG, WAV, music wrappers, sound wrappers, and station entry are complete.
   Event 006 gameplay still does not assign audio ID `6002` and fire the
   settings-aware presentation path.
@@ -106,8 +108,8 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 - Installed-map binding and installed-mod tag audits.
 - FORM-01 through FORM-04 implementation, tags, flags, identity aliases, and
   readiness promotion.
-- Character portrait regeneration, regional advisor dossiers, and army-small
-  dossier correction.
+- Character portrait regeneration, explicit custom-advisor-icon withdrawal,
+  and army-small dossier correction.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - Historical AFX and AGX coordinated static promotion; AFX is subsequently
   revoked fail-closed while AGX remains admitted.

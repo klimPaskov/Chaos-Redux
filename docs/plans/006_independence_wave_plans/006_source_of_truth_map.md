@@ -57,7 +57,7 @@ not a current runtime report.
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Commit `a2c274d1e` implements the overlay and its independent re-audit passes the bounded source surface. It preserves Belgium and is not a selectable Event 006 release package. The one-day timeout versus `on_daily_BEL` edge remains a documented static ordering caveat because engine order is unspecified, and AI garrison completion remains opportunistic |
 | FORM-01 through FORM-04 | Implemented, audited, and readiness-promoted | `98ec32e93` plus the operational, FORM-03, and readiness-promotion audit chain. FORM-03 uses cosmetic identity `LCX`. FORM-01 uses corrected tag `KCX` |
 | FORM-05 through FORM-48 | Fail-closed | No readiness promotion is authorized. Their gameplay identities, emblems, flags, and route integration remain incomplete |
-| Static visual package | Materially produced | Static icon families, report scenes, country flags, portraits, army-small dossiers, advisor dossiers, FORM-01 through FORM-04 flag packages, and two Event 006 super-event images exist. Commit `45bee09d2` completed the five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment. The old claim that Event 006 has no final assets is false |
+| Static visual package | Materially produced | Static icon families, report scenes, country flags, portraits, army-small dossiers, FORM-01 through FORM-04 flag packages, and two Event 006 super-event images exist. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons. Commit `45bee09d2` completed the five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment. The old claim that Event 006 has no final assets is false |
 | Audio `6002` | Derivatives and registry complete, gameplay firing pending | Final OGG and WAV, music wrappers, sound wrappers, and zero-random-play station entry exist. No Event 006 firing source currently assigns `global.current_super_event_audio_id = 6002` and invokes the presentation flow |
 | Audio `6001` | Hard blocked | The specified recording does not have verified redistribution rights for this repository. No substitute or fallback is authorized |
 | Documentation and workbook alignment | Not completion-audited | Current gameplay facts have advanced beyond older status prose. The event detail workbook and every event-log/detail surface were not re-audited in this curator pass |
@@ -144,7 +144,7 @@ described as absent:
 | Liberations cluster availability | `62e937dcc` |
 | FORM-01 through FORM-04 | `98ec32e93` |
 | FORM-01 tag correction and ideology aliases | `e983b676d` and `ffc227156` |
-| Human portrait, advisor, and army-small dossiers | `5f8f0c000`, `5eff0d6ff`, and `d0044b22e` |
+| Historical human portrait, advisor, and army-small asset commits | `5f8f0c000`, `5eff0d6ff`, and `d0044b22e`; the custom advisor dossiers were later withdrawn while gameplay advisor offices remained intact |
 | Installed-mod tag collision audit | `e0c1d5831` |
 | IW-003 map blocker record | `2f867e9cd` |
 | Historical AFX and AGX runtime promotion; AFX later revoked fail-closed | `2912e0a46` and the current runtime-admission boundary |
@@ -201,7 +201,8 @@ user approval.
 | `006_afx_agx_release_readiness_audit_2026_07_16.md` | Partly superseded | Its AGX authorization remains current. Its AFX authorization missed the binding Level 2 focus requirement and no longer grants admission |
 | `006_iw003_cornwall_map_feasibility_2026_07_16.md` | Blocked | Current no-fallback map blocker |
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
-| `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Automatic content attestation and SCN-008 admission remain separate and closed |
+| `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
+| `006_event6_advisor_icon_withdrawal_2026_07_16.md` and its final audit | Current user-directed asset boundary | Event 006 gameplay advisor offices remain active but carry no custom advisor portrait block, sprite registration, runtime DDS, or explicit gender metadata |
 | Shared army-small checksum alignment | Implemented evidence | Commit `45bee09d2` completed the exact five-line ACX, AEX, AFX, AGX, and AJX ledger transaction |
 | Super-event audio research handoff | Partly superseded | `6002` production steps are complete. Its rights research and `6001` blocker remain current |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
