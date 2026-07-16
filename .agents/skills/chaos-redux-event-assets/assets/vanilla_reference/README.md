@@ -1,80 +1,100 @@
-# Canonical vanilla visual references
+# Canonical asset-reference library
 
 This directory is the canonical, skill-local review library for
-`chaos-redux-event-assets`. It contains a deliberately small selection of PNG
-review copies extracted from the locally installed Hearts of Iron IV files.
-They are style, framing, scale, transparency, and pipeline references only.
+`chaos-redux-event-assets`. It is organized by the owning visual surface so an
+agent can compare the right canvas, transparency treatment, frame layout, or
+event-art presentation before creating an original Chaos Redux asset.
 
-Do not wire these PNGs into Chaos Redux, copy the depicted people or symbols
-into final art, or ship them as mod assets. For implementation, inspect the
-original vanilla source and its `.gfx`, `.gui`, `.asset`, or `.mesh` precedent,
-then create an original or properly sourced Chaos Redux asset.
+Reference PNGs are never runtime mod assets. Do not wire, ship, trace, recolor,
+or copy the depicted people and symbols into final art. For implementation,
+inspect the cataloged source and its `.gfx`, `.gui`, `.asset`, or `.mesh`
+precedent, then create an original or properly sourced Chaos Redux asset.
 
-## Provenance
+## Provenance and coverage
 
-- Installed game root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
+- Vanilla source root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - Installed build at extraction: `Operation Postern v1.19.2.0.a729 (d245)`
-- Extraction date: `2026-07-15`
-- Review format: lossless RGBA PNG decoded from the source DDS or TGA
+- Extraction date: `2026-07-16`
+- Review format: lossless RGBA PNG decoded from source DDS, TGA, or PNG
 - Pixel policy: preserve the source texture canvas exactly; do not crop,
   stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 90 reference PNGs in 38 leaf folders, plus 6 contact sheets
+- Inventory: 283 allowlisted reference PNGs across 37 semantic folders
 - Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
-Every PNG and its exact vanilla source path are listed in [CATALOG.md](CATALOG.md).
+The generated [CATALOG.md](CATALOG.md) records the exact source, source kind,
+native dimensions, related definition, and local contact sheet for every
+reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos
+Redux source and migrated legacy review copies.
+
+Common icon families — national focus, ideas, decisions, decision categories,
+technologies, and achievement states — contain at least 15 references. Every
+other tracked icon family contains at least 5. Counts exclude contact sheets.
+The reusable achievement not-eligible overlay is stored beside these examples
+at `icons/achievements/overlay.png`, but is a workflow input and is excluded
+from the contact sheet and inventory count.
 
 ## Contact sheets
 
-- `contact_sheets/portraits_and_flags.png` — leader, commander, operative,
-  advisor, and explicit army-small dossier treatments plus three flat flags
-  across the complete ladder
-- `contact_sheets/icons.png` — focus, idea, decision, mission, decision-category,
-  achievement, officer-corps, technology, special-project, and balance-of-power
-  icon families
-- `contact_sheets/icons_extended.png` — intelligence agency and operation icons,
-  commander traits, medals, raids, state modifiers, MIOs, factions, buildings,
-  and modifier icons
-- `contact_sheets/event_art.png` — report-event and news-event image formats
-- `contact_sheets/units.png` — equipment technology art, large two-frame land
-  counters, and land-model material references
-- `contact_sheets/units_expanded.png` — land map counters, division-template
-  emblems, air and naval counters, and air/naval model material references
+Every semantic folder owns one labeled `contact_sheet.png` beside its reference
+PNGs. There is deliberately no broad `contact_sheets/` directory. Sheets use a
+checkerboard review background for transparency, show the filename and native
+dimensions, and preserve the source family’s aspect ratio. The checkerboard is
+not part of any extracted image.
 
-The checkerboard is a review background, not part of the extracted image.
+Examples:
 
-## Dimension rules
+- `icons/national_focus/contact_sheet.png`
+- `icons/ideas/contact_sheet.png`
+- `icons/decisions/contact_sheet.png`
+- `icons/technologies/contact_sheet.png`
+- `event_art/report/contact_sheet.png`
+- `event_art/news/contact_sheet.png`
+- `event_art/super_event/contact_sheet.png`
+- `flags/contact_sheet.png`
 
-Native vanilla texture dimensions are evidence, not a universal resize order.
-Always inspect the relevant vanilla `.gfx` definition and the existing Chaos
-Redux precedent before producing a final asset.
+## Reference families
 
-- Leader, commander, and operative portrait references are exactly `156x210`.
-  Commander `small` sprite names do not prove a separate native 50x67 texture;
-  inspect the owning portrait definition instead of deriving one by assumption.
-- Advisor dossier references are exactly `65x67`; they are separately composed
-  cards, not resized leader portraits.
-- Flags are shown at the full required ladder: `82x52`, `41x26`, and `10x7`.
-  Final game flags remain uncompressed 32-bit TGA files with vanilla-compatible
-  origin/header behavior; the PNGs here are review copies only.
-- Vanilla focus references use `100x88` texture canvases. Visible artwork and
-  transparent margins can differ from older nominal-size guidance.
-- Idea, decision, decision-category, and technology textures have family- and
-  file-specific native canvases. Preserve the intended in-game footprint and
-  validate against the owning sprite rather than forcing one blanket size.
-- Division counter references are `152x42` two-frame strips (`noOfFrames = 2`),
-  giving two `76x42` frames.
-- Land map counter strips are `60x12` and may also use two frames. Air and naval
-  counters have their own white/inverted state conventions; preserve the owning
-  sprite's frame and state behavior rather than treating them as focus icons.
-- Equipment UI illustrations have variable native widths and are not division
-  counters or map models.
-- `units/models_3d/` contains land, air, and naval UV diffuse textures used by
-  model meshes. These are material references, not 2D equipment icons, unit
-  counters, rendered concept art, or finished model previews.
+Portraits and dossier cards:
 
-## Maintenance rule
+- `portraits/leaders/`
+- `portraits/commanders/`
+- `portraits/operatives/`
+- `portraits/advisors/`
 
-Keep this library representative and allowlisted. Add an example only when it
-documents a genuinely missing asset family, state, size, or engine pipeline.
-Record the exact source and dimensions in `CATALOG.md`, rebuild the relevant
-contact sheet, and never bulk-copy a vanilla directory.
+Flags and event art:
+
+- `flags/normal/`, `flags/medium/`, and `flags/small/`
+- `event_art/report/`, `event_art/news/`, and `event_art/super_event/`
+
+Gameplay icons:
+
+- `icons/national_focus/`, `icons/ideas/`, `icons/technologies/`
+- `icons/decisions/`, `icons/missions/`, and `icons/decision_categories/`
+- `icons/achievements/`, `icons/officer_corps_spirits/`, and
+  `icons/special_projects/`
+- `icons/balance_of_power/`, `icons/intelligence_agency/`, and
+  `icons/intelligence_operations/`
+- `icons/commander_traits/`, `icons/medals/`, and `icons/military_raids/`
+- `icons/state_modifiers/`, `icons/military_industrial_organizations/`,
+  `icons/factions/`, `icons/buildings/`, and `icons/modifiers/`
+
+Unit visual pipelines:
+
+- `units/equipment/technology_art/`
+- `units/land/counters_large/`, `units/land/map_counters/`, and
+  `units/land/division_template_emblems/`
+- `units/air/map_counters/` and `units/naval/map_counters/`
+- `units/models_3d/land_materials/`, `air_materials/`, and `naval_materials/`
+
+These families are not interchangeable. Follow the cataloged native canvas,
+transparency, frame order, and owning definition. Model materials are UV
+references paired with mesh/entity definitions; they are not 2D icons, renders,
+or concept sheets.
+
+## Maintenance
+
+The allowlist is maintained by `.tools/extract_hoi4_asset_references.py`.
+When adding a reference, record its exact provenance, choose the correct
+semantic folder, keep the coverage floor, regenerate that folder’s contact
+sheet, and update the catalog. Do not recreate the old shared contact-sheet
+directory or add new reference images beside this tree.

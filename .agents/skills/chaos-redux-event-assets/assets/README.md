@@ -12,8 +12,15 @@ Do not create a second canonical library at the project root or in another
 skill. Start every review with:
 
 - `vanilla_reference/README.md` for library and contact-sheet rules
-- `vanilla_reference/CATALOG.md` for exact vanilla provenance, native canvas,
+- `vanilla_reference/CATALOG.md` for exact source provenance, native canvas,
   frame count, and owning definition
+
+Every semantic reference folder contains its own labeled `contact_sheet.png`.
+There is no shared `vanilla_reference/contact_sheets/` folder. The contact
+sheet is a review aid and is not counted as an example. Common icon families
+(focus, ideas, decisions, decision categories, technologies, and achievement
+states) contain at least 15 references; other tracked families contain at
+least 5.
 
 Reference PNGs teach framing, scale, transparency, style, and engine pipeline.
 They are not templates or final assets and must never be copied, recolored,
@@ -40,10 +47,13 @@ shrink a leader, commander, or operative portrait into a dossier card.
 Reusable generated dossier components live under
 `advisor_dossier_overlays/`. Read
 `advisor_dossier_overlays/advisor_dossier_overlay_manifest.json` before use.
-The frame and paper/seal are original ImageGen outputs with transparent
-derivatives; they are compositing inputs, not permission to recreate visible
-card art with rectangles, polygons, lines, ellipses, procedural patina, or
-other primitive drawing.
+The active manifest is self-contained: it pins the approved frame and paper
+source/overlay hashes and all six canonical advisor-style references inside
+this skill. It must not require an event asset package, a user-specific
+ImageGen store, or an external source copy. The frame and paper/seal are
+original ImageGen outputs with transparent derivatives; they are compositing
+inputs, not permission to recreate visible card art with rectangles, polygons,
+lines, ellipses, procedural patina, or other primitive drawing.
 
 ### Flags and event art
 
@@ -51,6 +61,7 @@ other primitive drawing.
   flag ladders
 - `vanilla_reference/event_art/report/` — report-event presentation
 - `vanilla_reference/event_art/news/` — news-event presentation
+- `vanilla_reference/event_art/super_event/` — super-event presentation
 
 Every final flag remains an ImageGen-created flat graphic design, including a
 historically attested flag after research locks its geometry, colours, and
@@ -59,6 +70,9 @@ folds, flagpoles, scenery, perspective, lighting, gradients, and invented
 heraldry.
 
 ### Gameplay icon families
+
+Super-event references live in `vanilla_reference/event_art/super_event/`.
+They use the same per-type contact-sheet rule as report and news event art.
 
 Use only the folder matching the owning UI surface:
 
@@ -75,6 +89,11 @@ Use only the folder matching the owning UI surface:
   `icons/state_modifiers/`
 - organizations and economy: `icons/military_industrial_organizations/`,
   `icons/factions/`, `icons/buildings/`, and `icons/modifiers/`
+
+The reusable achievement not-eligible compositing overlay is kept at
+`vanilla_reference/icons/achievements/overlay.png`. It is a workflow input,
+not a reference example, so it is excluded from the achievement contact sheet
+and coverage count.
 
 These families are not interchangeable. Follow the cataloged native canvas,
 transparency, frame order, and owning `.gfx`, `.gui`, or database definition.
@@ -103,26 +122,22 @@ final paths, and handoffs. Model materials are UV references paired with
 cataloged mesh, asset, and entity definitions; they are not 2D icons, finished
 renders, or concept sheets.
 
-## Legacy compatibility and supplemental paths
+## Retained support paths
 
-The category folders beside `vanilla_reference/` remain stable because older
-manifests, prompts, and processing scripts may depend on them. Classify them as:
+The old duplicated example folders beside `vanilla_reference/` have been
+migrated into the canonical semantic tree and are no longer valid reference
+locations. The only top-level paths retained are live workflow inputs:
 
-- legacy icon and workflow examples: `achievements/`, `bop/`, `decisions/`,
-  `focuses/`, `ideas/`, `special_projects/`, and `tech_icons/`
-- legacy flat-flag examples: `flags/`
-- legacy event-art examples: `news_event_images/`, `report_event_images/`, and
-  `super_event_images/`
+- `advisor_dossier_overlays/` — source and processed advisor-card overlays
 
-Do not rename, move, delete, or repurpose these paths without first migrating
-every dependency. Do not add new canonical references to them. They may teach
-an established Chaos Redux treatment or provide a retained workflow input, but
-they never override `vanilla_reference/CATALOG.md` or the current source rules.
+Do not add new reference images beside `vanilla_reference/`. Keep any future
+workflow input separate from the canonical library and document its consumer.
 
 ## Maintenance
 
 Add a canonical reference only when it documents a missing family, state,
-size, or engine pipeline. Record exact vanilla provenance and native
-dimensions, update the relevant contact sheet, and keep the selection small
-and representative. Never bulk-copy vanilla art or wire reference PNGs into
+size, or engine pipeline. Record exact provenance and native dimensions, update
+that family’s local `contact_sheet.png`, and preserve the coverage floor. The
+extractor and catalog distinguish Vanilla HOI4 examples from explicitly marked
+Chaos Redux source or migrated review copies. Never wire reference PNGs into
 the mod.
