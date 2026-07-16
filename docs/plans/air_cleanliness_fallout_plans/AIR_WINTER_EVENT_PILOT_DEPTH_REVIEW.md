@@ -2,7 +2,7 @@
 
 ## Review boundary
 
-This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry, island-refugee, Desert City, and dead-city salvage tranches. It is a source review only. Hearts of Iron IV was not launched.
+This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented Phase 1 regional return, heavy-industry, island-refugee, Desert City, and dead-city salvage tranches. It is a source review only. Hearts of Iron IV was not launched.
 
 The pilot already proves the bounded dispatch model, one visible event per eligible country cooldown, regular state and country event targets, delayed deterministic results, state memory, AI choice weights, Deaths integration, and cleanup through the existing monthly state pass. It does not count toward the 660-block Fallout living-world floor.
 
@@ -25,9 +25,20 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 
 The pilot has strong delayed-result depth in its transport, heating, shelter, harvest, city, archive, continuity, thaw, and second-winter families. Those chains carry a state target, record a branch flag before dispatch, resolve through state conditions, write durable memory, and clear the pending branch.
 
-The Phase 1 and several Phase 2 regional entries remain intentionally shorter. The mountain-capital and exact Desert City routes carry full delayed results, while other regional entries establish voice and early choices without all returning later.
+The five Phase 1 regional entries now carry a complete shared delayed return. Several Phase 2 regional entries remain intentionally shorter. The mountain-capital and exact Desert City routes carry full delayed results, while other regional entries establish voice and early choices without all returning later.
 
 The most important gap identified by the baseline review was infrastructure identity. The accepted hydroelectric, oil, reactor, and exact coal or heavy-industry rows lacked dedicated live identity routes, even though the engine exposes the required state buildings and resources.
+
+## Phase 1 regional return depth
+
+The Phase 1 regional return contract contains six manually authored blocks:
+
+- `chaosx.fallout.1` through `.5`, the five regional openings
+- `chaosx.fallout.6`, the shared 21-day result
+
+The ten opening policies write exclusive owner-bound branches and preserve their matching state and country memories. The shared result requires regular country and state targets, the generic pending row, the stored original owner, current ownership, and exactly one branch. It reads live ledgers and operational buildings after the delay even if ordinary Air Winter progression has moved the state beyond Phase 1.
+
+Each branch exposes one success and one direct inverse failure. Exact pre-choice AI projections reverse the opening ledger changes, then government and crisis weights express policy preference. Casualty failures route through Deaths. Phase 1 raises Building Damage Pressure where appropriate but never damages a building. Three mutually exclusive timed state modifiers represent factory-access disruption, supply disruption, or marked-corridor relief for 21 days. Opening-only stale rejection cannot clear a newer transaction. Full proof is recorded in `AIR_WINTER_PHASE_1_REGIONAL_RETURN_EVENT_PROOF.md`.
 
 ## Selected expansion
 
@@ -121,7 +132,7 @@ The result uses success, partial, and disaster predicates for each branch. Their
 
 ## Implementation disposition
 
-The pilot contains 51 blocks, 171 options, 170 effect-bearing options, and 57 delayed-result schedules. Island refugee admission, seed and livestock policy, mountain capitals, Desert City water logistics, hydroelectric states, oil or refinery states, reactor states, coal or heavy-industry states, and ruined major-city salvage have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country. The shared Phase 5 memory likewise permits one ordinary Phase 5 identity chain per country, with the dead-city route winning over the generic Phase 5 city route when both qualify.
+The pilot contains 52 blocks, 191 options, 190 effect-bearing options, and 67 delayed-result schedules. Phase 1 regional policy, island refugee admission, seed and livestock policy, mountain capitals, Desert City water logistics, hydroelectric states, oil or refinery states, reactor states, coal or heavy-industry states, and ruined major-city salvage have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country. The shared Phase 5 memory likewise permits one ordinary Phase 5 identity chain per country, with the dead-city route winning over the generic Phase 5 city route when both qualify.
 
 ## Deferred depth
 

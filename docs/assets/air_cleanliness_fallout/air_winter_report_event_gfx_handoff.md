@@ -9,6 +9,7 @@ Status: ten final report-event asset packages are registered and consumed.
 - Processed folder: `docs/assets/air_cleanliness_fallout/processed_png/report_events/`
 - Final contact sheet: `docs/assets/air_cleanliness_fallout/contact_sheets/air_winter_report_events_final_contact_sheet.png`
 - Existing event consumers: `events/fallout_world_end_events.txt`
+- Phase 1 consumers: `chaosx.fallout.1` through `chaosx.fallout.6`
 - Island-refugee consumers: `chaosx.fallout.38` and `chaosx.fallout.39`
 - Desert-city consumers: exact-receipt `chaosx.fallout.13` and `chaosx.fallout.49`
 - Dead-city salvage consumers: `chaosx.fallout.47` and `chaosx.fallout.48`
@@ -16,6 +17,8 @@ Status: ten final report-event asset packages are registered and consumed.
 - Source mode: built-in `$imagegen`, fictional 1936 to 1945 period-documentary scenes
 
 The current Desert City tranche registers the dedicated sprite in `interface/air_cleanliness_winter.gfx` and consumes it through the exact event 13 picture route and event 49. It adds no audio or GUI asset.
+
+The existing `GFX_report_event_air_winter_phase_1` asset covers events 1 through 6, including the five regional openings and their shared delayed return. The Phase 1 return adds no asset or audio requirement.
 
 ## Stable sprite mapping
 

@@ -176,10 +176,10 @@ The final DDS decode is pixel-identical to the processed PNG. Alpha spans 0 thro
 
 The Air Winter pilot now contains:
 
-- 51 unique event blocks before the separate Fallout transition and manual event ranges
-- 171 options
-- 170 effect-bearing options
-- 57 delayed-result schedules
+- 52 unique event blocks before the separate Fallout transition and manual event ranges
+- 191 options
+- 190 effect-bearing options
+- 67 delayed-result schedules
 - one effect-free stale-order acknowledgement
 
 Event 49 is declared once and scheduled by exactly three event 13 choices. All 51 event references added or used by the Desert City opening and result resolve to exactly one localisation key. All six dynamic-modifier name and description keys exist. The localisation files retain their UTF-8 byte order marks.
