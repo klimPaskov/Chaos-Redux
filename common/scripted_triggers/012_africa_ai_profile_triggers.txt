@@ -1,0 +1,565 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA AI PROFILE TRIGGERS
+# ============================================================================
+# Country-scope activation predicates for the exact sixty-four-row Event 12 AI
+# registry. Every predicate reads implemented state: host overlay, constitution,
+# relationship graph, action evidence, foreign posture, capital continent, or
+# full host playbook. No opinion-only accession test and no periodic scan lives
+# here. Callers refresh profiles only from an action, focus, event, or bounded
+# AI decision evaluation.
+# ============================================================================
+
+# Shared guards
+
+africa_ai_profile_common_is_valid = {
+	exists = yes
+	NOT = { has_global_flag = world_end }
+}
+
+africa_ai_host_profile_base_is_active = {
+	africa_ai_profile_common_is_valid = yes
+	africa_is_current_host = yes
+	has_variable = africa_host_generation
+	capital_scope = { is_on_continent = africa }
+}
+
+africa_ai_member_profile_base_is_active = {
+	africa_ai_profile_common_is_valid = yes
+	africa_is_valid_relationship_target = yes
+	has_event_target = africa_host
+	event_target:africa_host = { africa_is_current_host = yes }
+}
+
+africa_ai_foreign_profile_base_is_active = {
+	africa_ai_profile_common_is_valid = yes
+	africa_is_valid_external_action_target = yes
+	NOT = { has_country_flag = africa_registered_high_chaos_actor }
+	NOT = { has_country_flag = africa_ecological_bargain_site }
+	has_event_target = africa_host
+	event_target:africa_host = { africa_is_current_host = yes }
+}
+
+africa_ai_chaos_profile_base_is_active = {
+	africa_ai_profile_common_is_valid = yes
+	has_global_flag = africa_evolution_iii_logged
+	OR = {
+		has_country_flag = africa_registered_high_chaos_actor
+		has_country_flag = africa_ecological_bargain_site
+	}
+}
+
+africa_ai_world_profile_base_is_active = {
+	africa_ai_profile_common_is_valid = yes
+	has_global_flag = africa_world_order_open
+	africa_is_valid_external_action_target = yes
+}
+
+# Regional host overlays
+
+africa_ai_profile_host_maghreb_sahara_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.maghreb_sahara }
+}
+
+africa_ai_profile_host_west_atlantic_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.west_atlantic }
+}
+
+africa_ai_profile_host_sahel_lake_chad_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.sahel_lake_chad }
+}
+
+africa_ai_profile_host_nile_horn_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
+}
+
+africa_ai_profile_host_congo_basin_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.congo_basin }
+}
+
+africa_ai_profile_host_great_lakes_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.great_lakes }
+}
+
+africa_ai_profile_host_swahili_indian_ocean_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
+}
+
+africa_ai_profile_host_southern_africa_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa }
+}
+
+africa_ai_profile_host_madagascar_islands_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
+}
+
+# Constitutional routes
+
+africa_ai_profile_route_charter_federalism_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.federal_union }
+}
+
+africa_ai_profile_route_continental_republic_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
+}
+
+africa_ai_profile_route_council_of_crowns_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
+}
+
+africa_ai_profile_route_peoples_union_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
+}
+
+africa_ai_profile_route_military_continentalism_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
+}
+
+africa_ai_profile_route_continental_confederation_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+}
+
+africa_ai_profile_route_high_chaos_covenant_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+	has_global_flag = africa_evolution_iii_logged
+	has_country_flag = africa_covenant_route_committed
+	has_country_flag = africa_covenant_route_revealed
+	africa_focus_has_covenant_actor = yes
+}
+
+# Member relationship states. Outside profiles use actual threat/proof evidence
+# and industrial independence; later states read only the relationship graph.
+
+africa_ai_profile_member_outside_threatened_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_relationship_is_outside = yes
+	OR = {
+		has_country_flag = africa_contact_protection_priority
+		has_country_flag = africa_member_requested_protection
+		has_country_flag = africa_relief_crisis_active
+		has_war = yes
+	}
+}
+
+africa_ai_profile_member_outside_strong_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_relationship_is_outside = yes
+	NOT = { africa_ai_profile_member_outside_threatened_is_active = yes }
+	is_subject = no
+	OR = {
+		is_major = yes
+		num_of_factories > constant:africa_host_selection.strong_factory_minimum
+		has_country_flag = africa_contact_proof_demand
+	}
+}
+
+africa_ai_profile_member_protected_partner_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	africa_relationship_is_protected = yes
+}
+
+africa_ai_profile_member_associate_member_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	africa_relationship_is_associate = yes
+}
+
+africa_ai_profile_member_chartered_member_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	africa_relationship_is_chartered = yes
+}
+
+africa_ai_profile_member_federal_member_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	OR = {
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+}
+
+africa_ai_profile_member_resistant_member_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	OR = {
+		africa_relationship_is_resistant = yes
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+}
+
+africa_ai_profile_member_rival_bloc_leader_is_active = {
+	africa_ai_member_profile_base_is_active = yes
+	africa_member_host_generation_is_current = yes
+	africa_relationship_is_rival_bloc = yes
+}
+
+# Foreign response profiles. Branch exclusions make the five predicates distinct
+# while preserving only states already written by the Scramble/action runtime.
+
+africa_ai_profile_power_expedition_coalition_is_active = {
+	africa_ai_foreign_profile_base_is_active = yes
+	has_country_flag = africa_scramble_coalition_member
+	OR = {
+		has_country_flag = africa_scramble_expedition_accelerated
+		has_war_with = event_target:africa_host
+	}
+}
+
+africa_ai_profile_power_containment_sanctions_is_active = {
+	africa_ai_foreign_profile_base_is_active = yes
+	has_country_flag = africa_scramble_coalition_member
+	NOT = { africa_ai_profile_power_expedition_coalition_is_active = yes }
+	NOT = { has_war_with = event_target:africa_host }
+}
+
+africa_ai_profile_power_recognition_partner_is_active = {
+	africa_ai_foreign_profile_base_is_active = yes
+	NOT = { has_country_flag = africa_scramble_coalition_member }
+	NOT = { has_country_flag = africa_foreign_patronage_active }
+	OR = {
+		has_country_flag = africa_world_order_partner
+		has_country_flag = africa_international_recognition_obtained
+	}
+}
+
+africa_ai_profile_power_opportunist_patron_is_active = {
+	africa_ai_foreign_profile_base_is_active = yes
+	NOT = { has_country_flag = africa_scramble_coalition_member }
+	NOT = { has_country_flag = africa_world_order_partner }
+	OR = {
+		has_country_flag = africa_foreign_patronage_active
+		has_country_flag = africa_world_order_rivalry_intensified
+	}
+}
+
+africa_ai_profile_power_negotiated_withdrawal_is_active = {
+	africa_ai_foreign_profile_base_is_active = yes
+	NOT = { africa_ai_profile_power_expedition_coalition_is_active = yes }
+	NOT = { africa_ai_profile_power_containment_sanctions_is_active = yes }
+	NOT = { africa_ai_profile_power_recognition_partner_is_active = yes }
+	NOT = { africa_ai_profile_power_opportunist_patron_is_active = yes }
+	OR = {
+		has_country_flag = africa_base_withdrawal_treaty_accepted
+		has_country_flag = africa_intervention_coalition_withdrawn
+		AND = {
+			any_owned_state = { is_on_continent = africa }
+			OR = {
+				has_war_support < constant:africa_ai_policy.low_war_support
+				has_stability < constant:africa_ai_policy.low_stability
+			}
+		}
+	}
+}
+
+# High-chaos actor profiles. The current source package does not yet write a
+# speculative species enum. These predicates therefore use existing action/site
+# evidence and remain inactive until the actor's real semantic evidence exists.
+
+africa_ai_profile_chaos_disease_cult_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	OR = {
+		has_country_flag = africa_disease_crisis_active
+		has_country_flag = africa_disease_research_site
+		has_country_flag = africa_disease_containment_complete
+		has_country_flag = africa_disease_countermeasure_researched
+		has_country_flag = africa_fictional_pathogen_stockpile_bounded
+	}
+}
+
+africa_ai_profile_chaos_rain_drought_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	NOT = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+	OR = {
+		has_country_flag = africa_oracle_network_consulted
+		has_country_flag = africa_rain_obligation_settled
+		has_country_flag = africa_drought_defence_complete
+	}
+}
+
+africa_ai_profile_chaos_stoneborn_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	NOT = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+	NOT = { africa_ai_profile_chaos_rain_drought_is_active = yes }
+	OR = {
+		has_country_flag = africa_stone_cohort_raised_once
+		has_country_flag = africa_action_awaken_stone_cohort_full
+		has_country_flag = africa_action_awaken_stone_cohort_partial
+		has_country_flag = africa_action_awaken_stone_cohort_failure
+	}
+}
+
+africa_ai_profile_chaos_gorilla_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	NOT = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+	NOT = { africa_ai_profile_chaos_rain_drought_is_active = yes }
+	NOT = { africa_ai_profile_chaos_stoneborn_is_active = yes }
+	OR = {
+		has_country_flag = africa_gorilla_heavy_infantry_raised_once
+		has_country_flag = africa_action_train_gorilla_heavy_infantry_full
+		has_country_flag = africa_action_train_gorilla_heavy_infantry_partial
+		has_country_flag = africa_action_train_gorilla_heavy_infantry_failure
+	}
+}
+
+africa_ai_profile_chaos_pan_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	NOT = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+	NOT = { africa_ai_profile_chaos_rain_drought_is_active = yes }
+	NOT = { africa_ai_profile_chaos_stoneborn_is_active = yes }
+	NOT = { africa_ai_profile_chaos_gorilla_is_active = yes }
+	OR = {
+		has_country_flag = africa_pan_sappers_raised_once
+		has_country_flag = africa_action_organise_pan_sappers_full
+		has_country_flag = africa_action_organise_pan_sappers_partial
+		has_country_flag = africa_action_organise_pan_sappers_failure
+	}
+}
+
+africa_ai_profile_chaos_green_is_active = {
+	africa_ai_chaos_profile_base_is_active = yes
+	NOT = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+	NOT = { africa_ai_profile_chaos_rain_drought_is_active = yes }
+	NOT = { africa_ai_profile_chaos_stoneborn_is_active = yes }
+	NOT = { africa_ai_profile_chaos_gorilla_is_active = yes }
+	NOT = { africa_ai_profile_chaos_pan_is_active = yes }
+	OR = {
+		has_country_flag = africa_ecological_bargain_site
+		has_country_flag = africa_green_compact_bounded
+	}
+}
+
+# World-continent profiles. Event 12 treats the map's middle_east and australia
+# continent tokens as the Middle East and Oceania registry rows.
+
+africa_ai_profile_world_middle_east_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = middle_east }
+}
+
+africa_ai_profile_world_europe_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = europe }
+}
+
+africa_ai_profile_world_asia_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = asia }
+}
+
+africa_ai_profile_world_north_america_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = north_america }
+}
+
+africa_ai_profile_world_south_america_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = south_america }
+}
+
+africa_ai_profile_world_oceania_is_active = {
+	africa_ai_world_profile_base_is_active = yes
+	capital_scope = { is_on_continent = australia }
+}
+
+africa_ai_profile_world_africa_world_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	has_global_flag = africa_world_order_open
+	has_global_flag = africa_is_one
+	check_variable = {
+		var = africa_charter_authority
+		value = constant:africa_measure.medium
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_integration_burden
+		value = constant:africa_measure.high
+		compare = less_than
+	}
+	NOT = { has_country_flag = africa_route_viability_under_review }
+}
+
+# Full host playbooks
+
+africa_ai_profile_host_ethiopia_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.ethiopia }
+}
+
+africa_ai_profile_host_egypt_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.egypt }
+}
+
+africa_ai_profile_host_sudan_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.sudan }
+}
+
+africa_ai_profile_host_morocco_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.morocco }
+}
+
+africa_ai_profile_host_algeria_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.algeria }
+}
+
+africa_ai_profile_host_tunisia_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.tunisia }
+}
+
+africa_ai_profile_host_libya_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.libya }
+}
+
+africa_ai_profile_host_liberia_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.liberia }
+}
+
+africa_ai_profile_host_nigeria_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.nigeria }
+}
+
+africa_ai_profile_host_gold_coast_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.gold_coast }
+}
+
+africa_ai_profile_host_senegal_fwa_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa }
+}
+
+africa_ai_profile_host_sierra_leone_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.sierra_leone }
+}
+
+africa_ai_profile_host_belgian_congo_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.belgian_congo }
+}
+
+africa_ai_profile_host_angola_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.angola }
+}
+
+africa_ai_profile_host_french_equatorial_africa_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa }
+}
+
+africa_ai_profile_host_kenya_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.kenya }
+}
+
+africa_ai_profile_host_uganda_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.uganda }
+}
+
+africa_ai_profile_host_tanganyika_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.tanganyika }
+}
+
+africa_ai_profile_host_somali_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.somali_territories }
+}
+
+africa_ai_profile_host_madagascar_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.madagascar }
+}
+
+africa_ai_profile_host_south_africa_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.south_africa }
+}
+
+africa_ai_profile_host_southern_rhodesia_specific_is_active = {
+	africa_ai_host_profile_base_is_active = yes
+	check_variable = { africa_host_playbook = constant:africa_host_playbook.southern_rhodesia }
+}
+
+# Callable policy-result predicates. Call africa_ai_refresh_profile_registry or
+# africa_ai_evaluate_requested_action in the same effect chain before using them.
+
+africa_ai_profile_registry_has_active_policy = {
+	check_variable = { africa_ai_active_profile_count > constant:africa_value.zero }
+}
+
+africa_ai_requested_action_risk_is_allowed = {
+	check_variable = {
+		var = africa_profile_risk
+		value = africa_ai_risk_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+africa_ai_accepts_partial_outcome = {
+	check_variable = {
+		var = africa_ai_partial_tolerance
+		value = constant:africa_ai_partial_tolerance.accept
+		compare = greater_than_or_equals
+	}
+}
+
+africa_ai_will_retry_after_recovery = {
+	check_variable = {
+		var = africa_ai_retry_stance
+		value = constant:africa_ai_retry_stance.after_recovery
+		compare = greater_than_or_equals
+	}
+}
+
+africa_ai_will_retry_when_valid = {
+	check_variable = {
+		var = africa_ai_retry_stance
+		value = constant:africa_ai_retry_stance.when_valid
+		compare = greater_than_or_equals
+	}
+}
+
+africa_ai_has_persistent_retry_stance = {
+	check_variable = { africa_ai_retry_stance = constant:africa_ai_retry_stance.persistent }
+}
+
+africa_ai_requested_action_is_approved = {
+	check_variable = { africa_ai_action_valid > constant:africa_value.zero }
+	check_variable = { africa_ai_action_weight > constant:africa_ai_policy.weight_minimum }
+}
+
+africa_ai_policy_is_protection_first = {
+	check_variable = {
+		var = africa_ai_weight_protection
+		value = africa_ai_weight_integration
+		compare = greater_than
+	}
+}

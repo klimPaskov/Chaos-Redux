@@ -1,0 +1,2220 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA AI PROFILE EFFECTS
+# ============================================================================
+# Event-driven, country-scope API for the exact Event 12 AI registry.
+#
+# Integration contracts:
+# - africa_ai_refresh_profile_registry: compose every active profile layer and
+#   return fourteen africa_ai_weight_* temps plus risk, partial, retry, layer IDs.
+# - africa_ai_get_requested_family_weight: set africa_ai_requested_family first;
+#   refreshes the actor registry and returns africa_ai_requested_family_weight.
+# - africa_ai_evaluate_requested_action: set africa_requested_action_id first;
+#   returns validity, contextual weight, risk allowance, partial tolerance, retry.
+# - africa_ai_evaluate_requested_action_for_action_target: same contract, scoped
+#   through the existing africa_action_target event target for member/foreign AI.
+#
+# Call only from bounded action, focus, event, or AI-decision evaluation. This
+# file registers no daily, weekly, monthly, or autonomous world iteration.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Policy composition
+# ---------------------------------------------------------------------------
+
+africa_ai_reset_profile_registry = {
+	set_temp_variable = { africa_ai_weight_protection = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_accession = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_regional_congress = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_integration = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_economy = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_diaspora = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_rival_bloc = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_high_chaos = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_scramble = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_world_order = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_constitutional_crisis = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_post_unification = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_host_opening = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_weight_regional_restorations = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_risk_ceiling = constant:africa_action_risk.low }
+	set_temp_variable = { africa_ai_partial_tolerance = constant:africa_ai_partial_tolerance.reject }
+	set_temp_variable = { africa_ai_retry_stance = constant:africa_ai_retry_stance.none }
+	set_temp_variable = { africa_ai_active_profile_count = constant:africa_value.zero }
+	set_temp_variable = { africa_ai_last_applied_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.none }
+	set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.none }
+}
+
+africa_ai_merge_profile_policy = {
+	add_to_temp_variable = { africa_ai_weight_protection = africa_ai_profile_input_protection }
+	add_to_temp_variable = { africa_ai_weight_accession = africa_ai_profile_input_accession }
+	add_to_temp_variable = { africa_ai_weight_regional_congress = africa_ai_profile_input_regional_congress }
+	add_to_temp_variable = { africa_ai_weight_integration = africa_ai_profile_input_integration }
+	add_to_temp_variable = { africa_ai_weight_economy = africa_ai_profile_input_economy }
+	add_to_temp_variable = { africa_ai_weight_diaspora = africa_ai_profile_input_diaspora }
+	add_to_temp_variable = { africa_ai_weight_rival_bloc = africa_ai_profile_input_rival_bloc }
+	add_to_temp_variable = { africa_ai_weight_high_chaos = africa_ai_profile_input_high_chaos }
+	add_to_temp_variable = { africa_ai_weight_scramble = africa_ai_profile_input_scramble }
+	add_to_temp_variable = { africa_ai_weight_world_order = africa_ai_profile_input_world_order }
+	add_to_temp_variable = { africa_ai_weight_constitutional_crisis = africa_ai_profile_input_constitutional_crisis }
+	add_to_temp_variable = { africa_ai_weight_post_unification = africa_ai_profile_input_post_unification }
+	add_to_temp_variable = { africa_ai_weight_host_opening = africa_ai_profile_input_host_opening }
+	add_to_temp_variable = { africa_ai_weight_regional_restorations = africa_ai_profile_input_regional_restorations }
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_profile_input_risk_ceiling
+				value = africa_ai_risk_ceiling
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_risk_ceiling = africa_ai_profile_input_risk_ceiling }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_profile_input_partial_tolerance
+				value = africa_ai_partial_tolerance
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_partial_tolerance = africa_ai_profile_input_partial_tolerance }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_profile_input_retry_stance
+				value = africa_ai_retry_stance
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_retry_stance = africa_ai_profile_input_retry_stance }
+	}
+	add_to_temp_variable = { africa_ai_active_profile_count = constant:africa_value.one }
+	set_temp_variable = { africa_ai_last_applied_profile = africa_ai_profile_input_id }
+}
+
+# Policy loader: host_maghreb_sahara
+africa_ai_apply_profile_host_maghreb_sahara = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_maghreb_sahara }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_maghreb_sahara.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_maghreb_sahara.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_maghreb_sahara.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_maghreb_sahara.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_maghreb_sahara.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_maghreb_sahara.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_maghreb_sahara.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_maghreb_sahara.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_maghreb_sahara.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_maghreb_sahara.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_maghreb_sahara.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_maghreb_sahara.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_maghreb_sahara.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_maghreb_sahara.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_maghreb_sahara.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_maghreb_sahara.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_maghreb_sahara.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_west_atlantic
+africa_ai_apply_profile_host_west_atlantic = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_west_atlantic }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_west_atlantic.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_west_atlantic.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_west_atlantic.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_west_atlantic.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_west_atlantic.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_west_atlantic.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_west_atlantic.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_west_atlantic.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_west_atlantic.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_west_atlantic.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_west_atlantic.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_west_atlantic.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_west_atlantic.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_west_atlantic.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_west_atlantic.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_west_atlantic.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_west_atlantic.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_sahel_lake_chad
+africa_ai_apply_profile_host_sahel_lake_chad = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_sahel_lake_chad }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_sahel_lake_chad.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_sahel_lake_chad.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_sahel_lake_chad.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_sahel_lake_chad.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_sahel_lake_chad.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_sahel_lake_chad.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_sahel_lake_chad.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_sahel_lake_chad.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_sahel_lake_chad.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_sahel_lake_chad.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_sahel_lake_chad.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_sahel_lake_chad.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_sahel_lake_chad.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_sahel_lake_chad.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_sahel_lake_chad.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_sahel_lake_chad.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_sahel_lake_chad.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_nile_horn
+africa_ai_apply_profile_host_nile_horn = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_nile_horn }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_nile_horn.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_nile_horn.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_nile_horn.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_nile_horn.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_nile_horn.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_nile_horn.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_nile_horn.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_nile_horn.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_nile_horn.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_nile_horn.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_nile_horn.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_nile_horn.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_nile_horn.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_nile_horn.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_nile_horn.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_nile_horn.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_nile_horn.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_congo_basin
+africa_ai_apply_profile_host_congo_basin = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_congo_basin }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_congo_basin.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_congo_basin.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_congo_basin.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_congo_basin.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_congo_basin.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_congo_basin.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_congo_basin.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_congo_basin.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_congo_basin.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_congo_basin.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_congo_basin.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_congo_basin.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_congo_basin.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_congo_basin.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_congo_basin.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_congo_basin.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_congo_basin.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_great_lakes
+africa_ai_apply_profile_host_great_lakes = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_great_lakes }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_great_lakes.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_great_lakes.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_great_lakes.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_great_lakes.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_great_lakes.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_great_lakes.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_great_lakes.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_great_lakes.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_great_lakes.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_great_lakes.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_great_lakes.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_great_lakes.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_great_lakes.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_great_lakes.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_great_lakes.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_great_lakes.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_great_lakes.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_swahili_indian_ocean
+africa_ai_apply_profile_host_swahili_indian_ocean = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_swahili_indian_ocean }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_swahili_indian_ocean.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_swahili_indian_ocean.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_swahili_indian_ocean.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_swahili_indian_ocean.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_swahili_indian_ocean.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_swahili_indian_ocean.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_swahili_indian_ocean.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_swahili_indian_ocean.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_swahili_indian_ocean.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_swahili_indian_ocean.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_swahili_indian_ocean.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_swahili_indian_ocean.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_swahili_indian_ocean.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_swahili_indian_ocean.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_swahili_indian_ocean.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_swahili_indian_ocean.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_swahili_indian_ocean.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_southern_africa
+africa_ai_apply_profile_host_southern_africa = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_southern_africa }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_southern_africa.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_southern_africa.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_southern_africa.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_southern_africa.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_southern_africa.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_southern_africa.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_southern_africa.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_southern_africa.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_southern_africa.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_southern_africa.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_southern_africa.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_southern_africa.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_southern_africa.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_southern_africa.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_southern_africa.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_southern_africa.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_southern_africa.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_madagascar_islands
+africa_ai_apply_profile_host_madagascar_islands = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_madagascar_islands }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_madagascar_islands.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_madagascar_islands.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_madagascar_islands.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_madagascar_islands.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_madagascar_islands.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_madagascar_islands.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_madagascar_islands.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_madagascar_islands.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_madagascar_islands.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_madagascar_islands.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_madagascar_islands.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_madagascar_islands.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_madagascar_islands.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_madagascar_islands.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_madagascar_islands.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_madagascar_islands.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_madagascar_islands.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_charter_federalism
+africa_ai_apply_profile_route_charter_federalism = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_charter_federalism }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_charter_federalism.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_charter_federalism.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_charter_federalism.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_charter_federalism.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_charter_federalism.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_charter_federalism.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_charter_federalism.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_charter_federalism.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_charter_federalism.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_charter_federalism.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_charter_federalism.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_charter_federalism.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_charter_federalism.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_charter_federalism.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_charter_federalism.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_charter_federalism.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_charter_federalism.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_continental_republic
+africa_ai_apply_profile_route_continental_republic = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_continental_republic }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_continental_republic.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_continental_republic.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_continental_republic.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_continental_republic.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_continental_republic.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_continental_republic.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_continental_republic.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_continental_republic.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_continental_republic.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_continental_republic.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_continental_republic.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_continental_republic.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_continental_republic.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_continental_republic.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_continental_republic.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_continental_republic.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_continental_republic.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_council_of_crowns
+africa_ai_apply_profile_route_council_of_crowns = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_council_of_crowns }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_council_of_crowns.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_council_of_crowns.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_council_of_crowns.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_council_of_crowns.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_council_of_crowns.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_council_of_crowns.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_council_of_crowns.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_council_of_crowns.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_council_of_crowns.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_council_of_crowns.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_council_of_crowns.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_council_of_crowns.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_council_of_crowns.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_council_of_crowns.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_council_of_crowns.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_council_of_crowns.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_council_of_crowns.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_peoples_union
+africa_ai_apply_profile_route_peoples_union = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_peoples_union }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_peoples_union.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_peoples_union.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_peoples_union.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_peoples_union.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_peoples_union.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_peoples_union.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_peoples_union.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_peoples_union.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_peoples_union.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_peoples_union.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_peoples_union.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_peoples_union.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_peoples_union.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_peoples_union.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_peoples_union.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_peoples_union.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_peoples_union.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_military_continentalism
+africa_ai_apply_profile_route_military_continentalism = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_military_continentalism }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_military_continentalism.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_military_continentalism.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_military_continentalism.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_military_continentalism.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_military_continentalism.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_military_continentalism.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_military_continentalism.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_military_continentalism.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_military_continentalism.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_military_continentalism.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_military_continentalism.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_military_continentalism.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_military_continentalism.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_military_continentalism.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_military_continentalism.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_military_continentalism.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_military_continentalism.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_continental_confederation
+africa_ai_apply_profile_route_continental_confederation = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_continental_confederation }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_continental_confederation.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_continental_confederation.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_continental_confederation.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_continental_confederation.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_continental_confederation.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_continental_confederation.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_continental_confederation.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_continental_confederation.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_continental_confederation.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_continental_confederation.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_continental_confederation.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_continental_confederation.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_continental_confederation.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_continental_confederation.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_continental_confederation.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_continental_confederation.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_continental_confederation.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: route_high_chaos_covenant
+africa_ai_apply_profile_route_high_chaos_covenant = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.route_high_chaos_covenant }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_route_high_chaos_covenant.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_route_high_chaos_covenant.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_route_high_chaos_covenant.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_route_high_chaos_covenant.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_route_high_chaos_covenant.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_route_high_chaos_covenant.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_route_high_chaos_covenant.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_route_high_chaos_covenant.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_route_high_chaos_covenant.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_route_high_chaos_covenant.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_route_high_chaos_covenant.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_route_high_chaos_covenant.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_route_high_chaos_covenant.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_route_high_chaos_covenant.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_route_high_chaos_covenant.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_route_high_chaos_covenant.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_route_high_chaos_covenant.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_outside_threatened
+africa_ai_apply_profile_member_outside_threatened = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_outside_threatened }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_outside_threatened.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_outside_threatened.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_outside_threatened.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_outside_threatened.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_outside_threatened.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_outside_threatened.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_outside_threatened.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_outside_threatened.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_outside_threatened.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_outside_threatened.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_outside_threatened.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_outside_threatened.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_outside_threatened.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_outside_threatened.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_outside_threatened.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_outside_threatened.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_outside_threatened.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_outside_strong
+africa_ai_apply_profile_member_outside_strong = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_outside_strong }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_outside_strong.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_outside_strong.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_outside_strong.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_outside_strong.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_outside_strong.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_outside_strong.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_outside_strong.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_outside_strong.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_outside_strong.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_outside_strong.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_outside_strong.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_outside_strong.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_outside_strong.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_outside_strong.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_outside_strong.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_outside_strong.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_outside_strong.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_protected_partner
+africa_ai_apply_profile_member_protected_partner = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_protected_partner }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_protected_partner.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_protected_partner.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_protected_partner.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_protected_partner.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_protected_partner.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_protected_partner.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_protected_partner.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_protected_partner.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_protected_partner.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_protected_partner.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_protected_partner.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_protected_partner.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_protected_partner.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_protected_partner.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_protected_partner.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_protected_partner.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_protected_partner.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_associate_member
+africa_ai_apply_profile_member_associate_member = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_associate_member }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_associate_member.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_associate_member.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_associate_member.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_associate_member.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_associate_member.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_associate_member.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_associate_member.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_associate_member.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_associate_member.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_associate_member.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_associate_member.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_associate_member.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_associate_member.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_associate_member.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_associate_member.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_associate_member.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_associate_member.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_chartered_member
+africa_ai_apply_profile_member_chartered_member = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_chartered_member }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_chartered_member.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_chartered_member.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_chartered_member.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_chartered_member.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_chartered_member.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_chartered_member.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_chartered_member.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_chartered_member.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_chartered_member.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_chartered_member.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_chartered_member.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_chartered_member.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_chartered_member.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_chartered_member.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_chartered_member.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_chartered_member.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_chartered_member.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_federal_member
+africa_ai_apply_profile_member_federal_member = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_federal_member }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_federal_member.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_federal_member.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_federal_member.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_federal_member.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_federal_member.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_federal_member.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_federal_member.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_federal_member.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_federal_member.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_federal_member.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_federal_member.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_federal_member.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_federal_member.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_federal_member.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_federal_member.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_federal_member.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_federal_member.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_resistant_member
+africa_ai_apply_profile_member_resistant_member = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_resistant_member }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_resistant_member.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_resistant_member.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_resistant_member.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_resistant_member.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_resistant_member.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_resistant_member.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_resistant_member.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_resistant_member.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_resistant_member.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_resistant_member.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_resistant_member.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_resistant_member.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_resistant_member.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_resistant_member.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_resistant_member.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_resistant_member.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_resistant_member.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: member_rival_bloc_leader
+africa_ai_apply_profile_member_rival_bloc_leader = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.member_rival_bloc_leader }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_member_rival_bloc_leader.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_member_rival_bloc_leader.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_member_rival_bloc_leader.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_member_rival_bloc_leader.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_member_rival_bloc_leader.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_member_rival_bloc_leader.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_member_rival_bloc_leader.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_member_rival_bloc_leader.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_member_rival_bloc_leader.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_member_rival_bloc_leader.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_member_rival_bloc_leader.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_member_rival_bloc_leader.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_member_rival_bloc_leader.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_member_rival_bloc_leader.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_member_rival_bloc_leader.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_member_rival_bloc_leader.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_member_rival_bloc_leader.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: power_negotiated_withdrawal
+africa_ai_apply_profile_power_negotiated_withdrawal = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.power_negotiated_withdrawal }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_power_negotiated_withdrawal.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_power_negotiated_withdrawal.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_power_negotiated_withdrawal.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_power_negotiated_withdrawal.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_power_negotiated_withdrawal.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_power_negotiated_withdrawal.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_power_negotiated_withdrawal.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_power_negotiated_withdrawal.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_power_negotiated_withdrawal.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_power_negotiated_withdrawal.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_power_negotiated_withdrawal.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_power_negotiated_withdrawal.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_power_negotiated_withdrawal.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_power_negotiated_withdrawal.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_power_negotiated_withdrawal.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_power_negotiated_withdrawal.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_power_negotiated_withdrawal.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: power_containment_sanctions
+africa_ai_apply_profile_power_containment_sanctions = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.power_containment_sanctions }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_power_containment_sanctions.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_power_containment_sanctions.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_power_containment_sanctions.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_power_containment_sanctions.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_power_containment_sanctions.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_power_containment_sanctions.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_power_containment_sanctions.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_power_containment_sanctions.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_power_containment_sanctions.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_power_containment_sanctions.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_power_containment_sanctions.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_power_containment_sanctions.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_power_containment_sanctions.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_power_containment_sanctions.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_power_containment_sanctions.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_power_containment_sanctions.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_power_containment_sanctions.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: power_expedition_coalition
+africa_ai_apply_profile_power_expedition_coalition = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.power_expedition_coalition }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_power_expedition_coalition.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_power_expedition_coalition.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_power_expedition_coalition.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_power_expedition_coalition.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_power_expedition_coalition.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_power_expedition_coalition.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_power_expedition_coalition.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_power_expedition_coalition.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_power_expedition_coalition.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_power_expedition_coalition.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_power_expedition_coalition.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_power_expedition_coalition.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_power_expedition_coalition.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_power_expedition_coalition.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_power_expedition_coalition.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_power_expedition_coalition.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_power_expedition_coalition.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: power_recognition_partner
+africa_ai_apply_profile_power_recognition_partner = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.power_recognition_partner }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_power_recognition_partner.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_power_recognition_partner.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_power_recognition_partner.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_power_recognition_partner.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_power_recognition_partner.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_power_recognition_partner.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_power_recognition_partner.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_power_recognition_partner.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_power_recognition_partner.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_power_recognition_partner.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_power_recognition_partner.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_power_recognition_partner.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_power_recognition_partner.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_power_recognition_partner.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_power_recognition_partner.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_power_recognition_partner.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_power_recognition_partner.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: power_opportunist_patron
+africa_ai_apply_profile_power_opportunist_patron = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.power_opportunist_patron }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_power_opportunist_patron.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_power_opportunist_patron.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_power_opportunist_patron.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_power_opportunist_patron.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_power_opportunist_patron.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_power_opportunist_patron.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_power_opportunist_patron.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_power_opportunist_patron.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_power_opportunist_patron.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_power_opportunist_patron.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_power_opportunist_patron.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_power_opportunist_patron.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_power_opportunist_patron.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_power_opportunist_patron.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_power_opportunist_patron.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_power_opportunist_patron.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_power_opportunist_patron.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_pan
+africa_ai_apply_profile_chaos_pan = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_pan }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_pan.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_pan.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_pan.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_pan.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_pan.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_pan.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_pan.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_pan.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_pan.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_pan.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_pan.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_pan.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_pan.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_pan.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_pan.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_pan.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_pan.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_gorilla
+africa_ai_apply_profile_chaos_gorilla = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_gorilla }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_gorilla.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_gorilla.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_gorilla.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_gorilla.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_gorilla.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_gorilla.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_gorilla.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_gorilla.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_gorilla.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_gorilla.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_gorilla.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_gorilla.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_gorilla.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_gorilla.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_gorilla.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_gorilla.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_gorilla.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_green
+africa_ai_apply_profile_chaos_green = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_green }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_green.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_green.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_green.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_green.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_green.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_green.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_green.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_green.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_green.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_green.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_green.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_green.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_green.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_green.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_green.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_green.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_green.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_stoneborn
+africa_ai_apply_profile_chaos_stoneborn = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_stoneborn }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_stoneborn.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_stoneborn.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_stoneborn.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_stoneborn.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_stoneborn.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_stoneborn.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_stoneborn.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_stoneborn.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_stoneborn.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_stoneborn.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_stoneborn.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_stoneborn.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_stoneborn.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_stoneborn.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_stoneborn.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_stoneborn.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_stoneborn.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_rain_drought
+africa_ai_apply_profile_chaos_rain_drought = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_rain_drought }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_rain_drought.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_rain_drought.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_rain_drought.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_rain_drought.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_rain_drought.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_rain_drought.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_rain_drought.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_rain_drought.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_rain_drought.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_rain_drought.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_rain_drought.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_rain_drought.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_rain_drought.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_rain_drought.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_rain_drought.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_rain_drought.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_rain_drought.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: chaos_disease_cult
+africa_ai_apply_profile_chaos_disease_cult = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.chaos_disease_cult }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_chaos_disease_cult.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_chaos_disease_cult.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_chaos_disease_cult.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_chaos_disease_cult.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_chaos_disease_cult.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_chaos_disease_cult.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_chaos_disease_cult.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_chaos_disease_cult.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_chaos_disease_cult.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_chaos_disease_cult.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_chaos_disease_cult.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_chaos_disease_cult.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_chaos_disease_cult.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_chaos_disease_cult.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_chaos_disease_cult.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_chaos_disease_cult.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_chaos_disease_cult.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_middle_east
+africa_ai_apply_profile_world_middle_east = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_middle_east }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_middle_east.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_middle_east.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_middle_east.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_middle_east.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_middle_east.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_middle_east.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_middle_east.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_middle_east.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_middle_east.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_middle_east.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_middle_east.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_middle_east.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_middle_east.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_middle_east.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_middle_east.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_middle_east.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_middle_east.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_europe
+africa_ai_apply_profile_world_europe = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_europe }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_europe.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_europe.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_europe.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_europe.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_europe.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_europe.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_europe.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_europe.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_europe.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_europe.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_europe.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_europe.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_europe.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_europe.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_europe.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_europe.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_europe.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_asia
+africa_ai_apply_profile_world_asia = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_asia }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_asia.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_asia.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_asia.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_asia.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_asia.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_asia.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_asia.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_asia.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_asia.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_asia.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_asia.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_asia.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_asia.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_asia.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_asia.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_asia.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_asia.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_north_america
+africa_ai_apply_profile_world_north_america = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_north_america }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_north_america.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_north_america.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_north_america.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_north_america.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_north_america.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_north_america.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_north_america.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_north_america.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_north_america.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_north_america.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_north_america.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_north_america.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_north_america.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_north_america.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_north_america.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_north_america.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_north_america.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_south_america
+africa_ai_apply_profile_world_south_america = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_south_america }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_south_america.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_south_america.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_south_america.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_south_america.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_south_america.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_south_america.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_south_america.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_south_america.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_south_america.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_south_america.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_south_america.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_south_america.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_south_america.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_south_america.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_south_america.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_south_america.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_south_america.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_oceania
+africa_ai_apply_profile_world_oceania = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_oceania }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_oceania.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_oceania.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_oceania.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_oceania.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_oceania.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_oceania.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_oceania.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_oceania.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_oceania.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_oceania.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_oceania.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_oceania.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_oceania.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_oceania.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_oceania.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_oceania.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_oceania.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: world_africa_world
+africa_ai_apply_profile_world_africa_world = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.world_africa_world }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_world_africa_world.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_world_africa_world.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_world_africa_world.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_world_africa_world.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_world_africa_world.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_world_africa_world.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_world_africa_world.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_world_africa_world.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_world_africa_world.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_world_africa_world.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_world_africa_world.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_world_africa_world.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_world_africa_world.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_world_africa_world.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_world_africa_world.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_world_africa_world.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_world_africa_world.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_ethiopia_specific
+africa_ai_apply_profile_host_ethiopia_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_ethiopia_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_ethiopia_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_ethiopia_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_ethiopia_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_ethiopia_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_ethiopia_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_ethiopia_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_ethiopia_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_ethiopia_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_ethiopia_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_ethiopia_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_ethiopia_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_ethiopia_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_ethiopia_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_ethiopia_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_ethiopia_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_ethiopia_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_ethiopia_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_egypt_specific
+africa_ai_apply_profile_host_egypt_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_egypt_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_egypt_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_egypt_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_egypt_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_egypt_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_egypt_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_egypt_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_egypt_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_egypt_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_egypt_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_egypt_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_egypt_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_egypt_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_egypt_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_egypt_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_egypt_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_egypt_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_egypt_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_sudan_specific
+africa_ai_apply_profile_host_sudan_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_sudan_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_sudan_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_sudan_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_sudan_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_sudan_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_sudan_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_sudan_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_sudan_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_sudan_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_sudan_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_sudan_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_sudan_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_sudan_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_sudan_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_sudan_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_sudan_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_sudan_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_sudan_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_morocco_specific
+africa_ai_apply_profile_host_morocco_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_morocco_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_morocco_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_morocco_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_morocco_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_morocco_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_morocco_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_morocco_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_morocco_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_morocco_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_morocco_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_morocco_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_morocco_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_morocco_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_morocco_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_morocco_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_morocco_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_morocco_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_morocco_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_algeria_specific
+africa_ai_apply_profile_host_algeria_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_algeria_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_algeria_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_algeria_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_algeria_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_algeria_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_algeria_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_algeria_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_algeria_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_algeria_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_algeria_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_algeria_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_algeria_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_algeria_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_algeria_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_algeria_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_algeria_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_algeria_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_algeria_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_tunisia_specific
+africa_ai_apply_profile_host_tunisia_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_tunisia_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_tunisia_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_tunisia_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_tunisia_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_tunisia_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_tunisia_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_tunisia_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_tunisia_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_tunisia_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_tunisia_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_tunisia_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_tunisia_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_tunisia_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_tunisia_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_tunisia_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_tunisia_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_tunisia_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_tunisia_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_libya_specific
+africa_ai_apply_profile_host_libya_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_libya_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_libya_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_libya_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_libya_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_libya_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_libya_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_libya_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_libya_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_libya_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_libya_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_libya_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_libya_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_libya_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_libya_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_libya_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_libya_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_libya_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_libya_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_liberia_specific
+africa_ai_apply_profile_host_liberia_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_liberia_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_liberia_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_liberia_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_liberia_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_liberia_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_liberia_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_liberia_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_liberia_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_liberia_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_liberia_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_liberia_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_liberia_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_liberia_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_liberia_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_liberia_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_liberia_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_liberia_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_liberia_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_nigeria_specific
+africa_ai_apply_profile_host_nigeria_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_nigeria_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_nigeria_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_nigeria_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_nigeria_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_nigeria_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_nigeria_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_nigeria_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_nigeria_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_nigeria_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_nigeria_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_nigeria_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_nigeria_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_nigeria_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_nigeria_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_nigeria_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_nigeria_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_nigeria_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_nigeria_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_gold_coast_specific
+africa_ai_apply_profile_host_gold_coast_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_gold_coast_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_gold_coast_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_gold_coast_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_gold_coast_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_gold_coast_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_gold_coast_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_gold_coast_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_gold_coast_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_gold_coast_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_gold_coast_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_gold_coast_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_gold_coast_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_gold_coast_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_gold_coast_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_gold_coast_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_gold_coast_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_gold_coast_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_gold_coast_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_senegal_fwa_specific
+africa_ai_apply_profile_host_senegal_fwa_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_senegal_fwa_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_senegal_fwa_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_senegal_fwa_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_senegal_fwa_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_senegal_fwa_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_senegal_fwa_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_senegal_fwa_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_senegal_fwa_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_senegal_fwa_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_senegal_fwa_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_senegal_fwa_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_senegal_fwa_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_senegal_fwa_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_senegal_fwa_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_senegal_fwa_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_senegal_fwa_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_senegal_fwa_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_senegal_fwa_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_sierra_leone_specific
+africa_ai_apply_profile_host_sierra_leone_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_sierra_leone_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_sierra_leone_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_sierra_leone_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_sierra_leone_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_sierra_leone_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_sierra_leone_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_sierra_leone_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_sierra_leone_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_sierra_leone_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_sierra_leone_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_sierra_leone_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_sierra_leone_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_sierra_leone_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_sierra_leone_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_sierra_leone_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_sierra_leone_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_sierra_leone_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_sierra_leone_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_belgian_congo_specific
+africa_ai_apply_profile_host_belgian_congo_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_belgian_congo_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_belgian_congo_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_belgian_congo_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_belgian_congo_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_belgian_congo_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_belgian_congo_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_belgian_congo_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_belgian_congo_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_belgian_congo_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_belgian_congo_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_belgian_congo_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_belgian_congo_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_belgian_congo_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_belgian_congo_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_belgian_congo_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_belgian_congo_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_belgian_congo_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_belgian_congo_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_angola_specific
+africa_ai_apply_profile_host_angola_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_angola_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_angola_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_angola_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_angola_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_angola_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_angola_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_angola_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_angola_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_angola_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_angola_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_angola_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_angola_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_angola_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_angola_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_angola_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_angola_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_angola_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_angola_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_french_equatorial_africa_specific
+africa_ai_apply_profile_host_french_equatorial_africa_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_french_equatorial_africa_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_french_equatorial_africa_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_french_equatorial_africa_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_french_equatorial_africa_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_french_equatorial_africa_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_french_equatorial_africa_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_french_equatorial_africa_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_french_equatorial_africa_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_french_equatorial_africa_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_french_equatorial_africa_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_french_equatorial_africa_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_french_equatorial_africa_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_french_equatorial_africa_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_french_equatorial_africa_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_french_equatorial_africa_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_french_equatorial_africa_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_french_equatorial_africa_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_french_equatorial_africa_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_kenya_specific
+africa_ai_apply_profile_host_kenya_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_kenya_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_kenya_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_kenya_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_kenya_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_kenya_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_kenya_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_kenya_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_kenya_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_kenya_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_kenya_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_kenya_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_kenya_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_kenya_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_kenya_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_kenya_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_kenya_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_kenya_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_kenya_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_uganda_specific
+africa_ai_apply_profile_host_uganda_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_uganda_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_uganda_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_uganda_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_uganda_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_uganda_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_uganda_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_uganda_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_uganda_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_uganda_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_uganda_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_uganda_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_uganda_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_uganda_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_uganda_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_uganda_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_uganda_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_uganda_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_uganda_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_tanganyika_specific
+africa_ai_apply_profile_host_tanganyika_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_tanganyika_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_tanganyika_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_tanganyika_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_tanganyika_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_tanganyika_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_tanganyika_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_tanganyika_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_tanganyika_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_tanganyika_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_tanganyika_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_tanganyika_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_tanganyika_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_tanganyika_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_tanganyika_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_tanganyika_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_tanganyika_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_tanganyika_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_tanganyika_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_somali_specific
+africa_ai_apply_profile_host_somali_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_somali_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_somali_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_somali_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_somali_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_somali_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_somali_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_somali_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_somali_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_somali_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_somali_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_somali_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_somali_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_somali_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_somali_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_somali_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_somali_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_somali_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_somali_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_madagascar_specific
+africa_ai_apply_profile_host_madagascar_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_madagascar_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_madagascar_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_madagascar_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_madagascar_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_madagascar_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_madagascar_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_madagascar_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_madagascar_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_madagascar_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_madagascar_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_madagascar_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_madagascar_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_madagascar_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_madagascar_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_madagascar_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_madagascar_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_madagascar_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_madagascar_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_south_africa_specific
+africa_ai_apply_profile_host_south_africa_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_south_africa_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_south_africa_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_south_africa_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_south_africa_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_south_africa_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_south_africa_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_south_africa_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_south_africa_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_south_africa_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_south_africa_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_south_africa_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_south_africa_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_south_africa_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_south_africa_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_south_africa_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_south_africa_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_south_africa_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_south_africa_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# Policy loader: host_southern_rhodesia_specific
+africa_ai_apply_profile_host_southern_rhodesia_specific = {
+	set_temp_variable = { africa_ai_profile_input_id = constant:africa_ai_profile.host_southern_rhodesia_specific }
+	set_temp_variable = { africa_ai_profile_input_protection = constant:africa_ai_policy_host_southern_rhodesia_specific.protection }
+	set_temp_variable = { africa_ai_profile_input_accession = constant:africa_ai_policy_host_southern_rhodesia_specific.accession }
+	set_temp_variable = { africa_ai_profile_input_regional_congress = constant:africa_ai_policy_host_southern_rhodesia_specific.regional_congress }
+	set_temp_variable = { africa_ai_profile_input_integration = constant:africa_ai_policy_host_southern_rhodesia_specific.integration }
+	set_temp_variable = { africa_ai_profile_input_economy = constant:africa_ai_policy_host_southern_rhodesia_specific.economy }
+	set_temp_variable = { africa_ai_profile_input_diaspora = constant:africa_ai_policy_host_southern_rhodesia_specific.diaspora }
+	set_temp_variable = { africa_ai_profile_input_rival_bloc = constant:africa_ai_policy_host_southern_rhodesia_specific.rival_bloc }
+	set_temp_variable = { africa_ai_profile_input_high_chaos = constant:africa_ai_policy_host_southern_rhodesia_specific.high_chaos }
+	set_temp_variable = { africa_ai_profile_input_scramble = constant:africa_ai_policy_host_southern_rhodesia_specific.scramble }
+	set_temp_variable = { africa_ai_profile_input_world_order = constant:africa_ai_policy_host_southern_rhodesia_specific.world_order }
+	set_temp_variable = { africa_ai_profile_input_constitutional_crisis = constant:africa_ai_policy_host_southern_rhodesia_specific.constitutional_crisis }
+	set_temp_variable = { africa_ai_profile_input_post_unification = constant:africa_ai_policy_host_southern_rhodesia_specific.post_unification }
+	set_temp_variable = { africa_ai_profile_input_host_opening = constant:africa_ai_policy_host_southern_rhodesia_specific.host_opening }
+	set_temp_variable = { africa_ai_profile_input_regional_restorations = constant:africa_ai_policy_host_southern_rhodesia_specific.regional_restorations }
+	set_temp_variable = { africa_ai_profile_input_risk_ceiling = constant:africa_ai_policy_host_southern_rhodesia_specific.risk_ceiling }
+	set_temp_variable = { africa_ai_profile_input_partial_tolerance = constant:africa_ai_policy_host_southern_rhodesia_specific.partial_tolerance }
+	set_temp_variable = { africa_ai_profile_input_retry_stance = constant:africa_ai_policy_host_southern_rhodesia_specific.retry_stance }
+	africa_ai_merge_profile_policy = yes
+}
+
+# ---------------------------------------------------------------------------
+# Exact layered registry refresh
+# ---------------------------------------------------------------------------
+
+africa_ai_refresh_profile_registry = {
+	africa_ai_reset_profile_registry = yes
+
+	# Regional host overlay layer.
+	if = {
+		limit = { africa_ai_profile_host_maghreb_sahara_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_maghreb_sahara }
+		africa_ai_apply_profile_host_maghreb_sahara = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_west_atlantic_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_west_atlantic }
+		africa_ai_apply_profile_host_west_atlantic = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_sahel_lake_chad_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_sahel_lake_chad }
+		africa_ai_apply_profile_host_sahel_lake_chad = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_nile_horn_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_nile_horn }
+		africa_ai_apply_profile_host_nile_horn = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_congo_basin_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_congo_basin }
+		africa_ai_apply_profile_host_congo_basin = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_great_lakes_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_great_lakes }
+		africa_ai_apply_profile_host_great_lakes = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_swahili_indian_ocean_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_swahili_indian_ocean }
+		africa_ai_apply_profile_host_swahili_indian_ocean = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_southern_africa_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_southern_africa }
+		africa_ai_apply_profile_host_southern_africa = yes
+	}
+	if = {
+		limit = { africa_ai_profile_host_madagascar_islands_is_active = yes }
+		set_temp_variable = { africa_ai_host_overlay_profile = constant:africa_ai_profile.host_madagascar_islands }
+		africa_ai_apply_profile_host_madagascar_islands = yes
+	}
+
+	# Constitutional route layer.
+	if = {
+		limit = { africa_ai_profile_route_charter_federalism_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_charter_federalism }
+		africa_ai_apply_profile_route_charter_federalism = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_continental_republic_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_continental_republic }
+		africa_ai_apply_profile_route_continental_republic = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_council_of_crowns_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_council_of_crowns }
+		africa_ai_apply_profile_route_council_of_crowns = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_peoples_union_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_peoples_union }
+		africa_ai_apply_profile_route_peoples_union = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_military_continentalism_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_military_continentalism }
+		africa_ai_apply_profile_route_military_continentalism = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_continental_confederation_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_continental_confederation }
+		africa_ai_apply_profile_route_continental_confederation = yes
+	}
+	if = {
+		limit = { africa_ai_profile_route_high_chaos_covenant_is_active = yes }
+		set_temp_variable = { africa_ai_route_profile = constant:africa_ai_profile.route_high_chaos_covenant }
+		africa_ai_apply_profile_route_high_chaos_covenant = yes
+	}
+
+	# Member relationship layer; relationship predicates are mutually exclusive.
+	if = {
+		limit = { africa_ai_profile_member_outside_threatened_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_outside_threatened }
+		africa_ai_apply_profile_member_outside_threatened = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_outside_strong_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_outside_strong }
+		africa_ai_apply_profile_member_outside_strong = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_protected_partner_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_protected_partner }
+		africa_ai_apply_profile_member_protected_partner = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_associate_member_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_associate_member }
+		africa_ai_apply_profile_member_associate_member = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_chartered_member_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_chartered_member }
+		africa_ai_apply_profile_member_chartered_member = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_federal_member_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_federal_member }
+		africa_ai_apply_profile_member_federal_member = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_resistant_member_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_resistant_member }
+		africa_ai_apply_profile_member_resistant_member = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_member_rival_bloc_leader_is_active = yes }
+		set_temp_variable = { africa_ai_relationship_profile = constant:africa_ai_profile.member_rival_bloc_leader }
+		africa_ai_apply_profile_member_rival_bloc_leader = yes
+	}
+
+	# Foreign response layer; ordered from committed expedition to withdrawal.
+	if = {
+		limit = { africa_ai_profile_power_expedition_coalition_is_active = yes }
+		set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.power_expedition_coalition }
+		africa_ai_apply_profile_power_expedition_coalition = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_power_containment_sanctions_is_active = yes }
+		set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.power_containment_sanctions }
+		africa_ai_apply_profile_power_containment_sanctions = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_power_recognition_partner_is_active = yes }
+		set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.power_recognition_partner }
+		africa_ai_apply_profile_power_recognition_partner = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_power_opportunist_patron_is_active = yes }
+		set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.power_opportunist_patron }
+		africa_ai_apply_profile_power_opportunist_patron = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_power_negotiated_withdrawal_is_active = yes }
+		set_temp_variable = { africa_ai_foreign_profile = constant:africa_ai_profile.power_negotiated_withdrawal }
+		africa_ai_apply_profile_power_negotiated_withdrawal = yes
+	}
+
+	# High-chaos actor layer; evidence predicates enforce one semantic profile.
+	if = {
+		limit = { africa_ai_profile_chaos_disease_cult_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_disease_cult }
+		africa_ai_apply_profile_chaos_disease_cult = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_chaos_rain_drought_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_rain_drought }
+		africa_ai_apply_profile_chaos_rain_drought = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_chaos_stoneborn_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_stoneborn }
+		africa_ai_apply_profile_chaos_stoneborn = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_chaos_gorilla_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_gorilla }
+		africa_ai_apply_profile_chaos_gorilla = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_chaos_pan_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_pan }
+		africa_ai_apply_profile_chaos_pan = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_chaos_green_is_active = yes }
+		set_temp_variable = { africa_ai_chaos_profile = constant:africa_ai_profile.chaos_green }
+		africa_ai_apply_profile_chaos_green = yes
+	}
+
+	# World-continent layer.
+	if = {
+		limit = { africa_ai_profile_world_middle_east_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_middle_east }
+		africa_ai_apply_profile_world_middle_east = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_europe_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_europe }
+		africa_ai_apply_profile_world_europe = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_asia_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_asia }
+		africa_ai_apply_profile_world_asia = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_north_america_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_north_america }
+		africa_ai_apply_profile_world_north_america = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_south_america_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_south_america }
+		africa_ai_apply_profile_world_south_america = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_oceania_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_oceania }
+		africa_ai_apply_profile_world_oceania = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_world_africa_world_is_active = yes }
+		set_temp_variable = { africa_ai_world_profile = constant:africa_ai_profile.world_africa_world }
+		africa_ai_apply_profile_world_africa_world = yes
+	}
+
+	# Full host playbook layer.
+	if = {
+		limit = { africa_ai_profile_host_ethiopia_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_ethiopia_specific }
+		africa_ai_apply_profile_host_ethiopia_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_egypt_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_egypt_specific }
+		africa_ai_apply_profile_host_egypt_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_sudan_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_sudan_specific }
+		africa_ai_apply_profile_host_sudan_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_morocco_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_morocco_specific }
+		africa_ai_apply_profile_host_morocco_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_algeria_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_algeria_specific }
+		africa_ai_apply_profile_host_algeria_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_tunisia_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_tunisia_specific }
+		africa_ai_apply_profile_host_tunisia_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_libya_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_libya_specific }
+		africa_ai_apply_profile_host_libya_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_liberia_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_liberia_specific }
+		africa_ai_apply_profile_host_liberia_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_nigeria_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_nigeria_specific }
+		africa_ai_apply_profile_host_nigeria_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_gold_coast_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_gold_coast_specific }
+		africa_ai_apply_profile_host_gold_coast_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_senegal_fwa_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_senegal_fwa_specific }
+		africa_ai_apply_profile_host_senegal_fwa_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_sierra_leone_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_sierra_leone_specific }
+		africa_ai_apply_profile_host_sierra_leone_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_belgian_congo_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_belgian_congo_specific }
+		africa_ai_apply_profile_host_belgian_congo_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_angola_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_angola_specific }
+		africa_ai_apply_profile_host_angola_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_french_equatorial_africa_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_french_equatorial_africa_specific }
+		africa_ai_apply_profile_host_french_equatorial_africa_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_kenya_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_kenya_specific }
+		africa_ai_apply_profile_host_kenya_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_uganda_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_uganda_specific }
+		africa_ai_apply_profile_host_uganda_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_tanganyika_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_tanganyika_specific }
+		africa_ai_apply_profile_host_tanganyika_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_somali_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_somali_specific }
+		africa_ai_apply_profile_host_somali_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_madagascar_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_madagascar_specific }
+		africa_ai_apply_profile_host_madagascar_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_south_africa_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_south_africa_specific }
+		africa_ai_apply_profile_host_south_africa_specific = yes
+	}
+	else_if = {
+		limit = { africa_ai_profile_host_southern_rhodesia_specific_is_active = yes }
+		set_temp_variable = { africa_ai_host_specific_profile = constant:africa_ai_profile.host_southern_rhodesia_specific }
+		africa_ai_apply_profile_host_southern_rhodesia_specific = yes
+	}
+
+	# Bounded composite weights protect consumers from future additional layers.
+	clamp_temp_variable = { var = africa_ai_weight_protection min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_accession min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_regional_congress min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_integration min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_economy min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_diaspora min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_rival_bloc min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_high_chaos min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_scramble min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_world_order min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_constitutional_crisis min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_post_unification min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_host_opening min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_regional_restorations min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+}
+
+# ---------------------------------------------------------------------------
+# Family and action scoring APIs
+# ---------------------------------------------------------------------------
+
+africa_ai_read_requested_family_weight = {
+	set_temp_variable = { africa_ai_requested_family_weight = constant:africa_ai_policy.weight_minimum }
+	if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.protection } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_protection }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.accession } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_accession }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.regional_congress } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_regional_congress }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.integration } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_integration }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.economy } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_economy }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.diaspora } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_diaspora }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.rival_bloc } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_rival_bloc }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.high_chaos } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_high_chaos }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.scramble } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_scramble }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.world_order } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_world_order }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.constitutional_crisis } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_constitutional_crisis }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.post_unification } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_post_unification }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.host_opening } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_host_opening }
+	}
+	else_if = {
+		limit = { check_variable = { africa_ai_requested_family = constant:africa_action_family.regional_restorations } }
+		set_temp_variable = { africa_ai_requested_family_weight = africa_ai_weight_regional_restorations }
+	}
+}
+
+# Public focus/decision-family hook. The internal reader exists separately so
+# requested-action evaluation does not refresh the same actor twice.
+africa_ai_get_requested_family_weight = {
+	africa_ai_refresh_profile_registry = yes
+	africa_ai_read_requested_family_weight = yes
+}
+
+africa_ai_load_requested_action_context = {
+	set_temp_variable = { africa_ai_action_context_factor = constant:africa_ai_policy.context_neutral }
+	if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.protection } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_protection_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.accession } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_accession_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.regional_congress } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_regional_congress_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.integration } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_integration_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.economy } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_economy_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.diaspora } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_diaspora_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.rival_bloc } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_rival_bloc_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.high_chaos } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_high_chaos_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.scramble } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_scramble_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.world_order } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_world_order_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.constitutional_crisis } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_constitutional_crisis_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.post_unification } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_post_unification_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.host_opening } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_host_opening_context_factor }
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_family = constant:africa_action_family.regional_restorations } }
+		set_temp_variable = { africa_ai_action_context_factor = mtth:africa_ai_regional_restorations_context_factor }
+	}
+}
+
+africa_ai_reset_action_evaluation_outputs = {
+	set_temp_variable = { africa_ai_action_valid = constant:africa_value.zero }
+	set_temp_variable = { africa_ai_action_weight = constant:africa_ai_policy.weight_minimum }
+	set_temp_variable = { africa_ai_action_risk_allowed = constant:africa_value.zero }
+	set_temp_variable = { africa_ai_action_partial_tolerance = constant:africa_ai_partial_tolerance.reject }
+	set_temp_variable = { africa_ai_action_retry_stance = constant:africa_ai_retry_stance.none }
+}
+
+africa_ai_score_prepared_action_from_current_registry = {
+	if = {
+		limit = { check_variable = { africa_profile_valid > constant:africa_value.zero } }
+		set_temp_variable = { africa_ai_requested_family = africa_profile_family }
+		africa_ai_read_requested_family_weight = yes
+		africa_ai_load_requested_action_context = yes
+		set_temp_variable = { africa_ai_action_weight = africa_ai_requested_family_weight }
+		multiply_temp_variable = { africa_ai_action_weight = africa_ai_action_context_factor }
+		clamp_temp_variable = { var = africa_ai_action_weight min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+		if = {
+			limit = { africa_ai_requested_action_risk_is_allowed = yes }
+			set_temp_variable = { africa_ai_action_risk_allowed = constant:africa_value.one }
+		}
+		set_temp_variable = { africa_ai_action_partial_tolerance = africa_ai_partial_tolerance }
+		set_temp_variable = { africa_ai_action_retry_stance = africa_ai_retry_stance }
+		if = {
+			limit = {
+				africa_ai_profile_registry_has_active_policy = yes
+				check_variable = { africa_ai_action_risk_allowed > constant:africa_value.zero }
+				check_variable = { africa_ai_action_weight > constant:africa_ai_policy.weight_minimum }
+			}
+			set_temp_variable = { africa_ai_action_valid = constant:africa_value.one }
+		}
+	}
+}
+
+# Snapshot and merge let a host policy and its selected member/foreign policy
+# both influence the same action without writing persistent profile state.
+africa_ai_snapshot_actor_registry = {
+	set_temp_variable = { africa_ai_actor_weight_protection = africa_ai_weight_protection }
+	set_temp_variable = { africa_ai_actor_weight_accession = africa_ai_weight_accession }
+	set_temp_variable = { africa_ai_actor_weight_regional_congress = africa_ai_weight_regional_congress }
+	set_temp_variable = { africa_ai_actor_weight_integration = africa_ai_weight_integration }
+	set_temp_variable = { africa_ai_actor_weight_economy = africa_ai_weight_economy }
+	set_temp_variable = { africa_ai_actor_weight_diaspora = africa_ai_weight_diaspora }
+	set_temp_variable = { africa_ai_actor_weight_rival_bloc = africa_ai_weight_rival_bloc }
+	set_temp_variable = { africa_ai_actor_weight_high_chaos = africa_ai_weight_high_chaos }
+	set_temp_variable = { africa_ai_actor_weight_scramble = africa_ai_weight_scramble }
+	set_temp_variable = { africa_ai_actor_weight_world_order = africa_ai_weight_world_order }
+	set_temp_variable = { africa_ai_actor_weight_constitutional_crisis = africa_ai_weight_constitutional_crisis }
+	set_temp_variable = { africa_ai_actor_weight_post_unification = africa_ai_weight_post_unification }
+	set_temp_variable = { africa_ai_actor_weight_host_opening = africa_ai_weight_host_opening }
+	set_temp_variable = { africa_ai_actor_weight_regional_restorations = africa_ai_weight_regional_restorations }
+	set_temp_variable = { africa_ai_actor_risk_ceiling = africa_ai_risk_ceiling }
+	set_temp_variable = { africa_ai_actor_partial_tolerance = africa_ai_partial_tolerance }
+	set_temp_variable = { africa_ai_actor_retry_stance = africa_ai_retry_stance }
+	set_temp_variable = { africa_ai_actor_profile_count = africa_ai_active_profile_count }
+	set_temp_variable = { africa_ai_actor_host_overlay_profile = africa_ai_host_overlay_profile }
+	set_temp_variable = { africa_ai_actor_route_profile = africa_ai_route_profile }
+	set_temp_variable = { africa_ai_actor_world_profile = africa_ai_world_profile }
+	set_temp_variable = { africa_ai_actor_host_specific_profile = africa_ai_host_specific_profile }
+}
+
+africa_ai_merge_actor_registry_snapshot = {
+	add_to_temp_variable = { africa_ai_weight_protection = africa_ai_actor_weight_protection }
+	add_to_temp_variable = { africa_ai_weight_accession = africa_ai_actor_weight_accession }
+	add_to_temp_variable = { africa_ai_weight_regional_congress = africa_ai_actor_weight_regional_congress }
+	add_to_temp_variable = { africa_ai_weight_integration = africa_ai_actor_weight_integration }
+	add_to_temp_variable = { africa_ai_weight_economy = africa_ai_actor_weight_economy }
+	add_to_temp_variable = { africa_ai_weight_diaspora = africa_ai_actor_weight_diaspora }
+	add_to_temp_variable = { africa_ai_weight_rival_bloc = africa_ai_actor_weight_rival_bloc }
+	add_to_temp_variable = { africa_ai_weight_high_chaos = africa_ai_actor_weight_high_chaos }
+	add_to_temp_variable = { africa_ai_weight_scramble = africa_ai_actor_weight_scramble }
+	add_to_temp_variable = { africa_ai_weight_world_order = africa_ai_actor_weight_world_order }
+	add_to_temp_variable = { africa_ai_weight_constitutional_crisis = africa_ai_actor_weight_constitutional_crisis }
+	add_to_temp_variable = { africa_ai_weight_post_unification = africa_ai_actor_weight_post_unification }
+	add_to_temp_variable = { africa_ai_weight_host_opening = africa_ai_actor_weight_host_opening }
+	add_to_temp_variable = { africa_ai_weight_regional_restorations = africa_ai_actor_weight_regional_restorations }
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_actor_risk_ceiling
+				value = africa_ai_risk_ceiling
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_risk_ceiling = africa_ai_actor_risk_ceiling }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_actor_partial_tolerance
+				value = africa_ai_partial_tolerance
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_partial_tolerance = africa_ai_actor_partial_tolerance }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_ai_actor_retry_stance
+				value = africa_ai_retry_stance
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { africa_ai_retry_stance = africa_ai_actor_retry_stance }
+	}
+	add_to_temp_variable = { africa_ai_active_profile_count = africa_ai_actor_profile_count }
+	set_temp_variable = { africa_ai_host_overlay_profile = africa_ai_actor_host_overlay_profile }
+	set_temp_variable = { africa_ai_route_profile = africa_ai_actor_route_profile }
+	set_temp_variable = { africa_ai_host_specific_profile = africa_ai_actor_host_specific_profile }
+	clamp_temp_variable = { var = africa_ai_weight_protection min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_accession min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_regional_congress min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_integration min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_economy min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_diaspora min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_rival_bloc min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_high_chaos min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_scramble min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_world_order min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_constitutional_crisis min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_post_unification min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_host_opening min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+	clamp_temp_variable = { var = africa_ai_weight_regional_restorations min = constant:africa_ai_policy.weight_minimum max = constant:africa_ai_policy.weight_maximum }
+}
+
+africa_ai_evaluate_requested_action = {
+	africa_ai_reset_action_evaluation_outputs = yes
+	africa_prepare_action_profile = yes
+	if = {
+		limit = { check_variable = { africa_profile_valid > constant:africa_value.zero } }
+		africa_ai_refresh_profile_registry = yes
+		africa_ai_score_prepared_action_from_current_registry = yes
+	}
+}
+
+# Host action callers already use africa_action_target for the selected member,
+# foreign power, high-chaos actor, or world-continent partner. This hook composes
+# the caller's host/route/playbook policy with the target's relationship/foreign/
+# chaos/world policy before applying the shared family and risk evaluation.
+africa_ai_evaluate_requested_action_for_action_target = {
+	africa_ai_reset_action_evaluation_outputs = yes
+	africa_prepare_action_profile = yes
+	if = {
+		limit = {
+			check_variable = { africa_profile_valid > constant:africa_value.zero }
+			has_event_target = africa_action_target
+			event_target:africa_action_target = { exists = yes }
+		}
+		africa_ai_refresh_profile_registry = yes
+		africa_ai_snapshot_actor_registry = yes
+		event_target:africa_action_target = {
+			africa_ai_refresh_profile_registry = yes
+			africa_ai_merge_actor_registry_snapshot = yes
+			africa_ai_score_prepared_action_from_current_registry = yes
+		}
+	}
+}
