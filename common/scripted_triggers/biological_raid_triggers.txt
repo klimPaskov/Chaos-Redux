@@ -1,0 +1,246 @@
+# ============================================================================
+# CHAOS REDUX - STRATEGIC BIOLOGICAL RAID SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates the exact native raid actor, victim, selected target state, agent,
+#   use policy, and designated staging state.
+# - Keeps reservation, release, failed-attempt, and attacker-accident records
+#   distinct so only a proven release can enter the biological lifecycle.
+# - Contains no launch-state inference, aircraft-presence proxy, estimator, or
+#   ordinary-air mission hook.
+# ============================================================================
+
+bio_strategic_raid_agent_is_valid = {
+	OR = {
+		check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+}
+
+bio_strategic_raid_engine_outcome_is_valid = {
+	OR = {
+		check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.failure compare = equals }
+		check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.limited_success compare = equals }
+		check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.success compare = equals }
+		check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals }
+	}
+}
+
+# Country scope. The temporary agent code must match the completed project
+# whose exact payload model the native raid reserved.
+bio_strategic_raid_actor_has_agent_project = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			is_special_project_completed = sp:plague_bomb
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			is_special_project_completed = sp:tularemia_bomb
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			is_special_project_completed = sp:smallpox_bomb
+		}
+	}
+}
+
+bio_strategic_raid_country_has_any_agent_project = {
+	OR = {
+		is_special_project_completed = sp:anthrax_bomb
+		is_special_project_completed = sp:plague_bomb
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:smallpox_bomb
+	}
+}
+
+# State scope with the acting country as PREV. ROOT may remain a raid instance
+# when this helper is reached through the actor's stored staging-state scope.
+bio_strategic_raid_state_is_valid_staging_candidate = {
+	is_controlled_by = PREV
+	impassable = no
+	air_base > constant:bio_strategic_raid_staging.air_base_trigger_floor
+	infrastructure > constant:bio_strategic_raid_staging.infrastructure_trigger_floor
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+}
+
+# Country scope. The stored scope is the only accepted attacker-accident state.
+bio_strategic_raid_actor_has_valid_staging_state = {
+	has_variable = bio_strategic_raid_staging_state
+	var:bio_strategic_raid_staging_state = {
+		bio_strategic_raid_state_is_valid_staging_candidate = yes
+	}
+}
+
+# Raid-instance scope after the native actor, victim, and target state have been
+# saved as regular event targets by the resolver.
+bio_strategic_raid_native_context_is_valid = {
+	has_event_target = bio_raid_actor
+	has_event_target = bio_raid_victim
+	has_event_target = bio_raid_target_state
+	bio_strategic_raid_agent_is_valid = yes
+	bio_strategic_raid_engine_outcome_is_valid = yes
+	event_target:bio_raid_actor = {
+		exists = yes
+		has_war_with = event_target:bio_raid_victim
+		NOT = { is_in_faction_with = event_target:bio_raid_victim }
+		NOT = { is_subject_of = event_target:bio_raid_victim }
+		bio_strategic_raid_actor_has_agent_project = yes
+		bio_strategic_raid_actor_has_valid_staging_state = yes
+		cbrn_policy_allows_strategic_use = yes
+		has_variable = chemical_readiness
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+	}
+	event_target:bio_raid_victim = {
+		exists = yes
+		NOT = { is_subject_of = event_target:bio_raid_actor }
+	}
+	event_target:bio_raid_target_state = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		CONTROLLER = { tag = event_target:bio_raid_victim }
+	}
+}
+
+# Raid-instance scope. Outcome tooltips use only the native current-version
+# raid variables because resolver-owned event targets and temporary agent codes
+# do not exist while the result UI is being assembled. Immutable project and
+# outcome identity remain enforced by the resolver itself.
+bio_strategic_raid_native_tooltip_context_is_valid = {
+	var:actor_country = {
+		exists = yes
+		has_war_with = var:ROOT.victim_country
+		NOT = { is_in_faction_with = var:ROOT.victim_country }
+		NOT = { is_subject_of = var:ROOT.victim_country }
+		bio_strategic_raid_actor_has_valid_staging_state = yes
+		cbrn_policy_allows_strategic_use = yes
+		has_variable = chemical_readiness
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+	}
+	var:victim_country = {
+		exists = yes
+		NOT = { is_subject_of = var:ROOT.actor_country }
+	}
+	var:target_state = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		is_controlled_by = var:ROOT.victim_country
+	}
+}
+
+bio_strategic_raid_outcome_is_valid = {
+	OR = {
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.failed_delivery compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.partial_contamination compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.hidden_contamination compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.detected_outbreak_seed compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.successful_outbreak_seed compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.attacker_accident compare = equals }
+	}
+}
+
+bio_strategic_raid_outcome_has_target_release = {
+	OR = {
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.partial_contamination compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.hidden_contamination compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.detected_outbreak_seed compare = equals }
+		check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.successful_outbreak_seed compare = equals }
+	}
+}
+
+bio_strategic_raid_outcome_has_no_release = {
+	check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.failed_delivery compare = equals }
+}
+
+bio_strategic_raid_outcome_is_attacker_accident = {
+	check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.attacker_accident compare = equals }
+}
+
+bio_strategic_raid_reservation_record_is_valid = {
+	bio_strategic_raid_agent_is_valid = yes
+	bio_strategic_raid_outcome_is_valid = yes
+	check_variable = { var = bio_raid_reservation_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+	check_variable = { var = bio_raid_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_raid_payload_consumed value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_raid_payload_consumed value = bio_raid_payload_required compare = less_than_or_equals }
+}
+
+# Country scope with FROM as the proposed victim and var:target_state supplied
+# by the native state-target raid category. All biological state is written to
+# this same exact state.
+bio_strategic_raid_target_from_is_valid = {
+	FROM = { exists = yes }
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = ROOT } }
+	var:target_state = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		is_controlled_by = FROM
+	}
+}
+
+bio_strategic_raid_can_prepare_against_from = {
+	bio_strategic_raid_target_from_is_valid = yes
+	bio_strategic_raid_actor_has_valid_staging_state = yes
+	cbrn_policy_allows_strategic_use = yes
+}
+
+# Country scope. This is the ordinary AI safety floor: one real handling tier
+# and one real domestic containment tier. The explicit desperate route below
+# is the only permission to cross this floor.
+bio_strategic_raid_ai_has_safe_domestic_program = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+# Country scope. Desperation never creates policy authority or payload. It only
+# waives the ordinary AI safety floor after an unrestricted route already owns
+# both the doctrine authorization and near-capitulation condition.
+bio_strategic_raid_ai_is_desperate_route = {
+	cbrn_ai_route_allows_unrestricted_use = yes
+	cbrn_policy_allows_extreme_use = yes
+	surrender_progress > constant:bio_strategic_raid_ai.desperate_surrender_threshold
+}
+
+# Country scope with FROM as the proposed victim. This is AI-only. Player raid
+# availability continues to use the same project, policy, staging, war, target,
+# aircraft, and native equipment-reservation gates without an ideology lock.
+bio_strategic_raid_ai_may_target_from = {
+	exists = yes
+	bio_strategic_raid_can_prepare_against_from = yes
+	OR = {
+		bio_strategic_raid_ai_has_safe_domestic_program = yes
+		bio_strategic_raid_ai_is_desperate_route = yes
+	}
+	OR = {
+		has_country_flag = cbrn_retaliation_authorized
+		FROM = { has_country_flag = used_bioweapon }
+		cbrn_ai_route_allows_first_use = yes
+		bio_strategic_raid_ai_is_desperate_route = yes
+	}
+}
+
+# Country scope with FROM as the proposed victim. Used only for the bounded
+# historical China-theater preference. It cannot bypass the common AI gate.
+bio_strategic_raid_ai_is_japan_china_target = {
+	original_tag = JAP
+	is_japan_china_chemical_campaign_war = yes
+	FROM = {
+		OR = {
+			original_tag = CHI
+			original_tag = PRC
+			original_tag = SHX
+			original_tag = GXC
+			original_tag = YUN
+			original_tag = XSM
+			original_tag = SIK
+		}
+	}
+}

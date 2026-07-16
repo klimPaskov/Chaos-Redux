@@ -219,6 +219,26 @@ It targets concentrated armies and supply areas. It has lower strategic spread t
 
 Covert decision family. It creates lower initial dose, high attribution uncertainty, and severe political consequence after discovery.
 
+## Chaos Warfare doctrine interaction
+
+Chaos Warfare doctrine is an escalation path. It may raise seed potency, outbreak growth, spread, deaths, duration, medical saturation, preparation speed, and aggressive AI willingness. It may also ease deployment through bounded preparation savings or a bounded Command Power refund after an operation has resolved.
+
+Condemnation is the only consequence record doctrine may reduce. Doctrine may not reduce physical payload debit, evidence, attribution, deaths or death history, contamination or contamination history, medical saturation or medical history, confirmed-use history, domestic war-support penalties, biological-use counters, accident records, resistance trauma, or public-harm floors.
+
+Doctrine cannot create, reveal, authorize, or unlock camps, extermination sites, experiment sites, restricted chemical sites, or generic concentration laws. Any separately authorized interaction with an existing camp system is limited to increasing its already resolved killing efficiency. It cannot change that system's evidence, discovery, responsibility, resistance, trauma, Condemnation, or historical records.
+
+## Current implementation boundary
+
+The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. It does not seed contamination from continuous air activity or infer a launch state.
+
+The ordinary lifecycle reads `smallpox_vaccination_program_idea` directly for agent-specific growth, spread, and death multipliers. Recovery calls `bio_lifecycle_cleanup_state_response_if_no_ordinary_episode` for the exact state. This removes field hospitals, quarantine, stale legacy protection state, and the quarantine modifier only after no ordinary episode remains.
+
+The current implementation has no `common/on_actions/chaosx_on_actions_biowarfare.txt` file and no startup or weekly calls to `initialize_smallpox_vaccination_protection`, `progress_smallpox_vaccination`, or `check_all_states_for_contamination_cleanup`. Ordinary biological progression and cleanup do not use a global daily, weekly, or monthly country pulse.
+
+`GFX_decision_bio_designate_strategic_raid_staging_state` is registered in `interface/biological_warfare.gfx`. Strategic raids reuse the byte-preserved Chaos Redux raid icons under `gfx/interface/military_raids/`.
+
+These implemented surfaces do not close Stage 7. The operative, battlefield, sabotage, doomsday, facility, countermeasure, asset, localisation, AI, and scenario requirements remain accepted wherever the Stage 7 plan has not established completion evidence.
+
 ## Incubation and detection
 
 A seeded state receives hidden biological contamination. Detection time depends on:
@@ -276,7 +296,7 @@ Intensity falls through:
 
 ## Spread model
 
-Spread is event-driven or uses an approved targeted pulse. Do not create an unapproved all-state daily loop.
+Spread is driven by the active agent's state-owned lifecycle event and schedules only the exact newly exposed state. It does not use a global daily, weekly, or monthly country pulse or an all-state scan.
 
 A state can spread to:
 
