@@ -1,6 +1,6 @@
 # Air Winter Report-Event GFX Handoff
 
-Status: seven final report-event asset packages are registered and consumed.
+Status: eight final report-event asset packages are registered and consumed.
 
 ## Package summary
 
@@ -9,6 +9,7 @@ Status: seven final report-event asset packages are registered and consumed.
 - Processed folder: `docs/assets/air_cleanliness_fallout/processed_png/report_events/`
 - Final contact sheet: `docs/assets/air_cleanliness_fallout/contact_sheets/air_winter_report_events_final_contact_sheet.png`
 - Existing event consumers: `events/fallout_world_end_events.txt`
+- Island-refugee consumers: `chaosx.fallout.38` and `chaosx.fallout.39`
 - Suggested registry: `interface/air_cleanliness_winter.gfx`
 - Source mode: built-in `$imagegen`, fictional 1936 to 1945 period-documentary scenes
 
@@ -22,6 +23,7 @@ No `.gfx`, event, localisation, gameplay, GUI, or audio file was edited by this 
 | `GFX_report_event_air_winter_phase_2` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_2.dds` | 210x176 | Bengal crop shock under impossible cold rain |
 | `GFX_report_event_air_winter_phase_3` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_3.dds` | 210x176 | Canadian freight transport locked by hard freeze |
 | `GFX_report_event_air_winter_phase_4` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_4.dds` | 210x176 | Greek black harvest and dead vegetation |
+| `GFX_report_event_air_winter_island_refugee_harbor` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_island_refugee_harbor.dds` | 210x176 | Overloaded civilian boats reaching a small island harbor or improvised anchorage under cold rain |
 | `GFX_report_event_air_winter_phase_5` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_5.dds` | 210x176 | Lower Yangtze ash winter and frozen water |
 | `GFX_report_event_air_winter_phase_6` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_6.dds` | 210x176 | Terminally dim Central Asian settlement |
 | `GFX_report_event_air_winter_recovery` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_recovery.dds` | 210x176 | Andean thaw, meltwater, and recovering soil |
@@ -59,6 +61,10 @@ spriteType = {
 	texturefile = "gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_4.dds"
 }
 spriteType = {
+	name = "GFX_report_event_air_winter_island_refugee_harbor"
+	texturefile = "gfx/event_pictures/fallout/air_winter/report_event_air_winter_island_refugee_harbor.dds"
+}
+spriteType = {
 	name = "GFX_report_event_air_winter_phase_5"
 	texturefile = "gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_5.dds"
 }
@@ -80,6 +86,7 @@ spriteType = {
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_phase_2_source.png`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_phase_3_source.png`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_phase_4_source.png`
+- `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_island_refugee_harbor_source.png`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_phase_5_source.png`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_phase_6_source.png`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_recovery_source.png`
@@ -90,6 +97,7 @@ spriteType = {
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_phase_2.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_phase_3.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_phase_4.png`
+- `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_island_refugee_harbor.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_phase_5.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_phase_6.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_recovery.png`
@@ -100,6 +108,7 @@ spriteType = {
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_2.dds`
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_3.dds`
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_4.dds`
+- `gfx/event_pictures/fallout/air_winter/report_event_air_winter_island_refugee_harbor.dds`
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_5.dds`
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_6.dds`
 - `gfx/event_pictures/fallout/air_winter/report_event_air_winter_recovery.dds`
@@ -112,18 +121,18 @@ spriteType = {
 
 ## Validation evidence
 
-- All seven generated sources were visually reviewed at 1536x1024 and contain distinct regional scenes with no embedded text or modern UI.
-- All seven final DDS decodes were visually reviewed together on the checkerboard contact sheet.
+- All eight generated sources were visually reviewed at 1536x1024 and contain distinct regional scenes with no embedded text or modern UI.
+- All eight final DDS decodes were visually reviewed together on the checkerboard contact sheet.
 - Every processed PNG and DDS is exactly 210x176.
 - Every final DDS decodes pixel-identically to its processed PNG.
 - Every final DDS has four transparent corner pixels, a visible subtle tilt, a soft shadow, and readable source content after the cover crop.
-- All seven source file hashes are distinct.
-- All seven final DDS file hashes are distinct.
+- All eight source file hashes are distinct.
+- All eight final DDS file hashes are distinct.
 - DDS headers confirm 32-bit BGRA masks, 840-byte pitch, and one stored image level.
 
 ## Risks and remaining work
 
-- The seven sprite identifiers are registered in `interface/air_cleanliness_winter.gfx` and consumed by `events/fallout_world_end_events.txt`.
+- All eight sprite identifiers are registered in `interface/air_cleanliness_winter.gfx` and consumed by `events/fallout_world_end_events.txt`.
 - These are fictional generated documentary scenes. They must not be described as photographs of named real incidents or assigned archival provenance.
 - No asset blocker remains.
 - No fallback source, substitute art, simplification, or omitted requested phase was used.

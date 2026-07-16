@@ -4,9 +4,9 @@
 
 The Air Winter pilot scheduler has three entry points in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`:
 
-- `air_winter_event_prepare_candidate_cycle` clears the bounded owner array and snapshots the documented current engine year before the existing monthly state pass
-- `air_winter_schedule_phase_event` evaluates one state during that existing pass, captures durable seasonal observations, and records one owner candidate
-- `air_winter_dispatch_phase_events` iterates only the bounded owner array after the pass
+- `air_winter_event_prepare_candidate_cycle` clears the bounded event and island-source arrays, clears old source receipts, and snapshots the documented current engine year before the existing monthly state pass
+- `air_winter_schedule_phase_event` evaluates one state during that existing pass, captures durable seasonal observations, records one owner candidate, and records at most one island-refugee source receipt per source owner
+- `air_winter_dispatch_phase_events` iterates only the bounded candidate and source-owner arrays after the pass
 
 `air_contamination_monthly_update` calls dispatch before Air Winter finalization. No new state-wide or country-wide periodic scan was added. Seasonal capture occurs before the country cooldown gate, so a transition observed during cooldown remains available for a later cycle.
 
@@ -42,7 +42,9 @@ Every selectable event number comes from the typed `air_winter_event_id` script-
 
 Within a selected Phase 3 state, route selection checks reactor, hydroelectric, oil or refinery, coal or heavy industry, transport, then clinic and heat. This is state-local routing. Country candidate selection still compares family priority, origin cycle, frozen score, and state id, so a higher-scoring transport state can defeat a reactor state elsewhere in the country. The shared Phase 3 seen flag permits one ordinary Phase 3 identity chain per country.
 
-Within a selected Phase 2 state, an exact highland and capital classifier runs before the generic city route. This prevents a mountain capital with an urban state category from being consumed by `chaosx.fallout.11`. The typed id `phase_2_mountain_capital` freezes that identity for ordinary and first-frost candidates. A later first-frost dispatch keeps the stored route even if the country moves its capital, while the original state, owner, and highland class must remain valid.
+Within a selected Phase 2 state, an exact highland and capital classifier runs first. An engine island classifier using `is_island_state` or `is_one_state_island` runs next, before the generic city route. This prevents a mountain capital with an urban state category from being consumed by `chaosx.fallout.11` and prevents an engine-classified island from being consumed by a generic coastal or city route. Typed ids freeze both identities for ordinary and first-frost candidates. A later first-frost dispatch keeps the stored route while its original state, owner, and required identity remain valid.
+
+The island route adds 131 to its normal phase and pressure score. The current state-pressure range ends at 130. It therefore wins against another ordinary Phase 2 candidate owned by the same country without overtaking a Phase 3 candidate. Ordinary and first-frost capture apply the same bonus.
 
 Each eligible state calculates a candidate score from phase and pressure. Seasonal rows freeze that score at observation time. The owning country compares candidates in this order:
 
@@ -55,13 +57,15 @@ The family order is terminal season, ordinary unseen phase, second winter, dark 
 
 Unclassified presentation states cannot select a phase, recovery, or seasonal event. A missing regional route leaves the phase eligible for another classified state and does not write a seen flag or receipt.
 
-The state pass adds each owner to `global.air_winter_event_candidate_countries` at most once. A partial current-cycle candidate is replaced before lexicographic comparison. Post-pass dispatch validates owner existence, cooldown, current cycle id, positive year snapshot, selected state, selected family, selected priority, typed event id, current ownership, presentation class, origin year, origin cycle, and the winning marker row when a seasonal family is selected.
+The state pass adds each owner to `global.air_winter_event_candidate_countries` at most once. A partial current-cycle candidate is replaced before lexicographic comparison. It also adds each eligible source owner to `global.air_winter_island_refugee_source_countries` at most once. Each source owner keeps its highest phase and pressure score, with lower state id resolving a tie. Post-pass dispatch validates owner existence, cooldown, current cycle id, positive year snapshot, selected state, selected family, selected priority, typed event id, current ownership, presentation class, origin year, origin cycle, and the winning marker row when a seasonal family is selected.
 
 ## Receipt ordering
 
 The five seasonal country receipts store the marker origin year. A receipt is written only inside the final dispatch branch after `air_winter_event_candidate_is_dispatchable` passes. The winning state marker is then cleared, the relevant phase memory is committed when required, the cooldown is applied, and the typed event is fired.
 
 An ordinary worsening-phase event normally writes no seasonal receipt. First frost and dark harvest reuse exact ordinary routes, so a validated ordinary dispatch coalesces a marker only when the same winning state stores the same typed event id. It writes that marker's origin year and clears that one row. This prevents one physical incident from opening the same authored event twice while preserving unrelated seasonal rows. A failed dispatch clears only the transient owner candidate. It does not clear a valid seasonal marker.
+
+Event id 38 defers this commit. Dispatch first selects the highest live foreign source from the bounded source-owner array. No source means no offer, cooldown, seen flag, receipt, marker consumption, or event. A live source freezes a complete offer and opens event 38. Only a positive exact population transfer writes the Phase 2 seen flag and consumes or coalesces the first-frost marker. Stale or empty transfers clear the offer and cooldown while preserving route eligibility.
 
 Second winter has nine additional regional severe-year memories. The first severe observation for a presentation class seeds its year without firing the recurring event. A severe state in a later year can create a marker. The regional severe-year memory advances to the marker origin year only after final second-winter dispatch validation.
 
@@ -78,9 +82,14 @@ Before firing an event, dispatch saves:
 - `air_winter_event_country`
 - `air_winter_event_state`
 
+Event 38 additionally saves:
+
+- `air_winter_refugee_source_country`
+- `air_winter_refugee_source_state`
+
 The offline Data structures page states that a regular event target carries into events fired by the same effect chain, including delayed child events. The pilot uses regular targets so simultaneous countries cannot overwrite a shared global target.
 
-Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. All 48 delayed-result schedules call the shared country-cooldown helper immediately before the child timer begins. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice is suppressed during the Fallout transition and active Fallout. It has one effect-free acknowledgement.
+Every initial event validates its typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. All 51 delayed-result schedules call the shared country-cooldown helper or the island commit helper immediately before the child timer begins. A stale click cancels only the matching pending branch or rolls back its uncommitted island offer and opens `chaosx.fallout.203` as a recovery notice. The notice is suppressed during the Fallout transition and active Fallout. It has one effect-free acknowledgement.
 
 Delayed result blocks require their own pending branch flag and the stored original owner. Whenever the generic pending flag exists, `air_winter_event_targets_are_valid` requires a complete owner variable, equality with the saved country target, and current state ownership by that stored owner. Monthly reconciliation cancels a branch when ownership changes or the branch ledger is incomplete. Active Fallout and the Fallout transition also invalidate the target contract. The stored owner uses a regular scope-valued variable and `var:` entry, matching the documented variable-target pattern and the reviewed vanilla ownership precedent.
 
@@ -94,11 +103,13 @@ The mountain-capital opening repeats manpower and support-equipment affordabilit
 
 The Phase 2 seed-ledger opening repeats its 1,000-manpower affordability check at click time. Guarded seed plots apply a 10 percent local factory penalty for 46 days. Every valid choice opens one owner-bound branch, refreshes the 46-day country cooldown from the click, and schedules event 18 after 45 days. This preserves the one-day buffer when a human leaves the opening popup unresolved. Seed plots and breeding stock use exact result gates with pre-choice AI boundaries translated through the opening ledger changes. Herd slaughter returns through a fixed depletion result. Five result options expose only the matching branch and conditional outcome. Seed success, seed failure, branch replacement, and generic cancellation all remove the temporary factory modifier.
 
+The Phase 2 island-refugee opening repeats its full offer, source, destination, topology, and affordability checks at click time. Rescue, quarantine, and exclusion request 2 percent, 1 percent, or 0.25 percent of current destination population with ceilings of 40,000, 20,000, or 5,000 people. The exact source-loss helper protects 1,000 people and returns the exact applied loss. Only that positive output is added to the destination. Migration therefore does not create population or enter Deaths. A successful opening writes one exclusive branch, commits the deferred scheduler receipt, refreshes the 46-day cooldown, and schedules event 39 after 30 days. Six result options expose only the matching branch and direct success or inverse failure. Failure casualties use the Deaths system.
+
 ## AI and cleanup
 
 Every non-deterministic player-choice opening has explicit AI weights with state or country conditions. Delayed deterministic results expose only the option matching the stored pending branch and outcome. AI countries therefore use the same mechanical chain without a second visible-only scheduler.
 
-`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, seed-ledger memory, infrastructure memory, furnace memory, tunnel-school memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary seed-vault, refinery, reactor, furnace, or tunnel-school modifiers. `air_winter_reset_global` clears the calendar snapshot.
+`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, island receiver and source memory, seed-ledger memory, infrastructure memory, furnace memory, tunnel-school memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, island offers, source receipts, migration memory, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary seed-vault, refinery, reactor, furnace, or tunnel-school modifiers. `air_winter_reset_global` clears the calendar snapshot and bounded island-source array.
 
 ## Static validation
 
@@ -124,11 +135,17 @@ Static review establishes:
 18. exact Phase 3 infrastructure identity and state-local route precedence, including the coal-or-four-factory ladder
 19. exact mountain-capital identity, city-route precedence, and first-frost typed-id retention
 20. seed-ledger branch exclusivity, threshold derivation, and delayed cleanup
-21. click-time cooldown reanchoring for all 48 delayed-result schedules
+21. click-time cooldown reanchoring for all 51 delayed-result schedules
 22. furnace branch exclusivity, 40 and 55 threshold inverse, day-30 modifier removal, repairable damage exhaustion, and cancellation cleanup
+23. exact engine island route precedence for ordinary and first-frost selection
+24. one bounded deterministic source receipt per source owner without a new world scan
+25. deferred seen and seasonal receipt commit with no-source retry
+26. capped balanced source loss and destination gain with no minimum floor
+27. three exclusive island policies and six complete delayed-result partitions
+28. island offer, branch, receipt, migration-memory, state, country, and global cleanup
 
-The 46 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 137 options. One hundred thirty-six effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. Seed-ledger proof is in `AIR_WINTER_PHASE_2_SEED_LEDGER_EVENT_PROOF.md`. Dam, refinery, and reactor proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Heavy-industry proof is in `AIR_WINTER_PHASE_3_HEAVY_INDUSTRY_EVENT_PROOF.md`. Mountain-capital proof is in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
+The 48 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 146 options. One hundred forty-five effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. Island source and population proof is in `AIR_WINTER_PHASE_2_ISLAND_REFUGEE_SOURCE_AND_POPULATION_PROOF.md`. Seed-ledger proof is in `AIR_WINTER_PHASE_2_SEED_LEDGER_EVENT_PROOF.md`. Dam, refinery, and reactor proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Heavy-industry proof is in `AIR_WINTER_PHASE_3_HEAVY_INDUSTRY_EVENT_PROOF.md`. Mountain-capital proof is in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
 ## Unobserved engine boundary
 
-The installed documentation supports the current-year dynamic variable, meta-effect text, scope-valued variables, array iteration, regular event targets, delayed event syntax, state dynamic modifiers, and repairable building damage. A live session has not observed the year snapshot assignment, generated event dispatch, delayed regular-target retention, popup ordering, AI resolution, modifier arithmetic and expiry, damage repair, annual receipt persistence, or save-resume behavior. HOI4 was not launched. These surfaces are not claimed as runtime proven.
+The installed documentation supports the current-year dynamic variable, meta-effect text, scope-valued variables, array iteration, regular event targets, delayed event syntax, state dynamic modifiers, state population reads, positive state `add_manpower`, and repairable building damage. A live session has not observed the year snapshot assignment, generated event dispatch, delayed regular-target retention, popup ordering, AI resolution, balanced migration readback, modifier arithmetic and expiry, damage repair, annual receipt persistence, or save-resume behavior. HOI4 was not launched. These surfaces are not claimed as runtime proven.

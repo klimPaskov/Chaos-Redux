@@ -378,6 +378,15 @@ air_winter_event_is_mountain_capital = {
 	is_capital = yes
 }
 
+# Supported scope: STATE. This is the exact engine topology accepted for the
+# Phase 2 island-refugee route.
+air_winter_event_is_engine_island_state = {
+	OR = {
+		is_island_state = yes
+		is_one_state_island = yes
+	}
+}
+
 air_winter_presentation_is_oceanic = {
 	check_variable = { air_winter_presentation_class = constant:air_winter_presentation_class.island_oceanic }
 }
@@ -767,6 +776,200 @@ air_winter_event_breeding_stock_succeeds = {
 air_winter_event_breeding_stock_ai_is_plausible = {
 	check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.breeding_ai_food_minimum }
 	check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.breeding_ai_shelter_minimum }
+}
+
+# Supported scope: STATE
+air_winter_event_has_island_refugee_rescue_branch = {
+	has_state_flag = air_winter_island_refugee_chain_rescue
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_island_refugee_chain_quarantine
+			has_state_flag = air_winter_island_refugee_chain_exclusion
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_island_refugee_quarantine_branch = {
+	has_state_flag = air_winter_island_refugee_chain_quarantine
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_island_refugee_chain_rescue
+			has_state_flag = air_winter_island_refugee_chain_exclusion
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_island_refugee_exclusion_branch = {
+	has_state_flag = air_winter_island_refugee_chain_exclusion
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_island_refugee_chain_rescue
+			has_state_flag = air_winter_island_refugee_chain_quarantine
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_exact_island_refugee_branch = {
+	OR = {
+		air_winter_event_has_island_refugee_rescue_branch = yes
+		air_winter_event_has_island_refugee_quarantine_branch = yes
+		air_winter_event_has_island_refugee_exclusion_branch = yes
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_invalid_island_refugee_branches = {
+	OR = {
+		AND = {
+			has_state_flag = air_winter_island_refugee_chain_rescue
+			has_state_flag = air_winter_island_refugee_chain_quarantine
+		}
+		AND = {
+			has_state_flag = air_winter_island_refugee_chain_rescue
+			has_state_flag = air_winter_island_refugee_chain_exclusion
+		}
+		AND = {
+			has_state_flag = air_winter_island_refugee_chain_quarantine
+			has_state_flag = air_winter_island_refugee_chain_exclusion
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_rescue_succeeds = {
+	check_variable = {
+		var = air_winter_food_reserve
+		value = constant:air_winter_event_outcome.island_refugee_rescue_food_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_shelter_capacity
+		value = constant:air_winter_event_outcome.island_refugee_rescue_shelter_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.island_refugee_rescue_disease_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_rescue_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_rescue_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_food_reserve
+		value = constant:air_winter_event_outcome.island_refugee_rescue_ai_food_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_shelter_capacity
+		value = constant:air_winter_event_outcome.island_refugee_rescue_ai_shelter_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.island_refugee_rescue_ai_disease_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_rescue_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_quarantine_succeeds = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_water_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_disease_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_damage_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_quarantine_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_ai_water_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_ai_disease_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_ai_damage_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_quarantine_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_exclusion_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_exposure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_island_refugee_exclusion_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_ai_exposure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_event_outcome.island_refugee_exclusion_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
 }
 
 # Supported scope: STATE
@@ -1372,6 +1575,212 @@ air_winter_event_cycle_year_is_valid = {
 	check_variable = { global.air_winter_cycle_id > constant:air_winter_event_runtime.zero }
 }
 
+# Supported scope: STATE. A source remains live only while its current owner
+# also controls the coast and the protected population remainder is intact.
+air_winter_island_refugee_source_state_is_live = {
+	air_winter_state_is_valid = yes
+	has_state_flag = air_winter_initialized
+	has_variable = air_winter_phase
+	is_owned_and_controlled_by = OWNER
+	is_coastal = yes
+	check_variable = {
+		var = air_winter_phase
+		value = constant:air_winter_phase.crop_shock
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_phase
+		value = constant:air_winter_phase.maximum
+		compare = less_than_or_equals
+	}
+	state_population > constant:air_winter_event_island_refugee.protected_source_remainder
+}
+
+# Supported scope: COUNTRY. The receipt belongs to a source owner and remains
+# current only during the monthly cycle that produced it.
+air_winter_island_refugee_source_receipt_is_current = {
+	air_winter_event_cycle_year_is_valid = yes
+	has_variable = air_winter_island_refugee_source_state
+	has_variable = air_winter_island_refugee_source_score
+	has_variable = air_winter_island_refugee_source_cycle_id
+	has_variable = air_winter_island_refugee_source_region
+	check_variable = { air_winter_island_refugee_source_state > constant:air_winter_event_runtime.zero }
+	check_variable = { air_winter_island_refugee_source_score > constant:air_winter_event_runtime.zero }
+	check_variable = { air_winter_island_refugee_source_cycle_id > constant:air_winter_event_runtime.zero }
+	check_variable = {
+		var = air_winter_island_refugee_source_cycle_id
+		value = global.air_winter_cycle_id
+		compare = equals
+	}
+	check_variable = { air_winter_island_refugee_source_region > constant:air_winter_presentation_class.unclassified }
+	check_variable = {
+		var = air_winter_island_refugee_source_region
+		value = constant:air_winter_presentation_class.maximum
+		compare = less_than_or_equals
+	}
+	var:air_winter_island_refugee_source_state = {
+		air_winter_island_refugee_source_state_is_live = yes
+		is_owned_by = PREV
+		check_variable = {
+			var = air_winter_presentation_class
+			value = PREV.air_winter_island_refugee_source_region
+			compare = equals
+		}
+	}
+}
+
+# Supported scope: COUNTRY. ROOT is the receiver. The opening event can execute
+# only while every frozen scope and monthly-cycle field still matches live data.
+air_winter_island_refugee_offer_is_valid = {
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_transition_active }
+	has_variable = global.air_winter_cycle_id
+	has_variable = global.air_winter_event_cycle_year
+	check_variable = { global.air_winter_cycle_id > constant:air_winter_event_runtime.zero }
+	check_variable = { global.air_winter_event_cycle_year > constant:air_winter_event_runtime.zero }
+	has_country_flag = air_winter_island_refugee_offer_pending
+	has_variable = air_winter_island_refugee_offer_source_state
+	has_variable = air_winter_island_refugee_offer_source_country
+	has_variable = air_winter_island_refugee_offer_source_region
+	has_variable = air_winter_island_refugee_offer_destination_state
+	has_variable = air_winter_island_refugee_offer_family
+	has_variable = air_winter_island_refugee_offer_year
+	has_variable = air_winter_island_refugee_offer_cycle_id
+	has_event_target = air_winter_event_country
+	has_event_target = air_winter_event_state
+	has_event_target = air_winter_refugee_source_country
+	has_event_target = air_winter_refugee_source_state
+	check_variable = {
+		var = air_winter_island_refugee_offer_source_state
+		value = event_target:air_winter_refugee_source_state
+		compare = equals
+	}
+	check_variable = {
+		var = air_winter_island_refugee_offer_source_country
+		value = event_target:air_winter_refugee_source_country
+		compare = equals
+	}
+	check_variable = {
+		var = air_winter_island_refugee_offer_destination_state
+		value = event_target:air_winter_event_state
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = {
+				var = air_winter_island_refugee_offer_family
+				value = constant:air_winter_event_family.ordinary_phase
+				compare = equals
+			}
+			check_variable = {
+				var = air_winter_island_refugee_offer_year
+				value = global.air_winter_event_cycle_year
+				compare = equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = air_winter_island_refugee_offer_family
+				value = constant:air_winter_event_family.first_frost
+				compare = equals
+			}
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_first_frost_marker
+				has_variable = air_winter_first_frost_origin_year
+				has_variable = air_winter_first_frost_origin_cycle_id
+				has_variable = air_winter_first_frost_origin_owner
+				has_variable = air_winter_first_frost_origin_region
+				has_variable = air_winter_first_frost_origin_score
+				has_variable = air_winter_first_frost_origin_event_id
+				check_variable = {
+					var = air_winter_first_frost_origin_event_id
+					value = constant:air_winter_event_id.phase_2_island_refugees
+					compare = equals
+				}
+				check_variable = {
+					var = air_winter_first_frost_origin_year
+					value = ROOT.air_winter_island_refugee_offer_year
+					compare = equals
+				}
+				check_variable = { air_winter_first_frost_origin_year > constant:air_winter_event_runtime.zero }
+				check_variable = {
+					var = air_winter_first_frost_origin_year
+					value = global.air_winter_event_cycle_year
+					compare = less_than_or_equals
+				}
+				check_variable = { air_winter_first_frost_origin_cycle_id > constant:air_winter_event_runtime.zero }
+				check_variable = {
+					var = air_winter_first_frost_origin_cycle_id
+					value = global.air_winter_cycle_id
+					compare = less_than_or_equals
+				}
+				check_variable = { air_winter_first_frost_origin_region > constant:air_winter_presentation_class.unclassified }
+				check_variable = {
+					var = air_winter_first_frost_origin_region
+					value = constant:air_winter_presentation_class.maximum
+					compare = less_than_or_equals
+				}
+				check_variable = {
+					var = air_winter_first_frost_origin_region
+					value = air_winter_presentation_class
+					compare = equals
+				}
+				check_variable = { air_winter_first_frost_origin_score > constant:air_winter_event_runtime.zero }
+				check_variable = {
+					var = air_winter_first_frost_origin_owner
+					value = ROOT
+					compare = equals
+				}
+				is_owned_by = var:air_winter_first_frost_origin_owner
+				ROOT = {
+					OR = {
+						NOT = { has_variable = air_winter_first_frost_event_year }
+						check_variable = {
+							var = air_winter_first_frost_event_year
+							value = PREV.air_winter_first_frost_origin_year
+							compare = less_than
+						}
+					}
+				}
+			}
+		}
+	}
+	check_variable = {
+		var = air_winter_island_refugee_offer_cycle_id
+		value = global.air_winter_cycle_id
+		compare = equals
+	}
+	check_variable = { air_winter_island_refugee_offer_source_region > constant:air_winter_presentation_class.unclassified }
+	check_variable = {
+		var = air_winter_island_refugee_offer_source_region
+		value = constant:air_winter_presentation_class.maximum
+		compare = less_than_or_equals
+	}
+	event_target:air_winter_event_country = {
+		exists = yes
+		tag = ROOT
+	}
+	event_target:air_winter_event_state = {
+		air_winter_state_is_valid = yes
+		is_owned_by = ROOT
+		air_winter_is_phase_2 = yes
+		air_winter_event_is_engine_island_state = yes
+	}
+	event_target:air_winter_refugee_source_country = {
+		exists = yes
+		NOT = { tag = ROOT }
+	}
+	event_target:air_winter_refugee_source_state = {
+		air_winter_island_refugee_source_state_is_live = yes
+		is_owned_by = event_target:air_winter_refugee_source_country
+		check_variable = {
+			var = air_winter_presentation_class
+			value = ROOT.air_winter_island_refugee_offer_source_region
+			compare = equals
+		}
+	}
+}
+
 # Supported scope: STATE
 air_winter_first_frost_marker_is_valid = {
 	air_winter_event_cycle_year_is_valid = yes
@@ -1409,6 +1818,7 @@ air_winter_first_frost_marker_is_valid = {
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_arid }
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_highland }
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_mountain_capital }
+		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_island_refugees }
 	}
 	is_owned_by = var:air_winter_first_frost_origin_owner
 	OWNER = {
@@ -1589,6 +1999,7 @@ air_winter_event_candidate_is_ordinary_phase = {
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_arid }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_highland }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_mountain_capital }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_island_refugees }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_transport }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_dam }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_clinics }
@@ -1719,6 +2130,9 @@ air_winter_event_candidate_is_dispatchable = {
 air_winter_event_has_pending_chain = {
 	OR = {
 		has_state_flag = air_winter_deep_water_patrol
+		has_state_flag = air_winter_island_refugee_chain_rescue
+		has_state_flag = air_winter_island_refugee_chain_quarantine
+		has_state_flag = air_winter_island_refugee_chain_exclusion
 		has_state_flag = air_winter_seed_chain_vaults
 		has_state_flag = air_winter_seed_chain_herds
 		has_state_flag = air_winter_seed_chain_breeding

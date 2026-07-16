@@ -2,7 +2,7 @@
 
 ## Review boundary
 
-This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry tranche. It is a source review only. Hearts of Iron IV was not launched.
+This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry and island-refugee tranches. It is a source review only. Hearts of Iron IV was not launched.
 
 The pilot already proves the bounded dispatch model, one visible event per eligible country cooldown, regular state and country event targets, delayed deterministic results, state memory, AI choice weights, Deaths integration, and cleanup through the existing monthly state pass. It does not count toward the 660-block Fallout living-world floor.
 
@@ -17,7 +17,7 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 | Tropical coast | `chaosx.fallout.12` and `.15` cover nearshore food loss, deep-water patrols, and a delayed return or loss. | Covered. |
 | Desert city | `chaosx.fallout.13` covers frozen mains and water convoys. | Partial. It is a single-block regional choice. |
 | Mountain capital | `chaosx.fallout.5` and `.14` covered marked passes, herds, and lower-valley movement. | Covered by `chaosx.fallout.16` and `.17`, including shelter, industry, delayed outcomes, and population protection. |
-| Island state | `chaosx.fallout.12` and `.15` cover small craft, rescue patrols, food, exposure, disease, and state memory. | Covered for maritime survival. Refugee admission policy remains outside this pilot. |
+| Island state | `chaosx.fallout.12` and `.15` cover small craft, rescue patrols, food, exposure, disease, and state memory. | Covered for maritime survival and refugee admission by `chaosx.fallout.38` and `.39`. The dedicated route uses exact engine island topology, a real foreign coastal source, balanced population movement, three policies, and six delayed results. |
 | Dead city candidate | No event performs an early salvage transaction. | Missing. It should remain separate from the Phase 3 infrastructure batch because it needs its own casualty and equipment-risk contract. |
 | Reactor state | No event checked reactor buildings or created a cooling failure before the first expansion. | Covered by `chaosx.fallout.28` and `.29`. |
 
@@ -80,9 +80,22 @@ The guarded seed route also applies a 10 percent local factory penalty for 46 da
 
 This batch changes no phase coefficient, Fallout survival coefficient, treaty policy, route selector, or world iteration.
 
+## Island-refugee depth
+
+The island-refugee contract contains two manually authored blocks:
+
+- `chaosx.fallout.38`, Boats Beneath the Shore Lights
+- `chaosx.fallout.39`, Thirty Days at the Island Shore
+
+The route accepts the exact engine `is_island_state` or `is_one_state_island` topology after mountain-capital identity and before generic city routing. The existing monthly state pass records one highest-scoring live coastal source per owner. The bounded dispatcher excludes the receiver and selects the highest remaining source score, with lower state id resolving an exact tie.
+
+Dispatch defers the Phase 2 seen flag and first-frost receipt. No live source means no event, cooldown, receipt, or marker consumption. Rescue, quarantine, and exclusion calculate 2 percent, 1 percent, or 0.25 percent of current destination population, apply ceilings of 40,000, 20,000, or 5,000 people, and protect 1,000 people at the source. The exact source loss is added to the destination, so migration does not create population or enter the Deaths ledger.
+
+The opening spends real Manpower, Convoys, or Support Equipment where required and writes one exclusive branch only after a positive transfer. Event `.39` partitions each branch into direct success and inverse failure after 30 days. All six outcomes write distinct state and country memories. The three failures record local casualties through Deaths. Stale and zero-transfer openings roll back without consuming the route. The complete engine-sensitive proof is in `AIR_WINTER_PHASE_2_ISLAND_REFUGEE_SOURCE_AND_POPULATION_PROOF.md`.
+
 ## Implementation disposition
 
-The pilot contains 46 blocks, 137 options, 136 effect-bearing options, and 48 delayed-result schedules. Seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, reactor states, and coal or heavy-industry states have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country.
+The pilot contains 48 blocks, 146 options, 145 effect-bearing options, and 51 delayed-result schedules. Island refugee admission, seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, reactor states, and coal or heavy-industry states have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country.
 
 ## Deferred depth
 
@@ -90,6 +103,6 @@ The following accepted rows remain unresolved after this tranche:
 
 - an approved post-Fallout food-recovery consumer for the seed-ledger outcomes
 - an early dead-city salvage chain
-- refugee admission and identity consequences for island states
+- post-Fallout focus, successor-identity, and migration consumers for island-refugee policy memory
 
 They require separate reviewed contracts and are not claimed by the completed expansions.
