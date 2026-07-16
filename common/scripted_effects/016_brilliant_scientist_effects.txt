@@ -486,6 +486,7 @@ brilliant_scientist_initialize_host_state = {
 		set_variable = { brilliant_scientist_independent_capacity = constant:brilliant_scientist_measure.secret_independent_capacity }
 		set_variable = { brilliant_scientist_grievance = constant:brilliant_scientist_measure.secret_grievance }
 	}
+	set_variable = { brilliant_scientist_project_capacity_gross = brilliant_scientist_project_capacity }
 
 	set_variable = { brilliant_scientist_temporal_sync_capacity = constant:brilliant_scientist_temporal.synchronization_maximum }
 	set_variable = { brilliant_scientist_temporal_debt = constant:brilliant_scientist_temporal.debt_minimum }
@@ -520,7 +521,9 @@ brilliant_scientist_change_exposure = {
 
 brilliant_scientist_change_project_capacity = {
 	add_to_variable = { brilliant_scientist_project_capacity = brilliant_scientist_value_delta }
+	add_to_variable = { brilliant_scientist_project_capacity_gross = brilliant_scientist_value_delta }
 	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+	clamp_variable = { var = brilliant_scientist_project_capacity_gross min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
 }
 
 brilliant_scientist_change_independent_capacity = {
@@ -898,6 +901,54 @@ brilliant_scientist_initialize_project_ledgers = {
 	brilliant_scientist_refresh_project_counts = yes
 }
 
+# COUNTRY scope. Reconstructs available Project Capacity from the durable gross
+# capacity receipt and the exact current ledger. Completed stages retain their
+# full cumulative burden; suspended stages retain half. A live stage mission
+# also occupies its incremental reservation until completion or cancellation.
+brilliant_scientist_refresh_project_capacity_from_gross = {
+	set_temp_variable = { brilliant_scientist_project_capacity_used = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_capacity_index = constant:brilliant_scientist_value.zero }
+	while = {
+		limit = { check_variable = { brilliant_scientist_project_capacity_index < constant:brilliant_scientist_event.project_family_count } }
+		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_capacity_index }
+		add_to_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_value.one }
+		set_temp_variable = { brilliant_scientist_project_capacity_stage = brilliant_scientist_project_stage_entries^brilliant_scientist_project_capacity_index }
+		set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_capacity_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.theory }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_project_capacity_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.prototype }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_project_capacity_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.deployment }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_project_capacity_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.weaponization }
+		}
+		if = {
+			limit = { brilliant_scientist_project_is_suspended = yes }
+			multiply_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.suspended_factor }
+		}
+		add_to_temp_variable = { brilliant_scientist_project_capacity_used = brilliant_scientist_project_capacity_burden }
+		add_to_temp_variable = { brilliant_scientist_project_capacity_index = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_stage_in_progress
+			has_variable = brilliant_scientist_active_project_capacity_delta
+		}
+		add_to_temp_variable = { brilliant_scientist_project_capacity_used = brilliant_scientist_active_project_capacity_delta }
+	}
+	set_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_gross }
+	subtract_from_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_used }
+	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+}
+
 # COUNTRY scope. Input: temporary brilliant_scientist_project_family.
 brilliant_scientist_load_project_index = {
 	set_temp_variable = { brilliant_scientist_project_index = brilliant_scientist_project_family }
@@ -996,6 +1047,7 @@ brilliant_scientist_suspend_project = {
 			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none }
 		}
 		add_to_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_project_family }
+		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
 	}
 }
 
@@ -1004,6 +1056,7 @@ brilliant_scientist_resume_project = {
 	if = {
 		limit = { brilliant_scientist_project_is_suspended = yes }
 		remove_from_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_project_family }
+		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
 	}
 }
 
@@ -1016,6 +1069,7 @@ brilliant_scientist_damage_project = {
 			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none }
 		}
 		add_to_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_project_family }
+		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
 	}
 }
 
@@ -1024,6 +1078,7 @@ brilliant_scientist_repair_project = {
 	if = {
 		limit = { brilliant_scientist_project_is_damaged = yes }
 		remove_from_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_project_family }
+		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
 	}
 }
 
@@ -1067,19 +1122,50 @@ brilliant_scientist_dismantle_project = {
 		}
 		set_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.none }
 		brilliant_scientist_refresh_project_counts = yes
+		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
 	}
 }
 
 # COUNTRY scope. After Kruger leaves, active stages collapse to the aligned
-# independently replicated stages. Institutional publication/theft history is
-# retained; Kruger's personal character flags are not copied back.
+# independently replicated stages. The old host receives no capacity from
+# departed laboratories: its gross ceiling is rebuilt from Independent
+# Capacity and charged for every retained institutional stage. Publication,
+# theft, dismantling, and other durable history remains with the institution.
 brilliant_scientist_reconcile_old_host_after_transfer = {
+	clr_country_flag = brilliant_scientist_project_stage_in_progress
+	clear_variable = brilliant_scientist_active_project_family
+	clear_variable = brilliant_scientist_active_project_stage
+	clear_variable = brilliant_scientist_active_project_capacity_delta
 	set_temp_variable = { brilliant_scientist_project_transfer_index = constant:brilliant_scientist_value.zero }
 	while = {
 		limit = { check_variable = { brilliant_scientist_project_transfer_index < constant:brilliant_scientist_event.project_family_count } }
+		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_transfer_index }
+		add_to_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_value.one }
+		brilliant_scientist_disable_project_stage_modifiers = yes
 		set_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_transfer_index = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_project_transfer_index }
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_transfer_index = constant:brilliant_scientist_project_stage.none } }
+			if = {
+				limit = { brilliant_scientist_project_is_suspended = yes }
+				remove_from_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_project_family }
+			}
+			if = {
+				limit = { brilliant_scientist_project_is_damaged = yes }
+				remove_from_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_project_family }
+			}
+		}
 		add_to_temp_variable = { brilliant_scientist_project_transfer_index = constant:brilliant_scientist_value.one }
 	}
+	set_variable = { brilliant_scientist_project_capacity_gross = brilliant_scientist_independent_capacity }
+	clamp_variable = { var = brilliant_scientist_project_capacity_gross min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+	brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+	brilliant_scientist_validate_inherited_project_physical_state = yes
+	brilliant_scientist_refresh_project_capacity_from_gross = yes
+	brilliant_scientist_apply_project_inheritance_outputs = yes
+	# The former host may never have initialized the KRG package, so this must
+	# unconditionally revoke grant-only outputs before rebuilding from the
+	# independently replicated ledger and surviving physical sites.
+	brilliant_scientist_rebuild_project_force_runtime_package = yes
 	set_country_flag = brilliant_scientist_former_host
 	brilliant_scientist_refresh_project_counts = yes
 }
@@ -1421,7 +1507,7 @@ brilliant_scientist_store_inherited_project_stage = {
 # COUNTRY scope, called on the recipient after nationality and roles move.
 # Starts with no independent institutional replication and reconstructs only the
 # highest stage proved by Kruger's persistent personal-history flags.
-brilliant_scientist_inherit_kruger_carried_portfolio = {
+brilliant_scientist_inherit_kruger_personal_history_portfolio = {
 	brilliant_scientist_initialize_project_ledgers = yes
 
 	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
@@ -1727,6 +1813,68 @@ brilliant_scientist_inherit_kruger_carried_portfolio = {
 	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.none }
 	set_temp_variable = { brilliant_scientist_project_index = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.none }
+	brilliant_scientist_refresh_project_counts = yes
+}
+
+# COUNTRY scope, called after the recipient's baseline state exists. Fixed-tag
+# sovereignty restores the exact formation snapshot, including suspended,
+# damaged, dismantled, published, and stolen state. Ordinary international
+# transfers reconstruct Kruger's portable personal research history, but never
+# fabricate physical project sites or replay completion rewards.
+brilliant_scientist_inherit_kruger_carried_portfolio = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_formation_portfolio_snapshot_ready }
+		brilliant_scientist_initialize_project_ledgers = yes
+		clear_array = brilliant_scientist_project_stage_entries
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_stage_entries
+			value = brilliant_scientist_formation_carried_project_stage
+			add_to_array = {
+				array = brilliant_scientist_project_stage_entries
+				value = brilliant_scientist_formation_carried_project_stage
+			}
+		}
+		clear_array = brilliant_scientist_project_suspended_families
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_suspended_families
+			value = brilliant_scientist_formation_carried_project_family
+			add_to_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_formation_carried_project_family }
+		}
+		clear_array = brilliant_scientist_project_damaged_families
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_damaged_families
+			value = brilliant_scientist_formation_carried_project_family
+			add_to_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_formation_carried_project_family }
+		}
+		clear_array = brilliant_scientist_project_dismantled_families
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_dismantled_families
+			value = brilliant_scientist_formation_carried_project_family
+			add_to_array = { array = brilliant_scientist_project_dismantled_families value = brilliant_scientist_formation_carried_project_family }
+		}
+		clear_array = brilliant_scientist_project_published_families
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_published_families
+			value = brilliant_scientist_formation_carried_project_family
+			add_to_array = { array = brilliant_scientist_project_published_families value = brilliant_scientist_formation_carried_project_family }
+		}
+		clear_array = brilliant_scientist_project_stolen_families
+		for_each_loop = {
+			array = brilliant_scientist_formation_carried_project_stolen_families
+			value = brilliant_scientist_formation_carried_project_family
+			add_to_array = { array = brilliant_scientist_project_stolen_families value = brilliant_scientist_formation_carried_project_family }
+		}
+	}
+	else = {
+		brilliant_scientist_inherit_kruger_personal_history_portfolio = yes
+	}
+	clr_country_flag = brilliant_scientist_project_stage_in_progress
+	clear_variable = brilliant_scientist_active_project_family
+	clear_variable = brilliant_scientist_active_project_stage
+	clear_variable = brilliant_scientist_active_project_capacity_delta
+	brilliant_scientist_validate_inherited_project_physical_state = yes
+	brilliant_scientist_refresh_project_capacity_from_gross = yes
+	brilliant_scientist_apply_project_inheritance_outputs = yes
 	brilliant_scientist_refresh_project_counts = yes
 }
 
@@ -2317,6 +2465,7 @@ brilliant_scientist_finalize_pending_prefire_opening = {
 		limit = { has_country_flag = brilliant_scientist_prefire_opening_pending }
 		brilliant_scientist_record_prefire_evolved_opening = yes
 		clr_country_flag = brilliant_scientist_prefire_opening_pending
+		brilliant_scientist_sync_evolution_runtime = yes
 	}
 }
 
@@ -2361,6 +2510,10 @@ brilliant_scientist_appoint_kruger_from_opening = {
 		if = {
 			limit = { check_variable = { brilliant_scientist_opening_history_was_ready > constant:brilliant_scientist_value.zero } }
 			brilliant_scientist_finalize_pending_prefire_opening = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = brilliant_scientist_prefire_opening_pending } }
+			brilliant_scientist_sync_evolution_runtime = yes
 		}
 		clr_country_flag = brilliant_scientist_opening_chain_active
 		clr_country_flag = brilliant_scientist_character_transaction_lock
@@ -2482,6 +2635,7 @@ brilliant_scientist_refresh_kruger_portrait_stage = {
 		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_i_unlocked } }
 		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.one }
 	}
+	brilliant_scientist_apply_kruger_portraits_for_current_stage = yes
 }
 
 # COUNTRY scope. Character flags are authoritative personal continuity; the
@@ -2535,6 +2689,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 			set_temp_variable = { brilliant_scientist_transfer_posture = constant:brilliant_scientist_recruitment_posture.public_compact }
 		}
 
+		brilliant_scientist_clear_evolution_schedule_state = yes
 		brilliant_scientist_remove_kruger_roles = yes
 		brilliant_scientist_reconcile_old_host_after_transfer = yes
 		clr_country_flag = brilliant_scientist_current_host
@@ -2578,6 +2733,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 			brilliant_scientist_add_kruger_roles = yes
 			brilliant_scientist_inherit_kruger_carried_portfolio = yes
 			brilliant_scientist_refresh_kruger_continuity_state = yes
+			brilliant_scientist_sync_evolution_runtime = yes
 			clr_country_flag = brilliant_scientist_character_transaction_lock
 		}
 
@@ -3100,6 +3256,7 @@ brilliant_scientist_lock_origin_conclusion = {
 		if = {
 			limit = { check_variable = { brilliant_scientist_requested_origin = constant:brilliant_scientist_origin.extraterrestrial_provenance } }
 			set_country_flag = brilliant_scientist_origin_extraterrestrial_provenance
+			KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_origin_extraterrestrial_provenance }
 		}
 		else_if = {
 			limit = { check_variable = { brilliant_scientist_requested_origin = constant:brilliant_scientist_origin.temporal_displacement } }
@@ -3224,5 +3381,9 @@ brilliant_scientist_cleanup_transient_targets_after_world_end = {
 	if = {
 		limit = { has_event_target = brilliant_scientist_temporal_anchor }
 		clear_global_event_target = brilliant_scientist_temporal_anchor
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_kruger_state_former_host_persistent }
+		clear_global_event_target = brilliant_scientist_kruger_state_former_host_persistent
 	}
 }

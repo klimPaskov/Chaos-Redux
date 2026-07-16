@@ -1,0 +1,563 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE TERRITORY TRIGGERS
+# ============================================================================
+# Overview:
+# - Defines the live-state predicates used to build and revalidate a frozen
+#   Kruger State territory plan.
+# - Requires every selected state to remain owned and controlled by the former
+#   host until the formation effect begins its first mutation.
+# - Keeps charter, enclave, and rebellion contracts separate and fail-closed.
+# - Institutional takeover is deliberately absent: territory failure never
+#   grants or evaluates that route.
+# ============================================================================
+
+# STATE scope. ROOT must be the Event 016 host that is preparing the plan.
+brilliant_scientist_territory_state_has_event_facility = {
+	OR = {
+		has_variable = brilliant_scientist_facility_type
+		has_state_flag = brilliant_scientist_primary_facility
+		has_state_flag = brilliant_scientist_secondary_facility
+		has_state_flag = brilliant_scientist_joint_laboratory_site
+		has_state_flag = brilliant_scientist_quantum_transit_terminal
+		has_state_flag = brilliant_scientist_cloning_growth_site
+		has_state_flag = brilliant_scientist_robotics_assembly_complex
+		has_state_flag = brilliant_scientist_paleogenetic_reserve
+		has_state_flag = brilliant_scientist_paleogenetic_hatchery
+		has_state_flag = brilliant_scientist_xenobiological_vat_complex
+		has_state_flag = brilliant_scientist_xenobiological_control_center
+		has_state_flag = brilliant_scientist_alien_interface_chamber
+		has_state_flag = brilliant_scientist_temporal_anchor
+	}
+	NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+}
+
+# STATE scope. This is the non-negotiable ownership and former-host survival
+# boundary for every route. The host capital is never a territorial candidate.
+brilliant_scientist_territory_state_is_host_candidate = {
+	impassable = no
+	is_capital = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+	OR = {
+		ROOT = { NOT = { has_country_flag = brilliant_scientist_formation_territory_route_charter } }
+		is_core_of = ROOT
+	}
+}
+
+# STATE scope. A home-area connection is the preferred land supply proof.
+# Remote states require an actual hub, railway, or serviced port.
+brilliant_scientist_territory_state_has_logistics_access = {
+	OR = {
+		is_in_home_area = yes
+		supply_node > constant:brilliant_scientist_territory_plan.zero
+		rail_way > constant:brilliant_scientist_territory_plan.zero
+		AND = {
+			is_coastal = yes
+			naval_base > constant:brilliant_scientist_territory_plan.zero
+			infrastructure > constant:brilliant_scientist_territory_plan.zero
+		}
+	}
+}
+
+# STATE scope. Support territory must contribute a concrete industrial or
+# transport asset; adjacency alone does not make an unrelated state eligible.
+brilliant_scientist_territory_state_is_strategic_support = {
+	OR = {
+		supply_node > constant:brilliant_scientist_territory_plan.zero
+		rail_way > constant:brilliant_scientist_territory_plan.zero
+		industrial_complex > constant:brilliant_scientist_territory_plan.zero
+		arms_factory > constant:brilliant_scientist_territory_plan.zero
+		dockyard > constant:brilliant_scientist_territory_plan.zero
+		AND = {
+			is_coastal = yes
+			naval_base > constant:brilliant_scientist_territory_plan.zero
+		}
+	}
+}
+
+# STATE scope. These are the only proofs accepted for a deliberately separated
+# site: Event 016 transport hardware, a serviced air base, or a serviced port.
+brilliant_scientist_territory_state_can_support_multi_site_plan = {
+	OR = {
+		has_state_flag = brilliant_scientist_quantum_transit_terminal
+		has_state_flag = brilliant_scientist_temporal_anchor
+		AND = {
+			air_base > constant:brilliant_scientist_territory_plan.zero
+			infrastructure > constant:brilliant_scientist_territory_plan.zero
+		}
+		AND = {
+			is_coastal = yes
+			naval_base > constant:brilliant_scientist_territory_plan.zero
+			infrastructure > constant:brilliant_scientist_territory_plan.zero
+		}
+	}
+}
+
+# STATE scope.
+brilliant_scientist_territory_state_is_viable_capital = {
+	brilliant_scientist_territory_state_is_host_candidate = yes
+	brilliant_scientist_territory_state_has_event_facility = yes
+	brilliant_scientist_territory_state_has_logistics_access = yes
+}
+
+# STATE scope.
+brilliant_scientist_territory_state_is_connected_facility_candidate = {
+	brilliant_scientist_territory_state_is_host_candidate = yes
+	brilliant_scientist_territory_state_has_event_facility = yes
+	NOT = { has_state_flag = brilliant_scientist_formation_territory_selected }
+	any_neighbor_state = {
+		has_state_flag = brilliant_scientist_formation_territory_selected
+	}
+}
+
+# STATE scope.
+brilliant_scientist_territory_state_is_multi_site_facility_candidate = {
+	brilliant_scientist_territory_state_is_host_candidate = yes
+	brilliant_scientist_territory_state_has_event_facility = yes
+	brilliant_scientist_territory_state_can_support_multi_site_plan = yes
+	NOT = { has_state_flag = brilliant_scientist_formation_territory_selected }
+	ROOT = { has_country_flag = brilliant_scientist_multi_site_network_verified }
+}
+
+# STATE scope.
+brilliant_scientist_territory_state_is_support_candidate = {
+	brilliant_scientist_territory_state_is_host_candidate = yes
+	brilliant_scientist_territory_state_is_strategic_support = yes
+	is_core_of = ROOT
+	NOT = { brilliant_scientist_territory_state_has_event_facility = yes }
+	NOT = { has_state_flag = brilliant_scientist_formation_territory_selected }
+	any_neighbor_state = {
+		has_state_flag = brilliant_scientist_formation_territory_selected
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_has_single_territory_route_request = {
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = brilliant_scientist_charter_accepted
+				has_country_flag = brilliant_scientist_sovereignty_response_charter
+			}
+			NOT = { has_country_flag = brilliant_scientist_enclave_settlement }
+			NOT = { has_country_flag = brilliant_scientist_rebellion_committed }
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_enclave_settlement
+			NOT = { has_country_flag = brilliant_scientist_charter_accepted }
+			NOT = { has_country_flag = brilliant_scientist_rebellion_committed }
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_rebellion_committed
+			NOT = { has_country_flag = brilliant_scientist_charter_accepted }
+			NOT = { has_country_flag = brilliant_scientist_enclave_settlement }
+		}
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_territory_plan_host_is_eligible = {
+	exists = yes
+	has_country_flag = brilliant_scientist_current_host
+	NOT = { tag = KRG }
+	capital_scope = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = brilliant_scientist_formation_territory_selected }
+	}
+	NOT = { has_global_flag = brilliant_scientist_kruger_state_active }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope.
+brilliant_scientist_territory_plan_route_matches_request = {
+	OR = {
+		AND = {
+			has_country_flag = brilliant_scientist_formation_territory_route_charter
+			OR = {
+				has_country_flag = brilliant_scientist_charter_accepted
+				has_country_flag = brilliant_scientist_sovereignty_response_charter
+			}
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_enclave }
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_rebellion }
+			NOT = { has_country_flag = brilliant_scientist_enclave_settlement }
+			NOT = { has_country_flag = brilliant_scientist_rebellion_committed }
+			check_variable = {
+				var = brilliant_scientist_formation_territory_route
+				value = constant:brilliant_scientist_territory_route.charter
+				compare = equals
+			}
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_formation_territory_route_enclave
+			has_country_flag = brilliant_scientist_enclave_settlement
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_charter }
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_rebellion }
+			NOT = { has_country_flag = brilliant_scientist_charter_accepted }
+			NOT = { has_country_flag = brilliant_scientist_rebellion_committed }
+			check_variable = {
+				var = brilliant_scientist_formation_territory_route
+				value = constant:brilliant_scientist_territory_route.enclave
+				compare = equals
+			}
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_formation_territory_route_rebellion
+			has_country_flag = brilliant_scientist_rebellion_committed
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_charter }
+			NOT = { has_country_flag = brilliant_scientist_formation_territory_route_enclave }
+			NOT = { has_country_flag = brilliant_scientist_charter_accepted }
+			NOT = { has_country_flag = brilliant_scientist_enclave_settlement }
+			check_variable = {
+				var = brilliant_scientist_formation_territory_route
+				value = constant:brilliant_scientist_territory_route.rebellion
+				compare = equals
+			}
+		}
+	}
+}
+
+# STATE scope. Exactly one planner role is required for every selected state.
+brilliant_scientist_territory_selected_state_has_exact_role = {
+	OR = {
+		AND = {
+			has_state_flag = brilliant_scientist_formation_territory_capital
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_connected_facility }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_multi_site_facility }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_support }
+			brilliant_scientist_territory_state_is_viable_capital = yes
+		}
+		AND = {
+			has_state_flag = brilliant_scientist_formation_territory_connected_facility
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_capital }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_multi_site_facility }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_support }
+			brilliant_scientist_territory_state_has_event_facility = yes
+			any_neighbor_state = {
+				has_state_flag = brilliant_scientist_formation_territory_selected
+			}
+		}
+		AND = {
+			has_state_flag = brilliant_scientist_formation_territory_multi_site_facility
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_capital }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_connected_facility }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_support }
+			brilliant_scientist_territory_state_has_event_facility = yes
+			brilliant_scientist_territory_state_can_support_multi_site_plan = yes
+			ROOT = { has_country_flag = brilliant_scientist_multi_site_network_verified }
+		}
+		AND = {
+			has_state_flag = brilliant_scientist_formation_territory_support
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_capital }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_connected_facility }
+			NOT = { has_state_flag = brilliant_scientist_formation_territory_multi_site_facility }
+			NOT = { brilliant_scientist_territory_state_has_event_facility = yes }
+			brilliant_scientist_territory_state_is_strategic_support = yes
+			is_core_of = ROOT
+			any_neighbor_state = {
+				has_state_flag = brilliant_scientist_formation_territory_selected
+			}
+		}
+	}
+}
+
+# STATE scope. ROOT must remain the former host.
+brilliant_scientist_territory_selected_state_is_current = {
+	has_state_flag = brilliant_scientist_formation_territory_selected
+	brilliant_scientist_territory_state_is_host_candidate = yes
+	brilliant_scientist_territory_selected_state_has_exact_role = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_territory_plan_capital_is_current = {
+	has_event_target = brilliant_scientist_formation_capital_state
+	event_target:brilliant_scientist_formation_capital_state = {
+		has_state_flag = brilliant_scientist_formation_territory_selected
+		has_state_flag = brilliant_scientist_formation_territory_capital
+		brilliant_scientist_territory_selected_state_is_current = yes
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_territory_capital_mark_count
+		value = constant:brilliant_scientist_territory_plan.one
+		compare = equals
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_territory_plan_scopes_are_current = {
+	has_country_flag = brilliant_scientist_formation_territory_scope_scan_valid
+	has_event_target = brilliant_scientist_formation_territory_host
+	event_target:brilliant_scientist_formation_territory_host = { tag = ROOT }
+	brilliant_scientist_territory_plan_capital_is_current = yes
+	NOT = {
+		any_state = {
+			OR = {
+				has_state_flag = brilliant_scientist_formation_territory_selected
+				has_state_flag = brilliant_scientist_formation_territory_capital
+				has_state_flag = brilliant_scientist_formation_territory_connected_facility
+				has_state_flag = brilliant_scientist_formation_territory_multi_site_facility
+				has_state_flag = brilliant_scientist_formation_territory_support
+			}
+			NOT = { brilliant_scientist_territory_selected_state_is_current = yes }
+		}
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_territory_marked_state_count
+		value = brilliant_scientist_formation_selected_state_count
+		compare = equals
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_territory_plan_preserves_host = {
+	brilliant_scientist_territory_plan_host_is_eligible = yes
+	check_variable = {
+		var = brilliant_scientist_formation_host_remaining_state_count
+		value = constant:brilliant_scientist_formation.host_retained_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_host_remaining_core_state_count
+		value = constant:brilliant_scientist_territory_limit.host_retained_core_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_host_remaining_factory_count
+		value = constant:brilliant_scientist_formation.host_retained_factories
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. Route-specific state bounds and factory minima are applied by
+# the three route contracts below.
+brilliant_scientist_territory_plan_meets_common_contract = {
+	brilliant_scientist_territory_plan_scopes_are_current = yes
+	brilliant_scientist_territory_plan_preserves_host = yes
+	brilliant_scientist_territory_plan_route_matches_request = yes
+	brilliant_scientist_project_mode_history_is_coherent = yes
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = brilliant_scientist_formation_target_state_count
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_facility_state_count
+		value = constant:brilliant_scientist_territory_limit.minimum_facility_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_logistics_state_count
+		value = constant:brilliant_scientist_territory_limit.minimum_logistics_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_territory_score
+		value = constant:brilliant_scientist_formation.minimum_territory_score
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_invalid }
+	NOT = { has_global_flag = brilliant_scientist_kruger_state_active }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. A charter is a core-only legal transfer with industry.
+brilliant_scientist_charter_territory_plan_meets_contract = {
+	brilliant_scientist_territory_plan_meets_common_contract = yes
+	has_country_flag = brilliant_scientist_formation_territory_route_charter
+	check_variable = {
+		var = brilliant_scientist_formation_target_state_count
+		value = constant:brilliant_scientist_territory_limit.charter_minimum_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_target_state_count
+		value = constant:brilliant_scientist_territory_limit.charter_maximum_states
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.charter_minimum_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.charter_maximum_states
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_factory_count
+		value = constant:brilliant_scientist_territory_limit.charter_minimum_factories
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_core_state_count
+		value = brilliant_scientist_formation_selected_state_count
+		compare = equals
+	}
+}
+
+# COUNTRY scope. One state is valid when the actual laboratory itself satisfies
+# capital and logistics requirements; a second state is optional support.
+brilliant_scientist_enclave_territory_plan_meets_contract = {
+	brilliant_scientist_territory_plan_meets_common_contract = yes
+	has_country_flag = brilliant_scientist_formation_territory_route_enclave
+	check_variable = {
+		var = brilliant_scientist_formation_target_state_count
+		value = constant:brilliant_scientist_territory_limit.enclave_maximum_states
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.enclave_minimum_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.enclave_maximum_states
+		compare = less_than_or_equals
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_rebellion_territory_plan_meets_contract = {
+	brilliant_scientist_territory_plan_meets_common_contract = yes
+	has_country_flag = brilliant_scientist_formation_territory_route_rebellion
+	check_variable = {
+		var = brilliant_scientist_formation_target_state_count
+		value = constant:brilliant_scientist_territory_limit.rebellion_minimum_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_target_state_count
+		value = constant:brilliant_scientist_territory_limit.rebellion_maximum_states
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.rebellion_minimum_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_limit.rebellion_maximum_states
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_selected_factory_count
+		value = constant:brilliant_scientist_territory_limit.rebellion_minimum_factories
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. Stable snapshot equality detects altered membership or state
+# status between planning and the required immediate pre-formation recheck.
+brilliant_scientist_territory_plan_snapshot_is_current = {
+	check_variable = {
+		var = brilliant_scientist_formation_planned_target_state_count
+		value = brilliant_scientist_formation_target_state_count
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_planned_state_count
+		value = brilliant_scientist_formation_selected_state_count
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_planned_facility_state_count
+		value = brilliant_scientist_formation_facility_state_count
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_planned_territory_score
+		value = brilliant_scientist_formation_territory_score
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_planned_host_remaining_state_count
+		value = brilliant_scientist_formation_host_remaining_state_count
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_planned_host_remaining_core_state_count
+		value = brilliant_scientist_formation_host_remaining_core_state_count
+		compare = equals
+	}
+}
+
+# COUNTRY scope. Stable route-specific verified-plan triggers for decisions,
+# events, and the parent-owned formation effect.
+brilliant_scientist_verified_charter_territory_plan_is_valid = {
+	has_country_flag = brilliant_scientist_formation_territory_prepared
+	has_country_flag = brilliant_scientist_formation_territory_revalidated
+	has_country_flag = brilliant_scientist_formation_territory_verified
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_planning }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_invalid }
+	brilliant_scientist_territory_plan_snapshot_is_current = yes
+	brilliant_scientist_charter_territory_plan_meets_contract = yes
+}
+
+brilliant_scientist_verified_enclave_territory_plan_is_valid = {
+	has_country_flag = brilliant_scientist_formation_territory_prepared
+	has_country_flag = brilliant_scientist_formation_territory_revalidated
+	has_country_flag = brilliant_scientist_formation_territory_verified
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_planning }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_invalid }
+	brilliant_scientist_territory_plan_snapshot_is_current = yes
+	brilliant_scientist_enclave_territory_plan_meets_contract = yes
+}
+
+brilliant_scientist_verified_rebellion_territory_plan_is_valid = {
+	has_country_flag = brilliant_scientist_formation_territory_prepared
+	has_country_flag = brilliant_scientist_formation_territory_revalidated
+	has_country_flag = brilliant_scientist_formation_territory_verified
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_planning }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_invalid }
+	brilliant_scientist_territory_plan_snapshot_is_current = yes
+	brilliant_scientist_rebellion_territory_plan_meets_contract = yes
+}
+
+brilliant_scientist_has_verified_formation_territory_plan = {
+	OR = {
+		brilliant_scientist_verified_charter_territory_plan_is_valid = yes
+		brilliant_scientist_verified_enclave_territory_plan_is_valid = yes
+		brilliant_scientist_verified_rebellion_territory_plan_is_valid = yes
+	}
+}
+
+brilliant_scientist_formation_territory_plan_can_be_committed = {
+	brilliant_scientist_has_verified_formation_territory_plan = yes
+}
+
+# COUNTRY scope. Invalid plans retain only route and reason metadata. Territory
+# state marks and persistent targets must already be absent.
+brilliant_scientist_formation_territory_plan_is_invalid = {
+	has_country_flag = brilliant_scientist_formation_territory_invalid
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_verified }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_prepared }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_revalidated }
+	NOT = { has_country_flag = brilliant_scientist_formation_territory_planning }
+	NOT = { has_event_target = brilliant_scientist_formation_capital_state }
+	NOT = { has_event_target = brilliant_scientist_formation_territory_host }
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_territory_plan.zero
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_territory_invalid_reason
+		value = constant:brilliant_scientist_territory_invalid_reason.none
+		compare = greater_than
+	}
+	NOT = {
+		any_state = {
+			OR = {
+				has_state_flag = brilliant_scientist_formation_territory_selected
+				has_state_flag = brilliant_scientist_formation_territory_capital
+				has_state_flag = brilliant_scientist_formation_territory_connected_facility
+				has_state_flag = brilliant_scientist_formation_territory_multi_site_facility
+				has_state_flag = brilliant_scientist_formation_territory_support
+			}
+		}
+	}
+}
