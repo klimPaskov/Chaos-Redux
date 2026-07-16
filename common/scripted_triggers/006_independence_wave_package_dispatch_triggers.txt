@@ -23,14 +23,16 @@ has_independence_wave_runtime_package_adapter_for_execution_id = {
 # Compile-time content attestations. Every admitted package is listed by its
 # exact immutable package ID after its independent package audit is complete.
 # In the current attested set, IW-001 depends on FORM-01/02, IW-002 and IW-004
-# on FORM-01, and IW-007 on FORM-03. Other package and formable adapters remain
-# dormant until their exact content audits authorize admission.
+# on FORM-01, IW-007 on FORM-03, and IW-010 on FORM-04. Other package and
+# formable adapters remain dormant until their exact content audits authorize
+# admission.
 has_independence_wave_runtime_package_content_attestation_for_execution_id = {
 	OR = {
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_001 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_002 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_004 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_007 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_010 }
 	}
 }
 
@@ -101,6 +103,10 @@ is_independence_wave_scenario_package_preflight_ready = {
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_007 }
 			is_independence_wave_exact_package_iw_007_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_010 }
+			is_independence_wave_exact_package_iw_010_tag_available = yes
 		}
 	}
 }
