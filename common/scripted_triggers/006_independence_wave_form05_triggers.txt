@@ -1,0 +1,510 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-05 MEDITERRANEAN ISLAND LEAGUE TRIGGERS
+# ============================================================================
+# Overview:
+# - Restricts the founding carrier to the live COR, ARX, or ASX Event 006
+#   package while admitting future compatible FORM-05 island packages.
+# - Proves sovereign consent, a usable member port, and a bilateral diplomatic
+#   connection without scanning every country or transferring member states.
+# - Gates every visible surface behind the dedicated FORM-05 asset attestation.
+# ============================================================================
+
+is_independence_wave_form05_member_candidate = {
+	is_independence_wave_active_country = yes
+	is_subject = no
+	has_country_flag = independence_wave_formable_family_registered
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mediterranean_island_league }
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = {
+		is_owned_and_controlled_by = ROOT
+		naval_base > constant:independence_wave_formable_tuning.no_entries
+	}
+}
+
+has_independence_wave_form05_light_convoy_capacity = {
+	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+}
+
+has_independence_wave_form05_standard_convoy_capacity = {
+	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+}
+
+has_independence_wave_form05_light_factory_capacity = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_form05_decision_cost.minimum_available_factory_threshold
+}
+
+# FORM-05 separates the shared material cost from its island-scaled factory
+# assignment. The shared administration trigger otherwise demands two spare
+# factories before a one-factory project may begin.
+can_pay_independence_wave_form05_administration_light_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	has_manpower > constant:independence_wave_decision_cost.manpower_light
+}
+
+# Opening, customs, and proclamation each debit both the light administrative
+# palette and the standard diplomatic palette. The combined gate proves the
+# full Command Power total before either helper can spend it.
+can_pay_independence_wave_form05_combined_administrative_diplomatic_cost = {
+	command_power > constant:independence_wave_form05_decision_cost.combined_command_power
+	has_manpower > constant:independence_wave_decision_cost.manpower_light
+	has_independence_wave_form05_standard_convoy_capacity = yes
+}
+
+# The shared strategic trigger carries a multi-factory gate. FORM-05 retains the
+# full strategic stability, war-support, Command Power, and convoy expenditure
+# while its decision supplies the one-factory island assignment separately.
+can_pay_independence_wave_form05_strategic_cost = {
+	stability > constant:independence_wave_decision_cost.stability_standard
+	war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	has_independence_wave_form05_standard_convoy_capacity = yes
+}
+
+can_pay_independence_wave_form05_proclamation_cost = {
+	stability > constant:independence_wave_decision_cost.stability_standard
+	war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_form05_combined_administrative_diplomatic_cost = yes
+}
+
+has_independence_wave_form05_exact_carrier_anchor = {
+	is_independence_wave_form05_member_candidate = yes
+	OR = {
+		AND = {
+			original_tag = COR
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_017 }
+			check_variable = { independence_wave_anchor_state = 1 }
+			owns_state = 1
+			controls_state = 1
+			capital_scope = { state = 1 }
+		}
+		AND = {
+			original_tag = ARX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_018 }
+			check_variable = { independence_wave_anchor_state = 114 }
+			owns_state = 114
+			controls_state = 114
+			capital_scope = { state = 114 }
+		}
+		AND = {
+			original_tag = ASX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_019 }
+			check_variable = { independence_wave_anchor_state = 115 }
+			owns_state = 115
+			controls_state = 115
+			capital_scope = { state = 115 }
+		}
+	}
+}
+
+has_independence_wave_form05_focus_mandate = {
+	OR = {
+		AND = {
+			original_tag = COR
+			has_country_flag = independence_wave_cor_form05_delegation_ready
+		}
+		AND = {
+			original_tag = ARX
+			has_country_flag = independence_wave_arx_form05_delegation_ready
+		}
+		AND = {
+			original_tag = ASX
+			has_country_flag = independence_wave_asx_form05_delegation_ready
+			has_country_flag = independence_wave_asx_mediterranean_republic_choice
+		}
+	}
+}
+
+has_independence_wave_form05_carrier_mandate = {
+	has_independence_wave_form05_focus_mandate = yes
+	OR = {
+		AND = {
+			original_tag = COR
+			has_country_flag = independence_wave_cor_maritime_congress_prepared
+		}
+		AND = {
+			original_tag = ARX
+			has_country_flag = independence_wave_arx_maritime_congress_prepared
+		}
+		AND = {
+			original_tag = ASX
+			has_country_flag = independence_wave_asx_maritime_congress_prepared
+		}
+	}
+}
+
+is_independence_wave_form05_prospective_carrier = {
+	has_independence_wave_form05_exact_carrier_anchor = yes
+	has_independence_wave_form05_focus_mandate = yes
+	is_independence_wave_recognized_or_later = yes
+	is_independence_wave_regional_power = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_origin_committed
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_form05_autonomous_member }
+}
+
+has_independence_wave_form05_prospective_connected_core_partner = {
+	is_independence_wave_form05_prospective_carrier = yes
+	OR = {
+		COR = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ARX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ASX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+	}
+}
+
+can_independence_wave_form05_prepare_carrier_mandate = {
+	is_independence_wave_form05_prospective_carrier = yes
+	has_independence_wave_form05_prospective_connected_core_partner = yes
+	NOT = { has_independence_wave_form05_carrier_mandate = yes }
+	NOT = { has_global_flag = independence_wave_form05_charter_in_progress }
+	NOT = { has_global_flag = independence_wave_form05_charter_recovery }
+	NOT = { has_global_flag = independence_wave_form05_mix_identity_in_use }
+	NOT = { has_independence_wave_active_formable_operation = yes }
+}
+
+is_independence_wave_form05_eligible_carrier = {
+	has_independence_wave_form05_exact_carrier_anchor = yes
+	has_independence_wave_form05_carrier_mandate = yes
+	is_independence_wave_recognized_or_later = yes
+	is_independence_wave_regional_power = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_origin_committed
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_form05_autonomous_member }
+}
+
+# Candidate-country scope with ROOT as the prospective or active carrier.
+has_independence_wave_form05_maritime_connection_to_root = {
+	exists = yes
+	is_independence_wave_form05_member_candidate = yes
+	NOT = { has_war_with = ROOT }
+	OR = {
+		tag = ROOT
+		is_in_faction_with = ROOT
+		has_non_aggression_pact_with = ROOT
+		has_military_access_to = ROOT
+		gives_military_access_to = ROOT
+		has_guaranteed = ROOT
+		is_guaranteed_by = ROOT
+	}
+}
+
+has_independence_wave_form05_connected_core_partner = {
+	is_independence_wave_form05_eligible_carrier = yes
+	OR = {
+		COR = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ARX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ASX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+	}
+}
+
+is_independence_wave_form05_active_charter_carrier = {
+	has_country_flag = independence_wave_form05_charter_active
+	has_country_flag = independence_wave_form05_league_carrier
+	has_global_flag = independence_wave_form05_charter_in_progress
+	OR = {
+		AND = { original_tag = COR has_global_flag = independence_wave_form05_cor_carrier }
+		AND = { original_tag = ARX has_global_flag = independence_wave_form05_arx_carrier }
+		AND = { original_tag = ASX has_global_flag = independence_wave_form05_asx_carrier }
+	}
+}
+
+has_independence_wave_form05_reserved_opening = {
+	has_country_flag = independence_wave_form05_charter_opening_reserved
+	has_global_flag = independence_wave_form05_charter_in_progress
+	OR = {
+		AND = { original_tag = COR has_global_flag = independence_wave_form05_cor_carrier }
+		AND = { original_tag = ARX has_global_flag = independence_wave_form05_arx_carrier }
+		AND = { original_tag = ASX has_global_flag = independence_wave_form05_asx_carrier }
+	}
+}
+
+has_independence_wave_form05_active_carrier_connection = {
+	OR = {
+		COR = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ARX = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ASX = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+	}
+}
+
+# Country scope. Before proclamation the MIX identity must still be free. Once
+# the league exists, the exact carrier and its recorded sovereign members keep
+# access through their live, diplomatically connected post-formation carrier.
+# This avoids a mutable "assets ready" switch while keeping every visible
+# FORM-05 surface tied to the same audited family-readiness contract installed
+# by the package adapter.
+has_independence_wave_form05_live_post_formation_carrier_connection = {
+	has_country_flag = independence_wave_form05_autonomous_member
+	OR = {
+		AND = {
+			has_country_flag = independence_wave_form05_member_of_cor_carrier
+			COR = {
+				is_independence_wave_form05_post_formation_carrier = yes
+				has_independence_wave_form05_maritime_connection_to_root = yes
+			}
+		}
+		AND = {
+			has_country_flag = independence_wave_form05_member_of_arx_carrier
+			ARX = {
+				is_independence_wave_form05_post_formation_carrier = yes
+				has_independence_wave_form05_maritime_connection_to_root = yes
+			}
+		}
+		AND = {
+			has_country_flag = independence_wave_form05_member_of_asx_carrier
+			ASX = {
+				is_independence_wave_form05_post_formation_carrier = yes
+				has_independence_wave_form05_maritime_connection_to_root = yes
+			}
+		}
+	}
+}
+
+has_independence_wave_form05_runtime_readiness = {
+	has_country_flag = independence_wave_formable_family_registered
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mediterranean_island_league }
+	has_variable = independence_wave_formable_readiness_family
+	check_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.mediterranean_island_league }
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_x_tag_reserved
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+	has_country_flag = independence_wave_formable_integration_adapter_ready
+	has_country_flag = independence_wave_formable_member_policy_audited
+	has_country_flag = independence_wave_form05_readiness_attested
+	OR = {
+		NOT = { has_global_flag = independence_wave_form05_mix_identity_in_use }
+		is_independence_wave_form05_post_formation_carrier = yes
+		has_independence_wave_form05_live_post_formation_carrier_connection = yes
+	}
+}
+
+can_independence_wave_form05_open_charter = {
+	has_independence_wave_form05_runtime_readiness = yes
+	is_independence_wave_form05_eligible_carrier = yes
+	has_independence_wave_form05_connected_core_partner = yes
+	NOT = { has_global_flag = independence_wave_form05_charter_in_progress }
+	NOT = { has_global_flag = independence_wave_form05_charter_recovery }
+	NOT = { has_global_flag = independence_wave_form05_mix_identity_in_use }
+	NOT = { has_country_flag = independence_wave_form05_charter_active }
+	NOT = { has_idea = independence_wave_form05_charter_breakdown }
+}
+
+can_independence_wave_form05_reopen_charter = {
+	has_independence_wave_form05_runtime_readiness = yes
+	is_independence_wave_form05_eligible_carrier = yes
+	has_independence_wave_form05_connected_core_partner = yes
+	has_idea = independence_wave_form05_charter_breakdown
+	NOT = { has_global_flag = independence_wave_form05_charter_in_progress }
+	NOT = { has_global_flag = independence_wave_form05_charter_recovery }
+	NOT = { has_global_flag = independence_wave_form05_mix_identity_in_use }
+}
+
+can_independence_wave_form05_answer_invitation = {
+	has_independence_wave_form05_runtime_readiness = yes
+	is_independence_wave_form05_member_candidate = yes
+	has_country_flag = independence_wave_form05_charter_invited
+	has_independence_wave_form05_active_carrier_connection = yes
+	NOT = { has_country_flag = independence_wave_form05_response_accepted }
+	NOT = { has_country_flag = independence_wave_form05_response_withheld }
+	NOT = { has_country_flag = independence_wave_form05_league_carrier }
+}
+
+# Candidate-country scope with ROOT as the charter carrier. This is the exact
+# action-time consent proof used before the league identity is applied.
+has_independence_wave_form05_consent_for_root = {
+	is_independence_wave_form05_member_candidate = yes
+	has_country_flag = independence_wave_form05_response_accepted
+	OR = {
+		tag = ROOT
+		AND = { ROOT = { original_tag = COR } has_country_flag = independence_wave_form05_invited_by_cor }
+		AND = { ROOT = { original_tag = ARX } has_country_flag = independence_wave_form05_invited_by_arx }
+		AND = { ROOT = { original_tag = ASX } has_country_flag = independence_wave_form05_invited_by_asx }
+	}
+	OR = {
+		tag = ROOT
+		has_independence_wave_form05_maritime_connection_to_root = yes
+	}
+}
+
+has_independence_wave_form05_minimum_live_consent = {
+	is_independence_wave_form05_active_charter_carrier = yes
+	check_variable = {
+		var = independence_wave_form05_consent_count
+		value = constant:independence_wave_formable_registry.mediterranean_island_league.minimum_consents
+		compare = greater_than_or_equals
+	}
+	OR = {
+		COR = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_consent_for_root = yes
+		}
+		ARX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_consent_for_root = yes
+		}
+		ASX = {
+			NOT = { tag = ROOT }
+			has_independence_wave_form05_consent_for_root = yes
+		}
+	}
+}
+
+has_independence_wave_form05_active_progression = {
+	OR = {
+		has_country_flag = independence_wave_form05_charter_active
+		has_country_flag = independence_wave_form05_league_carrier
+		has_country_flag = independence_wave_form05_autonomous_member
+		has_country_flag = independence_wave_form05_recovery_active
+		has_idea = independence_wave_form05_charter_breakdown
+	}
+}
+
+is_independence_wave_form05_post_formation_carrier = {
+	has_country_flag = independence_wave_form05_league_carrier
+	has_country_flag = independence_wave_form05_post_formation_active
+	has_country_flag = independence_wave_form05_charter_ratified
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_global_flag = independence_wave_form05_mix_identity_in_use
+	has_cosmetic_tag = MIX
+	OR = {
+		original_tag = COR
+		original_tag = ARX
+		original_tag = ASX
+	}
+}
+
+# Carrier-country scope. The first maritime board is valid only while at least
+# one other sovereign founding member remains alive, autonomous, and connected.
+has_independence_wave_form05_live_autonomous_member = {
+	is_independence_wave_form05_post_formation_carrier = yes
+	OR = {
+		COR = {
+			NOT = { tag = ROOT }
+			has_country_flag = independence_wave_form05_autonomous_member
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ARX = {
+			NOT = { tag = ROOT }
+			has_country_flag = independence_wave_form05_autonomous_member
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+		ASX = {
+			NOT = { tag = ROOT }
+			has_country_flag = independence_wave_form05_autonomous_member
+			has_independence_wave_form05_maritime_connection_to_root = yes
+		}
+	}
+}
+
+has_independence_wave_form05_open_first_board_session = {
+	is_independence_wave_form05_post_formation_carrier = yes
+	has_active_mission = independence_wave_form05_complete_first_maritime_board
+	NOT = { has_country_flag = independence_wave_form05_first_board_deadline_failed }
+	NOT = { has_country_flag = independence_wave_form05_first_stage_complete }
+}
+
+has_independence_wave_form05_first_stage_integration = {
+	has_independence_wave_form05_open_first_board_session = yes
+	has_country_flag = independence_wave_form05_shipping_board_complete
+	has_country_flag = independence_wave_form05_coastal_warning_complete
+	has_country_flag = independence_wave_form05_customs_clearinghouse_complete
+	check_variable = { var = independence_wave_form05_shipping value = constant:independence_wave_form05_integration_value.completion_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_defense value = constant:independence_wave_form05_integration_value.completion_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_customs value = constant:independence_wave_form05_integration_value.completion_threshold compare = greater_than_or_equals }
+	has_independence_wave_form05_live_autonomous_member = yes
+}
+
+has_independence_wave_form05_active_project = {
+	OR = {
+		has_decision = independence_wave_form05_petition_maritime_congress
+		has_decision = independence_wave_form05_chart_convoy_guarantees
+		has_decision = independence_wave_form05_ratify_common_defense_protocol
+		has_decision = independence_wave_form05_conclude_customs_convention
+		has_decision = independence_wave_form05_settle_congress_seat
+		has_decision = independence_wave_form05_proclaim_island_league
+		has_decision = independence_wave_form05_reopen_maritime_congress
+		has_decision = independence_wave_form05_establish_common_shipping_board
+		has_decision = independence_wave_form05_link_coastal_warning_stations
+		has_decision = independence_wave_form05_open_customs_clearinghouse
+		has_decision = independence_wave_form05_ratify_first_maritime_board
+		has_decision = independence_wave_form05_reconvene_first_maritime_board
+	}
+}
+
+has_independence_wave_form05_capital_compromise = {
+	is_independence_wave_form05_active_charter_carrier = yes
+	has_country_flag = independence_wave_form05_shipping_article_complete
+	has_country_flag = independence_wave_form05_defense_article_complete
+	has_country_flag = independence_wave_form05_customs_article_complete
+	check_variable = { var = independence_wave_form05_shipping value = constant:independence_wave_form05_progression.compromise_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_defense value = constant:independence_wave_form05_progression.compromise_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_customs value = constant:independence_wave_form05_progression.compromise_threshold compare = greater_than_or_equals }
+	has_independence_wave_form05_minimum_live_consent = yes
+}
+
+has_independence_wave_form05_first_charter_stage = {
+	is_independence_wave_form05_active_charter_carrier = yes
+	has_country_flag = independence_wave_form05_maritime_congress_opened
+	has_country_flag = independence_wave_form05_capital_settled
+	has_country_flag = independence_wave_form05_shipping_article_complete
+	has_country_flag = independence_wave_form05_defense_article_complete
+	has_country_flag = independence_wave_form05_customs_article_complete
+	check_variable = { var = independence_wave_form05_shipping value = constant:independence_wave_form05_progression.first_stage_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_defense value = constant:independence_wave_form05_progression.first_stage_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_form05_customs value = constant:independence_wave_form05_progression.first_stage_threshold compare = greater_than_or_equals }
+	has_independence_wave_form05_minimum_live_consent = yes
+}
+
+can_independence_wave_form05_proclaim_league = {
+	has_independence_wave_form05_runtime_readiness = yes
+	has_independence_wave_form05_first_charter_stage = yes
+	NOT = { has_global_flag = independence_wave_form05_mix_identity_in_use }
+}
+
+has_independence_wave_form05_active_carrier_host_threat = {
+	OR = {
+		COR = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_severe_host_threat = yes
+		}
+		ARX = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_severe_host_threat = yes
+		}
+		ASX = {
+			is_independence_wave_form05_active_charter_carrier = yes
+			has_independence_wave_severe_host_threat = yes
+		}
+	}
+}

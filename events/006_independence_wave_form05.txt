@@ -1,0 +1,151 @@
+add_namespace = chaosx.nr6
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-05 MEDITERRANEAN ISLAND LEAGUE
+# ============================================================================
+# IDs chaosx.nr6.28 through chaosx.nr6.34 are reserved for this charter and its
+# post-formation first maritime board.
+# Every event is triggered by a dedicated FORM-05 decision or lifecycle effect.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr6.28
+	title = chaosx.nr6.28.t
+	desc = chaosx.nr6.28.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.28.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.29
+	title = chaosx.nr6.29.t
+	desc = chaosx.nr6.29.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.29.a
+		trigger = { has_independence_wave_form05_capital_compromise = yes }
+		independence_wave_form05_choose_rotating_congress = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				has_independence_wave_constitutional_route = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.29.b
+		trigger = { has_independence_wave_form05_capital_compromise = yes }
+		independence_wave_form05_choose_permanent_secretariat = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				has_independence_wave_traditional_route = yes
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				has_independence_wave_emergency_military_route = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.30
+	title = chaosx.nr6.30.t
+	desc = chaosx.nr6.30.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.30.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.31
+	title = chaosx.nr6.31.t
+	desc = chaosx.nr6.31.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.31.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.32
+	title = chaosx.nr6.32.t
+	desc = chaosx.nr6.32.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_form05_post_formation_carrier = yes
+		NOT = { has_country_flag = independence_wave_form05_first_stage_complete }
+	}
+
+	option = {
+		name = chaosx.nr6.32.a
+		independence_wave_form05_prioritize_shipping_board = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_constitutional_route = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.32.b
+		independence_wave_form05_prioritize_warning_chain = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.33
+	title = chaosx.nr6.33.t
+	desc = chaosx.nr6.33.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_form05_first_stage_complete }
+
+	option = {
+		name = chaosx.nr6.33.a
+		custom_effect_tooltip = chaosx.nr6.33.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.34
+	title = chaosx.nr6.34.t
+	desc = chaosx.nr6.34.d
+	picture = GFX_report_event_independence_wave_form05_charter_congress
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_form05_first_board_deadline_failed }
+
+	option = {
+		name = chaosx.nr6.34.a
+		independence_wave_form05_recover_shipping_ledger = yes
+		ai_chance = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	option = {
+		name = chaosx.nr6.34.b
+		independence_wave_form05_recover_warning_ledger = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+}

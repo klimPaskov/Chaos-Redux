@@ -56,6 +56,17 @@ Use this skill for:
 - sprite sheets and GIF previews for review
 - any other static or animated visual asset required by a Chaos Redux event or mechanic
 
+Asset-type coverage is authorization-bounded. Do not infer a custom asset only
+because the corresponding gameplay object exists. In particular, an advisor,
+theorist, high-command, or officer-corps character definition does not by
+itself authorize a dossier portrait. Create that asset family only when an
+accepted spec row, asset manifest row, or explicit user instruction requests
+it. Otherwise leave the character portraitless, record the dossier asset as
+`not_needed` when a coverage ledger includes it, and do not generate, process,
+register, or retain event-scoped advisor art. Apply the same rule to optional
+portraits, route emblems, animation, and other asset families not present in
+the accepted requirement set.
+
 Use this skill when the user asks the agent to create, source, process, or wire final visual assets.
 
 Use this skill when the implementation task includes generated, sourced, or user-provided PNG files that must be turned into HOI4-ready assets.
