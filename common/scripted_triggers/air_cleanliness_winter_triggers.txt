@@ -371,6 +371,13 @@ air_winter_presentation_is_highland = {
 	check_variable = { air_winter_presentation_class = constant:air_winter_presentation_class.mountain_highland }
 }
 
+# Supported scope: STATE. This classifier is used only when the typed Phase 2
+# route is selected. A delayed first-frost dispatch keeps that frozen identity.
+air_winter_event_is_mountain_capital = {
+	air_winter_presentation_is_highland = yes
+	is_capital = yes
+}
+
 air_winter_presentation_is_oceanic = {
 	check_variable = { air_winter_presentation_class = constant:air_winter_presentation_class.island_oceanic }
 }
@@ -703,6 +710,62 @@ air_winter_event_is_reactor_state = {
 		non_damaged_building_level = { building = nuclear_reactor level > constant:air_winter_runtime.zero }
 		non_damaged_building_level = { building = nuclear_reactor_heavy_water level > constant:air_winter_runtime.zero }
 		non_damaged_building_level = { building = commercial_nuclear_reactor level > constant:air_winter_runtime.zero }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_tunnel_civic_succeeds = {
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.tunnel_civic_pressure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.tunnel_civic_disease_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_tunnel_civic_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.tunnel_civic_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_disease_pressure
+		value = constant:air_winter_event_outcome.tunnel_civic_ai_disease_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_tunnel_cellars_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.tunnel_cellars_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_event_outcome.tunnel_cellars_exposure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_tunnel_cellars_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.tunnel_cellars_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_exposure
+		value = constant:air_winter_event_outcome.tunnel_cellars_ai_exposure_ceiling
+		compare = less_than_or_equals
 	}
 }
 
@@ -1240,6 +1303,7 @@ air_winter_first_frost_marker_is_valid = {
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_coast }
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_arid }
 		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_highland }
+		check_variable = { air_winter_first_frost_origin_event_id = constant:air_winter_event_id.phase_2_mountain_capital }
 	}
 	is_owned_by = var:air_winter_first_frost_origin_owner
 	OWNER = {
@@ -1419,6 +1483,7 @@ air_winter_event_candidate_is_ordinary_phase = {
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_coast }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_arid }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_highland }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_mountain_capital }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_transport }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_dam }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_clinics }
@@ -1548,6 +1613,9 @@ air_winter_event_candidate_is_dispatchable = {
 air_winter_event_has_pending_chain = {
 	OR = {
 		has_state_flag = air_winter_deep_water_patrol
+		has_state_flag = air_winter_tunnel_chain_civic
+		has_state_flag = air_winter_tunnel_chain_shifts
+		has_state_flag = air_winter_tunnel_chain_cellars
 		has_state_flag = air_winter_route_chain_rail
 		has_state_flag = air_winter_route_chain_roads
 		has_state_flag = air_winter_route_chain_abandoned

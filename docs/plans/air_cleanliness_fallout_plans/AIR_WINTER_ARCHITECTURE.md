@@ -159,6 +159,7 @@ Primary effects:
 - rural population health pressure
 - reduced local resources or food abstractions where supported
 - increased relief demand
+- protected civic shelter with temporary factory diversion in mountain capitals
 
 Flavour families:
 
@@ -166,6 +167,7 @@ Flavour families:
 - livestock and seed reserve losses
 - rural migration
 - rationing disputes
+- tunnel classrooms and shared workshop schedules
 
 ### Phase 3
 
@@ -428,6 +430,8 @@ The implemented seasonal families are:
 Country receipts make each family at most once for its recorded year. Nine regional severe-year memories seed the first severe year and advance only after a validated later-year second-winter dispatch. Prior-year markers remain valid when their receipt is still earlier than the marker year. No seasonal family adds a world iterator. Full ordering, cleanup, and engine-boundary proof is recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
 The implemented Phase 3 infrastructure layer adds dam, oil or refinery, and reactor routes inside the ordinary family. Route precedence applies within the selected state. The country still chooses one candidate by family priority, origin cycle, phase and pressure score, then state id, and the Phase 3 seen flag permits one ordinary Phase 3 route per country. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`.
+
+The implemented Phase 2 mountain-capital route checks the selected state for highland presentation and current capital identity before the generic city route. The typed event id preserves that selection if a first-frost marker dispatches after the capital moves. Its delayed result trades temporary local factory availability for shelter, adaptation, and a durable 10 percent reduction in the established monthly Air Winter civilian death percentage. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
 Player priority:
 

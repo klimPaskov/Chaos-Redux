@@ -146,6 +146,8 @@ Pastoral states become wasteland only after a sustained phase 6. Enclaves, islan
 
 Phase 3 through 6 population losses use the shared exact state civilian-loss helper. The request is based on current state population and the phase rate, then modified by exposure, food, shelter, infrastructure, occupation, and adaptation. Applied losses enter the shared Deaths system with reason `constant:chaos_meter_deaths_reason.air_winter_exposure`.
 
+A successful mountain-capital tunnel-school result writes durable state protection. After the normal monthly winter calculation, that state uses 90 percent of the resulting civilian death percentage. This makes the accepted population-loss benefit exact even when the shelter gain does not cross the separate low-shelter threshold.
+
 Death reason 17 is integrated into the reason schema, country cause totals, detail arrays, sorting, map views, and localisation. Event-specific Air Winter losses use the same exact helper and reason. The monthly and event paths both stop population loss when `settings_chaos_deaths_disabled` is active, matching the player-facing Deaths setting.
 
 ### Operations and response decisions
@@ -160,23 +162,23 @@ The abandonment vote fires `chaosx.fallout.201`. Mass decontamination fires `cha
 
 ## Event pilot and scheduler
 
-`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 41 manually authored event blocks:
+`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 43 manually authored event blocks:
 
-- 38 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
+- 40 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
 - 2 terminal response result blocks for abandonment and decontamination.
 - 1 stale-choice recovery block.
 
-The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, hydroelectric dams, oil and synthetic refineries, reactors, government continuity, recovery, and several delayed deterministic results. The Phase 3 infrastructure chains use state oil output, repairable building damage, state energy demand, the country energy ratio, low reactor-accident fallout, and civilian losses through the Deaths system. The recurring seasonal layer records first frost, dark harvest, ash thaw, second winter, and terminal season. Event text uses state names and government-aware authority terms.
+The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, mountain-capital tunnel schools, hydroelectric dams, oil and synthetic refineries, reactors, government continuity, recovery, and several delayed deterministic results. The tunnel-school chain trades temporary local factory availability for shelter and a durable Deaths reduction. The Phase 3 infrastructure chains use state oil output, repairable building damage, state energy demand, the country energy ratio, low reactor-accident fallout, and civilian losses through the Deaths system. The recurring seasonal layer records first frost, dark harvest, ash thaw, second winter, and terminal season. Event text uses state names and government-aware authority terms.
 
 `air_winter_event_prepare_candidate_cycle` snapshots the documented current engine year once when the existing monthly cycle opens. `air_winter_schedule_phase_event` then runs from the existing monthly state update. Before the country cooldown gate, it can freeze a complete state marker for each of the five seasonal families. A marker records origin year, origin cycle, origin owner, presentation class, score, and typed event id. Markers remain eligible across cooldowns and year boundaries until a validated dispatch consumes them.
 
 The owning country records one deterministic candidate through typed family priority, earliest origin cycle, highest frozen score, and lowest state id. The bounded post-pass owner array dispatches one event per eligible country, applies a 46-day cooldown, preserves the existing one-recovery-arc cap, and uses reviewed regional routing. Annual country receipts prevent a seasonal family from firing twice for the same recorded year. Second winter also uses nine presentation-class memories. The first severe year seeds that regional memory, while a later severe year can create the recurring event. The regional year advances only after a validated second-winter dispatch.
 
-First frost reuses the five Phase 2 regional routes. Dark harvest reuses the food-collapse opening and result. Ash thaw reuses the recovery opening and result. Terminal season reuses the Phase 6 terminal incident and its delayed result. Second winter uses the dedicated `chaosx.fallout.60` choice event and deterministic `chaosx.fallout.61` result. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event id. No second country-wide or state-wide iterator is introduced.
+First frost reuses six Phase 2 routes, including the exact mountain-capital route. Dark harvest reuses the food-collapse opening and result. Ash thaw reuses the recovery opening and result. Terminal season reuses the Phase 6 terminal incident and its delayed result. Second winter uses the dedicated `chaosx.fallout.60` choice event and deterministic `chaosx.fallout.61` result. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event id. No second country-wide or state-wide iterator is introduced.
 
 Delayed events retain their originating state target through the event chain. Their event triggers require the saved state to remain owned by the saved country and require a live branch flag. When the generic pending flag exists, target validation also requires the stored original owner. State reset, ownership change, Fallout transition, or active Fallout cancels or invalidates the branch. The existing Fallout snapshot pass freezes the Air Winter row before cancelling pending branches and their temporary modifiers. Country phase memories, cooldown flags, and recovery counts are cleared separately through `air_winter_reset_country`.
 
-This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`. The seasonal marker and annual receipt proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
+This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`. The seasonal marker and annual receipt proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`. The mountain-capital route, industry, Deaths, and ownership proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
 ## Map modes and normal-map proof
 
@@ -234,6 +236,8 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 
 The refinery-output and reactor-power dynamic modifiers both use `GFX_air_winter_phase_3`. No additional modifier icon is required for the infrastructure tranche.
 
+The two tunnel-school industry modifiers use `GFX_air_winter_phase_2`, and both tunnel-school event blocks use `GFX_report_event_air_winter_phase_2`. No additional icon, report image, sprite definition, or runtime path is required for the mountain-capital tranche.
+
 Sources, processed PNGs, contact sheets, provenance, and handoffs live under `docs/assets/air_cleanliness_fallout/`. The central manifest is `docs/assets/air_cleanliness_fallout/manifest.md`.
 
 ## Cleanup and reset
@@ -277,7 +281,7 @@ Implemented in the Air Winter tranche:
 - A paid secretariat Verification Mission that offers full access, records-only access, or refusal, then returns an exact seven-day result with government-aware AI and durable memory. Refusal enforces the accepted treaty expulsion, relief-loss, opinion, and embargo consequences without changing Winter or Fallout tuning formulas.
 - Invalid treaty routes reconcile before the monthly state pressure pass. Membership loss, annexation, dissolution, and Fallout release active donor projects and exact state reservations through bounded receipts.
 - Membership loss, war, founder succession, annexation, dissolution, schema migration, and Fallout release paired inspection receipts through a separate bounded cancellation queue.
-- Forty-one manually authored Air Winter pilot events, including five durable seasonal recurrence families and three Phase 3 infrastructure chains.
+- Forty-three manually authored Air Winter pilot events, including five durable seasonal recurrence families, the mountain-capital tunnel-school chain, and three Phase 3 infrastructure chains.
 - Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
 - Dedicated modifier, report-event, map-mode, and response-decision assets.
 - Dedicated nine-class regional ground, two-channel weather, vegetation, frozen-water, and thaw assets with a synchronized five-slot lifecycle.
