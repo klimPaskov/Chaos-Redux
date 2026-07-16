@@ -565,7 +565,7 @@ No new animated asset is specified. If a later accepted design adds animation, i
 | `common/scripted_effects/006_independence_wave_wallonia_frisia_package_effects.txt` | Preserve package lifecycles and expose the existing AFX or AGX project-value hooks only |
 | `common/scripted_triggers/006_independence_wave_wallonia_frisia_package_triggers.txt` | Reuse stable continuity and waterline checks in project AI |
 | `docs/systems/006_independence_wave_formable_registry.md` | Document post-charter state machine and runtime completion flag |
-| `docs/006_independence_wave_wallonia_frisia_packages.md` | Document AFX and AGX interaction with LCX projects |
+| `docs/events/006_independence_wave/northern_western_europe_packages.md` | Document AFX and AGX interaction with LCX projects |
 | `docs/events/006_independence_wave.md` | Document events, decisions, focus branch, member behavior, and failure outcomes |
 | `docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv` | Mark the accepted progression implemented only after audit |
 | `docs/specs/006_independence_wave_specs/matrices/006_decision_mission_map.csv` | Register the FORM-03 action family after parent accepts identifier rows |

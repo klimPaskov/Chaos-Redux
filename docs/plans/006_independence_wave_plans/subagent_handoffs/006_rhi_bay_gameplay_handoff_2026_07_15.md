@@ -20,7 +20,7 @@ No Git commit was created.
 - `common/decisions/006_independence_wave_rhineland_bavaria_decisions.txt`
 - `common/ai_strategy/006_independence_wave_rhineland_bavaria.txt`
 - `localisation/english/006_independence_wave_rhineland_bavaria_l_english.yml`
-- `docs/006_independence_wave_rhineland_bavaria_packages.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_rhi_bay_gameplay_handoff_2026_07_15.md`
 
 No shared allocator, reservation, registry, dispatcher, tag history, vanilla character, formable, event, or interface file was edited by this subtask.

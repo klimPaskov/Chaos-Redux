@@ -110,7 +110,7 @@ The existing major security cost remains. Neither action tests, publishes, or in
 - `common/scripted_triggers/006_independence_wave_rhineland_bavaria_package_triggers.txt`
 - `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`
 - `localisation/english/006_independence_wave_rhineland_bavaria_l_english.yml`
-- `docs/006_independence_wave_rhineland_bavaria_packages.md`
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_2_event_flow_and_evolutions.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_rhi_bay_gameplay_handoff_2026_07_15.md`
 - this handoff

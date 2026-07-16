@@ -44,7 +44,7 @@ PNG, and has fully transparent corners.
 ## Documentation synchronized by this asset tranche
 
 - `docs/assets/006_independence_wave/manifest.md`;
-- `docs/006_independence_wave_saar_package.md`;
+- `docs/events/006_independence_wave/northern_western_europe_packages.md`;
 - this package's `manifest.md`, `gfx_handoff.md`, metadata JSON records,
   validation JSON, checksum ledger, and this handoff.
 
