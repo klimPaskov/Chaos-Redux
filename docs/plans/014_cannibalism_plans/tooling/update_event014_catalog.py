@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Align Event 014 and SCN-010 with the live implementation/localisation."""
 
+import subprocess
+import sys
 from copy import copy
 from pathlib import Path
 
@@ -88,6 +90,15 @@ def main() -> None:
 	workbook.calculation.forceFullCalc = True
 	workbook.calculation.calcMode = "auto"
 	workbook.save(WORKBOOK)
+	subprocess.run(
+		[
+			sys.executable,
+			str(ROOT / ".tools" / "export_event_catalog_csv.py"),
+			"--workbook",
+			str(WORKBOOK),
+		],
+		check=True,
+	)
 	print(f"Updated Event 014 at Events!A15:M15 and SCN-010 at Scenarios!A10:F10 in {WORKBOOK}")
 
 

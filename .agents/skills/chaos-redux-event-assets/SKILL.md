@@ -103,7 +103,7 @@ Asset subagents may create:
 
 Asset subagents must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, scripted effect, scripted trigger, on_action, history, country, or spreadsheet files unless the parent explicitly grants that scope.
 
-The main agent owns final `.gfx` sprite definitions, gameplay references, docs alignment, spreadsheet alignment, and validation.
+The main agent owns final `.gfx` sprite definitions, gameplay references, docs alignment, spreadsheet alignment, and validation. When an asset change requires catalog alignment, update only the authoritative XLSX and run `python .tools/export_event_catalog_csv.py`; the three CSV files are export-only and must not be edited directly.
 
 A good parent prompt to an asset subagent includes the event id, asset list, asset type, target size, source mode, final DDS folder, sprite name if already registered, reference folder, visual direction, source constraints, and anything the subagent must mark blocked instead of substituting.
 

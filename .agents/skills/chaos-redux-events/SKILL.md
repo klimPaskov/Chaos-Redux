@@ -613,6 +613,10 @@ Maintain the gameplay-facing event table in:
 Rules:
 
 - use the `xlsx` skill
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable catalog source
+- after every successful workbook save, run `python .tools/export_event_catalog_csv.py` from the mod root
+- the exporter overwrites `chaos_redux_events_catalog.csv`, `chaos_redux_clusters_catalog.csv`, and `chaos_redux_scenarios_catalog.csv`
+- treat those CSVs as export-only read-only snapshots and never edit them directly
 - write for players, not script readers
 - don't put effects into descriptions
 - focus on what happens in play
@@ -733,7 +737,7 @@ Before closing an event task, verify:
 11. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
 12. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
 13. `docs/events/` is updated.
-14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
+14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
 15. If assets are required, `chaos-redux-event-assets` has been used.
 16. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
 17. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.

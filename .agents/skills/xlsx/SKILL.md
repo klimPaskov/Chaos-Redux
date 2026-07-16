@@ -156,6 +156,22 @@ This applies to ALL calculations - totals, percentages, ratios, differences, etc
      - `#VALUE!`: Wrong data type in formula
      - `#NAME?`: Unrecognized formula name
 
+### Chaos Redux event catalog export contract
+
+For the Chaos Redux event catalog, `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable source of truth. Never update an exported CSV directly. After every successful workbook save, run the repository exporter from the mod root:
+
+```bash
+python .tools/export_event_catalog_csv.py
+```
+
+The exporter overwrites these three export-only snapshots from the `Events`, `Clusters`, and `Scenarios` sheets:
+
+- `docs/spreadsheets/chaos_redux_events_catalog.csv`
+- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`
+- `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`
+
+If the workbook uses formulas, recalculate it before exporting. Treat the CSVs as read-only outputs for inspection, handoffs, and tooling. If an export fails, fix the workbook or dependency issue and rerun the exporter. Do not patch a CSV to compensate.
+
 ### Creating new Excel files
 
 ```python
