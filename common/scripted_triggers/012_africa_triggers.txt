@@ -132,23 +132,191 @@ africa_is_compact_host_playbook_country = {
 	}
 }
 
+# COUNTRY scope during the fire-once selection pass. A candidate host is only
+# valid when its mapped overlay contains another real African-rooted government.
+# This is a one-shot selection query, not a recurring world scan.
+africa_has_prefire_opening_contact = {
+	OR = {
+		AND = {
+			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
+			}
+		}
+		AND = {
+			OR = {
+				original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+				original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+				has_country_flag = africa_host_signature_sao_tome
+			}
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = {
+					original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+					original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+					original_tag = MLI original_tag = VOL
+					has_country_flag = africa_host_signature_sao_tome
+				}
+			}
+		}
+		AND = {
+			OR = { original_tag = MLI original_tag = NGR original_tag = VOL original_tag = CHA }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR }
+			}
+		}
+		AND = {
+			OR = { original_tag = ETH original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN }
+			}
+		}
+		AND = {
+			OR = { original_tag = COG original_tag = ANG original_tag = RCG original_tag = CMR original_tag = GAB original_tag = EQG }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM }
+			}
+		}
+		AND = {
+			OR = { original_tag = UGA original_tag = RWA original_tag = BRD }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
+			}
+		}
+		AND = {
+			OR = { original_tag = KEN original_tag = TZN original_tag = MZB original_tag = ELX }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD }
+			}
+		}
+		AND = {
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = BOT original_tag = HZX original_tag = EUX }
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG }
+			}
+		}
+		AND = {
+			OR = {
+				original_tag = MAD original_tag = FBX original_tag = FAX
+				has_country_flag = africa_host_signature_seychelles
+				has_country_flag = africa_host_signature_reunion
+			}
+			any_country = {
+				africa_is_valid_relationship_target = yes
+				NOT = { tag = PREV }
+				OR = {
+					original_tag = MAD original_tag = FAX original_tag = FBX original_tag = ELX
+					has_country_flag = africa_host_signature_seychelles
+					has_country_flag = africa_host_signature_reunion
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a prospective contact. The selected candidate host is saved
+# as africa_prefire_host_candidate. Every accepted playbook is explicitly
+# assigned to one controlled regional pool; several playbooks intentionally
+# share the same geography, but none reaches this trigger through an else case.
+africa_matches_prefire_host_contact_pool = {
+	has_event_target = africa_prefire_host_candidate
+	OR = {
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT }
+			}
+			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = {
+					original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+					original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+					has_country_flag = africa_host_signature_sao_tome
+				}
+			}
+			OR = {
+				original_tag = LIB original_tag = NGA original_tag = GHA original_tag = SEN original_tag = SIE
+				original_tag = GNB original_tag = CBV original_tag = GAM original_tag = IVO original_tag = DAH original_tag = TOG
+				original_tag = MLI original_tag = VOL
+				has_country_flag = africa_host_signature_sao_tome
+			}
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = MLI original_tag = NGR original_tag = VOL original_tag = CHA } }
+			OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = ETH original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI } }
+			OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = COG original_tag = ANG original_tag = RCG original_tag = CMR original_tag = GAB original_tag = EQG } }
+			OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = UGA original_tag = RWA original_tag = BRD } }
+			OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = KEN original_tag = TZN original_tag = MZB original_tag = ELX } }
+			OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = { OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = BOT original_tag = HZX original_tag = EUX } }
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG }
+		}
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				OR = {
+					original_tag = MAD original_tag = FBX original_tag = FAX
+					has_country_flag = africa_host_signature_seychelles
+					has_country_flag = africa_host_signature_reunion
+				}
+			}
+			OR = {
+				original_tag = MAD original_tag = FAX original_tag = FBX original_tag = ELX
+				has_country_flag = africa_host_signature_seychelles
+				has_country_flag = africa_host_signature_reunion
+			}
+		}
+	}
+}
+
 # COUNTRY scope. The mapped playbook is itself the African-rooted historical
 # package; the capital/core checks prevent relocated metropoles or occupation
 # authorities from borrowing that legitimacy.
 africa_is_eligible_host = {
 	exists = yes
 	africa_has_mapped_host_playbook = yes
+	africa_has_prefire_opening_contact = yes
 	has_capitulated = no
 	capital_scope = {
 		is_on_continent = africa
-		is_controlled_by = ROOT
+		is_controlled_by = PREV
 	}
 	any_core_state = {
 		is_on_continent = africa
 	}
+	has_civil_war = no
 	OR = {
-		has_civil_war = no
-		original_tag = SAF
+		NOT = { original_tag = SAF }
+		tag = SAF
 	}
 	OR = {
 		is_government_in_exile = no
@@ -397,6 +565,104 @@ africa_has_opening_contact = {
 	}
 }
 
+# COUNTRY scope. Focus-layout predicates remain numeric and mutually exclusive,
+# so all nine static overlay branches can safely reuse one coordinate template.
+africa_focus_uses_maghreb_sahara_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.maghreb_sahara }
+}
+
+africa_focus_uses_west_atlantic_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.west_atlantic }
+}
+
+africa_focus_uses_sahel_lake_chad_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.sahel_lake_chad }
+}
+
+africa_focus_uses_nile_horn_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
+}
+
+africa_focus_uses_congo_basin_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.congo_basin }
+}
+
+africa_focus_uses_great_lakes_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.great_lakes }
+}
+
+africa_focus_uses_swahili_indian_ocean_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
+}
+
+africa_focus_uses_southern_africa_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa }
+}
+
+africa_focus_uses_madagascar_islands_overlay = {
+	africa_is_current_host = yes
+	check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
+}
+
+africa_focus_shows_full_host_signature = {
+	africa_is_current_host = yes
+	OR = {
+		check_variable = { africa_host_depth = constant:africa_host_depth.full }
+		check_variable = { africa_host_depth = constant:africa_host_depth.promoted }
+	}
+}
+
+africa_focus_shows_compact_host_signature = {
+	africa_is_current_host = yes
+	has_country_flag = africa_host_origin_was_compact
+}
+
+africa_focus_first_proof_satisfied = {
+	OR = {
+		has_country_flag = africa_first_proof_succeeded
+		has_country_flag = africa_first_proof_recovered
+	}
+}
+
+africa_focus_can_start_first_proof = {
+	africa_is_current_host = yes
+	has_country_flag = africa_first_contact_selected
+	has_country_flag = africa_first_corridor_secured
+	has_country_flag = africa_first_obligation_written
+	has_country_flag = africa_first_proof_pending
+	NOT = { has_country_flag = africa_first_proof_failed }
+}
+
+africa_focus_can_convene_provisional_congress = {
+	africa_is_current_host = yes
+	has_country_flag = africa_overlay_mandate_proven
+	has_country_flag = africa_first_obligation_published
+	has_country_flag = africa_regional_delegations_invited
+}
+
+africa_focus_has_origin_mandate = {
+	OR = {
+		has_country_flag = africa_host_origin_mandate_proven
+		has_country_flag = africa_compact_host_viability_proven
+	}
+}
+
+africa_focus_can_choose_constitutional_principle = {
+	africa_is_current_host = yes
+	africa_focus_first_proof_satisfied = yes
+	has_country_flag = africa_provisional_charter_written
+	has_country_flag = africa_overlay_mandate_proven
+	africa_focus_has_origin_mandate = yes
+}
+
 # COUNTRY scope on the host. Selected targets, dossiers, living-core projects,
 # and active actions are explicit capped stores rather than passive lists.
 africa_has_open_action_capacity = {
@@ -413,6 +679,38 @@ africa_has_dossier_capacity = {
 
 africa_has_living_core_project_capacity = {
 	check_variable = { africa_living_core_projects^num < africa_living_core_project_cap }
+}
+
+# COUNTRY scope on the host. State and region actions require deliberate map
+# selections from the current country cursor; country and host actions do not.
+africa_has_selected_action_state_target = {
+	OR = {
+		AND = {
+			check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+			check_variable = { africa_selected_action_state_targets^num = constant:africa_value.one }
+		}
+		AND = {
+			check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+			check_variable = { africa_selected_action_state_targets^num > constant:africa_value.zero }
+			NOT = { check_variable = { africa_selected_action_state_targets^num > constant:africa_action_capacity.maximum_region_state_targets } }
+		}
+	}
+	all_of_scopes = {
+		array = africa_selected_action_state_targets
+		has_state_flag = africa_selected_action_state
+		has_state_flag = africa_selected_action_state_candidate
+		NOT = { has_state_flag = africa_action_project_active }
+	}
+}
+
+africa_action_quote_state_target_is_ready = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state } }
+			NOT = { check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region } }
+		}
+		africa_has_selected_action_state_target = yes
+	}
 }
 
 # COUNTRY scope on a member. Integration needs an explicit accepted agreement,
@@ -494,6 +792,7 @@ africa_has_current_action_quote = {
 # COUNTRY scope on the host.
 africa_can_pay_action_quote = {
 	africa_has_current_action_quote = yes
+	africa_action_quote_state_target_is_ready = yes
 	has_political_power > africa_quote_cost_pp
 	command_power > africa_quote_cost_cp
 	has_manpower > africa_quote_cost_manpower
@@ -542,6 +841,27 @@ africa_selected_action_targets_host = {
 	}
 }
 
+# COUNTRY scope on the host. Country, state, and region actions may deliberately
+# use the host as their selected country cursor. They execute through the
+# non-targeted host decision so the engine never has to render a country-targeted
+# decision against ROOT itself.
+africa_selected_action_targets_selected_host = {
+	OR = {
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.country }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+	}
+	has_country_flag = africa_selected_country_target
+	check_variable = { africa_selected_country_id = THIS.id }
+}
+
+africa_selected_action_uses_host_execution = {
+	OR = {
+		africa_selected_action_targets_host = yes
+		africa_selected_action_targets_selected_host = yes
+	}
+}
+
 africa_selected_action_targets_external = {
 	OR = {
 		check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.country }
@@ -556,10 +876,7 @@ africa_action_target_is_usable = {
 	exists = yes
 	OR = {
 		africa_is_valid_action_target = yes
-		AND = {
-			africa_is_current_host = yes
-			has_country_flag = africa_first_proof_internal_staging
-		}
+		africa_is_current_host = yes
 	}
 	NOT = { has_country_flag = africa_action_record_active }
 	NOT = { has_country_flag = africa_action_recent_target }
@@ -589,58 +906,59 @@ africa_active_action_generation_is_current = {
 africa_action_quote_phase_is_available = {
 	OR = {
 		AND = {
-			has_country_flag = africa_first_proof_active
 			OR = {
-				check_variable = { africa_quote_action_id = constant:africa_action.guarantee_sovereignty }
-				check_variable = { africa_quote_action_id = constant:africa_action.open_aid_corridor }
-				check_variable = { africa_quote_action_id = constant:africa_action.deploy_volunteers }
-				check_variable = { africa_quote_action_id = constant:africa_action.intervene_against_coloniser }
-				check_variable = { africa_quote_action_id = constant:africa_action.recognise_provisional_government }
-				check_variable = { africa_quote_action_id = constant:africa_action.settle_overlapping_claims }
-				check_variable = { africa_quote_action_id = constant:africa_action.build_regional_rail_spine }
+				has_country_flag = africa_first_proof_active
+				has_country_flag = africa_first_proof_failed
 			}
-		}
-		check_variable = { africa_quote_phase = constant:africa_action_phase.any }
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.opening }
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_first_proof_quoted_action_is_allowed = yes
 		}
 		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.regional }
+			NOT = { has_country_flag = africa_first_proof_active }
+			NOT = { has_country_flag = africa_first_proof_failed }
 			OR = {
-				check_variable = { africa_current_phase = constant:africa_action_phase.regional }
-				check_variable = { africa_current_phase = constant:africa_action_phase.late }
-				check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
+				check_variable = { africa_quote_phase = constant:africa_action_phase.any }
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.opening }
+					check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.regional }
+					OR = {
+						check_variable = { africa_current_phase = constant:africa_action_phase.regional }
+						check_variable = { africa_current_phase = constant:africa_action_phase.late }
+						check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
+					}
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.late }
+					OR = {
+						check_variable = { africa_current_phase = constant:africa_action_phase.late }
+						check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
+					}
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.high_chaos }
+					has_global_flag = africa_evolution_iii_logged
+					OR = {
+						check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
+						check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
+						check_variable = { africa_current_phase = constant:africa_action_phase.terminal_approach }
+						check_variable = { africa_current_phase = constant:africa_action_phase.terminal }
+					}
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.post_unification }
+					has_global_flag = africa_is_one
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal_approach }
+					has_global_flag = africa_world_order_open
+				}
+				AND = {
+					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal }
+					has_global_flag = africa_continental_wars_active
+				}
 			}
-		}
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.late }
-			OR = {
-				check_variable = { africa_current_phase = constant:africa_action_phase.late }
-				check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
-			}
-		}
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.high_chaos }
-			has_global_flag = africa_evolution_iii_logged
-			OR = {
-				check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
-				check_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
-				check_variable = { africa_current_phase = constant:africa_action_phase.terminal_approach }
-				check_variable = { africa_current_phase = constant:africa_action_phase.terminal }
-			}
-		}
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.post_unification }
-			has_global_flag = africa_is_one
-		}
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.terminal_approach }
-			has_global_flag = africa_world_order_open
-		}
-		AND = {
-			check_variable = { africa_quote_phase = constant:africa_action_phase.terminal }
-			has_global_flag = africa_continental_wars_active
 		}
 	}
 	OR = {

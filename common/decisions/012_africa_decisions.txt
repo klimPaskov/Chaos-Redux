@@ -7,6 +7,34 @@
 # ============================================================================
 
 africa_charter_council_category = {
+	africa_select_next_mapped_first_proof_action = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			africa_is_current_host = yes
+			has_country_flag = africa_first_proof_active
+			NOT = { has_country_flag = africa_first_proof_failed }
+		}
+		available = { africa_first_proof_profile_is_current = yes }
+		cost = 0
+		complete_effect = { africa_select_next_playbook_first_proof_action = yes }
+		ai_will_do = { base = 0 }
+	}
+
+	africa_clear_selected_action_states = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			africa_is_current_host = yes
+			check_variable = { africa_selected_action_state_targets^num > constant:africa_value.zero }
+		}
+		available = { always = yes }
+		cost = 0
+		complete_effect = {
+			africa_clear_selected_action_state_selection = yes
+			africa_refresh_selected_action_quote = yes
+		}
+		ai_will_do = { base = 0 }
+	}
+
 	africa_refresh_african_contacts = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = { africa_is_current_host = yes }
@@ -39,6 +67,20 @@ africa_charter_council_category = {
 		available = { FROM = { NOT = { has_country_flag = africa_action_recent_target } } }
 		cost = 0
 		complete_effect = { africa_save_from_as_selected_country_target = yes }
+		ai_will_do = { base = 0 }
+	}
+
+	africa_select_host_charter_target = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = { africa_is_current_host = yes }
+		available = {
+			OR = {
+				NOT = { has_country_flag = africa_selected_country_target }
+				NOT = { check_variable = { africa_selected_country_id = THIS.id } }
+			}
+		}
+		cost = 0
+		complete_effect = { africa_save_host_as_selected_country_target = yes }
 		ai_will_do = { base = 0 }
 	}
 
@@ -203,13 +245,55 @@ africa_charter_council_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	africa_select_action_state_target = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		target_array = africa_selected_action_state_candidates
+		activation = {
+			africa_has_current_action_quote = yes
+			OR = {
+				check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+				check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+			}
+		}
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = {
+			FROM = {
+				has_state_flag = africa_selected_action_state_candidate
+				NOT = { has_state_flag = africa_action_project_active }
+			}
+		}
+		available = {
+			FROM = { NOT = { has_state_flag = africa_selected_action_state } }
+			OR = {
+				check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+				AND = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+					check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+				}
+			}
+		}
+		cost = 0
+		complete_effect = { africa_save_from_as_selected_action_state_target = yes }
+		ai_will_do = { base = 0 }
+	}
+
 	africa_execute_selected_country_action = {
 		icon = GFX_decision_generic_diplomatic_treaty
-		target_array = africa_selected_targets
+		target_array = africa_selected_country_targets
 		activation = { africa_has_current_action_quote = yes africa_selected_action_targets_external = yes }
 		target_root_trigger = { africa_action_quote_phase_is_available = yes }
-		target_trigger = { FROM = { africa_is_current_quoted_action_target = yes } }
-		available = { africa_can_pay_action_quote = yes }
+		target_trigger = {
+			FROM = {
+				africa_is_current_quoted_action_target = yes
+				NOT = { africa_is_current_host = yes }
+			}
+		}
+		available = {
+			africa_can_pay_action_quote = yes
+			africa_action_quote_state_target_is_ready = yes
+		}
 		custom_cost_trigger = { africa_can_pay_action_quote = yes }
 		custom_cost_text = africa_selected_action_dynamic_cost
 		complete_effect = { FROM = { save_event_target_as = africa_action_target } africa_begin_quoted_action_against_target = yes }
@@ -218,8 +302,12 @@ africa_charter_council_category = {
 
 	africa_execute_selected_host_action = {
 		icon = GFX_decision_generic_diplomatic_treaty
-		visible = { africa_has_current_action_quote = yes africa_selected_action_targets_host = yes }
-		available = { africa_action_quote_phase_is_available = yes africa_can_pay_action_quote = yes }
+		visible = { africa_has_current_action_quote = yes africa_selected_action_uses_host_execution = yes }
+		available = {
+			africa_action_quote_phase_is_available = yes
+			africa_can_pay_action_quote = yes
+			africa_action_quote_state_target_is_ready = yes
+		}
 		custom_cost_trigger = { africa_can_pay_action_quote = yes }
 		custom_cost_text = africa_selected_action_dynamic_cost
 		complete_effect = { save_event_target_as = africa_action_target africa_begin_quoted_action_against_target = yes }
@@ -1568,4 +1656,3 @@ africa_regional_restorations_actions_category = {
 	}
 
 }
-

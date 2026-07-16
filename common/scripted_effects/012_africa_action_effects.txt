@@ -1812,6 +1812,17 @@ africa_compute_action_quote = {
 	set_temp_variable = { africa_cost_component = africa_target_state_scale }
 	divide_temp_variable = { africa_cost_component = constant:africa_action_cost.target_state_divisor }
 	add_to_temp_variable = { africa_cost_multiplier = africa_cost_component }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_profile_target_mode = constant:africa_action_target_mode.state }
+				check_variable = { africa_profile_target_mode = constant:africa_action_target_mode.region }
+			}
+		}
+		set_temp_variable = { africa_cost_component = africa_selected_action_state_targets^num }
+		divide_temp_variable = { africa_cost_component = constant:africa_action_cost.selected_state_divisor }
+		add_to_temp_variable = { africa_cost_multiplier = africa_cost_component }
+	}
 	set_temp_variable = { africa_cost_component = africa_integration_burden }
 	divide_temp_variable = { africa_cost_component = constant:africa_action_cost.burden_divisor }
 	add_to_temp_variable = { africa_cost_multiplier = africa_cost_component }
@@ -2023,108 +2034,28 @@ africa_select_action_family_page = {
 africa_select_action_for_quote = {
 	africa_prepare_action_profile = yes
 	if = {
-		limit = { check_variable = { africa_profile_valid > constant:africa_value.zero } }
+		limit = {
+			check_variable = { africa_profile_valid > constant:africa_value.zero }
+			OR = {
+				AND = {
+					NOT = { has_country_flag = africa_first_proof_active }
+					NOT = { has_country_flag = africa_first_proof_failed }
+				}
+				africa_first_proof_requested_action_is_allowed = yes
+			}
+		}
 		set_variable = { africa_selected_action_id = africa_requested_action_id }
 		set_variable = { africa_selected_action_family = africa_profile_family }
 		africa_refresh_selected_action_quote = yes
 	}
 }
 
-# COUNTRY scope on the host. Selects the shared action that expresses the
-# playbook's mapped proof family. Host-specific opening modules may replace this
-# selection with their exact playbook action before launch.
+# COUNTRY scope on the host. Compatibility wrapper retained for older callers;
+# the executable profile selects the exact matrix action without scanning for
+# a substitute target or reducing the playbook to a coarse proof family.
 africa_select_mapped_first_proof_action = {
-	set_temp_variable = { africa_requested_action_id = constant:africa_action.none }
-	set_temp_variable = { africa_selected_proof_target_at_war = constant:africa_value.zero }
-	for_each_scope_loop = {
-		array = africa_selected_country_targets
-		if = {
-			limit = { has_war = yes }
-			set_temp_variable = { africa_selected_proof_target_at_war = constant:africa_value.one }
-		}
-	}
-	if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.defended_partner } }
-		if = {
-			limit = { check_variable = { africa_selected_proof_target_at_war > constant:africa_value.zero } }
-			set_temp_variable = { africa_requested_action_id = constant:africa_action.deploy_volunteers }
-		}
-		else = { set_temp_variable = { africa_requested_action_id = constant:africa_action.guarantee_sovereignty } }
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.aid_corridor } }
-		for_each_scope_loop = { array = africa_selected_country_targets set_country_flag = africa_first_proof_aid_target }
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.diplomatic_recognition } }
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.dispatch_charter_mission }
-		for_each_scope_loop = {
-			array = africa_selected_country_targets
-			set_country_flag = africa_first_proof_diplomatic_recognition_target
-			if = {
-				limit = {
-					OR = {
-						is_subject = yes
-						has_country_flag = africa_contact_liberation_priority
-						has_country_flag = africa_liberation_movement_candidate
-					}
-				}
-				ROOT = { set_temp_variable = { africa_requested_action_id = constant:africa_action.recognise_provisional_government } }
-			}
-		}
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.punitive_expedition } }
-		random_country = {
-			limit = {
-				capital_scope = { NOT = { is_on_continent = africa } }
-				any_owned_state = { is_on_continent = africa }
-				NOT = { has_country_flag = africa_unifier_host }
-			}
-			save_event_target_as = africa_first_proof_punitive_coloniser
-		}
-		if = {
-			limit = { has_event_target = africa_first_proof_punitive_coloniser }
-			africa_clear_selected_country_target = yes
-			event_target:africa_first_proof_punitive_coloniser = {
-				set_country_flag = africa_first_proof_punitive_coloniser
-				set_country_flag = africa_selected_roster_target
-			}
-			if = {
-				limit = {
-					NOT = { is_in_array = { array = africa_selected_targets value = event_target:africa_first_proof_punitive_coloniser } }
-					africa_has_selected_target_capacity = yes
-				}
-				add_to_array = { array = africa_selected_targets value = event_target:africa_first_proof_punitive_coloniser }
-			}
-			set_variable = { africa_selected_country_id = event_target:africa_first_proof_punitive_coloniser.id }
-			add_to_array = { array = africa_selected_country_targets value = event_target:africa_first_proof_punitive_coloniser }
-			event_target:africa_first_proof_punitive_coloniser = { set_country_flag = africa_selected_country_target }
-		}
-		else = {
-			for_each_scope_loop = { array = africa_selected_country_targets set_country_flag = africa_first_proof_punitive_partner }
-		}
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.intervene_against_coloniser }
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.transport_link } }
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.build_regional_rail_spine }
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.preserved_guarantee } }
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.guarantee_sovereignty }
-	}
-	else_if = {
-		limit = { check_variable = { africa_first_proof_type = constant:africa_proof.mediated_war } }
-		set_temp_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
-	}
-	if = {
-		limit = { check_variable = { africa_requested_action_id > constant:africa_action.none } }
-		africa_select_action_for_quote = yes
-	}
+	africa_select_playbook_first_proof_action = yes
 }
-+
 # Input: prepared profile and regular africa_action_target. Output is one only
 # when the exact matrix concept can start against the current target.
 africa_validate_action_specific_requirements = {
@@ -3179,9 +3110,9 @@ africa_validate_action_specific_requirements = {
 		limit = {
 			check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof }
 			has_event_target = africa_action_target
-			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_country_flag = africa_first_proof_failed
-			event_target:africa_action_target = { NOT = { has_country_flag = africa_original_failed_proof_target } }
+			africa_first_proof_recovery_host_is_valid = yes
+			NOT = { has_country_flag = africa_first_proof_recovery_contract_active }
+			event_target:africa_action_target = { africa_first_proof_recovery_target_is_valid = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3192,6 +3123,14 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			event_target:africa_action_target = { has_country_flag = africa_priority_promotion_candidate has_country_flag = africa_priority_viable_territory has_country_flag = africa_priority_functioning_institution has_country_flag = africa_priority_distinct_role has_country_flag = africa_priority_relationship_unresolved check_variable = { var = africa_priority_local_support value = constant:africa_action_threshold.minimum_confidence compare = greater_than_or_equals } }
+		}
+		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = africa_first_proof_active
+			NOT = { has_country_flag = africa_first_proof_failed }
+			africa_first_proof_current_action_semantics_are_valid = yes
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3240,24 +3179,45 @@ africa_requote_selected_action_against_action_target = {
 	}
 }
 
-# COUNTRY scope on the host. State projects receive one exact reverse-linked
-# African state before payment; a missing state invalidates the launch.
+# COUNTRY scope on the host. State projects consume one explicit map cursor;
+# region projects consume one to four deliberate states. There is no random
+# geography substitute, and every selected state must remain valid at launch.
 africa_prepare_action_state_target = {
 	set_temp_variable = { africa_action_state_target_valid = constant:africa_value.one }
 	if = {
 		limit = { check_variable = { africa_profile_target_mode = constant:africa_action_target_mode.state } }
 		set_temp_variable = { africa_action_state_target_valid = constant:africa_value.zero }
-		event_target:africa_action_target = {
-			random_controlled_state = {
-				limit = {
-					is_on_continent = africa
-					NOT = { has_state_flag = africa_action_project_active }
-				}
-				save_event_target_as = africa_action_state
-			}
-		}
 		if = {
-			limit = { has_event_target = africa_action_state }
+			limit = {
+				check_variable = { africa_selected_action_state_targets^num = constant:africa_value.one }
+				all_of_scopes = {
+					array = africa_selected_action_state_targets
+					has_state_flag = africa_selected_action_state
+					has_state_flag = africa_selected_action_state_candidate
+					NOT = { has_state_flag = africa_action_project_active }
+					is_on_continent = africa
+					is_controlled_by = event_target:africa_action_target
+				}
+			}
+			set_temp_variable = { africa_action_state_target_valid = constant:africa_value.one }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { africa_profile_target_mode = constant:africa_action_target_mode.region } }
+		set_temp_variable = { africa_action_state_target_valid = constant:africa_value.zero }
+		if = {
+			limit = {
+				check_variable = { africa_selected_action_state_targets^num > constant:africa_value.zero }
+				NOT = { check_variable = { africa_selected_action_state_targets^num > constant:africa_action_capacity.maximum_region_state_targets } }
+				all_of_scopes = {
+					array = africa_selected_action_state_targets
+					has_state_flag = africa_selected_action_state
+					has_state_flag = africa_selected_action_state_candidate
+					NOT = { has_state_flag = africa_action_project_active }
+					is_on_continent = africa
+					is_controlled_by = event_target:africa_action_target
+				}
+			}
 			set_temp_variable = { africa_action_state_target_valid = constant:africa_value.one }
 		}
 	}
@@ -3340,23 +3300,25 @@ africa_create_action_record = {
 		set_variable = { africa_active_action_intelligence_reservation = ROOT.africa_quote_cost_intelligence }
 		set_variable = { africa_active_action_cost_stability = ROOT.africa_quote_cost_stability }
 		set_variable = { africa_active_action_cost_war_support = ROOT.africa_quote_cost_war_support }
-		if = {
-			limit = { has_event_target = africa_action_state }
-			set_variable = { africa_active_action_state_id = event_target:africa_action_state.id }
-			clear_array = africa_action_state_targets
-			add_to_array = { array = africa_action_state_targets value = event_target:africa_action_state }
-			event_target:africa_action_state = {
-				set_state_flag = africa_action_project_active
-				set_variable = { africa_action_project_generation = PREV.africa_active_action_generation }
-				set_variable = { africa_action_project_host_generation = PREV.africa_active_action_host_generation }
-			}
-		}
+		clear_array = africa_action_state_targets
 	}
 	if = {
-		limit = { has_event_target = africa_action_state }
-		if = {
-			limit = { NOT = { is_in_array = { array = africa_active_action_states value = event_target:africa_action_state } } }
-			add_to_array = { array = africa_active_action_states value = event_target:africa_action_state }
+		limit = {
+			OR = {
+				check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+				check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+			}
+		}
+		for_each_scope_loop = {
+			array = africa_selected_action_state_targets
+			set_state_flag = africa_action_project_active
+			set_variable = { africa_action_project_generation = event_target:africa_action_target.africa_active_action_generation }
+			set_variable = { africa_action_project_host_generation = event_target:africa_action_target.africa_active_action_host_generation }
+			event_target:africa_action_target = { add_to_array = { array = africa_action_state_targets value = PREV } }
+			if = {
+				limit = { ROOT = { NOT = { is_in_array = { array = africa_active_action_states value = PREV } } } }
+				ROOT = { add_to_array = { array = africa_active_action_states value = PREV } }
+			}
 		}
 	}
 }
@@ -3396,6 +3358,8 @@ africa_begin_quoted_action_against_target = {
 	set_temp_variable = { africa_requested_action_id = africa_selected_action_id }
 	africa_prepare_action_profile = yes
 	africa_prepare_action_state_target = yes
+	africa_prepare_first_proof_action_markers = yes
+	africa_prepare_first_proof_recovery_contract = yes
 	africa_validate_action_specific_requirements = yes
 	if = {
 		limit = {
@@ -3407,6 +3371,10 @@ africa_begin_quoted_action_against_target = {
 			check_variable = { africa_action_specific_validation_result > constant:africa_value.zero }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { NOT = { has_country_flag = africa_action_record_active } }
+		}
+		if = {
+			limit = { check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof } }
+			africa_begin_first_proof_recovery_contract = yes
 		}
 		africa_pay_current_action_quote = yes
 		africa_create_action_record = yes
@@ -3427,9 +3395,9 @@ africa_begin_quoted_action_against_target = {
 		set_temp_variable = { africa_action_begin_result = constant:africa_value.one }
 		set_variable = { africa_selected_action_id = constant:africa_action.none }
 		africa_clear_action_quote = yes
+		africa_clear_selected_action_state_context = yes
 	}
 }
-+
 # COUNTRY scope on the resolved target. Records every one of the 102 matrix
 # dispositions without creating per-action runtime stores.
 africa_record_action_full_disposition = {
@@ -5322,6 +5290,18 @@ africa_apply_action_full_semantics = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.guarantee_regional_representation } }
 		set_country_flag = africa_member_representation_settled
 		set_country_flag = africa_regional_seat_guarantee
+		if = {
+			limit = {
+				africa_is_current_host = yes
+				check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros }
+				has_country_flag = africa_first_proof_active
+			}
+			set_country_flag = africa_first_proof_comoros_grande_comore_seat
+			set_country_flag = africa_first_proof_comoros_anjouan_seat
+			set_country_flag = africa_first_proof_comoros_moheli_seat
+			set_country_flag = africa_first_proof_comoros_mayotte_seat
+			custom_effect_tooltip = africa_comoros_equal_island_representation_tt
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.fund_congress_security } }
@@ -5427,6 +5407,19 @@ africa_apply_action_full_semantics = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.modernise_continental_port } }
 		for_each_scope_loop = { array = africa_action_state_targets limit = { is_coastal = yes } add_building_construction = { type = naval_base level = constant:africa_action_building.port_minor instant_build = yes } }
 		set_country_flag = africa_continental_port_modernised
+		if = {
+			limit = {
+				africa_is_current_host = yes
+				check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros }
+				has_country_flag = africa_first_proof_active
+				any_of_scopes = {
+					array = africa_action_state_targets
+					is_coastal = yes
+				}
+			}
+			set_country_flag = africa_first_proof_comoros_transport_operational
+			custom_effect_tooltip = africa_comoros_inter_island_transport_tt
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.create_local_processing_chain } }
@@ -5696,8 +5689,7 @@ africa_apply_action_full_semantics = {
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.recover_failed_host_proof } }
 		event_target:africa_host = {
-			clr_country_flag = africa_first_proof_failed
-			set_country_flag = africa_first_proof_recovered_with_memory
+			set_country_flag = africa_first_proof_recovery_full_result
 			add_to_variable = { africa_first_proof_recovery_attempts = constant:africa_value.one }
 		}
 	}
@@ -5811,8 +5803,7 @@ africa_apply_action_partial_semantics = {
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.recover_failed_host_proof } }
 		event_target:africa_host = {
-			set_country_flag = africa_first_proof_recovered_under_oversight
-			set_country_flag = africa_mandatory_autonomy_clause
+			set_country_flag = africa_first_proof_recovery_partial_result
 			add_to_variable = { africa_first_proof_recovery_attempts = constant:africa_value.one }
 		}
 	}
@@ -5823,15 +5814,6 @@ africa_apply_action_failure_semantics = {
 	if = {
 		limit = { check_variable = { africa_active_action_family = constant:africa_action_family.protection } }
 		set_country_flag = africa_protection_action_failed
-		event_target:africa_host = {
-			if = {
-				limit = { has_country_flag = africa_first_proof_active NOT = { has_country_flag = africa_first_proof_succeeded } }
-				clr_country_flag = africa_first_proof_active
-				set_country_flag = africa_first_proof_failed
-				add_to_variable = { africa_first_proof_failures = constant:africa_value.one }
-				PREV = { set_country_flag = africa_original_failed_proof_target }
-			}
-		}
 		if = {
 			limit = { check_variable = { africa_active_action_id = constant:africa_action.guarantee_sovereignty } }
 			set_country_flag = africa_lifetime_broken_guarantee
@@ -6006,35 +5988,8 @@ africa_roll_action_outcome = {
 	}
 }
 
-# COUNTRY scope on a full-result target.
-africa_record_first_proof_success_if_applicable = {
-	if = {
-		limit = {
-			event_target:africa_host = { has_country_flag = africa_first_proof_active }
-			OR = {
-				check_variable = { africa_active_action_id = constant:africa_action.guarantee_sovereignty }
-				check_variable = { africa_active_action_id = constant:africa_action.open_aid_corridor }
-				check_variable = { africa_active_action_id = constant:africa_action.dispatch_charter_mission }
-				check_variable = { africa_active_action_id = constant:africa_action.deploy_volunteers }
-				check_variable = { africa_active_action_id = constant:africa_action.intervene_against_coloniser }
-				check_variable = { africa_active_action_id = constant:africa_action.recognise_provisional_government }
-				check_variable = { africa_active_action_id = constant:africa_action.settle_overlapping_claims }
-				check_variable = { africa_active_action_id = constant:africa_action.connect_member_capitals }
-				check_variable = { africa_active_action_id = constant:africa_action.build_regional_rail_spine }
-				check_variable = { africa_active_action_id = constant:africa_action.offer_rival_arbitration }
-				check_variable = { africa_active_action_id = constant:africa_action.contain_regional_secession_war }
-			}
-		}
-		event_target:africa_host = {
-			clr_country_flag = africa_first_proof_active
-			set_country_flag = africa_first_proof_succeeded
-			set_country_flag = africa_league_congress_unlocked
-			set_variable = { africa_current_phase = constant:africa_action_phase.regional }
-		}
-		set_country_flag = africa_first_proof_success_target
-	}
-}
-
+# Legacy proof success used a broad action-ID shortcut. Exact proof resolution
+# now runs once from africa_resolve_action through the compound ledger.
 # COUNTRY scope on an active action target.
 africa_apply_current_action_outcome = {
 	if = {
@@ -6042,7 +5997,6 @@ africa_apply_current_action_outcome = {
 		africa_record_action_full_disposition = yes
 		africa_apply_full_action_family_values = yes
 		africa_apply_action_full_semantics = yes
-		africa_record_first_proof_success_if_applicable = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial } }
@@ -6161,6 +6115,7 @@ africa_resolve_action = {
 			africa_roll_action_outcome = yes
 		}
 		africa_apply_current_action_outcome = yes
+		africa_handle_first_proof_action_resolution = yes
 		set_variable = { africa_active_action_status = constant:africa_action_status.resolved }
 		set_variable = { africa_last_action_id = africa_active_action_id }
 		set_variable = { africa_last_action_outcome = africa_active_action_outcome }
@@ -6183,6 +6138,7 @@ africa_cancel_action = {
 			add_to_variable = { africa_member_confidence = constant:africa_action_result.cancelled_confidence }
 			clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 		}
+		africa_handle_first_proof_action_resolution = yes
 		africa_cleanup_action = yes
 	}
 }
