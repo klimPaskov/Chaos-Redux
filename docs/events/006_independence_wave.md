@@ -25,6 +25,8 @@ The shared Liberations coordinator owns the transaction lifecycle:
 
 `chaosx.nr6.1` is the hidden repeatable dispatcher. On a standalone firing it captures tuning, opens the shared plan, allocates the exact automatic count, executes the frozen Event 006 contribution, and dispatches the public report only after commit. During a joint Liberations firing it consumes `independence_wave_joint_presentation_pending` and presents the already committed result without planning or releasing a second time. Any standalone failure before ownership mutation restores the original-capital ledger, clears Event 006 reservations, and aborts without a report. A release or transfer failure before finalization restores the frozen core, owner, controller, country-existence, and capital facts before clearing the ledger. An unexpected failure after finalization starts enters terminal `finalization_failed`, retains the diagnostic ledger, and queues no successful presentation.
 
+The Event Details branch uses final non-spoiler premise text about the synchronized appearance of provisional states, surviving host remnants, and the recognition, government, security, border, and patron problems that follow. Event Log history uses the first country in the committed frozen selection as the row's representative actor. That target is assigned only after every selected package has validated and is overwritten by the next successful wave; a dispatch-local readiness flag prevents a failed later attempt from reusing the previous wave's actor and is cleared immediately after the Event 006 history row is appended. The actor identifies the row in the UI and does not treat that country as the cause or sole participant in the synchronized incident.
+
 The package finalizer is a four-pass incident transaction: prepare the exact package, activate its live registries, validate the complete live package, then append durable origin history and evolution delivery. The entire package pipeline begins only after the frozen ownership footprint has passed, because technology inheritance, starting forces, stockpiles, and host air/naval transfers are not exactly reversible. The pre-release runtime attestation makes this finalizer deterministic; a failed terminal count is retained as a finalization failure rather than routed through an invalid partial rollback. The same adapter is used by standalone waves, joint Event 5/Event 6 execution, and SCN-008.
 
 The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count. The 126 automatic/high-chaos selectors contain only bound rows with an automatic readiness verdict. Overlay-only, community-variant-only, formable-or-route-only, scenario-variant-only, and unbound rows remain available only through their explicit owning systems; Open Sovereignty cannot promote them merely to fill a wave.
@@ -151,10 +153,12 @@ six idea icons, six decision icons, and charter-convention report scene are the
 dedicated FORM-03 package recorded under
 `docs/assets/006_independence_wave/low_countries_form03_progression/`.
 Progression attestation is restored after the independent operational and
-promotion audits. Commit `2912e0a46` promotes the exact AFX and AGX
-automatic/scenario wrappers; live host, anchor, reservation, Event 5 collision,
-and transaction preflight checks still apply. The promotion evidence is static
-and does not claim an in-engine release execution.
+promotion audits. Commit `2912e0a46` promotes AGX's exact automatic/scenario
+wrappers. AFX was later held fail-closed until its Level 2 Sambre-Meuse lane,
+three incidents, and unique art passed a fresh exact-ID admission audit. Live
+host, anchor, reservation, Event 5 collision, and transaction preflight checks
+still apply. The promotion evidence is static and does not claim an in-engine
+release execution.
 
 ## Implementation surfaces
 

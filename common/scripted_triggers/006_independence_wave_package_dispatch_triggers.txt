@@ -23,15 +23,19 @@ has_independence_wave_runtime_package_adapter_for_execution_id = {
 # Compile-time content attestations. Every admitted package is listed by its
 # exact immutable package ID after its independent package audit is complete.
 # In the current attested set, IW-001 depends on FORM-01/02, IW-002 and IW-004
-# on FORM-01, IW-007 on FORM-03, and IW-010 on FORM-04. Other package and
-# formable adapters remain dormant until their exact content audits authorize
-# admission.
+# on FORM-01, IW-006 and IW-007 on FORM-03, and IW-008 and IW-010 on FORM-04.
+# IW-009 has a package-owned South German settlement and no shared formable dependency.
+# Other package and formable adapters remain dormant until their exact content
+# audits authorize admission.
 has_independence_wave_runtime_package_content_attestation_for_execution_id = {
 	OR = {
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_001 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_002 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_004 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_006 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_007 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_008 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_009 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_010 }
 	}
 }
@@ -101,8 +105,20 @@ is_independence_wave_scenario_package_preflight_ready = {
 			is_independence_wave_exact_package_iw_004_tag_available = yes
 		}
 		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_006 }
+			is_independence_wave_exact_package_iw_006_tag_available = yes
+		}
+		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_007 }
 			is_independence_wave_exact_package_iw_007_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_008 }
+			is_independence_wave_exact_package_iw_008_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_009 }
+			is_independence_wave_exact_package_iw_009_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_010 }

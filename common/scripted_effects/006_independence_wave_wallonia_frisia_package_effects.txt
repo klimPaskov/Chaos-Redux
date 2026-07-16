@@ -159,6 +159,16 @@ independence_wave_nwe_apply_project_failure = {
 	independence_wave_decision_apply_country_deltas = yes
 }
 
+# Inputs: temporary independence_wave_afx_continuity_delta and all five shared
+# country-value deltas. Every incident option sets every input before this call.
+independence_wave_apply_afx_incident_deltas = {
+	if = {
+		limit = { is_independence_wave_afx_package = yes }
+		independence_wave_change_afx_industrial_continuity = yes
+		independence_wave_decision_apply_country_deltas = yes
+	}
+}
+
 independence_wave_nwe_settle_former_host_ledgers = {
 	if = {
 		limit = { has_independence_wave_living_former_host = yes }
@@ -268,6 +278,7 @@ independence_wave_install_afx_constitutional_government = {
 		remove_ideas = { afx_constitutional_compact afx_workers_industrial_charter afx_emergency_works_command afx_patron_industrial_mandate }
 		add_ideas = afx_constitutional_compact
 		set_country_flag = independence_wave_afx_constitutional_government
+		independence_wave_schedule_afx_route_incident = yes
 	}
 }
 
@@ -281,6 +292,7 @@ independence_wave_install_afx_labor_government = {
 		remove_ideas = { afx_constitutional_compact afx_workers_industrial_charter afx_emergency_works_command afx_patron_industrial_mandate }
 		add_ideas = afx_workers_industrial_charter
 		set_country_flag = independence_wave_afx_labor_government
+		independence_wave_schedule_afx_route_incident = yes
 	}
 }
 
@@ -294,6 +306,7 @@ independence_wave_install_afx_emergency_government = {
 		remove_ideas = { afx_constitutional_compact afx_workers_industrial_charter afx_emergency_works_command afx_patron_industrial_mandate }
 		add_ideas = afx_emergency_works_command
 		set_country_flag = independence_wave_afx_emergency_government
+		independence_wave_schedule_afx_route_incident = yes
 	}
 }
 
@@ -307,6 +320,7 @@ independence_wave_install_afx_patron_government = {
 		remove_ideas = { afx_constitutional_compact afx_workers_industrial_charter afx_emergency_works_command afx_patron_industrial_mandate }
 		add_ideas = afx_patron_industrial_mandate
 		set_country_flag = independence_wave_afx_patron_government
+		independence_wave_schedule_afx_route_incident = yes
 	}
 }
 
@@ -346,6 +360,219 @@ independence_wave_install_agx_patron_government = {
 		remove_ideas = { agx_constitutional_water_board agx_coastal_labor_councils agx_patron_harbor_mandate }
 		add_ideas = agx_patron_harbor_mandate
 		set_country_flag = independence_wave_agx_patron_government
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-006 Level 2 focus rewards
+# ---------------------------------------------------------------------------
+
+independence_wave_afx_focus_charter_sambre_meuse_authority = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			NOT = { has_country_flag = independence_wave_afx_focus_sambre_meuse_authority_chartered }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		independence_wave_focus_reward_founding_step = yes
+		set_country_flag = independence_wave_afx_focus_sambre_meuse_authority_chartered
+		independence_wave_schedule_afx_founding_incident = yes
+	}
+}
+
+independence_wave_afx_focus_bind_mines_rails_furnaces = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			NOT = { has_country_flag = independence_wave_afx_focus_mines_rails_furnaces_bound }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_building_construction = {
+					type = infrastructure
+					level = constant:independence_wave_focus_reward.building_level
+					instant_build = yes
+				}
+			}
+		}
+		add_tech_bonus = {
+			name = independence_wave_afx_basin_industry_bonus
+			bonus = constant:independence_wave_focus_reward.technology_bonus
+			uses = constant:independence_wave_focus_reward.technology_uses
+			category = industry
+		}
+		independence_wave_nwe_apply_administrative_progress = yes
+		set_country_flag = independence_wave_afx_focus_mines_rails_furnaces_bound
+	}
+}
+
+independence_wave_afx_focus_codify_basin_government = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			has_independence_wave_afx_route_government = yes
+			NOT = { has_country_flag = independence_wave_afx_focus_basin_government_codified }
+		}
+		if = {
+			limit = { has_independence_wave_constitutional_route = yes }
+			set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+			independence_wave_change_afx_industrial_continuity = yes
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		else_if = {
+			limit = { has_independence_wave_popular_council_route = yes }
+			set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			independence_wave_change_afx_industrial_continuity = yes
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		else_if = {
+			limit = { has_independence_wave_emergency_military_route = yes }
+			set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.major_gain }
+			independence_wave_change_afx_industrial_continuity = yes
+			add_stability = constant:independence_wave_nwe_package_focus.stability_loss
+			independence_wave_nwe_apply_security_progress = yes
+		}
+		else_if = {
+			limit = { has_independence_wave_patron_client_route = yes }
+			set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			independence_wave_change_afx_industrial_continuity = yes
+			add_stability = constant:independence_wave_nwe_package_focus.stability_loss
+			independence_wave_nwe_apply_diplomatic_progress = yes
+		}
+		set_country_flag = independence_wave_afx_focus_basin_government_codified
+	}
+}
+
+independence_wave_afx_focus_integrate_industrial_reserve = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			NOT = { has_country_flag = independence_wave_afx_focus_industrial_reserve_integrated }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		army_experience = constant:independence_wave_focus_reward.army_experience
+		add_command_power = constant:independence_wave_focus_reward.command_power
+		independence_wave_nwe_apply_security_progress = yes
+		set_country_flag = independence_wave_afx_focus_industrial_reserve_integrated
+	}
+}
+
+independence_wave_afx_focus_settle_industrial_succession = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			NOT = { has_country_flag = independence_wave_afx_focus_industrial_succession_settled }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		if = {
+			limit = {
+				has_independence_wave_living_former_host = yes
+				has_country_flag = independence_wave_afx_host_ledgers_settled
+			}
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_focus_reward_public_settlement = yes
+		}
+		else = {
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		set_country_flag = independence_wave_afx_focus_industrial_succession_settled
+	}
+}
+
+independence_wave_afx_focus_open_meuse_network_office = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			has_country_flag = independence_wave_network_member
+			NOT = { has_country_flag = independence_wave_afx_focus_meuse_network_office_open }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_nwe_apply_diplomatic_progress = yes
+		set_country_flag = independence_wave_afx_focus_meuse_network_office_open
+	}
+}
+
+independence_wave_afx_focus_mandate_meuse_conference = {
+	if = {
+		limit = {
+			has_independence_wave_afx_meuse_conference_foundation = yes
+			NOT = { has_country_flag = independence_wave_afx_meuse_conference_authorized }
+		}
+		set_country_flag = independence_wave_afx_meuse_conference_authorized
+		independence_wave_nwe_apply_diplomatic_progress = yes
+		set_country_flag = independence_wave_afx_focus_meuse_conference_mandated
+	}
+}
+
+independence_wave_afx_focus_prepare_low_countries_dossier = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			has_country_flag = independence_wave_afx_meuse_conference_complete
+			NOT = { has_country_flag = independence_wave_afx_form03_delegation_prepared }
+		}
+		set_temp_variable = { independence_wave_afx_continuity_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_afx_industrial_continuity = yes
+		set_country_flag = independence_wave_afx_form03_delegation_prepared
+		set_country_flag = independence_wave_unlock_formable_discovery
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+		independence_wave_schedule_afx_ambition_incident = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-006 player-facing country incident scheduling
+# ---------------------------------------------------------------------------
+
+independence_wave_schedule_afx_founding_incident = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			NOT = { has_country_flag = independence_wave_afx_founding_incident_scheduled }
+			NOT = { has_country_flag = independence_wave_afx_founding_incident_resolved }
+		}
+		set_country_flag = independence_wave_afx_founding_incident_scheduled
+		set_temp_variable = { independence_wave_afx_incident_delay = constant:independence_wave_nwe_package_duration.afx_incident_delay }
+		country_event = { id = chaosx.nr6.18 days = independence_wave_afx_incident_delay }
+	}
+}
+
+independence_wave_schedule_afx_route_incident = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			has_independence_wave_afx_route_government = yes
+			NOT = { has_country_flag = independence_wave_afx_route_incident_scheduled }
+			NOT = { has_country_flag = independence_wave_afx_route_incident_resolved }
+		}
+		set_country_flag = independence_wave_afx_route_incident_scheduled
+		set_temp_variable = { independence_wave_afx_incident_delay = constant:independence_wave_nwe_package_duration.afx_incident_delay }
+		country_event = { id = chaosx.nr6.19 days = independence_wave_afx_incident_delay }
+	}
+}
+
+independence_wave_schedule_afx_ambition_incident = {
+	if = {
+		limit = {
+			is_independence_wave_afx_package = yes
+			has_country_flag = independence_wave_afx_meuse_conference_complete
+			NOT = { has_country_flag = independence_wave_afx_ambition_incident_scheduled }
+			NOT = { has_country_flag = independence_wave_afx_ambition_incident_resolved }
+		}
+		set_country_flag = independence_wave_afx_ambition_incident_scheduled
+		set_temp_variable = { independence_wave_afx_incident_delay = constant:independence_wave_nwe_package_duration.afx_incident_delay }
+		country_event = { id = chaosx.nr6.20 days = independence_wave_afx_incident_delay }
 	}
 }
 
@@ -391,6 +618,7 @@ independence_wave_setup_iw_006_wallonia = {
 		independence_wave_load_force_package_mapping = yes
 		independence_wave_apply_dynamic_starting_force = yes
 		set_country_flag = independence_wave_afx_ai_profile
+		independence_wave_schedule_afx_founding_incident = yes
 		if = {
 			limit = { has_prepared_independence_wave_iw_006_package_setup = yes }
 			set_country_flag = independence_wave_iw_006_setup_complete
@@ -526,6 +754,27 @@ independence_wave_cleanup_iw_006_wallonia = {
 		clr_country_flag = independence_wave_afx_factory_guards_unified
 		clr_country_flag = independence_wave_afx_host_ledgers_settled
 		clr_country_flag = independence_wave_afx_meuse_conference_complete
+		clr_country_flag = independence_wave_afx_meuse_conference_authorized
+		clr_country_flag = independence_wave_afx_form03_delegation_prepared
+		clr_country_flag = independence_wave_afx_focus_sambre_meuse_authority_chartered
+		clr_country_flag = independence_wave_afx_focus_mines_rails_furnaces_bound
+		clr_country_flag = independence_wave_afx_focus_basin_government_codified
+		clr_country_flag = independence_wave_afx_focus_industrial_reserve_integrated
+		clr_country_flag = independence_wave_afx_focus_industrial_succession_settled
+		clr_country_flag = independence_wave_afx_focus_meuse_network_office_open
+		clr_country_flag = independence_wave_afx_focus_meuse_conference_mandated
+		clr_country_flag = independence_wave_afx_founding_incident_scheduled
+		clr_country_flag = independence_wave_afx_founding_incident_resolved
+		clr_country_flag = independence_wave_afx_municipal_warrants_preserved
+		clr_country_flag = independence_wave_afx_binding_dispatch_mandate
+		clr_country_flag = independence_wave_afx_route_incident_scheduled
+		clr_country_flag = independence_wave_afx_route_incident_resolved
+		clr_country_flag = independence_wave_afx_published_industrial_review
+		clr_country_flag = independence_wave_afx_government_quota_command
+		clr_country_flag = independence_wave_afx_ambition_incident_scheduled
+		clr_country_flag = independence_wave_afx_ambition_incident_resolved
+		clr_country_flag = independence_wave_afx_confederal_meuse_mandate
+		clr_country_flag = independence_wave_afx_binding_low_countries_directorate
 		clr_country_flag = independence_wave_afx_ai_profile
 		clr_country_flag = independence_wave_low_countries_federation_candidate
 		clr_country_flag = independence_wave_meuse_industrial_ambition

@@ -1,14 +1,14 @@
 # Event 006 resume packet
 
-Updated: 2026-07-16 after committed baseline `7368cc0`
+Updated: 2026-07-16 after portrait commit `95f7529c7` and the audited AFX/RHI/BAY admission tranche
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-Committed baseline: `7368cc0bf`.
+Committed portrait baseline: `95f7529c7`.
 
-IW-005 is a committed, independently audited living-BEL overlay. IW-004 BRI and
-IW-010 AJX are committed, bounded country packages with commit-readiness proof.
-These facts do not add any of the three surfaces to a selectable release pool.
+IW-005 is a committed, independently audited living-BEL overlay and remains
+outside the selectable pool. IW-004, IW-006, IW-008, IW-009, and IW-010 have
+joined IW-001, IW-002, and IW-007 in the exact audited selectable set.
 
 ## Read first
 
@@ -49,14 +49,16 @@ truth map for current implementation status and handoff dispositions.
 - IW-007 AGX remains promoted from `2912e0a46` for ordinary automatic and
   SCN-008 admission. The audit is static and is not an in-engine execution
   result.
-- IW-006 AFX's earlier admission was revoked after the binding Level 2 focus
-  group was found missing.
+- IW-006 AFX has an audited eight-focus Sambre-Meuse Level 2 lane, three
+  incidents, unique art, and exact automatic/SCN-008 admission.
 - IW-001 SCO and IW-002 WLS passed their repaired transaction audit and are
   admitted for ordinary automatic and SCN-008 execution.
-- IW-009 BAY's earlier admission was revoked after the binding Level 2 focus
-  group was found missing.
-- The current attested set is IW-001, IW-002, and IW-007. Every other
-  package remains outside the compile-time admission set.
+- IW-008 RHI and IW-009 BAY have audited Level 2 lanes, incidents, unique art,
+  and exact automatic/SCN-008 admission. RHI retains its binding FORM-04
+  delegation gate; BAY retains its package-owned South German settlement.
+- The current attested set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
+  IW-009, and IW-010. Every other selectable package remains outside the
+  compile-time admission set.
 - Commit `a2c274d1e` contains the independently audited living-BEL IW-005
   Flanders overlay. It preserves Belgium and is not a selectable Event 006
   release package. Its one-day timeout versus `on_daily_BEL` edge remains a
@@ -69,9 +71,8 @@ truth map for current implementation status and handoff dispositions.
   ACX and AEX are unregistered readiness-pool art only. Earlier portrait and
   army-small checksum ledgers are historical and superseded.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
-  the repaired FORM transaction integration. Both exact immutable identity
-  helpers and both runtime-preflight ID/tag branches are present. Neither exact
-  ID has compile-time content attestation or a SCN-008 admission branch.
+  the repaired FORM transaction integration. Exact promotions are committed in
+  `5d17e55b3` and `f64d9640e`.
 - Static icon families, current male-HOI4 portraits and commander-small
   dossiers, country flags, FORM-01 through FORM-04 flags, report scenes,
   super-event art, and final `6002` audio files materially exist. Gameplay
@@ -86,21 +87,22 @@ truth map for current implementation status and handoff dispositions.
 
 | Package | Current state | Resume rule |
 | --- | --- | --- |
-| IW-006 AFX | Prior admission revoked | Add the binding Level 2 focus group and re-audit before restoring content attestation or SCN-008 admission |
+| IW-006 AFX | Promoted | Preserve its audited Level 2 Sambre-Meuse lane, three incidents, and exact automatic and SCN-008 gates |
 | IW-007 AGX | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
 | IW-001 SCO | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
 | IW-002 WLS | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
-| IW-008 RHI | Fail-closed | Add the binding Level 2 focus group and repair FORM-04 preparation, then run a fresh exact-ID audit |
-| IW-009 BAY | Prior admission revoked | Add the binding Level 2 focus group and re-audit before restoring content attestation or SCN-008 admission |
+| IW-008 RHI | Promoted | Preserve its audited Level 2 lane, incidents, exact runtime gates, and binding FORM-04 delegation gate |
+| IW-009 BAY | Promoted | Preserve its audited Level 2 lane, incidents, exact runtime gates, and package-owned South German settlement |
 | IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
-| IW-004 BRI | Bounded package implemented and commit-audited | Exact identity helper and runtime-preflight branch are present. Run a separate exact-ID content-attestation and SCN-008 admission audit before promotion |
-| IW-010 AJX | Bounded package implemented and commit-audited | Exact identity helper and runtime-preflight branch are present. Run a separate exact-ID content-attestation and SCN-008 admission audit before promotion |
+| IW-004 BRI | Promoted | Preserve the exact automatic and SCN-008 gates admitted in `5d17e55b3` |
+| IW-010 AJX | Promoted | Preserve the exact automatic and SCN-008 gates admitted in `f64d9640e` |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion |
 
-Three compile-time attestations do not guarantee a valid wave. The allocator
+Eight compile-time attestations do not guarantee a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
-chaos-band, and wave-size gates. Higher bands need more audited packages.
+chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
+7-country bands, but World Collapse remains under-supplied for its required ten.
 
 ## Completed tranches not to repeat
 
@@ -118,14 +120,18 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
   2026-07-16 package, plus explicit custom-advisor-icon withdrawal. The
   2026-07-15 fictional portrait and army-small packages are superseded.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
-- Historical AFX and AGX coordinated static promotion; AFX is subsequently
-  revoked fail-closed while AGX remains admitted.
+- AGX's coordinated static promotion remains admitted. AFX received its missing
+  Level 2 Sambre-Meuse lane, three incidents, unique art, and a fresh exact-ID
+  audit before admission was restored.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
   implementation evidence; the 2026-07-16 runtime ledger is current.
 - Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
-  closeout in `7368cc0bf`.
+  closeout in `7368cc0bf`, followed by their exact promotions in `5d17e55b3`
+  and `f64d9640e`.
+- RHI and BAY Level 2 lanes, incidents, unique art, and exact admission, with
+  RHI's FORM-04 delegation gate and BAY's package-owned South German settlement.
 - SCO/WLS congress preparation repair in `4884c0ef1`, followed by exact IW-001
   and IW-002 content-attestation and SCN-008 promotion.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
@@ -134,24 +140,19 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 
 ## Immediate continuation order
 
-1. Audit IW-004 BRI for exact-ID compile-time content attestation and SCN-008
-   admission. Keep this separate from AJX.
-2. Audit IW-010 AJX for exact-ID compile-time content attestation and SCN-008
-   admission. Keep this separate from BRI.
-3. Implement the missing AFX, RHI, and BAY Level 2 focus groups, repair RHI's
-   FORM-04 congress preparation, and re-audit each package before admission.
-4. Expand the audited automatic pool until every accepted wave band has enough
-   mutually compatible candidates. Preserve reservation-first planning and
-   Event 005 collision checks.
-5. Wire Event 006 super-event presentation and settings-aware `6002` playback.
+1. Expand the audited automatic pool to at least ten mutually compatible
+   candidates so World Collapse can still execute exactly ten releases.
+2. Preserve the eight admitted package gates and rerun their exact-ID audits
+   whenever shared planner or dispatch logic changes.
+3. Wire Event 006 super-event presentation and settings-aware `6002` playback.
    Keep `6001` absent.
-6. Continue package and FORM-05 through FORM-48 implementation with bespoke
+4. Continue package and FORM-05 through FORM-48 implementation with bespoke
    identities, gameplay, AI, localisation, assets, and audits.
-7. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
+5. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
    only after their GUI sizes, states, frame plans, and consumers are locked.
-8. Reconcile event logs, event details, documentation, asset manifests, and the
+6. Reconcile event logs, event details, documentation, asset manifests, and the
    event workbook after the active gameplay tranche settles.
-9. Run the relevant country-package, decision/mission, localisation, and Event
+7. Run the relevant country-package, decision/mission, localisation, and Event
    006 completion audits before any overall completion claim.
 
 ## Hard blockers and missing completion evidence
@@ -162,9 +163,8 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
   decision.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-05 through FORM-48 remain incomplete and fail-closed.
-- IW-004 and IW-010 still lack exact-ID content-attestation and SCN-008 admission
-  audits. Their committed package and preflight plumbing does not close that
-  evidence gap.
+- The automatic pool has eight exact attestations and therefore cannot yet
+  satisfy the ten-country World Collapse band.
 - The event workbook and every event-log/detail surface have not been reconciled
   against the current implementation.
 - No final balance and Event 006 completion audit covers the whole accepted spec.
@@ -177,8 +177,8 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- BRI and AJX exact identity helpers and runtime-preflight branches are
-  non-authorizing prerequisites, not admission proof.
+- The eight exact package attestations remain binding runtime gates; a broad
+  identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
   commit, or `006_source_of_truth_map.md` narrows it.
