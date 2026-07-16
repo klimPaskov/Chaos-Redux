@@ -6,7 +6,7 @@ This proof covers the five recurring Air Winter families carried by the existing
 
 | Family | Observation | Event route |
 | --- | --- | --- |
-| First frost | A state crosses into Phase 2 or worse from below Phase 2 | Existing regional Phase 2 routes, ids 10 through 14 and exact mountain-capital id 16 |
+| First frost | A state crosses into Phase 2 or worse from below Phase 2 | Existing regional Phase 2 routes, ids 10 through 14 and exact mountain-capital id 16. Seed route 10 can schedule result 18. |
 | Dark harvest | A classified food state is severe | Existing food-collapse opening 33 and result 32 |
 | Ash thaw | A state drops from Phase 3 or Phase 4 to a lower phase | Existing recovery opening 50 and result 51 |
 | Second winter | A presentation class is severe in a later engine year | Dedicated choice event 60 and result 61 |
@@ -59,6 +59,8 @@ Reconciliation clears partial rows, transferred rows, impossible calendar rows, 
 ### First frost
 
 The state must have changed phase during the current tick. Its previous phase is below Phase 2 and its new phase is Phase 2 or higher. Regional routing is resolved at capture time and stored in the row. Mountain-capital identity is checked before the generic city route. The typed id preserves that selection if the capital moves before dispatch, while the stored state, owner, and highland class must remain valid.
+
+When the frozen route is seed event 10, each opening choice schedules event 18 after 45 days. The child result uses the same regular state and country targets and the shared pending-owner transaction. This continuation does not write a second seasonal receipt.
 
 ### Dark harvest
 

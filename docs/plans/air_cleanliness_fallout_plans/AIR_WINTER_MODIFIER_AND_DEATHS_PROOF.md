@@ -215,6 +215,16 @@ infrastructure, occupation, and adaptation result. The same exact-loss helper,
 setting gate, reason, and returned applied amount remain in force. Failure and
 cancelled branches do not receive the protection memory.
 
+## Seed vault factory diversion
+
+The official `documentation/modifiers_documentation.md` entry at lines 3167 through 3170 classifies `local_factories` for state and war-production modifiers. The official `add_dynamic_modifier` effect at lines 1153 through 1167 permits state scope and a variable-backed `days` field. Vanilla `common/dynamic_modifiers/SEA_dynamic_modifiers.txt` applies a negative 10 percent `local_factories` value in a state dynamic modifier. These references prove the field, scope, sign, magnitude precedent, and temporary-duration syntax used here.
+
+The guarded seed route applies `air_winter_seed_vault_preservation_industry_state` in state scope. It reads the constant-backed value of negative 10 percent.
+
+The modifier lasts 46 days, which is one day longer than the scheduled 45-day seed result. Seed success and failure remove it explicitly. Branch replacement, ownership cancellation, state reset, and Fallout snapshot cleanup also remove it through the shared pending-chain effects. Herd slaughter and breeding-stock routes do not apply it.
+
+The modifier uses the dedicated Phase 2 Air Winter icon. It does not change a monthly winter coefficient or a Fallout survival coefficient. Runtime factory availability remains part of the unobserved modifier boundary because Hearts of Iron IV was not launched.
+
 The shared exact-loss helper can be used by other systems that intentionally
 remove population even when Deaths display and logging are disabled. Air
 Winter does not use that independent mode. Changing the global setting
@@ -251,7 +261,8 @@ pre-seed its temporary outputs, and add only
 ## Runtime observation boundary
 
 Static evidence proves the repair-field categories, every building token, the
-Deaths setting gates, the tunnel-school protection multiplier, the documented
+Deaths setting gates, the tunnel-school protection multiplier, the seed-vault
+factory-diversion contract, the documented
 state population mutation route, the
 recruitable-credit reconciliation contract, and vanilla state usage of
 controller attrition. It also proves country scope for the four air fields,

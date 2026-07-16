@@ -10,7 +10,7 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 
 | Accepted state identity | Pre-expansion coverage | Review result |
 | --- | --- | --- |
-| Breadbasket | `chaosx.fallout.10` preserves or consumes seed stock and writes state memory. | Partial. The opening is specific, but it has no delayed seed outcome. |
+| Breadbasket | `chaosx.fallout.10` preserves or consumes seed stock and writes state memory. | Partial. Event 18 carries the delayed result and guarded storage diverts local factories. Post-Fallout food recovery remains approval-gated. The active user contract forbids a political-power store. |
 | Coal or heavy industry | `chaosx.fallout.23` and `.24` allocate scarce heat and return a delayed coal-ledger result. | Substantial. The chain is not restricted to an industrial state, so it remains a broad Phase 3 route. |
 | Hydroelectric region | No event checked a dam building before the first expansion. | Covered by `chaosx.fallout.22` and `.25`. |
 | Oil region | No event checked oil resources, refineries, or fuel storage before the first expansion. | Covered by `chaosx.fallout.26` and `.27`. |
@@ -41,28 +41,43 @@ These routes are selected before the existing broad transport and clinic routes 
 
 This batch changes no monthly phase coefficient, population formula, Fallout grade coefficient, treaty policy, or world iteration. It uses the existing Air Winter ledgers, event cooldown, candidate ordering, state refresh, Deaths and fallout helpers, and pending-chain cleanup.
 
-## Mountain-capital expansion
+## Mountain-capital depth
 
-The next reviewed tranche adds two manually authored blocks:
+The mountain-capital contract contains two manually authored blocks:
 
 - `chaosx.fallout.16`, Classes Beneath the Capital
 - `chaosx.fallout.17`, The Tunnel Bell
 
 The route checks highland and capital identity before generic city routing. Civic conversion and shared shifts apply temporary local factory penalties while increasing shelter. Civic conversion and cellar dispersal resolve through disclosed ledger thresholds. Shared shifts resolve to a fixed middle outcome. Successful routes write a durable protection memory that multiplies the existing monthly Air Winter civilian death percentage by 0.90.
 
-This second batch changes no phase coefficient, Fallout survival coefficient, treaty policy, or world iteration. It extends the established Air Winter Deaths calculation only for states with a successful tunnel-school result.
+The route leaves the phase coefficients, Fallout survival coefficients, treaty policy, and world iteration unchanged. Only states with a successful tunnel-school result modify the established Air Winter Deaths calculation.
+
+## Seed-ledger depth
+
+The seed-ledger contract contains:
+
+- `chaosx.fallout.18`, The Spring Ledger
+- two conditional seed-plot outcomes
+- one fixed herd-depletion outcome
+- two conditional breeding-stock outcomes
+
+The delayed result arrives after 45 days. Seed plots test Reclamation and Exposure. Breeding stock tests Food Reserve and Shelter Capacity. AI plausibility gates translate those thresholds back through each opening route's exact ledger changes. All three routes use the shared owner-bound pending transaction and state reset cleanup.
+
+The guarded seed route also applies a 10 percent local factory penalty for 46 days. The modifier is removed when either seed result resolves or any pending-chain cancellation runs.
+
+This batch changes no phase coefficient, Fallout survival coefficient, treaty policy, route selector, or world iteration.
 
 ## Implementation disposition
 
-Both reviewed expansions are live. The pilot contains 43 blocks, 127 options, and 126 effect-bearing options. Mountain capitals, hydroelectric states, oil or refinery states, and reactor states now have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the three infrastructure routes provide deterministic cross-playthrough breadth rather than three guaranteed incidents for every country.
+The pilot contains 44 blocks, 132 options, and 131 effect-bearing options. Seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, and reactor states have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the three infrastructure routes provide deterministic cross-playthrough breadth rather than three guaranteed incidents for every country.
 
 ## Deferred depth
 
 The following accepted rows remain unresolved after this tranche:
 
-- delayed seed-vault consequences
+- an approved post-Fallout food-recovery consumer for the seed-ledger outcomes
 - an early dead-city salvage chain
 - refugee admission and identity consequences for island states
 - state-specific heavy-industry routing beyond the broad heat chain
 
-They require separate reviewed contracts and are not claimed by either completed expansion.
+They require separate reviewed contracts and are not claimed by the completed expansions.

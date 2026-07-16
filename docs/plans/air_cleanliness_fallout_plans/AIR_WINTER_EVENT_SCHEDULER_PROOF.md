@@ -10,7 +10,7 @@ The Air Winter pilot scheduler has three entry points in `common/scripted_effect
 
 `air_contamination_monthly_update` calls dispatch before Air Winter finalization. No new state-wide or country-wide periodic scan was added. Seasonal capture occurs before the country cooldown gate, so a transition observed during cooldown remains available for a later cycle.
 
-The scheduler retains the original one-time worsening-phase memories. A country phase remains eligible when its first qualifying month was blocked by cooldown. Generic recovery still requires an actual phase decrease and respects `constant:air_winter_event_runtime.recovery_arc_cap`. A 46-day country cooldown is one day longer than the longest 45-day delayed result.
+The scheduler retains the original one-time worsening-phase memories. A country phase remains eligible when its first qualifying month was blocked by cooldown. Generic recovery still requires an actual phase decrease and respects `constant:air_winter_event_runtime.recovery_arc_cap`. A 46-day country cooldown is one day longer than the longest 45-day delayed result. Dispatch applies it before opening the event. Every successful delayed-result choice reapplies it immediately before scheduling the child, so time spent on the opening popup cannot consume the result buffer.
 
 ## Calendar snapshot
 
@@ -80,7 +80,7 @@ Before firing an event, dispatch saves:
 
 The offline Data structures page states that a regular event target carries into events fired by the same effect chain, including delayed child events. The pilot uses regular targets so simultaneous countries cannot overwrite a shared global target.
 
-Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice is suppressed during the Fallout transition and active Fallout. It has one effect-free acknowledgement.
+Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. All 46 delayed-result schedules call the shared country-cooldown helper immediately before the child timer begins. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice is suppressed during the Fallout transition and active Fallout. It has one effect-free acknowledgement.
 
 Delayed result blocks require their own pending branch flag and the stored original owner. Whenever the generic pending flag exists, `air_winter_event_targets_are_valid` requires a complete owner variable, equality with the saved country target, and current state ownership by that stored owner. Monthly reconciliation cancels a branch when ownership changes or the branch ledger is incomplete. Active Fallout and the Fallout transition also invalidate the target contract. The stored owner uses a regular scope-valued variable and `var:` entry, matching the documented variable-target pattern and the reviewed vanilla ownership precedent.
 
@@ -90,11 +90,13 @@ The three Phase 3 infrastructure openings repeat manpower, Command Power, suppor
 
 The mountain-capital opening repeats manpower and support-equipment affordability at click time. Its AI combines government and war preferences with exact pre-choice ledger boundaries derived from the civic and cellar opening effects. Civic conversion and shared shifts apply temporary state `local_factories` penalties. Five result options expose only the stored branch and deterministic outcome. Successful outcomes write a state memory that reduces the established monthly Air Winter civilian death percentage by 10 percent.
 
+The Phase 2 seed-ledger opening repeats its 1,000-manpower affordability check at click time. Guarded seed plots apply a 10 percent local factory penalty for 46 days. Every valid choice opens one owner-bound branch, refreshes the 46-day country cooldown from the click, and schedules event 18 after 45 days. This preserves the one-day buffer when a human leaves the opening popup unresolved. Seed plots and breeding stock use exact result gates with pre-choice AI boundaries translated through the opening ledger changes. Herd slaughter returns through a fixed depletion result. Five result options expose only the matching branch and conditional outcome. Seed success, seed failure, branch replacement, and generic cancellation all remove the temporary factory modifier.
+
 ## AI and cleanup
 
 Every non-deterministic player-choice opening has explicit AI weights with state or country conditions. Delayed deterministic results expose only the option matching the stored pending branch and outcome. AI countries therefore use the same mechanical chain without a second visible-only scheduler.
 
-`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, infrastructure memory, tunnel-school memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary refinery, reactor, or tunnel-school modifiers. `air_winter_reset_global` clears the calendar snapshot.
+`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, seed-ledger memory, infrastructure memory, tunnel-school memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary seed-vault, refinery, reactor, or tunnel-school modifiers. `air_winter_reset_global` clears the calendar snapshot.
 
 ## Static validation
 
@@ -119,8 +121,10 @@ Static review establishes:
 17. Fallout snapshot capture before pending-branch cancellation
 18. exact Phase 3 infrastructure identity and state-local route precedence
 19. exact mountain-capital identity, city-route precedence, and first-frost typed-id retention
+20. seed-ledger branch exclusivity, threshold derivation, and delayed cleanup
+21. click-time cooldown reanchoring for all 46 delayed-result schedules
 
-The 43 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 127 options. One hundred twenty-six effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. Infrastructure-specific proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Mountain-capital proof is in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
+The 44 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 132 options. One hundred thirty-one effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. Seed-ledger proof is in `AIR_WINTER_PHASE_2_SEED_LEDGER_EVENT_PROOF.md`. Infrastructure-specific proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Mountain-capital proof is in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
 ## Unobserved engine boundary
 
