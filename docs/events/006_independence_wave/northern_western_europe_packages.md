@@ -49,7 +49,7 @@ Scotland uses `SCO_independence_wave_civic_convention` as its multi-route civic 
 
 These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `65x67` army dossiers. Each large portrait master was generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from its installed DDS file, and reviewed against the canonical vanilla portrait references.
 
-Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. Each advisor has a distinct `65x67` dossier card produced from its own ImageGen master by the advisor-card processor, a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
+Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
 The static advisor records are recruited by hidden setup event `chaosx.nr6.10` inside the frozen release chain. The calling package adapter then proves all three records exist before it can publish setup success; no scripted effect or on action contains `recruit_character`.
 
@@ -120,7 +120,7 @@ The package reuses these already registered Event 006 interface sprites:
 - decisions: `GFX_decision_independence_wave_government_actions`, `GFX_decision_independence_wave_depot_border_actions`, `GFX_decision_independence_wave_former_host_negotiations`, `GFX_decision_independence_wave_army_integration_actions`, and `GFX_decision_independence_wave_formable_proclamation`;
 - focuses: `GFX_goal_independence_wave_founding_administration`, `GFX_goal_independence_wave_infrastructure_authority`, `GFX_goal_independence_wave_recognition_diplomacy`, `GFX_goal_independence_wave_constitutional_state`, `GFX_goal_independence_wave_army_integration`, and `GFX_goal_independence_wave_league_congress`.
 
-The unique package portraits are registered in `interface/006_independence_wave_region_01_portraits.gfx` and installed under `gfx/leaders/006_independence_wave/`. The advisor dossier sprites are registered in `interface/006_independence_wave_nwe_advisors.gfx` and installed under `gfx/interface/ideas/006_independence_wave/advisors/`. The authoritative user-directed HOI4 portrait pass, including source portraits, processed PNGs, DDS decodes, reference review sheets, hashes, and manifests, lives under `docs/assets/006_independence_wave/portrait_regeneration_2026_07_15/`; advisor production evidence lives under `docs/assets/006_independence_wave/nwe_advisor_dossiers_2026_07_15/`.
+The unique package portraits are registered in `interface/006_independence_wave_region_01_portraits.gfx` and installed under `gfx/leaders/006_independence_wave/`. The gameplay advisor offices deliberately carry no custom Event 006 portrait sprites. The authoritative user-directed HOI4 leader production package records source portraits, processed PNGs, DDS decodes, reference review sheets, hashes, and manifests under `docs/assets/006_independence_wave/`.
 
 Scotland and Wales retain their installed vanilla flag triplets because these are reused vanilla countries, not newly created Event 006 tags. Any future royal Scottish cosmetic route must remain traditional-route-only. Wales receives no invented pre-1959 fallback.
 
@@ -537,12 +537,12 @@ Cleanup restores both vanilla character portraits. No `.gfx` character sprite is
 
 #### Advisor offices
 
-Each package recruits three fictional specialists with independently composed `65x67` advisor dossier cards:
+Each package recruits three fictional specialist offices without custom Event 006 advisor portrait cards:
 
 - Rhineland: Municipal Customs Administrator, Rail and Public Works Liaison, and River Defense Planner.
 - Bavaria: District Finance Administrator, Estates' Constitutional Liaison, and Alpine Supply Inspector.
 
-Their substantial traits affect customs and consumer burdens, rail and infrastructure construction, river defense and planning, district finance, constitutional stability, or alpine logistics. Hiring costs and route-aware AI weights are centralized in `common/script_constants/006_independence_wave_nwe_advisor_constants.txt`. The advisors are visible only for their exact active Event 006 package and never overwrite either tag's vanilla advisor content.
+Their substantial traits affect customs and consumer burdens, rail and infrastructure construction, river defense and planning, district finance, constitutional stability, or alpine logistics. Hiring costs and route-aware AI weights are centralized in `common/script_constants/006_independence_wave_nwe_advisor_constants.txt`. The advisors are visible only for their exact active Event 006 package, use no custom portrait sprites, and never overwrite either tag's vanilla advisor content.
 
 Hidden setup event `chaosx.nr6.10` recruits these static records within the frozen release chain. The package adapter will not publish success unless the exact three-advisor roster is present, and no scripted effect or on action contains `recruit_character`.
 
@@ -725,7 +725,7 @@ The fictional package roster is registered in `interface/006_independence_wave_r
 - `GFX_portrait_BAY_independence_wave_state_council`
 - `GFX_portrait_BAY_independence_wave_mountain_commandant` and its `_small` army sprite
 
-The six package advisor cards are registered in `interface/006_independence_wave_nwe_advisors.gfx` and live under `gfx/interface/ideas/006_independence_wave/advisors/`. Their full ImageGen masters, explicit crops, processed PNGs, DDS decodes, review sheets, hashes, and manifests live under `docs/assets/006_independence_wave/nwe_advisor_dossiers_2026_07_15/`. The authoritative user-directed HOI4 leader production and review package lives under `docs/assets/006_independence_wave/portrait_regeneration_2026_07_15/`.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package lives under `docs/assets/006_independence_wave/`.
 
 ### Readiness boundary
 
@@ -914,9 +914,6 @@ and bunker priority without assuming a fixed host tag.
 | Friedrich Hoffmann | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_region_01_portraits.gfx` |
 | Karl Becker large | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
 | Karl Becker small | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds` | `GFX_portrait_AJX_karl_becker_small`; army portrait only |
-| Mine and Rail Dispatch Superintendent | `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_mine_rail_dispatch_superintendent.dds` | `GFX_portrait_advisor_AJX_independence_wave_mine_rail_dispatch_superintendent` in `interface/006_independence_wave_region_01_portraits.gfx` |
-| Cross-Border Accounts Comptroller | `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_cross_border_accounts_comptroller.dds` | `GFX_portrait_advisor_AJX_independence_wave_cross_border_accounts_comptroller` in the same `.gfx` file |
-| Factory Security Inspector | `gfx/interface/ideas/006_independence_wave/advisors/advisor_AJX_independence_wave_factory_security_inspector.dds` | `GFX_portrait_advisor_AJX_independence_wave_factory_security_inspector` in the same `.gfx` file |
 | Municipal Neutral Commission focus | `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds` | base and shine in `interface/006_independence_wave.gfx`; base consumed by `independence_wave_ajx_appoint_neutral_commission_focus` |
 
 The character sprites are consumed by
@@ -943,25 +940,21 @@ The decisions and focuses use already registered Event 006 sprites:
 - `GFX_goal_independence_wave_regional_formable`.
 
 No placeholder icon is counted as completed art. A distinct Municipal Neutral
-Commission focus icon and three independently composed advisor dossiers are
-installed as runtime DDS files and documented in
+Commission focus icon is installed as a runtime DDS file and documented in
 `docs/assets/006_independence_wave/ajx_asset_completion_2026_07_15/manifest.md`.
-The verified handles are:
+The verified handle is:
 
 - `GFX_goal_independence_wave_ajx_neutral_commission` at
-  `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds`;
-- `GFX_portrait_advisor_AJX_independence_wave_mine_rail_dispatch_superintendent`;
-- `GFX_portrait_advisor_AJX_independence_wave_cross_border_accounts_comptroller`;
-- `GFX_portrait_advisor_AJX_independence_wave_factory_security_inspector`.
+  `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds`.
 
-The three character records consume the matching advisor handles, carry the
-approved gender metadata, have role-title localisation, and are recruited by
-the Event 006 setup event. The focus base and shine handles are registered; the
-base handle identifies the neutral-commission entry focus while its three
-  follow-up nodes retain their specific shared icons. The commander's separately
-  composed `65x67` army dossier remains army-only and is not used by any advisor
-  card. Its runtime SHA-256 is
-  `470C29FD6CC73F5B6A269969160F1F4D721F31D4197F3D070C8388765F269312`.
+The three gameplay advisor records have role-title localisation and are
+recruited by the Event 006 setup event, but they deliberately carry no custom
+portrait handles. The focus base and shine handles are registered; the base
+handle identifies the neutral-commission entry focus while its three follow-up
+nodes retain their specific shared icons. The commander's separately composed
+`65x67` army dossier remains army-only and is not used by any advisor card. Its
+runtime SHA-256 is
+`470C29FD6CC73F5B6A269969160F1F4D721F31D4197F3D070C8388765F269312`.
 
 ### Implementation files
 
@@ -1003,10 +996,10 @@ branches, and Argentina's origin-gated AI strategy.
   military-settlement adapters remain independently audited and ready. FORM-04
   still requires its living RHI partner and carrier-specific delegation proof;
   admitting AJX does not manufacture or overwrite that partner.
-- The three advisor dossiers and distinct neutral-commission focus art are
-  produced, installed, hash-validated, registered, and consumed by the live
-  parent-owned records. No AJX asset-integration blocker remains, and no
-  generic, placeholder, leader-crop, or army-thumbnail substitute is used.
+- The distinct neutral-commission focus art is produced, installed,
+  hash-validated, registered, and consumed by the live parent-owned focus.
+  AJX's three gameplay advisor offices deliberately carry no custom Event 006
+  portrait sprites. No AJX focus-art integration blocker remains.
 
 After those contracts are resolved, useful extensions would be patron-specific
 coal contracts, former-host-dependent border prose, a negotiated Saar/Rhine

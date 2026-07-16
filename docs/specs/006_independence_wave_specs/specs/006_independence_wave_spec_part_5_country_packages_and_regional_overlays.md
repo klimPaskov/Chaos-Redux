@@ -96,11 +96,14 @@ Used for invented provisional politicians, officers, organizers, clerics, tradit
 Requirements:
 
 - generated portrait appropriate to region and era
-- small regional name pool
-- separate male and female pools
-- portrait gender presentation matched to name and metadata
+- small male regional name pool
+- male portrait presentation matched to name and metadata
 - plausible personal name rather than generic office title
 - route-specific traits and background
+
+For Event 6, the 2026-07-16 user direction supersedes the earlier mixed-gender
+pool: no female leader, commander, collective portrait subject, or character
+metadata is used.
 
 ### Institutional leadership
 
@@ -109,7 +112,7 @@ Used for councils, assemblies, juntas, congresses, traditional bodies, committee
 Requirements:
 
 - institutional name
-- collective portrait or symbolic office art
+- all-male collective portrait or symbolic office art
 - no personal random name
 - route that can later preserve the institution or replace it with a personal leader
 

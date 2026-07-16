@@ -493,6 +493,24 @@ Source rules:
 - signature country routes receive priority portrait depth
 - ordinary framework countries can begin with a council and later select a leader
 
+Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
+
+- every Event 6 personal, command, and collective portrait depicts men only;
+- no Event 6 character carries female gender metadata;
+- every fictional portrait master is generated against the canonical vanilla
+  leader or commander references and finished in the recognisable HOI4
+  painterly-realistic style;
+- sourced real portraits are cropped to head and shoulders and receive an
+  identity-preserving HOI4 treatment;
+- `portrait_BAY_rupprecht_of_bavaria.dds` and
+  `portrait_RHI_josef_friedrich_matthes.dds` are approved and remain untouched;
+  every other current Event 6 leader or commander portrait must be regenerated;
+- Event 6 gameplay advisor offices use no custom advisor portrait icons or
+  `GFX_portrait_advisor_*` registrations.
+
+The absence of custom advisor icons is a selected presentation rule, not
+permission to omit advisor mechanics, traits, costs, availability, or AI.
+
 ## Asset source modes
 
 The authoritative asset matrix is `matrices/006_asset_family_registry.csv`.
