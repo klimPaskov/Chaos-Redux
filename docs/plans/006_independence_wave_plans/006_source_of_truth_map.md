@@ -48,9 +48,10 @@ not a current runtime report.
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
-| IW-006 AFX and IW-007 AGX | Promoted for automatic and SCN-008 admission | `2912e0a46` applies the coordinated readiness wrappers, runtime attestations, and scenario preflight branches authorized by `006_afx_agx_release_readiness_audit_2026_07_16.md`. The audit was static and did not execute an in-engine release |
-| IW-009 BAY | Content-attested | The compile-time registry admits IW-009. Its exact runtime predicates still apply |
-| IW-001 SCO, IW-002 WLS, IW-008 RHI | Package content present, not promoted | Country-package implementation exists, but these IDs are absent from the current compile-time content-attestation set |
+| IW-006 AFX | Fail-closed pending Level 2 repair | Its earlier admission from `2912e0a46` was revoked after review found no binding country-specific focus group. Package mechanics remain implemented but do not authorize release readiness |
+| IW-007 AGX | Promoted for automatic and SCN-008 admission | `2912e0a46` applies its readiness wrapper, runtime attestation, and scenario preflight branch. The audit was static and did not execute an in-engine release |
+| IW-001 SCO and IW-002 WLS | Promoted for automatic and SCN-008 admission | Commit `4884c0ef1` repairs their shared preparation transaction; the focused staged-index re-audit then passed exact package, FORM-01/02, visual, AI, localisation, and transaction gates. Exact dormant-tag availability, host, anchor, reservation, Event 5, and capacity predicates still apply |
+| IW-008 RHI and IW-009 BAY | Fail-closed pending Level 2 repair | A current audit found both packages missing the binding country-specific focus group. RHI also bypasses FORM-04 preparation. BAY's prior attestation and scenario branch were revoked rather than treated as proof |
 | IW-004 BRI and IW-010 AJX | Bounded packages implemented and commit-audited | Commit `7368cc0bf` contains both package surfaces and the repaired FORM transaction integration. Their exact immutable identity helpers and runtime-preflight ID/tag branches are present. Compile-time content attestation and SCN-008 admission remain closed for both |
 | IW-003 Cornwall | Blocked | No legal collision-free contiguous state ID exists on the accepted installed-map contract. ACX remains reserved and dormant. No fallback is authorized |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Commit `a2c274d1e` implements the overlay and its independent re-audit passes the bounded source surface. It preserves Belgium and is not a selectable Event 006 release package. The one-day timeout versus `on_daily_BEL` edge remains a documented static ordering caveat because engine order is unspecified, and AI garrison completion remains opportunistic |
@@ -99,11 +100,11 @@ The committed compile-time content-attestation set is currently:
 
 | Package | Identity | Admission state | Remaining runtime boundary |
 | --- | --- | --- | --- |
-| IW-006 | AFX, Wallonia | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, chaos-band, and transaction preflight checks |
+| IW-001 | SCO, Scotland | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, chaos-band, and transaction preflight checks |
+| IW-002 | WLS, Wales | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, chaos-band, and transaction preflight checks |
 | IW-007 | AGX, Frisia | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, chaos-band, and transaction preflight checks |
-| IW-009 | BAY, Bavaria | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, chaos-band, and transaction preflight checks |
 
-The registry does not attest IW-001, IW-002, IW-004, IW-008, or IW-010. The
+The registry does not attest IW-004, IW-006, IW-008, IW-009, or IW-010. The
 exact immutable identity helpers
 `is_independence_wave_exact_package_iw_004_tag_available` and
 `is_independence_wave_exact_package_iw_010_tag_available`, together with the
@@ -115,9 +116,11 @@ overlay and is outside this selectable-release registry.
 
 The three attested IDs can satisfy only a wave for which all three remain valid
 at runtime. Higher wave bands remain under-supplied by the attested set. The
-AFX/AGX audit proves static source readiness and coordinated admission. It does
-not prove an in-engine release, scenario load, or every possible host-state
-combination.
+SCO/WLS and AGX audits prove static source readiness for those exact packages.
+They do not prove an in-engine release, scenario load, or every possible
+host-state combination. AFX package source remains implemented, but the later
+Level 2 review supersedes its earlier admission claim until its required focus
+group exists and passes a new audit.
 
 ## Implemented and audited architecture
 
@@ -144,10 +147,11 @@ described as absent:
 | Human portrait, advisor, and army-small dossiers | `5f8f0c000`, `5eff0d6ff`, and `d0044b22e` |
 | Installed-mod tag collision audit | `e0c1d5831` |
 | IW-003 map blocker record | `2f867e9cd` |
-| AFX and AGX runtime promotion | `2912e0a46` |
+| Historical AFX and AGX runtime promotion; AFX later revoked fail-closed | `2912e0a46` and the current runtime-admission boundary |
 | Living-BEL IW-005 Flanders overlay and independent audit | `a2c274d1e` |
 | Five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment | `45bee09d2` |
 | Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness closeout | `7368cc0bf` |
+| Round-number progression and balance normalization | `879e511cc` and `006_round_number_balance_preflight_2026_07_15.md` |
 
 ## Asset and super-event boundary
 
@@ -194,14 +198,14 @@ user approval.
 | `006_nwe_package_portrait_regeneration_handoff_2026_07_15.md` | Superseded | Replaced by `006_character_portrait_regeneration_handoff_2026_07_15.md` and the army-small correction |
 | `006_nwe_country_package_audit_2026_07_15.md` | Partly superseded | Use later remediation, FORM commits, package re-audits, and the current compile-time registry for readiness |
 | FORM-01 through FORM-04 operational, FORM-03 promotion, and readiness-promotion chain | Implemented evidence | Current bounded formable authority |
-| `006_afx_agx_release_readiness_audit_2026_07_16.md` | Implemented evidence | Authorized and followed by coordinated promotion in `2912e0a46` |
+| `006_afx_agx_release_readiness_audit_2026_07_16.md` | Partly superseded | Its AGX authorization remains current. Its AFX authorization missed the binding Level 2 focus requirement and no longer grants admission |
 | `006_iw003_cornwall_map_feasibility_2026_07_16.md` | Blocked | Current no-fallback map blocker |
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Automatic content attestation and SCN-008 admission remain separate and closed |
 | Shared army-small checksum alignment | Implemented evidence | Commit `45bee09d2` completed the exact five-line ACX, AEX, AFX, AGX, and AJX ledger transaction |
 | Super-event audio research handoff | Partly superseded | `6002` production steps are complete. Its rights research and `6001` blocker remain current |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
-| `006_round_number_balance_preflight_2026_07_15.md` | Queued evidence | It is not a final Event 006 balance or completion audit |
+| `006_round_number_balance_preflight_2026_07_15.md` | Implemented evidence | Commit `879e511cc` contains its reviewed tuning tranche. It is not a final Event 006 balance or completion audit |
 
 Historical handoffs remain untouched. Their completion language must not be used
 when a later audit, commit, or this map gives a narrower state.
@@ -213,7 +217,7 @@ when a later audit, commit, or this map gives a narrower state.
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
 | Older audio notes say `6002` derivatives and wrappers are absent | Superseded for production and registry. Gameplay firing remains pending |
-| Earlier AFX and AGX source was fail-closed | Superseded by audit and commit `2912e0a46` |
+| Earlier AFX and AGX source was fail-closed | AGX was promoted by `2912e0a46`; AFX returned to fail-closed status after the missing Level 2 focus group was found |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
 | Older curator status for BRI and AJX | Superseded by commit `7368cc0bf`, which contains the bounded package tranche and its commit-readiness closeout. Package-level completion does not grant runtime admission |
 | BRI and AJX have exact identity and runtime-preflight branches but are absent from content attestation and SCN-008 branches | Intentional fail-closed boundary. Each exact ID needs a separate admission audit before either registry is opened |
@@ -228,8 +232,8 @@ Parent decisions still required:
    admission as a separate readiness transaction.
 3. Preserve IW-005 as a living-BEL `BEL_flanders` overlay. Do not add it to the
    selectable release registry.
-4. Promote SCO, WLS, and RHI only after a current package, formable, visual, and
-   transaction audit explicitly authorizes each exact ID.
+4. Repair and re-audit the missing AFX, RHI, and BAY Level 2 focus groups. RHI
+   also requires the FORM-04 preparation transaction repair before promotion.
 5. Wire the Event 006 super-event presentation and settings-aware `6002`
    playback. Keep `6001` blocked unless its exact recording rights are cleared.
 6. Continue FORM-05 through FORM-48 and the remaining package registry without

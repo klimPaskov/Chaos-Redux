@@ -43,12 +43,17 @@ truth map for current implementation status and handoff dispositions.
   surface are implemented.
 - FORM-01 through FORM-04 are implemented, source-audited, and readiness-
   promoted. FORM-05 through FORM-48 remain fail-closed.
-- IW-006 AFX and IW-007 AGX were promoted together in `2912e0a46` for ordinary
-  automatic and SCN-008 admission. Their audit is static and is not an in-engine
-  execution result.
-- IW-009 BAY is also compile-time content-attested.
-- The current attested set is IW-006, IW-007, and IW-009. Every other package
-  remains outside the compile-time admission set.
+- IW-007 AGX remains promoted from `2912e0a46` for ordinary automatic and
+  SCN-008 admission. The audit is static and is not an in-engine execution
+  result.
+- IW-006 AFX's earlier admission was revoked after the binding Level 2 focus
+  group was found missing.
+- IW-001 SCO and IW-002 WLS passed their repaired transaction audit and are
+  admitted for ordinary automatic and SCN-008 execution.
+- IW-009 BAY's earlier admission was revoked after the binding Level 2 focus
+  group was found missing.
+- The current attested set is IW-001, IW-002, and IW-007. Every other
+  package remains outside the compile-time admission set.
 - Commit `a2c274d1e` contains the independently audited living-BEL IW-005
   Flanders overlay. It preserves Belgium and is not a selectable Event 006
   release package. Its one-day timeout versus `on_daily_BEL` edge remains a
@@ -73,12 +78,12 @@ truth map for current implementation status and handoff dispositions.
 
 | Package | Current state | Resume rule |
 | --- | --- | --- |
-| IW-006 AFX | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
+| IW-006 AFX | Prior admission revoked | Add the binding Level 2 focus group and re-audit before restoring content attestation or SCN-008 admission |
 | IW-007 AGX | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
-| IW-009 BAY | Content-attested | Preserve current exact runtime predicates |
-| IW-001 SCO | Package content exists, not attested | Requires a current exact-ID promotion audit |
-| IW-002 WLS | Package content exists, not attested | Requires a current exact-ID promotion audit |
-| IW-008 RHI | Package content exists, not attested | Requires a current exact-ID promotion audit |
+| IW-001 SCO | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
+| IW-002 WLS | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
+| IW-008 RHI | Fail-closed | Add the binding Level 2 focus group and repair FORM-04 preparation, then run a fresh exact-ID audit |
+| IW-009 BAY | Prior admission revoked | Add the binding Level 2 focus group and re-audit before restoring content attestation or SCN-008 admission |
 | IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Bounded package implemented and commit-audited | Exact identity helper and runtime-preflight branch are present. Run a separate exact-ID content-attestation and SCN-008 admission audit before promotion |
@@ -104,12 +109,18 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 - Character portrait regeneration, regional advisor dossiers, and army-small
   dossier correction.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
-- AFX and AGX coordinated static promotion.
+- Historical AFX and AGX coordinated static promotion; AFX is subsequently
+  revoked fail-closed while AGX remains admitted.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2`.
 - Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
   closeout in `7368cc0bf`.
+- SCO/WLS congress preparation repair in `4884c0ef1`, followed by exact IW-001
+  and IW-002 content-attestation and SCN-008 promotion.
+- Round-number progression, force, scenario, evolution, idea, and AI tuning in
+  `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
+  and distinct standard versus major focus rewards.
 
 ## Immediate continuation order
 
@@ -117,8 +128,8 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
    admission. Keep this separate from AJX.
 2. Audit IW-010 AJX for exact-ID compile-time content attestation and SCN-008
    admission. Keep this separate from BRI.
-3. Audit SCO, WLS, and RHI as exact promotion candidates. Their package content
-   and formable dependencies do not by themselves authorize runtime admission.
+3. Implement the missing AFX, RHI, and BAY Level 2 focus groups, repair RHI's
+   FORM-04 congress preparation, and re-audit each package before admission.
 4. Expand the audited automatic pool until every accepted wave band has enough
    mutually compatible candidates. Preserve reservation-first planning and
    Event 005 collision checks.
