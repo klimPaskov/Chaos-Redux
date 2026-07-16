@@ -1,8 +1,10 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 016 PROJECT COMPLETION BRIDGE
+# CHAOS REDUX - EVENT 016 PROJECT AND SOVEREIGNTY BRIDGES
 # ============================================================================
 # ROOT is the completing country and FROM is the completed project. This exact
 # completion hook avoids any daily, weekly, monthly, or whole-world iteration.
+# The state-control hook retries a deferred, one-time KRG opening force package
+# after a fully occupied takeover first regains a valid controlled state.
 # ============================================================================
 
 on_actions = {
@@ -17,5 +19,20 @@ on_actions = {
 			}
 		}
 	}
-}
 
+	on_state_control_changed = {
+		effect = {
+			ROOT = {
+				if = {
+					limit = {
+						has_country_flag = brilliant_scientist_kruger_state_active
+						NOT = { has_country_flag = brilliant_scientist_project_force_package_from_history_applied }
+						any_owned_state = { is_controlled_by = ROOT }
+					}
+					save_event_target_as = brilliant_scientist_kruger_state_carrier
+					brilliant_scientist_apply_project_force_package_from_history = yes
+				}
+			}
+		}
+	}
+}

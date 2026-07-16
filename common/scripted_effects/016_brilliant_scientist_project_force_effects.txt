@@ -1,0 +1,901 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PROJECT-DERIVED FORCE EFFECTS
+# ============================================================================
+# Country-scope reconstruction and one-time formation dispatch for the military
+# outputs carried by Warren Kruger's exact project history. The runtime rebuild
+# never creates units or stockpiles. Only the guarded formation dispatcher
+# creates bounded opening formations, and it cannot run twice for one country.
+# Biological weapons reuse their existing delivery technologies and equipment.
+# ============================================================================
+
+# COUNTRY scope. Existing formations survive a project shutdown, but every
+# matching template immediately loses both queue access and its division cap.
+# The runtime rebuild selectively restores only operational project families.
+brilliant_scientist_revoke_project_force_template_authorizations = {
+	set_temp_variable = { brilliant_scientist_project_force_zero_division_cap = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { has_template = "Quantum Transit Raiders" }
+		set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Replicated Guard Cadre" }
+		set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Autonomous Frame Cohort" }
+		set_division_force_allow_recruiting = { division_template = "Autonomous Frame Cohort" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Autonomous Frame Cohort" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Paleogenetic Shock Pack" }
+		set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Xenobiological Assault Organisms" }
+		set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Exotic Interface Guard" }
+		set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+	if = {
+		limit = { has_template = "Temporal Continuity Guard" }
+		set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = no }
+		set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_zero_division_cap }
+	}
+}
+
+# COUNTRY scope. Clears only runtime outputs owned by this package. Shared
+# biological delivery technologies and bioweapon flags are deliberately not
+# revoked because other systems can grant and consume them independently.
+brilliant_scientist_clear_project_force_runtime_package = {
+	set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_revoke_project_force_template_authorizations = yes
+	set_technology = {
+		brilliant_scientist_portal_warfare_tech = 0
+		brilliant_scientist_clone_formations_tech = 0
+		brilliant_scientist_robot_formations_tech = 0
+		brilliant_scientist_paleogenetic_formations_tech = 0
+		brilliant_scientist_xenobiological_formations_tech = 0
+		brilliant_scientist_exotic_guard_tech = 0
+		brilliant_scientist_temporal_guard_tech = 0
+		brilliant_scientist_portal_warfare_weaponization_tech = 0
+		brilliant_scientist_clone_formations_weaponization_tech = 0
+		brilliant_scientist_robot_formations_weaponization_tech = 0
+		brilliant_scientist_paleogenetic_formations_weaponization_tech = 0
+		brilliant_scientist_xenobiological_formations_weaponization_tech = 0
+		brilliant_scientist_exotic_guard_weaponization_tech = 0
+		brilliant_scientist_temporal_guard_weaponization_tech = 0
+		brilliant_scientist_xeno_chemical_control_tech = 0
+		brilliant_scientist_xeno_neural_control_tech = 0
+		brilliant_scientist_xeno_machine_control_tech = 0
+		brilliant_scientist_xeno_researched_control_tech = 0
+		popup = no
+	}
+
+	if = { limit = { has_idea = brilliant_scientist_xeno_control_chemical_force } remove_ideas = brilliant_scientist_xeno_control_chemical_force }
+	if = { limit = { has_idea = brilliant_scientist_xeno_control_neural_force } remove_ideas = brilliant_scientist_xeno_control_neural_force }
+	if = { limit = { has_idea = brilliant_scientist_xeno_control_machine_force } remove_ideas = brilliant_scientist_xeno_control_machine_force }
+	if = { limit = { has_idea = brilliant_scientist_xeno_control_researched_force } remove_ideas = brilliant_scientist_xeno_control_researched_force }
+	if = { limit = { has_idea = brilliant_scientist_biological_delivery_anthrax } remove_ideas = brilliant_scientist_biological_delivery_anthrax }
+	if = { limit = { has_idea = brilliant_scientist_biological_delivery_plague } remove_ideas = brilliant_scientist_biological_delivery_plague }
+	if = { limit = { has_idea = brilliant_scientist_biological_delivery_tularemia } remove_ideas = brilliant_scientist_biological_delivery_tularemia }
+	if = { limit = { has_idea = brilliant_scientist_biological_delivery_smallpox } remove_ideas = brilliant_scientist_biological_delivery_smallpox }
+	if = { limit = { has_idea = brilliant_scientist_biological_delivery_weaponized_zombies } remove_ideas = brilliant_scientist_biological_delivery_weaponized_zombies }
+
+	clr_country_flag = brilliant_scientist_project_force_teleportation_active
+	clr_country_flag = brilliant_scientist_project_force_teleportation_weaponized
+	clr_country_flag = brilliant_scientist_project_force_cloning_active
+	clr_country_flag = brilliant_scientist_project_force_cloning_weaponized
+	clr_country_flag = brilliant_scientist_project_force_robotics_active
+	clr_country_flag = brilliant_scientist_project_force_robotics_weaponized
+	clr_country_flag = brilliant_scientist_project_force_paleogenetics_active
+	clr_country_flag = brilliant_scientist_project_force_paleogenetics_weaponized
+	clr_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active
+	clr_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_weaponized
+	clr_country_flag = brilliant_scientist_project_force_biological_weapons_active
+	clr_country_flag = brilliant_scientist_project_force_biological_weapons_weaponized
+	clr_country_flag = brilliant_scientist_project_force_alien_arms_active
+	clr_country_flag = brilliant_scientist_project_force_alien_arms_weaponized
+	clr_country_flag = brilliant_scientist_project_force_temporal_active
+	clr_country_flag = brilliant_scientist_project_force_temporal_weaponized
+	clr_country_flag = brilliant_scientist_teleportation_military_package_ready
+	clr_country_flag = brilliant_scientist_cloning_military_package_ready
+	clr_country_flag = brilliant_scientist_robotics_military_package_ready
+	clr_country_flag = brilliant_scientist_paleogenetics_military_package_ready
+	clr_country_flag = brilliant_scientist_xenobiological_synthesis_military_package_ready
+	clr_country_flag = brilliant_scientist_alien_arms_military_package_ready
+	clr_country_flag = brilliant_scientist_temporal_military_package_ready
+	clr_country_flag = brilliant_scientist_project_force_package_state_current
+}
+
+# COUNTRY scope. The agent flags are the exact payload ledger. No biological
+# project, agent, or stockpile is fabricated by this reconstruction.
+brilliant_scientist_apply_biological_force_history = {
+	if = {
+		limit = { brilliant_scientist_has_biological_force_history_prototype = yes }
+		set_country_flag = brilliant_scientist_project_force_biological_weapons_active
+	}
+
+	if = {
+		limit = { brilliant_scientist_has_biological_force_history_deployment = yes }
+		if = { limit = { NOT = { has_country_flag = bioweapon_available } } set_country_flag = bioweapon_available }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_anthrax } }
+			set_technology = { anthrax_bomb_delivery_systems = 1 popup = no }
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_plague } }
+			set_technology = { plague_bomb_delivery_systems = 1 popup = no }
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_tularemia } }
+			set_technology = { tularemia_bomb_delivery_systems = 1 popup = no }
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_smallpox } }
+			set_technology = { smallpox_bomb_delivery_systems = 1 popup = no }
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_weaponized_zombies } }
+			set_technology = { zombie_disease_bomb_delivery_systems = 1 popup = no }
+		}
+	}
+
+	if = {
+		limit = { brilliant_scientist_has_biological_force_history_weaponization = yes }
+		set_country_flag = brilliant_scientist_project_force_biological_weapons_weaponized
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_anthrax } }
+			add_ideas = brilliant_scientist_biological_delivery_anthrax
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_plague } }
+			add_ideas = brilliant_scientist_biological_delivery_plague
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_tularemia } }
+			add_ideas = brilliant_scientist_biological_delivery_tularemia
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_smallpox } }
+			add_ideas = brilliant_scientist_biological_delivery_smallpox
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_weaponized_zombies } }
+			add_ideas = brilliant_scientist_biological_delivery_weaponized_zombies
+		}
+	}
+}
+
+# COUNTRY scope. Creates only exact active-family templates. Prototype history
+# can preserve a stranded cadre, but recruiting requires the matching physical
+# facility and Deployment history. Every project template remains locked.
+brilliant_scientist_define_project_force_templates = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_teleportation_active
+			NOT = { has_template = "Quantum Transit Raiders" }
+		}
+		division_template = {
+			name = "Quantum Transit Raiders"
+			regiments = {
+				kruger_portal_raider = { x = 0 y = 0 }
+				kruger_portal_raider = { x = 0 y = 1 }
+				kruger_portal_raider = { x = 1 y = 0 }
+				kruger_portal_raider = { x = 1 y = 1 }
+				kruger_portal_raider = { x = 2 y = 0 }
+				kruger_portal_raider = { x = 2 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_cloning_active
+			NOT = { has_template = "Replicated Guard Cadre" }
+		}
+		division_template = {
+			name = "Replicated Guard Cadre"
+			regiments = {
+				kruger_clone_infantry = { x = 0 y = 0 }
+				kruger_clone_infantry = { x = 0 y = 1 }
+				kruger_clone_infantry = { x = 1 y = 0 }
+				kruger_clone_infantry = { x = 1 y = 1 }
+				kruger_clone_infantry = { x = 2 y = 0 }
+				kruger_clone_infantry = { x = 2 y = 1 }
+				kruger_clone_infantry = { x = 3 y = 0 }
+				kruger_clone_infantry = { x = 3 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_robotics_active
+			NOT = { has_template = "Autonomous Frame Cohort" }
+		}
+		division_template = {
+			name = "Autonomous Frame Cohort"
+			regiments = {
+				kruger_robot_frame = { x = 0 y = 0 }
+				kruger_robot_frame = { x = 0 y = 1 }
+				kruger_robot_frame = { x = 1 y = 0 }
+				kruger_robot_frame = { x = 1 y = 1 }
+				kruger_robot_frame = { x = 2 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_paleogenetics_active
+			NOT = { has_template = "Paleogenetic Shock Pack" }
+		}
+		division_template = {
+			name = "Paleogenetic Shock Pack"
+			regiments = {
+				kruger_paleogenetic_beast = { x = 0 y = 0 }
+				kruger_paleogenetic_beast = { x = 0 y = 1 }
+				kruger_paleogenetic_beast = { x = 1 y = 0 }
+				kruger_paleogenetic_beast = { x = 1 y = 1 }
+				kruger_paleogenetic_beast = { x = 2 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active
+			NOT = { has_template = "Xenobiological Assault Organisms" }
+		}
+		division_template = {
+			name = "Xenobiological Assault Organisms"
+			regiments = {
+				kruger_xenobiological_assault = { x = 0 y = 0 }
+				kruger_xenobiological_assault = { x = 0 y = 1 }
+				kruger_xenobiological_assault = { x = 1 y = 0 }
+				kruger_xenobiological_assault = { x = 1 y = 1 }
+				kruger_xenobiological_assault = { x = 2 y = 0 }
+				kruger_xenobiological_assault = { x = 2 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_alien_arms_active
+			NOT = { has_template = "Exotic Interface Guard" }
+		}
+		division_template = {
+			name = "Exotic Interface Guard"
+			regiments = {
+				kruger_exotic_guard = { x = 0 y = 0 }
+				kruger_exotic_guard = { x = 0 y = 1 }
+				kruger_exotic_guard = { x = 1 y = 0 }
+				kruger_exotic_guard = { x = 1 y = 1 }
+				kruger_exotic_guard = { x = 2 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_force_temporal_active
+			NOT = { has_template = "Temporal Continuity Guard" }
+		}
+		division_template = {
+			name = "Temporal Continuity Guard"
+			regiments = {
+				kruger_temporal_guard = { x = 0 y = 0 }
+				kruger_temporal_guard = { x = 0 y = 1 }
+				kruger_temporal_guard = { x = 1 y = 0 }
+				kruger_temporal_guard = { x = 1 y = 1 }
+			}
+		}
+	}
+
+	if = {
+		limit = { has_template = "Quantum Transit Raiders" }
+		set_division_template_lock = { division_template = "Quantum Transit Raiders" is_locked = yes }
+		if = {
+			limit = { brilliant_scientist_has_teleportation_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_project_force_cap.teleportation }
+			set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_teleportation_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = yes }
+		}
+		else = {
+			set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
+			set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_teleportation_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Replicated Guard Cadre" }
+		set_division_template_lock = { division_template = "Replicated Guard Cadre" is_locked = yes }
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_cloning_active }
+			set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
+		}
+		if = {
+			limit = { brilliant_scientist_has_cloning_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_project_force_cap.cloning }
+			set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_cloning_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = yes }
+		}
+		else = {
+			set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_cloning_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Autonomous Frame Cohort" }
+		set_division_template_lock = { division_template = "Autonomous Frame Cohort" is_locked = yes }
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_robotics_active }
+			set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
+		}
+		if = {
+			limit = { brilliant_scientist_has_robotics_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_project_force_cap.robotics }
+			set_division_template_cap = { division_template = "Autonomous Frame Cohort" division_cap = brilliant_scientist_project_force_robotics_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Autonomous Frame Cohort" force_allow_recruiting = yes }
+		}
+		else = {
+			set_division_template_cap = { division_template = "Autonomous Frame Cohort" division_cap = brilliant_scientist_project_force_robotics_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Autonomous Frame Cohort" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Paleogenetic Shock Pack" }
+		set_division_template_lock = { division_template = "Paleogenetic Shock Pack" is_locked = yes }
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_paleogenetics_active }
+			set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
+		}
+		if = {
+			limit = { brilliant_scientist_has_paleogenetics_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_project_force_cap.paleogenetics }
+			set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_paleogenetics_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = yes }
+		}
+		else = {
+			set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_paleogenetics_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Xenobiological Assault Organisms" }
+		set_division_template_lock = { division_template = "Xenobiological Assault Organisms" is_locked = yes }
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active }
+			set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
+		}
+		if = {
+			limit = { brilliant_scientist_has_xenobiological_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_project_force_cap.xenobiological_synthesis }
+			set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_xenobiological_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = yes }
+		}
+		else = {
+			set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_xenobiological_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Exotic Interface Guard" }
+		set_division_template_lock = { division_template = "Exotic Interface Guard" is_locked = yes }
+		if = {
+			limit = { brilliant_scientist_has_alien_arms_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_project_force_cap.alien_arms }
+			set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_alien_arms_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = yes }
+		}
+		else = {
+			set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_value.zero }
+			set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_alien_arms_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = no }
+		}
+	}
+	if = {
+		limit = { has_template = "Temporal Continuity Guard" }
+		set_division_template_lock = { division_template = "Temporal Continuity Guard" is_locked = yes }
+		if = {
+			limit = { brilliant_scientist_has_temporal_force_deployment = yes }
+			set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_project_force_cap.temporal }
+			set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_temporal_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = yes }
+		}
+		else = {
+			set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_value.zero }
+			set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_temporal_division_cap }
+			set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = no }
+		}
+	}
+}
+
+# COUNTRY scope. Idempotent runtime rebuild used by setup, reload-sensitive
+# reconciliation, or a future explicit capacity change. It never spawns units.
+brilliant_scientist_rebuild_project_force_runtime_package = {
+	brilliant_scientist_clear_project_force_runtime_package = yes
+
+	if = {
+		limit = { brilliant_scientist_has_teleportation_force_history_deployment = yes }
+		set_technology = { brilliant_scientist_portal_warfare_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_teleportation_active
+		if = {
+			limit = { brilliant_scientist_has_teleportation_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_portal_warfare_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_teleportation_weaponized
+			set_country_flag = brilliant_scientist_teleportation_military_package_ready
+		}
+	}
+	if = {
+		limit = { brilliant_scientist_has_cloning_force_history_prototype = yes }
+		set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_cloning_active
+		if = {
+			limit = { brilliant_scientist_has_cloning_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_cloning_weaponized
+			set_country_flag = brilliant_scientist_cloning_military_package_ready
+		}
+	}
+	if = {
+		limit = { brilliant_scientist_has_robotics_force_history_prototype = yes }
+		set_technology = { brilliant_scientist_robot_formations_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_robotics_active
+		if = {
+			limit = { brilliant_scientist_has_robotics_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_robot_formations_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_robotics_weaponized
+			set_country_flag = brilliant_scientist_robotics_military_package_ready
+		}
+	}
+	if = {
+		limit = { brilliant_scientist_has_paleogenetics_force_history_prototype = yes }
+		set_technology = { brilliant_scientist_paleogenetic_formations_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_paleogenetics_active
+		if = {
+			limit = { brilliant_scientist_has_paleogenetics_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_paleogenetic_formations_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_paleogenetics_weaponized
+			set_country_flag = brilliant_scientist_paleogenetics_military_package_ready
+		}
+	}
+	if = {
+		limit = { brilliant_scientist_has_xenobiological_force_history_prototype = yes }
+		set_technology = { brilliant_scientist_xenobiological_formations_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active
+		if = {
+			limit = {
+				brilliant_scientist_has_xenobiological_force_history_weaponization = yes
+				brilliant_scientist_has_exact_xeno_control_mode = yes
+			}
+			set_technology = { brilliant_scientist_xenobiological_formations_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_weaponized
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_military_package_ready
+		}
+		if = {
+			limit = { brilliant_scientist_has_exact_xeno_control_mode = yes has_country_flag = brilliant_scientist_xeno_control_chemical }
+			set_technology = { brilliant_scientist_xeno_chemical_control_tech = 1 popup = no }
+			add_ideas = brilliant_scientist_xeno_control_chemical_force
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_exact_xeno_control_mode = yes has_country_flag = brilliant_scientist_xeno_control_neural }
+			set_technology = { brilliant_scientist_xeno_neural_control_tech = 1 popup = no }
+			add_ideas = brilliant_scientist_xeno_control_neural_force
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_exact_xeno_control_mode = yes has_country_flag = brilliant_scientist_xeno_control_machine }
+			set_technology = { brilliant_scientist_xeno_machine_control_tech = 1 popup = no }
+			add_ideas = brilliant_scientist_xeno_control_machine_force
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_exact_xeno_control_mode = yes has_country_flag = brilliant_scientist_xeno_control_researched }
+			set_technology = { brilliant_scientist_xeno_researched_control_tech = 1 popup = no }
+			add_ideas = brilliant_scientist_xeno_control_researched_force
+		}
+	}
+
+	brilliant_scientist_apply_biological_force_history = yes
+
+	if = {
+		limit = { brilliant_scientist_has_alien_arms_force_history_deployment = yes }
+		set_technology = { brilliant_scientist_exotic_guard_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_alien_arms_active
+		if = {
+			limit = { brilliant_scientist_has_alien_arms_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_exotic_guard_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_alien_arms_weaponized
+			set_country_flag = brilliant_scientist_alien_arms_military_package_ready
+		}
+	}
+	if = {
+		limit = { brilliant_scientist_has_temporal_force_history_deployment = yes }
+		set_technology = { brilliant_scientist_temporal_guard_tech = 1 popup = no }
+		set_country_flag = brilliant_scientist_project_force_temporal_active
+		if = {
+			limit = { brilliant_scientist_has_temporal_force_history_weaponization = yes }
+			set_technology = { brilliant_scientist_temporal_guard_weaponization_tech = 1 popup = no }
+			set_country_flag = brilliant_scientist_project_force_temporal_weaponized
+			set_country_flag = brilliant_scientist_temporal_military_package_ready
+		}
+	}
+
+	brilliant_scientist_define_project_force_templates = yes
+	set_country_flag = brilliant_scientist_project_force_package_state_current
+}
+
+# COUNTRY scope. Ledger mutations on a sovereign or previously initialized
+# project-force country immediately revoke or restore the exact runtime set.
+# Ordinary pre-state Directorate hosts remain unaffected until a force package
+# has actually been initialized.
+brilliant_scientist_sync_project_force_runtime_after_ledger_change = {
+	if = {
+		limit = {
+			OR = {
+				brilliant_scientist_is_kruger_sovereign_country = yes
+				has_country_flag = brilliant_scientist_project_force_package_state_current
+			}
+		}
+		brilliant_scientist_rebuild_project_force_runtime_package = yes
+	}
+}
+
+# Stable aliases for setup/rebuild consumers. Both deliberately exclude the
+# one-time materialization transaction.
+brilliant_scientist_setup_project_force_packages = {
+	brilliant_scientist_rebuild_project_force_runtime_package = yes
+}
+
+brilliant_scientist_rebuild_project_force_packages = {
+	brilliant_scientist_rebuild_project_force_runtime_package = yes
+}
+
+# COUNTRY scope. Input: temporary formation stage. Outputs: temporary factors
+# injected into create_unit's division string by the bounded spawn helpers.
+brilliant_scientist_load_project_force_formation_quality = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization } }
+		set_temp_variable = { brilliant_scientist_project_force_start_experience = constant:brilliant_scientist_project_force_formation.weaponization_experience }
+		set_temp_variable = { brilliant_scientist_project_force_start_equipment = constant:brilliant_scientist_project_force_formation.weaponization_equipment }
+		set_temp_variable = { brilliant_scientist_project_force_start_manpower = constant:brilliant_scientist_project_force_formation.weaponization_manpower }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment } }
+		set_temp_variable = { brilliant_scientist_project_force_start_experience = constant:brilliant_scientist_project_force_formation.deployment_experience }
+		set_temp_variable = { brilliant_scientist_project_force_start_equipment = constant:brilliant_scientist_project_force_formation.deployment_equipment }
+		set_temp_variable = { brilliant_scientist_project_force_start_manpower = constant:brilliant_scientist_project_force_formation.deployment_manpower }
+	}
+	else = {
+		set_temp_variable = { brilliant_scientist_project_force_start_experience = constant:brilliant_scientist_project_force_formation.prototype_experience }
+		set_temp_variable = { brilliant_scientist_project_force_start_equipment = constant:brilliant_scientist_project_force_formation.prototype_equipment }
+		set_temp_variable = { brilliant_scientist_project_force_start_manpower = constant:brilliant_scientist_project_force_formation.prototype_manpower }
+	}
+}
+
+# COUNTRY scope. Each helper independently requires the dispatcher's live
+# transaction, exact family history, active runtime package, and an unset
+# persistent family receipt. The receipt is committed only inside the selected
+# controlled state after its bounded package is created.
+brilliant_scientist_spawn_teleportation_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_teleportation_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.portal_deployment_units }
+		if = {
+			limit = { brilliant_scientist_has_teleportation_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.portal_weaponization_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Quantum Transit Raider Detachment\" division_template = \"Quantum Transit Raiders\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_teleportation_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_teleportation_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_cloning_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_cloning_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.clone_prototype_units }
+		if = {
+			limit = { brilliant_scientist_has_cloning_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.clone_weaponization_units }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_cloning_force_history_deployment = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.clone_deployment_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Replicated Guard Cadre\" division_template = \"Replicated Guard Cadre\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_cloning_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_cloning_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_robotics_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_robotics_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.robot_prototype_units }
+		if = {
+			limit = { brilliant_scientist_has_robotics_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.robot_weaponization_units }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_robotics_force_history_deployment = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.robot_deployment_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Autonomous Frame Cohort\" division_template = \"Autonomous Frame Cohort\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_robotics_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_robotics_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_paleogenetics_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_paleogenetics_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.paleogenetic_prototype_units }
+		if = {
+			limit = { brilliant_scientist_has_paleogenetics_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.paleogenetic_weaponization_units }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_paleogenetics_force_history_deployment = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.paleogenetic_deployment_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Paleogenetic Shock Pack\" division_template = \"Paleogenetic Shock Pack\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_paleogenetics_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_paleogenetics_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_xenobiological_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_xenobiological_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.xenobiological_prototype_units }
+		if = {
+			limit = {
+				brilliant_scientist_has_xenobiological_force_history_weaponization = yes
+				brilliant_scientist_has_exact_xeno_control_mode = yes
+			}
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.xenobiological_weaponization_units }
+		}
+		else_if = {
+			limit = {
+				brilliant_scientist_has_xenobiological_force_history_deployment = yes
+				brilliant_scientist_has_exact_xeno_control_mode = yes
+			}
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.xenobiological_deployment_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Xenobiological Assault Organisms\" division_template = \"Xenobiological Assault Organisms\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_xenobiological_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_alien_arms_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_alien_arms_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.exotic_deployment_units }
+		if = {
+			limit = { brilliant_scientist_has_alien_arms_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.exotic_weaponization_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Exotic Interface Guard\" division_template = \"Exotic Interface Guard\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_alien_arms_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_alien_arms_materialized
+			}
+		}
+	}
+}
+
+brilliant_scientist_spawn_temporal_project_force = {
+	if = {
+		limit = { brilliant_scientist_can_materialize_temporal_project_force = yes }
+		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
+		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.temporal_deployment_units }
+		if = {
+			limit = { brilliant_scientist_has_temporal_force_history_weaponization = yes }
+			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
+			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.temporal_weaponization_units }
+		}
+		brilliant_scientist_load_project_force_formation_quality = yes
+		random_owned_controlled_state = {
+			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Temporal Continuity Guard\" division_template = \"Temporal Continuity Guard\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+						owner = event_target:brilliant_scientist_kruger_state_carrier
+						allow_spawning_on_enemy_provs = no
+						count = [COUNT]
+					}
+				}
+				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
+				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
+				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
+				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
+			}
+			event_target:brilliant_scientist_kruger_state_carrier = {
+				set_variable = { brilliant_scientist_project_force_temporal_formation_count = brilliant_scientist_project_force_formation_units }
+				set_country_flag = brilliant_scientist_project_force_temporal_materialized
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Formation-time entry point required by the Kruger State setup.
+# Output: temporary brilliant_scientist_project_force_package_applied (0/1).
+# The guard is committed only after runtime reconstruction and every eligible
+# bounded family materialization. Biological history grants capabilities but no
+# free payload stockpile or generic formation.
+brilliant_scientist_apply_project_force_package_from_history = {
+	set_temp_variable = { brilliant_scientist_project_force_package_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_can_apply_project_force_package_from_history = yes }
+		brilliant_scientist_rebuild_project_force_runtime_package = yes
+		set_country_flag = brilliant_scientist_project_force_materialization_transaction
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_teleportation_active }
+			brilliant_scientist_spawn_teleportation_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_cloning_active }
+			brilliant_scientist_spawn_cloning_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_robotics_active }
+			brilliant_scientist_spawn_robotics_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_paleogenetics_active }
+			brilliant_scientist_spawn_paleogenetics_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active }
+			brilliant_scientist_spawn_xenobiological_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_alien_arms_active }
+			brilliant_scientist_spawn_alien_arms_project_force = yes
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_project_force_temporal_active }
+			brilliant_scientist_spawn_temporal_project_force = yes
+		}
+		clr_country_flag = brilliant_scientist_project_force_materialization_transaction
+		set_country_flag = brilliant_scientist_project_force_package_from_history_applied
+		set_temp_variable = { brilliant_scientist_project_force_package_applied = constant:brilliant_scientist_value.one }
+	}
+}
