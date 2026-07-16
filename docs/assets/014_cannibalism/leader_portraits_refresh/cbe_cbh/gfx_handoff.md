@@ -1,6 +1,6 @@
 # Event 014 CBE-CBH GFX handoff
 
-No interface edit is required. `interface/014_cannibalism.gfx` already registers the complete CBE-CBH set at lines 199-230.
+`interface/014_cannibalism.gfx` preserves the complete CBE-CBH sprite-name set at lines 199-230 while the live artwork is reduced to 9 unique DDS files.
 
 ## Contract
 
@@ -8,16 +8,16 @@ No interface edit is required. `interface/014_cannibalism.gfx` already registers
 - Final size: 156x210.
 - Final encoding: legacy DDS, uncompressed 32-bit BGRA, opaque alpha.
 - Europe/default mapping: each tag's base and `_europe` sprite intentionally share the base DDS.
-- All other regional sprites map one-to-one to the same-named regional DDS.
+- Retired regional sprite names deliberately alias the retained base texture for their slot; CBG aliases all use the retained CBF base texture.
 
-The exact sprite-to-file mapping is recorded in `manifest.md`. The regenerated DDS filenames preserve every existing registration, so downstream character, cosmetic-tag, focus, decision, and GUI references require no rewiring. The changed artwork introduces distinct close-up props and gestures entirely inside the existing 156x210 texture contract.
+The exact sprite-to-file mapping is recorded in `manifest.md` and the reduction amendment above. Existing character, cosmetic-tag, focus, decision, and GUI references require no rewiring because sprite names remain stable.
 
 ## Runtime handoff
 
-- CBE: seven DDS files serving eight registered sprites.
-- CBF: seven DDS files serving eight registered sprites.
-- CBG: seven DDS files serving eight registered sprites.
-- CBH: seven DDS files serving eight registered sprites.
-- Total: 28 live DDS files serving 32 existing sprite names.
+- CBE: three DDS files serving eight registered sprites.
+- CBF: three DDS files serving eight registered sprites.
+- CBG: zero dedicated DDS files; eight registered sprites alias the retained CBF base texture.
+- CBH: three DDS files serving eight registered sprites.
+- Total: 9 live DDS files serving 32 existing sprite names.
 
-No placeholder, fallback portrait, or alternate texture path is used.
+The 19 retired CBE-CBH DDS paths are absent. The retained-texture aliases are a deliberate reduction choice, not new artwork or a placeholder asset.

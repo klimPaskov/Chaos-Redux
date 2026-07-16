@@ -92,11 +92,11 @@ The role/action column records the decisive per-portrait prompt delta. It is the
 
 ## Processing and review
 
-Each selected master was passed through .tools/process_hoi4_portrait.py leader with an explicit full-source crop, fictional source mode, the canonical leader reference directory, a 156x210 output, a JSON metadata record, and a per-portrait review sheet. The selected processed PNG was then converted through .tools/convert_to_dds.py at 156x210.
+Each selected master was passed through .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader with an explicit full-source crop, fictional source mode, the canonical leader reference directory, a 156x210 output, a JSON metadata record, and a per-portrait review sheet. The selected processed PNG was then converted through .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py at 156x210.
 
 The final native-size repaint sheets are:
 
 - contact_sheets/cba_cbb_hoi4_repaint_contact_sheet.png
 - contact_sheets/cbc_cbd_hoi4_repaint_contact_sheet.png
 
-The final whole-sheet review confirmed that all 28 actions survive the crop, every head reads as bald, every slot remains visually distinct, the classic matte HOI4 paint treatment survives at native size, and no modern or prison setting appears.
+The historical whole-sheet review confirmed that all 28 actions survive the crop, every head reads as bald, every slot remains visually distinct, the classic matte HOI4 paint treatment survives at native size, and no modern or prison setting appears. The live texture reduction is documented in the package manifest.

@@ -1,6 +1,10 @@
 # Event 014 CBE-CBH leader portrait manifest
 
-## Package contract
+## 2026-07-16 reduction amendment
+
+The requested retirement removes 19 CBE-CBH final DDS files: four CBE regional files, four CBF regional files, all seven CBG files, and four CBH regional files. The remaining unique live textures are CBE base/North America/South America, CBF base/Africa/Oceania, and CBH base/North America/South America (9 total). CBG keeps its existing sprite names, but all eight CBG sprite aliases now use the retained CBF base texture. Removed CBE Asia/Africa/Middle East/Oceania aliases use the CBE base; removed CBF Asia/Middle East/North America/South America aliases use the CBF base; and removed CBH Africa/Asia/Middle East/Oceania aliases use the CBH base. The historical source, processed, metadata, prompt, review, and checksum records remain for provenance; only the 9 DDS files above are live final textures.
+
+## Historical package contract (pre-reduction)
 
 - Related event: 014, Cannibalism.
 - Asset type: fictional country-leader portrait.
@@ -27,7 +31,7 @@
 
 The default/Europe sprite alias intentionally shares each tag's base DDS. The 28 files therefore serve 32 registered sprite names.
 
-## Asset inventory
+## Historical asset inventory (pre-reduction)
 
 Common path abbreviations in the table are relative to this package for source, processed, metadata, prompt, and review files. Final paths are repository-relative.
 
@@ -65,7 +69,7 @@ Common path abbreviations in the table are relative to this package for source, 
 ## Visual and provenance review
 
 - Every source is a separate built-in image-generation output and a unique fictional person; no portrait, source, or final DDS is reused.
-- The SHA-256 audit found 28 unique source masters, 28 unique processed PNGs, and 28 unique live DDS files; each live DDS matches its same-stem processed master pixel-for-pixel.
+- The historical SHA-256 audit found 28 unique source masters, 28 unique processed PNGs, and 28 unique pre-reduction DDS files; the 9 current live DDS files are the retained subset documented above.
 - All 28 subjects are visibly bald or hairless and remain readable at native 156x210 scale.
 - Each portrait has a distinct macabre but non-graphic action, prop, face construction, clothing silhouette, pose, light, and regional atmosphere.
 - CBG and CBH remain origin-agnostic feral warlords; no prison, cell, bar, cage, restraint, or prisoner-uniform imagery appears.

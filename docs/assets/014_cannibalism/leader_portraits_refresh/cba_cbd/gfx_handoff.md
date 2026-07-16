@@ -1,6 +1,6 @@
 # Event 014 CBA-CBD Warlord GFX Handoff
 
-No `.gfx` edit is required. `interface/014_cannibalism.gfx` already registers the complete sprite family and was deliberately left unchanged.
+`interface/014_cannibalism.gfx` keeps the complete sprite-name family, with 7 unique CBA-CBD DDS files carrying the remaining artwork and retired names routed to retained textures.
 
 ## Existing registration
 
@@ -18,4 +18,4 @@ No `.gfx` edit is required. `interface/014_cannibalism.gfx` already registers th
 - Expected byte length: 131,168 bytes each, including the 128-byte DDS header.
 - Exact final processed-PNG and DDS SHA-256 values are recorded in `validation.md`.
 
-No gameplay, localisation, interface, sprite, spreadsheet, flag, or unrelated texture file is part of this handoff.
+The 21 retired DDS paths are absent from the mod. The 21 historical source/processed records remain only as provenance. No gameplay, localisation, spreadsheet, flag, or unrelated texture file is part of this handoff.

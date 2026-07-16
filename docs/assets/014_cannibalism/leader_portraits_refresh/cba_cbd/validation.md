@@ -1,11 +1,18 @@
 # Event 014 CBA-CBD Warlord Portrait Validation
 
-Validation date: 2026-07-15.
+Validation date: 2026-07-15; reduction amendment: 2026-07-16.
 
-## Final package checks
+## 2026-07-16 reduction audit
 
-- Exact selected asset count: 28 source PNGs, 28 processed PNGs, 28 metadata JSON records, 28 per-portrait review sheets, and 28 live DDS files.
-- Uniqueness: 28 unique source SHA-256 hashes, 28 unique processed-PNG SHA-256 hashes, and 28 unique DDS SHA-256 hashes.
+- 21 attachment-listed CBA-CBD DDS files were removed from `gfx/leaders/014_cannibalism/`.
+- 7 unique CBA-CBD DDS files remain live: CBA Middle East/South America, CBB Middle East, CBC base/South America, and CBD North America/South America.
+- The 32 CBA-CBD sprite names remain registered; retired names alias the retained texture documented in `gfx_handoff.md`.
+- The 28-row source/processed/hash ledger below is retained as a historical pre-reduction record, not as a claim that those DDS files remain installed.
+
+## Historical pre-reduction package checks
+
+- Historical exact selected asset count: 28 source PNGs, 28 processed PNGs, 28 metadata JSON records, 28 per-portrait review sheets, and 28 pre-reduction DDS files.
+- Historical uniqueness: 28 unique source SHA-256 hashes, 28 unique processed-PNG SHA-256 hashes, and 28 unique pre-reduction DDS SHA-256 hashes.
 - Processed dimensions: 156x210 for all 28.
 - DDS decoded dimensions and mode: 156x210 RGBA for all 28.
 - DDS byte length: 131,168 bytes for all 28.
@@ -15,7 +22,7 @@ Validation date: 2026-07-15.
 
 Source SHA-256 values and their built-in generated-output filenames are recorded in prompts/warlord_prompts.md.
 
-## Final processed and DDS hashes
+## Historical pre-reduction processed and DDS hashes
 
 | Asset | Processed PNG SHA-256 | DDS SHA-256 |
 | --- | --- | --- |
@@ -50,6 +57,6 @@ Source SHA-256 values and their built-in generated-output filenames are recorded
 
 ## Scope boundary
 
-No gameplay, interface registration, localisation, script, spreadsheet, flag, or unrelated texture file was required or edited for this portrait refresh. The existing sprite registrations already target the 28 live DDS paths.
+The historical portrait refresh did not edit gameplay, localisation, script, spreadsheet, flag, or unrelated texture files. The current sprite registrations target 7 live CBA-CBD DDS paths plus the documented retained-texture aliases.
 
-An independent read-only style audit compared the native-size repaint sheets and individual review sheets against the three canonical vanilla references and passed all 28 portraits without a borderline finding. It also verified that `hannibal.dds` and `hannibal_wendigo.dds` remain byte-identical to `HEAD`.
+The independent read-only style audit compared the historical native-size repaint sheets and individual review sheets against the three canonical vanilla references and passed all 28 pre-reduction portraits without a borderline finding. It also verified that `hannibal.dds` and `hannibal_wendigo.dds` remain byte-identical to `HEAD`.

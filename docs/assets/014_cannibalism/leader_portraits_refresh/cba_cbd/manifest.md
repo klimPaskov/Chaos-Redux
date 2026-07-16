@@ -1,8 +1,19 @@
 # Event 014 CBA-CBD Warlord Portrait Manifest
 
-Status: visually reviewed, processed, and installed in the existing live DDS paths on 2026-07-15.
+Status: 7 unique DDS assets remain installed after the 2026-07-16 portrait reduction; 21 attachment-listed CBA-CBD DDS paths were retired.
 
-## Package contents
+## 2026-07-16 reduction amendment
+
+The requested retirement removes the final CBA-CBD DDS files listed in the attached deletion list. The remaining unique live textures are:
+
+- CBA: `leader_CBA_warlord_middle_east.dds`, `leader_CBA_warlord_south_america.dds`
+- CBB: `leader_CBB_warlord_middle_east.dds`
+- CBC: `leader_CBC_warlord.dds`, `leader_CBC_warlord_south_america.dds`
+- CBD: `leader_CBD_warlord_north_america.dds`, `leader_CBD_warlord_south_america.dds`
+
+Existing sprite names remain valid through deliberate retained-texture aliases in `interface/014_cannibalism.gfx`: removed CBA base/Europe, Asia, Africa, North America, and Oceania names use CBA Middle East; removed CBB base/Europe, Asia, Africa, North America, South America, and Oceania names use CBB Middle East; removed CBC Asia, Africa, Middle East, North America, and Oceania names use the CBC base; and removed CBD base/Europe, Asia, Africa, Middle East, and Oceania names use CBD North America. The historical source, processed, metadata, prompt, and review records remain in this package as provenance for the retired generation set and are not live game textures.
+
+## Historical package contents (pre-reduction)
 
 - 28 independently generated fictional source masters under `source_png/`.
 - 28 deterministic 156x210 HOI4 portrait PNGs under `processed_png/`.
@@ -11,14 +22,14 @@ Status: visually reviewed, processed, and installed in the existing live DDS pat
 - Labelled final sheet at `contact_sheets/cba_cbd_warlords_contact_sheet.png`.
 - Enlarged scalp, face, and silhouette sheet at `contact_sheets/cba_cbd_baldness_audit_contact_sheet.png`.
 - Generation-group review sheets at `contact_sheets/cba_cbb_hoi4_repaint_contact_sheet.png` and `contact_sheets/cbc_cbd_hoi4_repaint_contact_sheet.png`.
-- Explicit 28/28 visual checklist at `baldness_audit.md`.
+- Historical 28/28 visual checklist at `baldness_audit.md`.
 - Prompt, action, generated-output, and source-hash record at `prompts/warlord_prompts.md`.
 - Live-file and sprite registration record at `gfx_handoff.md`.
 - Mechanical verification record at `validation.md`.
 
-The selected source, processed, and DDS sets each contain 28 unique SHA-256 hashes. Every portrait came from its own built-in ImageGen result; none was created by recolouring, mirroring, warping, filtering, or transforming another portrait. The visual sheet confirms distinct anatomy, expression, clothing, hand action, prop, background, and silhouette across all 28 slots.
+The historical selected source, processed, and DDS sets each contain 28 unique SHA-256 hashes. Every portrait came from its own built-in ImageGen result; none was created by recolouring, mirroring, warping, filtering, or transforming another portrait. The historical visual sheet confirms distinct anatomy, expression, clothing, hand action, prop, background, and silhouette across all 28 slots.
 
-## Asset map
+## Historical asset map (pre-reduction)
 
 Each identifier below has the matching files `source_png/<identifier>_source.png`, `processed_png/<identifier>.png`, `metadata/<identifier>.json`, `review_sheets/<identifier>_review.png`, and `gfx/leaders/014_cannibalism/<identifier>.dds`.
 
@@ -35,9 +46,9 @@ Each identifier below has the matching files `source_png/<identifier>_source.png
 
 - Source type: fictional built-in ImageGen; no real-person or actor likeness requested.
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png`.
-- Finish: `.tools/process_hoi4_portrait.py leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
-- DDS conversion: `.tools/convert_to_dds.py --width 156 --height 210`, producing uncompressed 32-bit RGBA/BGRA-compatible DDS files.
-- Visual decision: 28/28 approved as bald fictional adult men with readable actions, distinct silhouettes, matte opaque oil/gouache handling, simplified painted facial planes, muted interwar values, and no photographic, modern-digital, prison, cell, bar, cage, restraint, or confinement imagery.
+- Finish: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
+- DDS conversion: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 156 --height 210`, producing uncompressed 32-bit RGBA/BGRA-compatible DDS files.
+- Historical visual decision: 28/28 approved as bald fictional adult men with readable actions, distinct silhouettes, matte opaque oil/gouache handling, simplified painted facial planes, muted interwar values, and no photographic, modern-digital, prison, cell, bar, cage, restraint, or confinement imagery.
 
 ## Image-generation accounting
 

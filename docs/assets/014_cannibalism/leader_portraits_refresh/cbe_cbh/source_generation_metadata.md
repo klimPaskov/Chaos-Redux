@@ -1,8 +1,8 @@
 # Event 014 CBE-CBH image-generation provenance
 
-Generation date: 2026-07-15.
+Generation date: 2026-07-15; reduction amendment: 2026-07-16.
 
-All 28 installed CBE-CBH masters are separate fictional portraits created through built-in ImageGen. Each accepted call is preserved verbatim under `prompts/generated/`; each selected output was copied unchanged to its exact `source_png/<stem>_source.png` path before deterministic finishing.
+The historical 28 CBE-CBH masters are separate fictional portraits created through built-in ImageGen. Nine corresponding DDS textures remain live after the 2026-07-16 reduction; the other 19 final DDS paths were retired while their source evidence remains archived in this package. Each accepted call is preserved verbatim under `prompts/generated/`; each selected output was copied unchanged to its exact `source_png/<stem>_source.png` path before deterministic finishing.
 
 ## Style-only references
 
@@ -22,4 +22,4 @@ No referenced identity, face, clothing, pose, or insignia was copied. The accept
 - Total built-in calls: 31.
 - Fallbacks: none. No CLI generation, local procedural drawing, sourced-photo substitution, transformed old portrait, alternate model, or reused portrait was accepted.
 
-The per-stem source SHA-256, explicit crop, processor version, output path, and final visual-approval record live in `metadata/`. Package-wide source, processed, review-sheet, documentation, and DDS hashes are recorded in `hashes.sha256`. The final style and action review surfaces are `contact_sheets/cbe_cbf_hoi4_repaint_contact_sheet.png` and `contact_sheets/cbg_cbh_hoi4_repaint_contact_sheet.png`.
+The per-stem source SHA-256, explicit crop, processor version, output path, and final visual-approval record live in `metadata/`. Package-wide source, processed, review-sheet, documentation, and current 9-file DDS hashes are recorded in `hashes.sha256`; retired DDS hashes remain in the historical validation records. The final style and action review surfaces are `contact_sheets/cbe_cbf_hoi4_repaint_contact_sheet.png` and `contact_sheets/cbg_cbh_hoi4_repaint_contact_sheet.png`.
