@@ -182,6 +182,9 @@ Flavour families:
 - heating-system collapse
 - hospital overload
 - failed maintenance shifts
+- dam gates and frozen hydroelectric intakes
+- refinery shutdown, guarded output, and district heat
+- reactor cooling, emergency power, and plant authority
 
 ### Phase 4
 
@@ -423,6 +426,8 @@ The implemented seasonal families are:
 - terminal season when a Phase 6 state is observed above the terminal contamination threshold
 
 Country receipts make each family at most once for its recorded year. Nine regional severe-year memories seed the first severe year and advance only after a validated later-year second-winter dispatch. Prior-year markers remain valid when their receipt is still earlier than the marker year. No seasonal family adds a world iterator. Full ordering, cleanup, and engine-boundary proof is recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
+
+The implemented Phase 3 infrastructure layer adds dam, oil or refinery, and reactor routes inside the ordinary family. Route precedence applies within the selected state. The country still chooses one candidate by family priority, origin cycle, phase and pressure score, then state id, and the Phase 3 seen flag permits one ordinary Phase 3 route per country. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`.
 
 Player priority:
 

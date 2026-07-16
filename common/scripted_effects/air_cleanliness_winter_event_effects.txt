@@ -20,6 +20,8 @@
 
 # Supported scope: STATE
 air_winter_event_cancel_pending_chain = {
+	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
+	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
 	clr_state_flag = air_winter_deep_water_patrol
 	clr_state_flag = air_winter_route_chain_rail
 	clr_state_flag = air_winter_route_chain_roads
@@ -27,6 +29,15 @@ air_winter_event_cancel_pending_chain = {
 	clr_state_flag = air_winter_heat_chain_hospitals
 	clr_state_flag = air_winter_heat_chain_barracks
 	clr_state_flag = air_winter_heat_chain_census
+	clr_state_flag = air_winter_dam_chain_ice_crews
+	clr_state_flag = air_winter_dam_chain_drawdown
+	clr_state_flag = air_winter_dam_chain_full_head
+	clr_state_flag = air_winter_refinery_chain_shutdown
+	clr_state_flag = air_winter_refinery_chain_military_output
+	clr_state_flag = air_winter_refinery_chain_district_heat
+	clr_state_flag = air_winter_reactor_chain_scram
+	clr_state_flag = air_winter_reactor_chain_reduced_output
+	clr_state_flag = air_winter_reactor_chain_plant_council
 	clr_state_flag = air_winter_shelter_chain_care
 	clr_state_flag = air_winter_shelter_chain_workers
 	clr_state_flag = air_winter_shelter_chain_lottery
@@ -99,7 +110,13 @@ air_winter_event_reject_stale_choice = {
 		}
 		event_target:air_winter_event_state = { air_winter_event_cancel_pending_chain = yes }
 	}
-	country_event = { id = chaosx.fallout.203 }
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		country_event = { id = chaosx.fallout.203 }
+	}
 }
 
 # Supported scope: STATE
@@ -194,6 +211,31 @@ air_winter_event_clear_state_memory = {
 	clr_state_flag = air_winter_memory_barracks_heat_result
 	clr_state_flag = air_winter_memory_heat_census
 	clr_state_flag = air_winter_memory_heat_census_result
+	clr_state_flag = air_winter_memory_dam_ice_crews
+	clr_state_flag = air_winter_memory_dam_ice_crews_succeeded
+	clr_state_flag = air_winter_memory_dam_ice_crews_failed
+	clr_state_flag = air_winter_memory_dam_drawdown
+	clr_state_flag = air_winter_memory_dam_drawdown_result
+	clr_state_flag = air_winter_memory_dam_full_head
+	clr_state_flag = air_winter_memory_dam_full_head_held
+	clr_state_flag = air_winter_memory_dam_full_head_failed
+	clr_state_flag = air_winter_memory_refinery_shutdown
+	clr_state_flag = air_winter_memory_refinery_shutdown_result
+	clr_state_flag = air_winter_memory_refinery_military_output
+	clr_state_flag = air_winter_memory_refinery_military_output_held
+	clr_state_flag = air_winter_memory_refinery_military_output_failed
+	clr_state_flag = air_winter_memory_oil_fortress_candidate
+	clr_state_flag = air_winter_memory_refinery_district_heat
+	clr_state_flag = air_winter_memory_refinery_district_heat_result
+	clr_state_flag = air_winter_memory_reactor_scram
+	clr_state_flag = air_winter_memory_reactor_scram_succeeded
+	clr_state_flag = air_winter_memory_reactor_scram_failed
+	clr_state_flag = air_winter_memory_reactor_reduced_output
+	clr_state_flag = air_winter_memory_reactor_reduced_output_held
+	clr_state_flag = air_winter_memory_reactor_reduced_output_failed
+	clr_state_flag = air_winter_memory_reactor_plant_council
+	clr_state_flag = air_winter_memory_reactor_plant_council_succeeded
+	clr_state_flag = air_winter_memory_reactor_plant_council_failed
 	clr_state_flag = air_winter_memory_shelter_care_priority
 	clr_state_flag = air_winter_memory_shelter_care_result
 	clr_state_flag = air_winter_memory_shelter_worker_priority
@@ -294,6 +336,102 @@ air_winter_event_calculate_candidate_score = {
 	add_to_temp_variable = { air_winter_marker_score = air_winter_marker_pressure_score }
 }
 
+# Supported scope: STATE
+air_winter_event_damage_hydroelectric_building = {
+	if = {
+		limit = { dam > constant:air_winter_runtime.zero }
+		damage_building = { type = dam damage = constant:air_winter_event_outcome.dam_damage }
+	}
+	else_if = {
+		limit = { dam_mountain > constant:air_winter_runtime.zero }
+		damage_building = { type = dam_mountain damage = constant:air_winter_event_outcome.dam_damage }
+	}
+	else_if = {
+		limit = { cataract_dam_mountain > constant:air_winter_runtime.zero }
+		damage_building = { type = cataract_dam_mountain damage = constant:air_winter_event_outcome.dam_damage }
+	}
+	if = {
+		limit = { infrastructure > constant:air_winter_runtime.zero }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_outcome.infrastructure_damage }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_damage_refinery_network = {
+	if = {
+		limit = { synthetic_refinery > constant:air_winter_runtime.zero }
+		damage_building = { type = synthetic_refinery damage = constant:air_winter_event_outcome.refinery_damage }
+	}
+	if = {
+		limit = { fuel_silo > constant:air_winter_runtime.zero }
+		damage_building = { type = fuel_silo damage = constant:air_winter_event_outcome.refinery_damage }
+	}
+	if = {
+		limit = { infrastructure > constant:air_winter_runtime.zero }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_outcome.infrastructure_damage }
+	}
+}
+
+# Supported scope: STATE. Natural oil receives the exact state resource
+# penalty. A synthetic plant receives repairable operational damage.
+air_winter_event_apply_refinery_output_disruption = {
+	if = {
+		limit = { synthetic_refinery > constant:air_winter_runtime.zero }
+		damage_building = { type = synthetic_refinery damage = constant:air_winter_event_outcome.refinery_output_damage }
+	}
+	set_temp_variable = { air_winter_refinery_disruption_days = constant:air_winter_event_runtime.delayed_short_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_refinery_output_disruption_state
+		days = air_winter_refinery_disruption_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_clear_refinery_output_disruption = {
+	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
+}
+
+# Supported scope: STATE
+air_winter_event_apply_reactor_power_demand = {
+	set_temp_variable = { air_winter_reactor_power_demand_days = constant:air_winter_event_outcome.reactor_power_demand_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_reactor_emergency_power_demand_state
+		days = air_winter_reactor_power_demand_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_clear_reactor_power_demand = {
+	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
+}
+
+# Supported scope: STATE
+air_winter_event_damage_reactor_network = {
+	if = {
+		limit = { nuclear_reactor > constant:air_winter_runtime.zero }
+		damage_building = { type = nuclear_reactor damage = constant:air_winter_event_outcome.reactor_damage }
+	}
+	else_if = {
+		limit = { nuclear_reactor_heavy_water > constant:air_winter_runtime.zero }
+		damage_building = { type = nuclear_reactor_heavy_water damage = constant:air_winter_event_outcome.reactor_damage }
+	}
+	else_if = {
+		limit = { commercial_nuclear_reactor > constant:air_winter_runtime.zero }
+		damage_building = { type = commercial_nuclear_reactor damage = constant:air_winter_event_outcome.reactor_damage }
+	}
+	if = {
+		limit = { infrastructure > constant:air_winter_runtime.zero }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_outcome.infrastructure_damage }
+	}
+}
+
+# Supported scope: STATE. This uses the existing clamped state fallout helper.
+air_winter_event_apply_reactor_failure_fallout = {
+	set_temp_variable = { chaos_fallout_duration_days = constant:air_winter_event_outcome.reactor_failure_fallout_days }
+	set_temp_variable = { chaos_fallout_intensity_add = constant:air_winter_event_outcome.reactor_failure_fallout_intensity }
+	chaos_meter_apply_nuclear_fallout_to_state = yes
+}
+
 # Supported scope: STATE. Output is temporary air_winter_selected_event_id.
 air_winter_event_select_phase_2_route = {
 	if = {
@@ -380,6 +518,18 @@ air_winter_event_select_unseen_phase_route = {
 			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_3 } }
 		}
 		if = {
+			limit = { air_winter_event_is_reactor_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_reactor }
+		}
+		else_if = {
+			limit = { air_winter_event_is_hydroelectric_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_dam }
+		}
+		else_if = {
+			limit = { air_winter_event_is_oil_or_refinery_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_refinery }
+		}
+		else_if = {
 			limit = { air_winter_response_is_transport_state = yes }
 			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_transport }
 		}

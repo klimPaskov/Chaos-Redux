@@ -307,10 +307,13 @@ Implemented first tranche:
 
 Still required:
 
+- pooled treaty decontamination with approved sponsor, recipient, cancellation, and refund rules
+- seed archive exchange with an approved greenhouse and post-Fallout memory contract
 - evacuation corridors
 - Fallout-era treaty memory and successor legitimacy
 - broader manually reviewed treaty event families
 - relief votes and policy for major atmospheric burners
+- forecast precision beyond shared basic sampling
 - runtime observation of target scope, delayed results, sanctions, and route pressure
 
 ### D3: three-layer focus architecture
