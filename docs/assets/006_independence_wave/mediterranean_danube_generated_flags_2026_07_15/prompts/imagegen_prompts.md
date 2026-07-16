@@ -12,6 +12,22 @@ The original tool outputs remain in the generated-image store and exact copies
 are retained under `source_png/`. The two rejected Trieste edits are retained so
 the selection decision is auditable.
 
+## Technical-reference migration boundary
+
+The ordered input lists below preserve the paths that were actually supplied to
+ImageGen. Those three technical-presentation PNGs lived in the retired
+`.agents/skills/chaos-redux-event-assets/assets/flags/` directory and are no
+longer present in the working tree. Their pre-migration SHA-256 values remain
+frozen in
+`notes/technical_reference_provenance_2026_07_16.md`.
+
+The current canonical files under
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/`
+are byte-distinct review references extracted for the current skill library.
+They replace the retired files only for present-day review and hash-ledger
+validation; they are not retroactively claimed as the inputs that produced the
+retained ImageGen outputs.
+
 ## ARX Sardinia - selected first result
 
 Input images, in order:

@@ -6,8 +6,8 @@ Audit date: 2026-07-16
 
 - Candidate registry rows: **206**.
 - Reserved Event 006 country tags scanned: **102**.
-- Event 006 formable/cosmetic identity tags scanned: **4**.
-- Unique Event 006-owned identifiers checked together: **106**.
+- Event 006 formable/cosmetic identity tags scanned: **5**.
+- Unique Event 006-owned identifiers checked together: **107**.
 - Registered vanilla-tag reuse rows: **91**, using **89** unique vanilla tags.
 - Non-selectable vanilla route-overlay rows: **13**.
 - Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, AUX, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
@@ -24,12 +24,12 @@ Audit date: 2026-07-16
 - External and vanilla country-tag definitions parsed: **7981**.
 - External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69484**.
 - Other Chaos Redux country-tag definitions parsed: **49**.
-- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **963**.
+- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **966**.
 - Reserved-tag collisions: **0**.
 - Packages with exact or state-word-normalized vanilla identity matches requiring reuse review: **0**.
 - Packages with fuzzy identity matches requiring manual review: **16**.
 - Recorded manual identity dispositions: **18**.
-- Collision-free unused `??X` replacement candidates: **448**.
+- Collision-free unused `??X` replacement candidates: **447**.
 
 ## Reserved-tag collisions
 
@@ -43,8 +43,9 @@ No Event 006-owned country, formable, or cosmetic identifier collides with the s
 | FORM-02 | North Atlantic Union | `NUX` |
 | FORM-03 | Confederation of the Low Countries | `LCX` |
 | FORM-04 | Rhenish League | `RLX` |
+| FORM-05 | Mediterranean Island League | `MIX` |
 
-All four tags are X-ending, unique against the 102 country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.
+All 5 tags are X-ending, unique against the 102 country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.
 
 ## Vanilla identity comparison
 
@@ -154,7 +155,7 @@ Both shared-tag pairs use one reservation group per tag, so the frozen planner c
 
 The following tags end in `X` and were unused by vanilla, Chaos Redux, and every scanned installed mod at audit time. They are candidates only; a remap must update every gameplay, localisation, history, asset, manifest, scenario, specification, documentation, and catalog reference together.
 
-`IDX IEX IFX IGX IHX IIX IJX IKX ILX IMX INX IOX IPX IQX IRX ISX ITX IUX IVX IWX IXX IYX IZX JAX JBX JCX JDX JEX JFX JHX JIX JJX JKX JLX JMX JNX JOX JPX JQX JRX JSX JTX JUX JVX JWX JXX JYX JZX KAX KBX KDX KEX KFX KGX KHX KIX KJX KKX KLX KMX KNX KOX KPX KQX KRX KSX KUX KVX KWX KXX KYX KZX LAX LBX LDX LEX LFX LGX LHX LIX LJX LKX LLX LMX LNX LOX LPX LQX LRX LSX LTX LVX LWX LXX LYX LZX MBX MCX MDX MFX MGX MHX MIX MJX MKX MLX MMX MNX MOX MPX MQX MRX MSX MTX MUX MVX MWX MXX MYX MZX NBX NCX NDX NEX NFX NGX NHX NIX NJX NKX NLX NMX NNX NOX NPX NQX NRX NSX NTX NVX NWX NXX NYX NZX OAX OBX OCX ODX OEX OFX OGX OHX OIX OJX OKX OLX OMX ONX OOX OPX OQX ORX OSX OTX OUX OVX OWX OXX OYX OZX PAX PBX PCX PDX PEX PFX PGX PIX PJX PKX PLX PMX PNX POX PPX PQX PRX PSX PTX PUX PVX PWX PXX PYX PZX QAX QBX QCX QDX QEX QFX QGX QHX QIX QJX QKX QLX QMX QNX QOX QPX QQX QRX QSX QTX QUX QVX QWX QXX QYX QZX RAX RBX RCX RDX REX RFX RGX RHX RIX RJX RKX RMX RNX ROX RPX RQX RRX RSX RTX RUX RVX RWX RXX RYX RZX SBX SCX SDX SFX SGX SIX SJX SKX SLX SMX SNX SOX SPX SQX SRX SSX STX SUX SVX SWX SXX SYX SZX TAX TBX TCX TDX TFX TGX THX TIX TJX TKX TLX TNX TOX TPX TQX TRX TSX TTX TUX TVX TWX TXX TYX TZX UAX UBX UCX UDX UEX UFX UGX UHX UIX UJX UKX ULX UMX UNX UOX UPX UQX URX USX UTX UUX UVX UWX UXX UYX UZX VAX VBX VCX VDX VEX VFX VGX VHX VJX VKX VLX VMX VNX VOX VPX VQX VRX VSX VTX VUX VVX VWX VXX VYX VZX WAX WBX WCX WDX WEX WFX WGX WHX WIX WJX WKX WLX WMX WNX WOX WPX WQX WRX WSX WTX WUX WVX WWX WXX WYX WZX XAX XBX XCX XDX XEX XFX XGX XHX XIX XJX XKX XLX XMX XNX XOX XPX XQX XRX XSX XTX XUX XVX XWX XXX XYX XZX YAX YBX YCX YDX YEX YFX YGX YHX YIX YJX YKX YLX YMX YNX YOX YPX YQX YRX YSX YTX YUX YVX YWX YXX YYX YZX ZAX ZBX ZCX ZDX ZEX ZFX ZGX ZHX ZIX ZJX ZKX ZLX ZMX ZNX ZOX ZPX ZQX ZRX ZSX ZTX ZUX ZVX ZWX ZXX ZYX ZZX`
+`IDX IEX IFX IGX IHX IIX IJX IKX ILX IMX INX IOX IPX IQX IRX ISX ITX IUX IVX IWX IXX IYX IZX JAX JBX JCX JDX JEX JFX JHX JIX JJX JKX JLX JMX JNX JOX JPX JQX JRX JSX JTX JUX JVX JWX JXX JYX JZX KAX KBX KDX KEX KFX KGX KHX KIX KJX KKX KLX KMX KNX KOX KPX KQX KRX KSX KUX KVX KWX KXX KYX KZX LAX LBX LDX LEX LFX LGX LHX LIX LJX LKX LLX LMX LNX LOX LPX LQX LRX LSX LTX LVX LWX LXX LYX LZX MBX MCX MDX MFX MGX MHX MJX MKX MLX MMX MNX MOX MPX MQX MRX MSX MTX MUX MVX MWX MXX MYX MZX NBX NCX NDX NEX NFX NGX NHX NIX NJX NKX NLX NMX NNX NOX NPX NQX NRX NSX NTX NVX NWX NXX NYX NZX OAX OBX OCX ODX OEX OFX OGX OHX OIX OJX OKX OLX OMX ONX OOX OPX OQX ORX OSX OTX OUX OVX OWX OXX OYX OZX PAX PBX PCX PDX PEX PFX PGX PIX PJX PKX PLX PMX PNX POX PPX PQX PRX PSX PTX PUX PVX PWX PXX PYX PZX QAX QBX QCX QDX QEX QFX QGX QHX QIX QJX QKX QLX QMX QNX QOX QPX QQX QRX QSX QTX QUX QVX QWX QXX QYX QZX RAX RBX RCX RDX REX RFX RGX RHX RIX RJX RKX RMX RNX ROX RPX RQX RRX RSX RTX RUX RVX RWX RXX RYX RZX SBX SCX SDX SFX SGX SIX SJX SKX SLX SMX SNX SOX SPX SQX SRX SSX STX SUX SVX SWX SXX SYX SZX TAX TBX TCX TDX TFX TGX THX TIX TJX TKX TLX TNX TOX TPX TQX TRX TSX TTX TUX TVX TWX TXX TYX TZX UAX UBX UCX UDX UEX UFX UGX UHX UIX UJX UKX ULX UMX UNX UOX UPX UQX URX USX UTX UUX UVX UWX UXX UYX UZX VAX VBX VCX VDX VEX VFX VGX VHX VJX VKX VLX VMX VNX VOX VPX VQX VRX VSX VTX VUX VVX VWX VXX VYX VZX WAX WBX WCX WDX WEX WFX WGX WHX WIX WJX WKX WLX WMX WNX WOX WPX WQX WRX WSX WTX WUX WVX WWX WXX WYX WZX XAX XBX XCX XDX XEX XFX XGX XHX XIX XJX XKX XLX XMX XNX XOX XPX XQX XRX XSX XTX XUX XVX XWX XXX XYX XZX YAX YBX YCX YDX YEX YFX YGX YHX YIX YJX YKX YLX YMX YNX YOX YPX YQX YRX YSX YTX YUX YVX YWX YXX YYX YZX ZAX ZBX ZCX ZDX ZEX ZFX ZGX ZHX ZIX ZJX ZKX ZLX ZMX ZNX ZOX ZPX ZQX ZRX ZSX ZTX ZUX ZVX ZWX ZXX ZYX ZZX`
 
 ## Scope and limitations
 
@@ -169,12 +170,12 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 
 ## Input fingerprints
 
-- Audit script SHA-256: `17fb39255f6d7a59d50c7c329ae59ea61fb6d6fcf4a0376faa910cab6896a605`
+- Audit script SHA-256: `4787aea3c3cc63b1ef79da6bbedd75689dafdc101dd0e245f7e8699e5c4357b0`
 - Event 006 tag registry SHA-256: `81a5eb91c2f84cef458fa63750275dc8123574d858961a4b415c30d024d64461`
-- Event 006 formable/cosmetic registry SHA-256: `673d7b9f8a5813f0481f8b79644865c24e6ef1ff5c65519653d6b0a78ca5f7df`
+- Event 006 formable/cosmetic registry SHA-256: `9d9f46ee76f459b2d2a099526e3dbd183969d4afbba78c16fa1ab6e09fd049a5`
 - Candidate matrix SHA-256: `5a9d5612e83689df591fbdad9aacf694debe34897e0cf2f19b5dfc4e3d8d51a8`
 - Formable-family matrix SHA-256: `816162e3ffd6ce702bfcab591fc85bc49c875343a6d857fa80475e6c2af23169`
-- Formable base-localisation inventory SHA-256: `b3576aa9071d60d1dd05857d5475da2996471ec0acd892449b3fe3ed1d3a8607`
+- Formable base-localisation inventory SHA-256: `ad972ed4ca457837ace9355793c3e616132310d142f1d4760482b4a1721fef8b`
 - Manual identity dispositions SHA-256: `08fd0882fb52175b18229d0d85cfbf093e5dc50610f1ec3cb31363237457791c`
 - Vanilla `00_countries.txt` SHA-256: `b3777a74b44bfb1b082817b2a1e9676f0c8cda45a0cbea75e55e2b703f3b73b6`
 - Vanilla country localisation SHA-256: `31aad14d7e190da4f230c7b3fe16e4a087b8ea89951fede2743d5aec0f016706`
@@ -182,8 +183,8 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Parsed vanilla tag-surface inventory SHA-256: `57dfbe267a32983680c3fa385cce69e7e7a9cd52af06d8ec8bf8bb6508004d09`
 - Parsed Workshop tag-surface inventory SHA-256: `c4e0f8f99a79be4459ad4a8c0068c9c4bf6319c594c2d8a0cc6c756a65035fb3`
 - Parsed sibling-mod tag-surface inventory SHA-256: `4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945`
-- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `cbf71bad63cfade6f8f4f3f9b02c39c83eabce4261723869b90bd9aaa7b7145d`
+- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `3c7d7aa6231c480ad5859f9b0c9cfbbf38ac0553a3ce77d9def9447b0c2910b9`
 - ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `58936aaf298fa38a1ebb5e99706d0ff81c52334eb4342de50f8ed42ab12439f1`
-- Package-origin wrapper source SHA-256: `bc1470ff76efeddee1f99292fdc4fdff4b42e22f561e991ad17f6d387bc9f64b`
+- Runtime attestation source SHA-256: `ad7f2bba193c8267b83745ebb6d3159c5dff3470415131c5e520720f5ffcd548`
+- Package-origin wrapper source SHA-256: `989cafdaa52ff5439001e3428426a76223c62f806d995c0c5303931f412268cc`
 - Scenario block source SHA-256: `d9a2e870945c4bab459f8d3eb243bb014e41af3a328d28204a175a4794f10823`

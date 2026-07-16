@@ -5,9 +5,10 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE FOCUS FRAMEWORK
 # ============================================================================
-# The full tree is loaded only through the explicit assignment effect for a
-# reviewed Event 6-created package. Existing meaningful trees keep their tree
-# and include the additive shared-focus root declared after the full tree.
+# The full tree is loaded only through the explicit assignment effect for an
+# Event 6-created package or a registered tag whose vanilla generic-tree status
+# was explicitly reviewed. Existing meaningful trees are never replaced; the
+# reusable additive shared-focus template remains declared after the full tree.
 #
 # Full-tree lanes:
 # - survival and state construction
@@ -36,6 +37,7 @@ focus_tree = {
 	reset_on_civilwar = no
 	continuous_focus_position = { x = 4200 y = 2200 }
 	initial_show_position = { focus = independence_wave_prepare_capital_administration }
+	shared_focus = independence_wave_cor_authorize_form05_delegation_focus
 
 	# ------------------------------------------------------------------------
 	# Lane 1: survival and state construction
@@ -2670,6 +2672,207 @@ focus_tree = {
 	}
 
 	# -----------------------------------------------------------------------
+	# IW-018 Sardinia: municipal reconciliation, Cagliari shipping, mountain
+	# guards, the Italian property settlement, island compact, and FORM-05.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_arx_reconcile_municipal_ledgers_focus
+		icon = GFX_goal_independence_wave_arx_shipping
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 68
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_arx_package = yes }
+		available = { is_independence_wave_arx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_reconcile_municipal_ledgers_tt hidden_effect = { independence_wave_arx_focus_reconcile_municipal_ledgers = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_arx_civic_cohesion = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_arx_restore_cagliari_shipping_office_focus
+		icon = GFX_goal_independence_wave_arx_shipping
+		prerequisite = { focus = independence_wave_arx_reconcile_municipal_ledgers_focus }
+		x = 67
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		available = { is_independence_wave_arx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_restore_cagliari_shipping_office_tt hidden_effect = { independence_wave_arx_focus_restore_cagliari_shipping_office = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_arx_organize_mountain_guards_focus
+		icon = GFX_goal_independence_wave_arx_mountain_guards
+		prerequisite = { focus = independence_wave_arx_reconcile_municipal_ledgers_focus }
+		x = 69
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_arx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_organize_mountain_guards_tt hidden_effect = { independence_wave_arx_focus_organize_mountain_guards = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } }
+	}
+
+	focus = {
+		id = independence_wave_arx_settle_italian_property_focus
+		icon = GFX_goal_independence_wave_former_host_settlement
+		prerequisite = { focus = independence_wave_arx_restore_cagliari_shipping_office_focus }
+		x = 67
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_arx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_settle_italian_property_tt hidden_effect = { independence_wave_arx_focus_settle_italian_property = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_living_former_host = yes } }
+	}
+
+	focus = {
+		id = independence_wave_arx_convene_island_settlement_focus
+		icon = GFX_goal_independence_wave_arx_mountain_guards
+		prerequisite = { focus = independence_wave_arx_organize_mountain_guards_focus }
+		x = 69
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_arx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_convene_island_settlement_tt hidden_effect = { independence_wave_arx_focus_convene_island_settlement = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_arx_authorize_form05_delegation_focus
+		icon = GFX_goal_independence_wave_form05_maritime_congress
+		prerequisite = { focus = independence_wave_arx_settle_italian_property_focus }
+		prerequisite = { focus = independence_wave_arx_convene_island_settlement_focus }
+		x = 68
+		y = 4
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_arx_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_arx_authorize_form05_delegation_tt hidden_effect = { independence_wave_arx_focus_authorize_form05_delegation = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	# -----------------------------------------------------------------------
+	# IW-019 Sicily: Palermo port authority, inland grain routes, straits
+	# garrisons, island administration, host property, and a deliberate choice
+	# between a mainland restoration dossier and the maritime republic league.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_asx_unify_palermo_port_books_focus
+		icon = GFX_goal_independence_wave_asx_port
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 72
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_asx_package = yes }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_unify_palermo_port_books_tt hidden_effect = { independence_wave_asx_focus_unify_palermo_port_books = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_asx_port_authority = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_asx_secure_interior_grain_routes_focus
+		icon = GFX_goal_independence_wave_asx_grain_straits
+		prerequisite = { focus = independence_wave_asx_unify_palermo_port_books_focus }
+		x = 70
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_secure_interior_grain_routes_tt hidden_effect = { independence_wave_asx_focus_secure_interior_grain_routes = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_asx_integrate_straits_garrisons_focus
+		icon = GFX_goal_independence_wave_asx_grain_straits
+		prerequisite = { focus = independence_wave_asx_unify_palermo_port_books_focus }
+		x = 74
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_integrate_straits_garrisons_tt hidden_effect = { independence_wave_asx_focus_integrate_straits_garrisons = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } }
+	}
+
+	focus = {
+		id = independence_wave_asx_establish_island_administration_focus
+		icon = GFX_goal_independence_wave_asx_port
+		prerequisite = { focus = independence_wave_asx_secure_interior_grain_routes_focus }
+		prerequisite = { focus = independence_wave_asx_integrate_straits_garrisons_focus }
+		x = 72
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_establish_island_administration_tt hidden_effect = { independence_wave_asx_focus_establish_island_administration = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_asx_settle_italian_state_property_focus
+		icon = GFX_goal_independence_wave_former_host_settlement
+		prerequisite = { focus = independence_wave_asx_establish_island_administration_focus }
+		x = 71
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_settle_italian_state_property_tt hidden_effect = { independence_wave_asx_focus_settle_italian_state_property = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_living_former_host = yes } }
+	}
+
+	focus = {
+		id = independence_wave_asx_commission_straits_customs_service_focus
+		icon = GFX_goal_independence_wave_asx_grain_straits
+		prerequisite = { focus = independence_wave_asx_establish_island_administration_focus }
+		x = 73
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		available = { is_independence_wave_asx_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_commission_straits_customs_service_tt hidden_effect = { independence_wave_asx_focus_commission_straits_customs_service = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_asx_prepare_two_sicilies_dossier_focus
+		icon = GFX_goal_independence_wave_asx_two_sicilies
+		prerequisite = { focus = independence_wave_asx_settle_italian_state_property_focus }
+		prerequisite = { focus = independence_wave_asx_commission_straits_customs_service_focus }
+		mutually_exclusive = { focus = independence_wave_asx_commit_mediterranean_republic_focus }
+		x = 71
+		y = 5
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_asx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_prepare_two_sicilies_dossier_tt hidden_effect = { independence_wave_asx_focus_prepare_two_sicilies_dossier = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.standard modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_traditional_route = yes } modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_emergency_military_route = yes } }
+	}
+
+	focus = {
+		id = independence_wave_asx_commit_mediterranean_republic_focus
+		icon = GFX_goal_independence_wave_form05_maritime_congress
+		prerequisite = { focus = independence_wave_asx_settle_italian_state_property_focus }
+		prerequisite = { focus = independence_wave_asx_commission_straits_customs_service_focus }
+		mutually_exclusive = { focus = independence_wave_asx_prepare_two_sicilies_dossier_focus }
+		x = 73
+		y = 5
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_asx_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_asx_commit_mediterranean_republic_tt hidden_effect = { independence_wave_asx_focus_commit_mediterranean_republic = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_constitutional_route = yes } modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_popular_council_route = yes } }
+	}
+
+	# -----------------------------------------------------------------------
 	# Framework capstone.
 	# -----------------------------------------------------------------------
 
@@ -2814,5 +3017,83 @@ shared_focus = {
 	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 	available = { can_complete_independence_wave_overlay_maturity = yes }
 	completion_reward = { custom_effect_tooltip = independence_wave_overlay_mature_independence_tt hidden_effect = { set_country_flag = independence_wave_overlay_maturity_complete independence_wave_focus_reward_durable_state = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+# ---------------------------------------------------------------------------
+# IW-017 Corsica full-framework extension. Vanilla COR has no unique tree; the
+# package adapter admits it only while the generic tree is active, then loads
+# the Event 6 framework. These connected shared focuses appear only for the
+# exact Event 6 origin package.
+# ---------------------------------------------------------------------------
+
+shared_focus = {
+	id = independence_wave_cor_reopen_ajaccio_customs_focus
+	icon = GFX_goal_independence_wave_cor_customs
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	x = 64
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_cor_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_cor_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cor_reopen_ajaccio_customs_tt hidden_effect = { independence_wave_cor_focus_reopen_ajaccio_customs = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_cor_maritime_access = yes } } }
+}
+
+shared_focus = {
+	id = independence_wave_cor_secure_mountain_post_road_focus
+	icon = GFX_goal_independence_wave_cor_mountain_communes
+	prerequisite = { focus = independence_wave_cor_reopen_ajaccio_customs_focus }
+	relative_position_id = independence_wave_cor_reopen_ajaccio_customs_focus
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cor_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cor_secure_mountain_post_road_tt hidden_effect = { independence_wave_cor_focus_secure_mountain_post_road = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } }
+}
+
+shared_focus = {
+	id = independence_wave_cor_register_coastal_communes_focus
+	icon = GFX_goal_independence_wave_cor_customs
+	prerequisite = { focus = independence_wave_cor_reopen_ajaccio_customs_focus }
+	relative_position_id = independence_wave_cor_reopen_ajaccio_customs_focus
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cor_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cor_register_coastal_communes_tt hidden_effect = { independence_wave_cor_focus_register_coastal_communes = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_cor_settle_french_maritime_accounts_focus
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { focus = independence_wave_cor_secure_mountain_post_road_focus }
+	prerequisite = { focus = independence_wave_cor_register_coastal_communes_focus }
+	relative_position_id = independence_wave_cor_reopen_ajaccio_customs_focus
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cor_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cor_settle_french_maritime_accounts_tt hidden_effect = { independence_wave_cor_focus_settle_french_maritime_accounts = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_living_former_host = yes } }
+}
+
+shared_focus = {
+	id = independence_wave_cor_authorize_form05_delegation_focus
+	icon = GFX_goal_independence_wave_form05_maritime_congress
+	prerequisite = { focus = independence_wave_cor_settle_french_maritime_accounts_focus }
+	relative_position_id = independence_wave_cor_reopen_ajaccio_customs_focus
+	x = 0
+	y = 3
+	cost = @independence_wave_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cor_package = yes has_country_flag = independence_wave_network_member }
+	completion_reward = { custom_effect_tooltip = independence_wave_cor_authorize_form05_delegation_tt hidden_effect = { independence_wave_cor_focus_authorize_form05_delegation = yes } }
 	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
 }

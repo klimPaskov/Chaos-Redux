@@ -1,14 +1,14 @@
 # Event 006 resume packet
 
-Updated: 2026-07-16 after portrait commit `95f7529c7` and the audited AFX/RHI/BAY admission tranche
+Updated: 2026-07-16 after the audited Mediterranean IW-017/IW-018/IW-019 and FORM-05 tranche
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
 Committed portrait baseline: `95f7529c7`.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains
-outside the selectable pool. IW-004, IW-006, IW-008, IW-009, and IW-010 have
-joined IW-001, IW-002, and IW-007 in the exact audited selectable set.
+outside the selectable pool. IW-017 COR, IW-018 ARX, and IW-019 ASX have joined
+the eight earlier packages in the exact audited selectable set.
 
 ## Read first
 
@@ -25,6 +25,12 @@ joined IW-001, IW-002, and IW-007 in the exact audited selectable set.
 11. `subagent_handoffs/006_bri_ajx_commit_readiness_reaudit_2026_07_16.md`
 12. `subagent_handoffs/006_event6_advisor_icon_withdrawal_2026_07_16.md`
 13. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
+14. `subagent_handoffs/006_mediterranean_country_package_audit_2026_07_16.md`
+15. `subagent_handoffs/006_mediterranean_focus_tree_audit_2026_07_16.md`
+16. `subagent_handoffs/006_mediterranean_form05_decision_mission_audit_2026_07_16.md`
+17. `subagent_handoffs/006_mediterranean_localisation_audit_2026_07_16.md`
+18. `subagent_handoffs/006_iw017_iw019_allocator_admission_audit_2026_07_16.md`
+19. `subagent_handoffs/006_mediterranean_tranche_admission_closeout_2026_07_16.md`
 
 The seven specification parts remain the design authority. Use the source-of-
 truth map for current implementation status and handoff dispositions.
@@ -44,8 +50,8 @@ truth map for current implementation status and handoff dispositions.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
   point-of-no-return, sponsorship transaction, and Liberations cluster capacity
   surface are implemented.
-- FORM-01 through FORM-04 are implemented, source-audited, and readiness-
-  promoted. FORM-05 through FORM-48 remain fail-closed.
+- FORM-01 through FORM-05 are implemented, source-audited, and readiness-
+  promoted. FORM-06 through FORM-48 remain fail-closed.
 - IW-007 AGX remains promoted from `2912e0a46` for ordinary automatic and
   SCN-008 admission. The audit is static and is not an in-engine execution
   result.
@@ -57,19 +63,21 @@ truth map for current implementation status and handoff dispositions.
   and exact automatic/SCN-008 admission. RHI retains its binding FORM-04
   delegation gate; BAY retains its package-owned South German settlement.
 - The current attested set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
-  IW-009, and IW-010. Every other selectable package remains outside the
-  compile-time admission set.
+  IW-009, IW-010, IW-017, IW-018, and IW-019. These eleven IDs span ten
+  disjoint reservation groups; every other selectable package remains outside
+  the compile-time admission set.
 - Commit `a2c274d1e` contains the independently audited living-BEL IW-005
   Flanders overlay. It preserves Belgium and is not a selectable Event 006
   release package. Its one-day timeout versus `on_daily_BEL` edge remains a
   documented static ordering caveat because engine order is unspecified, and AI
   completion still depends on opportunistic placement of garrisons in states 6
   and 977.
-- The 2026-07-16 male-HOI4 portrait package and final independent audit are the
-  current portrait authority: twenty male fictional large portraits and ten
-  commander-small dossiers pass, while Rupprecht and Matthes remain protected.
-  ACX and AEX are unregistered readiness-pool art only. Earlier portrait and
-  army-small checksum ledgers are historical and superseded.
+- The 2026-07-16 male-HOI4 portrait package and Mediterranean portrait ledger
+  are the current portrait authorities: twenty-eight male fictional large
+  portraits and ten commander-small dossiers pass, while Rupprecht and Matthes
+  remain protected. ACX and AEX are unregistered readiness-pool art only.
+  Earlier portrait and army-small checksum ledgers are historical and
+  superseded.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
   the repaired FORM transaction integration. Exact promotions are committed in
   `5d17e55b3` and `f64d9640e`.
@@ -97,12 +105,17 @@ truth map for current implementation status and handoff dispositions.
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Promoted | Preserve the exact automatic and SCN-008 gates admitted in `5d17e55b3` |
 | IW-010 AJX | Promoted | Preserve the exact automatic and SCN-008 gates admitted in `f64d9640e` |
+| IW-017 COR | Promoted | Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean package mechanics, FORM-05 access, and exact automatic/SCN-008 gates |
+| IW-018 ARX | Promoted | Preserve the distinct Sardinian identity, anchor 114, Italian host survival, Mediterranean package mechanics, FORM-05 access, and exact automatic/SCN-008 gates |
+| IW-019 ASX | Promoted | Preserve the distinct Sicilian identity, anchor 115, Italian host survival, Level 2 package, FORM-05 access, and exact automatic/SCN-008 gates |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion |
 
-Eight compile-time attestations do not guarantee a valid wave. The allocator
+Eleven compile-time attestations do not guarantee a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
-chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
-7-country bands, but World Collapse remains under-supplied for its required ten.
+chaos-band, and wave-size gates. Ten disjoint reservation groups can
+structurally supply every 3-, 4-, 5-, 7-, and 10-country band. World Collapse
+remains exactly ten and still fails closed when runtime availability cannot
+satisfy the synchronized frozen plan.
 
 ## Completed tranches not to repeat
 
@@ -114,7 +127,7 @@ chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
 - All-countries scenario framework.
 - Liberations cluster integration.
 - Installed-map binding and installed-mod tag audits.
-- FORM-01 through FORM-04 implementation, tags, flags, identity aliases, and
+- FORM-01 through FORM-05 implementation, tags, flags, identity aliases, and
   readiness promotion.
 - Male-HOI4 portrait regeneration and final independent acceptance under the
   2026-07-16 package, plus explicit custom-advisor-icon withdrawal. The
@@ -134,19 +147,24 @@ chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
   RHI's FORM-04 delegation gate and BAY's package-owned South German settlement.
 - SCO/WLS congress preparation repair in `4884c0ef1`, followed by exact IW-001
   and IW-002 content-attestation and SCN-008 promotion.
+- Mediterranean IW-017 through IW-019 packages, eight male HOI4-style large
+  portraits, historical flat flag families for real countries, and sovereign
+  charter-driven FORM-05 implementation, followed by country, focus,
+  decision/mission, localisation, collision, host-survival, and admission
+  audits. No advisor icons were created.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
   `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
   and distinct standard versus major focus rewards.
 
 ## Immediate continuation order
 
-1. Expand the audited automatic pool to at least ten mutually compatible
-   candidates so World Collapse can still execute exactly ten releases.
-2. Preserve the eight admitted package gates and rerun their exact-ID audits
+1. Preserve the eleven admitted package gates and ten disjoint capacity groups
+   so World Collapse can continue to attempt exactly ten releases.
+2. Rerun exact-ID audits
    whenever shared planner or dispatch logic changes.
 3. Wire Event 006 super-event presentation and settings-aware `6002` playback.
    Keep `6001` absent.
-4. Continue package and FORM-05 through FORM-48 implementation with bespoke
+4. Continue package and FORM-06 through FORM-48 implementation with bespoke
    identities, gameplay, AI, localisation, assets, and audits.
 5. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
    only after their GUI sizes, states, frame plans, and consumers are locked.
@@ -162,9 +180,7 @@ chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
 - The Assyria survival achievement lacks an approved exact motif and ownership
   decision.
 - ASSET-040 through ASSET-043 have no authored frame packages.
-- FORM-05 through FORM-48 remain incomplete and fail-closed.
-- The automatic pool has eight exact attestations and therefore cannot yet
-  satisfy the ten-country World Collapse band.
+- FORM-06 through FORM-48 remain incomplete and fail-closed.
 - The event workbook and every event-log/detail surface have not been reconciled
   against the current implementation.
 - No final balance and Event 006 completion audit covers the whole accepted spec.
@@ -177,7 +193,7 @@ chaos-band, and wave-size gates. The current set can supply the 3-, 4-, 5-, and
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The eight exact package attestations remain binding runtime gates; a broad
+- The eleven exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,

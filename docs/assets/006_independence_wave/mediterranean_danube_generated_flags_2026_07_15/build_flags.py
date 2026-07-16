@@ -34,13 +34,18 @@ REFERENCE_ROOT = PACKAGE_ROOT / "reference_inputs"
 CONTACT_ROOT = PACKAGE_ROOT / "contact_sheets"
 NOTES_ROOT = PACKAGE_ROOT / "notes"
 FLAGS_ROOT = ROOT / "gfx" / "flags"
-CANONICAL_FLAGS_ROOT = (
+CURRENT_CANONICAL_FLAGS_ROOT = (
     ROOT
     / ".agents"
     / "skills"
     / "chaos-redux-event-assets"
     / "assets"
+    / "vanilla_reference"
     / "flags"
+    / "normal"
+)
+TECHNICAL_REFERENCE_PROVENANCE = (
+    NOTES_ROOT / "technical_reference_provenance_2026_07_16.md"
 )
 
 
@@ -72,7 +77,7 @@ FLAGS = {
             / "source_images"
             / "sardinia_gelre_armorial_folio_62r.png",
         ),
-        "technical_reference": CANONICAL_FLAGS_ROOT / "ARM_UK.png",
+        "technical_reference": CURRENT_CANONICAL_FLAGS_ROOT / "arm_uk.png",
     },
     "ASX": {
         "label": "Sicily - 1848 S.015 route reconstruction",
@@ -86,7 +91,8 @@ FLAGS = {
             / "source_images"
             / "sicily_1848_national_flag_reference.svg",
         ),
-        "technical_reference": CANONICAL_FLAGS_ROOT / "ARG_gen_nazism_party.png",
+        "technical_reference": CURRENT_CANONICAL_FLAGS_ROOT
+        / "arg_gen_nazism_party.png",
     },
     "ICX": {
         "label": "Trieste - 1918-1936 civic reconstruction",
@@ -100,7 +106,7 @@ FLAGS = {
             / "source_images"
             / "trieste_free_territory_flag_reference.svg",
         ),
-        "technical_reference": CANONICAL_FLAGS_ROOT / "ANU_fascism.png",
+        "technical_reference": CURRENT_CANONICAL_FLAGS_ROOT / "anu_fascism.png",
     },
 }
 
@@ -669,6 +675,10 @@ def sha256(path: Path) -> str:
 def write_hash_ledger(outputs: dict[str, dict[str, Path]], contact_paths: tuple[Path, ...]) -> None:
     paths: set[Path] = set(contact_paths)
     paths.add(NOTES_ROOT / "validation.json")
+    # The current canonical review PNGs are ledger dependencies only.  The
+    # retired, byte-distinct files actually supplied to ImageGen remain frozen
+    # as historical path/hash records in this note and in the prompt log.
+    paths.add(TECHNICAL_REFERENCE_PROVENANCE)
     paths.update(SOURCE_ROOT.glob("*.png"))
     for config in FLAGS.values():
         paths.add(config["reference"])

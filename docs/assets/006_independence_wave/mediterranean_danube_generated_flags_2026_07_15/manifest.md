@@ -100,6 +100,18 @@ The upstream links, object dates, authority notes, and full licence decisions
 are preserved in
 `docs/assets/006_independence_wave/mediterranean_danube_flag_sources_2026_07_15/source_manifest.csv`.
 
+### Technical presentation reference migration
+
+The technical flag examples actually supplied to ImageGen came from the now-
+retired skill-local `assets/flags/` directory. The current canonical
+`assets/vanilla_reference/flags/normal/` files are byte-distinct, current review
+references and are not described as historical generation inputs. The exact
+old path/hash records, current canonical path/hash records, and their separate
+roles are frozen in
+`notes/technical_reference_provenance_2026_07_16.md`. The prompt log preserves
+the original ordered input paths; `hashes.sha256` validates the files that exist
+in the current package and canonical review library.
+
 ## Deterministic processing
 
 `build_flags.py` performs the complete retained-source-to-runtime build:
@@ -138,6 +150,8 @@ draw a new emblem, or substitute SVG geometry.
   neighbor scale.
 - `notes/validation.json` records dimensions, palettes, alpha, TGA headers,
   origins, decode equality, and the tiny-size coverage rules.
+- `notes/technical_reference_provenance_2026_07_16.md` separates the retired
+  generation-input records from the current canonical review references.
 - `hashes.sha256` records cited inputs, all generated source PNGs including the
   rejected Trieste edits, flat masters, processed PNGs, actual runtime TGAs,
   validation evidence, and contact sheets.

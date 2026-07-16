@@ -1,0 +1,573 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-05 MEDITERRANEAN ISLAND LEAGUE EFFECTS
+# ============================================================================
+# Overview:
+# - Runs a bounded charter process over the Event 006 active-country registry.
+# - Applies MIX only as a cosmetic identity to the elected carrier.
+# - Records consenting island governments as sovereign league members without
+#   annexing countries, transferring states, granting cores, or replacing COR.
+# ============================================================================
+
+independence_wave_form05_register_readiness = {
+	independence_wave_formable_clear_selected_family_readiness = yes
+	set_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.mediterranean_island_league }
+	set_country_flag = independence_wave_formable_territory_adapter_ready
+	set_country_flag = independence_wave_formable_x_tag_reserved
+	set_country_flag = independence_wave_formable_flag_package_ready
+	set_country_flag = independence_wave_formable_identity_adapter_ready
+	set_country_flag = independence_wave_formable_integration_adapter_ready
+	set_country_flag = independence_wave_formable_member_policy_audited
+	set_country_flag = independence_wave_form05_readiness_attested
+}
+
+independence_wave_form05_clear_country_invitation = {
+	clr_country_flag = independence_wave_form05_charter_invited
+	clr_country_flag = independence_wave_form05_response_accepted
+	clr_country_flag = independence_wave_form05_response_withheld
+	clr_country_flag = independence_wave_form05_invited_by_cor
+	clr_country_flag = independence_wave_form05_invited_by_arx
+	clr_country_flag = independence_wave_form05_invited_by_asx
+}
+
+# Candidate-country scope with ROOT as the charter carrier.
+independence_wave_form05_store_invitation_from_root = {
+	independence_wave_form05_clear_country_invitation = yes
+	set_country_flag = independence_wave_form05_charter_invited
+	if = {
+		limit = { ROOT = { original_tag = COR } }
+		set_country_flag = independence_wave_form05_invited_by_cor
+	}
+	else_if = {
+		limit = { ROOT = { original_tag = ARX } }
+		set_country_flag = independence_wave_form05_invited_by_arx
+	}
+	else_if = {
+		limit = { ROOT = { original_tag = ASX } }
+		set_country_flag = independence_wave_form05_invited_by_asx
+	}
+}
+
+# Carrier-country scope. This is an explicit action-time pass over the Event
+# 006 active-country registry and never a periodic all-country iteration.
+independence_wave_form05_invite_connected_members = {
+	independence_wave_reconcile_active_registry = yes
+	if = {
+		limit = { independence_wave_active_country_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_form05_invitation_index = constant:independence_wave_formable_tuning.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = independence_wave_form05_invitation_index value = global.independence_wave_active_countries^num compare = less_than }
+			}
+			var:global.independence_wave_active_countries^independence_wave_form05_invitation_index = {
+				if = {
+					limit = {
+						NOT = { tag = ROOT }
+						has_independence_wave_form05_maritime_connection_to_root = yes
+					}
+					independence_wave_form05_store_invitation_from_root = yes
+				}
+			}
+			add_to_temp_variable = { independence_wave_form05_invitation_index = constant:independence_wave_formable_tuning.loop_increment }
+		}
+	}
+}
+
+# Carrier-country scope. Clears FORM-05 response state only from active Event
+# 006 entries, including any compatible island packages added later.
+independence_wave_form05_clear_all_invitations = {
+	independence_wave_reconcile_active_registry = yes
+	if = {
+		limit = { independence_wave_active_country_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_form05_cleanup_index = constant:independence_wave_formable_tuning.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = independence_wave_form05_cleanup_index value = global.independence_wave_active_countries^num compare = less_than }
+			}
+			var:global.independence_wave_active_countries^independence_wave_form05_cleanup_index = {
+				if = {
+					limit = {
+						has_country_flag = independence_wave_formable_family_selected
+						check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mediterranean_island_league }
+					}
+					independence_wave_form05_clear_country_invitation = yes
+				}
+			}
+			add_to_temp_variable = { independence_wave_form05_cleanup_index = constant:independence_wave_formable_tuning.loop_increment }
+		}
+	}
+}
+
+independence_wave_form05_clear_global_carrier_markers = {
+	clr_global_flag = independence_wave_form05_charter_in_progress
+	clr_global_flag = independence_wave_form05_cor_carrier
+	clr_global_flag = independence_wave_form05_arx_carrier
+	clr_global_flag = independence_wave_form05_asx_carrier
+}
+
+independence_wave_form05_set_global_carrier_marker = {
+	independence_wave_form05_clear_global_carrier_markers = yes
+	set_global_flag = independence_wave_form05_charter_in_progress
+	if = {
+		limit = { original_tag = COR }
+		set_global_flag = independence_wave_form05_cor_carrier
+	}
+	else_if = {
+		limit = { original_tag = ARX }
+		set_global_flag = independence_wave_form05_arx_carrier
+	}
+	else_if = {
+		limit = { original_tag = ASX }
+		set_global_flag = independence_wave_form05_asx_carrier
+	}
+}
+
+independence_wave_form05_reserve_charter_opening = {
+	if = {
+		limit = {
+			OR = {
+				can_independence_wave_form05_open_charter = yes
+				can_independence_wave_form05_reopen_charter = yes
+			}
+		}
+		independence_wave_form05_set_global_carrier_marker = yes
+		set_country_flag = independence_wave_form05_charter_opening_reserved
+	}
+}
+
+independence_wave_form05_cancel_charter_reservation = {
+	if = {
+		limit = { has_independence_wave_form05_reserved_opening = yes }
+		clr_country_flag = independence_wave_form05_charter_opening_reserved
+		independence_wave_form05_clear_global_carrier_markers = yes
+	}
+}
+
+independence_wave_form05_remove_charter_ideas = {
+	remove_ideas = independence_wave_form05_provisional_maritime_charter
+	remove_ideas = independence_wave_form05_ratified_island_union
+	remove_ideas = independence_wave_form05_charter_breakdown
+}
+
+independence_wave_form05_clamp_public_values = {
+	clamp_variable = { var = independence_wave_form05_shipping min = constant:independence_wave_form05_integration_value.minimum max = constant:independence_wave_form05_integration_value.maximum }
+	clamp_variable = { var = independence_wave_form05_defense min = constant:independence_wave_form05_integration_value.minimum max = constant:independence_wave_form05_integration_value.maximum }
+	clamp_variable = { var = independence_wave_form05_customs min = constant:independence_wave_form05_integration_value.minimum max = constant:independence_wave_form05_integration_value.maximum }
+}
+
+independence_wave_form05_clear_charter_stage = {
+	clr_country_flag = independence_wave_form05_shipping_article_complete
+	clr_country_flag = independence_wave_form05_defense_article_complete
+	clr_country_flag = independence_wave_form05_customs_article_complete
+	clr_country_flag = independence_wave_form05_capital_settled
+	clr_country_flag = independence_wave_form05_rotating_congress
+	clr_country_flag = independence_wave_form05_permanent_secretariat
+	clr_country_flag = independence_wave_form05_charter_ratified
+	clr_country_flag = independence_wave_form05_charter_failed
+	clr_country_flag = independence_wave_form05_recovery_active
+}
+
+independence_wave_form05_begin_charter = {
+	if = {
+		limit = {
+			OR = {
+				can_independence_wave_form05_open_charter = yes
+				can_independence_wave_form05_reopen_charter = yes
+				has_independence_wave_form05_reserved_opening = yes
+			}
+		}
+		independence_wave_form05_clear_all_invitations = yes
+		independence_wave_form05_clear_charter_stage = yes
+		independence_wave_form05_remove_charter_ideas = yes
+		independence_wave_form05_set_global_carrier_marker = yes
+		set_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_progression.shipping_start }
+		set_variable = { independence_wave_form05_defense = constant:independence_wave_form05_progression.defense_start }
+		set_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.customs_start }
+		set_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+		set_country_flag = independence_wave_form05_charter_active
+		set_country_flag = independence_wave_form05_league_carrier
+		set_country_flag = independence_wave_form05_maritime_congress_opened
+		set_country_flag = independence_wave_form05_response_accepted
+		set_country_flag = independence_wave_form05_founding_member
+		clr_country_flag = independence_wave_form05_charter_opening_reserved
+		add_ideas = independence_wave_form05_provisional_maritime_charter
+		independence_wave_form05_invite_connected_members = yes
+		activate_mission = independence_wave_form05_charter_deadline
+		country_event = { id = chaosx.nr6.28 }
+	}
+}
+
+# Candidate-country scope. The response markers are mutually exclusive and the
+# carrier count can increase only once because the decision then disappears.
+independence_wave_form05_accept_invitation = {
+	if = {
+		limit = { can_independence_wave_form05_answer_invitation = yes }
+		set_country_flag = independence_wave_form05_response_accepted
+		clr_country_flag = independence_wave_form05_response_withheld
+		clr_country_flag = independence_wave_form05_charter_invited
+		if = {
+			limit = { has_country_flag = independence_wave_form05_invited_by_cor }
+			COR = {
+				if = {
+					limit = { is_independence_wave_form05_active_charter_carrier = yes }
+					add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_form05_invited_by_arx }
+			ARX = {
+				if = {
+					limit = { is_independence_wave_form05_active_charter_carrier = yes }
+					add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_form05_invited_by_asx }
+			ASX = {
+				if = {
+					limit = { is_independence_wave_form05_active_charter_carrier = yes }
+					add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+				}
+			}
+		}
+	}
+}
+
+independence_wave_form05_withhold_invitation = {
+	if = {
+		limit = { can_independence_wave_form05_answer_invitation = yes }
+		set_country_flag = independence_wave_form05_response_withheld
+		clr_country_flag = independence_wave_form05_response_accepted
+		clr_country_flag = independence_wave_form05_charter_invited
+	}
+}
+
+independence_wave_form05_complete_shipping_article = {
+	add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_progression.project_decisive }
+	add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.project_decisive }
+	set_country_flag = independence_wave_form05_shipping_article_complete
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_complete_defense_article = {
+	add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_progression.project_decisive }
+	add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_progression.project_major }
+	set_country_flag = independence_wave_form05_defense_article_complete
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_complete_customs_article = {
+	add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.project_decisive }
+	add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_progression.project_decisive }
+	set_country_flag = independence_wave_form05_customs_article_complete
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_choose_rotating_congress = {
+	clr_country_flag = independence_wave_form05_permanent_secretariat
+	set_country_flag = independence_wave_form05_rotating_congress
+	set_country_flag = independence_wave_form05_capital_settled
+	add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.project_minor }
+	independence_wave_mediterranean_apply_diplomatic_progress = yes
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_choose_permanent_secretariat = {
+	clr_country_flag = independence_wave_form05_rotating_congress
+	set_country_flag = independence_wave_form05_permanent_secretariat
+	set_country_flag = independence_wave_form05_capital_settled
+	add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.project_minor }
+	independence_wave_mediterranean_apply_security_progress = yes
+	independence_wave_form05_clamp_public_values = yes
+}
+
+# Candidate-country scope with ROOT as the carrier. Membership is sovereign:
+# no annexation, subject creation, state transfer, capital move, or new core.
+independence_wave_form05_record_membership_from_root = {
+	if = {
+		limit = { has_independence_wave_form05_consent_for_root = yes }
+		set_country_flag = independence_wave_form05_autonomous_member
+		set_country_flag = independence_wave_form05_founding_member
+		if = {
+			limit = { ROOT = { original_tag = COR } }
+			set_country_flag = independence_wave_form05_member_of_cor_carrier
+		}
+		else_if = {
+			limit = { ROOT = { original_tag = ARX } }
+			set_country_flag = independence_wave_form05_member_of_arx_carrier
+		}
+		else_if = {
+			limit = { ROOT = { original_tag = ASX } }
+			set_country_flag = independence_wave_form05_member_of_asx_carrier
+		}
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_ratified_island_union
+	}
+}
+
+independence_wave_form05_record_consenting_members = {
+	independence_wave_reconcile_active_registry = yes
+	if = {
+		limit = { independence_wave_active_country_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_form05_member_index = constant:independence_wave_formable_tuning.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = independence_wave_form05_member_index value = global.independence_wave_active_countries^num compare = less_than }
+			}
+			var:global.independence_wave_active_countries^independence_wave_form05_member_index = {
+				independence_wave_form05_record_membership_from_root = yes
+			}
+			add_to_temp_variable = { independence_wave_form05_member_index = constant:independence_wave_formable_tuning.loop_increment }
+		}
+	}
+}
+
+independence_wave_form05_form_island_league = {
+	if = {
+		limit = { can_independence_wave_form05_proclaim_league = yes }
+		remove_mission = independence_wave_form05_charter_deadline
+		remove_mission = independence_wave_form05_complete_first_maritime_board
+		set_cosmetic_tag = MIX
+		set_global_flag = independence_wave_form05_mix_identity_in_use
+		set_country_flag = independence_wave_form05_charter_ratified
+		set_country_flag = independence_wave_form05_post_formation_active
+		set_country_flag = independence_wave_formable_active
+		set_country_flag = independence_wave_formable_committed
+		set_country_flag = independence_wave_formable_identity_committed
+		set_country_flag = independence_wave_formable_integration_committed
+		clr_country_flag = independence_wave_formable_first_stage_integration_complete
+		clr_country_flag = independence_wave_formable_all_required_initial_integration_complete
+		clr_country_flag = independence_wave_form05_charter_active
+		clr_country_flag = independence_wave_form05_first_stage_complete
+		clr_country_flag = independence_wave_form05_first_board_deadline_failed
+		clr_country_flag = independence_wave_form05_shipping_board_complete
+		clr_country_flag = independence_wave_form05_coastal_warning_complete
+		clr_country_flag = independence_wave_form05_customs_clearinghouse_complete
+		clr_country_flag = independence_wave_form05_first_board_shipping_priority
+		clr_country_flag = independence_wave_form05_first_board_warning_priority
+		independence_wave_form05_record_consenting_members = yes
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_ratified_island_union
+		independence_wave_form05_clear_all_invitations = yes
+		independence_wave_form05_clear_global_carrier_markers = yes
+		country_event = { id = chaosx.nr6.30 }
+		activate_mission = independence_wave_form05_complete_first_maritime_board
+		country_event = { id = chaosx.nr6.32 }
+	}
+}
+
+independence_wave_form05_prioritize_shipping_board = {
+	clr_country_flag = independence_wave_form05_first_board_warning_priority
+	set_country_flag = independence_wave_form05_first_board_shipping_priority
+	add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.opening_priority_gain }
+	add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.opening_priority_loss }
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_prioritize_warning_chain = {
+	clr_country_flag = independence_wave_form05_first_board_shipping_priority
+	set_country_flag = independence_wave_form05_first_board_warning_priority
+	add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.opening_priority_gain }
+	add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_integration_value.opening_priority_loss }
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_complete_common_shipping_board = {
+	if = {
+		limit = {
+			has_independence_wave_form05_open_first_board_session = yes
+			has_independence_wave_form05_live_autonomous_member = yes
+		}
+		add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.primary_project_gain }
+		add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_integration_value.secondary_project_gain }
+		set_country_flag = independence_wave_form05_shipping_board_complete
+		independence_wave_form05_clamp_public_values = yes
+	}
+}
+
+independence_wave_form05_complete_coastal_warning_chain = {
+	if = {
+		limit = {
+			has_independence_wave_form05_open_first_board_session = yes
+			has_independence_wave_form05_live_autonomous_member = yes
+		}
+		add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.primary_project_gain }
+		add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.secondary_project_gain }
+		set_country_flag = independence_wave_form05_coastal_warning_complete
+		independence_wave_form05_clamp_public_values = yes
+	}
+}
+
+independence_wave_form05_complete_customs_clearinghouse = {
+	if = {
+		limit = {
+			has_independence_wave_form05_open_first_board_session = yes
+			has_independence_wave_form05_live_autonomous_member = yes
+		}
+		add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_integration_value.primary_project_gain }
+		add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.secondary_project_gain }
+		set_country_flag = independence_wave_form05_customs_clearinghouse_complete
+		independence_wave_form05_clamp_public_values = yes
+	}
+}
+
+independence_wave_form05_ratify_first_stage_integration = {
+	if = {
+		limit = { has_independence_wave_form05_first_stage_integration = yes }
+		remove_mission = independence_wave_form05_complete_first_maritime_board
+		set_country_flag = independence_wave_form05_first_stage_complete
+		set_country_flag = independence_wave_formable_first_stage_integration_complete
+		set_country_flag = independence_wave_formable_all_required_initial_integration_complete
+		clr_country_flag = independence_wave_form05_first_board_deadline_failed
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_ratified_island_union
+		country_event = { id = chaosx.nr6.33 }
+	}
+}
+
+independence_wave_form05_fail_first_maritime_board = {
+	if = {
+		limit = {
+			is_independence_wave_form05_post_formation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form05_first_stage_complete }
+		}
+		set_country_flag = independence_wave_form05_first_board_deadline_failed
+		clr_country_flag = independence_wave_form05_shipping_board_complete
+		clr_country_flag = independence_wave_form05_coastal_warning_complete
+		clr_country_flag = independence_wave_form05_customs_clearinghouse_complete
+		add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.deadline_loss }
+		add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.deadline_loss }
+		add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_integration_value.deadline_loss }
+		independence_wave_form05_clamp_public_values = yes
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_charter_breakdown
+		country_event = { id = chaosx.nr6.34 }
+	}
+}
+
+independence_wave_form05_recover_shipping_ledger = {
+	add_stability = constant:independence_wave_decision_cost.stability_minor_spend
+	add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.recovery_gain }
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_recover_warning_ledger = {
+	add_war_support = constant:independence_wave_decision_cost.war_support_minor_spend
+	add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.recovery_gain }
+	independence_wave_form05_clamp_public_values = yes
+}
+
+independence_wave_form05_reopen_first_maritime_board = {
+	if = {
+		limit = {
+			is_independence_wave_form05_post_formation_carrier = yes
+			has_country_flag = independence_wave_form05_first_board_deadline_failed
+			has_independence_wave_form05_live_autonomous_member = yes
+		}
+		clr_country_flag = independence_wave_form05_first_board_deadline_failed
+		add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_integration_value.reconvening_recovery_gain }
+		add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_integration_value.reconvening_recovery_gain }
+		add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_integration_value.reconvening_recovery_gain }
+		independence_wave_form05_clamp_public_values = yes
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_ratified_island_union
+		activate_mission = independence_wave_form05_complete_first_maritime_board
+	}
+}
+
+independence_wave_form05_fail_charter = {
+	if = {
+		limit = { has_country_flag = independence_wave_form05_charter_active }
+		remove_mission = independence_wave_form05_charter_deadline
+		add_to_variable = { independence_wave_form05_shipping = constant:independence_wave_form05_progression.failure_loss }
+		add_to_variable = { independence_wave_form05_defense = constant:independence_wave_form05_progression.failure_loss }
+		add_to_variable = { independence_wave_form05_customs = constant:independence_wave_form05_progression.failure_loss }
+		independence_wave_form05_clamp_public_values = yes
+		independence_wave_form05_remove_charter_ideas = yes
+		add_ideas = independence_wave_form05_charter_breakdown
+		set_temp_variable = { independence_wave_form05_recovery_days = constant:independence_wave_mediterranean_duration.form05_recovery_days }
+		set_country_flag = { flag = independence_wave_form05_recovery_active days = independence_wave_form05_recovery_days }
+		set_global_flag = { flag = independence_wave_form05_charter_recovery days = independence_wave_form05_recovery_days }
+		set_country_flag = independence_wave_form05_charter_failed
+		clr_country_flag = independence_wave_form05_charter_active
+		clr_country_flag = independence_wave_form05_maritime_congress_opened
+		clr_country_flag = independence_wave_form05_capital_settled
+		clr_country_flag = independence_wave_form05_rotating_congress
+		clr_country_flag = independence_wave_form05_permanent_secretariat
+		independence_wave_form05_clear_all_invitations = yes
+		independence_wave_form05_clear_global_carrier_markers = yes
+		country_event = { id = chaosx.nr6.31 }
+	}
+}
+
+# Country scope. Called before the shared Event 006 reset clears package and
+# origin provenance. A departing carrier releases the one global charter lock;
+# an invited or autonomous member clears only its own FORM-05 state.
+independence_wave_form05_cleanup_country_runtime = {
+	remove_mission = independence_wave_form05_charter_deadline
+	remove_mission = independence_wave_form05_complete_first_maritime_board
+	remove_decision = independence_wave_form05_petition_maritime_congress
+	remove_decision = independence_wave_form05_accept_charter_invitation
+	remove_decision = independence_wave_form05_withhold_charter_invitation
+	remove_decision = independence_wave_form05_chart_convoy_guarantees
+	remove_decision = independence_wave_form05_ratify_common_defense_protocol
+	remove_decision = independence_wave_form05_conclude_customs_convention
+	remove_decision = independence_wave_form05_settle_congress_seat
+	remove_decision = independence_wave_form05_proclaim_island_league
+	remove_decision = independence_wave_form05_reopen_maritime_congress
+	remove_decision = independence_wave_form05_establish_common_shipping_board
+	remove_decision = independence_wave_form05_link_coastal_warning_stations
+	remove_decision = independence_wave_form05_open_customs_clearinghouse
+	remove_decision = independence_wave_form05_ratify_first_maritime_board
+	remove_decision = independence_wave_form05_reconvene_first_maritime_board
+	if = {
+		limit = { has_country_flag = independence_wave_form05_league_carrier }
+		independence_wave_form05_clear_all_invitations = yes
+		independence_wave_form05_clear_global_carrier_markers = yes
+		if = {
+			limit = { has_country_flag = independence_wave_form05_post_formation_active }
+			drop_cosmetic_tag = yes
+			clr_global_flag = independence_wave_form05_mix_identity_in_use
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_form05_recovery_active }
+			clr_global_flag = independence_wave_form05_charter_recovery
+		}
+	}
+	independence_wave_form05_remove_charter_ideas = yes
+	independence_wave_form05_clear_country_invitation = yes
+	clear_variable = independence_wave_form05_shipping
+	clear_variable = independence_wave_form05_defense
+	clear_variable = independence_wave_form05_customs
+	clear_variable = independence_wave_form05_consent_count
+	clr_country_flag = independence_wave_form05_charter_opening_reserved
+	clr_country_flag = independence_wave_form05_charter_active
+	clr_country_flag = independence_wave_form05_league_carrier
+	clr_country_flag = independence_wave_form05_maritime_congress_opened
+	clr_country_flag = independence_wave_form05_founding_member
+	clr_country_flag = independence_wave_form05_shipping_article_complete
+	clr_country_flag = independence_wave_form05_defense_article_complete
+	clr_country_flag = independence_wave_form05_customs_article_complete
+	clr_country_flag = independence_wave_form05_capital_settled
+	clr_country_flag = independence_wave_form05_rotating_congress
+	clr_country_flag = independence_wave_form05_permanent_secretariat
+	clr_country_flag = independence_wave_form05_charter_ratified
+	clr_country_flag = independence_wave_form05_charter_failed
+	clr_country_flag = independence_wave_form05_recovery_active
+	clr_country_flag = independence_wave_form05_autonomous_member
+	clr_country_flag = independence_wave_form05_member_of_cor_carrier
+	clr_country_flag = independence_wave_form05_member_of_arx_carrier
+	clr_country_flag = independence_wave_form05_member_of_asx_carrier
+	clr_country_flag = independence_wave_form05_post_formation_active
+	clr_country_flag = independence_wave_form05_first_stage_complete
+	clr_country_flag = independence_wave_form05_first_board_deadline_failed
+	clr_country_flag = independence_wave_form05_shipping_board_complete
+	clr_country_flag = independence_wave_form05_coastal_warning_complete
+	clr_country_flag = independence_wave_form05_customs_clearinghouse_complete
+	clr_country_flag = independence_wave_form05_first_board_shipping_priority
+	clr_country_flag = independence_wave_form05_first_board_warning_priority
+	clr_country_flag = independence_wave_form05_readiness_attested
+	clr_country_flag = independence_wave_formable_first_stage_integration_complete
+	clr_country_flag = independence_wave_formable_all_required_initial_integration_complete
+}

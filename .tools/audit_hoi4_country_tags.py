@@ -62,6 +62,7 @@ EVENT6_FORMABLE_COSMETIC_IDENTITIES = {
 	"NUX": ("FORM-02", "North Atlantic Union"),
 	"LCX": ("FORM-03", "Confederation of the Low Countries"),
 	"RLX": ("FORM-04", "Rhenish League"),
+	"MIX": ("FORM-05", "Mediterranean Island League"),
 }
 REQUIRED_MANUAL_IDENTITY_PACKAGES = {
 	"IW-011",
@@ -851,7 +852,9 @@ def markdown_report(data: dict[str, object]) -> str:
 	lines.extend(("## Event 006 formable and cosmetic identities", "", "| Family | Identity | Tag |", "| --- | --- | --- |"))
 	for row in data["event6_formable_cosmetic_rows"]:
 		lines.append(f"| {row['package_id']} | {row['identity']} | `{row['tag']}` |")
-	lines.extend(("", "All four tags are X-ending, unique against the 102 country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.", ""))
+	formable_count = len(data["event6_formable_cosmetic_rows"])
+	reserved_count = data["event6_reserved_tag_count"]
+	lines.extend(("", f"All {formable_count} tags are X-ending, unique against the {reserved_count} country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.", ""))
 
 	lines.extend(("## Vanilla identity comparison", ""))
 	if data["identity_matches"]:
@@ -975,6 +978,7 @@ def main() -> None:
 	formable_family_registry_file = repo_root / "docs" / "specs" / "006_independence_wave_specs" / "matrices" / "006_formable_family_registry.csv"
 	formable_localisation_files = [
 		repo_root / "localisation" / "english" / "006_independence_wave_form01_02_04_l_english.yml",
+		repo_root / "localisation" / "english" / "006_independence_wave_form05_l_english.yml",
 		repo_root / "localisation" / "english" / "006_independence_wave_formable_registry_l_english.yml",
 	]
 	manual_identity_file = repo_root / "docs" / "plans" / "006_independence_wave_plans" / "tag_audit" / "006_vanilla_identity_manual_dispositions_2026_07_16.csv"
@@ -1035,7 +1039,7 @@ def main() -> None:
 	}
 	if actual_formable_family_names != expected_formable_family_names:
 		raise RuntimeError(
-			"Event 006 FORM-01 through FORM-04 family names do not match the reviewed cosmetic identities: "
+			"Event 006 promoted formable family names do not match the reviewed cosmetic identities: "
 			f"expected={expected_formable_family_names} actual={actual_formable_family_names}"
 		)
 	expected_formable_localisations = {

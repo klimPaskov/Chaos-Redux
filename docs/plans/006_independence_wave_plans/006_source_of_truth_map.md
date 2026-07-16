@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Curated: 2026-07-16 after portrait commit `95f7529c7` and the audited AFX/RHI/BAY admission tranche
+Curated: 2026-07-16 after the audited Mediterranean IW-017/IW-018/IW-019 and FORM-05 tranche
 
 Completion state: **incomplete and active**.
 
@@ -30,10 +30,12 @@ bounded package audits rather than the older `7368cc0bf` status snapshot.
 6. This map and `006_independence_wave_resume_packet.md` are the current routing
    documents. They supersede earlier resume and curator status summaries.
 
-For Event 006 portraits, the current asset authority is
+For Event 006 portraits, the current asset authorities are
 `../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
-and the current acceptance authority is
-`subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
+Their acceptance authorities are
+`subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`
+and `subagent_handoffs/006_mediterranean_large_portraits_2026_07_16.md`.
 All 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, and
 army-small visual/hash approvals are superseded.
 
@@ -58,11 +60,12 @@ not a current runtime report.
 | IW-001 SCO and IW-002 WLS | Promoted for automatic and SCN-008 admission | Commit `4884c0ef1` repairs their shared preparation transaction; the focused staged-index re-audit then passed exact package, FORM-01/02, visual, AI, localisation, and transaction gates. Exact dormant-tag availability, host, anchor, reservation, Event 5, and capacity predicates still apply |
 | IW-008 RHI and IW-009 BAY | Promoted for automatic and SCN-008 admission | Both exact Level 2 branches, incidents, AI, cleanup, unique art, and package proofs passed `006_rhi_bay_final_admission_audit_2026_07_16.md`. RHI delegation is a binding FORM-04 precondition; BAY keeps its package-owned South German settlement. All runtime gates remain authoritative |
 | IW-004 BRI and IW-010 AJX | Promoted for automatic and SCN-008 admission | Their bounded packages were implemented in `7368cc0bf` and independently promoted by `5d17e55b3` and `f64d9640e`. Exact identity, formable, host, collision, force, and transaction gates still apply |
+| IW-017 COR, IW-018 ARX, and IW-019 ASX | Promoted for automatic and SCN-008 admission | Corsica uses the dormant vanilla COR identity without history or country overwrite; Sardinia and Sicily use collision-cleared ARX and ASX identities. Their country-package, focus, decision/mission, localisation, asset, FORM-05, cleanup, host-survival, and exact-ID audits pass. Exact runtime availability remains binding |
 | IW-003 Cornwall | Blocked | No legal collision-free contiguous state ID exists on the accepted installed-map contract. ACX remains reserved and dormant. No fallback is authorized |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Commit `a2c274d1e` implements the overlay and its independent re-audit passes the bounded source surface. It preserves Belgium and is not a selectable Event 006 release package. The one-day timeout versus `on_daily_BEL` edge remains a documented static ordering caveat because engine order is unspecified, and AI garrison completion remains opportunistic |
-| FORM-01 through FORM-04 | Implemented, audited, and readiness-promoted | `98ec32e93` plus the operational, FORM-03, and readiness-promotion audit chain. FORM-03 uses cosmetic identity `LCX`. FORM-01 uses corrected tag `KCX` |
-| FORM-05 through FORM-48 | Fail-closed | No readiness promotion is authorized. Their gameplay identities, emblems, flags, and route integration remain incomplete |
-| Static visual package | Materially produced | Static icon families, report scenes, country flags, FORM-01 through FORM-04 flag packages, and two Event 006 super-event images exist. The accepted 2026-07-16 portrait package owns twenty male fictional large portraits and ten commander-small dossiers; Rupprecht and Matthes remain the only protected historical exemptions. AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS retain live consumers, while ACX and AEX are unregistered readiness-pool art only. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons. Older portrait checksum commits are historical, not current visual/hash authority |
+| FORM-01 through FORM-05 | Implemented, audited, and readiness-promoted | `98ec32e93` plus the operational, FORM-03, readiness-promotion, and Mediterranean FORM-05 audit chains. FORM-05 is the sovereign, charter-driven Mediterranean Island League using cosmetic identity `MIX`; it performs no annexation, core transfer, subject creation, or forced state transfer |
+| FORM-06 through FORM-48 | Fail-closed | No readiness promotion is authorized. Their gameplay identities, emblems, flags, and route integration remain incomplete |
+| Static visual package | Materially produced | Static icon families, report scenes, country flags, FORM-01 through FORM-05 flag packages, and two Event 006 super-event images exist. The portrait authorities own twenty-eight male fictional large portraits and ten commander-small dossiers, plus the protected historical Rupprecht and Matthes portraits. AFX, AGX, AJX, ARX, ASX, BAY, BRI, COR, RHI, SCO, and WLS retain live consumers, while ACX and AEX are unregistered readiness-pool art only. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons. Older portrait checksum commits are historical, not current visual/hash authority |
 | Audio `6002` | Derivatives and registry complete, gameplay firing pending | Final OGG and WAV, music wrappers, sound wrappers, and zero-random-play station entry exist. No Event 006 firing source currently assigns `global.current_super_event_audio_id = 6002` and invokes the presentation flow |
 | Audio `6001` | Hard blocked | The specified recording does not have verified redistribution rights for this repository. No substitute or fallback is authorized |
 | Documentation and workbook alignment | Not completion-audited | Current gameplay facts have advanced beyond older status prose. The event detail workbook and every event-log/detail surface were not re-audited in this curator pass |
@@ -113,17 +116,21 @@ The committed compile-time content-attestation set is currently:
 | IW-008 | RHI, Rhineland | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, FORM-04 delegation, force, chaos-band, and transaction preflight checks |
 | IW-009 | BAY, Bavaria | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, force, chaos-band, and transaction preflight checks |
 | IW-010 | AJX, Saar | Promoted | Exact absence, host, anchor, reservation, Event 005 collision, FORM-04 delegation, force, chaos-band, and transaction preflight checks |
+| IW-017 | COR, Corsica | Promoted | Exact absence, host, anchor 1, reservation group 1, Event 005 collision, FORM-05, force, chaos-band, generic-tree preservation, and transaction preflight checks |
+| IW-018 | ARX, Sardinia | Promoted | Exact absence, Italian host, anchor 114, reservation group 114, Event 005 collision, FORM-05, force, chaos-band, and transaction preflight checks |
+| IW-019 | ASX, Sicily | Promoted | Exact absence, Italian host, anchor 115, reservation group 115, Event 005 collision, FORM-05, force, chaos-band, and transaction preflight checks |
 
 The exact compile-time set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
-IW-009, and IW-010. IW-005 is a living-BEL route overlay and remains outside
-the selectable-release registry. No other package should be described as
-automatically selectable.
+IW-009, IW-010, IW-017, IW-018, and IW-019. IW-005 is a living-BEL route overlay
+and remains outside the selectable-release registry. No other package should be
+described as automatically selectable.
 
-Eight attested IDs can supply the 3, 4, 5, and 7-country bands only when enough
-mutually compatible hosts, anchors, tags, reservations, forces, and Event 5
-exclusions survive the frozen transaction. The 10-country World Collapse band
-remains under-supplied by the attested pool. Static source audits do not prove
-an in-engine release, scenario load, or every possible host-state combination.
+Eleven attested IDs cover ten disjoint reservation groups and can structurally
+supply the 3, 4, 5, 7, and 10-country bands when enough mutually compatible
+hosts, anchors, tags, reservations, forces, and Event 5 exclusions survive the
+frozen transaction. World Collapse remains exactly ten; it does not increase
+the release count. Static source audits do not prove an in-engine release,
+scenario load, or every possible host-state combination.
 
 ## Implemented and audited architecture
 
@@ -155,6 +162,7 @@ described as absent:
 | Five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment | `45bee09d2` |
 | IW-004 BRI and IW-010 AJX implementation and promotion | `7368cc0bf`, `5d17e55b3`, and `f64d9640e` |
 | IW-008 RHI and IW-009 BAY Level 2 implementation and promotion | `006_rhi_bay_level2_focus_implementation_2026_07_16.md`, `006_rhi_bay_final_admission_audit_2026_07_16.md`, and the exact current registry |
+| Mediterranean IW-017 through IW-019 and FORM-05 | `006_mediterranean_country_package_audit_2026_07_16.md`, `006_mediterranean_focus_tree_audit_2026_07_16.md`, `006_mediterranean_form05_decision_mission_audit_2026_07_16.md`, `006_mediterranean_localisation_audit_2026_07_16.md`, and the current exact registry |
 | Round-number progression and balance normalization | `879e511cc` and `006_round_number_balance_preflight_2026_07_15.md` |
 
 ## Asset and super-event boundary
@@ -164,19 +172,20 @@ The authoritative current static asset ledger is
 idea, decision, mission, achievement, portrait, dossier, report, and formable
 packages. It also records these open boundaries:
 
-The accepted portrait sub-ledger is
-`../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`.
-Its runtime hash inventory and the final independent audit supersede every
-2026-07-15 fictional portrait and army-small ledger. ACX and AEX remain
-readiness-pool only, Rupprecht and Matthes remain protected, and no custom Event
-006 advisor icon is live.
+The accepted portrait ledgers are
+`../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
+Their runtime hash inventories and audits supersede every 2026-07-15 fictional
+portrait and army-small ledger. ACX and AEX remain readiness-pool only,
+Rupprecht and Matthes remain protected, and no custom Event 006 advisor icon is
+live.
 
 - The Assyria survival achievement icon is blocked pending an exact approved
   Assyrian motif and ownership/date decision.
 - ASSET-040 through ASSET-043 are real animation tasks. They require authored
   source frames, static fallbacks, manifests, contact sheets, previews, and GUI
   handoff. Transform-only animation is not acceptable.
-- FORM-05 through FORM-48 flags and emblems remain blocked on final identities,
+- FORM-06 through FORM-48 flags and emblems remain blocked on final identities,
   tags, motifs, palettes, routes, and consumers.
 - Remaining regional report variants are readiness-controlled and cannot reuse
   FORM-03 art as a generic substitute.
@@ -213,6 +222,7 @@ user approval.
 | `006_afx_agx_release_readiness_audit_2026_07_16.md` | Partly superseded | Its AGX authorization remains current. Its original AFX verdict was superseded by the Level 2 repair and `006_afx_final_admission_audit_2026_07_16.md` |
 | AFX Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-006 gameplay, unique-art, cleanup, host-survival, collision, and admission authority |
 | RHI/BAY Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-008/IW-009 gameplay, FORM-04 delegation, unique-art, cleanup, host-survival, collision, and admission authority |
+| Mediterranean IW-017/IW-018/IW-019 and FORM-05 audit chain | Implemented evidence | `006_mediterranean_tranche_admission_closeout_2026_07_16.md` routes the current COR/ARX/ASX gameplay, FORM-05 charter and congress system, male HOI4 portraits, historical flat flags, exact readiness, cleanup, host-survival, collision, and admission evidence |
 | `006_iw003_cornwall_map_feasibility_2026_07_16.md` | Blocked | Current no-fallback map blocker |
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
@@ -245,11 +255,11 @@ Parent decisions still required:
 
 1. Preserve IW-005 as a living-BEL `BEL_flanders` overlay. Do not add it to the
    selectable release registry.
-2. Expand the exact audited pool to at least ten mutually compatible candidates
-   so the World Collapse band can attempt its required ten releases.
+2. Preserve the eleven exact package attestations and ten disjoint capacity
+   groups that allow World Collapse to attempt exactly ten releases.
 3. Wire the Event 006 super-event presentation and settings-aware `6002`
    playback. Keep `6001` blocked unless its exact recording rights are cleared.
-4. Continue FORM-05 through FORM-48 and the remaining package registry without
+4. Continue FORM-06 through FORM-48 and the remaining package registry without
    generic flags, emblems, portraits, or regional-report substitutes.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
@@ -264,7 +274,7 @@ Parent decisions still required:
   or adapter exists.
 - Do not infer IW-005 as a selectable release package. It is a living-BEL route
   overlay.
-- Do not weaken the exact runtime gates for the eight attested packages merely
+- Do not weaken the exact runtime gates for the eleven attested packages merely
   because their compile-time content attestations are present.
 - Do not replace the Event 005 and Event 006 reservation-first transaction with
   an independent release path.
