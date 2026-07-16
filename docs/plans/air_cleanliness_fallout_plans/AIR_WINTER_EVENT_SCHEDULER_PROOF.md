@@ -40,6 +40,8 @@ The exact capture rules and event routes are recorded in `AIR_WINTER_SEASONAL_RE
 
 Every selectable event number comes from the typed `air_winter_event_id` script-constant table. Presentation class, state role, shelter, phase, recovery direction, and seasonal family choose the id through ordered conditions. No random effect, random list, MTTH roll, or unordered first-match country search is used.
 
+Within a selected Phase 3 state, route selection checks reactor, hydroelectric, oil or refinery, transport, then clinic and heat. This is state-local routing. Country candidate selection still compares family priority, origin cycle, frozen score, and state id, so a higher-scoring transport state can defeat a reactor state elsewhere in the country. The shared Phase 3 seen flag permits one ordinary Phase 3 identity chain per country.
+
 Each eligible state calculates a candidate score from phase and pressure. Seasonal rows freeze that score at observation time. The owning country compares candidates in this order:
 
 1. higher typed family priority
@@ -76,17 +78,19 @@ Before firing an event, dispatch saves:
 
 The offline Data structures page states that a regular event target carries into events fired by the same effect chain, including delayed child events. The pilot uses regular targets so simultaneous countries cannot overwrite a shared global target.
 
-Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice itself has one effect-free acknowledgement.
+Every initial event validates both typed targets before opening. Every effect-bearing option repeats target or response-target validation at click time. A stale click cancels only the matching pending branch and opens `chaosx.fallout.203` as a recovery notice. The notice is suppressed during the Fallout transition and active Fallout. It has one effect-free acknowledgement.
 
-Delayed result blocks require their own pending branch flag and the stored original owner. Monthly reconciliation cancels a branch when ownership changes or the branch ledger is incomplete. The stored owner uses a regular scope-valued variable and `var:` entry, matching the documented variable-target pattern and the reviewed vanilla ownership precedent.
+Delayed result blocks require their own pending branch flag and the stored original owner. Whenever the generic pending flag exists, `air_winter_event_targets_are_valid` requires a complete owner variable, equality with the saved country target, and current state ownership by that stored owner. Monthly reconciliation cancels a branch when ownership changes or the branch ledger is incomplete. Active Fallout and the Fallout transition also invalidate the target contract. The stored owner uses a regular scope-valued variable and `var:` entry, matching the documented variable-target pattern and the reviewed vanilla ownership precedent.
 
 The dedicated second-winter opening has three weighted choices. Its military-heating choice also checks exact Command Power affordability both when the option is shown and when the click resolves. Its delayed result exposes one of six deterministic outcome options and repeats the exact outcome thresholds inside the click guard.
+
+The three Phase 3 infrastructure openings repeat manpower, Command Power, support-equipment, and fuel affordability at click time. Their AI weights combine government and war preferences with derived pre-choice state-ledger thresholds for each delayed success. Reactor emergency pumping also checks the documented country energy ratio and applies a temporary state energy-demand modifier. Its AI uses a separate 60 percent pre-choice energy floor above the 50 percent result threshold, accounting for the route's own local demand increase and later live grid movement.
 
 ## AI and cleanup
 
 Every non-deterministic player-choice opening has explicit AI weights with state or country conditions. Delayed deterministic results expose only the option matching the stored pending branch and outcome. AI countries therefore use the same mechanical chain without a second visible-only scheduler.
 
-`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. `air_winter_reset_global` clears the calendar snapshot.
+`air_winter_event_clear_state_memory` clears state arc memory, delayed-result memory, infrastructure memory, and all five complete seasonal marker rows. `air_winter_event_clear_country_memory` clears phase gates, cooldown, recovery count, five annual seasonal receipts, nine regional severe-year memories, and candidate data. Completed delayed results clear their pending flag and stored owner immediately. During Fallout snapshot capture, each state freezes its Air Winter values before the same pass cancels pending branches and removes temporary refinery or reactor modifiers. `air_winter_reset_global` clears the calendar snapshot.
 
 ## Static validation
 
@@ -107,8 +111,11 @@ Static review establishes:
 13. ownership-change cleanup
 14. candidate cleanup after dispatch
 15. complete country, state, and global reset coverage
+16. pending-owner validation across all delayed Air Winter branches
+17. Fallout snapshot capture before pending-branch cancellation
+18. exact Phase 3 infrastructure identity and state-local route precedence
 
-The 35 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 95 options. Ninety-four effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor.
+The 41 current Air Winter event blocks have unique `chaosx.fallout` ids and matching localisation. They contain 119 options. One hundred eighteen effect-bearing options have click-time target guards, while the remaining stale-order acknowledgement has no effect. This pilot is separate from the Fallout living-world scheduler and does not satisfy the 660-block Fallout release floor. The infrastructure-specific engine proof is in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`.
 
 ## Unobserved engine boundary
 

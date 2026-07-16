@@ -160,13 +160,13 @@ The abandonment vote fires `chaosx.fallout.201`. Mass decontamination fires `cha
 
 ## Event pilot and scheduler
 
-`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 35 manually authored event blocks:
+`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 41 manually authored event blocks:
 
-- 32 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
+- 38 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
 - 2 terminal response result blocks for abandonment and decontamination.
 - 1 stale-choice recovery block.
 
-The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, government continuity, recovery, and several delayed deterministic results. The recurring seasonal layer records first frost, dark harvest, ash thaw, second winter, and terminal season. Event text uses state names and government-aware authority terms.
+The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, hydroelectric dams, oil and synthetic refineries, reactors, government continuity, recovery, and several delayed deterministic results. The Phase 3 infrastructure chains use state oil output, repairable building damage, state energy demand, the country energy ratio, low reactor-accident fallout, and civilian losses through the Deaths system. The recurring seasonal layer records first frost, dark harvest, ash thaw, second winter, and terminal season. Event text uses state names and government-aware authority terms.
 
 `air_winter_event_prepare_candidate_cycle` snapshots the documented current engine year once when the existing monthly cycle opens. `air_winter_schedule_phase_event` then runs from the existing monthly state update. Before the country cooldown gate, it can freeze a complete state marker for each of the five seasonal families. A marker records origin year, origin cycle, origin owner, presentation class, score, and typed event id. Markers remain eligible across cooldowns and year boundaries until a validated dispatch consumes them.
 
@@ -174,7 +174,7 @@ The owning country records one deterministic candidate through typed family prio
 
 First frost reuses the five Phase 2 regional routes. Dark harvest reuses the food-collapse opening and result. Ash thaw reuses the recovery opening and result. Terminal season reuses the Phase 6 terminal incident and its delayed result. Second winter uses the dedicated `chaosx.fallout.60` choice event and deterministic `chaosx.fallout.61` result. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event id. No second country-wide or state-wide iterator is introduced.
 
-Delayed events retain their originating state target through the event chain. Their event triggers require the saved state to remain owned by the saved country and require a live branch flag. State reset or ownership change cancels the branch and its stored owner. Country phase memories, cooldown flags, and recovery counts are cleared separately through `air_winter_reset_country`.
+Delayed events retain their originating state target through the event chain. Their event triggers require the saved state to remain owned by the saved country and require a live branch flag. When the generic pending flag exists, target validation also requires the stored original owner. State reset, ownership change, Fallout transition, or active Fallout cancels or invalidates the branch. The existing Fallout snapshot pass freezes the Air Winter row before cancelling pending branches and their temporary modifiers. Country phase memories, cooldown flags, and recovery counts are cleared separately through `air_winter_reset_country`.
 
 This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`. The seasonal marker and annual receipt proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
@@ -232,6 +232,8 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
 | Registered grade and static alternatives | `GFX_air_winter_regional_*` | `gfx/interface/air_cleanliness_winter/regional_grades/` and regional static textures | `interface/air_cleanliness_winter_regional_visuals.gfx` |
 
+The refinery-output and reactor-power dynamic modifiers both use `GFX_air_winter_phase_3`. No additional modifier icon is required for the infrastructure tranche.
+
 Sources, processed PNGs, contact sheets, provenance, and handoffs live under `docs/assets/air_cleanliness_fallout/`. The central manifest is `docs/assets/air_cleanliness_fallout/manifest.md`.
 
 ## Cleanup and reset
@@ -250,6 +252,7 @@ The proof set is:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_STATE_LEDGER_INTEGRATION_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MONTHLY_DETERMINISM_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MODIFIER_AND_DEATHS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`
@@ -274,7 +277,7 @@ Implemented in the Air Winter tranche:
 - A paid secretariat Verification Mission that offers full access, records-only access, or refusal, then returns an exact seven-day result with government-aware AI and durable memory. Refusal enforces the accepted treaty expulsion, relief-loss, opinion, and embargo consequences without changing Winter or Fallout tuning formulas.
 - Invalid treaty routes reconcile before the monthly state pressure pass. Membership loss, annexation, dissolution, and Fallout release active donor projects and exact state reservations through bounded receipts.
 - Membership loss, war, founder succession, annexation, dissolution, schema migration, and Fallout release paired inspection receipts through a separate bounded cancellation queue.
-- Thirty-five manually authored Air Winter pilot events, including five durable seasonal recurrence families.
+- Forty-one manually authored Air Winter pilot events, including five durable seasonal recurrence families and three Phase 3 infrastructure chains.
 - Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
 - Dedicated modifier, report-event, map-mode, and response-decision assets.
 - Dedicated nine-class regional ground, two-channel weather, vegetation, frozen-water, and thaw assets with a synchronized five-slot lifecycle.
@@ -297,7 +300,7 @@ Incomplete and not claimed:
 2. Promote the full-screen grade or static accessibility setting only after its interface parent, click behavior, selection rule, and performance contract are proven.
 3. Use event memory from the Air Winter pilot as an input to the Fallout cause-memory and successor schedulers.
 4. Connect evacuation reception states and refugee pressure to post-rewrite migration without adding another world iterator.
-5. Expand Air Winter event depth only after the pilot audit and accepted improvement addendum are resolved.
+5. Continue Air Winter event depth through manually reviewed tranches, with a depth audit and accepted addendum before each expansion.
 6. Add country and regional response variation through the future survivor content layers without replacing state condition with generic national modifiers.
 7. Extend the proven treaty registry and state-route transaction into the remaining accepted treaty projects without adding another periodic world scan.
 

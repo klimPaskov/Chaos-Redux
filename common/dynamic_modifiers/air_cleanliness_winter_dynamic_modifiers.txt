@@ -140,6 +140,22 @@ air_winter_air_operations_country = {
 	air_weather_penalty = var:air_winter_air_weather_penalty
 }
 
+# The generated state_resources_oil_factor modifier is state-scoped and does
+# not reduce unrelated resources in the affected state.
+air_winter_refinery_output_disruption_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_3
+	state_resources_oil_factor = constant:air_winter_event_outcome.refinery_oil_output_penalty
+}
+
+# Emergency cooling pumps and heat tracing raise factory power demand in the
+# reactor state until the delayed plant report resolves.
+air_winter_reactor_emergency_power_demand_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_3
+	local_factory_energy_consumption = constant:air_winter_event_outcome.reactor_power_demand
+}
+
 # Disease pressure is calculated and capped by the state update. Keeping it
 # separate makes shelter, food, exposure, and adaptation matter within a phase
 # without duplicating the deterministic civilian-death tick.

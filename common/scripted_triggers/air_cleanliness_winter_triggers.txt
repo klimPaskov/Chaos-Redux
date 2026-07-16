@@ -678,6 +678,196 @@ air_winter_response_is_transport_state = {
 }
 
 # Supported scope: STATE
+air_winter_event_is_hydroelectric_state = {
+	OR = {
+		non_damaged_building_level = { building = dam level > constant:air_winter_runtime.zero }
+		non_damaged_building_level = { building = dam_mountain level > constant:air_winter_runtime.zero }
+		non_damaged_building_level = { building = cataract_dam_mountain level > constant:air_winter_runtime.zero }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_is_oil_or_refinery_state = {
+	OR = {
+		has_resources_amount = {
+			resource = oil
+			amount > constant:air_winter_runtime.zero
+		}
+		non_damaged_building_level = { building = synthetic_refinery level > constant:air_winter_runtime.zero }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_is_reactor_state = {
+	OR = {
+		non_damaged_building_level = { building = nuclear_reactor level > constant:air_winter_runtime.zero }
+		non_damaged_building_level = { building = nuclear_reactor_heavy_water level > constant:air_winter_runtime.zero }
+		non_damaged_building_level = { building = commercial_nuclear_reactor level > constant:air_winter_runtime.zero }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_dam_ice_succeeds = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.dam_ice_water_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_reclamation
+		value = constant:air_winter_event_outcome.dam_ice_reclamation_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: STATE. These pre-choice boundaries include the opening
+# route's exact ledger deltas and let the AI judge the delayed outcome.
+air_winter_event_dam_ice_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.dam_ice_ai_water_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_reclamation
+		value = constant:air_winter_event_outcome.dam_ice_ai_reclamation_minimum
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_dam_full_head_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.dam_full_head_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.dam_full_head_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_dam_full_head_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.dam_full_head_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.dam_full_head_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_refinery_output_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.refinery_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.refinery_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_refinery_output_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.refinery_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.refinery_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_scram_succeeds = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.reactor_scram_water_threshold
+		compare = greater_than_or_equals
+	}
+	OWNER = { energy_ratio > constant:air_winter_event_outcome.reactor_scram_energy_threshold }
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_scram_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.reactor_scram_ai_water_minimum
+		compare = greater_than_or_equals
+	}
+	OWNER = { energy_ratio > constant:air_winter_event_outcome.reactor_scram_ai_energy_minimum }
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_reduced_output_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.reactor_reduced_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.reactor_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_reduced_output_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.reactor_reduced_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.reactor_reduced_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_council_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.reactor_council_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.reactor_council_water_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_reactor_council_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.reactor_council_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_water_security
+		value = constant:air_winter_event_outcome.reactor_council_ai_water_minimum
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: STATE
 air_winter_response_is_reception_state = {
 	air_winter_state_is_valid = yes
 	check_variable = {
@@ -1230,7 +1420,10 @@ air_winter_event_candidate_is_ordinary_phase = {
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_arid }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_2_highland }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_transport }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_dam }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_clinics }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_refinery }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_reactor }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_shelter }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_food }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_city }
@@ -1361,6 +1554,15 @@ air_winter_event_has_pending_chain = {
 		has_state_flag = air_winter_heat_chain_hospitals
 		has_state_flag = air_winter_heat_chain_barracks
 		has_state_flag = air_winter_heat_chain_census
+		has_state_flag = air_winter_dam_chain_ice_crews
+		has_state_flag = air_winter_dam_chain_drawdown
+		has_state_flag = air_winter_dam_chain_full_head
+		has_state_flag = air_winter_refinery_chain_shutdown
+		has_state_flag = air_winter_refinery_chain_military_output
+		has_state_flag = air_winter_refinery_chain_district_heat
+		has_state_flag = air_winter_reactor_chain_scram
+		has_state_flag = air_winter_reactor_chain_reduced_output
+		has_state_flag = air_winter_reactor_chain_plant_council
 		has_state_flag = air_winter_shelter_chain_care
 		has_state_flag = air_winter_shelter_chain_workers
 		has_state_flag = air_winter_shelter_chain_lottery
@@ -1396,6 +1598,8 @@ air_winter_event_pending_owner_is_valid = {
 
 # Supported scope: COUNTRY. Both regular targets are saved by the scheduler.
 air_winter_event_targets_are_valid = {
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_active }
 	has_event_target = air_winter_event_state
 	has_event_target = air_winter_event_country
 	event_target:air_winter_event_country = {
@@ -1405,6 +1609,18 @@ air_winter_event_targets_are_valid = {
 	event_target:air_winter_event_state = {
 		air_winter_state_is_valid = yes
 		is_owned_by = event_target:air_winter_event_country
+		OR = {
+			NOT = { has_state_flag = air_winter_pending_delayed_result }
+			AND = {
+				has_variable = air_winter_pending_event_owner
+				check_variable = {
+					var = air_winter_pending_event_owner
+					value = event_target:air_winter_event_country
+					compare = equals
+				}
+				air_winter_event_pending_owner_is_valid = yes
+			}
+		}
 	}
 }
 
