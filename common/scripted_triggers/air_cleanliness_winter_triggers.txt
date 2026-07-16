@@ -1985,6 +1985,256 @@ air_winter_terminal_season_marker_is_valid = {
 	}
 }
 
+# Supported scope: STATE. Dynamic damaged-building levels are the live proof
+# that the earlier Air Winter building-loss receipt still describes a ruin.
+air_winter_event_has_current_dead_city_damage = {
+	OR = {
+		check_variable = { var = damaged_building_level@infrastructure value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@industrial_complex value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@arms_factory value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@air_base value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@dockyard value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@supply_node value = constant:air_winter_event_runtime.zero compare = greater_than }
+		check_variable = { var = damaged_building_level@rail_way value = constant:air_winter_event_runtime.zero compare = greater_than }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_is_dead_city_salvage_candidate = {
+	air_winter_state_is_valid = yes
+	air_winter_is_active = yes
+	air_winter_is_phase_5 = yes
+	is_controlled_by = OWNER
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_active }
+	has_state_flag = air_winter_original_category_recorded
+	has_variable = air_winter_original_category
+	OR = {
+		check_variable = { air_winter_original_category = constant:air_winter_state_category.large_city }
+		check_variable = { air_winter_original_category = constant:air_winter_state_category.metropolis }
+		check_variable = { air_winter_original_category = constant:air_winter_state_category.megalopolis }
+	}
+	has_variable = air_winter_last_building_loss_date
+	air_winter_event_has_current_dead_city_damage = yes
+	NOT = { has_state_flag = air_winter_memory_dead_city_salvage_exhausted }
+	NOT = { air_winter_event_has_pending_chain = yes }
+}
+
+# Supported scope: COUNTRY
+air_winter_event_dead_city_can_pay_survey = {
+	NOT = { has_manpower < constant:air_winter_event_dead_city.survey_manpower_cost }
+	NOT = { has_equipment = { support_equipment < constant:air_winter_event_dead_city.survey_support_cost } }
+	NOT = { has_equipment = { motorized_equipment < constant:air_winter_event_dead_city.survey_motorized_cost } }
+}
+
+# Supported scope: COUNTRY
+air_winter_event_dead_city_can_pay_military = {
+	NOT = { has_manpower < constant:air_winter_event_dead_city.military_manpower_cost }
+	NOT = { has_equipment = { infantry_equipment < constant:air_winter_event_dead_city.military_infantry_cost } }
+	NOT = { has_equipment = { motorized_equipment < constant:air_winter_event_dead_city.military_motorized_cost } }
+	NOT = { has_fuel < constant:air_winter_event_dead_city.military_fuel_cost }
+}
+
+# Supported scope: STATE
+air_winter_event_has_dead_city_survey_branch = {
+	has_state_flag = air_winter_dead_city_chain_survey
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_dead_city_chain_military
+			has_state_flag = air_winter_dead_city_chain_licensed
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_dead_city_military_branch = {
+	has_state_flag = air_winter_dead_city_chain_military
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_dead_city_chain_survey
+			has_state_flag = air_winter_dead_city_chain_licensed
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_dead_city_licensed_branch = {
+	has_state_flag = air_winter_dead_city_chain_licensed
+	NOT = {
+		OR = {
+			has_state_flag = air_winter_dead_city_chain_survey
+			has_state_flag = air_winter_dead_city_chain_military
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_exact_dead_city_branch = {
+	OR = {
+		air_winter_event_has_dead_city_survey_branch = yes
+		air_winter_event_has_dead_city_military_branch = yes
+		air_winter_event_has_dead_city_licensed_branch = yes
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_invalid_dead_city_branches = {
+	OR = {
+		AND = {
+			has_state_flag = air_winter_dead_city_chain_survey
+			has_state_flag = air_winter_dead_city_chain_military
+		}
+		AND = {
+			has_state_flag = air_winter_dead_city_chain_survey
+			has_state_flag = air_winter_dead_city_chain_licensed
+		}
+		AND = {
+			has_state_flag = air_winter_dead_city_chain_military
+			has_state_flag = air_winter_dead_city_chain_licensed
+		}
+		AND = {
+			OR = {
+				has_state_flag = air_winter_dead_city_chain_survey
+				has_state_flag = air_winter_dead_city_chain_military
+				has_state_flag = air_winter_dead_city_chain_licensed
+			}
+			NOT = { is_controlled_by = OWNER }
+		}
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_survey_succeeds = {
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.survey_success_adaptation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.survey_success_reclamation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.survey_success_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.survey_success_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_survey_is_partial = {
+	NOT = { air_winter_event_dead_city_survey_succeeds = yes }
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.survey_partial_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.survey_partial_pressure_ceiling compare = less_than_or_equals }
+	OR = {
+		check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.survey_partial_adaptation_minimum compare = greater_than_or_equals }
+		check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.survey_partial_reclamation_minimum compare = greater_than_or_equals }
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_survey_is_disaster = {
+	NOT = { air_winter_event_dead_city_survey_succeeds = yes }
+	NOT = { air_winter_event_dead_city_survey_is_partial = yes }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_military_succeeds = {
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.military_success_adaptation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.military_success_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.military_success_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_military_is_partial = {
+	NOT = { air_winter_event_dead_city_military_succeeds = yes }
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.military_partial_adaptation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.military_partial_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.military_partial_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_military_is_disaster = {
+	NOT = { air_winter_event_dead_city_military_succeeds = yes }
+	NOT = { air_winter_event_dead_city_military_is_partial = yes }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_licensed_succeeds = {
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.licensed_success_reclamation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.licensed_success_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.licensed_success_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_licensed_is_partial = {
+	NOT = { air_winter_event_dead_city_licensed_succeeds = yes }
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = less_than_or_equals }
+	check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.licensed_partial_reclamation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.licensed_partial_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.licensed_partial_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_licensed_is_disaster = {
+	NOT = { air_winter_event_dead_city_licensed_succeeds = yes }
+	NOT = { air_winter_event_dead_city_licensed_is_partial = yes }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_survey_ai_is_plausible = {
+	check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.survey_ai_adaptation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.survey_ai_reclamation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.survey_ai_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.survey_ai_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_military_ai_is_plausible = {
+	check_variable = { var = air_winter_adaptation value = constant:air_winter_event_dead_city.military_ai_adaptation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.military_ai_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.military_ai_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_licensed_ai_is_plausible = {
+	check_variable = { var = air_winter_reclamation value = constant:air_winter_event_dead_city.licensed_ai_reclamation_minimum compare = greater_than_or_equals }
+	check_variable = { var = air_winter_exposure value = constant:air_winter_event_dead_city.licensed_ai_exposure_ceiling compare = less_than_or_equals }
+	check_variable = { var = air_winter_building_damage_pressure value = constant:air_winter_event_dead_city.licensed_ai_pressure_ceiling compare = less_than_or_equals }
+}
+
+# Supported scope: STATE
+air_winter_event_dead_city_selected_branch_is_disaster = {
+	OR = {
+		AND = {
+			air_winter_event_has_dead_city_survey_branch = yes
+			air_winter_event_dead_city_survey_is_disaster = yes
+		}
+		AND = {
+			air_winter_event_has_dead_city_military_branch = yes
+			air_winter_event_dead_city_military_is_disaster = yes
+		}
+		AND = {
+			air_winter_event_has_dead_city_licensed_branch = yes
+			air_winter_event_dead_city_licensed_is_disaster = yes
+		}
+	}
+}
+
+# Supported scope: STATE. This is one fictional mixed-cause outcome. It does
+# not gate Fallout and does not classify ordinary radiation as mutation.
+air_winter_event_dead_city_altered_return_is_ready = {
+	air_winter_event_dead_city_selected_branch_is_disaster = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals }
+	has_variable = nuclear_fallout_intensity
+	check_variable = { var = nuclear_fallout_intensity value = constant:air_winter_event_runtime.zero compare = greater_than }
+	has_dynamic_modifier = { modifier = nuclear_fallout_state }
+	OR = {
+		has_dynamic_modifier = { modifier = chem_state_contamination }
+		has_state_flag = bioweapon_contaminated
+		has_state_flag = bio_agent_1_active
+		has_state_flag = bio_agent_2_active
+		has_state_flag = bio_agent_3_active
+		has_state_flag = bio_agent_4_active
+	}
+}
+
 # Supported scope: COUNTRY
 air_winter_event_candidate_is_ordinary_phase = {
 	OR = {
@@ -2012,6 +2262,7 @@ air_winter_event_candidate_is_ordinary_phase = {
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_5_city }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_5_abandonment }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_5_archive }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_5_dead_city_salvage }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_6_terminal }
 	}
 }
@@ -2168,6 +2419,9 @@ air_winter_event_has_pending_chain = {
 		has_state_flag = air_winter_ash_city_chain_crews
 		has_state_flag = air_winter_ash_city_chain_command
 		has_state_flag = air_winter_ash_city_chain_hardened
+		has_state_flag = air_winter_dead_city_chain_survey
+		has_state_flag = air_winter_dead_city_chain_military
+		has_state_flag = air_winter_dead_city_chain_licensed
 		has_state_flag = air_winter_archive_chain_agronomy
 		has_state_flag = air_winter_archive_chain_medical
 		has_state_flag = air_winter_archive_chain_engineers
@@ -2214,6 +2468,16 @@ air_winter_event_targets_are_valid = {
 				air_winter_event_pending_owner_is_valid = yes
 			}
 		}
+	}
+}
+
+# Supported scope: COUNTRY. Dead-city salvage additionally requires the
+# original country to retain control of the committed urban site.
+air_winter_event_dead_city_result_targets_are_valid = {
+	air_winter_event_targets_are_valid = yes
+	event_target:air_winter_event_state = {
+		is_controlled_by = ROOT
+		air_winter_event_has_exact_dead_city_branch = yes
 	}
 }
 

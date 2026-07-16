@@ -30,6 +30,7 @@ air_winter_event_refresh_country_cooldown = {
 # Supported scope: STATE
 air_winter_event_cancel_pending_chain = {
 	air_winter_island_refugee_clear_pending_branch = yes
+	air_winter_dead_city_clear_pending_branch = yes
 	air_winter_event_clear_furnace_pending_branch = yes
 	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
 	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
@@ -114,6 +115,7 @@ air_winter_event_reconcile_pending_chain = {
 					has_state_flag = air_winter_furnace_chain_shutdown
 				}
 				air_winter_event_has_invalid_island_refugee_branches = yes
+				air_winter_event_has_invalid_dead_city_branches = yes
 			}
 		}
 		air_winter_event_cancel_pending_chain = yes
@@ -166,6 +168,7 @@ air_winter_event_refresh_state = {
 # Supported scope: COUNTRY
 air_winter_event_clear_country_memory = {
 	air_winter_island_refugee_clear_country_memory = yes
+	air_winter_dead_city_clear_country_memory = yes
 	clr_country_flag = air_winter_event_cooldown
 	clr_country_flag = air_winter_event_seen_phase_1
 	clr_country_flag = air_winter_event_seen_phase_2
@@ -205,6 +208,7 @@ air_winter_event_clear_state_memory = {
 	clear_variable = air_winter_last_event_date
 	air_winter_event_cancel_pending_chain = yes
 	air_winter_island_refugee_clear_state_memory = yes
+	air_winter_dead_city_clear_state_memory = yes
 	clr_state_flag = air_winter_memory_boreal_shift_network
 	clr_state_flag = air_winter_memory_boreal_full_shifts
 	clr_state_flag = air_winter_memory_dry_warehouse_rooms
@@ -374,6 +378,124 @@ air_winter_event_apply_deaths = {
 	}
 	set_temp_variable = { air_winter_event_death_request = constant:air_winter_event_runtime.zero }
 	set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_runtime.zero }
+}
+
+# Supported scope: STATE
+air_winter_dead_city_clear_pending_branch = {
+	clr_state_flag = air_winter_dead_city_chain_survey
+	clr_state_flag = air_winter_dead_city_chain_military
+	clr_state_flag = air_winter_dead_city_chain_licensed
+}
+
+# Supported scope: STATE. The exhausted-site receipt is intentionally kept so
+# opening a newer owner cannot restore a previously stripped site.
+air_winter_dead_city_clear_state_policy_and_outcome_memory = {
+	clr_state_flag = air_winter_memory_dead_city_salvage_attempted
+	clr_state_flag = air_winter_memory_dead_city_salvage_survey
+	clr_state_flag = air_winter_memory_dead_city_salvage_military
+	clr_state_flag = air_winter_memory_dead_city_salvage_licensed
+	clr_state_flag = air_winter_memory_dead_city_salvage_success
+	clr_state_flag = air_winter_memory_dead_city_salvage_partial
+	clr_state_flag = air_winter_memory_dead_city_salvage_disaster
+	clr_state_flag = air_winter_memory_dead_city_salvage_altered_return
+	clr_state_flag = air_winter_memory_dead_city_salvage_casualties
+}
+
+# Supported scope: STATE
+air_winter_dead_city_clear_state_memory = {
+	air_winter_dead_city_clear_pending_branch = yes
+	air_winter_dead_city_clear_state_policy_and_outcome_memory = yes
+	clr_state_flag = air_winter_memory_dead_city_salvage_exhausted
+}
+
+# Supported scope: COUNTRY
+air_winter_dead_city_clear_country_memory = {
+	clr_country_flag = air_winter_memory_dead_city_salvage_survey
+	clr_country_flag = air_winter_memory_dead_city_salvage_military
+	clr_country_flag = air_winter_memory_dead_city_salvage_licensed
+	clr_country_flag = air_winter_memory_dead_city_salvage_success
+	clr_country_flag = air_winter_memory_dead_city_salvage_partial
+	clr_country_flag = air_winter_memory_dead_city_salvage_disaster
+	clr_country_flag = air_winter_memory_dead_city_salvage_altered_return
+	clr_country_flag = air_winter_memory_dead_city_salvage_casualties
+}
+
+# Supported scope: COUNTRY
+air_winter_dead_city_pay_survey = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.survey_manpower_cost }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.survey_support_cost }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.survey_motorized_cost }
+	air_winter_response_pay_motorized_equipment = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_dead_city_pay_military = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.military_manpower_cost }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.military_infantry_cost }
+	air_winter_response_pay_infantry_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.military_motorized_cost }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_event_dead_city.military_fuel_cost }
+	air_winter_response_pay_fuel = yes
+}
+
+# Supported scope: COUNTRY. Inputs are the four temporary equipment grant
+# variables. Every caller supplies all four values, including explicit zeroes.
+air_winter_dead_city_grant_salvage_equipment = {
+	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = air_winter_dead_city_infantry_grant }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = air_winter_dead_city_support_grant }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = air_winter_dead_city_motorized_grant }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = air_winter_dead_city_train_grant }
+	set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+}
+
+# Supported scope: STATE
+air_winter_dead_city_damage_survey_failure = {
+	if = {
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_dead_city.building_damage }
+	}
+}
+
+# Supported scope: STATE
+air_winter_dead_city_damage_military_failure = {
+	if = {
+		limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = arms_factory damage = constant:air_winter_event_dead_city.building_damage }
+	}
+	else_if = {
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_dead_city.building_damage }
+	}
+}
+
+# Supported scope: STATE
+air_winter_dead_city_damage_licensed_failure = {
+	if = {
+		limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = industrial_complex damage = constant:air_winter_event_dead_city.building_damage }
+	}
+	else_if = {
+		limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = arms_factory damage = constant:air_winter_event_dead_city.building_damage }
+	}
+	else_if = {
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_event_runtime.zero compare = greater_than } }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_dead_city.building_damage }
+	}
+}
+
+# Supported scope: STATE
+air_winter_dead_city_finalize_result = {
+	set_state_flag = air_winter_memory_dead_city_salvage_exhausted
+	air_winter_dead_city_clear_pending_branch = yes
+	air_winter_event_refresh_state = yes
 }
 
 # Supported scope: STATE
@@ -701,12 +823,16 @@ air_winter_island_refugee_transfer_population = {
 	set_temp_variable = { air_winter_island_refugee_source_pressure_relief = constant:air_winter_event_runtime.zero }
 }
 
-# Supported scope: STATE. Island rows outrank other Phase 2 candidates owned by
-# the same country while retaining the scheduler's phase ordering.
+# Supported scope: STATE. Dedicated identity rows outrank generic candidates
+# within their own phase while retaining the scheduler's phase ordering.
 air_winter_event_apply_route_score_bonus = {
 	if = {
 		limit = { check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_2_island_refugees } }
 		add_to_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.island_refugee_same_phase_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_dead_city_salvage } }
+		add_to_temp_variable = { air_winter_marker_score = constant:air_winter_event_runtime.dead_city_salvage_same_phase_bonus }
 	}
 }
 
@@ -1082,6 +1208,10 @@ air_winter_event_select_unseen_phase_route = {
 			OWNER = { NOT = { has_country_flag = air_winter_event_seen_phase_5 } }
 		}
 		if = {
+			limit = { air_winter_event_is_dead_city_salvage_candidate = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_dead_city_salvage }
+		}
+		else_if = {
 			limit = { air_winter_response_is_city = yes }
 			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_5_city }
 		}

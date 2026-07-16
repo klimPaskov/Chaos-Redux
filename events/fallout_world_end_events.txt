@@ -4665,6 +4665,507 @@ country_event = {
 }
 
 # ---------------------------------------------------------------------------
+# Air Winter Phase 5 dead-city salvage chain
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.47
+	title = chaosx.fallout.47.t
+	desc = chaosx.fallout.47.d
+	picture = GFX_report_event_air_winter_dead_city_salvage
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = {
+			air_winter_event_is_dead_city_salvage_candidate = yes
+		}
+	}
+
+	option = {
+		name = chaosx.fallout.47.a
+		trigger = { air_winter_event_dead_city_can_pay_survey = yes }
+		ai_chance = {
+			base = constant:air_winter_event_ai.primary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_dead_city_survey_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_dead_city_survey_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war = no
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					air_winter_event_dead_city_can_pay_survey = yes
+					event_target:air_winter_event_state = { air_winter_event_is_dead_city_salvage_candidate = yes }
+				}
+				air_winter_dead_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_dead_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_dead_city_clear_pending_branch = yes
+				}
+				air_winter_dead_city_pay_survey = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_dead_city_chain_survey
+					set_state_flag = air_winter_memory_dead_city_salvage_attempted
+					set_state_flag = air_winter_memory_dead_city_salvage_survey
+					air_winter_event_refresh_state = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_survey
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.48 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.47.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.47.b
+		trigger = { air_winter_event_dead_city_can_pay_military = yes }
+		ai_chance = {
+			base = constant:air_winter_event_ai.risky
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_dead_city_military_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_dead_city_military_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				NOT = { has_war_support < constant:air_winter_event_ai.high_war_support }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					air_winter_event_dead_city_can_pay_military = yes
+					event_target:air_winter_event_state = { air_winter_event_is_dead_city_salvage_candidate = yes }
+				}
+				air_winter_dead_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_dead_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_dead_city_clear_pending_branch = yes
+				}
+				air_winter_dead_city_pay_military = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					set_state_flag = air_winter_dead_city_chain_military
+					set_state_flag = air_winter_memory_dead_city_salvage_attempted
+					set_state_flag = air_winter_memory_dead_city_salvage_military
+					air_winter_event_refresh_state = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_military
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.48 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.47.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.47.c
+		ai_chance = {
+			base = constant:air_winter_event_ai.secondary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_dead_city_licensed_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_dead_city_licensed_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_government = communism
+					has_government = democratic
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				NOT = { has_stability > constant:air_winter_event_ai.low_stability }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_war = yes
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { air_winter_event_is_dead_city_salvage_candidate = yes }
+				}
+				air_winter_dead_city_clear_country_memory = yes
+				event_target:air_winter_event_state = {
+					air_winter_dead_city_clear_state_policy_and_outcome_memory = yes
+					air_winter_dead_city_clear_pending_branch = yes
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_dead_city_chain_licensed
+					set_state_flag = air_winter_memory_dead_city_salvage_attempted
+					set_state_flag = air_winter_memory_dead_city_salvage_licensed
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor_loss
+				set_country_flag = air_winter_memory_dead_city_salvage_licensed
+				air_winter_event_refresh_country_cooldown = yes
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				country_event = { id = chaosx.fallout.48 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.47.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.48
+	title = chaosx.fallout.48.t
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_succeeds = yes } }
+		text = chaosx.fallout.48.survey_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_partial = yes } }
+		text = chaosx.fallout.48.survey_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		text = chaosx.fallout.48.survey_disaster.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_succeeds = yes } }
+		text = chaosx.fallout.48.military_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_partial = yes } }
+		text = chaosx.fallout.48.military_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		text = chaosx.fallout.48.military_disaster.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_succeeds = yes } }
+		text = chaosx.fallout.48.licensed_success.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_partial = yes } }
+		text = chaosx.fallout.48.licensed_partial.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		text = chaosx.fallout.48.licensed_disaster.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_dead_city_altered_return_is_ready = yes } }
+		text = chaosx.fallout.48.altered_return.d
+	}
+	picture = GFX_report_event_air_winter_dead_city_salvage
+	is_triggered_only = yes
+	trigger = { air_winter_event_dead_city_result_targets_are_valid = yes }
+
+	option = {
+		name = chaosx.fallout.48.a
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_succeeds = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.survey_success_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.survey_success_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_dead_city.survey_success_trains }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					set_state_flag = air_winter_memory_dead_city_salvage_success
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_success
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.b
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_partial = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.survey_partial_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.survey_partial_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_survey_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					set_state_flag = air_winter_memory_dead_city_salvage_partial
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_partial
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.c
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_survey_branch = yes air_winter_event_dead_city_survey_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_survey_disaster_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_dead_city_damage_survey_failure = yes
+					set_state_flag = air_winter_memory_dead_city_salvage_disaster
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_country_flag = air_winter_memory_dead_city_salvage_disaster
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.c.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.d
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_succeeds = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_dead_city.military_success_infantry }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.military_success_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.military_success_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_military_success_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_minor }
+					set_state_flag = air_winter_memory_dead_city_salvage_success
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_success
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.d.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.e
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_partial = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_dead_city.military_partial_infantry }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.military_partial_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.military_partial_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_military_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					set_state_flag = air_winter_memory_dead_city_salvage_partial
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_partial
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.e.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.f
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_military_branch = yes air_winter_event_dead_city_military_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_military_disaster_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_severe }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_major }
+					air_winter_dead_city_damage_military_failure = yes
+					set_state_flag = air_winter_memory_dead_city_salvage_disaster
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_major_loss
+				set_country_flag = air_winter_memory_dead_city_salvage_disaster
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.f.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.g
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_succeeds = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_succeeds = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.licensed_success_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.licensed_success_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_dead_city.licensed_success_trains }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_licensed_success_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_moderate }
+					set_state_flag = air_winter_memory_dead_city_salvage_success
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_success
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.g.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.h
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_partial = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_partial = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.licensed_partial_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.licensed_partial_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_licensed_partial_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					set_state_flag = air_winter_memory_dead_city_salvage_partial
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				set_country_flag = air_winter_memory_dead_city_salvage_partial
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.h.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.i
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_has_dead_city_licensed_branch = yes air_winter_event_dead_city_licensed_is_disaster = yes NOT = { air_winter_event_dead_city_altered_return_is_ready = yes } } }
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_licensed_disaster_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_severe }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_dead_city_damage_licensed_failure = yes
+					set_state_flag = air_winter_memory_dead_city_salvage_disaster
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_country_flag = air_winter_memory_dead_city_salvage_disaster
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.i.tt
+	}
+
+	option = {
+		name = chaosx.fallout.48.j
+		trigger = { event_target:air_winter_event_state = { air_winter_event_dead_city_altered_return_is_ready = yes } }
+		hidden_effect = {
+			if = {
+				limit = { air_winter_event_dead_city_result_targets_are_valid = yes event_target:air_winter_event_state = { air_winter_event_dead_city_altered_return_is_ready = yes } }
+				set_temp_variable = { air_winter_dead_city_infantry_grant = constant:air_winter_event_runtime.zero }
+				set_temp_variable = { air_winter_dead_city_support_grant = constant:air_winter_event_dead_city.altered_return_support }
+				set_temp_variable = { air_winter_dead_city_motorized_grant = constant:air_winter_event_dead_city.altered_return_motorized }
+				set_temp_variable = { air_winter_dead_city_train_grant = constant:air_winter_event_runtime.zero }
+				air_winter_dead_city_grant_salvage_equipment = yes
+				event_target:air_winter_event_state = {
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.dead_city_altered_return_percent }
+					air_winter_event_apply_deaths = yes
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_extreme }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_major }
+					set_state_flag = air_winter_memory_dead_city_salvage_altered_return
+					set_state_flag = air_winter_memory_dead_city_salvage_casualties
+					air_winter_dead_city_finalize_result = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_major_loss
+				set_country_flag = air_winter_memory_dead_city_salvage_altered_return
+				set_country_flag = air_winter_memory_dead_city_salvage_casualties
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.48.j.tt
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Air Winter phase 6 and recovery chains
 # ---------------------------------------------------------------------------
 
