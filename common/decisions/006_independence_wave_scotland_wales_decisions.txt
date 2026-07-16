@@ -170,7 +170,7 @@ independence_wave_sco_state_category = {
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
-		remove_effect = { custom_effect_tooltip = independence_wave_sco_celtic_choice_effect_tt set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.celtic_cooperation_state } set_country_flag = independence_wave_formable_family_selected set_country_flag = independence_wave_sco_celtic_family_choice clr_country_flag = independence_wave_sco_north_atlantic_family_choice independence_wave_scotland_wales_apply_diplomatic_progress = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_sco_celtic_choice_effect_tt set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.celtic_cooperation_state } set_country_flag = independence_wave_formable_family_selected set_country_flag = independence_wave_sco_celtic_family_choice clr_country_flag = independence_wave_sco_north_atlantic_family_choice independence_wave_focus_register_formable_family = yes independence_wave_scotland_wales_apply_diplomatic_progress = yes }
 		cancel_trigger = { OR = { NOT = { is_independence_wave_sco_package = yes } has_country_flag = independence_wave_formable_discovered } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_traditional_route = yes } }
 	}
@@ -185,7 +185,7 @@ independence_wave_sco_state_category = {
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
-		remove_effect = { custom_effect_tooltip = independence_wave_sco_north_atlantic_choice_effect_tt set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.north_atlantic_compact } set_country_flag = independence_wave_formable_family_selected set_country_flag = independence_wave_sco_north_atlantic_family_choice clr_country_flag = independence_wave_sco_celtic_family_choice independence_wave_scotland_wales_apply_diplomatic_progress = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_sco_north_atlantic_choice_effect_tt set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.north_atlantic_compact } set_country_flag = independence_wave_formable_family_selected set_country_flag = independence_wave_sco_north_atlantic_family_choice clr_country_flag = independence_wave_sco_celtic_family_choice independence_wave_focus_register_formable_family = yes independence_wave_scotland_wales_apply_diplomatic_progress = yes }
 		cancel_trigger = { OR = { NOT = { is_independence_wave_sco_package = yes } has_country_flag = independence_wave_formable_discovered } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_sco_shipping_charter } }
 	}
@@ -195,14 +195,45 @@ independence_wave_sco_state_category = {
 		desc = independence_wave_sco_convene_maritime_conference_desc
 		icon = GFX_decision_independence_wave_formable_proclamation
 		visible = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_formable_discovered NOT = { has_country_flag = independence_wave_sco_maritime_conference_complete } }
-		available = { has_stable_independence_wave_sco_state = yes can_independence_wave_prepare_formable = yes can_pay_independence_wave_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_sco_active_package_project = yes } NOT = { has_independence_wave_active_formable_operation = yes } }
+		available = {
+			has_stable_independence_wave_sco_state = yes
+			can_independence_wave_prepare_formable = yes
+			can_pay_independence_wave_strategic_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_sco_active_package_project = yes }
+			NOT = { has_independence_wave_active_formable_operation = yes }
+		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
 		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
 		days_remove = constant:independence_wave_decision_duration.strategic
 		complete_effect = { independence_wave_decision_pay_strategic = yes }
-		remove_effect = { custom_effect_tooltip = independence_wave_scotland_wales_conference_effect_tt set_country_flag = independence_wave_sco_maritime_conference_complete set_country_flag = independence_wave_formation_congress_complete independence_wave_decision_request_selected_formable_commit = yes independence_wave_scotland_wales_reward_network_project = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_sco_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_scotland_wales_conference_effect_tt
+			if = {
+				limit = {
+					is_independence_wave_sco_package = yes
+					can_independence_wave_prepare_formable = yes
+				}
+				independence_wave_formable_begin_preparation = yes
+				if = {
+					limit = { has_country_flag = independence_wave_formable_transaction_ready }
+					set_country_flag = independence_wave_sco_maritime_conference_complete
+					independence_wave_scotland_wales_reward_network_project = yes
+				}
+			}
+			else_if = {
+				limit = { is_independence_wave_sco_package = yes }
+				independence_wave_scotland_wales_apply_project_failure = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_sco_package = yes }
+				NOT = { can_independence_wave_prepare_formable = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
 		cancel_effect = { if = { limit = { is_independence_wave_sco_package = yes } independence_wave_scotland_wales_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
 	}
@@ -342,14 +373,45 @@ independence_wave_wls_state_category = {
 		desc = independence_wave_wls_convene_celtic_council_desc
 		icon = GFX_decision_independence_wave_formable_proclamation
 		visible = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_formable_discovered NOT = { has_country_flag = independence_wave_wls_celtic_council_complete } }
-		available = { has_stable_independence_wave_wls_state = yes can_independence_wave_prepare_formable = yes can_pay_independence_wave_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_wls_active_package_project = yes } NOT = { has_independence_wave_active_formable_operation = yes } }
+		available = {
+			has_stable_independence_wave_wls_state = yes
+			can_independence_wave_prepare_formable = yes
+			can_pay_independence_wave_strategic_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_wls_active_package_project = yes }
+			NOT = { has_independence_wave_active_formable_operation = yes }
+		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
 		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
 		days_remove = constant:independence_wave_decision_duration.strategic
 		complete_effect = { independence_wave_decision_pay_strategic = yes }
-		remove_effect = { custom_effect_tooltip = independence_wave_scotland_wales_conference_effect_tt set_country_flag = independence_wave_wls_celtic_council_complete set_country_flag = independence_wave_formation_congress_complete independence_wave_decision_request_selected_formable_commit = yes independence_wave_scotland_wales_reward_network_project = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_wls_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_scotland_wales_conference_effect_tt
+			if = {
+				limit = {
+					is_independence_wave_wls_package = yes
+					can_independence_wave_prepare_formable = yes
+				}
+				independence_wave_formable_begin_preparation = yes
+				if = {
+					limit = { has_country_flag = independence_wave_formable_transaction_ready }
+					set_country_flag = independence_wave_wls_celtic_council_complete
+					independence_wave_scotland_wales_reward_network_project = yes
+				}
+			}
+			else_if = {
+				limit = { is_independence_wave_wls_package = yes }
+				independence_wave_scotland_wales_apply_project_failure = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_wls_package = yes }
+				NOT = { can_independence_wave_prepare_formable = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
 		cancel_effect = { if = { limit = { is_independence_wave_wls_package = yes } independence_wave_scotland_wales_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
 	}
