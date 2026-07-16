@@ -988,15 +988,21 @@ Vanilla precedents include Assyria's history character recruitment,
 Afghanistan's timed mission structure, Brazil's mutually exclusive focus
 branches, and Argentina's origin-gated AI strategy.
 
-### Readiness blockers and future plans
+### Readiness and future plans
 
-- Runtime content attestation and SCN-008 preflight remain fail-closed by
-  contract. The adapter and exact tag identity are present, but AJX is not
-  listed in either readiness registry.
+- A fresh independent IW-010 package audit passed the complete Level 1 package,
+  exact AJX identity, state-42 anchor, host-survival proof, Event 5 collision
+  gates, shared focus and regional overlay, routes, decisions, forces, AI,
+  assets, localisation, and FORM-04 dependency. Runtime content attestation,
+  SCN-008 preflight, the exact automatic wrapper, the P10 capacity witness, and
+  the region-one planner gate are active.
+- IW-010 and IW-008 retain the shared `RG-RHINE-SAAR` reservation. They cannot
+  collide inside one frozen incident, while a later wave may admit the other
+  package if its own readiness and host-survival checks pass.
 - FORM-04 identity, consent, integration, rollback construction, and
-  military-settlement adapters have passed their separate operational audit and
-  readiness promotion. Their status does not substitute for an IW-010 package
-  admission audit.
+  military-settlement adapters remain independently audited and ready. FORM-04
+  still requires its living RHI partner and carrier-specific delegation proof;
+  admitting AJX does not manufacture or overwrite that partner.
 - The three advisor dossiers and distinct neutral-commission focus art are
   produced, installed, hash-validated, registered, and consumed by the live
   parent-owned records. No AJX asset-integration blocker remains, and no
