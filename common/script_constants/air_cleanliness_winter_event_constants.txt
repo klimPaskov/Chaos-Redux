@@ -23,6 +23,9 @@ air_winter_event_runtime = {
 	rail_protection_months = 4
 	candidate_phase_weight = 1000
 	candidate_pressure_weight = 1
+	# One point above the full state-pressure range lets the island route win
+	# within Phase 2 without overtaking a genuinely later phase.
+	island_refugee_same_phase_bonus = 131
 	candidate_recovery_base = 500
 }
 
@@ -80,6 +83,7 @@ air_winter_event_id = {
 	phase_2_arid = 13
 	phase_2_highland = 14
 	phase_2_mountain_capital = 16
+	phase_2_island_refugees = 38
 	phase_3_transport = 20
 	phase_3_dam = 22
 	phase_3_clinics = 23
@@ -95,6 +99,21 @@ air_winter_event_id = {
 	phase_6_terminal = 43
 	recovery = 50
 	second_winter = 60
+}
+
+air_winter_event_island_refugee = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	rescue_population_share = 0.02
+	rescue_population_ceiling = 40000
+	quarantine_population_share = 0.01
+	quarantine_population_ceiling = 20000
+	exclusion_population_share = 0.0025
+	exclusion_population_ceiling = 5000
+	protected_source_remainder = 1000
 }
 
 air_winter_event_ledger = {
@@ -174,6 +193,7 @@ air_winter_event_country = {
 	manpower_major_cost = -1000
 	support_equipment_crew_cost = 15
 	support_equipment_engineer_cost = 30
+	island_refugee_convoy_cost = 3
 	fuel_minor = 1000
 	fuel_moderate = 2500
 	fuel_minor_cost = -1000
@@ -188,6 +208,7 @@ air_winter_event_deaths = {
 
 	population_scale = 1000
 	minimum_remaining = 1000
+	island_refugee_failure_percent = 0.00010
 	failed_patrol_percent = 0.00010
 	failed_convoy_percent = 0.00020
 	refinery_fire_percent = 0.00010
@@ -215,6 +236,30 @@ air_winter_event_outcome = {
 	recovery_exposure_ceiling = 55
 	second_winter_ledger_threshold = 25
 	second_winter_building_pressure_ceiling = 65
+	# Phase 2 island-refugee delayed outcomes and their exact pre-choice AI
+	# boundaries share one tuning surface.
+	island_refugee_rescue_food_minimum = 25
+	island_refugee_rescue_shelter_minimum = 20
+	island_refugee_rescue_disease_ceiling = 55
+	island_refugee_rescue_pressure_ceiling = 35
+	island_refugee_quarantine_water_minimum = 30
+	island_refugee_quarantine_disease_ceiling = 50
+	island_refugee_quarantine_damage_ceiling = 65
+	island_refugee_quarantine_pressure_ceiling = 30
+	island_refugee_exclusion_adaptation_minimum = 15
+	island_refugee_exclusion_exposure_ceiling = 60
+	island_refugee_exclusion_pressure_ceiling = 25
+	island_refugee_rescue_ai_food_minimum = 31
+	island_refugee_rescue_ai_shelter_minimum = 26
+	island_refugee_rescue_ai_disease_ceiling = 53
+	island_refugee_rescue_ai_pressure_ceiling = 29
+	island_refugee_quarantine_ai_water_minimum = 30
+	island_refugee_quarantine_ai_disease_ceiling = 49
+	island_refugee_quarantine_ai_damage_ceiling = 57
+	island_refugee_quarantine_ai_pressure_ceiling = 26
+	island_refugee_exclusion_ai_adaptation_minimum = 13
+	island_refugee_exclusion_ai_exposure_ceiling = 58
+	island_refugee_exclusion_ai_pressure_ceiling = 23
 	# Pre-choice AI boundaries mirror the strict delayed thresholds after the
 	# opening route applies its food, shelter, or building-pressure change.
 	second_winter_ration_ai_food_minimum = 31

@@ -2,7 +2,7 @@
 
 ## Implemented scope
 
-`chaosx.fallout.10` refreshes the 46-day country cooldown and schedules the manually authored `chaosx.fallout.18` result after 45 days for each of its three choices. The Air Winter pilot contains 44 blocks, 132 options, and 131 effect-bearing options. The remaining effect-free option is the existing stale-order acknowledgement.
+`chaosx.fallout.10` refreshes the 46-day country cooldown and schedules the manually authored `chaosx.fallout.18` result after 45 days for each of its three choices. At this tranche's review point, the Air Winter pilot contained 44 blocks, 132 options, and 131 effect-bearing options. The remaining effect-free option was the existing stale-order acknowledgement. Later tranche totals are maintained in `AIR_WINTER_EVENT_SCHEDULER_PROOF.md`.
 
 These blocks are Air Winter incidents. They do not count toward the 660-block Fallout living-world release floor.
 
@@ -50,4 +50,4 @@ The opening and result use state-aware text and government-aware authority terms
 
 The installed documentation and existing pilot support delayed country events, regular event-target retention, scope-valued owner variables, and the current pending-chain pattern. Hearts of Iron IV was not launched. Delayed target retention, popup display, AI choice, save-resume behavior, and monthly cancellation remain runtime observation gates.
 
-No simplification or fallback was used inside the delayed-result transaction. The broader Breadbasket obligation remains partial because the approved post-Fallout food-recovery consumer does not exist. It depends on the pending Fallout numerical contract. The active user contract forbids a political-power store, so this route uses manpower and the factory diversion. Dead-city salvage, island refugee identity, and state-specific heavy-industry rows remain separate work.
+No simplification or fallback was used inside the delayed-result transaction. The broader Breadbasket obligation remains partial because the approved post-Fallout food-recovery consumer does not exist. It depends on the pending Fallout numerical contract. The active user contract forbids a political-power store, so this route uses manpower and the factory diversion. At this review point, dead-city salvage, island refugee identity, and state-specific heavy-industry rows remained separate work. Later tranches implemented the island-refugee and heavy-industry rows under their own accepted addenda and proofs. Dead-city salvage remains unresolved.

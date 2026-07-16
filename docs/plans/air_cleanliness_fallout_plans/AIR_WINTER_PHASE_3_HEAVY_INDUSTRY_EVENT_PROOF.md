@@ -15,7 +15,7 @@ The implementation adds two event blocks to `events/fallout_world_end_events.txt
 - `chaosx.fallout.36` is the two-choice furnace opening.
 - `chaosx.fallout.37` is the three-option deterministic result.
 
-The five added options all carry effects and repeat the required target or branch validation at click time. The Air Winter pilot therefore contains 46 event blocks, 137 options, 136 effect-bearing options, and 48 delayed-result schedules. The one remaining effect-free option is the existing stale-order acknowledgement in `chaosx.fallout.203`.
+The five added options all carry effects and repeat the required target or branch validation at click time. At this tranche's review point, the Air Winter pilot contained 46 event blocks, 137 options, 136 effect-bearing options, and 48 delayed-result schedules. The one effect-free option was the existing stale-order acknowledgement in `chaosx.fallout.203`. Later tranche totals are maintained in `AIR_WINTER_EVENT_SCHEDULER_PROOF.md`.
 
 Both blocks use `GFX_report_event_air_winter_phase_3`. The sprite and final DDS already exist. No new art, sprite, audio, or asset path was created.
 
@@ -160,7 +160,7 @@ The established Deaths and exact state-population contract remains documented in
 
 Static source inspection establishes the typed ids, route order, exact coal-or-factory identity, five-case factory ladder, 40 and 55 result gate, 38 and 40 AI inverse, two conditional 31-day modifiers, day-30 delivery cleanup, repairable fixed-order damage, no-target exhaustion, Deaths calls, exclusive branch transaction, refresh path, reset coverage, Fallout snapshot cancellation, and 46-day cooldown adjacency.
 
-A scoped source count before the Fallout coordinator event range returns 46 top-level Air Winter ids, 137 option blocks, 136 option `hidden_effect` blocks, and 48 delayed day schedules. This matches the pilot totals above.
+The scoped source count recorded for this tranche returned 46 top-level Air Winter ids, 137 option blocks, 136 option `hidden_effect` blocks, and 48 delayed day schedules. This is historical evidence for the heavy-industry review point, not the current pilot count.
 
 A narrow `hoi4.event_inspect` request for `chaosx.fallout.36` was attempted in lint and refresh mode and in scan and cached mode. The installed server returned `ARTIFACT_STORAGE_LIMIT` before producing a graph in both attempts. It supplied no diagnostic and is not part of the proof basis.
 
