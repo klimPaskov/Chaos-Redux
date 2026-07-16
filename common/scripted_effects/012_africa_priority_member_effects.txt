@@ -1,0 +1,1276 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PRIORITY MEMBER PACKAGE EFFECTS
+# ============================================================================
+# Bounded country-scope implementation for the sixteen promoted Tier A member
+# packages. Action 102 supplies the promotion result. This file validates the
+# exact formation identity, records one package ID, and drives politics,
+# mechanics, forces, League bargaining, overlap settlements, lawful departure,
+# rivalry, and post-settlement play through the shared Charter state machine.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Package registration
+# ---------------------------------------------------------------------------
+
+africa_priority_member_load_requested_package_from_origin = {
+	set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.none }
+	if = {
+		limit = { africa_priority_member_origin_is_asante = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.asante }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_oyo = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.oyo }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_sokoto = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.sokoto }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_kanem_bornu = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kanem_bornu }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_manden = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.manden }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_kongo = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kongo }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_buganda = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.buganda }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_aksum = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.aksum }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_harar = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.harar }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_kilwa = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kilwa }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_nubia = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.nubia }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_luba = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.luba }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_lunda = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.lunda }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_great_zimbabwe = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.great_zimbabwe }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_merina = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.merina }
+	}
+	else_if = {
+		limit = { africa_priority_member_origin_is_zulu = yes }
+		set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.zulu }
+	}
+}
+
+africa_priority_member_register_requested_package = {
+	set_temp_variable = { africa_priority_registration_valid = constant:africa_value.zero }
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.asante }
+			africa_priority_member_origin_is_asante = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.oyo }
+			africa_priority_member_origin_is_oyo = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.sokoto }
+			africa_priority_member_origin_is_sokoto = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kanem_bornu }
+			africa_priority_member_origin_is_kanem_bornu = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.manden }
+			africa_priority_member_origin_is_manden = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kongo }
+			africa_priority_member_origin_is_kongo = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.buganda }
+			africa_priority_member_origin_is_buganda = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.aksum }
+			africa_priority_member_origin_is_aksum = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.harar }
+			africa_priority_member_origin_is_harar = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.kilwa }
+			africa_priority_member_origin_is_kilwa = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.nubia }
+			africa_priority_member_origin_is_nubia = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.luba }
+			africa_priority_member_origin_is_luba = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.lunda }
+			africa_priority_member_origin_is_lunda = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.great_zimbabwe }
+			africa_priority_member_origin_is_great_zimbabwe = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.merina }
+			africa_priority_member_origin_is_merina = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.zulu }
+			africa_priority_member_origin_is_zulu = yes
+		}
+		set_temp_variable = { africa_priority_registration_valid = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_priority_registration_valid > constant:africa_value.zero }
+			africa_priority_member_can_register_package = yes
+		}
+		set_variable = { africa_priority_member_package_id = africa_priority_requested_package_id }
+		set_variable = { africa_priority_member_mechanic_progress = constant:africa_priority_member_progress.minimum }
+		set_variable = { africa_priority_member_security_readiness = constant:africa_priority_member_progress.minimum }
+		set_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.minimum }
+		if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
+		set_country_flag = africa_priority_member_package_active
+		set_country_flag = africa_priority_member_tier_a_package
+		set_country_flag = africa_priority_member_origin_validated
+		set_country_flag = africa_priority_member_overlap_dispute_active
+		clr_country_flag = africa_priority_relationship_unresolved
+		if = {
+			limit = { has_country_flag = africa_priority_package_promotion_approved }
+			set_country_flag = africa_priority_member_full_promotion
+			add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_priority_partial_autonomy }
+			set_country_flag = africa_priority_member_negotiated_partial_promotion
+			set_country_flag = africa_clause_federal_autonomy
+		}
+		if = {
+			limit = { is_ai = no }
+			set_country_flag = africa_priority_member_player_origin_validated
+			africa_achievement_register_valid_priority_player = yes
+			if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_player_origin_asante }
+			if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_player_origin_oyo }
+			if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_player_origin_sokoto }
+			if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_player_origin_kanem_bornu }
+			if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_player_origin_manden }
+			if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_player_origin_kongo }
+			if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_player_origin_buganda }
+			if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_player_origin_aksum }
+			if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_player_origin_harar }
+			if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_player_origin_kilwa }
+			if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_player_origin_nubia }
+			if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_player_origin_luba }
+			if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_player_origin_lunda }
+			if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_player_origin_great_zimbabwe }
+			if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_player_origin_merina }
+			if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_player_origin_zulu }
+		}
+		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+	}
+	set_temp_variable = { africa_priority_registration_valid = constant:africa_value.zero }
+}
+
+africa_priority_member_register_from_origin = {
+	africa_priority_member_load_requested_package_from_origin = yes
+	africa_priority_member_register_requested_package = yes
+}
+
+# ---------------------------------------------------------------------------
+# Political settlements
+# ---------------------------------------------------------------------------
+
+africa_priority_member_clear_political_routes = {
+	clr_country_flag = africa_priority_member_council_route
+	clr_country_flag = africa_priority_member_civic_route
+	clr_country_flag = africa_priority_member_producer_route
+}
+
+africa_priority_member_reconcile_post_settlement = {
+	if = {
+		limit = { africa_priority_member_settlement_is_recorded = yes }
+		set_country_flag = africa_priority_member_post_settlement_open
+	}
+}
+
+africa_priority_member_apply_council_politics = {
+	africa_priority_member_clear_political_routes = yes
+	set_country_flag = africa_priority_member_council_route
+	add_popularity = { ideology = neutrality popularity = constant:africa_priority_member_reward.political_popularity }
+	if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_stool_council_government }
+	if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_alaafin_city_council_government }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_emirate_consultative_chamber }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_lake_covenant_council }
+	if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_restoration_assembly_government }
+	if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_court_civic_congress_government }
+	if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_kabaka_lukiiko_compact }
+	if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_highland_heritage_council }
+	if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_municipal_court_compact }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_coastal_island_council }
+	if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_dual_recognition_council }
+	if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_claimant_civic_council }
+	if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_cross_border_council }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_restoration_council }
+	if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_crown_assembly_government }
+	if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_crown_assembly_government }
+	set_country_flag = africa_priority_member_politics_settled
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_standard_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_apply_civic_politics = {
+	africa_priority_member_clear_political_routes = yes
+	set_country_flag = africa_priority_member_civic_route
+	add_popularity = { ideology = democratic popularity = constant:africa_priority_member_reward.political_popularity }
+	if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_civic_revenue_board_government }
+	if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_corridor_federation_government }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_reformist_federal_chamber }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_lake_chad_commission_government }
+	if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_river_federal_assembly }
+	if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_cross_border_commonwealth_government }
+	if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_uganda_federal_balance_government }
+	if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_highland_federal_commonwealth }
+	if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_mercantile_city_government }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_maritime_federal_government }
+	if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_autonomous_river_federation }
+	if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_mining_federal_government }
+	if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_corridor_confederal_government }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_zimbabwe_federal_government }
+	if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_malagasy_federal_government }
+	if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_south_african_federal_state }
+	set_country_flag = africa_priority_member_politics_settled
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_member_representation_balance = constant:africa_priority_member_progress.host_standard_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_apply_producer_politics = {
+	africa_priority_member_clear_political_routes = yes
+	set_country_flag = africa_priority_member_producer_route
+	add_popularity = { ideology = communism popularity = constant:africa_priority_member_reward.political_popularity }
+	if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_producer_revenue_compact_government }
+	if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_urban_producer_compact_government }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_pastoral_producer_compact }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_pastoral_water_compact }
+	if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_inland_producer_assembly }
+	if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_river_community_union_government }
+	if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_cotton_land_reform_compact }
+	if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_highland_civic_development_compact }
+	if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_hinterland_market_compact }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_peoples_maritime_union }
+	if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_workers_river_union }
+	if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_public_processing_union }
+	if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_resource_corridor_union }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_agrarian_mining_union }
+	if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_peoples_island_union }
+	if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_land_labour_union }
+	set_country_flag = africa_priority_member_politics_settled
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+# ---------------------------------------------------------------------------
+# Distinct mechanics and force reinforcement
+# ---------------------------------------------------------------------------
+
+africa_priority_member_apply_mechanic_payload = {
+	if = {
+		limit = { africa_priority_member_package_is_asante = yes }
+		set_country_flag = africa_priority_asante_stool_council_legitimacy_built
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = {
+			add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_oyo = yes }
+		set_country_flag = africa_priority_oyo_corridor_city_compact_operational
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+		event_target:africa_host = {
+			add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_integration_burden = constant:africa_priority_member_progress.host_minor_burden }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_sokoto = yes }
+		set_country_flag = africa_priority_sokoto_emirate_reform_compact_operational
+		add_stability = constant:africa_priority_member_reward.stability_standard
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+		event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kanem_bornu = yes }
+		set_country_flag = africa_priority_kanem_bornu_lake_caravan_covenant_operational
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_manden = yes }
+		set_country_flag = africa_priority_manden_assembly_legitimacy_built
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kongo = yes }
+		set_country_flag = africa_priority_kongo_cross_border_consent_recorded
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = {
+			add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_buganda = yes }
+		set_country_flag = africa_priority_buganda_kingdom_federal_balance_recorded
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		event_target:africa_host = { add_to_variable = { africa_member_representation_balance = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_aksum = yes }
+		set_country_flag = africa_priority_aksum_heritage_consent_separated
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = {
+			add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_harar = yes }
+		set_country_flag = africa_priority_harar_corridor_guarantees_diversified
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kilwa = yes }
+		set_country_flag = africa_priority_kilwa_common_customs_arbitrated
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		navy_experience = constant:africa_priority_member_reward.navy_experience_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_nubia = yes }
+		set_country_flag = africa_priority_nubia_river_rights_recognised
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_luba = yes }
+		set_country_flag = africa_priority_luba_mining_revenue_settled
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		event_target:africa_host = {
+			add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_lunda = yes }
+		set_country_flag = africa_priority_lunda_cross_border_access_settled
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		event_target:africa_host = {
+			add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_great_zimbabwe = yes }
+		set_country_flag = africa_priority_great_zimbabwe_restoration_mandate_balanced
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+		event_target:africa_host = { add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_merina = yes }
+		set_country_flag = africa_priority_merina_island_confidence_recorded
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = {
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain }
+		}
+	}
+	if = {
+		limit = { africa_priority_member_package_is_zulu = yes }
+		set_country_flag = africa_priority_zulu_crown_land_labour_balance_recorded
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_war_support = constant:africa_priority_member_reward.war_support_small
+		event_target:africa_host = { add_to_variable = { africa_common_defence_stockpile = constant:africa_priority_member_progress.host_standard_gain } }
+	}
+}
+
+africa_priority_member_build_mechanic_project = {
+	if = {
+		limit = {
+			check_variable = { var = africa_priority_member_mechanic_progress value = constant:africa_priority_member_progress.midpoint compare = greater_than_or_equals }
+			NOT = { has_country_flag = africa_priority_member_mechanic_capital_project_built }
+		}
+		if = {
+			limit = { OR = { africa_priority_member_package_is_asante = yes africa_priority_member_package_is_luba = yes africa_priority_member_package_is_great_zimbabwe = yes } }
+			capital_scope = { add_building_construction = { type = industrial_complex level = constant:africa_priority_member_reward.building_level instant_build = yes } }
+			set_country_flag = africa_priority_member_mechanic_capital_project_built
+		}
+		else_if = {
+			limit = { africa_priority_member_package_is_zulu = yes }
+			capital_scope = { add_building_construction = { type = arms_factory level = constant:africa_priority_member_reward.building_level instant_build = yes } }
+			set_country_flag = africa_priority_member_mechanic_capital_project_built
+		}
+		else_if = {
+			limit = { africa_priority_member_package_is_kilwa = yes africa_priority_member_has_coastal_project_site = yes }
+			random_owned_state = {
+				limit = { is_controlled_by = ROOT is_coastal = yes }
+				add_building_construction = { type = dockyard level = constant:africa_priority_member_reward.building_level instant_build = yes }
+			}
+			set_country_flag = africa_priority_member_mechanic_capital_project_built
+		}
+		else_if = {
+			limit = { NOT = { africa_priority_member_package_is_kilwa = yes } }
+			capital_scope = { add_building_construction = { type = infrastructure level = constant:africa_priority_member_reward.building_level instant_build = yes } }
+			set_country_flag = africa_priority_member_mechanic_capital_project_built
+		}
+	}
+}
+
+africa_priority_member_advance_mechanic = {
+	if = {
+		limit = { africa_priority_member_can_advance_mechanic = yes }
+		if = { limit = { NOT = { has_variable = africa_priority_member_mechanic_progress } } set_variable = { africa_priority_member_mechanic_progress = constant:africa_priority_member_progress.minimum } }
+		add_to_variable = { africa_priority_member_mechanic_progress = constant:africa_priority_member_progress.step }
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+		africa_priority_member_apply_mechanic_payload = yes
+		africa_priority_member_build_mechanic_project = yes
+		clamp_variable = { var = africa_priority_member_mechanic_progress min = constant:africa_priority_member_progress.minimum max = constant:africa_priority_member_progress.maximum }
+		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+		if = {
+			limit = { check_variable = { var = africa_priority_member_mechanic_progress value = constant:africa_priority_member_progress.maximum compare = greater_than_or_equals } }
+			set_country_flag = africa_priority_member_mechanic_complete
+			if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_mechanic_complete }
+			if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_mechanic_complete }
+		}
+		if = { limit = { has_event_target = africa_host } event_target:africa_host = { africa_clamp_host_values = yes } }
+	}
+}
+
+africa_priority_member_apply_force_payload = {
+	if = {
+		limit = { africa_priority_member_package_is_asante = yes }
+		set_country_flag = africa_priority_asante_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+	}
+	if = {
+		limit = { africa_priority_member_package_is_oyo = yes }
+		set_country_flag = africa_priority_oyo_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+	}
+	if = {
+		limit = { africa_priority_member_package_is_sokoto = yes }
+		set_country_flag = africa_priority_sokoto_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kanem_bornu = yes }
+		set_country_flag = africa_priority_kanem_bornu_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_manden = yes }
+		set_country_flag = africa_priority_manden_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kongo = yes }
+		set_country_flag = africa_priority_kongo_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_buganda = yes }
+		set_country_flag = africa_priority_buganda_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_aksum = yes }
+		set_country_flag = africa_priority_aksum_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+	}
+	if = {
+		limit = { africa_priority_member_package_is_harar = yes }
+		set_country_flag = africa_priority_harar_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kilwa = yes }
+		set_country_flag = africa_priority_kilwa_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		navy_experience = constant:africa_priority_member_reward.navy_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_nubia = yes }
+		set_country_flag = africa_priority_nubia_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_luba = yes }
+		set_country_flag = africa_priority_luba_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_lunda = yes }
+		set_country_flag = africa_priority_lunda_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_small }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_great_zimbabwe = yes }
+		set_country_flag = africa_priority_great_zimbabwe_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_merina = yes }
+		set_country_flag = africa_priority_merina_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		army_experience = constant:africa_priority_member_reward.army_experience_small
+	}
+	if = {
+		limit = { africa_priority_member_package_is_zulu = yes }
+		set_country_flag = africa_priority_zulu_force_identity_established
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_priority_member_reward.infantry_equipment_standard }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		army_experience = constant:africa_priority_member_reward.army_experience_standard
+	}
+}
+
+africa_priority_member_reinforce_force = {
+	if = {
+		limit = { africa_priority_member_can_reinforce_force = yes }
+		if = { limit = { NOT = { has_variable = africa_priority_member_security_readiness } } set_variable = { africa_priority_member_security_readiness = constant:africa_priority_member_progress.minimum } }
+		add_manpower = constant:africa_priority_member_manpower.force_spend
+		add_to_variable = { africa_priority_member_security_readiness = constant:africa_priority_member_progress.step }
+		africa_priority_member_apply_force_payload = yes
+		clamp_variable = { var = africa_priority_member_security_readiness min = constant:africa_priority_member_progress.minimum max = constant:africa_priority_member_progress.maximum }
+		if = {
+			limit = { check_variable = { var = africa_priority_member_security_readiness value = constant:africa_priority_member_progress.maximum compare = greater_than_or_equals } }
+			set_country_flag = africa_priority_member_force_ready
+			if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_force_ready }
+			if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_force_ready }
+			if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_force_ready }
+			if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_force_ready }
+			if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_force_ready }
+			if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_force_ready }
+			if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_force_ready }
+			if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_force_ready }
+			if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_force_ready }
+			if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_force_ready }
+			if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_force_ready }
+			if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_force_ready }
+			if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_force_ready }
+			if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_force_ready }
+			if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_force_ready }
+			if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_force_ready }
+		}
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = {
+				add_to_variable = { africa_common_defence_stockpile = constant:africa_priority_member_progress.host_minor_gain }
+				africa_clamp_host_values = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# League bargaining and relationship-state transitions
+# ---------------------------------------------------------------------------
+
+africa_priority_member_apply_preferred_league_clause = {
+	if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_clause_stool_council_and_autonomy }
+	if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_clause_corridor_and_city_compact }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_clause_emirate_jurisdiction_and_reform }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_clause_lake_and_caravan_covenant }
+	if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_clause_assembly_and_corridor_guarantee }
+	if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_clause_cultural_citizenship_separate_from_territory }
+	if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_clause_kingdom_federal_balance }
+	if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_clause_heritage_without_annexation }
+	if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_clause_corridor_non_monopoly }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_clause_distributed_customs_and_patrols }
+	if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_clause_dual_river_recognition }
+	if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_clause_mining_revenue_and_local_consent }
+	if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_clause_cross_border_access_and_citizenship }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_clause_bounded_restoration_mandate }
+	if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_clause_asymmetric_island_federalism }
+	if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_clause_crown_land_and_labour_balance }
+}
+
+africa_priority_member_advance_one_league_stage = {
+	if = {
+		limit = { africa_relationship_is_outside = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
+		africa_apply_relationship_transition = yes
+	}
+	else_if = {
+		limit = { africa_relationship_is_protected = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+	}
+	else_if = {
+		limit = { africa_relationship_is_associate = yes }
+		if = {
+			limit = { OR = { africa_priority_member_package_is_kanem_bornu = yes africa_priority_member_package_is_aksum = yes africa_priority_member_package_is_harar = yes africa_priority_member_package_is_lunda = yes } }
+			set_country_flag = africa_priority_member_preferred_relationship_reached
+		}
+		else = {
+			set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered }
+			africa_apply_relationship_transition = yes
+		}
+	}
+	else_if = {
+		limit = { africa_relationship_is_chartered = yes }
+		if = {
+			limit = { OR = { africa_priority_member_package_is_sokoto = yes africa_priority_member_package_is_kilwa = yes } }
+			set_country_flag = africa_priority_member_preferred_relationship_reached
+		}
+		else_if = {
+			limit = { africa_member_can_enter_autonomous_federal = yes }
+			set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal }
+			africa_apply_relationship_transition = yes
+			clr_country_flag = africa_priority_member_autonomy_review_pending
+			set_country_flag = africa_priority_member_preferred_relationship_reached
+		}
+		else = { set_country_flag = africa_priority_member_autonomy_review_pending }
+	}
+	else_if = {
+		limit = { africa_relationship_is_resistant = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered }
+		africa_apply_relationship_transition = yes
+	}
+	else_if = {
+		limit = { OR = { africa_relationship_is_leaving = yes africa_relationship_is_rival_bloc = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+	}
+	else_if = {
+		limit = { OR = { africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes } }
+		set_country_flag = africa_priority_member_preferred_relationship_reached
+	}
+}
+
+africa_priority_member_clear_league_disposition = {
+	clr_country_flag = africa_priority_member_league_offer_accepted
+	clr_country_flag = africa_priority_member_counterproposal_active
+	clr_country_flag = africa_priority_member_league_offer_refused
+	clr_country_flag = africa_priority_member_membership_renewed
+}
+
+# These shared consent proofs are consumed by the Event 012 unity predicate.
+# They are granted only by an explicit affirmative constitutional choice.
+africa_priority_member_record_constitutional_acceptance = {
+	set_country_flag = africa_member_allied_settlement_accepted
+	set_country_flag = africa_member_continental_constitution_accepted
+}
+
+africa_priority_member_withdraw_constitutional_acceptance = {
+	clr_country_flag = africa_member_allied_settlement_accepted
+	clr_country_flag = africa_member_continental_constitution_accepted
+}
+
+africa_priority_member_accept_league_offer = {
+	africa_priority_member_clear_league_disposition = yes
+	africa_priority_member_apply_preferred_league_clause = yes
+	africa_priority_member_advance_one_league_stage = yes
+	africa_priority_member_record_constitutional_acceptance = yes
+	set_country_flag = africa_priority_member_league_offer_accepted
+	set_country_flag = africa_priority_member_league_disposition_recorded
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			add_to_variable = { africa_charter_authority = constant:africa_priority_member_progress.host_standard_gain }
+			africa_clamp_host_values = yes
+		}
+	}
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_submit_counterproposal = {
+	africa_priority_member_clear_league_disposition = yes
+	africa_priority_member_apply_preferred_league_clause = yes
+	set_country_flag = africa_clause_federal_autonomy
+	set_country_flag = africa_priority_member_counterproposal_active
+	set_country_flag = africa_priority_member_league_disposition_recorded
+	africa_priority_member_advance_one_league_stage = yes
+	africa_priority_member_record_constitutional_acceptance = yes
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain }
+			add_to_variable = { africa_integration_burden = constant:africa_priority_member_progress.host_minor_burden }
+			africa_clamp_host_values = yes
+		}
+	}
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_move_to_resistance = {
+	if = {
+		limit = { OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.resistant }
+		africa_apply_relationship_transition = yes
+	}
+	else_if = {
+		limit = { africa_relationship_is_leaving = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.rival_bloc }
+		africa_apply_relationship_transition = yes
+	}
+}
+
+africa_priority_member_refuse_league_offer = {
+	africa_priority_member_clear_league_disposition = yes
+	africa_priority_member_withdraw_constitutional_acceptance = yes
+	set_country_flag = africa_priority_member_league_offer_refused
+	set_country_flag = africa_priority_member_league_disposition_recorded
+	africa_priority_member_move_to_resistance = yes
+	add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_loss }
+	clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			if = { limit = { NOT = { has_variable = africa_rival_pressure } } set_variable = { africa_rival_pressure = constant:africa_measure.minimum } }
+			add_to_variable = { africa_rival_pressure = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_integration_burden = constant:africa_priority_member_progress.host_standard_burden }
+			clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+			africa_clamp_host_values = yes
+		}
+	}
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+# ---------------------------------------------------------------------------
+# Overlap settlements, rivalry, and lawful departure
+# ---------------------------------------------------------------------------
+
+africa_priority_member_clear_overlap_disposition = {
+	clr_country_flag = africa_priority_member_overlap_congress_settlement
+	clr_country_flag = africa_priority_member_overlap_local_consent_settlement
+	clr_country_flag = africa_priority_member_overlap_autonomy_settlement
+	clr_country_flag = africa_priority_member_overlap_rival_settlement
+}
+
+africa_priority_member_record_package_overlap_mode = {
+	if = { limit = { africa_priority_member_package_is_asante = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_asante_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_asante = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_asante_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_asante = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_asante_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_asante = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_asante_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_oyo = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_oyo_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_oyo = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_oyo_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_oyo = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_oyo_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_oyo = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_oyo_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_sokoto_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_sokoto_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_sokoto_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_sokoto = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_sokoto_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_kanem_bornu_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_kanem_bornu_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_kanem_bornu_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_kanem_bornu = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_kanem_bornu_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_manden = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_manden_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_manden = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_manden_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_manden = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_manden_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_manden = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_manden_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_kongo = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_kongo_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_kongo = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_kongo_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_kongo = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_kongo_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_kongo = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_kongo_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_buganda = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_buganda_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_buganda = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_buganda_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_buganda = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_buganda_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_buganda = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_buganda_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_aksum_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_aksum_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_aksum_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_aksum_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_harar_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_harar_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_harar_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_harar_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_kilwa_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_kilwa_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_kilwa_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_kilwa = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_kilwa_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_nubia_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_nubia_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_nubia_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_nubia_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_luba_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_luba_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_luba_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_luba_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_lunda_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_lunda_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_lunda_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_lunda_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_great_zimbabwe_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_great_zimbabwe_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_great_zimbabwe_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_great_zimbabwe_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_merina = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_merina_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_merina = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_merina_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_merina = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_merina_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_merina = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_merina_rival_settlement }
+	if = { limit = { africa_priority_member_package_is_zulu = yes has_country_flag = africa_priority_member_overlap_congress_settlement } set_country_flag = africa_priority_zulu_congress_settlement }
+	if = { limit = { africa_priority_member_package_is_zulu = yes has_country_flag = africa_priority_member_overlap_local_consent_settlement } set_country_flag = africa_priority_zulu_local_consent_settlement }
+	if = { limit = { africa_priority_member_package_is_zulu = yes has_country_flag = africa_priority_member_overlap_autonomy_settlement } set_country_flag = africa_priority_zulu_autonomy_settlement }
+	if = { limit = { africa_priority_member_package_is_zulu = yes has_country_flag = africa_priority_member_overlap_rival_settlement } set_country_flag = africa_priority_zulu_rival_settlement }
+}
+
+africa_priority_member_choose_congress_settlement = {
+	africa_priority_member_clear_overlap_disposition = yes
+	set_country_flag = africa_priority_member_overlap_congress_settlement
+	set_country_flag = africa_priority_member_overlap_disposition_recorded
+	set_country_flag = africa_overlap_settlement_accepted
+	set_country_flag = africa_member_representation_settled
+	clr_country_flag = africa_priority_member_overlap_dispute_active
+	clr_country_flag = africa_overlap_dispute_active
+	africa_priority_member_record_package_overlap_mode = yes
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_major_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_choose_local_consent_settlement = {
+	africa_priority_member_clear_overlap_disposition = yes
+	set_country_flag = africa_priority_member_overlap_local_consent_settlement
+	set_country_flag = africa_priority_member_overlap_disposition_recorded
+	set_country_flag = africa_priority_local_consent_recorded
+	set_country_flag = africa_member_integration_consent
+	clr_country_flag = africa_priority_member_overlap_dispute_active
+	clr_country_flag = africa_overlap_dispute_active
+	africa_priority_member_record_package_overlap_mode = yes
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_major_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_choose_autonomy_settlement = {
+	africa_priority_member_clear_overlap_disposition = yes
+	set_country_flag = africa_priority_member_overlap_autonomy_settlement
+	set_country_flag = africa_priority_member_overlap_disposition_recorded
+	set_country_flag = africa_clause_federal_autonomy
+	set_country_flag = africa_member_representation_settled
+	clr_country_flag = africa_priority_member_overlap_dispute_active
+	clr_country_flag = africa_overlap_dispute_active
+	africa_priority_member_record_package_overlap_mode = yes
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain }
+			add_to_variable = { africa_integration_burden = constant:africa_priority_member_progress.host_minor_burden }
+			africa_clamp_host_values = yes
+		}
+	}
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_move_to_rival_bloc = {
+	if = {
+		limit = { africa_relationship_is_outside = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.rival_bloc }
+		africa_apply_relationship_transition = yes
+	}
+	if = {
+		limit = { OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.resistant }
+		africa_apply_relationship_transition = yes
+	}
+	if = {
+		limit = { OR = { africa_relationship_is_resistant = yes africa_relationship_is_leaving = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.rival_bloc }
+		africa_apply_relationship_transition = yes
+	}
+}
+
+africa_priority_member_choose_rival_settlement = {
+	africa_priority_member_clear_overlap_disposition = yes
+	africa_priority_member_withdraw_constitutional_acceptance = yes
+	clr_country_flag = africa_priority_member_preferred_relationship_reached
+	set_country_flag = africa_priority_member_overlap_rival_settlement
+	set_country_flag = africa_priority_member_overlap_disposition_recorded
+	set_country_flag = africa_priority_member_overlap_dispute_active
+	africa_priority_member_move_to_rival_bloc = yes
+	africa_priority_member_record_package_overlap_mode = yes
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_integration_burden = constant:africa_priority_member_progress.host_standard_burden } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_renew_league_relationship = {
+	if = { limit = { has_active_mission = africa_priority_member_withdrawal_mission } remove_mission = africa_priority_member_withdrawal_mission }
+	clr_country_flag = africa_priority_member_withdrawal_in_progress
+	clr_country_flag = africa_priority_member_peaceful_exit_completed
+	africa_priority_member_record_constitutional_acceptance = yes
+	set_country_flag = africa_priority_member_membership_renewed
+	set_country_flag = africa_priority_member_league_disposition_recorded
+	africa_priority_member_advance_one_league_stage = yes
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_standard_gain } africa_clamp_host_values = yes } }
+	africa_priority_member_reconcile_post_settlement = yes
+}
+
+africa_priority_member_begin_peaceful_withdrawal = {
+	africa_priority_member_withdraw_constitutional_acceptance = yes
+	clr_country_flag = africa_priority_member_preferred_relationship_reached
+	if = {
+		limit = { OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.resistant }
+		africa_apply_relationship_transition = yes
+	}
+	if = {
+		limit = { africa_relationship_is_resistant = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.leaving }
+		africa_apply_relationship_transition = yes
+	}
+	if = {
+		limit = { OR = { africa_relationship_is_leaving = yes africa_relationship_is_rival_bloc = yes } }
+		set_country_flag = africa_priority_member_withdrawal_in_progress
+		set_country_flag = africa_priority_member_withdrawal_terms_negotiated
+		activate_mission = africa_priority_member_withdrawal_mission
+	}
+}
+
+africa_priority_member_complete_peaceful_withdrawal = {
+	if = {
+		limit = { OR = { africa_relationship_is_leaving = yes africa_relationship_is_rival_bloc = yes } }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.outside }
+		africa_apply_relationship_transition = yes
+	}
+	clr_country_flag = africa_priority_member_withdrawal_in_progress
+	set_country_flag = africa_priority_member_peaceful_exit_completed
+	set_country_flag = africa_priority_member_post_settlement_open
+}
+
+africa_priority_member_cancel_withdrawal = {
+	clr_country_flag = africa_priority_member_withdrawal_in_progress
+	clr_country_flag = africa_priority_member_withdrawal_terms_negotiated
+}
+
+africa_priority_member_choose_rival_departure = {
+	if = { limit = { has_active_mission = africa_priority_member_withdrawal_mission } remove_mission = africa_priority_member_withdrawal_mission }
+	clr_country_flag = africa_priority_member_withdrawal_in_progress
+	africa_priority_member_withdraw_constitutional_acceptance = yes
+	clr_country_flag = africa_priority_member_preferred_relationship_reached
+	set_country_flag = africa_priority_member_rival_departure_chosen
+	set_country_flag = africa_priority_member_league_disposition_recorded
+	africa_priority_member_move_to_rival_bloc = yes
+	set_country_flag = africa_priority_member_post_settlement_open
+}
+
+# COUNTRY scope. Called by a bounded peace, capitulation, or scripted victory
+# transaction after the package itself has become the victorious rival actor.
+africa_priority_member_record_rival_bloc_victory = {
+	if = {
+		limit = { africa_priority_member_has_package = yes africa_relationship_is_rival_bloc = yes }
+		set_country_flag = africa_priority_member_rival_bloc_victory
+		if = { limit = { africa_priority_member_package_is_asante = yes } set_country_flag = africa_priority_asante_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_oyo = yes } set_country_flag = africa_priority_oyo_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_sokoto = yes } set_country_flag = africa_priority_sokoto_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_country_flag = africa_priority_kanem_bornu_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_manden = yes } set_country_flag = africa_priority_manden_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_kongo = yes } set_country_flag = africa_priority_kongo_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_buganda = yes } set_country_flag = africa_priority_buganda_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_aksum = yes } set_country_flag = africa_priority_aksum_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_harar = yes } set_country_flag = africa_priority_harar_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_kilwa = yes } set_country_flag = africa_priority_kilwa_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_nubia = yes } set_country_flag = africa_priority_nubia_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_luba = yes } set_country_flag = africa_priority_luba_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_lunda = yes } set_country_flag = africa_priority_lunda_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_rival_bloc_victory }
+		if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_rival_bloc_victory }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Continuing post-settlement play
+# ---------------------------------------------------------------------------
+
+africa_priority_member_apply_post_settlement_payload = {
+	if = {
+		limit = { africa_priority_member_package_is_asante = yes }
+		set_country_flag = africa_priority_asante_post_settlement_action_completed
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_oyo = yes }
+		set_country_flag = africa_priority_oyo_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_sokoto = yes }
+		set_country_flag = africa_priority_sokoto_post_settlement_action_completed
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kanem_bornu = yes }
+		set_country_flag = africa_priority_kanem_bornu_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_manden = yes }
+		set_country_flag = africa_priority_manden_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kongo = yes }
+		set_country_flag = africa_priority_kongo_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_buganda = yes }
+		set_country_flag = africa_priority_buganda_post_settlement_action_completed
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_small }
+		event_target:africa_host = { add_to_variable = { africa_member_representation_balance = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_aksum = yes }
+		set_country_flag = africa_priority_aksum_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_harar = yes }
+		set_country_flag = africa_priority_harar_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_kilwa = yes }
+		set_country_flag = africa_priority_kilwa_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		navy_experience = constant:africa_priority_member_reward.navy_experience_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_nubia = yes }
+		set_country_flag = africa_priority_nubia_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_luba = yes }
+		set_country_flag = africa_priority_luba_post_settlement_action_completed
+		set_country_flag = africa_priority_luba_public_processing_programme_active
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_lunda = yes }
+		set_country_flag = africa_priority_lunda_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:africa_priority_member_reward.motorized_small }
+		add_political_power = constant:africa_priority_member_reward.political_power_small
+		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_great_zimbabwe = yes }
+		set_country_flag = africa_priority_great_zimbabwe_post_settlement_action_completed
+		set_country_flag = africa_priority_great_zimbabwe_public_processing_programme_active
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_restoration_legitimacy = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_merina = yes }
+		set_country_flag = africa_priority_merina_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:africa_priority_member_reward.train_small }
+		event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+	if = {
+		limit = { africa_priority_member_package_is_zulu = yes }
+		set_country_flag = africa_priority_zulu_post_settlement_action_completed
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_priority_member_reward.support_equipment_small }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		event_target:africa_host = { add_to_variable = { africa_common_defence_stockpile = constant:africa_priority_member_progress.host_minor_gain } }
+	}
+}
+
+africa_priority_member_run_post_settlement_action = {
+	if = {
+		limit = { africa_priority_member_can_run_post_settlement_action = yes }
+		if = { limit = { NOT = { has_variable = africa_priority_member_post_settlement_progress } } set_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.minimum } }
+		add_to_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.step }
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+		africa_priority_member_apply_post_settlement_payload = yes
+		clamp_variable = { var = africa_priority_member_post_settlement_progress min = constant:africa_priority_member_progress.minimum max = constant:africa_priority_member_progress.maximum }
+		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+		if = { limit = { check_variable = { var = africa_priority_member_post_settlement_progress value = constant:africa_priority_member_progress.maximum compare = greater_than_or_equals } } set_country_flag = africa_priority_member_post_settlement_mature }
+		if = { limit = { has_event_target = africa_host } event_target:africa_host = { africa_clamp_host_values = yes } }
+	}
+}
+
+# COUNTRY scope. Full Event 012 teardown hook for a registered package.
+# Call only after any final achievement or ending evaluation has consumed the
+# package ID. Lifetime origin, political-route, settlement, completion, and
+# victory proof flags are deliberately retained.
+africa_priority_member_cleanup_runtime = {
+	if = {
+		limit = { has_active_mission = africa_priority_member_withdrawal_mission }
+		remove_mission = africa_priority_member_withdrawal_mission
+	}
+	clear_variable = africa_priority_member_package_id
+	clear_variable = africa_priority_member_mechanic_progress
+	clear_variable = africa_priority_member_security_readiness
+	clear_variable = africa_priority_member_post_settlement_progress
+	clr_country_flag = africa_priority_member_package_active
+	clr_country_flag = africa_priority_member_overlap_dispute_active
+	clr_country_flag = africa_priority_member_counterproposal_active
+	clr_country_flag = africa_priority_member_autonomy_review_pending
+	clr_country_flag = africa_priority_member_withdrawal_in_progress
+	clr_country_flag = africa_priority_member_withdrawal_terms_negotiated
+	clr_country_flag = africa_priority_member_post_settlement_open
+	clr_country_flag = africa_priority_member_preferred_relationship_reached
+	clr_country_flag = africa_priority_relationship_unresolved
+}

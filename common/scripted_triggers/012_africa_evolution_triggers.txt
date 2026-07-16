@@ -1,0 +1,181 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA EVOLUTION TRIGGERS
+# ============================================================================
+# Host-scoped gates for the three logged layers. The shared Chaos Meter stores
+# the public tier-4/5/6 bands as runtime bands 3/4/5.
+# ============================================================================
+
+africa_evolution_clock_can_run = {
+	africa_is_current_host = yes
+	has_global_flag = africa_event_active
+	NOT = { has_global_flag = africa_event_resolved }
+	NOT = { has_country_flag = africa_evolution_clock_halted_by_settings }
+	NOT = { has_global_flag = africa_evolution_iii_logged }
+}
+
+africa_evolution_i_conditions_met = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = africa_evolution_i_logged }
+	NOT = { has_global_flag = africa_evolution_i_disabled_by_settings }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+	has_country_flag = africa_overlay_mandate_proven
+	has_country_flag = africa_overlay_corridor_operational
+	africa_focus_first_proof_satisfied = yes
+	check_variable = {
+		var = africa_cooperative_relationship_count
+		value = constant:africa_evolution_runtime.member_threshold_i
+		compare = greater_than_or_equals
+	}
+}
+
+africa_evolution_ii_conditions_met = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = africa_evolution_ii_logged }
+	NOT = { has_global_flag = africa_evolution_ii_disabled_by_settings }
+	OR = {
+		has_global_flag = africa_evolution_i_logged
+		has_global_flag = africa_evolution_i_disabled_by_settings
+	}
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_4.min
+		compare = greater_than_or_equals
+	}
+	has_country_flag = africa_charter_league_declared
+	check_variable = {
+		var = africa_cooperative_relationship_count
+		value = constant:africa_evolution_runtime.member_threshold_ii
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_continental_reach
+		value = constant:africa_evolution_threshold.continental_machinery_reach
+		compare = greater_than_or_equals
+	}
+}
+
+africa_evolution_iii_conditions_met = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = africa_evolution_iii_logged }
+	NOT = { has_global_flag = africa_evolution_iii_disabled_by_settings }
+	OR = {
+		has_global_flag = africa_evolution_ii_logged
+		has_global_flag = africa_evolution_ii_disabled_by_settings
+	}
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_final.min
+		compare = greater_than_or_equals
+	}
+	africa_focus_has_route_capstone = yes
+	OR = {
+		has_global_flag = africa_is_one
+		AND = {
+			check_variable = {
+				var = africa_cooperative_relationship_count
+				value = constant:africa_evolution_runtime.member_threshold_iii
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_continental_reach
+				value = constant:africa_evolution_threshold.world_pole_reach
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_charter_authority
+				value = constant:africa_evolution_threshold.world_pole_authority
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host. Input: temporary africa_requested_action_id.
+# First-proof actions retain their exact playbook exception; after that proof,
+# the stronger regional and continental action sets wait for their enabled
+# evolution or for an explicit settings disposition that keeps grounded play
+# from being blocked.
+africa_requested_action_evolution_gate_is_open = {
+	OR = {
+		has_country_flag = africa_first_proof_active
+		has_country_flag = africa_first_proof_failed
+		AND = {
+			NOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.intervene_against_coloniser }
+					check_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress }
+					check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+					check_variable = { africa_requested_action_id = constant:africa_action.create_regional_charter }
+					check_variable = { africa_requested_action_id = constant:africa_action.form_regional_federation }
+					check_variable = { africa_requested_action_id = constant:africa_action.restore_historical_polity }
+					check_variable = { africa_requested_action_id = constant:africa_action.approve_direct_integration_schedule }
+					check_variable = { africa_requested_action_id = constant:africa_action.fund_congress_security }
+					check_variable = { africa_requested_action_id = constant:africa_action.invite_diaspora_delegates }
+					check_variable = { africa_requested_action_id = constant:africa_action.enforce_congress_settlement }
+					check_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services }
+					check_variable = { africa_requested_action_id = constant:africa_action.grant_core_recognition }
+					check_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities }
+					check_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review }
+					check_variable = { africa_requested_action_id = constant:africa_action.continental_industrial_plan }
+					check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+					check_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote }
+				}
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.intervene_against_coloniser }
+				check_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress }
+				check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+				check_variable = { africa_requested_action_id = constant:africa_action.create_regional_charter }
+				check_variable = { africa_requested_action_id = constant:africa_action.form_regional_federation }
+				check_variable = { africa_requested_action_id = constant:africa_action.restore_historical_polity }
+				check_variable = { africa_requested_action_id = constant:africa_action.approve_direct_integration_schedule }
+				check_variable = { africa_requested_action_id = constant:africa_action.fund_congress_security }
+				check_variable = { africa_requested_action_id = constant:africa_action.invite_diaspora_delegates }
+				check_variable = { africa_requested_action_id = constant:africa_action.enforce_congress_settlement }
+			}
+			OR = {
+				has_global_flag = africa_evolution_i_logged
+				has_global_flag = africa_evolution_i_disabled_by_settings
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services }
+				check_variable = { africa_requested_action_id = constant:africa_action.grant_core_recognition }
+				check_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities }
+				check_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review }
+				check_variable = { africa_requested_action_id = constant:africa_action.continental_industrial_plan }
+				check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+				check_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote }
+			}
+			OR = {
+				has_global_flag = africa_evolution_ii_logged
+				has_global_flag = africa_evolution_ii_disabled_by_settings
+			}
+		}
+	}
+}
+
+africa_evolution_i_grounded_action_gate_is_open = {
+	OR = {
+		has_country_flag = africa_first_proof_active
+		has_country_flag = africa_first_proof_failed
+		has_global_flag = africa_evolution_i_logged
+		has_global_flag = africa_evolution_i_disabled_by_settings
+	}
+}
+
+africa_evolution_ii_grounded_action_gate_is_open = {
+	OR = {
+		has_country_flag = africa_first_proof_active
+		has_country_flag = africa_first_proof_failed
+		has_global_flag = africa_evolution_ii_logged
+		has_global_flag = africa_evolution_ii_disabled_by_settings
+	}
+}

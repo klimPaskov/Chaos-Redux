@@ -1,0 +1,1317 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AFRICA ALLIED-RUPTURE EFFECTS
+# ============================================================================
+# Owns the fixed-host South African split, bounded patron snapshot, explicit
+# Allied faction and autonomy continuity, proof ledger, intervention ledger,
+# pairwise settlement, and one-use exile continuation. No recurring scan or
+# faction-wide peace effect is used by this package.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Persistent pre-war context
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the original SAF host.
+africa_rsa_clear_autonomy_snapshot = {
+	clr_country_flag = africa_rsa_was_subject
+	clr_country_flag = africa_rsa_autonomy_puppet
+	clr_country_flag = africa_rsa_autonomy_integrated_puppet
+	clr_country_flag = africa_rsa_autonomy_wtt_imperial_protectorate
+	clr_country_flag = africa_rsa_autonomy_personal_union
+	clr_country_flag = africa_rsa_autonomy_satellite
+	clr_country_flag = africa_rsa_autonomy_wtt_imperial_associate
+	clr_country_flag = africa_rsa_autonomy_wtt_imperial_subject
+	clr_country_flag = africa_rsa_autonomy_reichskommissariat
+	clr_country_flag = africa_rsa_autonomy_reichsprotectorate
+	clr_country_flag = africa_rsa_autonomy_taog_indonesian_union_state
+	clr_country_flag = africa_rsa_autonomy_austro_hungarian_subject
+	clr_country_flag = africa_rsa_autonomy_collaboration_government
+	clr_country_flag = africa_rsa_autonomy_colony
+	clr_country_flag = africa_rsa_autonomy_aat_defense_council_member
+	clr_country_flag = africa_rsa_autonomy_dominion
+	clr_country_flag = africa_rsa_autonomy_supervised_state
+	clr_country_flag = africa_rsa_autonomy_sea_warlord_subject
+	clr_country_flag = africa_rsa_autonomy_volkskommissariat
+	clr_country_flag = africa_rsa_autonomy_eu_member
+	clr_country_flag = africa_rsa_autonomy_sea_integrated_warlord_subject
+	clr_country_flag = africa_rsa_autonomy_associated_dominion
+}
+
+# COUNTRY scope on the original SAF host.
+africa_rsa_snapshot_autonomy = {
+	africa_rsa_clear_autonomy_snapshot = yes
+	if = {
+		limit = { is_subject = yes }
+		set_country_flag = africa_rsa_was_subject
+		overlord = { save_global_event_target_as = africa_rsa_original_overlord }
+		if = { limit = { has_autonomy_state = autonomy_puppet } set_country_flag = africa_rsa_autonomy_puppet }
+		else_if = { limit = { has_autonomy_state = autonomy_integrated_puppet } set_country_flag = africa_rsa_autonomy_integrated_puppet }
+		else_if = { limit = { has_autonomy_state = autonomy_wtt_imperial_protectorate } set_country_flag = africa_rsa_autonomy_wtt_imperial_protectorate }
+		else_if = { limit = { has_autonomy_state = autonomy_personal_union } set_country_flag = africa_rsa_autonomy_personal_union }
+		else_if = { limit = { has_autonomy_state = autonomy_satellite } set_country_flag = africa_rsa_autonomy_satellite }
+		else_if = { limit = { has_autonomy_state = autonomy_wtt_imperial_associate } set_country_flag = africa_rsa_autonomy_wtt_imperial_associate }
+		else_if = { limit = { has_autonomy_state = autonomy_wtt_imperial_subject } set_country_flag = africa_rsa_autonomy_wtt_imperial_subject }
+		else_if = { limit = { has_autonomy_state = autonomy_reichskommissariat } set_country_flag = africa_rsa_autonomy_reichskommissariat }
+		else_if = { limit = { has_autonomy_state = autonomy_reichsprotectorate } set_country_flag = africa_rsa_autonomy_reichsprotectorate }
+		else_if = { limit = { has_autonomy_state = autonomy_taog_indonesian_union_state } set_country_flag = africa_rsa_autonomy_taog_indonesian_union_state }
+		else_if = { limit = { has_autonomy_state = autonomy_austro_hungarian_subject } set_country_flag = africa_rsa_autonomy_austro_hungarian_subject }
+		else_if = { limit = { has_autonomy_state = autonomy_collaboration_government } set_country_flag = africa_rsa_autonomy_collaboration_government }
+		else_if = { limit = { has_autonomy_state = autonomy_colony } set_country_flag = africa_rsa_autonomy_colony }
+		else_if = { limit = { has_autonomy_state = autonomy_aat_defense_council_member } set_country_flag = africa_rsa_autonomy_aat_defense_council_member }
+		else_if = { limit = { has_autonomy_state = autonomy_dominion } set_country_flag = africa_rsa_autonomy_dominion }
+		else_if = { limit = { has_autonomy_state = autonomy_supervised_state } set_country_flag = africa_rsa_autonomy_supervised_state }
+		else_if = { limit = { has_autonomy_state = autonomy_sea_warlord_subject } set_country_flag = africa_rsa_autonomy_sea_warlord_subject }
+		else_if = { limit = { has_autonomy_state = autonomy_volkskommissariat } set_country_flag = africa_rsa_autonomy_volkskommissariat }
+		else_if = { limit = { has_autonomy_state = autonomy_eu_member } set_country_flag = africa_rsa_autonomy_eu_member }
+		else_if = { limit = { has_autonomy_state = autonomy_sea_integrated_warlord_subject } set_country_flag = africa_rsa_autonomy_sea_integrated_warlord_subject }
+		else_if = { limit = { has_autonomy_state = autonomy_associated_dominion } set_country_flag = africa_rsa_autonomy_associated_dominion }
+	}
+}
+
+# COUNTRY scope on the original SAF host. The saved overlord receives the
+# loyalist revolter at the exact old autonomy level, while the coalition is
+# released without ending either the civil war or any inherited external war.
+africa_rsa_restore_allied_autonomy = {
+	if = {
+		limit = {
+			has_country_flag = africa_rsa_was_subject
+			has_event_target = africa_rsa_original_overlord
+			has_event_target = africa_rsa_allied_union_government
+		}
+		if = { limit = { has_country_flag = africa_rsa_autonomy_puppet } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_puppet end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_integrated_puppet } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_integrated_puppet end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_wtt_imperial_protectorate } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_wtt_imperial_protectorate end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_personal_union } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_personal_union end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_satellite } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_satellite end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_wtt_imperial_associate } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_wtt_imperial_associate end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_wtt_imperial_subject } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_wtt_imperial_subject end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_reichskommissariat } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_reichskommissariat end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_reichsprotectorate } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_reichsprotectorate end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_taog_indonesian_union_state } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_taog_indonesian_union_state end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_austro_hungarian_subject } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_austro_hungarian_subject end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_collaboration_government } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_collaboration_government end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_colony } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_colony end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_aat_defense_council_member } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_aat_defense_council_member end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_dominion } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_dominion end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_supervised_state } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_supervised_state end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_sea_warlord_subject } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_sea_warlord_subject end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_volkskommissariat } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_volkskommissariat end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_eu_member } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_eu_member end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_sea_integrated_warlord_subject } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_sea_integrated_warlord_subject end_wars = no end_civil_wars = no } } }
+		else_if = { limit = { has_country_flag = africa_rsa_autonomy_associated_dominion } event_target:africa_rsa_original_overlord = { set_autonomy = { target = event_target:africa_rsa_allied_union_government autonomy_state = autonomy_associated_dominion end_wars = no end_civil_wars = no } } }
+		event_target:africa_rsa_original_overlord = {
+			set_autonomy = {
+				target = event_target:africa_rsa_continental_coalition
+				autonomy_state = autonomy_free
+				end_wars = no
+				end_civil_wars = no
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the original host before the civil war. Freeze every valid
+# pre-war candidate from the accepted bounded Event 12 stores. Later roster
+# refreshes cannot expand this ledger.
+africa_rsa_snapshot_exile_patron_candidates = {
+	clear_array = africa_rsa_prewar_exile_patron_candidates
+	for_each_scope_loop = {
+		array = africa_relationship_countries
+		if = {
+			limit = {
+				africa_rsa_is_valid_exile_patron = yes
+				event_target:africa_rsa_continental_coalition = { NOT = { is_in_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } } }
+			}
+			event_target:africa_rsa_continental_coalition = { add_to_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } }
+		}
+	}
+	for_each_scope_loop = {
+		array = africa_selected_targets
+		if = {
+			limit = {
+				africa_rsa_is_valid_exile_patron = yes
+				event_target:africa_rsa_continental_coalition = { NOT = { is_in_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } } }
+			}
+			event_target:africa_rsa_continental_coalition = { add_to_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } }
+		}
+	}
+	for_each_scope_loop = {
+		array = africa_frozen_first_contact_targets
+		if = {
+			limit = {
+				africa_rsa_is_valid_exile_patron = yes
+				event_target:africa_rsa_continental_coalition = { NOT = { is_in_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } } }
+			}
+			event_target:africa_rsa_continental_coalition = { add_to_array = { array = africa_rsa_prewar_exile_patron_candidates value = PREV } }
+		}
+	}
+}
+
+# COUNTRY scope on the current Event 12 host. Selection is deterministic and
+# bounded to the pre-war frozen ledger. Governments that explicitly supported
+# the Coalition during the war take priority. No refreshed-roster substitution
+# or world search is permitted.
+africa_rsa_select_exile_patron = {
+	clear_global_event_target = africa_rsa_exile_patron
+	set_temp_variable = { africa_rsa_patron_selected = constant:africa_rsa_count.none }
+	for_each_scope_loop = {
+		array = africa_rsa_external_supporters
+		if = {
+			limit = {
+				check_variable = { africa_rsa_patron_selected = constant:africa_rsa_count.none }
+				africa_rsa_is_valid_exile_patron = yes
+			}
+			save_global_event_target_as = africa_rsa_exile_patron
+			set_temp_variable = { africa_rsa_patron_selected = constant:africa_rsa_count.one }
+		}
+	}
+	for_each_scope_loop = {
+		array = africa_rsa_prewar_exile_patron_candidates
+		if = {
+			limit = {
+				check_variable = { africa_rsa_patron_selected = constant:africa_rsa_count.none }
+				africa_rsa_is_valid_exile_patron = yes
+			}
+			save_global_event_target_as = africa_rsa_exile_patron
+			set_temp_variable = { africa_rsa_patron_selected = constant:africa_rsa_count.one }
+		}
+	}
+}
+
+# COUNTRY scope on original SAF.
+africa_rsa_snapshot_prewar_context = {
+	clear_global_event_target = africa_rsa_continental_coalition
+	clear_global_event_target = africa_rsa_allied_union_government
+	clear_global_event_target = africa_rsa_original_capital_state
+	clear_global_event_target = africa_rsa_original_overlord
+	clear_global_event_target = africa_rsa_original_faction_leader
+	clear_global_event_target = africa_rsa_allied_faction_leader
+	clear_global_event_target = africa_rsa_exile_patron
+	clear_array = africa_rsa_inherited_enemies
+	clear_array = africa_rsa_allied_interveners
+	clear_array = africa_rsa_coalition_interveners
+	clear_array = africa_rsa_external_supporters
+	clear_array = africa_rsa_regional_responses
+	clear_array = africa_rsa_prewar_exile_patron_candidates
+	set_variable = { africa_rsa_external_support_count = constant:africa_rsa_count.none }
+
+	save_global_event_target_as = africa_rsa_continental_coalition
+	capital_scope = { save_global_event_target_as = africa_rsa_original_capital_state }
+	if = {
+		limit = { is_in_faction = yes }
+		faction_leader = { save_global_event_target_as = africa_rsa_original_faction_leader }
+		if = { limit = { is_faction_leader = yes } set_country_flag = africa_rsa_was_faction_leader }
+		else = { clr_country_flag = africa_rsa_was_faction_leader }
+	}
+
+	africa_rsa_snapshot_autonomy = yes
+	set_variable = { africa_rsa_prewar_democratic_support = party_popularity@democratic }
+	set_variable = { africa_rsa_prewar_communist_support = party_popularity@communism }
+	set_variable = { africa_rsa_prewar_fascist_support = party_popularity@fascism }
+	set_variable = { africa_rsa_prewar_neutrality_support = party_popularity@neutrality }
+
+	every_enemy_country = {
+		event_target:africa_rsa_continental_coalition = {
+			add_to_array = { array = africa_rsa_inherited_enemies value = PREV }
+		}
+	}
+	africa_rsa_snapshot_exile_patron_candidates = yes
+	africa_rsa_select_exile_patron = yes
+
+	set_variable = { africa_rsa_allied_stockpile_ratio = constant:africa_rsa_ratio.allied_stockpile }
+	set_variable = { africa_rsa_allied_army_ratio = constant:africa_rsa_ratio.allied_army }
+	set_variable = { africa_rsa_allied_navy_ratio = constant:africa_rsa_ratio.allied_navy }
+	set_variable = { africa_rsa_allied_air_ratio = constant:africa_rsa_ratio.allied_air }
+	set_variable = { africa_rsa_first_proof_days = constant:africa_rsa_days.first_proof }
+	set_variable = { africa_rsa_settlement_truce_days = constant:africa_rsa_days.settlement_truce }
+	set_variable = { africa_rsa_exile_recovery_delay_days = constant:africa_rsa_days.exile_recovery_delay }
+}
+
+# ---------------------------------------------------------------------------
+# Deterministic original-host civil war
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the original SAF host after the revolter exists.
+africa_rsa_assign_allied_framework = {
+	africa_rsa_restore_allied_autonomy = yes
+	if = {
+		limit = { has_country_flag = africa_rsa_was_faction_leader }
+		add_to_faction = event_target:africa_rsa_allied_union_government
+		event_target:africa_rsa_allied_union_government = {
+			set_faction_leader = yes
+			save_global_event_target_as = africa_rsa_allied_faction_leader
+		}
+		leave_faction = yes
+	}
+	else_if = {
+		limit = { has_event_target = africa_rsa_original_faction_leader }
+		event_target:africa_rsa_original_faction_leader = {
+			add_to_faction = event_target:africa_rsa_allied_union_government
+			save_global_event_target_as = africa_rsa_allied_faction_leader
+		}
+		leave_faction = yes
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. This only removes the wars the
+# original country carried into the split, leaving the loyalist government and
+# its old faction at war with those same enemies.
+africa_rsa_end_inherited_coalition_wars = {
+	for_each_scope_loop = {
+		array = africa_rsa_inherited_enemies
+		if = {
+			limit = { exists = yes }
+			event_target:africa_rsa_continental_coalition = {
+				if = {
+					limit = { has_war_with = PREV }
+					white_peace = PREV
+				}
+				set_truce = { target = PREV days = africa_rsa_settlement_truce_days }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. This bounded faction traversal
+# captures relations created before on_war_relation_added could see the saved
+# loyalist target inside start_civil_war.
+africa_rsa_seed_initial_allied_intervention_ledger = {
+	if = {
+		limit = { has_event_target = africa_rsa_allied_faction_leader }
+		event_target:africa_rsa_allied_faction_leader = {
+			every_faction_member = {
+				limit = {
+					exists = yes
+					has_war_with = event_target:africa_rsa_continental_coalition
+					event_target:africa_rsa_allied_union_government = { NOT = { tag = PREV } }
+				}
+				event_target:africa_rsa_continental_coalition = {
+					if = {
+						limit = { NOT = { is_in_array = { array = africa_rsa_allied_interveners value = PREV } } }
+						add_to_array = { array = africa_rsa_allied_interveners value = PREV }
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_prepare_first_proof = {
+	africa_refresh_bounded_african_target_roster = yes
+	africa_initialize_compound_first_proof_ledger = yes
+	if = {
+		limit = { has_country_flag = africa_first_proof_ledger_active }
+		set_country_flag = africa_first_proof_active
+		set_country_flag = africa_first_proof_pending
+		activate_mission = africa_rsa_first_proof_mission
+	}
+}
+
+# COUNTRY scope on the dynamic revolter inside start_civil_war. The original
+# SAF remains the sole Event 12 host, so host identity markers are explicitly
+# stripped even if the engine copies country state into the revolter.
+africa_rsa_initialize_allied_union_government = {
+	save_global_event_target_as = africa_rsa_allied_union_government
+	set_country_flag = africa_rsa_allied_union_government
+	set_cosmetic_tag = AFRICA_RSA_ALLIED_UNION_GOVERNMENT
+	clr_country_flag = africa_unifier_host
+	clr_country_flag = africa_host_commit_completed
+	clr_country_flag = africa_original_host_preserved
+	clr_country_flag = africa_protection_first_opening
+	clr_country_flag = africa_first_proof_active
+	clr_country_flag = africa_first_proof_pending
+	clr_country_flag = africa_first_proof_ledger_active
+	set_variable = { africa_rsa_settlement_truce_days = constant:africa_rsa_days.settlement_truce }
+	set_variable = { africa_rsa_exile_recovery_delay_days = constant:africa_rsa_days.exile_recovery_delay }
+	set_popularities = {
+		democratic = event_target:africa_rsa_continental_coalition.africa_rsa_prewar_democratic_support
+		communism = event_target:africa_rsa_continental_coalition.africa_rsa_prewar_communist_support
+		fascism = event_target:africa_rsa_continental_coalition.africa_rsa_prewar_fascist_support
+		neutrality = event_target:africa_rsa_continental_coalition.africa_rsa_prewar_neutrality_support
+	}
+}
+
+# Public integration API. COUNTRY scope on the original, player-led SAF host.
+# Callers must satisfy africa_rsa_allied_branch_can_start; the effect contains
+# the same hard gate and performs no substitute split when it fails.
+africa_rsa_start_allied_civil_war = {
+	if = {
+		limit = { africa_rsa_allied_branch_can_start = yes }
+		africa_rsa_snapshot_prewar_context = yes
+		set_global_flag = africa_rsa_branch_used
+		set_global_flag = africa_rsa_civil_war_active
+		set_country_flag = africa_rsa_continental_coalition
+		set_country_flag = africa_rsa_civil_war_origin
+		set_cosmetic_tag = AFRICA_RSA_CONTINENTAL_COALITION
+		set_capital = { state = 275 }
+
+		if = {
+			limit = { has_government = democratic }
+			start_civil_war = {
+				ideology = ROOT
+				ruling_party = communism
+				size = africa_rsa_allied_stockpile_ratio
+				army_ratio = africa_rsa_allied_army_ratio
+				navy_ratio = africa_rsa_allied_navy_ratio
+				air_ratio = africa_rsa_allied_air_ratio
+				capital = 681
+				states = all
+				states_filter = {
+					OR = { state = 681 state = 719 state = 541 state = 893 state = 894 state = 895 }
+				}
+				keep_political_leader = no
+				keep_political_party_members = no
+				africa_rsa_initialize_allied_union_government = yes
+			}
+			set_popularities = {
+				communism = constant:africa_rsa_popularity.coalition_primary
+				democratic = constant:africa_rsa_popularity.coalition_partner
+				neutrality = constant:africa_rsa_popularity.coalition_non_aligned
+				fascism = constant:africa_rsa_popularity.coalition_exclusionary
+			}
+			set_politics = { ruling_party = communism elections_allowed = no }
+		}
+		else = {
+			start_civil_war = {
+				ideology = ROOT
+				ruling_party = democratic
+				size = africa_rsa_allied_stockpile_ratio
+				army_ratio = africa_rsa_allied_army_ratio
+				navy_ratio = africa_rsa_allied_navy_ratio
+				air_ratio = africa_rsa_allied_air_ratio
+				capital = 681
+				states = all
+				states_filter = {
+					OR = { state = 681 state = 719 state = 541 state = 893 state = 894 state = 895 }
+				}
+				keep_political_leader = no
+				keep_political_party_members = no
+				africa_rsa_initialize_allied_union_government = yes
+			}
+			set_popularities = {
+				democratic = constant:africa_rsa_popularity.coalition_primary
+				communism = constant:africa_rsa_popularity.coalition_partner
+				neutrality = constant:africa_rsa_popularity.coalition_non_aligned
+				fascism = constant:africa_rsa_popularity.coalition_exclusionary
+			}
+			set_politics = { ruling_party = democratic elections_allowed = yes }
+		}
+
+		africa_rsa_assign_allied_framework = yes
+		africa_rsa_end_inherited_coalition_wars = yes
+		africa_rsa_seed_initial_allied_intervention_ledger = yes
+		africa_rsa_prepare_first_proof = yes
+		country_event = { id = chaosx.nr12.1200 }
+		event_target:africa_rsa_allied_union_government = { country_event = { id = chaosx.nr12.1201 } }
+		if = {
+			limit = {
+				has_event_target = africa_rsa_original_faction_leader
+				event_target:africa_rsa_original_faction_leader = { NOT = { tag = ROOT } }
+			}
+			event_target:africa_rsa_original_faction_leader = { country_event = { id = chaosx.nr12.1209 } }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Proof actions and intervention ledgers
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_spend_relief_cost = {
+	set_temp_variable = { africa_rsa_negative_relief_pp = constant:africa_rsa_cost.relief_pp }
+	set_temp_variable = { africa_rsa_negative_relief_cp = constant:africa_rsa_cost.relief_cp }
+	set_temp_variable = { africa_rsa_negative_relief_trains = constant:africa_rsa_cost.relief_trains }
+	set_temp_variable = { africa_rsa_negative_relief_support = constant:africa_rsa_cost.relief_support_equipment }
+	multiply_temp_variable = { africa_rsa_negative_relief_pp = constant:africa_rsa_factor.negative_one }
+	multiply_temp_variable = { africa_rsa_negative_relief_cp = constant:africa_rsa_factor.negative_one }
+	multiply_temp_variable = { africa_rsa_negative_relief_trains = constant:africa_rsa_factor.negative_one }
+	multiply_temp_variable = { africa_rsa_negative_relief_support = constant:africa_rsa_factor.negative_one }
+	add_political_power = africa_rsa_negative_relief_pp
+	add_command_power = africa_rsa_negative_relief_cp
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_rsa_negative_relief_trains }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = africa_rsa_negative_relief_support }
+}
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_protect_civilian_corridor_effect = {
+	africa_rsa_spend_relief_cost = yes
+	set_country_flag = africa_rsa_civilians_protected
+	275 = { set_state_flag = africa_rsa_relief_corridor_state }
+	681 = { set_state_flag = africa_rsa_relief_corridor_state }
+	719 = { set_state_flag = africa_rsa_relief_corridor_state }
+}
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_spend_regional_request_cost = {
+	set_temp_variable = { africa_rsa_negative_request_pp = constant:africa_rsa_cost.regional_request_pp }
+	multiply_temp_variable = { africa_rsa_negative_request_pp = constant:africa_rsa_factor.negative_one }
+	add_political_power = africa_rsa_negative_request_pp
+}
+
+# COUNTRY scope on the Continental Coalition. Input is the regular
+# africa_rsa_support_actor target created by the target country's event option.
+africa_rsa_register_regional_response = {
+	if = {
+		limit = {
+			has_event_target = africa_rsa_support_actor
+			event_target:africa_rsa_support_actor = { exists = yes }
+			NOT = { is_in_array = { array = africa_rsa_regional_responses value = event_target:africa_rsa_support_actor } }
+		}
+		add_to_array = { array = africa_rsa_regional_responses value = event_target:africa_rsa_support_actor }
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. Input is the regular
+# africa_rsa_support_actor target created by the target country's event option.
+africa_rsa_register_regional_support = {
+	africa_rsa_register_regional_response = yes
+	if = {
+		limit = {
+			has_event_target = africa_rsa_support_actor
+			event_target:africa_rsa_support_actor = { africa_rsa_is_valid_regional_support_target = yes }
+			NOT = { is_in_array = { array = africa_rsa_external_supporters value = event_target:africa_rsa_support_actor } }
+		}
+		add_to_array = { array = africa_rsa_external_supporters value = event_target:africa_rsa_support_actor }
+		set_variable = { africa_rsa_external_support_count = africa_rsa_external_supporters^num }
+		event_target:africa_rsa_support_actor = { set_country_flag = africa_rsa_regional_supporter }
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. Input is the regular
+# africa_rsa_intervener_to_register target set by on_war_relation_added.
+africa_rsa_register_allied_intervener = {
+	if = {
+		limit = {
+			has_event_target = africa_rsa_intervener_to_register
+			event_target:africa_rsa_intervener_to_register = { exists = yes }
+			NOT = { is_in_array = { array = africa_rsa_allied_interveners value = event_target:africa_rsa_intervener_to_register } }
+		}
+		add_to_array = { array = africa_rsa_allied_interveners value = event_target:africa_rsa_intervener_to_register }
+		event_target:africa_rsa_intervener_to_register = { set_country_flag = africa_rsa_allied_intervener }
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. Input is the regular
+# africa_rsa_intervener_to_register target set by on_war_relation_added.
+africa_rsa_register_coalition_intervener = {
+	if = {
+		limit = {
+			has_event_target = africa_rsa_intervener_to_register
+			event_target:africa_rsa_intervener_to_register = { exists = yes }
+			NOT = { is_in_array = { array = africa_rsa_coalition_interveners value = event_target:africa_rsa_intervener_to_register } }
+		}
+		add_to_array = { array = africa_rsa_coalition_interveners value = event_target:africa_rsa_intervener_to_register }
+		event_target:africa_rsa_intervener_to_register = { set_country_flag = africa_rsa_coalition_intervener }
+	}
+}
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_complete_civil_war_first_proof = {
+	if = {
+		limit = {
+			africa_rsa_civil_war_corridor_is_secure = yes
+			NOT = { has_country_flag = africa_rsa_civil_war_first_proof_succeeded }
+		}
+		set_country_flag = africa_rsa_civil_war_first_proof_succeeded
+		set_country_flag = africa_rsa_civilian_rail_port_industrial_proof
+		set_country_flag = africa_first_proof_ledger_ready
+		add_stability = constant:africa_rsa_effect.proof_stability
+		add_war_support = constant:africa_rsa_effect.proof_war_support
+		africa_consume_first_proof_ledger_ready = yes
+	}
+}
+
+# COUNTRY scope on the Continental Coalition.
+africa_rsa_fail_civil_war_first_proof = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_rsa_civil_war_first_proof_succeeded } }
+		set_country_flag = africa_rsa_civil_war_first_proof_failed
+		set_country_flag = africa_first_proof_failed
+		clr_country_flag = africa_first_proof_active
+		clr_country_flag = africa_first_proof_pending
+		if = {
+			limit = { has_country_flag = africa_first_proof_ledger_active }
+			africa_cleanup_compound_first_proof_ledger = yes
+		}
+	}
+}
+
+# COUNTRY scope on the victorious Continental Coalition.
+africa_rsa_check_postwar_first_proof = {
+	if = {
+		limit = { africa_rsa_postwar_first_proof_is_ready = yes }
+		set_country_flag = africa_rsa_postwar_first_proof_completed
+		set_country_flag = africa_first_proof_failed
+		set_country_flag = africa_first_proof_recovery_partial_ready
+		africa_consume_first_proof_recovery_ready = yes
+	}
+}
+
+# COUNTRY scope on the victorious Continental Coalition.
+africa_rsa_enact_citizenship_land_milestone_effect = {
+	set_temp_variable = { africa_rsa_negative_citizenship_pp = constant:africa_rsa_cost.citizenship_pp }
+	set_temp_variable = { africa_rsa_negative_citizenship_stability = constant:africa_rsa_cost.citizenship_stability }
+	multiply_temp_variable = { africa_rsa_negative_citizenship_pp = constant:africa_rsa_factor.negative_one }
+	multiply_temp_variable = { africa_rsa_negative_citizenship_stability = constant:africa_rsa_factor.negative_one }
+	add_political_power = africa_rsa_negative_citizenship_pp
+	add_stability = africa_rsa_negative_citizenship_stability
+	set_country_flag = africa_rsa_citizenship_land_milestone
+	africa_rsa_check_postwar_first_proof = yes
+}
+
+# COUNTRY scope on the victorious Continental Coalition. FROM is the chosen
+# neighboring sovereign target from the targeted decision.
+africa_rsa_guarantee_neighbor_sovereignty_effect = {
+	set_temp_variable = { africa_rsa_negative_guarantee_pp = constant:africa_rsa_cost.sovereignty_guarantee_pp }
+	set_temp_variable = { africa_rsa_negative_guarantee_cp = constant:africa_rsa_cost.sovereignty_guarantee_cp }
+	multiply_temp_variable = { africa_rsa_negative_guarantee_pp = constant:africa_rsa_factor.negative_one }
+	multiply_temp_variable = { africa_rsa_negative_guarantee_cp = constant:africa_rsa_factor.negative_one }
+	add_political_power = africa_rsa_negative_guarantee_pp
+	add_command_power = africa_rsa_negative_guarantee_cp
+	give_guarantee = FROM
+	set_country_flag = africa_rsa_neighbor_sovereignty_guaranteed
+	FROM = { set_country_flag = africa_rsa_sovereignty_guarantee_recipient }
+	africa_rsa_check_postwar_first_proof = yes
+}
+
+# ---------------------------------------------------------------------------
+# Civil-war end snapshots and pairwise settlements
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the capitulated Allied Union Government. This is only a
+# lifecycle bridge: it removes faction and subject protection so the engine can
+# fire its normal before-annexation and civil-war-end hooks. It does not choose
+# a winner, make peace, annex territory, or execute any settlement effect.
+africa_rsa_release_capitulated_allied_union = {
+	set_country_flag = africa_rsa_capitulation_bridge_used
+	if = {
+		limit = { is_faction_leader = yes }
+		set_temp_variable = { africa_rsa_replacement_leader_selected = constant:africa_rsa_count.none }
+		event_target:africa_rsa_continental_coalition = {
+			for_each_scope_loop = {
+				array = africa_rsa_allied_interveners
+				if = {
+					limit = {
+						check_variable = { africa_rsa_replacement_leader_selected = constant:africa_rsa_count.none }
+						exists = yes
+						NOT = { has_capitulated = yes }
+						is_in_faction_with = ROOT
+					}
+					save_event_target_as = africa_rsa_replacement_allied_faction_leader
+					set_temp_variable = { africa_rsa_replacement_leader_selected = constant:africa_rsa_count.one }
+				}
+			}
+		}
+		if = {
+			limit = { has_event_target = africa_rsa_replacement_allied_faction_leader }
+			event_target:africa_rsa_replacement_allied_faction_leader = {
+				set_faction_leader = yes
+				save_global_event_target_as = africa_rsa_allied_faction_leader
+			}
+		}
+	}
+	else = {
+		faction_leader = { save_global_event_target_as = africa_rsa_allied_faction_leader }
+	}
+	if = {
+		limit = { is_subject = yes }
+		overlord = {
+			set_autonomy = {
+				target = ROOT
+				autonomy_state = autonomy_free
+				end_wars = no
+				end_civil_wars = no
+			}
+		}
+	}
+	if = {
+		limit = { is_in_faction = yes }
+		leave_faction = yes
+	}
+}
+
+# COUNTRY scope on the coalition winner. FROM is the loyalist loser and still
+# exists. This supplements the live intervention ledger with actual old-faction
+# belligerents immediately before annexation.
+africa_rsa_prepare_continental_victory = {
+	set_country_flag = africa_rsa_continental_victory_pending
+	if = {
+		limit = { FROM = { is_in_faction = yes } }
+		FROM = {
+			faction_leader = { save_global_event_target_as = africa_rsa_allied_faction_leader }
+		}
+	}
+	if = {
+		limit = { NOT = { has_country_flag = africa_rsa_civil_war_first_proof_succeeded } }
+		africa_rsa_fail_civil_war_first_proof = yes
+	}
+	if = {
+		limit = { has_event_target = africa_rsa_allied_faction_leader }
+		event_target:africa_rsa_allied_faction_leader = {
+			every_faction_member = {
+				limit = {
+					exists = yes
+					has_war_with = event_target:africa_rsa_continental_coalition
+					event_target:africa_rsa_allied_union_government = { NOT = { tag = PREV } }
+				}
+				event_target:africa_rsa_continental_coalition = {
+					if = {
+						limit = { NOT = { is_in_array = { array = africa_rsa_allied_interveners value = PREV } } }
+						add_to_array = { array = africa_rsa_allied_interveners value = PREV }
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the loyalist winner. FROM is the coalition loser and still
+# exists. The supporter ledger is copied before annexation so the winner can
+# settle each civil-war-related relation in on_civil_war_end.
+africa_rsa_copy_coalition_intervention_ledger_to_loyalist = {
+	clear_array = africa_rsa_defeated_coalition_interveners
+	FROM = {
+		for_each_scope_loop = {
+			array = africa_rsa_coalition_interveners
+			ROOT = {
+				if = {
+					limit = { NOT = { is_in_array = { array = africa_rsa_defeated_coalition_interveners value = PREV } } }
+					add_to_array = { array = africa_rsa_defeated_coalition_interveners value = PREV }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the old coalition host before the global host target moves.
+africa_rsa_cleanup_old_host_runtime = {
+	africa_clear_selected_country_target = yes
+	clear_array = africa_rsa_actions_to_cleanup
+	clear_array = africa_rsa_prewar_exile_patron_candidates
+	for_each_scope_loop = {
+		array = africa_active_action_targets
+		event_target:africa_rsa_continental_coalition = {
+			add_to_array = { array = africa_rsa_actions_to_cleanup value = PREV }
+		}
+	}
+	for_each_scope_loop = {
+		array = africa_rsa_actions_to_cleanup
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = africa_action_record_active
+			}
+			africa_cleanup_action = yes
+		}
+	}
+	clear_array = africa_rsa_actions_to_cleanup
+	clear_array = africa_active_action_targets
+	clear_array = africa_active_action_short_targets
+	clear_array = africa_active_action_medium_targets
+	clear_array = africa_active_action_long_targets
+	clear_array = africa_active_action_epic_targets
+	clear_array = africa_active_action_states
+	clear_array = africa_selected_action_state_candidates
+	clear_array = africa_selected_action_state_targets
+	if = {
+		limit = { has_country_flag = africa_first_proof_ledger_active }
+		africa_cleanup_compound_first_proof_ledger = yes
+	}
+}
+
+# COUNTRY scope on the suppressed original host while africa_host still points
+# to it. This is used only by the explicit no-patron terminal: negotiated
+# constitutional subjects are released, temporary peace missions are removed,
+# and all durable Event 12 indexes are emptied before the global target clears.
+africa_rsa_cleanup_terminal_host_runtime = {
+	for_each_scope_loop = {
+		array = africa_relationship_countries
+		limit = {
+			exists = yes
+			africa_is_charter_subject_of_current_host = yes
+		}
+		africa_release_member_from_continental_subject_status = yes
+	}
+	for_each_scope_loop = {
+		array = africa_peace_exemption_countries
+		limit = { exists = yes }
+		event_target:africa_host = {
+			remove_targeted_decision = {
+				target = PREV
+				decision = mission_africa_complete_continental_peace_exemption
+			}
+		}
+		for_each_scope_loop = {
+			array = africa_continental_peace_exemption_states
+			clr_state_flag = africa_continental_peace_exemption_active
+		}
+		clear_array = africa_continental_peace_exemption_states
+		clr_country_flag = africa_continental_peace_completion_mission_active
+		clr_country_flag = africa_continental_peace_terms_accepted
+	}
+	clear_array = africa_relationship_countries
+	clear_array = africa_protected_countries
+	clear_array = africa_associate_countries
+	clear_array = africa_chartered_countries
+	clear_array = africa_autonomous_federal_countries
+	clear_array = africa_integrated_countries
+	clear_array = africa_resistant_countries
+	clear_array = africa_leaving_countries
+	clear_array = africa_rival_bloc_countries
+	clear_array = africa_occupied_settlement_countries
+	clear_array = africa_selected_targets
+	clear_array = africa_host_action_targets
+	clear_array = africa_active_dossiers
+	clear_array = africa_living_core_projects
+	clear_array = africa_active_congress_regions
+	clear_array = africa_active_obligations
+	clear_array = africa_warning_ledger
+	clear_array = africa_peace_exemption_countries
+	clear_array = africa_peace_exemption_states
+	clr_country_flag = africa_unifier_host
+	clr_country_flag = africa_host_commit_completed
+}
+
+# COUNTRY scope on the exile custodian; FROM is the suppressed original host.
+# Route-origin flags are constitutional history rather than completed-focus
+# state, so they travel with the constitution while operational progress does
+# not. Opening-profile flags preserve the selected-host identity contract.
+africa_rsa_restore_transferred_host_flags = {
+	clr_country_flag = africa_protection_first_opening
+	clr_country_flag = africa_host_origin_was_compact
+	clr_country_flag = africa_narrow_opening_region
+	clr_country_flag = africa_emergency_diplomatic_leverage
+	clr_country_flag = africa_neighbor_suspicion_active
+	clr_country_flag = africa_constitutional_route_committed
+	clr_country_flag = africa_origin_route_federal_union
+	clr_country_flag = africa_origin_route_continental_republic
+	clr_country_flag = africa_origin_route_council_of_crowns
+	clr_country_flag = africa_origin_route_peoples_union
+	clr_country_flag = africa_origin_route_military_continentalism
+	clr_country_flag = africa_origin_route_continental_confederation
+	clr_country_flag = africa_covenant_route_revealed
+	clr_country_flag = africa_covenant_route_committed
+
+	if = { limit = { FROM = { has_country_flag = africa_protection_first_opening } } set_country_flag = africa_protection_first_opening }
+	if = { limit = { FROM = { has_country_flag = africa_host_origin_was_compact } } set_country_flag = africa_host_origin_was_compact }
+	if = { limit = { FROM = { has_country_flag = africa_narrow_opening_region } } set_country_flag = africa_narrow_opening_region }
+	if = { limit = { FROM = { has_country_flag = africa_emergency_diplomatic_leverage } } set_country_flag = africa_emergency_diplomatic_leverage }
+	if = { limit = { FROM = { has_country_flag = africa_neighbor_suspicion_active } } set_country_flag = africa_neighbor_suspicion_active }
+	if = { limit = { FROM = { has_country_flag = africa_constitutional_route_committed } } set_country_flag = africa_constitutional_route_committed }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_federal_union } } set_country_flag = africa_origin_route_federal_union }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_continental_republic } } set_country_flag = africa_origin_route_continental_republic }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_council_of_crowns } } set_country_flag = africa_origin_route_council_of_crowns }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_peoples_union } } set_country_flag = africa_origin_route_peoples_union }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_military_continentalism } } set_country_flag = africa_origin_route_military_continentalism }
+	if = { limit = { FROM = { has_country_flag = africa_origin_route_continental_confederation } } set_country_flag = africa_origin_route_continental_confederation }
+	if = { limit = { FROM = { has_country_flag = africa_covenant_route_revealed } } set_country_flag = africa_covenant_route_revealed }
+	if = { limit = { FROM = { has_country_flag = africa_covenant_route_committed } } set_country_flag = africa_covenant_route_committed }
+}
+
+# COUNTRY scope remains the loyalist winner; FROM is the old coalition host.
+# This transfers Event 12 to the one saved African patron while preserving the
+# original host ID, original playbook, generation lineage, relationships, and
+# continental state. Active actions are deliberately closed before this call.
+africa_rsa_transfer_host_to_exile_patron = {
+	FROM = { africa_rsa_cleanup_old_host_runtime = yes }
+	FROM = {
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			limit = { africa_is_charter_subject_of_current_host = yes }
+			africa_release_member_from_continental_subject_status = yes
+		}
+	}
+	event_target:africa_rsa_exile_patron = {
+		africa_clear_selected_country_target = yes
+		clear_array = africa_rsa_actions_to_cleanup
+		clear_array = africa_relationship_countries
+		clear_array = africa_protected_countries
+		clear_array = africa_associate_countries
+		clear_array = africa_chartered_countries
+		clear_array = africa_autonomous_federal_countries
+		clear_array = africa_integrated_countries
+		clear_array = africa_resistant_countries
+		clear_array = africa_leaving_countries
+		clear_array = africa_rival_bloc_countries
+		clear_array = africa_occupied_settlement_countries
+		clear_array = africa_selected_targets
+		clear_array = africa_host_action_targets
+		clear_array = africa_active_action_targets
+		clear_array = africa_active_action_short_targets
+		clear_array = africa_active_action_medium_targets
+		clear_array = africa_active_action_long_targets
+		clear_array = africa_active_action_epic_targets
+		clear_array = africa_active_action_states
+		clear_array = africa_selected_action_state_candidates
+		clear_array = africa_selected_action_state_targets
+		clear_array = africa_active_dossiers
+		clear_array = africa_living_core_projects
+		clear_array = africa_active_congress_regions
+		clear_array = africa_active_obligations
+		clear_array = africa_warning_ledger
+		clear_array = africa_peace_exemption_countries
+		clear_array = africa_peace_exemption_states
+	}
+
+	FROM = {
+		for_each_scope_loop = { array = africa_relationship_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_relationship_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_protected_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_protected_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_associate_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_associate_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_chartered_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_chartered_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_autonomous_federal_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_integrated_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_integrated_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_resistant_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_resistant_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_leaving_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_leaving_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_rival_bloc_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_rival_bloc_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_occupied_settlement_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_selected_targets limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_selected_targets value = PREV } } }
+		for_each_scope_loop = { array = africa_peace_exemption_countries limit = { exists = yes } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_peace_exemption_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_peace_exemption_states event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_peace_exemption_states value = PREV } } }
+	}
+
+	FROM = {
+		clr_country_flag = africa_unifier_host
+		clr_country_flag = africa_host_commit_completed
+		set_country_flag = africa_rsa_suppressed_original_host
+	}
+	event_target:africa_rsa_exile_patron = { africa_achievement_register_valid_host_successor = yes }
+	clear_global_event_target = africa_host
+	event_target:africa_rsa_exile_patron = {
+		save_global_event_target_as = africa_host
+		set_country_flag = africa_unifier_host
+		set_country_flag = africa_host_commit_completed
+		set_country_flag = africa_original_host_preserved
+		set_country_flag = africa_rsa_exile_custodian
+		set_country_flag = africa_rsa_suppressed_route_received
+		set_country_flag = africa_rsa_civil_war_first_proof_failed
+		set_country_flag = africa_first_proof_pending
+		set_country_flag = africa_first_proof_failed
+		set_variable = { africa_origin_host_id = FROM.africa_origin_host_id }
+		set_variable = { africa_host_generation = FROM.africa_host_generation }
+		add_to_variable = { africa_host_generation = constant:africa_rsa_count.one }
+		set_variable = { africa_origin_host_playbook = FROM.africa_origin_host_playbook }
+		set_variable = { africa_host_playbook = FROM.africa_host_playbook }
+		set_variable = { africa_host_depth = FROM.africa_host_depth }
+		set_variable = { africa_regional_overlay = FROM.africa_regional_overlay }
+		set_variable = { africa_first_proof_type = FROM.africa_first_proof_type }
+		set_variable = { africa_host_problem = FROM.africa_host_problem }
+		set_variable = { africa_host_leverage = FROM.africa_host_leverage }
+		set_variable = { africa_host_rival_risk = FROM.africa_host_rival_risk }
+		set_variable = { africa_host_support_class = FROM.africa_host_support_class }
+		set_variable = { africa_constitution = FROM.africa_constitution }
+		africa_rsa_restore_transferred_host_flags = yes
+		if = {
+			limit = { FROM = { has_country_flag = africa_constitutional_payoff_axes_active } }
+			set_country_flag = africa_constitutional_payoff_axes_active
+			set_variable = { africa_constitutional_representation = FROM.africa_constitutional_representation }
+			set_variable = { africa_constitutional_executive_power = FROM.africa_constitutional_executive_power }
+			set_variable = { africa_constitutional_resource_governance = FROM.africa_constitutional_resource_governance }
+			set_variable = { africa_constitutional_command_integration = FROM.africa_constitutional_command_integration }
+			set_variable = { africa_constitutional_withdrawal_protection = FROM.africa_constitutional_withdrawal_protection }
+			set_variable = { africa_constitutional_crisis_authority = FROM.africa_constitutional_crisis_authority }
+			set_variable = { africa_constitutional_post_unification_rule = FROM.africa_constitutional_post_unification_rule }
+		}
+		set_variable = { africa_current_phase = constant:africa_action_phase.opening }
+		set_variable = { africa_peace_exemption_days = constant:africa_continental_settlement.peace_exemption_days }
+		set_variable = { africa_selected_action_family = constant:africa_action_family.protection }
+		set_variable = { africa_selected_action_id = constant:africa_action.none }
+		set_variable = { africa_action_generation = FROM.africa_action_generation }
+		add_to_variable = { africa_action_generation = constant:africa_rsa_count.one }
+		set_variable = { africa_action_quote_generation = FROM.africa_action_quote_generation }
+		set_variable = { africa_action_short_days = constant:africa_action_duration.short_days }
+		set_variable = { africa_action_medium_days = constant:africa_action_duration.medium_days }
+		set_variable = { africa_action_long_days = constant:africa_action_duration.long_days }
+		set_variable = { africa_action_epic_days = constant:africa_action_duration.epic_days }
+		set_variable = { africa_active_action_count = constant:africa_rsa_count.none }
+		set_variable = { africa_active_action_cap = constant:africa_capacity.opening_active_action_cap }
+		set_variable = { africa_selected_target_cap = constant:africa_capacity.opening_selected_target_cap }
+		set_variable = { africa_dossier_cap = constant:africa_capacity.opening_dossier_cap }
+		set_variable = { africa_living_core_project_cap = constant:africa_capacity.opening_project_cap }
+		set_variable = { africa_civilian_capacity_available = num_of_factories }
+		add_to_variable = { africa_civilian_capacity_available = constant:africa_action_capacity.initial_civilian_capacity }
+		clamp_variable = { var = africa_civilian_capacity_available min = constant:africa_rsa_count.one max = constant:africa_action_capacity.maximum_civilian_capacity }
+		set_variable = { africa_intelligence_capacity_available = constant:africa_action_capacity.initial_intelligence_capacity }
+		add_to_array = { array = africa_host_action_targets value = THIS }
+		set_variable = { africa_charter_authority = FROM.africa_charter_authority }
+		set_variable = { africa_continental_reach = FROM.africa_continental_reach }
+		set_variable = { africa_integration_burden = FROM.africa_integration_burden }
+		set_variable = { africa_colonial_pressure = FROM.africa_colonial_pressure }
+		set_variable = { africa_diaspora_settlement_capacity = FROM.africa_diaspora_settlement_capacity }
+		set_variable = { africa_diaspora_trust = FROM.africa_diaspora_trust }
+		set_variable = { africa_common_defence_stockpile = FROM.africa_common_defence_stockpile }
+		set_variable = { africa_member_representation_balance = FROM.africa_member_representation_balance }
+		set_variable = { africa_restoration_legitimacy = FROM.africa_restoration_legitimacy }
+		set_variable = { africa_ecological_wrath = FROM.africa_ecological_wrath }
+		set_variable = { africa_continental_war_readiness = FROM.africa_continental_war_readiness }
+		set_variable = { africa_consent_commitment = FROM.africa_consent_commitment }
+		set_variable = { africa_central_capacity = FROM.africa_central_capacity }
+		set_variable = { africa_regional_equality = FROM.africa_regional_equality }
+		set_variable = { africa_emergency_rule_debt = FROM.africa_emergency_rule_debt }
+		add_to_variable = { africa_charter_authority = constant:africa_rsa_effect.exile_authority_loss }
+		add_to_variable = { africa_integration_burden = constant:africa_rsa_effect.exile_burden }
+		africa_initialize_compound_first_proof_ledger = yes
+		set_country_flag = africa_first_proof_pending
+		set_country_flag = africa_first_proof_failed
+		set_variable = { africa_rsa_exile_recovery_delay_days = constant:africa_rsa_days.exile_recovery_delay }
+		africa_clamp_host_values = yes
+		africa_load_continental_focus_tree = yes
+		africa_refresh_continental_focus_tree_layout = yes
+		africa_schedule_next_evolution_clock = yes
+	}
+	event_target:africa_rsa_exile_patron = {
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			set_variable = { africa_member_host_generation = event_target:africa_rsa_exile_patron.africa_host_generation }
+			africa_apply_member_autonomy_for_current_relationship = yes
+		}
+		for_each_scope_loop = {
+			array = africa_peace_exemption_countries
+			set_variable = { africa_member_host_generation = event_target:africa_rsa_exile_patron.africa_host_generation }
+		}
+	}
+	set_global_flag = africa_rsa_recovery_used
+}
+
+# COUNTRY scope on the loyalist winner; FROM is the coalition loser.
+africa_rsa_prepare_loyalist_victory = {
+	set_country_flag = africa_rsa_loyalist_victory_pending
+	africa_rsa_copy_coalition_intervention_ledger_to_loyalist = yes
+	FROM = { africa_rsa_select_exile_patron = yes }
+	if = {
+		limit = {
+			has_event_target = africa_rsa_exile_patron
+			event_target:africa_rsa_exile_patron = { africa_rsa_is_valid_exile_patron = yes }
+		}
+		africa_rsa_transfer_host_to_exile_patron = yes
+	}
+	else = {
+		FROM = { africa_rsa_cleanup_old_host_runtime = yes }
+		FROM = { africa_rsa_cleanup_terminal_host_runtime = yes }
+		set_country_flag = africa_rsa_no_exile_patron
+		set_global_flag = africa_rsa_exile_recovery_blocked_no_patron
+		clear_global_event_target = africa_host
+		clr_global_flag = africa_event_active
+		set_global_flag = africa_event_resolved
+	}
+	FROM = {
+		for_each_scope_loop = {
+			array = africa_rsa_regional_responses
+			clr_country_flag = africa_rsa_regional_supporter
+			clr_country_flag = africa_rsa_regional_support_refused
+		}
+		for_each_scope_loop = { array = africa_rsa_allied_interveners clr_country_flag = africa_rsa_allied_intervener }
+		for_each_scope_loop = { array = africa_rsa_coalition_interveners clr_country_flag = africa_rsa_coalition_intervener }
+		clear_array = africa_rsa_regional_responses
+		clear_array = africa_rsa_external_supporters
+		clear_array = africa_rsa_allied_interveners
+		clear_array = africa_rsa_coalition_interveners
+		275 = { clr_state_flag = africa_rsa_relief_corridor_state }
+		681 = { clr_state_flag = africa_rsa_relief_corridor_state }
+		719 = { clr_state_flag = africa_rsa_relief_corridor_state }
+	}
+}
+
+# COUNTRY scope on the coalition winner in on_civil_war_end.
+africa_rsa_settle_allied_interveners = {
+	for_each_scope_loop = {
+		array = africa_rsa_allied_interveners
+		if = {
+			limit = { exists = yes }
+			event_target:africa_rsa_continental_coalition = {
+				if = {
+					limit = { has_war_with = PREV }
+					white_peace = PREV
+				}
+				set_truce = { target = PREV days = africa_rsa_settlement_truce_days }
+			}
+			set_country_flag = africa_rsa_allied_settlement_party
+		}
+	}
+}
+
+# COUNTRY scope on the loyalist winner in on_civil_war_end.
+africa_rsa_settle_coalition_interveners = {
+	for_each_scope_loop = {
+		array = africa_rsa_defeated_coalition_interveners
+		if = {
+			limit = { exists = yes }
+			ROOT = {
+				if = {
+					limit = { has_war_with = PREV }
+					white_peace = PREV
+				}
+				set_truce = { target = PREV days = africa_rsa_settlement_truce_days }
+			}
+			set_country_flag = africa_rsa_coalition_settlement_party
+			clr_country_flag = africa_rsa_coalition_intervener
+		}
+	}
+}
+
+# COUNTRY scope on the coalition winner.
+africa_rsa_restore_original_capital = {
+	if = {
+		limit = { has_event_target = africa_rsa_original_capital_state }
+		event_target:africa_rsa_original_capital_state = {
+			if = {
+				limit = { is_owned_by = ROOT }
+				ROOT = { set_capital = { state = PREV } }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the coalition winner.
+africa_rsa_resolve_continental_victory = {
+	clr_country_flag = africa_rsa_continental_victory_pending
+	africa_rsa_settle_allied_interveners = yes
+	africa_rsa_restore_original_capital = yes
+	clr_global_flag = africa_rsa_civil_war_active
+	set_global_flag = africa_rsa_settlement_pending
+	set_country_flag = africa_rsa_continental_victory
+	country_event = { id = chaosx.nr12.1204 }
+}
+
+# COUNTRY scope on the loyalist winner. Removes every transient value that the
+# engine may have copied from the original country when it created the revolter.
+africa_rsa_cleanup_loyalist_runtime = {
+	clear_array = africa_rsa_inherited_enemies
+	clear_array = africa_rsa_allied_interveners
+	clear_array = africa_rsa_coalition_interveners
+	clear_array = africa_rsa_external_supporters
+	clear_array = africa_rsa_regional_responses
+	clear_array = africa_rsa_prewar_exile_patron_candidates
+	clear_array = africa_rsa_defeated_coalition_interveners
+	clear_variable = africa_rsa_external_support_count
+	clear_variable = africa_rsa_prewar_democratic_support
+	clear_variable = africa_rsa_prewar_communist_support
+	clear_variable = africa_rsa_prewar_fascist_support
+	clear_variable = africa_rsa_prewar_neutrality_support
+	clear_variable = africa_rsa_allied_stockpile_ratio
+	clear_variable = africa_rsa_allied_army_ratio
+	clear_variable = africa_rsa_allied_navy_ratio
+	clear_variable = africa_rsa_allied_air_ratio
+	clear_variable = africa_rsa_first_proof_days
+	clear_variable = africa_rsa_settlement_truce_days
+	clear_variable = africa_rsa_exile_recovery_delay_days
+	africa_rsa_clear_autonomy_snapshot = yes
+	clr_country_flag = africa_rsa_was_faction_leader
+	clr_country_flag = africa_rsa_civil_war_origin
+	clr_country_flag = africa_rsa_allied_framework_confirmed
+}
+
+# COUNTRY scope on the loyalist winner.
+africa_rsa_resolve_loyalist_victory = {
+	clr_country_flag = africa_rsa_loyalist_victory_pending
+	africa_rsa_settle_coalition_interveners = yes
+	clr_global_flag = africa_rsa_civil_war_active
+	set_global_flag = africa_rsa_settlement_completed
+	set_country_flag = africa_rsa_allied_victory
+	set_country_flag = africa_rsa_allied_settlement_complete
+	country_event = { id = chaosx.nr12.1205 }
+	if = {
+		limit = { has_event_target = africa_rsa_exile_patron }
+		event_target:africa_rsa_exile_patron = {
+			set_country_flag = africa_rsa_allied_settlement_complete
+			country_event = { id = chaosx.nr12.1206 days = africa_rsa_exile_recovery_delay_days }
+		}
+	}
+	else = { country_event = { id = chaosx.nr12.1208 } }
+	if = {
+		limit = { has_event_target = africa_rsa_original_faction_leader }
+		event_target:africa_rsa_original_faction_leader = {
+			clr_country_flag = africa_rsa_allied_leader_material_support
+			clr_country_flag = africa_rsa_allied_leader_mediation
+			clr_country_flag = africa_rsa_allied_leader_distanced
+		}
+	}
+	if = {
+		limit = { has_event_target = africa_rsa_allied_faction_leader }
+		event_target:africa_rsa_allied_faction_leader = {
+			clr_country_flag = africa_rsa_allied_leader_material_support
+			clr_country_flag = africa_rsa_allied_leader_mediation
+			clr_country_flag = africa_rsa_allied_leader_distanced
+		}
+	}
+	africa_rsa_cleanup_loyalist_runtime = yes
+	clear_global_event_target = africa_rsa_continental_coalition
+	clear_global_event_target = africa_rsa_allied_union_government
+	clear_global_event_target = africa_rsa_original_capital_state
+	clear_global_event_target = africa_rsa_original_overlord
+	clear_global_event_target = africa_rsa_original_faction_leader
+	clear_global_event_target = africa_rsa_allied_faction_leader
+	clear_global_event_target = africa_rsa_exile_patron
+}
+
+# ---------------------------------------------------------------------------
+# Continental settlement choices and exile recovery
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the coalition winner. Historical settlement flags remain;
+# transient war, cost, state-proof, target, and participant data are removed.
+africa_rsa_cleanup_continental_crisis = {
+	if = {
+		limit = { has_active_mission = africa_rsa_first_proof_mission }
+		remove_mission = africa_rsa_first_proof_mission
+	}
+	for_each_scope_loop = {
+		array = africa_rsa_regional_responses
+		clr_country_flag = africa_rsa_regional_supporter
+		clr_country_flag = africa_rsa_regional_support_refused
+	}
+	for_each_scope_loop = {
+		array = africa_rsa_allied_interveners
+		clr_country_flag = africa_rsa_allied_intervener
+	}
+	for_each_scope_loop = {
+		array = africa_rsa_coalition_interveners
+		clr_country_flag = africa_rsa_coalition_intervener
+	}
+	275 = { clr_state_flag = africa_rsa_relief_corridor_state }
+	681 = { clr_state_flag = africa_rsa_relief_corridor_state }
+	719 = { clr_state_flag = africa_rsa_relief_corridor_state }
+	clear_array = africa_rsa_inherited_enemies
+	clear_array = africa_rsa_allied_interveners
+	clear_array = africa_rsa_coalition_interveners
+	clear_array = africa_rsa_external_supporters
+	clear_array = africa_rsa_regional_responses
+	clear_array = africa_rsa_prewar_exile_patron_candidates
+	clear_variable = africa_rsa_external_support_count
+	clear_variable = africa_rsa_prewar_democratic_support
+	clear_variable = africa_rsa_prewar_communist_support
+	clear_variable = africa_rsa_prewar_fascist_support
+	clear_variable = africa_rsa_prewar_neutrality_support
+	clear_variable = africa_rsa_allied_stockpile_ratio
+	clear_variable = africa_rsa_allied_army_ratio
+	clear_variable = africa_rsa_allied_navy_ratio
+	clear_variable = africa_rsa_allied_air_ratio
+	clear_variable = africa_rsa_first_proof_days
+	clear_variable = africa_rsa_exile_recovery_delay_days
+	africa_rsa_clear_autonomy_snapshot = yes
+	clr_country_flag = africa_rsa_was_faction_leader
+	clr_country_flag = africa_rsa_civil_war_origin
+	clr_country_flag = africa_rsa_allied_framework_confirmed
+	clr_global_flag = africa_rsa_civil_war_active
+	clr_global_flag = africa_rsa_settlement_pending
+	set_global_flag = africa_rsa_settlement_completed
+	set_country_flag = africa_rsa_allied_settlement_complete
+	clear_global_event_target = africa_rsa_continental_coalition
+	clear_global_event_target = africa_rsa_allied_union_government
+	clear_global_event_target = africa_rsa_original_capital_state
+	clear_global_event_target = africa_rsa_original_overlord
+	clear_global_event_target = africa_rsa_exile_patron
+	if = {
+		limit = { has_event_target = africa_rsa_original_faction_leader }
+		event_target:africa_rsa_original_faction_leader = {
+			clr_country_flag = africa_rsa_allied_leader_material_support
+			clr_country_flag = africa_rsa_allied_leader_mediation
+			clr_country_flag = africa_rsa_allied_leader_distanced
+		}
+	}
+	clear_global_event_target = africa_rsa_original_faction_leader
+	if = {
+		limit = { NOT = { has_country_flag = africa_rsa_temporary_allied_base_lease } }
+		clear_global_event_target = africa_rsa_allied_faction_leader
+		clear_variable = africa_rsa_settlement_truce_days
+	}
+}
+
+# COUNTRY scope on the coalition winner.
+africa_rsa_settle_cape_convention = {
+	set_country_flag = africa_rsa_cape_convention
+	681 = { set_state_flag = africa_rsa_cape_convention_state }
+	719 = { set_state_flag = africa_rsa_cape_convention_state }
+	add_to_variable = { africa_charter_authority = constant:africa_rsa_effect.settlement_authority }
+	add_to_variable = { africa_continental_reach = constant:africa_rsa_effect.settlement_reach }
+	africa_clamp_host_values = yes
+	africa_rsa_cleanup_continental_crisis = yes
+}
+
+# COUNTRY scope on the coalition winner.
+africa_rsa_settle_temporary_base_lease = {
+	set_country_flag = africa_rsa_temporary_allied_base_lease
+	681 = { set_state_flag = africa_rsa_temporary_allied_base_state }
+	719 = { set_state_flag = africa_rsa_temporary_allied_base_state }
+	add_to_variable = { africa_integration_burden = constant:africa_rsa_effect.settlement_burden }
+	add_to_variable = { africa_colonial_pressure = constant:africa_rsa_effect.settlement_pressure }
+	if = {
+		limit = {
+			has_event_target = africa_rsa_allied_faction_leader
+			event_target:africa_rsa_allied_faction_leader = {
+				exists = yes
+				NOT = { tag = ROOT }
+				NOT = { has_capitulated = yes }
+				is_faction_leader = yes
+				NOT = { has_military_access_to = ROOT }
+			}
+		}
+		give_military_access = event_target:africa_rsa_allied_faction_leader
+		set_country_flag = africa_rsa_base_access_created
+	}
+	country_event = { id = chaosx.nr12.1207 days = africa_rsa_settlement_truce_days }
+	africa_clamp_host_values = yes
+	africa_rsa_cleanup_continental_crisis = yes
+}
+
+# COUNTRY scope on the coalition winner.
+africa_rsa_settle_closed_ports = {
+	set_country_flag = africa_rsa_closed_foreign_bases
+	681 = { set_state_flag = africa_rsa_closed_foreign_base_state }
+	719 = { set_state_flag = africa_rsa_closed_foreign_base_state }
+	add_to_variable = { africa_charter_authority = constant:africa_rsa_effect.settlement_authority }
+	add_to_variable = { africa_colonial_pressure = constant:africa_rsa_effect.settlement_pressure }
+	africa_clamp_host_values = yes
+	africa_rsa_cleanup_continental_crisis = yes
+}
+
+# COUNTRY scope on the coalition winner. Safe for the scheduled expiry event
+# and the early-termination decision to call independently.
+africa_rsa_end_temporary_base_lease = {
+	if = {
+		limit = {
+			has_country_flag = africa_rsa_base_access_created
+			has_event_target = africa_rsa_allied_faction_leader
+			event_target:africa_rsa_allied_faction_leader = { exists = yes }
+		}
+		diplomatic_relation = {
+			country = event_target:africa_rsa_allied_faction_leader
+			relation = military_access
+			active = no
+		}
+	}
+	clr_country_flag = africa_rsa_base_access_created
+	clr_country_flag = africa_rsa_temporary_allied_base_lease
+	set_country_flag = africa_rsa_temporary_allied_base_lease_ended
+	681 = { clr_state_flag = africa_rsa_temporary_allied_base_state }
+	719 = { clr_state_flag = africa_rsa_temporary_allied_base_state }
+	clear_global_event_target = africa_rsa_allied_faction_leader
+	clear_variable = africa_rsa_settlement_truce_days
+}
+
+# COUNTRY scope on the loyalist winner after its suppression event.
+africa_rsa_finalize_loyalist_suppression = {
+	drop_cosmetic_tag = yes
+	clr_country_flag = africa_rsa_allied_union_government
+	clr_country_flag = africa_rsa_allied_material_support_received
+	set_country_flag = africa_rsa_continental_coalition_suppressed
+}
+
+# COUNTRY scope on the one-use exile custodian.
+africa_rsa_complete_exile_recovery = {
+	if = {
+		limit = { africa_rsa_exile_recovery_can_be_completed = yes }
+		set_temp_variable = { africa_rsa_negative_exile_pp = constant:africa_rsa_cost.exile_recovery_pp }
+		set_temp_variable = { africa_rsa_negative_exile_cp = constant:africa_rsa_cost.exile_recovery_cp }
+		multiply_temp_variable = { africa_rsa_negative_exile_pp = constant:africa_rsa_factor.negative_one }
+		multiply_temp_variable = { africa_rsa_negative_exile_cp = constant:africa_rsa_factor.negative_one }
+		add_political_power = africa_rsa_negative_exile_pp
+		add_command_power = africa_rsa_negative_exile_cp
+		set_country_flag = africa_first_proof_recovery_partial_ready
+		set_country_flag = africa_rsa_exile_recovery_completed
+		clr_country_flag = africa_rsa_exile_recovery_available
+		clear_variable = africa_rsa_exile_recovery_delay_days
+		africa_consume_first_proof_recovery_ready = yes
+	}
+}

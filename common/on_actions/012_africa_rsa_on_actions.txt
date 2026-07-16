@@ -1,0 +1,117 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AFRICA ALLIED-RUPTURE ON ACTIONS
+# ============================================================================
+# Records only war relations created during the active civil war, releases a
+# capitulated loyalist from faction protection so normal civil-war-end hooks can
+# fire, snapshots the still-living loser before annexation, and then performs
+# pairwise settlement. No recurring country iteration exists.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					ROOT = { africa_rsa_is_continental_coalition = yes }
+					FROM = {
+						africa_rsa_is_recorded_allied_party = yes
+						NOT = { has_country_flag = africa_rsa_allied_union_government }
+					}
+				}
+				FROM = { save_event_target_as = africa_rsa_intervener_to_register }
+				event_target:africa_rsa_continental_coalition = { africa_rsa_register_allied_intervener = yes }
+			}
+			else_if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					FROM = { africa_rsa_is_continental_coalition = yes }
+					ROOT = {
+						africa_rsa_is_recorded_allied_party = yes
+						NOT = { has_country_flag = africa_rsa_allied_union_government }
+					}
+				}
+				ROOT = { save_event_target_as = africa_rsa_intervener_to_register }
+				event_target:africa_rsa_continental_coalition = { africa_rsa_register_allied_intervener = yes }
+			}
+			else_if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					ROOT = { africa_rsa_is_allied_union_government = yes }
+					FROM = { africa_rsa_is_recorded_coalition_supporter = yes }
+				}
+				FROM = { save_event_target_as = africa_rsa_intervener_to_register }
+				event_target:africa_rsa_continental_coalition = { africa_rsa_register_coalition_intervener = yes }
+			}
+			else_if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					FROM = { africa_rsa_is_allied_union_government = yes }
+					ROOT = { africa_rsa_is_recorded_coalition_supporter = yes }
+				}
+				ROOT = { save_event_target_as = africa_rsa_intervener_to_register }
+				event_target:africa_rsa_continental_coalition = { africa_rsa_register_coalition_intervener = yes }
+			}
+		}
+	}
+
+	# ROOT is the capitulated country. This handler performs no settlement; it
+	# only removes the active Allied Union loser from subject/faction protection.
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					has_event_target = africa_rsa_continental_coalition
+					ROOT = {
+						africa_rsa_is_allied_union_government = yes
+						has_civil_war = yes
+						has_capitulated = yes
+						is_in_faction = yes
+						NOT = { has_country_flag = africa_rsa_capitulation_bridge_used }
+					}
+					event_target:africa_rsa_continental_coalition = {
+						exists = yes
+						NOT = { has_capitulated = yes }
+						has_war_with = ROOT
+					}
+				}
+				ROOT = { africa_rsa_release_capitulated_allied_union = yes }
+			}
+		}
+	}
+
+	on_civil_war_end_before_annexation = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					ROOT = { has_country_flag = africa_rsa_continental_coalition }
+					FROM = { has_country_flag = africa_rsa_allied_union_government }
+				}
+				ROOT = { africa_rsa_prepare_continental_victory = yes }
+			}
+			else_if = {
+				limit = {
+					has_global_flag = africa_rsa_civil_war_active
+					ROOT = { has_country_flag = africa_rsa_allied_union_government }
+					FROM = { has_country_flag = africa_rsa_continental_coalition }
+				}
+				ROOT = { africa_rsa_prepare_loyalist_victory = yes }
+			}
+		}
+	}
+
+	on_civil_war_end = {
+		effect = {
+			if = {
+				limit = { ROOT = { has_country_flag = africa_rsa_continental_victory_pending } }
+				ROOT = { africa_rsa_resolve_continental_victory = yes }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_rsa_loyalist_victory_pending } }
+				ROOT = { africa_rsa_resolve_loyalist_victory = yes }
+			}
+		}
+	}
+}

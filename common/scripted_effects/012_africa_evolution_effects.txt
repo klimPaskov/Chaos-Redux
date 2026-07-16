@@ -1,0 +1,174 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA EVOLUTION EFFECTS
+# ============================================================================
+# A single host-owned clock samples dynamic MTTH. Each tick activates at most
+# one enabled and eligible layer, records it with the current host as actor,
+# then samples a fresh delay. Disabled stages are skipped independently.
+# ============================================================================
+
+# COUNTRY scope on the current host. Input: temporary africa_evolution_stage.
+africa_prepare_evolution_log_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:africa_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:africa_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = africa_evolution_stage }
+	set_temp_variable = { events_log_evolution_tier = constant:africa_evolution_runtime.log_tier_i }
+	if = {
+		limit = { check_variable = { africa_evolution_stage = constant:africa_event.evolution_ii_stage } }
+		set_temp_variable = { events_log_evolution_tier = constant:africa_evolution_runtime.log_tier_ii }
+	}
+	else_if = {
+		limit = { check_variable = { africa_evolution_stage = constant:africa_event.evolution_iii_stage } }
+		set_temp_variable = { events_log_evolution_tier = constant:africa_evolution_runtime.log_tier_iii }
+	}
+	set_temp_variable = { events_log_evolution_has_actor = constant:africa_value.one }
+	save_event_target_as = events_log_evolution_actor
+}
+
+africa_activate_evolution_i = {
+	set_global_flag = africa_evolution_i_logged
+	if = {
+		limit = { check_variable = { africa_current_phase < constant:africa_action_phase.regional } }
+		set_variable = { africa_current_phase = constant:africa_action_phase.regional }
+	}
+	add_to_variable = { africa_charter_authority = constant:africa_evolution_effect.regional_authority }
+	add_to_variable = { africa_continental_reach = constant:africa_evolution_effect.regional_reach }
+	add_to_variable = { africa_integration_burden = constant:africa_evolution_effect.regional_burden }
+	africa_reconcile_relationship_counts_and_caps = yes
+	add_to_variable = { africa_active_action_cap = constant:africa_evolution_effect.regional_action_cap }
+	add_to_variable = { africa_selected_target_cap = constant:africa_evolution_effect.regional_target_cap }
+	add_to_variable = { africa_dossier_cap = constant:africa_evolution_effect.regional_dossier_cap }
+	add_to_variable = { africa_living_core_project_cap = constant:africa_evolution_effect.regional_project_cap }
+	clamp_variable = { var = africa_active_action_cap min = constant:africa_capacity.opening_active_action_cap max = constant:africa_capacity.continental_active_action_cap }
+	clamp_variable = { var = africa_selected_target_cap min = constant:africa_capacity.opening_selected_target_cap max = constant:africa_capacity.maximum_selected_target_cap }
+	clamp_variable = { var = africa_dossier_cap min = constant:africa_capacity.opening_dossier_cap max = constant:africa_capacity.maximum_dossier_cap }
+	clamp_variable = { var = africa_living_core_project_cap min = constant:africa_capacity.opening_project_cap max = constant:africa_capacity.maximum_project_cap }
+	africa_clamp_host_values = yes
+	record_events_log_evolution_entry = yes
+	set_temp_variable = { africa_evolution_activated = constant:africa_value.one }
+	country_event = { id = chaosx.nr12.401 }
+	africa_refresh_continental_focus_tree_layout = yes
+}
+
+africa_activate_evolution_ii = {
+	set_global_flag = africa_evolution_ii_logged
+	if = {
+		limit = { check_variable = { africa_current_phase < constant:africa_action_phase.late } }
+		set_variable = { africa_current_phase = constant:africa_action_phase.late }
+	}
+	add_to_variable = { africa_continental_reach = constant:africa_evolution_effect.machinery_reach }
+	add_to_variable = { africa_central_capacity = constant:africa_evolution_effect.machinery_central_capacity }
+	add_to_variable = { africa_common_defence_stockpile = constant:africa_evolution_effect.machinery_defence_stockpile }
+	add_to_variable = { africa_integration_burden = constant:africa_evolution_effect.machinery_burden }
+	africa_reconcile_relationship_counts_and_caps = yes
+	add_to_variable = { africa_active_action_cap = constant:africa_evolution_effect.machinery_action_cap }
+	add_to_variable = { africa_selected_target_cap = constant:africa_evolution_effect.machinery_target_cap }
+	add_to_variable = { africa_dossier_cap = constant:africa_evolution_effect.machinery_dossier_cap }
+	add_to_variable = { africa_living_core_project_cap = constant:africa_evolution_effect.machinery_project_cap }
+	clamp_variable = { var = africa_active_action_cap min = constant:africa_capacity.opening_active_action_cap max = constant:africa_capacity.continental_active_action_cap }
+	clamp_variable = { var = africa_selected_target_cap min = constant:africa_capacity.opening_selected_target_cap max = constant:africa_capacity.maximum_selected_target_cap }
+	clamp_variable = { var = africa_dossier_cap min = constant:africa_capacity.opening_dossier_cap max = constant:africa_capacity.maximum_dossier_cap }
+	clamp_variable = { var = africa_living_core_project_cap min = constant:africa_capacity.opening_project_cap max = constant:africa_capacity.maximum_project_cap }
+	africa_clamp_host_values = yes
+	record_events_log_evolution_entry = yes
+	set_temp_variable = { africa_evolution_activated = constant:africa_value.one }
+	country_event = { id = chaosx.nr12.402 }
+	africa_refresh_continental_focus_tree_layout = yes
+}
+
+africa_activate_evolution_iii = {
+	set_global_flag = africa_evolution_iii_logged
+	if = {
+		limit = { check_variable = { africa_current_phase < constant:africa_action_phase.high_chaos } }
+		set_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
+	}
+	add_to_variable = { africa_charter_authority = constant:africa_evolution_effect.world_pole_authority }
+	add_to_variable = { africa_continental_war_readiness = constant:africa_evolution_effect.world_pole_readiness }
+	add_to_variable = { africa_colonial_pressure = constant:africa_evolution_effect.world_pole_pressure }
+	add_to_variable = { africa_active_action_cap = constant:africa_evolution_effect.world_pole_action_cap }
+	add_to_variable = { africa_selected_target_cap = constant:africa_evolution_effect.world_pole_target_cap }
+	add_to_variable = { africa_dossier_cap = constant:africa_evolution_effect.world_pole_dossier_cap }
+	clamp_variable = { var = africa_active_action_cap min = constant:africa_capacity.opening_active_action_cap max = constant:africa_capacity.continental_active_action_cap }
+	clamp_variable = { var = africa_selected_target_cap min = constant:africa_capacity.opening_selected_target_cap max = constant:africa_capacity.maximum_selected_target_cap }
+	clamp_variable = { var = africa_dossier_cap min = constant:africa_capacity.opening_dossier_cap max = constant:africa_capacity.maximum_dossier_cap }
+	africa_clamp_host_values = yes
+	record_events_log_evolution_entry = yes
+	set_temp_variable = { africa_evolution_activated = constant:africa_value.one }
+	country_event = { id = chaosx.nr12.403 }
+	africa_refresh_continental_focus_tree_layout = yes
+	africa_achievement_refresh_survival_windows = yes
+}
+
+# COUNTRY scope on the current host. At most one enabled layer activates.
+africa_evaluate_evolution_clock = {
+	set_temp_variable = { africa_evolution_activated = constant:africa_value.zero }
+	if = {
+		limit = {
+			check_variable = { africa_evolution_activated = constant:africa_value.zero }
+			africa_evolution_i_conditions_met = yes
+		}
+		set_temp_variable = { africa_evolution_stage = constant:africa_event.evolution_i_stage }
+		africa_prepare_evolution_log_context = yes
+		if = { limit = { is_current_evolution_enabled = yes } africa_activate_evolution_i = yes }
+		else = { set_global_flag = africa_evolution_i_disabled_by_settings }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_evolution_activated = constant:africa_value.zero }
+			africa_evolution_ii_conditions_met = yes
+		}
+		set_temp_variable = { africa_evolution_stage = constant:africa_event.evolution_ii_stage }
+		africa_prepare_evolution_log_context = yes
+		if = { limit = { is_current_evolution_enabled = yes } africa_activate_evolution_ii = yes }
+		else = { set_global_flag = africa_evolution_ii_disabled_by_settings }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_evolution_activated = constant:africa_value.zero }
+			africa_evolution_iii_conditions_met = yes
+		}
+		set_temp_variable = { africa_evolution_stage = constant:africa_event.evolution_iii_stage }
+		africa_prepare_evolution_log_context = yes
+		if = { limit = { is_current_evolution_enabled = yes } africa_activate_evolution_iii = yes }
+		else = {
+			set_global_flag = africa_evolution_iii_disabled_by_settings
+			set_country_flag = africa_evolution_clock_halted_by_settings
+		}
+	}
+	africa_schedule_next_evolution_clock = yes
+}
+
+# COUNTRY scope on the current host. Duplicate clocks are rejected by flag and
+# generation; RSA succession starts a fresh clock on the one valid custodian.
+africa_schedule_next_evolution_clock = {
+	if = {
+		limit = {
+			africa_evolution_clock_can_run = yes
+			NOT = { has_country_flag = africa_evolution_clock_scheduled }
+		}
+		set_temp_variable = { africa_evolution_delay_days = mtth:africa_evolution_interval }
+		clamp_temp_variable = {
+			var = africa_evolution_delay_days
+			min = constant:africa_evolution_clock.minimum_days
+			max = constant:africa_evolution_clock.maximum_days
+		}
+		set_country_flag = africa_evolution_clock_scheduled
+		set_variable = { africa_evolution_clock_host_generation = africa_host_generation }
+		country_event = { id = chaosx.nr12.400 days = africa_evolution_delay_days }
+	}
+}
+
+# COUNTRY scope from the private clock event.
+africa_handle_evolution_clock_tick = {
+	clr_country_flag = africa_evolution_clock_scheduled
+	if = {
+		limit = {
+			africa_evolution_clock_can_run = yes
+			check_variable = { africa_evolution_clock_host_generation = africa_host_generation }
+		}
+		# Consume the fired generation before evaluation. A successful evaluation
+		# may schedule a fresh clock and must retain its new generation witness.
+		clear_variable = africa_evolution_clock_host_generation
+		africa_evaluate_evolution_clock = yes
+	}
+	else = { clear_variable = africa_evolution_clock_host_generation }
+}

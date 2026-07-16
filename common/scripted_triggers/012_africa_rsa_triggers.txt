@@ -1,0 +1,271 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AFRICA ALLIED-RUPTURE TRIGGERS
+# ============================================================================
+# Public entry, identity, intervention, proof, settlement, autonomy, and exile
+# gates for the isolated South African package. The Allied identity is explicit:
+# either Britain shares the faction or an integration caller sets the documented
+# africa_rsa_allied_framework_confirmed flag before calling the entry effect.
+# ============================================================================
+
+# COUNTRY scope on SAF. Every vanilla autonomy state is handled explicitly.
+africa_rsa_has_supported_subject_autonomy = {
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			OR = {
+				has_autonomy_state = autonomy_puppet
+				has_autonomy_state = autonomy_integrated_puppet
+				has_autonomy_state = autonomy_wtt_imperial_protectorate
+				has_autonomy_state = autonomy_personal_union
+				has_autonomy_state = autonomy_satellite
+				has_autonomy_state = autonomy_wtt_imperial_associate
+				has_autonomy_state = autonomy_wtt_imperial_subject
+				has_autonomy_state = autonomy_reichskommissariat
+				has_autonomy_state = autonomy_reichsprotectorate
+				has_autonomy_state = autonomy_taog_indonesian_union_state
+				has_autonomy_state = autonomy_austro_hungarian_subject
+				has_autonomy_state = autonomy_collaboration_government
+				has_autonomy_state = autonomy_colony
+				has_autonomy_state = autonomy_aat_defense_council_member
+				has_autonomy_state = autonomy_dominion
+				has_autonomy_state = autonomy_supervised_state
+				has_autonomy_state = autonomy_sea_warlord_subject
+				has_autonomy_state = autonomy_volkskommissariat
+				has_autonomy_state = autonomy_eu_member
+				has_autonomy_state = autonomy_sea_integrated_warlord_subject
+				has_autonomy_state = autonomy_associated_dominion
+			}
+		}
+	}
+}
+
+# COUNTRY scope on an African government already present in one of Event 12's
+# bounded relationship or selection arrays. This never scans the world.
+africa_rsa_is_valid_exile_patron = {
+	exists = yes
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	NOT = { original_tag = SAF }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+	any_core_state = { is_on_continent = africa }
+	capital_scope = {
+		is_on_continent = africa
+		is_controlled_by = PREV
+	}
+}
+
+# COUNTRY scope on the current host. A later loyalist victory can transfer the
+# suppressed project only to an actor chosen before the war from bounded stores.
+africa_rsa_has_exile_patron_candidate = {
+	OR = {
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_rsa_is_valid_exile_patron = yes
+		}
+		any_of_scopes = {
+			array = africa_selected_targets
+			africa_rsa_is_valid_exile_patron = yes
+		}
+		any_of_scopes = {
+			array = africa_frozen_first_contact_targets
+			africa_rsa_is_valid_exile_patron = yes
+		}
+	}
+}
+
+# Public integration gate. The original, player-led SAF must control the three
+# current vanilla South African core states so the deterministic split cannot
+# silently substitute a random capital or random territory.
+africa_rsa_allied_branch_can_start = {
+	tag = SAF
+	original_tag = SAF
+	africa_is_current_host = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_global_flag = africa_rsa_civil_war_active }
+	NOT = { has_global_flag = africa_rsa_branch_used }
+	NOT = { has_global_flag = africa_rsa_recovery_used }
+	is_in_faction = yes
+	OR = {
+		ENG = {
+			exists = yes
+			is_in_faction_with = ROOT
+		}
+		has_country_flag = africa_rsa_allied_framework_confirmed
+	}
+	africa_rsa_has_supported_subject_autonomy = yes
+	africa_rsa_has_exile_patron_candidate = yes
+	capital_scope = { is_controlled_by = PREV }
+	275 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+	}
+	681 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		naval_base > constant:africa_rsa_count.none
+	}
+	719 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		naval_base > constant:africa_rsa_count.none
+	}
+}
+
+africa_rsa_is_continental_coalition = {
+	has_country_flag = africa_rsa_continental_coalition
+	has_event_target = africa_rsa_continental_coalition
+	event_target:africa_rsa_continental_coalition = { tag = PREV }
+}
+
+africa_rsa_is_allied_union_government = {
+	has_country_flag = africa_rsa_allied_union_government
+	has_event_target = africa_rsa_allied_union_government
+	event_target:africa_rsa_allied_union_government = { tag = PREV }
+}
+
+# COUNTRY scope on a possible Allied intervener. Both equality and shared-faction
+# tests are guarded by saved targets established before and during the split.
+africa_rsa_is_recorded_allied_party = {
+	has_event_target = africa_rsa_allied_union_government
+	OR = {
+		event_target:africa_rsa_allied_union_government = {
+			OR = {
+				tag = PREV
+				is_in_faction_with = PREV
+			}
+		}
+		AND = {
+			has_event_target = africa_rsa_original_faction_leader
+			event_target:africa_rsa_original_faction_leader = {
+				OR = {
+					tag = PREV
+					is_in_faction_with = PREV
+				}
+			}
+		}
+		AND = {
+			has_event_target = africa_rsa_allied_faction_leader
+			event_target:africa_rsa_allied_faction_leader = {
+				OR = {
+					tag = PREV
+					is_in_faction_with = PREV
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a possible coalition-side intervener.
+africa_rsa_is_recorded_coalition_supporter = {
+	has_event_target = africa_rsa_continental_coalition
+	OR = {
+		has_country_flag = africa_rsa_regional_supporter
+		event_target:africa_rsa_continental_coalition = {
+			is_in_array = {
+				array = africa_rsa_external_supporters
+				value = PREV
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a targeted-decision candidate.
+africa_rsa_is_valid_regional_support_target = {
+	africa_is_valid_relationship_target = yes
+	has_event_target = africa_rsa_allied_union_government
+	has_event_target = africa_rsa_continental_coalition
+	NOT = { original_tag = SAF }
+	NOT = { has_country_flag = africa_rsa_regional_supporter }
+	NOT = { has_country_flag = africa_rsa_regional_support_refused }
+	event_target:africa_rsa_allied_union_government = {
+		NOT = { is_in_faction_with = PREV }
+	}
+	event_target:africa_rsa_continental_coalition = {
+		NOT = { has_war_with = PREV }
+	}
+}
+
+# COUNTRY scope on the Continental Coalition. The proof is physical: protected
+# civilians, the Transvaal industrial base, a captured Cape or Natal port, a
+# working allied-controlled railway, and two distinct African supporters.
+africa_rsa_civil_war_corridor_is_secure = {
+	africa_rsa_is_continental_coalition = yes
+	has_global_flag = africa_rsa_civil_war_active
+	has_country_flag = africa_rsa_civilians_protected
+	check_variable = {
+		var = africa_rsa_external_support_count
+		value = constant:africa_rsa_count.required_external_supporters
+		compare = greater_than_or_equals
+	}
+	275 = {
+		is_controlled_by = PREV
+		OR = {
+			industrial_complex > constant:africa_rsa_count.none
+			arms_factory > constant:africa_rsa_count.none
+		}
+	}
+	OR = {
+		AND = {
+			681 = {
+				is_controlled_by = PREV
+				naval_base > constant:africa_rsa_count.none
+			}
+			has_railway_connection = {
+				build_only_on_allied = yes
+				start_state = 275
+				target_state = 681
+			}
+		}
+		AND = {
+			719 = {
+				is_controlled_by = PREV
+				naval_base > constant:africa_rsa_count.none
+			}
+			has_railway_connection = {
+				build_only_on_allied = yes
+				start_state = 275
+				target_state = 719
+			}
+		}
+	}
+}
+
+africa_rsa_civil_war_first_proof_satisfied = {
+	OR = {
+		has_country_flag = africa_rsa_civil_war_first_proof_succeeded
+		has_country_flag = africa_rsa_postwar_first_proof_completed
+		has_country_flag = africa_rsa_exile_recovery_completed
+	}
+	OR = {
+		has_country_flag = africa_first_proof_succeeded
+		has_country_flag = africa_first_proof_recovered
+	}
+}
+
+africa_rsa_postwar_first_proof_is_ready = {
+	has_country_flag = africa_rsa_continental_victory
+	has_country_flag = africa_rsa_civil_war_first_proof_failed
+	has_country_flag = africa_rsa_neighbor_sovereignty_guaranteed
+	has_country_flag = africa_rsa_citizenship_land_milestone
+	NOT = { has_country_flag = africa_rsa_postwar_first_proof_completed }
+}
+
+africa_rsa_allied_settlement_is_complete = {
+	has_country_flag = africa_rsa_allied_settlement_complete
+	has_global_flag = africa_rsa_settlement_completed
+}
+
+africa_rsa_exile_recovery_can_be_completed = {
+	africa_is_current_host = yes
+	has_country_flag = africa_rsa_exile_custodian
+	has_country_flag = africa_rsa_suppressed_route_received
+	has_country_flag = africa_rsa_exile_council_received
+	has_country_flag = africa_first_proof_failed
+	NOT = { has_country_flag = africa_rsa_exile_recovery_completed }
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	capital_scope = { is_controlled_by = PREV }
+}

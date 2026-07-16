@@ -186,32 +186,421 @@ africa_first_proof_current_action_semantics_are_valid = {
 	}
 }
 
-# COUNTRY scope on the host. State 708 is the complete vanilla Comoros map
-# unit; both the island-seat compact and the transport project must act on that
-# homeland state rather than using an unrelated acquired state as evidence.
-africa_first_proof_playbook_action_target_is_exact = {
+# COUNTRY scope on the host. Country-mode proof actions always address a named
+# geographic partner. State and region actions use the separate exact-state
+# contract below; no broad regional overlay is proof evidence.
+africa_first_proof_requested_action_uses_geographic_partner = {
 	OR = {
-		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } }
+		check_variable = { africa_requested_action_id = constant:africa_action.guarantee_sovereignty }
+		check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
+		check_variable = { africa_requested_action_id = constant:africa_action.dispatch_charter_mission }
+		check_variable = { africa_requested_action_id = constant:africa_action.deploy_volunteers }
+		check_variable = { africa_requested_action_id = constant:africa_action.offer_defence_charter }
+		check_variable = { africa_requested_action_id = constant:africa_action.hold_accession_referendum }
+		check_variable = { africa_requested_action_id = constant:africa_action.connect_member_capitals }
+		check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration }
+		check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war }
+	}
+}
+
+# COUNTRY scope on the host.
+africa_first_proof_requested_action_uses_exact_state = {
+	OR = {
+		check_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress }
+		check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+		check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+		check_variable = { africa_requested_action_id = constant:africa_action.build_regional_rail_spine }
+		check_variable = { africa_requested_action_id = constant:africa_action.expand_river_transport }
+		check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
+		check_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review }
+	}
+}
+
+# COUNTRY scope on a proposed country-mode target. Every list is the bounded
+# geography stated by that host's matrix row and dossier. Original tags keep
+# civil-war and cosmetic successors inside the same geographic identity.
+africa_first_proof_country_is_current_playbook_geographic_partner = {
+	exists = yes
+	NOT = { africa_is_current_host = yes }
+	OR = {
 		AND = {
-			check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros }
-			OR = {
-				AND = {
-					check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
-					event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
-				}
-				AND = {
-					OR = {
-						check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
-						check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
-					}
-					event_target:africa_action_target = { africa_is_current_host = yes }
-					708 = {
-						is_controlled_by = ROOT
-						has_state_flag = africa_selected_action_state
-						ROOT = { is_in_array = { array = africa_selected_action_state_targets value = PREV } }
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ethiopia } }
+			OR = { original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI original_tag = ETH }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.egypt } }
+			OR = { original_tag = SUD original_tag = LBA original_tag = ETH original_tag = ERI original_tag = DJI original_tag = SOM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sudan } }
+			OR = { original_tag = EGY original_tag = ETH original_tag = ERI original_tag = DJI original_tag = SOM original_tag = CHA original_tag = NGR original_tag = MRT original_tag = MLI }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.morocco } }
+			OR = { original_tag = ALG original_tag = MRT original_tag = TUN original_tag = LBA original_tag = RIF original_tag = DFX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.algeria } }
+			OR = { original_tag = MOR original_tag = TUN original_tag = LBA original_tag = MRT original_tag = MLI original_tag = NGR original_tag = DFX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.tunisia } }
+			OR = { original_tag = ALG original_tag = LBA original_tag = MOR }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.libya } }
+			OR = { original_tag = TUN original_tag = EGY original_tag = SUD original_tag = CHA original_tag = NGR original_tag = ALG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.liberia } }
+			OR = { original_tag = SIE original_tag = GHA original_tag = IVO original_tag = GNB }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.nigeria } }
+			OR = { original_tag = GHA original_tag = DAH original_tag = TOG original_tag = CMR original_tag = NGR original_tag = CHA original_tag = VOL }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gold_coast } }
+			OR = { original_tag = IVO original_tag = VOL original_tag = TOG original_tag = DAH original_tag = NGA original_tag = LIB original_tag = SIE }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa } }
+			OR = { original_tag = MLI original_tag = MRT original_tag = GNB original_tag = GAM original_tag = VOL }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sierra_leone } }
+			OR = { original_tag = LIB original_tag = GHA original_tag = IVO original_tag = GNB }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.belgian_congo } }
+			OR = { original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = ZAM original_tag = UGA original_tag = RWA original_tag = BRD original_tag = TZN }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.angola } }
+			OR = { original_tag = COG original_tag = RCG original_tag = ZAM original_tag = BOT original_tag = MZB }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa } }
+			OR = { original_tag = CMR original_tag = GAB original_tag = CHA original_tag = COG original_tag = ANG original_tag = EQG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.kenya } }
+			OR = { original_tag = UGA original_tag = TZN original_tag = ETH original_tag = SOM original_tag = DJI }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.uganda } }
+			OR = { original_tag = KEN original_tag = TZN original_tag = RWA original_tag = BRD original_tag = COG original_tag = SUD }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.tanganyika } }
+			OR = { original_tag = KEN original_tag = UGA original_tag = RWA original_tag = BRD original_tag = MZB original_tag = ELX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.somali_territories } }
+			OR = { original_tag = ETH original_tag = DJI original_tag = ERI original_tag = KEN original_tag = SOM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.madagascar } }
+			OR = { original_tag = MZB original_tag = ELX original_tag = FAX original_tag = FBX africa_is_seychelles_signature_country = yes africa_is_reunion_signature_country = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.south_africa } }
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = BOT original_tag = HZX original_tag = EUX original_tag = MZB original_tag = ANG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.southern_rhodesia } }
+			OR = { original_tag = SAF original_tag = ZAM original_tag = BOT original_tag = MLW original_tag = MZB }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.portuguese_guinea } }
+			OR = { original_tag = SEN original_tag = GAM original_tag = MLI original_tag = SIE }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cape_verde } }
+			OR = { original_tag = SEN original_tag = GNB original_tag = GAM original_tag = SIE original_tag = MRT }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gambia } }
+			OR = { original_tag = SEN original_tag = GNB original_tag = MLI }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cote_divoire } }
+			OR = { original_tag = GHA original_tag = VOL original_tag = MLI original_tag = LIB }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.dahomey } }
+			OR = { original_tag = NGA original_tag = TOG original_tag = GHA original_tag = VOL original_tag = BIA original_tag = DSX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.togo } }
+			OR = { original_tag = GHA original_tag = DAH original_tag = NGA original_tag = VOL }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.french_sudan_mali } }
+			OR = { original_tag = SEN original_tag = MRT original_tag = NGR original_tag = VOL original_tag = IVO original_tag = GHA original_tag = GNB original_tag = GAM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania } }
+			OR = { original_tag = MOR original_tag = ALG original_tag = SEN original_tag = MLI original_tag = NGR }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.niger } }
+			OR = { original_tag = MLI original_tag = VOL original_tag = NGA original_tag = CHA original_tag = ALG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.upper_volta } }
+			OR = { original_tag = MLI original_tag = IVO original_tag = GHA original_tag = TOG original_tag = DAH original_tag = NGR }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.chad } }
+			OR = { original_tag = NGR original_tag = SUD original_tag = LBA original_tag = CMR original_tag = NGA original_tag = RCG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cameroon } }
+			OR = { original_tag = NGA original_tag = CHA original_tag = RCG original_tag = GAB original_tag = EQG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gabon } }
+			OR = { original_tag = RCG original_tag = CMR original_tag = EQG original_tag = COG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.equatorial_guinea } }
+			OR = { original_tag = CMR original_tag = GAB original_tag = RCG africa_is_sao_tome_signature_country = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sao_tome } }
+			OR = { original_tag = GAB original_tag = EQG original_tag = CMR original_tag = RCG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ruanda_urundi } }
+			OR = { original_tag = RWA original_tag = BRD original_tag = UGA original_tag = TZN original_tag = COG }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.northern_rhodesia } }
+			OR = { original_tag = ZIM original_tag = ANG original_tag = COG original_tag = TZN original_tag = MLW original_tag = MZB original_tag = BOT }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.nyasaland } }
+			OR = { original_tag = ZAM original_tag = MZB original_tag = TZN original_tag = ZIM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mozambique } }
+			OR = { original_tag = MLW original_tag = ZAM original_tag = ZIM original_tag = SAF original_tag = TZN }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.bechuanaland } }
+			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = HZX original_tag = EUX }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.basutoland } }
+			OR = { original_tag = SAF original_tag = BOT original_tag = EUX original_tag = ZIM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.swaziland } }
+			OR = { original_tag = SAF original_tag = MZB original_tag = HZX original_tag = BOT }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.eritrea } }
+			OR = { original_tag = ETH original_tag = DJI original_tag = SOM original_tag = SUD original_tag = EGY }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.djibouti } }
+			OR = { original_tag = ETH original_tag = SOM original_tag = ERI }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.zanzibar } }
+			OR = { original_tag = TZN original_tag = KEN original_tag = MZB original_tag = MAD original_tag = SOM }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritius } }
+			OR = { original_tag = MAD original_tag = FAX original_tag = ELX africa_is_seychelles_signature_country = yes africa_is_reunion_signature_country = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } }
+			OR = { original_tag = MAD original_tag = MZB original_tag = FBX original_tag = ELX africa_is_seychelles_signature_country = yes africa_is_reunion_signature_country = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.seychelles } }
+			OR = { original_tag = MAD original_tag = FBX original_tag = FAX original_tag = ELX africa_is_reunion_signature_country = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.reunion } }
+			OR = { original_tag = MAD original_tag = FBX original_tag = FAX original_tag = ELX africa_is_seychelles_signature_country = yes }
+		}
+	}
+}
+
+# STATE scope. These are the installed vanilla homeland states used by the 51
+# host packages. The three scenario-only compact tags have no distinct vanilla
+# state; their own controlled core capital is therefore the only exact state
+# they can expose, never an acquired province. Event 6's registry independently
+# confirms the compressed 274, 548, and 708 bindings used here.
+africa_first_proof_state_is_current_playbook_homeland = {
+	is_controlled_by = event_target:africa_host
+	OR = {
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ethiopia } } OR = { state = 271 state = 835 state = 836 state = 837 state = 838 state = 839 state = 840 state = 841 state = 842 state = 843 state = 908 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.egypt } } OR = { state = 446 state = 447 state = 907 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sudan } } OR = { state = 549 state = 551 state = 767 state = 883 state = 884 state = 885 state = 886 state = 887 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.morocco } } OR = { state = 290 state = 461 state = 462 state = 783 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.algeria } } OR = { state = 459 state = 460 state = 513 state = 514 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.tunisia } } OR = { state = 458 state = 665 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.libya } } OR = { state = 273 state = 448 state = 449 state = 450 state = 451 state = 661 state = 662 state = 663 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.liberia } } state = 298 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.nigeria } } OR = { state = 558 state = 900 state = 901 state = 902 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gold_coast } } state = 274 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa } } state = 272 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sierra_leone } } state = 700 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.belgian_congo } } OR = { state = 295 state = 538 state = 718 state = 888 state = 889 state = 890 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.angola } } OR = { state = 540 state = 796 state = 891 state = 892 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa } } state = 772 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.kenya } } OR = { state = 547 state = 903 state = 904 state = 905 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.uganda } } state = 548 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.tanganyika } } state = 546 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.somali_territories } } OR = { state = 268 state = 269 state = 559 state = 835 state = 836 state = 844 state = 903 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.madagascar } } state = 543 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.south_africa } } OR = { state = 275 state = 541 state = 681 state = 719 state = 893 state = 894 state = 895 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.southern_rhodesia } } state = 545 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.portuguese_guinea } } state = 296 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cape_verde } } state = 702 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gambia } } state = 701 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cote_divoire } } state = 779 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.dahomey } } state = 776 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.togo } } state = 777 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.french_sudan_mali } } OR = { state = 556 state = 782 state = 898 state = 899 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania } } OR = { state = 557 state = 786 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.niger } } OR = { state = 515 state = 781 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.upper_volta } } state = 778 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.chad } } OR = { state = 774 state = 775 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cameroon } } state = 773 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gabon } } state = 539 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.equatorial_guinea } } state = 297 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sao_tome } } state = 705 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ruanda_urundi } } OR = { state = 768 state = 769 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.northern_rhodesia } } OR = { state = 771 state = 981 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.nyasaland } } state = 770 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mozambique } } OR = { state = 544 state = 896 state = 897 } }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.bechuanaland } } state = 542 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.basutoland } } is_capital = yes is_core_of = event_target:africa_host }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.swaziland } } is_capital = yes is_core_of = event_target:africa_host }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.eritrea } } state = 550 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.djibouti } } state = 268 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.zanzibar } } is_capital = yes is_core_of = event_target:africa_host }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritius } } state = 707 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } } state = 708 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.seychelles } } state = 709 }
+		AND = { event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.reunion } } state = 706 }
+	}
+}
+
+# COUNTRY scope on the host. Four political-region rows and Mauritania's Dakar
+# port deliberately use a named neighbouring polity. Every other state or
+# region action is confined to the host's exact homeland registry above.
+africa_first_proof_playbook_state_action_target_is_exact = {
+	OR = {
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.dahomey }
+			check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+			event_target:africa_action_target = { OR = { original_tag = NGA original_tag = BIA original_tag = DSX } }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				state = 558
+				is_controlled_by = event_target:africa_action_target
+			}
+		}
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa }
+			check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+			event_target:africa_action_target = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				OR = { state = 296 state = 556 state = 557 state = 701 state = 778 state = 782 state = 786 state = 898 state = 899 }
+				is_controlled_by = event_target:africa_action_target
+			}
+		}
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa }
+			check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+			event_target:africa_action_target = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				OR = { state = 539 state = 773 state = 774 state = 775 }
+				is_controlled_by = event_target:africa_action_target
+			}
+		}
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania }
+			check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
+			event_target:africa_action_target = { original_tag = SEN }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				state = 272
+				is_controlled_by = event_target:africa_action_target
+			}
+		}
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.ruanda_urundi }
+			check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+			event_target:africa_action_target = {
+				OR = {
+					africa_is_current_host = yes
+					AND = {
+						africa_first_proof_country_is_current_playbook_geographic_partner = yes
+						OR = { original_tag = RWA original_tag = BRD }
 					}
 				}
 			}
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				OR = { state = 768 state = 769 }
+				is_controlled_by = event_target:africa_action_target
+			}
+		}
+		AND = {
+			NOT = {
+				OR = {
+					AND = {
+						check_variable = { africa_host_playbook = constant:africa_host_playbook.dahomey }
+						check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+					}
+					AND = {
+						check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa }
+						check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+					}
+					AND = {
+						check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa }
+						check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+					}
+					AND = {
+						check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania }
+						check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
+					}
+					AND = {
+						check_variable = { africa_host_playbook = constant:africa_host_playbook.ruanda_urundi }
+						check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+					}
+				}
+			}
+			event_target:africa_action_target = { africa_is_current_host = yes }
+			all_of_scopes = {
+				array = africa_selected_action_state_targets
+				africa_first_proof_state_is_current_playbook_homeland = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host. This gate is checked after the explicit target and
+# state cursors exist. It is deliberately exhaustive: a profile action belongs
+# to exactly one of the two target classes above.
+africa_first_proof_playbook_action_target_is_exact = {
+	OR = {
+		AND = {
+			africa_first_proof_requested_action_uses_geographic_partner = yes
+			event_target:africa_action_target = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+		}
+		AND = {
+			africa_first_proof_requested_action_uses_exact_state = yes
+			africa_first_proof_playbook_state_action_target_is_exact = yes
 		}
 	}
 }
@@ -410,6 +799,74 @@ africa_first_proof_state_project_evidence_is_live = {
 	}
 }
 
+# STATE scope during ledger refresh. Political-region credits are normally
+# homeland evidence. Senegal/FWA and French Equatorial Africa deliberately use
+# a named inland council, while Ruanda-Urundi may credit its other polity. The
+# controller must still be one of that dossier's exact named geographic actors.
+africa_first_proof_region_state_evidence_is_live_and_exact = {
+	OR = {
+		africa_first_proof_state_is_current_playbook_homeland = yes
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.senegal_fwa } }
+			OR = { state = 296 state = 556 state = 557 state = 701 state = 778 state = 782 state = 786 state = 898 state = 899 }
+			CONTROLLER = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.french_equatorial_africa } }
+			OR = { state = 539 state = 773 state = 774 state = 775 }
+			CONTROLLER = { africa_first_proof_country_is_current_playbook_geographic_partner = yes }
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ruanda_urundi } }
+			OR = { state = 768 state = 769 }
+			CONTROLLER = {
+				OR = {
+					africa_is_current_host = yes
+					AND = {
+						africa_first_proof_country_is_current_playbook_geographic_partner = yes
+						OR = { original_tag = RWA original_tag = BRD }
+					}
+				}
+			}
+		}
+	}
+}
+
+# STATE scope during corridor refresh. Physical projects normally remain in the
+# host homeland. Mauritania's vanilla coastal state has no naval base, so its
+# exact secured-port action is the Dakar port in state 272, controlled by the
+# named Senegalese partner rather than a fabricated Mauritanian port.
+africa_first_proof_corridor_state_evidence_is_live_and_exact = {
+	OR = {
+		africa_first_proof_state_is_current_playbook_homeland = yes
+		AND = {
+			event_target:africa_host = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania } }
+			state = 272
+			CONTROLLER = {
+				original_tag = SEN
+				africa_first_proof_country_is_current_playbook_geographic_partner = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a credited corridor partner with ROOT equal to the host.
+# Action 32 creates a real capital-to-capital railway; its proof marker remains
+# valid only while that route exists. The other country-mode corridor actions
+# carry their own delivered convoy, charter, or war-resolution semantics.
+africa_first_proof_corridor_actor_route_is_live = {
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_capital_rail_route }
+		AND = {
+			has_country_flag = africa_first_proof_capital_rail_route
+			has_railway_connection = {
+				start_state = ROOT.capital
+				target_state = THIS.capital
+			}
+		}
+	}
+}
+
 # COUNTRY scope on the host. Every boolean proof fact is represented by a
 # durable role flag rather than a numeric zero-or-one variable.
 africa_first_proof_role_credits_are_met = {
@@ -526,6 +983,182 @@ africa_first_proof_live_gates_are_met = {
 # role ledger. Map-compressed starts add exact internal constitutional facts
 # here instead of pretending that one HOI4 state is several selectable states.
 africa_first_proof_playbook_specific_gates_are_met = {
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.ethiopia } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_actor_credits
+			has_country_flag = africa_first_proof_capital_rail_route
+			africa_first_proof_corridor_actor_route_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.egypt } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			OR = { state = 446 state = 447 }
+			has_state_flag = africa_port_modernisation_operational
+			africa_first_proof_state_project_evidence_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.gold_coast } }
+		AND = {
+			has_country_flag = africa_first_proof_gold_coast_asante_seat
+			has_country_flag = africa_first_proof_gold_coast_northern_authority_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.sierra_leone } }
+		AND = {
+			has_country_flag = africa_first_proof_sierra_leone_colony_seat
+			has_country_flag = africa_first_proof_sierra_leone_protectorate_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.uganda } }
+		AND = {
+			has_country_flag = africa_first_proof_uganda_buganda_seat
+			has_country_flag = africa_first_proof_uganda_bunyoro_seat
+			has_country_flag = africa_first_proof_uganda_ankole_busoga_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.tanganyika } }
+		AND = {
+			has_country_flag = africa_first_proof_aid_action_completed
+			any_of_scopes = {
+				array = africa_first_proof_corridor_actor_credits
+				has_country_flag = africa_first_proof_capital_rail_route
+				africa_first_proof_corridor_actor_route_is_live = yes
+			}
+			any_of_scopes = {
+				array = africa_first_proof_corridor_credits
+				state = 546
+				OR = {
+					has_state_flag = africa_river_or_lake_transport_operational
+					has_state_flag = africa_port_modernisation_operational
+				}
+				africa_first_proof_state_project_evidence_is_live = yes
+			}
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.somali_territories } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			has_state_flag = africa_port_modernisation_operational
+			africa_first_proof_state_is_current_playbook_homeland = yes
+			africa_first_proof_state_project_evidence_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.madagascar } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			state = 543
+			has_state_flag = africa_port_modernisation_operational
+			africa_first_proof_state_project_evidence_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.south_africa } }
+		AND = {
+			any_of_scopes = {
+				array = africa_first_proof_corridor_credits
+				has_state_flag = africa_rail_spine_connection_operational
+				africa_first_proof_state_project_evidence_is_live = yes
+			}
+			OR = {
+				AND = {
+					has_country_flag = africa_first_proof_south_africa_wartime_route
+					check_variable = {
+						var = africa_first_proof_actor_credit_count
+						value = constant:africa_first_proof_count.two
+						compare = greater_than_or_equals
+					}
+				}
+				AND = {
+					has_country_flag = africa_first_proof_south_africa_constitutional_route
+					has_country_flag = africa_first_proof_guarantee_action_completed
+					has_country_flag = africa_first_proof_land_settlement_action_completed
+				}
+			}
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.portuguese_guinea } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			state = 296
+			is_controlled_by = ROOT
+			has_state_flag = africa_river_or_lake_transport_operational
+			africa_state_is_registered_river_or_lake_project_site = yes
+			has_state_flag = africa_port_modernisation_operational
+			is_coastal = yes
+			naval_base > constant:africa_value.zero
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.togo } }
+		AND = {
+			has_country_flag = africa_first_proof_togo_british_mandate_seat
+			has_country_flag = africa_first_proof_togo_french_mandate_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mauritania } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			state = 272
+			has_state_flag = africa_port_modernisation_operational
+			africa_first_proof_state_project_evidence_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.cameroon } }
+		AND = {
+			has_country_flag = africa_first_proof_cameroon_british_mandate_seat
+			has_country_flag = africa_first_proof_cameroon_french_mandate_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.equatorial_guinea } }
+		AND = {
+			has_country_flag = africa_first_proof_equatorial_guinea_bioko_seat
+			has_country_flag = africa_first_proof_equatorial_guinea_rio_muni_seat
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.mozambique } }
+		any_of_scopes = {
+			array = africa_first_proof_corridor_credits
+			has_state_flag = africa_port_modernisation_operational
+			africa_first_proof_state_is_current_playbook_homeland = yes
+			africa_first_proof_state_project_evidence_is_live = yes
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.bechuanaland } }
+		AND = {
+			has_country_flag = africa_first_proof_guarantee_action_completed
+			any_of_scopes = {
+				array = africa_first_proof_corridor_actor_credits
+				has_country_flag = africa_first_proof_capital_rail_route
+				africa_first_proof_corridor_actor_route_is_live = yes
+			}
+		}
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.basutoland } }
+		has_country_flag = africa_first_proof_guarantee_action_completed
+	}
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.eritrea } }
+		AND = {
+			has_country_flag = africa_first_proof_eritrea_highland_seat
+			has_country_flag = africa_first_proof_eritrea_lowland_seat
+		}
+	}
 	OR = {
 		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } }
 		AND = {

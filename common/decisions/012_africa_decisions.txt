@@ -386,13 +386,39 @@ africa_charter_council_category = {
 		timeout_effect = { FROM = { africa_resolve_action = yes } }
 	}
 
+	mission_africa_complete_continental_peace_exemption = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		target_array = africa_peace_exemption_countries
+		activation = { africa_is_current_host = yes }
+		target_trigger = {
+			FROM = {
+				has_country_flag = africa_continental_peace_completion_mission_active
+				africa_member_host_generation_is_current = yes
+			}
+		}
+		days_mission_timeout = var:africa_peace_exemption_days
+		is_good = yes
+		fire_only_once = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_global_flag = africa_event_active }
+				FROM = { africa_continental_peace_exemption_completion_is_ready = yes }
+				FROM = { africa_continental_peace_exemption_terms_are_breached = yes }
+				FROM = { NOT = { africa_member_host_generation_is_current = yes } }
+			}
+		}
+		cancel_effect = { FROM = { africa_close_continental_peace_exemption = yes } }
+		timeout_effect = { FROM = { africa_close_continental_peace_exemption = yes } }
+	}
+
 }
 africa_protection_actions_category = {
 	africa_select_guarantee_sovereignty = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.guarantee_sovereignty } } }
 		cost = 0
@@ -404,7 +430,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.open_aid_corridor } } }
 		cost = 0
@@ -416,7 +442,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.dispatch_charter_mission } } }
 		cost = 0
@@ -428,7 +454,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.deploy_volunteers } } }
 		cost = 0
@@ -440,9 +466,9 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.intervene_against_coloniser } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.intervene_against_coloniser } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.intervene_against_coloniser } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -452,7 +478,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.evacuate_leaders_archives } } }
 		cost = 0
@@ -464,7 +490,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.recognise_provisional_government } } }
 		cost = 0
@@ -476,7 +502,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.secure_border_sanctuary } } }
 		cost = 0
@@ -488,7 +514,7 @@ africa_protection_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.break_blockade } } }
 		cost = 0
@@ -514,7 +540,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_defence_charter } } }
 		cost = 0
@@ -526,7 +552,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_development_charter } } }
 		cost = 0
@@ -538,7 +564,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.federal_union }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_federal_charter } } }
@@ -551,7 +577,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_crown_charter } } }
@@ -564,7 +590,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_peoples_charter } } }
@@ -577,7 +603,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_security_charter } } }
@@ -614,7 +640,7 @@ africa_accession_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.hold_accession_referendum } } }
 		cost = 0
@@ -640,9 +666,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.convene_regional_congress } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.convene_regional_congress } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -652,9 +678,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.settle_overlapping_claims } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.settle_overlapping_claims } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -664,9 +690,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.create_regional_charter } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.create_regional_charter } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.create_regional_charter } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -676,9 +702,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.form_regional_federation } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.form_regional_federation } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.form_regional_federation } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -688,9 +714,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.restore_historical_polity } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.restore_historical_polity } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.restore_historical_polity } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -700,9 +726,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.approve_direct_integration_schedule } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.approve_direct_integration_schedule } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.approve_direct_integration_schedule } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -723,9 +749,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.fund_congress_security } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.fund_congress_security } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.fund_congress_security } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -735,9 +761,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.invite_diaspora_delegates } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.invite_diaspora_delegates } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.invite_diaspora_delegates } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -747,9 +773,9 @@ africa_regional_congress_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.enforce_congress_settlement } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_i_action_gate_tt africa_evolution_i_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.enforce_congress_settlement } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.enforce_congress_settlement } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -762,7 +788,7 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.build_administrative_bridge } } }
 		cost = 0
@@ -774,7 +800,7 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.connect_member_capitals } } }
 		cost = 0
@@ -786,7 +812,7 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.standardise_customs } } }
 		cost = 0
@@ -798,9 +824,9 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.integrate_security_services } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.integrate_security_services } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -810,7 +836,7 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.harmonise_officer_corps } } }
 		cost = 0
@@ -833,7 +859,7 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.launch_local_settlement_programme } } }
 		cost = 0
@@ -845,9 +871,9 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.grant_core_recognition } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.grant_core_recognition } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.grant_core_recognition } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -868,9 +894,9 @@ africa_integration_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.federalise_restored_polities } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.federalise_restored_polities } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -883,7 +909,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.survey_continental_resources } } }
 		cost = 0
@@ -895,7 +921,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.build_regional_rail_spine } } }
 		cost = 0
@@ -907,7 +933,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.expand_river_transport } } }
 		cost = 0
@@ -919,7 +945,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.modernise_continental_port } } }
 		cost = 0
@@ -931,7 +957,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.create_local_processing_chain } } }
 		cost = 0
@@ -943,7 +969,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.continental_procurement_contract } } }
 		cost = 0
@@ -955,7 +981,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.food_security_reserve } } }
 		cost = 0
@@ -967,9 +993,9 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.resource_sovereignty_review } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.resource_sovereignty_review } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -979,7 +1005,7 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.charter_development_fund } } }
 		cost = 0
@@ -991,9 +1017,9 @@ africa_economy_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.continental_industrial_plan } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.continental_industrial_plan } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.continental_industrial_plan } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -1006,7 +1032,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.open_voluntary_return_registry } } }
 		cost = 0
@@ -1018,7 +1044,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.charter_passage_programme } } }
 		cost = 0
@@ -1030,7 +1056,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.build_returnee_housing } } }
 		cost = 0
@@ -1042,7 +1068,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.invite_afro_american_technical_mission } } }
 		cost = 0
@@ -1054,7 +1080,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.veterans_and_volunteers_programme } } }
 		cost = 0
@@ -1066,7 +1092,7 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.diaspora_investment_bonds } } }
 		cost = 0
@@ -1078,9 +1104,9 @@ africa_diaspora_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.citizenship_and_representation_convention } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.citizenship_and_representation_convention } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -1104,7 +1130,7 @@ africa_rival_bloc_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.monitor_rival_bloc } } }
 		cost = 0
@@ -1116,7 +1142,7 @@ africa_rival_bloc_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.offer_rival_arbitration } } }
 		cost = 0
@@ -1128,7 +1154,7 @@ africa_rival_bloc_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.support_rival_member_defection } } }
 		cost = 0
@@ -1140,7 +1166,7 @@ africa_rival_bloc_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.counter_foreign_patronage } } }
 		cost = 0
@@ -1174,9 +1200,9 @@ africa_rival_bloc_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_late = yes
 		}
-		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.emergency_leadership_vote } } }
+		available = { custom_trigger_tooltip = { tooltip = africa_evolution_ii_action_gate_tt africa_evolution_ii_grounded_action_gate_is_open = yes } NOT = { check_variable = { africa_selected_action_id = constant:africa_action.emergency_leadership_vote } } }
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
@@ -1521,8 +1547,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.federal_union }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.convene_federal_deadlock_conference }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.convene_federal_deadlock_conference } } }
 		cost = 0
@@ -1534,8 +1562,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.conduct_first_continental_election }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.conduct_first_continental_election } } }
 		cost = 0
@@ -1547,8 +1577,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.arbitrate_continental_succession }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.arbitrate_continental_succession } } }
 		cost = 0
@@ -1560,8 +1592,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.balance_food_and_industrial_plan }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.balance_food_and_industrial_plan } } }
 		cost = 0
@@ -1573,8 +1607,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.review_victorious_commander_loyalty }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.review_victorious_commander_loyalty } } }
 		cost = 0
@@ -1586,8 +1622,10 @@ africa_constitutional_crisis_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.regional } check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.high_chaos } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.ratify_confederal_emergency_action }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.ratify_confederal_emergency_action } } }
 		cost = 0
@@ -1601,6 +1639,8 @@ africa_constitutional_crisis_actions_category = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
 			check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.review_covenant_obligation }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.review_covenant_obligation } } }
 		cost = 0
@@ -1616,6 +1656,8 @@ africa_post_unification_actions_category = {
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_is_one
+			check_variable = { africa_focus_pending_route_action = constant:africa_action.hold_postwar_constitutional_review }
+			africa_focus_pending_route_action_is_unresolved = yes
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.hold_postwar_constitutional_review } } }
 		cost = 0
@@ -1630,7 +1672,7 @@ africa_host_opening_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			check_variable = { africa_current_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
 			has_country_flag = africa_first_proof_failed
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.recover_failed_host_proof } } }
@@ -1646,7 +1688,7 @@ africa_regional_restorations_actions_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			OR = { check_variable = { africa_current_phase = constant:africa_action_phase.late } check_variable = { africa_current_phase = constant:africa_action_phase.post_unification } }
+			africa_action_phase_has_reached_regional = yes
 			has_country_flag = africa_league_congress_unlocked
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.promote_priority_member_package } } }

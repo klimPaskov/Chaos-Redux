@@ -1,0 +1,908 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PRIORITY MEMBER DECISIONS
+# ============================================================================
+# Action 102 registration, four-stage package mechanics, four-stage force
+# reinforcement, explicit Charter bargaining, overlap settlement, a timed
+# withdrawal, and repeatable post-settlement actions for all sixteen packages.
+# ============================================================================
+
+africa_priority_member_category = {
+	africa_priority_member_ratify_promoted_package = {
+		icon = GFX_decision_012_africa_priority_member_ratification
+		visible = { africa_priority_member_can_register_package = yes }
+		available = { africa_priority_member_can_register_package = yes }
+		cost = constant:africa_priority_member_cost.registration_pp
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_ratify_promoted_package_tt
+			hidden_effect = {
+				africa_priority_member_register_from_origin = yes
+				if = { limit = { africa_priority_member_can_open_political_settlement = yes } country_event = { id = africa_priority_member.1200 } }
+			}
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.registration }
+	}
+
+	africa_priority_member_convene_political_settlement = {
+		icon = GFX_decision_012_africa_priority_member_political_settlement
+		visible = { africa_priority_member_has_package = yes NOT = { has_country_flag = africa_priority_member_politics_settled } }
+		available = { africa_priority_member_can_open_political_settlement = yes }
+		cost = constant:africa_priority_member_cost.politics_pp
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_convene_political_settlement_tt
+			hidden_effect = { country_event = { id = africa_priority_member.1200 } }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.politics }
+	}
+
+	africa_priority_member_negotiate_league_role = {
+		icon = GFX_decision_012_africa_priority_member_league_bargain
+		visible = {
+			africa_priority_member_has_package = yes
+			NOT = { has_country_flag = africa_priority_member_preferred_relationship_reached }
+		}
+		available = { africa_priority_member_can_negotiate_league_role = yes }
+		cost = constant:africa_priority_member_cost.league_pp
+		days_re_enable = constant:africa_priority_member_duration.league_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_negotiate_league_role_tt
+			hidden_effect = { country_event = { id = africa_priority_member.1210 } }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.league }
+	}
+
+	africa_priority_member_resolve_overlap = {
+		icon = GFX_decision_012_africa_priority_member_overlap_settlement
+		visible = { africa_priority_member_has_package = yes NOT = { has_country_flag = africa_priority_member_overlap_disposition_recorded } }
+		available = { africa_priority_member_can_resolve_overlap = yes }
+		cost = constant:africa_priority_member_cost.overlap_pp
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_resolve_overlap_tt
+			hidden_effect = { country_event = { id = africa_priority_member.1220 } }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.overlap }
+	}
+
+	africa_priority_member_open_departure_terms = {
+		icon = GFX_decision_012_africa_priority_member_departure_terms
+		visible = { africa_priority_member_has_package = yes NOT = { africa_relationship_is_outside = yes } }
+		available = { africa_priority_member_can_open_departure_terms = yes }
+		cost = constant:africa_priority_member_cost.departure_pp
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_open_departure_terms_tt
+			hidden_effect = { country_event = { id = africa_priority_member.1230 } }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.departure
+			modifier = {
+				factor = constant:africa_priority_member_ai.preferred_factor
+				check_variable = { africa_member_confidence < constant:africa_measure.low }
+			}
+		}
+	}
+
+	africa_priority_member_recall_withdrawal_notice = {
+		icon = GFX_decision_012_africa_priority_member_withdrawal_recall
+		visible = { has_country_flag = africa_priority_member_withdrawal_in_progress }
+		available = { has_country_flag = africa_priority_member_withdrawal_in_progress }
+		cost = constant:africa_priority_member_cost.free
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_member_recall_withdrawal_notice_tt
+			hidden_effect = { africa_priority_member_renew_league_relationship = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.departure
+			modifier = {
+				factor = constant:africa_priority_member_ai.preferred_factor
+				check_variable = { var = africa_member_confidence value = constant:africa_measure.high compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	africa_priority_member_withdrawal_mission = {
+		icon = GFX_decision_012_africa_priority_member_withdrawal_mission
+		allowed = { always = no }
+		visible = { africa_priority_member_has_package = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:africa_priority_member_duration.withdrawal_days
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_priority_member_withdrawal_in_progress }
+				AND = { NOT = { africa_relationship_is_leaving = yes } NOT = { africa_relationship_is_rival_bloc = yes } }
+			}
+		}
+		cancel_effect = { hidden_effect = { africa_priority_member_cancel_withdrawal = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = africa_priority_member_withdrawal_mission_complete_tt
+			hidden_effect = { africa_priority_member_complete_peaceful_withdrawal = yes }
+		}
+	}
+
+	# asante mechanic
+	africa_priority_asante_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_asante
+		visible = { africa_priority_member_package_is_asante = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_asante_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# oyo mechanic
+	africa_priority_oyo_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_oyo
+		visible = { africa_priority_member_package_is_oyo = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_oyo_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# sokoto mechanic
+	africa_priority_sokoto_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_sokoto
+		visible = { africa_priority_member_package_is_sokoto = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_sokoto_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# kanem bornu mechanic
+	africa_priority_kanem_bornu_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_kanem_bornu
+		visible = { africa_priority_member_package_is_kanem_bornu = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kanem_bornu_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# manden mechanic
+	africa_priority_manden_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_manden
+		visible = { africa_priority_member_package_is_manden = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_manden_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# kongo mechanic
+	africa_priority_kongo_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_kongo
+		visible = { africa_priority_member_package_is_kongo = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kongo_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# buganda mechanic
+	africa_priority_buganda_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_buganda
+		visible = { africa_priority_member_package_is_buganda = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_buganda_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# aksum mechanic
+	africa_priority_aksum_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_aksum
+		visible = { africa_priority_member_package_is_aksum = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_aksum_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# harar mechanic
+	africa_priority_harar_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_harar
+		visible = { africa_priority_member_package_is_harar = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_harar_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# kilwa mechanic
+	africa_priority_kilwa_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_kilwa
+		visible = { africa_priority_member_package_is_kilwa = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+			custom_trigger_tooltip = { tooltip = africa_priority_member_coastal_site_required_tt hidden_trigger = { africa_priority_member_has_coastal_project_site = yes } }
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kilwa_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# nubia mechanic
+	africa_priority_nubia_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_nubia
+		visible = { africa_priority_member_package_is_nubia = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# luba mechanic
+	africa_priority_luba_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_luba
+		visible = { africa_priority_member_package_is_luba = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_luba_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# lunda mechanic
+	africa_priority_lunda_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_lunda
+		visible = { africa_priority_member_package_is_lunda = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_lunda_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# great zimbabwe mechanic
+	africa_priority_great_zimbabwe_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_great_zimbabwe
+		visible = { africa_priority_member_package_is_great_zimbabwe = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# merina mechanic
+	africa_priority_merina_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_merina
+		visible = { africa_priority_member_package_is_merina = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_merina_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# zulu mechanic
+	africa_priority_zulu_advance_mechanic = {
+		icon = GFX_decision_012_africa_priority_member_mechanic_zulu
+		visible = { africa_priority_member_package_is_zulu = yes }
+		available = {
+			africa_priority_member_can_advance_mechanic = yes
+		}
+		cost = constant:africa_priority_member_cost.mechanic_pp
+		days_re_enable = constant:africa_priority_member_duration.mechanic_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_zulu_advance_mechanic_tt
+			hidden_effect = { africa_priority_member_advance_mechanic = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.mechanic }
+	}
+
+	# asante force identity
+	africa_priority_asante_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_asante
+		visible = { africa_priority_member_package_is_asante = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_asante_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# oyo force identity
+	africa_priority_oyo_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_oyo
+		visible = { africa_priority_member_package_is_oyo = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_oyo_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# sokoto force identity
+	africa_priority_sokoto_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_sokoto
+		visible = { africa_priority_member_package_is_sokoto = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_sokoto_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# kanem bornu force identity
+	africa_priority_kanem_bornu_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_kanem_bornu
+		visible = { africa_priority_member_package_is_kanem_bornu = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kanem_bornu_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# manden force identity
+	africa_priority_manden_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_manden
+		visible = { africa_priority_member_package_is_manden = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_manden_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# kongo force identity
+	africa_priority_kongo_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_kongo
+		visible = { africa_priority_member_package_is_kongo = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kongo_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# buganda force identity
+	africa_priority_buganda_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_buganda
+		visible = { africa_priority_member_package_is_buganda = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_buganda_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# aksum force identity
+	africa_priority_aksum_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_aksum
+		visible = { africa_priority_member_package_is_aksum = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_aksum_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# harar force identity
+	africa_priority_harar_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_harar
+		visible = { africa_priority_member_package_is_harar = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_harar_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# kilwa force identity
+	africa_priority_kilwa_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_kilwa
+		visible = { africa_priority_member_package_is_kilwa = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kilwa_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# nubia force identity
+	africa_priority_nubia_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_nubia
+		visible = { africa_priority_member_package_is_nubia = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# luba force identity
+	africa_priority_luba_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_luba
+		visible = { africa_priority_member_package_is_luba = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_luba_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# lunda force identity
+	africa_priority_lunda_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_lunda
+		visible = { africa_priority_member_package_is_lunda = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_lunda_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# great zimbabwe force identity
+	africa_priority_great_zimbabwe_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_great_zimbabwe
+		visible = { africa_priority_member_package_is_great_zimbabwe = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# merina force identity
+	africa_priority_merina_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_merina
+		visible = { africa_priority_member_package_is_merina = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_merina_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# zulu force identity
+	africa_priority_zulu_reinforce_force = {
+		icon = GFX_decision_012_africa_priority_member_force_zulu
+		visible = { africa_priority_member_package_is_zulu = yes }
+		available = { africa_priority_member_can_reinforce_force = yes }
+		cost = constant:africa_priority_member_cost.force_pp
+		days_re_enable = constant:africa_priority_member_duration.force_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_zulu_reinforce_force_tt
+			hidden_effect = { africa_priority_member_reinforce_force = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.force
+			modifier = { factor = constant:africa_priority_member_ai.preferred_factor has_war = yes }
+		}
+	}
+
+	# asante continuing settlement
+	africa_priority_asante_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_asante
+		visible = { africa_priority_member_package_is_asante = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_asante_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# oyo continuing settlement
+	africa_priority_oyo_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_oyo
+		visible = { africa_priority_member_package_is_oyo = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_oyo_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# sokoto continuing settlement
+	africa_priority_sokoto_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_sokoto
+		visible = { africa_priority_member_package_is_sokoto = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_sokoto_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# kanem bornu continuing settlement
+	africa_priority_kanem_bornu_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_kanem_bornu
+		visible = { africa_priority_member_package_is_kanem_bornu = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kanem_bornu_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# manden continuing settlement
+	africa_priority_manden_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_manden
+		visible = { africa_priority_member_package_is_manden = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_manden_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# kongo continuing settlement
+	africa_priority_kongo_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_kongo
+		visible = { africa_priority_member_package_is_kongo = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kongo_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# buganda continuing settlement
+	africa_priority_buganda_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_buganda
+		visible = { africa_priority_member_package_is_buganda = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_buganda_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# aksum continuing settlement
+	africa_priority_aksum_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_aksum
+		visible = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_aksum_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# harar continuing settlement
+	africa_priority_harar_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_harar
+		visible = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_harar_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# kilwa continuing settlement
+	africa_priority_kilwa_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_kilwa
+		visible = { africa_priority_member_package_is_kilwa = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+			custom_trigger_tooltip = { tooltip = africa_priority_member_coastal_site_required_tt hidden_trigger = { africa_priority_member_has_coastal_project_site = yes } }
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_kilwa_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# nubia continuing settlement
+	africa_priority_nubia_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# luba continuing settlement
+	africa_priority_luba_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_luba
+		visible = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_luba_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# lunda continuing settlement
+	africa_priority_lunda_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_lunda
+		visible = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_lunda_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# great zimbabwe continuing settlement
+	africa_priority_great_zimbabwe_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# merina continuing settlement
+	africa_priority_merina_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_merina
+		visible = { africa_priority_member_package_is_merina = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_merina_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# zulu continuing settlement
+	africa_priority_zulu_post_settlement_action = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_zulu
+		visible = { africa_priority_member_package_is_zulu = yes has_country_flag = africa_priority_member_post_settlement_open }
+		available = {
+			africa_priority_member_can_run_post_settlement_action = yes
+		}
+		cost = constant:africa_priority_member_cost.post_settlement_pp
+		days_re_enable = constant:africa_priority_member_duration.post_settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_zulu_post_settlement_action_tt
+			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+}
