@@ -7,10 +7,10 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 Use the following precedence when two sources disagree:
 
 1. The latest direct user constraints in the continuation prompt.
-2. The accepted design in `air_cleanliness_fallout_planning_package_expanded.zip`.
-3. Live repository behavior at commit `8044d232376fef3a1a3ca1ea3e0d487523924cc6` as evidence of what currently exists.
-4. Current repository documentation as a description to be corrected when stale.
-5. The originally uploaded Air Cleanliness document as historical design context.
+2. The accepted source specifications under `docs/specs/air_cleanliness_fallout_specs/`.
+3. Resolved implementation decisions, proofs, and current status under `docs/plans/air_cleanliness_fallout_plans/`.
+4. Live repository behavior as evidence of what currently exists.
+5. Earlier archives and uploaded Air Cleanliness documents as historical design context.
 
 Live code does not silently override accepted design. A difference between code and design becomes an implementation task or an explicit parent decision.
 
@@ -52,7 +52,8 @@ Implementation interpretation:
 Accepted rule:
 
 - Fallout is not a normal super-event.
-- No super-event slot, quote, normal super-event option, or super-event audio wrapper is used.
+- No super-event slot, quote, normal super-event option, shared audio id, borrowed asset, or borrowed path is used.
+- Dedicated Fallout audio still plays during the blackout and follows the existing super-event audio preference.
 - The screen becomes black.
 - Centered text appears one sentence or beat at a time.
 - The world rewrite occurs while control is withheld.
@@ -77,7 +78,7 @@ Accepted rule:
 
 Implementation interpretation:
 
-- The current random-state winter pulse is replaced by a persistent state phase model.
+- The live persistent state model owns phases 0 through 6, exposure, recovery, adaptation, food, shelter, reclamation, water, refugee, disease, and damage ledgers.
 - The existing monthly contamination host pass is extended instead of adding another world-wide monthly pass.
 - Population loss uses the shared Chaos Meter Deaths pipeline.
 - Building and state-category damage use bounded, persistent exposure logic.
@@ -143,26 +144,25 @@ Implementation interpretation:
 
 | Surface | Live state | Accepted state | Required action |
 | --- | --- | --- | --- |
-| Fallout event ownership | a Fallout block exists in a non-Fallout event file | every Fallout event lives in `events/fallout_world_end_events.txt` under `chaosx.fallout` | delete the old block and migrate callers directly |
-| Fallout threshold | event trigger checks 1000 percent | eligibility begins at 100 percent and direct scripted callers exist | add request and risk coordinator |
-| Winter | global flag plus random states and generic fallout modifiers | persistent state phases and phase-specific effects | replace winter pulse with state model |
+| Fallout event ownership | Fallout definitions live in `events/fallout_world_end_events.txt` under `chaosx.fallout`, and the stale non-Fallout block is absent | every Fallout event uses the dedicated file and namespace | keep future Fallout definitions, callers, assets, and audio inside the dedicated ownership boundary |
+| Fallout threshold | the normal Air Contamination route can request Fallout at 100 percent, and terminal callers use the same idempotent coordinator | eligibility begins at 100 percent and direct scripted callers exist | retain the request receipts and do not restore a Chaos-above-1000 requirement |
+| Winter | persistent phases 0 through 6 drive state ledgers, consequences, mapmodes, ordinary-map visuals, responses, and a reviewed event pilot | persistent state phases and phase-specific effects | finish the remaining treaty and event work while preserving the single monthly host |
 | Treaty | one host-owned bounded lifecycle, paid cleanup project, paid filter convoy, founder succession, violation sanctions, annex cleanup, pre-pressure route reconciliation, exact donor cleanup, and silent Fallout pause | active severe-contamination diplomacy and mitigation layer | expand verification, evacuation, direct successor memory, and manually reviewed treaty event families |
-| Air docs | describe old recovery, old event id, normal super-event | must describe live and accepted implementation | rewrite after each tranche |
+| Air docs | current system docs describe the live partial implementation and identify remaining work | must describe live and accepted implementation | update the current system docs and proof index after each reviewed tranche |
 | Scenario registry | the writable checkout reaches SCN-013 while raw id 12 remains separately reserved | Fallout must use the next id after the highest live assignment | SCN-014 is reserved in Fallout-owned constants without renumbering existing ids, and public activation waits for the sweep gate |
 | Mapmode strip | the selected and deselected strips are 380 by 18 with 19 exact 20-pixel frames | Deaths owns slot 18, contaminated states owns slot 19, and Air Winter uses dedicated per-mode sprites | resolved in `AIR_WINTER_MAPMODE_ICON_PROOF.md` without changing an asset |
 | Province sweep | 41 dormant batches expand the installed map into 10,154 native province calls | every valid province receives a thermonuclear strike before the seven-day clock | static route and ledger proven, with native acceptance and callback load retained as runtime blockers |
 
 ## Documentation disposition
 
-The following current documentation must be treated as stale evidence until implementation aligns it:
+Current implementation authority:
 
-- `docs/systems/air_contamination_mechanic.md`
-- world-end sections in `CHAOS_REDUX_MECHANICS.md`
-- any super-event registry entry that still lists Fallout as a normal super-event
-- scenario documentation that hardcodes a Fallout id before the live registry has been scanned
-- stale Fallout event ids from any non-Fallout namespace
-- stale Fallout asset paths inside another feature folder
-- stale Fallout event definitions outside `events/fallout_world_end_events.txt`
+- `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.
+- `docs/air_cleanliness_winter.md` describes the live Air Winter implementation and its reported gaps.
+- `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` records the overall partial status and hard blockers.
+- `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md` owns Fallout file, namespace, asset, and audio boundaries.
+
+Historical notes remain evidence only when they conflict with those current sources. Any remaining world-end overview that states every ending requires Chaos above 1000 or every ending uses an ordinary super-event must identify Fallout as the dedicated exception. Scenario documentation may name SCN-014 only as a reserved identity until the exact native sweep release gate passes.
 
 Do not erase historical source material. Mark superseded notes where needed and keep one current implementation document per system.
 

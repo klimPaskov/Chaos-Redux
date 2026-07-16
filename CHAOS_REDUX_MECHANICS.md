@@ -257,6 +257,7 @@ The tab also includes an enable/disable checkbox for the air cleanliness system.
 | One outbreak state, high intensity | `+3 bp` | `+0.03%` |
 | Normal nuke | `+20 bp` | `+0.20%` |
 | Thermonuclear strike | `+150 bp` | `+1.50%` |
+| Wildfire smoke and volcanic ash reservoir | up to `+4 bp` each month | up to `+0.04%` each month |
 
 | Monthly recovery band | Basis points | Percent |
 | --- | --- | --- |
@@ -270,8 +271,7 @@ The tab also includes an enable/disable checkbox for the air cleanliness system.
 | `25%` | `2500 bp` | Spread becomes easier |
 | `50%` | `5000 bp` | Mild nuclear-winter periods can begin |
 | `75%` | `7500 bp` | Stronger nuclear-winter periods can begin |
-| `100%` | `10000 bp` | Contamination becomes irreversible |
-| `1000%` | `100000 bp` | Fallout world-end scenario can trigger |
+| `100%` | `10000 bp` | Contamination becomes irreversible and the normal Fallout request route becomes eligible |
 
 <!-- IMAGE PLACEHOLDER: Air Cleanliness tab with thresholds and status line -->
 
@@ -329,8 +329,10 @@ Each chaos tier applies a multiplier to event timers:
 
 ## World End Scenario Mechanic
 
-When the **Chaos Meter** exceeds 1000, the system triggers a **World End Scenario**.  
+When the **Chaos Meter** exceeds 1000, the system triggers a **World End Scenario**.
 This represents the logical conclusion of the campaign and prevents indefinite gameplay.
+
+Fallout is the dedicated exception. It can be requested at 100 percent Air Contamination, by a terminal event, or by the manual Fallout scenario after its exact seven-day interval. It does not require Chaos above 1000 and does not use an ordinary super-event.
 
 <img width="480" height="80" alt="chaos_meter_max" src="https://github.com/klimPaskov/Chaos-Redux/blob/master/gfx/interface/chaos_meter/chaos_meter_max.png" />
 
@@ -341,7 +343,7 @@ This represents the logical conclusion of the campaign and prevents indefinite g
 - **Per-Scenario Control**: Public event-owned endings can be enabled or disabled independently from their owner event in Event Details. A disabled ending is skipped by its automatic readiness path, while enabled sibling endings remain eligible.
 - **Event Freeze**: Automatic event firing stops across the world.
 - **Purpose**: Ensures campaigns reach a dramatic, conclusive end and prevents late-game slowdown.
-- **Super Event**: Each world end scenario has a custom super event.
+- **Presentation**: Ordinary world ends use their custom super events. Fallout uses its dedicated full-screen blackout and dedicated dramatic audio while honoring the super-event audio preference.
 
 ---
 
