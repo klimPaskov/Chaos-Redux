@@ -13,16 +13,18 @@ These facts do not add any of the three surfaces to a selectable release pool.
 ## Read first
 
 1. `006_source_of_truth_map.md`
-2. `../../specs/006_independence_wave_specs/README.md`
-3. `subagent_handoffs/006_transaction_architecture_resolution_2026_07_15.md`
-4. `subagent_handoffs/006_form01_04_readiness_promotion_2026_07_16.md`
-5. `subagent_handoffs/006_form03_promotion_reaudit_2026_07_16.md`
-6. `subagent_handoffs/006_afx_agx_release_readiness_audit_2026_07_16.md`
-7. `subagent_handoffs/006_iw003_cornwall_map_feasibility_2026_07_16.md`
-8. `subagent_handoffs/006_iw005_flanders_independent_audit_2026_07_16.md`
-9. `subagent_handoffs/006_bri_ajx_commit_readiness_reaudit_2026_07_16.md`
-10. `subagent_handoffs/006_event6_advisor_icon_withdrawal_2026_07_16.md`
-11. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
+2. `../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+3. `subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`
+4. `../../specs/006_independence_wave_specs/README.md`
+5. `subagent_handoffs/006_transaction_architecture_resolution_2026_07_15.md`
+6. `subagent_handoffs/006_form01_04_readiness_promotion_2026_07_16.md`
+7. `subagent_handoffs/006_form03_promotion_reaudit_2026_07_16.md`
+8. `subagent_handoffs/006_afx_agx_release_readiness_audit_2026_07_16.md`
+9. `subagent_handoffs/006_iw003_cornwall_map_feasibility_2026_07_16.md`
+10. `subagent_handoffs/006_iw005_flanders_independent_audit_2026_07_16.md`
+11. `subagent_handoffs/006_bri_ajx_commit_readiness_reaudit_2026_07_16.md`
+12. `subagent_handoffs/006_event6_advisor_icon_withdrawal_2026_07_16.md`
+13. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
 
 The seven specification parts remain the design authority. Use the source-of-
 truth map for current implementation status and handoff dispositions.
@@ -61,16 +63,20 @@ truth map for current implementation status and handoff dispositions.
   documented static ordering caveat because engine order is unspecified, and AI
   completion still depends on opportunistic placement of garrisons in states 6
   and 977.
-- Commit `45bee09d2` completed the exact five-line ACX, AEX, AFX, AGX, and AJX
-  army-small checksum alignment.
+- The 2026-07-16 male-HOI4 portrait package and final independent audit are the
+  current portrait authority: twenty male fictional large portraits and ten
+  commander-small dossiers pass, while Rupprecht and Matthes remain protected.
+  ACX and AEX are unregistered readiness-pool art only. Earlier portrait and
+  army-small checksum ledgers are historical and superseded.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
   the repaired FORM transaction integration. Both exact immutable identity
   helpers and both runtime-preflight ID/tag branches are present. Neither exact
   ID has compile-time content attestation or a SCN-008 admission branch.
-- Static icon families, portraits, army-small dossiers, country flags, FORM-01
-  through FORM-04 flags, report scenes, super-event art, and final `6002` audio
-  files materially exist. Gameplay advisor offices are asset-neutral after the
-  user-directed withdrawal of all custom Event 006 advisor icons.
+- Static icon families, current male-HOI4 portraits and commander-small
+  dossiers, country flags, FORM-01 through FORM-04 flags, report scenes,
+  super-event art, and final `6002` audio files materially exist. Gameplay
+  advisor offices are asset-neutral after the user-directed withdrawal of all
+  custom Event 006 advisor icons.
 - `6002` OGG, WAV, music wrappers, sound wrappers, and station entry are complete.
   Event 006 gameplay still does not assign audio ID `6002` and fire the
   settings-aware presentation path.
@@ -108,14 +114,16 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 - Installed-map binding and installed-mod tag audits.
 - FORM-01 through FORM-04 implementation, tags, flags, identity aliases, and
   readiness promotion.
-- Character portrait regeneration, explicit custom-advisor-icon withdrawal,
-  and army-small dossier correction.
+- Male-HOI4 portrait regeneration and final independent acceptance under the
+  2026-07-16 package, plus explicit custom-advisor-icon withdrawal. The
+  2026-07-15 fictional portrait and army-small packages are superseded.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - Historical AFX and AGX coordinated static promotion; AFX is subsequently
   revoked fail-closed while AGX remains admitted.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
-- Five-line army-small checksum alignment in `45bee09d2`.
+- Five-line army-small checksum alignment in `45bee09d2` remains historical
+  implementation evidence; the 2026-07-16 runtime ledger is current.
 - Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
   closeout in `7368cc0bf`.
 - SCO/WLS congress preparation repair in `4884c0ef1`, followed by exact IW-001
@@ -166,6 +174,8 @@ chaos-band, and wave-size gates. Higher bands need more audited packages.
 - A tag, history shell, portrait, flag, focus, or adapter does not make a package
   runtime-ready.
 - ACX and AEX visual files do not authorize standalone releases.
+- No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
+  army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
 - BRI and AJX exact identity helpers and runtime-preflight branches are
   non-authorizing prerequisites, not admission proof.

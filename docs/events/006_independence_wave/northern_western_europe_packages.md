@@ -10,6 +10,17 @@ Package sections:
 - Rhineland and Bavaria (IW-008–IW-009)
 - Saar (IW-010)
 
+Current portrait authority is
+`docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`,
+accepted by
+`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+It covers twenty male fictional `156x210` portraits and ten matching `65x67`
+commander-small dossiers. AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS retain
+their stable registrations; ACX and AEX are unregistered readiness-pool art
+only. The route-owned Rupprecht and Matthes portraits remain protected and
+byte-identical. Gameplay advisor offices remain active without custom Event 006
+advisor cards, sprites, or runtime DDS files.
+
 ---
 
 <!-- Consolidated section: Scotland and Wales. -->
@@ -256,7 +267,7 @@ New portrait sprites are registered in `interface/006_independence_wave_brittany
 - `GFX_portrait_BRI_independence_wave_coastal_commandant` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`.
 - `GFX_portrait_BRI_independence_wave_coastal_commandant_small` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant_small.dds`.
 
-The commander's army-small asset is a separately composed `65x67` dossier texture, not a resized leader crop. Its runtime SHA-256 is `12C1A20D2CC1234895E7AF557BDA9BAF7CDDCA58593527194B5EDAD3AF058684`. The complete source, processing, review, hashes, and rights record is in `docs/assets/006_independence_wave/bri_package_2026_07_15/manifest.md` and `docs/assets/006_independence_wave/army_small_dossier_correction_2026_07_15/manifest.md`.
+The commander's army-small asset is a separately composed `65x67` dossier texture, not a resized leader crop. Its current source, processing, review, runtime hash, and decoded-DDS evidence are in `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and `hashes/runtime_sha256_inventory.sha256`; the final independent audit named at the top of this document supplies the current visual verdict. The 2026-07-15 BRI and army-small evidence is historical and superseded for portrait acceptance. The separate Debeauvais rights blocker remains current and no generated likeness substitutes for him.
 
 The package reuses these registered Event 006 icons:
 
@@ -725,7 +736,7 @@ The fictional package roster is registered in `interface/006_independence_wave_r
 - `GFX_portrait_BAY_independence_wave_state_council`
 - `GFX_portrait_BAY_independence_wave_mountain_commandant` and its `_small` army sprite
 
-The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package lives under `docs/assets/006_independence_wave/`.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package is `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/`, with final acceptance in the independent audit cited above.
 
 ### Readiness boundary
 
@@ -919,7 +930,7 @@ and bunker priority without assuming a fixed host tag.
 The character sprites are consumed by
 `common/characters/006_independence_wave_saar_characters.txt`. The installed
 portrait hashes are checked against
-`docs/assets/006_independence_wave/portrait_regeneration_2026_07_15/portrait_package_hashes.sha256`;
+`docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/hashes/runtime_sha256_inventory.sha256`;
 the flag hashes remain checked against `generated_nwe_hashes.sha256`.
 
 #### Reused Event 006 icons
@@ -953,8 +964,9 @@ portrait handles. The focus base and shine handles are registered; the base
 handle identifies the neutral-commission entry focus while its three follow-up
 nodes retain their specific shared icons. The commander's separately composed
 `65x67` army dossier remains army-only and is not used by any advisor card. Its
-runtime SHA-256 is
-`470C29FD6CC73F5B6A269969160F1F4D721F31D4197F3D070C8388765F269312`.
+current runtime hash and visual evidence are governed by the accepted
+2026-07-16 portrait package and final independent audit, not the superseded
+2026-07-15 portrait ledgers.
 
 ### Implementation files
 

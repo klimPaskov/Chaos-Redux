@@ -1,5 +1,10 @@
 # Event 006 RHI/BAY Gameplay Handoff — 2026-07-15
 
+> **Portrait-specific supersession (2026-07-16):** Any claim that all
+> non-exempt approved portraits already existed is superseded by the male-HOI4
+> package manifest and final independent audit. Stable sprite wiring and
+> gameplay findings remain historical; Rupprecht and Matthes remain protected.
+
 > Superseded for route publication, government identifiers, AI route coupling, and readiness mapping by `006_nwe_route_matrix_remediation_2026_07_15.md`. The original implementation record below is retained for provenance and must not be used as the current route matrix.
 
 ## Status

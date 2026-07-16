@@ -1,5 +1,10 @@
 # Event 006 IW-010 Saar country-package implementation handoff
 
+> **Portrait-specific supersession (2026-07-16):** AJX fictional portrait
+> hashes and visual acceptance in this handoff are superseded by the male-HOI4
+> package manifest and final independent audit. Flag-ledger and gameplay
+> findings remain historical within their stated scope.
+
 Date: 2026-07-15
 
 Implementer: `event6_ajx_package`

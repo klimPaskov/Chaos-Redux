@@ -1,5 +1,11 @@
 # Event 006 IW-004 Brittany Country-Package Implementation Handoff
 
+> **Portrait-specific supersession (2026-07-16):** The old BRI portrait
+> manifest, hashes, and commander-small evidence are superseded by the
+> male-HOI4 package manifest and final independent audit. Gameplay
+> implementation findings remain preserved; the Debeauvais rights blocker is
+> still current.
+
 Date: 2026-07-15
 Country/package: `BRI` / `IW-004` / state `14`
 Implementation owner: `/root/event6_bri_package`

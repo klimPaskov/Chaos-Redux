@@ -1,5 +1,10 @@
 # Event 006 SCO/WLS Release-Readiness Promotion — 2026-07-16
 
+> **Portrait-specific supersession (2026-07-16):** The large and small
+> portrait visual evidence in this promotion is superseded by the male-HOI4
+> package manifest and final independent audit. Gameplay, formable, and
+> admission findings remain historical evidence.
+
 ## Scope
 
 This handoff records the exact admission transaction for IW-001 Scotland (`SCO`)

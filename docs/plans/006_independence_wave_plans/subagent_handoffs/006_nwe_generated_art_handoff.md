@@ -1,5 +1,11 @@
 # Event 006 northern and western Europe generated-art handoff
 
+> **Portrait-specific supersession (2026-07-16):** Only this record's portrait
+> and commander-small sections are superseded by the 2026-07-16 male-HOI4
+> package manifest and final independent audit. Its flag production and
+> historical flag conclusions remain current within their separate flag-only
+> authority.
+
 ## Outcome
 
 The bounded ACX/AFX/AGX/AJX live-flag repair is complete at the asset layer;

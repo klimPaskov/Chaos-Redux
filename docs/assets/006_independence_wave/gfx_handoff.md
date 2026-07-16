@@ -162,8 +162,13 @@ sprite names, exact texture paths, route locks, the blocked BRI identity record,
 and the warning that historical symbol previews are provenance inputs rather
 than runtime flag sprites.
 
-The generated companion registration and character portrait fragments for ACX,
-AEX, AFX, AGX, and AJX are in
-`northern_western_europe_generated_art_gfx_handoff.md`. Its target registry is
-`interface/006_independence_wave_region_01_portraits.gfx`; country-package owners
-retain gameplay and localisation wiring.
+The current full fictional portrait inventory and stable runtime contract are
+in `portrait_regeneration_male_hoi4_2026_07_16/manifest.md`, with production
+handoff
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_regeneration_2026_07_16.md`
+and independent acceptance in
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+The registered AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS textures retain their
+existing registries and consumers. ACX and AEX remain unregistered
+readiness-pool art only. The rejected mixed generated-art portrait handoff is
+not a wiring authority, and custom Event 006 advisor icons remain withdrawn.

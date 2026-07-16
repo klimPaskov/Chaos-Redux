@@ -1,5 +1,10 @@
 # IW-006 Wallonia and IW-007 Frisia Package Handoff
 
+> **Portrait-specific supersession (2026-07-16):** The stable portrait
+> inventory and visual-review claims in this handoff are superseded by the
+> male-HOI4 package manifest and final independent audit. Gameplay, FORM, flag,
+> and package-wiring findings are otherwise preserved.
+
 ## Ownership and completion boundary
 
 > Parent reconciliation, 2026-07-15: this handoff records the isolated package state before the shared FORM-01–48 registry was integrated. Readiness is no longer carried by dormant-country history. The later review withdrew both AFX and AGX static execution attestations because their accepted FORM-03 Low Countries lane still lacks a certified X-ending identity, final public localisation, complete ImageGen flag package, exact territory/member policy, and operational identity/integration adapters. The package gameplay below remains implemented, but neither package is currently selectable.

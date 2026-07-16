@@ -1,5 +1,10 @@
 # IW-003 Cornwall map feasibility audit
 
+> **Portrait-specific supersession (2026-07-16):** ACX portrait-file existence
+> below is a dated inventory, not visual acceptance. Current ACX art is accepted
+> only as an unregistered readiness pool under the male-HOI4 package and final
+> audit; the independent map blocker remains unchanged.
+
 Date: 2026-07-16
 
 Package: `IW-003` Cornwall / `ACX`

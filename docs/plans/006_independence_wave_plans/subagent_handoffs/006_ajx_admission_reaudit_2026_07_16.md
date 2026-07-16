@@ -1,5 +1,11 @@
 # Event 006 IW-010 Saar admission re-audit
 
+> **Portrait-specific supersession (2026-07-16):** Portrait, commander-small,
+> asset-ledger, and advisor-visual claims that rely on rejected 2026-07-15 art
+> are superseded by the male-HOI4 package manifest and final independent audit.
+> Gameplay admission findings remain historical; custom advisor icons remain
+> withdrawn.
+
 Date: 2026-07-16
 
 Audited package: `IW-010`, Saar (`AJX`), state 42, `RG-RHINE-SAAR`

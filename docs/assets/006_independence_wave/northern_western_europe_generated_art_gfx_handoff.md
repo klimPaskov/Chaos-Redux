@@ -1,302 +1,111 @@
-# Event 006 northern and western Europe generated-art GFX handoff
+# Event 006 northern and western Europe generated-flag engine handoff
 
-## Ownership boundary
+## Authority and ownership boundary
 
-This handoff supplies final textures and copy-ready registration/portrait
-fragments only. It does not edit `.gfx`, characters, country history, route
-logic, localisation, state ownership, or other gameplay files. Register these
-sprites in `interface/006_independence_wave_region_01_portraits.gfx`, retaining
-the names and paths below.
+This is the current flag-only engine handoff for the ACX, AFX, AGX, and AJX
+Event 006 triplets. It supplies exact runtime lookup paths and validation
+evidence. It does not supply a sprite registration block because HOI4 loads
+country flags by tag filename.
 
-The flag triplets require no `spriteType` registration. HOI4 discovers the
-unsuffixed `ACX`, `AFX`, `AGX`, and `AJX` files by exact path under
-`gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
+No `.gfx`, `.gui`, country, state, character, event, decision, focus, idea,
+history, localisation, or spreadsheet file is edited by this package.
 
-There is no standalone AEX flag family. AEX remains a vanilla `BEL_flanders`
-cosmetic overlay; the retired AEX runtime triplet and generated previews must
-not be recreated. Retained AEX portrait staging below does not change that flag
-boundary.
+## Automatic engine lookup
 
-The five officer `_small` texture paths below now resolve to independent
-`65x67` dossier cards. Their current source of truth is
-`army_small_dossier_correction_2026_07_15/gfx_handoff.md`; the names and paths
-in this copy-ready block remain valid.
+HOI4 discovers the four unsuffixed triplets directly under the standard flag
+ladder:
 
-## Copy-ready sprite registrations
+| Tag | Normal 82×52 | Medium 41×26 | Small 10×7 |
+| --- | --- | --- | --- |
+| ACX | `gfx/flags/ACX.tga` | `gfx/flags/medium/ACX.tga` | `gfx/flags/small/ACX.tga` |
+| AFX | `gfx/flags/AFX.tga` | `gfx/flags/medium/AFX.tga` | `gfx/flags/small/AFX.tga` |
+| AGX | `gfx/flags/AGX.tga` | `gfx/flags/medium/AGX.tga` | `gfx/flags/small/AGX.tga` |
+| AJX | `gfx/flags/AJX.tga` | `gfx/flags/medium/AJX.tga` | `gfx/flags/small/AJX.tga` |
 
-```txt
-spriteTypes = {
-	spriteType = {
-		name = "GFX_portrait_ACX_cornish_port_and_mines_committee"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_ACX_cornish_port_and_mines_committee.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_ACX_cornish_coastal_commander"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_ACX_cornish_coastal_commander.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_ACX_cornish_coastal_commander_small"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_ACX_cornish_coastal_commander_small.dds"
-	}
+Do not add `spriteType` entries for these files. Do not move them into an
+event-scoped subdirectory. `gfx/flags/`, `gfx/flags/medium/`, and
+`gfx/flags/small/` are engine lookup roots whose filenames must remain exact.
 
-	spriteType = {
-		name = "GFX_portrait_AEX_flemish_civil_industrial_board"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AEX_flemish_civil_industrial_board.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AEX_flemish_industrial_security_commander"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AEX_flemish_industrial_security_commander_small"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander_small.dds"
-	}
-
-	spriteType = {
-		name = "GFX_portrait_AFX_walloon_provisional_assembly"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AFX_walloon_reserve_commander"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AFX_walloon_reserve_commander_small"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander_small.dds"
-	}
-
-	spriteType = {
-		name = "GFX_portrait_AGX_friesland_coastal_council"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AGX_friesland_coastal_commander"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AGX_friesland_coastal_commander_small"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander_small.dds"
-	}
-
-	spriteType = {
-		name = "GFX_portrait_AJX_friedrich_hoffmann"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AJX_karl_becker"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds"
-	}
-	spriteType = {
-		name = "GFX_portrait_AJX_karl_becker_small"
-		texturefile = "gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds"
-	}
-}
-```
-
-## Institutional character portrait fragments
-
-Merge these entries into the package-owned `characters = { ... }` block and add
-only the route roles, ideology, traits, and availability approved by the country
-package. The mixed-gender group image represents an institution; do not add an
-individual biography or individual gender metadata.
-
-```txt
-ACX_cornish_port_and_mines_committee = {
-	name = ACX_cornish_port_and_mines_committee
-	portraits = {
-		civilian = {
-			large = GFX_portrait_ACX_cornish_port_and_mines_committee
-		}
-	}
-}
-
-AEX_flemish_civil_industrial_board = {
-	name = AEX_flemish_civil_industrial_board
-	portraits = {
-		civilian = {
-			large = GFX_portrait_AEX_flemish_civil_industrial_board
-		}
-	}
-}
-
-AFX_walloon_provisional_assembly = {
-	name = AFX_walloon_provisional_assembly
-	portraits = {
-		civilian = {
-			large = GFX_portrait_AFX_walloon_provisional_assembly
-		}
-	}
-}
-
-AGX_friesland_coastal_council = {
-	name = AGX_friesland_coastal_council
-	portraits = {
-		civilian = {
-			large = GFX_portrait_AGX_friesland_coastal_council
-		}
-	}
-}
-
-AJX_friedrich_hoffmann = {
-	name = AJX_friedrich_hoffmann
-	portraits = {
-		civilian = {
-			large = GFX_portrait_AJX_friedrich_hoffmann
-		}
-	}
-}
-```
-
-Required English localisation values for those character keys:
-
-| Key | English value |
-|---|---|
-| `ACX_cornish_port_and_mines_committee` | Cornish Port and Mines Security Committee |
-| `AEX_flemish_civil_industrial_board` | Flemish Civil-Industrial Security Board |
-| `AFX_walloon_provisional_assembly` | Walloon Provisional Assembly |
-| `AGX_friesland_coastal_council` | Friesland Coastal Council |
-| `AJX_friedrich_hoffmann` | Friedrich Hoffmann |
-
-## Officer character portrait fragments
-
-These are male-presenting fictional officers. The default male character setting
-is required; do not set `female = yes`. The `small` sprite is included because
-vanilla's `portraits = { army = { ... } }` precedent supplies both sizes for
-corps commanders and the officer corps.
-
-```txt
-ACX_cornish_coastal_commander = {
-	name = ACX_cornish_coastal_commander
-	portraits = {
-		army = {
-			large = GFX_portrait_ACX_cornish_coastal_commander
-			small = GFX_portrait_ACX_cornish_coastal_commander_small
-		}
-	}
-}
-
-AEX_flemish_industrial_security_commander = {
-	name = AEX_flemish_industrial_security_commander
-	portraits = {
-		army = {
-			large = GFX_portrait_AEX_flemish_industrial_security_commander
-			small = GFX_portrait_AEX_flemish_industrial_security_commander_small
-		}
-	}
-}
-
-AFX_walloon_reserve_commander = {
-	name = AFX_walloon_reserve_commander
-	portraits = {
-		army = {
-			large = GFX_portrait_AFX_walloon_reserve_commander
-			small = GFX_portrait_AFX_walloon_reserve_commander_small
-		}
-	}
-}
-
-AGX_friesland_coastal_commander = {
-	name = AGX_friesland_coastal_commander
-	portraits = {
-		army = {
-			large = GFX_portrait_AGX_friesland_coastal_commander
-			small = GFX_portrait_AGX_friesland_coastal_commander_small
-		}
-	}
-}
-
-AJX_karl_becker = {
-	name = AJX_karl_becker
-	portraits = {
-		army = {
-			large = GFX_portrait_AJX_karl_becker
-			small = GFX_portrait_AJX_karl_becker_small
-		}
-	}
-}
-```
-
-Required English localisation values for the officer keys:
-
-| Key | English value |
-|---|---|
-| `ACX_cornish_coastal_commander` | Thomas Trevorrow |
-| `AEX_flemish_industrial_security_commander` | Hendrik Vermeulen |
-| `AFX_walloon_reserve_commander` | Marcel Delcourt |
-| `AGX_friesland_coastal_commander` | Sjoerd Hoekstra |
-| `AJX_karl_becker` | Karl Becker |
+Every file is an uncompressed 32-bit BGRA TGA with eight-bit alpha and a
+bottom-left origin. The flag-only builder decodes every runtime file and proves
+exact pixel and orientation equality with its processed PNG before refreshing
+the ledger.
 
 ## Route-use locks
 
-| Character | Allowed use | Blocked or forbidden use |
-|---|---|---|
-| `ACX_cornish_port_and_mines_committee` | future ACX civic opening after geography is approved | do not wire while ACX lacks unique Cornwall geography; not a real-person leader |
-| `ACX_cornish_coastal_commander` | future ACX harbor/coastal command roster after geography is approved | do not wire while ACX is geography-blocked; not a historical officer |
-| `AEX_flemish_civil_industrial_board` | future AEX civil/industrial opening after the protected anchor is approved | do not wire while AEX lacks a protected Brussels/Flanders anchor; not a real-person leader |
-| `AEX_flemish_industrial_security_commander` | future AEX industrial-security command roster after the anchor is approved | do not wire while AEX is anchor-blocked; not a historical officer |
-| `AFX_walloon_provisional_assembly` | accepted AFX constitutional, labor, and patron civil openings | emergency military command role |
-| `AFX_walloon_reserve_commander` | accepted AFX emergency military command and command roster | universal civil opening or a historical-person claim |
-| `AGX_friesland_coastal_council` | accepted AGX civil, cultural, labor, and patron openings | commander role or pan-Frisian authority |
-| `AGX_friesland_coastal_commander` | accepted AGX command roster and coastal-security role | universal civil opening or pan-Frisian authority |
-| `AJX_friedrich_hoffmann` | AJX constitutional, labor, patron, and municipal-neutral civil openings | military-government role or a historical-person claim |
-| `AJX_karl_becker` | AJX industrial-security command roster | country-leader role or a historical-officer claim |
+These are unsuffixed baseline identities only:
 
-## Handoff-only regional name-pool recommendations
+| Tag | Authorized use | Not authorized by this handoff |
+| --- | --- | --- |
+| ACX | baseline Cornish identity using St Piran's Cross | inferred ideology variants, cosmetic variants, or content-readiness claim |
+| AFX | baseline Walloon identity using the 1913 coq hardi | inferred ideology variants or alternate rooster redesigns |
+| AGX | baseline Friesland identity using the provincial flag | pan-Frisian substitution, inferred ideology variants, or altered band/charge layout |
+| AJX | baseline Saar identity using the Saar Territory 1920–1935 tricolour | inferred ideology variants, added emblems, or changed stripe order |
 
-These snippets follow vanilla `common/names/00_names.txt`. They are recommendations
-for male-generated names that visually agree with this package's male officer
-art; they are not written to gameplay files by this tranche. If a package later
-adds female generic officers, it must add a separate female pool and matching
-female-presenting art instead of reusing these portraits.
+No `<TAG>_democratic.tga`, `<TAG>_communism.tga`, `<TAG>_fascism.tga`,
+`<TAG>_neutrality.tga`, or cosmetic-tag mapping is approved here. A later route
+may add one only through an accepted design and explicit route-to-filename
+contract.
 
-```txt
-ACX = {
-	male = {
-		names = { John William Thomas Richard Pascoe }
-	}
-	surnames = { Trevorrow Penrose Tregenza Pascoe }
-}
+## AEX no-standalone-flag boundary
 
-AEX = {
-	male = {
-		names = { Jan Pieter Hendrik Karel }
-	}
-	surnames = { "De Smet" Vermeulen "Van den Broeck" Peeters }
-}
+AEX remains a vanilla `BEL_flanders` cosmetic overlay, not a standalone Event
+006 flag family. Do not create:
 
-AFX = {
-	male = {
-		names = { Jules Marcel Léon Henri }
-	}
-	surnames = { Dubois Lambert Leclercq Delcourt }
-}
+- `gfx/flags/AEX.tga`;
+- `gfx/flags/medium/AEX.tga`;
+- `gfx/flags/small/AEX.tga`;
+- matching generated or processed AEX files under the NWE flag tree.
 
-AGX = {
-	male = {
-		names = { Sjoerd Douwe Tjalling Pieter }
-	}
-	surnames = { "de Vries" Dijkstra Hoekstra Visser }
-}
+The retained Lion of Flanders historical source documents the vanilla cosmetic
+overlay only. It is not an input for a standalone AEX triplet. The builder
+fails if an AEX artifact appears; it does not silently adopt or delete one.
 
-AJX = {
-	male = {
-		names = { Karl Friedrich Wilhelm Otto }
-	}
-	surnames = { Becker Schmitt Wagner Hoffmann }
-}
+## Source and review authority
+
+- `northern_western_europe_generated_art_manifest.md` is the flag inventory,
+  processing, runtime, and hash authority.
+- `prompts/006_nwe_generated_art.md` preserves the four exact prompts,
+  historical citations, rights notes, original ImageGen output locations,
+  canonical ladder choices, repo copies, and palettes.
+- `006_nwe_historical_flag_comparison.md` records the manual design comparison.
+- `contact_sheets/006_nwe_generated_historical_flags_raw_vs_flat_contact_sheet.png`
+  compares cited design, official ImageGen raw, and deterministic flat master.
+- `contact_sheets/006_nwe_generated_flags_contact_sheet.png` shows the decoded
+  runtime normal, medium, and small TGAs.
+- `generated_nwe_hashes.sha256` inventories only the explicit flag evidence and
+  runtime paths.
+
+## Reproduction and implementer check
+
+Run from the mod root:
+
+```powershell
+python -B docs/assets/006_independence_wave/_tooling/build_nwe_generated_art.py --scope flags
 ```
 
-## Validation and review references
+The no-argument invocation is equivalent. `flags` is the only accepted scope
+value.
 
-The actual post-conversion large runtime portraits are shown in
-`contact_sheets/006_nwe_generated_final_dds_decoded_contact_sheet.png`. The old
-`contact_sheets/006_nwe_generated_officer_small_dds_decoded_contact_sheet.png`
-is pre-correction evidence only. Current native and enlarged `_small`
-comparisons, retained DDS files, decoded pixels, exact hashes, and header checks
-are in `army_small_dossier_correction_2026_07_15/`.
-The actual TGA files at all three engine sizes are shown in
-`contact_sheets/006_nwe_generated_flags_contact_sheet.png`; cited-design versus
-ImageGen versus flat-master evidence is shown in
-`contact_sheets/006_nwe_generated_historical_flags_raw_vs_flat_contact_sheet.png`.
-Full asset identity, prompts, route boundaries, reproduction steps, and hashes are in
-`northern_western_europe_generated_art_manifest.md`.
+After reproduction, confirm:
+
+1. exactly ACX, AFX, AGX, and AJX exist in each processed flag ladder;
+2. all twelve TGAs have the required dimensions, 32-bit depth, eight-bit alpha,
+   and bottom-left origin;
+3. decoded runtime pixels equal their processed PNGs;
+4. both flag contact sheets reopen correctly;
+5. the AEX standalone paths remain absent;
+6. the hash ledger contains only flag evidence and runtime flag paths.
+
+No copy-ready `.gfx` fragment is required or permitted for this flag family.
+
+## Remaining content boundary
+
+The four triplets resolve their flag-art surface only. ACX retains its separate
+Cornwall geography/state-ownership blocker. AEX remains outside standalone
+flag scope. Neither condition should be inferred from flag-file presence alone.
+
+## Simplifications, omissions, and blockers
+
+No fallback, placeholder, route variant, or registration workaround is used.
+There is no unresolved flag-engine handoff blocker.

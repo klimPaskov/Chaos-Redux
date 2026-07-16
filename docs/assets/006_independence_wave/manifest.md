@@ -250,56 +250,41 @@ overlay evidence according to the package-specific handoff.
 
 ## Related northern and western Europe generated-art package
 
-The four official-ImageGen-derived historical flag triplets, five fictional
-institutional council portraits, five independently generated fictional officer
-portraits, their current army-small dossier handoff, prompts, decoded runtime
-review sheets, and exact
-hash inventory are documented in
-`northern_western_europe_generated_art_manifest.md`. ACX remains blocked at the
-country-content layer by geography ownership. AEX is a vanilla `BEL_flanders`
-overlay and has no standalone Event 006 flag family. No ideology or cosmetic
-flag variants were produced without an approved route mapping.
+`northern_western_europe_generated_art_manifest.md` is the current authority
+only for the ACX, AFX, AGX, and AJX generated historical-design flag triplets
+and their flag comparisons. Its former portrait, commander-small, and portrait
+completion claims are superseded and are not portrait evidence. AEX remains a
+vanilla `BEL_flanders` overlay and has no standalone Event 006 flag family.
 
-## 2026-07-15 character portrait replacement
+## 2026-07-16 male HOI4 portrait authority
 
-The current `156x210` portrait source of truth is
-`portrait_regeneration_2026_07_15/manifest.md`. It replaces the generic
-fictional portrait evidence in the earlier northern/western handoffs without
-renaming runtime sprites. The package contains 18 independent official
-ImageGen masters, 18 installed leader or commander DDS files, individual
-vanilla-reference review sheets, actual-runtime DDS decode sheets, exact
-hashes, prompts, a visual acceptance record, and a reproducible guarded
-builder.
-
-The ten commander `_small` textures have a separate current source of truth:
-`army_small_dossier_correction_2026_07_15/manifest.md`. They are independently
-composed `65x67` HOI4 dossier cards with transparent corners, not reductions of
-the large portraits. That correction package contains the retained final DDS
-files, exact crops and processor arguments, three exact vanilla army-small
-references, native and enlarged comparisons, decoded DDS evidence, runtime
-hash matching, and byte-preservation guards for all ten large portraits.
+The current portrait source of truth is
+`portrait_regeneration_male_hoi4_2026_07_16/manifest.md`, together with the
+production handoff
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_regeneration_2026_07_16.md`
+and the independent final audit
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+The audited package contains twenty distinct male `156x210` fictional portraits
+and ten matching `65x67` commander-small dossiers under the existing runtime
+filenames. The twenty-four textures for AFX, AGX, AJX, BAY, BRI, RHI, SCO, and
+WLS retain their existing registrations and consumers. The six ACX and AEX
+textures are installed readiness-pool art only and deliberately have no live
+sprite or character consumer.
 
 The two user-approved historical portraits remain unchanged and hash-locked:
 
 - `portrait_BAY_rupprecht_of_bavaria.dds`;
 - `portrait_RHI_josef_friedrich_matthes.dds`.
 
-ACX and AEX remain readiness-pool art rather than package-readiness claims
-because their current portrait sprites are not registered. AJX is registered
-to the fictional humans Friedrich Hoffmann and Karl Becker through
-`interface/006_independence_wave_region_01_portraits.gfx` and
-`common/characters/006_independence_wave_saar_characters.txt`; this does not
-grant runtime content attestation or scenario-preflight readiness. AFX, AGX,
-RHI, BAY, SCO, and WLS retain their existing sprite and character wiring.
-
-For every regenerated `156x210` portrait, including the AJX runtime files, the
-authoritative checksum ledger is
-`portrait_regeneration_2026_07_15/portrait_package_hashes.sha256`. The
-authoritative small-texture hashes are in
-`army_small_dossier_correction_2026_07_15/sha256_inventory.sha256` and
-`army_small_dossier_correction_2026_07_15/validation_report.json`.
-`generated_nwe_hashes.sha256` remains the historical pre-regeneration ledger
-and is authoritative for the AJX flag triplet, not for the replaced portraits.
+The authoritative runtime checksum ledger is
+`portrait_regeneration_male_hoi4_2026_07_16/hashes/runtime_sha256_inventory.sha256`;
+the package's merged visual review and final independent audit govern visual
+acceptance. Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
+portrait, and army-small package is historical and superseded for portrait
+files, hashes, and approval. `generated_nwe_hashes.sha256` is not portrait
+authority. Custom Event 006 advisor icons remain withdrawn: gameplay advisor
+offices have no custom Event 006 portrait cards, sprite registrations, or
+runtime DDS files.
 
 ## 2026-07-15 AJX neutral-commission focus handoff
 
@@ -315,20 +300,19 @@ SHA-256 contracts remain in the focus-only package. Custom Event 006 advisor
 icons and their sprite registrations were removed by explicit user direction;
 the gameplay offices remain asset-neutral.
 
-## 2026-07-15 BRI country-package portrait handoff
+## 2026-07-16 BRI portrait disposition
 
-The current IW-004 Brittany portrait source of truth is
-`bri_package_2026_07_15/manifest.md`. It installs one distinctive fictional
-human civic federalist portrait, one fictional human coastal-command portrait,
-and the commander's independent `65x67` dossier card. The civic slot is a single person,
-not the earlier four-person institutional image. Exact prompt, frozen source,
-metadata, vanilla-reference review sheets, decoded runtime DDS, contact sheet,
-hashes, sprite registration, and character consumers are recorded in that
-package and `bri_package_2026_07_15/gfx_handoff.md`.
+IW-004 Brittany's current fictional civic, commander-large, and
+commander-small evidence is part of
+`portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and the independent
+final audit named above. Existing BRI filenames, sprite registrations, and
+gameplay consumers remain stable; the 2026-07-15 BRI portrait package and its
+small-card evidence are superseded.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
 political portraits. François Debeauvais remains explicitly blocked because
 the available portrait candidates lack both adequate identity detail and a
 defensible United States public-domain basis. No Debeauvais asset or generated
-likeness is wired. The BRI portrait handoff does not grant runtime content
-attestation or SCN008 scenario-preflight readiness.
+likeness is wired. The accepted fictional BRI civic portrait does not clear or
+replace that historical-person rights blocker, and portrait presence does not
+grant runtime content attestation or SCN008 scenario-preflight readiness.

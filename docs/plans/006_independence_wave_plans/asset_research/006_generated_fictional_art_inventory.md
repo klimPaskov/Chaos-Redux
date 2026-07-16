@@ -6,6 +6,20 @@ This inventory routes all Event 006 art that must be original fictional or alter
 
 No art was generated in this research pass.
 
+## Current produced portrait disposition
+
+This remains a planning inventory for unresolved Event 006 art. Any produced
+portrait rows or completion claims tied to the 2026-07-15 fictional portrait,
+mixed NWE portrait, BRI portrait, or army-small packages are superseded. The
+current produced authority is
+`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`,
+accepted by
+`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+It covers twenty male fictional large portraits and ten commander-small
+dossiers. ACX and AEX remain unregistered readiness-pool art only, Rupprecht
+and Matthes remain protected historical exemptions, and custom Event 006
+advisor icons remain withdrawn.
+
 ## Production ownership
 
 - Historical flags, real portraits, and archival imagery: source-research route, using the companion source ledger and a per-file provenance manifest.
