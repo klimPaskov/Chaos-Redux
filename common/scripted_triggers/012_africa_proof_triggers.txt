@@ -1,0 +1,493 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 COMPOUND FIRST-PROOF TRIGGERS
+# ============================================================================
+# Host-playbook action admission, durable proof-ledger gates, exact credit
+# requirements, and the action-101 recovery contract live here. These triggers
+# never advance the event phase or unlock the provisional congress.
+# ============================================================================
+
+# COUNTRY scope on the host. The initializer snapshots the current playbook so
+# a stale profile cannot admit actions after host succession or reassignment.
+africa_first_proof_profile_is_current = {
+	africa_is_current_host = yes
+	has_country_flag = africa_first_proof_profile_initialized
+	check_variable = {
+		var = africa_first_proof_profile_playbook
+		value = africa_host_playbook
+		compare = equals
+	}
+}
+
+# COUNTRY scope on the host. Input: temporary africa_requested_action_id.
+# The profile lists one exact row action, one optional route alternative, and
+# the additional actions that may supply compound proof roles.
+africa_first_proof_requested_action_is_allowed = {
+	OR = {
+		AND = {
+			has_country_flag = africa_first_proof_active
+			NOT = { has_country_flag = africa_first_proof_failed }
+			africa_first_proof_profile_is_current = yes
+			check_variable = { africa_requested_action_id > constant:africa_action.none }
+			OR = {
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_primary_action_id
+					compare = equals
+				}
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_alternate_primary_action_id
+					compare = equals
+				}
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_additional_action_id_1
+					compare = equals
+				}
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_additional_action_id_2
+					compare = equals
+				}
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_additional_action_id_3
+					compare = equals
+				}
+				check_variable = {
+					var = africa_requested_action_id
+					value = africa_first_proof_additional_action_id_4
+					compare = equals
+				}
+			}
+		}
+		AND = {
+			africa_first_proof_recovery_host_can_select_action = yes
+			check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof }
+		}
+	}
+}
+
+# COUNTRY scope on the host. This is the quote-phase wrapper for the same
+# playbook contract. Action 101 is the only admitted recovery action.
+africa_first_proof_quoted_action_is_allowed = {
+	OR = {
+		AND = {
+			has_country_flag = africa_first_proof_active
+			NOT = { has_country_flag = africa_first_proof_failed }
+			africa_first_proof_profile_is_current = yes
+			check_variable = { africa_quote_action_id > constant:africa_action.none }
+			OR = {
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_primary_action_id
+					compare = equals
+				}
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_alternate_primary_action_id
+					compare = equals
+				}
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_additional_action_id_1
+					compare = equals
+				}
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_additional_action_id_2
+					compare = equals
+				}
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_additional_action_id_3
+					compare = equals
+				}
+				check_variable = {
+					var = africa_quote_action_id
+					value = africa_first_proof_additional_action_id_4
+					compare = equals
+				}
+			}
+		}
+		AND = {
+			africa_first_proof_recovery_host_can_select_action = yes
+			check_variable = { africa_quote_action_id = constant:africa_action.recover_failed_host_proof }
+		}
+	}
+}
+
+# COUNTRY scope on the host after the exact target and any state cursor have
+# been prepared. This is the opening-proof semantic gate; it admits no action
+# outside the current 51-row profile and keeps war, route, consent, and partner
+# requirements visible instead of inheriting later-phase relationship gates.
+africa_first_proof_current_action_semantics_are_valid = {
+	africa_first_proof_requested_action_is_allowed = yes
+	has_event_target = africa_action_target
+	event_target:africa_action_target = { africa_action_target_is_usable = yes }
+	africa_first_proof_playbook_action_target_is_exact = yes
+	OR = {
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.guarantee_sovereignty }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.dispatch_charter_mission }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.deploy_volunteers }
+			event_target:africa_action_target = { has_war = yes }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.offer_defence_charter }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.hold_accession_referendum }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress }
+				check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims }
+				check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+				check_variable = { africa_requested_action_id = constant:africa_action.build_regional_rail_spine }
+				check_variable = { africa_requested_action_id = constant:africa_action.expand_river_transport }
+				check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
+				check_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review }
+			}
+			africa_has_selected_action_state_target = yes
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.connect_member_capitals }
+			event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration }
+			event_target:africa_action_target = {
+				OR = {
+					has_war = yes
+					has_country_flag = africa_first_proof_outward_partner_eligible
+					africa_relationship_is_rival_bloc = yes
+					africa_relationship_is_leaving = yes
+					africa_relationship_is_resistant = yes
+				}
+			}
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war }
+			event_target:africa_action_target = { has_war = yes }
+		}
+	}
+}
+
+# COUNTRY scope on the host. State 708 is the complete vanilla Comoros map
+# unit; both the island-seat compact and the transport project must act on that
+# homeland state rather than using an unrelated acquired state as evidence.
+africa_first_proof_playbook_action_target_is_exact = {
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } }
+		AND = {
+			check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros }
+			OR = {
+				AND = {
+					check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
+					event_target:africa_action_target = { NOT = { africa_is_current_host = yes } }
+				}
+				AND = {
+					OR = {
+						check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation }
+						check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port }
+					}
+					event_target:africa_action_target = { africa_is_current_host = yes }
+					708 = {
+						is_controlled_by = ROOT
+						has_state_flag = africa_selected_action_state
+						ROOT = { is_in_array = { array = africa_selected_action_state_targets value = PREV } }
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host. Input: temporary
+# africa_resolved_first_proof_action_id.
+africa_resolved_first_proof_action_is_primary = {
+	africa_first_proof_profile_is_current = yes
+	OR = {
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_primary_action_id
+			compare = equals
+		}
+		AND = {
+			check_variable = { africa_first_proof_alternate_primary_action_id > constant:africa_action.none }
+			check_variable = {
+				var = africa_resolved_first_proof_action_id
+				value = africa_first_proof_alternate_primary_action_id
+				compare = equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host. Input: temporary
+# africa_resolved_first_proof_action_id. This prevents a full unrelated action
+# from supplying any proof role even when its target was previously marked.
+africa_resolved_first_proof_action_is_allowed = {
+	has_country_flag = africa_first_proof_active
+	NOT = { has_country_flag = africa_first_proof_failed }
+	africa_first_proof_profile_is_current = yes
+	check_variable = { africa_resolved_first_proof_action_id > constant:africa_action.none }
+	OR = {
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_primary_action_id
+			compare = equals
+		}
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_alternate_primary_action_id
+			compare = equals
+		}
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_additional_action_id_1
+			compare = equals
+		}
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_additional_action_id_2
+			compare = equals
+		}
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_additional_action_id_3
+			compare = equals
+		}
+		check_variable = {
+			var = africa_resolved_first_proof_action_id
+			value = africa_first_proof_additional_action_id_4
+			compare = equals
+		}
+	}
+}
+
+# COUNTRY scope on the host while the resolver's temporary immutable snapshot
+# is live. Regular event targets do not survive a timed action mission.
+africa_first_proof_full_action_context_is_valid = {
+	check_variable = { africa_resolved_first_proof_full_context > constant:africa_value.zero }
+}
+
+# COUNTRY scope on the host. Every boolean proof fact is represented by a
+# durable role flag rather than a numeric zero-or-one variable.
+africa_first_proof_role_credits_are_met = {
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_primary_action }
+		has_country_flag = africa_first_proof_credit_primary_action
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_home_corridor }
+		has_country_flag = africa_first_proof_credit_home_corridor
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_outward_partner }
+		has_country_flag = africa_first_proof_credit_outward_partner
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_domestic_settlement }
+		has_country_flag = africa_first_proof_credit_domestic_settlement
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_regional_consent }
+		has_country_flag = africa_first_proof_credit_regional_consent
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_reform }
+		has_country_flag = africa_first_proof_credit_reform
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_sovereignty }
+		has_country_flag = africa_first_proof_credit_sovereignty
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_no_coercion }
+		has_country_flag = africa_first_proof_credit_no_coercion
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_all_regions }
+		has_country_flag = africa_first_proof_all_required_regions_credited
+	}
+}
+
+# COUNTRY scope on the host. Actor, region, and corridor totals count distinct
+# recorded scopes only. Their live validity is refreshed before finalization.
+africa_first_proof_distinct_credits_are_met = {
+	check_variable = {
+		var = africa_first_proof_actor_credit_count
+		value = africa_first_proof_required_actor_credits
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_first_proof_region_credit_count
+		value = africa_first_proof_required_region_credits
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_first_proof_corridor_credit_count
+		value = africa_first_proof_required_corridor_credits
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope on the host. These are live final gates, not historical proof
+# counters. The refresh effect clears a gate when any credited scope loses its
+# explicit durable semantic flag.
+africa_first_proof_live_gates_are_met = {
+	has_global_flag = africa_event_active
+	NOT = { has_global_flag = world_end }
+	africa_is_current_host = yes
+	exists = yes
+	has_capitulated = no
+	capital_scope = { is_controlled_by = ROOT }
+	has_country_flag = africa_first_proof_live_actors_valid
+	has_country_flag = africa_first_proof_live_primary_target_valid
+	has_country_flag = africa_first_proof_live_regions_valid
+	has_country_flag = africa_first_proof_live_corridors_valid
+	has_country_flag = africa_first_proof_live_sovereignty_valid
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_home_corridor }
+		AND = {
+			has_country_flag = africa_first_proof_home_corridor_durable
+			NOT = { has_country_flag = africa_first_proof_corridor_breached }
+		}
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_domestic_settlement }
+		has_country_flag = africa_first_proof_domestic_settlement_durable
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_reform }
+		has_country_flag = africa_first_proof_reform_durable
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_sovereignty }
+		AND = {
+			has_country_flag = africa_first_proof_sovereignty_durable
+			NOT = { has_country_flag = africa_first_proof_sovereignty_breached }
+		}
+	}
+	OR = {
+		NOT = { has_country_flag = africa_first_proof_requires_no_coercion }
+		AND = {
+			has_country_flag = africa_first_proof_no_coercion_durable
+			NOT = { has_country_flag = africa_first_proof_coercion_breached }
+		}
+	}
+}
+
+# COUNTRY scope on the host. Most profiles are fully expressed by the shared
+# role ledger. Map-compressed starts add exact internal constitutional facts
+# here instead of pretending that one HOI4 state is several selectable states.
+africa_first_proof_playbook_specific_gates_are_met = {
+	OR = {
+		NOT = { check_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } }
+		AND = {
+			has_country_flag = africa_first_proof_comoros_grande_comore_seat
+			has_country_flag = africa_first_proof_comoros_anjouan_seat
+			has_country_flag = africa_first_proof_comoros_moheli_seat
+			has_country_flag = africa_first_proof_comoros_mayotte_seat
+			has_country_flag = africa_first_proof_comoros_transport_operational
+		}
+	}
+}
+
+# COUNTRY scope on the host. The finalizer may set only the ledger-ready flag
+# after this trigger succeeds. Event progression remains an integration concern.
+africa_compound_first_proof_is_complete = {
+	africa_first_proof_profile_is_current = yes
+	has_country_flag = africa_first_proof_ledger_active
+	has_country_flag = africa_first_proof_active
+	NOT = { has_country_flag = africa_first_proof_failed }
+	africa_first_proof_role_credits_are_met = yes
+	africa_first_proof_distinct_credits_are_met = yes
+	africa_first_proof_live_gates_are_met = yes
+	africa_first_proof_playbook_specific_gates_are_met = yes
+}
+
+# COUNTRY scope on the host before the recovery action is selected.
+africa_first_proof_recovery_host_can_select_action = {
+	has_global_flag = africa_event_active
+	NOT = { has_global_flag = world_end }
+	africa_is_current_host = yes
+	exists = yes
+	has_capitulated = no
+	capital_scope = { is_controlled_by = ROOT }
+	has_country_flag = africa_first_proof_failed
+	NOT = { has_country_flag = africa_first_proof_recovery_ready }
+	NOT = { has_country_flag = africa_first_proof_recovery_contract_active }
+	check_variable = { africa_first_proof_recovery_attempts < constant:africa_first_proof_count.one }
+}
+
+# COUNTRY scope on the host before an alternate target is registered. Recovery
+# requires a viable host and a durable route supplied by exact action semantics.
+africa_first_proof_recovery_host_can_register_target = {
+	africa_first_proof_recovery_host_can_select_action = yes
+	has_country_flag = africa_first_proof_recovery_route_durable
+}
+
+# COUNTRY scope on the host after an exact alternate target is registered.
+africa_first_proof_recovery_host_is_valid = {
+	africa_first_proof_recovery_host_can_register_target = yes
+	has_country_flag = africa_first_proof_recovery_target_registered
+}
+
+# COUNTRY scope on an explicitly selected alternate recovery target.
+africa_first_proof_recovery_target_is_valid = {
+	exists = yes
+	has_capitulated = no
+	africa_action_target_is_usable = yes
+	africa_matches_current_host_overlay = yes
+	NOT = { africa_is_current_host = yes }
+	has_country_flag = africa_first_proof_recovery_target_eligible
+	has_country_flag = africa_first_proof_same_overlay_recovery_target
+	NOT = { has_country_flag = africa_original_failed_proof_target }
+}
+
+# COUNTRY scope on the host while action 101 is active or resolving. This omits
+# the historical failed flag because full action semantics may clear it before
+# the proof hook runs.
+africa_first_proof_recovery_contract_is_live = {
+	has_global_flag = africa_event_active
+	NOT = { has_global_flag = world_end }
+	africa_is_current_host = yes
+	exists = yes
+	has_capitulated = no
+	capital_scope = { is_controlled_by = ROOT }
+	has_country_flag = africa_first_proof_recovery_route_durable
+	has_country_flag = africa_first_proof_recovery_target_registered
+	has_country_flag = africa_first_proof_recovery_contract_active
+}
+
+# COUNTRY scope on the resolved action-101 target. This must be called before
+# the action record is cleaned up.
+africa_first_proof_recovery_full_result_is_valid = {
+	africa_active_action_generation_is_current = yes
+	check_variable = { africa_active_action_id = constant:africa_action.recover_failed_host_proof }
+	check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+	exists = yes
+	has_capitulated = no
+	NOT = { africa_is_current_host = yes }
+	has_country_flag = africa_first_proof_recovery_target_eligible
+	has_country_flag = africa_first_proof_same_overlay_recovery_target
+	NOT = { has_country_flag = africa_original_failed_proof_target }
+	event_target:africa_host = {
+		africa_first_proof_recovery_contract_is_live = yes
+	}
+}
