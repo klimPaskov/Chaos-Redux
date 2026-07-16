@@ -110,6 +110,6 @@ Scotland and Wales retain their installed vanilla flag triplets because these ar
 
 ## Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, complete advisor boards, and FORM-01/02 integration are implemented. The package transaction keeps IW-001 and IW-002 fail-closed until an independent promotion audit authorizes their compile-time content attestation and scenario admission. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, complete advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. This promotion does not attest Wallonia, Rhineland, or Bavaria, whose missing Level 2 focus groups keep them fail-closed. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
