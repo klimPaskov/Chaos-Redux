@@ -1,0 +1,1896 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PROJECT PORTFOLIO TRIGGERS
+# ============================================================================
+# Exact stage, cost, native-project, site, control, and nonterminal Singularity
+# gates. Array indexes 0-14 map directly to family IDs 1-15.
+# ============================================================================
+
+brilliant_scientist_project_board_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+}
+
+brilliant_scientist_has_capacity_to_resume_selected_project = {
+	OR = {
+		AND = {
+			check_variable = { brilliant_scientist_directorate_selected_project_stage = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_resume_capacity.theory compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { brilliant_scientist_directorate_selected_project_stage = constant:brilliant_scientist_project_stage.prototype }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_resume_capacity.prototype compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { brilliant_scientist_directorate_selected_project_stage = constant:brilliant_scientist_project_stage.deployment }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_resume_capacity.deployment compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { brilliant_scientist_directorate_selected_project_stage = constant:brilliant_scientist_project_stage.weaponization }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_resume_capacity.weaponization compare = greater_than_or_equals }
+		}
+	}
+}
+
+brilliant_scientist_selected_project_can_be_dismantled_safely = {
+	custom_trigger_tooltip = {
+		tooltip = brilliant_scientist_singularity_dismantle_guard_tt
+		OR = {
+			NOT = { check_variable = { brilliant_scientist_directorate_selected_project_family = constant:brilliant_scientist_project_family.singularity } }
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_stage
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = less_than
+			}
+		}
+	}
+}
+
+brilliant_scientist_has_required_singularity_facilities = {
+	custom_trigger_tooltip = {
+		tooltip = brilliant_scientist_singularity_facility_requirement_tt
+		any_owned_state = {
+			count = constant:brilliant_scientist_singularity.minimum_facilities
+			is_controlled_by = ROOT
+			OR = {
+				land_facility > 0
+				air_facility > 0
+				nuclear_facility > 0
+				biowarfare_facility > 0
+			}
+		}
+	}
+}
+
+brilliant_scientist_xeno_control_is_locked = {
+	OR = {
+		has_country_flag = brilliant_scientist_xeno_control_chemical
+		has_country_flag = brilliant_scientist_xeno_control_neural
+		has_country_flag = brilliant_scientist_xeno_control_machine
+		has_country_flag = brilliant_scientist_xeno_control_researched
+	}
+}
+
+brilliant_scientist_can_pay_computation_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.computation_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.computation_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.computation_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.computation_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.computation_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.computation_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_computation_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_computation_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_tech = mechanical_computing
+}
+
+brilliant_scientist_can_pay_computation_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.computation_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.computation_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.computation_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.computation_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.computation_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.computation_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.computation_deployment_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.computation_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.computation_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_computation_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_computation_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	has_tech = improved_computing_machine
+}
+
+brilliant_scientist_can_pay_computation_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.computation_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.computation_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.computation_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.computation_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.computation_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.computation_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.computation_weaponization_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.computation_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.computation_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_computation_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_computation_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	has_tech = advanced_computing_machine
+}
+
+brilliant_scientist_can_pay_electronics_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.electronics_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.electronics_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.electronics_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.electronics_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.electronics_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_electronics_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_electronics_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_tech = electronic_mechanical_engineering
+}
+
+brilliant_scientist_can_pay_electronics_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.electronics_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.electronics_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.electronics_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.electronics_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.electronics_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.electronics_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.electronics_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.electronics_deployment_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.electronics_deployment_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.electronics_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.electronics_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_electronics_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_electronics_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	has_tech = radio_detection
+	is_special_project_completed = sp:sp_air_radar
+}
+
+brilliant_scientist_can_pay_electronics_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.electronics_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_electronics_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_electronics_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	OR = {
+		has_tech = centimetric_radar
+		has_tech = phased_array
+	}
+}
+
+brilliant_scientist_can_pay_materials_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.materials_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.materials_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.materials_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.materials_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.materials_theory_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.materials_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.materials_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_materials_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_materials_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_tech = basic_machine_tools
+}
+
+brilliant_scientist_can_pay_materials_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.materials_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.materials_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.materials_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.materials_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.materials_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.materials_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.materials_deployment_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.materials_deployment_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.materials_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.materials_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_materials_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_materials_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	OR = {
+		has_tech = advanced_machine_tools
+		has_tech = assembly_line_production
+	}
+}
+
+brilliant_scientist_can_pay_materials_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.materials_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.materials_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.materials_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.materials_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.materials_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.materials_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.materials_weaponization_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.materials_weaponization_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.materials_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.materials_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_materials_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_materials_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	has_tech = construction4
+	has_tech = excavation5
+}
+
+brilliant_scientist_can_pay_rocketry_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.rocketry_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.rocketry_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.rocketry_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.rocketry_theory_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.rocketry_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_rocketry_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_rocketry_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^3
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_tech = rocket_engines
+}
+
+brilliant_scientist_can_pay_rocketry_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.rocketry_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_rocketry_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_rocketry_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^3
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	OR = {
+		is_special_project_completed = sp:sp_rockets_ballistic_missile
+		is_special_project_completed = sp:sp_air_axial_jet_engine
+	}
+}
+
+brilliant_scientist_can_pay_rocketry_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_rocketry_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_rocketry_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^3
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	OR = {
+		is_special_project_completed = sp:sp_rockets_long_range_ballistic_missile
+		is_special_project_completed = sp:sp_air_supersonic_jet
+	}
+}
+
+brilliant_scientist_can_pay_high_energy_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.high_energy_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.high_energy_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.high_energy_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.high_energy_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.high_energy_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_high_energy_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_high_energy_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_tech = atomic_research
+}
+
+brilliant_scientist_can_pay_high_energy_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.high_energy_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_high_energy_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_high_energy_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	OR = {
+		is_special_project_completed = sp:sp_commercial_nuclear_reactor
+		is_special_project_completed = sp:sp_nuclear_bomb
+	}
+}
+
+brilliant_scientist_can_pay_high_energy_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_high_energy_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_high_energy_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	OR = {
+		is_special_project_completed = sp:sp_thermo_nuclear_bomb
+		is_special_project_completed = sp:sp_nuclear_warheads
+	}
+}
+
+brilliant_scientist_can_pay_biomedical_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biomedical_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biomedical_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.biomedical_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.biomedical_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biomedical_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biomedical_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biomedical_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	OR = {
+		has_tech = pathogen_handling_protocols
+		has_tech = bio_surveillance_networks
+	}
+}
+
+brilliant_scientist_can_pay_biomedical_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biomedical_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biomedical_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biomedical_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	OR = {
+		has_tech = field_epidemiology_teams
+		has_tech = mobile_cbrn_hospitals
+	}
+}
+
+brilliant_scientist_can_pay_biomedical_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biomedical_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biomedical_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	has_tech = integrated_epidemic_control
+	has_tech = fail_safe_containment_facilities
+}
+
+brilliant_scientist_can_pay_teleportation_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.teleportation_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.teleportation_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.teleportation_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.teleportation_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.teleportation_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.teleportation_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_teleportation_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_teleportation_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^6
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_teleportation_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.teleportation_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.teleportation_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.teleportation_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_teleportation_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_teleportation_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^6
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_secondary_facility_is_valid = yes
+}
+
+brilliant_scientist_can_pay_teleportation_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_teleportation_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_teleportation_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^6
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_cloning_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.cloning_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.cloning_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.cloning_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.cloning_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.cloning_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.cloning_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_cloning_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_cloning_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_cloning_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.cloning_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.cloning_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.cloning_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.cloning_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.cloning_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.cloning_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.cloning_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.cloning_deployment_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.cloning_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.cloning_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_cloning_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_cloning_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	has_tech = sealed_containment_laboratories
+}
+
+brilliant_scientist_can_pay_cloning_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.cloning_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.cloning_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.cloning_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_cloning_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_cloning_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_cloning_growth_site
+}
+
+brilliant_scientist_can_pay_robotics_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.robotics_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.robotics_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.robotics_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.robotics_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.robotics_theory_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.robotics_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.robotics_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_robotics_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_robotics_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^8
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_robotics_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.robotics_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.robotics_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.robotics_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.robotics_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.robotics_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.robotics_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.robotics_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.robotics_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.robotics_deployment_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.robotics_deployment_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.robotics_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.robotics_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_robotics_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_robotics_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^8
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	has_tech = assembly_line_production
+}
+
+brilliant_scientist_can_pay_robotics_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_political_power
+	has_resources_in_country = { resource = steel amount > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_robotics_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_robotics_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^8
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_paleogenetics_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_paleogenetics_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_paleogenetics_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^9
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_paleogenetics_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_paleogenetics_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_paleogenetics_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^9
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_secondary_facility_is_valid = yes
+}
+
+brilliant_scientist_can_pay_paleogenetics_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_paleogenetics_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_paleogenetics_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^9
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_paleogenetic_sites_ready
+}
+
+brilliant_scientist_can_pay_xenobiological_synthesis_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_political_power
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_xenobiological_synthesis_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_xenobiological_synthesis_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^10
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^7
+			value = constant:brilliant_scientist_project_stage.prototype
+			compare = greater_than_or_equals
+		}
+		has_country_flag = brilliant_scientist_alien_material_authenticated
+	}
+}
+
+brilliant_scientist_can_pay_xenobiological_synthesis_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_political_power
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_xenobiological_synthesis_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_xenobiological_synthesis_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^10
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	brilliant_scientist_xeno_control_is_locked = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_secondary_facility_is_valid = yes
+}
+
+brilliant_scientist_can_pay_xenobiological_synthesis_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_political_power
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_resource_units }
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_xenobiological_synthesis_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_xenobiological_synthesis_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^10
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	brilliant_scientist_xeno_control_is_locked = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_xenobiological_sites_ready
+}
+
+brilliant_scientist_can_pay_biological_weapons_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biological_weapons_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biological_weapons_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^11
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	OR = {
+		has_tech = pathogen_handling_protocols
+		has_tech = sealed_containment_laboratories
+		has_tech = bio_surveillance_networks
+	}
+}
+
+brilliant_scientist_can_pay_biological_weapons_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biological_weapons_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biological_weapons_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^11
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	count_triggers = {
+		amount > 1
+		is_special_project_completed = sp:anthrax_bomb
+		is_special_project_completed = sp:plague_bomb
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:smallpox_bomb
+		is_special_project_completed = sp:weaponize_the_zombies
+	}
+	OR = {
+		has_equipment = { anthrax_bomb_equipment > 0 }
+		has_equipment = { plague_bomb_equipment > 0 }
+		has_equipment = { tularemia_bomb_equipment > 0 }
+		has_equipment = { smallpox_bomb_equipment > 0 }
+		has_equipment = { zombie_disease_bomb_equipment > 0 }
+	}
+}
+
+brilliant_scientist_can_pay_biological_weapons_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_army_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_political_power
+	has_resources_in_country = { resource = rubber amount > constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_biological_weapons_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_biological_weapons_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^11
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	OR = {
+		is_special_project_completed = sp:smallpox_bomb
+		is_special_project_completed = sp:weaponize_the_zombies
+	}
+}
+
+brilliant_scientist_can_pay_alien_arms_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.alien_arms_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.alien_arms_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.alien_arms_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.alien_arms_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_alien_arms_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_alien_arms_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^12
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	OR = {
+		has_idea = antarctica_success
+		has_country_flag = brilliant_scientist_alien_spacecraft_recovered
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_alien_arms_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_alien_arms_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_alien_arms_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^12
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_alien_arms_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_alien_arms_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_alien_arms_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^12
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_temporal_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.temporal_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.temporal_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.temporal_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.temporal_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.temporal_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.temporal_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.temporal_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_temporal_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_temporal_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^13
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	OR = {
+		has_idea = time_traveler
+		has_country_flag = brilliant_scientist_time_traveler_contact
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_temporal_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.temporal_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.temporal_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.temporal_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.temporal_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.temporal_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.temporal_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.temporal_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.temporal_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.temporal_deployment_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.temporal_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.temporal_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.temporal_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_temporal_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_temporal_deployment = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^13
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_temporal_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_air_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_temporal_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_temporal_weaponization = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^13
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+	NOT = { has_country_flag = brilliant_scientist_temporal_anchor_lost }
+	check_variable = {
+		var = brilliant_scientist_temporal_debt
+		value = constant:brilliant_scientist_temporal.debt_critical
+		compare = less_than
+	}
+}
+
+brilliant_scientist_can_pay_singularity_theory = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.singularity_theory_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.singularity_theory_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.singularity_theory_support_equipment }
+	manpower > constant:brilliant_scientist_project_stage_cost.singularity_theory_manpower
+	political_power > constant:brilliant_scientist_project_stage_cost.singularity_theory_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.singularity_theory_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.singularity_theory_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_singularity_theory = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_singularity_theory = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^14
+		value = constant:brilliant_scientist_project_stage.none
+		compare = equals
+	}
+	has_country_flag = brilliant_scientist_kruger_state
+	has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
+	has_country_flag = brilliant_scientist_singularity_facilities_verified
+	brilliant_scientist_has_required_singularity_facilities = yes
+	brilliant_scientist_can_commit_to_singularity = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^4
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = greater_than_or_equals
+	}
+	count_triggers = {
+		amount > 1
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^6
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^13
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^12
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^8
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^11
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_stage_entries^2
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+brilliant_scientist_can_pay_singularity_deployment = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.singularity_deployment_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.singularity_deployment_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.singularity_deployment_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.singularity_deployment_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.singularity_deployment_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.singularity_deployment_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.singularity_deployment_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.singularity_deployment_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.singularity_deployment_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.singularity_deployment_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.singularity_deployment_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.singularity_deployment_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.singularity_deployment_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_deployment
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_singularity_deployment = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_singularity_deployment = yes
+	brilliant_scientist_has_required_singularity_facilities = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^14
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_component_count
+		value = constant:brilliant_scientist_singularity.components_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_live_command_node_count
+		value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_power_link_count
+		value = constant:brilliant_scientist_singularity.minimum_power_links
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_singularity_weaponization = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_civilian_factories }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_military_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_trucks }
+	has_equipment = { train_equipment > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_trains }
+	has_fuel > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_fuel
+	manpower > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_manpower
+	has_army_experience > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_army_xp
+	has_air_experience > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_air_xp
+	has_navy_experience > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_navy_xp
+	political_power > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_political_power
+	has_resources_in_country = { resource = tungsten amount > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_resource_units }
+	has_resources_in_country = { resource = chromium amount > constant:brilliant_scientist_project_stage_cost.singularity_weaponization_resource_units }
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_weaponization
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_begin_singularity_weaponization = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_can_pay_singularity_weaponization = yes
+	brilliant_scientist_has_required_singularity_facilities = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^14
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+	has_country_flag = brilliant_scientist_singularity_architecture_integrated
+	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+	NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+}
+
+brilliant_scientist_can_research_computation_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_materials_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_biomedical_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^5
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_teleportation_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^6
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_cloning_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^7
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_robotics_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^8
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_paleogenetics_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^9
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_xenobiological_synthesis_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^10
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_xeno_control_is_locked = yes
+}
+
+brilliant_scientist_can_research_alien_arms_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^12
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_temporal_prototype = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^13
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_project_board.capacity_prototype
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_research_singularity_component = {
+	brilliant_scientist_is_current_host = yes
+	has_country_flag = brilliant_scientist_kruger_state
+	has_country_flag = brilliant_scientist_singularity_facilities_verified
+	brilliant_scientist_has_required_singularity_facilities = yes
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^14
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_pay_singularity_command_node = {
+	brilliant_scientist_has_required_singularity_facilities = yes
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.singularity_node_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.singularity_node_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.singularity_node_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.singularity_node_fuel
+	manpower > constant:brilliant_scientist_project_board.singularity_node_manpower
+	political_power > constant:brilliant_scientist_project_board.singularity_node_political_power
+}
+
+brilliant_scientist_can_pay_singularity_power_link = {
+	brilliant_scientist_has_required_singularity_facilities = yes
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.singularity_link_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.singularity_link_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.singularity_link_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.singularity_link_fuel
+	manpower > constant:brilliant_scientist_project_board.singularity_link_manpower
+	political_power > constant:brilliant_scientist_project_board.singularity_link_political_power
+}
+
+brilliant_scientist_can_pay_technical_incident_response = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.response_technical_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.response_technical_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.response_technical_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.response_technical_fuel
+	manpower > constant:brilliant_scientist_project_board.response_technical_manpower
+	political_power > constant:brilliant_scientist_project_board.response_technical_political_power
+}
+
+brilliant_scientist_can_pay_industrial_incident_response = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.response_industrial_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.response_industrial_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.response_industrial_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.response_industrial_fuel
+	manpower > constant:brilliant_scientist_project_board.response_industrial_manpower
+	political_power > constant:brilliant_scientist_project_board.response_industrial_political_power
+}
+
+brilliant_scientist_can_pay_biological_incident_response = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.response_biological_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.response_biological_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.response_biological_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.response_biological_fuel
+	manpower > constant:brilliant_scientist_project_board.response_biological_manpower
+	political_power > constant:brilliant_scientist_project_board.response_biological_political_power
+}
+
+brilliant_scientist_can_pay_exotic_incident_response = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.response_exotic_civilian_factories }
+	has_equipment = { support_equipment > constant:brilliant_scientist_project_board.response_exotic_support_equipment }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_project_board.response_exotic_trucks }
+	has_fuel > constant:brilliant_scientist_project_board.response_exotic_fuel
+	manpower > constant:brilliant_scientist_project_board.response_exotic_manpower
+	political_power > constant:brilliant_scientist_project_board.response_exotic_political_power
+}

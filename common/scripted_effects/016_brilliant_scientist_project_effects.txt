@@ -1,0 +1,1317 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PROJECT PORTFOLIO EFFECTS
+# ============================================================================
+# Owns concrete stage payments, capacity occupation, persistent stage outputs,
+# native-project synchronization, family incidents, site markers, exact agent
+# history, and guarded Strategic Singularity component preparation.
+# ============================================================================
+
+# COUNTRY scope. Inputs: temporary project family and requested stage.
+brilliant_scientist_begin_project_stage = {
+	brilliant_scientist_load_project_cost_and_duration = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_cost_ready = constant:brilliant_scientist_value.one } }
+		set_country_flag = brilliant_scientist_project_stage_in_progress
+		set_variable = { brilliant_scientist_active_project_family = brilliant_scientist_project_family }
+		set_variable = { brilliant_scientist_active_project_stage = brilliant_scientist_requested_project_stage }
+		set_temp_variable = { brilliant_scientist_project_capacity_delta = constant:brilliant_scientist_project_board.capacity_theory }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_temp_variable = { brilliant_scientist_project_capacity_delta = constant:brilliant_scientist_project_board.capacity_deployment }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_temp_variable = { brilliant_scientist_project_capacity_delta = constant:brilliant_scientist_project_board.capacity_weaponization }
+		}
+		set_variable = { brilliant_scientist_active_project_capacity_delta = brilliant_scientist_project_capacity_delta }
+		subtract_from_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_delta }
+		clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+		multiply_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_trains = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_army_xp = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_air_xp = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_cost_navy_xp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_cost_support_equipment }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_cost_trucks }
+		add_equipment_to_stockpile = { type = train_equipment amount = brilliant_scientist_cost_trains }
+		add_fuel = brilliant_scientist_cost_fuel
+		add_manpower = brilliant_scientist_cost_manpower
+		add_army_experience = brilliant_scientist_cost_army_xp
+		add_air_experience = brilliant_scientist_cost_air_xp
+		add_navy_experience = brilliant_scientist_cost_navy_xp
+	}
+}
+
+brilliant_scientist_cancel_project_stage = {
+	if = {
+		limit = { has_variable = brilliant_scientist_active_project_capacity_delta }
+		add_to_variable = { brilliant_scientist_project_capacity = brilliant_scientist_active_project_capacity_delta }
+		clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+	}
+	clr_country_flag = brilliant_scientist_project_stage_in_progress
+	clear_variable = brilliant_scientist_active_project_family
+	clear_variable = brilliant_scientist_active_project_stage
+	clear_variable = brilliant_scientist_active_project_capacity_delta
+}
+
+# COUNTRY scope. Inputs: family and requested stage.
+brilliant_scientist_finish_project_stage = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_project_stage_in_progress
+			check_variable = { var = brilliant_scientist_active_project_family value = brilliant_scientist_project_family compare = equals }
+			check_variable = { var = brilliant_scientist_active_project_stage value = brilliant_scientist_requested_project_stage compare = equals }
+		}
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.one } }
+			brilliant_scientist_apply_project_stage_output = yes
+			brilliant_scientist_refresh_project_accident_pressure = yes
+			brilliant_scientist_dispatch_project_accident = yes
+		}
+	}
+	clr_country_flag = brilliant_scientist_project_stage_in_progress
+	clear_variable = brilliant_scientist_active_project_family
+	clear_variable = brilliant_scientist_active_project_stage
+	clear_variable = brilliant_scientist_active_project_capacity_delta
+}
+
+# COUNTRY scope. Occupies the additional capacity required by a native prototype.
+brilliant_scientist_complete_native_prototype_stage = {
+	subtract_from_variable = { brilliant_scientist_project_capacity = constant:brilliant_scientist_project_board.capacity_prototype }
+	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+	brilliant_scientist_advance_project_to_requested_stage = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.one } }
+		brilliant_scientist_apply_project_stage_output = yes
+		brilliant_scientist_refresh_project_accident_pressure = yes
+		brilliant_scientist_dispatch_project_accident = yes
+	}
+}
+
+# COUNTRY scope. Inputs: family. Releases the full retained burden before the
+# generic board dismantles its exact ledger entry.
+brilliant_scientist_release_project_capacity = {
+	brilliant_scientist_load_project_index = yes
+	set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.theory }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.prototype } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.prototype }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.deployment } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.deployment }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.weaponization } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.weaponization }
+	}
+	if = {
+		limit = { brilliant_scientist_project_is_suspended = yes }
+		multiply_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.suspended_factor }
+	}
+	add_to_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_release }
+	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+}
+
+brilliant_scientist_release_suspended_project_capacity = {
+	brilliant_scientist_load_project_index = yes
+	set_temp_variable = { brilliant_scientist_project_capacity_release = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index }
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.theory }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.prototype } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.prototype }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.deployment } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.deployment }
+	}
+	else = { set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.weaponization } }
+	multiply_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.suspended_factor }
+	add_to_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_release }
+	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+}
+
+brilliant_scientist_reoccupy_suspended_project_capacity = {
+	brilliant_scientist_load_project_index = yes
+	set_temp_variable = { brilliant_scientist_project_capacity_release = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index }
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.theory }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.prototype } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.prototype }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.deployment } }
+		set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.deployment }
+	}
+	else = { set_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.weaponization } }
+	multiply_temp_variable = { brilliant_scientist_project_capacity_release = constant:brilliant_scientist_project_capacity.suspended_factor }
+	subtract_from_variable = { brilliant_scientist_project_capacity = brilliant_scientist_project_capacity_release }
+	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
+}
+
+# COUNTRY scope. Inputs: family and requested stage.
+brilliant_scientist_apply_project_stage_output = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_computation_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_computation_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_computation_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_computation_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_computation_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_computation_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_electronics_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_electronics_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_electronics_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_electronics_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_electronics_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_electronics_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_electronics_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_materials_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_materials_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_materials_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_materials_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_materials_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_materials_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_materials_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_materials_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_rocketry_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_rocketry_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_rocketry_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_rocketry_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_high_energy_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_high_energy_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_high_energy_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_high_energy_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_biomedical_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_biomedical_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_biomedical_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_biomedical_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_weaponization }
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_teleportation_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_teleportation_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_teleportation_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_quantum_transit_terminal }
+			event_target:brilliant_scientist_secondary_facility = { set_state_flag = brilliant_scientist_quantum_transit_terminal }
+			set_country_flag = brilliant_scientist_quantum_transit_network_ready
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_teleportation_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_weaponization }
+			set_technology = { brilliant_scientist_portal_warfare_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_teleportation_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_cloning_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_cloning_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_cloning_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_cloning_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_cloning_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_cloning_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_cloning_growth_site }
+			set_country_flag = brilliant_scientist_cloning_growth_site
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_cloning_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_cloning_weaponization }
+			set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_cloning_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_robotics_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_robotics_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_robotics_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_robotics_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_robotics_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_robotics_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_robotics_assembly_complex }
+			set_country_flag = brilliant_scientist_robotics_assembly_complex
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_robotics_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_robotics_weaponization }
+			set_technology = { brilliant_scientist_robot_formations_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_robotics_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_paleogenetics_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_paleogenetics_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_paleogenetics_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_paleogenetic_reserve }
+			event_target:brilliant_scientist_secondary_facility = { set_state_flag = brilliant_scientist_paleogenetic_hatchery }
+			set_country_flag = brilliant_scientist_paleogenetic_sites_ready
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_paleogenetics_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_weaponization }
+			set_technology = { brilliant_scientist_paleogenetic_formations_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_paleogenetics_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_xenobiological_vat_complex }
+			event_target:brilliant_scientist_secondary_facility = { set_state_flag = brilliant_scientist_xenobiological_control_center }
+			set_country_flag = brilliant_scientist_xenobiological_sites_ready
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_weaponization }
+			set_technology = { brilliant_scientist_xenobiological_formations_tech = 1 popup = yes }
+			if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_chemical }
+				set_technology = { brilliant_scientist_xeno_chemical_control_tech = 1 popup = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_neural }
+				set_technology = { brilliant_scientist_xeno_neural_control_tech = 1 popup = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_machine }
+				set_technology = { brilliant_scientist_xeno_machine_control_tech = 1 popup = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_researched }
+				set_technology = { brilliant_scientist_xeno_researched_control_tech = 1 popup = yes }
+			}
+			set_country_flag = brilliant_scientist_xenobiological_synthesis_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_biological_weapons_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_biological_weapons_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_biological_weapons_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_biological_weapons_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_weaponization }
+			set_country_flag = brilliant_scientist_biological_delivery_package_ready
+		}
+		brilliant_scientist_capture_biological_agent_history = yes
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_alien_arms_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_alien_arms_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_prototype }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_alien_arms_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_deployment }
+			event_target:brilliant_scientist_primary_facility = { set_state_flag = brilliant_scientist_alien_interface_chamber }
+			set_country_flag = brilliant_scientist_alien_interface_chamber
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_alien_arms_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_weaponization }
+			set_technology = { brilliant_scientist_exotic_guard_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_alien_arms_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_temporal_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_temporal_theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_temporal_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_temporal_prototype }
+			event_target:brilliant_scientist_primary_facility = { brilliant_scientist_register_temporal_anchor = yes }
+			set_country_flag = brilliant_scientist_temporal_anchor_authenticated
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_temporal_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_temporal_deployment }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_temporal_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_temporal_weaponization }
+			set_technology = { brilliant_scientist_temporal_guard_tech = 1 popup = yes }
+			set_country_flag = brilliant_scientist_temporal_military_package_ready
+		}
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
+			set_country_flag = brilliant_scientist_singularity_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_singularity_theory }
+			brilliant_scientist_commit_to_singularity = yes
+			set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.theory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_country_flag = brilliant_scientist_singularity_prototype_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_singularity_prototype }
+			set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.components }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
+			set_country_flag = brilliant_scientist_singularity_deployment_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment }
+			set_country_flag = brilliant_scientist_singularity_architecture_integrated
+			set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.construction }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
+			set_country_flag = brilliant_scientist_singularity_weaponization_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization }
+			set_country_flag = brilliant_scientist_singularity_prepared_nonterminal
+			set_country_flag = brilliant_scientist_singularity_terminal_contract_guarded
+			set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.construction }
+			clr_country_flag = brilliant_scientist_singularity_armed
+			clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
+		}
+	}
+}
+
+# COUNTRY scope. Input: family. Suspension removes live benefits while keeping
+# stage history and sites. Resume re-applies only the recorded cumulative stage.
+brilliant_scientist_disable_project_stage_modifiers = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_computation_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_computation_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_computation_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_electronics_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_electronics_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_electronics_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_materials_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_materials_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_materials_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_materials_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_rocketry_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_rocketry_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_rocketry_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_energy_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_energy_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_energy_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biomedical_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biomedical_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biomedical_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_teleportation_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_teleportation_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_teleportation_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_teleportation_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_cloning_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_cloning_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_cloning_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_cloning_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_robotics_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_robotics_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_robotics_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_robotics_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_temporal_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_temporal_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_temporal_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_temporal_weaponization }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_theory }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_prototype }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization }
+	}
+}
+
+brilliant_scientist_enable_project_stage_modifiers = {
+	brilliant_scientist_load_project_index = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_weaponization } }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_theory } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_prototype } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment } }
+		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization } }
+	}
+}
+
+brilliant_scientist_dismantle_project_operational_outputs = {
+	brilliant_scientist_disable_project_stage_modifiers = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		clr_country_flag = brilliant_scientist_quantum_transit_network_ready
+		clr_country_flag = brilliant_scientist_teleportation_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_quantum_transit_terminal } }
+		if = { limit = { has_event_target = brilliant_scientist_secondary_facility } event_target:brilliant_scientist_secondary_facility = { clr_state_flag = brilliant_scientist_quantum_transit_terminal } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		clr_country_flag = brilliant_scientist_cloning_growth_site
+		clr_country_flag = brilliant_scientist_cloning_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_cloning_growth_site } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		clr_country_flag = brilliant_scientist_robotics_assembly_complex
+		clr_country_flag = brilliant_scientist_robotics_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_robotics_assembly_complex } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		clr_country_flag = brilliant_scientist_paleogenetic_sites_ready
+		clr_country_flag = brilliant_scientist_paleogenetics_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_paleogenetic_reserve } }
+		if = { limit = { has_event_target = brilliant_scientist_secondary_facility } event_target:brilliant_scientist_secondary_facility = { clr_state_flag = brilliant_scientist_paleogenetic_hatchery } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		clr_country_flag = brilliant_scientist_xenobiological_sites_ready
+		clr_country_flag = brilliant_scientist_xenobiological_synthesis_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_xenobiological_vat_complex } }
+		if = { limit = { has_event_target = brilliant_scientist_secondary_facility } event_target:brilliant_scientist_secondary_facility = { clr_state_flag = brilliant_scientist_xenobiological_control_center } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		clr_country_flag = brilliant_scientist_alien_interface_chamber
+		clr_country_flag = brilliant_scientist_alien_arms_military_package_ready
+		if = { limit = { has_event_target = brilliant_scientist_primary_facility } event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_alien_interface_chamber } }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		clr_country_flag = brilliant_scientist_temporal_military_package_ready
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		clr_country_flag = brilliant_scientist_biological_delivery_package_ready
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		clr_country_flag = brilliant_scientist_singularity_architecture_integrated
+		clr_country_flag = brilliant_scientist_singularity_prepared_nonterminal
+		clr_country_flag = brilliant_scientist_singularity_terminal_contract_guarded
+		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.dormant }
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_project_stage_entries^14
+					value = constant:brilliant_scientist_project_stage.deployment
+					compare = less_than
+				}
+				NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+				NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+			}
+			clr_country_flag = brilliant_scientist_terminal_commitment_singularity
+			clr_country_flag = brilliant_scientist_terminal_commitment_locked
+			set_variable = { brilliant_scientist_terminal_commitment = constant:brilliant_scientist_terminal_commitment.none }
+		}
+	}
+}
+
+brilliant_scientist_capture_biological_agent_history = {
+	if = { limit = { is_special_project_completed = sp:anthrax_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_anthrax } }
+	if = { limit = { is_special_project_completed = sp:plague_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_plague } }
+	if = { limit = { is_special_project_completed = sp:tularemia_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_tularemia } }
+	if = { limit = { is_special_project_completed = sp:smallpox_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_smallpox } }
+	if = { limit = { is_special_project_completed = sp:weaponize_the_zombies } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_weaponized_zombies } }
+}
+
+# COUNTRY scope. Reused native projects keep their clocks and outputs. This
+# bridge only records Event 016 Prototype after exact completion and capacity.
+brilliant_scientist_sync_native_project_prototypes = {
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			is_special_project_completed = sp:sp_air_radar
+		}
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics }
+		brilliant_scientist_complete_native_prototype_stage = yes
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			OR = { is_special_project_completed = sp:sp_rockets_flying_bomb is_special_project_completed = sp:sp_air_jet_engine }
+		}
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
+		brilliant_scientist_complete_native_prototype_stage = yes
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			is_special_project_completed = sp:sp_nuclear_reactor
+		}
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy }
+		brilliant_scientist_complete_native_prototype_stage = yes
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			OR = { is_special_project_completed = sp:anthrax_bomb is_special_project_completed = sp:tularemia_bomb is_special_project_completed = sp:plague_bomb }
+		}
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons }
+		brilliant_scientist_complete_native_prototype_stage = yes
+	}
+}
+
+# COUNTRY scope. Exact family input, used by project completion outputs.
+brilliant_scientist_record_new_project_prototype = {
+	brilliant_scientist_load_project_index = yes
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+		}
+		brilliant_scientist_complete_native_prototype_stage = yes
+	}
+}
+
+# COUNTRY scope. Input: temporary singularity component.
+brilliant_scientist_register_singularity_component = {
+	if = {
+		limit = { NOT = { is_in_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component } } }
+		add_to_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component }
+		add_to_variable = { brilliant_scientist_singularity_component_count = constant:brilliant_scientist_value.one }
+		if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } } set_country_flag = brilliant_scientist_singularity_command_core_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } } set_country_flag = brilliant_scientist_singularity_power_link_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } } set_country_flag = brilliant_scientist_singularity_containment_lattice_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } } set_country_flag = brilliant_scientist_singularity_temporal_authenticator_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } } set_country_flag = brilliant_scientist_singularity_delivery_architecture_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } } set_country_flag = brilliant_scientist_singularity_fail_deadly_governor_complete }
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.theory }
+				check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			}
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+			brilliant_scientist_complete_native_prototype_stage = yes
+		}
+		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.components }
+	}
+}
+
+brilliant_scientist_destroy_singularity_component = {
+	if = {
+		limit = { is_in_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component } }
+		remove_from_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component }
+		subtract_from_variable = { brilliant_scientist_singularity_component_count = constant:brilliant_scientist_value.one }
+		clamp_variable = { var = brilliant_scientist_singularity_component_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_singularity.component_count }
+		set_country_flag = brilliant_scientist_singularity_component_destroyed
+		if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } } clr_country_flag = brilliant_scientist_singularity_command_core_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } } clr_country_flag = brilliant_scientist_singularity_power_link_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } } clr_country_flag = brilliant_scientist_singularity_containment_lattice_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } } clr_country_flag = brilliant_scientist_singularity_temporal_authenticator_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } } clr_country_flag = brilliant_scientist_singularity_delivery_architecture_complete }
+		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } } clr_country_flag = brilliant_scientist_singularity_fail_deadly_governor_complete }
+		clr_country_flag = brilliant_scientist_singularity_architecture_integrated
+		clr_country_flag = brilliant_scientist_singularity_prepared_nonterminal
+	}
+}
+
+brilliant_scientist_audit_singularity_facilities = {
+	set_variable = { brilliant_scientist_singularity_verified_facility_count = constant:brilliant_scientist_value.zero }
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			OR = { land_facility > 0 air_facility > 0 nuclear_facility > 0 biowarfare_facility > 0 }
+		}
+		ROOT = { add_to_variable = { brilliant_scientist_singularity_verified_facility_count = constant:brilliant_scientist_value.one } }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_singularity_verified_facility_count value = constant:brilliant_scientist_singularity.minimum_facilities compare = greater_than_or_equals } }
+		set_country_flag = brilliant_scientist_singularity_facilities_verified
+	}
+	else = { clr_country_flag = brilliant_scientist_singularity_facilities_verified }
+}
+
+brilliant_scientist_construct_singularity_command_node = {
+	add_to_variable = { brilliant_scientist_singularity_live_command_node_count = constant:brilliant_scientist_value.one }
+	set_country_flag = brilliant_scientist_singularity_live_command_network
+}
+
+brilliant_scientist_construct_singularity_power_link = {
+	add_to_variable = { brilliant_scientist_singularity_power_link_count = constant:brilliant_scientist_value.one }
+}
+
+brilliant_scientist_pay_singularity_command_node = {
+	set_temp_variable = { brilliant_scientist_singularity_payment_support = constant:brilliant_scientist_project_board.singularity_node_support_equipment }
+	set_temp_variable = { brilliant_scientist_singularity_payment_trucks = constant:brilliant_scientist_project_board.singularity_node_trucks }
+	set_temp_variable = { brilliant_scientist_singularity_payment_fuel = constant:brilliant_scientist_project_board.singularity_node_fuel }
+	set_temp_variable = { brilliant_scientist_singularity_payment_manpower = constant:brilliant_scientist_project_board.singularity_node_manpower }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_singularity_payment_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_singularity_payment_trucks }
+	add_fuel = brilliant_scientist_singularity_payment_fuel
+	add_manpower = brilliant_scientist_singularity_payment_manpower
+}
+
+brilliant_scientist_pay_singularity_power_link = {
+	set_temp_variable = { brilliant_scientist_singularity_payment_support = constant:brilliant_scientist_project_board.singularity_link_support_equipment }
+	set_temp_variable = { brilliant_scientist_singularity_payment_trucks = constant:brilliant_scientist_project_board.singularity_link_trucks }
+	set_temp_variable = { brilliant_scientist_singularity_payment_fuel = constant:brilliant_scientist_project_board.singularity_link_fuel }
+	set_temp_variable = { brilliant_scientist_singularity_payment_manpower = constant:brilliant_scientist_project_board.singularity_link_manpower }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_singularity_payment_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_singularity_payment_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_singularity_payment_trucks }
+	add_fuel = brilliant_scientist_singularity_payment_fuel
+	add_manpower = brilliant_scientist_singularity_payment_manpower
+}
+
+# Family-specific incident selection. Pressure is a real variable weight.
+brilliant_scientist_dispatch_project_accident = {
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_project_incident_active } }
+		set_temp_variable = { brilliant_scientist_accident_safe_weight = constant:brilliant_scientist_accident.maximum }
+		subtract_from_temp_variable = { brilliant_scientist_accident_safe_weight = brilliant_scientist_accident_pressure }
+		random_list = {
+			brilliant_scientist_accident_safe_weight = { }
+			brilliant_scientist_accident_pressure = { brilliant_scientist_begin_family_project_incident = yes }
+		}
+	}
+}
+
+brilliant_scientist_begin_family_project_incident = {
+	set_country_flag = brilliant_scientist_project_incident_active
+	set_country_flag = brilliant_scientist_dangerous_project_incident
+	clr_country_flag = brilliant_scientist_project_incident_response_failed
+	add_to_variable = { brilliant_scientist_project_incident_count = constant:brilliant_scientist_value.one }
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		clr_country_flag = brilliant_scientist_computation_incident_resolved
+		set_country_flag = brilliant_scientist_computation_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_computation_incident }
+		activate_mission = brilliant_scientist_computation_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		clr_country_flag = brilliant_scientist_electronics_incident_resolved
+		set_country_flag = brilliant_scientist_electronics_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_electronics_incident }
+		activate_mission = brilliant_scientist_electronics_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		clr_country_flag = brilliant_scientist_materials_incident_resolved
+		set_country_flag = brilliant_scientist_materials_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_materials_incident }
+		activate_mission = brilliant_scientist_materials_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		clr_country_flag = brilliant_scientist_rocketry_incident_resolved
+		set_country_flag = brilliant_scientist_rocketry_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_incident }
+		activate_mission = brilliant_scientist_rocketry_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		clr_country_flag = brilliant_scientist_high_energy_incident_resolved
+		set_country_flag = brilliant_scientist_high_energy_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_incident }
+		activate_mission = brilliant_scientist_high_energy_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		clr_country_flag = brilliant_scientist_biomedical_incident_resolved
+		set_country_flag = brilliant_scientist_biomedical_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_incident }
+		activate_mission = brilliant_scientist_biomedical_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		clr_country_flag = brilliant_scientist_teleportation_incident_resolved
+		set_country_flag = brilliant_scientist_teleportation_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_incident }
+		activate_mission = brilliant_scientist_teleportation_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		clr_country_flag = brilliant_scientist_cloning_incident_resolved
+		set_country_flag = brilliant_scientist_cloning_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_cloning_incident }
+		activate_mission = brilliant_scientist_cloning_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		clr_country_flag = brilliant_scientist_robotics_incident_resolved
+		set_country_flag = brilliant_scientist_robotics_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_robotics_incident }
+		activate_mission = brilliant_scientist_robotics_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		clr_country_flag = brilliant_scientist_paleogenetics_incident_resolved
+		set_country_flag = brilliant_scientist_paleogenetics_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_incident }
+		activate_mission = brilliant_scientist_paleogenetics_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		clr_country_flag = brilliant_scientist_xenobiological_synthesis_incident_resolved
+		set_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_incident }
+		activate_mission = brilliant_scientist_xenobiological_synthesis_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		clr_country_flag = brilliant_scientist_biological_weapons_incident_resolved
+		set_country_flag = brilliant_scientist_biological_weapons_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_incident }
+		activate_mission = brilliant_scientist_biological_weapons_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		clr_country_flag = brilliant_scientist_alien_arms_incident_resolved
+		set_country_flag = brilliant_scientist_alien_arms_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_incident }
+		activate_mission = brilliant_scientist_alien_arms_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		clr_country_flag = brilliant_scientist_temporal_incident_resolved
+		set_country_flag = brilliant_scientist_temporal_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_temporal_incident }
+		activate_mission = brilliant_scientist_temporal_incident_mission
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		clr_country_flag = brilliant_scientist_singularity_incident_resolved
+		set_country_flag = brilliant_scientist_singularity_incident_active
+		add_dynamic_modifier = { modifier = brilliant_scientist_singularity_incident }
+		activate_mission = brilliant_scientist_singularity_incident_mission
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_accident_pressure value = constant:brilliant_scientist_accident.severe_threshold compare = greater_than_or_equals } }
+		brilliant_scientist_damage_project = yes
+	}
+}
+
+# COUNTRY scope. Input: family.
+brilliant_scientist_resolve_family_project_incident = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		clr_country_flag = brilliant_scientist_computation_incident_active
+		set_country_flag = brilliant_scientist_computation_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_computation_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		clr_country_flag = brilliant_scientist_electronics_incident_active
+		set_country_flag = brilliant_scientist_electronics_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_electronics_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		clr_country_flag = brilliant_scientist_materials_incident_active
+		set_country_flag = brilliant_scientist_materials_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_materials_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		clr_country_flag = brilliant_scientist_rocketry_incident_active
+		set_country_flag = brilliant_scientist_rocketry_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_rocketry_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		clr_country_flag = brilliant_scientist_high_energy_incident_active
+		set_country_flag = brilliant_scientist_high_energy_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_energy_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		clr_country_flag = brilliant_scientist_biomedical_incident_active
+		set_country_flag = brilliant_scientist_biomedical_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biomedical_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		clr_country_flag = brilliant_scientist_teleportation_incident_active
+		set_country_flag = brilliant_scientist_teleportation_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_teleportation_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		clr_country_flag = brilliant_scientist_cloning_incident_active
+		set_country_flag = brilliant_scientist_cloning_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_cloning_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		clr_country_flag = brilliant_scientist_robotics_incident_active
+		set_country_flag = brilliant_scientist_robotics_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_robotics_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		clr_country_flag = brilliant_scientist_paleogenetics_incident_active
+		set_country_flag = brilliant_scientist_paleogenetics_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		clr_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active
+		set_country_flag = brilliant_scientist_xenobiological_synthesis_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		clr_country_flag = brilliant_scientist_biological_weapons_incident_active
+		set_country_flag = brilliant_scientist_biological_weapons_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		clr_country_flag = brilliant_scientist_alien_arms_incident_active
+		set_country_flag = brilliant_scientist_alien_arms_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		clr_country_flag = brilliant_scientist_temporal_incident_active
+		set_country_flag = brilliant_scientist_temporal_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_temporal_incident }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		clr_country_flag = brilliant_scientist_singularity_incident_active
+		set_country_flag = brilliant_scientist_singularity_incident_resolved
+		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_incident }
+	}
+	brilliant_scientist_repair_project = yes
+	clr_country_flag = brilliant_scientist_project_incident_active
+	set_country_flag = brilliant_scientist_project_incident_resolved
+}
+
+# COUNTRY scope. Input: family. Timeout preserves the live incident for a late
+# recovery decision, but damages the exact family and records state harm.
+brilliant_scientist_fail_family_project_incident = {
+	brilliant_scientist_damage_project = yes
+	add_stability = constant:brilliant_scientist_project_modifier.accident_stability
+	add_war_support = constant:brilliant_scientist_project_modifier.accident_war_support
+	set_country_flag = brilliant_scientist_project_incident_response_failed
+}
+
+brilliant_scientist_pay_technical_incident_response = {
+	set_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_project_board.response_technical_support_equipment }
+	set_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_project_board.response_technical_trucks }
+	set_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_project_board.response_technical_fuel }
+	set_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_project_board.response_technical_manpower }
+	multiply_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_response_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_response_trucks }
+	add_fuel = brilliant_scientist_response_fuel
+	add_manpower = brilliant_scientist_response_manpower
+}
+
+brilliant_scientist_pay_industrial_incident_response = {
+	set_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_project_board.response_industrial_support_equipment }
+	set_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_project_board.response_industrial_trucks }
+	set_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_project_board.response_industrial_fuel }
+	set_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_project_board.response_industrial_manpower }
+	multiply_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_response_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_response_trucks }
+	add_fuel = brilliant_scientist_response_fuel
+	add_manpower = brilliant_scientist_response_manpower
+}
+
+brilliant_scientist_pay_biological_incident_response = {
+	set_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_project_board.response_biological_support_equipment }
+	set_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_project_board.response_biological_trucks }
+	set_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_project_board.response_biological_fuel }
+	set_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_project_board.response_biological_manpower }
+	multiply_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_response_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_response_trucks }
+	add_fuel = brilliant_scientist_response_fuel
+	add_manpower = brilliant_scientist_response_manpower
+}
+
+brilliant_scientist_pay_exotic_incident_response = {
+	set_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_project_board.response_exotic_support_equipment }
+	set_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_project_board.response_exotic_trucks }
+	set_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_project_board.response_exotic_fuel }
+	set_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_project_board.response_exotic_manpower }
+	multiply_temp_variable = { brilliant_scientist_response_support = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_trucks = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+	multiply_temp_variable = { brilliant_scientist_response_manpower = constant:brilliant_scientist_directorate_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_response_support }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = brilliant_scientist_response_trucks }
+	add_fuel = brilliant_scientist_response_fuel
+	add_manpower = brilliant_scientist_response_manpower
+}
