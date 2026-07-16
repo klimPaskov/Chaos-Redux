@@ -1,0 +1,144 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SAAR CHARACTERS
+# ============================================================================
+# Friedrich Hoffmann is the fictional municipal jurist who chairs the Saar's
+# provisional civil authority. Karl Becker is the fictional industrial-
+# security commissioner who organizes the coal, factory, and railway guards.
+# The commander has no country-leader role: the neutral route remains civilian.
+# ============================================================================
+
+@ajx_character_expire = 1965.1.1.1
+@ajx_commander_skill = 3
+@ajx_commander_attack = 2
+@ajx_commander_defense = 3
+@ajx_commander_planning = 2
+@ajx_commander_logistics = 3
+
+characters = {
+	AJX_friedrich_hoffmann = {
+		name = AJX_friedrich_hoffmann
+		portraits = {
+			civilian = {
+				large = GFX_portrait_AJX_friedrich_hoffmann
+			}
+		}
+		country_leader = {
+			ideology = centrism
+			expire = @ajx_character_expire
+			id = -1
+			traits = { }
+		}
+		country_leader = {
+			ideology = socialism
+			expire = @ajx_character_expire
+			id = -1
+			traits = { }
+		}
+		country_leader = {
+			ideology = oligarchism
+			expire = @ajx_character_expire
+			id = -1
+			traits = { }
+		}
+	}
+
+	AJX_karl_becker = {
+		name = AJX_karl_becker
+		female = no
+		portraits = {
+			civilian = {
+				large = GFX_portrait_AJX_karl_becker
+			}
+			army = {
+				large = GFX_portrait_AJX_karl_becker
+				small = GFX_portrait_AJX_karl_becker_small
+			}
+		}
+		corps_commander = {
+			traits = { engineer_officer career_officer }
+			skill = @ajx_commander_skill
+			attack_skill = @ajx_commander_attack
+			defense_skill = @ajx_commander_defense
+			planning_skill = @ajx_commander_planning
+			logistics_skill = @ajx_commander_logistics
+			legacy_id = -1
+		}
+	}
+
+	AJX_independence_wave_mine_rail_dispatch_superintendent = {
+		name = AJX_independence_wave_mine_rail_dispatch_superintendent
+		gender = female
+		portraits = {
+			civilian = {
+				small = GFX_portrait_advisor_AJX_independence_wave_mine_rail_dispatch_superintendent
+			}
+		}
+		advisor = {
+			slot = political_advisor
+			idea_token = AJX_independence_wave_mine_rail_dispatch_superintendent
+			allowed = { is_independence_wave_ajx_package = yes }
+			visible = { has_country_flag = independence_wave_iw_010_setup_complete }
+			available = { has_country_flag = independence_wave_iw_010_setup_complete }
+			traits = { independence_wave_trait_mine_rail_dispatch_superintendent }
+			cost = constant:independence_wave_nwe_advisor_cost.specialist
+			ai_will_do = {
+				factor = constant:independence_wave_nwe_advisor_ai.base
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.urgent NOT = { has_country_flag = independence_wave_ajx_mine_rail_dispatch_restored } }
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.preferred has_country_flag = independence_wave_ajx_labor_government }
+			}
+			on_add = { owner = { set_country_flag = independence_wave_ajx_mine_rail_superintendent_active } }
+			on_remove = { owner = { clr_country_flag = independence_wave_ajx_mine_rail_superintendent_active } }
+		}
+	}
+
+	AJX_independence_wave_cross_border_accounts_comptroller = {
+		name = AJX_independence_wave_cross_border_accounts_comptroller
+		portraits = {
+			civilian = {
+				small = GFX_portrait_advisor_AJX_independence_wave_cross_border_accounts_comptroller
+			}
+		}
+		advisor = {
+			slot = political_advisor
+			idea_token = AJX_independence_wave_cross_border_accounts_comptroller
+			allowed = { is_independence_wave_ajx_package = yes }
+			visible = { has_country_flag = independence_wave_iw_010_setup_complete }
+			available = { has_country_flag = independence_wave_iw_010_setup_complete }
+			traits = { independence_wave_trait_cross_border_accounts_comptroller }
+			cost = constant:independence_wave_nwe_advisor_cost.administrative
+			ai_will_do = {
+				factor = constant:independence_wave_nwe_advisor_ai.base
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.urgent NOT = { has_country_flag = independence_wave_ajx_former_host_ledgers_settled } }
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.preferred has_country_flag = independence_wave_ajx_cross_border_trade_open }
+			}
+			on_add = { owner = { set_country_flag = independence_wave_ajx_accounts_comptroller_active } }
+			on_remove = { owner = { clr_country_flag = independence_wave_ajx_accounts_comptroller_active } }
+		}
+	}
+
+	AJX_independence_wave_factory_security_inspector = {
+		name = AJX_independence_wave_factory_security_inspector
+		gender = female
+		portraits = {
+			civilian = {
+				small = GFX_portrait_advisor_AJX_independence_wave_factory_security_inspector
+			}
+		}
+		advisor = {
+			slot = political_advisor
+			idea_token = AJX_independence_wave_factory_security_inspector
+			allowed = { is_independence_wave_ajx_package = yes }
+			visible = { has_country_flag = independence_wave_iw_010_setup_complete }
+			available = { has_country_flag = independence_wave_iw_010_setup_complete }
+			traits = { independence_wave_trait_factory_security_inspector }
+			cost = constant:independence_wave_nwe_advisor_cost.strategic
+			ai_will_do = {
+				factor = constant:independence_wave_nwe_advisor_ai.base
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.urgent NOT = { has_country_flag = independence_wave_ajx_factory_security_integrated } }
+				modifier = { factor = constant:independence_wave_nwe_advisor_ai.preferred has_country_flag = independence_wave_ajx_neutral_commission_government }
+			}
+			on_add = { owner = { set_country_flag = independence_wave_ajx_factory_security_inspector_active } }
+			on_remove = { owner = { clr_country_flag = independence_wave_ajx_factory_security_inspector_active } }
+		}
+	}
+}

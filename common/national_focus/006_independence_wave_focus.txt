@@ -11,7 +11,8 @@
 #
 # Full-tree lanes:
 # - survival and state construction
-# - six package-gated government settlements
+# - seven package-gated government settlements, including the Saar's distinct
+#   municipal neutral commission
 # - economy and regional infrastructure
 # - army and researched military identity
 # - diplomacy, recognition, and patrons
@@ -1189,6 +1190,63 @@ focus_tree = {
 		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
 	}
 
+	# IW-010 only: a civilian municipal neutral commission. This is a seventh
+	# government settlement, not a traditional-restoration or military route.
+	focus = {
+		id = independence_wave_ajx_appoint_neutral_commission_focus
+		icon = GFX_goal_independence_wave_ajx_neutral_commission
+		prerequisite = { focus = independence_wave_complete_founding_settlement }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders }
+		x = 87
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_ajx_package = yes has_country_flag = independence_wave_ajx_neutral_commission_route_available }
+		available = { can_lock_independence_wave_ajx_neutral_commission_route = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_appoint_neutral_commission_tt hidden_effect = { independence_wave_ajx_focus_lock_neutral_commission_route = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_severe_instability = yes } }
+	}
+
+	focus = {
+		id = independence_wave_ajx_codify_municipal_neutrality_focus
+		icon = GFX_goal_independence_wave_recognition_diplomacy
+		prerequisite = { focus = independence_wave_ajx_appoint_neutral_commission_focus }
+		x = 86
+		y = 5
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_independence_wave_ajx_neutral_commission_route = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_codify_municipal_neutrality_tt hidden_effect = { independence_wave_ajx_focus_codify_municipal_neutrality = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_bind_security_to_commission_focus
+		icon = GFX_goal_independence_wave_army_integration
+		prerequisite = { focus = independence_wave_ajx_appoint_neutral_commission_focus }
+		x = 88
+		y = 5
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		available = { has_independence_wave_ajx_neutral_commission_route = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_bind_security_to_commission_tt hidden_effect = { independence_wave_ajx_focus_bind_security_to_commission = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_entrench_neutral_commission_focus
+		icon = GFX_goal_independence_wave_founding_administration
+		prerequisite = { focus = independence_wave_ajx_codify_municipal_neutrality_focus }
+		prerequisite = { focus = independence_wave_ajx_bind_security_to_commission_focus }
+		x = 87
+		y = 6
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_independence_wave_ajx_neutral_commission_route = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_entrench_neutral_commission_tt hidden_effect = { independence_wave_ajx_focus_entrench_neutral_commission = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
 	# -----------------------------------------------------------------------
 	# Former-host settlement. Every living-host path is exclusive and writes
 	# through the shared bilateral ledger. A collapsed host has its own branch.
@@ -2027,6 +2085,164 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		available = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_network_member }
 		completion_reward = { custom_effect_tooltip = independence_wave_wls_convene_celtic_council_tt hidden_effect = { independence_wave_wls_focus_convene_celtic_council = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	# -----------------------------------------------------------------------
+	# IW-010 Saar: survival of the one-state coal and rail system, civilian
+	# control of industrial security, cross-border diplomacy, host accounts,
+	# and an explicit FORM-04 carrier delegation.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_ajx_keep_mines_breathing_focus
+		icon = GFX_goal_independence_wave_infrastructure_authority
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 82
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_ajx_package = yes }
+		available = { is_independence_wave_ajx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_keep_mines_breathing_tt hidden_effect = { independence_wave_ajx_focus_keep_mines_breathing = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_ajx_charter_coal_rail_authority_focus
+		icon = GFX_goal_independence_wave_infrastructure_authority
+		prerequisite = { focus = independence_wave_ajx_keep_mines_breathing_focus }
+		x = 81
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available = { is_independence_wave_ajx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_charter_coal_rail_authority_tt hidden_effect = { independence_wave_ajx_focus_charter_coal_rail_authority = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_screen_industrial_security_companies_focus
+		icon = GFX_goal_independence_wave_army_integration
+		prerequisite = { focus = independence_wave_ajx_keep_mines_breathing_focus }
+		x = 83
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_ajx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_screen_industrial_security_companies_tt hidden_effect = { independence_wave_ajx_focus_screen_security_companies = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_open_cross_border_trade_desk_focus
+		icon = GFX_goal_independence_wave_recognition_diplomacy
+		prerequisite = { focus = independence_wave_ajx_charter_coal_rail_authority_focus }
+		x = 81
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available = { is_independence_wave_ajx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_open_cross_border_trade_desk_tt hidden_effect = { independence_wave_ajx_focus_open_cross_border_trade_desk = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_settle_saar_accounts_focus
+		icon = GFX_goal_independence_wave_former_host_settlement
+		prerequisite = { focus = independence_wave_ajx_screen_industrial_security_companies_focus }
+		x = 83
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_ajx_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_settle_saar_accounts_tt hidden_effect = { independence_wave_ajx_focus_settle_saar_accounts = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_ajx_send_rhenish_league_delegation_focus
+		icon = GFX_goal_independence_wave_regional_formable
+		prerequisite = { focus = independence_wave_ajx_open_cross_border_trade_desk_focus }
+		prerequisite = { focus = independence_wave_ajx_settle_saar_accounts_focus }
+		x = 82
+		y = 4
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_independence_wave_ajx_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_ajx_send_rhenish_league_delegation_tt hidden_effect = { independence_wave_ajx_focus_send_rhenish_league_delegation = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	# -----------------------------------------------------------------------
+	# IW-004 Brittany: state-14 port administration, Breton and Gallo public
+	# services, a joint coastal command, French accounts, and FORM-01 alone.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_bri_charter_ports_fisheries_focus
+		icon = GFX_goal_independence_wave_infrastructure_authority
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 86
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_bri_package = yes }
+		available = { is_independence_wave_bri_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bri_charter_ports_fisheries_tt hidden_effect = { independence_wave_bri_focus_charter_ports_fisheries = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_bri_establish_breton_gallo_services_focus
+		icon = GFX_goal_independence_wave_founding_administration
+		prerequisite = { focus = independence_wave_bri_charter_ports_fisheries_focus }
+		x = 85
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bri_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bri_establish_breton_gallo_services_tt hidden_effect = { independence_wave_bri_focus_establish_breton_gallo_services = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_bri_integrate_sailors_guards_focus
+		icon = GFX_goal_independence_wave_army_integration
+		prerequisite = { focus = independence_wave_bri_charter_ports_fisheries_focus }
+		x = 87
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_bri_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bri_integrate_sailors_guards_tt hidden_effect = { independence_wave_bri_focus_integrate_sailors_guards = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_bri_settle_french_accounts_focus
+		icon = GFX_goal_independence_wave_former_host_settlement
+		prerequisite = { focus = independence_wave_bri_establish_breton_gallo_services_focus }
+		prerequisite = { focus = independence_wave_bri_integrate_sailors_guards_focus }
+		x = 86
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bri_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bri_settle_french_accounts_tt hidden_effect = { independence_wave_bri_focus_settle_french_accounts = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_bri_convene_celtic_delegation_focus
+		icon = GFX_goal_independence_wave_regional_formable
+		prerequisite = { focus = independence_wave_bri_settle_french_accounts_focus }
+		x = 86
+		y = 4
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_bri_convene_celtic_delegation_tt hidden_effect = { independence_wave_bri_focus_convene_celtic_delegation = yes } }
 		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
 	}
 

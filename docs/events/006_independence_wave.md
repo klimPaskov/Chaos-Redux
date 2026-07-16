@@ -85,9 +85,32 @@ The mechanics foundation currently defines visible starting, mitigation, mature,
 
 Fourteen regional identity ideas provide the base overlay. Package-specific identity progression and route institutions are implemented by the focus/package tranches and must not be replaced with a generic political identity.
 
+## IW-010 Saar package
+
+AJX uses state `42`, the industrial-security force profile, a protected dynamic
+former-host remnant, and the shared `RG-RHINE-SAAR` reservation with IW-008 RHI.
+The reservation prevents both packages from being selected in one incident,
+but a later repeatable wave may release the other country. Its
+four permanent routes are constitutional, popular/labor, patron-client, and a
+distinct civilian Municipal Neutral Commission. Industrial Continuity,
+Neutrality Credibility, and a Municipal Commission versus Industrial Security
+power struggle drive its mission, decisions, ideas, focus branch, and AI.
+
+The package supplies runtime setup/final-validation/cleanup adapters and exact
+tag identity, but its automatic-pool and SCN-008 package preflights remain a
+separate readiness decision. The FORM-04 identity, consent, rollback,
+integration, autonomous-member, and military-settlement adapters passed their
+independent operational audit; that formable certification does not by itself
+open AJX as a release candidate. Later-wave AJX/RHI coexistence supports the
+approved two-founder Rhenish League direction. The full package reference is
+`docs/006_independence_wave_saar_package.md`.
+
 ## Asset wiring
 
-Runtime sprites are registered in `interface/006_independence_wave.gfx`. The idea pictures used by the mechanics foundation are:
+Runtime sprites are registered in `interface/006_independence_wave.gfx` and
+regional portrait files such as
+`interface/006_independence_wave_region_01_portraits.gfx`. The idea pictures
+used by the mechanics foundation are:
 
 - `independence_wave_improvised_government`;
 - `independence_wave_unrecognized_state`;
@@ -126,8 +149,10 @@ six idea icons, six decision icons, and charter-convention report scene are the
 dedicated FORM-03 package recorded under
 `docs/assets/006_independence_wave/low_countries_form03_progression/`.
 Progression attestation is restored after the independent operational and
-promotion audits. The AFX and AGX automatic/scenario package wrappers remain a
-separate preflight gate until their package-level release tests pass.
+promotion audits. Commit `2912e0a46` promotes the exact AFX and AGX
+automatic/scenario wrappers; live host, anchor, reservation, Event 5 collision,
+and transaction preflight checks still apply. The promotion evidence is static
+and does not claim an in-engine release execution.
 
 ## Implementation surfaces
 
