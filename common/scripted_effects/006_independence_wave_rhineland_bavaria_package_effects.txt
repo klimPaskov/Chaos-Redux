@@ -182,6 +182,24 @@ independence_wave_rhine_bavaria_apply_project_failure = {
 	independence_wave_decision_apply_country_deltas = yes
 }
 
+# Inputs: temporary package-value delta plus the five shared country-value
+# deltas. Event options set every input before calling one of these adapters.
+independence_wave_apply_rhi_incident_deltas = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes }
+		independence_wave_change_rhi_corridor_authority = yes
+		independence_wave_decision_apply_country_deltas = yes
+	}
+}
+
+independence_wave_apply_bay_incident_deltas = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes }
+		independence_wave_change_bay_civic_security = yes
+		independence_wave_decision_apply_country_deltas = yes
+	}
+}
+
 independence_wave_rhine_bavaria_settle_former_host_ledgers = {
 	if = {
 		limit = { has_independence_wave_living_former_host = yes }
@@ -324,13 +342,13 @@ independence_wave_restore_rhi_bay_vanilla_portraits = {
 	if = {
 		limit = { original_tag = RHI has_character = RHI_josef_friedrich_matthes }
 		RHI_josef_friedrich_matthes = {
-			set_portraits = { civilian = { large = GFX_portrait_RHI_josef_friedrich_matthes } }
+			set_portraits = { civilian = { large = GFX_portrait_RHI_josef_matthes } }
 		}
 	}
 	else_if = {
 		limit = { original_tag = BAY has_character = BAY_rupprecht_of_bavaria }
 		BAY_rupprecht_of_bavaria = {
-			set_portraits = { civilian = { large = GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria } }
+			set_portraits = { civilian = { large = GFX_portrait_BAY_rupprecht_of_bavaria } }
 		}
 	}
 }
@@ -432,6 +450,7 @@ independence_wave_install_rhi_constitutional_government = {
 		independence_wave_remove_rhi_route_ideas = yes
 		add_ideas = rhi_constitutional_river_compact
 		set_country_flag = independence_wave_rhi_constitutional_government
+		independence_wave_schedule_rhi_route_incident = yes
 	}
 }
 
@@ -449,6 +468,7 @@ independence_wave_install_rhi_labor_government = {
 		independence_wave_remove_rhi_route_ideas = yes
 		add_ideas = rhi_workers_rhine_charter
 		set_country_flag = independence_wave_rhi_labor_government
+		independence_wave_schedule_rhi_route_incident = yes
 	}
 }
 
@@ -462,6 +482,7 @@ independence_wave_install_rhi_emergency_government = {
 		independence_wave_remove_rhi_route_ideas = yes
 		add_ideas = rhi_emergency_corridor_command
 		set_country_flag = independence_wave_rhi_emergency_government
+		independence_wave_schedule_rhi_route_incident = yes
 	}
 }
 
@@ -475,6 +496,7 @@ independence_wave_install_rhi_patron_government = {
 		independence_wave_remove_rhi_route_ideas = yes
 		add_ideas = rhi_patron_transit_mandate
 		set_country_flag = independence_wave_rhi_patron_government
+		independence_wave_schedule_rhi_route_incident = yes
 	}
 }
 
@@ -488,6 +510,7 @@ independence_wave_install_bay_constitutional_government = {
 		independence_wave_remove_bay_route_ideas = yes
 		add_ideas = bay_constitutional_state_compact
 		set_country_flag = independence_wave_bay_constitutional_government
+		independence_wave_schedule_bay_route_incident = yes
 	}
 }
 
@@ -501,6 +524,7 @@ independence_wave_install_bay_labor_government = {
 		independence_wave_remove_bay_route_ideas = yes
 		add_ideas = bay_workers_district_charter
 		set_country_flag = independence_wave_bay_labor_government
+		independence_wave_schedule_bay_route_incident = yes
 	}
 }
 
@@ -518,6 +542,7 @@ independence_wave_install_bay_traditional_government = {
 		independence_wave_remove_bay_route_ideas = yes
 		add_ideas = bay_restoration_court_settlement
 		set_country_flag = independence_wave_bay_traditional_government
+		independence_wave_schedule_bay_route_incident = yes
 	}
 }
 
@@ -531,6 +556,351 @@ independence_wave_install_bay_emergency_government = {
 		independence_wave_remove_bay_route_ideas = yes
 		add_ideas = bay_emergency_mountain_guardians
 		set_country_flag = independence_wave_bay_emergency_government
+		independence_wave_schedule_bay_route_incident = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Level 2 package focus rewards
+# ---------------------------------------------------------------------------
+
+independence_wave_rhi_focus_establish_corridor_authority = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_focus_corridor_authority_chartered } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		independence_wave_focus_reward_founding_step = yes
+		set_country_flag = independence_wave_rhi_focus_corridor_authority_chartered
+	}
+}
+
+independence_wave_rhi_focus_unify_rail_dispatch = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_focus_rail_dispatch_unified } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_building_construction = { type = infrastructure level = constant:independence_wave_focus_reward.building_level instant_build = yes }
+			}
+		}
+		add_tech_bonus = {
+			name = independence_wave_rhi_rail_industry_bonus
+			bonus = constant:independence_wave_focus_reward.technology_bonus
+			uses = constant:independence_wave_focus_reward.technology_uses
+			category = industry
+		}
+		independence_wave_focus_reward_administration = yes
+		set_country_flag = independence_wave_rhi_focus_rail_dispatch_unified
+	}
+}
+
+independence_wave_rhi_focus_arm_customs_guard = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_focus_customs_guard_armed } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		army_experience = constant:independence_wave_focus_reward.army_experience
+		add_command_power = constant:independence_wave_focus_reward.command_power
+		independence_wave_focus_reward_security_reform = yes
+		set_country_flag = independence_wave_rhi_focus_customs_guard_armed
+	}
+}
+
+independence_wave_rhi_focus_secure_industrial_belt = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_focus_industrial_belt_secured } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_extra_state_shared_building_slots = constant:independence_wave_focus_reward.building_level
+				add_building_construction = { type = industrial_complex level = constant:independence_wave_focus_reward.building_level instant_build = yes }
+			}
+		}
+		independence_wave_focus_reward_administration = yes
+		set_country_flag = independence_wave_rhi_focus_industrial_belt_secured
+	}
+}
+
+independence_wave_rhi_focus_ratify_host_transit_compact = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_rhi_focus_host_transit_compact } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		independence_wave_rhine_bavaria_settle_former_host_ledgers = yes
+		set_temp_variable = { independence_wave_focus_legitimacy_delta = constant:independence_wave_value.minor_gain }
+		set_temp_variable = { independence_wave_focus_recognition_delta = constant:independence_wave_value.standard_gain }
+		set_temp_variable = { independence_wave_focus_capacity_delta = constant:independence_wave_value.minor_gain }
+		set_temp_variable = { independence_wave_focus_security_delta = constant:independence_wave_value.minor_loss }
+		set_temp_variable = { independence_wave_focus_instability_delta = constant:independence_wave_value.minor_loss }
+		independence_wave_focus_apply_value_bundle = yes
+		add_war_support = constant:independence_wave_rhine_bavaria_focus.war_support_loss
+		set_country_flag = independence_wave_rhi_focus_host_transit_compact
+	}
+}
+
+independence_wave_rhi_focus_proclaim_neutral_corridor = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes NOT = { has_country_flag = independence_wave_rhi_focus_neutral_corridor } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		set_temp_variable = { independence_wave_focus_legitimacy_delta = constant:independence_wave_value.minor_gain }
+		set_temp_variable = { independence_wave_focus_recognition_delta = constant:independence_wave_value.minor_loss }
+		set_temp_variable = { independence_wave_focus_capacity_delta = constant:independence_wave_value.minor_gain }
+		set_temp_variable = { independence_wave_focus_security_delta = constant:independence_wave_value.standard_gain }
+		set_temp_variable = { independence_wave_focus_instability_delta = constant:independence_wave_value.minor_loss }
+		independence_wave_focus_apply_value_bundle = yes
+		add_stability = constant:independence_wave_focus_reward.stability_support
+		set_country_flag = independence_wave_rhi_focus_neutral_corridor
+	}
+}
+
+independence_wave_rhi_focus_charter_network_transit_office = {
+	if = {
+		limit = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_network_member NOT = { has_country_flag = independence_wave_rhi_focus_network_transit_office } }
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_value.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+		set_country_flag = independence_wave_rhi_focus_network_transit_office
+	}
+}
+
+independence_wave_rhi_focus_authorize_form04_delegation = {
+	if = {
+		limit = {
+			is_independence_wave_rhi_package = yes
+			has_country_flag = independence_wave_rhi_form04_candidate
+			check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.rhine_federation }
+			has_country_flag = independence_wave_rhi_rhine_congress_complete
+			NOT = { has_country_flag = independence_wave_rhi_form04_delegation_ready }
+		}
+		set_temp_variable = { independence_wave_rhi_authority_delta = constant:independence_wave_value.minor_gain }
+		independence_wave_change_rhi_corridor_authority = yes
+		set_country_flag = independence_wave_rhi_form04_delegation_ready
+		set_country_flag = independence_wave_unlock_formable_discovery
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+independence_wave_bay_focus_broker_civic_settlement = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_focus_civic_settlement_brokered } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minor_gain }
+		independence_wave_change_bay_civic_security = yes
+		independence_wave_focus_reward_founding_step = yes
+		set_country_flag = independence_wave_bay_focus_civic_settlement_brokered
+	}
+}
+
+independence_wave_bay_focus_reconcile_landesbank_accounts = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_focus_landesbank_reconciled } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_bay_civic_security = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_extra_state_shared_building_slots = constant:independence_wave_focus_reward.building_level
+				add_building_construction = { type = industrial_complex level = constant:independence_wave_focus_reward.building_level instant_build = yes }
+			}
+		}
+		add_tech_bonus = {
+			name = independence_wave_bay_finance_industry_bonus
+			bonus = constant:independence_wave_focus_reward.technology_bonus
+			uses = constant:independence_wave_focus_reward.technology_uses
+			category = industry
+		}
+		independence_wave_focus_reward_administration = yes
+		set_country_flag = independence_wave_bay_focus_landesbank_reconciled
+	}
+}
+
+independence_wave_bay_focus_bind_rail_and_pass_authorities = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_focus_rail_pass_authority } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+		independence_wave_change_bay_civic_security = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_building_construction = { type = infrastructure level = constant:independence_wave_focus_reward.building_level instant_build = yes }
+			}
+		}
+		army_experience = constant:independence_wave_focus_reward.army_experience
+		add_command_power = constant:independence_wave_focus_reward.command_power
+		independence_wave_focus_reward_security_reform = yes
+		set_country_flag = independence_wave_bay_focus_rail_pass_authority
+	}
+}
+
+independence_wave_bay_focus_seat_landtag_and_court = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_focus_landtag_court_compact } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss }
+		independence_wave_change_bay_civic_security = yes
+		add_stability = constant:independence_wave_focus_reward.stability_support
+		add_war_support = constant:independence_wave_rhine_bavaria_focus.war_support_loss
+		independence_wave_focus_reward_public_settlement = yes
+		set_country_flag = independence_wave_bay_focus_landtag_court_compact
+	}
+}
+
+independence_wave_bay_focus_entrust_mountain_guardians = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes NOT = { has_country_flag = independence_wave_bay_focus_mountain_guardians_mandate } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_loss }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.standard_gain }
+		independence_wave_change_bay_civic_security = yes
+		add_stability = constant:independence_wave_rhine_bavaria_focus.stability_loss
+		add_war_support = constant:independence_wave_focus_reward.war_support
+		independence_wave_focus_reward_security_reform = yes
+		set_country_flag = independence_wave_bay_focus_mountain_guardians_mandate
+	}
+}
+
+independence_wave_bay_focus_open_alpine_network_office = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_network_member NOT = { has_country_flag = independence_wave_bay_focus_alpine_network_office } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_value.minor_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minor_gain }
+		independence_wave_change_bay_civic_security = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+		set_country_flag = independence_wave_bay_focus_alpine_network_office
+	}
+}
+
+independence_wave_bay_focus_convene_south_german_settlement = {
+	if = {
+		limit = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_bay_south_german_estates_settlement NOT = { has_country_flag = independence_wave_bay_focus_south_german_settlement_mandate } }
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		independence_wave_change_bay_civic_security = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+		set_country_flag = independence_wave_bay_focus_south_german_settlement_mandate
+	}
+}
+
+independence_wave_bay_focus_ratify_german_host_compact = {
+	if = {
+		limit = {
+			is_independence_wave_bay_package = yes
+			has_independence_wave_living_former_host = yes
+			has_country_flag = independence_wave_bay_no_competing_german_claim
+			NOT = { has_country_flag = independence_wave_bay_south_german_choice }
+			NOT = { has_country_flag = independence_wave_bay_focus_german_host_compact }
+		}
+		set_temp_variable = { independence_wave_bay_civic_delta = constant:independence_wave_rhine_bavaria_pressure.minor_gain }
+		set_temp_variable = { independence_wave_bay_security_delta = constant:independence_wave_value.minor_gain }
+		independence_wave_change_bay_civic_security = yes
+		independence_wave_rhine_bavaria_settle_former_host_ledgers = yes
+		independence_wave_focus_reward_public_settlement = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+		set_country_flag = independence_wave_bay_focus_german_host_compact
+		independence_wave_schedule_bay_host_compact_incident = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Player-facing country incident scheduling
+# ---------------------------------------------------------------------------
+
+independence_wave_schedule_rhi_founding_incident = {
+	if = {
+		limit = {
+			is_independence_wave_rhi_package = yes
+			NOT = { has_country_flag = independence_wave_rhi_founding_incident_scheduled }
+		}
+		set_country_flag = independence_wave_rhi_founding_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.11 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_rhi_route_incident = {
+	if = {
+		limit = {
+			is_independence_wave_rhi_package = yes
+			has_independence_wave_rhi_route_government = yes
+			NOT = { has_country_flag = independence_wave_rhi_route_incident_scheduled }
+		}
+		set_country_flag = independence_wave_rhi_route_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.12 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_rhi_congress_incident = {
+	if = {
+		limit = {
+			is_independence_wave_rhi_package = yes
+			has_country_flag = independence_wave_rhi_rhine_congress_complete
+			NOT = { has_country_flag = independence_wave_rhi_congress_incident_scheduled }
+		}
+		set_country_flag = independence_wave_rhi_congress_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.13 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_bay_founding_incident = {
+	if = {
+		limit = {
+			is_independence_wave_bay_package = yes
+			NOT = { has_country_flag = independence_wave_bay_founding_incident_scheduled }
+		}
+		set_country_flag = independence_wave_bay_founding_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.14 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_bay_route_incident = {
+	if = {
+		limit = {
+			is_independence_wave_bay_package = yes
+			has_independence_wave_bay_route_government = yes
+			NOT = { has_country_flag = independence_wave_bay_route_incident_scheduled }
+		}
+		set_country_flag = independence_wave_bay_route_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.15 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_bay_estates_incident = {
+	if = {
+		limit = {
+			is_independence_wave_bay_package = yes
+			has_country_flag = independence_wave_bay_south_german_estates_settlement
+			NOT = { has_country_flag = independence_wave_bay_estates_incident_scheduled }
+		}
+		set_country_flag = independence_wave_bay_estates_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.16 days = independence_wave_rhine_bavaria_incident_delay }
+	}
+}
+
+independence_wave_schedule_bay_host_compact_incident = {
+	if = {
+		limit = {
+			is_independence_wave_bay_package = yes
+			has_country_flag = independence_wave_bay_focus_german_host_compact
+			NOT = { has_country_flag = independence_wave_bay_host_compact_incident_scheduled }
+		}
+		set_country_flag = independence_wave_bay_host_compact_incident_scheduled
+		set_temp_variable = { independence_wave_rhine_bavaria_incident_delay = constant:independence_wave_rhine_bavaria_duration.incident_delay }
+		country_event = { id = chaosx.nr6.17 days = independence_wave_rhine_bavaria_incident_delay }
 	}
 }
 
@@ -579,6 +949,7 @@ independence_wave_setup_iw_008_rhineland = {
 			independence_wave_apply_dynamic_starting_force = yes
 		}
 		set_country_flag = independence_wave_rhi_ai_profile
+		independence_wave_schedule_rhi_founding_incident = yes
 		if = {
 			limit = { has_prepared_independence_wave_iw_008_package_setup = yes }
 			activate_decision = declare_germany_reunified_decision
@@ -626,15 +997,21 @@ independence_wave_setup_iw_009_bavaria = {
 		clr_country_flag = independence_wave_formable_family_selected
 		clr_country_flag = independence_wave_formable_family_registered
 		set_country_flag = independence_wave_bay_south_german_ambition
-		set_country_flag = independence_wave_bay_german_reunification_preserved
+		set_country_flag = independence_wave_bay_no_competing_german_claim
+		clr_country_flag = independence_wave_bay_german_reunification_choice
+		clr_country_flag = independence_wave_bay_german_reunification_preserved
 		if = {
 			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_bay_command_roster = yes }
 			independence_wave_load_force_package_mapping = yes
 			independence_wave_apply_dynamic_starting_force = yes
 		}
 		set_country_flag = independence_wave_bay_ai_profile
+		independence_wave_schedule_bay_founding_incident = yes
 		if = {
 			limit = { has_prepared_independence_wave_iw_009_package_setup = yes }
+			activate_decision = declare_germany_reunified_decision
+			remove_decision = declare_germany_reunified_decision
+			set_country_flag = independence_wave_bay_german_reunification_closed
 			set_country_flag = independence_wave_iw_009_setup_complete
 			set_country_flag = independence_wave_package_setup_complete
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
@@ -730,6 +1107,26 @@ independence_wave_cleanup_iw_008_rhineland = {
 		clr_country_flag = independence_wave_rhi_customs_administrator_active
 		clr_country_flag = independence_wave_rhi_rail_works_liaison_active
 		clr_country_flag = independence_wave_rhi_river_defense_planner_active
+		clr_country_flag = independence_wave_rhi_focus_corridor_authority_chartered
+		clr_country_flag = independence_wave_rhi_focus_rail_dispatch_unified
+		clr_country_flag = independence_wave_rhi_focus_customs_guard_armed
+		clr_country_flag = independence_wave_rhi_focus_industrial_belt_secured
+		clr_country_flag = independence_wave_rhi_focus_host_transit_compact
+		clr_country_flag = independence_wave_rhi_focus_neutral_corridor
+		clr_country_flag = independence_wave_rhi_focus_network_transit_office
+		clr_country_flag = independence_wave_rhi_form04_delegation_ready
+		clr_country_flag = independence_wave_rhi_founding_incident_scheduled
+		clr_country_flag = independence_wave_rhi_founding_incident_resolved
+		clr_country_flag = independence_wave_rhi_municipal_warrants_preserved
+		clr_country_flag = independence_wave_rhi_unified_gate_command
+		clr_country_flag = independence_wave_rhi_route_incident_scheduled
+		clr_country_flag = independence_wave_rhi_route_incident_resolved
+		clr_country_flag = independence_wave_rhi_published_review_statute
+		clr_country_flag = independence_wave_rhi_decree_authority
+		clr_country_flag = independence_wave_rhi_congress_incident_scheduled
+		clr_country_flag = independence_wave_rhi_congress_incident_resolved
+		clr_country_flag = independence_wave_rhi_municipal_federation_veto
+		clr_country_flag = independence_wave_rhi_binding_transit_mandate
 		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
 		clr_country_flag = independence_wave_iw_008_setup_complete
 		clr_country_flag = independence_wave_iw_008_lifecycle_initialized
@@ -740,10 +1137,7 @@ independence_wave_cleanup_iw_008_rhineland = {
 independence_wave_cleanup_iw_009_bavaria = {
 	if = {
 		limit = { original_tag = BAY check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_009 } }
-		if = {
-			limit = { has_country_flag = independence_wave_bay_south_german_choice }
-			activate_decision = declare_germany_reunified_decision
-		}
+		activate_decision = declare_germany_reunified_decision
 		remove_mission = independence_wave_bay_hold_the_state_together
 		remove_decision = independence_wave_bay_reconcile_district_treasuries
 		remove_decision = independence_wave_bay_organize_mountain_passes
@@ -755,7 +1149,6 @@ independence_wave_cleanup_iw_009_bavaria = {
 		remove_decision = independence_wave_bay_establish_mountain_guardians
 		remove_decision = independence_wave_bay_codify_durable_independence
 		remove_decision = independence_wave_bay_choose_south_german_restoration
-		remove_decision = independence_wave_bay_keep_german_reunification_claim
 		remove_decision = independence_wave_bay_convene_south_german_estates
 		remove_decision = independence_wave_bay_negotiate_alpine_supply_accord
 		remove_decision = independence_wave_bay_seize_south_german_protectorates
@@ -783,11 +1176,37 @@ independence_wave_cleanup_iw_009_bavaria = {
 		clr_country_flag = independence_wave_bay_alpine_supply_accord
 		clr_country_flag = independence_wave_bay_high_chaos_protectorates
 		clr_country_flag = independence_wave_bay_south_german_ambition
+		clr_country_flag = independence_wave_bay_no_competing_german_claim
+		clr_country_flag = independence_wave_bay_german_reunification_closed
 		clr_country_flag = independence_wave_bay_german_reunification_preserved
 		clr_country_flag = independence_wave_bay_ai_profile
 		clr_country_flag = independence_wave_bay_finance_administrator_active
 		clr_country_flag = independence_wave_bay_estates_liaison_active
 		clr_country_flag = independence_wave_bay_alpine_supply_inspector_active
+		clr_country_flag = independence_wave_bay_focus_civic_settlement_brokered
+		clr_country_flag = independence_wave_bay_focus_landesbank_reconciled
+		clr_country_flag = independence_wave_bay_focus_rail_pass_authority
+		clr_country_flag = independence_wave_bay_focus_landtag_court_compact
+		clr_country_flag = independence_wave_bay_focus_mountain_guardians_mandate
+		clr_country_flag = independence_wave_bay_focus_alpine_network_office
+		clr_country_flag = independence_wave_bay_focus_south_german_settlement_mandate
+		clr_country_flag = independence_wave_bay_focus_german_host_compact
+		clr_country_flag = independence_wave_bay_founding_incident_scheduled
+		clr_country_flag = independence_wave_bay_founding_incident_resolved
+		clr_country_flag = independence_wave_bay_district_seal_inventories
+		clr_country_flag = independence_wave_bay_guardian_treasury_commissions
+		clr_country_flag = independence_wave_bay_route_incident_scheduled
+		clr_country_flag = independence_wave_bay_route_incident_resolved
+		clr_country_flag = independence_wave_bay_published_district_compact
+		clr_country_flag = independence_wave_bay_central_emergency_apparatus
+		clr_country_flag = independence_wave_bay_estates_incident_scheduled
+		clr_country_flag = independence_wave_bay_estates_incident_resolved
+		clr_country_flag = independence_wave_bay_consenting_estates_compact
+		clr_country_flag = independence_wave_bay_executive_regional_guarantees
+		clr_country_flag = independence_wave_bay_host_compact_incident_scheduled
+		clr_country_flag = independence_wave_bay_host_compact_incident_resolved
+		clr_country_flag = independence_wave_bay_reciprocal_district_offices
+		clr_country_flag = independence_wave_bay_narrow_military_liaison
 		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
 		clr_country_flag = independence_wave_iw_009_setup_complete
 		clr_country_flag = independence_wave_iw_009_lifecycle_initialized

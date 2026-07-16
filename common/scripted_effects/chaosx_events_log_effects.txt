@@ -215,6 +215,16 @@ events_log_set_default_actor_for_current_event = {
     }
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			has_global_flag = independence_wave_event_log_actor_ready
+			has_event_target = independence_wave_latest_actor
+			event_target:independence_wave_latest_actor = { exists = yes }
+		}
+		event_target:independence_wave_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = constant:independence_wave_plan.loop_increment }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = 7 }
 			has_event_target = fury_latest_actor
 		}
@@ -484,6 +494,10 @@ record_events_log_history_entry = {
 				brilliant_scientist_finalize_pending_prefire_opening = yes
 			}
 		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:independence_wave_event.id } }
+		clr_global_flag = independence_wave_event_log_actor_ready
 	}
     every_country = {
         limit = {

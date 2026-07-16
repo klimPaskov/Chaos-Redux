@@ -914,6 +914,30 @@ independence_wave_commit_wave_history = {
 		max = constant:liberation_release_limit.maximum_event6_packages
 	}
 	set_variable = { global.independence_wave_presentation_date = global.date }
+	clear_global_event_target = independence_wave_latest_actor
+	if = {
+		limit = {
+			check_variable = { global.independence_wave_plan_selected_count > constant:independence_wave_planner.no_candidates }
+			check_variable = {
+				var = global.independence_wave_plan_country_row_indices^num
+				value = global.independence_wave_plan_selected_count
+				compare = equals
+			}
+		}
+		set_temp_variable = { independence_wave_history_actor_index = constant:independence_wave_plan.first_array_index }
+		set_temp_variable = {
+			independence_wave_history_actor_country_row = global.independence_wave_plan_country_row_indices^independence_wave_history_actor_index
+		}
+		var:global.liberation_plan_countries^independence_wave_history_actor_country_row = {
+			if = {
+				limit = {
+					exists = yes
+					is_independence_wave_active_country = yes
+				}
+				save_global_event_target_as = independence_wave_latest_actor
+			}
+		}
+	}
 	independence_wave_commit_previous_wave_memory = yes
 }
 

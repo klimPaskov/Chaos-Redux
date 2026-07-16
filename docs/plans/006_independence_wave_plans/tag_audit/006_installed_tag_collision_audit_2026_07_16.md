@@ -23,8 +23,8 @@ Audit date: 2026-07-16
 - Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **0**.
 - External and vanilla country-tag definitions parsed: **7981**.
 - External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69484**.
-- Other Chaos Redux country-tag definitions parsed: **48**.
-- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **962**.
+- Other Chaos Redux country-tag definitions parsed: **49**.
+- Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **963**.
 - Reserved-tag collisions: **0**.
 - Packages with exact or state-word-normalized vanilla identity matches requiring reuse review: **0**.
 - Packages with fuzzy identity matches requiring manual review: **16**.
@@ -182,8 +182,8 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Parsed vanilla tag-surface inventory SHA-256: `57dfbe267a32983680c3fa385cce69e7e7a9cd52af06d8ec8bf8bb6508004d09`
 - Parsed Workshop tag-surface inventory SHA-256: `c4e0f8f99a79be4459ad4a8c0068c9c4bf6319c594c2d8a0cc6c756a65035fb3`
 - Parsed sibling-mod tag-surface inventory SHA-256: `4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945`
-- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `b882bca8405b14f23aa6dcb4eb534ff9b3042c1bd4733fbd082e7a7edf6bead9`
+- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `cbf71bad63cfade6f8f4f3f9b02c39c83eabce4261723869b90bd9aaa7b7145d`
 - ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `be98ee6122a87938c3bf0622ba1ac82d3af3db7ab44a04619ef7d0f05a9deea0`
-- Package-origin wrapper source SHA-256: `64a4655215ca7241ba2b732fcafdd1a959d38f64c9427020265988ad86507b39`
+- Runtime attestation source SHA-256: `58936aaf298fa38a1ebb5e99706d0ff81c52334eb4342de50f8ed42ab12439f1`
+- Package-origin wrapper source SHA-256: `bc1470ff76efeddee1f99292fdc4fdff4b42e22f561e991ad17f6d387bc9f64b`
 - Scenario block source SHA-256: `d9a2e870945c4bab459f8d3eb243bb014e41af3a328d28204a175a4794f10823`

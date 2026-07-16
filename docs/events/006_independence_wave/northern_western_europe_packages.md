@@ -137,7 +137,7 @@ Scotland and Wales retain their installed vanilla flag triplets because these ar
 
 ### Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, complete advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. This promotion does not attest Wallonia, Rhineland, or Bavaria, whose missing Level 2 focus groups keep them fail-closed. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, asset-neutral advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Package-specific readiness remains independent: the later sections record the completed Wallonia, Rhineland, and Bavaria promotions. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
 
@@ -366,6 +366,20 @@ Actions take 75 to 180 days. The emergency pump and rail projects sequentially c
 
 After recognition and stabilization, the Meuse Industrial Conference raises network standing and opens the package's Meuse and Low Countries political identity. It uses the shared strategic cost and takes 300 days.
 
+#### Level 2 Sambre-Meuse lane and incidents
+
+Wallonia's package-specific eight-focus lane begins after the shared capital-administration opening. It charters the Sambre-Meuse authority, binds mines to rails and furnaces, codifies the selected government, integrates the industrial reserve, settles industrial succession, opens the Meuse network office, authorizes the paid conference, and prepares the Low Countries dossier. The lane never substitutes a checklist for the existing projects: the host settlement, network membership, conference payment, 300-day conference timer, and `FORM-03` consent transaction remain binding.
+
+The lane applies concrete costs as well as gains. Constitutional and popular governments trade 5 percent War Support for their public settlement; emergency and patron governments trade 5 percent Stability for stronger command or diplomatic authority. A living-host succession compact requires the paid industrial-ledger project and costs 5 percent War Support. The defense node grants Army Experience and Command Power but creates no formation or stockpile. The industry node adds one anchor-state Infrastructure and a single Industry research bonus.
+
+Three generation-local incidents make the package values and political choices visible:
+
+- `chaosx.nr6.18`, scheduled with prepared founding setup, chooses between municipal review of industrial warrants and binding dispatch authority;
+- `chaosx.nr6.19`, scheduled by any accepted government installation, chooses between published quotas and government quota command; and
+- `chaosx.nr6.20`, scheduled only after the paid Meuse conference completes, chooses between a confederal mandate and a binding industrial directorate.
+
+Every option changes Industrial Continuity plus legitimacy, recognition, capacity, security, and instability. The selected outcomes persist for the generation and cleanup clears every scheduled, resolved, outcome, focus, authorization, and delegation flag. No incident creates troops, grants free equipment, or bypasses route, host, network, league, or formable costs.
+
 ### Frisia, IW-007
 
 #### Political authority and command
@@ -464,14 +478,18 @@ The package uses only the authorized unsuffixed tag flags:
 
 No ideology or cosmetic flag variants are referenced.
 
-#### Reused Event 006 icons
+#### Focus, report, idea, and decision icons
 
-No additional focus, idea, or decision icon files are required by this package layer. It reuses sprites registered in `interface/006_independence_wave.gfx`:
+Wallonia's Level 2 lane uses eight package-specific `94x86` focus icons under `gfx/interface/goals/006_independence_wave/afx/`. Its three generation incidents use distinct `210x176` report cards under `gfx/event_pictures/006_independence_wave/afx/`. The nineteen base, shine, and report sprites are registered in `interface/006_independence_wave_wallonia_frisia_assets.gfx`; every focus and event consumes its exact registered sprite.
+
+The full ImageGen sources, exact prompts, processed PNGs, contact sheets, decoded-equivalence proof, uniqueness results, hashes, manifest, and sprite handoff live under `docs/assets/006_independence_wave/afx_unique_assets_2026_07_16/`. The final package contains eleven separate source compositions and eleven validated runtime DDS files. No shared composition or placeholder substitutes for the country-specific art.
+
+The package continues to reuse the established Event 006 idea and decision sprites registered in `interface/006_independence_wave.gfx`:
 
 - Ideas: `GFX_idea_independence_wave_founding_identity`, `GFX_idea_independence_wave_improvised_government`, `GFX_idea_independence_wave_fragmented_command`, and `GFX_idea_independence_wave_patron_pressure`.
 - Decisions: `GFX_decision_independence_wave_government_actions`, `GFX_decision_independence_wave_army_integration_actions`, `GFX_decision_independence_wave_depot_border_actions`, `GFX_decision_independence_wave_former_host_negotiations`, `GFX_decision_independence_wave_patron_aid`, `GFX_decision_independence_wave_league_votes`, and `GFX_decision_independence_wave_formable_proclamation`.
 
-Reusing the established Event 006 visual language is the intended framework design, not a fallback or placeholder.
+Reusing the established idea and decision language is the intended framework design; the country-specific focus and incident surfaces use their own completed art.
 
 ### Source references consulted
 
@@ -483,7 +501,7 @@ References consulted include vanilla `documentation/effects_documentation.md`, `
 
 - Add later package events that react to a failed industrial-stoppage or waterline mission without bypassing the shared Event 006 evolution system.
 - Let a durable Low Countries league coordinate Meuse rail standards and North Sea flood-response stores through member-scoped decisions.
-- Add package-specific focus modules only if the accepted Event 006 specification promotes either package to signature depth.
+- Preserve Wallonia's Level 2 Sambre-Meuse lane when adding later incidents or regional diplomacy; any expansion must continue to consume the paid projects and shared FORM-03 consent transaction.
 - Add additional commanders or advisors only after a researched roster and portrait plan replaces the current deliberate two-character package scope.
 
 ### Integration status and blockers
@@ -496,14 +514,18 @@ industrial-continuity value; AGX carrier work in state 36 feeds the existing
 waterline and coastal-security values. An absorbed non-carrier package is not
 reinitialized.
 
-The package portrait and flag files remain registered. FORM-03 has a dedicated
-six-focus, six-idea, six-decision icon set and a charter-convention report scene.
+The package portrait and flag files remain registered. Wallonia has eight
+package-specific focus icons and three incident report scenes with complete
+source and runtime evidence. FORM-03 has a dedicated six-focus, six-idea,
+six-decision icon set and a charter-convention report scene.
 BEL, HOL, and LUX member work remains sovereign and never modifies the AFX/AGX
 package identity contract. The audited FORM-03 base and progression
-attestations are restored. Automatic and SCN-008 release readiness remain
-closed only until the separate package-level host-survival, collision, and
-scenario preflight checks pass. No gameplay fallback, placeholder leader,
-generic commander, generic route, or substitute flag is introduced.
+attestations are restored. Wallonia's post-Level-2 audit authorizes the exact
+IW-006 compile-time content attestation and SCN-008 preflight branch. Its live
+wrapper still requires the dormant AFX tag, unique anchor, surviving-host
+remnant, reservation, Event 5 collision, chaos-band, and transaction-preflight
+checks. No gameplay fallback, placeholder leader, generic commander, generic
+route, or substitute flag is introduced.
 
 ---
 
@@ -525,7 +547,7 @@ The bounded dispatcher adapters are:
 - `independence_wave_dispatch_rhineland_bavaria_package_final_validation`
 - `independence_wave_dispatch_rhineland_bavaria_package_cleanup`
 
-The parent Event 006 transaction calls these adapters from its setup, final-validation, and cleanup dispatchers, and its immutable adapter registry recognizes the exact ID/tag pairs for package IDs 8 and 9. Readiness is not stored in dormant vanilla history. Both rows remain absent from the static content-attestation registry until their independent package audits are complete. Rhineland additionally depends on the shared `FORM-04` identity transaction and flag package. Bavaria has a South German restoration ambition and no shared formable dependency.
+The parent Event 006 transaction calls these adapters from its setup, final-validation, and cleanup dispatchers, and its immutable adapter registry recognizes the exact ID/tag pairs for package IDs 8 and 9. Readiness is not stored in dormant vanilla history. Both rows carry exact static content attestations and SCN-008 preflight branches after their independent package audit; runtime admission still requires every dormant-tag, anchor, host-survival, reservation, Event 5 exclusion, chaos-band, and transaction-preflight gate. Rhineland additionally depends on the shared `FORM-04` identity transaction and flag package. Bavaria has a South German restoration ambition and no shared formable dependency.
 
 Each prepared proof checks the exact tag, package ID, region, depth, archetype, anchor, former-host pointer, capital, laws, command roster, full focus assignment, allowed routes, power struggle, ambition policy, force mapping, applied starting force, lifecycle, and AI profile. Both proofs require `independence_wave_radical_sovereignty_route_excluded`, which keeps their accepted route matrices authoritative when Evolution 5 applies Open Sovereignty; other countries retain the shared evolution behavior. The frozen allocation planner owns the shared `RG-RHINE-SAAR` reservation and prevents the RHI and AJX package rows from competing for the same release slot while still allowing the two living states required by `FORM-04` to coexist.
 
@@ -598,7 +620,7 @@ Each route installs one mutually exclusive route spirit. **Codify Durable Rhenis
 
 #### Ambition, formable, league, and high chaos
 
-Rhineland selects the shared `rhine_federation` family (`FORM04`), surveys the federation corridor, and can convene the Rhine Congress. The congress performs the shared preparation transaction once; only a valid prepared result records the package congress and exposes the final proclamation. The selected-family registry owns the separate, synchronized formation commit.
+Rhineland selects the shared `rhine_federation` family (`FORM04`), surveys the federation corridor, and can convene the Rhine Congress. This package congress settles the Rhenish municipal, industrial, customs, and security mandate even when no Saar delegation is yet available, so the country-specific incident sequence and Level 2 branch remain playable on every viable RHI release. It does not prepare or commit `FORM04`. The later shared formation congress independently rechecks the living RHI and AJX founders, connected capitals, territory, carrier delegation, invitation ledger, and consent before the selected-family registry can perform its synchronized formation commit.
 
 The Event 006 package closes the vanilla German reunification decision only after its prepared proof succeeds, preventing the Rhenish FORM04 identity from competing with a second German path. Cleanup reactivates the vanilla decision as part of rollback.
 
@@ -644,7 +666,7 @@ The Rhineland branch contains eight focuses and resolves seven in any one playth
 3. **Secure the Rhine Industrial Belt** requires both parallel projects, adds one Civilian Factory and building slot to the anchor state, and supplies the final 10 Corridor Authority needed to move from the opening value of 25 to the stable threshold of 65 without a free unit package.
 4. **Ratify the Former Host Transit Compact** and **Proclaim the Neutral Rhine Corridor** are mutually exclusive. The compact improves recognition and former-host ledgers at the cost of security and War Support. Neutrality improves domestic security and Stability while reducing recognition.
 5. **Charter the Network Transit Office** requires either diplomatic settlement and active network membership.
-6. **Authorize the Rhine Federation Delegation** requires the exact `FORM-04` family, the RHI carrier flag, and a completed package Rhine Congress. It sets `independence_wave_rhi_form04_delegation_ready` and opens formable discovery. The shared `FORM-04` strict mutation precondition requires this marker for an RHI carrier or the corresponding AJX delegation marker for an AJX carrier before formation can commit.
+6. **Authorize the Rhine Federation Delegation** requires the exact `FORM-04` family, the RHI carrier flag, and a completed package Rhine Congress. It sets `independence_wave_rhi_form04_delegation_ready` and opens formable discovery. The package congress does not stand in for Saar consent or a prepared formation transaction: the shared `FORM-04` strict mutation precondition still requires this marker for an RHI carrier or the corresponding AJX delegation marker for an AJX carrier, plus both valid founders and the complete shared ledger, before formation can commit.
 
 #### Bavaria civic and mountain branch
 
@@ -712,7 +734,7 @@ No new decision icon files are required. The package reuses registered Event 006
 - `GFX_decision_independence_wave_formable_proclamation` -> `gfx/interface/decisions/006_independence_wave/decision_independence_wave_formable_proclamation.dds`
 - `GFX_decision_independence_wave_league_votes` -> `gfx/interface/decisions/006_independence_wave/decision_independence_wave_league_votes.dds`
 
-The Level 2 branches require a distinct visual package before release admission:
+The Level 2 branches use a distinct installed visual package:
 
 - sixteen `94x86` focus icons under `gfx/interface/goals/006_independence_wave/rhineland_bavaria/`, one for every RHI and BAY country focus;
 - eight `64x64` route-institution idea icons under `gfx/interface/ideas/006_independence_wave/rhineland_bavaria/`, one for each accepted government route;
@@ -720,7 +742,7 @@ The Level 2 branches require a distinct visual package before release admission:
 - normal and shine focus sprites, idea sprites, and report sprites in `interface/006_independence_wave_rhineland_bavaria_assets.gfx`; and
 - source masters, processed PNGs, contact sheets, exact prompts, validation, and hashes under `docs/assets/006_independence_wave/rhi_bay_unique_assets_2026_07_16/`.
 
-The incident events already reserve `GFX_report_event_006_rhi_corridor_incidents` and `GFX_report_event_006_bay_state_incidents`. Until the final asset handoff registers those sprites and replaces every shared focus and route-idea picture, both packages remain fail-closed.
+All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The fresh independent gameplay and package audit passed, so the exact compile-time attestations and SCN-008 preflights are live while every runtime gate remains authoritative.
 
 The historical-character portraits are registered in `interface/006_independence_wave.gfx`:
 
@@ -740,11 +762,11 @@ The six gameplay advisor offices carry no custom Event 006 advisor cards or port
 
 ### Readiness boundary
 
-Gameplay, AI, localisation, large and small leader portraits, and advisor dossiers are wired. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. `IW-008` and `IW-009` nevertheless remain fail-closed in automatic and SCN-008 allocation until a fresh independent package audit validates these Level 2 branches and their parent integration. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains a readiness flag through vanilla history.
+Gameplay, AI, localisation, large and small leader portraits, asset-neutral advisor offices, package-specific focus art, route-idea art, and incident scenes are wired. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. A fresh independent static package audit passed both Level 2 branches and closed the RHI package-congress dependency without weakening the shared FORM-04 transaction. `IW-008` and `IW-009` therefore carry exact compile-time content attestations and SCN-008 preflight branches. Their automatic wrappers still fail closed unless the exact dormant tag, unique anchor, host-survival proof, reservation group, Event 5 exclusions, chaos band, and transaction preflight all pass at runtime. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
 
 ### Future plans and suggestions
 
-- Grant `IW-008` or `IW-009` content attestation only after an independent exact-package audit confirms their complete setup, focus, decision, AI, identity, force, cleanup, and collision contracts.
+- Preserve the exact-package admission boundary when either package is expanded: new content must remain origin-gated, cleanup-complete, and compatible with the audited host-survival and Event 5 collision contracts.
 - Give the South German restoration ambition a dedicated regional diplomacy module if a future accepted specification defines its member states and treaty outcomes.
 - Consider dedicated decision art only if a later Event 006 asset pass replaces the current shared icon language across all regional packages.
 

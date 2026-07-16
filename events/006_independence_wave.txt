@@ -9,16 +9,31 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		clr_global_flag = independence_wave_event_log_actor_ready
 		if = {
 			limit = { has_global_flag = independence_wave_joint_presentation_pending }
 			clr_global_flag = independence_wave_joint_presentation_pending
 			set_global_flag = independence_wave_joint_presentation_delivered
+			if = {
+				limit = {
+					has_event_target = independence_wave_latest_actor
+					event_target:independence_wave_latest_actor = { exists = yes }
+				}
+				set_global_flag = independence_wave_event_log_actor_ready
+			}
 			country_event = { id = chaosx.nr6.2 }
 		}
 		else = {
 			independence_wave_prepare_and_execute_standalone_incident = yes
 			if = {
 				limit = { has_global_flag = independence_wave_standalone_incident_committed }
+				if = {
+					limit = {
+						has_event_target = independence_wave_latest_actor
+						event_target:independence_wave_latest_actor = { exists = yes }
+					}
+					set_global_flag = independence_wave_event_log_actor_ready
+				}
 				country_event = { id = chaosx.nr6.2 }
 			}
 		}

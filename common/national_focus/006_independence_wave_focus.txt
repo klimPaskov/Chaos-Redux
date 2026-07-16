@@ -2247,6 +2247,429 @@ focus_tree = {
 	}
 
 	# -----------------------------------------------------------------------
+	# IW-006 Wallonia: Sambre-Meuse continuity, the selected route government,
+	# industrial succession, network diplomacy, and FORM-03 preparation.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_afx_charter_sambre_meuse_authority_focus
+		icon = GFX_goal_independence_wave_afx_sambre_meuse_authority
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 93
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_afx_package = yes }
+		available = { is_independence_wave_afx_package = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_charter_sambre_meuse_authority_tt
+			hidden_effect = { independence_wave_afx_focus_charter_sambre_meuse_authority = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.urgent
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_afx_industrial_continuity = yes } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_bind_mines_rails_furnaces_focus
+		icon = GFX_goal_independence_wave_afx_mines_rails_furnaces
+		prerequisite = { focus = independence_wave_afx_charter_sambre_meuse_authority_focus }
+		x = 93
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_afx_package = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_bind_mines_rails_furnaces_tt
+			hidden_effect = { independence_wave_afx_focus_bind_mines_rails_furnaces = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.urgent
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_afx_industrial_continuity = yes } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_codify_basin_government_focus
+		icon = GFX_goal_independence_wave_afx_basin_government
+		prerequisite = { focus = independence_wave_afx_bind_mines_rails_furnaces_focus }
+		x = 93
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			is_independence_wave_afx_package = yes
+			has_independence_wave_afx_route_government = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_codify_basin_government_tt
+			hidden_effect = { independence_wave_afx_focus_codify_basin_government = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_afx_industrial_continuity = yes } }
+			modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_emergency_military_route = yes has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_integrate_industrial_reserve_focus
+		icon = GFX_goal_independence_wave_afx_industrial_reserve
+		prerequisite = { focus = independence_wave_afx_codify_basin_government_focus }
+		x = 93
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_afx_package = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_integrate_industrial_reserve_tt
+			hidden_effect = { independence_wave_afx_focus_integrate_industrial_reserve = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_settle_industrial_succession_focus
+		icon = GFX_goal_independence_wave_afx_industrial_succession
+		prerequisite = { focus = independence_wave_afx_integrate_industrial_reserve_focus }
+		x = 93
+		y = 5
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			is_independence_wave_afx_package = yes
+			OR = {
+				NOT = { has_independence_wave_living_former_host = yes }
+				has_country_flag = independence_wave_afx_host_ledgers_settled
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_settle_industrial_succession_tt
+			hidden_effect = { independence_wave_afx_focus_settle_industrial_succession = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_living_former_host = yes has_independence_wave_severe_host_threat = yes }
+			modifier = { factor = constant:independence_wave_focus_ai.preferred_factor NOT = { has_independence_wave_living_former_host = yes } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_open_meuse_network_office_focus
+		icon = GFX_goal_independence_wave_afx_meuse_network_office
+		prerequisite = { focus = independence_wave_afx_settle_industrial_succession_focus }
+		x = 93
+		y = 6
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available = {
+			is_independence_wave_afx_package = yes
+			has_country_flag = independence_wave_network_member
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_open_meuse_network_office_tt
+			hidden_effect = { independence_wave_afx_focus_open_meuse_network_office = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_league_member }
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_mandate_meuse_conference_focus
+		icon = GFX_goal_independence_wave_afx_meuse_conference
+		prerequisite = { focus = independence_wave_afx_open_meuse_network_office_focus }
+		x = 93
+		y = 7
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			has_independence_wave_afx_meuse_conference_foundation = yes
+			NOT = { has_country_flag = independence_wave_afx_meuse_conference_authorized }
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_mandate_meuse_conference_tt
+			hidden_effect = { independence_wave_afx_focus_mandate_meuse_conference = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.urgent
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_constitutional_route = yes }
+			modifier = {
+				factor = constant:independence_wave_focus_ai.strong_preference_factor
+				has_country_flag = independence_wave_league_member
+				check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.development_compact }
+			}
+		}
+	}
+
+	focus = {
+		id = independence_wave_afx_prepare_low_countries_dossier_focus
+		icon = GFX_goal_independence_wave_afx_low_countries_delegation
+		prerequisite = { focus = independence_wave_afx_mandate_meuse_conference_focus }
+		x = 93
+		y = 8
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			is_independence_wave_afx_package = yes
+			has_country_flag = independence_wave_afx_meuse_conference_complete
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_afx_prepare_low_countries_dossier_tt
+			hidden_effect = { independence_wave_afx_focus_prepare_low_countries_dossier = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.urgent
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_form03_compatible_route = yes }
+			modifier = { factor = constant:independence_wave_focus_ai.preferred_factor is_independence_wave_high_chaos_pool_open = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# IW-008 Rhineland: corridor authority, rail and customs coordination,
+	# industrial security, corridor diplomacy, network transit, and FORM-04.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_rhi_establish_corridor_authority_focus
+		icon = GFX_goal_independence_wave_rhi_establish_corridor_authority
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 90
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_rhi_package = yes }
+		available = { is_independence_wave_rhi_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_establish_corridor_authority_tt hidden_effect = { independence_wave_rhi_focus_establish_corridor_authority = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_rhi_corridor = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_unify_rail_dispatch_focus
+		icon = GFX_goal_independence_wave_rhi_unify_rail_dispatch
+		prerequisite = { focus = independence_wave_rhi_establish_corridor_authority_focus }
+		x = 89
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_rhi_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_unify_rail_dispatch_tt hidden_effect = { independence_wave_rhi_focus_unify_rail_dispatch = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor NOT = { has_stable_independence_wave_rhi_corridor = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_arm_customs_guard_focus
+		icon = GFX_goal_independence_wave_rhi_arm_customs_guard
+		prerequisite = { focus = independence_wave_rhi_establish_corridor_authority_focus }
+		x = 91
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_rhi_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_arm_customs_guard_tt hidden_effect = { independence_wave_rhi_focus_arm_customs_guard = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_secure_industrial_belt_focus
+		icon = GFX_goal_independence_wave_rhi_secure_industrial_belt
+		prerequisite = { focus = independence_wave_rhi_unify_rail_dispatch_focus }
+		prerequisite = { focus = independence_wave_rhi_arm_customs_guard_focus }
+		x = 90
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_rhi_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_secure_industrial_belt_tt hidden_effect = { independence_wave_rhi_focus_secure_industrial_belt = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_rhi_corridor = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_ratify_host_transit_compact_focus
+		icon = GFX_goal_independence_wave_rhi_ratify_host_transit_compact
+		prerequisite = { focus = independence_wave_rhi_secure_industrial_belt_focus }
+		mutually_exclusive = { focus = independence_wave_rhi_proclaim_neutral_corridor_focus }
+		x = 89
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_rhi_package = yes has_independence_wave_living_former_host = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_ratify_host_transit_compact_tt hidden_effect = { independence_wave_rhi_focus_ratify_host_transit_compact = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_independence_wave_severe_host_threat = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_proclaim_neutral_corridor_focus
+		icon = GFX_goal_independence_wave_rhi_proclaim_neutral_corridor
+		prerequisite = { focus = independence_wave_rhi_secure_industrial_belt_focus }
+		mutually_exclusive = { focus = independence_wave_rhi_ratify_host_transit_compact_focus }
+		x = 91
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_rhi_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_proclaim_neutral_corridor_tt hidden_effect = { independence_wave_rhi_focus_proclaim_neutral_corridor = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.standard modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } modifier = { factor = constant:independence_wave_focus_ai.preferred_factor NOT = { has_independence_wave_living_former_host = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_rhi_charter_network_transit_office_focus
+		icon = GFX_goal_independence_wave_rhi_charter_network_transit_office
+		prerequisite = { focus = independence_wave_rhi_ratify_host_transit_compact_focus focus = independence_wave_rhi_proclaim_neutral_corridor_focus }
+		x = 90
+		y = 5
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_charter_network_transit_office_tt hidden_effect = { independence_wave_rhi_focus_charter_network_transit_office = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_rhi_authorize_form04_delegation_focus
+		icon = GFX_goal_independence_wave_rhi_authorize_form04_delegation
+		prerequisite = { focus = independence_wave_rhi_charter_network_transit_office_focus }
+		x = 90
+		y = 6
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			is_independence_wave_rhi_package = yes
+			has_country_flag = independence_wave_rhi_form04_candidate
+			check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.rhine_federation }
+			has_country_flag = independence_wave_rhi_rhine_congress_complete
+		}
+		completion_reward = { custom_effect_tooltip = independence_wave_rhi_authorize_form04_delegation_tt hidden_effect = { independence_wave_rhi_focus_authorize_form04_delegation = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	# -----------------------------------------------------------------------
+	# IW-009 Bavaria: civic settlement, district finance, rail and pass
+	# security, the Landtag-guardian balance, and South German diplomacy.
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_bay_broker_civic_settlement_focus
+		icon = GFX_goal_independence_wave_bay_broker_civic_settlement
+		prerequisite = { focus = independence_wave_prepare_capital_administration }
+		x = 96
+		y = 1
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_bay_package = yes }
+		available = { is_independence_wave_bay_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_broker_civic_settlement_tt hidden_effect = { independence_wave_bay_focus_broker_civic_settlement = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_stable_independence_wave_bay_state = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_bay_reconcile_landesbank_accounts_focus
+		icon = GFX_goal_independence_wave_bay_reconcile_landesbank_accounts
+		prerequisite = { focus = independence_wave_bay_broker_civic_settlement_focus }
+		x = 95
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bay_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_reconcile_landesbank_accounts_tt hidden_effect = { independence_wave_bay_focus_reconcile_landesbank_accounts = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor check_variable = { var = independence_wave_bay_civic_settlement value = constant:independence_wave_rhine_bavaria_pressure.bay_civic_stable compare = less_than } } }
+	}
+
+	focus = {
+		id = independence_wave_bay_bind_rail_and_pass_authorities_focus
+		icon = GFX_goal_independence_wave_bay_bind_rail_and_pass_authorities
+		prerequisite = { focus = independence_wave_bay_broker_civic_settlement_focus }
+		x = 97
+		y = 2
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		available = { is_independence_wave_bay_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_bind_rail_and_pass_authorities_tt hidden_effect = { independence_wave_bay_focus_bind_rail_and_pass_authorities = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor check_variable = { var = independence_wave_bay_mountain_security value = constant:independence_wave_rhine_bavaria_pressure.bay_security_stable compare = less_than } } }
+	}
+
+	focus = {
+		id = independence_wave_bay_seat_landtag_and_court_focus
+		icon = GFX_goal_independence_wave_bay_seat_landtag_and_court
+		prerequisite = { focus = independence_wave_bay_reconcile_landesbank_accounts_focus }
+		prerequisite = { focus = independence_wave_bay_bind_rail_and_pass_authorities_focus }
+		mutually_exclusive = { focus = independence_wave_bay_entrust_mountain_guardians_focus }
+		x = 95
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bay_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_seat_landtag_and_court_tt hidden_effect = { independence_wave_bay_focus_seat_landtag_and_court = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor OR = { has_country_flag = independence_wave_bay_constitutional_government has_country_flag = independence_wave_bay_traditional_government } } }
+	}
+
+	focus = {
+		id = independence_wave_bay_entrust_mountain_guardians_focus
+		icon = GFX_goal_independence_wave_bay_entrust_mountain_guardians
+		prerequisite = { focus = independence_wave_bay_reconcile_landesbank_accounts_focus }
+		prerequisite = { focus = independence_wave_bay_bind_rail_and_pass_authorities_focus }
+		mutually_exclusive = { focus = independence_wave_bay_seat_landtag_and_court_focus }
+		x = 97
+		y = 3
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		available = { is_independence_wave_bay_package = yes }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_entrust_mountain_guardians_tt hidden_effect = { independence_wave_bay_focus_entrust_mountain_guardians = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor OR = { has_country_flag = independence_wave_bay_emergency_government has_independence_wave_severe_host_threat = yes } } }
+	}
+
+	focus = {
+		id = independence_wave_bay_open_alpine_network_office_focus
+		icon = GFX_goal_independence_wave_bay_open_alpine_network_office
+		prerequisite = { focus = independence_wave_bay_seat_landtag_and_court_focus focus = independence_wave_bay_entrust_mountain_guardians_focus }
+		x = 96
+		y = 4
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_network_member }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_open_alpine_network_office_tt hidden_effect = { independence_wave_bay_focus_open_alpine_network_office = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	}
+
+	focus = {
+		id = independence_wave_bay_convene_south_german_settlement_focus
+		icon = GFX_goal_independence_wave_bay_convene_south_german_settlement
+		prerequisite = { focus = independence_wave_bay_open_alpine_network_office_focus }
+		mutually_exclusive = { focus = independence_wave_bay_ratify_german_host_compact_focus }
+		x = 95
+		y = 5
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_bay_south_german_estates_settlement }
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_convene_south_german_settlement_tt hidden_effect = { independence_wave_bay_focus_convene_south_german_settlement = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_bay_ratify_german_host_compact_focus
+		icon = GFX_goal_independence_wave_bay_ratify_german_host_compact
+		prerequisite = { focus = independence_wave_bay_open_alpine_network_office_focus }
+		mutually_exclusive = { focus = independence_wave_bay_convene_south_german_settlement_focus }
+		x = 97
+		y = 5
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			is_independence_wave_bay_package = yes
+			has_independence_wave_living_former_host = yes
+			has_country_flag = independence_wave_bay_no_competing_german_claim
+			NOT = { has_country_flag = independence_wave_bay_south_german_choice }
+		}
+		completion_reward = { custom_effect_tooltip = independence_wave_bay_ratify_german_host_compact_tt hidden_effect = { independence_wave_bay_focus_ratify_german_host_compact = yes } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_independence_wave_severe_host_threat = yes } } }
+	}
+
+	# -----------------------------------------------------------------------
 	# Framework capstone.
 	# -----------------------------------------------------------------------
 
