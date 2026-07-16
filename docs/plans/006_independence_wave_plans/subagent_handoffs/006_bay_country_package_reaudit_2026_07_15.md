@@ -1,5 +1,11 @@
 # Event 006 IW-009 Bavaria country-package reaudit
 
+> **Portrait-specific supersession (2026-07-16):** Generated fictional
+> portrait hashes and acceptance evidence in this audit are superseded by the
+> male-HOI4 package manifest and final independent audit. The approved
+> Rupprecht exemption and unrelated gameplay findings remain current within
+> their stated scope.
+
 Date: 2026-07-15
 
 Auditor: `event6_bay_package_reaudit`

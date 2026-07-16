@@ -1,5 +1,10 @@
 # Event 006 Northern and Western Europe country-package audit
 
+> **Portrait-specific supersession (2026-07-16):** Portrait and art-acceptance
+> conclusions in this audit are superseded by the male-HOI4 package manifest
+> and final independent audit. Unrelated gameplay, route, balance, flag, and
+> admission findings remain bounded historical evidence.
+
 > Parent resolution: the route-matrix finding was remediated in
 > `006_nwe_route_matrix_remediation_2026_07_15.md`. A later independent audit
 > certified only `IW-009` Bavaria, and the parent applied its exact runtime and

@@ -1,5 +1,10 @@
 # Event 006 AFX/AGX release-readiness audit
 
+> **Portrait-specific supersession (2026-07-16):** The old portrait hashes,
+> comparisons, and visual-fallback conclusion are superseded by the male-HOI4
+> package manifest and final independent audit. Gameplay and admission findings
+> remain historical on their own terms.
+
 Date: 2026-07-16
 Mode: read-only source audit; this handoff is the only file created
 Packages: IW-006 / AFX / Wallonia and IW-007 / AGX / Frisia

@@ -1,5 +1,12 @@
 # Event 006 character portrait regeneration handoff
 
+> **Portrait-specific supersession (2026-07-16):** This entire fictional
+> portrait result, its hashes, and its approval status are historical and are
+> superseded by `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+> and `006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+> ACX/AEX remain readiness-pool only, Rupprecht/Matthes remain protected, and
+> custom Event 006 advisor icons remain withdrawn.
+
 ## Outcome
 
 All 18 fictional large portrait assets outside the two user-approved historical

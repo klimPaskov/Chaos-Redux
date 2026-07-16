@@ -33,6 +33,33 @@ All final flag families require normal, medium, and small 32-bit uncompressed TG
 
 The source and generated packages are under `docs/assets/006_independence_wave/mediterranean_danube_flag_sources_2026_07_15/` and `docs/assets/006_independence_wave/mediterranean_danube_generated_flags_2026_07_15/`. Asset delivery does not override package readiness, route, portrait, focus, mechanic, or AI gates.
 
+### Current northern and western Europe portrait coverage
+
+The accepted portrait authority is
+`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+and its final independent audit at
+`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+The following rows supersede all 2026-07-15 fictional portrait, mixed NWE, BRI,
+and army-small visual/hash claims:
+
+| Package | Accepted fictional portrait coverage | Runtime disposition |
+|---|---|---|
+| IW-003 ACX | male institutional large, commander large, commander-small | unregistered readiness pool only; map blocker unchanged |
+| IW-005 AEX | male institutional large, commander large, commander-small | unregistered readiness pool only; no standalone release claim |
+| IW-006 AFX | male institutional large, commander large, commander-small | installed with existing consumers |
+| IW-007 AGX | male institutional large, commander large, commander-small | installed with existing consumers |
+| IW-010 AJX | male institutional large, commander large, commander-small | installed with existing consumers |
+| IW-009 BAY | male institutional large, commander large, commander-small | installed; protected Rupprecht portrait remains separate |
+| IW-004 BRI | male civic large, commander large, commander-small | installed; Debeauvais historical-source blocker remains separate |
+| IW-008 RHI | male institutional large, commander large, commander-small | installed; protected Matthes portrait remains separate |
+| IW-001 SCO | male institutional large, commander large, commander-small | installed with existing consumers |
+| IW-002 WLS | male institutional large, commander large, commander-small | installed with existing consumers |
+
+Rupprecht and Matthes are the only protected historical portrait exemptions.
+Gameplay advisor offices remain active without custom Event 006 advisor cards,
+sprites, or runtime DDS files. Portrait delivery does not grant package
+readiness or scenario admission.
+
 ## Group A: existing registered base reuse — 63
 
 Installed Hearts of Iron IV provides at least one complete normal/medium/small flag set for every tag in this group. The base may be retained only when it matches the package identity and opening route. Existing character art may be reused only after the implementation pass confirms the leader is period-valid and not active in another country. Otherwise the accepted opening is a generated institutional cabinet, not a borrowed real person.

@@ -1,5 +1,10 @@
 # Event 006 advisor icon withdrawal audit
 
+> **Portrait-specific supersession (2026-07-16):** The runtime leader-portrait
+> inventory in this audit predates the male-HOI4 regeneration and is not current
+> visual/hash authority. Its advisor-icon withdrawal finding remains current:
+> no custom Event 006 advisor portrait, sprite, or runtime DDS is live.
+
 Date: 2026-07-16
 Scope: Event 006 character records, advisor presentation, runtime advisor
 assets, current documentation, and live leader portrait inventory

@@ -1,5 +1,11 @@
 # Event 006 army-small dossier correction handoff
 
+> **Portrait-specific supersession (2026-07-16):** All small-card visual
+> results, hashes, and acceptance evidence in this record are historical. The
+> current ten commander-small dossiers are governed by the 2026-07-16
+> male-HOI4 package manifest and final independent audit; custom advisor icons
+> remain withdrawn.
+
 ## Result
 
 The ten Event 006 commander `_small` runtime textures are corrected from the
@@ -84,7 +90,7 @@ unchanged by the parent and were outside this correction's write set.
 
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/contact_sheets/portraits_and_flags.png`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/contact_sheet.png`
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_erwin_rommel.png`
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_friedrich_paulus.png`
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_gunther_von_kluge.png`

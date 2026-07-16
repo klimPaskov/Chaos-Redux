@@ -13,6 +13,21 @@ Statuses:
 
 The contextual source IDs already accepted in docs/specs/006_independence_wave_specs/research/006_source_register.csv remain the historical starting point. Blank URL fields and book citations in that register are not image licenses. Each final asset still needs an asset-specific source record.
 
+## Current Event 006 portrait-authority boundary
+
+This research ledger is not the authority for produced fictional portraits.
+Every 2026-07-15 fictional portrait and army-small visual/hash approval is
+superseded by
+`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+and
+`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+Rupprecht and Matthes remain protected route-owned historical exemptions with
+their source and review evidence preserved in
+`../../../assets/006_independence_wave/northern_western_europe_source_manifest.md`.
+The Debeauvais rights blocker remains current and is not cleared by BRI's
+fictional civic portrait. ACX and AEX portrait files are readiness-pool only,
+and custom Event 006 advisor icons remain withdrawn.
+
 ## Portrait candidates with reusable-rights evidence
 
 | Source ID | Package and subject | Source, date, and rights | Production note |

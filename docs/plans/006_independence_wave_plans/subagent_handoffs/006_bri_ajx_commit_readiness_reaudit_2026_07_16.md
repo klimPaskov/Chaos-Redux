@@ -1,5 +1,11 @@
 # Event 006 IW-004 BRI / IW-010 AJX commit-readiness re-audit
 
+> **Portrait-specific supersession (2026-07-16):** Portrait reviews, hashes,
+> small-card evidence, and visual dossier claims based on the 2026-07-15 art are
+> superseded by the male-HOI4 package manifest and final independent audit.
+> Gameplay commit-safety findings remain historical; custom advisor icons stay
+> withdrawn.
+
 - Date: 2026-07-16
 - Audit mode: independent read-only source, integration, asset, documentation, and staging-boundary review; parent repair closeout appended
 - Working-tree baseline: `13dd2fef4` (`98ec32e93`, `2f867e9cd`, and `d0044b22e` are ancestors)

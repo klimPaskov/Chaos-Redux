@@ -1,5 +1,10 @@
 # Event 006 IW-004 Brittany country-package audit
 
+> **Portrait-specific supersession (2026-07-16):** BRI fictional portrait and
+> commander-small visual acceptance in this audit is superseded by the
+> male-HOI4 package manifest and final independent audit. Gameplay audit
+> findings remain historical, and the Debeauvais rights blocker remains current.
+
 Date: 2026-07-15
 Auditor role: `chaosx_country_package_auditor`
 Scope: bounded `IW-004` / `BRI` package only
