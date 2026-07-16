@@ -1,0 +1,326 @@
+# ============================================================================
+# CHAOS REDUX - ORDINARY BIOLOGICAL OPERATION SCRIPTED EFFECTS
+# ============================================================================
+# Overview:
+# - Resolves the four ordinary native intelligence operations against their
+#   exact selected state and native non-refundable equipment cost.
+# - Splits release into abort/failure, partial seed, and full seed outcomes.
+# - Sends every proven release through the ordinary biological lifecycle.
+# - Converts every exact operative capture into immediate attribution or
+#   attempt consequences without treating a failed attempt as completed use.
+# - Weaponized-zombie operations remain in biowarfare_effects.txt.
+# ============================================================================
+
+# Operation scope. The legacy calculator remains shared with the separate
+# weaponized-zombie operation; this helper adds ordinary-route doctrine and
+# splits the release weight into partial and full outcomes.
+bio_operative_release_calculate_outcome_weights_internal = {
+	bio_operation_calculate_plant_success_chance = yes
+
+	if = {
+		limit = { event_target:bio_operation_actor = { has_idea = cbrn_terminal_hazard_doctrine_spirit } }
+		add_to_temp_variable = { bio_operation_success_chance = constant:bio_operation_plant_outbreak.terminal_hazard_success_add }
+	}
+	else_if = {
+		limit = { event_target:bio_operation_actor = { has_idea = cbrn_theater_contamination_doctrine_spirit } }
+		add_to_temp_variable = { bio_operation_success_chance = constant:bio_operation_plant_outbreak.theater_contamination_success_add }
+	}
+	clamp_temp_variable = {
+		var = bio_operation_success_chance
+		min = constant:bio_operation_plant_outbreak.min_success
+		max = constant:bio_operation_plant_outbreak.max_success
+	}
+
+	set_temp_variable = { bio_operation_partial_chance = bio_operation_success_chance }
+	multiply_temp_variable = { bio_operation_partial_chance = constant:bio_operation_plant_outbreak.partial_release_share }
+	round_temp_variable = bio_operation_partial_chance
+	set_temp_variable = { bio_operation_full_success_chance = bio_operation_success_chance }
+	subtract_from_temp_variable = { bio_operation_full_success_chance = bio_operation_partial_chance }
+	set_temp_variable = { bio_operation_failure_chance = constant:bio_lifecycle_math.hundred }
+	subtract_from_temp_variable = { bio_operation_failure_chance = bio_operation_success_chance }
+}
+
+# Operation scope. Weaponization changes physical outbreak potency. Attribution
+# control changes concealment during detection, never the evidence record.
+bio_operative_release_prepare_program_values_internal = {
+	set_temp_variable = { bio_operation_weaponization_mult = constant:bio_operation_plant_outbreak.weaponization_limited }
+	if = {
+		limit = { event_target:bio_operation_actor = { cbrn_country_has_full_readiness = yes } }
+		set_temp_variable = { bio_operation_weaponization_mult = constant:bio_operation_plant_outbreak.weaponization_full }
+	}
+	else_if = {
+		limit = { event_target:bio_operation_actor = { cbrn_country_has_integrated_readiness = yes } }
+		set_temp_variable = { bio_operation_weaponization_mult = constant:bio_operation_plant_outbreak.weaponization_integrated }
+	}
+	else_if = {
+		limit = { event_target:bio_operation_actor = { cbrn_country_has_operational_readiness = yes } }
+		set_temp_variable = { bio_operation_weaponization_mult = constant:bio_operation_plant_outbreak.weaponization_operational }
+	}
+
+	set_temp_variable = { bio_operation_concealment = event_target:bio_operation_actor.cbrn_attribution_control }
+	multiply_temp_variable = { bio_operation_concealment = constant:bio_operation_plant_outbreak.attribution_concealment_factor }
+	clamp_temp_variable = {
+		var = bio_operation_concealment
+		min = constant:bio_lifecycle_math.zero
+		max = constant:bio_operation_plant_outbreak.attribution_concealment_maximum
+	}
+}
+
+# State scope. Records the actual native resolution without inventing a
+# runtime equipment-debit amount the operation engine does not expose.
+bio_operative_release_record_attempt_internal = {
+	set_temp_variable = { bio_active_agent = bio_operation_agent }
+	meta_effect = {
+		text = {
+			set_state_flag = bio_agent_[BIO_AGENT]_operative_attempt_history
+			set_variable = { bio_agent_[BIO_AGENT]_operative_last_actor = event_target:bio_operation_actor }
+			set_variable = { bio_agent_[BIO_AGENT]_operative_last_victim = event_target:bio_operation_victim }
+			set_variable = { bio_agent_[BIO_AGENT]_operative_last_result = bio_operation_result }
+			set_variable = { bio_agent_[BIO_AGENT]_operative_last_date = global.num_days }
+			set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = constant:bio_operation_plant_outbreak.failed_attempt_evidence }
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+
+	event_target:bio_operation_actor = {
+		if = {
+			limit = { NOT = { has_variable = bio_operative_release_attempt_count } }
+			set_variable = { bio_operative_release_attempt_count = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_operative_release_attempt_count = constant:bio_lifecycle_history.one_use }
+		set_variable = { bio_operative_release_last_agent = bio_operation_agent }
+		set_variable = { bio_operative_release_last_result = bio_operation_result }
+		set_variable = { bio_operative_release_last_date = global.num_days }
+		set_variable = { bio_operative_release_last_target_state = event_target:bio_operation_target_state }
+		set_variable = { bio_operative_release_last_victim = event_target:bio_operation_victim }
+	}
+}
+
+# State scope. Inputs are the exact native operation record and either partial
+# or success in bio_operation_result.
+bio_operative_release_dispatch_seed_internal = {
+	bio_lifecycle_reset_seed_record = yes
+	set_temp_variable = { bio_seed_agent = bio_operation_agent }
+	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.operative_release }
+	set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+	set_temp_variable = { bio_seed_result = bio_operation_result }
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_weaponization_mult = bio_operation_weaponization_mult }
+	set_temp_variable = { bio_seed_concealment = bio_operation_concealment }
+	event_target:bio_operation_actor = { save_event_target_as = bio_seed_actor }
+	event_target:bio_operation_victim = { save_event_target_as = bio_seed_victim }
+	bio_lifecycle_dispatch_seed = yes
+}
+
+# Actor country scope. Doctrine makes resolved CBRN operations easier to sustain
+# through a bounded Command Power refund. It does not alter native equipment.
+bio_operative_release_refund_doctrine_command_power_internal = {
+	set_temp_variable = { bio_operation_command_power_refund = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		set_temp_variable = { bio_operation_command_power_refund = constant:bio_operation_plant_outbreak.terminal_hazard_command_power_refund }
+	}
+	else_if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		set_temp_variable = { bio_operation_command_power_refund = constant:bio_operation_plant_outbreak.theater_contamination_command_power_refund }
+	}
+	if = {
+		limit = { check_variable = { var = bio_operation_command_power_refund value = constant:bio_lifecycle_math.zero compare = greater_than } }
+		add_command_power = bio_operation_command_power_refund
+		if = {
+			limit = { NOT = { has_variable = bio_operative_release_command_power_refunded_total } }
+			set_variable = { bio_operative_release_command_power_refunded_total = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_operative_release_command_power_refunded_total = bio_operation_command_power_refund }
+		set_variable = { bio_operative_release_last_command_power_refund = bio_operation_command_power_refund }
+	}
+}
+
+# Operation scope. ROOT, FROM, and FROM.FROM are accepted only after the native
+# control check succeeds. The non-refundable native equipment block is the
+# authoritative debit because no runtime amount is exposed to script.
+bio_operative_release_resolve = {
+	set_temp_variable = { bio_operation_success_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_operation_failure_chance = constant:bio_lifecycle_math.hundred }
+	set_temp_variable = { bio_operation_partial_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_operation_full_success_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_operation_infectiousness_bonus = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_operation_weaponization_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_operation_concealment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.failed }
+
+	if = {
+		limit = { bio_operative_release_native_operation_scopes_are_valid = yes }
+		ROOT = { save_event_target_as = bio_operation_actor }
+		FROM = { save_event_target_as = bio_operation_victim }
+		FROM.FROM = { save_event_target_as = bio_operation_target_state }
+		if = {
+			limit = { bio_operative_release_native_context_is_valid = yes }
+			bio_operative_release_prepare_program_values_internal = yes
+			bio_operative_release_calculate_outcome_weights_internal = yes
+			random_list = {
+				bio_operation_failure_chance = {
+					set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.failed }
+					event_target:bio_operation_target_state = { bio_operative_release_record_attempt_internal = yes }
+					custom_effect_tooltip = operation_plant_bioweapon_aborted_tt
+				}
+				bio_operation_partial_chance = {
+					set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.partial }
+					set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
+					event_target:bio_operation_target_state = {
+						bio_operative_release_dispatch_seed_internal = yes
+						if = {
+							limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+							bio_operative_release_record_attempt_internal = yes
+						}
+						else = {
+							set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.failed }
+							bio_operative_release_record_attempt_internal = yes
+						}
+					}
+					if = {
+						limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+						custom_effect_tooltip = operation_plant_bioweapon_partial_seed_tt
+					}
+					else = { custom_effect_tooltip = operation_plant_bioweapon_context_lost_tt }
+				}
+				bio_operation_full_success_chance = {
+					set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.success }
+					set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
+					event_target:bio_operation_target_state = {
+						bio_operative_release_dispatch_seed_internal = yes
+						if = {
+							limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+							bio_operative_release_record_attempt_internal = yes
+						}
+						else = {
+							set_temp_variable = { bio_operation_result = constant:bio_lifecycle_result.failed }
+							bio_operative_release_record_attempt_internal = yes
+						}
+					}
+					if = {
+						limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+						custom_effect_tooltip = operation_plant_bioweapon_hidden_seed_tt
+					}
+					else = { custom_effect_tooltip = operation_plant_bioweapon_context_lost_tt }
+				}
+			}
+		}
+		else = {
+			event_target:bio_operation_target_state = { bio_operative_release_record_attempt_internal = yes }
+			custom_effect_tooltip = operation_plant_bioweapon_context_lost_tt
+		}
+		ROOT = { bio_operative_release_refund_doctrine_command_power_internal = yes }
+	}
+	else = { custom_effect_tooltip = operation_plant_bioweapon_context_lost_tt }
+}
+
+# Actor country scope. Every call represents one actual captured operative.
+# The engine exposes no operation-instance id, so this ledger counts callbacks
+# without inferring or deduplicating an operation.
+bio_operative_release_record_captured_operative_internal = {
+	set_country_flag = bio_confirmed_operative_capture_history
+	if = {
+		limit = { NOT = { has_variable = bio_confirmed_operative_capture_count } }
+		set_variable = { bio_confirmed_operative_capture_count = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_confirmed_operative_capture_count = constant:bio_lifecycle_history.one_use }
+	set_variable = { bio_last_confirmed_operative_capture_agent = bio_operation_agent }
+	set_variable = { bio_last_confirmed_operative_capture_date = global.num_days }
+	set_variable = { bio_last_confirmed_operative_capture_state = event_target:bio_operation_target_state }
+	set_variable = { bio_last_confirmed_operative_capture_victim = event_target:bio_operation_victim }
+}
+
+# Actor country scope. A captured attempt with no proven release receives a
+# public biological-attempt record plus coverup pressure. The dedicated source
+# proof prevents the shared Condemnation system from writing weapon-use history.
+bio_operative_release_apply_captured_attempt_consequence_internal = {
+	set_temp_variable = { bio_operation_capture_condemnation_mult = constant:bio_lifecycle_math.one }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		set_temp_variable = { bio_operation_capture_condemnation_mult = constant:bio_lifecycle_doctrine.terminal_hazard.condemnation_mult }
+	}
+	else_if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		set_temp_variable = { bio_operation_capture_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = constant:bio_operation_plant_outbreak.captured_attempt_condemnation }
+	add_to_temp_variable = { condemnation_base_gain = constant:bio_lifecycle_condemnation.coverup_add }
+	multiply_temp_variable = { condemnation_base_gain = bio_operation_capture_condemnation_mult }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+	set_temp_variable = { condemnation_civilian_deaths = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_victim_country = event_target:bio_operation_victim }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.concern }
+	condemnation_add_source = yes
+	add_war_support = constant:bio_operation_plant_outbreak.captured_attempt_domestic_war_support
+}
+
+# State scope. Every callback is an actual captured operative. Exact operation
+# assignment proves the attempt; only a matching live lifecycle episode proves
+# release and may write confirmed-use history.
+bio_operative_release_process_capture = {
+	set_temp_variable = { bio_active_agent = bio_operation_agent }
+	event_target:bio_operation_actor = { bio_operative_release_record_captured_operative_internal = yes }
+	meta_effect = {
+		text = { set_state_flag = bio_agent_[BIO_AGENT]_operative_capture_history }
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+	if = {
+		limit = { bio_operative_release_capture_matches_seeded_episode = yes }
+		bio_lifecycle_confirm_operative_release_from_capture = yes
+	}
+	else = {
+		meta_effect = {
+			text = {
+				set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = constant:bio_operation_plant_outbreak.captured_attempt_evidence_floor }
+				set_state_flag = bio_agent_[BIO_AGENT]_operative_attempt_confirmed_history
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+		event_target:bio_operation_actor = { bio_operative_release_apply_captured_attempt_consequence_internal = yes }
+	}
+}
+
+# Character scope. The current-version on_operative_captured hook supplies the
+# exact employer and target countries, while operation_state and operation_type
+# supply the exact selected state and ordinary-agent operation token.
+bio_operative_release_on_operative_captured = {
+	set_temp_variable = { bio_operation_agent = constant:bio_lifecycle_agent.none }
+	if = {
+		limit = { operative_leader_operation = operation_plant_anthrax_outbreak }
+		set_temp_variable = { bio_operation_agent = constant:bio_lifecycle_agent.anthrax }
+	}
+	else_if = {
+		limit = { operative_leader_operation = operation_plant_plague_outbreak }
+		set_temp_variable = { bio_operation_agent = constant:bio_lifecycle_agent.plague }
+	}
+	else_if = {
+		limit = { operative_leader_operation = operation_plant_tularemia_outbreak }
+		set_temp_variable = { bio_operation_agent = constant:bio_lifecycle_agent.tularemia }
+	}
+	else_if = {
+		limit = { operative_leader_operation = operation_plant_smallpox_outbreak }
+		set_temp_variable = { bio_operation_agent = constant:bio_lifecycle_agent.smallpox }
+	}
+
+	set_variable = { bio_operation_capture_country = operation_country }
+	set_variable = { bio_operation_capture_state = operation_state }
+	FROM = { save_event_target_as = bio_operation_actor }
+	ROOT = { save_event_target_as = bio_operation_victim }
+	if = {
+		limit = { bio_operative_release_capture_context_is_valid = yes }
+		var:bio_operation_capture_state = {
+			save_event_target_as = bio_operation_target_state
+			bio_operative_release_process_capture = yes
+		}
+	}
+	clear_variable = bio_operation_capture_country
+	clear_variable = bio_operation_capture_state
+}

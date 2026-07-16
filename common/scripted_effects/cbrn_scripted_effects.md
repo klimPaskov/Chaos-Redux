@@ -6,7 +6,7 @@ This file documents reusable effects owned by the CBRN, protective-equipment, ch
 
 Keep a helper here when its inputs, ledgers, policy gates, equipment, consequences, or cleanup contract are CBRN-specific. Move a helper to the shared registry only after real call sites show frequent use by unrelated systems or event families. Do not add wrappers, aliases, estimators, proxies, or fallback implementations during a move.
 
-Biological lifecycle and biological raid helpers remain documented with the biological subsystem rather than in either shared or CBRN-wide registries.
+Biological lifecycle, biological raid, and biological operative-release helpers remain owned by and documented with the biological subsystem rather than in either shared dynamic registry. Their subsystem-private interfaces are indexed below only so CBRN maintainers can find the delivery boundary.
 
 ## Source files
 
@@ -21,6 +21,24 @@ Biological lifecycle and biological raid helpers remain documented with the biol
 - `common/scripted_effects/cbrn_protection_decision_effects.txt`
 - `common/scripted_effects/cbrn_protection_effects.txt`
 - `common/scripted_effects/cbrn_starting_protection_effects.txt`
+
+## Biological subsystem-private delivery effects
+
+Source: `common/scripted_effects/biological_operation_effects.txt`. These helpers are not shared dynamic effects and must not be moved into `chaosx_dynamic_effects` without frequent, unrelated call sites.
+
+### bio_operative_release_resolve
+
+Operation-scope entry point for Anthrax, Plague, Tularemia, and Smallpox intelligence operations. The caller supplies the exact agent code. The native operation supplies ROOT as initiator, FROM as target country, and FROM.FROM as selected state. The effect first verifies that FROM still controls FROM.FROM, then records and validates the exact actor, victim, selected state, completed project, state profile, policy, and readiness before resolving abort, partial release, or full release. Partial and full releases enter `bio_lifecycle_dispatch_seed`; an abort records an attempted delivery without creating a biological-use history record. Theater Contamination and Terminal Hazard return a bounded amount of Command Power once after resolution without changing the physical equipment cost.
+
+The operation engine does not expose the runtime amount charged by its `equipment` block. The exact native cost and `return_on_complete = no` are therefore authoritative, while the lifecycle's numeric payload fields remain zero for this route rather than recording a fabricated amount or proof. Defaults: invalid or incomplete native context fails closed with no seed, no inferred target, and no substitute payload debit. Side effects: records the exact attempt result and lifecycle consequences owned by the biological subsystem.
+
+### bio_operative_release_on_operative_captured
+
+Character-scope entry point called only from the current-version `on_operative_captured` hook. It reads `operative_leader_operation`, `operation_country`, and `operation_state` to recover the exact ordinary-agent operation, employer, victim, and selected state. A matching live seeded episode receives the confirmed-operative attribution floor and one-shot outbreak coverup consequence; otherwise the actual capture receives public-attempt and coverup records without weapon-use history.
+
+The engine exposes no operation-instance identifier for deduplicating multiple captured operatives from the same operation. The ledger counts actual captured operatives, not inferred operation attempts, and each actual capture callback is consequential; this is not a timer or inferred duplicate. Defaults: any missing, mismatched, stale, zombie, or unsupported operation context fails closed. It performs no periodic search, target estimation, scope substitution, or fallback resolution.
+
+Internal helpers calculate the three outcome weights, derive readiness weaponization and attribution-control concealment, record the exact attempt result, dispatch the exact seed, refund bounded doctrine Command Power, and distinguish a captured seeded episode from a captured no-release attempt. They are private implementation details of the two interfaces above.
 
 
 ## grant_random_chaos_special_project_available_tech

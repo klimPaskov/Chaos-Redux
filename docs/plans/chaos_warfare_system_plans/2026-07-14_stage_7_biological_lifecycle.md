@@ -18,7 +18,7 @@ No broad `on_daily`, `on_weekly`, or `on_monthly` biological pass is permitted. 
 
 ## Current tranche ledger
 
-Implemented in the current strategic biological tranche:
+Implemented in the completed strategic-raid and operative-release tranches:
 
 - `common/on_actions/chaosx_on_actions_biowarfare.txt` is absent. Legacy startup and weekly calls to `initialize_smallpox_vaccination_protection`, `progress_smallpox_vaccination`, and `check_all_states_for_contamination_cleanup` are absent.
 - `smallpox_vaccination_program_idea` has no legacy `on_add` or `on_remove` state-scan hooks. The ordinary lifecycle reads the country idea directly when applying agent-specific growth, spread, and death multipliers.
@@ -26,6 +26,12 @@ Implemented in the current strategic biological tranche:
 - Strategic biological raids use the exact native selected state, exact payload reservation and debit, six biological outcomes, state-owned incubation and lifecycle ticks, and no continuous-air contamination.
 - `GFX_decision_bio_designate_strategic_raid_staging_state` is registered in `interface/biological_warfare.gfx` and resolves to the final staging decision DDS.
 - The existing raid icons under `gfx/interface/military_raids/` remain byte-preserved and are reused by the four strategic biological raids.
+- Four native operative-release operations cover Anthrax, Plague, Tularemia, and Smallpox with exact selected-state profiles, distinct preparation time, operatives, network requirements, native non-refundable payload and support-equipment costs, and abort, partial, or full resolution.
+- Partial and full operative releases enter `bio_lifecycle_dispatch_seed` through the private `operative_release` route. The operation engine exposes no runtime debit amount, so this route does not fabricate numeric payload proof or payload history.
+- Exact operative captures use the current operation token, assigned country, and positive assigned state. A matching live episode confirms attribution; otherwise each actual capture records a confirmed no-release attempt without weapon-use history. No timer, periodic search, inferred state, or operation-instance proxy is used.
+- Operative AI applies policy and route gates, defensive-profile suppression, domestic-safety preference, and agent-specific target-country profiles. Native AI cannot rank the eventual selected state, and no estimator is retained.
+- Theater Contamination and Terminal Hazard increase success and refund 2 or 4 Command Power once after resolution while leaving equipment, evidence, history, deaths, and physical consequences intact.
+- `docs/plans/chaos_warfare_system_plans/2026-07-16_stage_7_operative_release_validation.md` records the bounded source and scenario audit for this tranche.
 
 Still queued under this active plan:
 
@@ -54,16 +60,16 @@ Every deliberate delivery route must prepare one normalized temporary action rec
 - exact target state
 - exact actor and victim when deliberate
 - route and source type
-- payload required, payload consumed, and positive debit proof
+- route-specific payload authority: numeric required/consumed/proof for script-debited routes, or the private native operation cost for `operative_release`
 - seed intensity and exposed share
 - evidence, concealment, weaponization quality, safety, and friendly-spread risk
 - route outcome: failed, partial, successful, catastrophic, accident, spread, or doomsday.
 
-Deliberate release is rejected unless the exact state, actor, agent, and positive payload debit are proven. Natural spread, laboratory accident, captured-facility release, and doomsday use have separate explicit source contracts and may not pass through a fabricated deliberate actor. Failed delivery can record attempt evidence and capture consequences but cannot seed an outbreak unless a defined accident outcome releases material.
+Deliberate release is rejected unless the exact state, actor, agent, and route-specific payload authority are proven. The operative-release route is accepted only through its private native operation path; its exact `equipment` block and `return_on_complete = no` own the debit because the engine exposes no runtime amount to script. No temporary amount or proof is fabricated. Natural spread, laboratory accident, captured-facility release, and doomsday use have separate explicit source contracts and may not pass through a fabricated deliberate actor. Failed delivery can record attempt evidence and capture consequences but cannot seed an outbreak unless a defined accident outcome releases material.
 
 The seed dispatcher performs this order:
 
-1. Validate the route-specific record and debit proof.
+1. Validate the route-specific record and debit authority.
 2. Apply actor doctrine to potency, spread, deaths, duration, and medical pressure, but not evidence.
 3. Store or strengthen the independent agent-state record.
 4. Schedule that agent's incubation event if no tick is already scheduled.
@@ -103,7 +109,7 @@ The seed dispatcher performs this order:
 - Food, water, and medical-chain sabotage uses a covert low-dose seed with uncertain initial attribution and severe later discovery consequences.
 - Doomsday release requires the explicit route, extreme policy, near-capitulation or world-end conditions, a real arsenal, and a domestic-risk warning. It consumes the arsenal, seeds own and nearby fronts, records maximum evidence, and harms allies and the user.
 
-Every caller of a legacy `apply_*_contamination` identifier is migrated to an exact route adapter and the legacy identifiers are then removed. No permissive compatibility wrapper remains. A route adapter is valid only when it can supply every required actor, victim, agent, route, result, target-state, and debit proof directly from the current engine scope.
+Every caller of a legacy `apply_*_contamination` identifier is migrated to an exact route adapter and the legacy identifiers are then removed. No permissive compatibility wrapper remains. A route adapter is valid only when it can supply every required actor, victim, agent, route, result, target-state, and route-specific debit authority directly from the current engine scope.
 
 ## Program safety, facilities, and countermeasures
 
@@ -123,7 +129,7 @@ Final localisation must describe uncertainty in-world, hide exact incubation and
 
 - Four independent agent-state lifecycle scenarios prove distinct incubation, detection, spread, deaths, treatment, persistence, and cleanup.
 - Multiple ordinary agents can coexist in one state without overwriting each other's modifiers, actor records, evidence, death caps, or schedulers.
-- Every deliberate route proves exact payload debit before seeding and reaches the same dispatcher.
+- Every deliberate route proves its exact payload authority before seeding and reaches the same dispatcher; native operations use their non-refundable operation cost without a fabricated runtime amount.
 - No global biological daily, weekly, or monthly pass remains, and the Chaos Meter daily state scan no longer calculates ordinary biological outbreak deaths.
 - Deaths, Air Cleanliness, evidence, attribution, Condemnation, sanctions, confirmed-use history, and medical saturation each register once at the correct lifecycle transition.
 - Doctrine raises biological operational harm and reduces only Condemnation after attribution, with public-harm floors intact.

@@ -31,25 +31,17 @@ bio_lifecycle_deliberate_seed_record_is_valid = {
 		value = constant:bio_lifecycle_source.deliberate
 		compare = equals
 	}
-	check_variable = {
-		var = bio_seed_payload_debit_proof
-		value = constant:bio_lifecycle_proof.supplied
-		compare = equals
-	}
-	check_variable = {
-		var = bio_seed_payload_required
-		value = constant:bio_lifecycle_math.zero
-		compare = greater_than
-	}
-	check_variable = {
-		var = bio_seed_payload_consumed
-		value = constant:bio_lifecycle_math.zero
-		compare = greater_than
-	}
-	check_variable = {
-		var = bio_seed_payload_consumed
-		value = bio_seed_payload_required
-		compare = less_than_or_equals
+	OR = {
+		# Operative releases use the native non-refundable operation equipment
+		# block. The operation engine exposes no runtime debit amount to script.
+		check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
+		AND = {
+			NOT = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals } }
+			check_variable = { var = bio_seed_payload_debit_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_seed_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+			check_variable = { var = bio_seed_payload_consumed value = constant:bio_lifecycle_math.zero compare = greater_than }
+			check_variable = { var = bio_seed_payload_consumed value = bio_seed_payload_required compare = less_than_or_equals }
+		}
 	}
 	OR = {
 		check_variable = {

@@ -1,0 +1,352 @@
+# ============================================================================
+# CHAOS REDUX - ORDINARY BIOLOGICAL OPERATION SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Gates Anthrax, Plague, Tularemia, and Smallpox operative releases by exact
+#   project, CBRN readiness, use policy, relationship, and selected-state data.
+# - Gives every ordinary agent a distinct native state selector.
+# - Validates captured operatives through the current operation token, assigned
+#   country, assigned state, and any exact matching lifecycle episode.
+# - Weaponized zombies are intentionally excluded.
+# ============================================================================
+
+bio_operative_release_agent_is_valid = {
+	OR = {
+		check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+}
+
+# Country scope. The temporary agent code must match the completed offensive
+# project whose exact equipment model the native operation reserves.
+bio_operative_release_actor_has_agent_project = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			is_special_project_completed = sp:plague_bomb
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			is_special_project_completed = sp:tularemia_bomb
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			is_special_project_completed = sp:smallpox_bomb
+		}
+	}
+}
+
+# State-scope selector helpers. FROM is the native operation target country.
+bio_operative_release_common_target_state = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	impassable = no
+	is_controlled_by = FROM
+}
+
+bio_operative_release_anthrax_target_state = {
+	bio_operative_release_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+	OR = {
+		air_base > constant:bio_operation_plant_outbreak.state_building_floor
+		naval_base > constant:bio_operation_plant_outbreak.state_building_floor
+		supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+		industrial_complex > constant:bio_operation_plant_outbreak.state_building_floor
+		arms_factory > constant:bio_operation_plant_outbreak.state_building_floor
+		biowarfare_facility > constant:bio_operation_plant_outbreak.state_building_floor
+	}
+}
+
+bio_operative_release_plague_target_state = {
+	bio_operative_release_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_plague_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_operation_plant_outbreak.plague_population_threshold_k
+		supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+		infrastructure > constant:bio_operation_plant_outbreak.plague_infrastructure_threshold
+	}
+}
+
+bio_operative_release_tularemia_target_state = {
+	bio_operative_release_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_tularemia_episode = yes }
+	OR = {
+		any_state_division = { always = yes }
+		supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+	}
+}
+
+bio_operative_release_smallpox_target_state = {
+	bio_operative_release_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_smallpox_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_operation_plant_outbreak.smallpox_population_threshold_k
+	}
+}
+
+# State scope. Event-target controller proof is separate from the target-type
+# profile so the same profile can be reused by resolution and capture checks.
+bio_operative_release_state_matches_current_agent_profile = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+			OR = {
+				air_base > constant:bio_operation_plant_outbreak.state_building_floor
+				naval_base > constant:bio_operation_plant_outbreak.state_building_floor
+				supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+				industrial_complex > constant:bio_operation_plant_outbreak.state_building_floor
+				arms_factory > constant:bio_operation_plant_outbreak.state_building_floor
+				biowarfare_facility > constant:bio_operation_plant_outbreak.state_building_floor
+			}
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			NOT = { bio_lifecycle_state_has_plague_episode = yes }
+			OR = {
+				is_capital = yes
+				has_state_category = city
+				has_state_category = large_city
+				has_state_category = metropolis
+				has_state_category = megalopolis
+				state_population_k > constant:bio_operation_plant_outbreak.plague_population_threshold_k
+				supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+				infrastructure > constant:bio_operation_plant_outbreak.plague_infrastructure_threshold
+			}
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			NOT = { bio_lifecycle_state_has_tularemia_episode = yes }
+			OR = {
+				any_state_division = { always = yes }
+				supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+			}
+		}
+		AND = {
+			check_variable = { var = bio_operation_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			NOT = { bio_lifecycle_state_has_smallpox_episode = yes }
+			OR = {
+				is_capital = yes
+				has_state_category = city
+				has_state_category = large_city
+				has_state_category = metropolis
+				has_state_category = megalopolis
+				state_population_k > constant:bio_operation_plant_outbreak.smallpox_population_threshold_k
+			}
+		}
+	}
+}
+
+# Country scope with FROM as the proposed victim. Belligerents require
+# strategic authority; attacking a neutral country requires unrestricted use.
+bio_operative_release_can_prepare_against_from = {
+	exists = yes
+	FROM = { exists = yes }
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	has_variable = cbrn_biological_security
+	has_variable = cbrn_attribution_control
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = ROOT } }
+	OR = {
+		AND = {
+			has_war_with = FROM
+			cbrn_policy_allows_strategic_use = yes
+		}
+		AND = {
+			NOT = { has_war_with = FROM }
+			cbrn_policy_allows_extreme_use = yes
+		}
+	}
+}
+
+bio_operative_release_ai_has_safe_domestic_program = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+bio_operative_release_ai_is_desperate_route = {
+	cbrn_ai_route_allows_unrestricted_use = yes
+	cbrn_policy_allows_extreme_use = yes
+	surrender_progress > constant:bio_operation_plant_outbreak.desperate_surrender_threshold
+}
+
+# Country scope with FROM as the proposed victim. Native operation AI can rank
+# target countries with suitable controlled states, but it cannot rank the
+# eventual player/engine-selected state inside that country.
+bio_operative_release_ai_anthrax_target_profile = {
+	FROM = {
+		any_controlled_state = {
+			impassable = no
+			OR = {
+				naval_base > constant:bio_operation_plant_outbreak.state_building_floor
+				supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+				industrial_complex > constant:bio_operation_plant_outbreak.anthrax_ai_industry_threshold
+				arms_factory > constant:bio_operation_plant_outbreak.anthrax_ai_industry_threshold
+				biowarfare_facility > constant:bio_operation_plant_outbreak.state_building_floor
+			}
+		}
+	}
+}
+
+bio_operative_release_ai_plague_target_profile = {
+	FROM = {
+		any_controlled_state = {
+			impassable = no
+			OR = {
+				is_capital = yes
+				has_state_category = metropolis
+				has_state_category = megalopolis
+				state_population_k > constant:bio_operation_plant_outbreak.plague_ai_population_threshold_k
+			}
+		}
+	}
+}
+
+bio_operative_release_ai_tularemia_target_profile = {
+	FROM = {
+		any_controlled_state = {
+			impassable = no
+			any_state_division = { always = yes }
+			supply_node > constant:bio_operation_plant_outbreak.state_building_floor
+		}
+	}
+}
+
+bio_operative_release_ai_smallpox_target_profile = {
+	FROM = {
+		any_controlled_state = {
+			impassable = no
+			OR = {
+				is_capital = yes
+				has_state_category = metropolis
+				has_state_category = megalopolis
+				state_population_k > constant:bio_operation_plant_outbreak.smallpox_ai_population_threshold_k
+			}
+		}
+	}
+}
+
+# Country scope with FROM as the proposed victim. This cannot bypass project,
+# stockpile, policy, target-state, or native operation requirements.
+bio_operative_release_ai_may_target_from = {
+	bio_operative_release_can_prepare_against_from = yes
+	OR = {
+		bio_operative_release_ai_has_safe_domestic_program = yes
+		bio_operative_release_ai_is_desperate_route = yes
+	}
+	OR = {
+		has_country_flag = cbrn_retaliation_authorized
+		FROM = { has_country_flag = used_bioweapon }
+		cbrn_ai_route_allows_first_use = yes
+		bio_operative_release_ai_is_desperate_route = yes
+	}
+}
+
+# Operation scope before any selected-state dereference. This mirrors the
+# current vanilla operation precedent for exact target-state control.
+bio_operative_release_native_operation_scopes_are_valid = {
+	bio_operative_release_agent_is_valid = yes
+	ROOT = { exists = yes }
+	FROM = {
+		exists = yes
+		controls_state = FROM.FROM
+	}
+	ROOT = { NOT = { tag = FROM } }
+}
+
+# Operation scope after exact actor, victim, and selected-state targets have
+# been prepared by the resolver. Native operation equipment is not mirrored
+# into a fabricated runtime amount because the engine exposes no debit value.
+bio_operative_release_native_context_is_valid = {
+	has_event_target = bio_operation_actor
+	has_event_target = bio_operation_victim
+	has_event_target = bio_operation_target_state
+	bio_operative_release_agent_is_valid = yes
+	event_target:bio_operation_actor = {
+		exists = yes
+		bio_operative_release_actor_has_agent_project = yes
+		cbrn_country_has_program = yes
+		cbrn_country_has_operational_readiness = yes
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+		NOT = { is_in_faction_with = event_target:bio_operation_victim }
+		NOT = { is_subject_of = event_target:bio_operation_victim }
+		OR = {
+			AND = {
+				has_war_with = event_target:bio_operation_victim
+				cbrn_policy_allows_strategic_use = yes
+			}
+			AND = {
+				NOT = { has_war_with = event_target:bio_operation_victim }
+				cbrn_policy_allows_extreme_use = yes
+			}
+		}
+	}
+	event_target:bio_operation_victim = {
+		exists = yes
+		NOT = { is_subject_of = event_target:bio_operation_actor }
+	}
+	event_target:bio_operation_target_state = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		impassable = no
+		CONTROLLER = { tag = event_target:bio_operation_victim }
+		bio_operative_release_state_matches_current_agent_profile = yes
+	}
+}
+
+# Character scope in on_operative_captured. ROOT is the country in which the
+# operative was working and FROM is the operative's employing country.
+bio_operative_release_captured_operative_has_ordinary_operation = {
+	OR = {
+		operative_leader_operation = operation_plant_anthrax_outbreak
+		operative_leader_operation = operation_plant_plague_outbreak
+		operative_leader_operation = operation_plant_tularemia_outbreak
+		operative_leader_operation = operation_plant_smallpox_outbreak
+	}
+}
+
+bio_operative_release_capture_context_is_valid = {
+	bio_operative_release_captured_operative_has_ordinary_operation = yes
+	ROOT = { exists = yes }
+	FROM = { exists = yes }
+	ROOT = { NOT = { tag = FROM } }
+	has_variable = bio_operation_capture_country
+	has_variable = bio_operation_capture_state
+	check_variable = { var = bio_operation_capture_state value = constant:bio_lifecycle_math.zero compare = greater_than }
+	var:bio_operation_capture_country = { tag = ROOT }
+}
+
+bio_operative_release_capture_matches_seeded_episode = {
+	meta_trigger = {
+		text = {
+			OR = {
+				has_state_flag = bio_agent_[BIO_AGENT]_incubating
+				has_state_flag = bio_agent_[BIO_AGENT]_active
+			}
+			check_variable = { var = bio_agent_[BIO_AGENT]_route value = constant:bio_lifecycle_route.operative_release compare = equals }
+			check_variable = { var = bio_agent_[BIO_AGENT]_source value = constant:bio_lifecycle_source.deliberate compare = equals }
+			has_variable = bio_agent_[BIO_AGENT]_actor
+			has_variable = bio_agent_[BIO_AGENT]_victim
+			var:bio_agent_[BIO_AGENT]_actor = { tag = event_target:bio_operation_actor }
+			var:bio_agent_[BIO_AGENT]_victim = { tag = event_target:bio_operation_victim }
+		}
+		BIO_AGENT = "[?bio_operation_agent|.0]"
+	}
+}

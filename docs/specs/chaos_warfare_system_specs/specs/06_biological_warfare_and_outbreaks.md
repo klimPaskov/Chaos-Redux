@@ -231,13 +231,21 @@ Doctrine cannot create, reveal, authorize, or unlock camps, extermination sites,
 
 The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. It does not seed contamination from continuous air activity or infer a launch state.
 
+The ordinary operative-release tranche implements four separate native intelligence operations for Anthrax, Plague, Tularemia, and Smallpox. Each operation uses its native selected state, agent-specific state profile, native non-refunded agent equipment, distinct preparation time and equipment bill, and abort, partial-release, or full-release resolution. Partial and full release enter the same state-owned lifecycle as the strategic raid with the operative-release route profile; an abort records an attempt but does not create confirmed biological-use history. The operation engine does not expose the runtime amount charged by its equipment block, so the native cost and `return_on_complete = no` are authoritative and no numeric payload proof or lifecycle amount is fabricated for this route.
+
+The current-version `on_operative_captured` hook reads the captured character's exact operation token, assigned country, and positive assigned state. Every actual capture callback is evaluated immediately. A capture matching a live seeded episode creates confirmed attribution and a one-shot outbreak coverup consequence; otherwise it creates attempt and coverup consequences without falsely recording completed weapon use. The engine exposes no unique operation-instance identifier, so actual captured operatives cannot be deduplicated by operation without inventing identity. Missing or mismatched context fails closed, with no inferred country, inferred state, periodic search, proxy, estimator, or fallback.
+
+Theater Contamination and Terminal Hazard doctrine increase operation success and refund bounded Command Power after resolution while leaving the native equipment cost intact. Operation AI uses defensive-profile suppression and agent-specific target-country evidence. The native API cannot rank the eventual selected state, and current-version triggers expose no exact state-scope frontline predicate; Tularemia therefore uses only verified troop-presence and supply-node evidence rather than unrelated buildings or an estimator.
+
 The ordinary lifecycle reads `smallpox_vaccination_program_idea` directly for agent-specific growth, spread, and death multipliers. Recovery calls `bio_lifecycle_cleanup_state_response_if_no_ordinary_episode` for the exact state. This removes field hospitals, quarantine, stale legacy protection state, and the quarantine modifier only after no ordinary episode remains.
 
 The current implementation has no `common/on_actions/chaosx_on_actions_biowarfare.txt` file and no startup or weekly calls to `initialize_smallpox_vaccination_protection`, `progress_smallpox_vaccination`, or `check_all_states_for_contamination_cleanup`. Ordinary biological progression and cleanup do not use a global daily, weekly, or monthly country pulse.
 
 `GFX_decision_bio_designate_strategic_raid_staging_state` is registered in `interface/biological_warfare.gfx`. Strategic raids reuse the byte-preserved Chaos Redux raid icons under `gfx/interface/military_raids/`.
 
-These implemented surfaces do not close Stage 7. The operative, battlefield, sabotage, doomsday, facility, countermeasure, asset, localisation, AI, and scenario requirements remain accepted wherever the Stage 7 plan has not established completion evidence.
+The operative operations reuse the existing `GFX_operations_plant_bioweapon`, `GFX_operations_plant_bioweapon_map`, and operation phase sprites. Weaponized-zombie operations remain separate and retain their existing project, operation, effects, and player-facing outcome text.
+
+These implemented surfaces do not close Stage 7. Battlefield dissemination, food/water/medical sabotage, laboratory accidents, captured-facility release, doomsday release, the complete countermeasure and treatment package, remaining required assets and localisation, package scenarios, and the mapped audits remain accepted wherever the Stage 7 plan has not established completion evidence.
 
 ## Incubation and detection
 

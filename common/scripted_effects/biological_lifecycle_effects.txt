@@ -294,6 +294,19 @@ bio_lifecycle_prepare_result_multipliers = {
 }
 
 bio_lifecycle_finalize_seed_values = {
+	set_temp_variable = { bio_seed_result_intensity_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_result_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_result_evidence_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_potency_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_growth_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_spread_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_death_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_duration_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_medical_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_intensity_final = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_final = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_final = constant:bio_lifecycle_math.zero }
 	bio_lifecycle_prepare_result_multipliers = yes
 	bio_lifecycle_prepare_actor_doctrine_snapshot = yes
 	set_temp_variable = { bio_seed_intensity_final = bio_seed_intensity }
@@ -501,6 +514,9 @@ bio_lifecycle_prepare_incubation_delay = {
 }
 
 bio_lifecycle_schedule_incubation_for_current_agent = {
+	set_temp_variable = { bio_incubation_days = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_incubation_random_days = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_incubation_random_roll = constant:bio_lifecycle_math.zero }
 	meta_effect = {
 		text = {
 			if = {
@@ -602,9 +618,41 @@ bio_lifecycle_record_internal_deliberate_use = {
 }
 
 # Canonical state-scoped entry point. Deliberate records fail closed unless the
-# exact actor and positive payload debit are proven.
+# exact actor and route-specific debit authority are proven.
 bio_lifecycle_dispatch_seed = {
 	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_friendly_spread_risk = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_growth = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_decline = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_spread_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_detection_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_medical_points_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_low = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_medium = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_high = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_death_cap_fraction = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_result_intensity_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_result_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_result_evidence_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_potency_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_growth_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_spread_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_death_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_duration_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_medical_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_seed_intensity_final = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_final = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_final = constant:bio_lifecycle_math.zero }
 	bio_lifecycle_prepare_route_profile = yes
 	bio_lifecycle_prepare_agent_profile = yes
 	bio_lifecycle_finalize_seed_values = yes
@@ -812,6 +860,32 @@ bio_lifecycle_calculate_response_values = {
 }
 
 bio_lifecycle_attempt_detection_for_current_agent = {
+	set_temp_variable = { bio_agent_base_growth = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_decline = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_spread_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_detection_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_medical_points_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_low = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_medium = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_high = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_death_cap_fraction = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_surveillance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_containment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_medical = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_biosecurity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_spread_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_death_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_detection_environment_add = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_growth_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_math.one }
 	bio_lifecycle_load_current_agent_record = yes
 	if = {
 		limit = {
@@ -1113,6 +1187,60 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 			}
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+}
+
+# State scope. The caller has proven an exact captured ordinary operation,
+# assigned country, assigned state, actor, victim, agent, and matching operative
+# release episode. Capture raises evidence and attribution immediately, adds
+# coverup pressure once, and releases all latent Condemnation without marking
+# the still-incubating or hidden outbreak as medically detected.
+bio_lifecycle_confirm_operative_release_from_capture = {
+	if = {
+		limit = { bio_operative_release_capture_matches_seeded_episode = yes }
+		set_temp_variable = { bio_active_agent = bio_operation_agent }
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						check_variable = {
+							var = bio_agent_[BIO_AGENT]_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_operative_floor
+							compare = less_than
+						}
+					}
+					set_variable = { bio_agent_[BIO_AGENT]_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = bio_agent_[BIO_AGENT]_actor_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_operative_floor
+							compare = less_than
+						}
+					}
+					set_variable = { bio_agent_[BIO_AGENT]_actor_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
+				}
+				if = {
+					limit = { NOT = { has_state_flag = bio_agent_[BIO_AGENT]_operative_capture_coverup_recorded } }
+					add_to_variable = { bio_agent_[BIO_AGENT]_condemnation_base = constant:bio_lifecycle_condemnation.coverup_add }
+					clamp_variable = {
+						var = bio_agent_[BIO_AGENT]_condemnation_base
+						min = constant:bio_lifecycle_math.zero
+						max = constant:bio_lifecycle_condemnation.maximum
+					}
+					set_state_flag = bio_agent_[BIO_AGENT]_operative_capture_coverup_recorded
+				}
+				set_variable = { bio_agent_[BIO_AGENT]_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
+				set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
+				set_state_flag = bio_agent_[BIO_AGENT]_operative_attempt_confirmed_history
+				set_state_flag = bio_confirmed_operative_attribution_history
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+		bio_lifecycle_load_current_agent_record = yes
+		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
+		bio_lifecycle_release_confirmed_condemnation_if_due = yes
 	}
 }
 
@@ -1588,6 +1716,10 @@ bio_lifecycle_refresh_ambiguous_modifier = {
 }
 
 bio_lifecycle_refresh_state_modifiers = {
+	set_temp_variable = { bio_response_surveillance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_containment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_medical = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_biosecurity = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_refresh_original_agent = bio_active_agent }
 	set_temp_variable = { bio_refresh_agent = constant:bio_lifecycle_agent.anthrax }
 	while_loop_effect = {
@@ -1727,6 +1859,7 @@ bio_lifecycle_seed_selected_spread_target = {
 		set_temp_variable = { bio_seed_evidence_override = bio_spread_evidence }
 		set_temp_variable = { bio_seed_condemnation_override = bio_spread_condemnation }
 		CONTROLLER = { save_event_target_as = bio_seed_victim }
+		set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_dispatch_seed = yes
 		if = {
 			limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
@@ -1737,6 +1870,13 @@ bio_lifecycle_seed_selected_spread_target = {
 }
 
 bio_lifecycle_attempt_current_agent_spread = {
+	set_temp_variable = { bio_spread_target_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_spread_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_spread_intensity_component = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_spread_response_remaining = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_repeated_seed_spread_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_spread_cross_border_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_no_spread_chance = constant:bio_lifecycle_math.hundred }
 	if = {
 		limit = {
 			check_variable = { bio_current_intensity > constant:bio_lifecycle_intensity_band.local_min }
@@ -1841,6 +1981,32 @@ bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = {
 }
 
 bio_lifecycle_process_current_agent_tick = {
+	set_temp_variable = { bio_agent_base_growth = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_decline = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_spread_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_base_detection_chance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_medical_points_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_low = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_medium = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_weekly_death_high = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_death_cap_fraction = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_surveillance = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_containment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_medical = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_response_biosecurity = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_spread_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_death_environment_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_detection_environment_add = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_growth_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_math.one }
 	meta_effect = {
 		text = {
 			if = {
