@@ -1,79 +1,163 @@
 # Event 006 resume packet
 
-Updated: 2026-07-15
+Updated: 2026-07-16 after committed baseline `7368cc0`
+
+Status: **Event 006 is incomplete and the goal remains active.**
+
+Committed baseline: `7368cc0bf`.
+
+IW-005 is a committed, independently audited living-BEL overlay. IW-004 BRI and
+IW-010 AJX are committed, bounded country packages with commit-readiness proof.
+These facts do not add any of the three surfaces to a selectable release pool.
 
 ## Read first
 
 1. `006_source_of_truth_map.md`
 2. `../../specs/006_independence_wave_specs/README.md`
-3. `package_bindings/006_current_installed_map_binding_audit.md`
-4. `subagent_handoffs/006_scripted_architecture_handoff.md`
-5. `subagent_handoffs/006_event5_collision_handoff.md`
-6. `super_event_research/006_super_event_audio_verification.md`
+3. `subagent_handoffs/006_transaction_architecture_resolution_2026_07_15.md`
+4. `subagent_handoffs/006_form01_04_readiness_promotion_2026_07_16.md`
+5. `subagent_handoffs/006_form03_promotion_reaudit_2026_07_16.md`
+6. `subagent_handoffs/006_afx_agx_release_readiness_audit_2026_07_16.md`
+7. `subagent_handoffs/006_iw003_cornwall_map_feasibility_2026_07_16.md`
+8. `subagent_handoffs/006_iw005_flanders_independent_audit_2026_07_16.md`
+9. `subagent_handoffs/006_bri_ajx_commit_readiness_reaudit_2026_07_16.md`
+10. `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
 
-The accepted seven-part specification remains binding. The source-of-truth map explains which later evidence is promoted, queued, blocked, superseded, rejected, or unresolved.
+The seven specification parts remain the design authority. Use the source-of-
+truth map for current implementation status and handoff dispositions.
 
-## Frozen dated facts
+## Safe current facts
 
-- Packages: 206.
-- Current geographic map audit: 149 bound, 57 unbound before representation reconciliation.
-- Selectable release registry: 138 bound, 55 unbound; 13 vanilla-route overlays are outside both lists.
-- Current states referenced: 205, all present.
-- Reservation groups: 111, covering every package exactly once.
-- Collision rows: 14.
-- Reserved new tags: 102, all ending in `X`, with zero collision across vanilla, 122 Workshop directories, sibling mods, aliases, cosmetic calls, localisation, history, and flags.
-- Reused registered tags: 91, all present. Shared resolved tags are limited to the package-gated `BIA` and `CHU` pairs.
-- Non-selectable vanilla route overlays: 13.
-- Current dispositions are 9 automatic, 44 if not living, 73 if unique, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 overlay-only.
-- Event 005 exact shared tags: 20.
-- Asset-research tranche: 167 packages. Final assets are not produced.
-- `6001`: blocked recording rights.
-- `6002`: source verified and preserved. Final derivatives are not produced.
+- The event source and localisation are substantial implementations, not
+  placeholders.
+- The 206 accepted packages resolve to 102 reserved `X` tags, 91 reused vanilla
+  tags, and 13 overlay rows.
+- The 2026-07-15 installed-mod audit found zero collision for all 102 reserved
+  tags in the scanned environment.
+- The installed-map registry has 138 selectable bound packages, 55 selectable
+  unbound packages, and 13 overlays.
+- Trabzon state 354 and Kashmir state 441 have implemented cross-group
+  reservation protection. Their old unresolved status is superseded.
+- The synchronized Event 005 and Event 006 release transaction, rollback ledger,
+  point-of-no-return, sponsorship transaction, and Liberations cluster capacity
+  surface are implemented.
+- FORM-01 through FORM-04 are implemented, source-audited, and readiness-
+  promoted. FORM-05 through FORM-48 remain fail-closed.
+- IW-006 AFX and IW-007 AGX were promoted together in `2912e0a46` for ordinary
+  automatic and SCN-008 admission. Their audit is static and is not an in-engine
+  execution result.
+- IW-009 BAY is also compile-time content-attested.
+- The current attested set is IW-006, IW-007, and IW-009. Every other package
+  remains outside the compile-time admission set.
+- Commit `a2c274d1e` contains the independently audited living-BEL IW-005
+  Flanders overlay. It preserves Belgium and is not a selectable Event 006
+  release package. Its one-day timeout versus `on_daily_BEL` edge remains a
+  documented static ordering caveat because engine order is unspecified, and AI
+  completion still depends on opportunistic placement of garrisons in states 6
+  and 977.
+- Commit `45bee09d2` completed the exact five-line ACX, AEX, AFX, AGX, and AJX
+  army-small checksum alignment.
+- Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
+  the repaired FORM transaction integration. Both exact immutable identity
+  helpers and both runtime-preflight ID/tag branches are present. Neither exact
+  ID has compile-time content attestation or a SCN-008 admission branch.
+- Static icon families, portraits, army-small dossiers, advisor dossiers,
+  country flags, FORM-01 through FORM-04 flags, report scenes, super-event art,
+  and final `6002` audio files materially exist.
+- `6002` OGG, WAV, music wrappers, sound wrappers, and station entry are complete.
+  Event 006 gameplay still does not assign audio ID `6002` and fire the
+  settings-aware presentation path.
+- `6001` remains blocked on exact recording rights. No fallback is authorized.
 
-## Current workspace snapshot
+## Current package gates
 
-- `events/006_independence_wave.txt` is still an inert placeholder.
-- `localisation/english/006_independence_wave_l_english.yml` still contains placeholder text.
-- Shared release-coordinator and Event 6 constant surfaces exist as concurrent implementation work, including `common/script_constants/006_independence_wave_constants.txt`, `common/script_constants/006_independence_wave_mechanics_constants.txt`, `common/script_constants/chaosx_liberation_release_constants.txt`, `common/scripted_effects/chaosx_liberation_release_effects.txt`, and `common/scripted_triggers/chaosx_liberation_release_triggers.txt`.
-- This documentation pass did not validate or modify those gameplay files. Treat them as in-flight until the parent reviews their implementation handoff and diff.
-- Triggerable scenario ID `8` is reserved for Independence Wave and Event 6's Every Flag design. Africa Is One is recorded as `SCN-011`.
+| Package | Current state | Resume rule |
+| --- | --- | --- |
+| IW-006 AFX | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
+| IW-007 AGX | Promoted | Preserve exact automatic and SCN-008 gates. Reopen only for a concrete audit defect |
+| IW-009 BAY | Content-attested | Preserve current exact runtime predicates |
+| IW-001 SCO | Package content exists, not attested | Requires a current exact-ID promotion audit |
+| IW-002 WLS | Package content exists, not attested | Requires a current exact-ID promotion audit |
+| IW-008 RHI | Package content exists, not attested | Requires a current exact-ID promotion audit |
+| IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
+| IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
+| IW-004 BRI | Bounded package implemented and commit-audited | Exact identity helper and runtime-preflight branch are present. Run a separate exact-ID content-attestation and SCN-008 admission audit before promotion |
+| IW-010 AJX | Bounded package implemented and commit-audited | Exact identity helper and runtime-preflight branch are present. Run a separate exact-ID content-attestation and SCN-008 admission audit before promotion |
+| Other package IDs | Fail-closed | Implement and audit individually before promotion |
 
-Recheck this workspace snapshot before editing because concurrent agents may advance it.
+Three compile-time attestations do not guarantee a valid wave. The allocator
+must still satisfy exact host, anchor, reservation, Event 005 collision,
+chaos-band, and wave-size gates. Higher bands need more audited packages.
 
-## Parent decisions required before release-planner completion
+## Completed tranches not to repeat
 
-1. Preserve `RG-LAZISTAN` and `RG-PONTUS`, then add a state-level mutual exclusion for state 354 Trabzon.
-2. Require the Himalayan confederation route to consume or exclude the Kashmir reservation on state 441.
-3. Keep `6001` blocked unless permission or a waiver clears the exact recording. Ask the user before reopening selection.
-4. Leave approved titles, buttons, and quote strings unchanged unless the user explicitly authorizes a formatting change.
+- Core mechanics, event lifecycle, evolutions, focus and decision framework.
+- Dynamic force registry and package allocator.
+- Synchronized Event 005 and Event 006 release transaction.
+- Anchor-first correction and rollback hardening.
+- Durable sponsorship transaction.
+- All-countries scenario framework.
+- Liberations cluster integration.
+- Installed-map binding and installed-mod tag audits.
+- FORM-01 through FORM-04 implementation, tags, flags, identity aliases, and
+  readiness promotion.
+- Character portrait regeneration, regional advisor dossiers, and army-small
+  dossier correction.
+- IW-003 Cornwall feasibility audit and no-fallback blocker.
+- AFX and AGX coordinated static promotion.
+- Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
+  `a2c274d1e`.
+- Five-line army-small checksum alignment in `45bee09d2`.
+- Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
+  closeout in `7368cc0bf`.
 
-## Recommended implementation sequence
+## Immediate continuation order
 
-1. Review the shared release-coordinator foundation against the architecture handoff and installed documentation.
-2. Compile the 138 selectable bound packages and 55 explicit selectable-unbound outcomes from the current binding CSV. Keep all 13 vanilla-route overlays out of the allocator.
-3. Implement the Trabzon and Kashmir state-level collision gates.
-4. Integrate Event 005's 20 shared tags, exact provisional footprints, origin exclusions, and focus-replacement guard into the joint Liberations preflight.
-5. Implement Event 6 planning, lock validation, synchronous execution, and result presentation without whole-world periodic iteration.
-6. Replace the inert entry event and placeholder localisation only when its complete event-log, actor, details, evolution, and catalog wiring can be updated together.
-7. Continue country mechanics, decisions, focus composition, AI, network, league, formable, Every Flag, achievement, and asset tranches from the accepted specification.
-8. Produce and wire `6002` from its verified source. Leave `6001` absent until cleared.
-9. Run the required implementation auditors before any completion claim.
+1. Audit IW-004 BRI for exact-ID compile-time content attestation and SCN-008
+   admission. Keep this separate from AJX.
+2. Audit IW-010 AJX for exact-ID compile-time content attestation and SCN-008
+   admission. Keep this separate from BRI.
+3. Audit SCO, WLS, and RHI as exact promotion candidates. Their package content
+   and formable dependencies do not by themselves authorize runtime admission.
+4. Expand the audited automatic pool until every accepted wave band has enough
+   mutually compatible candidates. Preserve reservation-first planning and
+   Event 005 collision checks.
+5. Wire Event 006 super-event presentation and settings-aware `6002` playback.
+   Keep `6001` absent.
+6. Continue package and FORM-05 through FORM-48 implementation with bespoke
+   identities, gameplay, AI, localisation, assets, and audits.
+7. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
+   only after their GUI sizes, states, frame plans, and consumers are locked.
+8. Reconcile event logs, event details, documentation, asset manifests, and the
+   event workbook after the active gameplay tranche settles.
+9. Run the relevant country-package, decision/mission, localisation, and Event
+   006 completion audits before any overall completion claim.
 
-## Do not repeat unless inputs change
+## Hard blockers and missing completion evidence
 
-- Do not redo the 2026-07-14 installed-map scan unless the installed build or map overrides change.
-- Rerun the installed tag scan before any later tag migration or final completion audit; a newly installed mod can consume a previously safe value.
-- Do not reopen accepted package identities or dispositions to make an unbound package fit.
-- Do not treat the explorer's old claim that no release foundation exists as current.
-- Do not treat the optional map-tool budget error as evidence.
-- Do not process the `6001` source URL.
+- IW-003 has no legal current-map state binding.
+- `6001` lacks verified redistribution rights for the specified recording.
+- The Assyria survival achievement lacks an approved exact motif and ownership
+  decision.
+- ASSET-040 through ASSET-043 have no authored frame packages.
+- FORM-05 through FORM-48 remain incomplete and fail-closed.
+- IW-004 and IW-010 still lack exact-ID content-attestation and SCN-008 admission
+  audits. Their committed package and preflight plumbing does not close that
+  evidence gap.
+- The event workbook and every event-log/detail surface have not been reconciled
+  against the current implementation.
+- No final balance and Event 006 completion audit covers the whole accepted spec.
 
-## Remaining production queue
+## Do not infer
 
-- 167-package asset tranche, plus later route-only and exact-community tranches.
-- Individual portrait and symbol rights or identity blockers recorded in `subagent_handoffs/006_asset_source_research_handoff.md`.
-- Final super-event display slots and images.
-- `6002` OGG and WAV derivatives, wrappers, and settings-aware firing.
-- Gameplay, localisation, docs, workbook, event log, details window, evolution, and audit alignment.
-
-No fallback, package broadening, silent reservation-group merge, substitute recording, or completion simplification is authorized by this packet.
+- A tag, history shell, portrait, flag, focus, or adapter does not make a package
+  runtime-ready.
+- ACX and AEX visual files do not authorize standalone releases.
+- The IW-005 living-BEL overlay is not a selectable release package.
+- BRI and AJX exact identity helpers and runtime-preflight branches are
+  non-authorizing prerequisites, not admission proof.
+- A static source audit is not an in-engine execution result.
+- Historical handoff completion wording is not current when a later audit,
+  commit, or `006_source_of_truth_map.md` narrows it.
+- Do not rewrite accepted specs to match partial implementation.
+- Do not add a fallback for Cornwall or `6001` without explicit user approval.
