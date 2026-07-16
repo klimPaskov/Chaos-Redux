@@ -66,7 +66,7 @@ not a current runtime report.
 | FORM-01 through FORM-05 | Implemented, audited, and readiness-promoted | `98ec32e93` plus the operational, FORM-03, readiness-promotion, and Mediterranean FORM-05 audit chains. FORM-05 is the sovereign, charter-driven Mediterranean Island League using cosmetic identity `MIX`; it performs no annexation, core transfer, subject creation, or forced state transfer |
 | FORM-06 through FORM-48 | Fail-closed | No readiness promotion is authorized. Their gameplay identities, emblems, flags, and route integration remain incomplete |
 | Static visual package | Materially produced | Static icon families, report scenes, country flags, FORM-01 through FORM-05 flag packages, and two Event 006 super-event images exist. The portrait authorities own twenty-eight male fictional large portraits and ten commander-small dossiers, plus the protected historical Rupprecht and Matthes portraits. AFX, AGX, AJX, ARX, ASX, BAY, BRI, COR, RHI, SCO, and WLS retain live consumers, while ACX and AEX are unregistered readiness-pool art only. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons. Older portrait checksum commits are historical, not current visual/hash authority |
-| Audio `6002` | Derivatives and registry complete, gameplay firing pending | Final OGG and WAV, music wrappers, sound wrappers, and zero-random-play station entry exist. No Event 006 firing source currently assigns `global.current_super_event_audio_id = 6002` and invokes the presentation flow |
+| Super-event `6002` | Runtime implemented; one route dormant | Final OGG/WAV, wrappers, zero-random station entry, slot-24 dispatch, Event Log payload, settings-aware FIFO, and five predicates exist. Packages 1, 2, 3, and 5 are reachable. Package 4 remains dormant until a fully implemented FORM-42 or FORM-48 hidden-high-chaos carrier is readiness-promoted |
 | Audio `6001` | Hard blocked | The specified recording does not have verified redistribution rights for this repository. No substitute or fallback is authorized |
 | Documentation and workbook alignment | Not completion-audited | Current gameplay facts have advanced beyond older status prose. The event detail workbook and every event-log/detail surface were not re-audited in this curator pass |
 
@@ -172,6 +172,12 @@ The authoritative current static asset ledger is
 idea, decision, mission, achievement, portrait, dossier, report, and formable
 packages. It also records these open boundaries:
 
+- Sixteen Event 006 achievements are accepted in design, but zero have gameplay
+  definitions and zero have localisation sets. Fifteen have final normal,
+  grey, and not-eligible DDS triplets. `chaosx_006_assyria_survives` is the only
+  missing art triplet. Radical Bloc currently has only its package-1
+  qualification record; no achievement is awarded.
+
 The accepted portrait ledgers are
 `../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
 and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
@@ -196,13 +202,16 @@ live.
 For super-event `6002`, the preserved source, final `109.992517 s` OGG and WAV,
 hashes, loudness measurements, and exact wrappers are documented in
 `../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
-The audio registry is complete. Gameplay presentation remains pending because
-no Event 006 firing effect currently assigns audio ID `6002` and calls the
-settings-aware playback path.
+The audio registry, slot-24 dispatch, Event Log payload, and settings-aware FIFO
+submission are complete. Four qualification routes are reachable. The fifth
+predicate is wired but dormant because FORM-42 and FORM-48 remain fail-closed
+and no promoted carrier can yet hold `hidden_high_chaos`.
 
-Super-event `6001` remains absent. Its exact recording-rights blocker is current.
-Do not generate, source, or substitute a different recording without explicit
-user approval.
+Super-event `6001` remains absent from runtime dispatch, localisation, audio,
+and firing. ASSET-005's static DDS exists and its sprite is registered, but it
+is deliberately held without a slot-23 consumer. Its exact recording-rights
+blocker is current. Do not generate, source, or substitute a different
+recording without explicit user approval.
 
 ## Handoff and plan dispositions
 
@@ -223,12 +232,13 @@ user approval.
 | AFX Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-006 gameplay, unique-art, cleanup, host-survival, collision, and admission authority |
 | RHI/BAY Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-008/IW-009 gameplay, FORM-04 delegation, unique-art, cleanup, host-survival, collision, and admission authority |
 | Mediterranean IW-017/IW-018/IW-019 and FORM-05 audit chain | Implemented evidence | `006_mediterranean_tranche_admission_closeout_2026_07_16.md` routes the current COR/ARX/ASX gameplay, FORM-05 charter and congress system, male HOI4 portraits, historical flat flags, exact readiness, cleanup, host-survival, collision, and admission evidence |
+| `006_form48_pacific_federation_implementation_plan_2026_07_16.md` | Accepted next tranche | Implement FORM-48 with HBX carrier, autonomous HAW/FSM members, and collision-cleared PFX cosmetic identity. FORM-42 remains fail-closed because its current founding set consumes protected capitals or lacks valid bindings |
 | `006_iw003_cornwall_map_feasibility_2026_07_16.md` | Blocked | Current no-fallback map blocker |
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
 | `006_event6_advisor_icon_withdrawal_2026_07_16.md` and its final audit | Current user-directed asset boundary | Event 006 gameplay advisor offices remain active but carry no custom advisor portrait block, sprite registration, runtime DDS, or explicit gender metadata |
 | Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence; current hashes are in the 2026-07-16 portrait package runtime ledger |
-| Super-event audio research handoff | Partly superseded | `6002` production steps are complete. Its rights research and `6001` blocker remain current |
+| Super-event audio research handoff | Partly superseded | `6002` production and runtime wiring are complete. Its rights research and `6001` blocker remain current. Use `docs/super_events/006_independence_wave_super_event_research.md` for the canonical implementation contract |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
 | `006_round_number_balance_preflight_2026_07_15.md` | Implemented evidence | Commit `879e511cc` contains its reviewed tuning tranche. It is not a final Event 006 balance or completion audit |
 
@@ -244,7 +254,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
 | Older portrait handoffs approve 2026-07-15 fictional or army-small art | Superseded by the 2026-07-16 male-HOI4 manifest and final independent audit |
-| Older audio notes say `6002` derivatives and wrappers are absent | Superseded for production and registry. Gameplay firing remains pending |
+| Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable route is dormant behind FORM-42/48. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
 | Earlier AFX source was revoked for missing Level 2 content | Resolved. The Sambre-Meuse lane and unique visual package passed the final exact-package audit, and IW-006 is restored to the exact registry |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
 | Older curator status for BRI and AJX | Superseded by implementation commit `7368cc0bf` and exact promotion commits `5d17e55b3` and `f64d9640e` |
@@ -257,10 +267,13 @@ Parent decisions still required:
    selectable release registry.
 2. Preserve the eleven exact package attestations and ten disjoint capacity
    groups that allow World Collapse to attempt exactly ten releases.
-3. Wire the Event 006 super-event presentation and settings-aware `6002`
-   playback. Keep `6001` blocked unless its exact recording rights are cleared.
-4. Continue FORM-06 through FORM-48 and the remaining package registry without
-   generic flags, emblems, portraits, or regional-report substitutes.
+3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
+   and settings-aware queued `6002` playback. Keep `6001` blocked unless its
+   exact recording rights are cleared.
+4. Implement the accepted FORM-48 HBX/HAW/FSM/PFX tranche next so the dormant
+   hidden-formable super-event route gains a real carrier. Keep FORM-42 and all
+   other unfinished families fail-closed; use no generic flags, emblems,
+   portraits, or regional-report substitutes.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
 

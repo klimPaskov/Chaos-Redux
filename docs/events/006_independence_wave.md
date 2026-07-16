@@ -131,6 +131,40 @@ Final source, processed PNG, DDS, provenance, contact-sheet, and animation recor
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
+## Dangerous milestone super-event
+
+`Every Border a Casus Belli` uses display slot 24, audio ID 6002, and
+`GFX_super_event_006_asset_006_revisionist_milestone`. It is a one-shot OR
+across five factual predicates: a seven-member radical offensive league meeting the
+75 common-cause, 60 reserve, and three-action gates; an exact ten-country
+Totalen Chaos or World Collapse wave that creates at least three distinct
+verified former-host border claims for armed or radical actors; at least three
+successful released-country declarations against former hosts in one accepted
+Maximum scenario batch; a hidden-high-chaos formable carried by the exact
+leader of a qualifying radical league; or three successfully committed
+league-backed DM-57 sponsorship contracts.
+
+Four routes are presently reachable. The hidden-formable predicate is wired,
+but FORM-42 and FORM-48 are the only registered `hidden_high_chaos` families
+and both remain fail-closed with their carrier packages incomplete. That route
+cannot publish until one of those formables is implemented and promoted; no
+ordinary formable is accepted as a substitute. Revisionist pressure is a
+visible scalar, while each completed high-chaos focus or qualifying league
+operation adds exactly one completed action to the separate three-action gate.
+
+The qualifying actor and reason are frozen at the mutation boundary. Event 6
+history receives payload 6002 without creating a sixth evolution. The shared
+settings-aware FIFO preserves any already visible super-event and later
+dispatches slot 24 with its registered volume wrapper. Only the first package
+records Radical Bloc achievement qualification. The achievement definition and
+its separate containment-survival award path remain unimplemented.
+
+`The League of New States` remains absent: the accepted 1949 recording lacks
+verified United States redistribution permission, so slot 23 and audio ID 6001
+are not wired and no replacement has been substituted. Full trigger, source,
+rights, checksum, exclusion, and implementation details are in
+`docs/super_events/006_independence_wave_super_event_research.md`.
+
 ## FORM-03 LCX post-charter progression
 
 A fully committed AFX or AGX LCX carrier opens events `chaosx.nr6.300` through

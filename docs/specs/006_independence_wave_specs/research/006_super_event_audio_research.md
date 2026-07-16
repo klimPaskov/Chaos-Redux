@@ -54,7 +54,7 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 **Final path:** `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg`
 
-**Suggested audio ID:** `6002`, subject to the implementation collision check.
+**Runtime audio ID:** `6002`; the implementation collision check found no conflicting super-event audio registration.
 
 **Fit:** The final escalation communicates organized military confidence and a widening war. It is reserved for the frightening coordinated threshold and cannot play for an ordinary release wave.
 
@@ -68,8 +68,9 @@ The cleared `6002` derivative has been produced from the preserved source,
 post-encode verified, and registered through the unique music and sound wrapper
 families. Its exact measurements and checksums are recorded in
 `../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
-The final dangerous-bloc firing effect must still assign audio ID `6002` before
-calling the settings-aware playback helper. `6001` remains unwired until its
+The dangerous-bloc firing effect submits audio ID `6002` and display slot 24 to
+the shared settings-aware FIFO; the dispatcher assigns the ID when the entry
+becomes visible and calls the playback helper. `6001` remains unwired until its
 blocker is cleared. A different recording is not authorized without explicit
 user approval.
 

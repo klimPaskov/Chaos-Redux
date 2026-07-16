@@ -2,6 +2,13 @@
 
 Research date: 2026-07-14
 
+> Runtime reconciliation, 2026-07-16: this file preserves the original research
+> and identifier audit. Audio 6002 has since been produced, registered, and
+> wired through slot 24 and the settings-aware FIFO. Any statement below that
+> calls 6002 absent or future work is superseded by
+> `docs/super_events/006_independence_wave_super_event_research.md` and the final
+> production manifest. Audio 6001 remains blocked and absent from runtime.
+
 This note independently verifies the two accepted Event 006 super-event recordings. It records source identity, rights evidence, preserved-source state, timing, technical measurements, audio identifiers, and the exact production/wiring handoff. It does not change the accepted music choices, process final OGG/WAV derivatives, or wire gameplay.
 
 ## Outcome
@@ -24,7 +31,11 @@ Current Chaos Redux precedent was taken from:
 - `sound/chaosx_sound.asset`
 - `common/scripted_effects/chaosx_settings_effects.txt`
 
-The registered super-event audio surface currently tops out at ID `56`. Neither `6001` nor `6002` is registered in the music assets, station list, sound assets, or settings-aware helper surface. The unrelated `priority = 6001` and `priority = 6002` values in `common/units/zombies.txt` are not audio identifiers and do not collide. Both accepted IDs are therefore available.
+At research time, the registered super-event audio surface topped out at ID
+`56`; neither 6001 nor 6002 was registered. That collision finding established
+both IDs as available. Audio 6002 is now registered. The unrelated
+`priority = 6001` and `priority = 6002` values in `common/units/zombies.txt` are
+not audio identifiers and do not collide.
 
 ## Audio ID 6001: The League of New States
 
@@ -173,7 +184,7 @@ preserved source and exact accepted interval. Post-encode verification found:
 The full production record is in
 `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`.
 
-## Precise future wiring handoff
+## Implemented 6002 wiring record
 
 The current settings helper is already dynamic. `play_dynamic_super_event_music` builds `chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]`, and `play_dynamic_super_event_sound` builds `chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]`. No helper rewrite is required for IDs `6001` or `6002`.
 
@@ -196,12 +207,16 @@ For the verified cue, the required identifiers are:
 - sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
 - each sound wrapper should retain `max_audible = 1` and `max_audible_behaviour = fail` and should not enable looping.
 
-The firing effect must set `global.current_super_event_audio_id = 6002` before calling `play_current_super_event_audio = yes`, after the super-event display state is established. Do not register or fire the parallel `6001` identifiers while its recording license is blocked.
+The implemented dangerous-milestone publisher submits audio ID 6002 and slot 24
+to the settings-aware FIFO; its dispatcher assigns the ID immediately before
+the existing playback call. Do not register or fire the parallel 6001 audio
+identifiers while its recording license is blocked.
 
 ## Remaining uncertainties and blockers
 
 1. Audio ID `6001` has no verified United States redistribution right for the accepted 1949 recording. This is a material blocker, not an attribution omission.
 2. Audio ID `6002` rests on the U.S. federal public-domain basis stated by Commons and used by current repository precedent; it is not accompanied by a worldwide CC0 waiver.
-3. The `6002` gameplay threshold and super-event firing effect still must assign
-   the registered ID before the settings-aware playback call.
+3. The `6002` gameplay threshold submits the registered ID and slot 24 to the
+   settings-aware FIFO; its dispatcher assigns the ID immediately before the
+   playback call.
 4. No fallback, replacement, or substitute recording was used.

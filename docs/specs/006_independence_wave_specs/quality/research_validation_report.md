@@ -90,7 +90,7 @@ The production prompt and research files contain two distinct approved packages:
    - Hosea 8:7 King James Version quote and attribution recorded
    - Tchaikovsky United States Marine Band recording, segment, rights basis, preserved source checksum, final path, and suggested audio ID recorded
 
-The two reserved OGG paths and suggested IDs are distinct. Both selected edit plans use 110-second segments. Only `6002` has a cleared and preserved source for later production.
+The two reserved OGG paths and IDs are distinct. Both selected edit plans use 110-second segments. Only `6002` has a cleared source and produced runtime derivative; `6001` remains blocked and absent.
 
 ## Package integrity checks
 
@@ -112,7 +112,7 @@ The remaining tasks are implementation, production, and explicit blocker resolut
 - final ordinary localisation
 - visual asset sourcing and generation
 - obtain rights clearance for the accepted `6001` recording, or ask the user before reopening selection
-- trim, convert, checksum, and wire the verified `6002` source
+- retain and audit the implemented `6002` derivative, trigger, history, and queued playback wiring
 - gameplay, AI, map, scenario, focus, decision, GUI, and super-event validation
 
 The map scan is complete for the 2026-07-14 snapshot and the tag architecture is locked for the 2026-07-15 scan universe. The scans must be repeated if the installed build or registries change. Adapter and overlay implementation remains unproven until gameplay files and route preservation are audited. No fallback recording is authorized.

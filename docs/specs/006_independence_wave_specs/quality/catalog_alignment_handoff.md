@@ -63,7 +63,7 @@ The event has two threshold-based super-event roles:
 - formation of a meaningful league or coalition among Event 6 states
 - emergence of a dangerous coordinated bloc, extreme high-chaos wave, or similarly global milestone
 
-Ordinary waves do not receive super-events. The two milestone titles, text, buttons, quotes, and musical selections are approved in the research files. Images and the cleared `6002` final audio remain production work. The exact `6001` recording is blocked for United States redistribution and must remain unwired until permission or a waiver clears it.
+Ordinary waves do not receive super-events. The two milestone titles, text, buttons, quotes, and musical selections are approved in the research files. The dangerous milestone's image, cleared `6002` audio, five trigger predicates, history row, and settings-aware queued playback are implemented. Four predicates have reachable producers; the hidden-formable predicate remains dormant until FORM-42 or FORM-48 and its carrier are fully implemented and promoted. The exact `6001` recording is blocked for United States redistribution and remains absent until permission or a waiver clears it.
 
 ### Triggerable scenario proposal
 

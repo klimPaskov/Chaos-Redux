@@ -434,7 +434,6 @@ independence_wave_focus_reward_league_revisionism = {
 	set_temp_variable = { independence_wave_league_shared_reserve_delta = constant:independence_wave_value.minor_gain }
 	set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_value.minor_loss }
 	independence_wave_change_league_values = yes
-	independence_wave_focus_add_revisionist_pressure = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -638,7 +637,14 @@ independence_wave_focus_add_revisionist_pressure = {
 		limit = { has_independence_wave_world_collapse_mandate = yes }
 		multiply_temp_variable = { independence_wave_focus_revisionist_delta = constant:independence_wave_allocation_factor.world_collapse_ambition }
 	}
-	add_to_variable = { global.independence_wave_league_revisionist_actions = independence_wave_focus_revisionist_delta }
+	add_to_variable = { global.independence_wave_league_revisionist_pressure = independence_wave_focus_revisionist_delta }
+	independence_wave_clamp_league_values = yes
+}
+
+# Records one completed revisionist operation. Callers evaluate the dangerous
+# milestone only after the rest of their transactional state changes finish.
+independence_wave_record_revisionist_action = {
+	add_to_variable = { global.independence_wave_league_revisionist_actions = constant:independence_wave_plan.loop_increment }
 }
 
 independence_wave_focus_open_signature_module = {

@@ -368,6 +368,21 @@ independence_wave_decision_publish_breakaway_sponsorship = {
 		set_variable = { independence_wave_sponsored_opening_strength = constant:independence_wave_decision_gate.sponsorship_opening_strength }
 		set_variable = { independence_wave_sponsored_route = constant:independence_wave_government_route.radical_sovereignty }
 		if = {
+			limit = {
+				ROOT = {
+					is_independence_wave_active_country = yes
+					has_country_flag = independence_wave_league_member
+				}
+				OR = {
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+				}
+			}
+			set_state_flag = independence_wave_dm57_league_sponsorship_active
+		}
+		else = { clr_state_flag = independence_wave_dm57_league_sponsorship_active }
+		if = {
 			limit = { NOT = { is_in_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS } } }
 			add_to_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
 		}
@@ -380,6 +395,7 @@ independence_wave_decision_publish_breakaway_sponsorship = {
 independence_wave_clear_breakaway_sponsorship_record = {
 	remove_from_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
 	clr_state_flag = independence_wave_dm57_sponsorship_active
+	clr_state_flag = independence_wave_dm57_league_sponsorship_active
 	clear_variable = independence_wave_sponsoring_country
 	clear_variable = independence_wave_sponsorship_generation
 	clear_variable = independence_wave_sponsored_opening_strength
@@ -464,6 +480,10 @@ independence_wave_consume_committed_breakaway_sponsorships = {
 			limit = { NOT = { has_variable = global.independence_wave_successful_sponsored_releases } }
 			set_variable = { global.independence_wave_successful_sponsored_releases = constant:independence_wave_planner.no_candidates }
 		}
+		if = {
+			limit = { NOT = { has_variable = global.independence_wave_successful_league_sponsored_releases } }
+			set_variable = { global.independence_wave_successful_league_sponsored_releases = constant:independence_wave_planner.no_candidates }
+		}
 		set_temp_variable = { independence_wave_sponsorship_commit_index = constant:independence_wave_plan.first_array_index }
 		while_loop_effect = {
 			limit = {
@@ -502,12 +522,27 @@ independence_wave_consume_committed_breakaway_sponsorships = {
 						check_variable = { var = independence_wave_sponsored_route value = independence_wave_sponsorship_commit_route compare = equals }
 					}
 				}
+				set_temp_variable = { independence_wave_sponsorship_commit_was_league_backed = constant:independence_wave_value.minimum }
+				event_target:independence_wave_sponsorship_commit_state = {
+					if = {
+						limit = { has_state_flag = independence_wave_dm57_league_sponsorship_active }
+						set_temp_variable = { independence_wave_sponsorship_commit_was_league_backed = constant:independence_wave_plan.loop_increment }
+					}
+				}
 				event_target:independence_wave_sponsorship_commit_state = { independence_wave_clear_breakaway_sponsorship_record = yes }
 				event_target:independence_wave_sponsorship_commit_country = {
 					clr_country_flag = independence_wave_sponsorship_commit_pending
 					clear_variable = independence_wave_sponsorship_commit_plan_id
 				}
 				add_to_variable = { global.independence_wave_successful_sponsored_releases = constant:independence_wave_plan.loop_increment }
+				if = {
+					limit = { check_variable = { independence_wave_sponsorship_commit_was_league_backed = constant:independence_wave_plan.loop_increment } }
+					add_to_variable = { global.independence_wave_successful_league_sponsored_releases = constant:independence_wave_plan.loop_increment }
+					clear_global_event_target = independence_wave_last_league_sponsor
+					event_target:independence_wave_sponsorship_commit_sponsor = {
+						save_global_event_target_as = independence_wave_last_league_sponsor
+					}
+				}
 			}
 			add_to_temp_variable = { independence_wave_sponsorship_commit_index = constant:independence_wave_plan.loop_increment }
 		}

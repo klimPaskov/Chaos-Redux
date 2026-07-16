@@ -2,6 +2,11 @@
 
 This checklist evaluates the planning package against the Event 6 request. `Complete in source design` means the requirement is fully specified but not implemented. `Implementation gate` means the final value depends on repository inspection, asset research, or game validation.
 
+This checklist is frozen source-design evidence. Current implementation status,
+including fifteen completed achievement icon triplets but zero of sixteen
+achievement definitions/localisation sets, is maintained in
+`../../../plans/006_independence_wave_plans/006_source_of_truth_map.md`.
+
 | Requirement | Evidence | Status | Remaining gate |
 | --- | --- | --- | --- |
 | Event identity is Event 6, Independence Wave, Minor Repeatable | `README.md`, Part 1 | Complete in source design | Register and validate in the event system |

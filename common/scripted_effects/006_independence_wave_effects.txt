@@ -1978,6 +1978,7 @@ independence_wave_register_league_member = {
 	independence_wave_rebuild_league_regions = yes
 	independence_wave_recalculate_league_confidence = yes
 	independence_wave_refresh_idea_lifecycles = yes
+	independence_wave_evaluate_danger_milestone = yes
 }
 
 independence_wave_unregister_league_member = {
@@ -2182,6 +2183,7 @@ independence_wave_proclaim_consultative_league = {
 		set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.undecided }
 		set_variable = { global.independence_wave_league_proclamation_date = global.date }
 		set_global_flag = independence_wave_consultative_league_active
+		independence_wave_set_league_leader = yes
 		for_each_scope_loop = {
 			array = global.independence_wave_league_founder_entries
 			independence_wave_register_league_member = yes
@@ -2203,6 +2205,7 @@ independence_wave_proclaim_formal_league = {
 		set_variable = { global.independence_wave_league_route = independence_wave_league_route_input }
 		set_variable = { global.independence_wave_league_proclamation_date = global.date }
 		set_global_flag = independence_wave_formal_league_active
+		independence_wave_set_league_leader = yes
 		for_each_scope_loop = {
 			array = global.independence_wave_league_founder_entries
 			independence_wave_register_league_member = yes
@@ -2222,6 +2225,10 @@ independence_wave_upgrade_consultative_league = {
 		set_variable = { global.independence_wave_league_route = independence_wave_league_route_input }
 		set_variable = { global.independence_wave_league_formalization_date = global.date }
 		set_global_flag = independence_wave_formal_league_active
+		if = {
+			limit = { NOT = { has_event_target = independence_wave_league_leader_target } }
+			independence_wave_set_league_leader = yes
+		}
 	}
 }
 
@@ -2238,6 +2245,7 @@ independence_wave_mark_league_durable = {
 			array = global.independence_wave_league_member_country_entries
 			independence_wave_refresh_idea_lifecycles = yes
 		}
+		independence_wave_evaluate_danger_milestone = yes
 	}
 }
 
@@ -2369,7 +2377,11 @@ independence_wave_initialize_league_values = {
 		set_variable = { global.independence_wave_league_patron_capture = constant:independence_wave_league.patron_capture_start }
 		set_variable = { global.independence_wave_league_shared_reserve = constant:independence_wave_league.shared_reserve_start }
 		set_variable = { global.independence_wave_league_member_confidence = constant:independence_wave_league.member_confidence_start }
+		set_variable = { global.independence_wave_league_revisionist_pressure = constant:independence_wave_value.minimum }
 		set_variable = { global.independence_wave_league_revisionist_actions = constant:independence_wave_value.minimum }
+		set_variable = { global.independence_wave_successful_league_sponsored_releases = constant:independence_wave_value.minimum }
+		clear_variable = global.independence_wave_league_leader
+		clear_global_event_target = independence_wave_league_leader_target
 		set_variable = { global.independence_wave_active_country_count = constant:independence_wave_value.minimum }
 		set_variable = { global.independence_wave_network_member_count = constant:independence_wave_value.minimum }
 		set_variable = { global.independence_wave_network_region_count = constant:independence_wave_value.minimum }
@@ -2399,6 +2411,7 @@ independence_wave_clamp_league_values = {
 	clamp_variable = { var = global.independence_wave_league_patron_capture min = constant:independence_wave_league.minimum max = constant:independence_wave_league.maximum }
 	clamp_variable = { var = global.independence_wave_league_shared_reserve min = constant:independence_wave_league.minimum max = constant:independence_wave_league.maximum }
 	clamp_variable = { var = global.independence_wave_league_member_confidence min = constant:independence_wave_league.minimum max = constant:independence_wave_league.maximum }
+	clamp_variable = { var = global.independence_wave_league_revisionist_pressure min = constant:independence_wave_league.minimum max = constant:independence_wave_league.maximum }
 }
 
 # Inputs: `independence_wave_league_cohesion_delta`,
@@ -2426,6 +2439,7 @@ independence_wave_change_league_values = {
 		add_to_variable = { global.independence_wave_league_shared_reserve = independence_wave_league_shared_reserve_delta }
 		add_to_variable = { global.independence_wave_league_member_confidence = independence_wave_league_member_confidence_delta }
 		independence_wave_clamp_league_values = yes
+		independence_wave_evaluate_danger_milestone = yes
 	}
 }
 
@@ -2452,6 +2466,12 @@ independence_wave_end_active_origin = {
 		independence_wave_remove_former_host_ledger_entry = yes
 		independence_wave_remove_origin_ideas = yes
 		independence_wave_clear_patron_ledger = yes
+		if = {
+			limit = { has_country_flag = independence_wave_league_current_leader }
+			clr_country_flag = independence_wave_league_current_leader
+			clear_variable = global.independence_wave_league_leader
+			clear_global_event_target = independence_wave_league_leader_target
+		}
 		clr_country_flag = independence_wave_active_origin
 		set_country_flag = independence_wave_origin_ended
 		set_variable = { liberation_origin = constant:liberation_origin.none }
@@ -2485,5 +2505,10 @@ independence_wave_end_active_origin = {
 		clr_country_flag = independence_wave_league_founder
 		clr_country_flag = independence_wave_network_member
 		clr_country_flag = independence_wave_client_route_locked
+		clr_country_flag = independence_wave_opening_claim_actor
+		clear_variable = independence_wave_opening_claim_plan_id
+		clr_country_flag = independence_wave_danger_former_host_war_actor
+		clear_variable = independence_wave_danger_former_host_war_batch_id
+		clr_country_flag = independence_wave_radical_bloc_qualified_actor
 	}
 }

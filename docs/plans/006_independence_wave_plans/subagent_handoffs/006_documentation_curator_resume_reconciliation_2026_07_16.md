@@ -2,6 +2,12 @@
 
 Date: 2026-07-16
 
+> Superseded snapshot: this handoff predates the slot-24/6002 runtime tranche.
+> Audio 6002 presentation, Event Log history, and settings-aware FIFO playback
+> are implemented. Use `../006_source_of_truth_map.md` and
+> `../../../super_events/006_independence_wave_super_event_research.md` for
+> current status.
+
 Role: `chaosx_documentation_curator`
 
 Mode: documentation-only patch. No gameplay, localisation, assets, workbook,
@@ -77,18 +83,18 @@ documentation change.
 - **Superseded:** the old curator status handoff, the old placeholder/no-assets
   claims, the transaction P0 audit after its resolution, the one-package cluster
   snapshot, and the pre-regeneration northern/western portrait handoff.
-- **Queued:** separate exact-ID admission audits for IW-004 and IW-010, exact
-  promotion audits for SCO, WLS, and RHI, further package and formable
-  implementation, `6002` gameplay presentation, remaining asset work, workbook
-  alignment, and final completion auditing.
+- **Queued at this snapshot:** separate exact-ID admission audits for IW-004 and
+  IW-010, exact promotion audits for SCO, WLS, and RHI, further package and
+  formable implementation, remaining asset work, workbook alignment, and final
+  completion auditing. The later 6002 gameplay presentation tranche is complete.
 
 ## Corrected stale claims
 
 - `events/006_independence_wave.txt` is not an inert placeholder.
 - Event 006 localisation is not a placeholder-only surface.
 - Final Event 006 assets materially exist.
-- Audio `6002` has final OGG and WAV derivatives plus music and sound registry
-  entries. Only gameplay firing and presentation remain pending.
+- Audio `6002` has final OGG and WAV derivatives, music and sound registry
+  entries, slot-24 firing, Event Log history, and settings-aware presentation.
 - Trabzon state 354 and Kashmir state 441 are no longer unresolved architecture
   defects. Their explicit reservation protections are implemented.
 - AFX and AGX are no longer fail-closed in committed source.

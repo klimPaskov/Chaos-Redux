@@ -61,7 +61,8 @@ The following work remains:
 - writing Clausewitz country, state, focus, decision, AI, GUI, event, and localisation files
 - sourcing or producing final flags, portraits, icons, super-event images, and other visual assets
 - obtain permission or a waiver for the accepted `6001` recording, or ask the user before reopening selection
-- trim, convert, checksum, and wire the verified `6002` recording
+- retain and re-audit the completed `6002` derivative, checksum, registries,
+  slot-24 dispatch, and settings-aware FIFO wiring
 - live balance, map safety, AI, scenario, and UI validation
 - writing final localisation for ordinary event surfaces from the existing direction
 
