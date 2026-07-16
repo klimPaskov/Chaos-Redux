@@ -296,6 +296,21 @@ Resolved for implementation planning:
 
 Restore and modernize the treaty because it is part of the accepted design. Live code disabling it is not treated as a design rejection.
 
+Implemented first tranche:
+
+- one monthly host-owned coordinator manages bounded membership, violation, invitation, active-donor, and relief-route ledgers
+- Global Cleaning Day is an atomic paid cleanup project
+- Joint Filter Convoy is an atomic paid state-targeted Air Winter relief project
+- founder succession, annex cleanup, sanctions, cancellation, route expiry, and the silent Fallout pause have explicit receipts
+
+Still required:
+
+- verification and inspection disputes
+- evacuation corridors
+- Fallout-era treaty memory and successor legitimacy
+- broader manually reviewed treaty event families
+- runtime observation of target scope, delayed results, sanctions, and route pressure
+
 ### D3: three-layer focus architecture
 
 Resolved:
@@ -386,7 +401,7 @@ Possible uses:
 - former treaty members receive a reconstruction diplomacy route
 - violators receive distrust and isolation memory
 
-This is expected content, but exact numerical influence is tuned during implementation.
+The implemented Joint Filter Convoy already changes live Air Winter exposure, adaptation, shelter, recovery, and survival values. The Fallout snapshot later freezes those ordinary Air Winter values, so a completed route can influence the frozen state indirectly. No treaty-specific Fallout coefficient, successor legitimacy value, or post-Fallout diplomacy rule has been approved or added. Those direct numerical and political effects remain pending.
 
 ## P5: ordinary world-end documentation
 

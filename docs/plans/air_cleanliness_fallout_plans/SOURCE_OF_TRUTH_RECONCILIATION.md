@@ -85,15 +85,16 @@ Implementation interpretation:
 
 ### Treaty layer
 
-Accepted source design includes an Air Cleanliness Treaty at severe contamination. The live monthly update currently cleans up old treaty state instead of calling the treaty monthly helper, even though treaty helper code and events remain in the repository.
+Accepted source design includes an Air Cleanliness Treaty at severe contamination. The live monthly host now calls one treaty coordinator around the existing state pass. It initializes the bounded member, violator, active-donor, and relief-route ledgers, removes invalid routes before winter pressure, resolves founder succession, issues retry-safe generation-bound invitations on a quarterly cadence, and maintains sanctions only on membership or violation edges. Fallout silently ends operational projects while preserving treaty memory.
 
 Decision for implementation planning:
 
-- Restore and modernize the treaty layer.
-- Do not delete the accepted treaty design because live code disabled it.
-- Connect treaty members to winter mitigation, relief missions, verification, embargo behavior, violations, and Fallout-era memory.
-- Audit treaty performance before restoring global country-to-country loops.
-- Replace broad repeated opinion and embargo loops with targeted or cached behavior where possible.
+- Keep the treaty layer active through the bounded coordinator.
+- Use array-backed membership and explicit entry, exit, violation, donor-project, annexation, Fallout-pause, and route cleanup receipts.
+- Use Global Cleaning Day as a paid global cleanup project.
+- Use Joint Filter Convoy as a paid state-targeted project that creates a temporary Air Winter relief route.
+- Keep verification, evacuation corridors, Fallout-era successor memory, and the broader treaty event families as incomplete work.
+- Do not restore broad repeated country-to-country opinion or embargo loops.
 
 ### Successor countries
 
@@ -145,7 +146,7 @@ Implementation interpretation:
 | Fallout event ownership | a Fallout block exists in a non-Fallout event file | every Fallout event lives in `events/fallout_world_end_events.txt` under `chaosx.fallout` | delete the old block and migrate callers directly |
 | Fallout threshold | event trigger checks 1000 percent | eligibility begins at 100 percent and direct scripted callers exist | add request and risk coordinator |
 | Winter | global flag plus random states and generic fallout modifiers | persistent state phases and phase-specific effects | replace winter pulse with state model |
-| Treaty | helper code exists but monthly update removes old state | active severe-contamination diplomacy and mitigation layer | restore with performance-safe lifecycle |
+| Treaty | one host-owned bounded lifecycle, paid cleanup project, paid filter convoy, founder succession, violation sanctions, annex cleanup, pre-pressure route reconciliation, exact donor cleanup, and silent Fallout pause | active severe-contamination diplomacy and mitigation layer | expand verification, evacuation, direct successor memory, and manually reviewed treaty event families |
 | Air docs | describe old recovery, old event id, normal super-event | must describe live and accepted implementation | rewrite after each tranche |
 | Scenario registry | the writable checkout reaches SCN-013 while raw id 12 remains separately reserved | Fallout must use the next id after the highest live assignment | SCN-014 is reserved in Fallout-owned constants without renumbering existing ids, and public activation waits for the sweep gate |
 | Mapmode strip | the selected and deselected strips are 380 by 18 with 19 exact 20-pixel frames | Deaths owns slot 18, contaminated states owns slot 19, and Air Winter uses dedicated per-mode sprites | resolved in `AIR_WINTER_MAPMODE_ICON_PROOF.md` without changing an asset |

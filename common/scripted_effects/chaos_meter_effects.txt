@@ -9,7 +9,6 @@
 # ============================================================================
 
 # Chaos meter tuning is centralized in `common/script_constants/chaos_meter_constants.txt`.
-@air_cleanliness_treaty_cleaning_day_cooldown_days = 180
 
 # ============================================================================
 # INITIALIZATION
@@ -4809,173 +4808,8 @@ air_contamination_apply_irreversible_effects = {
     }
 }
 
-air_cleanliness_treaty_try_form = {
-    if = {
-        limit = {
-            NOT = { has_global_flag = air_cleanliness_treaty_active }
-            check_variable = {
-                var = global.air_contamination_bp
-                value = constant:air_contamination_threshold_bp.winter_75
-                compare = greater_than_or_equals
-            }
-            any_country = { is_air_cleanliness_treaty_founder_candidate = yes }
-        }
-        random_country = {
-            limit = { is_air_cleanliness_treaty_founder_candidate = yes }
-            set_global_flag = air_cleanliness_treaty_active
-            set_country_flag = air_cleanliness_treaty_member
-            save_global_event_target_as = air_cleanliness_treaty_founder
-
-            if = {
-                limit = { NOT = { has_global_flag = air_cleanliness_treaty_news_fired } }
-                set_global_flag = air_cleanliness_treaty_news_fired
-                news_event = { id = chaosx_contamination.7 }
-            }
-
-            country_event = { id = chaosx_contamination.10 }
-
-            every_country = {
-                limit = {
-                    NOT = { tag = PREV }
-                    NOT = { has_country_flag = air_cleanliness_treaty_member }
-                    NOT = { has_country_flag = air_cleanliness_treaty_banned }
-                    NOT = { original_tag = ZZZ }
-                    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-                }
-                country_event = {
-                    id = chaosx_contamination.9
-                    days = constant:air_cleanliness_treaty.invite_delay_days
-                }
-            }
-        }
-    }
-}
-
-air_cleanliness_treaty_set_cleaning_day_cooldown = {
-    set_global_flag = {
-        flag = air_cleanliness_treaty_cleaning_day_cooldown
-        days = @air_cleanliness_treaty_cleaning_day_cooldown_days
-    }
-}
-
-air_cleanliness_treaty_try_cleaning_day = {
-    if = {
-        limit = {
-            NOT = { has_global_flag = air_cleanliness_treaty_cleaning_day_cooldown }
-            check_variable = {
-                var = global.air_contamination_bp
-                value = constant:air_cleanliness_treaty.decision_min_contamination_bp
-                compare = greater_than_or_equals
-            }
-        }
-        set_temp_variable = { air_cleanliness_member_count = 0 }
-        every_country = {
-            limit = { has_country_flag = air_cleanliness_treaty_member }
-            add_to_temp_variable = { air_cleanliness_member_count = 1 }
-        }
-
-        if = {
-            limit = {
-                check_variable = {
-                    var = air_cleanliness_member_count
-                    value = constant:air_cleanliness_treaty.decision_member_count_min
-                    compare = greater_than_or_equals
-                }
-            }
-            random = {
-                chance = constant:air_cleanliness_treaty.cleaning_day_monthly_chance
-                air_cleanliness_treaty_set_cleaning_day_cooldown = yes
-                set_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty.cleaning_day_delta_bp }
-                multiply_temp_variable = { air_contamination_delta_bp = -1 }
-                set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
-                set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
-                air_contamination_apply_delta_bp = yes
-                air_contamination_apply_state_modifier = yes
-                news_event = { id = chaosx_contamination.11 }
-            }
-        }
-    }
-}
-
-air_cleanliness_treaty_monthly_update = {
-    air_cleanliness_treaty_try_form = yes
-
-    if = {
-        limit = { has_global_flag = air_cleanliness_treaty_active }
-        every_country = {
-            limit = { has_country_flag = air_cleanliness_treaty_banned }
-            clr_country_flag = air_cleanliness_treaty_member
-        }
-
-        every_country = {
-            limit = {
-                has_country_flag = air_cleanliness_treaty_member
-                has_used_unconventional_weapons = yes
-            }
-            air_cleanliness_treaty_on_unconventional_use = yes
-        }
-
-        every_country = {
-            limit = { has_country_flag = air_cleanliness_treaty_member }
-            every_other_country = {
-                limit = { has_country_flag = air_cleanliness_treaty_member }
-                add_opinion_modifier = {
-                    target = PREV
-                    modifier = air_cleanliness_treaty_member_respect
-                }
-            }
-        }
-
-		every_country = {
-			limit = { exists = yes }
-			set_temp_variable = { air_treaty_embargo_target = THIS }
-			every_other_country = {
-				limit = { exists = yes }
-				set_temp_variable = { condemnation_embargo_target = air_treaty_embargo_target }
-				set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
-				if = {
-					limit = {
-						has_country_flag = air_cleanliness_treaty_member
-						var:air_treaty_embargo_target = { NOT = { has_country_flag = air_cleanliness_treaty_member } }
-						NOT = { is_subject_of = var:air_treaty_embargo_target }
-					}
-					condemnation_register_native_embargo_source = yes
-				}
-				else = { condemnation_unregister_native_embargo_source = yes }
-			}
-		}
-
-        air_cleanliness_treaty_try_cleaning_day = yes
-    }
-}
-
 air_cleanliness_treaty_on_unconventional_use = {
-    if = {
-        limit = {
-            has_global_flag = air_cleanliness_treaty_active
-            has_country_flag = air_cleanliness_treaty_member
-            NOT = { has_country_flag = air_cleanliness_treaty_banned }
-        }
-
-        clr_country_flag = air_cleanliness_treaty_member
-        set_country_flag = air_cleanliness_treaty_banned
-
-		every_other_country = {
-			limit = {
-				exists = yes
-				NOT = { is_subject_of = PREV }
-            }
-            add_opinion_modifier = {
-                target = PREV
-                modifier = air_cleanliness_treaty_violator
-            }
-			set_temp_variable = { condemnation_embargo_target = PREV }
-			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
-			condemnation_register_native_embargo_source = yes
-		}
-
-        news_event = { id = chaosx_contamination.8 }
-    }
+	air_cleanliness_treaty_handle_violation = yes
 }
 
 chaos_meter_apply_daily_contamination_and_outbreak_deaths = {
@@ -5114,6 +4948,7 @@ air_contamination_monthly_update = {
 		limit = { NOT = { has_global_flag = fallout_transition_active } }
 		air_winter_begin_monthly_cycle = yes
 	}
+	air_cleanliness_treaty_pre_winter_pulse = yes
 	if = {
 		limit = { has_global_flag = air_contamination_winter }
 		clr_global_flag = air_contamination_winter
@@ -5352,30 +5187,9 @@ air_contamination_monthly_update = {
         air_contamination_apply_state_modifier = yes
     }
 
-    # The treaty-pressure phase has been removed from contamination escalation.
-    # Clean up legacy treaty state so old saves do not keep side effects.
-    if = {
-        limit = {
-            OR = {
-                has_global_flag = air_cleanliness_treaty_active
-                has_global_flag = air_cleanliness_treaty_news_fired
-                has_global_flag = air_cleanliness_treaty_cleaning_day_cooldown
-            }
-        }
-        clr_global_flag = air_cleanliness_treaty_active
-        clr_global_flag = air_cleanliness_treaty_news_fired
-        clr_global_flag = air_cleanliness_treaty_cleaning_day_cooldown
-
-        if = {
-            limit = { has_event_target = air_cleanliness_treaty_founder }
-            clear_global_event_target = air_cleanliness_treaty_founder
-        }
-
-        every_country = {
-            clr_country_flag = air_cleanliness_treaty_member
-            clr_country_flag = air_cleanliness_treaty_banned
-        }
-    }
+	# The treaty shares this existing single monthly coordinator. Its own host is
+	# date-idempotent and iterates only bounded country and route registries.
+	air_cleanliness_treaty_host_pulse = yes
 }
 
 world_end_scenario_triggered = {

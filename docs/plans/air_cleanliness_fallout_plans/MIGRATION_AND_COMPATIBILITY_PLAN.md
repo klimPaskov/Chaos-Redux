@@ -46,16 +46,17 @@ Do not lower existing contamination or remove live nuclear fallout during migrat
 
 ## Treaty migration
 
-The live monthly update currently removes legacy treaty state. The accepted design restores a modernized treaty.
+The live monthly update owns a bounded treaty lifecycle. Schema reconstruction restores valid members, existing violators, and their permanent diplomatic edges. It cancels active project receipts and clears route ledgers without a country-world scan.
 
 Migration steps:
 
 1. clear stale founder targets that point to invalid countries
 2. preserve valid treaty members only when the treaty had genuinely formed in the save
-3. remove duplicate opinion and embargo residue only through verified effects
-4. rebuild the treaty member cache
-5. initialize new contribution and relief values
-6. set a treaty system version
+3. restore opinion and embargo ownership through idempotent membership and violator edges
+4. rebuild the treaty member and violator caches
+5. cancel stale active projects and clear relief-state caches through their exact receipts
+6. initialize the treaty generation and Cleaning Day transaction values
+7. set a treaty system version
 
 A save with no real treaty formation should not suddenly gain a random founder merely because stale member flags exist.
 

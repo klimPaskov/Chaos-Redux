@@ -1,0 +1,1303 @@
+# ============================================================================
+# CHAOS REDUX - AIR CLEANLINESS TREATY EFFECTS
+# ============================================================================
+# This subsystem is hosted by the existing single Air Contamination monthly
+# coordinator. It uses bounded country and state arrays. It performs no periodic
+# every_country or every_state iteration.
+# ============================================================================
+
+@air_cleanliness_treaty_invitation_delay_days = 2
+@air_cleanliness_treaty_invitation_window_days = 30
+@air_cleanliness_treaty_cleaning_day_cooldown_days = 180
+@air_cleanliness_treaty_filter_convoy_route_days = 180
+@air_cleanliness_treaty_filter_convoy_cooldown_days = 90
+
+# ---------------------------------------------------------------------------
+# Lifecycle schema and host
+# ---------------------------------------------------------------------------
+
+# Supported scope: any. A schema migration reconstructs only from the bounded
+# Air Winter country registry produced by the existing monthly state pass.
+air_cleanliness_treaty_initialize_lifecycle = {
+	if = {
+		limit = { NOT = { has_variable = global.air_cleanliness_treaty_generation } }
+		set_variable = { global.air_cleanliness_treaty_generation = constant:air_cleanliness_treaty_runtime.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.air_cleanliness_treaty_cleaning_day_transaction } }
+		set_variable = { global.air_cleanliness_treaty_cleaning_day_transaction = constant:air_cleanliness_treaty_runtime.zero }
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.air_cleanliness_treaty_schema }
+				NOT = {
+					check_variable = {
+						var = global.air_cleanliness_treaty_schema
+						value = constant:air_cleanliness_treaty_runtime.schema_version
+						compare = equals
+					}
+				}
+			}
+		}
+		air_cleanliness_treaty_cancel_all_filter_convoys = yes
+		air_cleanliness_treaty_release_cleaning_day_project = yes
+
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_relief_states
+			clr_state_flag = air_winter_relief_route
+			clr_state_flag = air_cleanliness_treaty_filter_convoy_reserved
+			clear_variable = air_cleanliness_treaty_relief_sponsor
+			clear_variable = air_cleanliness_treaty_relief_recipient
+			clear_variable = air_cleanliness_treaty_relief_generation
+			clear_variable = air_cleanliness_treaty_filter_convoy_sponsor
+			clear_variable = air_cleanliness_treaty_filter_convoy_recipient
+			clear_variable = air_cleanliness_treaty_filter_convoy_generation
+		}
+		clear_array = global.air_cleanliness_treaty_members
+		clear_array = global.air_cleanliness_treaty_violators
+		clear_array = global.air_cleanliness_treaty_relief_states
+		clear_array = global.air_cleanliness_treaty_member_removals
+		clear_array = global.air_cleanliness_treaty_violation_queue
+		clear_array = global.air_cleanliness_treaty_route_removals
+		clear_array = global.air_cleanliness_treaty_filter_convoy_donors
+		clear_array = global.air_cleanliness_treaty_filter_convoy_cancellations
+
+		if = {
+			limit = { has_global_flag = air_cleanliness_treaty_active }
+			set_temp_variable = { air_cleanliness_treaty_defer_founder_reconcile = constant:air_cleanliness_treaty_runtime.one }
+			for_each_scope_loop = {
+				array = global.air_winter_registered_countries
+				if = {
+					limit = {
+						exists = yes
+						has_country_flag = air_cleanliness_treaty_banned
+					}
+					air_cleanliness_treaty_register_observed_violator = yes
+				}
+				else_if = {
+					limit = {
+						has_country_flag = air_cleanliness_treaty_member
+						has_used_unconventional_weapons = yes
+					}
+					clr_country_flag = air_cleanliness_treaty_member
+					set_country_flag = air_cleanliness_treaty_banned
+					air_cleanliness_treaty_register_observed_violator = yes
+				}
+				else_if = {
+					limit = {
+						has_country_flag = air_cleanliness_treaty_member
+						air_cleanliness_treaty_country_is_membership_eligible = yes
+					}
+					air_cleanliness_treaty_register_member = yes
+				}
+				else_if = {
+					limit = { has_country_flag = air_cleanliness_treaty_member }
+					air_cleanliness_treaty_unregister_member = yes
+				}
+			}
+			set_temp_variable = { air_cleanliness_treaty_defer_founder_reconcile = constant:air_cleanliness_treaty_runtime.zero }
+
+			if = {
+				limit = {
+					check_variable = {
+						var = global.air_cleanliness_treaty_members^num
+						value = constant:air_cleanliness_treaty_runtime.zero
+						compare = equals
+					}
+				}
+				clr_global_flag = air_cleanliness_treaty_active
+				clr_global_flag = air_cleanliness_treaty_news_fired
+				if = {
+					limit = { has_event_target = air_cleanliness_treaty_founder }
+					clear_global_event_target = air_cleanliness_treaty_founder
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						check_variable = {
+							var = global.air_cleanliness_treaty_generation
+							value = constant:air_cleanliness_treaty_runtime.zero
+							compare = equals
+						}
+					}
+					set_variable = { global.air_cleanliness_treaty_generation = constant:air_cleanliness_treaty_runtime.one }
+				}
+				air_cleanliness_treaty_reconcile_founder = yes
+			}
+		}
+		else = {
+			if = {
+				limit = { has_event_target = air_cleanliness_treaty_founder }
+				clear_global_event_target = air_cleanliness_treaty_founder
+			}
+			for_each_scope_loop = {
+				array = global.air_winter_registered_countries
+				clr_country_flag = air_cleanliness_treaty_member
+				clr_country_flag = air_cleanliness_treaty_invitation_pending
+				clr_country_flag = air_cleanliness_treaty_invitation_open
+				clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+			}
+		}
+		set_variable = { global.air_cleanliness_treaty_schema = constant:air_cleanliness_treaty_runtime.schema_version }
+	}
+}
+
+# Supported scope: any. The Air host calls this before the existing state pass
+# so an invalid route cannot reduce the next monthly winter pressure result.
+air_cleanliness_treaty_pre_winter_pulse = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = fallout_transition_active
+				has_global_flag = fallout_active
+			}
+		}
+		air_cleanliness_treaty_pause_for_fallout = yes
+	}
+	else = {
+		air_cleanliness_treaty_initialize_lifecycle = yes
+		if = {
+			limit = { has_global_flag = air_cleanliness_treaty_active }
+			air_cleanliness_treaty_reconcile_relief_routes = yes
+		}
+	}
+}
+
+# Supported scope: any. The caller is the existing single monthly global host.
+air_cleanliness_treaty_host_pulse = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		air_cleanliness_treaty_initialize_lifecycle = yes
+	}
+	else = { air_cleanliness_treaty_pause_for_fallout = yes }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.air_cleanliness_treaty_last_host_date }
+				NOT = {
+					check_variable = {
+						var = global.air_cleanliness_treaty_last_host_date
+						value = global.date
+						compare = equals
+					}
+				}
+			}
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		set_variable = { global.air_cleanliness_treaty_last_host_date = global.date }
+
+		if = {
+			limit = { has_global_flag = air_cleanliness_treaty_active }
+			air_cleanliness_treaty_reconcile_registry = yes
+		}
+		else = { air_cleanliness_treaty_clear_inactive_runtime = yes }
+
+		if = {
+			limit = { has_global_flag = air_cleanliness_treaty_active }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = global.air_cleanliness_treaty_next_invitation_scan_date }
+						check_variable = {
+							var = global.date
+							value = global.air_cleanliness_treaty_next_invitation_scan_date
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				air_cleanliness_treaty_reconcile_observed_countries = yes
+				if = {
+					limit = { air_cleanliness_treaty_founder_is_valid = yes }
+					event_target:air_cleanliness_treaty_founder = {
+						air_cleanliness_treaty_issue_invitations = yes
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = { NOT = { has_global_flag = air_cleanliness_treaty_active } }
+			air_cleanliness_treaty_try_form = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Membership, diplomacy, and violation transactions
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. Registration is idempotent. Relationship and
+# treaty-owned embargo changes happen only at lifecycle edges.
+air_cleanliness_treaty_register_member = {
+	if = {
+		limit = {
+			has_global_flag = air_cleanliness_treaty_active
+			air_cleanliness_treaty_country_is_membership_eligible = yes
+			NOT = {
+				is_in_array = {
+					array = global.air_cleanliness_treaty_members
+					value = THIS
+				}
+			}
+		}
+		save_event_target_as = air_cleanliness_treaty_joining_member
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			if = {
+				limit = {
+					air_cleanliness_treaty_country_is_live_member = yes
+					NOT = { tag = event_target:air_cleanliness_treaty_joining_member }
+				}
+				save_event_target_as = air_cleanliness_treaty_existing_member
+				remove_opinion_modifier = {
+					target = event_target:air_cleanliness_treaty_joining_member
+					modifier = air_cleanliness_treaty_member_respect
+				}
+				add_opinion_modifier = {
+					target = event_target:air_cleanliness_treaty_joining_member
+					modifier = air_cleanliness_treaty_member_respect
+				}
+				event_target:air_cleanliness_treaty_joining_member = {
+					remove_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_existing_member
+						modifier = air_cleanliness_treaty_member_respect
+					}
+					add_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_existing_member
+						modifier = air_cleanliness_treaty_member_respect
+					}
+				}
+				set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_joining_member }
+				set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+				condemnation_unregister_native_embargo_source = yes
+				event_target:air_cleanliness_treaty_joining_member = {
+					set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_existing_member }
+					set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+					condemnation_unregister_native_embargo_source = yes
+				}
+			}
+		}
+
+		set_country_flag = air_cleanliness_treaty_member
+		set_country_flag = air_cleanliness_treaty_ever_member
+		clr_country_flag = air_cleanliness_treaty_invitation_pending
+		clr_country_flag = air_cleanliness_treaty_invitation_open
+		clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+		add_to_array = { array = global.air_cleanliness_treaty_members value = THIS }
+
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_violators
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = air_cleanliness_treaty_banned
+					NOT = { tag = event_target:air_cleanliness_treaty_joining_member }
+				}
+				save_event_target_as = air_cleanliness_treaty_existing_violator
+				event_target:air_cleanliness_treaty_joining_member = {
+					remove_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_existing_violator
+						modifier = air_cleanliness_treaty_violator
+					}
+					add_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_existing_violator
+						modifier = air_cleanliness_treaty_violator
+					}
+					if = {
+						limit = { NOT = { is_subject_of = event_target:air_cleanliness_treaty_existing_violator } }
+						set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_existing_violator }
+						set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+						condemnation_register_native_embargo_source = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. This removes current membership and every treaty-
+# owned bilateral edge while retaining historical membership and betrayal flags.
+air_cleanliness_treaty_unregister_member = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = air_cleanliness_treaty_member
+				is_in_array = {
+					array = global.air_cleanliness_treaty_members
+					value = THIS
+				}
+			}
+		}
+		save_event_target_as = air_cleanliness_treaty_departing_member
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			if = {
+				limit = { NOT = { tag = event_target:air_cleanliness_treaty_departing_member } }
+				save_event_target_as = air_cleanliness_treaty_remaining_member
+				remove_opinion_modifier = {
+					target = event_target:air_cleanliness_treaty_departing_member
+					modifier = air_cleanliness_treaty_member_respect
+				}
+				event_target:air_cleanliness_treaty_departing_member = {
+					remove_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_remaining_member
+						modifier = air_cleanliness_treaty_member_respect
+					}
+					set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_remaining_member }
+					set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+					condemnation_unregister_native_embargo_source = yes
+				}
+				set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_departing_member }
+				set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+				condemnation_unregister_native_embargo_source = yes
+			}
+		}
+
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_violators
+			if = {
+				limit = { NOT = { tag = event_target:air_cleanliness_treaty_departing_member } }
+				save_event_target_as = air_cleanliness_treaty_departure_violator
+				event_target:air_cleanliness_treaty_departing_member = {
+					remove_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_departure_violator
+						modifier = air_cleanliness_treaty_violator
+					}
+					set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_departure_violator }
+					set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+					condemnation_unregister_native_embargo_source = yes
+				}
+			}
+		}
+
+		event_target:air_cleanliness_treaty_departing_member = {
+			if = {
+				limit = { has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor }
+				air_cleanliness_treaty_cancel_cleaning_day_project = yes
+			}
+			air_cleanliness_treaty_cancel_filter_convoys_for_country = yes
+			air_cleanliness_treaty_revoke_relief_routes_for_country = yes
+			while_loop_effect = {
+				limit = {
+					is_in_array = {
+						array = global.air_cleanliness_treaty_members
+						value = THIS
+					}
+				}
+				remove_from_array = { array = global.air_cleanliness_treaty_members value = THIS }
+			}
+			clr_country_flag = air_cleanliness_treaty_member
+			clr_country_flag = air_cleanliness_treaty_invitation_pending
+			clr_country_flag = air_cleanliness_treaty_invitation_open
+			clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+			clear_variable = air_cleanliness_treaty_invitation_generation
+			clear_variable = air_cleanliness_treaty_invitation_accepted_generation
+			clear_variable = air_cleanliness_treaty_invitation_declined_generation
+		}
+
+		if = {
+			limit = {
+				has_event_target = air_cleanliness_treaty_founder
+				event_target:air_cleanliness_treaty_founder = { tag = event_target:air_cleanliness_treaty_departing_member }
+			}
+			clear_global_event_target = air_cleanliness_treaty_founder
+		}
+		if = {
+			limit = { NOT = { check_variable = { air_cleanliness_treaty_defer_founder_reconcile > constant:air_cleanliness_treaty_runtime.zero } } }
+			air_cleanliness_treaty_reconcile_founder = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. This edge helper records one existing banned
+# country and creates every missing treaty-owned sanction against live members.
+air_cleanliness_treaty_register_observed_violator = {
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = air_cleanliness_treaty_banned
+		}
+		save_event_target_as = air_cleanliness_treaty_observed_violator
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = air_cleanliness_treaty_member
+					is_in_array = {
+						array = global.air_cleanliness_treaty_members
+						value = THIS
+					}
+				}
+			}
+			air_cleanliness_treaty_unregister_member = yes
+		}
+		set_country_flag = air_cleanliness_treaty_betrayal_memory
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.air_cleanliness_treaty_violators
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_violators value = THIS }
+			for_each_scope_loop = {
+				array = global.air_cleanliness_treaty_members
+				if = {
+					limit = {
+						air_cleanliness_treaty_country_is_live_member = yes
+						NOT = { tag = event_target:air_cleanliness_treaty_observed_violator }
+					}
+					remove_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_observed_violator
+						modifier = air_cleanliness_treaty_violator
+					}
+					add_opinion_modifier = {
+						target = event_target:air_cleanliness_treaty_observed_violator
+						modifier = air_cleanliness_treaty_violator
+					}
+					if = {
+						limit = { NOT = { is_subject_of = event_target:air_cleanliness_treaty_observed_violator } }
+						set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_observed_violator }
+						set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+						condemnation_register_native_embargo_source = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY, the treaty member that used an unconventional arm.
+air_cleanliness_treaty_handle_violation = {
+	if = {
+		limit = {
+			has_global_flag = air_cleanliness_treaty_active
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+			has_country_flag = air_cleanliness_treaty_member
+			NOT = { has_country_flag = air_cleanliness_treaty_banned }
+			is_in_array = {
+				array = global.air_cleanliness_treaty_members
+				value = THIS
+			}
+		}
+		save_event_target_as = air_cleanliness_treaty_violating_member
+		set_country_flag = air_cleanliness_treaty_banned
+		set_country_flag = air_cleanliness_treaty_betrayal_memory
+		air_cleanliness_treaty_unregister_member = yes
+		event_target:air_cleanliness_treaty_violating_member = {
+			air_cleanliness_treaty_register_observed_violator = yes
+		}
+
+		event_target:air_cleanliness_treaty_violating_member = {
+			if = {
+				limit = { NOT = { has_country_flag = air_cleanliness_treaty_violation_news_fired } }
+				set_country_flag = air_cleanliness_treaty_violation_news_fired
+				news_event = { id = chaosx_contamination.8 }
+			}
+		}
+	}
+}
+
+# Supported scope: any. Array mutation occurs only while iterating separate
+# work queues, never while iterating the member registry itself.
+air_cleanliness_treaty_reconcile_registry = {
+	clear_array = global.air_cleanliness_treaty_member_removals
+	clear_array = global.air_cleanliness_treaty_violation_queue
+	set_temp_variable = { air_cleanliness_treaty_defer_founder_reconcile = constant:air_cleanliness_treaty_runtime.one }
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_members
+		if = {
+			limit = {
+				has_country_flag = air_cleanliness_treaty_member
+				NOT = { has_country_flag = air_cleanliness_treaty_banned }
+				has_used_unconventional_weapons = yes
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_violation_queue value = THIS }
+		}
+		else_if = {
+			limit = { NOT = { air_cleanliness_treaty_country_is_live_member = yes } }
+			add_to_array = { array = global.air_cleanliness_treaty_member_removals value = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_violation_queue
+		air_cleanliness_treaty_handle_violation = yes
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_member_removals
+		air_cleanliness_treaty_unregister_member = yes
+	}
+	clear_array = global.air_cleanliness_treaty_violation_queue
+	clear_array = global.air_cleanliness_treaty_member_removals
+	set_temp_variable = { air_cleanliness_treaty_defer_founder_reconcile = constant:air_cleanliness_treaty_runtime.zero }
+	air_cleanliness_treaty_reconcile_founder = yes
+}
+
+# Supported scope: any. This low-frequency scan repairs legacy flags and adds
+# persistent violator memory only among already observed Air Winter countries.
+air_cleanliness_treaty_reconcile_observed_countries = {
+	for_each_scope_loop = {
+		array = global.air_winter_registered_countries
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = air_cleanliness_treaty_banned
+			}
+			air_cleanliness_treaty_register_observed_violator = yes
+		}
+		else_if = {
+			limit = {
+				has_country_flag = air_cleanliness_treaty_member
+				air_cleanliness_treaty_country_is_membership_eligible = yes
+				NOT = {
+					is_in_array = {
+						array = global.air_cleanliness_treaty_members
+						value = THIS
+					}
+				}
+			}
+			air_cleanliness_treaty_register_member = yes
+		}
+		else_if = {
+			limit = {
+				has_country_flag = air_cleanliness_treaty_member
+				NOT = {
+					is_in_array = {
+						array = global.air_cleanliness_treaty_members
+						value = THIS
+					}
+				}
+			}
+			air_cleanliness_treaty_unregister_member = yes
+		}
+	}
+}
+
+# Supported scope: any
+air_cleanliness_treaty_reconcile_founder = {
+	if = {
+		limit = {
+			has_global_flag = air_cleanliness_treaty_active
+			NOT = { air_cleanliness_treaty_founder_is_valid = yes }
+		}
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder }
+			clear_global_event_target = air_cleanliness_treaty_founder
+		}
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder_candidate }
+			clear_global_event_target = air_cleanliness_treaty_founder_candidate
+		}
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			if = {
+				limit = { air_cleanliness_treaty_country_is_live_member = yes }
+				set_temp_variable = { air_cleanliness_treaty_current_country_id = id }
+				if = {
+					limit = { NOT = { has_event_target = air_cleanliness_treaty_founder_candidate } }
+					set_temp_variable = { air_cleanliness_treaty_selected_country_id = air_cleanliness_treaty_current_country_id }
+					save_global_event_target_as = air_cleanliness_treaty_founder_candidate
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = air_cleanliness_treaty_current_country_id
+							value = air_cleanliness_treaty_selected_country_id
+							compare = less_than
+						}
+					}
+					set_temp_variable = { air_cleanliness_treaty_selected_country_id = air_cleanliness_treaty_current_country_id }
+					save_global_event_target_as = air_cleanliness_treaty_founder_candidate
+				}
+			}
+		}
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder_candidate }
+			event_target:air_cleanliness_treaty_founder_candidate = {
+				save_global_event_target_as = air_cleanliness_treaty_founder
+				country_event = { id = chaosx_air_treaty.3 }
+			}
+			clear_global_event_target = air_cleanliness_treaty_founder_candidate
+		}
+		else = { air_cleanliness_treaty_dissolve = yes }
+	}
+}
+
+# Supported scope: any
+air_cleanliness_treaty_dissolve = {
+	air_cleanliness_treaty_release_cleaning_day_project = yes
+	air_cleanliness_treaty_clear_all_relief_routes = yes
+	clr_global_flag = air_cleanliness_treaty_active
+	clr_global_flag = air_cleanliness_treaty_news_fired
+	if = {
+		limit = { has_event_target = air_cleanliness_treaty_founder }
+		clear_global_event_target = air_cleanliness_treaty_founder
+	}
+	air_cleanliness_treaty_clear_inactive_runtime = yes
+	for_each_scope_loop = {
+		array = global.air_winter_registered_countries
+		clr_country_flag = air_cleanliness_treaty_invitation_pending
+		clr_country_flag = air_cleanliness_treaty_invitation_open
+	}
+	clear_variable = global.air_cleanliness_treaty_next_invitation_scan_date
+}
+
+# Supported scope: any. Used after explicit system initialization has cleared
+# flags but a schema-current bounded array still exists.
+air_cleanliness_treaty_clear_inactive_runtime = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_members^num
+				value = constant:air_cleanliness_treaty_runtime.zero
+				compare = greater_than
+			}
+		}
+		clear_array = global.air_cleanliness_treaty_member_removals
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			add_to_array = { array = global.air_cleanliness_treaty_member_removals value = THIS }
+		}
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_member_removals
+			air_cleanliness_treaty_unregister_member = yes
+		}
+		clear_array = global.air_cleanliness_treaty_member_removals
+	}
+	air_cleanliness_treaty_cancel_all_filter_convoys = yes
+	air_cleanliness_treaty_release_cleaning_day_project = yes
+	air_cleanliness_treaty_clear_all_relief_routes = yes
+}
+
+# ---------------------------------------------------------------------------
+# Formation and invitations
+# ---------------------------------------------------------------------------
+
+# Supported scope: any
+air_cleanliness_treaty_try_form = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = air_cleanliness_treaty_active }
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.winter_75
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder_candidate }
+			clear_global_event_target = air_cleanliness_treaty_founder_candidate
+		}
+		for_each_scope_loop = {
+			array = global.air_winter_registered_countries
+			if = {
+				limit = { is_air_cleanliness_treaty_founder_candidate = yes }
+				set_temp_variable = { air_cleanliness_treaty_current_country_id = id }
+				if = {
+					limit = { NOT = { has_event_target = air_cleanliness_treaty_founder_candidate } }
+					set_temp_variable = { air_cleanliness_treaty_selected_country_id = air_cleanliness_treaty_current_country_id }
+					save_global_event_target_as = air_cleanliness_treaty_founder_candidate
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = air_cleanliness_treaty_current_country_id
+							value = air_cleanliness_treaty_selected_country_id
+							compare = less_than
+						}
+					}
+					set_temp_variable = { air_cleanliness_treaty_selected_country_id = air_cleanliness_treaty_current_country_id }
+					save_global_event_target_as = air_cleanliness_treaty_founder_candidate
+				}
+			}
+		}
+
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder_candidate }
+			add_to_variable = { global.air_cleanliness_treaty_generation = constant:air_cleanliness_treaty_runtime.one }
+			set_global_flag = air_cleanliness_treaty_active
+			set_global_flag = air_cleanliness_treaty_news_fired
+			event_target:air_cleanliness_treaty_founder_candidate = {
+				save_global_event_target_as = air_cleanliness_treaty_founder
+				air_cleanliness_treaty_register_member = yes
+				set_variable = { global.air_cleanliness_treaty_formation_news_generation = global.air_cleanliness_treaty_generation }
+				news_event = { id = chaosx_contamination.7 }
+				country_event = { id = chaosx_contamination.10 }
+				air_cleanliness_treaty_issue_invitations = yes
+			}
+			clear_global_event_target = air_cleanliness_treaty_founder_candidate
+		}
+	}
+}
+
+# Supported scope: COUNTRY, the current persistent treaty founder.
+air_cleanliness_treaty_issue_invitations = {
+	save_event_target_as = air_cleanliness_treaty_invitation_issuer
+	if = {
+		limit = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			has_event_target = air_cleanliness_treaty_founder
+			event_target:air_cleanliness_treaty_founder = { tag = event_target:air_cleanliness_treaty_invitation_issuer }
+		}
+		for_each_scope_loop = {
+			array = global.air_winter_registered_countries
+			if = {
+				limit = {
+					air_cleanliness_treaty_country_can_be_invited = yes
+					NOT = { has_country_flag = air_cleanliness_treaty_invitation_pending }
+					NOT = { has_country_flag = air_cleanliness_treaty_invitation_open }
+					OR = {
+						NOT = { has_variable = air_cleanliness_treaty_invitation_generation }
+						NOT = {
+							check_variable = {
+								var = air_cleanliness_treaty_invitation_generation
+								value = global.air_cleanliness_treaty_generation
+								compare = equals
+							}
+						}
+					}
+				}
+				set_variable = { air_cleanliness_treaty_invitation_attempt_generation = global.air_cleanliness_treaty_generation }
+				set_country_flag = {
+					flag = air_cleanliness_treaty_invitation_pending
+					days = @air_cleanliness_treaty_invitation_window_days
+				}
+				country_event = {
+					id = chaosx_contamination.9
+					days = @air_cleanliness_treaty_invitation_delay_days
+				}
+			}
+		}
+		set_variable = { global.air_cleanliness_treaty_next_invitation_scan_date = global.date }
+		add_to_variable = {
+			global.air_cleanliness_treaty_next_invitation_scan_date = constant:air_cleanliness_treaty_runtime.invitation_scan_days
+		}
+	}
+}
+
+# Supported scope: COUNTRY, called by the delayed invitation event immediate.
+air_cleanliness_treaty_open_invitation = {
+	if = {
+		limit = { air_cleanliness_treaty_pending_invitation_is_valid = yes }
+		clr_country_flag = air_cleanliness_treaty_invitation_pending
+		set_country_flag = air_cleanliness_treaty_invitation_open
+		set_variable = { air_cleanliness_treaty_invitation_generation = global.air_cleanliness_treaty_generation }
+		clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+	}
+}
+
+# Supported scope: COUNTRY
+air_cleanliness_treaty_accept_invitation = {
+	if = {
+		limit = { air_cleanliness_treaty_can_accept_invitation = yes }
+		set_variable = { air_cleanliness_treaty_invitation_accepted_generation = global.air_cleanliness_treaty_generation }
+		clr_country_flag = air_cleanliness_treaty_invitation_open
+		air_cleanliness_treaty_register_member = yes
+	}
+}
+
+# Supported scope: COUNTRY
+air_cleanliness_treaty_decline_invitation = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_invitation_open }
+		set_variable = { air_cleanliness_treaty_invitation_declined_generation = air_cleanliness_treaty_invitation_generation }
+	}
+	clr_country_flag = air_cleanliness_treaty_invitation_pending
+	clr_country_flag = air_cleanliness_treaty_invitation_open
+}
+
+# ---------------------------------------------------------------------------
+# Atomic Global Cleaning Day project
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY, the decision actor.
+air_cleanliness_treaty_start_cleaning_day_project = {
+	if = {
+		limit = { air_cleanliness_treaty_can_start_cleaning_day = yes }
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_cleaning_day_sponsor }
+			clear_global_event_target = air_cleanliness_treaty_cleaning_day_sponsor
+		}
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_runtime.cleaning_day_support_cost }
+		air_winter_response_pay_support_equipment = yes
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_runtime.cleaning_day_convoy_cost }
+		air_winter_response_pay_convoys = yes
+		add_to_variable = { global.air_cleanliness_treaty_cleaning_day_transaction = constant:air_cleanliness_treaty_runtime.one }
+		set_global_flag = air_cleanliness_treaty_cleaning_day_in_progress
+		set_country_flag = air_cleanliness_treaty_cleaning_day_sponsor
+		set_variable = { air_cleanliness_treaty_cleaning_day_transaction = global.air_cleanliness_treaty_cleaning_day_transaction }
+		set_variable = { air_cleanliness_treaty_cleaning_day_generation = global.air_cleanliness_treaty_generation }
+		save_global_event_target_as = air_cleanliness_treaty_cleaning_day_sponsor
+	}
+}
+
+# Supported scope: any. This is safe when the sponsor has been annexed.
+air_cleanliness_treaty_release_cleaning_day_project = {
+	if = {
+		limit = { has_event_target = air_cleanliness_treaty_cleaning_day_sponsor }
+		event_target:air_cleanliness_treaty_cleaning_day_sponsor = {
+			clr_country_flag = air_cleanliness_treaty_cleaning_day_sponsor
+			clear_variable = air_cleanliness_treaty_cleaning_day_transaction
+			clear_variable = air_cleanliness_treaty_cleaning_day_generation
+		}
+		clear_global_event_target = air_cleanliness_treaty_cleaning_day_sponsor
+	}
+	clr_global_flag = air_cleanliness_treaty_cleaning_day_in_progress
+}
+
+# Supported scope: COUNTRY, the sponsor whose active project failed validation.
+air_cleanliness_treaty_cancel_cleaning_day_project = {
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		country_event = { id = chaosx_air_treaty.5 }
+	}
+	air_cleanliness_treaty_release_cleaning_day_project = yes
+}
+
+# Supported scope: COUNTRY, the timed decision sponsor.
+air_cleanliness_treaty_complete_cleaning_day_project = {
+	if = {
+		limit = { air_cleanliness_treaty_cleaning_day_project_is_valid = yes }
+		set_variable = {
+			global.air_cleanliness_treaty_cleaning_day_last_completed_transaction = air_cleanliness_treaty_cleaning_day_transaction
+		}
+		set_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty_runtime.cleaning_day_reduction_bp }
+		multiply_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty_runtime.negative_one }
+		set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+		set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+		air_contamination_apply_delta_bp = yes
+		air_contamination_apply_state_modifier = yes
+		set_global_flag = {
+			flag = air_cleanliness_treaty_cleaning_day_cooldown
+			days = @air_cleanliness_treaty_cleaning_day_cooldown_days
+		}
+		news_event = { id = chaosx_contamination.11 }
+		air_cleanliness_treaty_release_cleaning_day_project = yes
+	}
+	else = { air_cleanliness_treaty_cancel_cleaning_day_project = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Joint Filter Convoy project and active relief routes
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the targeted member.
+air_cleanliness_treaty_start_joint_filter_convoy = {
+	if = {
+		limit = { air_cleanliness_treaty_can_send_joint_filter_convoy = yes }
+		FROM = {
+			save_event_target_as = air_cleanliness_treaty_convoy_recipient
+			var:air_winter_response_priority_state = {
+				save_event_target_as = air_cleanliness_treaty_convoy_state
+			}
+		}
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_runtime.filter_convoy_support_cost }
+		air_winter_response_pay_support_equipment = yes
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_runtime.filter_convoy_convoy_cost }
+		air_winter_response_pay_convoys = yes
+		set_country_flag = air_cleanliness_treaty_filter_convoy_project_active
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.air_cleanliness_treaty_filter_convoy_donors
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_filter_convoy_donors value = THIS }
+		}
+		set_country_flag = {
+			flag = air_cleanliness_treaty_filter_convoy_cooldown
+			days = @air_cleanliness_treaty_filter_convoy_cooldown_days
+		}
+		set_variable = { air_cleanliness_treaty_filter_convoy_recipient = event_target:air_cleanliness_treaty_convoy_recipient }
+		set_variable = { air_cleanliness_treaty_filter_convoy_state = event_target:air_cleanliness_treaty_convoy_state.id }
+		set_variable = { air_cleanliness_treaty_filter_convoy_generation = global.air_cleanliness_treaty_generation }
+		event_target:air_cleanliness_treaty_convoy_state = {
+			set_state_flag = air_cleanliness_treaty_filter_convoy_reserved
+			set_variable = { air_cleanliness_treaty_filter_convoy_sponsor = ROOT }
+			set_variable = { air_cleanliness_treaty_filter_convoy_recipient = event_target:air_cleanliness_treaty_convoy_recipient }
+			set_variable = { air_cleanliness_treaty_filter_convoy_generation = global.air_cleanliness_treaty_generation }
+		}
+		country_event = { id = chaosx_air_treaty.1 }
+	}
+}
+
+# Supported scope: COUNTRY, the donor. Releases only the donor's exact reserved
+# state receipt. It never removes an already completed relief route.
+air_cleanliness_treaty_clear_filter_convoy_project = {
+	save_event_target_as = air_cleanliness_treaty_convoy_cleanup_donor
+	if = {
+		limit = { has_variable = air_cleanliness_treaty_filter_convoy_state }
+		var:air_cleanliness_treaty_filter_convoy_state = {
+			if = {
+				limit = {
+					has_state_flag = air_cleanliness_treaty_filter_convoy_reserved
+					has_variable = air_cleanliness_treaty_filter_convoy_sponsor
+					check_variable = {
+						var = air_cleanliness_treaty_filter_convoy_sponsor
+						value = event_target:air_cleanliness_treaty_convoy_cleanup_donor
+						compare = equals
+					}
+				}
+				clr_state_flag = air_cleanliness_treaty_filter_convoy_reserved
+				clear_variable = air_cleanliness_treaty_filter_convoy_sponsor
+				clear_variable = air_cleanliness_treaty_filter_convoy_recipient
+				clear_variable = air_cleanliness_treaty_filter_convoy_generation
+			}
+		}
+	}
+	clr_country_flag = air_cleanliness_treaty_filter_convoy_project_active
+	clear_variable = air_cleanliness_treaty_filter_convoy_recipient
+	clear_variable = air_cleanliness_treaty_filter_convoy_state
+	clear_variable = air_cleanliness_treaty_filter_convoy_generation
+	while_loop_effect = {
+		limit = {
+			is_in_array = {
+				array = global.air_cleanliness_treaty_filter_convoy_donors
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.air_cleanliness_treaty_filter_convoy_donors value = THIS }
+	}
+}
+
+# Supported scope: COUNTRY. Cancel every active donor project owned by this
+# country or targeting it. The work queue prevents mutation of the donor array
+# while that array is being inspected.
+air_cleanliness_treaty_cancel_filter_convoys_for_country = {
+	save_event_target_as = air_cleanliness_treaty_filter_convoy_departing_country
+	clear_array = global.air_cleanliness_treaty_filter_convoy_cancellations
+	if = {
+		limit = {
+			has_country_flag = air_cleanliness_treaty_filter_convoy_project_active
+			NOT = {
+				is_in_array = {
+					array = global.air_cleanliness_treaty_filter_convoy_donors
+					value = THIS
+				}
+			}
+		}
+		add_to_array = { array = global.air_cleanliness_treaty_filter_convoy_cancellations value = THIS }
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_filter_convoy_donors
+		if = {
+			limit = {
+				OR = {
+					NOT = { exists = yes }
+					NOT = { has_country_flag = air_cleanliness_treaty_filter_convoy_project_active }
+					tag = event_target:air_cleanliness_treaty_filter_convoy_departing_country
+					check_variable = {
+						var = air_cleanliness_treaty_filter_convoy_recipient
+						value = event_target:air_cleanliness_treaty_filter_convoy_departing_country
+						compare = equals
+					}
+				}
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_filter_convoy_cancellations value = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_filter_convoy_cancellations
+		air_cleanliness_treaty_cancel_joint_filter_convoy = yes
+	}
+	clear_array = global.air_cleanliness_treaty_filter_convoy_cancellations
+}
+
+# Supported scope: any. This is used by schema migration, dissolution, and the
+# Fallout pause boundary to release every exact active-project owner.
+air_cleanliness_treaty_cancel_all_filter_convoys = {
+	clear_array = global.air_cleanliness_treaty_filter_convoy_cancellations
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_filter_convoy_donors
+		add_to_array = { array = global.air_cleanliness_treaty_filter_convoy_cancellations value = THIS }
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_filter_convoy_cancellations
+		air_cleanliness_treaty_cancel_joint_filter_convoy = yes
+	}
+	clear_array = global.air_cleanliness_treaty_filter_convoy_cancellations
+	clear_array = global.air_cleanliness_treaty_filter_convoy_donors
+}
+
+# Supported scope: COUNTRY, the donor.
+air_cleanliness_treaty_cancel_joint_filter_convoy = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_filter_convoy_project_active }
+		if = {
+			limit = { has_variable = air_cleanliness_treaty_filter_convoy_recipient }
+			var:air_cleanliness_treaty_filter_convoy_recipient = {
+				save_event_target_as = air_cleanliness_treaty_convoy_recipient
+			}
+		}
+		if = {
+			limit = { has_variable = air_cleanliness_treaty_filter_convoy_state }
+			var:air_cleanliness_treaty_filter_convoy_state = {
+				save_event_target_as = air_cleanliness_treaty_convoy_state
+			}
+		}
+		if = {
+			limit = {
+				exists = yes
+				has_event_target = air_cleanliness_treaty_convoy_recipient
+				has_event_target = air_cleanliness_treaty_convoy_state
+				NOT = { has_global_flag = fallout_transition_active }
+				NOT = { has_global_flag = fallout_active }
+			}
+			country_event = { id = chaosx_air_treaty.4 }
+		}
+	}
+	air_cleanliness_treaty_clear_filter_convoy_project = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the decision target.
+air_cleanliness_treaty_complete_joint_filter_convoy = {
+	if = {
+		limit = { air_cleanliness_treaty_filter_convoy_project_is_valid = yes }
+		save_event_target_as = air_cleanliness_treaty_convoy_donor
+		FROM = { save_event_target_as = air_cleanliness_treaty_convoy_recipient }
+		var:air_cleanliness_treaty_filter_convoy_state = {
+			save_event_target_as = air_cleanliness_treaty_convoy_state
+			air_winter_normalize_state_ledger = yes
+			subtract_from_variable = { air_winter_exposure = constant:air_winter_response_result.mask_exposure_reduction }
+			subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_response_result.mask_disease_reduction }
+			add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.mask_adaptation_gain }
+			add_to_variable = { air_winter_shelter_capacity = constant:air_winter_response_result.clinic_shelter_gain }
+			add_to_variable = { air_winter_recovery = constant:air_winter_response_result.clinic_recovery_gain }
+			set_state_flag = {
+				flag = air_winter_relief_route
+				days = @air_cleanliness_treaty_filter_convoy_route_days
+			}
+			set_variable = { air_cleanliness_treaty_relief_sponsor = event_target:air_cleanliness_treaty_convoy_donor }
+			set_variable = { air_cleanliness_treaty_relief_recipient = event_target:air_cleanliness_treaty_convoy_recipient }
+			set_variable = { air_cleanliness_treaty_relief_generation = global.air_cleanliness_treaty_generation }
+			clr_state_flag = air_cleanliness_treaty_filter_convoy_reserved
+			clear_variable = air_cleanliness_treaty_filter_convoy_sponsor
+			clear_variable = air_cleanliness_treaty_filter_convoy_recipient
+			clear_variable = air_cleanliness_treaty_filter_convoy_generation
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = global.air_cleanliness_treaty_relief_states
+							value = THIS
+						}
+					}
+				}
+				add_to_array = { array = global.air_cleanliness_treaty_relief_states value = THIS }
+			}
+			air_winter_normalize_state_ledger = yes
+			air_winter_calculate_survival_value = yes
+		}
+		event_target:air_cleanliness_treaty_convoy_recipient = {
+			country_event = { id = chaosx_air_treaty.2 }
+		}
+		air_cleanliness_treaty_clear_filter_convoy_project = yes
+	}
+	else = { air_cleanliness_treaty_cancel_joint_filter_convoy = yes }
+}
+
+# Supported scope: STATE
+air_cleanliness_treaty_clear_relief_route = {
+	clr_state_flag = air_winter_relief_route
+	clear_variable = air_cleanliness_treaty_relief_sponsor
+	clear_variable = air_cleanliness_treaty_relief_recipient
+	clear_variable = air_cleanliness_treaty_relief_generation
+	while_loop_effect = {
+		limit = {
+			is_in_array = {
+				array = global.air_cleanliness_treaty_relief_states
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.air_cleanliness_treaty_relief_states value = THIS }
+	}
+}
+
+# Supported scope: any
+air_cleanliness_treaty_clear_all_relief_routes = {
+	clear_array = global.air_cleanliness_treaty_route_removals
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_relief_states
+		add_to_array = { array = global.air_cleanliness_treaty_route_removals value = THIS }
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_route_removals
+		air_cleanliness_treaty_clear_relief_route = yes
+	}
+	clear_array = global.air_cleanliness_treaty_route_removals
+	clear_array = global.air_cleanliness_treaty_relief_states
+}
+
+# Supported scope: any. Each route recovers its two country scopes before the
+# bilateral war test. Invalid routes are removed through a separate state queue.
+air_cleanliness_treaty_reconcile_relief_routes = {
+	clear_array = global.air_cleanliness_treaty_route_removals
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_relief_states
+		set_temp_variable = { air_cleanliness_treaty_route_valid = constant:air_cleanliness_treaty_runtime.one }
+		if = {
+			limit = { NOT = { air_cleanliness_treaty_relief_route_ledger_is_valid = yes } }
+			set_temp_variable = { air_cleanliness_treaty_route_valid = constant:air_cleanliness_treaty_runtime.zero }
+		}
+		if = {
+			limit = {
+				has_variable = air_cleanliness_treaty_relief_sponsor
+				has_variable = air_cleanliness_treaty_relief_recipient
+			}
+			var:air_cleanliness_treaty_relief_sponsor = {
+				save_event_target_as = air_cleanliness_treaty_route_sponsor
+			}
+			var:air_cleanliness_treaty_relief_recipient = {
+				save_event_target_as = air_cleanliness_treaty_route_recipient
+			}
+			if = {
+				limit = {
+					event_target:air_cleanliness_treaty_route_sponsor = {
+						has_war_with = event_target:air_cleanliness_treaty_route_recipient
+					}
+				}
+				set_temp_variable = { air_cleanliness_treaty_route_valid = constant:air_cleanliness_treaty_runtime.zero }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = air_cleanliness_treaty_route_valid
+					value = constant:air_cleanliness_treaty_runtime.zero
+					compare = equals
+				}
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_route_removals value = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_route_removals
+		air_cleanliness_treaty_clear_relief_route = yes
+	}
+	clear_array = global.air_cleanliness_treaty_route_removals
+}
+
+# Supported scope: COUNTRY
+air_cleanliness_treaty_revoke_relief_routes_for_country = {
+	save_event_target_as = air_cleanliness_treaty_route_departing_country
+	clear_array = global.air_cleanliness_treaty_route_removals
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_relief_states
+		if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = air_cleanliness_treaty_relief_sponsor
+						value = event_target:air_cleanliness_treaty_route_departing_country
+						compare = equals
+					}
+					check_variable = {
+						var = air_cleanliness_treaty_relief_recipient
+						value = event_target:air_cleanliness_treaty_route_departing_country
+						compare = equals
+					}
+				}
+			}
+			add_to_array = { array = global.air_cleanliness_treaty_route_removals value = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.air_cleanliness_treaty_route_removals
+		air_cleanliness_treaty_clear_relief_route = yes
+	}
+	clear_array = global.air_cleanliness_treaty_route_removals
+}
+
+# Supported scope: any. Fallout preserves current and historical treaty memory
+# but ends every operational project, route, and invitation without reports.
+air_cleanliness_treaty_pause_for_fallout = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = fallout_transition_active
+				has_global_flag = fallout_active
+			}
+		}
+		air_cleanliness_treaty_cancel_all_filter_convoys = yes
+		air_cleanliness_treaty_release_cleaning_day_project = yes
+		air_cleanliness_treaty_clear_all_relief_routes = yes
+		for_each_scope_loop = {
+			array = global.air_winter_registered_countries
+			clr_country_flag = air_cleanliness_treaty_invitation_pending
+			clr_country_flag = air_cleanliness_treaty_invitation_open
+			clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+		}
+		set_global_flag = air_cleanliness_treaty_paused_for_fallout
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Non-periodic annex cleanup
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY, the annexed country from on_annex FROM.
+air_cleanliness_treaty_handle_annexed_country = {
+	save_event_target_as = air_cleanliness_treaty_annexed_country
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = air_cleanliness_treaty_member
+				is_in_array = { array = global.air_cleanliness_treaty_members value = THIS }
+			}
+		}
+		air_cleanliness_treaty_unregister_member = yes
+	}
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.air_cleanliness_treaty_violators
+				value = THIS
+			}
+		}
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			remove_opinion_modifier = {
+				target = event_target:air_cleanliness_treaty_annexed_country
+				modifier = air_cleanliness_treaty_violator
+			}
+			set_temp_variable = { condemnation_embargo_target = event_target:air_cleanliness_treaty_annexed_country }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+			condemnation_unregister_native_embargo_source = yes
+		}
+		while_loop_effect = {
+			limit = {
+				is_in_array = {
+					array = global.air_cleanliness_treaty_violators
+					value = THIS
+				}
+			}
+			remove_from_array = { array = global.air_cleanliness_treaty_violators value = THIS }
+		}
+	}
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor }
+		air_cleanliness_treaty_release_cleaning_day_project = yes
+	}
+	air_cleanliness_treaty_revoke_relief_routes_for_country = yes
+	air_cleanliness_treaty_cancel_filter_convoys_for_country = yes
+	clr_country_flag = air_cleanliness_treaty_invitation_pending
+	clr_country_flag = air_cleanliness_treaty_invitation_open
+	clear_variable = air_cleanliness_treaty_invitation_attempt_generation
+	air_cleanliness_treaty_reconcile_founder = yes
+}
