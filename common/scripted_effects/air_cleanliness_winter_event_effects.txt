@@ -18,13 +18,26 @@
 # constant:air_winter_event_runtime.country_cooldown_days.
 @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS = 46
 
+# Supported scope: COUNTRY. Reanchors the event cooldown when a delayed
+# result is scheduled after the opening popup has already been displayed.
+air_winter_event_refresh_country_cooldown = {
+	set_country_flag = {
+		flag = air_winter_event_cooldown
+		days = @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS
+	}
+}
+
 # Supported scope: STATE
 air_winter_event_cancel_pending_chain = {
 	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
 	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
+	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
 	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
 	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
 	clr_state_flag = air_winter_deep_water_patrol
+	clr_state_flag = air_winter_seed_chain_vaults
+	clr_state_flag = air_winter_seed_chain_herds
+	clr_state_flag = air_winter_seed_chain_breeding
 	clr_state_flag = air_winter_tunnel_chain_civic
 	clr_state_flag = air_winter_tunnel_chain_shifts
 	clr_state_flag = air_winter_tunnel_chain_cellars
@@ -192,6 +205,11 @@ air_winter_event_clear_state_memory = {
 	clr_state_flag = air_winter_memory_seed_vaults
 	clr_state_flag = air_winter_memory_herd_slaughter
 	clr_state_flag = air_winter_memory_breeding_stock
+	clr_state_flag = air_winter_memory_seed_vaults_flourished
+	clr_state_flag = air_winter_memory_seed_vaults_failed
+	clr_state_flag = air_winter_memory_herd_slaughter_depleted
+	clr_state_flag = air_winter_memory_breeding_stock_survived
+	clr_state_flag = air_winter_memory_breeding_stock_failed
 	clr_state_flag = air_winter_memory_household_rations
 	clr_state_flag = air_winter_memory_ward_kitchens
 	clr_state_flag = air_winter_memory_policed_food_depots
@@ -444,6 +462,38 @@ air_winter_event_apply_reactor_failure_fallout = {
 	set_temp_variable = { chaos_fallout_duration_days = constant:air_winter_event_outcome.reactor_failure_fallout_days }
 	set_temp_variable = { chaos_fallout_intensity_add = constant:air_winter_event_outcome.reactor_failure_fallout_intensity }
 	chaos_meter_apply_nuclear_fallout_to_state = yes
+}
+
+# Supported scope: STATE. A later owner can reopen the Phase 2 route, so the
+# newest seed-ledger choice replaces the older branch and outcome memory.
+air_winter_event_clear_seed_ledger_memory = {
+	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
+	clr_state_flag = air_winter_seed_chain_vaults
+	clr_state_flag = air_winter_seed_chain_herds
+	clr_state_flag = air_winter_seed_chain_breeding
+	clr_state_flag = air_winter_memory_seed_vaults
+	clr_state_flag = air_winter_memory_herd_slaughter
+	clr_state_flag = air_winter_memory_breeding_stock
+	clr_state_flag = air_winter_memory_seed_vaults_flourished
+	clr_state_flag = air_winter_memory_seed_vaults_failed
+	clr_state_flag = air_winter_memory_herd_slaughter_depleted
+	clr_state_flag = air_winter_memory_breeding_stock_survived
+	clr_state_flag = air_winter_memory_breeding_stock_failed
+}
+
+# Supported scope: STATE
+air_winter_event_apply_seed_vault_industry = {
+	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
+	set_temp_variable = { air_winter_seed_vault_industry_days = constant:air_winter_event_outcome.seed_vault_industry_days }
+	add_dynamic_modifier = {
+		modifier = air_winter_seed_vault_preservation_industry_state
+		days = air_winter_seed_vault_industry_days
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_clear_seed_vault_industry = {
+	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
 }
 
 # Supported scope: STATE. A later owner can reopen the Phase 2 route, so the
@@ -1242,10 +1292,7 @@ air_winter_dispatch_phase_events = {
 				}
 			}
 
-			set_country_flag = {
-				flag = air_winter_event_cooldown
-				days = @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS
-			}
+			air_winter_event_refresh_country_cooldown = yes
 			meta_effect = {
 				text = { country_event = { id = chaosx.fallout.[AIR_WINTER_EVENT_ID] } }
 				AIR_WINTER_EVENT_ID = "[?air_winter_event_candidate_id|.0]"

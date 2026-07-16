@@ -433,6 +433,8 @@ The implemented Phase 3 infrastructure layer adds dam, oil or refinery, and reac
 
 The implemented Phase 2 mountain-capital route checks the selected state for highland presentation and current capital identity before the generic city route. The typed event id preserves that selection if a first-frost marker dispatches after the capital moves. Its delayed result trades temporary local factory availability for shelter, adaptation, and a durable 10 percent reduction in the established monthly Air Winter civilian death percentage. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
+The Phase 2 seed-ledger route retains its regional selection and resolves every opening choice through `chaosx.fallout.18` after 45 days. Each valid opening click refreshes the 46-day country cooldown before scheduling that result. Guarded seed plots divert 10 percent of local factory availability for a 46-day review window. Protected plots and breeding stock use disclosed ledger thresholds with exact pre-choice AI translations. Emergency herd slaughter has a fixed later depletion cost. All three branches share the established pending owner and cleanup transaction. Post-Fallout food recovery remains outside this route until its numerical contract is approved. Full proof is recorded in `AIR_WINTER_PHASE_2_SEED_LEDGER_EVENT_PROOF.md`.
+
 Player priority:
 
 - player-owned state

@@ -714,6 +714,32 @@ air_winter_event_is_reactor_state = {
 }
 
 # Supported scope: STATE
+air_winter_event_seed_vault_succeeds = {
+	check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.seed_vault_reclamation_threshold }
+	check_variable = { air_winter_exposure < constant:air_winter_event_outcome.seed_vault_exposure_ceiling }
+}
+
+# Supported scope: STATE. These are the result thresholds translated back
+# through the opening route's two-point Reclamation gain.
+air_winter_event_seed_vault_ai_is_plausible = {
+	check_variable = { air_winter_reclamation > constant:air_winter_event_outcome.seed_vault_ai_reclamation_minimum }
+	check_variable = { air_winter_exposure < constant:air_winter_event_outcome.seed_vault_ai_exposure_ceiling }
+}
+
+# Supported scope: STATE
+air_winter_event_breeding_stock_succeeds = {
+	check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.breeding_food_threshold }
+	check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.breeding_shelter_threshold }
+}
+
+# Supported scope: STATE. Food is tested before the opening route spends four
+# points. Shelter is unchanged by that route.
+air_winter_event_breeding_stock_ai_is_plausible = {
+	check_variable = { air_winter_food_reserve > constant:air_winter_event_outcome.breeding_ai_food_minimum }
+	check_variable = { air_winter_shelter_capacity > constant:air_winter_event_outcome.breeding_ai_shelter_minimum }
+}
+
+# Supported scope: STATE
 air_winter_event_tunnel_civic_succeeds = {
 	check_variable = {
 		var = air_winter_building_damage_pressure
@@ -1613,6 +1639,9 @@ air_winter_event_candidate_is_dispatchable = {
 air_winter_event_has_pending_chain = {
 	OR = {
 		has_state_flag = air_winter_deep_water_patrol
+		has_state_flag = air_winter_seed_chain_vaults
+		has_state_flag = air_winter_seed_chain_herds
+		has_state_flag = air_winter_seed_chain_breeding
 		has_state_flag = air_winter_tunnel_chain_civic
 		has_state_flag = air_winter_tunnel_chain_shifts
 		has_state_flag = air_winter_tunnel_chain_cellars
