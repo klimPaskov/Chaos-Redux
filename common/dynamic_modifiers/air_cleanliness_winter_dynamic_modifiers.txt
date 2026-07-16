@@ -194,6 +194,28 @@ air_winter_tunnel_school_shift_industry_state = {
 	local_factories = constant:air_winter_event_outcome.tunnel_shifts_factory_penalty
 }
 
+# Emergency pipe workshops and pump crews occupy usable factory space until
+# the desert-city water ledger returns.
+air_winter_desert_city_waterworks_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	local_factories = constant:air_winter_event_desert_city.municipal_factory_penalty
+}
+
+# A resolved water route can briefly improve or disrupt local supply without
+# replacing the phase-wide Air Winter supply modifier.
+air_winter_desert_city_supply_relief_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	local_supplies = constant:air_winter_event_desert_city.supply_bonus
+}
+
+air_winter_desert_city_supply_disruption_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_2
+	local_supplies = constant:air_winter_event_desert_city.supply_penalty
+}
+
 # Disease pressure is calculated and capped by the state update. Keeping it
 # separate makes shelter, food, exposure, and adaptation matter within a phase
 # without duplicating the deterministic civilian-death tick.

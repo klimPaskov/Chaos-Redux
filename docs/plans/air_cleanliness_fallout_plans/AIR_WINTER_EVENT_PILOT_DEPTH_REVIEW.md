@@ -2,7 +2,7 @@
 
 ## Review boundary
 
-This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry, island-refugee, and dead-city salvage tranches. It is a source review only. Hearts of Iron IV was not launched.
+This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry, island-refugee, Desert City, and dead-city salvage tranches. It is a source review only. Hearts of Iron IV was not launched.
 
 The pilot already proves the bounded dispatch model, one visible event per eligible country cooldown, regular state and country event targets, delayed deterministic results, state memory, AI choice weights, Deaths integration, and cleanup through the existing monthly state pass. It does not count toward the 660-block Fallout living-world floor.
 
@@ -15,7 +15,7 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 | Hydroelectric region | No event checked a dam building before the first expansion. | Covered by `chaosx.fallout.22` and `.25`. |
 | Oil region | No event checked oil resources, refineries, or fuel storage before the first expansion. | Covered by `chaosx.fallout.26` and `.27`. |
 | Tropical coast | `chaosx.fallout.12` and `.15` cover nearshore food loss, deep-water patrols, and a delayed return or loss. | Covered. |
-| Desert city | `chaosx.fallout.13` covers frozen mains and water convoys. | Partial. It is a single-block regional choice. |
+| Desert city | `chaosx.fallout.13` covers frozen mains and water convoys. | Covered by the exact-receipt `chaosx.fallout.13` route and `chaosx.fallout.49`. Three authorities commit municipal works, railway tankers, or motor columns and return through nine deterministic results. |
 | Mountain capital | `chaosx.fallout.5` and `.14` covered marked passes, herds, and lower-valley movement. | Covered by `chaosx.fallout.16` and `.17`, including shelter, industry, delayed outcomes, and population protection. |
 | Island state | `chaosx.fallout.12` and `.15` cover small craft, rescue patrols, food, exposure, disease, and state memory. | Covered for maritime survival and refugee admission by `chaosx.fallout.38` and `.39`. The dedicated route uses exact engine island topology, a real foreign coastal source, balanced population movement, three policies, and six delayed results. |
 | Dead city candidate | No event performed an early salvage transaction before the Phase 5 expansion. | Covered by `chaosx.fallout.47` and `.48`. The route identifies a ruined major city through original urban category, a persistent building-loss receipt, current damaged-building evidence, and continued owner control. It is not described or treated as a committed Fallout dead-city grade. |
@@ -25,7 +25,7 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 
 The pilot has strong delayed-result depth in its transport, heating, shelter, harvest, city, archive, continuity, thaw, and second-winter families. Those chains carry a state target, record a branch flag before dispatch, resolve through state conditions, write durable memory, and clear the pending branch.
 
-The Phase 1 and several Phase 2 regional entries remain intentionally shorter. The mountain-capital route now carries a full delayed result, while other regional entries establish voice and early choices without all returning later.
+The Phase 1 and several Phase 2 regional entries remain intentionally shorter. The mountain-capital and exact Desert City routes carry full delayed results, while other regional entries establish voice and early choices without all returning later.
 
 The most important gap identified by the baseline review was infrastructure identity. The accepted hydroelectric, oil, reactor, and exact coal or heavy-industry rows lacked dedicated live identity routes, even though the engine exposes the required state buildings and resources.
 
@@ -93,6 +93,19 @@ Dispatch defers the Phase 2 seen flag and first-frost receipt. No live source me
 
 The opening spends real Manpower, Convoys, or Support Equipment where required and writes one exclusive branch only after a positive transfer. Event `.39` partitions each branch into direct success and inverse failure after 30 days. All six outcomes write distinct state and country memories. The three failures record local casualties through Deaths. Stale and zero-transfer openings roll back without consuming the route. The complete engine-sensitive proof is in `AIR_WINTER_PHASE_2_ISLAND_REFUGEE_SOURCE_AND_POPULATION_PROOF.md`.
 
+## Desert City depth
+
+The Desert City contract contains one shared opening and one dedicated result:
+
+- the exact-receipt interface inside `chaosx.fallout.13`, The Frozen Main and the Ward Cisterns
+- `chaosx.fallout.49`, nine policy-specific water-route results after 30 days
+
+The Phase 2 selector checks exact arid urban identity after mountain capitals and engine islands but before the generic city route. A typed `desert_city` subtype survives temporary selection, first-frost storage, country candidate comparison, and the final owner-bound opening receipt. Generic arid and Mediterranean event 13 rows carry subtype `none`. First-frost coalescing compares both event id and subtype, so the two event 13 identities cannot consume each other's seasonal marker.
+
+Municipal works are always executable and exchange Stability and temporary local factory access for water, shelter, and adaptation. Railway tankers require an operational railway and pay Manpower, Trains, and Fuel. Motor columns require operational infrastructure and pay Manpower, Motorized Equipment, Fuel, and Command Power. Paid choices repeat exact affordability at display and click time.
+
+Each branch resolves through success, partial, or failure. The nine result partitions are exhaustive and mutually exclusive. Failures use the Deaths system, apply route-specific water, exposure, disease, refugee, Stability, or War Support consequences, and damage at most one operational repairable target. Success applies a timed local supply benefit, while failure applies a timed local supply penalty. The result validator independently proves the pending flag, bound original owner, event country, state owner, and exact branch. A malformed branch without its pending receipt is cancelled during the existing state reconciliation pass. The full proof is in `AIR_WINTER_PHASE_2_DESERT_CITY_EVENT_PROOF.md`.
+
 ## Phase 5 dead-city salvage depth
 
 The dead-city salvage contract contains two manually authored blocks:
@@ -108,7 +121,7 @@ The result uses success, partial, and disaster predicates for each branch. Their
 
 ## Implementation disposition
 
-The pilot contains 50 blocks, 159 options, 158 effect-bearing options, and 54 delayed-result schedules. Island refugee admission, seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, reactor states, coal or heavy-industry states, and ruined major-city salvage have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country. The shared Phase 5 memory likewise permits one ordinary Phase 5 identity chain per country, with the dead-city route winning over the generic Phase 5 city route when both qualify.
+The pilot contains 51 blocks, 171 options, 170 effect-bearing options, and 57 delayed-result schedules. Island refugee admission, seed and livestock policy, mountain capitals, Desert City water logistics, hydroelectric states, oil or refinery states, reactor states, coal or heavy-industry states, and ruined major-city salvage have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country. The shared Phase 5 memory likewise permits one ordinary Phase 5 identity chain per country, with the dead-city route winning over the generic Phase 5 city route when both qualify.
 
 ## Deferred depth
 

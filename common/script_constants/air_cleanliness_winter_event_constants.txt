@@ -26,6 +26,8 @@ air_winter_event_runtime = {
 	# One point above the full state-pressure range lets the island route win
 	# within Phase 2 without overtaking a genuinely later phase.
 	island_refugee_same_phase_bonus = 131
+	# The exact desert-city subtype uses the same bounded Phase 2 interval.
+	desert_city_same_phase_bonus = 131
 	# The dead-city salvage route uses the same bounded score interval in Phase 5.
 	dead_city_salvage_same_phase_bonus = 131
 	candidate_recovery_base = 500
@@ -102,6 +104,19 @@ air_winter_event_id = {
 	phase_6_terminal = 43
 	recovery = 50
 	second_winter = 60
+}
+
+# Event 13 is shared by an exact arid urban route and a regional fallback.
+# This typed discriminator survives candidate and first-frost storage.
+air_winter_event_route_subtype = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	desert_city = 1
+	maximum = 1
 }
 
 air_winter_event_island_refugee = {
@@ -213,6 +228,12 @@ air_winter_event_deaths = {
 	population_scale = 1000
 	minimum_remaining = 1000
 	island_refugee_failure_percent = 0.00010
+	desert_city_municipal_partial_percent = 0.00005
+	desert_city_municipal_failure_percent = 0.00015
+	desert_city_rail_partial_percent = 0.00005
+	desert_city_rail_failure_percent = 0.00020
+	desert_city_motor_partial_percent = 0.00010
+	desert_city_motor_failure_percent = 0.00020
 	dead_city_survey_partial_percent = 0.00005
 	dead_city_survey_disaster_percent = 0.00015
 	dead_city_military_success_percent = 0.00010
@@ -372,6 +393,44 @@ air_winter_event_ai = {
 	high_war_support = 0.65
 	low_ledger = 25
 	high_ledger = 65
+}
+
+air_winter_event_desert_city = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	municipal_stability_cost = 0.01
+	municipal_factory_penalty = -0.10
+	municipal_factory_penalty_magnitude = 0.10
+	municipal_factory_days = 31
+	rail_manpower_cost = 500
+	rail_train_cost = 3
+	rail_fuel_cost = 1000
+	motor_manpower_cost = 200
+	motor_equipment_cost = 20
+	motor_fuel_cost = 1000
+	motor_command_cost = 7
+	success_water_minimum = 30
+	success_adaptation_minimum = 25
+	success_reclamation_minimum = 25
+	success_exposure_ceiling = 60
+	success_pressure_ceiling = 65
+	municipal_ai_water_minimum = 22
+	municipal_ai_adaptation_minimum = 23
+	municipal_ai_pressure_ceiling = 50
+	rail_ai_water_minimum = 25
+	rail_ai_adaptation_minimum = 23
+	rail_ai_exposure_ceiling = 59
+	motor_ai_water_minimum = 25
+	motor_ai_reclamation_minimum = 25
+	motor_ai_exposure_ceiling = 58
+	building_damage = 0.50
+	supply_bonus = 0.10
+	supply_penalty = -0.10
+	supply_penalty_magnitude = 0.10
+	supply_days = 60
 }
 
 air_winter_event_dead_city = {

@@ -35,14 +35,15 @@ The full-screen grade and static accessibility setting remain unwired. Runtime p
 
 ## Air Winter report-event image package
 
-These nine report-event images are fictional period-documentary scenes generated with the built-in `$imagegen` workflow. Generation was selected because the Air Winter progression is fictional, while a geographically varied documentary anthology communicates the world-scale climate collapse better than reusing one archive photograph. No real person, named historical incident, or archival collection is represented.
+These ten report-event images are fictional period-documentary scenes generated with the built-in `$imagegen` workflow. Generation was selected because the Air Winter progression is fictional, while a geographically varied documentary anthology communicates the world-scale climate collapse better than reusing one archive photograph. No real person, named historical incident, or archival collection is represented.
 
-All source PNGs are distinct 1536x1024 renders. Every processed PNG and final DDS is 210x176. The repository report-event processor applies grayscale conversion, sepia tone, grain, a four-degree card tilt, transparent edge space, and a soft shadow. Runtime DDS files are uncompressed one-image-level 32-bit BGRA with full 8-bit alpha.
+All source PNGs are distinct high-resolution renders. Every processed PNG and final DDS is 210x176. The repository report-event processor applies grayscale conversion, sepia tone, grain, a four-degree card tilt, transparent edge space, and a soft shadow. Runtime DDS files are uncompressed one-image-level 32-bit BGRA with full 8-bit alpha.
 
 | Asset | Related events | Regional visual identity | Source mode | Source PNG | Processed PNG | Final DDS | Sprite | Target `.gfx` | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Air Winter phase 1 | `chaosx.fallout.1` through `chaosx.fallout.5` | Norwegian coastal village under dim first-stage cold | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_phase_1_source.png` | `processed_png/report_events/report_event_air_winter_phase_1.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_1.dds` | `GFX_report_event_air_winter_phase_1` | `interface/air_cleanliness_winter.gfx` | `registered` |
 | Air Winter phase 2 | `chaosx.fallout.10` through `chaosx.fallout.18` | Bengal delta crop shock under impossible cold rain | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_phase_2_source.png` | `processed_png/report_events/report_event_air_winter_phase_2.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_2.dds` | `GFX_report_event_air_winter_phase_2` | `interface/air_cleanliness_winter.gfx` | `registered` |
+| Air Winter desert-city water convoy | exact-receipt `chaosx.fallout.13` and `chaosx.fallout.49` | Frost-split main, stone cistern, railway tanker, and period truck in a culturally neutral arid city | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_desert_water_convoy_source.png` | `processed_png/report_events/report_event_air_winter_desert_water_convoy.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_desert_water_convoy.dds` | `GFX_report_event_air_winter_desert_water_convoy` | `interface/air_cleanliness_winter.gfx` | `complete` |
 | Air Winter phase 3 | `chaosx.fallout.20` through `chaosx.fallout.29`, plus `chaosx.fallout.36` and `chaosx.fallout.37` | Canadian prairie freight line locked by hard freeze | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_phase_3_source.png` | `processed_png/report_events/report_event_air_winter_phase_3.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_3.dds` | `GFX_report_event_air_winter_phase_3` | `interface/air_cleanliness_winter.gfx` | `registered` |
 | Air Winter phase 4 | `chaosx.fallout.30` through `chaosx.fallout.35` | Greek black harvest and dead olive country | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_phase_4_source.png` | `processed_png/report_events/report_event_air_winter_phase_4.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_4.dds` | `GFX_report_event_air_winter_phase_4` | `interface/air_cleanliness_winter.gfx` | `registered` |
 | Air Winter island refugee harbor | `chaosx.fallout.38` and `chaosx.fallout.39` | Overloaded civilian boats entering a small island harbor or improvised anchorage under cold rain | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_island_refugee_harbor_source.png` | `processed_png/report_events/report_event_air_winter_island_refugee_harbor.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_island_refugee_harbor.dds` | `GFX_report_event_air_winter_island_refugee_harbor` | `interface/air_cleanliness_winter.gfx` | `registered` |
@@ -51,7 +52,7 @@ All source PNGs are distinct 1536x1024 renders. Every processed PNG and final DD
 | Air Winter phase 6 | `chaosx.fallout.43` and `chaosx.fallout.46` | Terminally dim Central Asian oasis settlement | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_phase_6_source.png` | `processed_png/report_events/report_event_air_winter_phase_6.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_phase_6.dds` | `GFX_report_event_air_winter_phase_6` | `interface/air_cleanliness_winter.gfx` | `registered` |
 | Air Winter recovery | `chaosx.fallout.50` and `chaosx.fallout.51` | Andean thaw, restored meltwater, and recovering soil | Built-in `$imagegen`, fictional period documentary | `source_png/report_events/report_event_air_winter_recovery_source.png` | `processed_png/report_events/report_event_air_winter_recovery.png` | `gfx/event_pictures/fallout/air_winter/report_event_air_winter_recovery.dds` | `GFX_report_event_air_winter_recovery` | `interface/air_cleanliness_winter.gfx` | `registered` |
 
-The final DDS decode contact sheet is `contact_sheets/air_winter_report_events_final_contact_sheet.png`.
+The runtime-equivalent final contact sheet is `contact_sheets/air_winter_report_events_final_contact_sheet.png`. It was assembled from the processed PNGs only after exact pixel-equality checks against every final DDS. The captions identify the pixel-identical runtime payload and do not describe the sheet assembly source. Its ten-asset SHA-256 is `a46a3ec2acf91e4d6eca9e3c2ed5f75c570f34203a91835835e27a7675a8cc51`.
 
 The Phase 3 furnace opening and result reuse this dedicated registered report asset. The heavy-industry tranche creates no new report image, sprite, audio, source PNG, processed PNG, DDS, or runtime path.
 
@@ -84,6 +85,22 @@ Composition/framing: landscape 3:2 mid-wide view, ruined crop and people both cl
 Lighting/mood: overcast cold rain, shock and disbelief, wet textures, visibly tropical region subjected to unseasonable cold
 Constraints: fictional people only, period-accurate rural clothing and architecture, respectful documentary realism, no readable text, no signage, no watermark, no modern objects, no UI, no map, no split panel, no collage, no frame, no card treatment, no supernatural creatures
 ```
+
+#### Air Winter desert-city water convoy
+
+```text
+Use case: historical-scene
+Asset type: fictional Hearts of Iron IV report-event source photograph
+Primary request: a winter water convoy restoring supply to a culturally neutral arid city between 1936 and 1945
+Scene/backdrop: a stone cistern and frost-split iron water main beside a small railway siding, with dry stone and earth visible beneath sparse frost and fine cold dust mixed with light sleet
+Subject: the broken main and cistern in the foreground, a riveted railway water tanker, a period tanker truck, two engineers studying a route sheet with no readable writing, and civilians waiting with metal buckets, ceramic jugs, wooden or leather vessels, and woven-covered containers
+Style/medium: authentic black-and-white press photograph, period lens and film grain, candid field-report composition
+Composition/framing: near-square crop-safe view with every essential subject inside the central 80 percent, strong foreground depth, no border and no caption
+Lighting/mood: overcast winter daylight, cold and austere but organized, practical civic relief work
+Constraints: fictional people only, low flat-roof stone and adobe service buildings, culturally neutral winter work coats and plain wool caps, period-accurate vehicles and tools, visible dry ground, no readable text, no national symbols, no modern plastic, no universal snow, no zombies, no corpses, no gore, no weapons, and no UI
+```
+
+The final source used a targeted edit that replaced a distinctive skyline and region-specific clothing while preserving the split main, cistern, railway tanker, truck, engineers, civilians, period containers, sparse frost, light sleet, and crop-safe documentary composition.
 
 #### Air Winter phase 3
 
