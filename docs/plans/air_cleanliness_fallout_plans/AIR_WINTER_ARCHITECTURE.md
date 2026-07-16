@@ -539,23 +539,27 @@ Performance rule:
 Implemented lifecycle:
 
 - the monthly Air host calls one idempotent treaty coordinator
-- bounded arrays own members, violators, active convoy donors, pending removals, pending violation changes, and active relief states
+- bounded arrays own members, violators, active convoy donors, active inspectors, pending removals, pending violation changes, and active relief states
 - the lowest eligible country id founds the treaty when severe contamination begins
 - invitations carry a generation receipt and expire without leaving stale eligibility
 - entry, exit, violation, annexation, founder succession, and dissolution own explicit cleanup paths
 - Global Cleaning Day consumes equipment and convoys from its sponsor and reserves that sponsor's civilian factories before cleanup begins
 - Joint Filter Convoy targets a treaty member, reserves one eligible controlled state, consumes real equipment and convoys, and writes one temporary relief-route ledger
+- Verification Mission lets the current secretariat inspect one member at a time through a fourteen-day targeted project, three paid or disputed responses, and an exact seven-day result
+- paired inspection receipts write government-aware cooperation or dispute memory without changing Winter or Fallout tuning formulas
+- inspection refusal enforces the accepted expulsion, embargo, opinion, and relief-loss consequences through the existing treaty violation path
 - route completion, cancellation, ownership drift, annexation, expiry, and treaty dissolution reconcile through idempotent receipts
 - invalid routes reconcile before monthly state pressure
 - Fallout silently clears active projects, invitations, and routes while preserving membership and betrayal memory
+- Fallout also clears active inspection receipts while preserving completed inspection memory
 
 Remaining treaty work:
 
-- verification missions and inspection disputes
 - evacuation corridors and refugee allocation
 - treaty-owned Fallout memory and successor legitimacy
 - broader regional and government-aware treaty event families
-- runtime observation of decision target scope, delayed completion, route pressure, and sanctions
+- relief vote transactions and major-burner policy
+- runtime observation of decision target scope, delayed completion, delayed inspection results, route pressure, and sanctions
 
 ## Gradual Fallout evaluation
 

@@ -125,4 +125,59 @@ air_cleanliness_treaty_category = {
 			}
 		}
 	}
+
+	air_cleanliness_treaty_verification_mission = {
+		icon = GFX_decision_generic_operation
+		target_root_trigger = { air_cleanliness_treaty_country_is_current_founder = yes }
+		target_array = global.air_cleanliness_treaty_members
+
+		visible = {
+			air_cleanliness_treaty_country_is_current_founder = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				air_cleanliness_treaty_country_is_live_member = yes
+			}
+		}
+
+		available = { air_cleanliness_treaty_can_start_verification_mission = yes }
+		cost = constant:air_cleanliness_treaty_runtime.zero
+		days_remove = constant:air_cleanliness_treaty_runtime.verification_mission_duration_days
+		modifier = {
+			civilian_factory_use = constant:air_cleanliness_treaty_runtime.verification_civilian_factories
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_verification_mission = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_verification_mission_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_verification_mission_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_verification_transaction = yes }
+		remove_effect = { air_cleanliness_treaty_complete_verification_mission = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_founder_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_new_subject_factor
+				FROM = { NOT = { has_country_flag = air_cleanliness_treaty_ever_opened_inspection } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_prior_refusal_factor
+				FROM = { has_country_flag = air_cleanliness_treaty_ever_refused_inspection }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_fascist_subject_factor
+				FROM = { has_government = fascism }
+			}
+		}
+	}
 }

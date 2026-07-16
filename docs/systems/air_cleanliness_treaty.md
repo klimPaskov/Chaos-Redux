@@ -15,10 +15,12 @@ The implemented tranche contains:
 - an atomic Global Cleaning Day project
 - a country-targeted Joint Filter Convoy project
 - a state relief route lasting up to six months that feeds the existing Air Winter pressure formula
+- a secretariat-owned Verification Mission with three inspected-member responses
+- an exact seven-day delayed verification result with durable country memory
 - a Fallout pause receipt that ends operational projects while preserving treaty memory
-- AI weights for joining and both projects
+- AI weights for joining, all three projects, and every verification response
 
-The broader accepted treaty package is not complete. Pooled decontamination, seed archive exchange, evacuation corridors, inspections, votes, sanctioning of major burners, and improved forecast precision beyond shared basic sampling remain unimplemented.
+The broader accepted treaty package is not complete. Pooled decontamination, seed archive exchange, evacuation corridors, relief votes, sanctioning of major burners, and improved forecast precision beyond shared basic sampling remain unimplemented.
 
 ## Runtime owner
 
@@ -34,6 +36,7 @@ The principal scope arrays are:
 - `global.air_cleanliness_treaty_violators`
 - `global.air_cleanliness_treaty_relief_states`
 - `global.air_cleanliness_treaty_filter_convoy_donors`
+- `global.air_cleanliness_treaty_active_inspectors`
 
 Mutation queues are separate from the arrays they repair:
 
@@ -41,8 +44,9 @@ Mutation queues are separate from the arrays they repair:
 - `global.air_cleanliness_treaty_violation_queue`
 - `global.air_cleanliness_treaty_route_removals`
 - `global.air_cleanliness_treaty_filter_convoy_cancellations`
+- `global.air_cleanliness_treaty_verification_cancellations`
 
-The code never removes a member or state while iterating the same registry. It first records the scope in the appropriate work queue and mutates the source registry during a second loop.
+The code never removes a country or state while iterating the same registry. It first records the scope in the appropriate work queue and mutates the source registry during a second loop.
 
 ## Formation and invitations
 
@@ -60,7 +64,7 @@ Registration sets the current and historical membership flags, adds one country-
 
 A new member also joins the active sanctions ledger against existing treaty violators. The native embargo helper records the Air Cleanliness Treaty as a separate relation owner. Removing treaty ownership breaks an engine embargo only when no condemnation, Great Embargo, external, or other tracked owner remains.
 
-An unconventional-weapon hook calls the compatibility effect `air_cleanliness_treaty_on_unconventional_use`. The wrapper delegates to the idempotent violation transaction. A current member is removed once, added to the violator registry once, marked with `air_cleanliness_treaty_betrayal_memory`, stripped of active relief routes, and sanctioned only by current members. The violation news report can fire only once for that country.
+An unconventional-weapon hook calls the compatibility effect `air_cleanliness_treaty_on_unconventional_use`. Inspection refusal calls the same idempotent consequence transaction with a distinct short-lived cause flag. A current member is removed once, added to the violator registry once, marked with `air_cleanliness_treaty_betrayal_memory`, stripped of active relief routes, and sanctioned only by current members. The unconventional-weapon news report can fire only for the weapon cause and only once for that country. Refusal retains its separate inspection memory and uses the verification result report.
 
 Opinion modifiers are permanent while their lifecycle edge exists. Member departure removes mutual cooperation and the departing country's treaty sanctions. Annexation removes the absent country from live registries while preserving its betrayal flag for a later return.
 
@@ -92,11 +96,31 @@ Active route states are held in a bounded registry. A route is removed before mo
 
 All three Air Winter map modes display whether the selected state currently has a treaty filter route.
 
+## Verification Mission
+
+`air_cleanliness_treaty_verification_mission` is a targeted country decision backed by the bounded member array. ROOT is the current treaty founder and secretariat. FROM is the inspected member. Restricting dispatch authority to the current secretariat permits only one active verification file at a time and prevents every member pair from becoming a daily decision target.
+
+The mission requires two distinct live members at peace with each other. The subject cannot already be reserved by another inspection and cannot have completed a response during the previous one hundred eighty days. The secretariat commits sixty support equipment and five convoys, reserves one civilian factory for fourteen days, and enters a ninety-day dispatch cooldown when the mission begins. Equipment is not refunded after a broken route.
+
+The travelling phase stores the treaty generation, a monotonic transaction number, the inspector, and the subject on both countries. The secretariat is held in `global.air_cleanliness_treaty_active_inspectors`. When travel completes, event `chaosx_air_treaty.6` gives the inspected government three responses:
+
+- full facility access costs thirty support equipment and five trains
+- certified records without facility access cost twelve support equipment and two trains
+- refusal costs no equipment and creates an inspection dispute
+
+The response is stored before hidden dispatcher `chaosx_air_treaty.9` is issued to the secretariat with an exact seven-day delay. On that day it opens result report `chaosx_air_treaty.7` only for the matching live transaction. Invalid delayed receipts are cleared immediately. If stores change while the response event is open, report `chaosx_air_treaty.8` preserves the request, recounts the depots, and reopens only the choices that can still be paid. Full access gives current members a decaying twenty-point diplomatic opinion benefit for up to twelve months. Records without access give a decaying fifteen-point penalty for up to nine months. Refusal gives a decaying forty-point penalty for up to eighteen months and then uses the existing treaty violation path to expel the member, revoke relief access, apply the standing violator opinion penalty, and register treaty-owned embargoes. The refusal memory is distinct from unconventional-weapon use and does not fire the weapon-use news report.
+
+The chain does not change Air Contamination, any Air Winter tuning formula, survival grading, exposure, deaths, adaptation, Fallout eligibility, or Fallout grading. Refusal can remove an existing treaty relief route through the accepted violation consequence, so the state loses that route's ordinary pressure reduction. The permanent flags and last-partner, last-date, and last-outcome variables are scheduler memory for later manually reviewed treaty events.
+
+Monthly reconciliation inspects only the active-inspector array. Membership loss, founder succession, war between the pair, transaction drift, annexation, dissolution, schema migration, and Fallout release the exact paired receipts through a separate cancellation queue. Timed cooldown and recency flags and completed historical memory survive operational cleanup.
+
 ## AI behavior
 
 Invitation AI weighs government, major status, unconventional stockpiles, prior weapon use, and war with the founder.
 
-Cleaning Day AI weighs government, war strain, and very high Air Contamination. Filter Convoy AI has a zero-validity gate through the decision availability trigger. It then weighs donor capacity, war strain, target phase, and critical target survival value. Every AI value is stored in `common/script_constants/air_cleanliness_treaty_constants.txt`.
+Cleaning Day AI weighs government, war strain, and very high Air Contamination. Filter Convoy AI has a zero-validity gate through the decision availability trigger. It then weighs donor capacity, war strain, target phase, and critical target survival value.
+
+Verification dispatch AI weighs secretariat government, war strain, the subject's inspection history, prior refusal, and fascist administration. The inspected government has separate AI weights for full access, records-only access, and refusal. Government, war strain, available equipment, and prior refusal shape the response. Every AI value is stored in `common/script_constants/air_cleanliness_treaty_constants.txt`.
 
 ## Files
 
@@ -124,25 +148,28 @@ Cleaning Day AI weighs government, war strain, and very high Air Contamination. 
 No new visual asset is required by this tranche.
 
 - Treaty category: `GFX_decision_category_contamination_defense`, defined in `interface/chaosx_decisions.gfx`, with texture `gfx/interface/decisions/decision_category_contamination_defense.dds`
-- Both projects: `GFX_decision_generic_operation`, defined by vanilla `interface/decisions.gfx`, with texture `gfx/interface/decisions/decision_generic_operation.dds`
+- Treaty projects: `GFX_decision_generic_operation`, defined by vanilla `interface/decisions.gfx`, with texture `gfx/interface/decisions/decision_generic_operation.dds`
 - Formation, invitation, and succession reports: vanilla `GFX_report_event_generic_sign_treaty2`
 - Cleaning Day report: vanilla `GFX_report_event_generic_sign_treaty1`
 - Violation report: Fallout-independent Chaos Redux sprite `GFX_news_event_chaosx_cbw_doom`
 - Convoy reports: vanilla `GFX_report_event_generic_factory`
+- Verification request: vanilla `GFX_report_event_generic_sign_treaty2`
+- Verification result: vanilla `GFX_report_event_generic_sign_treaty1`
+- Verification depot recount: vanilla `GFX_report_event_generic_factory`
 
 A future dedicated treaty icon package should use a treaty-owned directory and stable sprite ids before art is commissioned. That package is not required for the implemented decisions to render.
 
 ## Proof and runtime boundary
 
-Static engine proof is recorded in `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_LIFECYCLE_PROOF.md`.
+Static engine proof is recorded in `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_LIFECYCLE_PROOF.md` and `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_INSPECTION_PROOF.md`.
 
-Hearts of Iron IV was not launched. Targeted decision persistence, delayed invitation delivery, mapmode text rendering, native embargo behavior, Fallout pause timing, and save reconstruction remain runtime observation gates. No runtime pass is claimed.
+Hearts of Iron IV was not launched. Targeted decision persistence, delayed invitation and verification delivery, regular event-target retention, mapmode text rendering, native embargo behavior, Fallout pause timing, and save reconstruction remain runtime observation gates. No runtime pass is claimed.
 
 ## Future plans
 
 1. Add pooled state decontamination through the existing Air Winter decontamination project and formula.
 2. Add seed archive exchange with food, adaptation, and memory effects.
 3. Add bounded evacuation-corridor projects using the existing reception-state ledger.
-4. Add inspection and vote transactions with explicit member receipts.
+4. Add member relief vote transactions with explicit receipts.
 5. Add sanctions against major atmospheric burners only after an exact target ledger is defined.
-6. Carry membership and betrayal memories into Fallout successors only after the pending post-Fallout treaty policy is approved.
+6. Carry membership, inspection, and betrayal memories into Fallout successors only after the pending post-Fallout treaty policy is approved.

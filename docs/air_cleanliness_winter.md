@@ -212,6 +212,7 @@ Proof files are:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_LIFECYCLE_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_INSPECTION_PROOF.md`
 
 Regional snow, frost, cold rain, ash, dead vegetation, frozen water, phase-material dim light, and thaw are wired. The full-screen grade and static accessibility setting remain unpromoted because their UI and selection surfaces are not proven.
 
@@ -270,7 +271,9 @@ Implemented in the Air Winter tranche:
 - Four monitoring levels across every winter mapmode tooltip.
 - A bounded Air Cleanliness Treaty lifecycle with deterministic formation, invitation receipts, violation memory, and non-periodic annex cleanup.
 - A paid Joint Filter Convoy that applies existing response values to one exact Phase 3 or worse priority state and opens a pressure-reducing relief route for up to six months.
+- A paid secretariat Verification Mission that offers full access, records-only access, or refusal, then returns an exact seven-day result with government-aware AI and durable memory. Refusal enforces the accepted treaty expulsion, relief-loss, opinion, and embargo consequences without changing Winter or Fallout tuning formulas.
 - Invalid treaty routes reconcile before the monthly state pressure pass. Membership loss, annexation, dissolution, and Fallout release active donor projects and exact state reservations through bounded receipts.
+- Membership loss, war, founder succession, annexation, dissolution, schema migration, and Fallout release paired inspection receipts through a separate bounded cancellation queue.
 - Thirty-five manually authored Air Winter pilot events, including five durable seasonal recurrence families.
 - Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
 - Dedicated modifier, report-event, map-mode, and response-decision assets.
@@ -279,7 +282,7 @@ Implemented in the Air Winter tranche:
 
 Incomplete and not claimed:
 
-- The wider treaty catalogue remains incomplete. Pooled decontamination, seed archive exchange, evacuation corridors, inspections, votes, major-burner sanctions, and forecast precision beyond shared basic sampling are not implemented.
+- The wider treaty catalogue remains incomplete. Pooled decontamination, seed archive exchange, evacuation corridors, relief votes, major-burner sanctions, and forecast precision beyond shared basic sampling are not implemented.
 - Additional local Air Winter pressure from active ordinary land combat and an additional winter multiplier on recent strategic-bombing pressure or deaths. Chaos already routes strategic-bombing deaths separately. General air operations use the documented country-scoped aggregate, while exact regional confinement remains unavailable through runtime dynamic modifiers.
 - Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.

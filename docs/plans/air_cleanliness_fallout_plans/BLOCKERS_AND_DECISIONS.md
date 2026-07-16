@@ -298,17 +298,19 @@ Restore and modernize the treaty because it is part of the accepted design. Live
 
 Implemented first tranche:
 
-- one monthly host-owned coordinator manages bounded membership, violation, invitation, active-donor, and relief-route ledgers
+- one monthly host-owned coordinator manages bounded membership, violation, invitation, active-donor, active-inspector, and relief-route ledgers
 - Global Cleaning Day is an atomic paid cleanup project
 - Joint Filter Convoy is an atomic paid state-targeted Air Winter relief project
-- founder succession, annex cleanup, sanctions, cancellation, route expiry, and the silent Fallout pause have explicit receipts
+- Verification Mission preserves Winter and Fallout tuning formulas while giving three government-weighted responses and an exact seven-day result
+- refusal uses the accepted treaty expulsion, embargo, opinion, and relief-loss consequences
+- founder succession, annex cleanup, sanctions, inspection cancellation, route expiry, and the silent Fallout pause have explicit receipts
 
 Still required:
 
-- verification and inspection disputes
 - evacuation corridors
 - Fallout-era treaty memory and successor legitimacy
 - broader manually reviewed treaty event families
+- relief votes and policy for major atmospheric burners
 - runtime observation of target scope, delayed results, sanctions, and route pressure
 
 ### D3: three-layer focus architecture
