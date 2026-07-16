@@ -20,7 +20,8 @@ Before writing the event specification, use the following as the design baseline
 - `chaos-redux-super-events` when the event needs a super-event
 - `hoi4-focus-trees` or the current focus-tree skill when the event needs focus trees
 - `hoi4-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
-- provided event spreadsheet rows (don't use Python to read the spreadsheet, read the .csv files directly)
+- the authoritative event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and its export-only CSV snapshots
+- use CSV snapshots only for read-only inspection, never as an editable source; if a workbook update makes them stale, refresh them with `python .tools/export_event_catalog_csv.py`
 - provided existing event docs
 - provided Chaos Redux mechanics docs
 
@@ -1677,7 +1678,7 @@ When the planning pass is complete, write a concise completion report for the pa
 The completion report should include:
 
 - spec folder path and spec files created or updated
-- spreadsheet row or CSV row used when applicable
+- authoritative workbook row or export-only CSV snapshot used when applicable
 - repo context inspected
 - event cluster role defined when relevant
 - assets defined when needed, including country identity assets

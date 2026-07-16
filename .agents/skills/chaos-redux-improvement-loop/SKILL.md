@@ -83,6 +83,11 @@ Use the system skill that owns the surface being improved.
 - `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
 - `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.
 
+When an improvement pass requires event-catalog alignment, update only the
+authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook and
+then run `python .tools/export_event_catalog_csv.py`. The three catalog CSVs
+are export-only snapshots and must never be edited directly.
+
 ## Research and historical connection standard
 
 Deep research is part of improvement, not decoration. When a feature has historical, cultural, political, regional, military, scientific, religious, or ideological inspiration, the loop should look for concrete anchors that can improve the design.

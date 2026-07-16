@@ -107,7 +107,7 @@ For actual research work, use the narrow project subagents instead of making one
 | Real historical, archival, or real-world super-event image that must depict real material | `chaosx_asset_source_researcher` |
 | Fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific generated super-event image | `chaosx_generated_event_art` |
 
-The main agent owns final localisation, scripted localisation, slot wiring, settings-aware playback wiring, audio id wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment.
+The main agent owns final localisation, scripted localisation, slot wiring, settings-aware playback wiring, audio id wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
 
 The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
 

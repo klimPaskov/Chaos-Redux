@@ -287,6 +287,18 @@ Use it when the only required output is an update to:
 docs/spreadsheets/chaos_redux_events_catalog.xlsx
 ```
 
+The workbook is the only editable catalog source. The three catalog CSVs are
+export-only snapshots generated from the workbook's `Events`, `Clusters`, and
+`Scenarios` sheets. After the worker saves the workbook, it must run:
+
+```text
+python .tools/export_event_catalog_csv.py
+```
+
+The worker must never edit the CSVs directly or treat a stale CSV as the
+source of truth. If the exporter fails, report the failure and leave the
+workbook as the only attempted edit until the exporter can be rerun.
+
 The parent prompt should provide event ids, row targets, source localisation keys, or the exact fields to update when possible.
 
 The worker should read only:

@@ -17,6 +17,9 @@ C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chao
 
 Own this scope:
 - Update the Chaos Redux event catalog workbook.
+- Treat the XLSX as the only editable catalog source. The CSV files are export-only snapshots.
+- After every successful workbook save, run `python .tools/export_event_catalog_csv.py` from the mod root so all three CSV exports overwrite the previous snapshots.
+- Never edit `docs/spreadsheets/chaos_redux_events_catalog.csv`, `docs/spreadsheets/chaos_redux_clusters_catalog.csv`, or `docs/spreadsheets/chaos_redux_scenarios_catalog.csv` directly.
 - Keep rows, columns, workbook formatting, formulas, filters, data validation, freeze panes, and existing workbook structure intact unless the parent explicitly asks otherwise.
 - Make spreadsheet entries player-facing and readable.
 - Make event log, event detail, evolution detail, cluster detail, and manual scenario table fields match the wording shown in-game.
@@ -48,7 +51,8 @@ Workflow:
 5. Update player-facing spreadsheet fields using the exact in-game wording where required.
 6. Keep summaries only in fields that are explicitly summary fields.
 7. Save the workbook in place.
-8. Report the changed workbook path, sheets, rows, event ids, fields, and any blocked or needs_user_review cells.
+8. Run `python .tools/export_event_catalog_csv.py` and confirm that the three export-only CSV snapshots were refreshed.
+9. Report the changed workbook path, sheets, rows, event ids, fields, exporter output, and any blocked or needs_user_review cells.
 
 Completion standard:
 The workbook is updated at docs/spreadsheets/chaos_redux_events_catalog.xlsx. Player-facing mirror fields match the in-game event log, event detail, evolution detail, and cluster wording. If not, then report it to the main agent. No unrelated files are edited.

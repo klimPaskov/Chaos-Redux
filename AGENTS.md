@@ -127,6 +127,13 @@ Use these high-level routing rules:
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.
 - Use `chaosx_documentation_curator` during long implementation when specs, plans, docs, manifests, prompts, reports, or subagent handoffs may be stale, duplicated, contradictory, or too numerous. It patches documentation surfaces only, writes source-of-truth maps and resume packets, and does not edit gameplay files or spreadsheets.
 - Use `chaosx_spreadsheet_doc_worker` only after implementation facts are available. Spreadsheet event-detail, evolution-detail, and cluster-detail fields must match the in-game localisation wording.
+
+Spreadsheet source and export rule:
+
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable source for the event catalog.
+- After every successful workbook update, run `python .tools/export_event_catalog_csv.py` from the mod root.
+- That tool overwrites the export-only `chaos_redux_events_catalog.csv`, `chaos_redux_clusters_catalog.csv`, and `chaos_redux_scenarios_catalog.csv` files in `docs/spreadsheets/`.
+- Never edit those CSV files directly or use a stale CSV as the source of truth.
 - Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.
 - Use `chaosx_improvement_loop_planner` during large event implementation when a mechanic, focus tree, country package, decision system, super-event, visual progression, lore package, or audit finding needs deeper design. It creates concrete event expansion addenda with research, historical connections, playable mechanics, and implementation surfaces for the main agent. It does not patch gameplay files. Do not spawn it again for the same event until the previous addendum has been implemented, folded into specs, queued with a reason, or rejected.
 
