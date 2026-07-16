@@ -2,7 +2,7 @@
 
 ## Review boundary
 
-This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It is a source review only. Hearts of Iron IV was not launched.
+This review compared the pre-expansion 35-block Air Winter event pilot with the accepted biome and chain-depth obligations. It also records the implemented heavy-industry tranche. It is a source review only. Hearts of Iron IV was not launched.
 
 The pilot already proves the bounded dispatch model, one visible event per eligible country cooldown, regular state and country event targets, delayed deterministic results, state memory, AI choice weights, Deaths integration, and cleanup through the existing monthly state pass. It does not count toward the 660-block Fallout living-world floor.
 
@@ -11,7 +11,7 @@ The pilot already proves the bounded dispatch model, one visible event per eligi
 | Accepted state identity | Pre-expansion coverage | Review result |
 | --- | --- | --- |
 | Breadbasket | `chaosx.fallout.10` preserves or consumes seed stock and writes state memory. | Partial. Event 18 carries the delayed result and guarded storage diverts local factories. Post-Fallout food recovery remains approval-gated. The active user contract forbids a political-power store. |
-| Coal or heavy industry | `chaosx.fallout.23` and `.24` allocate scarce heat and return a delayed coal-ledger result. | Substantial. The chain is not restricted to an industrial state, so it remains a broad Phase 3 route. |
+| Coal or heavy industry | `chaosx.fallout.23` and `.24` allocate scarce heat and return a delayed coal-ledger result. | Covered by the dedicated `chaosx.fallout.36` and `.37` furnace chain. Positive coal or an exact four-operational-factory ladder establishes state identity. The broad clinic and heat route remains available after exact Phase 3 identities are exhausted. |
 | Hydroelectric region | No event checked a dam building before the first expansion. | Covered by `chaosx.fallout.22` and `.25`. |
 | Oil region | No event checked oil resources, refineries, or fuel storage before the first expansion. | Covered by `chaosx.fallout.26` and `.27`. |
 | Tropical coast | `chaosx.fallout.12` and `.15` cover nearshore food loss, deep-water patrols, and a delayed return or loss. | Covered. |
@@ -27,7 +27,7 @@ The pilot has strong delayed-result depth in its transport, heating, shelter, ha
 
 The Phase 1 and several Phase 2 regional entries remain intentionally shorter. The mountain-capital route now carries a full delayed result, while other regional entries establish voice and early choices without all returning later.
 
-The most important gap identified by the baseline review was infrastructure identity. The accepted hydroelectric, oil, and reactor rows had no live route, even though the engine exposes exact state buildings and resources for all three.
+The most important gap identified by the baseline review was infrastructure identity. The accepted hydroelectric, oil, reactor, and exact coal or heavy-industry rows lacked dedicated live identity routes, even though the engine exposes the required state buildings and resources.
 
 ## Selected expansion
 
@@ -37,9 +37,22 @@ The selected reviewed tranche adds six manually authored blocks:
 - `chaosx.fallout.26` and `.27`, Black Refinery Snow and its delayed result
 - `chaosx.fallout.28` and `.29`, Cooling Pond Emergency and its delayed result
 
-These routes are selected before the existing broad transport and clinic routes when the same Phase 3 state has the relevant infrastructure. Reactor takes precedence over dam, dam takes precedence over oil or refinery, and the existing transport and clinic order remains unchanged after those exact identities are exhausted. Country candidate selection still compares family priority, origin cycle, phase and pressure score, then state id. A higher-pressure transport state can therefore defeat a reactor state in another part of the same country.
+The exact Phase 3 routes are selected before the existing broad transport and clinic routes when the same state has the relevant identity. The state-local order is reactor, dam, oil or refinery, coal or heavy industry, transport, then clinic and heat. Country candidate selection still compares family priority, origin cycle, phase and pressure score, then state id. A higher-pressure transport state can therefore defeat a reactor state in another part of the same country.
 
 This batch changes no monthly phase coefficient, population formula, Fallout grade coefficient, treaty policy, or world iteration. It uses the existing Air Winter ledgers, event cooldown, candidate ordering, state refresh, Deaths and fallout helpers, and pending-chain cleanup.
+
+## Heavy-industry depth
+
+The heavy-industry contract contains two manually authored blocks:
+
+- `chaosx.fallout.36`, The Furnace Shift
+- `chaosx.fallout.37`, The Works Inspector's Ledger
+
+The route accepts positive coal or a combined total of at least four operational factories. Its exact five-case ladder is at least four military, at least three military and one civilian, at least two military and two civilian, at least one military and three civilian, or at least four civilian. Fully damaged factories do not qualify.
+
+Full shifts add Adaptation, Exposure, Building Damage Pressure, Stability loss, and a Deaths request. The delayed success gate requires Adaptation at least 40 and Building Damage Pressure no more than 55. Failure issues 0.50 repairable damage to one operational military factory, otherwise one operational civilian factory, otherwise infrastructure. If no target remains, the failure still applies Exposure, pressure, Deaths, and Stability consequences without inventing a damage target.
+
+Controlled shutdown conditionally applies a 31-day local-factory modifier and a 31-day coal-output modifier. Event `.37` arrives on day 30 and removes both in its immediate block before the restart result. Full shifts and shutdown are exact exclusive branches. Every opening clears old furnace memory, refreshes the state, refreshes the 46-day cooldown immediately before scheduling, and every result or cancellation clears its branch and shutdown state. AI full-shift plausibility uses the exact pre-choice inverse of the 40 and 55 result gate.
 
 ## Mountain-capital depth
 
@@ -69,7 +82,7 @@ This batch changes no phase coefficient, Fallout survival coefficient, treaty po
 
 ## Implementation disposition
 
-The pilot contains 44 blocks, 132 options, and 131 effect-bearing options. Seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, and reactor states have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the three infrastructure routes provide deterministic cross-playthrough breadth rather than three guaranteed incidents for every country.
+The pilot contains 46 blocks, 137 options, 136 effect-bearing options, and 48 delayed-result schedules. Seed and livestock policy, mountain capitals, hydroelectric states, oil or refinery states, reactor states, and coal or heavy-industry states have opening and delayed-result chains. The shared Phase 3 country memory still permits one ordinary Phase 3 identity chain per country in a campaign, so the four exact infrastructure routes provide deterministic cross-playthrough breadth rather than four guaranteed incidents for every country.
 
 ## Deferred depth
 
@@ -78,6 +91,5 @@ The following accepted rows remain unresolved after this tranche:
 - an approved post-Fallout food-recovery consumer for the seed-ledger outcomes
 - an early dead-city salvage chain
 - refugee admission and identity consequences for island states
-- state-specific heavy-industry routing beyond the broad heat chain
 
 They require separate reviewed contracts and are not claimed by the completed expansions.

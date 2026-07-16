@@ -148,6 +148,20 @@ air_winter_refinery_output_disruption_state = {
 	state_resources_oil_factor = constant:air_winter_event_outcome.refinery_oil_output_penalty
 }
 
+# Banking the furnace halls and closing coal workings are independent so a
+# coal-only or factory-only state receives only the production surface it owns.
+air_winter_furnace_shutdown_industry_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_3
+	local_factories = constant:air_winter_event_outcome.furnace_factory_penalty
+}
+
+air_winter_furnace_shutdown_coal_state = {
+	enable = { always = yes }
+	icon = GFX_air_winter_phase_3
+	state_resources_coal_factor = constant:air_winter_event_outcome.furnace_coal_output_penalty
+}
+
 # Emergency cooling pumps and heat tracing raise factory power demand in the
 # reactor state until the delayed plant report resolves.
 air_winter_reactor_emergency_power_demand_state = {

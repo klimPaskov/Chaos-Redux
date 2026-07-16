@@ -705,6 +705,36 @@ air_winter_event_is_oil_or_refinery_state = {
 }
 
 # Supported scope: STATE
+air_winter_event_has_operational_factory = {
+	OR = {
+		non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.zero }
+		non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.zero }
+	}
+}
+
+# Supported scope: STATE. The five factory partitions exactly cover a combined
+# operational military and civilian factory total of four or more.
+air_winter_event_is_heavy_industry_state = {
+	OR = {
+		coal > constant:air_winter_event_runtime.zero
+		non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.three }
+		AND = {
+			non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.two }
+			non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.zero }
+		}
+		AND = {
+			non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.one }
+			non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.one }
+		}
+		AND = {
+			non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.zero }
+			non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.two }
+		}
+		non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.three }
+	}
+}
+
+# Supported scope: STATE
 air_winter_event_is_reactor_state = {
 	OR = {
 		non_damaged_building_level = { building = nuclear_reactor level > constant:air_winter_runtime.zero }
@@ -877,6 +907,55 @@ air_winter_event_refinery_output_ai_is_plausible = {
 		var = air_winter_building_damage_pressure
 		value = constant:air_winter_event_outcome.refinery_ai_pressure_ceiling
 		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_furnace_full_shifts_succeeds = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.furnace_adaptation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.furnace_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE. These pre-choice values translate through the exact
+# opening effects to the delayed success threshold.
+air_winter_event_furnace_full_shifts_ai_is_plausible = {
+	check_variable = {
+		var = air_winter_adaptation
+		value = constant:air_winter_event_outcome.furnace_ai_adaptation_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = air_winter_building_damage_pressure
+		value = constant:air_winter_event_outcome.furnace_ai_pressure_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: STATE
+air_winter_event_has_full_shifts_branch = {
+	has_state_flag = air_winter_furnace_chain_full_shifts
+	NOT = { has_state_flag = air_winter_furnace_chain_shutdown }
+}
+
+# Supported scope: STATE
+air_winter_event_has_shutdown_branch = {
+	has_state_flag = air_winter_furnace_chain_shutdown
+	NOT = { has_state_flag = air_winter_furnace_chain_full_shifts }
+}
+
+# Supported scope: STATE
+air_winter_event_has_exact_furnace_branch = {
+	OR = {
+		air_winter_event_has_full_shifts_branch = yes
+		air_winter_event_has_shutdown_branch = yes
 	}
 }
 
@@ -1515,6 +1594,7 @@ air_winter_event_candidate_is_ordinary_phase = {
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_clinics }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_refinery }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_reactor }
+		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_3_heavy_industry }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_shelter }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_food }
 		check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.phase_4_city }
@@ -1660,6 +1740,8 @@ air_winter_event_has_pending_chain = {
 		has_state_flag = air_winter_reactor_chain_scram
 		has_state_flag = air_winter_reactor_chain_reduced_output
 		has_state_flag = air_winter_reactor_chain_plant_council
+		has_state_flag = air_winter_furnace_chain_full_shifts
+		has_state_flag = air_winter_furnace_chain_shutdown
 		has_state_flag = air_winter_shelter_chain_care
 		has_state_flag = air_winter_shelter_chain_workers
 		has_state_flag = air_winter_shelter_chain_lottery

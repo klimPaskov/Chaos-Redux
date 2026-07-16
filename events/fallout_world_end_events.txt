@@ -2721,6 +2721,273 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = chaosx.fallout.36
+	title = chaosx.fallout.36.t
+	desc = {
+		trigger = { event_target:air_winter_event_state = { coal > constant:air_winter_event_runtime.zero } }
+		text = chaosx.fallout.36.coal.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { NOT = { coal > constant:air_winter_event_runtime.zero } } }
+		text = chaosx.fallout.36.industry.d
+	}
+	picture = GFX_report_event_air_winter_phase_3
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = {
+			air_winter_is_phase_3 = yes
+			air_winter_event_is_heavy_industry_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.fallout.36.a
+		ai_chance = {
+			base = constant:air_winter_event_ai.secondary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war_support > constant:air_winter_event_ai.high_war_support
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { air_winter_event_furnace_full_shifts_ai_is_plausible = yes }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_furnace_full_shifts_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				has_stability < constant:air_winter_event_ai.low_stability
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						air_winter_is_phase_3 = yes
+						air_winter_event_is_heavy_industry_state = yes
+					}
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_furnace_memory = yes
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.furnace_full_shift_percent }
+					air_winter_event_apply_deaths = yes
+					set_state_flag = air_winter_furnace_chain_full_shifts
+					set_state_flag = air_winter_memory_furnace_full_shifts_order
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_moderate_loss
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				air_winter_event_refresh_country_cooldown = yes
+				country_event = { id = chaosx.fallout.37 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.36.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.36.b
+		ai_chance = {
+			base = constant:air_winter_event_ai.primary
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_war = no
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				has_stability < constant:air_winter_event_ai.low_stability
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.strong_modifier
+				event_target:air_winter_event_state = { NOT = { air_winter_event_furnace_full_shifts_ai_is_plausible = yes } }
+			}
+			modifier = {
+				factor = constant:air_winter_event_ai.weak_modifier
+				event_target:air_winter_event_state = { air_winter_event_furnace_full_shifts_ai_is_plausible = yes }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						air_winter_is_phase_3 = yes
+						air_winter_event_is_heavy_industry_state = yes
+					}
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_clear_furnace_memory = yes
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_minor }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_moderate }
+					air_winter_event_apply_furnace_shutdown = yes
+					set_state_flag = air_winter_furnace_chain_shutdown
+					set_state_flag = air_winter_memory_furnace_shutdown_order
+					air_winter_event_refresh_state = yes
+				}
+				set_temp_variable = { air_winter_event_delay_days = constant:air_winter_event_runtime.delayed_standard_days }
+				air_winter_event_refresh_country_cooldown = yes
+				country_event = { id = chaosx.fallout.37 days = air_winter_event_delay_days }
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.36.b.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.37
+	title = chaosx.fallout.37.t
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_has_full_shifts_branch = yes
+				air_winter_event_furnace_full_shifts_succeeds = yes
+			}
+		}
+		text = chaosx.fallout.37.full_success.d
+	}
+	desc = {
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_has_full_shifts_branch = yes
+				NOT = { air_winter_event_furnace_full_shifts_succeeds = yes }
+			}
+		}
+		text = chaosx.fallout.37.full_failure.d
+	}
+	desc = {
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_shutdown_branch = yes } }
+		text = chaosx.fallout.37.shutdown.d
+	}
+	picture = GFX_report_event_air_winter_phase_3
+	is_triggered_only = yes
+	trigger = {
+		air_winter_event_targets_are_valid = yes
+		event_target:air_winter_event_state = { air_winter_event_has_exact_furnace_branch = yes }
+	}
+	immediate = {
+		if = {
+			limit = {
+				air_winter_event_targets_are_valid = yes
+				event_target:air_winter_event_state = { air_winter_event_has_shutdown_branch = yes }
+			}
+			event_target:air_winter_event_state = { air_winter_event_clear_furnace_shutdown = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.fallout.37.a
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_has_full_shifts_branch = yes
+				air_winter_event_furnace_full_shifts_succeeds = yes
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						air_winter_event_has_full_shifts_branch = yes
+						air_winter_event_furnace_full_shifts_succeeds = yes
+					}
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_adaptation = constant:air_winter_event_ledger.adaptation_moderate }
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_minor }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					air_winter_event_clear_furnace_pending_branch = yes
+					set_state_flag = air_winter_memory_furnace_full_shifts_held
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.37.a.tt
+	}
+
+	option = {
+		name = chaosx.fallout.37.b
+		trigger = {
+			event_target:air_winter_event_state = {
+				air_winter_event_has_full_shifts_branch = yes
+				NOT = { air_winter_event_furnace_full_shifts_succeeds = yes }
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = {
+						air_winter_event_has_full_shifts_branch = yes
+						NOT = { air_winter_event_furnace_full_shifts_succeeds = yes }
+					}
+				}
+				event_target:air_winter_event_state = {
+					air_winter_event_damage_heavy_industry = yes
+					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
+					add_to_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_major }
+					set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_deaths.furnace_failure_percent }
+					air_winter_event_apply_deaths = yes
+					air_winter_event_clear_furnace_pending_branch = yes
+					set_state_flag = air_winter_memory_furnace_full_shifts_failed
+					air_winter_event_refresh_state = yes
+				}
+				add_stability = constant:air_winter_event_country.stability_minor_loss
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.37.b.tt
+	}
+
+	option = {
+		name = chaosx.fallout.37.c
+		trigger = { event_target:air_winter_event_state = { air_winter_event_has_shutdown_branch = yes } }
+		hidden_effect = {
+			if = {
+				limit = {
+					air_winter_event_targets_are_valid = yes
+					event_target:air_winter_event_state = { air_winter_event_has_shutdown_branch = yes }
+				}
+				event_target:air_winter_event_state = {
+					add_to_variable = { air_winter_reclamation = constant:air_winter_event_ledger.reclamation_minor }
+					subtract_from_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_minor }
+					subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_event_ledger.building_pressure_minor }
+					air_winter_event_clear_furnace_pending_branch = yes
+					set_state_flag = air_winter_memory_furnace_shutdown_complete
+					air_winter_event_refresh_state = yes
+				}
+			}
+			else = { air_winter_event_reject_stale_choice = yes }
+		}
+		custom_effect_tooltip = chaosx.fallout.37.c.tt
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Air Winter phase 4 black-harvest chains
 # ---------------------------------------------------------------------------

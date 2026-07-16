@@ -29,6 +29,7 @@ air_winter_event_refresh_country_cooldown = {
 
 # Supported scope: STATE
 air_winter_event_cancel_pending_chain = {
+	air_winter_event_clear_furnace_pending_branch = yes
 	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
 	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
 	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
@@ -99,10 +100,18 @@ air_winter_event_bind_pending_chain = {
 air_winter_event_reconcile_pending_chain = {
 	if = {
 		limit = {
-			has_state_flag = air_winter_pending_delayed_result
 			OR = {
-				NOT = { air_winter_event_has_pending_chain = yes }
-				NOT = { air_winter_event_pending_owner_is_valid = yes }
+				AND = {
+					has_state_flag = air_winter_pending_delayed_result
+					OR = {
+						NOT = { air_winter_event_has_pending_chain = yes }
+						NOT = { air_winter_event_pending_owner_is_valid = yes }
+					}
+				}
+				AND = {
+					has_state_flag = air_winter_furnace_chain_full_shifts
+					has_state_flag = air_winter_furnace_chain_shutdown
+				}
 			}
 		}
 		air_winter_event_cancel_pending_chain = yes
@@ -268,6 +277,11 @@ air_winter_event_clear_state_memory = {
 	clr_state_flag = air_winter_memory_reactor_plant_council
 	clr_state_flag = air_winter_memory_reactor_plant_council_succeeded
 	clr_state_flag = air_winter_memory_reactor_plant_council_failed
+	clr_state_flag = air_winter_memory_furnace_full_shifts_order
+	clr_state_flag = air_winter_memory_furnace_shutdown_order
+	clr_state_flag = air_winter_memory_furnace_full_shifts_held
+	clr_state_flag = air_winter_memory_furnace_full_shifts_failed
+	clr_state_flag = air_winter_memory_furnace_shutdown_complete
 	clr_state_flag = air_winter_memory_shelter_care_priority
 	clr_state_flag = air_winter_memory_shelter_care_result
 	clr_state_flag = air_winter_memory_shelter_worker_priority
@@ -421,6 +435,67 @@ air_winter_event_apply_refinery_output_disruption = {
 # Supported scope: STATE
 air_winter_event_clear_refinery_output_disruption = {
 	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
+}
+
+# Supported scope: STATE
+air_winter_event_clear_furnace_shutdown = {
+	remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_industry_state }
+	remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_coal_state }
+}
+
+# Supported scope: STATE
+air_winter_event_clear_furnace_pending_branch = {
+	air_winter_event_clear_furnace_shutdown = yes
+	clr_state_flag = air_winter_furnace_chain_full_shifts
+	clr_state_flag = air_winter_furnace_chain_shutdown
+}
+
+# Supported scope: STATE. A later valid owner replaces the previous furnace
+# order and result ledger before binding a new delayed result.
+air_winter_event_clear_furnace_memory = {
+	air_winter_event_clear_furnace_pending_branch = yes
+	clr_state_flag = air_winter_memory_furnace_full_shifts_order
+	clr_state_flag = air_winter_memory_furnace_shutdown_order
+	clr_state_flag = air_winter_memory_furnace_full_shifts_held
+	clr_state_flag = air_winter_memory_furnace_full_shifts_failed
+	clr_state_flag = air_winter_memory_furnace_shutdown_complete
+}
+
+# Supported scope: STATE
+air_winter_event_apply_furnace_shutdown = {
+	air_winter_event_clear_furnace_shutdown = yes
+	set_temp_variable = { air_winter_furnace_shutdown_days = constant:air_winter_event_outcome.furnace_shutdown_days }
+	if = {
+		limit = { air_winter_event_has_operational_factory = yes }
+		add_dynamic_modifier = {
+			modifier = air_winter_furnace_shutdown_industry_state
+			days = air_winter_furnace_shutdown_days
+		}
+	}
+	if = {
+		limit = { coal > constant:air_winter_event_runtime.zero }
+		add_dynamic_modifier = {
+			modifier = air_winter_furnace_shutdown_coal_state
+			days = air_winter_furnace_shutdown_days
+		}
+	}
+}
+
+# Supported scope: STATE. The fixed order damages at most one operational
+# surface. Exhausted states retain every non-building failure consequence.
+air_winter_event_damage_heavy_industry = {
+	if = {
+		limit = { non_damaged_building_level = { building = arms_factory level > constant:air_winter_event_runtime.zero } }
+		damage_building = { type = arms_factory damage = constant:air_winter_event_outcome.furnace_damage }
+	}
+	else_if = {
+		limit = { non_damaged_building_level = { building = industrial_complex level > constant:air_winter_event_runtime.zero } }
+		damage_building = { type = industrial_complex damage = constant:air_winter_event_outcome.furnace_damage }
+	}
+	else_if = {
+		limit = { non_damaged_building_level = { building = infrastructure level > constant:air_winter_event_runtime.zero } }
+		damage_building = { type = infrastructure damage = constant:air_winter_event_outcome.furnace_damage }
+	}
 }
 
 # Supported scope: STATE
@@ -633,6 +708,10 @@ air_winter_event_select_unseen_phase_route = {
 		else_if = {
 			limit = { air_winter_event_is_oil_or_refinery_state = yes }
 			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_refinery }
+		}
+		else_if = {
+			limit = { air_winter_event_is_heavy_industry_state = yes }
+			set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.phase_3_heavy_industry }
 		}
 		else_if = {
 			limit = { air_winter_response_is_transport_state = yes }

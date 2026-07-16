@@ -182,6 +182,7 @@ Flavour families:
 
 - frozen rail and road corridors
 - heating-system collapse
+- coal workings, furnace pressure, and heavy-industry shutdowns
 - hospital overload
 - failed maintenance shifts
 - dam gates and frozen hydroelectric intakes
@@ -429,7 +430,9 @@ The implemented seasonal families are:
 
 Country receipts make each family at most once for its recorded year. Nine regional severe-year memories seed the first severe year and advance only after a validated later-year second-winter dispatch. Prior-year markers remain valid when their receipt is still earlier than the marker year. No seasonal family adds a world iterator. Full ordering, cleanup, and engine-boundary proof is recorded in `AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`.
 
-The implemented Phase 3 infrastructure layer adds dam, oil or refinery, and reactor routes inside the ordinary family. Route precedence applies within the selected state. The country still chooses one candidate by family priority, origin cycle, phase and pressure score, then state id, and the Phase 3 seen flag permits one ordinary Phase 3 route per country. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`.
+The implemented Phase 3 identity layer checks reactor, hydroelectric dam, oil or refinery, coal or heavy industry, transport, then clinic and heat inside the selected state. Coal or heavy industry requires positive coal or a combined total of at least four operational factories through a five-case ladder: at least four military, at least three military and one civilian, at least two military and two civilian, at least one military and three civilian, or at least four civilian. The country still chooses one candidate by family priority, origin cycle, phase and pressure score, then state id. The Phase 3 seen flag permits one ordinary Phase 3 route per country.
+
+The furnace chain resolves `chaosx.fallout.36` through `.37` after 30 days. Full shifts test Adaptation 40 and Building Damage Pressure 55. The opening and its failure feed their separate casualty requests through Deaths. Failure can inflict 0.50 repairable damage on one operational military factory, then one operational civilian factory, then infrastructure. The damage ladder issues no building damage when every target is exhausted. Controlled shutdown applies conditional 31-day factory and coal modifiers and removes both at day-30 delivery. Both branches use one exclusive transaction, refresh the state, clear through the shared cancellation path, and refresh the 46-day cooldown immediately before scheduling. Dam, refinery, and reactor proof is recorded in `AIR_WINTER_PHASE_3_INFRASTRUCTURE_EVENT_PROOF.md`. Heavy-industry proof is recorded in `AIR_WINTER_PHASE_3_HEAVY_INDUSTRY_EVENT_PROOF.md`.
 
 The implemented Phase 2 mountain-capital route checks the selected state for highland presentation and current capital identity before the generic city route. The typed event id preserves that selection if a first-frost marker dispatches after the capital moves. Its delayed result trades temporary local factory availability for shelter, adaptation, and a durable 10 percent reduction in the established monthly Air Winter civilian death percentage. Full engine-sensitive proof is recorded in `AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`.
 
