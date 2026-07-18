@@ -123,22 +123,28 @@ Achievement files are engine-discovered by exact filename and do not need
 | ASSET-047 | `chaosx_006_balanced_patrons` | three patrons held in balance | final triplet, handed off |
 | ASSET-047 | `chaosx_006_league_arbitrator` | peaceful multi-border arbitration council | final triplet, handed off |
 | ASSET-047 | `chaosx_006_host_remnant` | protected surviving former-host remnant | final triplet, handed off |
-| ASSET-047 | `chaosx_006_assyria_survives` | mountain, river, and exact sourced Assyrian symbol | **blocked, unproduced** |
+| ASSET-047 | `chaosx_006_assyria_survives` | mountain, river, and exact sourced Assyrian symbol | **final triplet, reviewed, runtime-installed in the IW-043/IW-058 static icon package** |
 
-### Assyria blocker and reserved filenames
+### Assyria package record and preserved exclusion
 
-The following names are reserved and must not be filled with a substitute:
+The Assyria triplet is final and must not be replaced with a substitute. The
+authoritative package record is
+`docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/manifest.md`;
+its visual and DDS audits are in that package's `validation/validation_report.md`
+and `validation/dds_audit.json`.
 
-- `docs/assets/006_independence_wave/source_png/achievements/chaosx_006_assyria_survives_source.png`;
-- `docs/assets/006_independence_wave/processed_png/achievements/chaosx_006_assyria_survives.png`;
-- `docs/assets/006_independence_wave/processed_png/achievements/chaosx_006_assyria_survives_grey.png`;
-- `docs/assets/006_independence_wave/processed_png/achievements/chaosx_006_assyria_survives_not_eligible.png`;
-- matching DDS filenames under `gfx/achievements/`.
+The delivered source and processed/runtime paths are:
 
-Required input before production: one exact, approved Assyrian motif with
-community/faction ownership and date documented, plus a decision on whether it is
-community-wide, church-specific, Levies-specific, or political-faction-specific.
-The post-1968 modern Assyrian flag is not an acceptable 1936 baseline.
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/source_png/achievements/achievement_chaosx_006_assyria_survives_source.png`;
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/processed_png/achievements/chaosx_006_assyria_survives.png`;
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/processed_png/achievements/chaosx_006_assyria_survives_grey.png`;
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/processed_png/achievements/chaosx_006_assyria_survives_not_eligible.png`;
+- matching runtime DDS files under `gfx/achievements/` in the package handoff.
+
+The package preserves the approved motif and ownership/date record. The
+post-1968/1973 modern Assyrian flag remains excluded from the 1936 baseline.
+Final art does not by itself expose the signature achievement; its proof writer
+and adapter-attestation gates remain fail-closed in gameplay.
 
 ## ASSET-046 formable flags and remaining emblem coverage
 

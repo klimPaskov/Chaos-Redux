@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 tranche
+Updated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 tranche, with the bounded IW-043/IW-058 base-package tranche recorded
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
@@ -75,15 +75,25 @@ truth map for current implementation status and handoff dispositions.
   and exact automatic/SCN-008 admission. RHI retains its binding FORM-04
   delegation gate; BAY retains its package-owned South German settlement.
 - The current attested set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
-  IW-009, IW-010, IW-017, IW-018, IW-019, IW-173, IW-179, and IW-184. These
-  fourteen IDs are the only compile-time admitted packages; every other
-  selectable package remains outside the admission set.
+  IW-009, IW-010, IW-017, IW-018, IW-019, IW-043, IW-058, IW-173, IW-179, and
+  IW-184. These sixteen IDs are the only compile-time admitted packages;
+  every other selectable package remains outside the admission set. IW-043
+  `CHU` and IW-058 `ASY` are admitted for their bounded base package content;
+  The exact vanilla-formable compatibility adapter has passed its parent
+  re-audit. FORM-12/13/18 and the two signature achievement paths remain
+  hidden/fail-closed because their adapter-attestation and proof writers are
+  absent.
 - The Pacific promotion binds IW-184 `HBX` as the FORM-48 carrier and IW-173
   `HAW` / IW-179 `FSM` as sovereign autonomous members. Family 48 registration
   sets the six shared readiness flags plus
   `independence_wave_form48_registry_surface_registered` and
   `independence_wave_form48_readiness_attested` after coordinated PASS audits.
   No annexation or integration fallback is used.
+- The IW-043/IW-058 package manifests record final reviewed assets: 27 static
+  icons including the three-state Assyria survival triplet, eight all-male
+  institutional portraits, ten flat flags, and two report images. No custom
+  Event 006 advisor asset exists. The post-1968/1973 modern Assyrian flag is
+  explicitly excluded.
 - The allocator audit passes 149 publishers, 126 automatic/high-chaos
   selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10
   ladder, and Event 005-first joint reservation ordering. Runtime host,
@@ -141,9 +151,11 @@ truth map for current implementation status and handoff dispositions.
 | IW-173 HAW | Promoted | Preserve vanilla HAW identity/flags, anchor 629, the full Event 006 tree gate, and sovereign-autonomous FORM-48 membership only after exact current-generation consent |
 | IW-179 FSM | Promoted | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 package decisions, and sovereign-autonomous FORM-48 membership only after exact current-generation consent |
 | IW-184 HBX | Promoted | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, male civic-chair portrait, FORM-48 carrier gate, and exact automatic/SCN-008 preflight |
+| IW-043 CHU | Base package admitted; signature extensions **PARTIALLY IMPLEMENTED / HOLD** | Preserve the bounded CHU identity, route, forces, focus, decision, localisation, final assets, and the audited vanilla Idel-Ural shortcut guard. Keep FORM-12/13 and the Volga signature achievement closed until their exact attestation and proof writers exist |
+| IW-058 ASY | Base package admitted; signature extensions **PARTIALLY IMPLEMENTED / HOLD** | Preserve the bounded ASY identity, route, forces, focus, decision, localisation, final assets, and the audited vanilla Assyrian/Mesopotamian shortcut guards. Keep FORM-18 and the Assyria signature achievement closed until their exact attestation and proof writers exist |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion |
 
-Fourteen compile-time attestations do not guarantee a valid wave. The allocator
+Sixteen compile-time attestations do not guarantee a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
 chaos-band, and wave-size gates. Ten disjoint reservation groups can
 structurally supply every 3-, 4-, 5-, 7-, and 10-country band. World Collapse
@@ -196,7 +208,7 @@ satisfy the synchronized frozen plan.
 
 ## Immediate continuation order
 
-1. Preserve the fourteen admitted package gates and the allocator's reservation
+1. Preserve the sixteen admitted package gates and the allocator's reservation
    groups
    so World Collapse can continue to attempt exactly ten releases.
 2. Rerun exact-ID audits
@@ -208,20 +220,24 @@ satisfy the synchronized frozen plan.
    members, and collision-cleared PFX identity. Keep FORM-42 and FORM-06 through
    FORM-47 fail-closed. Then continue the remaining packages with bespoke
    gameplay, AI, localisation, assets, and audits.
-5. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
+5. Preserve the audited vanilla-formable compatibility adapter. Before any
+   FORM-12/13/18 or signature-achievement promotion, implement the missing
+   exact adapter-attestation and proof writers and rerun their scoped audits.
+6. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
    only after their GUI sizes, states, frame plans, and consumers are locked.
-6. Reconcile event logs, event details, documentation, asset manifests, and the
+7. Reconcile event logs, event details, documentation, asset manifests, and the
    event workbook after the active gameplay tranche settles.
-7. Run the relevant country-package, decision/mission, localisation, and Event
+8. Run the relevant country-package, decision/mission, localisation, and Event
    006 completion audits before any overall completion claim.
 
 ## Hard blockers and missing completion evidence
 
 - IW-003 has no legal current-map state binding.
 - `6001` lacks verified redistribution rights for the specified recording.
-- All sixteen accepted Event 006 achievements remain without gameplay
-  definitions or localisation. Fifteen have complete three-state icon triplets;
-  the Assyria survival icon is the only missing art package. Radical Bloc has a
+- The parent-wide achievement definitions/localisation audit remains incomplete.
+  The bounded package contains the final Assyria three-state icon triplet, but
+  the two signature achievements remain hidden/fail-closed pending their proof
+  writers and exact formable adapter-attestation. Radical Bloc has a
   qualification record only and cannot yet award.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
@@ -230,8 +246,10 @@ satisfy the synchronized frozen plan.
 - The parent Event 006 completion audit is still pending; no overall completion
   claim is authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
-  remains queued for separate Volga Bulgaria and Assyria package/achievement
-  work; it is not part of the Pacific promotion.
+  is **PARTIALLY IMPLEMENTED / HOLD**: its bounded CHU/ASY base tranche and
+  final assets and vanilla-formable compatibility PASS are recorded, while
+  FORM-12/13/18, their attestation, proof writers, and signature achievements
+  remain open. It is not an overall Event 006 completion claim.
 - The event workbook and every event-log/detail surface have not been reconciled
   against the current implementation.
 - No final balance and Event 006 completion audit covers the whole accepted spec.
@@ -244,7 +262,7 @@ satisfy the synchronized frozen plan.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The fourteen exact package attestations remain binding runtime gates; a broad
+- The sixteen exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,

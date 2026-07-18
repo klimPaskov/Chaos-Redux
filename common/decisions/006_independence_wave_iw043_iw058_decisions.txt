@@ -1,0 +1,2237 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-043 / IW-058 DECISIONS AND MISSIONS
+# ============================================================================
+# Overview:
+# - Implements the bounded action layers for the Middle Volga Congress and the
+#   Council of Communities.
+# - Every paid action uses the package transaction hooks. Resources are spent
+#   once at activation and are never refunded after cancellation or failure.
+# - Formation bindings are released on every authored exit path. Country-target
+#   actions use explicit bounded tag lists and never perform a world scan.
+# ============================================================================
+
+independence_wave_iw043_middle_volga_congress_category = {
+	independence_wave_iw043_convene_delegation_roll_call = {
+		icon = GFX_decision_independence_wave_iw043_congress
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_seat_the_delegations
+			NOT = { has_country_flag = iw043_delegation_roll_call_receipt }
+		}
+		available = {
+			check_variable = { iw043_congress_authority > constant:independence_wave_iw_package_delta.major }
+			can_pay_independence_wave_administration_light_cost = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
+		custom_cost_text = independence_wave_iw043_cost_roll_call
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw043.standard_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.convene_delegation_roll_call }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_light }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_delegation_roll_call_receipt
+				set_country_flag = iw043_delegation_roll_call_active
+				custom_effect_tooltip = independence_wave_iw043_convene_delegation_roll_call_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.convene_delegation_roll_call }
+			if = {
+				limit = {
+					is_independence_wave_iw043_country = yes
+					249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_delegation_roll_call_complete
+				add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw043_package_values = yes
+				country_event = { id = chaosx.nr006.4302 }
+				custom_effect_tooltip = independence_wave_iw043_convene_delegation_roll_call_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_delegation_roll_call_failed
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_convene_delegation_roll_call_timeout_tt
+			}
+			clr_country_flag = iw043_delegation_roll_call_active
+		}
+		cancel_trigger = { NOT = { is_independence_wave_iw043_country = yes } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.convene_delegation_roll_call }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_delegation_roll_call_active
+			if = {
+				limit = { is_independence_wave_iw043_country = yes }
+				set_country_flag = iw043_delegation_roll_call_cancelled
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_convene_delegation_roll_call_cancel_tt
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
+	}
+
+	independence_wave_iw043_ratify_tatar_bashkir_representation = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = iw043_delegation_roll_call_complete
+			NOT = { has_country_flag = iw043_clause_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_clause_tatar_bashkir_representation_rejected }
+			NOT = { has_country_flag = iw043_tatar_bashkir_transaction_receipt }
+		}
+		available = {
+			command_power > constant:independence_wave_decision_cost.command_power_light
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw043_cost_clause
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_tatar_bashkir_representation }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_tatar_bashkir_transaction_receipt
+				set_country_flag = iw043_pending_tatar_bashkir_representation
+				country_event = { id = chaosx.nr006.4302 }
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_ratify_chuvash_municipal_autonomy = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = iw043_delegation_roll_call_complete
+			NOT = { has_country_flag = iw043_clause_chuvash_municipal_autonomy }
+			NOT = { has_country_flag = iw043_clause_chuvash_municipal_autonomy_rejected }
+			NOT = { has_country_flag = iw043_chuvash_transaction_receipt }
+		}
+		available = {
+			OR = {
+				256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				has_country_flag = iw043_cheboksary_transit_secured
+			}
+			command_power > constant:independence_wave_decision_cost.command_power_light
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw043_cost_clause
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_chuvash_municipal_autonomy }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_chuvash_transaction_receipt
+				set_country_flag = iw043_pending_chuvash_municipal_autonomy
+				country_event = { id = chaosx.nr006.4303 }
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_ratify_mari_udmurt_language_rights = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = iw043_delegation_roll_call_complete
+			NOT = { has_country_flag = iw043_clause_mari_udmurt_language_rights }
+			NOT = { has_country_flag = iw043_clause_mari_udmurt_language_rights_rejected }
+			NOT = { has_country_flag = iw043_mari_udmurt_transaction_receipt }
+		}
+		available = {
+			can_pay_independence_wave_administration_light_cost = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
+		custom_cost_text = independence_wave_iw043_cost_clause_administration
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_mari_udmurt_language_rights }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_light }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_mari_udmurt_transaction_receipt
+				set_country_flag = iw043_pending_mari_udmurt_language_rights
+				country_event = { id = chaosx.nr006.4304 }
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_iw043_route_federal }
+		}
+	}
+
+	independence_wave_iw043_ratify_resident_civic_and_religious_equality = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = iw043_delegation_roll_call_complete
+			NOT = { has_country_flag = iw043_clause_resident_civic_and_religious_equality }
+			NOT = { has_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected }
+			NOT = { has_country_flag = iw043_resident_equality_transaction_receipt }
+		}
+		available = {
+			command_power > constant:independence_wave_decision_cost.command_power_light
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw043_cost_clause
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_resident_civic_and_religious_equality }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_resident_equality_transaction_receipt
+				set_country_flag = iw043_pending_resident_civic_and_religious_equality
+				country_event = { id = chaosx.nr006.4302 }
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw043_secure_kazan_cheboksary_navigation = {
+		icon = GFX_decision_independence_wave_iw043_river
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_secure_volga_navigation
+			NOT = { has_country_flag = iw043_navigation_mission_receipt }
+		}
+		available = {
+			249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			OR = {
+				256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				has_country_flag = iw043_cheboksary_transit_secured
+			}
+			has_country_flag = iw043_river_guard_created
+			can_bind_independence_wave_iw043_force_package = yes
+			command_power > constant:independence_wave_iw043.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw043_force_package = yes
+			command_power > constant:independence_wave_iw043.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+		}
+		custom_cost_text = independence_wave_iw043_cost_navigation
+		days_remove = constant:independence_wave_iw043.river_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.secure_kazan_cheboksary_navigation }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_iw043.standard_command_cost }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_light }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_decision_cost.support_light }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw043.train_commitment }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw043_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.one } }
+				independence_wave_iw043_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+					set_country_flag = iw043_navigation_mission_receipt
+					set_country_flag = iw043_navigation_mission_active
+					custom_effect_tooltip = independence_wave_iw043_secure_kazan_cheboksary_navigation_start_tt
+				}
+				else = { independence_wave_release_iw043_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.secure_kazan_cheboksary_navigation }
+			independence_wave_validate_iw043_force_binding = yes
+			if = {
+				limit = {
+					249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					OR = {
+						256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+						has_country_flag = iw043_cheboksary_transit_secured
+					}
+					check_variable = { independence_wave_iw043_force_validation_result = constant:independence_wave_iw043.one }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_navigation_mission_complete
+				clr_country_flag = iw043_navigation_crisis_active
+				add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.major }
+				add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_secure_kazan_cheboksary_navigation_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_navigation_crisis_active
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				country_event = { id = chaosx.nr006.4306 }
+				custom_effect_tooltip = independence_wave_iw043_secure_kazan_cheboksary_navigation_timeout_tt
+			}
+			independence_wave_release_iw043_force_package = yes
+			clr_country_flag = iw043_navigation_mission_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				249 = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.secure_kazan_cheboksary_navigation }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			independence_wave_release_iw043_force_package = yes
+			clr_country_flag = iw043_navigation_mission_active
+			if = {
+				limit = { is_independence_wave_iw043_country = yes }
+				set_country_flag = iw043_navigation_crisis_active
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_secure_kazan_cheboksary_navigation_cancel_tt
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
+	}
+
+	independence_wave_iw043_reopen_volga_customs_and_ferries = {
+		icon = GFX_decision_independence_wave_iw043_river
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_reopen_kazan_river_customs
+			NOT = { has_country_flag = iw043_customs_ferries_receipt }
+		}
+		available = {
+			can_pay_independence_wave_administration_light_cost = yes
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_pay_independence_wave_administration_light_cost = yes
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+		}
+		custom_cost_text = independence_wave_iw043_cost_customs
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw043.standard_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_volga_customs_and_ferries }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_light }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw043.train_commitment }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_customs_ferries_receipt
+				set_country_flag = iw043_customs_ferries_active
+				custom_effect_tooltip = independence_wave_iw043_reopen_volga_customs_and_ferries_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_volga_customs_and_ferries }
+			if = {
+				limit = {
+					249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					NOT = { has_country_flag = iw043_navigation_crisis_active }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_customs_ferries_complete
+				if = {
+					limit = { has_idea = independence_wave_iw043_disrupted_river_economy_idea }
+					swap_ideas = { remove_idea = independence_wave_iw043_disrupted_river_economy_idea add_idea = independence_wave_iw043_reopened_river_economy_idea }
+				}
+				add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_reopen_volga_customs_and_ferries_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_customs_burden_persists
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_reopen_volga_customs_and_ferries_timeout_tt
+			}
+			clr_country_flag = iw043_customs_ferries_active
+		}
+		cancel_trigger = { NOT = { is_independence_wave_iw043_country = yes } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_volga_customs_and_ferries }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_customs_ferries_active
+			if = {
+				limit = { is_independence_wave_iw043_country = yes }
+				set_country_flag = iw043_customs_burden_persists
+				custom_effect_tooltip = independence_wave_iw043_reopen_volga_customs_and_ferries_cancel_tt
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes } }
+	}
+
+	independence_wave_iw043_settle_muftiate_and_civic_courts = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_settle_muftiate_and_civic_jurisdiction
+			NOT = { has_country_flag = iw043_muftiate_courts_receipt }
+		}
+		available = {
+			has_country_flag = iw043_clause_resident_civic_and_religious_equality
+			has_country_flag = iw043_delegation_roll_call_complete
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw043_cost_settlement
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw043.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.settle_muftiate_and_civic_courts }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_muftiate_courts_receipt
+				set_country_flag = iw043_muftiate_courts_active
+				custom_effect_tooltip = independence_wave_iw043_settle_muftiate_and_civic_courts_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.settle_muftiate_and_civic_courts }
+			if = {
+				limit = {
+					has_country_flag = iw043_clause_resident_civic_and_religious_equality
+					has_country_flag = iw043_delegation_roll_call_complete
+					NOT = { has_country_flag = iw043_security_crisis_active }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				country_event = { id = chaosx.nr006.4305 }
+				custom_effect_tooltip = independence_wave_iw043_settle_muftiate_and_civic_courts_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_muftiate_civic_courts_crisis
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				country_event = { id = chaosx.nr006.4305 }
+				custom_effect_tooltip = independence_wave_iw043_settle_muftiate_and_civic_courts_timeout_tt
+			}
+			clr_country_flag = iw043_muftiate_courts_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				NOT = { has_country_flag = iw043_clause_resident_civic_and_religious_equality }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.settle_muftiate_and_civic_courts }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_muftiate_courts_active
+			if = {
+				limit = { is_independence_wave_iw043_country = yes }
+				set_country_flag = iw043_muftiate_civic_courts_crisis
+				custom_effect_tooltip = independence_wave_iw043_settle_muftiate_and_civic_courts_cancel_tt
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_iw043_route_restoration }
+		}
+	}
+
+	independence_wave_iw043_discipline_the_river_guard = {
+		icon = GFX_decision_independence_wave_iw043_guard
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_organize_the_river_guard
+			NOT = { has_country_flag = iw043_river_guard_discipline_receipt }
+		}
+		available = {
+			has_country_flag = iw043_river_guard_created
+			can_bind_independence_wave_iw043_force_package = yes
+			command_power > constant:independence_wave_iw043.standard_command_cost
+			has_manpower > constant:independence_wave_decision_cost.manpower_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw043_force_package = yes
+			command_power > constant:independence_wave_iw043.standard_command_cost
+			has_manpower > constant:independence_wave_decision_cost.manpower_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+		}
+		custom_cost_text = independence_wave_iw043_cost_guard
+		days_remove = constant:independence_wave_iw043.standard_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.discipline_the_river_guard }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_iw043.standard_command_cost }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_standard }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_decision_cost.support_standard }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw043_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.one } }
+				independence_wave_iw043_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+					set_country_flag = iw043_river_guard_discipline_receipt
+					set_country_flag = iw043_river_guard_discipline_active
+					custom_effect_tooltip = independence_wave_iw043_discipline_the_river_guard_start_tt
+				}
+				else = { independence_wave_release_iw043_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.discipline_the_river_guard }
+			independence_wave_validate_iw043_force_binding = yes
+			if = {
+				limit = {
+					has_country_flag = iw043_river_guard_created
+					check_variable = { independence_wave_iw043_force_validation_result = constant:independence_wave_iw043.one }
+					249 = { is_controlled_by = ROOT }
+				}
+				independence_wave_commit_iw043_force_discipline = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw043_force_discipline_result = constant:independence_wave_iw043.one } }
+					independence_wave_iw043_commit_paid_transaction = yes
+					set_country_flag = iw043_river_guard_under_civilian_law
+					clr_country_flag = iw043_security_crisis_active
+					if = {
+						limit = { has_idea = independence_wave_iw043_provisional_river_guard_idea }
+						swap_ideas = { remove_idea = independence_wave_iw043_provisional_river_guard_idea add_idea = independence_wave_iw043_civilian_river_guard_idea }
+					}
+					add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+					add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+					independence_wave_clamp_iw043_package_values = yes
+					custom_effect_tooltip = independence_wave_iw043_discipline_the_river_guard_success_tt
+				}
+				else = {
+					independence_wave_iw043_rollback_paid_transaction = yes
+					set_country_flag = iw043_security_crisis_active
+					custom_effect_tooltip = independence_wave_iw043_discipline_the_river_guard_timeout_tt
+				}
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_security_crisis_active
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				country_event = { id = chaosx.nr006.4307 }
+				custom_effect_tooltip = independence_wave_iw043_discipline_the_river_guard_timeout_tt
+			}
+			independence_wave_release_iw043_force_package = yes
+			clr_country_flag = iw043_river_guard_discipline_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				NOT = { has_country_flag = iw043_river_guard_created }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.discipline_the_river_guard }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			independence_wave_release_iw043_force_package = yes
+			clr_country_flag = iw043_river_guard_discipline_active
+			if = {
+				limit = { is_independence_wave_iw043_country = yes }
+				set_country_flag = iw043_security_crisis_active
+				custom_effect_tooltip = independence_wave_iw043_discipline_the_river_guard_cancel_tt
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_repair_cheboksary_workshops = {
+		icon = GFX_decision_independence_wave_iw043_river
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_repair_cheboksary_workshops
+			NOT = { has_country_flag = iw043_cheboksary_workshops_receipt }
+		}
+		available = {
+			OR = {
+				256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				has_country_flag = iw043_cheboksary_treaty_administration
+			}
+			can_pay_independence_wave_administration_standard_cost = yes
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_pay_independence_wave_administration_standard_cost = yes
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+		}
+		custom_cost_text = independence_wave_iw043_cost_workshops
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw043.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.repair_cheboksary_workshops }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw043.train_commitment }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_cheboksary_workshops_receipt
+				set_country_flag = iw043_cheboksary_workshops_active
+				custom_effect_tooltip = independence_wave_iw043_repair_cheboksary_workshops_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.repair_cheboksary_workshops }
+			if = {
+				limit = {
+					OR = {
+						256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+						has_country_flag = iw043_cheboksary_treaty_administration
+					}
+					NOT = { has_country_flag = iw043_navigation_crisis_active }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_cheboksary_workshops_repaired
+				add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+				add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_repair_cheboksary_workshops_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_cheboksary_workshops_worn
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_repair_cheboksary_workshops_timeout_tt
+			}
+			clr_country_flag = iw043_cheboksary_workshops_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				AND = {
+					256 = { NOT = { is_controlled_by = ROOT } }
+					NOT = { has_country_flag = iw043_cheboksary_treaty_administration }
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.repair_cheboksary_workshops }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_cheboksary_workshops_active
+			if = { limit = { is_independence_wave_iw043_country = yes } set_country_flag = iw043_cheboksary_workshops_worn custom_effect_tooltip = independence_wave_iw043_repair_cheboksary_workshops_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_negotiate_former_host_transit = {
+		icon = GFX_decision_independence_wave_iw043_diplomacy
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_independence_wave_iw043_former_host = yes
+			NOT = { has_country_flag = iw043_former_host_transit_receipt }
+		}
+		available = {
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_iw043_cost_transit
+		days_remove = constant:independence_wave_iw043.standard_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.negotiate_former_host_transit }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_decision_cost.train_standard }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_former_host_transit_receipt
+				set_country_flag = iw043_former_host_transit_active
+				custom_effect_tooltip = independence_wave_iw043_negotiate_former_host_transit_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.negotiate_former_host_transit }
+			if = {
+				limit = {
+					has_independence_wave_iw043_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_cheboksary_transit_secured
+				set_country_flag = iw043_former_host_property_settlement
+				add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.large }
+				add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_negotiate_former_host_transit_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_navigation_crisis_active
+				set_country_flag = iw043_former_host_claim_pressure
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				country_event = { id = chaosx.nr006.4306 }
+				custom_effect_tooltip = independence_wave_iw043_negotiate_former_host_transit_timeout_tt
+			}
+			clr_country_flag = iw043_former_host_transit_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				NOT = { has_independence_wave_iw043_former_host = yes }
+				var:independence_wave_former_host = { has_war_with = ROOT }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.negotiate_former_host_transit }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_former_host_transit_active
+			if = { limit = { is_independence_wave_iw043_country = yes } set_country_flag = iw043_former_host_claim_pressure custom_effect_tooltip = independence_wave_iw043_negotiate_former_host_transit_cancel_tt }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_iw043_dispatch_volga_trade_delegation = {
+		icon = GFX_decision_independence_wave_iw043_diplomacy
+		target_root_trigger = {
+			is_independence_wave_iw043_country = yes
+			has_completed_focus = independence_wave_iw043_trade_beyond_the_middle_volga
+			NOT = { has_country_flag = iw043_volga_trade_delegation_receipt }
+		}
+		targets = {
+			AFA AFX AGX AJX AKX ALT ANU ARM ARX ASX ASY ATJ ATX AXX AZR BAN BAR BAX BAY BBX BHX BIA BJX BKX BLC BLI BOS BRD BRI BSK BYA CAT CHM CIN CJX CLX COR COX CPX CQX CRI CUX CVX CXX DAG DAH DHX DKX DMX DON DOX DSX DUX DVX EBX EQX FAX FBX FDX FER FIJ FLX FNX FOX FSM FSX FUX FVX FXX GAL GAR GBX GCX GEO GHX GLC GMX GZX HAR HAW HAX HBX HCX HKX HPX HSX HUX HYD IAX IBX ICE ICX IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MEL MEN MNT MPU MYS NAV NEN OCC OKN PAL PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS YAK YUC
+			SOV ENG FRA GER USA TUR POL ROM FIN EST LAT LIT SWE PER
+		}
+		target_trigger = {
+			FROM = {
+				is_independence_wave_iw043_reachable_partner = yes
+			}
+		}
+		visible = {
+			is_independence_wave_iw043_country = yes
+			NOT = { has_country_flag = iw043_volga_trade_delegation_receipt }
+		}
+		available = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { train_equipment > constant:independence_wave_iw043.train_commitment }
+		}
+		custom_cost_text = independence_wave_iw043_cost_trade
+		days_remove = constant:independence_wave_iw043.standard_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.dispatch_volga_trade_delegation }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw043.train_commitment }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				set_country_flag = iw043_volga_trade_delegation_receipt
+				set_country_flag = iw043_volga_trade_delegation_active
+				custom_effect_tooltip = independence_wave_iw043_dispatch_volga_trade_delegation_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.dispatch_volga_trade_delegation }
+			if = {
+				limit = { FROM = { exists = yes NOT = { has_war_with = ROOT } } }
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_volga_trade_delegation_complete
+				give_market_access = FROM
+				add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+				add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_dispatch_volga_trade_delegation_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_trade_transport_lost
+				subtract_from_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_dispatch_volga_trade_delegation_timeout_tt
+			}
+			clr_country_flag = iw043_volga_trade_delegation_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw043_country = yes }
+				FROM = { has_war_with = ROOT }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.dispatch_volga_trade_delegation }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_volga_trade_delegation_active
+			if = { limit = { is_independence_wave_iw043_country = yes } set_country_flag = iw043_trade_transport_lost custom_effect_tooltip = independence_wave_iw043_dispatch_volga_trade_delegation_cancel_tt }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw043_major_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw043_treaty_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw043_league_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw043_patron_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw043_diaspora_reach = yes }
+			}
+		}
+	}
+
+	independence_wave_iw043_hold_form12_accession_congress = {
+		icon = GFX_decision_independence_wave_iw043_formable
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_iw043_route_federal
+			NOT = { has_country_flag = iw043_form12_accession_congress_receipt }
+		}
+		available = {
+			can_independence_wave_form12_iw043_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_independence_wave_form12_iw043_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_text = independence_wave_iw043_cost_formable_congress
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw043.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form12_accession_congress }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } } set_country_flag = iw043_form12_accession_congress_receipt set_country_flag = iw043_form12_accession_congress_active custom_effect_tooltip = independence_wave_iw043_hold_form12_accession_congress_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form12_accession_congress }
+			if = {
+				limit = { can_independence_wave_form12_iw043_commit = yes }
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_form12_accession_congress_complete
+				country_event = { id = chaosx.nr006.4310 }
+				custom_effect_tooltip = independence_wave_iw043_hold_form12_accession_congress_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_form12_accession_congress_failed
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_hold_form12_accession_congress_timeout_tt
+			}
+			clr_country_flag = iw043_form12_accession_congress_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw043_country = yes } NOT = { has_country_flag = independence_wave_iw043_route_federal } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form12_accession_congress }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_form12_accession_congress_active
+			if = { limit = { is_independence_wave_iw043_country = yes } set_country_flag = iw043_form12_accession_congress_failed custom_effect_tooltip = independence_wave_iw043_hold_form12_accession_congress_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_hold_form13_compact_congress = {
+		icon = GFX_decision_independence_wave_iw043_formable
+		visible = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_iw043_route_restoration
+			NOT = { has_country_flag = iw043_form13_compact_congress_receipt }
+		}
+		available = {
+			can_independence_wave_form13_iw043_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_independence_wave_form13_iw043_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_text = independence_wave_iw043_cost_formable_congress
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw043.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form13_compact_congress }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } } set_country_flag = iw043_form13_compact_congress_receipt set_country_flag = iw043_form13_compact_congress_active custom_effect_tooltip = independence_wave_iw043_hold_form13_compact_congress_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form13_compact_congress }
+			if = {
+				limit = { can_independence_wave_form13_iw043_commit = yes }
+				independence_wave_iw043_commit_paid_transaction = yes
+				set_country_flag = iw043_form13_compact_congress_complete
+				country_event = { id = chaosx.nr006.4310 }
+				custom_effect_tooltip = independence_wave_iw043_hold_form13_compact_congress_success_tt
+			}
+			else = {
+				independence_wave_iw043_rollback_paid_transaction = yes
+				set_country_flag = iw043_form13_compact_congress_failed
+				subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw043_package_values = yes
+				custom_effect_tooltip = independence_wave_iw043_hold_form13_compact_congress_timeout_tt
+			}
+			clr_country_flag = iw043_form13_compact_congress_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw043_country = yes } NOT = { has_country_flag = independence_wave_iw043_route_restoration } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.hold_form13_compact_congress }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_form13_compact_congress_active
+			if = { limit = { is_independence_wave_iw043_country = yes } set_country_flag = iw043_form13_compact_congress_failed custom_effect_tooltip = independence_wave_iw043_hold_form13_compact_congress_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw043_reopen_congress_clause = {
+		icon = GFX_decision_independence_wave_iw043_rights
+		visible = {
+			is_independence_wave_iw043_country = yes
+			OR = {
+				AND = { has_country_flag = iw043_clause_tatar_bashkir_representation_rejected NOT = { has_country_flag = iw043_reopen_tatar_bashkir_receipt } }
+				AND = { has_country_flag = iw043_clause_chuvash_municipal_autonomy_rejected NOT = { has_country_flag = iw043_reopen_chuvash_receipt } }
+				AND = { has_country_flag = iw043_clause_mari_udmurt_language_rights_rejected NOT = { has_country_flag = iw043_reopen_mari_udmurt_receipt } }
+				AND = { has_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected NOT = { has_country_flag = iw043_reopen_resident_equality_receipt } }
+			}
+		}
+		available = {
+			can_pay_independence_wave_administration_standard_cost = yes
+			check_variable = { iw043_congress_authority > constant:independence_wave_iw_package_delta.major }
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw043_cost_reconciliation
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw043.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+			set_temp_variable = { independence_wave_iw043_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw043_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw043_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw043_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw043_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one } }
+				if = {
+					limit = { has_country_flag = iw043_clause_tatar_bashkir_representation_rejected NOT = { has_country_flag = iw043_reopen_tatar_bashkir_receipt } }
+					set_country_flag = iw043_reopen_tatar_bashkir_receipt
+					set_country_flag = iw043_reconciling_tatar_bashkir_representation
+				}
+				else_if = {
+					limit = { has_country_flag = iw043_clause_chuvash_municipal_autonomy_rejected NOT = { has_country_flag = iw043_reopen_chuvash_receipt } }
+					set_country_flag = iw043_reopen_chuvash_receipt
+					set_country_flag = iw043_reconciling_chuvash_municipal_autonomy
+				}
+				else_if = {
+					limit = { has_country_flag = iw043_clause_mari_udmurt_language_rights_rejected NOT = { has_country_flag = iw043_reopen_mari_udmurt_receipt } }
+					set_country_flag = iw043_reopen_mari_udmurt_receipt
+					set_country_flag = iw043_reconciling_mari_udmurt_language_rights
+				}
+				else = {
+					set_country_flag = iw043_reopen_resident_equality_receipt
+					set_country_flag = iw043_reconciling_resident_civic_and_religious_equality
+				}
+				set_country_flag = iw043_clause_reconciliation_active
+				custom_effect_tooltip = independence_wave_iw043_reopen_congress_clause_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+			if = {
+				limit = { check_variable = { iw043_congress_authority > constant:independence_wave_iw_package_delta.major } }
+				independence_wave_iw043_commit_paid_transaction = yes
+				if = {
+					limit = { has_country_flag = iw043_reconciling_tatar_bashkir_representation }
+					clr_country_flag = iw043_clause_tatar_bashkir_representation_rejected
+					set_country_flag = iw043_pending_tatar_bashkir_representation
+					country_event = { id = chaosx.nr006.4302 }
+				}
+				else_if = {
+					limit = { has_country_flag = iw043_reconciling_chuvash_municipal_autonomy }
+					clr_country_flag = iw043_clause_chuvash_municipal_autonomy_rejected
+					set_country_flag = iw043_pending_chuvash_municipal_autonomy
+					country_event = { id = chaosx.nr006.4303 }
+				}
+				else_if = {
+					limit = { has_country_flag = iw043_reconciling_mari_udmurt_language_rights }
+					clr_country_flag = iw043_clause_mari_udmurt_language_rights_rejected
+					set_country_flag = iw043_pending_mari_udmurt_language_rights
+					country_event = { id = chaosx.nr006.4304 }
+				}
+				else = {
+					clr_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected
+					set_country_flag = iw043_pending_resident_civic_and_religious_equality
+					country_event = { id = chaosx.nr006.4302 }
+				}
+				custom_effect_tooltip = independence_wave_iw043_reopen_congress_clause_success_tt
+			}
+			else = {
+				set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+				independence_wave_iw043_rollback_paid_transaction = yes
+				clr_country_flag = iw043_clause_reconciliation_active
+				set_country_flag = iw043_clause_reconciliation_failed
+				custom_effect_tooltip = independence_wave_iw043_reopen_congress_clause_timeout_tt
+			}
+		}
+		cancel_trigger = { NOT = { is_independence_wave_iw043_country = yes } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+			independence_wave_iw043_rollback_paid_transaction = yes
+			clr_country_flag = iw043_clause_reconciliation_active
+			clr_country_flag = iw043_reconciling_tatar_bashkir_representation
+			clr_country_flag = iw043_reconciling_chuvash_municipal_autonomy
+			clr_country_flag = iw043_reconciling_mari_udmurt_language_rights
+			clr_country_flag = iw043_reconciling_resident_civic_and_religious_equality
+			if = { limit = { is_independence_wave_iw043_country = yes } custom_effect_tooltip = independence_wave_iw043_reopen_congress_clause_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}
+
+independence_wave_iw058_council_of_communities_category = {
+	independence_wave_iw058_secure_mosul_council_quarter = {
+		icon = GFX_decision_independence_wave_iw058_security
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_hold_mosul_council_quarter
+			NOT = { has_country_flag = iw058_council_quarter_receipt }
+		}
+		available = {
+			676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			has_country_flag = iw058_mosul_civic_guard_created
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+		}
+		custom_cost_text = independence_wave_iw058_cost_anchor
+		days_remove = constant:independence_wave_iw058.anchor_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.secure_mosul_council_quarter }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_iw058.standard_command_cost }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_light }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_decision_cost.support_light }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw058_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one } }
+				independence_wave_iw058_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+					set_country_flag = iw058_council_quarter_receipt
+					set_country_flag = iw058_council_quarter_active
+					custom_effect_tooltip = independence_wave_iw058_secure_mosul_council_quarter_start_tt
+				}
+				else = { independence_wave_release_iw058_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.secure_mosul_council_quarter }
+			independence_wave_validate_iw058_force_binding = yes
+			if = {
+				limit = {
+					676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					check_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.one }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_anchor_defense_mission_complete
+				clr_country_flag = iw058_anchor_crisis_active
+				add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+				add_to_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.major }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_secure_mosul_council_quarter_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_anchor_crisis_active
+				set_country_flag = iw058_severe_security_crisis_active
+				subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+				subtract_from_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5806 }
+				custom_effect_tooltip = independence_wave_iw058_secure_mosul_council_quarter_timeout_tt
+			}
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_council_quarter_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw058_country = yes }
+				676 = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.secure_mosul_council_quarter }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_council_quarter_active
+			if = {
+				limit = { is_independence_wave_iw058_country = yes }
+				set_country_flag = iw058_anchor_crisis_active
+				set_country_flag = iw058_severe_security_crisis_active
+				custom_effect_tooltip = independence_wave_iw058_secure_mosul_council_quarter_cancel_tt
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw058_enumerate_council_seats = {
+		icon = GFX_decision_independence_wave_iw058_council
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_seat_church_civic_and_village_delegates
+			NOT = { has_country_flag = iw058_council_seats_receipt }
+		}
+		available = {
+			can_pay_independence_wave_administration_light_cost = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
+		custom_cost_text = independence_wave_iw058_cost_council
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw058.institution_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.enumerate_council_seats }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_light }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+				set_country_flag = iw058_council_seats_receipt
+				set_country_flag = iw058_council_seats_active
+				custom_effect_tooltip = independence_wave_iw058_enumerate_council_seats_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.enumerate_council_seats }
+			if = {
+				limit = { 676 = { is_owned_by = ROOT is_controlled_by = ROOT } }
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_council_seats_complete
+				add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5802 }
+				custom_effect_tooltip = independence_wave_iw058_enumerate_council_seats_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_council_seat_deadlock
+				subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_enumerate_council_seats_timeout_tt
+			}
+			clr_country_flag = iw058_council_seats_active
+		}
+		cancel_trigger = { NOT = { is_independence_wave_iw058_country = yes } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.enumerate_council_seats }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_council_seats_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_council_seat_deadlock custom_effect_tooltip = independence_wave_iw058_enumerate_council_seats_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes } }
+	}
+
+	independence_wave_iw058_ratify_assyrian_self_identification = {
+		icon = GFX_decision_independence_wave_iw058_assyrian_guarantee
+		visible = {
+			is_independence_wave_iw058_country = yes
+			OR = { has_country_flag = iw058_council_seats_active has_country_flag = iw058_council_seats_complete }
+			NOT = { has_country_flag = iw058_guarantee_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_guarantee_assyrian_self_identification_rejected }
+			NOT = { has_country_flag = iw058_assyrian_guarantee_receipt }
+		}
+		available = { command_power > constant:independence_wave_decision_cost.command_power_light NOT = { has_country_flag = independence_wave_iw058_transaction_active } }
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw058_cost_guarantee
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_assyrian_self_identification }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_assyrian_guarantee_receipt set_country_flag = iw058_pending_assyrian_self_identification country_event = { id = chaosx.nr006.5802 } }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw058_ratify_chaldean_self_identification = {
+		icon = GFX_decision_independence_wave_iw058_chaldean_guarantee
+		visible = {
+			is_independence_wave_iw058_country = yes
+			OR = { has_country_flag = iw058_council_seats_active has_country_flag = iw058_council_seats_complete }
+			NOT = { has_country_flag = iw058_guarantee_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_guarantee_chaldean_self_identification_rejected }
+			NOT = { has_country_flag = iw058_chaldean_guarantee_receipt }
+		}
+		available = { command_power > constant:independence_wave_decision_cost.command_power_light NOT = { has_country_flag = independence_wave_iw058_transaction_active } }
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw058_cost_guarantee
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_chaldean_self_identification }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_chaldean_guarantee_receipt set_country_flag = iw058_pending_chaldean_self_identification country_event = { id = chaosx.nr006.5802 } }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw058_ratify_syriac_self_identification = {
+		icon = GFX_decision_independence_wave_iw058_syriac_guarantee
+		visible = {
+			is_independence_wave_iw058_country = yes
+			OR = { has_country_flag = iw058_council_seats_active has_country_flag = iw058_council_seats_complete }
+			NOT = { has_country_flag = iw058_guarantee_syriac_self_identification }
+			NOT = { has_country_flag = iw058_guarantee_syriac_self_identification_rejected }
+			NOT = { has_country_flag = iw058_syriac_guarantee_receipt }
+		}
+		available = { command_power > constant:independence_wave_decision_cost.command_power_light NOT = { has_country_flag = independence_wave_iw058_transaction_active } }
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw058_cost_guarantee
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_syriac_self_identification }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_syriac_guarantee_receipt set_country_flag = iw058_pending_syriac_self_identification country_event = { id = chaosx.nr006.5802 } }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw058_ratify_aramean_self_identification = {
+		icon = GFX_decision_independence_wave_iw058_aramean_guarantee
+		visible = {
+			is_independence_wave_iw058_country = yes
+			OR = { has_country_flag = iw058_council_seats_active has_country_flag = iw058_council_seats_complete }
+			NOT = { has_country_flag = iw058_guarantee_aramean_self_identification }
+			NOT = { has_country_flag = iw058_guarantee_aramean_self_identification_rejected }
+			NOT = { has_country_flag = iw058_aramean_guarantee_receipt }
+		}
+		available = { command_power > constant:independence_wave_decision_cost.command_power_light NOT = { has_country_flag = independence_wave_iw058_transaction_active } }
+		custom_cost_trigger = { command_power > constant:independence_wave_decision_cost.command_power_light }
+		custom_cost_text = independence_wave_iw058_cost_guarantee
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_aramean_self_identification }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_light }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_aramean_guarantee_receipt set_country_flag = iw058_pending_aramean_self_identification country_event = { id = chaosx.nr006.5802 } }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_iw058_settle_church_civil_competence = {
+		icon = GFX_decision_independence_wave_iw058_council
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_settle_church_and_civil_jurisdiction
+			NOT = { has_country_flag = iw058_church_civil_competence_receipt }
+		}
+		available = {
+			has_country_flag = iw058_church_synod_seated
+			has_country_flag = iw058_secular_committee_seated
+			has_country_flag = iw058_village_municipal_delegation_seated
+			has_country_flag = iw058_levies_veterans_delegation_seated
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw058_cost_competence
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.settle_church_civil_competence }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_church_civil_competence_receipt set_country_flag = iw058_church_civil_competence_active custom_effect_tooltip = independence_wave_iw058_settle_church_civil_competence_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.settle_church_civil_competence }
+			if = {
+				limit = {
+					has_country_flag = iw058_church_synod_seated
+					has_country_flag = iw058_secular_committee_seated
+					NOT = { has_country_flag = iw058_severe_security_crisis_active }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				country_event = { id = chaosx.nr006.5803 }
+				custom_effect_tooltip = independence_wave_iw058_settle_church_civil_competence_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_church_civil_competence_crisis
+				subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5803 }
+				custom_effect_tooltip = independence_wave_iw058_settle_church_civil_competence_timeout_tt
+			}
+			clr_country_flag = iw058_church_civil_competence_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } NOT = { has_country_flag = iw058_church_synod_seated } NOT = { has_country_flag = iw058_secular_committee_seated } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.settle_church_civil_competence }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_church_civil_competence_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_church_civil_competence_crisis custom_effect_tooltip = independence_wave_iw058_settle_church_civil_competence_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_open_diaspora_expert_mission = {
+		icon = GFX_decision_independence_wave_iw058_diplomacy
+		target_root_trigger = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_open_diaspora_liaison_bureau
+			NOT = { has_country_flag = iw058_diaspora_expert_mission_receipt }
+		}
+		targets = {
+			AFA AFX AGX AJX AKX ALT ANU ARM ARX ASX ATJ ATX AXX AZR BAN BAR BAX BAY BBX BHX BIA BJX BKX BLC BLI BOS BRD BRI BSK BYA CAT CHM CHU CIN CJX CLX COR COX CPX CQX CRI CUX CVX CXX DAG DAH DHX DKX DMX DON DOX DSX DUX DVX EBX EQX FAX FBX FDX FER FIJ FLX FNX FOX FSM FSX FUX FVX FXX GAL GAR GBX GCX GEO GHX GLC GMX GZX HAR HAW HAX HBX HCX HKX HPX HSX HUX HYD IAX IBX ICE ICX IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MEL MEN MNT MPU MYS NAV NEN OCC OKN PAL PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS YAK YUC
+			ENG FRA USA SOV GER ITA TUR IRQ SYR PER SAU JOR EGY GRE
+		}
+		target_trigger = {
+			FROM = {
+				is_independence_wave_iw058_reachable_partner = yes
+			}
+		}
+		visible = { is_independence_wave_iw058_country = yes NOT = { has_country_flag = iw058_diaspora_expert_mission_receipt } }
+		available = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { convoy > constant:independence_wave_iw058.convoy_commitment }
+			num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_light
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { convoy > constant:independence_wave_iw058.convoy_commitment }
+			num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_light
+		}
+		custom_cost_text = independence_wave_iw058_cost_diaspora
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw058.institution_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.open_diaspora_expert_mission }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw058.convoy_commitment }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_diaspora_expert_mission_receipt set_country_flag = iw058_diaspora_expert_mission_active custom_effect_tooltip = independence_wave_iw058_open_diaspora_expert_mission_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.open_diaspora_expert_mission }
+			if = {
+				limit = { FROM = { exists = yes NOT = { has_war_with = ROOT } } }
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_diaspora_liaison_active
+				FROM = { save_event_target_as = independence_wave_iw058_diaspora_partner }
+				country_event = { id = chaosx.nr006.5805 }
+				custom_effect_tooltip = independence_wave_iw058_open_diaspora_expert_mission_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_diaspora_foreign_suspicion
+				subtract_from_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_open_diaspora_expert_mission_timeout_tt
+			}
+			clr_country_flag = iw058_diaspora_expert_mission_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } FROM = { has_war_with = ROOT } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.open_diaspora_expert_mission }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_diaspora_expert_mission_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_diaspora_foreign_suspicion custom_effect_tooltip = independence_wave_iw058_open_diaspora_expert_mission_cancel_tt }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw058_major_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw058_treaty_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_league_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_patron_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_diaspora_reach = yes }
+			}
+		}
+	}
+
+	independence_wave_iw058_discipline_levies_under_civilian_law = {
+		icon = GFX_decision_independence_wave_iw058_security
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_discipline_the_levies_board
+			NOT = { has_country_flag = iw058_levies_discipline_receipt }
+		}
+		available = {
+			has_country_flag = iw058_levies_detachment_created
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_manpower > constant:independence_wave_decision_cost.manpower_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_manpower > constant:independence_wave_decision_cost.manpower_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+		}
+		custom_cost_text = independence_wave_iw058_cost_levies
+		days_remove = constant:independence_wave_iw058.institution_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.discipline_levies_under_civilian_law }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_iw058.standard_command_cost }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_standard }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_decision_cost.support_standard }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw058_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one } }
+				independence_wave_iw058_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+					set_country_flag = iw058_levies_discipline_receipt
+					set_country_flag = iw058_levies_discipline_active
+					custom_effect_tooltip = independence_wave_iw058_discipline_levies_under_civilian_law_start_tt
+				}
+				else = { independence_wave_release_iw058_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.discipline_levies_under_civilian_law }
+			independence_wave_validate_iw058_force_binding = yes
+			if = {
+				limit = {
+					has_country_flag = iw058_levies_detachment_created
+					check_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.one }
+					676 = { is_controlled_by = ROOT }
+				}
+				independence_wave_commit_iw058_force_discipline = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw058_force_discipline_result = constant:independence_wave_iw058.one } }
+					independence_wave_iw058_commit_paid_transaction = yes
+					set_country_flag = iw058_levies_board_under_civilian_law
+					clr_country_flag = iw058_severe_security_crisis_active
+					add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+					add_to_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.standard }
+					independence_wave_clamp_iw058_package_values = yes
+					country_event = { id = chaosx.nr006.5804 }
+					custom_effect_tooltip = independence_wave_iw058_discipline_levies_under_civilian_law_success_tt
+				}
+				else = {
+					independence_wave_iw058_rollback_paid_transaction = yes
+					set_country_flag = iw058_severe_security_crisis_active
+					custom_effect_tooltip = independence_wave_iw058_discipline_levies_under_civilian_law_timeout_tt
+				}
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_severe_security_crisis_active
+				subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5809 }
+				custom_effect_tooltip = independence_wave_iw058_discipline_levies_under_civilian_law_timeout_tt
+			}
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_levies_discipline_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } NOT = { has_country_flag = iw058_levies_detachment_created } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.discipline_levies_under_civilian_law }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_levies_discipline_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_severe_security_crisis_active custom_effect_tooltip = independence_wave_iw058_discipline_levies_under_civilian_law_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_patrol_nineveh_approaches = {
+		icon = GFX_decision_independence_wave_iw058_security
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_secure_nineveh_approaches
+			NOT = { has_country_flag = iw058_nineveh_patrol_receipt }
+		}
+		available = {
+			676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			has_country_flag = iw058_mosul_civic_guard_created
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_iw058.standard_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+		}
+		custom_cost_text = independence_wave_iw058_cost_patrol
+		days_remove = constant:independence_wave_iw058.anchor_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.patrol_nineveh_approaches }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_iw058.standard_command_cost }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_light }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_decision_cost.support_light }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw058_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one } }
+				independence_wave_iw058_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+					set_country_flag = iw058_nineveh_patrol_receipt
+					set_country_flag = iw058_nineveh_patrol_active
+					custom_effect_tooltip = independence_wave_iw058_patrol_nineveh_approaches_start_tt
+				}
+				else = { independence_wave_release_iw058_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.patrol_nineveh_approaches }
+			independence_wave_validate_iw058_force_binding = yes
+			if = {
+				limit = {
+					676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					check_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.one }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_nineveh_patrol_complete
+				clr_country_flag = iw058_anchor_crisis_active
+				add_to_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.major }
+				add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_patrol_nineveh_approaches_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_anchor_crisis_active
+				set_country_flag = iw058_former_host_patrol_escalation
+				subtract_from_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5806 }
+				custom_effect_tooltip = independence_wave_iw058_patrol_nineveh_approaches_timeout_tt
+			}
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_nineveh_patrol_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } 676 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.patrol_nineveh_approaches }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_nineveh_patrol_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_anchor_crisis_active custom_effect_tooltip = independence_wave_iw058_patrol_nineveh_approaches_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_fortify_mountain_river_corridor = {
+		icon = GFX_decision_independence_wave_iw058_security
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_fortify_mountain_river_corridor
+			NOT = { has_country_flag = iw058_corridor_fortification_receipt }
+		}
+		available = {
+			676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			has_country_flag = iw058_mosul_civic_guard_created
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+			num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_bind_independence_wave_iw058_force_package = yes
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+			num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+		}
+		custom_cost_text = independence_wave_iw058_cost_fortification
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.fortify_mountain_river_corridor }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_standard }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_decision_cost.support_standard }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_decision_cost.train_standard }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_bind_iw058_force_package = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one } }
+				independence_wave_iw058_begin_paid_transaction = yes
+				if = {
+					limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+					set_country_flag = iw058_corridor_fortification_receipt
+					set_country_flag = iw058_corridor_fortification_active
+					custom_effect_tooltip = independence_wave_iw058_fortify_mountain_river_corridor_start_tt
+				}
+				else = { independence_wave_release_iw058_force_package = yes }
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.fortify_mountain_river_corridor }
+			independence_wave_validate_iw058_force_binding = yes
+			if = {
+				limit = {
+					676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					check_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.one }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_corridor_fortification_complete
+				676 = {
+					add_building_construction = { type = bunker level = constant:independence_wave_decision_effect.construction_infrastructure instant_build = yes }
+					add_building_construction = { type = infrastructure level = constant:independence_wave_decision_effect.construction_infrastructure instant_build = yes }
+				}
+				if = {
+					limit = { has_idea = independence_wave_iw058_exposed_mosul_corridor_idea }
+					swap_ideas = { remove_idea = independence_wave_iw058_exposed_mosul_corridor_idea add_idea = independence_wave_iw058_secured_mosul_corridor_idea }
+				}
+				add_to_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.decisive }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_fortify_mountain_river_corridor_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_corridor_construction_burden
+				subtract_from_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.small }
+				independence_wave_clamp_iw058_package_values = yes
+				country_event = { id = chaosx.nr006.5806 }
+				custom_effect_tooltip = independence_wave_iw058_fortify_mountain_river_corridor_timeout_tt
+			}
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_corridor_fortification_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } 676 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.fortify_mountain_river_corridor }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			independence_wave_release_iw058_force_package = yes
+			clr_country_flag = iw058_corridor_fortification_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_corridor_construction_burden custom_effect_tooltip = independence_wave_iw058_fortify_mountain_river_corridor_cancel_tt }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_iw058_request_named_external_guarantee = {
+		icon = GFX_decision_independence_wave_iw058_diplomacy
+		target_root_trigger = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_request_external_guarantees
+			NOT = { has_country_flag = iw058_named_external_guarantee_receipt }
+		}
+		targets = {
+			AFA AFX AGX AJX AKX ALT ANU ARM ARX ASX ATJ ATX AXX AZR BAN BAR BAX BAY BBX BHX BIA BJX BKX BLC BLI BOS BRD BRI BSK BYA CAT CHM CHU CIN CJX CLX COR COX CPX CQX CRI CUX CVX CXX DAG DAH DHX DKX DMX DON DOX DSX DUX DVX EBX EQX FAX FBX FDX FER FIJ FLX FNX FOX FSM FSX FUX FVX FXX GAL GAR GBX GCX GEO GHX GLC GMX GZX HAR HAW HAX HBX HCX HKX HPX HSX HUX HYD IAX IBX ICE ICX IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MEL MEN MNT MPU MYS NAV NEN OCC OKN PAL PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS YAK YUC
+			ENG FRA USA SOV GER ITA TUR IRQ SYR PER SAU JOR EGY GRE
+		}
+		target_trigger = {
+			FROM = {
+				is_independence_wave_iw058_reachable_partner = yes
+			}
+		}
+		visible = { is_independence_wave_iw058_country = yes NOT = { has_country_flag = iw058_named_external_guarantee_receipt } }
+		available = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			command_power > constant:independence_wave_decision_cost.command_power_standard
+			has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+		}
+		custom_cost_text = independence_wave_iw058_cost_external_guarantee
+		days_remove = constant:independence_wave_iw058.institution_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.request_named_external_guarantee }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_decision_cost.convoy_light }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_named_external_guarantee_receipt set_country_flag = iw058_named_external_guarantee_active custom_effect_tooltip = independence_wave_iw058_request_named_external_guarantee_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.request_named_external_guarantee }
+			if = {
+				limit = { FROM = { exists = yes NOT = { has_war_with = ROOT } } }
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_named_external_guarantee_negotiated
+				FROM = { save_event_target_as = independence_wave_iw058_named_external_guarantee_target }
+				country_event = { id = chaosx.nr006.5807 }
+				custom_effect_tooltip = independence_wave_iw058_request_named_external_guarantee_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_external_guarantee_failed
+				subtract_from_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_request_named_external_guarantee_timeout_tt
+			}
+			clr_country_flag = iw058_named_external_guarantee_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } FROM = { has_war_with = ROOT } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.request_named_external_guarantee }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_named_external_guarantee_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_external_guarantee_failed custom_effect_tooltip = independence_wave_iw058_request_named_external_guarantee_cancel_tt }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_major_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_treaty_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw058_league_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { is_independence_wave_iw058_patron_reach = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { is_independence_wave_iw058_diaspora_reach = yes }
+			}
+		}
+	}
+
+	independence_wave_iw058_negotiate_former_host_security_settlement = {
+		icon = GFX_decision_independence_wave_iw058_settlement
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_negotiate_former_host_settlement
+			has_independence_wave_iw058_former_host = yes
+			NOT = { has_country_flag = iw058_former_host_settlement_receipt }
+		}
+		available = {
+			has_country_flag = iw058_guarantee_assyrian_self_identification
+			has_country_flag = iw058_guarantee_chaldean_self_identification
+			has_country_flag = iw058_guarantee_syriac_self_identification
+			has_country_flag = iw058_guarantee_aramean_self_identification
+			has_country_flag = iw058_anchor_defense_mission_complete
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw058_cost_host_settlement
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.negotiate_former_host_security_settlement }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_former_host_settlement_receipt set_country_flag = iw058_former_host_settlement_active custom_effect_tooltip = independence_wave_iw058_negotiate_former_host_security_settlement_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.negotiate_former_host_security_settlement }
+			if = {
+				limit = {
+					has_independence_wave_iw058_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+					676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_former_host_security_settlement_complete
+				set_country_flag = iw058_autonomy_boundary_settlement_complete
+				set_country_flag = iw058_autonomy_return_protection_complete
+				set_country_flag = iw058_autonomy_transit_property_complete
+				set_country_flag = iw058_autonomy_security_treaty_complete
+				add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.major }
+				add_to_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_negotiate_former_host_security_settlement_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_host_reclamation_conflict_active
+				set_country_flag = iw058_host_ultimatum_issued
+				country_event = { id = chaosx.nr006.5808 }
+				custom_effect_tooltip = independence_wave_iw058_negotiate_former_host_security_settlement_timeout_tt
+			}
+			clr_country_flag = iw058_former_host_settlement_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw058_country = yes }
+				NOT = { has_independence_wave_iw058_former_host = yes }
+				var:independence_wave_former_host = { has_war_with = ROOT }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.negotiate_former_host_security_settlement }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_former_host_settlement_active
+			if = {
+				limit = { is_independence_wave_iw058_country = yes }
+				set_country_flag = iw058_host_reclamation_conflict_active
+				set_country_flag = iw058_host_ultimatum_issued
+				custom_effect_tooltip = independence_wave_iw058_negotiate_former_host_security_settlement_cancel_tt
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_severe_host_threat = yes } }
+	}
+
+	independence_wave_iw058_survive_reclamation_crisis = {
+		icon = GFX_decision_independence_wave_iw058_security
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = iw058_host_reclamation_conflict_active
+			has_country_flag = iw058_host_ultimatum_issued
+			NOT = { has_country_flag = iw058_reclamation_crisis_receipt }
+		}
+		available = {
+			is_subject = no
+			676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			command_power > constant:independence_wave_iw058.major_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			command_power > constant:independence_wave_iw058.major_command_cost
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+		}
+		custom_cost_text = independence_wave_iw058_cost_reclamation_crisis
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.survive_reclamation_crisis }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_iw058.major_command_cost }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_decision_cost.infantry_standard }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_decision_cost.support_standard }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_reclamation_crisis_receipt set_country_flag = iw058_reclamation_crisis_mission_active custom_effect_tooltip = independence_wave_iw058_survive_reclamation_crisis_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.survive_reclamation_crisis }
+			if = {
+				limit = {
+					is_subject = no
+					676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+					has_independence_wave_iw058_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_reclamation_crisis_survived_without_war
+				clr_country_flag = iw058_host_ultimatum_issued
+				independence_wave_write_iw058_host_conflict_survived = yes
+				add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+				add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_survive_reclamation_crisis_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_reclamation_crisis_escalated
+				set_country_flag = iw058_severe_security_crisis_active
+				subtract_from_variable = { iw058_corridor_security = constant:independence_wave_iw_package_delta.large }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_survive_reclamation_crisis_timeout_tt
+			}
+			clr_country_flag = iw058_reclamation_crisis_mission_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } is_subject = yes 676 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.survive_reclamation_crisis }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_reclamation_crisis_mission_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_reclamation_crisis_escalated set_country_flag = iw058_severe_security_crisis_active custom_effect_tooltip = independence_wave_iw058_survive_reclamation_crisis_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_hold_form18_federal_congress = {
+		icon = GFX_decision_independence_wave_iw058_formable
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_convene_mesopotamian_federal_congress
+			NOT = { has_country_flag = iw058_form18_federal_congress_receipt }
+		}
+		available = {
+			can_independence_wave_form18_iw058_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = {
+			can_independence_wave_form18_iw058_commit = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_text = independence_wave_iw058_cost_federal_congress
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.hold_form18_federal_congress }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_form18_federal_congress_receipt set_country_flag = iw058_form18_federal_congress_active custom_effect_tooltip = independence_wave_iw058_hold_form18_federal_congress_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.hold_form18_federal_congress }
+			if = {
+				limit = { can_independence_wave_form18_iw058_commit = yes }
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_form18_federal_congress_complete
+				set_country_flag = iw058_mesopotamian_settlement_mode_federation
+				clr_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+				country_event = { id = chaosx.nr006.5810 }
+				custom_effect_tooltip = independence_wave_iw058_hold_form18_federal_congress_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_form18_federal_congress_failed
+				subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+				subtract_from_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_hold_form18_federal_congress_timeout_tt
+			}
+			clr_country_flag = iw058_form18_federal_congress_active
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_iw058_country = yes }
+				has_country_flag = independence_wave_iw058_route_levies_guardianship
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.hold_form18_federal_congress }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_form18_federal_congress_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_form18_federal_congress_failed custom_effect_tooltip = independence_wave_iw058_hold_form18_federal_congress_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_ratify_sovereign_autonomy_compact = {
+		icon = GFX_decision_independence_wave_iw058_settlement
+		visible = {
+			is_independence_wave_iw058_country = yes
+			has_completed_focus = independence_wave_iw058_offer_mesopotamian_autonomy_charter
+			NOT = { has_country_flag = iw058_sovereign_autonomy_compact_receipt }
+		}
+		available = {
+			is_subject = no
+			OR = { has_country_flag = independence_wave_iw058_route_church_compact has_country_flag = independence_wave_iw058_route_civic_assembly }
+			NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+			has_independence_wave_iw058_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			has_country_flag = iw058_former_host_security_settlement_complete
+			has_country_flag = iw058_church_civil_competence_settled
+			can_pay_independence_wave_administration_standard_cost = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw058_cost_autonomy_compact
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_sovereign_autonomy_compact }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = { limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } } set_country_flag = iw058_sovereign_autonomy_compact_receipt set_country_flag = iw058_sovereign_autonomy_compact_active custom_effect_tooltip = independence_wave_iw058_ratify_sovereign_autonomy_compact_start_tt }
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_sovereign_autonomy_compact }
+			if = {
+				limit = {
+					is_subject = no
+					has_country_flag = iw058_former_host_security_settlement_complete
+					has_country_flag = iw058_autonomy_boundary_settlement_complete
+					has_country_flag = iw058_autonomy_return_protection_complete
+					has_country_flag = iw058_church_civil_competence_settled
+					has_country_flag = iw058_autonomy_transit_property_complete
+					has_country_flag = iw058_autonomy_security_treaty_complete
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				set_country_flag = iw058_sovereign_autonomy_compact_complete
+				set_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+				clr_country_flag = iw058_mesopotamian_settlement_mode_federation
+				country_event = { id = chaosx.nr006.5810 }
+				custom_effect_tooltip = independence_wave_iw058_ratify_sovereign_autonomy_compact_success_tt
+			}
+			else = {
+				independence_wave_iw058_rollback_paid_transaction = yes
+				set_country_flag = iw058_sovereign_autonomy_compact_failed
+				set_country_flag = iw058_host_reclamation_conflict_active
+				subtract_from_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+				independence_wave_clamp_iw058_package_values = yes
+				custom_effect_tooltip = independence_wave_iw058_ratify_sovereign_autonomy_compact_timeout_tt
+			}
+			clr_country_flag = iw058_sovereign_autonomy_compact_active
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } is_subject = yes has_country_flag = independence_wave_iw058_route_levies_guardianship } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_sovereign_autonomy_compact }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_sovereign_autonomy_compact_active
+			if = { limit = { is_independence_wave_iw058_country = yes } set_country_flag = iw058_sovereign_autonomy_compact_failed custom_effect_tooltip = independence_wave_iw058_ratify_sovereign_autonomy_compact_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_iw058_reopen_community_guarantee = {
+		icon = GFX_decision_independence_wave_iw058_guarantees
+		visible = {
+			is_independence_wave_iw058_country = yes
+			NOT = { has_country_flag = iw058_anchor_protection_breached }
+			OR = {
+				AND = { has_country_flag = iw058_guarantee_assyrian_self_identification_rejected NOT = { has_country_flag = iw058_reopen_assyrian_guarantee_receipt } }
+				AND = { has_country_flag = iw058_guarantee_chaldean_self_identification_rejected NOT = { has_country_flag = iw058_reopen_chaldean_guarantee_receipt } }
+				AND = { has_country_flag = iw058_guarantee_syriac_self_identification_rejected NOT = { has_country_flag = iw058_reopen_syriac_guarantee_receipt } }
+				AND = { has_country_flag = iw058_guarantee_aramean_self_identification_rejected NOT = { has_country_flag = iw058_reopen_aramean_guarantee_receipt } }
+			}
+		}
+		available = {
+			can_pay_independence_wave_administration_standard_cost = yes
+			check_variable = { iw058_council_cohesion > constant:independence_wave_iw_package_delta.major }
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_iw058_cost_reconciliation
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_iw058.settlement_mission_days
+		complete_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee }
+			set_temp_variable = { independence_wave_iw058_command_power_cost = constant:independence_wave_decision_cost.command_power_standard }
+			set_temp_variable = { independence_wave_iw058_manpower_cost = constant:independence_wave_decision_cost.manpower_standard }
+			set_temp_variable = { independence_wave_iw058_infantry_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_support_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_train_equipment_cost = constant:independence_wave_iw_package_delta.zero }
+			set_temp_variable = { independence_wave_iw058_convoy_cost = constant:independence_wave_iw_package_delta.zero }
+			independence_wave_iw058_begin_paid_transaction = yes
+			if = {
+				limit = { check_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one } }
+				if = { limit = { has_country_flag = iw058_guarantee_assyrian_self_identification_rejected NOT = { has_country_flag = iw058_reopen_assyrian_guarantee_receipt } } set_country_flag = iw058_reopen_assyrian_guarantee_receipt set_country_flag = iw058_reconciling_assyrian_self_identification }
+				else_if = { limit = { has_country_flag = iw058_guarantee_chaldean_self_identification_rejected NOT = { has_country_flag = iw058_reopen_chaldean_guarantee_receipt } } set_country_flag = iw058_reopen_chaldean_guarantee_receipt set_country_flag = iw058_reconciling_chaldean_self_identification }
+				else_if = { limit = { has_country_flag = iw058_guarantee_syriac_self_identification_rejected NOT = { has_country_flag = iw058_reopen_syriac_guarantee_receipt } } set_country_flag = iw058_reopen_syriac_guarantee_receipt set_country_flag = iw058_reconciling_syriac_self_identification }
+				else = { set_country_flag = iw058_reopen_aramean_guarantee_receipt set_country_flag = iw058_reconciling_aramean_self_identification }
+				set_country_flag = iw058_guarantee_reconciliation_active
+				custom_effect_tooltip = independence_wave_iw058_reopen_community_guarantee_start_tt
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee }
+			if = {
+				limit = {
+					NOT = { has_country_flag = iw058_anchor_protection_breached }
+					check_variable = { iw058_council_cohesion > constant:independence_wave_iw_package_delta.major }
+				}
+				independence_wave_iw058_commit_paid_transaction = yes
+				if = { limit = { has_country_flag = iw058_reconciling_assyrian_self_identification } clr_country_flag = iw058_guarantee_assyrian_self_identification_rejected set_country_flag = iw058_pending_assyrian_self_identification }
+				else_if = { limit = { has_country_flag = iw058_reconciling_chaldean_self_identification } clr_country_flag = iw058_guarantee_chaldean_self_identification_rejected set_country_flag = iw058_pending_chaldean_self_identification }
+				else_if = { limit = { has_country_flag = iw058_reconciling_syriac_self_identification } clr_country_flag = iw058_guarantee_syriac_self_identification_rejected set_country_flag = iw058_pending_syriac_self_identification }
+				else = { clr_country_flag = iw058_guarantee_aramean_self_identification_rejected set_country_flag = iw058_pending_aramean_self_identification }
+				country_event = { id = chaosx.nr006.5802 }
+				custom_effect_tooltip = independence_wave_iw058_reopen_community_guarantee_success_tt
+			}
+			else = {
+				set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee }
+				independence_wave_iw058_rollback_paid_transaction = yes
+				clr_country_flag = iw058_guarantee_reconciliation_active
+				set_country_flag = iw058_guarantee_reconciliation_failed
+				custom_effect_tooltip = independence_wave_iw058_reopen_community_guarantee_timeout_tt
+			}
+		}
+		cancel_trigger = { OR = { NOT = { is_independence_wave_iw058_country = yes } has_country_flag = iw058_anchor_protection_breached } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee }
+			independence_wave_iw058_rollback_paid_transaction = yes
+			clr_country_flag = iw058_guarantee_reconciliation_active
+			clr_country_flag = iw058_reconciling_assyrian_self_identification
+			clr_country_flag = iw058_reconciling_chaldean_self_identification
+			clr_country_flag = iw058_reconciling_syriac_self_identification
+			clr_country_flag = iw058_reconciling_aramean_self_identification
+			if = { limit = { is_independence_wave_iw058_country = yes } custom_effect_tooltip = independence_wave_iw058_reopen_community_guarantee_cancel_tt }
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}

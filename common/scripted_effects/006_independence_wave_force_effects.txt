@@ -6,7 +6,8 @@
 # - Builds a bounded budget and tier-specific division, equipment, experience,
 #   logistics, officer, and military-influence outputs.
 # - Defines one researched profile template and creates the opening force once
-#   per Event 006 generation at the frozen anchor.
+#   per Event 006 generation at the frozen anchor, then stamps each newly
+#   created division with package/generation provenance for exact operations.
 # - Transfers only explicitly approved small naval or air fractions and never
 #   transfers host land units or general stockpiles.
 # - Records all inputs and outputs for Event Details, balancing, and audits.
@@ -715,6 +716,14 @@ independence_wave_define_force_template = {
 # ---------------------------------------------------------------------------
 
 independence_wave_create_opening_divisions = {
+	# Snapshot division scopes before materialisation. `create_unit` exposes no
+	# division-scoped payload, so the post-create scope delta is the only safe
+	# way to stamp the supplied formations without accepting a matching
+	# player-built division later.
+	clear_temp_array = independence_wave_precreate_division_scopes
+	every_country_division = {
+		add_to_temp_array = { array = independence_wave_precreate_division_scopes value = THIS }
+	}
 	meta_effect = {
 		text = {
 			event_target:independence_wave_setup_anchor_state = {
@@ -732,6 +741,16 @@ independence_wave_create_opening_divisions = {
 		IW_MANPOWER = "[?independence_wave_force_manpower_factor|.2]"
 		IW_COUNT = "[?independence_wave_force_division_count|.0]"
 	}
+	# Every division outside the pre-create scope array was materialised by the
+	# opening-force allocator in this call. Persist both immutable package and
+	# generation receipts on the division itself; country-level receipts remain
+	# only an admission summary and are not treated as unit identity.
+	every_country_division = {
+		limit = { NOT = { is_in_array = { array = independence_wave_precreate_division_scopes value = THIS } } }
+		set_variable = { independence_wave_force_division_package_id = independence_wave_setup_package_id }
+		set_variable = { independence_wave_force_division_generation_id = ROOT.independence_wave_generation_id }
+	}
+	clear_temp_array = independence_wave_precreate_division_scopes
 }
 
 independence_wave_add_opening_stockpiles = {

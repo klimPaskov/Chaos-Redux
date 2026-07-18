@@ -380,6 +380,10 @@ independence_wave_scenario_attempt_ranked_packages = {
 	for_each_loop = {
 		array = global.independence_wave_scenario_ranked_package_ids
 		value = independence_wave_scenario_dispatch_package_id
+		# Scenario preflight shares the normal execution attestation trigger.
+		# Temporary variables are unscoped, so this bridge remains visible while
+		# the candidate-country scope checks the immutable content authority.
+		set_temp_variable = { independence_wave_execution_package_id = independence_wave_scenario_dispatch_package_id }
 		independence_wave_scenario_load_dispatch_package = yes
 		if = {
 			limit = {
@@ -592,6 +596,7 @@ independence_wave_scenario_prepare_all_releases = {
 }
 
 independence_wave_scenario_form_common_congress = {
+	set_global_flag = independence_wave_achievement_scenario_preformed_league
 	set_variable = { global.independence_wave_league_cohesion = constant:independence_wave_scenario_network.congress_cohesion }
 	set_variable = { global.independence_wave_league_common_cause = constant:independence_wave_scenario_network.congress_common_cause }
 	set_variable = { global.independence_wave_league_patron_capture = constant:independence_wave_scenario_network.congress_patron_capture }
@@ -1016,7 +1021,7 @@ independence_wave_scenario_apply_type = {
 	}
 	if = {
 		limit = {
-			check_variable = { global.independence_wave_scenario_last_intensity = constant:independence_wave_scenario_intensity.maximum }
+			check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.maximum }
 			OR = {
 				check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.wars_of_separation }
 				AND = {
@@ -1256,8 +1261,11 @@ independence_wave_trigger_scenario = {
 		clear_variable = global.independence_wave_scenario_last_failure
 		independence_wave_scenario_set_intensity_tuning = yes
 		independence_wave_scenario_prepare_all_releases = yes
+		set_global_flag = independence_wave_scenario_application_open
 		independence_wave_scenario_apply_type = yes
+		clr_global_flag = independence_wave_scenario_application_open
 		independence_wave_scenario_freeze_summary = yes
+		independence_wave_achievement_begin_scenario_survival_challenge = yes
 		country_event = { id = chaosx.nr6.2 }
 		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
 	}

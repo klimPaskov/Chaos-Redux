@@ -130,8 +130,13 @@ Delivered IDs:
 - `chaosx_006_league_arbitrator`
 - `chaosx_006_host_remnant`
 
-`chaosx_006_assyria_survives` is reserved but unproduced. Exact reserved paths and
-the required community-attributed source input are in `manifest.md`.
+`chaosx_006_assyria_survives` is final, reviewed, and runtime-installed through
+the IW-043/IW-058 static icon package. Use
+`docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/manifest.md`
+and its validation reports for the exact source, processed PNG, and runtime DDS
+paths. The post-1968/1973 modern Assyrian flag remains excluded. The signature
+achievement itself remains hidden/fail-closed until its proof writer and
+adapter-attestation gates pass. No Event 006 advisor asset or sprite exists.
 
 ## Blocked/out-of-scope sprites
 

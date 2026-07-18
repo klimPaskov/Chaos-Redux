@@ -10,9 +10,12 @@ built-in `$imagegen` workflow on a uniform `#ff00ff` background, preserved under
 `source_png/`, and processed without repainting the generated subject.
 
 ASSET-040 through ASSET-043 were not generated here because they require real
-frame sequences under `chaos-redux-frame-animation`. ASSET-046 and
-`chaosx_006_assyria_survives` remain unproduced pending exact identity/source
-approval; no substitute prompt was run.
+frame sequences under `chaos-redux-frame-animation`. This prompt file is a
+historical pre-production snapshot for ASSET-046 and the Assyria achievement.
+The later IW-043/IW-058 static icon package produced and reviewed the complete
+`chaosx_006_assyria_survives` normal, grey, and not-eligible triplet under its
+own manifest. The post-1968/1973 modern Assyrian flag remains excluded; no
+substitute prompt was run.
 
 ## Shared focus-icon prompt
 
@@ -123,6 +126,8 @@ approval; no substitute prompt was run.
 The Volga Bulgaria direction uses `SYM-VOLGA-BOLGAR` only as contextual geometry:
 UNESCO documentation for the Bolgar Historical and Archaeological Complex supports
 the river and stone-architecture visual anchor, not an ancient flag or verified
-state emblem. The Assyria icon was not prompted because the accepted direction
-requires an exact, community-attributed Assyrian motif that distinguishes
-community-wide, church, Levies, and political-faction ownership.
+state emblem. This pre-production file did not prompt the Assyria icon because
+the accepted direction required an exact, community-attributed Assyrian motif
+that distinguishes community-wide, church, Levies, and political-faction
+ownership. That source decision was later resolved in the IW-043/IW-058 static
+icon package; see its manifest and validation report for the final triplet.

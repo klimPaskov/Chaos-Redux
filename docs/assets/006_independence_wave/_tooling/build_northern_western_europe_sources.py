@@ -3,7 +3,7 @@
 
 The script performs documentary symbol processing and assembles contact sheets
 from separately approved real-person portrait outputs. Real portraits are
-finished only through ``.tools/process_hoi4_portrait.py``; this helper must not
+finished only through ``.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py``; this helper must not
 reconstruct a face or overwrite those reviewed outputs with archival crops.
 """
 
@@ -165,7 +165,7 @@ def main() -> None:
         if not output.exists():
             raise FileNotFoundError(
                 f"Missing approved portrait output: {output}. Run the required "
-                ".tools/process_hoi4_portrait.py workflow first."
+                ".agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py workflow first."
             )
         portrait_paths[stem] = output
     symbol_paths = {stem: process_symbol(stem) for stem in SYMBOLS}

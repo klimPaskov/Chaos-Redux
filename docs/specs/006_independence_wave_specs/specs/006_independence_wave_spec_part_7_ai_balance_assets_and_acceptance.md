@@ -511,6 +511,26 @@ Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
 The absence of custom advisor icons is a selected presentation rule, not
 permission to omit advisor mechanics, traits, costs, availability, or AI.
 
+## IW-043/IW-058 reviewed asset tranche
+
+The bounded package asset authorities are:
+
+- `docs/assets/006_independence_wave/iw043_iw058_generated_visuals_2026_07_18/manifest.md`
+  for eight all-male institutional portraits, ten flat flags, and two report
+  images;
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/manifest.md`
+  for two decision categories, sixteen decisions, six idea families, and the
+  three-state Assyria survival achievement triplet.
+
+The final files are reviewed and runtime-installed for the bounded base package.
+The Assyria triplet's provenance record explicitly excludes the post-1968/1973
+modern Assyrian flag from the 1936 baseline. Art completion does not make the
+Assyria achievement eligible: the two IW-043/IW-058 signature achievements
+remain hidden/fail-closed until their proof writers and the CHU/ASY formable
+compatibility adapter pass the parent re-audit. No custom Event 006 advisor,
+adviser, dossier, or portrait asset is permitted; all eight institutional
+characters remain male.
+
 ## Asset source modes
 
 The authoritative asset matrix is `matrices/006_asset_family_registry.csv`.

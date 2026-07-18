@@ -1367,6 +1367,7 @@ independence_wave_host_relations_category = {
 						check_variable = { var = independence_wave_security value = independence_wave_reconquest_fear compare = greater_than }
 					}
 				}
+				set_country_flag = independence_wave_achievement_forced_host_settlement
 				set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.recognized_separation }
 				independence_wave_set_host_outcome = yes
 				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_decisive }
@@ -1833,6 +1834,7 @@ independence_wave_patron_category = {
 			set_temp_variable = { independence_wave_decision_patron_reduction_delta = constant:independence_wave_decision_effect.patron_reduction_major }
 			independence_wave_decision_reduce_targeted_patron_influence = yes
 			clr_country_flag = independence_wave_concession_active
+			set_country_flag = independence_wave_achievement_concessions_bought_out
 			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
 			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
 			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -2197,6 +2199,7 @@ independence_wave_network_category = {
 			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
 			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard }
 			independence_wave_decision_apply_league_deltas = yes
+			independence_wave_achievement_record_arbitration = yes
 		}
 		cancel_trigger = {
 			OR = {
@@ -2263,6 +2266,8 @@ independence_wave_network_category = {
 			give_guarantee = event_target:independence_wave_rescue_member
 		}
 		remove_effect = {
+			FROM = { owner = { save_event_target_as = independence_wave_rescue_member } }
+			independence_wave_achievement_record_rescue = yes
 			set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major }
 			independence_wave_change_network_standing = yes
 			set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major }
@@ -2773,6 +2778,7 @@ independence_wave_borders_category = {
 				set_state_flag = independence_wave_dm51_ultimatum_attempted_by@ROOT
 				set_variable = { independence_wave_dm51_generation@ROOT = ROOT.independence_wave_generation_id }
 			}
+			independence_wave_achievement_record_coercive_settlement = yes
 			if = {
 				limit = {
 					FROM = {

@@ -73,6 +73,29 @@ Receives everything in Level 2 plus:
 
 Signature countries include the highlighted packages in Part 4.
 
+## Concrete Event 006 signature package tranche: IW-043 and IW-058
+
+The bounded implementation contract for the two signature packages is recorded
+in `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` and
+the dated package audits under
+`docs/plans/006_independence_wave_plans/subagent_handoffs/`. Those references
+are evidence for the concrete tranche; the package rules in this specification
+remain the design authority.
+
+| Package | Carrier and origin | Implemented base surface | Held extension boundary |
+| --- | --- | --- | --- |
+| IW-043 Middle Volga / Volga Bulgaria | Vanilla carrier `CHU`; exact Event 006 origin and package identity | Middle Volga Congress at anchor 249, optional Cheboksary member 256, rights and river-security routes, package forces, focus/decision/localisation surfaces, and cleanup | FORM-12/FORM-13 compatibility and the two Volga signature achievement writers remain **PARTIALLY IMPLEMENTED / HOLD** |
+| IW-058 Assyria | Vanilla carrier `ASY`; exact Event 006 origin and package identity | Mosul anchor 676, Council of Communities routes, package forces, focus/decision/localisation surfaces, and cleanup | FORM-18/sovereign-autonomy compatibility and the Assyria signature achievement writers remain **PARTIALLY IMPLEMENTED / HOLD** |
+
+Both packages reuse their vanilla carriers and do not create standalone country
+histories. Each has four institutional character entries; all eight visible
+institutional portraits are male and are not advisor/officer/commander assets.
+The base package is admitted by the exact shared runtime registry, but the
+held formable and achievement surfaces must not be described as promoted until
+the parent-reviewed vanilla compatibility adapter and proof-writer re-audit
+pass. No fallback, broad opening cores, or custom Event 006 advisor asset is
+authorized.
+
 ## Leadership model
 
 The event cannot create hundreds of convincing historical leaders without research. It therefore uses three leadership modes.

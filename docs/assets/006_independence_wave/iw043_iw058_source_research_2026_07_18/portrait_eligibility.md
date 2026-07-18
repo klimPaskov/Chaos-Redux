@@ -1,6 +1,6 @@
 # Real-person portrait eligibility
 
-Event 006 portraits are male-only, and the accepted IW-043/IW-058 design calls for institutional, people-free generated portraits by default. No advisor art is in scope. This review covers only the optional real-person question and does not approve any final portrait.
+Event 006 portraits are male-only, and the accepted IW-043/IW-058 design calls for separately authored, all-male institutional group portraits by default. No advisor art is in scope. This review covers only the optional real-person question and does not approve any final portrait.
 
 ## Optional candidate: `ASY_shimun_eshai` — Mar Eshai Shimun XXIII
 
@@ -16,7 +16,7 @@ Event 006 portraits are male-only, and the accepted IW-043/IW-058 design calls f
 
 - Do **not** automatically use vanilla `CHU_gerasim_ivanov`; identity, role, date, and suitability were not established by this source pass.
 - Do **not** use Benjamin Arsanis without the later provenance review required by the parent handoff.
-- Do **not** create custom IW-043/IW-058 advisor portraits, advisor icons, officer-corps portraits, or generated dossiers. Institutional leaders may remain generated, people-free, and separately authored.
+- Do **not** create custom IW-043/IW-058 advisor portraits, advisor icons, officer-corps portraits, or generated dossiers. Institutional leaders may remain separately authored, all-male group portraits in canonical HOI4 style.
 - BAY/RHI protected portraits are untouched and outside this package.
 - No real-person portrait can be treated as cleared merely because a processor accepts it; the separate visual-approval record must identify a different reviewer and hash the exact candidate/review sheet.
 

@@ -42,6 +42,8 @@ ACHIEVEMENT_OVERLAY = (
     / "skills"
     / "chaos-redux-event-assets"
     / "assets"
+    / "vanilla_reference"
+    / "icons"
     / "achievements"
     / "overlay.png"
 )

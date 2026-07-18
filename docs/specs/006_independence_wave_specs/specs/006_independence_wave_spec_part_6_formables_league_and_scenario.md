@@ -39,6 +39,26 @@ Every formable family records:
 
 The initial registry is in `matrices/006_formable_family_registry.csv`.
 
+## Event 006 compatibility hold for IW-043 and IW-058
+
+The accepted base package tranche admits IW-043 on vanilla carrier `CHU` and
+IW-058 on vanilla carrier `ASY` through the exact Event 006 origin/package
+registry. Their signature formable surfaces remain a separate gate:
+
+- FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent,
+  integration, and cleanup contract.
+- FORM-18 and the sovereign Mesopotamian autonomy settlement must use the
+  IW-058 guarantee, anchor, consent, integration, and cleanup contract.
+- The exact compatibility adapter for vanilla `form_idel_uralic_republic`,
+  `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` passed its
+  parent re-audit. It suppresses those shortcuts only for active Event 006
+  IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
+
+The base CHU/ASY package remains admitted. FORM-12/13/18 routes and signature
+achievements are still **PARTIALLY IMPLEMENTED / HOLD**, hidden/fail-closed,
+because their exact adapter-attestation and proof writers are absent. They must
+not use a fallback or broad core grant.
+
 ## Formation methods
 
 ### Negotiated federation

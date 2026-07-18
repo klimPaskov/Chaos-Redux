@@ -42,7 +42,7 @@ No source image was retained from a rights-unclear archive. The package keeps UR
 
 `ASY_shimun_eshai` (Mar Eshai Shimun XXIII) is identity- and period-plausible: born 1908, Church of the East patriarch from 1920, politically active and exiled in 1933. The Foundation’s circa-1920 formal photo is a possible crop reference, but the reviewed page gives no clear reuse license or stable image provenance. It remains `needs_user_review`; no image was downloaded, cropped, processed, or approved. Prefer a clearly licensed 1930–1936 archive photo if one is later found. The 1945 QDL record is too late for a baseline portrait and the LOC “Ishai d’Mar Shimun” image is the wrong person.
 
-Do not auto-use `CHU_gerasim_ivanov`, do not use Benjamin Arsanis without the separate provenance review, and do not add any Event 006 advisor art. The eight institutional IW043/IW058 portraits can remain separately authored fictional, people-free generated men.
+Do not auto-use `CHU_gerasim_ivanov`, do not use Benjamin Arsanis without the separate provenance review, and do not add any Event 006 advisor art. The eight institutional IW043/IW058 portraits can remain separately authored fictional, all-male institutional groups in canonical HOI4 style.
 
 ## Next producer handoff
 

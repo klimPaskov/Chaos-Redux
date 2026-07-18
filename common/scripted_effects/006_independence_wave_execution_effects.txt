@@ -442,6 +442,12 @@ independence_wave_finalize_frozen_country_origins = {
 	set_global_flag = liberation_release_event6_origin_commit_started
 	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
 	independence_wave_commit_frozen_country_origins = yes
+	if = {
+		limit = {
+			check_variable = { var = independence_wave_execution_initialized_count value = global.independence_wave_plan_selected_count compare = equals }
+		}
+		independence_wave_achievement_initialize_committed_wave = yes
+	}
 }
 
 # Event-owned rollback acknowledgement. The execution pipeline performs no

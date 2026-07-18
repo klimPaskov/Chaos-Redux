@@ -1,0 +1,1796 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-043 / IW-058 PACKAGE EFFECTS
+# ============================================================================
+# Bounded package architecture for the Middle Volga Congress (IW-043) and the
+# Assyrian National Council (IW-058). These helpers own only exact package
+# values, institutional surfaces, staged force receipts, paid transaction
+# accounting, cosmetics, setup/final-validation dispatch, and cleanup. Focus,
+# decision, localisation, asset, and achievement content remains in its owning
+# files. FORM-12/13/18 adapters intentionally fail closed until an exact keyed
+# vanilla compatibility contract is attested by a later promotion pass.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Package values and route-state helpers
+# ---------------------------------------------------------------------------
+
+independence_wave_clamp_iw043_package_values = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		clamp_variable = { var = iw043_congress_authority min = constant:independence_wave_iw043.value_minimum max = constant:independence_wave_iw043.value_maximum }
+		clamp_variable = { var = iw043_rights_compact min = constant:independence_wave_iw043.value_minimum max = constant:independence_wave_iw043.value_maximum }
+		clamp_variable = { var = iw043_river_control min = constant:independence_wave_iw043.value_minimum max = constant:independence_wave_iw043.value_maximum }
+		clamp_variable = { var = iw043_coalition_balance min = constant:independence_wave_iw043.value_minimum max = constant:independence_wave_iw043.value_maximum }
+	}
+}
+
+independence_wave_clamp_iw058_package_values = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		clamp_variable = { var = iw058_council_cohesion min = constant:independence_wave_iw058.value_minimum max = constant:independence_wave_iw058.value_maximum }
+		clamp_variable = { var = iw058_community_guarantee_count min = constant:independence_wave_iw058.value_minimum max = constant:independence_wave_iw058.required_guarantee_count }
+		clamp_variable = { var = iw058_corridor_security min = constant:independence_wave_iw058.value_minimum max = constant:independence_wave_iw058.value_maximum }
+		clamp_variable = { var = iw058_external_guarantee_credibility min = constant:independence_wave_iw058.value_minimum max = constant:independence_wave_iw058.value_maximum }
+		clamp_variable = { var = iw058_church_secular_balance min = constant:independence_wave_iw058.value_minimum max = constant:independence_wave_iw058.value_maximum }
+	}
+}
+
+independence_wave_recalculate_iw043_rights_compact = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_variable = { iw043_rights_compact = constant:independence_wave_iw043.start_rights_compact }
+		if = { limit = { has_country_flag = iw043_clause_tatar_bashkir_representation } add_to_variable = { iw043_rights_compact = constant:independence_wave_iw043.rights_clause_increment } }
+		if = { limit = { has_country_flag = iw043_clause_chuvash_municipal_autonomy } add_to_variable = { iw043_rights_compact = constant:independence_wave_iw043.rights_clause_increment } }
+		if = { limit = { has_country_flag = iw043_clause_mari_udmurt_language_rights } add_to_variable = { iw043_rights_compact = constant:independence_wave_iw043.rights_clause_increment } }
+		if = { limit = { has_country_flag = iw043_clause_resident_civic_and_religious_equality } add_to_variable = { iw043_rights_compact = constant:independence_wave_iw043.rights_clause_increment } }
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_rights_compact_complete
+		if = {
+			limit = {
+				has_country_flag = iw043_clause_tatar_bashkir_representation
+				has_country_flag = iw043_clause_chuvash_municipal_autonomy
+				has_country_flag = iw043_clause_mari_udmurt_language_rights
+				has_country_flag = iw043_clause_resident_civic_and_religious_equality
+				check_variable = { var = iw043_rights_compact value = constant:independence_wave_iw043.rights_complete_threshold compare = greater_than_or_equals }
+			}
+			set_country_flag = iw043_rights_compact_complete
+		}
+	}
+}
+
+independence_wave_recalculate_iw058_guarantee_count = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.start_guarantee_count }
+		if = { limit = { has_country_flag = iw058_guarantee_assyrian_self_identification } add_to_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.one } }
+		if = { limit = { has_country_flag = iw058_guarantee_chaldean_self_identification } add_to_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.one } }
+		if = { limit = { has_country_flag = iw058_guarantee_syriac_self_identification } add_to_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.one } }
+		if = { limit = { has_country_flag = iw058_guarantee_aramean_self_identification } add_to_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.one } }
+		independence_wave_clamp_iw058_package_values = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Setup/validation dispatch entry points
+# ---------------------------------------------------------------------------
+
+independence_wave_dispatch_iw043_iw058_package_setup = {
+	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_043 } } independence_wave_setup_iw043_middle_volga = yes }
+	else_if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_058 } } independence_wave_setup_iw058_assyria = yes }
+}
+
+independence_wave_dispatch_iw043_iw058_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_043 } }
+		independence_wave_validate_iw043_package = yes
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_058 } }
+		independence_wave_validate_iw058_package = yes
+	}
+}
+
+independence_wave_dispatch_iw043_iw058_package_cleanup = {
+	if = { limit = { original_tag = CHU check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 } } independence_wave_cleanup_iw043_middle_volga = yes }
+	else_if = { limit = { original_tag = ASY check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 } } independence_wave_cleanup_iw058_assyria = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Institutional characters, route roles, and staged ideas
+# ---------------------------------------------------------------------------
+
+independence_wave_apply_iw043_institutional_surface = {
+	if = {
+		limit = {
+			original_tag = CHU
+			is_independence_wave_active_country = yes
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 }
+			has_country_flag = independence_wave_package_iw043_volga_bulgaria
+			check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+			NOT = { has_country_flag = soviet_collapse_active_origin }
+		}
+		if = { limit = { NOT = { has_character = CHU_independence_wave_middle_volga_congress } } recruit_character = CHU_independence_wave_middle_volga_congress }
+		if = {
+			limit = { NOT = { has_country_leader = { ruling_only = no character = CHU_independence_wave_middle_volga_congress } } }
+			add_country_leader_role = {
+				character = CHU_independence_wave_middle_volga_congress
+				promote_leader = yes
+				country_leader = { ideology = centrism traits = { iw043_middle_volga_congress_trait } }
+			}
+		}
+		if = { limit = { NOT = { has_character = CHU_independence_wave_federal_presidium } } recruit_character = CHU_independence_wave_federal_presidium }
+		if = {
+			limit = { has_country_flag = independence_wave_iw043_route_federal NOT = { has_country_leader = { ruling_only = no character = CHU_independence_wave_federal_presidium } } }
+			add_country_leader_role = {
+				character = CHU_independence_wave_federal_presidium
+				promote_leader = yes
+				country_leader = { ideology = centrism traits = { iw043_federal_presidium_trait } }
+			}
+		}
+		if = { limit = { has_country_flag = independence_wave_iw043_route_restoration NOT = { has_character = CHU_independence_wave_bolgar_civic_presidium } } recruit_character = CHU_independence_wave_bolgar_civic_presidium }
+		if = { limit = { has_country_flag = independence_wave_iw043_route_restoration NOT = { has_country_leader = { ruling_only = no character = CHU_independence_wave_bolgar_civic_presidium } } }
+			add_country_leader_role = {
+				character = CHU_independence_wave_bolgar_civic_presidium
+				promote_leader = yes
+				country_leader = { ideology = conservatism traits = { iw043_bolgar_civic_presidium_trait } }
+			}
+		}
+		if = { limit = { has_country_flag = independence_wave_iw043_route_emergency_guard NOT = { has_character = CHU_independence_wave_river_security_directorate } } recruit_character = CHU_independence_wave_river_security_directorate }
+		if = { limit = { has_country_flag = independence_wave_iw043_route_emergency_guard NOT = { has_country_leader = { ruling_only = no character = CHU_independence_wave_river_security_directorate } } }
+			add_country_leader_role = {
+				character = CHU_independence_wave_river_security_directorate
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { iw043_river_security_directorate_trait } }
+			}
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw043_route_emergency_guard }
+			remove_ideas = { independence_wave_iw043_congress_in_session_idea independence_wave_iw043_federal_charter_idea independence_wave_iw043_bolgar_constitution_idea independence_wave_iw043_civilian_river_guard_idea independence_wave_iw043_provisional_river_guard_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_emergency_navigation_council_idea } } add_ideas = independence_wave_iw043_emergency_navigation_council_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_emergency_river_guard_idea } } add_ideas = independence_wave_iw043_emergency_river_guard_idea }
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw043_route_federal }
+			remove_ideas = { independence_wave_iw043_congress_in_session_idea independence_wave_iw043_bolgar_constitution_idea independence_wave_iw043_emergency_navigation_council_idea independence_wave_iw043_provisional_river_guard_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_federal_charter_idea } } add_ideas = independence_wave_iw043_federal_charter_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_civilian_river_guard_idea } } add_ideas = independence_wave_iw043_civilian_river_guard_idea }
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw043_route_restoration }
+			remove_ideas = { independence_wave_iw043_congress_in_session_idea independence_wave_iw043_federal_charter_idea independence_wave_iw043_emergency_navigation_council_idea independence_wave_iw043_provisional_river_guard_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_bolgar_constitution_idea } } add_ideas = independence_wave_iw043_bolgar_constitution_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_civilian_river_guard_idea } } add_ideas = independence_wave_iw043_civilian_river_guard_idea }
+		}
+		else = {
+			remove_ideas = { independence_wave_iw043_federal_charter_idea independence_wave_iw043_bolgar_constitution_idea independence_wave_iw043_emergency_navigation_council_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_congress_in_session_idea } } add_ideas = independence_wave_iw043_congress_in_session_idea }
+		}
+		set_country_flag = independence_wave_iw043_institutional_surface_applied
+	}
+}
+
+independence_wave_apply_iw058_institutional_surface = {
+	if = {
+		limit = {
+			original_tag = ASY
+			is_independence_wave_active_country = yes
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 }
+			has_country_flag = independence_wave_package_iw058_assyria
+			check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+		}
+		if = { limit = { NOT = { has_character = ASY_independence_wave_provisional_national_council } } recruit_character = ASY_independence_wave_provisional_national_council }
+		if = {
+			limit = { NOT = { has_country_leader = { ruling_only = no character = ASY_independence_wave_provisional_national_council } } }
+			add_country_leader_role = {
+				character = ASY_independence_wave_provisional_national_council
+				promote_leader = yes
+				country_leader = { ideology = centrism traits = { iw058_provisional_national_council_trait } }
+			}
+		}
+		if = { limit = { NOT = { has_character = ASY_independence_wave_concordat_council } } recruit_character = ASY_independence_wave_concordat_council }
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_route_church_compact NOT = { has_country_leader = { ruling_only = no character = ASY_independence_wave_concordat_council } } }
+			add_country_leader_role = {
+				character = ASY_independence_wave_concordat_council
+				promote_leader = yes
+				country_leader = { ideology = conservatism traits = { iw058_concordat_council_trait } }
+			}
+		}
+		if = { limit = { has_country_flag = independence_wave_iw058_route_civic_assembly NOT = { has_character = ASY_independence_wave_civic_national_assembly } } recruit_character = ASY_independence_wave_civic_national_assembly }
+		if = { limit = { has_country_flag = independence_wave_iw058_route_civic_assembly NOT = { has_country_leader = { ruling_only = no character = ASY_independence_wave_civic_national_assembly } } }
+			add_country_leader_role = {
+				character = ASY_independence_wave_civic_national_assembly
+				promote_leader = yes
+				country_leader = { ideology = centrism traits = { iw058_civic_national_assembly_trait } }
+			}
+		}
+		if = { limit = { has_country_flag = independence_wave_iw058_route_levies_guardianship NOT = { has_character = ASY_independence_wave_levies_guardianship } } recruit_character = ASY_independence_wave_levies_guardianship }
+		if = { limit = { has_country_flag = independence_wave_iw058_route_levies_guardianship NOT = { has_country_leader = { ruling_only = no character = ASY_independence_wave_levies_guardianship } } }
+			add_country_leader_role = {
+				character = ASY_independence_wave_levies_guardianship
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { iw058_levies_guardianship_trait } }
+			}
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+			remove_ideas = { independence_wave_iw058_provisional_council_idea independence_wave_iw058_concordat_charter_idea independence_wave_iw058_civic_charter_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_levies_guardianship_idea } } add_ideas = independence_wave_iw058_levies_guardianship_idea }
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw058_route_church_compact }
+			remove_ideas = { independence_wave_iw058_provisional_council_idea independence_wave_iw058_civic_charter_idea independence_wave_iw058_levies_guardianship_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_concordat_charter_idea } } add_ideas = independence_wave_iw058_concordat_charter_idea }
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw058_route_civic_assembly }
+			remove_ideas = { independence_wave_iw058_provisional_council_idea independence_wave_iw058_concordat_charter_idea independence_wave_iw058_levies_guardianship_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_civic_charter_idea } } add_ideas = independence_wave_iw058_civic_charter_idea }
+		}
+		else = {
+			remove_ideas = { independence_wave_iw058_concordat_charter_idea independence_wave_iw058_civic_charter_idea independence_wave_iw058_levies_guardianship_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_provisional_council_idea } } add_ideas = independence_wave_iw058_provisional_council_idea }
+		}
+		set_country_flag = independence_wave_iw058_institutional_surface_applied
+	}
+}
+
+# Emergency/guardianship is a temporary suspension. These effects remove only
+# the temporary role/idea and then re-apply the previously selected civilian
+# surface; route flags and guarantees remain untouched.
+independence_wave_restore_iw043_civilian_surface = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		remove_country_leader_role = { character = CHU_independence_wave_river_security_directorate ideology = despotism }
+		remove_ideas = { independence_wave_iw043_emergency_navigation_council_idea independence_wave_iw043_emergency_river_guard_idea }
+		independence_wave_apply_iw043_institutional_surface = yes
+	}
+}
+
+independence_wave_restore_iw058_civilian_surface = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		remove_country_leader_role = { character = ASY_independence_wave_levies_guardianship ideology = despotism }
+		if = { limit = { has_idea = independence_wave_iw058_levies_guardianship_idea } remove_ideas = independence_wave_iw058_levies_guardianship_idea }
+		independence_wave_apply_iw058_institutional_surface = yes
+		independence_wave_restore_iw058_preserved_civilian_cosmetic_identity = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cosmetic identity and force receipts
+# ---------------------------------------------------------------------------
+
+independence_wave_apply_iw043_cosmetic_identity = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes has_country_flag = independence_wave_iw043_cosmetic_identity_ready }
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_iw043_cosmetic_active } }
+			set_cosmetic_tag = CHU_independence_wave_middle_volga_congressX
+			set_country_flag = independence_wave_iw043_cosmetic_active
+			set_country_flag = independence_wave_iw043_opening_cosmetic_applied
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw043_route_federal NOT = { has_country_flag = independence_wave_iw043_federal_cosmetic_applied } }
+			drop_cosmetic_tag = yes
+			set_cosmetic_tag = CHU_independence_wave_volga_federationX
+			set_country_flag = independence_wave_iw043_federal_cosmetic_applied
+			set_country_flag = independence_wave_iw043_cosmetic_active
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw043_route_restoration NOT = { has_country_flag = independence_wave_iw043_restoration_cosmetic_applied } }
+			drop_cosmetic_tag = yes
+			set_cosmetic_tag = CHU_independence_wave_volga_bulgariaX
+			set_country_flag = independence_wave_iw043_restoration_cosmetic_applied
+			set_country_flag = independence_wave_iw043_cosmetic_active
+		}
+	}
+}
+
+# The guardianship branch may have replaced the cosmetic tag while the route
+# flag was active. Restore the last civilian identity using route flags first,
+# then the applied-identity receipt, and finally the opening council identity.
+# This helper never selects an advisor portrait or changes the package route;
+# it only restores the country-level cosmetic surface after guardianship ends.
+independence_wave_restore_iw058_preserved_civilian_cosmetic_identity = {
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_iw058_cosmetic_identity_ready
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_cosmetic_active }
+			drop_cosmetic_tag = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_iw058_route_church_compact
+					has_country_flag = independence_wave_iw058_church_cosmetic_applied
+				}
+			}
+			set_cosmetic_tag = ASY_independence_wave_church_compactX
+			clr_country_flag = independence_wave_iw058_civic_cosmetic_applied
+			clr_country_flag = independence_wave_iw058_guardianship_cosmetic_applied
+			set_country_flag = independence_wave_iw058_church_cosmetic_applied
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_iw058_route_civic_assembly
+					has_country_flag = independence_wave_iw058_civic_cosmetic_applied
+				}
+			}
+			set_cosmetic_tag = ASY_independence_wave_civic_federationX
+			clr_country_flag = independence_wave_iw058_church_cosmetic_applied
+			clr_country_flag = independence_wave_iw058_guardianship_cosmetic_applied
+			set_country_flag = independence_wave_iw058_civic_cosmetic_applied
+		}
+		else = {
+			set_cosmetic_tag = ASY_independence_wave_national_councilX
+			clr_country_flag = independence_wave_iw058_church_cosmetic_applied
+			clr_country_flag = independence_wave_iw058_civic_cosmetic_applied
+			clr_country_flag = independence_wave_iw058_guardianship_cosmetic_applied
+			set_country_flag = independence_wave_iw058_opening_cosmetic_applied
+		}
+		set_country_flag = independence_wave_iw058_cosmetic_active
+	}
+}
+
+independence_wave_apply_iw058_cosmetic_identity = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_cosmetic_identity_ready }
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_iw058_cosmetic_active } }
+			set_cosmetic_tag = ASY_independence_wave_national_councilX
+			set_country_flag = independence_wave_iw058_cosmetic_active
+			set_country_flag = independence_wave_iw058_opening_cosmetic_applied
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_route_church_compact NOT = { has_country_flag = independence_wave_iw058_church_cosmetic_applied } }
+			drop_cosmetic_tag = yes
+			set_cosmetic_tag = ASY_independence_wave_church_compactX
+			set_country_flag = independence_wave_iw058_church_cosmetic_applied
+			set_country_flag = independence_wave_iw058_cosmetic_active
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_route_civic_assembly NOT = { has_country_flag = independence_wave_iw058_civic_cosmetic_applied } }
+			drop_cosmetic_tag = yes
+			set_cosmetic_tag = ASY_independence_wave_civic_federationX
+			set_country_flag = independence_wave_iw058_civic_cosmetic_applied
+			set_country_flag = independence_wave_iw058_cosmetic_active
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_route_levies_guardianship NOT = { has_country_flag = independence_wave_iw058_guardianship_cosmetic_applied } }
+			drop_cosmetic_tag = yes
+			set_cosmetic_tag = ASY_independence_wave_security_guardianshipX
+			set_country_flag = independence_wave_iw058_guardianship_cosmetic_applied
+			set_country_flag = independence_wave_iw058_cosmetic_active
+		}
+	}
+}
+
+independence_wave_record_iw043_force_receipts = {
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_force_mapping_loaded
+			check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_043 }
+			has_country_flag = independence_wave_force_package_applied
+			has_independence_wave_force_package_for_current_generation = yes
+		}
+		if = { limit = { NOT = { has_country_flag = iw043_river_guard_created } } set_country_flag = iw043_river_guard_created }
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_opening_force_budget value = constant:independence_wave_force_tier.armed_budget compare = greater_than_or_equals }
+				256 = { is_owned_and_controlled_by = ROOT }
+				NOT = { has_country_flag = iw043_workshop_guard_created }
+			}
+			set_country_flag = iw043_workshop_guard_created
+		}
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_opening_force_budget value = constant:independence_wave_force_tier.high_chaos_budget compare = greater_than_or_equals }
+				NOT = { has_country_flag = iw043_cavalry_detachment_created }
+			}
+			set_country_flag = iw043_cavalry_detachment_created
+		}
+		set_country_flag = independence_wave_iw043_force_receipts_recorded
+	}
+}
+
+independence_wave_record_iw058_force_receipts = {
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_force_mapping_loaded
+			check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_058 }
+			has_country_flag = independence_wave_force_package_applied
+			has_independence_wave_force_package_for_current_generation = yes
+		}
+		if = { limit = { NOT = { has_country_flag = iw058_mosul_civic_guard_created } } set_country_flag = iw058_mosul_civic_guard_created }
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_opening_force_budget value = constant:independence_wave_force_tier.armed_budget compare = greater_than_or_equals }
+				NOT = { has_country_flag = iw058_levies_detachment_created }
+			}
+			set_country_flag = iw058_levies_detachment_created
+		}
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_opening_force_budget value = constant:independence_wave_force_tier.high_chaos_budget compare = greater_than_or_equals }
+				NOT = { has_country_flag = iw058_mountain_scouts_created }
+			}
+			set_country_flag = iw058_mountain_scouts_created
+		}
+		set_country_flag = independence_wave_iw058_force_receipts_recorded
+	}
+}
+
+# Binds one currently-owned, non-reserve division whose composition matches
+# the package's supplied profile. The country-level receipt is only an
+# admission gate; it is never treated as the unit identity. The selected
+# division is persisted as a generation-scoped global target so every timed
+# mission phase can validate and mutate the same formation.
+independence_wave_bind_iw043_force_package = {
+	set_temp_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.zero }
+	clear_global_event_target = independence_wave_iw043_bound_force_division
+	clear_variable = independence_wave_iw043_bound_force_generation
+	if = {
+		limit = { can_bind_independence_wave_iw043_force_package = yes }
+		random_country_division = {
+			limit = {
+				has_variable = independence_wave_force_division_package_id
+				check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_043 compare = equals }
+				has_variable = independence_wave_force_division_generation_id
+				check_variable = { var = independence_wave_force_division_generation_id value = ROOT.independence_wave_generation_id compare = equals }
+				division_has_majority_template = infantry
+				division_has_battalion_in_template = engineer
+				division_has_battalion_in_template = recon
+				NOT = { division_has_battalion_in_template = artillery_brigade }
+				NOT = { is_unit_template_reserves = yes }
+				unit_strength > constant:independence_wave_iw043.minimum_supplied_division_strength
+				unit_organization > constant:independence_wave_iw043.minimum_supplied_division_organization
+			}
+			save_global_event_target_as = independence_wave_iw043_bound_force_division
+		}
+		if = {
+			limit = { has_event_target = independence_wave_iw043_bound_force_division }
+			set_variable = { independence_wave_iw043_bound_force_generation = independence_wave_generation_id }
+			set_country_flag = iw043_force_binding_active
+			set_temp_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.one }
+		}
+	}
+}
+
+independence_wave_validate_iw043_force_binding = {
+	set_temp_variable = { independence_wave_iw043_force_validation_result = constant:independence_wave_iw043.zero }
+	if = {
+		limit = { has_valid_independence_wave_iw043_force_binding = yes }
+		set_temp_variable = { independence_wave_iw043_force_validation_result = constant:independence_wave_iw043.one }
+	}
+}
+
+# Discipline is the only operation that converts the bound generic profile to
+# the package-owned formation. It never creates a division and only writes to
+# the exact division target validated above.
+independence_wave_commit_iw043_force_discipline = {
+	set_temp_variable = { independence_wave_iw043_force_discipline_result = constant:independence_wave_iw043.zero }
+	if = {
+		limit = {
+			has_valid_independence_wave_iw043_force_binding = yes
+			has_country_flag = independence_wave_iw043_formation_template_ready
+			has_template = "Middle Volga River Guard"
+		}
+		event_target:independence_wave_iw043_bound_force_division = {
+			change_division_template = { division_template = "Middle Volga River Guard" }
+			set_unit_organization = constant:independence_wave_iw043.force_discipline_organization
+			set_variable = { independence_wave_iw043_designated_formation_generation = ROOT.independence_wave_generation_id }
+		}
+		set_variable = { independence_wave_iw043_designated_formation_generation = independence_wave_generation_id }
+		set_country_flag = iw043_river_guard_formation_designated
+		set_temp_variable = { independence_wave_iw043_force_discipline_result = constant:independence_wave_iw043.one }
+	}
+}
+
+independence_wave_release_iw043_force_package = {
+	# Release only closes the transient target/binding. The division-scoped
+	# designation receipt remains on the materialised unit for durable progress
+	# proof and is removed by exact package cleanup.
+	set_temp_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.zero }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = iw043_force_binding_active
+				has_event_target = independence_wave_iw043_bound_force_division
+			}
+		}
+		clear_global_event_target = independence_wave_iw043_bound_force_division
+		clear_variable = independence_wave_iw043_bound_force_generation
+		clr_country_flag = iw043_force_binding_active
+		set_temp_variable = { independence_wave_iw043_force_binding_result = constant:independence_wave_iw043.one }
+	}
+}
+
+independence_wave_bind_iw058_force_package = {
+	set_temp_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.zero }
+	clear_global_event_target = independence_wave_iw058_bound_force_division
+	clear_variable = independence_wave_iw058_bound_force_generation
+	if = {
+		limit = { can_bind_independence_wave_iw058_force_package = yes }
+		random_country_division = {
+			limit = {
+				has_variable = independence_wave_force_division_package_id
+				check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_058 compare = equals }
+				has_variable = independence_wave_force_division_generation_id
+				check_variable = { var = independence_wave_force_division_generation_id value = ROOT.independence_wave_generation_id compare = equals }
+				division_has_majority_template = infantry
+				division_has_battalion_in_template = artillery_brigade
+				division_has_battalion_in_template = engineer
+				NOT = { is_unit_template_reserves = yes }
+				unit_strength > constant:independence_wave_iw058.minimum_supplied_division_strength
+				unit_organization > constant:independence_wave_iw058.minimum_supplied_division_organization
+			}
+			save_global_event_target_as = independence_wave_iw058_bound_force_division
+		}
+		if = {
+			limit = { has_event_target = independence_wave_iw058_bound_force_division }
+			set_variable = { independence_wave_iw058_bound_force_generation = independence_wave_generation_id }
+			set_country_flag = iw058_force_binding_active
+			set_temp_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one }
+		}
+	}
+}
+
+independence_wave_validate_iw058_force_binding = {
+	set_temp_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.zero }
+	if = {
+		limit = { has_valid_independence_wave_iw058_force_binding = yes }
+		set_temp_variable = { independence_wave_iw058_force_validation_result = constant:independence_wave_iw058.one }
+	}
+}
+
+independence_wave_commit_iw058_force_discipline = {
+	set_temp_variable = { independence_wave_iw058_force_discipline_result = constant:independence_wave_iw058.zero }
+	if = {
+		limit = {
+			has_valid_independence_wave_iw058_force_binding = yes
+			has_country_flag = independence_wave_iw058_formation_template_ready
+			has_template = "Assyrian Levies Detachment"
+		}
+		event_target:independence_wave_iw058_bound_force_division = {
+			change_division_template = { division_template = "Assyrian Levies Detachment" }
+			set_unit_organization = constant:independence_wave_iw058.force_discipline_organization
+			set_variable = { independence_wave_iw058_designated_formation_generation = ROOT.independence_wave_generation_id }
+		}
+		set_variable = { independence_wave_iw058_designated_formation_generation = independence_wave_generation_id }
+		set_country_flag = iw058_levies_formation_designated
+		set_temp_variable = { independence_wave_iw058_force_discipline_result = constant:independence_wave_iw058.one }
+	}
+}
+
+independence_wave_release_iw058_force_package = {
+	# Release only closes the transient target/binding. The division-scoped
+	# designation receipt remains on the materialised unit for durable progress
+	# proof and is removed by exact package cleanup.
+	set_temp_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.zero }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = iw058_force_binding_active
+				has_event_target = independence_wave_iw058_bound_force_division
+			}
+		}
+		clear_global_event_target = independence_wave_iw058_bound_force_division
+		clear_variable = independence_wave_iw058_bound_force_generation
+		clr_country_flag = iw058_force_binding_active
+		set_temp_variable = { independence_wave_iw058_force_binding_result = constant:independence_wave_iw058.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Paid decision transaction ledgers
+# ---------------------------------------------------------------------------
+
+# Costs are supplied as temporary variables by the owning decision. The helper
+# validates the complete bundle before spending anything, stores a normal
+# transaction receipt, and never refunds a failed timed mission: rollback is a
+# ledger close, while the decision's timeout effects own the gameplay penalty.
+independence_wave_iw043_begin_paid_transaction = {
+	set_temp_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			NOT = { has_country_flag = independence_wave_iw043_transaction_active }
+			check_variable = { var = independence_wave_iw043_transaction_id value = constant:independence_wave_iw043.zero compare = greater_than }
+			OR = {
+				check_variable = { var = independence_wave_iw043_command_power_cost value = constant:independence_wave_iw043.zero compare = equals }
+				command_power > independence_wave_iw043_command_power_cost
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw043_manpower_cost value = constant:independence_wave_iw043.zero compare = equals }
+				has_manpower > independence_wave_iw043_manpower_cost
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw043_infantry_equipment_cost value = constant:independence_wave_iw043.zero compare = equals }
+				has_equipment = { infantry_equipment > independence_wave_iw043_infantry_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw043_support_equipment_cost value = constant:independence_wave_iw043.zero compare = equals }
+				has_equipment = { support_equipment > independence_wave_iw043_support_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw043_train_equipment_cost value = constant:independence_wave_iw043.zero compare = equals }
+				has_equipment = { train_equipment > independence_wave_iw043_train_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw043_convoy_cost value = constant:independence_wave_iw043.zero compare = equals }
+				has_equipment = { convoy > independence_wave_iw043_convoy_cost }
+			}
+		}
+		if = {
+			limit = { independence_wave_iw043_command_power_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_command_power_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_command_power = independence_wave_iw043_negative_cost
+		}
+		if = {
+			limit = { independence_wave_iw043_manpower_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_manpower_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_manpower = independence_wave_iw043_negative_cost
+		}
+		if = {
+			limit = { independence_wave_iw043_infantry_equipment_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_infantry_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = independence_wave_iw043_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw043_support_equipment_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_support_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = independence_wave_iw043_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw043_train_equipment_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_train_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = train_equipment amount = independence_wave_iw043_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw043_convoy_cost > constant:independence_wave_iw043.zero }
+			set_temp_variable = { independence_wave_iw043_negative_cost = independence_wave_iw043_convoy_cost }
+			multiply_temp_variable = { independence_wave_iw043_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy amount = independence_wave_iw043_negative_cost }
+		}
+		set_variable = { independence_wave_iw043_paid_transaction_id = independence_wave_iw043_transaction_id }
+		set_variable = { independence_wave_iw043_paid_command_power_cost = independence_wave_iw043_command_power_cost }
+		set_variable = { independence_wave_iw043_paid_manpower_cost = independence_wave_iw043_manpower_cost }
+		set_variable = { independence_wave_iw043_paid_infantry_equipment_cost = independence_wave_iw043_infantry_equipment_cost }
+		set_variable = { independence_wave_iw043_paid_support_equipment_cost = independence_wave_iw043_support_equipment_cost }
+		set_variable = { independence_wave_iw043_paid_train_equipment_cost = independence_wave_iw043_train_equipment_cost }
+		set_variable = { independence_wave_iw043_paid_convoy_cost = independence_wave_iw043_convoy_cost }
+		set_country_flag = independence_wave_iw043_transaction_active
+		set_temp_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one }
+	}
+}
+
+independence_wave_iw043_commit_paid_transaction = {
+	set_temp_variable = { independence_wave_iw043_requested_transaction_id = independence_wave_iw043_transaction_id }
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_iw043_transaction_active
+			check_variable = { var = independence_wave_iw043_paid_transaction_id value = independence_wave_iw043_requested_transaction_id compare = equals }
+		}
+		clr_country_flag = independence_wave_iw043_transaction_active
+		clear_variable = independence_wave_iw043_paid_transaction_id
+		clear_variable = independence_wave_iw043_paid_command_power_cost
+		clear_variable = independence_wave_iw043_paid_manpower_cost
+		clear_variable = independence_wave_iw043_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw043_paid_support_equipment_cost
+		clear_variable = independence_wave_iw043_paid_train_equipment_cost
+		clear_variable = independence_wave_iw043_paid_convoy_cost
+		set_temp_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one }
+	}
+}
+
+independence_wave_iw043_rollback_paid_transaction = {
+	set_temp_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.zero }
+	set_temp_variable = { independence_wave_iw043_requested_transaction_id = independence_wave_iw043_transaction_id }
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_iw043_transaction_active
+			check_variable = { var = independence_wave_iw043_paid_transaction_id value = independence_wave_iw043_requested_transaction_id compare = equals }
+		}
+		clr_country_flag = independence_wave_iw043_transaction_active
+		clear_variable = independence_wave_iw043_paid_transaction_id
+		clear_variable = independence_wave_iw043_paid_command_power_cost
+		clear_variable = independence_wave_iw043_paid_manpower_cost
+		clear_variable = independence_wave_iw043_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw043_paid_support_equipment_cost
+		clear_variable = independence_wave_iw043_paid_train_equipment_cost
+		clear_variable = independence_wave_iw043_paid_convoy_cost
+		set_temp_variable = { independence_wave_iw043_transaction_result = constant:independence_wave_iw043.one }
+	}
+}
+
+independence_wave_iw058_begin_paid_transaction = {
+	set_temp_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			NOT = { has_country_flag = independence_wave_iw058_transaction_active }
+			check_variable = { var = independence_wave_iw058_transaction_id value = constant:independence_wave_iw058.zero compare = greater_than }
+			OR = {
+				check_variable = { var = independence_wave_iw058_command_power_cost value = constant:independence_wave_iw058.zero compare = equals }
+				command_power > independence_wave_iw058_command_power_cost
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw058_manpower_cost value = constant:independence_wave_iw058.zero compare = equals }
+				has_manpower > independence_wave_iw058_manpower_cost
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw058_infantry_equipment_cost value = constant:independence_wave_iw058.zero compare = equals }
+				has_equipment = { infantry_equipment > independence_wave_iw058_infantry_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw058_support_equipment_cost value = constant:independence_wave_iw058.zero compare = equals }
+				has_equipment = { support_equipment > independence_wave_iw058_support_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw058_train_equipment_cost value = constant:independence_wave_iw058.zero compare = equals }
+				has_equipment = { train_equipment > independence_wave_iw058_train_equipment_cost }
+			}
+			OR = {
+				check_variable = { var = independence_wave_iw058_convoy_cost value = constant:independence_wave_iw058.zero compare = equals }
+				has_equipment = { convoy > independence_wave_iw058_convoy_cost }
+			}
+		}
+		if = {
+			limit = { independence_wave_iw058_command_power_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_command_power_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_command_power = independence_wave_iw058_negative_cost
+		}
+		if = {
+			limit = { independence_wave_iw058_manpower_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_manpower_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_manpower = independence_wave_iw058_negative_cost
+		}
+		if = {
+			limit = { independence_wave_iw058_infantry_equipment_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_infantry_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = independence_wave_iw058_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw058_support_equipment_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_support_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = independence_wave_iw058_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw058_train_equipment_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_train_equipment_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = train_equipment amount = independence_wave_iw058_negative_cost }
+		}
+		if = {
+			limit = { independence_wave_iw058_convoy_cost > constant:independence_wave_iw058.zero }
+			set_temp_variable = { independence_wave_iw058_negative_cost = independence_wave_iw058_convoy_cost }
+			multiply_temp_variable = { independence_wave_iw058_negative_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy amount = independence_wave_iw058_negative_cost }
+		}
+		set_variable = { independence_wave_iw058_paid_transaction_id = independence_wave_iw058_transaction_id }
+		set_variable = { independence_wave_iw058_paid_command_power_cost = independence_wave_iw058_command_power_cost }
+		set_variable = { independence_wave_iw058_paid_manpower_cost = independence_wave_iw058_manpower_cost }
+		set_variable = { independence_wave_iw058_paid_infantry_equipment_cost = independence_wave_iw058_infantry_equipment_cost }
+		set_variable = { independence_wave_iw058_paid_support_equipment_cost = independence_wave_iw058_support_equipment_cost }
+		set_variable = { independence_wave_iw058_paid_train_equipment_cost = independence_wave_iw058_train_equipment_cost }
+		set_variable = { independence_wave_iw058_paid_convoy_cost = independence_wave_iw058_convoy_cost }
+		set_country_flag = independence_wave_iw058_transaction_active
+		set_temp_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one }
+	}
+}
+
+independence_wave_iw058_commit_paid_transaction = {
+	set_temp_variable = { independence_wave_iw058_requested_transaction_id = independence_wave_iw058_transaction_id }
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_iw058_transaction_active
+			check_variable = { var = independence_wave_iw058_paid_transaction_id value = independence_wave_iw058_requested_transaction_id compare = equals }
+		}
+		clr_country_flag = independence_wave_iw058_transaction_active
+		clear_variable = independence_wave_iw058_paid_transaction_id
+		clear_variable = independence_wave_iw058_paid_command_power_cost
+		clear_variable = independence_wave_iw058_paid_manpower_cost
+		clear_variable = independence_wave_iw058_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw058_paid_support_equipment_cost
+		clear_variable = independence_wave_iw058_paid_train_equipment_cost
+		clear_variable = independence_wave_iw058_paid_convoy_cost
+		set_temp_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one }
+	}
+}
+
+independence_wave_iw058_rollback_paid_transaction = {
+	set_temp_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.zero }
+	set_temp_variable = { independence_wave_iw058_requested_transaction_id = independence_wave_iw058_transaction_id }
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_iw058_transaction_active
+			check_variable = { var = independence_wave_iw058_paid_transaction_id value = independence_wave_iw058_requested_transaction_id compare = equals }
+		}
+		clr_country_flag = independence_wave_iw058_transaction_active
+		clear_variable = independence_wave_iw058_paid_transaction_id
+		clear_variable = independence_wave_iw058_paid_command_power_cost
+		clear_variable = independence_wave_iw058_paid_manpower_cost
+		clear_variable = independence_wave_iw058_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw058_paid_support_equipment_cost
+		clear_variable = independence_wave_iw058_paid_train_equipment_cost
+		clear_variable = independence_wave_iw058_paid_convoy_cost
+		set_temp_variable = { independence_wave_iw058_transaction_result = constant:independence_wave_iw058.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact package setup and final validation
+# ---------------------------------------------------------------------------
+
+# The shared force allocator creates a profile template for the opening
+# divisions. These package-owned templates are deliberately separate: a
+# successful discipline mission converts the already-bound division to the
+# named formation without spawning or replacing a unit.
+independence_wave_define_iw043_package_formation_template = {
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			NOT = { has_country_flag = independence_wave_iw043_formation_template_ready }
+		}
+		division_template = {
+			name = "Middle Volga River Guard"
+			priority = 1
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				recon = { x = 0 y = 1 }
+			}
+		}
+		set_country_flag = independence_wave_iw043_formation_template_ready
+	}
+}
+
+independence_wave_define_iw058_package_formation_template = {
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			NOT = { has_country_flag = independence_wave_iw058_formation_template_ready }
+		}
+		division_template = {
+			name = "Assyrian Levies Detachment"
+			priority = 1
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+				artillery_brigade = { x = 2 y = 0 }
+			}
+			support = {
+				artillery = { x = 0 y = 0 }
+				engineer = { x = 0 y = 1 }
+			}
+		}
+		set_country_flag = independence_wave_iw058_formation_template_ready
+	}
+}
+
+independence_wave_setup_iw043_middle_volga = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw043_setup_complete
+	set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { can_initialize_independence_wave_iw043_package = yes }
+		if = { limit = { NOT = { has_country_flag = independence_wave_force_mapping_loaded } } independence_wave_load_force_package_mapping = yes }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_command_roster_ready
+				NOT = { has_country_flag = independence_wave_force_package_applied }
+			}
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		independence_wave_define_iw043_package_formation_template = yes
+		if = {
+			limit = { has_independence_wave_iw043_setup_surface = yes }
+			set_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 }
+			set_country_flag = independence_wave_package_iw043_volga_bulgaria
+			set_variable = { iw043_congress_authority = constant:independence_wave_iw043.start_congress_authority }
+			set_variable = { iw043_rights_compact = constant:independence_wave_iw043.start_rights_compact }
+			set_variable = { iw043_river_control = constant:independence_wave_iw043.start_river_control }
+			set_variable = { iw043_coalition_balance = constant:independence_wave_iw043.start_coalition_balance }
+			independence_wave_clamp_iw043_package_values = yes
+			independence_wave_recalculate_iw043_rights_compact = yes
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_congress_in_session_idea } } add_ideas = independence_wave_iw043_congress_in_session_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_disrupted_river_economy_idea } } add_ideas = independence_wave_iw043_disrupted_river_economy_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw043_provisional_river_guard_idea } } add_ideas = independence_wave_iw043_provisional_river_guard_idea }
+			independence_wave_record_iw043_force_receipts = yes
+			independence_wave_apply_iw043_cosmetic_identity = yes
+			independence_wave_apply_iw043_institutional_surface = yes
+			# Expose the complete Event 006 framework only after the package
+			# identity and opening transaction surfaces are committed.
+			set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+			independence_wave_assign_focus_framework = yes
+			independence_wave_focus_allow_constitutional_route = yes
+			independence_wave_focus_allow_popular_council_route = yes
+			independence_wave_focus_allow_traditional_route = yes
+			independence_wave_focus_allow_emergency_military_route = yes
+			independence_wave_focus_allow_patron_client_route = yes
+			clr_country_flag = independence_wave_patron_client_route_excluded
+			set_country_flag = independence_wave_radical_sovereignty_route_excluded
+			clr_country_flag = independence_wave_route_radical_sovereignty_available
+			independence_wave_focus_allow_host_negotiation_route = yes
+			independence_wave_focus_allow_host_guarded_frontier_route = yes
+			independence_wave_focus_allow_host_association_route = yes
+			independence_wave_focus_allow_host_reclamation_route = yes
+			set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+			independence_wave_focus_register_power_struggle = yes
+			independence_wave_focus_register_ambition_family = yes
+			independence_wave_focus_allow_league_route = yes
+			set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.volga_ural_federation }
+			set_country_flag = independence_wave_formable_family_selected
+			independence_wave_focus_register_formable_family = yes
+			independence_wave_focus_register_signature_module = yes
+			mark_focus_tree_layout_dirty = yes
+			if = {
+				limit = {
+					has_country_flag = independence_wave_iw043_force_receipts_recorded
+					has_country_flag = independence_wave_iw043_opening_cosmetic_applied
+					has_country_flag = independence_wave_iw043_institutional_surface_applied
+					has_country_flag = independence_wave_full_focus_framework
+					check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+					has_country_flag = independence_wave_internal_power_struggle_registered
+					has_country_flag = independence_wave_ambition_family_registered
+					has_country_flag = independence_wave_league_route_available
+					has_country_flag = independence_wave_formable_family_selected
+					has_country_flag = independence_wave_formable_family_registered
+					has_country_flag = independence_wave_formable_profile_loaded
+					has_country_flag = independence_wave_signature_module_registered
+					has_country_flag = independence_wave_route_constitutional_available
+					has_country_flag = independence_wave_route_popular_council_available
+					has_country_flag = independence_wave_route_traditional_available
+					has_country_flag = independence_wave_route_emergency_military_available
+					has_country_flag = independence_wave_route_patron_client_available
+					has_country_flag = independence_wave_host_negotiation_route_available
+					has_country_flag = independence_wave_host_guarded_frontier_route_available
+					has_country_flag = independence_wave_host_association_route_available
+					has_country_flag = independence_wave_host_reclamation_route_available
+					has_valid_independence_wave_chu_package_mutex = yes
+					has_valid_independence_wave_iw043_route_mutex = yes
+					has_valid_independence_wave_iw043_values = yes
+				}
+				set_country_flag = independence_wave_iw043_setup_complete
+				set_country_flag = independence_wave_package_setup_complete
+				if = {
+					limit = { NOT = { has_country_flag = independence_wave_iw043_opening_event_fired } }
+					country_event = { id = chaosx.nr006.4301 }
+					set_country_flag = independence_wave_iw043_opening_event_fired
+				}
+				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+				set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.selected }
+			}
+		}
+	}
+}
+
+independence_wave_setup_iw058_assyria = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw058_setup_complete
+	set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { can_initialize_independence_wave_iw058_package = yes }
+		if = { limit = { NOT = { has_country_flag = independence_wave_force_mapping_loaded } } independence_wave_load_force_package_mapping = yes }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_command_roster_ready
+				NOT = { has_country_flag = independence_wave_force_package_applied }
+			}
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		independence_wave_define_iw058_package_formation_template = yes
+		if = {
+			limit = { has_independence_wave_iw058_setup_surface = yes }
+			set_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 }
+			set_country_flag = independence_wave_package_iw058_assyria
+			set_variable = { iw058_council_cohesion = constant:independence_wave_iw058.start_council_cohesion }
+			set_variable = { iw058_community_guarantee_count = constant:independence_wave_iw058.start_guarantee_count }
+			set_variable = { iw058_corridor_security = constant:independence_wave_iw058.start_corridor_security }
+			set_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw058.start_external_credibility }
+			set_variable = { iw058_church_secular_balance = constant:independence_wave_iw058.start_church_secular_balance }
+			independence_wave_clamp_iw058_package_values = yes
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_provisional_council_idea } } add_ideas = independence_wave_iw058_provisional_council_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_exposed_mosul_corridor_idea } } add_ideas = independence_wave_iw058_exposed_mosul_corridor_idea }
+			if = { limit = { NOT = { has_idea = independence_wave_iw058_fragile_diaspora_links_idea } } add_ideas = independence_wave_iw058_fragile_diaspora_links_idea }
+			independence_wave_record_iw058_force_receipts = yes
+			independence_wave_apply_iw058_cosmetic_identity = yes
+			independence_wave_apply_iw058_institutional_surface = yes
+			# Assyria uses the same full framework, with every constitutional
+			# lane available and the radical lane explicitly excluded.
+			set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+			independence_wave_assign_focus_framework = yes
+			independence_wave_focus_allow_constitutional_route = yes
+			independence_wave_focus_allow_popular_council_route = yes
+			independence_wave_focus_allow_traditional_route = yes
+			independence_wave_focus_allow_emergency_military_route = yes
+			independence_wave_focus_allow_patron_client_route = yes
+			clr_country_flag = independence_wave_patron_client_route_excluded
+			set_country_flag = independence_wave_radical_sovereignty_route_excluded
+			clr_country_flag = independence_wave_route_radical_sovereignty_available
+			independence_wave_focus_allow_host_negotiation_route = yes
+			independence_wave_focus_allow_host_guarded_frontier_route = yes
+			independence_wave_focus_allow_host_association_route = yes
+			independence_wave_focus_allow_host_reclamation_route = yes
+			set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+			independence_wave_focus_register_power_struggle = yes
+			independence_wave_focus_register_ambition_family = yes
+			independence_wave_focus_allow_league_route = yes
+			set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mesopotamian_federation }
+			set_country_flag = independence_wave_formable_family_selected
+			independence_wave_focus_register_formable_family = yes
+			independence_wave_focus_register_signature_module = yes
+			mark_focus_tree_layout_dirty = yes
+			if = {
+				limit = {
+					has_country_flag = independence_wave_iw058_force_receipts_recorded
+					has_country_flag = independence_wave_iw058_opening_cosmetic_applied
+					has_country_flag = independence_wave_iw058_institutional_surface_applied
+					has_country_flag = independence_wave_full_focus_framework
+					check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+					has_country_flag = independence_wave_internal_power_struggle_registered
+					has_country_flag = independence_wave_ambition_family_registered
+					has_country_flag = independence_wave_league_route_available
+					has_country_flag = independence_wave_formable_family_selected
+					has_country_flag = independence_wave_formable_family_registered
+					has_country_flag = independence_wave_formable_profile_loaded
+					has_country_flag = independence_wave_signature_module_registered
+					has_country_flag = independence_wave_route_constitutional_available
+					has_country_flag = independence_wave_route_popular_council_available
+					has_country_flag = independence_wave_route_traditional_available
+					has_country_flag = independence_wave_route_emergency_military_available
+					has_country_flag = independence_wave_route_patron_client_available
+					has_country_flag = independence_wave_host_negotiation_route_available
+					has_country_flag = independence_wave_host_guarded_frontier_route_available
+					has_country_flag = independence_wave_host_association_route_available
+					has_country_flag = independence_wave_host_reclamation_route_available
+					has_valid_independence_wave_iw058_route_mutex = yes
+					has_valid_independence_wave_iw058_values = yes
+				}
+				set_country_flag = independence_wave_iw058_setup_complete
+				set_country_flag = independence_wave_package_setup_complete
+				if = {
+					limit = { NOT = { has_country_flag = independence_wave_iw058_opening_event_fired } }
+					country_event = { id = chaosx.nr006.5801 }
+					set_country_flag = independence_wave_iw058_opening_event_fired
+				}
+				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+				set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.selected }
+			}
+		}
+	}
+}
+
+independence_wave_validate_iw043_package = {
+	set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_iw043_setup_complete
+			has_country_flag = independence_wave_iw043_force_receipts_recorded
+			has_country_flag = independence_wave_iw043_opening_cosmetic_applied
+			has_country_flag = independence_wave_iw043_institutional_surface_applied
+			has_country_flag = independence_wave_full_focus_framework
+			check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+			has_country_flag = independence_wave_internal_power_struggle_registered
+			has_country_flag = independence_wave_ambition_family_registered
+			has_country_flag = independence_wave_league_route_available
+			has_country_flag = independence_wave_formable_family_selected
+			has_country_flag = independence_wave_formable_family_registered
+			has_country_flag = independence_wave_formable_profile_loaded
+			has_country_flag = independence_wave_signature_module_registered
+			has_country_flag = independence_wave_route_constitutional_available
+			has_country_flag = independence_wave_route_popular_council_available
+			has_country_flag = independence_wave_route_traditional_available
+			has_country_flag = independence_wave_route_emergency_military_available
+			has_country_flag = independence_wave_route_patron_client_available
+			has_country_flag = independence_wave_host_negotiation_route_available
+			has_country_flag = independence_wave_host_guarded_frontier_route_available
+			has_country_flag = independence_wave_host_association_route_available
+			has_country_flag = independence_wave_host_reclamation_route_available
+			has_independence_wave_iw043_compact_anchor_secured = yes
+			has_valid_independence_wave_chu_package_mutex = yes
+			has_valid_independence_wave_iw043_route_mutex = yes
+			has_valid_independence_wave_iw043_values = yes
+		}
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_validate_iw058_package = {
+	set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_iw058_setup_complete
+			has_country_flag = independence_wave_iw058_force_receipts_recorded
+			has_country_flag = independence_wave_iw058_opening_cosmetic_applied
+			has_country_flag = independence_wave_iw058_institutional_surface_applied
+			has_country_flag = independence_wave_full_focus_framework
+			check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+			has_country_flag = independence_wave_internal_power_struggle_registered
+			has_country_flag = independence_wave_ambition_family_registered
+			has_country_flag = independence_wave_league_route_available
+			has_country_flag = independence_wave_formable_family_selected
+			has_country_flag = independence_wave_formable_family_registered
+			has_country_flag = independence_wave_formable_profile_loaded
+			has_country_flag = independence_wave_signature_module_registered
+			has_country_flag = independence_wave_route_constitutional_available
+			has_country_flag = independence_wave_route_popular_council_available
+			has_country_flag = independence_wave_route_traditional_available
+			has_country_flag = independence_wave_route_emergency_military_available
+			has_country_flag = independence_wave_route_patron_client_available
+			has_country_flag = independence_wave_host_negotiation_route_available
+			has_country_flag = independence_wave_host_guarded_frontier_route_available
+			has_country_flag = independence_wave_host_association_route_available
+			has_country_flag = independence_wave_host_reclamation_route_available
+			has_independence_wave_iw058_anchor_secured = yes
+			has_valid_independence_wave_iw058_route_mutex = yes
+			has_valid_independence_wave_iw058_values = yes
+		}
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact package cleanup (identity is cleared last)
+# ---------------------------------------------------------------------------
+
+independence_wave_cleanup_iw043_middle_volga = {
+	if = {
+		limit = { original_tag = CHU check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 } has_country_flag = independence_wave_package_iw043_volga_bulgaria }
+		remove_decision = independence_wave_iw043_convene_delegation_roll_call
+		remove_decision = independence_wave_iw043_ratify_tatar_bashkir_representation
+		remove_decision = independence_wave_iw043_ratify_chuvash_municipal_autonomy
+		remove_decision = independence_wave_iw043_ratify_mari_udmurt_language_rights
+		remove_decision = independence_wave_iw043_ratify_resident_civic_and_religious_equality
+		remove_decision = independence_wave_iw043_secure_kazan_cheboksary_navigation
+		remove_decision = independence_wave_iw043_reopen_volga_customs_and_ferries
+		remove_decision = independence_wave_iw043_settle_muftiate_and_civic_courts
+		remove_decision = independence_wave_iw043_discipline_the_river_guard
+		remove_decision = independence_wave_iw043_repair_cheboksary_workshops
+		remove_decision = independence_wave_iw043_negotiate_former_host_transit
+		remove_decision = independence_wave_iw043_dispatch_volga_trade_delegation
+		remove_decision = independence_wave_iw043_hold_form12_accession_congress
+		remove_decision = independence_wave_iw043_hold_form13_compact_congress
+		remove_decision = independence_wave_iw043_reopen_congress_clause
+		independence_wave_release_iw043_force_package = yes
+		# Remove only the division-scoped provenance written by the shared
+		# opening-force allocator. This never disbands or refunds a unit.
+		every_country_division = {
+			limit = { has_variable = independence_wave_force_division_package_id check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_043 compare = equals } }
+			clear_variable = independence_wave_force_division_package_id
+			clear_variable = independence_wave_force_division_generation_id
+			clear_variable = independence_wave_iw043_designated_formation_generation
+		}
+		clear_global_event_target = independence_wave_iw043_bound_force_division
+		clear_variable = independence_wave_iw043_bound_force_generation
+		remove_ideas = {
+			independence_wave_iw043_congress_in_session_idea
+			independence_wave_iw043_federal_charter_idea
+			independence_wave_iw043_bolgar_constitution_idea
+			independence_wave_iw043_emergency_navigation_council_idea
+			independence_wave_iw043_disrupted_river_economy_idea
+			independence_wave_iw043_reopened_river_economy_idea
+			independence_wave_iw043_provisional_river_guard_idea
+			independence_wave_iw043_civilian_river_guard_idea
+			independence_wave_iw043_emergency_river_guard_idea
+		}
+		if = {
+			limit = { has_character = CHU_independence_wave_middle_volga_congress }
+			remove_country_leader_role = { character = CHU_independence_wave_middle_volga_congress ideology = centrism }
+		}
+		if = {
+			limit = { has_character = CHU_independence_wave_federal_presidium }
+			remove_country_leader_role = { character = CHU_independence_wave_federal_presidium ideology = centrism }
+		}
+		if = {
+			limit = { has_character = CHU_independence_wave_bolgar_civic_presidium }
+			remove_country_leader_role = { character = CHU_independence_wave_bolgar_civic_presidium ideology = conservatism }
+		}
+		if = {
+			limit = { has_character = CHU_independence_wave_river_security_directorate }
+			remove_country_leader_role = { character = CHU_independence_wave_river_security_directorate ideology = despotism }
+		}
+		if = { limit = { has_country_flag = independence_wave_iw043_cosmetic_active } drop_cosmetic_tag = yes }
+		# Decision/event receipts, pending selections, rejects, crises, and
+		# settlement records are all package-owned and must not leak into a
+		# repeatable Event 006 generation.
+		clr_country_flag = independence_wave_iw043_constitutional_capstone_complete
+		clr_country_flag = independence_wave_iw043_opening_event_fired
+		clr_country_flag = iw043_package_incident_opened
+		clr_country_flag = iw043_bolgar_constitutional_memory_adopted
+		clr_country_flag = iw043_chamber_of_peoples_settlement_complete
+		clr_country_flag = iw043_cheboksary_confrontation
+		clr_country_flag = iw043_cheboksary_municipal_consent
+		clr_country_flag = iw043_cheboksary_transit_secured
+		clr_country_flag = iw043_cheboksary_treaty_administration
+		clr_country_flag = iw043_cheboksary_workshop_treaty_complete
+		clr_country_flag = iw043_cheboksary_workshops_active
+		clr_country_flag = iw043_cheboksary_workshops_receipt
+		clr_country_flag = iw043_cheboksary_workshops_repaired
+		clr_country_flag = iw043_cheboksary_workshops_worn
+		clr_country_flag = iw043_chuvash_transaction_receipt
+		clr_country_flag = iw043_civic_courts_hold_public_jurisdiction
+		clr_country_flag = iw043_clause_chuvash_municipal_autonomy_rejected
+		clr_country_flag = iw043_clause_mari_udmurt_language_rights_rejected
+		clr_country_flag = iw043_clause_reconciliation_active
+		clr_country_flag = iw043_clause_reconciliation_failed
+		clr_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected
+		clr_country_flag = iw043_clause_tatar_bashkir_representation_rejected
+		clr_country_flag = iw043_congress_seat_formula_historic_delegations
+		clr_country_flag = iw043_congress_seat_formula_parity
+		clr_country_flag = iw043_congress_seat_formula_selected
+		clr_country_flag = iw043_constitutional_route_suspended
+		clr_country_flag = iw043_customs_burden_persists
+		clr_country_flag = iw043_customs_ferries_active
+		clr_country_flag = iw043_customs_ferries_complete
+		clr_country_flag = iw043_customs_ferries_receipt
+		clr_country_flag = iw043_delegation_roll_call_active
+		clr_country_flag = iw043_delegation_roll_call_cancelled
+		clr_country_flag = iw043_delegation_roll_call_complete
+		clr_country_flag = iw043_delegation_roll_call_failed
+		clr_country_flag = iw043_delegation_roll_call_receipt
+		clr_country_flag = iw043_emergency_authority_refused
+		clr_country_flag = iw043_federal_charter_capstone_presented
+		clr_country_flag = iw043_form12_accession_congress_active
+		clr_country_flag = iw043_form12_accession_congress_complete
+		clr_country_flag = iw043_form12_accession_congress_failed
+		clr_country_flag = iw043_form12_accession_congress_receipt
+		clr_country_flag = iw043_form13_compact_congress_active
+		clr_country_flag = iw043_form13_compact_congress_complete
+		clr_country_flag = iw043_form13_compact_congress_failed
+		clr_country_flag = iw043_form13_compact_congress_receipt
+		clr_country_flag = iw043_former_host_claim_pressure
+		clr_country_flag = iw043_former_host_property_settlement
+		clr_country_flag = iw043_former_host_transit_active
+		clr_country_flag = iw043_former_host_transit_receipt
+		clr_country_flag = iw043_language_rights_full_administration
+		clr_country_flag = iw043_language_rights_local_petition_model
+		clr_country_flag = iw043_mari_udmurt_transaction_receipt
+		clr_country_flag = iw043_muftiate_civic_courts_crisis
+		clr_country_flag = iw043_muftiate_civic_courts_crisis_pending
+		clr_country_flag = iw043_muftiate_civic_courts_settlement_complete
+		clr_country_flag = iw043_muftiate_courts_active
+		clr_country_flag = iw043_muftiate_courts_receipt
+		clr_country_flag = iw043_muftiate_delimited_personal_competence
+		clr_country_flag = iw043_municipal_language_settlement_complete
+		clr_country_flag = iw043_navigation_crisis_active
+		clr_country_flag = iw043_navigation_guard_convoy_authorized
+		clr_country_flag = iw043_navigation_host_negotiation_requested
+		clr_country_flag = iw043_navigation_mission_active
+		clr_country_flag = iw043_navigation_mission_complete
+		clr_country_flag = iw043_navigation_mission_receipt
+		clr_country_flag = iw043_navigation_trade_compromise
+		clr_country_flag = iw043_pending_chuvash_municipal_autonomy
+		clr_country_flag = iw043_pending_mari_udmurt_language_rights
+		clr_country_flag = iw043_pending_resident_civic_and_religious_equality
+		clr_country_flag = iw043_pending_tatar_bashkir_representation
+		clr_country_flag = iw043_reconciling_chuvash_municipal_autonomy
+		clr_country_flag = iw043_reconciling_mari_udmurt_language_rights
+		clr_country_flag = iw043_reconciling_resident_civic_and_religious_equality
+		clr_country_flag = iw043_reconciling_tatar_bashkir_representation
+		clr_country_flag = iw043_religious_civic_settlement_complete
+		clr_country_flag = iw043_reopen_chuvash_receipt
+		clr_country_flag = iw043_reopen_mari_udmurt_receipt
+		clr_country_flag = iw043_reopen_resident_equality_receipt
+		clr_country_flag = iw043_reopen_tatar_bashkir_receipt
+		clr_country_flag = iw043_resident_equality_transaction_receipt
+		clr_country_flag = iw043_restoration_charter_capstone_presented
+		clr_country_flag = iw043_river_guard_discipline_active
+		clr_country_flag = iw043_river_guard_discipline_receipt
+		clr_country_flag = iw043_river_guard_under_civilian_law
+		clr_country_flag = iw043_security_crisis_active
+		clr_country_flag = iw043_tatar_bashkir_transaction_receipt
+		clr_country_flag = iw043_trade_transport_lost
+		clr_country_flag = iw043_volga_trade_delegation_active
+		clr_country_flag = iw043_volga_trade_delegation_complete
+		clr_country_flag = iw043_volga_trade_delegation_receipt
+		clr_country_flag = iw043_bolgar_civic_memory_recovered
+		clr_country_flag = iw043_cheboksary_workshop_project_open
+		clr_country_flag = iw043_clause_reconciliation_surface_open
+		clr_country_flag = iw043_congress_focus_opened
+		clr_country_flag = iw043_customs_ferries_surface_open
+		clr_country_flag = iw043_delegation_settlement_surface_open
+		clr_country_flag = iw043_form12_consent_surface_open
+		clr_country_flag = iw043_form12_terminal_surface_open
+		clr_country_flag = iw043_form13_consent_surface_open
+		clr_country_flag = iw043_form13_terminal_surface_open
+		clr_country_flag = iw043_kazan_mandate_confirmed
+		clr_country_flag = iw043_navigation_mission_surface_open
+		clr_country_flag = iw043_rail_ferry_survey_complete
+		clr_country_flag = iw043_religious_civic_settlement_surface_open
+		clr_country_flag = iw043_river_cities_federalized
+		clr_country_flag = iw043_river_guard_discipline_surface_open
+		clr_country_flag = iw043_volga_trade_surface_open
+		clr_country_flag = independence_wave_iw043_civilian_normalization_complete
+		clear_variable = iw043_congress_authority
+		clear_variable = iw043_rights_compact
+		clear_variable = iw043_river_control
+		clear_variable = iw043_coalition_balance
+		clear_variable = independence_wave_iw043_paid_transaction_id
+		clear_variable = independence_wave_iw043_paid_command_power_cost
+		clear_variable = independence_wave_iw043_paid_manpower_cost
+		clear_variable = independence_wave_iw043_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw043_paid_support_equipment_cost
+		clear_variable = independence_wave_iw043_paid_train_equipment_cost
+		clear_variable = independence_wave_iw043_paid_convoy_cost
+		clear_variable = independence_wave_iw043_designated_formation_generation
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_iw043_transaction_active
+		clr_country_flag = iw043_force_binding_active
+		clr_country_flag = iw043_river_guard_formation_designated
+		clr_country_flag = independence_wave_iw043_formation_template_ready
+		clr_country_flag = iw043_river_guard_created
+		clr_country_flag = iw043_workshop_guard_created
+		clr_country_flag = iw043_cavalry_detachment_created
+		clr_country_flag = independence_wave_iw043_force_receipts_recorded
+		clr_country_flag = independence_wave_iw043_institutional_surface_applied
+		clr_country_flag = independence_wave_iw043_opening_cosmetic_applied
+		clr_country_flag = independence_wave_iw043_federal_cosmetic_applied
+		clr_country_flag = independence_wave_iw043_restoration_cosmetic_applied
+		clr_country_flag = independence_wave_iw043_cosmetic_active
+		clr_country_flag = independence_wave_iw043_cosmetic_identity_ready
+		clr_country_flag = independence_wave_iw043_setup_complete
+		clr_country_flag = independence_wave_package_setup_complete
+		clr_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
+		clr_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+		clr_country_flag = independence_wave_iw043_achievement_writers_attested
+		clr_country_flag = independence_wave_iw043_route_federal
+		clr_country_flag = independence_wave_iw043_route_restoration
+		clr_country_flag = independence_wave_iw043_route_emergency_guard
+		clr_country_flag = iw043_clause_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_chuvash_municipal_autonomy
+		clr_country_flag = iw043_clause_mari_udmurt_language_rights
+		clr_country_flag = iw043_clause_resident_civic_and_religious_equality
+		clr_country_flag = iw043_rights_compact_complete
+		clr_country_flag = iw043_river_guard_created
+		clr_country_flag = iw043_workshop_guard_created
+		clr_country_flag = iw043_cavalry_detachment_created
+		clr_country_flag = iw_form12_multilingual_charter_complete
+		clr_country_flag = iw_form12_river_authority_complete
+		clr_country_flag = iw_form12_member_autonomy_complete
+		clr_country_flag = iw_form12_defense_integration_complete
+		clr_country_flag = iw_form13_religious_civic_compact_complete
+		clr_country_flag = iw_form13_cultural_autonomy_complete
+		clr_country_flag = iw_form13_member_consent_complete
+		clr_country_flag = iw_form13_river_defense_complete
+		clr_country_flag = independence_wave_form12_adapter_attested
+		clr_country_flag = independence_wave_form13_adapter_attested
+		clr_country_flag = independence_wave_iw043_setup_surface_ready
+		# Drop the shared focus assignment and every published route hook before
+		# the carrier identity is cleared. CHU is a reviewed generic-tree reuse.
+		independence_wave_clear_focus_runtime = yes
+		independence_wave_formable_clear_loaded_profile = yes
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
+		clr_country_flag = independence_wave_package_iw043_volga_bulgaria
+		clear_variable = independence_wave_package_id
+	}
+}
+
+independence_wave_cleanup_iw058_assyria = {
+	if = {
+		limit = { original_tag = ASY check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 } has_country_flag = independence_wave_package_iw058_assyria }
+		remove_decision = independence_wave_iw058_secure_mosul_council_quarter
+		remove_decision = independence_wave_iw058_enumerate_council_seats
+		remove_decision = independence_wave_iw058_ratify_assyrian_self_identification
+		remove_decision = independence_wave_iw058_ratify_chaldean_self_identification
+		remove_decision = independence_wave_iw058_ratify_syriac_self_identification
+		remove_decision = independence_wave_iw058_ratify_aramean_self_identification
+		remove_decision = independence_wave_iw058_settle_church_civil_competence
+		remove_decision = independence_wave_iw058_open_diaspora_expert_mission
+		remove_decision = independence_wave_iw058_discipline_levies_under_civilian_law
+		remove_decision = independence_wave_iw058_patrol_nineveh_approaches
+		remove_decision = independence_wave_iw058_fortify_mountain_river_corridor
+		remove_decision = independence_wave_iw058_request_named_external_guarantee
+		remove_decision = independence_wave_iw058_negotiate_former_host_security_settlement
+		remove_decision = independence_wave_iw058_survive_reclamation_crisis
+		remove_decision = independence_wave_iw058_hold_form18_federal_congress
+		remove_decision = independence_wave_iw058_ratify_sovereign_autonomy_compact
+		remove_decision = independence_wave_iw058_reopen_community_guarantee
+		independence_wave_release_iw058_force_package = yes
+		# Remove only the division-scoped provenance written by the shared
+		# opening-force allocator. This never disbands or refunds a unit.
+		every_country_division = {
+			limit = { has_variable = independence_wave_force_division_package_id check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_058 compare = equals } }
+			clear_variable = independence_wave_force_division_package_id
+			clear_variable = independence_wave_force_division_generation_id
+			clear_variable = independence_wave_iw058_designated_formation_generation
+		}
+		clear_global_event_target = independence_wave_iw058_bound_force_division
+		clear_variable = independence_wave_iw058_bound_force_generation
+		remove_ideas = {
+			independence_wave_iw058_provisional_council_idea
+			independence_wave_iw058_concordat_charter_idea
+			independence_wave_iw058_civic_charter_idea
+			independence_wave_iw058_levies_guardianship_idea
+			independence_wave_iw058_mesopotamian_federal_settlement_idea
+			independence_wave_iw058_sovereign_autonomy_compact_idea
+			independence_wave_iw058_exposed_mosul_corridor_idea
+			independence_wave_iw058_secured_mosul_corridor_idea
+			independence_wave_iw058_fragile_diaspora_links_idea
+			independence_wave_iw058_diaspora_liaison_idea
+		}
+		if = {
+			limit = { has_character = ASY_independence_wave_provisional_national_council }
+			remove_country_leader_role = { character = ASY_independence_wave_provisional_national_council ideology = centrism }
+		}
+		if = {
+			limit = { has_character = ASY_independence_wave_concordat_council }
+			remove_country_leader_role = { character = ASY_independence_wave_concordat_council ideology = conservatism }
+		}
+		if = {
+			limit = { has_character = ASY_independence_wave_civic_national_assembly }
+			remove_country_leader_role = { character = ASY_independence_wave_civic_national_assembly ideology = centrism }
+		}
+		if = {
+			limit = { has_character = ASY_independence_wave_levies_guardianship }
+			remove_country_leader_role = { character = ASY_independence_wave_levies_guardianship ideology = despotism }
+		}
+		if = { limit = { has_country_flag = independence_wave_iw058_cosmetic_active } drop_cosmetic_tag = yes }
+		clr_country_flag = independence_wave_iw058_constitutional_capstone_complete
+		clr_country_flag = independence_wave_iw058_opening_event_fired
+		clr_country_flag = iw058_package_incident_opened
+		clr_country_flag = iw058_anchor_crisis_active
+		clr_country_flag = iw058_anchor_defense_mission_complete
+		clr_country_flag = iw058_anchor_hard_fortification_priority
+		clr_country_flag = iw058_anchor_protection_breached
+		clr_country_flag = iw058_aramean_civic_self_description_petition_right
+		clr_country_flag = iw058_aramean_civic_settlement_damaged
+		clr_country_flag = iw058_aramean_guarantee_receipt
+		clr_country_flag = iw058_assyrian_guarantee_receipt
+		clr_country_flag = iw058_assyrian_national_council_petition_right
+		clr_country_flag = iw058_assyrian_national_opposition
+		clr_country_flag = iw058_autonomy_boundary_record_complete
+		clr_country_flag = iw058_autonomy_boundary_settlement_complete
+		clr_country_flag = iw058_autonomy_jurisdiction_record_complete
+		clr_country_flag = iw058_autonomy_jurisdiction_complete
+		clr_country_flag = iw058_autonomy_return_protection_record_complete
+		clr_country_flag = iw058_autonomy_return_protection_complete
+		clr_country_flag = iw058_autonomy_security_treaty_record_complete
+		clr_country_flag = iw058_autonomy_security_treaty_complete
+		clr_country_flag = iw058_autonomy_transit_property_record_complete
+		clr_country_flag = iw058_autonomy_transit_property_complete
+		clr_country_flag = iw058_balanced_institution_seat_formula
+		clr_country_flag = iw058_chaldean_church_municipal_petition_right
+		clr_country_flag = iw058_chaldean_church_settlement_damaged
+		clr_country_flag = iw058_chaldean_guarantee_receipt
+		clr_country_flag = iw058_church_civil_competence_active
+		clr_country_flag = iw058_church_civil_competence_crisis
+		clr_country_flag = iw058_church_civil_competence_deadlock
+		clr_country_flag = iw058_church_civil_competence_receipt
+		clr_country_flag = iw058_church_civil_competence_settled
+		clr_country_flag = iw058_church_personal_competence_delimited
+		clr_country_flag = iw058_civic_public_law_has_primacy
+		clr_country_flag = iw058_constitutional_route_suspended
+		clr_country_flag = iw058_corridor_construction_burden
+		clr_country_flag = iw058_corridor_fortification_active
+		clr_country_flag = iw058_corridor_fortification_complete
+		clr_country_flag = iw058_corridor_fortification_receipt
+		clr_country_flag = iw058_council_quarter_active
+		clr_country_flag = iw058_council_quarter_receipt
+		clr_country_flag = iw058_council_seat_deadlock
+		clr_country_flag = iw058_council_seats_active
+		clr_country_flag = iw058_council_seats_complete
+		clr_country_flag = iw058_council_seats_receipt
+		clr_country_flag = iw058_diaspora_administrative_burden
+		clr_country_flag = iw058_diaspora_expert_mission_active
+		clr_country_flag = iw058_diaspora_expert_mission_receipt
+		clr_country_flag = iw058_diaspora_experts_bound_to_public_service
+		clr_country_flag = iw058_diaspora_foreign_suspicion
+		clr_country_flag = iw058_diaspora_remittance_accounts_only
+		clr_country_flag = iw058_dual_church_civic_seat_formula
+		clr_country_flag = iw058_external_guarantee_failed
+		clr_country_flag = iw058_external_guarantee_terms_rejected
+		clr_country_flag = iw058_external_guarantee_with_patron_leverage
+		clr_country_flag = iw058_external_guarantee_with_sovereignty_safeguards
+		clr_country_flag = iw058_external_security_treaty_record_complete
+		clr_country_flag = iw058_form18_federal_congress_active
+		clr_country_flag = iw058_form18_federal_congress_complete
+		clr_country_flag = iw058_form18_federal_congress_failed
+		clr_country_flag = iw058_form18_federal_congress_receipt
+		clr_country_flag = iw058_former_host_patrol_escalation
+		clr_country_flag = iw058_former_host_security_settlement_complete
+		clr_country_flag = iw058_former_host_settlement_active
+		clr_country_flag = iw058_former_host_settlement_receipt
+		clr_country_flag = iw058_guarantee_aramean_self_identification_rejected
+		clr_country_flag = iw058_guarantee_assyrian_self_identification_rejected
+		clr_country_flag = iw058_guarantee_chaldean_self_identification_rejected
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		clr_country_flag = iw058_guarantee_reconciliation_failed
+		clr_country_flag = iw058_guarantee_syriac_self_identification_rejected
+		clr_country_flag = iw058_guardianship_refused
+		clr_country_flag = iw058_host_crisis_arbitration_chosen
+		clr_country_flag = iw058_host_crisis_defense_chosen
+		clr_country_flag = iw058_host_crisis_negotiation_chosen
+		clr_country_flag = iw058_host_reclamation_conflict_active
+		clr_country_flag = iw058_host_ultimatum_issued
+		clr_country_flag = iw058_levies_emergency_pressure
+		clr_country_flag = iw058_levies_discipline_active
+		clr_country_flag = iw058_levies_discipline_receipt
+		clr_country_flag = iw058_levies_excluded_from_council_vote
+		clr_country_flag = iw058_levies_service_recognized
+		clr_country_flag = iw058_levies_veterans_delegation_seated
+		clr_country_flag = iw058_mesopotamian_federal_settlement_presented
+		clr_country_flag = iw058_mesopotamian_settlement_mode_federation
+		clr_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+		clr_country_flag = iw058_mountain_river_transit_agreements
+		clr_country_flag = iw058_named_external_guarantee_active
+		clr_country_flag = iw058_named_external_guarantee_negotiated
+		clr_country_flag = iw058_named_external_guarantee_receipt
+		clr_country_flag = iw058_nineveh_local_patrol_agreement
+		clr_country_flag = iw058_nineveh_patrol_active
+		clr_country_flag = iw058_nineveh_patrol_complete
+		clr_country_flag = iw058_nineveh_patrol_receipt
+		clr_country_flag = iw058_patron_leverage_active
+		clr_country_flag = iw058_pending_aramean_self_identification
+		clr_country_flag = iw058_pending_assyrian_self_identification
+		clr_country_flag = iw058_pending_chaldean_self_identification
+		clr_country_flag = iw058_pending_syriac_self_identification
+		clr_country_flag = iw058_reclamation_crisis_escalated
+		clr_country_flag = iw058_reclamation_crisis_mission_active
+		clr_country_flag = iw058_reclamation_crisis_receipt
+		clr_country_flag = iw058_reclamation_crisis_survived_without_war
+		clr_country_flag = iw058_reconciling_aramean_self_identification
+		clr_country_flag = iw058_reconciling_assyrian_self_identification
+		clr_country_flag = iw058_reconciling_chaldean_self_identification
+		clr_country_flag = iw058_reconciling_syriac_self_identification
+		clr_country_flag = iw058_reopen_aramean_guarantee_receipt
+		clr_country_flag = iw058_reopen_assyrian_guarantee_receipt
+		clr_country_flag = iw058_reopen_chaldean_guarantee_receipt
+		clr_country_flag = iw058_reopen_syriac_guarantee_receipt
+		clr_country_flag = iw058_severe_security_crisis_active
+		clr_country_flag = iw058_syriac_guarantee_receipt
+		clr_country_flag = iw058_sovereign_autonomy_compact_active
+		clr_country_flag = iw058_sovereign_autonomy_compact_complete
+		clr_country_flag = iw058_sovereign_autonomy_compact_failed
+		clr_country_flag = iw058_sovereign_autonomy_compact_receipt
+		clr_country_flag = iw058_sovereign_autonomy_settlement_presented
+		clr_country_flag = iw058_syriac_language_school_petition_right
+		clr_country_flag = iw058_syriac_language_settlement_damaged
+		clr_country_flag = iw058_village_municipal_delegation_seated
+		clr_country_flag = iw058_church_civic_charter_complete
+		clr_country_flag = iw058_church_civic_route_locked
+		clr_country_flag = iw058_church_civil_settlement_surface_open
+		clr_country_flag = iw058_civic_assembly_route_locked
+		clr_country_flag = iw058_civic_national_state_ratified
+		clr_country_flag = iw058_community_guarantee_surface_open
+		clr_country_flag = iw058_concordat_state_ratified
+		clr_country_flag = iw058_corridor_fortification_surface_open
+		clr_country_flag = iw058_council_focus_opened
+		clr_country_flag = iw058_council_seat_surface_open
+		clr_country_flag = iw058_diaspora_experts_bound_to_public_service
+		clr_country_flag = iw058_diaspora_mission_surface_open
+		clr_country_flag = iw058_external_guarantee_surface_open
+		clr_country_flag = iw058_form18_terminal_surface_open
+		clr_country_flag = iw058_former_host_settlement_surface_open
+		clr_country_flag = iw058_levies_discipline_surface_open
+		clr_country_flag = iw058_mesopotamian_settlement_surface_open
+		clr_country_flag = iw058_mosul_quarter_mission_surface_open
+		clr_country_flag = iw058_mosul_recognition_entrenched
+		clr_country_flag = iw058_municipal_community_charter_complete
+		clr_country_flag = iw058_nineveh_patrol_surface_open
+		clr_country_flag = iw058_synod_village_diaspora_compact_complete
+		clr_country_flag = independence_wave_iw058_civilian_normalization_complete
+		clear_variable = iw058_council_cohesion
+		clear_variable = iw058_community_guarantee_count
+		clear_variable = iw058_corridor_security
+		clear_variable = iw058_external_guarantee_credibility
+		clear_variable = iw058_church_secular_balance
+		clear_variable = independence_wave_iw058_paid_transaction_id
+		clear_variable = independence_wave_iw058_paid_command_power_cost
+		clear_variable = independence_wave_iw058_paid_manpower_cost
+		clear_variable = independence_wave_iw058_paid_infantry_equipment_cost
+		clear_variable = independence_wave_iw058_paid_support_equipment_cost
+		clear_variable = independence_wave_iw058_paid_train_equipment_cost
+		clear_variable = independence_wave_iw058_paid_convoy_cost
+		clear_variable = independence_wave_iw058_designated_formation_generation
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_iw058_transaction_active
+		clr_country_flag = iw058_force_binding_active
+		clr_country_flag = iw058_levies_formation_designated
+		clr_country_flag = independence_wave_iw058_formation_template_ready
+		clr_country_flag = iw058_mosul_civic_guard_created
+		clr_country_flag = iw058_levies_detachment_created
+		clr_country_flag = iw058_mountain_scouts_created
+		clr_country_flag = independence_wave_iw058_force_receipts_recorded
+		clr_country_flag = independence_wave_iw058_institutional_surface_applied
+		clr_country_flag = independence_wave_iw058_opening_cosmetic_applied
+		clr_country_flag = independence_wave_iw058_church_cosmetic_applied
+		clr_country_flag = independence_wave_iw058_civic_cosmetic_applied
+		clr_country_flag = independence_wave_iw058_guardianship_cosmetic_applied
+		clr_country_flag = independence_wave_iw058_cosmetic_active
+		clr_country_flag = independence_wave_iw058_cosmetic_identity_ready
+		clr_country_flag = independence_wave_iw058_setup_complete
+		clr_country_flag = independence_wave_package_setup_complete
+		clr_country_flag = independence_wave_assyria_anchor_population_protected
+		clr_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+		clr_country_flag = independence_wave_assyria_host_conflict_survived
+		clr_country_flag = independence_wave_iw058_achievement_writers_attested
+		clr_country_flag = independence_wave_iw058_route_church_compact
+		clr_country_flag = independence_wave_iw058_route_civic_assembly
+		clr_country_flag = independence_wave_iw058_route_levies_guardianship
+		clr_country_flag = independence_wave_iw058_route_mesopotamian_autonomy
+		clr_country_flag = iw058_guarantee_assyrian_self_identification
+		clr_country_flag = iw058_guarantee_chaldean_self_identification
+		clr_country_flag = iw058_guarantee_syriac_self_identification
+		clr_country_flag = iw058_guarantee_aramean_self_identification
+		clr_country_flag = iw058_church_synod_seated
+		clr_country_flag = iw058_secular_committee_seated
+		clr_country_flag = iw058_diaspora_liaison_active
+		clr_country_flag = iw058_levies_board_under_civilian_law
+		clr_country_flag = iw_form18_federal_autonomy_charter_complete
+		clr_country_flag = iw_form18_river_authority_complete
+		clr_country_flag = iw_form18_minority_guarantees_complete
+		clr_country_flag = iw_form18_member_army_settlement_complete
+		clr_country_flag = iw_form18_capital_and_revenue_settlement_complete
+		clr_country_flag = independence_wave_form18_adapter_attested
+		clr_country_flag = independence_wave_iw058_setup_surface_ready
+		# ASY also uses the reviewed generic carrier tree; clear all Event 006
+		# focus provenance and return to that tree before identity teardown.
+		independence_wave_clear_focus_runtime = yes
+		independence_wave_formable_clear_loaded_profile = yes
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
+		clr_country_flag = independence_wave_package_iw058_assyria
+		clear_variable = independence_wave_package_id
+	}
+}
+
+# ---------------------------------------------------------------------------
+# FORM-12 / FORM-13 / FORM-18 keyed adapters (fail closed)
+# ---------------------------------------------------------------------------
+
+# The numeric names are required by the registry's meta-effect dispatch. Each
+# adapter has a strict package readiness/attestation gate. Until the parent
+# proves exact vanilla Idel-Ural/Assyrian compatibility and sets that gate, no
+# identity, core, claim, member absorption, or cosmetic mutation runs.
+independence_wave_formable_identity_adapter_12 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form12_iw043_commit = yes }
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = VOLGA_URAL_FEDERATIONX
+		set_country_flag = independence_wave_formable_identity_committed
+		set_country_flag = independence_wave_form12_identity_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+independence_wave_formable_integration_adapter_12 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form12_iw043_commit = yes has_country_flag = independence_wave_formable_identity_committed }
+		set_country_flag = independence_wave_formable_integration_committed
+		set_country_flag = independence_wave_form12_integration_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+independence_wave_formable_identity_adapter_13 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form13_iw043_commit = yes }
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = IDEL_URAL_COMPACTX
+		set_country_flag = independence_wave_formable_identity_committed
+		set_country_flag = independence_wave_form13_identity_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+independence_wave_formable_integration_adapter_13 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form13_iw043_commit = yes has_country_flag = independence_wave_formable_identity_committed }
+		set_country_flag = independence_wave_formable_integration_committed
+		set_country_flag = independence_wave_form13_integration_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+independence_wave_formable_identity_adapter_18 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form18_iw058_commit = yes }
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = MESOPOTAMIAN_FEDERATIONX
+		set_country_flag = independence_wave_formable_identity_committed
+		set_country_flag = independence_wave_form18_identity_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+independence_wave_formable_integration_adapter_18 = {
+	set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = {
+		limit = { can_independence_wave_form18_iw058_commit = yes has_country_flag = independence_wave_formable_identity_committed }
+		set_country_flag = independence_wave_formable_integration_committed
+		set_country_flag = independence_wave_form18_integration_applied
+		set_temp_variable = { independence_wave_formable_adapter_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+# Terminal decision aliases are kept as narrow no-op gates until the registry
+# and exact keyed vanilla effects are promoted. They deliberately do not call
+# the generic commit effect, which would be an unauthorized fallback.
+independence_wave_form12_terminal_transaction = {
+	set_temp_variable = { independence_wave_form12_terminal_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = { limit = { can_independence_wave_form12_iw043_commit = yes } set_temp_variable = { independence_wave_form12_terminal_result = constant:independence_wave_iw_formable_adapter.attested } }
+}
+
+independence_wave_form13_terminal_transaction = {
+	set_temp_variable = { independence_wave_form13_terminal_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = { limit = { can_independence_wave_form13_iw043_commit = yes } set_temp_variable = { independence_wave_form13_terminal_result = constant:independence_wave_iw_formable_adapter.attested } }
+}
+
+independence_wave_form18_terminal_transaction = {
+	set_temp_variable = { independence_wave_form18_terminal_result = constant:independence_wave_iw_formable_adapter.unattested }
+	if = { limit = { can_independence_wave_form18_iw058_commit = yes } set_temp_variable = { independence_wave_form18_terminal_result = constant:independence_wave_iw_formable_adapter.attested } }
+}
+
+# Achievement writer hooks are intentionally inert in this tranche. Their
+# names are defined so audited focus call sites remain load-safe, but the
+# attestation flags are not writable until the parent owns the achievement
+# implementation and promotion evidence.
+independence_wave_write_iw043_restoration_route_proof = {
+	set_temp_variable = { independence_wave_iw043_achievement_writer_result = constant:independence_wave_iw_formable_adapter.unattested }
+}
+
+independence_wave_write_iw043_federal_route_proof = {
+	set_temp_variable = { independence_wave_iw043_achievement_writer_result = constant:independence_wave_iw_formable_adapter.unattested }
+}
+
+independence_wave_write_iw058_anchor_population_protected = {
+	set_temp_variable = { independence_wave_iw058_achievement_writer_result = constant:independence_wave_iw_formable_adapter.unattested }
+}
+
+independence_wave_write_iw058_mesopotamian_settlement_complete = {
+	set_temp_variable = { independence_wave_iw058_achievement_writer_result = constant:independence_wave_iw_formable_adapter.unattested }
+}
+
+independence_wave_write_iw058_host_conflict_survived = {
+	set_temp_variable = { independence_wave_iw058_achievement_writer_result = constant:independence_wave_iw_formable_adapter.unattested }
+}

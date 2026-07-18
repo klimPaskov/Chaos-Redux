@@ -1,0 +1,487 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-043 / IW-058 FOCUS EFFECTS
+# ============================================================================
+# Overview:
+# - Applies the bespoke Middle Volga and Assyrian focus rewards.
+# - Uses the shared Event 006 public-value transactions and the package-owned
+#   value clamps, route surfaces, incidents, and formable adapters.
+# - Focuses open paid decisions and missions; they do not duplicate their
+#   equipment, formation, factory, transport, or consent transactions.
+# - No effect creates or references an advisor portrait, sprite, or asset.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-043: Middle Volga Congress
+# ---------------------------------------------------------------------------
+
+independence_wave_complete_focus_iw043_open_middle_volga_congress = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		set_country_flag = iw043_congress_focus_opened
+		independence_wave_focus_reward_founding_step = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_confirm_kazan_mandate = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		set_country_flag = iw043_kazan_mandate_confirmed
+		independence_wave_focus_reward_administration = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_seat_the_delegations = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+		set_country_flag = iw043_delegation_settlement_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_secure_volga_navigation = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_navigation_mission_surface_open
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_reopen_kazan_river_customs = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_customs_ferries_surface_open
+		independence_wave_focus_reward_administration = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_repair_cheboksary_workshops = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_cheboksary_workshop_project_open
+		independence_wave_focus_reward_administration = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_survey_rail_and_ferry_network = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.small }
+		set_country_flag = iw043_rail_ferry_survey_complete
+		independence_wave_focus_reward_administration = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_organize_the_river_guard = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_river_guard_discipline_surface_open
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_trade_beyond_the_middle_volga = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_volga_trade_surface_open
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_recover_bolgar_civic_memory = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		set_country_flag = iw043_bolgar_civic_memory_recovered
+		independence_wave_focus_reward_public_settlement = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_settle_muftiate_and_civic_jurisdiction = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_religious_civic_settlement_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_bind_crescent_to_congress = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		country_event = { id = chaosx.nr006.4309 }
+	}
+}
+
+independence_wave_complete_focus_iw043_invite_idel_ural_delegations = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_form13_consent_surface_open
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.idel_ural }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_proclaim_modern_volga_bulgaria = {
+	if = {
+		limit = { can_write_independence_wave_iw043_restoration_route_proof = yes }
+		set_country_flag = independence_wave_iw043_constitutional_capstone_complete
+		country_event = { id = chaosx.nr006.4310 }
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_charter_chamber_of_peoples = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		country_event = { id = chaosx.nr006.4308 }
+	}
+}
+
+independence_wave_complete_focus_iw043_guarantee_language_and_municipal_rights = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		independence_wave_recalculate_iw043_rights_compact = yes
+		add_to_variable = { iw043_rights_compact = constant:independence_wave_iw_package_delta.large }
+		set_country_flag = iw043_clause_reconciliation_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_federalize_river_cities = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		add_to_variable = { iw043_river_control = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		set_country_flag = iw043_river_cities_federalized
+		independence_wave_focus_reward_ambition = yes
+		independence_wave_clamp_iw043_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_negotiate_volga_ural_accessions = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes }
+		set_country_flag = iw043_form12_consent_surface_open
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.volga_ural_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_ratify_modern_volga_federation = {
+	if = {
+		limit = { can_write_independence_wave_iw043_federal_route_proof = yes }
+		set_country_flag = independence_wave_iw043_constitutional_capstone_complete
+		country_event = { id = chaosx.nr006.4310 }
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_authorize_emergency_navigation_council = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes has_country_flag = iw043_security_crisis_active }
+		country_event = { id = chaosx.nr006.4307 }
+	}
+}
+
+independence_wave_complete_focus_iw043_return_guard_to_civilian_law = {
+	if = {
+		limit = { is_independence_wave_iw043_country = yes has_country_flag = independence_wave_iw043_route_emergency_guard }
+		add_command_power = constant:independence_wave_iw043.major_command_cost_spend
+		clr_country_flag = independence_wave_iw043_route_emergency_guard
+		clr_country_flag = iw043_constitutional_route_suspended
+		clr_country_flag = iw043_security_crisis_active
+		set_country_flag = independence_wave_iw043_civilian_normalization_complete
+		independence_wave_restore_iw043_civilian_surface = yes
+		independence_wave_apply_iw043_cosmetic_identity = yes
+		independence_wave_focus_reward_stabilization = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_convene_volga_ural_federal_congress = {
+	if = {
+		limit = { has_independence_wave_form12_readiness = yes }
+		set_country_flag = iw043_form12_terminal_surface_open
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+independence_wave_complete_focus_iw043_convene_idel_ural_compact = {
+	if = {
+		limit = { has_independence_wave_form13_readiness = yes }
+		set_country_flag = iw043_form13_terminal_surface_open
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-058: Assyrian Council of Communities
+# ---------------------------------------------------------------------------
+
+independence_wave_complete_focus_iw058_assemble_provisional_national_council = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+		set_country_flag = iw058_council_focus_opened
+		independence_wave_focus_reward_founding_step = yes
+		independence_wave_clamp_iw058_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_hold_mosul_council_quarter = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+		set_country_flag = iw058_mosul_quarter_mission_surface_open
+		independence_wave_focus_reward_security_reform = yes
+		independence_wave_clamp_iw058_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_seat_church_civic_and_village_delegates = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+		set_country_flag = iw058_council_seat_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+		independence_wave_clamp_iw058_package_values = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_secure_nineveh_approaches = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_nineveh_patrol_surface_open
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_open_diaspora_liaison_bureau = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_diaspora_mission_surface_open
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_write_four_community_guarantees = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_community_guarantee_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_settle_church_and_civil_jurisdiction = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_church_civil_settlement_surface_open
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_discipline_the_levies_board = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_levies_discipline_surface_open
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_request_external_guarantees = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_external_guarantee_surface_open
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_entrench_mosul_recognition = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes 676 = { is_owned_and_controlled_by = ROOT } }
+		if = {
+			limit = { NOT = { has_independence_wave_entrenched_recognition = yes } }
+			set_variable = { independence_wave_recognition = constant:independence_wave_recognition_band.internationally_entrenched }
+		}
+		set_country_flag = iw058_mosul_recognition_entrenched
+		independence_wave_refresh_country_state = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_convene_concordat_council = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship } }
+		set_country_flag = independence_wave_iw058_route_church_compact
+		clr_country_flag = independence_wave_iw058_route_civic_assembly
+		subtract_from_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.decisive }
+		set_country_flag = iw058_church_civic_route_locked
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_apply_iw058_institutional_surface = yes
+		independence_wave_apply_iw058_cosmetic_identity = yes
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_charter_church_civic_compact = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_route_church_compact has_independence_wave_iw058_all_community_guarantees = yes }
+		set_country_flag = iw058_church_civic_charter_complete
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_link_synods_villages_and_diaspora = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_route_church_compact }
+		set_country_flag = iw058_synod_village_diaspora_compact_complete
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_ratify_concordat_state = {
+	if = {
+		limit = { can_complete_independence_wave_iw058_constitutional_route = yes has_country_flag = independence_wave_iw058_route_church_compact }
+		set_country_flag = independence_wave_iw058_constitutional_capstone_complete
+		set_country_flag = iw058_concordat_state_ratified
+		independence_wave_focus_reward_stabilization = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_convene_civic_national_assembly = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship } }
+		set_country_flag = independence_wave_iw058_route_civic_assembly
+		clr_country_flag = independence_wave_iw058_route_church_compact
+		add_to_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.decisive }
+		set_country_flag = iw058_civic_assembly_route_locked
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_apply_iw058_institutional_surface = yes
+		independence_wave_apply_iw058_cosmetic_identity = yes
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_charter_municipal_and_community_chambers = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_route_civic_assembly has_independence_wave_iw058_all_community_guarantees = yes }
+		set_country_flag = iw058_municipal_community_charter_complete
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_bind_diaspora_experts_to_public_service = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_route_civic_assembly }
+		set_country_flag = iw058_diaspora_experts_bound_to_public_service
+		add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.large }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+		if = {
+			limit = { has_idea = independence_wave_iw058_fragile_diaspora_links_idea }
+			swap_ideas = { remove_idea = independence_wave_iw058_fragile_diaspora_links_idea add_idea = independence_wave_iw058_diaspora_liaison_idea }
+		}
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_focus_reward_administration = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_ratify_civic_national_state = {
+	if = {
+		limit = { can_complete_independence_wave_iw058_constitutional_route = yes has_country_flag = independence_wave_iw058_route_civic_assembly }
+		set_country_flag = independence_wave_iw058_constitutional_capstone_complete
+		set_country_flag = iw058_civic_national_state_ratified
+		independence_wave_focus_reward_stabilization = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_authorize_levies_guardianship = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = iw058_severe_security_crisis_active }
+		country_event = { id = chaosx.nr006.5809 }
+	}
+}
+
+independence_wave_complete_focus_iw058_restore_civilian_command = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_country_flag = independence_wave_iw058_route_levies_guardianship }
+		add_command_power = constant:independence_wave_iw058.major_command_cost_spend
+		clr_country_flag = independence_wave_iw058_route_levies_guardianship
+		clr_country_flag = iw058_constitutional_route_suspended
+		clr_country_flag = iw058_severe_security_crisis_active
+		set_country_flag = independence_wave_iw058_civilian_normalization_complete
+		independence_wave_restore_iw058_civilian_surface = yes
+		independence_wave_apply_iw058_cosmetic_identity = yes
+		independence_wave_focus_reward_stabilization = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_fortify_mountain_river_corridor = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes }
+		set_country_flag = iw058_corridor_fortification_surface_open
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_negotiate_former_host_settlement = {
+	if = {
+		limit = { is_independence_wave_iw058_country = yes has_independence_wave_iw058_former_host = yes }
+		set_country_flag = iw058_former_host_settlement_surface_open
+		independence_wave_focus_reward_diplomatic_step = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_offer_mesopotamian_autonomy_charter = {
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+			OR = {
+				has_country_flag = independence_wave_iw058_route_church_compact
+				has_country_flag = independence_wave_iw058_route_civic_assembly
+			}
+		}
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mesopotamian_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		set_country_flag = independence_wave_iw058_route_mesopotamian_autonomy
+		set_country_flag = iw058_mesopotamian_settlement_surface_open
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_convene_mesopotamian_federal_congress = {
+	if = {
+		limit = { has_independence_wave_form18_readiness = yes }
+		set_country_flag = iw058_form18_terminal_surface_open
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+independence_wave_complete_focus_iw058_ratify_mesopotamian_settlement = {
+	if = {
+		limit = { can_write_independence_wave_iw058_mesopotamian_settlement_complete = yes }
+		country_event = { id = chaosx.nr006.5810 }
+		set_country_flag = independence_wave_iw058_constitutional_capstone_complete
+		independence_wave_focus_reward_stabilization = yes
+	}
+}
