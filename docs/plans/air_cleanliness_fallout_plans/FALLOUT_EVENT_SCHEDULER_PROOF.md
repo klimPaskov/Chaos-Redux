@@ -106,7 +106,7 @@ The ready flag and issued flag are separate commit markers. This distinction is 
 
 The accepted resource identities are Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition. Cohesion and Reclamation are not resource entries.
 
-The reviewed transaction contract requires state rows with immutable producer inputs and country rows with immutable initial values, raw aggregation numerators and denominators, and separate mutable values. Each row must bind to the transition generation. The global commit must cover the exact finalized successor assignment and every included state.
+The reviewed transaction contract requires state rows with immutable producer inputs and country rows with immutable initial values, raw aggregation numerators and denominators, and separate mutable values. Each row must bind to the transition generation. The global commit must cover the exact finalized successor assignment and every included state. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) supplies the current proposed numerical formulas and commit order. It is not accepted and does not authorize a producer or ready setter.
 
 Survival initialization belongs inside the blackout after successor allocation and before player continuation. The live transition stages exact country and state identity rows, then enforces the committed-ledger barrier before player continuation and map return. Resource identity arrays fix the accepted order, while aligned global arrays prove physical indexes and all-and-only scope coverage. The numerical arrays have a structural row contract, but no effect fills or commits them. No numerical formula, value, aggregation, validation, or ready setter exists.
 
