@@ -6,6 +6,17 @@ Mode: audit with approved small local fixes
 
 Scope owner: `event6_achievement_audit`
 
+## Documentation reconciliation note (2026-07-18)
+
+This 2026-07-17 achievement audit is preserved as historical evidence for the
+fourteen non-signature achievements and its lifecycle cautions. Its IW-043
+and IW-058 blocker verdict is superseded by the exact signature tranche:
+`CHU` and `ASY` are admitted, the two IW-043 route writers and three IW-058
+settlement writers are operational, and the Assyria icon triplet is complete.
+The signature achievements remain hidden when their route, survival, or
+terminal proof predicates fail. A parent-wide sixteen-achievement completion
+audit is still required; do not repeat the old “no writers/no assets” work.
+
 ## Result
 
 The registration, localisation, constants, historical ledgers, and runtime wiring for all sixteen Event 006 achievements were reviewed. Fourteen achievements have reachable proof chains after the fixes in this handoff. Two package-specific achievements remain deliberately fail-closed:

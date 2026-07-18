@@ -14,6 +14,25 @@ is_independence_wave_achievement_sovereign_actor = {
 	NOT = { has_country_flag = independence_wave_achievement_subject_status_ever }
 }
 
+# Exact live IW-058 proof gate. Historical proof writers add their own
+# transaction-specific requirements; this shared gate prevents Event 005,
+# subject, patron-client, anchor-loss, or protection-breach false positives.
+can_write_independence_wave_iw058_achievement_proof = {
+	is_independence_wave_achievement_sovereign_actor = yes
+	is_independence_wave_iw058_country = yes
+	original_tag = ASY
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 }
+	has_independence_wave_entrenched_recognition = yes
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_route_patron_client }
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	NOT = { has_independence_wave_patron_dependency = yes }
+	NOT = { has_country_flag = iw058_client_capture_ever }
+	NOT = { has_country_flag = iw058_anchor_protection_breached }
+	676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+}
+
 independence_wave_achievement_one_state_to_statehood_is_complete = {
 	is_independence_wave_achievement_sovereign_actor = yes
 	has_country_flag = independence_wave_anchor_opening
@@ -133,30 +152,62 @@ independence_wave_achievement_regional_formable_is_complete = {
 
 independence_wave_achievement_volga_bulgaria_is_complete = {
 	is_independence_wave_achievement_sovereign_actor = yes
+	is_independence_wave_iw043_country = yes
 	original_tag = CHU
 	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 }
 	NOT = { has_country_flag = soviet_collapse_active_origin }
 	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = {
+		AND = {
+			has_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
+			has_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+		}
+	}
 	OR = {
-		has_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
-		has_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+		AND = {
+			has_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
+			has_country_flag = independence_wave_iw043_route_restoration
+			NOT = { has_country_flag = independence_wave_iw043_route_federal }
+			NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
+			has_cosmetic_tag = CHU_independence_wave_volga_bulgariaX
+		}
+		AND = {
+			has_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+			has_country_flag = independence_wave_iw043_route_federal
+			NOT = { has_country_flag = independence_wave_iw043_route_restoration }
+			NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
+			has_cosmetic_tag = CHU_independence_wave_volga_federationX
+		}
 	}
 	249 = { is_owned_by = ROOT is_controlled_by = ROOT }
 	256 = { is_owned_by = ROOT is_controlled_by = ROOT }
 }
 
 independence_wave_achievement_assyria_survives_is_complete = {
-	is_independence_wave_achievement_sovereign_actor = yes
-	original_tag = ASY
-	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 }
-	NOT = { has_country_flag = soviet_collapse_active_origin }
-	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
-	has_independence_wave_entrenched_recognition = yes
+	can_write_independence_wave_iw058_achievement_proof = yes
 	has_country_flag = independence_wave_assyria_anchor_population_protected
 	has_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
 	has_country_flag = independence_wave_assyria_host_conflict_survived
-	NOT = { has_country_flag = independence_wave_route_patron_client }
-	676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	has_country_flag = iw058_levies_board_under_civilian_law
+	NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+	OR = {
+		AND = {
+			has_country_flag = independence_wave_iw058_route_church_compact
+			NOT = { has_country_flag = independence_wave_iw058_route_civic_assembly }
+			OR = {
+				has_cosmetic_tag = ASY_independence_wave_church_compactX
+				has_cosmetic_tag = MESOPOTAMIAN_FEDERATIONX
+			}
+		}
+		AND = {
+			has_country_flag = independence_wave_iw058_route_civic_assembly
+			NOT = { has_country_flag = independence_wave_iw058_route_church_compact }
+			OR = {
+				has_cosmetic_tag = ASY_independence_wave_civic_federationX
+				has_cosmetic_tag = MESOPOTAMIAN_FEDERATIONX
+			}
+		}
+	}
 }
 
 independence_wave_achievement_small_to_major_is_complete = {

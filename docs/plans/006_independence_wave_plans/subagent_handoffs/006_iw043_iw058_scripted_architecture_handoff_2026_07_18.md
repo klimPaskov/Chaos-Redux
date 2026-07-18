@@ -2,6 +2,16 @@
 
 Owner: `chaosx_scripted_system_architect` subagent
 
+## Documentation reconciliation note (2026-07-18)
+
+The helper-map and cleanup evidence below is retained, but its FORM adapter
+section records the earlier pre-promotion state. The current exact CHU/ASY
+signature tranche has operational FORM-12/13/18 transactions and setup
+attestations, including paid 180-day congress ledgers, consent/anchor
+recounts, staged sovereignty-preserving integration, and sole signature-proof
+writers. Do not use the historical “unwritten” wording below to infer a
+current hold; wider Event 006 families remain separately fail-closed.
+
 ## Scope completed
 
 This handoff covers the bounded reusable scripted layer for the Middle Volga (IW-043) and Assyria (IW-058) packages. It does not change the protected BAY/RHI portrait surfaces, add advisor assets, rewrite the country pools, or commit a branch.
@@ -89,7 +99,10 @@ Task-specific checks performed:
 - Confirmed every new global target has a release clear and a cleanup clear; release clears the division-scoped receipt before the target.
 - Confirmed the designated triggers no longer depend on pre-conversion composition and are generation-gated.
 - Confirmed all new reach predicates are target-local and contain no `any_country`/world iteration.
-- Confirmed the FORM-12/13/18 adapter flags remain unwritten in the owned effects and therefore fail closed.
+- Confirmed at handoff time that the FORM-12/13/18 adapter flags were
+  unwritten in the owned effects and therefore failed closed; the later exact
+  CHU/ASY setup pass supplies the admitted-carrier attestations recorded in the
+  reconciliation note above.
 
 The read-only `hoi4.event_inspect` request was attempted against `events/006_independence_wave_iw043_iw058.txt` with a bounded scan, but the MCP call did not return an artifact within the available wait window. No artifact reference is therefore claimed; direct source inspection of the linked event and decision call sites is the authoritative evidence for this handoff.
 

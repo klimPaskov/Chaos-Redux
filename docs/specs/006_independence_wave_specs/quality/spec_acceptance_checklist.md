@@ -3,8 +3,9 @@
 This checklist evaluates the planning package against the Event 6 request. `Complete in source design` means the requirement is fully specified but not implemented. `Implementation gate` means the final value depends on repository inspection, asset research, or game validation.
 
 This checklist is frozen source-design evidence. Current implementation status,
-including fifteen completed achievement icon triplets but zero of sixteen
-achievement definitions/localisation sets, is maintained in
+including sixteen achievement definitions/localisation sets, final bounded
+IW-043/IW-058 package assets, and the operational exact-carrier signature
+transactions, is maintained in
 `../../../plans/006_independence_wave_plans/006_source_of_truth_map.md`.
 
 | Requirement | Evidence | Status | Remaining gate |
@@ -26,6 +27,7 @@ achievement definitions/localisation sets, is maintained in
 | Legitimacy, recognition, foreign support, patron influence, league cooperation, claims, instability, and formables are represented | Parts 3 and 6 | Complete in source design | Script constants, variables, UI, and cleanup |
 | Shared content adapts across all candidates | Part 4 shared framework, Part 5 overlays, registries | Complete in source design | Prove country-specific play in audit |
 | Strong packages receive signature ambitions | Part 5 signature modules and candidate registry | Complete in source design | Historical leaders, routes, symbols, and state mapping |
+| IW-043 and IW-058 signature transactions preserve member sovereignty | Parts 3, 5, and 6 plus the dated transaction audits | Implemented for exact carriers | Whole-event completion audit and runtime transaction matrix |
 | New Event 6 tags end in X | Candidate registry, Part 1 tag rule, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Repeat the collision scan if either registry changes |
 | Existing registered tags can be reused | Part 1 tag policy, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Implement and validate all thirteen package compatibility adapters |
 | Vanilla route identities remain non-selectable overlays | Part 1 representation architecture, tag audit, candidate registry | Complete in source design and current snapshot | Implement and validate all thirteen exact additive overlay hooks |
@@ -48,8 +50,8 @@ achievement definitions/localisation sets, is maintained in
 | Historical flags, symbols, and real portraits are sourced | Part 7, asset prompt | Complete in source design | Source, license, processing, DDS, and manifest work |
 | Fictional and alternate visual states can use generated art | Part 7 and asset prompt | Complete in source design | Use the correct art subagent and asset workflow |
 | Animation uses real per-frame art and static fallbacks | Part 7 and asset prompt | Complete in source design | Produce frame plans, source frames, sheets, DDS, and handoff |
-| Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Complete in source design | Implement tracking, disqualifiers, localisation, and icons |
-| Event log, docs, catalog, and workbook alignment are planned | Part 7 and catalog handoff | Complete in source design | Update after final in-game wording exists |
+| Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Implemented in bounded source and proof writers | Parent-wide completion audit and live validation matrix |
+| Event log, docs, catalog, and workbook alignment are planned | Part 7, catalog handoff, and dated direct comparison | Shared Event 6 mirror fields aligned | Recheck when player-facing localisation changes and finish parent-wide documentation |
 | Final player-facing text is direction-only in the source spec | All spec parts and prompts | Complete in source design | Implementation writes final localisation and runs text audit |
 | Final super-event titles, descriptions, buttons, quotes, and musical selections are sourced | Approved text research and corrected audio-rights research | Text complete, `6002` source verified, `6001` blocked | Preserve approved wording and attribution, do not process `6001` without clearance |
 | Completion requires focused audits across all major surfaces | Part 7 acceptance and subagent briefs | Complete in source design | Run the named auditors after implementation |

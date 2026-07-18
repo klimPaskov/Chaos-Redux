@@ -900,14 +900,25 @@ def markdown_report(data: dict[str, object]) -> str:
 		for tag, rows in data["duplicate_resolved_tags"].items():
 			packages = ", ".join(f"{row['package_id']} {row['identity']}" for row in rows)
 			lines.append(f"- `{tag}`: {packages}")
-		lines.extend(("", "Shared tags require mutually exclusive package reservation and package-specific readiness/origin gates.", ""))
-	lines.extend(("## Shared BIA and CHU fail-closed review", "", "| Tag | Package | Reservation group | Exact wrapper | Content attested | Scenario blocked | Runtime status |", "| --- | --- | --- | --- | --- | --- | --- |"))
+	lines.extend(("", "Shared tags require mutually exclusive package reservation and package-specific readiness/origin gates.", ""))
+	lines.extend(("## Shared BIA and CHU readiness review", "", "| Tag | Package | Reservation group | Exact wrapper | Content attested | Scenario blocked | Runtime status |", "| --- | --- | --- | --- | --- | --- | --- |"))
 	for row in data["shared_reused_tag_reviews"]:
 		lines.append(
 			f"| `{row['tag']}` | {row['package_id']} {row['identity']} | `{row['reservation_group']}` | "
 			f"{row['exact_package_wrapper']} | {row['content_attested']} | {row['scenario_blocked']} | `{row['runtime_status']}` |"
 		)
-	lines.extend(("", "Both shared-tag pairs use one reservation group per tag, so the frozen planner cannot select both identities together. None has both an exact package wrapper and static content attestation; the legacy generic content-ready flag has zero grants. They therefore remain fail-closed until separate package-specific origin, identity, localisation, content, and audit gates are implemented.", ""))
+	attested_shared = [row["package_id"] for row in data["shared_reused_tag_reviews"] if row["runtime_status"] == "attested"]
+	fail_closed_shared = [row["package_id"] for row in data["shared_reused_tag_reviews"] if row["runtime_status"] != "attested"]
+	lines.extend(
+		(
+			"",
+			"Both shared-tag pairs use one reservation group per tag, so the frozen planner cannot select both identities together. "
+			+ (f"Exact wrapper plus static content attestation admits: {', '.join(attested_shared)}. " if attested_shared else "No shared-tag row is admitted. ")
+			+ (f"Fail-closed rows: {', '.join(fail_closed_shared)}. " if fail_closed_shared else "No shared-tag row remains fail-closed. ")
+			+ "The legacy generic content-ready flag has zero grants.",
+			"",
+		)
+	)
 	if data["reused_not_in_vanilla"]:
 		for row in data["reused_not_in_vanilla"]:
 			lines.append(f"- {row['package_id']} {row['identity']}: `{row['resolved_tag']}`")
@@ -950,7 +961,7 @@ def markdown_report(data: dict[str, object]) -> str:
 			f"- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `{data['chaos_redux_non_event6_tag_surface_inventory_sha256']}`",
 			f"- ZIP archive content inventory SHA-256: `{data['archive_inventory_sha256']}`",
 			f"- Runtime attestation source SHA-256: `{data['dispatch_attestation_file_sha256']}`",
-			f"- Package-origin wrapper source SHA-256: `{data['package_trigger_file_sha256']}`",
+			f"- Package-origin wrapper source inventory SHA-256: `{data['package_trigger_inventory_sha256']}`",
 			f"- Scenario block source SHA-256: `{data['scenario_effect_file_sha256']}`",
 			"",
 		)
@@ -1180,16 +1191,22 @@ def main() -> None:
 
 	dispatch_trigger_file = repo_root / "common" / "scripted_triggers" / "006_independence_wave_package_dispatch_triggers.txt"
 	package_trigger_file = repo_root / "common" / "scripted_triggers" / "006_independence_wave_package_triggers.txt"
+	package_trigger_files = sorted(
+		(repo_root / "common" / "scripted_triggers").glob("006_independence_wave*package*triggers.txt")
+	)
 	scenario_effect_file = repo_root / "common" / "scripted_effects" / "006_independence_wave_scenario_effects.txt"
 	for runtime_source in (dispatch_trigger_file, package_trigger_file, scenario_effect_file):
 		if not runtime_source.is_file():
 			raise FileNotFoundError(f"Required Event 006 runtime evidence source is missing: {runtime_source}")
+	if not package_trigger_files:
+		raise FileNotFoundError("No Event 006 package trigger sources were found")
 	attested_package_ids = parse_runtime_attested_package_ids(dispatch_trigger_file)
+	package_trigger_text = "\n".join(decode_text(path) for path in package_trigger_files)
 	exact_wrapper_ids = {
 		f"IW-{numeric_id}"
 		for numeric_id in re.findall(
 			r'is_independence_wave_exact_package_iw_(\d{3})_tag_available',
-			decode_text(package_trigger_file),
+			package_trigger_text,
 		)
 	}
 	scenario_blocked_ids = {
@@ -1342,7 +1359,7 @@ def main() -> None:
 		"chaos_redux_non_event6_tag_surface_inventory_sha256": definition_inventory_sha256(non_event6_defs + non_event6_extended_defs),
 		"archive_inventory_sha256": archive_inventory_sha256(all_archive_paths),
 		"dispatch_attestation_file_sha256": file_sha256(dispatch_trigger_file),
-		"package_trigger_file_sha256": file_sha256(package_trigger_file),
+		"package_trigger_inventory_sha256": file_inventory_sha256(package_trigger_files),
 		"scenario_effect_file_sha256": file_sha256(scenario_effect_file),
 		"scan_roots": {
 			"game_root": str(args.game_root),

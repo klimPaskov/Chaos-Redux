@@ -4,6 +4,16 @@ Date: 2026-07-18
 Mode: bounded source audit plus narrow focus integration patch
 Scope: Event 006 IW-043 Middle Volga (`CHU`) and IW-058 Assyria (`ASY`) focus surfaces
 
+## Documentation reconciliation note (2026-07-18)
+
+The focus graph, import, prerequisite, mutex, icon, and localisation findings
+below remain useful evidence. The statement that FORM-12/13/18 are fail-closed
+because their attestation flags have no writer is superseded by the exact
+CHU/ASY signature tranche: the adapters and five sole proof writers are
+operational for their admitted carriers. The final ratification focus remains
+the sole `.5810` caller after sovereign-autonomy mode records are written;
+whole-Event 006 closeout is still pending.
+
 ## Executive result
 
 The two package trees now attach to the full Event 006 framework through their
@@ -18,9 +28,10 @@ package identity.
 The static source audit covers all 48 package focuses (23 IW-043 and 25 IW-058).
 All 48 are reachable from the main tree after the import patch, have known
 prerequisites, exact title/description/tooltip localisation, registered icons,
-AI weights, custom effect tooltips, and hidden effect dispatch. The FORM-12,
-FORM-13, and FORM-18 routes remain intentionally fail-closed because their
-adapter-attestation flags have no writer.
+AI weights, custom effect tooltips, and hidden effect dispatch. At the time of
+this audit, the FORM-12, FORM-13, and FORM-18 routes were fail-closed because
+their adapter-attestation flags had no writer; the later exact-carrier pass now
+supplies those attestations and sole proof writers for CHU/ASY.
 
 No full-tree MCP artifact was produced. `hoi4.focus_inspect` first returned
 `WORKSPACE_NOT_REGISTERED` for workspace `chaos_redux`, then the path-based
@@ -56,14 +67,14 @@ existing route contract.
 | IW-043 opening | `open_middle_volga_congress` -> `confirm_kazan_mandate` -> `seat_the_delegations` | `allow_branch` and `available` require `is_independence_wave_iw043_country`. | Reachable. |
 | IW-043 river economy | `secure_volga_navigation` -> `reopen_kazan_river_customs` -> `survey_rail_and_ferry_network` / `repair_cheboksary_workshops` -> `trade_beyond_the_middle_volga` | Repair accepts owned state or the existing workshop treaty; trade requires both customs and survey. | Reachable after explicit sibling imports; no dead descendant. |
 | IW-043 emergency guard | `organize_the_river_guard` -> `authorize_emergency_navigation_council` -> `return_guard_to_civilian_law` | Crisis focus requires severe host threat and active security crisis; return requires emergency route, command power, and no severe threat. | Reachable after explicit `return_guard_to_civilian_law` import. |
-| IW-043 federal | `charter_chamber_of_peoples` -> `guarantee_language_and_municipal_rights` + `federalize_river_cities` -> `negotiate_volga_ural_accessions` -> `ratify_modern_volga_federation` -> `convene_volga_ural_federal_congress` | Chamber is mutually exclusive with Crescent; final proof requires federal route, thresholds, and FORM-12 attestation. | Reachable; FORM-12 remains fail-closed. |
-| IW-043 restoration | `recover_bolgar_civic_memory` -> `settle_muftiate_and_civic_jurisdiction` -> `bind_crescent_to_congress` -> `invite_idel_ural_delegations` + `proclaim_modern_volga_bulgaria` -> `convene_idel_ural_compact` | Crescent is mutually exclusive with Chamber; final proof requires restoration route, thresholds, and FORM-13 attestation. The consent focus switches selected family to `idel_ural`. | Reachable; FORM-13 remains fail-closed. |
+| IW-043 federal | `charter_chamber_of_peoples` -> `guarantee_language_and_municipal_rights` + `federalize_river_cities` -> `negotiate_volga_ural_accessions` -> `ratify_modern_volga_federation` -> `convene_volga_ural_federal_congress` | Chamber is mutually exclusive with Crescent; final proof requires federal route, thresholds, and FORM-12 attestation. | Reachable; FORM-12 operational for the exact CHU carrier. |
+| IW-043 restoration | `recover_bolgar_civic_memory` -> `settle_muftiate_and_civic_jurisdiction` -> `bind_crescent_to_congress` -> `invite_idel_ural_delegations` + `proclaim_modern_volga_bulgaria` -> `convene_idel_ural_compact` | Crescent is mutually exclusive with Chamber; final proof requires restoration route, thresholds, and FORM-13 attestation. The consent focus switches selected family to `idel_ural`. | Reachable; FORM-13 operational for the exact CHU carrier. |
 | IW-043 shared framework | Constitutional, popular-council, traditional, emergency-military, and patron-client lanes; four former-host lanes; internal power struggle `traditional_authority_vs_assembly`; ambition, league, and signature registration. | Radical sovereignty is explicitly excluded for this package; route flags are cleared in cleanup. | Registered and validation-gated. |
 | IW-058 opening | `assemble_provisional_national_council` -> `hold_mosul_council_quarter` / `seat_church_civic_and_village_delegates`; navigation and diaspora/guarantee spurs connect from those roots. | Mosul ownership is checked where the focus requires it; all nodes require the exact ASY package trigger. | Reachable. |
 | IW-058 church compact | `write_four_community_guarantees` -> `settle_church_and_civil_jurisdiction` -> `convene_concordat_council` -> `charter_church_civic_compact` + `link_synods_villages_and_diaspora` -> `ratify_concordat_state`. | Concordat and Civic Assembly are mutually exclusive; guardianship blocks constitutional choice. | Reachable. |
 | IW-058 civic assembly | `convene_civic_national_assembly` -> `charter_municipal_and_community_chambers` + `bind_diaspora_experts_to_public_service` -> `ratify_civic_national_state`. | Civic route is mutually exclusive with Concordat and consumes the existing community-guarantee gate. | Reachable through the OR prerequisite closure of the settlement capstone. |
 | IW-058 levies guardianship | `discipline_the_levies_board` -> `authorize_levies_guardianship` -> `restore_civilian_command`. | Authorization requires severe host threat, active crisis, and civilian-law receipt; restore requires command power and no severe threat. | Reachable after explicit `restore_civilian_command` import. |
-| IW-058 autonomy / settlement | `fortify_mountain_river_corridor` + `entrench_mosul_recognition` -> `negotiate_former_host_settlement` -> `offer_mesopotamian_autonomy_charter` -> `convene_mesopotamian_federal_congress` -> `ratify_mesopotamian_settlement`. | Offer requires either constitutional route and excludes guardianship; FORM-18 readiness also requires exact family/profile and attestation. | Reachable; FORM-18 remains fail-closed. |
+| IW-058 autonomy / settlement | `fortify_mountain_river_corridor` + `entrench_mosul_recognition` -> `negotiate_former_host_settlement` -> `offer_mesopotamian_autonomy_charter` -> `convene_mesopotamian_federal_congress` -> `ratify_mesopotamian_settlement`. | Offer requires either constitutional route and excludes guardianship; FORM-18 readiness also requires exact family/profile and attestation. | Reachable; FORM-18 operational for the exact ASY carrier, with sovereign autonomy mutually exclusive. |
 | IW-058 shared framework | Constitutional, popular-council, traditional, emergency-military, and patron-client lanes; four former-host lanes; internal power struggle `traditional_authority_vs_assembly`; ambition, league, signature, and default `mesopotamian_federation` profile. | Radical sovereignty is explicitly excluded; guardianship is a temporary spur and cannot coexist with autonomy. | Registered and validation-gated. |
 
 ## Reachability and prerequisite audit

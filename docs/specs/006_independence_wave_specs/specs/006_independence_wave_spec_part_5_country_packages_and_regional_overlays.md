@@ -84,17 +84,27 @@ remain the design authority.
 
 | Package | Carrier and origin | Implemented base surface | Held extension boundary |
 | --- | --- | --- | --- |
-| IW-043 Middle Volga / Volga Bulgaria | Vanilla carrier `CHU`; exact Event 006 origin and package identity | Middle Volga Congress at anchor 249, optional Cheboksary member 256, rights and river-security routes, package forces, focus/decision/localisation surfaces, and cleanup | FORM-12/FORM-13 compatibility and the two Volga signature achievement writers remain **PARTIALLY IMPLEMENTED / HOLD** |
-| IW-058 Assyria | Vanilla carrier `ASY`; exact Event 006 origin and package identity | Mosul anchor 676, Council of Communities routes, package forces, focus/decision/localisation surfaces, and cleanup | FORM-18/sovereign-autonomy compatibility and the Assyria signature achievement writers remain **PARTIALLY IMPLEMENTED / HOLD** |
+| IW-043 Middle Volga / Volga Bulgaria | Vanilla carrier `CHU`; exact Event 006 origin and package identity | Middle Volga Congress at anchor 249, optional Cheboksary member 256, rights and river-security routes, package forces, focus/decision/localisation surfaces, centralized route politics, and cleanup | FORM-12/FORM-13 use the exact paid congress, consent, anchor, carrier-cosmetic, staged-integration, and cleanup contract. The two Volga signature achievement writers are sole and mutually exclusive |
+| IW-058 Assyria | Vanilla carrier `ASY`; exact Event 006 origin and package identity | Mosul anchor 676, Council of Communities routes, package forces, focus/decision/localisation surfaces, centralized route politics, and cleanup | FORM-18 and sovereign autonomy use the exact consent, anchor, defensive-method, carrier-cosmetic, staged-integration, and cleanup contract. The three Assyria proof writers are sole and contract-gated |
 
 Both packages reuse their vanilla carriers and do not create standalone country
-histories. Each has four institutional character entries; all eight visible
-institutional portraits are male and are not advisor/officer/commander assets.
-The base package is admitted by the exact shared runtime registry, but the
-held formable and achievement surfaces must not be described as promoted until
-the parent-reviewed vanilla compatibility adapter and proof-writer re-audit
-pass. No fallback, broad opening cores, or custom Event 006 advisor asset is
-authorized.
+histories. Each has four institutional character entries. All eight visible
+institutional portraits are male and are not advisor, officer, or commander
+assets. The exact shared runtime registry admits both packages after the
+content, origin, anchor, force, identity, politics, and asset receipts pass.
+FORM-12, FORM-13, and FORM-18 are operational for their exact Event 006
+carriers. Their member ledgers preserve sovereignty and use staged integration
+instead of annexation, subject creation, or blanket cores. The vanilla
+compatibility guard still suppresses only the active Event 006 CHU or ASY
+shortcuts and preserves ordinary and Event 005 behavior. No fallback, broad
+opening cores, or custom Event 006 advisor asset is authorized.
+
+The package political surface is centralized rather than left as dead
+localisation. Opening setup and signature or shared-government route adapters
+apply the package-specific ruling-party, popularity, election-law, and final
+party-name profiles, then attach the matching institutional leader. Cleanup
+removes those package-owned political and leader receipts without overwriting
+the vanilla carrier history.
 
 ## Leadership model
 

@@ -39,7 +39,7 @@ Every formable family records:
 
 The initial registry is in `matrices/006_formable_family_registry.csv`.
 
-## Event 006 compatibility hold for IW-043 and IW-058
+## Event 006 compatibility and signature contract for IW-043 and IW-058
 
 The accepted base package tranche admits IW-043 on vanilla carrier `CHU` and
 IW-058 on vanilla carrier `ASY` through the exact Event 006 origin/package
@@ -54,10 +54,28 @@ registry. Their signature formable surfaces remain a separate gate:
   parent re-audit. It suppresses those shortcuts only for active Event 006
   IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
 
-The base CHU/ASY package remains admitted. FORM-12/13/18 routes and signature
-achievements are still **PARTIALLY IMPLEMENTED / HOLD**, hidden/fail-closed,
-because their exact adapter-attestation and proof writers are absent. They must
-not use a fallback or broad core grant.
+The base CHU/ASY package remains admitted and the exact package setup writes
+the FORM-12/13/18 adapter and achievement-writer attestations for the matching
+carrier. FORM-12 and FORM-13 require three external consenting members with
+three distinct controlled anchors. FORM-18 requires two external consenting
+members with two distinct controlled anchors. All three use a paid 180-day
+congress, a frozen invitation ledger, explicit human replies or scored AI
+consent, an immutable terminal recount, and a bounded retry cooldown.
+
+Successful formation applies only a carrier cosmetic identity and then runs
+two sovereignty-preserving integration stages. Member countries retain their
+tags, sovereignty, Event 006 origin, territory, focus content, and units. No
+member annexation, subject creation, blanket core grant, or origin-ending
+shortcut is available. FORM-18's military method requires the tracked defensive
+former-host, sovereign-anchor, and corridor-control receipts before payment and
+rejects an offensive pretext. Its sovereign-autonomy compact is a mutually
+exclusive bilateral alternative with boundary, protection, jurisdiction,
+transit, property, and security terms. The two IW-043 route proofs and the
+three IW-058 proof writers are sole, exact-contract call sites.
+
+These adapters are operational only for the exact Event 006 carriers and do
+not promote the wider formable registry. They must not use a fallback or broad
+core grant.
 
 ## Formation methods
 

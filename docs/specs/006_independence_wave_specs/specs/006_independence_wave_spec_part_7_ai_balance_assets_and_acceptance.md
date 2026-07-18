@@ -524,12 +524,14 @@ The bounded package asset authorities are:
 
 The final files are reviewed and runtime-installed for the bounded base package.
 The Assyria triplet's provenance record explicitly excludes the post-1968/1973
-modern Assyrian flag from the 1936 baseline. Art completion does not make the
-Assyria achievement eligible: the two IW-043/IW-058 signature achievements
-remain hidden/fail-closed until their proof writers and the CHU/ASY formable
-compatibility adapter pass the parent re-audit. No custom Event 006 advisor,
-adviser, dossier, or portrait asset is permitted; all eight institutional
-characters remain male.
+modern Assyrian flag from the 1936 baseline. The exact CHU/ASY setup now writes
+the FORM-12/13/18 adapter and signature-achievement-writer attestations only
+after package identity, politics, institutional leader, force, and visual
+receipts pass. Art completion and attestation do not bypass the hidden
+achievement trigger contracts. The two IW-043/IW-058 signature achievements
+remain hidden until their exact route and survival proof conditions are met.
+No custom Event 006 advisor, adviser, dossier, or portrait asset is permitted;
+all eight institutional characters remain male.
 
 ## Asset source modes
 

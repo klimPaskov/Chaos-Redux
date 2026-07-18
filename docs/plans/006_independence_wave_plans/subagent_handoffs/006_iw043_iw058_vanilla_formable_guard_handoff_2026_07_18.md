@@ -2,6 +2,16 @@
 
 Owner: `chaosx_decision_mission_auditor`
 
+## Documentation reconciliation note (2026-07-18)
+
+The compatibility guard remains current: ordinary and Event 005 CHU/ASY
+behavior is preserved, while exact Event 006 carriers cannot use the vanilla
+shortcuts. The later exact-carrier transaction audit supersedes this
+handoff’s statement that no Event 006 formable is enabled and that all
+attestations are unwritten. FORM-12/13/18 now operate only for the admitted
+CHU/ASY carriers under their consent, anchor, paid-congress, and staged
+integration contracts; historical guard validation below is unchanged.
+
 ## Scope and changed files
 
 - `common/scripted_triggers/006_independence_wave_vanilla_formable_compatibility_triggers.txt`
@@ -30,7 +40,10 @@ After this patch, the three decisions retain the current vanilla baseline but ad
 - IW-058 `ASY` cannot see `neo_assyrian_empire_decision` or `neo_mesopotamia_decision`.
 - A normal vanilla `CHU` or `ASY`, including the separate Soviet Collapse flow, passes the negative guard and retains the unmodified vanilla behavior.
 
-No Event 006 formable is enabled. The three existing Event 006 readiness and adapter-attestation gates remain fail-closed.
+At handoff time no Event 006 formable was enabled. The later exact-carrier
+transaction pass enables FORM-12/13/18 only for CHU/ASY under their admitted
+readiness, consent, anchor, and staged-integration contracts; ordinary and
+Event 005 behavior remains guarded as described above.
 
 ## Compatibility and override surface
 
@@ -55,7 +68,9 @@ There is no new mission quality, cost, tooltip, localisation, or AI surface. The
 
 - No live game session was launched. The static check cannot prove the engine's final duplicate-key resolution beyond the standard common-decision override structure, so load-order behavior should be included in the parent’s next task-specific runtime pass.
 - The adapter intentionally mirrors the installed vanilla baseline. If a future HOI4 update changes any of these three vanilla decision definitions, this file must be re-compared and refreshed before claiming unchanged vanilla behavior.
-- FORM-12, FORM-13, and FORM-18 adapter attestations remain unwritten and fail-closed. This patch does not address their broader implementation blockers.
+- At handoff time FORM-12, FORM-13, and FORM-18 adapter attestations were
+  unwritten and fail-closed. The later exact-carrier pass supersedes that
+  status for CHU/ASY; wider family promotion remains outside this handoff.
 
 ## Simplifications, omissions, and blockers
 

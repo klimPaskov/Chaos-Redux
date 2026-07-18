@@ -2,7 +2,18 @@
 
 Owner lane: `/root/iw043_iw058_decisions_finish`
 
-Status: bounded decisions, incidents, and English localisation tranche complete; no commit created
+Status: bounded decisions, incidents, and English localisation tranche complete; historical admission wording is superseded
+
+## Documentation reconciliation note (2026-07-18)
+
+This handoff remains the historical decisions/events implementation evidence.
+The final decision transaction audit supersedes any older admission wording:
+FORM-12/13/18 are operational for the exact admitted CHU/ASY carriers with
+paid 180-day consent and anchor ledgers, terminal recounts, and staged
+sovereignty-preserving integration. The sovereign-autonomy decision writes its
+compact and mode records; the final ratification focus is the sole
+`chaosx.nr006.5810` caller. Preserve the decision/event findings below, but do
+not treat earlier fail-closed wording as the current signature-tranche status.
 
 ## Owned files
 
