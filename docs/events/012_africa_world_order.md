@@ -38,7 +38,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-The Middle East and Europe packages currently have their full dedicated focus architectures in `common/national_focus/012_africa_world_middle_east_focus.txt` and `common/national_focus/012_africa_world_europe_focus.txt`. Other candidates are not marked implementation-ready until their complete package files exist. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
+The Middle East, Europe, and Asia packages currently have their full dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Other candidates are not marked implementation-ready until their complete package files exist. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
 
 ## Middle East implementation
 
@@ -57,6 +57,10 @@ Every route must complete representation, command, Africa diplomacy, withdrawal 
 ## Europe implementation
 
 The Continental Settlement begins with border guarantees, industrial and rail reconstruction, and a colonial reckoning. It has six mutually exclusive routes: democratic federation, socialist union, royal concert, continental command, neutral confederation, and a reviewed mythic compact. Each route receives its own representative institution before converging on common defence, withdrawal and crisis law, a post-colonial treaty with Africa, and final ratification. The mythic compact remains locked until `africa_europe_high_chaos_package_reviewed` confirms its separate source and sensitivity review.
+
+## Asia implementation
+
+Centers of Asia uses four founding regional institutions and five mutually exclusive settlements: plural federation, revolutionary union, imperial congress, anti-colonial common front, and a reviewed celestial covenant. Each route has its own congress before converging on food, river, and monsoon management, rail and maritime corridors, common defence, autonomy and withdrawal law, an Indian Ocean partnership with Africa, and final ratification. The celestial covenant remains locked until `africa_asia_high_chaos_package_reviewed` confirms its separate source and sensitivity review.
 
 ## Asset contracts
 
