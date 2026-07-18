@@ -1,0 +1,256 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE EFFECTS
+# ============================================================================
+# Foundational, fail-closed adapters for Asante (`DOX`) and Sokoto (`SOK`).
+# This file owns only fixed package proofs, package-local setup values, the
+# capital/succession validation hooks, central dispatch entries, and cleanup.
+# It does not publish country surfaces or identity content. A future package
+# implementation must provide the explicit runtime attestation flags before
+# either setup path can return `selected`.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Central package dispatch
+# ---------------------------------------------------------------------------
+
+independence_wave_dispatch_iw093_iw098_package_setup = {
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_setup_package_id
+				value = constant:independence_wave_package_id.iw_093
+				compare = equals
+			}
+		}
+		independence_wave_setup_iw093_asante = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_setup_package_id
+				value = constant:independence_wave_package_id.iw_098
+				compare = equals
+			}
+		}
+		independence_wave_setup_iw098_sokoto = yes
+	}
+}
+
+independence_wave_dispatch_iw093_iw098_package_final_validation = {
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_setup_package_id
+				value = constant:independence_wave_package_id.iw_093
+				compare = equals
+			}
+		}
+		independence_wave_validate_iw093_package = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_setup_package_id
+				value = constant:independence_wave_package_id.iw_098
+				compare = equals
+			}
+		}
+		independence_wave_validate_iw098_package = yes
+	}
+}
+
+independence_wave_dispatch_iw093_iw098_package_cleanup = {
+	if = {
+		limit = {
+			original_tag = DOX
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_package_id.iw_093
+				compare = equals
+			}
+		}
+		independence_wave_cleanup_iw093_asante = yes
+	}
+	else_if = {
+		limit = {
+			original_tag = SOK
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_package_id.iw_098
+				compare = equals
+			}
+		}
+		independence_wave_cleanup_iw098_sokoto = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Date-aware succession hook (no role or character surface is authored here)
+# ---------------------------------------------------------------------------
+
+independence_wave_iw098_select_sultan_by_date = {
+	set_temp_variable = { independence_wave_iw098_succession_result = constant:independence_wave_iw098.zero }
+	clr_country_flag = independence_wave_iw098_sultan_selection_complete
+	clr_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+	clr_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+	if = {
+		limit = {
+			OR = {
+				is_independence_wave_iw098_prepared_scope = yes
+				is_independence_wave_iw098_active_scope = yes
+			}
+			has_independence_wave_iw098_date_appropriate_role_attestation = yes
+		}
+		if = {
+			limit = { is_independence_wave_iw098_pre_cutover = yes }
+			set_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+		}
+		else_if = {
+			limit = { is_independence_wave_iw098_post_cutover = yes }
+			set_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+		}
+		set_country_flag = independence_wave_iw098_sultan_selection_complete
+		set_temp_variable = { independence_wave_iw098_succession_result = constant:independence_wave_iw098.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Package setup
+# ---------------------------------------------------------------------------
+
+independence_wave_setup_iw093_asante = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw093_setup_complete
+	set_variable = { independence_wave_iw093_setup_result = constant:independence_wave_iw093.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw093_prepared_scope = yes
+			has_independence_wave_iw093_fixed_anchor_ownership_proof = yes
+			has_independence_wave_iw093_runtime_content_attestation = yes
+			has_independence_wave_iw093_kumasi_capital_proof = yes
+			has_independence_wave_iw093_host_capital_survival_proof = yes
+		}
+		set_variable = { independence_wave_iw093_anchor_state = event_target:independence_wave_setup_anchor_state }
+		set_variable = { independence_wave_iw093_kumasi_victory_point = constant:independence_wave_iw093.kumasi_victory_point }
+		set_country_flag = independence_wave_iw093_kumasi_capital_secured
+		set_country_flag = independence_wave_iw093_setup_complete
+		set_country_flag = independence_wave_package_setup_complete
+		set_variable = { independence_wave_iw093_setup_result = constant:independence_wave_iw093.one }
+		set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw093.one }
+	}
+}
+
+independence_wave_setup_iw098_sokoto = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw098_setup_complete
+	set_variable = { independence_wave_iw098_setup_result = constant:independence_wave_iw098.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			has_independence_wave_iw098_fixed_anchor_ownership_proof = yes
+			has_independence_wave_iw098_runtime_content_attestation = yes
+			has_independence_wave_iw098_sokoto_anchor_proof = yes
+			has_independence_wave_iw098_host_capital_survival_proof = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+		}
+		independence_wave_iw098_select_sultan_by_date = yes
+		if = {
+			limit = { has_country_flag = independence_wave_iw098_sultan_selection_complete }
+			set_variable = { independence_wave_iw098_anchor_state = event_target:independence_wave_setup_anchor_state }
+			if = {
+				limit = { has_country_flag = africa_priority_member_focus_tree_loaded }
+				set_country_flag = independence_wave_iw098_event012_overlay_present
+			}
+			set_country_flag = independence_wave_iw098_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_variable = { independence_wave_iw098_setup_result = constant:independence_wave_iw098.one }
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw098.one }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Final validation
+# ---------------------------------------------------------------------------
+
+independence_wave_validate_iw093_package = {
+	set_variable = { independence_wave_iw093_final_validation_result = constant:independence_wave_iw093.zero }
+	set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw093.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw093_active_scope = yes
+			has_country_flag = independence_wave_iw093_setup_complete
+			has_country_flag = independence_wave_iw093_kumasi_capital_secured
+			has_independence_wave_iw093_runtime_content_attestation = yes
+			has_independence_wave_iw093_kumasi_capital_proof = yes
+			has_independence_wave_iw093_host_capital_survival_proof = yes
+		}
+		set_variable = { independence_wave_iw093_final_validation_result = constant:independence_wave_iw093.one }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw093.one }
+	}
+}
+
+independence_wave_validate_iw098_package = {
+	set_variable = { independence_wave_iw098_final_validation_result = constant:independence_wave_iw098.zero }
+	set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw098.zero }
+	if = {
+		limit = {
+			is_independence_wave_iw098_active_scope = yes
+			has_country_flag = independence_wave_iw098_setup_complete
+			has_country_flag = independence_wave_iw098_sultan_selection_complete
+			has_independence_wave_iw098_runtime_content_attestation = yes
+			has_independence_wave_iw098_date_appropriate_role_attestation = yes
+			has_independence_wave_iw098_sokoto_anchor_proof = yes
+			has_independence_wave_iw098_host_capital_survival_proof = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+		}
+		set_variable = { independence_wave_iw098_final_validation_result = constant:independence_wave_iw098.one }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw098.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cleanup
+# ---------------------------------------------------------------------------
+
+independence_wave_cleanup_iw093_asante = {
+	if = {
+		limit = {
+			original_tag = DOX
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_package_id.iw_093
+				compare = equals
+			}
+		}
+		clr_country_flag = independence_wave_iw093_kumasi_capital_secured
+		clr_country_flag = independence_wave_iw093_setup_complete
+		clear_variable = independence_wave_iw093_anchor_state
+		clear_variable = independence_wave_iw093_kumasi_victory_point
+		clear_variable = independence_wave_iw093_setup_result
+		clear_variable = independence_wave_iw093_final_validation_result
+	}
+}
+
+independence_wave_cleanup_iw098_sokoto = {
+	if = {
+		limit = {
+			original_tag = SOK
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_package_id.iw_098
+				compare = equals
+			}
+		}
+		clr_country_flag = independence_wave_iw098_setup_complete
+		clr_country_flag = independence_wave_iw098_sultan_selection_complete
+		clr_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+		clr_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+		clr_country_flag = independence_wave_iw098_event012_overlay_present
+		clear_variable = independence_wave_iw098_anchor_state
+		clear_variable = independence_wave_iw098_setup_result
+		clear_variable = independence_wave_iw098_final_validation_result
+		# Event 012's own focus-tree and lifecycle flags are intentionally not
+		# cleared. This helper only removes the Event 006 generation receipt.
+	}
+}

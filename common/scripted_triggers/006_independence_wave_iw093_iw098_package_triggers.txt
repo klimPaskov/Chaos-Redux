@@ -1,0 +1,245 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE TRIGGERS
+# ============================================================================
+# Fixed tag/origin/anchor proofs and package-local admission gates for the
+# Asante and Sokoto adapters. These predicates do not grant content readiness;
+# the explicit runtime attestation flags remain unset until their owning
+# country packages pass the complete audit.
+# ============================================================================
+
+# Planner-side gates. The legacy content-ready flag is retained deliberately:
+# an exact tag alone must never make either dormant package selectable.
+is_independence_wave_iw093_candidate_preflight = {
+	is_independence_wave_exact_package_iw_093_tag_available = yes
+	is_independence_wave_candidate_tag_available = yes
+}
+
+is_independence_wave_iw098_candidate_preflight = {
+	is_independence_wave_exact_package_iw_098_tag_available = yes
+	is_independence_wave_candidate_tag_available = yes
+}
+
+# Execution-side fixed-origin proofs. The shared executor supplies the
+# reservation and package-id checks; these predicates only bind the immutable
+# country identity and origin-system exclusions.
+is_independence_wave_iw093_fixed_origin_preflight = {
+	exists = no
+	original_tag = DOX
+	is_liberation_release_current_reserved_country = yes
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_active_origin }
+}
+
+is_independence_wave_iw098_fixed_origin_preflight = {
+	exists = no
+	original_tag = SOK
+	is_liberation_release_current_reserved_country = yes
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_active_origin }
+}
+
+# The state scopes below are fixed by the package registry call sites. The
+# event-target check prevents a package setup pass from borrowing an unrelated
+# state target, while the literal state scope proves the immutable anchor.
+is_independence_wave_iw093_anchor_preflight = {
+	state = 274
+	is_independence_wave_candidate_anchor_available = yes
+}
+
+is_independence_wave_iw098_anchor_preflight = {
+	state = 902
+	is_independence_wave_candidate_anchor_available = yes
+}
+
+has_independence_wave_iw093_fixed_anchor_ownership_proof = {
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_anchor_state = {
+		state = 274
+		is_owned_and_controlled_by = ROOT
+	}
+}
+
+has_independence_wave_iw098_fixed_anchor_ownership_proof = {
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_anchor_state = {
+		state = 902
+		is_owned_and_controlled_by = ROOT
+	}
+}
+
+is_independence_wave_iw093_prepared_scope = {
+	original_tag = DOX
+	has_country_flag = independence_wave_origin_prepared
+	check_variable = {
+		var = liberation_origin
+		value = constant:liberation_origin.independence_wave
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_id
+		value = constant:independence_wave_package_id.iw_093
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_region
+		value = constant:independence_wave_region.west_central_africa
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_depth
+		value = constant:independence_wave_package_depth.signature
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_archetype
+		value = constant:independence_wave_package_archetype.agrarian_regional
+		compare = equals
+	}
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+}
+
+is_independence_wave_iw098_prepared_scope = {
+	original_tag = SOK
+	has_country_flag = independence_wave_origin_prepared
+	check_variable = {
+		var = liberation_origin
+		value = constant:liberation_origin.independence_wave
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_id
+		value = constant:independence_wave_package_id.iw_098
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_region
+		value = constant:independence_wave_region.west_central_africa
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_depth
+		value = constant:independence_wave_package_depth.signature
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_archetype
+		value = constant:independence_wave_package_archetype.agrarian_regional
+		compare = equals
+	}
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+}
+
+is_independence_wave_iw093_active_scope = {
+	original_tag = DOX
+	has_country_flag = independence_wave_active_origin
+	check_variable = {
+		var = liberation_origin
+		value = constant:liberation_origin.independence_wave
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_id
+		value = constant:independence_wave_package_id.iw_093
+		compare = equals
+	}
+}
+
+is_independence_wave_iw098_active_scope = {
+	original_tag = SOK
+	has_country_flag = independence_wave_active_origin
+	check_variable = {
+		var = liberation_origin
+		value = constant:liberation_origin.independence_wave
+		compare = equals
+	}
+	check_variable = {
+		var = independence_wave_package_id
+		value = constant:independence_wave_package_id.iw_098
+		compare = equals
+	}
+}
+
+# These flags are external admission receipts. No file in this tranche sets
+# them. A future country package may set one only after all required gameplay
+# and runtime surfaces, including its visual/content audit, are complete.
+has_independence_wave_iw093_runtime_content_attestation = {
+	has_country_flag = independence_wave_iw093_runtime_content_attested
+}
+
+has_independence_wave_iw098_runtime_content_attestation = {
+	has_country_flag = independence_wave_iw098_runtime_content_attested
+}
+
+has_independence_wave_iw093_kumasi_capital_proof = {
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_anchor_state = {
+		state = 274
+		is_owned_and_controlled_by = ROOT
+		is_capital = yes
+	}
+}
+
+has_independence_wave_iw093_host_capital_survival_proof = {
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		any_owned_state = {
+			is_capital = yes
+		}
+	}
+}
+
+has_independence_wave_iw098_host_capital_survival_proof = {
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		any_owned_state = {
+			is_capital = yes
+		}
+	}
+}
+
+has_independence_wave_iw098_sokoto_anchor_proof = {
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_anchor_state = {
+		state = 902
+		is_owned_and_controlled_by = ROOT
+	}
+}
+
+# `date` predicates do not accept script-constant tokens in the engine. The
+# single canonical cutover is therefore kept here, while the corresponding
+# day value is recorded in the package constants for cross-file tuning notes.
+is_independence_wave_iw098_pre_cutover = {
+	date < 1938.06.17
+}
+
+is_independence_wave_iw098_post_cutover = {
+	NOT = { date < 1938.06.17 }
+}
+
+has_independence_wave_iw098_date_appropriate_role_attestation = {
+	OR = {
+		AND = {
+			is_independence_wave_iw098_pre_cutover = yes
+			has_country_flag = independence_wave_iw098_pre_cutover_role_attested
+		}
+		AND = {
+			is_independence_wave_iw098_post_cutover = yes
+			has_country_flag = independence_wave_iw098_post_cutover_role_attested
+		}
+	}
+}
+
+# Event 012 owns its overlay tree and lifecycle flags. IW-098 is safe only if
+# this adapter has not claimed a replacement tree; presence of the Event 012
+# flag is recorded by the effect and is never cleared here.
+is_independence_wave_iw098_event012_state_safe = {
+	NOT = { has_country_flag = independence_wave_iw098_event012_focus_tree_replaced }
+}
