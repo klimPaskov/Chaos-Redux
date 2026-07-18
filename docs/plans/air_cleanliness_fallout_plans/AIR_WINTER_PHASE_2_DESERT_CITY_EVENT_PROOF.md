@@ -209,4 +209,4 @@ The following remain unobserved because Hearts of Iron IV was not launched:
 
 These are runtime observation limits, not passing claims. No fallback or weaker substitute was introduced inside this tranche.
 
-The wider Fallout implementation remains incomplete. The living-world release-floor count remains 0, the numerical survival transaction is still blocked by unapproved tuning, and SCN-014 remains absent because the exact engine-native every-province thermonuclear sweep cannot be runtime proven without launching Hearts of Iron IV.
+The wider Fallout implementation remains incomplete. The living-world release-floor count remains 0 of 660. The accepted numerical survival transaction is implemented. SCN-014 remains absent because the exact engine-native every-province thermonuclear sweep cannot be runtime proven without launching Hearts of Iron IV.

@@ -88,4 +88,4 @@ The proof relies on documented script evaluation and persistent variables. It do
 
 ## Remaining boundary
 
-This contract authenticates the frozen Air Winter inputs used by grading and future survival initialization. It does not define the still-unapproved numerical formulas for the nine Fallout survival resources. It also does not resolve the manual native sweep, literal lobby-host identity, blackout keyboard capture, or successor allocation blockers.
+This contract authenticates the frozen Air Winter inputs used by grading and survival initialization. The accepted numerical formulas for the nine Fallout survival resources are implemented and documented in `FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md` and `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md`. This provenance proof does not redefine those formulas. It also does not resolve the manual native sweep, literal lobby-host identity, blackout keyboard capture, or successor allocation blockers.
