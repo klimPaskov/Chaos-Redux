@@ -66,7 +66,7 @@ Human events `70` and `72` use `GFX_report_event_fallout_resource_crisis`. The s
 
 This tranche adds no call to `fallout_orientation_begin_immediate_resource_crisis`. It adds no setter for the resource package receipt, any regional, archetype, or memory approval surface, `fallout_event_scheduler_activation_approved`, or `fallout_event_scheduler_active`.
 
-Events `70` through `73` have no event-log rows or event-detail rows. They remain uncounted. Defined Ash-week orientation blocks become 11 of 23, while countable Fallout living-world blocks remain 0 of 660.
+Events `70` through `73` have no event-log rows or event-detail rows. They remain uncounted. After the later government pilot, defined Ash-week orientation blocks are 15 of 23, while countable Fallout living-world blocks remain 0 of 660.
 
 ## Engine-sensitive proof status
 

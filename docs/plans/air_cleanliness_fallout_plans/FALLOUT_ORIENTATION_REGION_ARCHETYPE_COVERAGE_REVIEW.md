@@ -54,4 +54,6 @@ The caller remains additionally blocked by successor allocation, player continua
 
 The reviewed twelve-successor memory pilot now has exact immediate-resource runtime rows. Each row authenticates its country memory, live region, government archetype, supporting resource, and deterministic AI preference. Human and hidden-AI roots and delayed results exist at events `70` through `73`, with country-memory text for all twelve rows.
 
-This is not approval of the complete 108-cell matrix. The other 96 region and archetype combinations have no resource runtime row. The separate capital-asset package receipt has no setter. The regional, archetype, and memory approval surfaces also have no setter. No orientation caller or scheduler activation was added.
+The same twelve reviewed identities now have exact government-authority rows. Each binds a country memory, region, archetype, consolidation benefit, and deterministic AI preference. Human and hidden-AI roots and delayed results exist at events `74` through `77`, with exact institutional and rival language for all twelve identities.
+
+This is not approval of the complete 108-cell matrix. The other 96 region and archetype combinations have no resource or government runtime row. The separate resource capital-asset package receipt has no setter. The regional, archetype, memory, and government approval surfaces also have no setter. No orientation caller or scheduler activation was added.
