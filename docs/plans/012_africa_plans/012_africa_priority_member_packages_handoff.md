@@ -23,6 +23,7 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 - common/scripted_effects/012_africa_priority_member_character_effects.txt
 - common/scripted_effects/012_africa_priority_member_force_effects.txt
 - common/scripted_effects/012_africa_action_effects.txt
+- common/countries/012_africa_cosmetic.txt
 - common/scripted_localisation/012_africa_scripted_localisation.txt
 - common/scripted_localisation/012_africa_priority_member_scripted_localisation.txt
 - common/decisions/012_africa_decisions.txt
@@ -35,6 +36,13 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 - localisation/english/012_africa_priority_member_focus_l_english.yml
 - interface/012_africa_priority_member_assets.gfx
 - interface/012_africa_priority_member_characters.gfx
+- docs/assets/012_africa_priority_members/manifest.md
+- docs/assets/012_africa_priority_members/gfx_handoff.md
+- docs/assets/012_africa_priority_members/source_png/
+- docs/assets/012_africa_priority_members/processed_png/
+- docs/assets/012_africa_priority_members/contact_sheets/
+- docs/assets/012_africa_priority_members/validation/review.md
+- gfx/interface/decisions/012_africa/priority_members/
 
 Focus texture folder:
 
@@ -89,13 +97,6 @@ Vanilla documentation and precedents:
 - common/scripted_effects/006_independence_wave_decision_effects.txt
 - common/decisions/African_Union_decisions.txt
 - common/decisions/categories/African_Union_decision_categories.txt
-- docs/assets/012_africa_priority_members/manifest.md
-- docs/assets/012_africa_priority_members/gfx_handoff.md
-- docs/assets/012_africa_priority_members/source_png/
-- docs/assets/012_africa_priority_members/processed_png/
-- docs/assets/012_africa_priority_members/contact_sheets/
-- docs/assets/012_africa_priority_members/validation/review.md
-- gfx/interface/decisions/012_africa/priority_members/
 
 Event 012 sources:
 
@@ -420,7 +421,7 @@ The mechanic identifier and filename pattern matches the existing Event 012 asse
 | GFX_report_event_012_africa_priority_member_overlap_settlement | report_event_012_africa_priority_member_overlap_settlement.dds |
 | GFX_report_event_012_africa_priority_member_departure | report_event_012_africa_priority_member_departure.dds |
 
-The expanded registration covers the package focus and idea icons in addition to these 60 decision and report references. Direct identity localisation is complete. Forty of the fifty-six decision references now have reviewed final DDS files. The sixteen post-settlement decisions, eight focus icons, thirty-five idea icons, four report pictures, national flags, and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
+The expanded registration covers the package focus and idea icons in addition to these 60 decision and report references. Direct identity localisation and all sixteen cosmetic country-colour definitions are complete. Forty of the fifty-six decision references now have reviewed final DDS files. The sixteen post-settlement decisions, eight focus icons, thirty-five idea icons, four report pictures, national flags, and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
 
 ### Institutional-council portraits
 
