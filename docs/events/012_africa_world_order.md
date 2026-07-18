@@ -22,7 +22,7 @@ No response grants African membership, integration, annexation, or cores. The fo
 
 - `common/script_constants/012_africa_world_order_constants.txt` contains phase identifiers, continent identifiers, package statuses, shared costs, durations, thresholds, and reward values.
 - `common/scripted_triggers/012_africa_world_order_triggers.txt` contains candidate, phase, sponsorship, union, war, and terminal checks.
-- `common/scripted_effects/012_africa_world_order_effects.txt` contains the one-time census, response choices, package installation, obligations, package ledgers, and terminal cleanup.
+- `common/scripted_effects/012_africa_world_order_effects.txt` contains the one-time census, response choices, package installation, obligations, package ledgers, and terminal cleanup. Parallel focus contributions are counted independently, while the displayed package step remains the highest numbered step reached.
 - Actions 77 through 92 continue to use the shared Action 1 through 102 selector and outcome kernel. The world-order file supplies their exact full, partial, and failure semantics.
 - Candidate countries qualify only if they still use the generic focus tree or carry the explicit `africa_world_package_focus_replacement_approved` audit flag. Meaningful existing country trees are not replaced.
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
@@ -38,7 +38,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-The Middle East, Europe, Asia, and North America packages currently have their dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. South America and Oceania are not marked implementation-ready until their complete package files exist. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
+The Middle East, Europe, Asia, North America, and South America packages currently have their dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Oceania is not marked implementation-ready until its complete package file exists. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
 
 ## Middle East implementation
 
@@ -105,6 +105,49 @@ All twenty sprites are registered in `interface/012_africa_world_order.gfx`. The
 - `GFX_goal_012_africa_continent_union_north_america_africa_diaspora_treaty` uses `goal_012_north_america_africa_diaspora_treaty.dds`.
 - `GFX_goal_012_africa_continent_union_north_america_ratification` uses `goal_012_north_america_ratification.dds`.
 
+## South America implementation
+
+The Andes, Amazon, and Plata Balance begins with mountain transport, Amazon river and forest law, La Plata and two-ocean access, and a public audit of concessions and foreign debt. Six mutually exclusive settlements follow: congress of republics, plural federation, socialist continental union, continental command, restored continental concert, and a reviewed sun covenant. Each route receives its own chamber before converging on resource and debt sovereignty, defence and corridors, the South Atlantic partnership with Africa, and final ratification.
+
+The converged lanes remain constitution-specific. Republican institutions favour formal regional representation and public concessions review. The federation equalises the three regional voices. The socialist union favours collective resource control. The command route gains the strongest mountain and naval coordination while carrying lower indigenous representation and debt freedom. The restored concert binds courts to regional institutions. The sun covenant gives ecological and indigenous law priority, and remains locked until `africa_south_america_high_chaos_package_reviewed` confirms its separate nonhuman, ecological, text, and asset review.
+
+The South Atlantic partnership covers shipping, cultural links, voluntary diaspora ties, resources, and security. Cultural and development projects require local acceptance. No opinion value creates integration.
+
+| Settlement | Andean voice | Amazon voice | La Plata voice | Indigenous representation | Resource sovereignty | Debt freedom |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Congress of republics | 100 | 45 | 100 | 95 | 75 | 75 |
+| Plural federation | 100 | 85 | 100 | 100 | 65 | 65 |
+| Socialist continental union | 80 | 75 | 100 | 65 | 100 | 65 |
+| Continental command | 100 | 45 | 100 | 35 | 85 | 50 |
+| Restored continental concert | 100 | 45 | 100 | 85 | 65 | 50 |
+| Sun covenant | 80 | 100 | 70 | 100 | 85 | 55 |
+
+### South America focus icon contracts
+
+All twenty-one sprites are registered in `interface/012_africa_world_order.gfx`. Their final DDS files belong under `gfx/interface/goals/012_africa/world_order/` and remain blocked until each one has approved source, processed PNG, DDS, manifest, and review evidence.
+
+- `GFX_goal_012_africa_continent_sponsorship_south_america_three_regions_balance` uses `goal_012_south_america_three_regions_balance.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_south_america_andean_transport` uses `goal_012_south_america_andean_transport.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_amazon_river` uses `goal_012_south_america_amazon_river.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_south_america_plata_ports` uses `goal_012_south_america_plata_ports.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_resource_debt_audit` uses `goal_012_south_america_resource_debt_audit.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_republics` uses `goal_012_south_america_republics.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_plural_federation` uses `goal_012_south_america_plural_federation.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_socialist_union` uses `goal_012_south_america_socialist_union.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_continental_command` uses `goal_012_south_america_continental_command.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_restored_concert` uses `goal_012_south_america_restored_concert.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_sun_covenant` uses `goal_012_south_america_sun_covenant.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_republican_chamber` uses `goal_012_south_america_republican_chamber.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_three_regions_council` uses `goal_012_south_america_three_regions_council.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_workers_communes` uses `goal_012_south_america_workers_communes.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_command_statute` uses `goal_012_south_america_command_statute.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_council_of_realms` uses `goal_012_south_america_council_of_realms.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_sun_covenant_law` uses `goal_012_south_america_sun_covenant_law.dds`.
+- `GFX_goal_012_africa_continental_representation_south_america_resource_sovereignty` uses `goal_012_south_america_resource_sovereignty.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_south_america_defence_corridors` uses `goal_012_south_america_defence_corridors.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_south_atlantic_partnership` uses `goal_012_south_america_south_atlantic_partnership.dds`.
+- `GFX_goal_012_africa_continent_union_south_america_ratification` uses `goal_012_south_america_ratification.dds`.
+
 ## Asset contracts
 
 The accepted matrix entries are registered in `interface/012_africa_world_order.gfx`. No generic texture redirection is used.
@@ -115,6 +158,7 @@ The accepted matrix entries are registered in `interface/012_africa_world_order.
 - Europe focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_europe_<focus_slug>.dds`
 - Asia focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_asia_<focus_slug>.dds`
 - North America focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_north_america_<focus_slug>.dds`
+- South America focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_south_america_<focus_slug>.dds`
 - Package ideas: `gfx/interface/ideas/012_africa/world_order/idea_012_<continent>_<identity>.dds`
 - Route flags: the seven `continent_package_*` identity packages in `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`
 - Scramble super-event: `GFX_super_event_012_africa_scramble_response`
@@ -129,7 +173,7 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 
 ## Future implementation work
 
-- Finish and audit the South America and Oceania focus trees, then complete the political, military, AI, decision, identity, and asset surfaces still required for all six continent packages.
+- Finish and audit the Oceania focus tree, then complete the political, military, AI, decision, identity, and asset surfaces still required for all six continent packages.
 - Add route-specific post-settlement decisions and breakup rules for every two-continent union.
 - Bind all 64 Event 12 AI profiles to the Scramble and world-order action choices.
 - Complete the accepted news, focus, idea, flag, super-event, animation, and audio assets with no substitutions.
