@@ -13,6 +13,8 @@ The accepted Ash-week orientation contract reserves 23 blocks at `chaosx.fallout
 
 The schema-3 Cohesion and State Supply Access ledgers and the authenticated live Air Winter result mapping are substrate, not event blocks. They do not increase the release count. Fifteen orientation blocks are defined at `62` through `65`, `70` through `77`, and `82` through `84`, but they remain uncounted. Orientation still fails acceptance while its caller, eight reserved blocks, exact capital repair, the other 96 region and archetype cells, the character registry, logs, details, and final audits remain incomplete.
 
+The accepted dormant scheduler numerical substrate is also non-countable. Constants, candidate scoring, fatigue, pacing receipts, transaction caps, bounded review lanes, debug receipts, and save-recovery helpers do not count as event blocks. Suffix reservations `100` through `126` remain at zero defined blocks until separately reviewed content exists.
+
 The implementation count target is detailed in `matrices/fallout_run_event_budget_matrix.md`.
 
 ## Coverage target
@@ -46,6 +48,22 @@ The run budget matrix controls:
 - late-game pacing
 
 A library of hundreds of events must not become hundreds of popups in one game.
+
+The accepted continuous-content baseline is about 114.9 visible beats for a small successor, 129.0 for a medium successor, and 147.2 for a large successor from Ash week through day 3650. Every opening reserves all visible beats promised by its envelope. Large successors never receive an ordinary base cooldown shorter than fourteen days.
+
+Pacing acceptance requires all of these properties:
+
+- a two-beat envelope reserves twice its phase and size base cooldown
+- an issued opening adds 60 fatigue once and fatigue decays by one point per elapsed day
+- exact candidate ties choose the lower stable identity regardless of registry iteration order
+- three active major arcs block a fourth opening but not an authenticated continuation
+- the third recent noncapital nonsiege state incident is rejected
+- one recurring character or institution cannot own two independent arcs
+- bilateral reservations commit both reciprocal rows or neither
+- a full eight-row delayed queue or six-row bilateral queue rejects new work without deleting an older row
+- save recovery retries one frozen unissued selection and never reissues an issued selection
+- human and hidden AI routes reserve the same costs, results, fatigue, delayed rows, memory, and cleanup
+- no numerical helper sets either activation flag or defines a block in suffixes `100` through `126`
 
 ## Event block quality
 

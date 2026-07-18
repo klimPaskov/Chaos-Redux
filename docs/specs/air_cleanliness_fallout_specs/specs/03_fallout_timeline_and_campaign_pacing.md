@@ -135,6 +135,29 @@ The approved scoring inputs, branch costs, result values, regional and archetype
 
 No country should begin with every decision visible. The orientation opens the first emergency set.
 
+## Accepted ordinary scheduler pacing
+
+The user approved the living-world scheduler numerical contract on 2026-07-18. It replaces the earlier 10 through 14 day draft cadence with a phase and frozen successor-size table. Frozen size is small for 1 through 3 assigned states, medium for 4 through 9, and large for 10 or more. Later conquest and fragmentation do not change that pacing identity.
+
+| Phase | Small | Medium | Large |
+| --- | ---: | ---: | ---: |
+| First season | 24 days | 18 days | 14 days |
+| First winter year | 28 days | 24 days | 20 days |
+| Consolidation | 32 days | 28 days | 24 days |
+| Rival orders | 34 days | 30 days | 26 days |
+| New states | 36 days | 32 days | 28 days |
+| Soot retreat | 38 days | 34 days | 30 days |
+| Second world | 40 days | 36 days | 32 days |
+| Open continuation | 46 days | 42 days | 38 days |
+
+Every opening reserves its complete visible envelope through an immutable visible-budget cost from 1 through 4. A result may extend the due day. It cannot shorten the reservation. A pressure-80 crisis may break cadence only after a seven-day visible gap and outside a 180-day crisis-break lock. That break reserves 42 days for each visible beat in its envelope. Broadcasts keep the separate thirty-day global minimum.
+
+Under continuous eligible content, the day-8-through-day-3650 arithmetic produces about 103.9 ordinary visible beats for a small successor, 118.0 for a medium successor, and 136.2 for a large successor. Including the eleven planned visible Ash-week beats gives baselines of about 114.9, 129.0, and 147.2. Candidate droughts, invalid targets, route locks, wars, and choices can lower those totals. Rare crisis breaks can raise them.
+
+The coordinator reviews current human successors once per engine date and reviews 1, 2, 3, or 4 AI registry countries when the frozen registry contains 1 through 30, 31 through 60, 61 through 90, or at least 91 countries. Transaction reconciliation runs first. One country may commit no more than one newly selected envelope on the same engine date.
+
+The exact scoring, fatigue, target repetition, transaction caps, deterministic tie order, AI parity, and save-recovery requirements are authoritative in `01_living_world_event_ecosystem.md`. The numerical implementation remains dormant. It does not authorize either activation setter, a candidate-content row, an ordinary event call, or release-floor credit.
+
 ## Days 8 to 30
 
 Eligible event families:
