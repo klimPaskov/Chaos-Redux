@@ -71,6 +71,21 @@ Every state receives one grade. This grade controls category rewrite, population
 | 5 | Vitrified zone | Direct thermonuclear in high-value target or repeated strikes | Almost no ordinary life. Rare mutants, robots, sealed bunkers, or forbidden zones. |
 | 6 | Altered biosphere | High radiation plus biological, chemical, or strange cause memory | Mutant countries, fungal states, strange units, unique research and dangers. |
 
+## Accepted immediate population-loss contract
+
+The standard Fallout rewrite removes approximately 90 to 95 percent of the population from every state after the destructive trigger has completed. The deterministic grade ladder is:
+
+| Grade | Population-loss request |
+| ---: | ---: |
+| Remote refuge | 90 percent |
+| Scarred province | 91 percent |
+| Ash zone | 92 percent |
+| Dead city | 93 percent |
+| Wasteland | 94 percent |
+| Vitrified zone | 95 percent |
+
+The request is calculated from the frozen pretransition population. The mutation is clamped to the live population with one person protected in every nonempty state. The transaction observes the actual state-population delta and registers exactly that observed delta through the shared Deaths system without applying population loss a second time. Zero-population states remain zero. Recovery may reconcile the issued mutation but may never issue it again.
+
 ## Cause memory impact on state grades
 
 | Cause memory | Grade bias |

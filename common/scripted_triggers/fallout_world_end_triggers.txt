@@ -439,12 +439,23 @@ fallout_pretransition_state_snapshot_row_is_structurally_current = {
 	has_variable = fallout_pretransition_non_damaged_dockyard
 	has_variable = fallout_pretransition_non_damaged_supply_node
 	has_variable = fallout_pretransition_non_damaged_rail_way
+	has_variable = fallout_pretransition_non_damaged_naval_base
+	has_variable = fallout_pretransition_non_damaged_radar_station
+	has_variable = fallout_pretransition_non_damaged_synthetic_refinery
+	has_variable = fallout_pretransition_non_damaged_fuel_silo
+	has_variable = fallout_pretransition_non_damaged_dam
+	has_variable = fallout_pretransition_non_damaged_dam_mountain
+	has_variable = fallout_pretransition_non_damaged_cataract_dam_mountain
+	has_variable = fallout_pretransition_non_damaged_nuclear_reactor
+	has_variable = fallout_pretransition_non_damaged_nuclear_reactor_heavy_water
+	has_variable = fallout_pretransition_non_damaged_commercial_nuclear_reactor
 	has_variable = fallout_pretransition_resource_oil
 	has_variable = fallout_pretransition_resource_aluminium
 	has_variable = fallout_pretransition_resource_rubber
 	has_variable = fallout_pretransition_resource_tungsten
 	has_variable = fallout_pretransition_resource_chromium
 	has_variable = fallout_pretransition_resource_steel
+	has_variable = fallout_pretransition_resource_coal
 	has_variable = fallout_pretransition_days_since_bombing
 	has_variable = fallout_pretransition_nuclear_fallout_intensity
 	has_variable = fallout_pretransition_state_category
@@ -796,15 +807,22 @@ fallout_population_loss_receipt_is_durable = {
 	has_state_flag = fallout_population_loss_reconciled
 	has_variable = fallout_population_loss_percent_applied
 	has_variable = fallout_population_loss_requested_memory
+	has_variable = fallout_population_before_loss_k
 	has_variable = fallout_population_before_loss_people
+	has_variable = fallout_population_before_loss_people_replay
 	has_variable = fallout_population_available_before_loss
 	has_variable = fallout_population_expected_loss
 	has_variable = fallout_population_after_loss_people
 	has_variable = fallout_population_after_loss_k
 	has_variable = fallout_population_reconciled_loss
+	has_variable = fallout_population_reconciled_total_people
 	has_variable = fallout_population_loss_memory
 	fallout_population_deaths_accounting_receipt_is_durable = yes
+	check_variable = { var = fallout_population_before_loss_k value = fallout_pretransition_population_k compare = equals }
+	check_variable = { var = fallout_population_before_loss_people_replay value = fallout_population_before_loss_people compare = equals }
+	check_variable = { var = fallout_population_reconciled_total_people value = fallout_population_before_loss_people compare = equals }
 	check_variable = { fallout_population_loss_requested_memory > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_population_before_loss_k > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_population_before_loss_people > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_population_available_before_loss > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_population_expected_loss > constant:fallout_runtime.negative_one }
@@ -835,6 +853,18 @@ fallout_population_loss_receipt_is_durable = {
 		var = fallout_population_reconciled_loss
 		value = fallout_population_loss_memory
 		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = { fallout_population_before_loss_people = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_after_loss_people = constant:fallout_runtime.zero }
+			check_variable = { fallout_population_loss_memory = constant:fallout_runtime.zero }
+		}
+		AND = {
+			check_variable = { fallout_population_before_loss_people > constant:fallout_runtime.zero }
+			check_variable = { fallout_population_after_loss_people > constant:fallout_runtime.zero }
+			check_variable = { var = fallout_population_after_loss_people value = fallout_population_before_loss_people compare = less_than_or_equals }
+		}
 	}
 	OR = {
 		AND = {
@@ -1040,7 +1070,7 @@ fallout_state_subtype_modifier_receipt_is_current = {
 }
 
 # Supported scope: STATE. Historical damage identifiers record permanently
-# removed building levels in transition schema 11.
+# removed building levels in transition schema 12.
 fallout_state_building_damage_receipt_is_durable = {
 	has_state_flag = fallout_building_damage_mutation_issued
 	has_state_flag = fallout_building_damage_evaluated
@@ -1072,6 +1102,11 @@ fallout_state_building_damage_receipt_is_durable = {
 	has_variable = fallout_building_damage_after_arms_factory
 	has_variable = fallout_building_damage_after_air_base
 	has_variable = fallout_building_damage_after_dockyard
+	has_variable = fallout_building_damage_after_non_damaged_infrastructure
+	has_variable = fallout_building_damage_after_non_damaged_industrial_complex
+	has_variable = fallout_building_damage_after_non_damaged_arms_factory
+	has_variable = fallout_building_damage_after_non_damaged_air_base
+	has_variable = fallout_building_damage_after_non_damaged_dockyard
 	check_variable = { var = fallout_building_damage_available_infrastructure value = fallout_building_damage_before_infrastructure compare = equals }
 	check_variable = { var = fallout_building_damage_available_industrial_complex value = fallout_building_damage_before_industrial_complex compare = equals }
 	check_variable = { var = fallout_building_damage_available_arms_factory value = fallout_building_damage_before_arms_factory compare = equals }
@@ -1082,6 +1117,16 @@ fallout_state_building_damage_receipt_is_durable = {
 	check_variable = { fallout_building_damage_after_arms_factory > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_building_damage_after_air_base > constant:fallout_runtime.negative_one }
 	check_variable = { fallout_building_damage_after_dockyard > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_non_damaged_infrastructure > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_non_damaged_industrial_complex > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_non_damaged_arms_factory > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_non_damaged_air_base > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_building_damage_after_non_damaged_dockyard > constant:fallout_runtime.negative_one }
+	check_variable = { var = fallout_building_damage_after_non_damaged_infrastructure value = fallout_building_damage_after_infrastructure compare = less_than_or_equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_industrial_complex value = fallout_building_damage_after_industrial_complex compare = less_than_or_equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_arms_factory value = fallout_building_damage_after_arms_factory compare = less_than_or_equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_air_base value = fallout_building_damage_after_air_base compare = less_than_or_equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_dockyard value = fallout_building_damage_after_dockyard compare = less_than_or_equals }
 	check_variable = { var = fallout_building_damage_observed_infrastructure value = fallout_building_damage_requested_infrastructure compare = equals }
 	check_variable = { var = fallout_building_damage_observed_industrial_complex value = fallout_building_damage_requested_industrial_complex compare = equals }
 	check_variable = { var = fallout_building_damage_observed_arms_factory value = fallout_building_damage_requested_arms_factory compare = equals }
@@ -1115,6 +1160,11 @@ fallout_state_building_damage_receipt_is_current = {
 	check_variable = { var = fallout_building_damage_after_arms_factory value = building_level@arms_factory compare = equals }
 	check_variable = { var = fallout_building_damage_after_air_base value = building_level@air_base compare = equals }
 	check_variable = { var = fallout_building_damage_after_dockyard value = building_level@dockyard compare = equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_infrastructure value = non_damaged_building_level@infrastructure compare = equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_industrial_complex value = non_damaged_building_level@industrial_complex compare = equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_arms_factory value = non_damaged_building_level@arms_factory compare = equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_air_base value = non_damaged_building_level@air_base compare = equals }
+	check_variable = { var = fallout_building_damage_after_non_damaged_dockyard value = non_damaged_building_level@dockyard compare = equals }
 }
 
 # Supported scope: STATE. Both the aggregate and direct province selector must

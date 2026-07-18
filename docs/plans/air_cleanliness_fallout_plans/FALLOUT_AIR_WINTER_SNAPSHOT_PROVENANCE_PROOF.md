@@ -2,7 +2,7 @@
 
 ## Status
 
-World transition schema 11 retains the Air Winter provenance contract that closed the stale-zero defect in the frozen payload and the stale-category defect in grading and rewrite. Fallout does not treat a missing Air Winter producer as a real phase or resource value. It also does not use Air Winter's historical restoration category as the live transition category. The request coordinator withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
+World transition schema 12 retains the Air Winter provenance contract that closed the stale-zero defect in the frozen payload and the stale-category defect in grading and rewrite. Schema 12 adds specialty survival inputs without changing Air Winter producer ownership. Fallout does not treat a missing Air Winter producer as a real phase or resource value. It also does not use Air Winter's historical restoration category as the live transition category. The request coordinator withholds blackout and world-end ownership until the player and world snapshot ledgers pass their complete synchronous capture proofs.
 
 This is static source proof. Hearts of Iron IV was not launched.
 
@@ -51,7 +51,7 @@ The synchronous capture proof compares every produced frozen value, schema, gene
 
 ## Transactional blackout lock
 
-`fallout_lock_transition` prepares schema 11 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
+`fallout_lock_transition` prepares schema 12 and phase 1 before entering a short pre-lock capture transaction. The rebuild helper accepts a call only when:
 
 - the pre-lock authorization flag is active on the request coordinator, or
 - a current-schema active Fallout transition remains in the snapshot phase on the coordinator
@@ -72,7 +72,7 @@ If a nonmanual source fails before lock, its pending envelope remains available 
 
 ## Migration
 
-Schema 7, schema 8, schema 9, and schema 10 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-11 epoch through the Air Winter producer and live category capture. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
+Schema 7 through schema 11 may attempt a rebuild only when the transition is active in the snapshot phase, the snapshot has not been applied, destruction has not started, and no unrelated error owns the ledger. The rebuild discards both old snapshot halves and attempts one schema-12 epoch through the Air Winter producer, live category capture, and survival-input capture. It writes completion flags only when both halves pass. Otherwise, the existing fail-closed snapshot error remains.
 
 Active schema-10 phases after snapshot use the narrower supply-network migration contract. Phase 2 may promote before grading mutation. Phase 3 through 6 may promote only before successor allocation, after current grading, and after every destructive-grade state's live node and railway aggregates still match the frozen snapshot. Phase 3 continues to population loss and phase 4 executes physical collapse. Phase 5 or 6 rewinds to physical collapse. Schema-10 phase 7 or 8 states and initialized allocation remain blocked.
 

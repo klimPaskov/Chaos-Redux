@@ -115,7 +115,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema 11 fail-closed policy implemented, full transition still blocked
+Status: schema 12 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -139,7 +139,7 @@ Implemented policy:
 - migration does not infer safety from a missing `fallout_transition_destructive_started` marker
 - no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The schema-7 through schema-10 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-11 row freezes the live state category separately from the historical Air Winter category and includes the market-access and province supply-network contracts. Any ambiguity remains blocked.
+The schema-7 through schema-11 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-12 row freezes the live state category separately from the historical Air Winter category, freezes specialty survival inputs and coal, and includes the market-access and province supply-network contracts. Any ambiguity remains blocked.
 
 Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
 
@@ -224,14 +224,16 @@ Implemented structural proof:
 - a current runtime schema can bind a schema-1 registry only while registry-ready and dormant, with no scheduler error, after the map-return and full survival ledger pass, and after every indexed registry, allocation, and survival row agrees
 - successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
 - no daily global candidate pool, candidate selector, call to the ordinary reservation API, event definition, or activation setter exists
-- the formula-neutral identity transaction stages exact successor and state rows with generation, allocation, region, archetype, country-memory, destructive-phase, and resource-index provenance
+- the identity-first transaction stages exact successor and state rows with generation, allocation, region, archetype, country-memory, destructive-phase, and resource-index provenance
 - a malformed uncommitted identity payload can be reset and restaged only during survivor allocation. The error-owned route requires the sole `survival_ledger_incomplete` signature, current planning and allocation proof, and no committed survival or player-continuation receipt
+- the numerical transaction calculates and replays every state and country row from frozen receipts, preserves immutable initial values, and writes the sole global ready flag last
+- a malformed uncommitted numerical payload can be cleared and retried only through the complementary exact one-error signature while identity remains current
 - survivor-allocation advancement, player continuation, map return, and scheduler initialization require the committed ledger
 - the frozen Fallout snapshot distinguishes a current produced Air Winter value from an explicit N/A row through schema and generation receipts
 
 Missing release work:
 
-- [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) defines the current proposed 0 to 100 formulas, aggregation, initialization, validation, and ready-last commit order. It is not accepted, so numerical state rows, country aggregation, value validation, row commits, and the global ready setter remain absent
+- survival numerical initialization is implemented under the accepted contract. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md) records the exact transaction and static arithmetic cases. Scheduler activation and event content remain absent
 - no candidate selection, event definition, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
 - bilateral event content and callers remain absent. Human choices, hidden AI resolution, stale-subject cancellation, delayed results, and content-owned cleanup must invoke the exact wrappers and pass review before activation
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
@@ -266,7 +268,7 @@ The complete readback and inverse audit is recorded in [FALLOUT_DIPLOMACY_AND_IN
 
 ## B11: province supply-network runtime acceptance
 
-Status: schema-11 transaction implemented, static engine route supported, runtime topology proof blocked
+Status: schema-12 transition implemented, static engine route supported, runtime topology proof blocked
 
 Dead-city and higher grades use `set_building_level` with the documented all-provinces selector for `supply_node` and `rail_way`. The state row freezes its immediate aggregate baseline and exact target. Each family retries only the idempotent set-to-zero command until both the aggregate variable and `any_province_building_level` report zero. Grades below dead city settle with an explicit no-op row. The global receipt commits only after every state is current, and the phase advances only after the durable global and state receipts pass.
 
@@ -332,7 +334,7 @@ The 99 matrix rows are candidates. The rewrite selects a coherent subset. No req
 
 Resolved:
 
-All winter and Fallout population loss uses the shared Deaths pipeline. Fallout issues the bounded population mutation first, reads the observed state delta, and submits only that amount to Deaths with population application disabled. The enabled path proves global total movement, one log-sequence step, and matching state-map ledger movement. The user-disabled and zero-loss paths have distinct receipts.
+All winter and Fallout population loss uses the shared Deaths pipeline. Fallout requests 90, 91, 92, 93, 94, or 95 percent loss from the frozen state population according to grade. It protects one person in every nonempty state, issues the bounded population mutation first, reads the observed state delta, and submits only that amount to Deaths with population application disabled. The enabled path proves global total movement, one log-sequence step, and matching state-map ledger movement. The user-disabled and zero-loss paths have distinct receipts.
 
 The official engine surface still provides no population-only mutation. Recruitable-manpower neutrality depends on immediate `manpower_k` observation and correction in the shared population helper. Immediate population and building-level read timing is also not documented. No Hearts of Iron IV run was authorized, so both remain runtime acceptance blockers and are not reported as proven.
 

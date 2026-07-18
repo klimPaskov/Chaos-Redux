@@ -1,22 +1,22 @@
-# Fallout survival numerical contract proposal
+# Fallout survival numerical contract
 
 ## Status
 
-This document is proposed design. It is not accepted design and it does not authorize gameplay implementation.
+Accepted by the user for implementation. The numerical producer, replay validators, schema promotions, ready-last coordinator, and deterministic state population loss ladder are implemented in the current Fallout tranche.
 
-The current repository has an accepted formula-neutral identity transaction for the nine Fallout survival resources. It deliberately has no numerical producer, numerical commit effect, or setter for `fallout_survival_ledger_ready`. This proposal defines the missing numerical contract for review.
+This document remains the coefficient-level design record. The accepted baseline specifications contain the player-facing and architectural requirements. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md) records implementation evidence and static scenario arithmetic.
 
-Until this proposal is accepted:
+Implementation preserves these gates:
 
-- no survival numerical arrays may be populated
-- no survival row commit flag may be set
-- no effect may set `fallout_survival_ledger_ready`
-- the Fallout transition barrier remains closed
-- living-world event ids `100` through `106` and `123` through `126` remain blocked
+- only the survivor-allocation coordinator may populate the numerical arrays
+- row commit flags are provisional until exact replay succeeds
+- one effect owns the sole `fallout_survival_ledger_ready` setter and writes it last
+- living-world scheduler activation remains absent
+- living-world event ids `100` through `126` remain unimplemented and count as zero release-floor blocks
 
-## Design decisions proposed for acceptance
+## Accepted design decisions
 
-The proposal makes seven explicit decisions.
+The accepted contract makes seven explicit decisions.
 
 1. Every resource uses an integer 0 to 100 scale.
 2. State scores describe usable local capacity after Air Winter and the destructive Fallout rewrite. They do not reuse the general `fallout_survival_value` as a substitute.
@@ -198,11 +198,11 @@ The existing `fallout_building_damage_after_*` fields use `building_level@type`.
 
 The building-loss durable validator must require and replay these fields. Industry, Logistics, Port capacity, and Communication capacity use the post-rewrite non-damaged receipts, never retained total levels.
 
-The proposed specialty-source snapshot remains authoritative only because the current destructive rewrite does not mutate dams, reactors, refineries, fuel silos, naval bases, radar, or coal deposits after the snapshot. If that rewrite gains any such mutation, the same tranche must add and consume durable post-rewrite operational receipts for the affected source. A pretransition value cannot be retained as a silent proxy.
+The specialty-source snapshot remains authoritative only because the current destructive rewrite does not mutate dams, reactors, refineries, fuel silos, naval bases, radar, or coal deposits after the snapshot. If that rewrite gains any such mutation, the same tranche must add and consume durable post-rewrite operational receipts for the affected source. A pretransition value cannot be retained as a silent proxy.
 
 Adding these fields requires a world-transition schema promotion before any Fallout path is activated. An in-progress row from the earlier schema cannot be promoted through a numerical fallback and cannot replay destructive phases. It fails closed. A completed Fallout row receives no fabricated opening profile.
 
-No hospital, laboratory, greenhouse, aquifer, desalination, wind, or generator building has a durable accepted Fallout snapshot surface. This proposal does not invent one. Medicine uses surviving urban and industrial institutional capacity. Food and water use their reviewed Air Winter ledgers, which already encode regional food and water conditions.
+No hospital, laboratory, greenhouse, aquifer, desalination, wind, or generator building has a durable accepted Fallout snapshot surface. This contract does not invent one. Medicine uses surviving urban and industrial institutional capacity. Food and water use their reviewed Air Winter ledgers, which already encode regional food and water conditions.
 
 ### Air Winter not-applicable rows
 
@@ -214,7 +214,7 @@ Every committed country must have at least one frozen state with a produced Air 
 
 ## Common normalized signals
 
-All formula coefficients in this section become typed script constants if the proposal is accepted.
+All formula coefficients in this section are typed script constants.
 
 ### Access
 
@@ -481,9 +481,9 @@ This preserves a stable opening profile for event memory, AI comparison, recover
 
 ## Transaction order
 
-The accepted formula-neutral identity transaction remains the first phase. The proposed numerical transaction is a second phase with one coordinator.
+The accepted identity transaction remains the first phase. The numerical transaction is a second phase with one coordinator.
 
-Proposed effect ownership:
+Implemented effect ownership:
 
 - `fallout_reset_provisional_survival_numerical_payload` clears every numerical field while global ready is absent and never touches identity
 - `fallout_recover_uncommitted_survival_numerical_transaction` owns the one exact retry signature
@@ -600,7 +600,7 @@ country_raw_denominator = 100
 
 Dividing the coverage accumulator before the broad and hub blend keeps the stored country numerator within the same 10,000-point bound as a state row. The coverage division is not rounded. The implementation proof must re-count the installed map and confirm the 864,800 accumulator bound before coefficients are committed. Any later state-map expansion requires the bound and its typed maximum-state constant to be reviewed again.
 
-The installed script-concept documentation confirms fixed-point arithmetic but does not publish its absolute numeric ceiling. This ordering deliberately keeps the largest proposed value below 865,000. Runtime overflow behavior remains unobserved because HOI4 was not run.
+The installed script-concept documentation confirms fixed-point arithmetic but does not publish its absolute numeric ceiling. This ordering deliberately keeps the largest value below 865,000. Runtime overflow behavior remains unobserved because HOI4 was not run.
 
 ## Balance expectations for static review
 
@@ -630,21 +630,21 @@ The tables must show every component, state result, population weight, hub, coun
 
 ## Schema version policy
 
-Acceptance would promote `fallout_survival_ledger_schema.version` from 1 to 2 and record version 1 as the identity-only predecessor. A version-1 row can never be treated as numerically committed because no version-1 effect can set the global ready flag.
+Implementation promotes `fallout_survival_ledger_schema.version` from 1 to 2 and records version 1 as the identity-only predecessor. A version-1 row can never be treated as numerically committed because no version-1 effect can set the global ready flag.
 
 The added frozen and post-rewrite source fields also require promotion of `fallout_world_end_schema.version` from the current live value 11 to 12. If another accepted transition-schema tranche lands first, implementation must allocate the then-highest live version plus one and update this plan before code review.
 
 There is no value migration. A version-1 survival identity may be cleared and restaged only when its world snapshot already satisfies the promoted source contract and no destructive phase is replayed. An older world snapshot fails closed. No effect reads later live buildings, deposits, Air Winter values, or ownership to fill a missing source.
 
-## Known preflight blocker outside this proposal
+## Separate request-source dependency
 
-The current dirty strategic-singularity work adds Fallout request source 8. The live `fallout_world_snapshot_rows_are_current` proof still caps the frozen request source at `legacy_fallout`, which is source 7. A strategic-singularity request therefore cannot pass the snapshot proof required by this numerical producer.
+The numerical contract does not own request sources beyond `legacy_fallout`, which is source 7. A separately owned strategic-singularity route in the working tree adds source 8 and aligns the snapshot validator with that source.
 
-This proposal does not own or patch that work. Its owner must align the request-source upper-bound validation before the numerical tranche can pass preflight for every accepted terminal source. The ordinary Air Contamination and existing terminal-source routes remain separate from that unresolved dirty hunk.
+Those strategic-singularity hunks are not recorded by this numerical tranche. Air Contamination and the existing terminal sources remain independently valid through source 7.
 
-## Implementation surface after acceptance
+## Implementation surface
 
-The numerical tranche would touch only reviewed Fallout-owned files and aligned documentation.
+The numerical tranche touches only reviewed Fallout-owned files and aligned documentation.
 
 - `common/script_constants/fallout_world_end_event_constants.txt`
 - `common/script_constants/fallout_world_end_constants.txt` for the required world-transition schema promotion only
@@ -655,9 +655,9 @@ The numerical tranche would touch only reviewed Fallout-owned files and aligned 
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SURVIVAL_LEDGER_IDENTITY_TRANSACTION_PROOF.md`
 - a new numerical transaction proof under the same plan folder
 
-`common/script_constants/fallout_world_end_constants.txt` currently contains overlapping user-owned work. It must not be edited or staged until those hunks are reconciled. The future numerical tranche still requires a narrow world-transition schema promotion there because old snapshot rows do not contain the proposed specialty-source fields. Numerical coefficients belong in the dedicated Fallout event constants file.
+`common/script_constants/fallout_world_end_constants.txt` contains overlapping strategic-singularity work. The numerical implementation changes only the world-transition schema, its predecessor marker, and the deterministic population-loss ladder there. Numerical coefficients remain in the dedicated Fallout event constants file.
 
-Any new reusable dynamic helper must be documented in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change. No helper is proposed merely to bypass a static effect field.
+Any new reusable dynamic helper must be documented in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change. This implementation adds no shared dynamic helper.
 
 ## Engine references and precedents
 
@@ -679,7 +679,7 @@ Vanilla precedents inspected:
 - `events/BBA_ItaloEthiopianWar.txt` for engine-native variable rounding
 - `events/GOE_Raj.txt` for ordered rounding and clamping of calculated values
 
-The read-only HOI4 event inspection tool returned internal errors for both namespace and file selectors during the independent architecture audit. No event-inspection result is claimed. The proposal's engine evidence is the installed official documentation, offline wiki snapshot, direct vanilla source, and direct repository source listed here.
+The read-only HOI4 event inspection tool returned internal errors for both namespace and file selectors during the independent architecture audit. No event-inspection result is claimed. The contract's engine evidence is the installed official documentation, offline wiki snapshot, direct vanilla source, and direct repository source listed here.
 
 Repository precedents:
 
@@ -707,15 +707,15 @@ Approval must cover each of these choices. They are design tuning, not conclusio
 - use of pretransition non-damaged specialty assets only while the destructive rewrite leaves them unchanged
 - no generic region or country-memory adjustment at initialization
 
-## Acceptance choice
+## Acceptance record
 
-Approval of this proposal would authorize the numerical implementation exactly as written, including the required snapshot additions, formula weights, aggregation bands, Recognition adjustment, replay validators, idempotent commit order, and sole ready-flag setter.
+The user approved this contract exactly as written, including the required snapshot additions, formula weights, aggregation bands, Recognition adjustment, replay validators, idempotent commit order, and sole ready-flag setter.
 
-If any coefficient, input, aggregation rule, or archetype adjustment should change, revise this document before implementation. Silence does not count as acceptance.
+Any later coefficient, input, aggregation rule, or archetype adjustment change requires another reviewed contract revision.
 
 ## Out of scope
 
-This proposal does not authorize:
+This accepted numerical contract does not authorize:
 
 - manual scenario activation
 - scheduler activation setters
