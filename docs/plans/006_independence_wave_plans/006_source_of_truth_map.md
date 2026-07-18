@@ -5,7 +5,8 @@ Curated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 
 Completion state: **incomplete and active; the IW-043/IW-058 signature tranche is implemented, while scoped closeout and whole-event audits remain pending**.
 
 This is a documentation reconciliation snapshot. It does not change the
-accepted Event 006 design. The committed portrait baseline is `95f7529c7`.
+accepted Event 006 design. The current portrait authority is the reviewed
+`portrait_refresh_male_hoi4_2026_07_18` package and its matching handoff.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
 
@@ -37,10 +38,10 @@ runtime admission state.
    documents. They supersede earlier resume and curator status summaries.
 
 For Event 006 portraits, the current asset authorities are
-`../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+`../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
 and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
 Their acceptance authorities are
-`subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`
+`subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`
 and `subagent_handoffs/006_mediterranean_large_portraits_2026_07_16.md`.
 All 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, and
 army-small visual/hash approvals are superseded.
@@ -209,7 +210,7 @@ described as absent:
 | Liberations cluster availability | `62e937dcc` |
 | FORM-01 through FORM-04 | `98ec32e93` |
 | FORM-01 tag correction and ideology aliases | `e983b676d` and `ffc227156` |
-| Current male HOI4 portrait replacement | `../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and `subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`; older portrait and army-small commits remain historical only, and custom advisor dossiers remain withdrawn |
+| Current male HOI4 portrait replacement | `../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md` and `subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`; older portrait and army-small commits remain historical only, and no Event 006 advisor portrait or icon package exists |
 | Installed-mod tag collision audit | `e0c1d5831` |
 | IW-003 map blocker record | `2f867e9cd` |
 | AFX and AGX package promotions | AGX entered through `2912e0a46`; AFX was later repaired at Level 2 and restored through `006_afx_final_admission_audit_2026_07_16.md` and the exact current registry |
@@ -240,7 +241,7 @@ packages. It also records these open boundaries:
   awarded.
 
 The accepted portrait ledgers are
-`../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+`../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
 and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
 Their runtime hash inventories and audits supersede every 2026-07-15 fictional
 portrait and army-small ledger. ACX and AEX remain readiness-pool only,
@@ -291,8 +292,8 @@ recording without explicit user approval.
 | `006_cluster_integration_audit_2026_07_15.md` | Partly superseded | Cluster architecture remains useful. Its one-attested-package snapshot predates `2912e0a46` |
 | `006_current_installed_map_binding_audit_handoff.md` | Implemented evidence | Current installed-map binding authority. Its Trabzon and Kashmir protections are present |
 | `006_installed_tag_and_vanilla_identity_audit_handoff.md` and dated tag audit | Implemented evidence | Current tag snapshot until registry or environment changes |
-| All 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, and army-small handoffs | Superseded for portrait visuals, hashes, and approval | Use the 2026-07-16 male-HOI4 manifest and final independent audit. Historical gameplay and flag findings remain bounded by each file's supersession note |
-| `006_event6_male_hoi4_portrait_regeneration_2026_07_16.md` and final independent audit | Current portrait authority | Twenty male fictional large portraits and ten commander-small dossiers accepted; ACX/AEX remain readiness-pool only; Rupprecht/Matthes remain protected; advisor icons remain withdrawn |
+| All 2026-07-15 and 2026-07-16 fictional portrait, BRI portrait, mixed NWE portrait, and army-small handoffs | Superseded for portrait visuals, hashes, and approval | Use the 2026-07-18 male-HOI4 refresh manifest and handoff. Historical gameplay and flag findings remain bounded by each file's supersession note |
+| `006_event6_male_commander_portrait_refresh_2026_07_18.md` | Current portrait authority | Twenty male fictional large portraits and ten commander-only 65x67 miniatures accepted; ACX/AEX remain readiness-pool only; Rupprecht/Matthes remain protected; no Event 6 advisor icon or portrait asset is present |
 | `006_nwe_country_package_audit_2026_07_15.md` | Partly superseded | Use later remediation, FORM commits, package re-audits, and the current compile-time registry for readiness |
 | FORM-01 through FORM-04 operational, FORM-03 promotion, and readiness-promotion chain | Implemented evidence | Current bounded formable authority |
 | `006_afx_agx_release_readiness_audit_2026_07_16.md` | Partly superseded | Its AGX authorization remains current. Its original AFX verdict was superseded by the Level 2 repair and `006_afx_final_admission_audit_2026_07_16.md` |
@@ -312,7 +313,7 @@ recording without explicit user approval.
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
 | `006_event6_advisor_icon_withdrawal_2026_07_16.md` and its final audit | Current user-directed asset boundary | Event 006 gameplay advisor offices remain active but carry no custom advisor portrait block, sprite registration, runtime DDS, or explicit gender metadata |
-| Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence; current hashes are in the 2026-07-16 portrait package runtime ledger |
+| Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence; current hashes are in the 2026-07-18 portrait package runtime ledger |
 | Super-event audio research handoff | Partly superseded | `6002` production and runtime wiring are complete. Its rights research and `6001` blocker remain current. Use `docs/super_events/006_independence_wave_super_event_research.md` for the canonical implementation contract |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
 | `006_round_number_balance_preflight_2026_07_15.md` | Implemented evidence | Commit `879e511cc` contains its reviewed tuning tranche. It is not a final Event 006 balance or completion audit |
@@ -328,7 +329,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | --- | --- |
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
-| Older portrait handoffs approve 2026-07-15 fictional or army-small art | Superseded by the 2026-07-16 male-HOI4 manifest and final independent audit |
+| Older portrait handoffs approve 2026-07-15 or 2026-07-16 fictional or army-small art | Superseded by the 2026-07-18 male-HOI4 manifest and reviewed handoff |
 | Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof, while FORM-42 remains fail-closed. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
 | Earlier AFX source was revoked for missing Level 2 content | Resolved. The Sambre-Meuse lane and unique visual package passed the final exact-package audit, and IW-006 is restored to the exact registry |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
