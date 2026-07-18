@@ -54,6 +54,19 @@ FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
 unrelated package/achievement work remain incomplete. Earlier Pacific handoffs
 that state HOLD/FAIL-CLOSED are historical records and are not rewritten here.
 
+IW-093 `DOX` Asante and IW-098 `SOK` Sokoto now have a bounded foundational
+scripted layer: exact dormant-tag and fixed-anchor predicates, central
+setup/final-validation/cleanup dispatch, Kumasi/Sokoto capital proofs,
+date-aware Sokoto succession hooks, host-capital survival checks, and
+Event-012-preserving cleanup. That layer deliberately grants neither runtime
+content attestation nor SCN-008 admission. Both packages remain fail-closed
+until their country mechanics, forces, focus/decision/idea/AI/localisation
+surfaces, FORM-24/25 links, and final visual identities pass audit. The
+Prempeh-II deterministic portrait candidate was rejected in parent visual
+review because it remained a monochrome photograph rather than the painted,
+colour HOI4 style; its runtime DDS was removed and the retained evidence is
+explicitly marked blocked. No advisor asset was created or requested.
+
 ## Design simplifications
 
 No requested design surface was intentionally simplified into a weaker substitute.
