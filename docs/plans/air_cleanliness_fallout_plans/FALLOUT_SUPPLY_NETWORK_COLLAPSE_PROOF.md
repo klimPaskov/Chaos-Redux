@@ -2,7 +2,7 @@
 
 ## Status
 
-World transition schema 11 contains a transactional province supply-network collapse for `supply_node` and `rail_way`. The selector grammar, building identities, aggregate variables, direct province query, migration bounds, and downstream receipt gates have static source support.
+World transition schema 12 retains the transactional province supply-network collapse for `supply_node` and `rail_way`. The selector grammar, building identities, aggregate variables, direct province query, migration bounds, and downstream receipt gates have static source support.
 
 This is not runtime acceptance. Hearts of Iron IV was not launched. No exact vanilla or approved-mod precedent removes either network family with this route. Railway edge cleanup and immediate script visibility remain engine-sensitive blockers.
 
@@ -14,7 +14,7 @@ The implementation is owned by:
 - `common/scripted_effects/fallout_world_end_effects.txt`
 - `common/scripted_triggers/fallout_world_end_triggers.txt`
 
-The world transition uses schema 11. The network receipt uses `fallout_supply_network_collapse_schema.version = 1` so its payload can be audited independently inside the transition.
+The world transition uses schema 12. The network receipt uses `fallout_supply_network_collapse_schema.version = 1` so its payload can be audited independently inside the transition.
 
 ## Assets and localisation
 
@@ -109,8 +109,8 @@ Migration never fabricates a network receipt.
 
 | Schema-10 state | Policy |
 | --- | --- |
-| Snapshot phase before snapshot application or destruction | Rebuild the complete schema-11 snapshot epoch |
-| Phase 2 before grading mutation | Promote to schema 11 and continue |
+| Snapshot phase before snapshot application or destruction | Rebuild the complete schema-12 snapshot epoch |
+| Phase 2 before grading mutation | Promote to schema 12 and continue |
 | Phase 3 or 4 before allocation | Require current grading and exact live-to-frozen network equality for every destructive-grade state, then continue to or execute physical collapse |
 | Phase 5 or 6 before allocation | Require current grading and exact live-to-frozen network equality for every destructive-grade state, then rewind to physical collapse and invalidate derived rows |
 | Phase 7 or 8 | Fail closed |

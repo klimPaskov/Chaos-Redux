@@ -34,6 +34,28 @@ Fallout needs resources that matter. These can be variables shown in a custom in
 | Shelter capacity | Bunkers, tunnels, converted factories | Population protection | Shelter riots and preventable deaths |
 | Recognition | Radio, envoys, old legitimacy, relief | Diplomacy, alliances, trade | Isolation and warlord stigma |
 
+## Accepted opening survival ledger
+
+Every state receives a frozen 0 to 100 opening score for the nine resources above. Every successor receives an immutable `initial` profile and a separate mutable `current` profile. The opening calculation uses only transition receipts from Air Winter, state grading, population loss, permanent building loss, supply collapse, frozen deposits, frozen specialty buildings, frozen state category, and finalized successor ownership.
+
+For each state resource, weighted normalized components sum to a numerator between 0 and 10,000. The denominator is 100. The state score is rounded once after the final division and clamped to 0 through 100. Air Winter not-applicable states receive a typed zero row and do not enter country coverage, population weight, or hub selection.
+
+| Resource | Accepted weighted components |
+| --- | --- |
+| Food | 45 Food Reserve, 20 rural identity, 10 port capacity, 10 Reclamation, 15 Access |
+| Clean water | 50 Water Security, 15 Shelter Capacity, 15 logistics, 10 Adaptation, 10 Access |
+| Medicine | 25 urban identity, 25 surviving industry, 20 Recovery, 15 Adaptation, 15 Access |
+| Scrap | 35 salvage, 20 surviving industry, 20 material deposits, 25 Access |
+| Fuel | 50 fuel source, 20 logistics, 15 surviving industry, 15 Access |
+| Power | 50 power source, 20 surviving industry, 15 logistics, 15 Access |
+| Filters | 40 surviving industry, 20 Shelter Capacity, 15 Adaptation, 10 Reclamation, 15 Access |
+| Shelter capacity | 55 Shelter Capacity, 15 logistics, 10 urban identity, 10 Adaptation, 10 Access |
+| Recognition | 35 communications, 25 administrative identity, 15 urban identity, 15 Recovery, 10 Access |
+
+Country coverage uses each produced state's unrounded score and a survivor-population weight of `fallout_population_after_loss_k / 1000`, clamped from 0.001 to 8. The strongest unrounded state score supplies the hub term. Food, Clean water, Medicine, Filters, and Shelter capacity blend 90 percent coverage with 10 percent hub. Scrap, Fuel, and Power blend 75 percent coverage with 25 percent hub. Recognition blends 70 percent coverage with 30 percent hub.
+
+Government archetype modifies only final Recognition. It cannot create physical resources. Region and country memory apply no hidden opening bonus. Their later effects must come from manually reviewed focus, decision, event, and package content. The complete coefficient contract and arithmetic proof are recorded in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md` and `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md`.
+
 ## State classes after Fallout
 
 The world map should feel new. State classes replace ordinary state identity as the main strategic layer.

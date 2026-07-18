@@ -57,8 +57,8 @@ New global values:
 | `global.fallout_event_registry_survival_schema` | variable | survival schema bound to the scheduler registry | written by registry commit or guarded migration |
 | `global.fallout_event_registry_survival_generation` | variable | survival generation bound to the scheduler registry | written by registry commit or guarded migration |
 | `global.fallout_event_registry_survival_country_count` | variable | exact survival-country count bound to the scheduler registry | written by registry commit or guarded migration |
-| `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | formula-neutral identity stage writes before numerical work |
-| `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | formula-neutral identity stage writes before numerical work |
+| `global.fallout_survival_ledger_schema_version` | variable | survival receipt schema | identity stage writes schema 2 before numerical work |
+| `global.fallout_survival_ledger_generation` | variable | binds survival rows to the current transition generation | identity stage writes before numerical work |
 | `global.fallout_survival_ledger_source_allocation_schema` | variable | finalized allocation schema captured by the survival stage | cleared only with an uncommitted rebuild |
 | `global.fallout_survival_ledger_source_allocation_generation` | variable | finalized allocation generation captured by the survival stage | cleared only with an uncommitted rebuild |
 | `global.fallout_survival_ledger_source_country_count` | variable | source assignment count before scope-array construction | must equal the staged country count |
@@ -73,8 +73,8 @@ New global values:
 | `global.fallout_survival_ledger_state_index_entries` | numeric array | physical zero-based index aligned to each state scope | staged with state identities |
 | `global.fallout_survival_ledger_identity_staged_date` | variable | engine date of identity staging | written before the identity-staged flag |
 | `global.fallout_survival_ledger_identity_staged_day` | variable | arithmetic day of identity staging | written before the identity-staged flag |
-| `global.fallout_survival_ledger_committed_date` | variable | immutable commit date receipt | future producer writes once |
-| `global.fallout_survival_ledger_committed_day` | variable | immutable arithmetic commit-day receipt | future producer writes once |
+| `global.fallout_survival_ledger_committed_date` | variable | immutable commit date receipt | numerical coordinator writes before precommit proof |
+| `global.fallout_survival_ledger_committed_day` | variable | immutable arithmetic commit-day receipt | numerical coordinator writes before precommit proof |
 | `global.fallout_rewrite_batch_index` | variable | persistent batch cursor | cleared on completion |
 | `global.fallout_rewrite_error_count` | variable | safety counter for failed assignments | cleared on completion |
 | `global.fallout_surviving_country_count` | variable | final survivor count | set after rewrite |
@@ -99,9 +99,9 @@ Global flags:
 | `fallout_synthetic_strike_batch` | suppresses per-strike log and diplomatic spam | clear immediately after strike pass |
 | `fallout_event_scheduler_initialization_pending` | a current map return may initialize the dormant living-world registry | clear only after a successful registry commit or proven dormant schema promotion |
 | `fallout_event_scheduler_registry_ready` | the aligned country registry payload passed its commit proof | clear only when an uncommitted payload is rebuilt |
-| `fallout_survival_ledger_building` | the identity payload is being staged | clear only after identity proof or uncommitted reset |
+| `fallout_survival_ledger_building` | the identity or numerical payload is being staged | clear only after the matching proof or uncommitted reset |
 | `fallout_survival_ledger_identity_staged` | all identity and provenance rows passed the transition-only proof | clear only with an uncommitted reset |
-| `fallout_survival_ledger_ready` | all nine-resource rows passed the future reviewed arithmetic, aggregation, range, and initialization proof | no setter until numeric initialization is accepted |
+| `fallout_survival_ledger_ready` | all nine-resource rows passed arithmetic replay, aggregation, range, and initialization proof | numerical coordinator owns the sole setter and writes it last |
 | `fallout_event_scheduler_activation_approved` | manual review approved gameplay scheduling | no setter until the pilot passes review |
 | `fallout_event_scheduler_active` | ordinary living-world dispatch is live | no setter until all activation gates pass |
 
@@ -109,17 +109,17 @@ Global flags:
 
 Each staged country row carries `fallout_survival_country_identity_staged`, `fallout_survival_country_schema_version`, `fallout_survival_country_generation`, `fallout_survival_country_index`, `fallout_survival_country_source_allocation_schema`, `fallout_survival_country_source_allocation_generation`, `fallout_survival_country_state_count`, `fallout_survival_country_source_region`, `fallout_survival_country_source_archetype`, `fallout_survival_country_source_memory`, and `fallout_survival_country_resource_id_entries`.
 
-The future numerical country contract reserves `fallout_survival_country_row_committed`, `fallout_survival_raw_numerator_entries`, `fallout_survival_raw_denominator_entries`, `fallout_survival_initial_entries`, and `fallout_survival_current_entries`. No current effect writes or commits those numerical arrays.
+The numerical country contract writes `fallout_survival_country_row_committed`, raw numerator and denominator arrays, immutable initial, mutable current, population-weight sum, weighted-score sum, hub score, and matching replay arrays. The row flag is written only after exact replay.
 
 Each staged state row carries `fallout_survival_state_identity_staged`, `fallout_survival_state_schema_version`, `fallout_survival_state_generation`, `fallout_survival_state_index`, `fallout_survival_state_owner`, `fallout_survival_state_source_snapshot_generation`, `fallout_survival_state_source_air_winter_schema`, `fallout_survival_state_source_air_winter_generation`, `fallout_survival_state_source_air_winter_kind`, `fallout_survival_state_source_grading_generation`, `fallout_survival_state_source_population_generation`, `fallout_survival_state_source_rewrite_generation`, `fallout_survival_state_source_supply_generation`, and `fallout_survival_state_resource_id_entries`.
 
-The future numerical state contract reserves `fallout_survival_state_row_committed`, `fallout_survival_state_raw_numerator_entries`, `fallout_survival_state_raw_denominator_entries`, and `fallout_survival_state_equal_share_entries`. No current effect writes or commits those numerical arrays.
+The numerical state contract writes `fallout_survival_state_row_committed`, raw numerator, raw denominator, rounded equal share, and matching replay arrays. The row flag is written only after exact replay.
 
 ## Transition ledger schemas
 
 | Ledger | Live schema | Contract |
 | --- | --- | --- |
-| Fallout world transition | 11 | fail-closed snapshot, destructive-phase receipt recovery, and province supply-network collapse |
+| Fallout world transition | 12 | fail-closed snapshot, specialty survival inputs, destructive-phase receipt recovery, and province supply-network collapse |
 | Government classifier | 2 | frozen-input signal aggregation and provisional archetype |
 | Successor pre-allocation inventory | 1 | live countries, possible-country scopes, states, reservations, and package conflicts |
 | Successor allocation output | 2 | consumed source receipt, reciprocal conflict links, unique assignments, package layers, capitals, and cleanup |
@@ -128,7 +128,7 @@ The future numerical state contract reserves `fallout_survival_state_row_committ
 | Fallout living-world registry | 2 | aligned country, generation, stable-index, and committed-survival binding payload |
 | Fallout orientation | 1 | five independent current-generation orientation receipts |
 | Fallout arc, delayed queue, and bilateral ledgers | 2 | dormant aligned transaction rows, reservation APIs, cancellation, cleanup handoff, and mutation-bounded reconciliation |
-| Fallout survival ledger | 1 | formula-neutral identity and row-shape contract, with no numerical producer or global commit setter |
+| Fallout survival ledger | 2 | identity-first and numerical rows with exact replay, frozen-owner aggregation, immutable initial values, mutable current values, and ready-last global commit |
 
 Paired living-world runtime-schema-1 and registry-schema-1 rows contained initialization-only data and no transaction producer. They may promote to schema 2 only while the map-return receipt and a fully current committed survival ledger are current, both activation flags are absent, the scheduler has no error, every preserved runtime field passes its current invariant, and every arc, delayed, bilateral, cleanup, history, ticket, and dispatch surface is absent or empty as required. A separate guarded migration can bind a current runtime schema to a schema-1 registry only while the registry is ready, both activation flags are absent, no scheduler error exists, the map-return receipts and full survival ledger are current, and every indexed registry, allocation, and survival row agrees. A partially populated, corrupt, or active legacy row fails closed before mutation.
 
@@ -136,7 +136,7 @@ The region enum has nine live values: North America, Europe, Eurasian Interior, 
 
 The tag-conflict resolution enum distinguishes continuation in place, conversion of an existing tag, release of a releasable, dynamic creation, retirement as a landless memory, preservation of another event package, and player reservation. A surviving assignment cannot use the landless-retirement result. Every non-retired frozen source must link to exactly one committed output country. The output must link back to the same source and carry the same resolution, generation, and cleanup owner. Converted outputs require a current conversion receipt. Released outputs require a current release receipt in addition to frozen possible-country membership. Dynamically created outputs require a current materialization receipt and absence from both frozen country collections. A retired source must own no state and must not name an output.
 
-World transition schema 11 records request source and intensity, Chaos and Air Contamination values, every live country scope and government-memory row, and every state owner, controller, population, live category, historical Air Winter category, building, damage, resource, nuclear, Air Winter, coastal, contamination, and manual-strike input used by the rewrite. Player and world capture share one epoch generation and date. Air Winter producer schema 1 opens one distinct generation per complete snapshot attempt. Valid states receive a produced source kind only after canonical initialization, normalization, range proof, and exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and Air-owned zero payload without initialization. Snapshot completion is written only after every row passes the synchronous capture proof, exact live owner and controller checks, live category equality, and all-and-only player-origin checks. Blackout and world-end ownership remain uncommitted until both snapshot halves pass. Air Winter mutation pauses while the transition is active. Later grading and rewrite receipts validate the frozen scope, live category, and provenance payload without requiring ownership or live climate values to remain unchanged. Grading cannot start when either half is incomplete. The same schema binds grading, population-loss, physical-collapse, province supply-network collapse, and market-access reset receipts to the active transition generation. Population, state-building, and category issue flags prevent a retry from applying their non-idempotent loss twice. Supply-node and railway set-to-zero operations are idempotent and retry until the exact zero surface is visible. Map return validates durable transaction receipts, so later population or construction changes do not invalidate completed destructive work.
+World transition schema 12 records request source and intensity, Chaos and Air Contamination values, every live country scope and government-memory row, and every state owner, controller, population, live category, historical Air Winter category, building, damage, resource, nuclear, Air Winter, specialty-building, coal, coastal, contamination, and manual-strike input used by the rewrite. Player and world capture share one epoch generation and date. Air Winter producer schema 1 opens one distinct generation per complete snapshot attempt. Valid states receive a produced source kind only after canonical initialization, normalization, range proof, and exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and Air-owned zero payload without initialization. Snapshot completion is written only after every row passes the synchronous capture proof, exact live owner and controller checks, live category equality, and all-and-only player-origin checks. Blackout and world-end ownership remain uncommitted until both snapshot halves pass. Air Winter mutation pauses while the transition is active. Later grading, rewrite, and survival receipts validate the frozen scope, category, and provenance payload without requiring ownership or live climate values to remain unchanged. Population uses the deterministic 90 through 95 percent grade ladder, preserves one person in every nonempty state, and registers the exact observed delta through Deaths. Population, state-building, and category issue flags prevent a retry from applying their non-idempotent loss twice. Supply-node and railway set-to-zero operations are idempotent and retry until the exact zero surface is visible. Map return validates durable transaction receipts, so later population or construction changes do not invalidate completed destructive work.
 
 The country-memory enum assigns ids 1 through 99 in the exact accepted row order from `matrices/baseline/fallout_successor_country_matrix.md`. The enum is an identity ledger only. It does not activate a candidate or approve a source tag, state package, fallback package, leader, focus tree, or asset set.
 

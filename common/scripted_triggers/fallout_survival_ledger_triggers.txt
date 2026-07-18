@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - FALLOUT SURVIVAL LEDGER TRIGGERS
 # ============================================================================
-# These triggers prove the formula-neutral identity transaction and define the
-# shape required from future numerical rows. No trigger approves coefficients,
-# rounding, aggregation math, value ranges, or a ready-flag setter.
+# These triggers prove the identity transaction, exact replay receipts,
+# immutable numerical rows, bounded country aggregation, and the ready-last
+# global survival-ledger commit.
 # ============================================================================
 
 # Supported scope: STATE
@@ -323,31 +323,185 @@ fallout_recoverable_survival_ledger_identity_error_is_active = {
 	NOT = { fallout_survival_ledger_identity_structure_is_current = yes }
 }
 
-# Supported scope: STATE. This is the future numerical row shape only.
+# Supported scope: STATE. Exact arithmetic was replayed by the numerical
+# producer. Mirror arrays bind the committed row to that independent replay.
 fallout_survival_state_resource_row_is_durable = {
 	fallout_survival_state_identity_components_are_present = yes
 	has_state_flag = fallout_survival_state_row_committed
+	has_state_flag = fallout_survival_state_numerical_reconciled
+	has_variable = fallout_survival_state_numerical_generation
+	check_variable = { var = fallout_survival_state_numerical_generation value = global.fallout_survival_ledger_generation compare = equals }
 	check_variable = { var = fallout_survival_state_raw_numerator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { var = fallout_survival_state_raw_denominator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { var = fallout_survival_state_equal_share_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_state_replay_numerator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_state_replay_denominator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_state_replay_share_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { fallout_survival_state_raw_numerator_entries^0 = constant:fallout_event_runtime.zero }
 	check_variable = { fallout_survival_state_raw_denominator_entries^0 = constant:fallout_event_runtime.zero }
 	check_variable = { fallout_survival_state_equal_share_entries^0 = constant:fallout_event_runtime.zero }
+	all_of = {
+		array = fallout_survival_state_resource_id_entries
+		value = fallout_survival_state_resource_id
+		index = fallout_survival_state_resource_index
+		check_variable = { var = fallout_survival_state_resource_id value = fallout_survival_state_resource_index compare = equals }
+		check_variable = { var = fallout_survival_state_raw_numerator_entries^fallout_survival_state_resource_index value = fallout_survival_state_replay_numerator_entries^fallout_survival_state_resource_index compare = equals }
+		check_variable = { var = fallout_survival_state_raw_denominator_entries^fallout_survival_state_resource_index value = fallout_survival_state_replay_denominator_entries^fallout_survival_state_resource_index compare = equals }
+		check_variable = { var = fallout_survival_state_equal_share_entries^fallout_survival_state_resource_index value = fallout_survival_state_replay_share_entries^fallout_survival_state_resource_index compare = equals }
+		if = {
+			limit = { check_variable = { fallout_survival_state_resource_index > constant:fallout_survival_resource.none } }
+			check_variable = { fallout_survival_state_raw_numerator_entries^fallout_survival_state_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_state_raw_numerator_entries^fallout_survival_state_resource_index value = constant:fallout_survival_numeric.maximum_numerator compare = less_than_or_equals }
+			check_variable = { fallout_survival_state_raw_denominator_entries^fallout_survival_state_resource_index = constant:fallout_survival_numeric.denominator }
+			check_variable = { fallout_survival_state_equal_share_entries^fallout_survival_state_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_state_equal_share_entries^fallout_survival_state_resource_index value = constant:fallout_survival_numeric.maximum compare = less_than_or_equals }
+		}
+	}
+	if = {
+		limit = { check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable } }
+		all_of = {
+			array = fallout_survival_state_resource_id_entries
+			value = fallout_survival_na_resource_id
+			index = fallout_survival_na_resource_index
+			if = {
+				limit = { check_variable = { fallout_survival_na_resource_index > constant:fallout_survival_resource.none } }
+				check_variable = { fallout_survival_state_raw_numerator_entries^fallout_survival_na_resource_index = constant:fallout_survival_numeric.minimum }
+				check_variable = { fallout_survival_state_equal_share_entries^fallout_survival_na_resource_index = constant:fallout_survival_numeric.minimum }
+			}
+		}
+	}
 }
 
-# Supported scope: COUNTRY. This validates row shape only and deliberately does
-# not compare the immutable and mutable arrays.
+# Supported scope: COUNTRY. Current values remain mutable after global commit.
+# Every raw, diagnostic, and initial value remains bound to its replay mirror.
 fallout_survival_country_resource_row_is_durable = {
 	fallout_survival_country_identity_components_are_present = yes
 	has_country_flag = fallout_survival_country_row_committed
+	has_country_flag = fallout_survival_country_numerical_reconciled
+	has_variable = fallout_survival_country_numerical_generation
+	has_variable = fallout_survival_country_aggregate_state_count
+	has_variable = fallout_survival_country_produced_state_count
+	has_variable = fallout_survival_country_replay_state_count
+	has_variable = fallout_survival_country_replay_produced_state_count
+	check_variable = { var = fallout_survival_country_numerical_generation value = global.fallout_survival_ledger_generation compare = equals }
+	check_variable = { var = fallout_survival_country_aggregate_state_count value = fallout_survival_country_state_count compare = equals }
+	check_variable = { var = fallout_survival_country_replay_state_count value = fallout_survival_country_aggregate_state_count compare = equals }
+	check_variable = { var = fallout_survival_country_replay_produced_state_count value = fallout_survival_country_produced_state_count compare = equals }
+	check_variable = { fallout_survival_country_produced_state_count > constant:fallout_event_runtime.zero }
 	check_variable = { var = fallout_survival_raw_numerator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { var = fallout_survival_raw_denominator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { var = fallout_survival_initial_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { var = fallout_survival_current_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_population_weight_sum_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_weighted_score_sum_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_hub_score_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_raw_numerator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_raw_denominator_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_initial_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_population_weight_sum_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_weighted_score_sum_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+	check_variable = { var = fallout_survival_replay_hub_score_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
 	check_variable = { fallout_survival_raw_numerator_entries^0 = constant:fallout_event_runtime.zero }
 	check_variable = { fallout_survival_raw_denominator_entries^0 = constant:fallout_event_runtime.zero }
 	check_variable = { fallout_survival_initial_entries^0 = constant:fallout_event_runtime.zero }
 	check_variable = { fallout_survival_current_entries^0 = constant:fallout_event_runtime.zero }
+	check_variable = { fallout_survival_population_weight_sum_entries^0 = constant:fallout_event_runtime.zero }
+	check_variable = { fallout_survival_weighted_score_sum_entries^0 = constant:fallout_event_runtime.zero }
+	check_variable = { fallout_survival_hub_score_entries^0 = constant:fallout_event_runtime.zero }
+	all_of = {
+		array = fallout_survival_country_resource_id_entries
+		value = fallout_survival_country_resource_id
+		index = fallout_survival_country_resource_index
+		check_variable = { var = fallout_survival_country_resource_id value = fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_raw_numerator_entries^fallout_survival_country_resource_index value = fallout_survival_replay_raw_numerator_entries^fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_raw_denominator_entries^fallout_survival_country_resource_index value = fallout_survival_replay_raw_denominator_entries^fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_initial_entries^fallout_survival_country_resource_index value = fallout_survival_replay_initial_entries^fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_population_weight_sum_entries^fallout_survival_country_resource_index value = fallout_survival_replay_population_weight_sum_entries^fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_weighted_score_sum_entries^fallout_survival_country_resource_index value = fallout_survival_replay_weighted_score_sum_entries^fallout_survival_country_resource_index compare = equals }
+		check_variable = { var = fallout_survival_hub_score_entries^fallout_survival_country_resource_index value = fallout_survival_replay_hub_score_entries^fallout_survival_country_resource_index compare = equals }
+		if = {
+			limit = { check_variable = { fallout_survival_country_resource_index > constant:fallout_survival_resource.none } }
+			check_variable = { fallout_survival_raw_numerator_entries^fallout_survival_country_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_raw_numerator_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum_numerator compare = less_than_or_equals }
+			check_variable = { fallout_survival_raw_denominator_entries^fallout_survival_country_resource_index = constant:fallout_survival_numeric.denominator }
+			check_variable = { fallout_survival_initial_entries^fallout_survival_country_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_initial_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum compare = less_than_or_equals }
+			check_variable = { fallout_survival_current_entries^fallout_survival_country_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_current_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum compare = less_than_or_equals }
+			check_variable = { fallout_survival_population_weight_sum_entries^fallout_survival_country_resource_index > constant:fallout_survival_numeric.minimum }
+			check_variable = { var = fallout_survival_population_weight_sum_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum_weight_sum compare = less_than_or_equals }
+			check_variable = { fallout_survival_weighted_score_sum_entries^fallout_survival_country_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_weighted_score_sum_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum_weighted_sum compare = less_than_or_equals }
+			check_variable = { fallout_survival_hub_score_entries^fallout_survival_country_resource_index > constant:fallout_runtime.negative_one }
+			check_variable = { var = fallout_survival_hub_score_entries^fallout_survival_country_resource_index value = constant:fallout_survival_numeric.maximum compare = less_than_or_equals }
+		}
+	}
+}
+
+# Supported scope: STATE. Precommit additionally binds the row to the live
+# transition generation and frozen allocation.
+fallout_survival_state_numerical_row_is_precommit_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = fallout_survival_state_numerical_generation value = global.fallout_transition_generation compare = equals }
+}
+
+# Supported scope: COUNTRY coordinator
+fallout_survival_state_numerical_rows_are_precommit_current = {
+	all_of_scopes = {
+		array = global.fallout_survival_ledger_states
+		fallout_survival_state_numerical_row_is_precommit_current = yes
+	}
+}
+
+# Supported scope: COUNTRY. Precommit requires current to equal immutable
+# initial values before the global ready flag is written.
+fallout_survival_country_numerical_row_is_precommit_current = {
+	fallout_survival_country_identity_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	check_variable = { var = fallout_survival_country_numerical_generation value = global.fallout_transition_generation compare = equals }
+	all_of = {
+		array = fallout_survival_country_resource_id_entries
+		value = fallout_survival_precommit_resource_id
+		index = fallout_survival_precommit_resource_index
+		check_variable = { var = fallout_survival_current_entries^fallout_survival_precommit_resource_index value = fallout_survival_initial_entries^fallout_survival_precommit_resource_index compare = equals }
+	}
+}
+
+# Supported scope: COUNTRY coordinator. This proof is intentionally independent
+# of the ready flag so the sole coordinator can run it before its final write.
+fallout_survival_ledger_numerical_precommit_payload_is_current = {
+	has_global_flag = fallout_survival_ledger_building
+	NOT = { has_global_flag = fallout_survival_ledger_ready }
+	fallout_survival_ledger_identity_payload_is_current = yes
+	has_variable = global.fallout_survival_ledger_committed_date
+	has_variable = global.fallout_survival_ledger_committed_day
+	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_date value = global.fallout_survival_ledger_identity_staged_date compare = less_than } }
+	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_day value = global.fallout_survival_ledger_identity_staged_day compare = less_than } }
+	check_variable = { var = global.fallout_survival_ledger_state_count value = global.fallout_survival_ledger_states^num compare = equals }
+	check_variable = { var = global.fallout_survival_ledger_country_count value = global.fallout_survival_ledger_countries^num compare = equals }
+	check_variable = { var = global.fallout_survival_ledger_state_count value = constant:fallout_survival_numeric.maximum_state_count compare = less_than_or_equals }
+	fallout_survival_state_numerical_rows_are_precommit_current = yes
+	all_of_scopes = {
+		array = global.fallout_survival_ledger_countries
+		fallout_survival_country_numerical_row_is_precommit_current = yes
+	}
+}
+
+# Supported scope: COUNTRY coordinator. Identity recovery owns invalid identity
+# payloads. Numerical recovery owns the complementary exact one-error case.
+fallout_recoverable_survival_ledger_numerical_error_is_active = {
+	has_global_flag = fallout_transition_error
+	NOT = { has_global_flag = fallout_survival_ledger_ready }
+	NOT = { has_global_flag = fallout_transition_survivor_allocation_applied }
+	NOT = { has_global_flag = fallout_player_continuation_commit_complete }
+	NOT = { has_global_flag = fallout_transition_player_continuation_applied }
+	check_variable = { var = global.fallout_transition_phase value = constant:fallout_transition_phase.survivor_allocation compare = equals }
+	check_variable = { var = global.fallout_transition_error_code value = constant:fallout_transition_error_code.survival_ledger_incomplete compare = equals }
+	check_variable = { var = global.fallout_transition_error_count value = constant:fallout_event_runtime.one compare = equals }
+	fallout_player_planning_ledger_is_current = yes
+	fallout_successor_allocation_structure_is_current = yes
+	fallout_survival_ledger_identity_structure_is_current = yes
 }
 
 # Supported scope: COUNTRY coordinator. These back-references remain durable
@@ -425,11 +579,14 @@ fallout_survival_ledger_header_is_current = {
 	NOT = { check_variable = { var = global.fallout_survival_ledger_identity_staged_day value = global.num_days compare = greater_than } }
 	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_date value = global.date compare = greater_than } }
 	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_day value = global.num_days compare = greater_than } }
+	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_date value = global.fallout_survival_ledger_identity_staged_date compare = less_than } }
+	NOT = { check_variable = { var = global.fallout_survival_ledger_committed_day value = global.fallout_survival_ledger_identity_staged_day compare = less_than } }
 	fallout_survival_ledger_identity_arrays_are_aligned = yes
 }
 
-# Supported scope: COUNTRY coordinator. Numerical formula validation must be
-# added before any future effect is allowed to set the ready flag.
+# Supported scope: COUNTRY coordinator. This remains valid after commit because
+# it verifies the immutable numerical rows and permits current resource values
+# to evolve within their reviewed bounds.
 fallout_survival_ledger_is_current = {
 	fallout_survival_ledger_header_is_current = yes
 	fallout_survival_ledger_frozen_identity_rows_are_durable = yes
@@ -444,8 +601,7 @@ fallout_survival_ledger_is_current = {
 }
 
 # Supported scope: COUNTRY coordinator. This is the blackout transition gate.
-# It is deliberately unreachable until reviewed numerical producers and the
-# sole ready-flag setter are implemented.
+# The numerical producer owns the sole ready-flag setter and writes it last.
 fallout_survival_ledger_transition_barrier_is_current = {
 	fallout_successor_allocation_is_current = yes
 	fallout_survival_ledger_identity_is_current = yes

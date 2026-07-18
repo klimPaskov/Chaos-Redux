@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - FALLOUT LIVING-WORLD EVENT CONSTANTS
 # ============================================================================
-# Dormant scheduler schemas, stable identities, timeline boundaries, cadence,
-# and reserved pilot ids. Resource initialization and event-choice tuning are
-# intentionally excluded until their reviewed producer contracts exist.
+# Dormant scheduler schemas, stable identities, survival initialization,
+# timeline boundaries, cadence, and reserved pilot ids. Event-choice tuning
+# remains excluded until its reviewed producer contracts exist.
 # ============================================================================
 
 fallout_event_schema = {
@@ -32,7 +32,8 @@ fallout_survival_ledger_schema = {
 		data = int
 	}
 
-	version = 1
+	version = 2
+	previous_identity_only_version = 1
 }
 
 fallout_event_orientation_schema = {
@@ -156,8 +157,7 @@ fallout_event_cancellation_reason = {
 	upper_bound = 7
 }
 
-# The accepted nine-resource identity set. Numeric initialization and
-# aggregation formulas are deliberately outside this constants file.
+# The accepted nine-resource identity set used by state and country arrays.
 fallout_survival_resource = {
 	schema = {
 		any_key = yes
@@ -175,6 +175,197 @@ fallout_survival_resource = {
 	shelter_capacity = 8
 	recognition = 9
 	upper_bound = 10
+}
+
+# Numerical initialization for the accepted nine-resource Fallout survival
+# ledger. State and country values are bounded to the inclusive 0 to 100 band.
+fallout_survival_numeric = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	denominator = 100
+	maximum_numerator = 10000
+	population_weight_divisor_k = 1000
+	population_weight_floor = 0.001
+	population_weight_cap = 8
+	maximum_state_count = 1081
+	maximum_weight_sum = 8648
+	maximum_weighted_sum = 864800
+	operational_factory_per_level = 10
+	logistics_per_infrastructure = 20
+	port_naval_base_per_level = 15
+	port_dockyard_per_level = 10
+	fuel_oil_per_unit = 4
+	fuel_refinery_per_level = 30
+	fuel_silo_per_level = 10
+	power_hydro_per_level = 45
+	power_reactor_per_level = 50
+	power_coal_per_unit = 4
+	power_factory_per_level = 3
+	material_steel_per_unit = 2
+	material_aluminium_per_unit = 2
+	material_tungsten_per_unit = 1
+	material_chromium_per_unit = 1
+	material_rubber_per_unit = 1
+	salvage_removed_per_level = 10
+	salvage_damaged_per_level = 6
+	salvage_urban_factor = 0.30
+	communication_capital = 35
+	communication_radar_per_level = 20
+	communication_air_base_per_level = 5
+	communication_infrastructure_per_level = 8
+	administrative_capital = 100
+	administrative_urban_factor = 0.50
+}
+
+fallout_survival_access = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	remote_refuge = 100
+	scarred_province = 80
+	ash_zone = 60
+	dead_city = 40
+	wasteland = 20
+	vitrified_zone = 0
+	exposure_factor = 0.30
+	hazard_weight = 50
+	reclamation_weight = 20
+	adaptation_weight = 15
+	recovery_weight = 10
+	shelter_weight = 5
+}
+
+fallout_survival_category_rural = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	wasteland = 0
+	enclave = 45
+	tiny_island = 35
+	small_island = 55
+	pastoral = 100
+	rural = 90
+	town = 65
+	large_town = 50
+	city = 30
+	large_city = 20
+	metropolis = 10
+	megalopolis = 5
+	large_island = 65
+}
+
+fallout_survival_category_urban = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	wasteland = 0
+	enclave = 20
+	tiny_island = 10
+	small_island = 15
+	pastoral = 10
+	rural = 20
+	town = 40
+	large_town = 55
+	city = 70
+	large_city = 85
+	metropolis = 95
+	megalopolis = 100
+	large_island = 45
+}
+
+fallout_survival_formula_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	food_reserve = 45
+	food_rural = 20
+	food_port = 10
+	food_reclamation = 10
+	food_access = 15
+	water_security = 50
+	water_shelter = 15
+	water_logistics = 15
+	water_adaptation = 10
+	water_access = 10
+	medicine_urban = 25
+	medicine_industry = 25
+	medicine_recovery = 20
+	medicine_adaptation = 15
+	medicine_access = 15
+	scrap_salvage = 35
+	scrap_industry = 20
+	scrap_material = 20
+	scrap_access = 25
+	fuel_source = 50
+	fuel_logistics = 20
+	fuel_industry = 15
+	fuel_access = 15
+	power_source = 50
+	power_industry = 20
+	power_logistics = 15
+	power_access = 15
+	filters_industry = 40
+	filters_shelter = 20
+	filters_adaptation = 15
+	filters_reclamation = 10
+	filters_access = 15
+	shelter_capacity = 55
+	shelter_logistics = 15
+	shelter_urban = 10
+	shelter_adaptation = 10
+	shelter_access = 10
+	recognition_communication = 35
+	recognition_administrative = 25
+	recognition_urban = 15
+	recognition_recovery = 15
+	recognition_access = 10
+}
+
+fallout_survival_country_blend = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_coverage = 90
+	local_hub = 10
+	industrial_coverage = 75
+	industrial_hub = 25
+	recognition_coverage = 70
+	recognition_hub = 30
+}
+
+fallout_survival_recognition_adjustment = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	continuity_government = 15
+	bunker_authority = -5
+	warlord_command = -15
+	food_compact = 5
+	maritime_remnant = 10
+	quarantine_state = 0
+	scavenger_syndicate = -10
+	nomad_convoy = -10
+	machine_protocol = -15
+	technate = 5
+	mutant_polity = -20
+	religious_refuge = 5
 }
 
 fallout_event_phase = {

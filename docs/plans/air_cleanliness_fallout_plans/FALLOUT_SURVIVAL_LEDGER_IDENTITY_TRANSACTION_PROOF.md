@@ -2,9 +2,9 @@
 
 ## Verdict
 
-The formula-neutral first phase of the Fallout survival ledger is implemented. It stages one exact country row for every finalized successor and one exact state row for every included state. It records transition generation, allocation provenance, region, archetype, and country-memory identities, destructive-phase provenance, stable physical indexes, and the fixed nine-resource identity order. An exact recovery transaction can discard and rebuild only a malformed uncommitted identity payload during survivor allocation.
+The identity-first phase of the Fallout survival ledger is implemented. It stages one exact country row for every finalized successor and one exact state row for every included state. It records transition generation, allocation provenance, region, archetype, and country-memory identities, destructive-phase provenance, stable physical indexes, and the fixed nine-resource identity order. An exact recovery transaction can discard and rebuild only a malformed uncommitted identity payload during survivor allocation.
 
-No survival resource value is produced. No state numerator, denominator, share, country initial value, or mutable value is written. No effect sets `fallout_survival_ledger_ready`. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) records a complete proposed 0 to 100 numerical and transaction contract. It is not accepted. The blackout transition therefore remains unable to pass this barrier until that contract is accepted and implemented.
+The accepted second phase now produces and replays every numerical state and country row, then sets `fallout_survival_ledger_ready` last. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) is the accepted coefficient contract. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md) records the code and arithmetic proof.
 
 ## Source files
 
@@ -28,7 +28,7 @@ No survival resource value is produced. No state numerator, denominator, share, 
 - aligned state scope, generation, and physical-index arrays
 - staging date and arithmetic day
 
-The effect first clears only an uncommitted survival transaction. A future committed ledger makes that reset a no-op. The staging flag is written last, after the full payload trigger proves every aligned back-reference and all-and-only coverage.
+The effect first clears only an uncommitted survival transaction. A committed ledger makes that reset a no-op. The staging flag is written last, after the full payload trigger proves every aligned back-reference and all-and-only coverage.
 
 ## Uncommitted recovery
 
@@ -36,19 +36,19 @@ The effect first clears only an uncommitted survival transaction. A future commi
 
 The wrapper clears only that exact error signature and immediately invokes the ordinary staging transaction. The recovery trigger proves the complete allocation structure without requiring the error to disappear first. The staging transaction performs the full uncommitted reset before rebuilding every country and state identity from the current allocation. If validation fails again, it writes the same single owned error. The static retry path can rebuild a persisted absent, building, or structurally invalid identity payload after an interruption. Runtime interruption behavior remains unobserved.
 
-A malformed identity payload without an error is rebuilt because survivor allocation now tests the structural identity proof instead of trusting the staging flag alone. A committed ledger, a later transition phase, or any different error signature cannot enter this route. Numerical arrays remain empty and the ready flag remains absent.
+A malformed identity payload without an error is rebuilt because survivor allocation tests the structural identity proof instead of trusting the staging flag alone. A committed ledger, a later transition phase, or any different error signature cannot enter this route. Numerical staging begins only after this identity proof succeeds.
 
 The state list covers every state in `game:all_states`. Final allocation already proves that every landholding country is one of the assigned successors. Each staged state stores its exact owner scope and the transition generations for snapshot, Air Winter provenance, grading, population loss, state rewrite, and province supply-network collapse.
 
 Each staged country stores the exact final allocation schema and generation, stable array index, owned-state count, region identity, government archetype identity, and country-memory identity.
 
-## Nine-resource row shape
+## Nine-resource row relationship
 
 Both state and country rows store an explicit resource identity array. Index zero is the `none` sentinel. Indexes one through nine are Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition in the accepted order.
 
-The future state numerical row is reserved as aligned raw numerator, raw denominator, and share arrays. The future country row is reserved as aligned raw numerator, raw denominator, immutable initial, and mutable current arrays. Row commit flags exist only as required shape markers. No current effect writes them.
+The state numerical row uses aligned raw numerator, raw denominator, rounded share, and replay arrays. The country row uses aligned raw numerator, raw denominator, immutable initial, mutable current, aggregation diagnostics, and replay arrays. Every row commit flag is written only after its full replay passes.
 
-The structural triggers do not approve coefficients, rounding, aggregation, range limits, modifier order, zero-state behavior, or the initialization relationship between immutable and mutable country arrays. The proposal supplies one reviewed candidate for each of those rules, but it does not change their approval status. Those checks must be accepted and added before the sole ready-flag setter is implemented.
+State values use the accepted 0 to 100 formulas and one final rounding operation. Country values aggregate unrounded state numerators with bounded population coverage and a strongest-hub term. Recognition alone receives an archetype adjustment. Precommit requires current to equal initial. Durable post-commit proof permits current to evolve while initial and raw arrays remain immutable.
 
 ## Transition barrier
 
@@ -57,12 +57,14 @@ The survivor-allocation phase now performs these steps in order:
 1. prove the final successor allocation and player planning ledger
 2. set initialization status to `survival_ledger_pending`
 3. stage an absent uncommitted identity transaction
-4. require the future committed survival ledger before setting `fallout_transition_survivor_allocation_applied`
-5. require the same barrier before advancing to player continuation
+4. stage and replay the numerical state and country rows
+5. commit the global ready flag as the final numerical write
+6. require the committed survival ledger before setting `fallout_transition_survivor_allocation_applied`
+7. require the same barrier before advancing to player continuation
 
 Player continuation checks the barrier again before any player-country commit. Every selected player target must carry its committed country survival row. Map return also requires the same global barrier.
 
-The stage effect does not invent resource values to escape this wait. A fresh staging failure records `survival_ledger_incomplete`. During survivor allocation, the exact single-error signature can clear and restage the uncommitted identity payload. A later phase that lacks the committed ledger records the same error and remains closed because later phases are outside the recovery gate.
+No default resource value can escape this wait. An identity failure records `survival_ledger_incomplete` and permits only identity recovery. A numerical failure clears only numerical rows, records the same one-error signature, and permits only numerical recovery when the identity structure remains current. A later phase that lacks the committed ledger remains closed because later phases are outside both recovery gates.
 
 ## Scheduler ownership
 
@@ -86,20 +88,14 @@ Repository precedents are the aligned successor-assignment ledger and living-wor
 
 ## Migration boundary
 
-World transition schema remains 11 because this tranche cannot commit a survival ledger and does not replay any destructive phase. An active schema-11 transition at survivor allocation may stage current identities and wait for the reviewed numerical producer. A completed schema-11 Fallout save receives no fabricated ledger and cannot activate the scheduler.
+World transition schema advances from 11 to 12 because schema 12 freezes the specialty and coal inputs required by the numerical formulas. An active schema-11 transition may rebuild its snapshot only in the existing safe pre-destructive snapshot route. A completed schema-11 Fallout save receives no fabricated input or opening ledger and cannot activate the scheduler.
 
 Living-world registry schema advances from 1 to 2 because the registry now carries survival binding receipts. Paired runtime-schema-1 and registry-schema-1 rows may promote together only if a fully current committed survival ledger already exists, both scheduler activation flags remain absent, and the existing empty-transaction migration proof passes. A current runtime schema may bind an unbound schema-1 registry only while the registry is ready, both activation flags remain absent, no scheduler error exists, the map-return receipts and full survival ledger are current, and every indexed registry, allocation, and survival row agrees. When the full survival ledger is current, both migrations run before the post-migration header check. Otherwise the pre-migration missing-ledger check fails closed.
 
 ## Remaining blockers
 
-- The proposed numerical source formula for every resource is unaccepted.
-- The proposed rounding, aggregation, range, zero-state, and overlay-order rules are unaccepted.
-- The proposed initialization relationship between immutable and mutable country arrays is unaccepted.
-- No state numerical producer exists.
-- No country aggregation producer exists.
-- No numerical row commit effect exists.
-- No global survival ready-flag setter exists.
 - General successor allocation and package producers remain absent, so the identity stage is not reachable end to end in the current transition.
+- Scheduler activation and living-world event content remain absent.
 - Runtime persistence, interruption recovery, and multiplayer behavior are unobserved because HOI4 was not run.
 
-These are intentional blockers. The identity transaction is not a completed survival mechanic and does not enable any living-world event.
+These are intentional blockers. The survival ledger is implemented but does not by itself enable any living-world event.

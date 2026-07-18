@@ -150,6 +150,7 @@ fallout_lock_transition = {
 	clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 	clr_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
 	clr_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
+	clr_global_flag = fallout_transition_legacy_completed_without_survival_inputs
 	clr_global_flag = fallout_snapshot_prelock_capture_authorized
 	fallout_clear_recoverable_player_snapshot_error = yes
 	fallout_clear_recoverable_snapshot_error = yes
@@ -288,6 +289,11 @@ fallout_world_end_migrate_save = {
 						value = constant:fallout_world_end_schema.previous_supply_network_version
 						compare = equals
 					}
+					check_variable = {
+						var = global.fallout_transition_schema_version
+						value = constant:fallout_world_end_schema.previous_survival_input_version
+						compare = equals
+					}
 				}
 				check_variable = {
 					var = global.fallout_transition_phase
@@ -307,6 +313,7 @@ fallout_world_end_migrate_save = {
 			clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 			clr_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
 			clr_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
+			clr_global_flag = fallout_transition_legacy_completed_without_survival_inputs
 			clear_variable = global.fallout_supply_network_collapse_schema_version
 			clear_variable = global.fallout_supply_network_collapse_generation
 			save_global_event_target_as = fallout_transition_coordinator
@@ -363,6 +370,7 @@ fallout_world_end_migrate_save = {
 			clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 			set_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
 			set_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
+			set_global_flag = fallout_transition_legacy_completed_without_survival_inputs
 			set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.complete }
 			clr_global_flag = fallout_transition_schema_migration_blocked
 			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
@@ -1054,12 +1062,23 @@ fallout_take_world_snapshot = {
 			set_variable = { fallout_pretransition_non_damaged_dockyard = non_damaged_building_level@dockyard }
 			set_variable = { fallout_pretransition_non_damaged_supply_node = non_damaged_building_level@supply_node }
 			set_variable = { fallout_pretransition_non_damaged_rail_way = non_damaged_building_level@rail_way }
+			set_variable = { fallout_pretransition_non_damaged_naval_base = non_damaged_building_level@naval_base }
+			set_variable = { fallout_pretransition_non_damaged_radar_station = non_damaged_building_level@radar_station }
+			set_variable = { fallout_pretransition_non_damaged_synthetic_refinery = non_damaged_building_level@synthetic_refinery }
+			set_variable = { fallout_pretransition_non_damaged_fuel_silo = non_damaged_building_level@fuel_silo }
+			set_variable = { fallout_pretransition_non_damaged_dam = non_damaged_building_level@dam }
+			set_variable = { fallout_pretransition_non_damaged_dam_mountain = non_damaged_building_level@dam_mountain }
+			set_variable = { fallout_pretransition_non_damaged_cataract_dam_mountain = non_damaged_building_level@cataract_dam_mountain }
+			set_variable = { fallout_pretransition_non_damaged_nuclear_reactor = non_damaged_building_level@nuclear_reactor }
+			set_variable = { fallout_pretransition_non_damaged_nuclear_reactor_heavy_water = non_damaged_building_level@nuclear_reactor_heavy_water }
+			set_variable = { fallout_pretransition_non_damaged_commercial_nuclear_reactor = non_damaged_building_level@commercial_nuclear_reactor }
 			set_variable = { fallout_pretransition_resource_oil = resource@oil }
 			set_variable = { fallout_pretransition_resource_aluminium = resource@aluminium }
 			set_variable = { fallout_pretransition_resource_rubber = resource@rubber }
 			set_variable = { fallout_pretransition_resource_tungsten = resource@tungsten }
 			set_variable = { fallout_pretransition_resource_chromium = resource@chromium }
 			set_variable = { fallout_pretransition_resource_steel = resource@steel }
+			set_variable = { fallout_pretransition_resource_coal = resource@coal }
 			set_variable = { fallout_pretransition_days_since_bombing = days_since_last_strategic_bombing }
 			if = { limit = { has_variable = nuclear_fallout_intensity } set_variable = { fallout_pretransition_nuclear_fallout_intensity = nuclear_fallout_intensity } }
 			if = {
@@ -1443,8 +1462,8 @@ fallout_calculate_population_loss_intent = {
 	multiply_temp_variable = { fallout_expected_population_before_loss = constant:fallout_runtime.population_scale }
 	round_temp_variable = fallout_expected_population_before_loss
 	set_temp_variable = { fallout_expected_population_requested_loss = fallout_expected_population_before_loss }
-	multiply_temp_variable = { fallout_expected_population_requested_loss = fallout_state_loss_percent }
 	multiply_temp_variable = { fallout_expected_population_requested_loss = constant:fallout_runtime.percentage_scale }
+	multiply_temp_variable = { fallout_expected_population_requested_loss = fallout_state_loss_percent }
 	round_temp_variable = fallout_expected_population_requested_loss
 }
 
@@ -1463,7 +1482,8 @@ fallout_apply_state_population_loss = {
 		clr_state_flag = fallout_population_loss_zero
 		set_variable = { fallout_population_loss_percent_applied = fallout_state_loss_percent }
 		set_variable = { fallout_population_loss_requested_memory = fallout_expected_population_requested_loss }
-		set_variable = { fallout_population_before_loss_people = state_population_k }
+		set_variable = { fallout_population_before_loss_k = state_population_k }
+		set_variable = { fallout_population_before_loss_people = fallout_population_before_loss_k }
 		multiply_variable = { fallout_population_before_loss_people = constant:fallout_runtime.population_scale }
 		round_variable = fallout_population_before_loss_people
 		set_variable = { fallout_population_available_before_loss = fallout_population_before_loss_people }
@@ -1484,6 +1504,8 @@ fallout_apply_state_population_loss = {
 		clear_variable = fallout_population_after_loss_people
 		clear_variable = fallout_population_after_loss_k
 		clear_variable = fallout_population_reconciled_loss
+		clear_variable = fallout_population_before_loss_people_replay
+		clear_variable = fallout_population_reconciled_total_people
 		clear_variable = fallout_population_deaths_accounting_status
 		clear_variable = fallout_population_deaths_total_before
 		clear_variable = fallout_population_deaths_total_after
@@ -1538,10 +1560,15 @@ fallout_reconcile_population_loss_receipt = {
 	set_variable = { fallout_population_after_loss_k = state_population_k }
 	multiply_variable = { fallout_population_after_loss_people = constant:fallout_runtime.population_scale }
 	round_variable = fallout_population_after_loss_people
+	set_variable = { fallout_population_before_loss_people_replay = fallout_population_before_loss_k }
+	multiply_variable = { fallout_population_before_loss_people_replay = constant:fallout_runtime.population_scale }
+	round_variable = fallout_population_before_loss_people_replay
 	set_variable = { fallout_population_reconciled_loss = fallout_population_before_loss_people }
 	subtract_from_variable = { fallout_population_reconciled_loss = fallout_population_after_loss_people }
 	clamp_variable = { var = fallout_population_reconciled_loss min = constant:fallout_runtime.zero }
 	round_variable = fallout_population_reconciled_loss
+	set_variable = { fallout_population_reconciled_total_people = fallout_population_after_loss_people }
+	add_to_variable = { fallout_population_reconciled_total_people = fallout_population_reconciled_loss }
 	if = {
 		limit = {
 			has_state_flag = fallout_population_loss_mutation_issued
@@ -1638,6 +1665,11 @@ fallout_apply_building_damage = {
 		fallout_calculate_building_damage_fraction = yes
 		clr_state_flag = fallout_building_damage_reconciled
 		clr_state_flag = fallout_building_damage_applied
+		clear_variable = fallout_building_damage_after_non_damaged_infrastructure
+		clear_variable = fallout_building_damage_after_non_damaged_industrial_complex
+		clear_variable = fallout_building_damage_after_non_damaged_arms_factory
+		clear_variable = fallout_building_damage_after_non_damaged_air_base
+		clear_variable = fallout_building_damage_after_non_damaged_dockyard
 		set_variable = { fallout_building_damage_before_infrastructure = building_level@infrastructure }
 		set_variable = { fallout_building_damage_before_industrial_complex = building_level@industrial_complex }
 		set_variable = { fallout_building_damage_before_arms_factory = building_level@arms_factory }
@@ -1732,6 +1764,7 @@ fallout_reconcile_building_damage_receipt = {
 	round_temp_variable = fallout_expected_building_damage_infrastructure
 	clamp_temp_variable = { var = fallout_expected_building_damage_infrastructure min = constant:fallout_runtime.zero max = fallout_building_damage_available_infrastructure }
 	set_variable = { fallout_building_damage_after_infrastructure = building_level@infrastructure }
+	set_variable = { fallout_building_damage_after_non_damaged_infrastructure = non_damaged_building_level@infrastructure }
 	set_variable = { fallout_building_damage_observed_infrastructure = fallout_building_damage_before_infrastructure }
 	subtract_from_variable = { fallout_building_damage_observed_infrastructure = fallout_building_damage_after_infrastructure }
 	clamp_variable = { var = fallout_building_damage_observed_infrastructure min = constant:fallout_runtime.zero }
@@ -1743,6 +1776,7 @@ fallout_reconcile_building_damage_receipt = {
 	round_temp_variable = fallout_expected_building_damage_industrial_complex
 	clamp_temp_variable = { var = fallout_expected_building_damage_industrial_complex min = constant:fallout_runtime.zero max = fallout_building_damage_available_industrial_complex }
 	set_variable = { fallout_building_damage_after_industrial_complex = building_level@industrial_complex }
+	set_variable = { fallout_building_damage_after_non_damaged_industrial_complex = non_damaged_building_level@industrial_complex }
 	set_variable = { fallout_building_damage_observed_industrial_complex = fallout_building_damage_before_industrial_complex }
 	subtract_from_variable = { fallout_building_damage_observed_industrial_complex = fallout_building_damage_after_industrial_complex }
 	clamp_variable = { var = fallout_building_damage_observed_industrial_complex min = constant:fallout_runtime.zero }
@@ -1754,6 +1788,7 @@ fallout_reconcile_building_damage_receipt = {
 	round_temp_variable = fallout_expected_building_damage_arms_factory
 	clamp_temp_variable = { var = fallout_expected_building_damage_arms_factory min = constant:fallout_runtime.zero max = fallout_building_damage_available_arms_factory }
 	set_variable = { fallout_building_damage_after_arms_factory = building_level@arms_factory }
+	set_variable = { fallout_building_damage_after_non_damaged_arms_factory = non_damaged_building_level@arms_factory }
 	set_variable = { fallout_building_damage_observed_arms_factory = fallout_building_damage_before_arms_factory }
 	subtract_from_variable = { fallout_building_damage_observed_arms_factory = fallout_building_damage_after_arms_factory }
 	clamp_variable = { var = fallout_building_damage_observed_arms_factory min = constant:fallout_runtime.zero }
@@ -1765,6 +1800,7 @@ fallout_reconcile_building_damage_receipt = {
 	round_temp_variable = fallout_expected_building_damage_air_base
 	clamp_temp_variable = { var = fallout_expected_building_damage_air_base min = constant:fallout_runtime.zero max = fallout_building_damage_available_air_base }
 	set_variable = { fallout_building_damage_after_air_base = building_level@air_base }
+	set_variable = { fallout_building_damage_after_non_damaged_air_base = non_damaged_building_level@air_base }
 	set_variable = { fallout_building_damage_observed_air_base = fallout_building_damage_before_air_base }
 	subtract_from_variable = { fallout_building_damage_observed_air_base = fallout_building_damage_after_air_base }
 	clamp_variable = { var = fallout_building_damage_observed_air_base min = constant:fallout_runtime.zero }
@@ -1776,6 +1812,7 @@ fallout_reconcile_building_damage_receipt = {
 	round_temp_variable = fallout_expected_building_damage_dockyard
 	clamp_temp_variable = { var = fallout_expected_building_damage_dockyard min = constant:fallout_runtime.zero max = fallout_building_damage_available_dockyard }
 	set_variable = { fallout_building_damage_after_dockyard = building_level@dockyard }
+	set_variable = { fallout_building_damage_after_non_damaged_dockyard = non_damaged_building_level@dockyard }
 	set_variable = { fallout_building_damage_observed_dockyard = fallout_building_damage_before_dockyard }
 	subtract_from_variable = { fallout_building_damage_observed_dockyard = fallout_building_damage_after_dockyard }
 	clamp_variable = { var = fallout_building_damage_observed_dockyard min = constant:fallout_runtime.zero }
@@ -4217,6 +4254,10 @@ fallout_apply_transition_phase_survivor_allocation = {
 		fallout_recover_uncommitted_survival_ledger_identity_transaction = yes
 	}
 	if = {
+		limit = { fallout_recoverable_survival_ledger_numerical_error_is_active = yes }
+		fallout_recover_uncommitted_survival_ledger_numerical_transaction = yes
+	}
+	if = {
 		limit = {
 			has_global_flag = fallout_successor_allocation_initialized
 			OR = {
@@ -4267,6 +4308,14 @@ fallout_apply_transition_phase_survivor_allocation = {
 		if = {
 			limit = { NOT = { fallout_survival_ledger_identity_is_current = yes } }
 			fallout_stage_survival_ledger_identity_transaction = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = fallout_transition_error }
+				fallout_survival_ledger_identity_is_current = yes
+				NOT = { has_global_flag = fallout_survival_ledger_ready }
+			}
+			fallout_commit_survival_ledger_numerical_transaction = yes
 		}
 	}
 	if = {
