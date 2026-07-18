@@ -108,6 +108,8 @@ Orientation events explain what survived and what is failing. They open decision
 
 Every materialized playable successor receives the accepted five-component Ash-week orientation chain during the reveal grace period. The chain covers national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution. Its distinct visible and hidden roots, delayed results, closure, and cleanup use reserved suffixes `chaosx.fallout.62` through `chaosx.fallout.84`. The exact sequence, timing, identity, parity, recovery, asset, and non-activation contract is authoritative in `03_fallout_timeline_and_campaign_pacing.md`.
 
+Orientation reads Survival Cohesion and State Supply Access only from committed schema-3 ledgers. Country Cohesion opens from Food, Shelter capacity, and already-adjusted Recognition. State Supply Access opens from surviving post-rewrite infrastructure and drives a native local-supply penalty. State results mutate only the authenticated assigned capital through the live Air Winter and Supply Access helpers. Caller-supplied mirrors are forbidden. A stale or missing row blocks the result without a partial state write.
+
 ### Arc events
 
 Arc events are ordered chains with persistent memory. They change politics, characters, institutions, borders, or route access. A country should have one to three active major arcs at a time.

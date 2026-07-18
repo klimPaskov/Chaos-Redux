@@ -165,14 +165,16 @@ Accepted Ash-week orientation disposition:
 - Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
 - The caller remains blocked until successor allocation, player continuation, and all required candidate registries are proven.
 
-Proposed post-pilot live-ledger disposition:
+Accepted post-pilot live-ledger disposition:
 
-- `FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` is queued for user approval and is not accepted source design.
-- It proposes an opening Survival Cohesion formula from the committed Food, Shelter capacity, and Recognition values.
-- It proposes promoting the accepted state Logistics formula into immutable opening and mutable current Supply Access values with a native local-supply modifier.
-- It proposes mapping orientation state results directly into the live Air Winter ledgers instead of the isolated `fallout_orientation_state_*` mirrors.
+- The user approved `FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` on 2026-07-18.
+- Opening Survival Cohesion uses 35 Food, 35 Shelter capacity, and 30 already-adjusted Recognition.
+- The accepted state Logistics formula is promoted into immutable opening and mutable current Supply Access values with a native local-supply modifier.
+- Orientation state results write the authenticated assigned capital through live Air Winter values and the Supply Access helper. Recovery writes the same delta to its durable bonus and current display value.
+- Survival ledger schema 3 owns exact opening replay, bounded mutable values, typed not-applicable state rows, and no fabricated schema-2 migration.
+- The accepted design is incorporated into the source specs and proven in `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`.
 - The exact one-damaged-level infrastructure repair result remains blocked. No construction, total-level, repair-speed, or variable-only substitute is approved.
-- The accepted specs remain unchanged until the user approves the numerical choices. The proposal does not authorize events `66` through `84`, a caller, or scheduler activation.
+- The approval does not authorize events `66` through `84`, a caller, or scheduler activation.
 
 Current implementation authority:
 

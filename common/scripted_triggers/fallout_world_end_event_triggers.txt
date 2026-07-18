@@ -1617,6 +1617,8 @@ fallout_orientation_state_target_is_current = {
 		state = var:ROOT.fallout_successor_assignment_capital_state
 		is_owned_and_controlled_by = ROOT
 		fallout_survival_state_identity_row_is_current = yes
+		fallout_state_supply_access_row_is_current = yes
+		air_winter_fallout_snapshot_payload_is_canonical = yes
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_assignment_capital_row_is_current = yes
 	}
@@ -1818,7 +1820,6 @@ fallout_orientation_begin_request_is_valid = {
 	has_variable = fallout_orientation_requested_state_recovery
 	has_variable = fallout_orientation_requested_state_adaptation
 	has_variable = fallout_orientation_requested_state_reclamation
-	has_variable = fallout_orientation_requested_state_supply
 	has_variable = fallout_orientation_requested_state_population
 	has_variable = fallout_orientation_requested_country_population
 	has_variable = fallout_orientation_requested_source_population
@@ -1833,9 +1834,6 @@ fallout_orientation_begin_request_is_valid = {
 	has_variable = fallout_orientation_requested_weakest_value
 	has_variable = fallout_orientation_requested_crisis_resource
 	has_variable = fallout_orientation_requested_crisis_value
-	has_variable = fallout_orientation_requested_cohesion
-	NOT = { check_variable = { fallout_orientation_requested_cohesion < constant:fallout_survival_numeric.minimum } }
-	NOT = { check_variable = { fallout_orientation_requested_cohesion > constant:fallout_survival_numeric.maximum } }
 	has_variable = fallout_orientation_requested_tailored_resource
 	OR = {
 		check_variable = { fallout_orientation_requested_tailored_resource = constant:fallout_survival_resource.power }
@@ -1851,8 +1849,6 @@ fallout_orientation_begin_request_is_valid = {
 	NOT = { check_variable = { fallout_orientation_requested_state_adaptation > constant:fallout_survival_numeric.maximum } }
 	NOT = { check_variable = { fallout_orientation_requested_state_reclamation < constant:fallout_survival_numeric.minimum } }
 	NOT = { check_variable = { fallout_orientation_requested_state_reclamation > constant:fallout_survival_numeric.maximum } }
-	NOT = { check_variable = { fallout_orientation_requested_state_supply < constant:fallout_survival_numeric.minimum } }
-	NOT = { check_variable = { fallout_orientation_requested_state_supply > constant:fallout_survival_numeric.maximum } }
 	NOT = { check_variable = { fallout_orientation_requested_state_population < constant:fallout_orientation_runtime.zero } }
 	NOT = { check_variable = { fallout_orientation_requested_country_population < constant:fallout_orientation_runtime.zero } }
 	NOT = { check_variable = { fallout_orientation_requested_source_population < constant:fallout_orientation_runtime.zero } }
@@ -1867,6 +1863,7 @@ fallout_orientation_begin_request_is_valid = {
 		exists = yes
 		is_owned_and_controlled_by = ROOT
 		fallout_survival_state_identity_row_is_current = yes
+		fallout_state_supply_access_row_is_current = yes
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_assignment_capital_row_is_current = yes
 		fallout_state_grading_row_is_current = yes
@@ -1989,8 +1986,8 @@ fallout_orientation_branch_is_affordable = {
 		AND = {
 			check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
 			OR = {
-				AND = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.ration } has_variable = fallout_orientation_cohesion check_variable = { fallout_orientation_cohesion value = constant:fallout_orientation_cost.resource_ration_cohesion compare = greater_than_or_equals } }
-				AND = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.requisition } check_variable = { fallout_survival_current_entries^9 value = constant:fallout_orientation_cost.resource_requisition_recognition compare = greater_than_or_equals } has_variable = fallout_orientation_cohesion check_variable = { fallout_orientation_cohesion value = constant:fallout_orientation_cost.resource_requisition_cohesion compare = greater_than_or_equals } }
+				AND = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.ration } check_variable = { fallout_survival_cohesion_current value = constant:fallout_orientation_cost.resource_ration_cohesion compare = greater_than_or_equals } }
+				AND = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.requisition } check_variable = { fallout_survival_current_entries^9 value = constant:fallout_orientation_cost.resource_requisition_recognition compare = greater_than_or_equals } check_variable = { fallout_survival_cohesion_current value = constant:fallout_orientation_cost.resource_requisition_cohesion compare = greater_than_or_equals } }
 				AND = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.tailored } check_variable = { fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.resource_tailored_scrap compare = greater_than_or_equals } OR = { AND = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.power } check_variable = { fallout_survival_current_entries^6 value = constant:fallout_orientation_cost.resource_tailored_support compare = greater_than_or_equals } } AND = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.fuel } check_variable = { fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.resource_tailored_support compare = greater_than_or_equals } } } }
 			}
 		}
@@ -2029,8 +2026,8 @@ fallout_orientation_national_branch_3_is_available = { fallout_orientation_compo
 fallout_orientation_capital_branch_1_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.capital_condition } fallout_orientation_capital_repair_surface_is_approved = yes check_variable = { fallout_survival_current_entries^7 value = constant:fallout_orientation_cost.capital_seal_filters compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.capital_seal_fuel compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.capital_seal_scrap compare = greater_than_or_equals } }
 fallout_orientation_capital_branch_2_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.capital_condition } check_variable = { fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.capital_disperse_food compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.capital_disperse_scrap compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^6 value = constant:fallout_orientation_cost.capital_disperse_power compare = greater_than_or_equals } }
 fallout_orientation_capital_branch_3_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.capital_condition } check_variable = { fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.capital_evacuation_fuel compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.capital_evacuation_food compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^8 value = constant:fallout_orientation_cost.capital_evacuation_shelter compare = greater_than_or_equals } fallout_orientation_receiving_state_target_is_current = yes }
-fallout_orientation_resource_branch_1_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } has_variable = fallout_orientation_cohesion check_variable = { fallout_orientation_cohesion value = constant:fallout_orientation_cost.resource_ration_cohesion compare = greater_than_or_equals } }
-fallout_orientation_resource_branch_2_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } has_variable = fallout_orientation_cohesion check_variable = { fallout_survival_current_entries^9 value = constant:fallout_orientation_cost.resource_requisition_recognition compare = greater_than_or_equals } check_variable = { fallout_orientation_cohesion value = constant:fallout_orientation_cost.resource_requisition_cohesion compare = greater_than_or_equals } }
+fallout_orientation_resource_branch_1_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } check_variable = { fallout_survival_cohesion_current value = constant:fallout_orientation_cost.resource_ration_cohesion compare = greater_than_or_equals } }
+fallout_orientation_resource_branch_2_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } check_variable = { fallout_survival_current_entries^9 value = constant:fallout_orientation_cost.resource_requisition_recognition compare = greater_than_or_equals } check_variable = { fallout_survival_cohesion_current value = constant:fallout_orientation_cost.resource_requisition_cohesion compare = greater_than_or_equals } }
 fallout_orientation_resource_branch_3_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } check_variable = { fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.resource_tailored_scrap compare = greater_than_or_equals } OR = { AND = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.power } check_variable = { fallout_survival_current_entries^6 value = constant:fallout_orientation_cost.resource_tailored_support compare = greater_than_or_equals } } AND = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.fuel } check_variable = { fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.resource_tailored_support compare = greater_than_or_equals } } } }
 fallout_orientation_government_branch_1_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype } fallout_orientation_government_row_surface_is_approved = yes check_variable = { fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.government_consolidate_food compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.government_consolidate_fuel compare = greater_than_or_equals } }
 fallout_orientation_government_branch_2_is_available = { fallout_orientation_component_can_choose = yes check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype } fallout_orientation_government_row_surface_is_approved = yes check_variable = { fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.government_division_food compare = greater_than_or_equals } check_variable = { fallout_survival_current_entries^8 value = constant:fallout_orientation_cost.government_division_shelter compare = greater_than_or_equals } }

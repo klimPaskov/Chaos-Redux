@@ -11,6 +11,8 @@ The release floor is 660 manually reviewed event blocks. Expansion toward 910 is
 
 The accepted Ash-week orientation contract reserves 23 blocks at `chaosx.fallout.62` through `chaosx.fallout.84`. Reservation contributes zero blocks. The tranche enters the release count only after all events, localisation, AI, effects, delayed results, memory, cleanup, six dedicated assets, log entries, event-detail entries, callers, and audits are complete. The current Fallout living-world count remains 0 of 660.
 
+The schema-3 Cohesion and State Supply Access ledgers and the authenticated live Air Winter result mapping are substrate, not event blocks. They do not increase the release count. Orientation still fails acceptance while its caller, nineteen reserved blocks, exact capital repair, coverage rows, registries, logs, details, and final audits remain incomplete.
+
 The implementation count target is detailed in `matrices/fallout_run_event_budget_matrix.md`.
 
 ## Coverage target

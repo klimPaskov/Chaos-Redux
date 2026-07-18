@@ -56,6 +56,12 @@ Country coverage uses each produced state's unrounded score and a survivor-popul
 
 Government archetype modifies only final Recognition. It cannot create physical resources. Region and country memory apply no hidden opening bonus. Their later effects must come from manually reviewed focus, decision, event, and package content. The complete coefficient contract and arithmetic proof are recorded in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md` and `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md`.
 
+### State Supply Access
+
+Every produced Fallout state receives immutable opening and mutable current Supply Access values from 0 through 100. Opening Supply Access is `clamp(20 * fallout_building_damage_after_non_damaged_infrastructure, 0, 100)`. It reads the durable post-rewrite non-damaged infrastructure receipt and grants no supply node, railway, port, or hidden country bonus. Air Winter not-applicable rows receive typed zero values and cannot become orientation targets.
+
+Current Supply Access drives a dedicated state dynamic modifier through `local_supply_impact_factor`. The exact translation is `clamp(-0.50 + 0.005 * current Supply Access, -0.50, 0)`. It therefore restores local distribution from minus 50 percent at zero access to ordinary capacity at 100 access without creating an above-normal bonus. This stacks with the Air Winter phase `local_supplies` modifier. One state helper owns current mutation, clamping, factor calculation, and immediate modifier refresh.
+
 ## State classes after Fallout
 
 The world map should feel new. State classes replace ordinary state identity as the main strategic layer.
@@ -96,6 +102,8 @@ Decision families should be actionable and costly. Political power alone is not 
 ### Survival Cohesion
 
 A country-level value that measures whether the surviving population still accepts the government. It rises from food security, shelter fairness, successful missions, and old legitimacy. It falls from famine, shelter riots, failed expeditions, forced labour, and mutant persecution.
+
+Opening Cohesion is `clamp(round((35 * Food + 35 * Shelter capacity + 30 * Recognition) / 100), 0, 100)`. Recognition is the already archetype-adjusted opening value. No second archetype, region, or country-memory opening bonus applies. The immutable opening value and mutable current value belong to survival ledger schema 3. Every current mutation must use the single clamp-owning Cohesion helper.
 
 Cohesion unlocks reforms, integration, diplomacy, and higher manpower. Low cohesion unlocks coups, cult routes, warlordism, and splinter states.
 
