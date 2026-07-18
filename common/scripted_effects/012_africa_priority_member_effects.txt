@@ -321,6 +321,78 @@ africa_priority_member_load_requested_package_from_origin = {
 	}
 }
 
+# COUNTRY scope. Applies the direct public identity that belongs to the
+# validated package while retaining the carrier's original tag, history,
+# territory, cores, and government. The identity deliberately survives the
+# package runtime cleanup because the promoted country remains playable.
+africa_priority_member_apply_public_identity = {
+	if = {
+		limit = { africa_priority_member_package_is_asante = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_ASANTE
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_oyo = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_OYO
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_sokoto = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_SOKOTO
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_kanem_bornu = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_KANEM_BORNU
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_manden = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_MANDEN
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_kongo = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_KONGO
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_buganda = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_BUGANDA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_aksum = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_AKSUM
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_harar = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_HARAR
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_kilwa = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_KILWA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_nubia = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_NUBIA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_luba = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_LUBA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_lunda = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_LUNDA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_great_zimbabwe = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_GREAT_ZIMBABWE
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_merina = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_MERINA
+	}
+	else_if = {
+		limit = { africa_priority_member_package_is_zulu = yes }
+		set_cosmetic_tag = AFRICA_PRIORITY_ZULU
+	}
+	set_country_flag = africa_priority_member_public_identity_applied
+}
+
 africa_priority_member_register_requested_package = {
 	set_temp_variable = { africa_priority_registration_valid = constant:africa_value.zero }
 	if = {
@@ -450,6 +522,7 @@ africa_priority_member_register_requested_package = {
 		set_country_flag = africa_priority_member_origin_validated
 		set_country_flag = africa_priority_member_overlap_dispute_active
 		clr_country_flag = africa_priority_relationship_unresolved
+		africa_priority_member_apply_public_identity = yes
 		africa_priority_member_ensure_focus_tree_loaded = yes
 		africa_priority_member_apply_starting_problem_idea = yes
 		africa_priority_member_initialize_starting_force = yes
