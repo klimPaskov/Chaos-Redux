@@ -1,12 +1,12 @@
 # Event 012 Africa priority-member country-package overlay handoff
 
-Date: 2026-07-17
+Date: 2026-07-18
 
 ## Status
 
-The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay.
+The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
 
-This is not a whole-country-package completion claim. Formation or release scripts, compact territory, country identities and ideology variants, staged ideas, focus overlay modules, leaders or council portraits, starting OOBs and templates, national flags, and final visual assets remain parent-owned integration work. The custom GFX identifiers referenced by this tranche are intentionally unresolved until the asset tranche supplies their DDS files and sprite definitions.
+This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, country identities and ideology variants, leaders or council portraits, starting OOBs and templates, national flags, and final visual assets remain parent-owned integration work. All current priority-member focus, idea, decision, category, and report-picture sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
 
 Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
@@ -15,18 +15,31 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 ## Owned files
 
 - common/script_constants/012_africa_priority_member_constants.txt
+- common/ideas/012_africa_priority_member_ideas.txt
+- common/national_focus/012_africa_priority_member_focus.txt
 - common/scripted_triggers/012_africa_priority_member_triggers.txt
 - common/scripted_effects/012_africa_priority_member_effects.txt
 - common/scripted_effects/012_africa_action_effects.txt
 - common/scripted_localisation/012_africa_scripted_localisation.txt
+- common/scripted_localisation/012_africa_priority_member_scripted_localisation.txt
 - common/decisions/012_africa_decisions.txt
 - common/decisions/categories/012_africa_priority_member_categories.txt
 - common/decisions/012_africa_priority_member_decisions.txt
 - events/012_africa_priority_member_events.txt
 - localisation/english/012_africa_priority_member_l_english.yml
+- localisation/english/012_africa_priority_member_focus_l_english.yml
+- interface/012_africa_priority_member_assets.gfx
+
+Focus texture folder:
+
+- gfx/interface/goals/012_africa/priority_members/
+
+Idea texture folder:
+
+- gfx/interface/ideas/012_africa/priority_members/
 - docs/plans/012_africa_plans/012_africa_priority_member_packages_handoff.md
 
-No forbidden Event 012 core, Action 102, focus, RSA, achievement, asset, interface, workbook, specification, or matrix file was edited by this tranche.
+No Event 012 RSA, workbook, specification, or matrix file was edited by this focus-and-lifecycle tranche.
 
 ## Sources and implementation guidance used
 
@@ -36,6 +49,7 @@ Repository skills:
 - chaos-redux-subagents
 - chaos-redux-improvement-loop
 - hoi4-decisions-missions
+- hoi4-focus-trees
 
 Required offline wiki pages:
 
@@ -50,6 +64,7 @@ Required offline wiki pages:
 - Decision modding
 - Idea modding
 - AI modding
+- National focus modding
 
 Vanilla documentation and precedents:
 
@@ -57,6 +72,8 @@ Vanilla documentation and precedents:
 - common/script_constants/documentation.md
 - documentation/effects_documentation.md
 - documentation/triggers_documentation.md
+- documentation/modifiers_documentation.md
+- common/national_focus/generic.txt
 - common/decisions/African_Union_decisions.txt
 - common/decisions/categories/African_Union_decision_categories.txt
 
@@ -84,6 +101,9 @@ No web research was used.
 8. The overlap event records congress, local consent, autonomy, or rivalry without automatic cores, annexation, or maximal borders.
 9. Departure supports renewal, a 90-day negotiated withdrawal, or an explicit rival-bloc course.
 10. A repeatable post-settlement action remains available after the political, League, and overlap settlements are recorded.
+11. Full registration sets the package-selection flag before loading africa_priority_member_focus_tree. Engine `keep_completed` semantics retain only focus IDs shared by the former and replacement trees; the Event 012 host and its continental tree are not touched.
+12. The overlay consumes the existing political, distinct-mechanic, force, relationship, overlap, and post-settlement states. It does not create a duplicate legitimacy store or infer a Charter relationship from opinion.
+13. Completing the political focus replaces the starting problem with the selected council, civic, or producer settlement idea. Completing the final focus replaces that stage with the package's distinct mature compact.
 
 ## Action 102 integration contract
 
@@ -292,9 +312,9 @@ League bargaining stops when the package reaches its preferred relationship. An 
 
 ## Asset production contract
 
-There are no generic visual fallbacks in the owned script. The following custom identifiers are referenced but not yet defined. Until the asset tranche supplies them, presentation is incomplete and the whole package layer must not be reported complete.
+There are no generic visual fallbacks in the owned script. The current custom identifiers are defined in the sprite file below, but their final DDS textures have not yet been produced. Until the asset tranche supplies them, presentation is incomplete and the whole package layer must not be reported complete.
 
-Proposed sprite-definition file:
+Sprite-definition file:
 
 - interface/012_africa_priority_member_assets.gfx
 
@@ -306,7 +326,31 @@ Report-picture texture folder:
 
 - gfx/event_pictures/012_africa/priority_members/
 
-Decision icons should be final 32x32 DDS assets designed for decision use. Report pictures should be final 210x176 DDS assets consistent with the Event 012 asset matrix.
+Focus icons should be final 95x85 DDS assets with registered shine sprites. Idea icons should be final 64x64 DDS assets. Decision icons should be final 32x32 DDS assets designed for decision use. Report pictures should be final 210x176 DDS assets consistent with the Event 012 asset matrix.
+
+### Shared focus assets
+
+The eight final focus files and their stable sprite IDs use the same suffixes:
+
+- compact_country
+- political_settlement
+- distinct_institution
+- economic_function
+- league_role
+- national_force
+- overlap_question
+- post_settlement
+
+For each suffix `<key>`, the base ID is `GFX_goal_012_africa_priority_<key>`, the shine ID is `GFX_goal_012_africa_priority_<key>_shine`, and the final file is `goal_012_africa_priority_<key>.dds`.
+
+### Lifecycle idea assets
+
+The three shared settlement ideas use `GFX_idea_africa_priority_<route>_settlement` and `idea_africa_priority_<route>_settlement.dds` for `council`, `civic`, and `producer`.
+
+Every package key in the 16-row matrix uses both:
+
+- `GFX_idea_africa_priority_<package>_problem` -> `idea_africa_priority_<package>_problem.dds`
+- `GFX_idea_africa_priority_<package>_mature` -> `idea_africa_priority_<package>_mature.dds`
 
 ### Shared decision and category assets
 
@@ -353,7 +397,7 @@ The mechanic identifier and filename pattern matches the existing Event 012 asse
 | GFX_report_event_012_africa_priority_member_overlap_settlement | report_event_012_africa_priority_member_overlap_settlement.dds |
 | GFX_report_event_012_africa_priority_member_departure | report_event_012_africa_priority_member_departure.dds |
 
-National flags, ideology variants, leader or council portraits, and package focus or idea icons are not covered by these 60 gameplay references. Their rows remain unresolved in the Event 012 asset tranche.
+The expanded registration now covers the package focus and idea icons in addition to these 60 decision and report references. National flags, ideology variants, and leader or council portraits are separate unresolved rows in the Event 012 asset tranche.
 
 ## Validation evidence
 
@@ -380,6 +424,17 @@ Decision and event inventory:
 - 56 unique custom decision or category GFX references
 - 4 unique custom report-picture references
 
+Focus and lifecycle inventory:
+
+- 1 dynamically loaded priority-member focus tree
+- 8 non-linear focus nodes with package-aware text, rewards, and AI weighting
+- 16 distinct starting-problem ideas
+- 3 mutually exclusive political-settlement ideas
+- 16 distinct mature-compact ideas
+- 9 scripted-localisation selectors with 16 package branches apiece
+- 103 unique gameplay sprite references registered without generic fallbacks
+- 8 additional focus-shine sprite registrations
+
 Reference integrity:
 
 - 83 priority-member script constants defined
@@ -403,6 +458,8 @@ Static path checks confirmed:
 - withdrawal is timed and preserves the country's playable package
 - no recurring world scan, opinion-based promotion, forced-diaspora effect, or all-country on-action was introduced
 
+The HOI4 focus inspector accepted the authored tree and resolved all eight focus titles, descriptions, and registered icon IDs. Deterministic rendering was attempted, but the MCP artifact store returned ARTIFACT_STORAGE_LIMIT before it could write the render outputs. Local focus topology, prerequisites, load references, scripted payloads, icon registration, and localisation checks therefore remain the visual-review evidence for this tranche.
+
 The HOI4 event-inspection MCP could not complete because its artifact store returned ARTIFACT_STORAGE_LIMIT. Local event namespace, ID, description, option, trigger, reference, and localisation audits were completed instead. This tooling limit is not evidence that the missing custom GFX assets exist.
 
 ## Simplifications, omissions, and blockers
@@ -417,12 +474,10 @@ Whole package layer remains incomplete until the parent integrates:
 
 - final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
 - country names and ideology variants where the carrier identity does not already supply them
-- staged national ideas
-- shared-tree focus overlay modules and payoffs
 - leader or council characters and portraits
 - starting divisions, templates, and OOBs
-- national flags and all 60 custom GFX assets in this handoff
-- asset manifests and sprite definitions
+- national flags and all 103 custom priority-member DDS assets in this handoff
+- asset manifests; the sprite definitions and final paths are registered, but the DDS files are not yet produced
 - parent victory or peace callsites for africa_priority_member_record_rival_bloc_victory
 - authorised post-registration player-switch callsites for africa_achievement_register_valid_priority_player
 - parent terminal cleanup callsite after achievement and ending evaluation
@@ -432,12 +487,11 @@ Whole package layer remains incomplete until the parent integrates:
 
 After the missing core package dependencies are implemented:
 
-1. Connect each package's mechanic-completion flag to its focus-overlay payoff instead of adding a second meter.
-2. Let package force-readiness alter shared defence actions, not create duplicate military systems.
-3. Use the package overlap-mode flags in regional congress and peace-resolution content.
-4. Add bounded pair interactions for Luba and Lunda, and for Kongo basin or Nile settlements, only after both participating identities are valid.
-5. Let post-settlement mature flags unlock one durable regional contribution rather than an unbounded equipment loop.
-6. Route every asset request through the Event 012 asset workflow and retain the stable GFX names above.
+1. Let package force-readiness alter shared defence actions, not create duplicate military systems.
+2. Use the package overlap-mode flags in regional congress and peace-resolution content.
+3. Add bounded pair interactions for Luba and Lunda, and for Kongo basin or Nile settlements, only after both participating identities are valid.
+4. Let post-settlement mature flags unlock one durable regional contribution rather than an unbounded equipment loop.
+5. Route every asset request through the Event 012 asset workflow and retain the stable GFX names above.
 
 ## Git
 
