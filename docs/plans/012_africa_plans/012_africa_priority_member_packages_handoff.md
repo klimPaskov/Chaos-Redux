@@ -8,7 +8,7 @@ The bounded gameplay overlay for all 16 rows in the priority-member package matr
 
 This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, institutional-council portrait DDS files, national flags, and the remaining visual assets remain parent-owned integration work. All sixteen promoted packages now apply a persistent direct-name cosmetic identity with complete ideology variants while retaining the carrier's original tag, history, states, and cores. Each package also recruits one distinct collective council and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching council leader role. All current priority-member focus, idea, decision, category, report-picture, and council-portrait sprite IDs are registered under stable final paths. Forty decision DDS files now resolve: eight shared actions, sixteen distinct mechanics, and sixteen national-force actions. The remaining sixty-three focus, idea, decision, and report DDS files plus sixteen council portraits remain unresolved.
 
-Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
+Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. All sixteen carrier identities are also mapped into their correct regional contact overlay, so a valid country can enter the bounded roster before survey. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
 The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently treated as full packages. They remain compact, dormant, cultural, autonomous, associated, or later-promotion candidates under the source specification.
 
@@ -434,6 +434,7 @@ Matrix coverage audit:
 - 16 priority rows inspected
 - 16 package ID triggers
 - 16 origin triggers
+- 16 priority carrier tags covered by at least one regional contact overlay
 - 16 distinct-mechanic decisions
 - 16 force decisions
 - 16 post-settlement decisions
