@@ -150,6 +150,130 @@ africa_priority_member_origin_is_zulu = {
 	OR = { original_tag = EQX has_country_flag = africa_priority_origin_zulu }
 }
 
+# COUNTRY scope. The eight identities already supplied by Event 6 keep their
+# installed tags. The other eight use exact vanilla African carriers whose
+# compact state and capital already exist; surveying them records the Event 12
+# identity without transferring territory or granting cores.
+africa_priority_member_has_supported_carrier_identity = {
+	OR = {
+		africa_priority_member_origin_is_asante = yes
+		africa_priority_member_origin_is_oyo = yes
+		original_tag = SOK
+		africa_priority_member_origin_is_kanem_bornu = yes
+		original_tag = MLI
+		africa_priority_member_origin_is_kongo = yes
+		original_tag = UGA
+		original_tag = TIG
+		original_tag = HAR
+		africa_priority_member_origin_is_kilwa = yes
+		original_tag = SUD
+		africa_priority_member_origin_is_luba = yes
+		africa_priority_member_origin_is_lunda = yes
+		original_tag = ZIM
+		original_tag = MAD
+		africa_priority_member_origin_is_zulu = yes
+	}
+}
+
+africa_priority_member_has_viable_compact_base = {
+	exists = yes
+	capital_scope = {
+		is_on_continent = africa
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	NOT = { has_capitulated = yes }
+}
+
+africa_priority_member_has_functioning_institution = {
+	africa_priority_member_has_supported_carrier_identity = yes
+	has_stability > constant:africa_priority_member_promotion.institution_stability_floor
+	NOT = { has_country_flag = africa_priority_institution_destroyed }
+}
+
+africa_priority_member_has_documented_strategic_function = {
+	africa_priority_member_has_supported_carrier_identity = yes
+	OR = {
+		num_of_factories > constant:africa_value.zero
+		any_owned_state = {
+			OR = {
+				infrastructure > constant:africa_priority_member_promotion.infrastructure_floor
+				state_population_k > constant:africa_priority_member_promotion.population_floor
+			}
+		}
+	}
+}
+
+africa_priority_member_has_unresolved_league_problem = {
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_member_final_integration_consent }
+	NOT = { africa_relationship_is_integrated_region = yes }
+}
+
+africa_priority_member_has_viable_population_and_infrastructure = {
+	any_owned_state = {
+		state_population_k > constant:africa_priority_member_promotion.population_floor
+		infrastructure > constant:africa_priority_member_promotion.infrastructure_floor
+	}
+}
+
+africa_priority_member_has_distinct_package_identity = {
+	africa_priority_member_has_supported_carrier_identity = yes
+	NOT = { has_country_flag = africa_priority_package_duplicates_existing_role }
+}
+
+africa_priority_member_promotion_survey_is_available = {
+	exists = yes
+	africa_priority_member_has_supported_carrier_identity = yes
+	africa_priority_member_has_viable_compact_base = yes
+	NOT = { africa_is_current_host = yes }
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_priority_promotion_requalification_pending }
+	NOT = { has_country_flag = africa_action_record_active }
+}
+
+# COUNTRY scope after africa_priority_member_evaluate_promotion_candidate. The
+# six condition flags and count are visible dossier evidence; support is a
+# separate gate and cannot be replaced by opinion.
+africa_priority_member_can_be_promoted = {
+	has_country_flag = africa_priority_promotion_candidate
+	africa_priority_member_has_valid_origin = yes
+	check_variable = {
+		var = africa_priority_promotion_criteria_count
+		value = constant:africa_priority_member_promotion.required_criteria
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_priority_local_support
+		value = constant:africa_action_threshold.minimum_confidence
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_priority_promotion_requalification_pending }
+}
+
+africa_priority_member_can_resolve_requalification = {
+	has_country_flag = africa_priority_promotion_requalification_pending
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	OR = {
+		AND = {
+			has_country_flag = africa_priority_requalification_access
+			num_of_factories > constant:africa_value.zero
+			any_owned_state = { infrastructure > constant:africa_priority_member_promotion.infrastructure_floor }
+		}
+		AND = {
+			has_country_flag = africa_priority_requalification_overlap
+			has_war = no
+			has_event_target = africa_host
+			event_target:africa_host = { has_country_flag = africa_league_congress_unlocked }
+		}
+		AND = {
+			has_country_flag = africa_priority_requalification_local_ratification
+			has_stability > constant:africa_priority_member_promotion.medium_support_stability
+		}
+	}
+}
+
 africa_priority_member_has_valid_origin = {
 	OR = {
 		africa_priority_member_origin_is_asante = yes
@@ -182,17 +306,15 @@ africa_priority_member_has_package = {
 	}
 }
 
-# COUNTRY scope. The generic promotion action must have reached a full or
-# negotiated partial result, and the release/formation identity must be exact.
+# COUNTRY scope. Only a full Action 102 result activates the complete package.
+# Partial autonomy remains a protected or associated compact settlement until
+# its recorded requalification problem is resolved and Action 102 succeeds.
 africa_priority_member_can_register_package = {
 	has_global_flag = africa_event_active
 	has_event_target = africa_host
 	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
 	NOT = { has_country_flag = africa_priority_member_package_active }
-	OR = {
-		has_country_flag = africa_priority_package_promotion_approved
-		has_country_flag = africa_priority_partial_autonomy
-	}
+	has_country_flag = africa_priority_package_promotion_approved
 	africa_priority_member_has_valid_origin = yes
 }
 

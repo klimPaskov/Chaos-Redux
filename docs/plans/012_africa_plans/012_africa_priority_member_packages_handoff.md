@@ -8,6 +8,8 @@ The bounded gameplay overlay for all 16 rows in the priority-member package matr
 
 This is not a whole-country-package completion claim. Formation or release scripts, compact territory, country identities and ideology variants, staged ideas, focus overlay modules, leaders or council portraits, starting OOBs and templates, national flags, and final visual assets remain parent-owned integration work. The custom GFX identifiers referenced by this tranche are intentionally unresolved until the asset tranche supplies their DDS files and sprite definitions.
 
+Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
+
 The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently treated as full packages. They remain compact, dormant, cultural, autonomous, associated, or later-promotion candidates under the source specification.
 
 ## Owned files
@@ -15,6 +17,9 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 - common/script_constants/012_africa_priority_member_constants.txt
 - common/scripted_triggers/012_africa_priority_member_triggers.txt
 - common/scripted_effects/012_africa_priority_member_effects.txt
+- common/scripted_effects/012_africa_action_effects.txt
+- common/scripted_localisation/012_africa_scripted_localisation.txt
+- common/decisions/012_africa_decisions.txt
 - common/decisions/categories/012_africa_priority_member_categories.txt
 - common/decisions/012_africa_priority_member_decisions.txt
 - events/012_africa_priority_member_events.txt
@@ -70,9 +75,9 @@ No web research was used.
 ## Runtime flow
 
 1. A country is formed, released, or otherwise given an exact priority origin.
-2. Existing Action 102, promote_priority_member_package, resolves either a full promotion or negotiated partial-autonomy result.
-3. Action 102 invokes africa_priority_member_register_from_origin after a full or negotiated partial-autonomy result. The bounded ratification decision remains an idempotent recovery surface if a valid origin was not available at resolution time.
-4. Registration validates both the Action 102 result and the exact origin, assigns one stable package ID, creates no territory or relationship change, and opens the political settlement.
+2. Existing Action 102, promote_priority_member_package, resolves either a full promotion or negotiated compact result.
+3. A full result invokes africa_priority_member_register_from_origin. A partial result stops at Protected status for an outside candidate or Associate status for an already Protected candidate, records one access, overlap, or local-ratification obstacle, and does not activate the full package.
+4. The bounded requalification decision checks the live obstacle requirement, rebuilds the dossier, and permits another Action 102 attempt. Registration validates the later full result and exact origin, assigns one stable package ID, creates no territory or core change, and opens the political settlement.
 5. The country chooses one of three political routes with a package-specific named council, civic government, or producer institution.
 6. The country advances a four-step distinct mechanic and a separate four-step force-reinforcement track.
 7. League bargaining uses only the shared africa_apply_relationship_transition state machine.
@@ -82,10 +87,9 @@ No web research was used.
 
 ## Action 102 integration contract
 
-Action 102 is the only promotion gate. Registration requires one of:
+Action 102 is the only promotion gate. Registration requires:
 
 - africa_priority_package_promotion_approved
-- africa_priority_partial_autonomy
 
 Registration also requires:
 
@@ -98,7 +102,7 @@ Preferred country-scope API after Action 102 has written its result:
 
 - africa_priority_member_register_from_origin = yes
 
-The normal player and AI path is the direct Action 102 call. It opens africa_priority_member.1200 only when africa_priority_member_can_open_political_settlement is true. The bounded ratification decision uses the same helper and remains available for an idempotent delayed-origin recovery.
+The normal player and AI path is the direct Action 102 call. It opens africa_priority_member.1200 only when africa_priority_member_can_open_political_settlement is true. The bounded ratification decision uses the same helper and remains available for an idempotent delayed-origin recovery after a full result. A partial result cannot satisfy africa_priority_member_can_register_package.
 
 Low-level explicit-ID API, for a caller that already knows the exact package:
 
@@ -109,18 +113,29 @@ The low-level API still validates that the requested ID matches the country's or
 
 ### Missing-identity origin handoff
 
-The formation or release script must set the exact origin flag before the Action 102 result is ratified for these eight identities:
+The bounded survey records these exact carrier-to-package origins before Action 102 validation:
 
-- africa_priority_origin_sokoto
-- africa_priority_origin_manden
-- africa_priority_origin_buganda
-- africa_priority_origin_aksum
-- africa_priority_origin_harar
-- africa_priority_origin_nubia
-- africa_priority_origin_great_zimbabwe
-- africa_priority_origin_merina
+- SOK -> africa_priority_origin_sokoto
+- MLI -> africa_priority_origin_manden
+- UGA -> africa_priority_origin_buganda
+- TIG -> africa_priority_origin_aksum
+- HAR -> africa_priority_origin_harar
+- SUD -> africa_priority_origin_nubia
+- ZIM -> africa_priority_origin_great_zimbabwe
+- MAD -> africa_priority_origin_merina
 
-The same origin flags are supported as explicit overrides for the eight reused identities, but their installed identities are auto-detected.
+The other eight packages continue to use their installed Event 6 or accepted carrier identities. All sixteen are eligible only through `africa_selected_targets`, which is filled by an explicit bounded contact refresh rather than a recurring scan. This tranche deliberately does not create new tags or maximal territorial releases.
+
+The survey recomputes, rather than caches, the six promotion conditions:
+
+- viable compact territory under the candidate's ownership and control
+- local support or a functioning carrier institution
+- an economic or strategic function beyond symbolic restoration
+- an unresolved relationship problem with the League
+- enough surviving population and infrastructure for meaningful play
+- a distinct package identity not already supplied by a neighbour
+
+At least three conditions and the Action 102 local-support floor are required. The dossier exposes the condition count and local-support value. Opinion is not an input. Action 102 runs the evaluator again during launch validation, so a stale survey cannot promote an invalid country.
 
 Do not set an origin flag on a cultural body, temporary transition subject, unrelated cosmetic route, or unreviewed maximal-territory claimant.
 
@@ -400,9 +415,7 @@ Owned gameplay overlay:
 
 Whole package layer remains incomplete until the parent integrates:
 
-- exact formation or release scripts and safe compact territory
-- the eight missing origin-flag producers listed above
-- confirmation that all eight reused identities enter the Action 102 candidate flow
+- final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
 - country names and ideology variants where the carrier identity does not already supply them
 - staged national ideas
 - shared-tree focus overlay modules and payoffs

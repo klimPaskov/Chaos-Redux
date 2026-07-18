@@ -12,6 +12,142 @@
 # Package registration
 # ---------------------------------------------------------------------------
 
+# COUNTRY scope. These are exact carriers, not substitutes: each is an existing
+# playable African identity with a compact vanilla capital and state package.
+# Recording an origin changes no owner, controller, core, subject, or faction.
+africa_priority_member_record_supported_carrier_origin = {
+	if = { limit = { original_tag = SOK } set_country_flag = africa_priority_origin_sokoto }
+	if = { limit = { original_tag = MLI } set_country_flag = africa_priority_origin_manden }
+	if = { limit = { original_tag = UGA } set_country_flag = africa_priority_origin_buganda }
+	if = { limit = { original_tag = TIG } set_country_flag = africa_priority_origin_aksum }
+	if = { limit = { original_tag = HAR } set_country_flag = africa_priority_origin_harar }
+	if = { limit = { original_tag = SUD } set_country_flag = africa_priority_origin_nubia }
+	if = { limit = { original_tag = ZIM } set_country_flag = africa_priority_origin_great_zimbabwe }
+	if = { limit = { original_tag = MAD } set_country_flag = africa_priority_origin_merina }
+}
+
+# COUNTRY scope on one bounded roster target. Rebuilds the six documented
+# promotion conditions from current state. The result is inspectable, can be
+# refreshed, and never promotes or integrates the country by itself.
+africa_priority_member_evaluate_promotion_candidate = {
+	africa_priority_member_record_supported_carrier_origin = yes
+	clr_country_flag = africa_priority_promotion_candidate
+	clr_country_flag = africa_priority_promotion_survey_passed
+	clr_country_flag = africa_priority_promotion_survey_deferred
+	clr_country_flag = africa_priority_viable_territory
+	clr_country_flag = africa_priority_functioning_institution
+	clr_country_flag = africa_priority_distinct_role
+	clr_country_flag = africa_priority_relationship_unresolved
+	clr_country_flag = africa_priority_economic_or_strategic_function
+	clr_country_flag = africa_priority_population_and_infrastructure_viable
+	set_variable = { africa_priority_promotion_criteria_count = constant:africa_value.zero }
+	if = {
+		limit = { has_stability > constant:africa_priority_member_promotion.high_support_stability }
+		set_variable = { africa_priority_local_support = constant:africa_priority_member_promotion.local_support_high }
+	}
+	else_if = {
+		limit = { has_stability > constant:africa_priority_member_promotion.medium_support_stability }
+		set_variable = { africa_priority_local_support = constant:africa_priority_member_promotion.local_support_medium }
+	}
+	else = {
+		set_variable = { africa_priority_local_support = constant:africa_priority_member_promotion.local_support_low }
+	}
+	if = {
+		limit = { africa_priority_member_has_viable_compact_base = yes }
+		set_country_flag = africa_priority_viable_territory
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = { africa_priority_member_has_functioning_institution = yes }
+		set_country_flag = africa_priority_functioning_institution
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = { africa_priority_member_has_documented_strategic_function = yes }
+		set_country_flag = africa_priority_economic_or_strategic_function
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = { africa_priority_member_has_unresolved_league_problem = yes }
+		set_country_flag = africa_priority_relationship_unresolved
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = { africa_priority_member_has_viable_population_and_infrastructure = yes }
+		set_country_flag = africa_priority_population_and_infrastructure_viable
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = { africa_priority_member_has_distinct_package_identity = yes }
+		set_country_flag = africa_priority_distinct_role
+		add_to_variable = { africa_priority_promotion_criteria_count = constant:africa_value.one }
+	}
+	if = {
+		limit = {
+			africa_priority_member_has_valid_origin = yes
+			NOT = { has_country_flag = africa_priority_promotion_requalification_pending }
+			check_variable = {
+				var = africa_priority_promotion_criteria_count
+				value = constant:africa_priority_member_promotion.required_criteria
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_priority_local_support
+				value = constant:africa_action_threshold.minimum_confidence
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = africa_priority_promotion_candidate
+		set_country_flag = africa_priority_promotion_survey_passed
+	}
+	else = {
+		set_country_flag = africa_priority_promotion_survey_deferred
+	}
+}
+
+# COUNTRY scope after a negotiated partial Action 102 result. Exactly one
+# concrete obstacle is recorded so the compact settlement has a visible route
+# back to candidacy rather than silently receiving the complete package.
+africa_priority_member_record_partial_requalification_issue = {
+	clr_country_flag = africa_priority_requalification_access
+	clr_country_flag = africa_priority_requalification_overlap
+	clr_country_flag = africa_priority_requalification_local_ratification
+	set_country_flag = africa_priority_promotion_requalification_pending
+	if = {
+		limit = {
+			check_variable = { africa_priority_local_support < constant:africa_priority_member_promotion.local_support_medium }
+		}
+		set_country_flag = africa_priority_requalification_local_ratification
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				any_owned_state = { infrastructure > constant:africa_priority_member_promotion.infrastructure_floor }
+			}
+		}
+		set_country_flag = africa_priority_requalification_access
+	}
+	else = {
+		set_country_flag = africa_priority_requalification_overlap
+	}
+}
+
+# COUNTRY scope on the compact candidate. The host decision is available only
+# when the recorded obstacle's live requirements are satisfied. Resolution
+# clears the obstacle and rebuilds the dossier; it still does not activate the
+# package, and Action 102 must produce a later full result.
+africa_priority_member_resolve_requalification_issue = {
+	if = {
+		limit = { africa_priority_member_can_resolve_requalification = yes }
+		clr_country_flag = africa_priority_promotion_requalification_pending
+		clr_country_flag = africa_priority_requalification_access
+		clr_country_flag = africa_priority_requalification_overlap
+		clr_country_flag = africa_priority_requalification_local_ratification
+		set_country_flag = africa_priority_requalification_resolved
+		africa_priority_member_evaluate_promotion_candidate = yes
+	}
+}
+
 africa_priority_member_load_requested_package_from_origin = {
 	set_temp_variable = { africa_priority_requested_package_id = constant:africa_priority_member_package.none }
 	if = {
@@ -213,11 +349,11 @@ africa_priority_member_register_requested_package = {
 			limit = { has_country_flag = africa_priority_package_promotion_approved }
 			set_country_flag = africa_priority_member_full_promotion
 			add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
-		}
-		else_if = {
-			limit = { has_country_flag = africa_priority_partial_autonomy }
-			set_country_flag = africa_priority_member_negotiated_partial_promotion
-			set_country_flag = africa_clause_federal_autonomy
+			if = {
+				limit = { has_country_flag = africa_priority_partial_autonomy }
+				set_country_flag = africa_priority_member_negotiated_partial_promotion
+				set_country_flag = africa_priority_member_requalified_after_partial
+			}
 		}
 		if = {
 			limit = { is_ai = no }
@@ -1273,4 +1409,8 @@ africa_priority_member_cleanup_runtime = {
 	clr_country_flag = africa_priority_member_post_settlement_open
 	clr_country_flag = africa_priority_member_preferred_relationship_reached
 	clr_country_flag = africa_priority_relationship_unresolved
+	clr_country_flag = africa_priority_promotion_requalification_pending
+	clr_country_flag = africa_priority_requalification_access
+	clr_country_flag = africa_priority_requalification_overlap
+	clr_country_flag = africa_priority_requalification_local_ratification
 }
