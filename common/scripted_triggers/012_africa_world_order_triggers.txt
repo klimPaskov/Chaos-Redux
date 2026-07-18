@@ -1,0 +1,327 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SCRAMBLE AND WORLD-ORDER TRIGGERS
+# ============================================================================
+# Candidate, phase, package, union, continental-war, and terminal checks for
+# Event 12. No trigger grants membership, integration, or territorial transfer.
+# ============================================================================
+
+# COUNTRY scope.
+africa_world_package_candidate_base_is_valid = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_country_flag = africa_unifier_host }
+	NOT = { has_country_flag = africa_world_package_actor }
+	NOT = { has_country_flag = africa_world_package_candidate }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_government_in_exile = yes }
+	OR = {
+		has_focus_tree = generic_focus
+		has_country_flag = africa_world_package_focus_replacement_approved
+	}
+	capital_scope = {
+		is_controlled_by = PREV
+		NOT = { is_on_continent = africa }
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+africa_world_is_middle_east_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = middle_east }
+}
+
+africa_world_is_europe_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = europe }
+}
+
+africa_world_is_asia_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = asia }
+}
+
+africa_world_is_north_america_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = north_america }
+}
+
+africa_world_is_south_america_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = south_america }
+}
+
+africa_world_is_oceania_candidate = {
+	africa_world_package_candidate_base_is_valid = yes
+	capital_scope = { is_on_continent = australia }
+}
+
+# COUNTRY scope on a nominated actor.
+africa_world_package_is_candidate = {
+	has_country_flag = africa_world_package_candidate
+	has_variable = africa_world_continent_id
+	check_variable = { africa_world_continent_id > constant:africa_world_continent.none }
+	check_variable = {
+		var = africa_world_continent_id
+		value = constant:africa_world_continent.oceania
+		compare = less_than_or_equals
+	}
+	NOT = { has_country_flag = africa_world_package_installed }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope on a nominated actor. The long comparison form is used because
+# the package registry includes the final Oceania identifier.
+africa_world_package_has_valid_identifier = {
+	has_variable = africa_world_continent_id
+	check_variable = { africa_world_continent_id > constant:africa_world_continent.none }
+	check_variable = {
+		var = africa_world_continent_id
+		value = constant:africa_world_continent.oceania
+		compare = less_than_or_equals
+	}
+}
+
+africa_world_package_is_installed = {
+	has_country_flag = africa_world_package_actor
+	has_country_flag = africa_world_package_installed
+	africa_world_package_has_valid_identifier = yes
+	NOT = { has_global_flag = world_end }
+}
+
+africa_world_package_is_sovereign_complete = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_sovereign_complete
+	check_variable = { africa_world_package_status = constant:africa_world_package_status.settled }
+}
+
+africa_world_package_is_resolved = {
+	africa_world_package_is_installed = yes
+	OR = {
+		has_country_flag = africa_world_package_sovereign_complete
+		has_country_flag = africa_world_union_partner
+		has_country_flag = africa_world_submission_settlement
+		has_country_flag = africa_world_package_terminal_absorbed
+	}
+}
+
+# COUNTRY scope on the Event 12 host.
+africa_scramble_phase_is_shock = {
+	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.shock_and_recognition }
+}
+
+africa_scramble_phase_is_coalition = {
+	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.coalition_and_ultimatum }
+}
+
+africa_scramble_phase_is_intervention = {
+	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.intervention_or_settlement }
+}
+
+africa_scramble_phase_is_aftermath = {
+	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.aftermath }
+}
+
+africa_scramble_phase_is_settled = {
+	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.settled }
+}
+
+africa_world_package_sponsorship_gate_is_open = {
+	africa_is_current_host = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_scramble_response_active
+	NOT = { has_global_flag = world_end }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:africa_world_order.sponsorship_chaos_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_world_packages_installed_count
+		value = constant:africa_world_order.required_package_count
+		compare = less_than
+	}
+}
+
+africa_world_packages_are_installed = {
+	check_variable = {
+		var = africa_world_packages_installed_count
+		value = constant:africa_world_order.required_package_count
+		compare = greater_than_or_equals
+	}
+}
+
+africa_world_packages_are_settled = {
+	check_variable = {
+		var = africa_world_packages_settled_count
+		value = constant:africa_world_order.required_settled_package_count
+		compare = greater_than_or_equals
+	}
+}
+
+africa_scramble_recognition_requirement_met = {
+	check_variable = {
+		var = africa_scramble_recognition_count
+		value = africa_scramble_recognition_target
+		compare = greater_than_or_equals
+	}
+}
+
+africa_scramble_sanctions_requirement_met = {
+	OR = {
+		check_variable = { africa_scramble_sanction_count = constant:africa_value.zero }
+		has_country_flag = africa_anti_sanctions_network_ready
+		has_country_flag = africa_scramble_sanctions_lifted
+	}
+}
+
+africa_scramble_ultimatum_requirement_met = {
+	OR = {
+		check_variable = { africa_scramble_ultimatum_count = constant:africa_value.zero }
+		has_country_flag = africa_foreign_ultimatum_answered
+		has_country_flag = africa_scramble_ultimata_withdrawn
+	}
+}
+
+africa_scramble_intervention_requirement_met = {
+	OR = {
+		check_variable = { africa_scramble_expedition_count = constant:africa_value.zero }
+		AND = {
+			has_country_flag = africa_continental_defence_mobilised
+			OR = {
+				has_country_flag = africa_expedition_plan_disrupted
+				has_country_flag = africa_intervention_coalition_withdrawn
+				has_country_flag = africa_scramble_armistice_signed
+				has_country_flag = africa_scramble_defensive_war_won
+			}
+		}
+	}
+}
+
+africa_scramble_has_no_active_intervention_war = {
+	NOT = {
+		any_country = {
+			has_country_flag = africa_scramble_participant
+			has_war_with = ROOT
+		}
+	}
+}
+
+africa_scramble_can_enter_aftermath = {
+	africa_is_current_host = yes
+	africa_scramble_phase_is_intervention = yes
+	africa_scramble_recognition_requirement_met = yes
+	africa_scramble_sanctions_requirement_met = yes
+	africa_scramble_ultimatum_requirement_met = yes
+	africa_scramble_intervention_requirement_met = yes
+	africa_scramble_has_no_active_intervention_war = yes
+}
+
+africa_scramble_can_ratify_aftermath = {
+	africa_is_current_host = yes
+	africa_scramble_phase_is_aftermath = yes
+	africa_world_packages_are_installed = yes
+	africa_scramble_recognition_requirement_met = yes
+	africa_scramble_sanctions_requirement_met = yes
+	africa_scramble_ultimatum_requirement_met = yes
+	africa_scramble_intervention_requirement_met = yes
+	africa_scramble_has_no_active_intervention_war = yes
+	NOT = { has_global_flag = world_end }
+}
+
+africa_world_order_route_is_diplomatic = {
+	OR = {
+		check_variable = { africa_world_order_route = constant:africa_world_order_route.charter_of_continents }
+		check_variable = { africa_world_order_route = constant:africa_world_order_route.balance_of_continents }
+	}
+}
+
+africa_world_order_route_is_terminal = {
+	check_variable = { africa_world_order_route = constant:africa_world_order_route.terminal_continental_campaign }
+}
+
+# COUNTRY scope on another continent actor. ROOT remains the host when called
+# from a targeted decision or the shared action kernel.
+africa_world_union_target_is_compatible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_sovereign_complete
+	NOT = { has_country_flag = africa_world_package_rival }
+	NOT = { has_country_flag = africa_world_submission_settlement }
+	NOT = { has_war_with = ROOT }
+	has_country_flag = africa_world_union_consent
+	check_variable = {
+		var = africa_world_package_legitimacy
+		value = constant:africa_world_order.minimum_world_union_compatibility
+		compare = greater_than_or_equals
+	}
+}
+
+africa_world_continental_war_target_is_eligible = {
+	africa_world_package_is_installed = yes
+	NOT = { has_country_flag = africa_world_union_partner }
+	NOT = { has_country_flag = africa_world_submission_settlement }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		has_country_flag = africa_world_package_rival
+		has_country_flag = africa_world_order_rivalry_intensified
+		AND = {
+			ROOT = { africa_world_order_route_is_terminal = yes }
+			NOT = { has_country_flag = africa_world_union_consent }
+		}
+	}
+}
+
+africa_world_defeated_continent_is_eligible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_continental_war_opponent
+	OR = {
+		has_capitulated = yes
+		has_country_flag = africa_defeated_continent_power
+	}
+	NOT = { has_country_flag = africa_world_submission_settlement }
+}
+
+# COUNTRY scope on the host.
+africa_terminal_world_identity_can_commit = {
+	africa_is_current_host = yes
+	has_global_flag = africa_the_world_super_event_package_ready
+	has_global_flag = africa_world_order_open
+	has_global_flag = africa_continental_wars_active
+	has_global_flag = africa_is_one
+	africa_world_order_route_is_terminal = yes
+	africa_world_packages_are_installed = yes
+	africa_world_packages_are_settled = yes
+	check_variable = {
+		var = africa_world_packages_sovereign_complete_count
+		value = constant:africa_world_order.minimum_sovereign_completions
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_world_terminal_resolved_count
+		value = constant:africa_world_order.minimum_terminal_control
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:africa_world_order.terminal_chaos_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	NOT = { has_country_flag = africa_postwar_constitutional_review_pending }
+	NOT = {
+		any_country = {
+			has_country_flag = africa_world_package_actor
+			has_war_with = ROOT
+		}
+	}
+}
+
+# COUNTRY scope after The World exists.
+africa_world_region_target_is_eligible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_order_resolved_under_africa
+	NOT = { has_country_flag = africa_world_region_administration_complete }
+	has_global_flag = world_end_africa_the_world
+}

@@ -1,0 +1,393 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 MIDDLE EAST WORLD-ORDER PACKAGE
+# ============================================================================
+# Dedicated replacement tree for the audited generic-focus candidate nominated
+# by Event 12. Crossroads Balance tracks representation, holy sites, water,
+# resources, regional powers, command, withdrawal law, and Africa relations.
+# ============================================================================
+
+@world_package_cost = 5
+@world_package_final_cost = 8
+@world_package_tree_weight = 100
+@world_package_ai_low = 5
+@world_package_ai_normal = 10
+@world_package_ai_high = 20
+@world_package_ai_urgent = 40
+@world_package_route_popularity = 0.15
+@world_package_factory = 1
+
+focus_tree = {
+	id = africa_middle_east_world_focus_tree
+
+	country = {
+		factor = 0
+		modifier = { add = @world_package_tree_weight has_country_flag = africa_world_middle_east_package }
+	}
+
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 20 y = 10 }
+	initial_show_position = { x = 20 y = 0 }
+
+	focus = {
+		id = africa_middle_east_convene_crossroads_balance
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_crossroads
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 0
+		cost = @world_package_cost
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_crossroads }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_middle_east_crossroads_council_open
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_middle_east_end_foreign_mandates
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_end_mandates
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 1
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_convene_crossroads_balance }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_cities }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_middle_east_mandate_system_ended
+			add_political_power = constant:africa_world_package_reward.political_power
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_middle_east_water_and_food_security
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_water_security
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 2
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_end_foreign_mandates }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_routes }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_major_gain }
+			africa_world_clamp_package_mechanic = yes
+			capital_scope = { add_extra_state_shared_building_slots = @world_package_factory add_building_construction = { type = industrial_complex level = @world_package_factory instant_build = yes } }
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_pipeline_sovereignty
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_pipeline_sovereignty
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESOURCES }
+		x = 26
+		y = 2
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_end_foreign_mandates }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_resources }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_major_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_fuel = constant:africa_world_package_reward.fuel
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_holy_cities_compact
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_holy_cities
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 2
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_end_foreign_mandates }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_routes }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	# Five constitutional routes. The high-chaos covenant stays unavailable until
+	# its separate source and sensitivity review sets the explicit ready flag.
+	focus = {
+		id = africa_middle_east_arab_federal_pact
+		icon = GFX_goal_012_africa_continent_union_middle_east_arab_federal
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 8
+		y = 3
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_holy_cities_compact }
+		mutually_exclusive = { focus = africa_middle_east_plural_crossroads_federation focus = africa_middle_east_royal_concert focus = africa_middle_east_socialist_republics focus = africa_middle_east_desert_covenant }
+		completion_reward = {
+			set_country_flag = africa_middle_east_arab_federal_route
+			add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+		}
+		ai_will_do = { factor = @world_package_ai_normal }
+	}
+
+	focus = {
+		id = africa_middle_east_plural_crossroads_federation
+		icon = GFX_goal_012_africa_continent_union_middle_east_plural_crossroads
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 3
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_holy_cities_compact }
+		mutually_exclusive = { focus = africa_middle_east_arab_federal_pact focus = africa_middle_east_royal_concert focus = africa_middle_east_socialist_republics focus = africa_middle_east_desert_covenant }
+		completion_reward = {
+			set_country_flag = africa_middle_east_plural_crossroads_route
+			add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_royal_concert
+		icon = GFX_goal_012_africa_continent_union_middle_east_royal_concert
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 3
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_holy_cities_compact }
+		mutually_exclusive = { focus = africa_middle_east_arab_federal_pact focus = africa_middle_east_plural_crossroads_federation focus = africa_middle_east_socialist_republics focus = africa_middle_east_desert_covenant }
+		completion_reward = {
+			set_country_flag = africa_middle_east_royal_concert_route
+			add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_crossroads_persian_influence = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_major_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_popularity = { ideology = neutrality popularity = @world_package_route_popularity }
+		}
+		ai_will_do = { factor = @world_package_ai_normal }
+	}
+
+	focus = {
+		id = africa_middle_east_socialist_republics
+		icon = GFX_goal_012_africa_continent_union_middle_east_socialist_republics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 3
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_pipeline_sovereignty }
+		mutually_exclusive = { focus = africa_middle_east_arab_federal_pact focus = africa_middle_east_plural_crossroads_federation focus = africa_middle_east_royal_concert focus = africa_middle_east_desert_covenant }
+		completion_reward = {
+			set_country_flag = africa_middle_east_socialist_republics_route
+			add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_major_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_popularity = { ideology = communism popularity = @world_package_route_popularity }
+		}
+		ai_will_do = { factor = @world_package_ai_normal }
+	}
+
+	focus = {
+		id = africa_middle_east_desert_covenant
+		icon = GFX_goal_012_africa_continent_union_middle_east_desert_covenant
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 3
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_water_and_food_security }
+		mutually_exclusive = { focus = africa_middle_east_arab_federal_pact focus = africa_middle_east_plural_crossroads_federation focus = africa_middle_east_royal_concert focus = africa_middle_east_socialist_republics }
+		available = {
+			has_global_flag = africa_middle_east_high_chaos_package_reviewed
+			check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+		}
+		completion_reward = {
+			set_country_flag = africa_middle_east_desert_covenant_route
+			set_country_flag = africa_middle_east_nonhuman_covenant_actor_recognised
+			add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_popularity = { ideology = neutrality popularity = @world_package_route_popularity }
+		}
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	focus = {
+		id = africa_middle_east_federal_chamber
+		icon = GFX_goal_012_africa_continental_representation_middle_east_federal_chamber
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 8
+		y = 4
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_arab_federal_pact }
+		completion_reward = { add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain } africa_world_clamp_package_mechanic = yes }
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_protected_communities_clause
+		icon = GFX_goal_012_africa_continental_representation_middle_east_protected_communities
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 4
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_plural_crossroads_federation }
+		completion_reward = { add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain } africa_world_clamp_package_mechanic = yes }
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_middle_east_council_of_courts
+		icon = GFX_goal_012_africa_continental_representation_middle_east_council_of_courts
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 4
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_royal_concert }
+		completion_reward = { add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain } africa_world_clamp_package_mechanic = yes }
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_republics_coordination
+		icon = GFX_goal_012_africa_continental_representation_middle_east_republics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 4
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_socialist_republics }
+		completion_reward = { add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_minor_gain } africa_world_clamp_package_mechanic = yes }
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_nonhuman_covenant_terms
+		icon = GFX_goal_012_africa_continental_representation_middle_east_nonhuman_covenant
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 4
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_desert_covenant }
+		completion_reward = { add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain } africa_world_clamp_package_mechanic = yes }
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	focus = {
+		id = africa_middle_east_desert_and_mountain_command
+		icon = GFX_goal_012_africa_continent_sponsorship_middle_east_desert_command
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY }
+		x = 14
+		y = 5
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_water_and_food_security }
+		prerequisite = { focus = africa_middle_east_federal_chamber focus = africa_middle_east_protected_communities_clause focus = africa_middle_east_council_of_courts focus = africa_middle_east_republics_coordination focus = africa_middle_east_nonhuman_covenant_terms }
+		completion_reward = {
+			add_command_power = constant:africa_world_package_reward.command_power
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_package_reward.infantry_equipment }
+			add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_crossroads_persian_influence = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_red_sea_and_nile_treaty
+		icon = GFX_goal_012_africa_continent_union_middle_east_red_sea_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 5
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_pipeline_sovereignty }
+		prerequisite = { focus = africa_middle_east_federal_chamber focus = africa_middle_east_protected_communities_clause focus = africa_middle_east_council_of_courts focus = africa_middle_east_republics_coordination focus = africa_middle_east_nonhuman_covenant_terms }
+		completion_reward = {
+			set_country_flag = africa_middle_east_africa_treaty_open
+			add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_middle_east_withdrawal_and_guarantees_law
+		icon = GFX_goal_012_africa_continental_representation_middle_east_withdrawal_law
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 5
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_federal_chamber focus = africa_middle_east_protected_communities_clause focus = africa_middle_east_council_of_courts focus = africa_middle_east_republics_coordination focus = africa_middle_east_nonhuman_covenant_terms }
+		completion_reward = {
+			set_country_flag = africa_world_package_withdrawal_law_ratified
+			set_country_flag = africa_world_union_consent
+			add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_middle_east_crossroads_settlement_congress
+		icon = GFX_goal_012_africa_continent_union_middle_east_settlement_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 6
+		cost = @world_package_cost
+		prerequisite = { focus = africa_middle_east_desert_and_mountain_command }
+		prerequisite = { focus = africa_middle_east_red_sea_and_nile_treaty }
+		prerequisite = { focus = africa_middle_east_withdrawal_and_guarantees_law }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_balance }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_world_package_constitution_ratified
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_middle_east_sovereign_settlement
+		icon = GFX_goal_012_africa_continent_union_middle_east_sovereign_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 7
+		cost = @world_package_final_cost
+		prerequisite = { focus = africa_middle_east_crossroads_settlement_congress }
+		available = {
+			has_country_flag = africa_world_package_withdrawal_law_ratified
+			has_country_flag = africa_world_package_constitution_ratified
+		}
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.middle_east_settlement }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			africa_world_finalize_distinct_package_identity = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+}

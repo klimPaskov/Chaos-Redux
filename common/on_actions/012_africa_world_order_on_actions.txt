@@ -1,0 +1,158 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SCRAMBLE AND CONTINENTAL WAR ON ACTIONS
+# ============================================================================
+# Pairwise war, capitulation, and peace hooks for the one-time Scramble crisis
+# and prepared continent wars. No recurring country iteration is used.
+# ROOT is the attacker in on_war_relation_added and the capitulated country in
+# on_capitulation. ROOT and FROM are checked in both orders at peace.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { africa_is_current_host = yes }
+					FROM = { has_country_flag = africa_scramble_expedition_leader }
+				}
+				ROOT = {
+					set_country_flag = africa_scramble_defensive_war_active
+					set_global_flag = africa_scramble_intervention_war_active
+				}
+				FROM = { set_country_flag = africa_scramble_intervention_war_actor }
+			}
+			else_if = {
+				limit = {
+					FROM = { africa_is_current_host = yes }
+					ROOT = { has_country_flag = africa_scramble_expedition_leader }
+				}
+				FROM = {
+					set_country_flag = africa_scramble_defensive_war_active
+					set_global_flag = africa_scramble_intervention_war_active
+				}
+				ROOT = { set_country_flag = africa_scramble_intervention_war_actor }
+			}
+			else_if = {
+				limit = {
+					ROOT = { africa_is_current_host = yes }
+					FROM = { has_country_flag = africa_continental_war_opponent }
+				}
+				ROOT = { set_country_flag = africa_continental_war_active }
+				FROM = { set_country_flag = africa_continental_war_active }
+			}
+			else_if = {
+				limit = {
+					FROM = { africa_is_current_host = yes }
+					ROOT = { has_country_flag = africa_continental_war_opponent }
+				}
+				FROM = { set_country_flag = africa_continental_war_active }
+				ROOT = { set_country_flag = africa_continental_war_active }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = {
+						africa_is_current_host = yes
+						has_global_flag = africa_scramble_intervention_war_active
+						has_capitulated = yes
+					}
+				}
+				ROOT = { africa_scramble_record_continental_defeat = yes }
+			}
+			else_if = {
+				limit = {
+					ROOT = {
+						has_country_flag = africa_scramble_expedition_leader
+						has_capitulated = yes
+					}
+					FROM = { africa_is_current_host = yes }
+				}
+				ROOT = {
+					set_country_flag = africa_scramble_expedition_defeated
+					clr_country_flag = africa_scramble_intervention_war_actor
+				}
+				FROM = {
+					set_country_flag = africa_scramble_defensive_war_won
+					set_country_flag = africa_scramble_armistice_signed
+					clr_country_flag = africa_scramble_defensive_war_active
+					clr_global_flag = africa_scramble_intervention_war_active
+				}
+			}
+			else_if = {
+				limit = {
+					ROOT = {
+						africa_world_package_is_installed = yes
+						has_country_flag = africa_continental_war_opponent
+						has_capitulated = yes
+					}
+					FROM = { africa_is_current_host = yes }
+				}
+				ROOT = {
+					set_country_flag = africa_defeated_continent_power
+					clr_country_flag = africa_continental_war_active
+				}
+				FROM = { clr_country_flag = africa_continental_war_active }
+			}
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { africa_is_current_host = yes }
+					FROM = { has_country_flag = africa_scramble_intervention_war_actor }
+				}
+				ROOT = {
+					set_country_flag = africa_scramble_defensive_war_won
+					set_country_flag = africa_scramble_armistice_signed
+					clr_country_flag = africa_scramble_defensive_war_active
+					clr_global_flag = africa_scramble_intervention_war_active
+				}
+				FROM = { clr_country_flag = africa_scramble_intervention_war_actor }
+			}
+			else_if = {
+				limit = {
+					FROM = { africa_is_current_host = yes }
+					ROOT = { has_country_flag = africa_scramble_intervention_war_actor }
+				}
+				FROM = {
+					set_country_flag = africa_scramble_defensive_war_lost
+					set_country_flag = africa_postwar_constitutional_review_pending
+					set_country_flag = africa_fragmentation_crisis_active
+					clr_country_flag = africa_scramble_defensive_war_active
+					clr_global_flag = africa_scramble_intervention_war_active
+					clr_global_flag = africa_scramble_response_active
+				}
+				ROOT = { clr_country_flag = africa_scramble_intervention_war_actor }
+			}
+			else_if = {
+				limit = {
+					ROOT = { africa_is_current_host = yes }
+					FROM = { has_country_flag = africa_continental_war_opponent }
+				}
+				FROM = {
+					set_country_flag = africa_defeated_continent_power
+					clr_country_flag = africa_continental_war_active
+				}
+				ROOT = { clr_country_flag = africa_continental_war_active }
+			}
+			else_if = {
+				limit = {
+					FROM = { africa_is_current_host = yes }
+					ROOT = { has_country_flag = africa_continental_war_opponent }
+				}
+				ROOT = { clr_country_flag = africa_continental_war_active }
+				FROM = {
+					set_country_flag = africa_continental_campaign_defeated
+					set_country_flag = africa_postwar_constitutional_review_pending
+					clr_country_flag = africa_continental_war_active
+				}
+			}
+		}
+	}
+}

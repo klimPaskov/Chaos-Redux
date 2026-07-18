@@ -189,7 +189,10 @@ africa_charter_council_category = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = {
 			africa_is_current_host = yes
-			has_global_flag = africa_world_order_open
+			OR = {
+				has_global_flag = africa_world_order_open
+				has_country_flag = africa_scramble_aftermath_phase
+			}
 		}
 		available = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.world_order } } }
 		cost = 0
@@ -1441,6 +1444,107 @@ africa_scramble_actions_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	africa_scramble_advance_from_diplomatic_shock = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = { africa_scramble_phase_is_shock = yes }
+		available = { africa_scramble_recognition_requirement_met = yes }
+		cost = constant:africa_world_order.phase_advance_pp_cost
+		complete_effect = {
+			set_temp_variable = { africa_scramble_timeout_result = constant:africa_value.zero }
+			africa_scramble_advance_to_coalition_phase = yes
+		}
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_scramble_advance_from_coalition = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = { africa_scramble_phase_is_coalition = yes }
+		available = { africa_scramble_recognition_requirement_met = yes }
+		cost = constant:africa_world_order.phase_advance_pp_cost
+		complete_effect = {
+			set_temp_variable = { africa_scramble_timeout_result = constant:africa_value.zero }
+			africa_scramble_advance_to_intervention_phase = yes
+		}
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_scramble_enter_aftermath = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = { africa_scramble_phase_is_intervention = yes }
+		available = { africa_scramble_can_enter_aftermath = yes }
+		cost = constant:africa_world_order.phase_advance_pp_cost
+		complete_effect = { africa_scramble_advance_to_aftermath = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_scramble_ratify_aftermath_settlement = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = { africa_scramble_phase_is_aftermath = yes }
+		available = { africa_scramble_can_ratify_aftermath = yes }
+		cost = constant:africa_world_order.aftermath_pp_cost
+		complete_effect = { africa_scramble_ratify_aftermath = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_preferred }
+	}
+
+	africa_scramble_recognition_window = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		activation = { africa_scramble_phase_is_shock = yes }
+		days_mission_timeout = constant:africa_world_order.recognition_window_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = { NOT = { africa_scramble_phase_is_shock = yes } }
+		timeout_effect = {
+			set_temp_variable = { africa_scramble_timeout_result = constant:africa_value.one }
+			africa_scramble_advance_to_coalition_phase = yes
+		}
+	}
+
+	africa_scramble_coalition_window = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		activation = { africa_scramble_phase_is_coalition = yes }
+		days_mission_timeout = constant:africa_world_order.coalition_window_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = { NOT = { africa_scramble_phase_is_coalition = yes } }
+		timeout_effect = {
+			set_temp_variable = { africa_scramble_timeout_result = constant:africa_value.one }
+			africa_scramble_advance_to_intervention_phase = yes
+		}
+	}
+
+	africa_scramble_intervention_window = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		activation = { africa_scramble_phase_is_intervention = yes }
+		days_mission_timeout = constant:africa_world_order.intervention_window_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = { NOT = { africa_scramble_phase_is_intervention = yes } }
+		timeout_effect = {
+			africa_scramble_launch_expedition_if_unresolved = yes
+			africa_scramble_advance_to_aftermath = yes
+		}
+	}
+
+	africa_scramble_aftermath_window = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		activation = { africa_scramble_phase_is_aftermath = yes }
+		days_mission_timeout = constant:africa_world_order.aftermath_window_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = { NOT = { africa_scramble_phase_is_aftermath = yes } }
+		timeout_effect = {
+			if = {
+				limit = { africa_scramble_can_ratify_aftermath = yes }
+				africa_scramble_ratify_aftermath = yes
+			}
+			else = {
+				set_country_flag = africa_scramble_aftermath_negotiations_prolonged
+				add_to_variable = { africa_scramble_pressure = constant:africa_world_order.scramble_pressure_gain }
+				africa_scramble_clamp_values = yes
+			}
+		}
+	}
+
 }
 
 africa_world_order_actions_category = {
@@ -1538,6 +1642,124 @@ africa_world_order_actions_category = {
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.contain_terminal_high_chaos } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
+	}
+
+	africa_world_choose_charter_of_continents = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			has_global_flag = africa_world_order_open
+			check_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
+		}
+		available = { africa_world_packages_are_settled = yes }
+		cost = constant:africa_world_order.world_route_pp_cost
+		complete_effect = {
+			set_variable = { africa_world_order_route = constant:africa_world_order_route.charter_of_continents }
+			set_variable = { africa_current_phase = constant:africa_action_phase.terminal_approach }
+			set_country_flag = africa_world_charter_route_active
+		}
+		ai_will_do = {
+			base = constant:africa_world_order.ai_normal
+			modifier = { factor = constant:africa_world_order.ai_modifier_double check_variable = { africa_constitution = constant:africa_constitution.federal_union } }
+			modifier = { factor = constant:africa_world_order.ai_modifier_double check_variable = { africa_constitution = constant:africa_constitution.continental_confederation } }
+		}
+	}
+
+	africa_world_choose_balance_of_continents = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			has_global_flag = africa_world_order_open
+			check_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
+		}
+		available = { africa_world_packages_are_settled = yes }
+		cost = constant:africa_world_order.world_route_pp_cost
+		complete_effect = {
+			set_variable = { africa_world_order_route = constant:africa_world_order_route.balance_of_continents }
+			set_variable = { africa_current_phase = constant:africa_action_phase.terminal_approach }
+			set_country_flag = africa_world_balance_route_active
+		}
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_choose_terminal_continental_campaign = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			has_global_flag = africa_world_order_open
+			check_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
+			has_global_flag = africa_evolution_iii_logged
+		}
+		available = {
+			africa_world_packages_are_settled = yes
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:africa_world_order.terminal_chaos_gate
+				compare = greater_than_or_equals
+			}
+		}
+		cost = constant:africa_world_order.terminal_route_pp_cost
+		complete_effect = {
+			set_variable = { africa_world_order_route = constant:africa_world_order_route.terminal_continental_campaign }
+			set_variable = { africa_current_phase = constant:africa_action_phase.terminal }
+			set_country_flag = africa_world_terminal_campaign_active
+			set_global_flag = africa_continental_wars_active
+		}
+		ai_will_do = {
+			base = constant:africa_world_order.ai_low
+			modifier = { factor = constant:africa_world_order.ai_modifier_quadruple check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
+			modifier = { factor = constant:africa_world_order.ai_modifier_quadruple check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant } }
+		}
+	}
+
+	africa_world_fulfil_sponsorship_obligation = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		target_array = africa_world_sponsorship_targets
+		visible = { FROM = { has_country_flag = africa_world_sponsorship_obligation_due } }
+		target_trigger = { FROM = { africa_world_package_is_installed = yes } }
+		available = {
+			has_equipment = { infantry_equipment > constant:africa_world_order.sponsorship_equipment }
+			has_equipment = { support_equipment > constant:africa_world_order.sponsorship_support_equipment }
+			has_equipment = { convoy > constant:africa_world_order.sponsorship_convoys }
+		}
+		cost = constant:africa_world_order.sponsorship_pp_cost
+		complete_effect = { FROM = { africa_world_fulfil_current_sponsorship_obligation = yes } }
+		ai_will_do = {
+			base = constant:africa_world_order.ai_normal
+			modifier = { factor = constant:africa_world_order.ai_modifier_double NOT = { has_war = yes } }
+		}
+	}
+
+	africa_world_sponsorship_obligation = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		target_array = africa_world_sponsorship_targets
+		activation = { africa_is_current_host = yes }
+		target_trigger = { FROM = { has_country_flag = africa_world_sponsorship_obligation_due } }
+		days_mission_timeout = constant:africa_world_order.sponsorship_obligation_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				has_global_flag = world_end
+				FROM = { NOT = { africa_world_package_is_installed = yes } }
+				FROM = { NOT = { has_country_flag = africa_world_sponsorship_obligation_due } }
+			}
+		}
+		timeout_effect = { FROM = { africa_world_default_current_sponsorship_obligation = yes } }
+	}
+
+	africa_world_launch_prepared_war = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		visible = {
+			has_country_flag = africa_continental_war_plan_ready
+			africa_world_order_route_is_terminal = yes
+		}
+		available = {
+			any_country = {
+				has_country_flag = africa_continental_war_plan_target
+				africa_world_continental_war_target_is_eligible = yes
+			}
+		}
+		cost = constant:africa_world_order.war_launch_pp_cost
+		complete_effect = { africa_world_launch_prepared_continental_war = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
 	}
 
 }
