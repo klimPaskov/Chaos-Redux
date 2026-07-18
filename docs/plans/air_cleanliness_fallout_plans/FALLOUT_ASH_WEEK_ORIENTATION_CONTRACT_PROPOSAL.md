@@ -148,6 +148,18 @@ Each component receives a base score of 50. The approved implementation must put
 - plus the state's recovery and adaptation support mapped to a combined 0 through 12 addition
 - minus 10 when a relevant unresolved opening crisis exists
 
+The exposure mapping is exact:
+
+| Frozen exposure | Score deduction |
+| ---: | ---: |
+| 0 through 19 | 0 |
+| 20 through 39 | 4 |
+| 40 through 59 | 8 |
+| 60 through 79 | 12 |
+| 80 through 100 | 15 |
+
+Recovery and adaptation are each clamped to 0 through 100. Their sum is multiplied by `0.06` and rounded once to produce the 0 through 12 support addition. Resource, Recognition, Cohesion, recovery, adaptation, shelter, reclamation, and exposure mutations are clamped to their accepted bounds after each transaction. All values in this section become typed script constants. None may remain as an inline tuning number in gameplay effects.
+
 Exact ties use the lowest stable branch identity. AI evaluates the same score and effects as the human path. It chooses the highest projected score after survival-need weighting. Exact ties use the lowest stable branch identity. Hidden AI events may not receive reduced costs or guaranteed success.
 
 ## Component contract
@@ -164,6 +176,16 @@ The three required branch families are:
 
 Every branch spends a meaningful combination of Food, Clean water, Filters, Fuel, Scrap, or Shelter capacity. No branch spends political power. The delayed result must change Recognition and Cohesion by at least 4 points in opposite risk patterns. A failure must also create a concrete shortage, unrest, building-damage, or Deaths consequence. Success records the chosen national-authority memory. Partial success records both the authority memory and its contested form. Failure records the failed authority memory and closes the transaction without a retry reward.
 
+The accepted branch transaction would use these exact values:
+
+| Branch | Cost at root | Success result | Partial result | Failure result |
+| --- | --- | --- | --- | --- |
+| household and workplace register | Food 4, Clean water 3, Filters 2 | Recognition plus 10, Cohesion plus 6 | Recognition plus 5, Cohesion plus 2 | Recognition minus 6, Cohesion minus 5, Food minus 4 |
+| district and settlement compacts | Food 3, Shelter capacity 5, Scrap 2 | Recognition plus 7, Cohesion plus 10 | Recognition plus 3, Cohesion plus 5 | Recognition minus 5, Cohesion minus 7, Shelter capacity minus 4 |
+| emergency command register | Fuel 4, Filters 4, Scrap 3 | Recognition plus 5, Cohesion plus 8, one 90-day command modifier | Recognition plus 2, Cohesion plus 3, one 45-day contested-command modifier | Recognition minus 9, Cohesion minus 6, one 90-day command-resistance modifier |
+
+The failure branch also records a Deaths transaction equal to `0.001` of the country's post-rewrite population when Recognition began below 20. The request is rounded, clamped to the available living population, and recorded through Deaths.
+
 ### Capital or main-state condition
 
 The target is the preserved capital when it is owned and valid. Otherwise it is the deterministic highest-priority owned state from the accepted main-state registry. This is an eligibility rule, not a fallback to an arbitrary state.
@@ -177,6 +199,16 @@ The three required branch families are:
 The root must show the target state's grade, phase, exposure, shelter, surviving infrastructure, and population receipt. Regional variants must distinguish snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw where they apply.
 
 The evacuation branch is available only with an exact prepared receiving state and a balanced migration transaction. The result must reconcile population movement, building damage or repair, shelter pressure, supply access, and Deaths. A failed evacuation may not delete population from the source without the matching Deaths and destination receipts.
+
+The accepted branch transaction would use these exact values:
+
+| Branch | Cost at root | Success result | Partial result | Failure result |
+| --- | --- | --- | --- | --- |
+| seal and heat the civic core | Filters 6, Fuel 6, Scrap 4 | target exposure minus 10, shelter plus 8, recovery plus 6, repair one eligible infrastructure level | target exposure minus 5, shelter plus 4, recovery plus 2 | target exposure plus 7, shelter minus 5, damage one eligible infrastructure level, Deaths equal to 0.002 of target population |
+| disperse stores and offices | Food 4, Scrap 6, Power 4 | target shelter plus 10, adaptation plus 7, supply value plus 6 | target shelter plus 5, adaptation plus 3, supply value plus 2 | target shelter minus 6, supply value minus 5, Deaths equal to 0.0015 of target population |
+| evacuate the poisoned core | Fuel 8, Food 6, Shelter capacity 5 | move 20 percent of the frozen source population request, destination shelter plus 6, source exposure minus 8 | move 12 percent, destination shelter plus 2, source exposure minus 4 | move 6 percent, record Deaths equal to 0.04 of the intended 20-percent migrant request, source exposure plus 5 |
+
+Migration uses the frozen source request. The source decrement equals destination increment plus exact Deaths. The one-person floor applies to the source. A capacity clamp reduces the whole request before any mutation and is recorded in the result text.
 
 ### Immediate resource crisis
 
@@ -192,6 +224,16 @@ The third response must be manually selected for each region and archetype pair.
 
 Success must improve the selected crisis value by at least 8 points and consume at least 4 points from one supporting resource. Partial success improves it by 4 to 7 points and creates a durable dispute or fatigue memory. Failure may not grant the selected resource. It must apply a concrete supply, disease, Deaths, recognition, or building consequence.
 
+The accepted branch transaction would use these exact values:
+
+| Branch | Cost at root | Success result | Partial result | Failure result |
+| --- | --- | --- | --- | --- |
+| strict public rationing | Cohesion 5 | crisis resource plus 10, Recognition plus 6 | crisis resource plus 5, Recognition plus 2, Cohesion minus 2 more | no crisis resource gain, Recognition minus 5, a 60-day ration unrest modifier |
+| emergency requisition | Recognition 7, Cohesion 4 | crisis resource plus 16 | crisis resource plus 7, Recognition minus 3 more | no crisis resource gain, Recognition minus 8 more, Deaths equal to 0.0015 of country population |
+| tailored production or distribution | Scrap 6 and either Power 4 or Fuel 4 from the reviewed regional row | crisis resource plus 13, Reclamation plus 5 | crisis resource plus 6, Reclamation plus 2 | no crisis resource gain, Scrap minus 4 more, one relevant building level damaged when available |
+
+When the selected crisis value is Food, Clean water, Medicine, or Filters, a cost may not subtract that same resource. The reviewed regional row chooses Power or Fuel before the root transaction. A result cannot raise the crisis value above 100.
+
 ### Government archetype
 
 The package must support exactly twelve manually reviewed archetypes. Each archetype receives one concrete root-text block, three tailored branch descriptions, branch-specific AI weights, and at least one distinct effect. Scripted localisation may select those blocks. A single generic paragraph with substituted archetype names does not satisfy the contract.
@@ -204,6 +246,16 @@ Each root must present:
 
 The result may set government memory, unlock later focus or decision layers, alter Recognition and Cohesion, and add a substantial timed or persistent country modifier. It must not perform a broad ideology or tag rewrite. Any later government change needs its own accepted country-package contract.
 
+The accepted branch transaction would use these exact values before archetype-specific additions:
+
+| Branch | Cost at root | Success result | Partial result | Failure result |
+| --- | --- | --- | --- | --- |
+| consolidate current authority | Food 3, Fuel 3 | Recognition plus 7, Cohesion plus 8, 180-day authority modifier | Recognition plus 3, Cohesion plus 4, 90-day contested-authority modifier | Recognition minus 8, Cohesion minus 6, 120-day legitimacy crisis |
+| negotiated division of authority | Food 4, Shelter capacity 4 | Recognition plus 11, Cohesion plus 7, institution compact memory | Recognition plus 5, Cohesion plus 2, disputed compact memory | Recognition minus 6, Cohesion minus 5, one later institution dispute ticket |
+| archetype-specific rival claim | Scrap 5, Fuel 4 | Recognition plus 5, Cohesion plus 10, rival integrated memory | Recognition plus 1, Cohesion plus 4, rival autonomous memory | Recognition minus 10, Cohesion minus 7, rival rupture memory |
+
+Each archetype adds one exact non-cosmetic effect worth at least 5 ledger points or a 90-day modifier with at least a 5-percent operational consequence. The coverage matrix must state that effect before implementation. It may not use a one-percent modifier or a political-power award.
+
 ### First character or institution
 
 Every successor needs a curated candidate registry before this component can run. Real people, flags, and attested institutions require sourced manifests. Fictional successors use generated fictional characters and institutions through the approved asset workflow. Mutant content is treated as fictional high-chaos society content.
@@ -211,6 +263,16 @@ Every successor needs a curated candidate registry before this component can run
 The root presents two or three valid candidates with distinct survival roles, costs, risks, and later memories. At least one branch must prioritize administration or relief. At least one must prioritize security or extraction. A third branch may represent a regional institution, technical body, faith network, labor organization, military remnant, or civic council when historically or fictionally appropriate.
 
 Success installs the exact character or institution and records its relationship memory. Partial success installs a contested or limited form with a delayed liability. Failure consumes the committed cost and records injury, refusal, factional rupture, institutional collapse, or Deaths as appropriate. A failed branch cannot be selected repeatedly for free.
+
+The accepted branch transaction would use these exact values:
+
+| Branch | Cost at root | Success result | Partial result | Failure result |
+| --- | --- | --- | --- | --- |
+| relief or administration candidate | Medicine 5, Food 5 | install exact candidate, Recognition plus 8, recovery plus 5 in the main state | install limited candidate, Recognition plus 4, recovery plus 2, 120-day capacity liability | no installation, Medicine minus 3 more, Recognition minus 5, refusal or injury memory |
+| security or extraction candidate | Fuel 5, Scrap 5 | install exact candidate, Cohesion plus 7, supply value plus 5 in the main state | install contested candidate, Cohesion plus 3, Recognition minus 3, 120-day coercion liability | no installation, Cohesion minus 6, Deaths equal to 0.001 of country population, rupture memory |
+| regional institution | Power 4, Shelter capacity 4, Scrap 4 | install exact institution, Recognition plus 7, Reclamation plus 6 | install limited institution, Recognition plus 3, Reclamation plus 3, dispute memory | no installation, Recognition minus 7, Shelter capacity minus 4, collapse memory |
+
+The root exposes only candidates whose exact cost can be paid. If fewer than two candidate branches remain affordable and valid, the component stays blocked with a typed diagnostic. It does not create a free option.
 
 ## Regional and archetype coverage
 
