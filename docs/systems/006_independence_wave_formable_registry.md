@@ -4,7 +4,14 @@
 
 The Event 006 formable registry is the shared discovery and transaction framework for FORM-01 through FORM-48. It replaces family-by-family copied decisions with one profile table, one method and consent surface, and one bounded member and anchor ledger.
 
-All 48 accepted family rows have stable discovery metadata, but none is declared operational by this framework alone. No formable or cosmetic tag is assigned here. A family remains blocked until its owning package supplies audited territory, a collision-safe X-ending identity, a complete flag package, an identity adapter, and a reviewed integration policy.
+All 48 accepted family rows have stable discovery metadata, but the shared
+framework does not declare a family operational by metadata alone. FORM-01
+through FORM-05 remain promoted from their owning adapters, and FORM-48 is now
+promoted after the Pacific package and coordinated adapter audits. FORM-06
+through FORM-47 remain fail-closed, including FORM-42. No formable or cosmetic
+tag is assigned by this shared registry; a family still requires its owning
+package's audited territory, collision-safe X-ending identity, complete flag
+package, identity adapter, and reviewed integration policy.
 
 The design authority remains docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md and docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv.
 
@@ -122,6 +129,8 @@ Failure clears ready and commit state, removes the generic congress, records the
 
 FORM-01, FORM-02, and FORM-04 autonomous settlements record the exact carrier, carrier Event 006 generation, and four directional ownership flags for military access and guarantees. Cleanup walks the frozen founding ledger before clearing it, accepts only the exact carrier-generation-family pairing, removes only relations whose Event 006 ownership flag is present, and then clears the member idea and pairing. Pre-existing access or guarantees are never claimed by this system and therefore survive cleanup. FORM-03 sovereign associates use their separate charter lifecycle and are not traversed by this cleanup.
 
+FORM-48 uses the same directional-ownership rule through its private `has_independence_wave_form48_current_autonomous_binding` trigger. The trigger runs in HAW/FSM member scope, takes no caller-supplied inputs, and requires the saved carrier pointer, saved carrier generation, autonomous FORM-48 family, the member's live Event 006 generation, and the carrier's live Event 006 generation/family to match. It has no outputs or side effects. `independence_wave_form48_remove_event6_autonomous_relations` is its only relation-mutation call site: a stale or cross-generation binding still has its local markers cleared, but cannot remove access or guarantees from another transaction.
+
 ## Family adapter contract
 
 A family adapter must bind its attestations by setting independence_wave_formable_readiness_family to the same stable family ID loaded in independence_wave_formable_profile_family. It must then complete all of the following before a congress can open:
@@ -137,7 +146,33 @@ The identity adapter must perform its identity mutation atomically and set indep
 
 The shared readiness trigger rejects attestations bound to any other family. There is no fallback adapter. Setting a readiness flag without the corresponding audited content violates the contract and can dispatch an undefined family helper.
 
-FORM-01 through FORM-04 passed the independent operational re-audit. Each registration effect clears any prior family bundle first, binds the readiness variable to its exact family, and then restores only the six generic adapter attestations and its family-specific proof. FORM-03 additionally restores its separately audited progression attestation. The shared gate still requires the matching family attestation for FORM-01, FORM-02, and FORM-04, and both FORM-03 base and progression attestations; FORM-05 through FORM-48 remain fail-closed until their own adapters and evidence exist. The audit record is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form01_04_operational_reaudit_2026_07_16.md`, with the resolved FORM-03 promotion check in `006_form03_promotion_reaudit_2026_07_16.md`.
+FORM-01 through FORM-04 passed the independent operational re-audit. Each
+registration effect clears any prior family bundle first, binds the readiness
+variable to its exact family, and then restores only the six generic adapter
+attestations and its family-specific proof. FORM-03 additionally restores its
+separately audited progression attestation. FORM-05 is promoted through its
+own audited adapter. FORM-48 now follows the same contract: its registration
+binds family 48, sets the six shared adapter flags, sets
+`independence_wave_form48_registry_surface_registered`, and sets
+`independence_wave_form48_readiness_attested` only after the coordinated Pacific
+PASS audits. FORM-06 through FORM-47 remain fail-closed, including FORM-42.
+Earlier FORM-48 handoffs that recorded unset flags are preserved as historical
+evidence, not current status.
+
+### FORM-48 Pacific adapter (current)
+
+FORM-48 uses HBX as the carrier and HAW/FSM as sovereign autonomous members.
+The family-48 identity adapter applies cosmetic identity `PFX` to the committed
+HBX carrier; it does not annex, subject, or replace either member's country
+identity or focus tree. The post-formation adapter requires the exact committed
+carrier/member generations and uses the dedicated current-generation binding
+trigger for relation cleanup. Its hidden-high-chaos presentation path remains
+conditional on the live league and action predicates. FORM-42 and all other
+unpromoted families remain fail-closed. Current evidence is the 2026-07-18
+Pacific architecture, country-package, focus/icon, decision/mission,
+localisation, flag/portrait, and postformation handoff chain under
+`docs/plans/006_independence_wave_plans/subagent_handoffs/`; the earlier
+fail-closed admission wording in those handoffs is historical and preserved.
 
 ## Origin separation and living countries
 

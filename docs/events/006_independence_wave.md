@@ -6,7 +6,39 @@ Independence Wave is the Minor Repeatable member of the Liberations cluster. It 
 
 The accepted design authority remains `docs/specs/006_independence_wave_specs/`. This file is the implementation-facing map for the live script surfaces and is updated as each plan tranche is completed.
 
-Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md).
+Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](006_independence_wave/pacific_country_packages.md).
+
+## Current Pacific promotion (2026-07-18)
+
+The parent promotion admits exactly IW-173 `HAW`, IW-179 `FSM`, and IW-184
+`HBX` to `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
+The Pacific family is FORM-48, with HBX as the carrier and HAW/FSM as sovereign
+autonomous members. FORM-48 uses no annexation or integration fallback. Its
+`independence_wave_form48_register_readiness` binds family 48 and, after the
+coordinated PASS audits, sets the six shared adapter readiness flags plus
+`independence_wave_form48_registry_surface_registered` and
+`independence_wave_form48_readiness_attested`.
+
+The Pacific admission remains subject to the normal live host, anchor,
+reservation, Event 005 collision, force, chaos-band, and transaction proofs.
+FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
+006 completion audit is still pending, so this promotion does not close the
+overall event.
+
+The current allocator audit records 149 publishers, 126 automatic/high-chaos
+selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
+and Event 005-first joint reservation ordering. The 2026-07-18 installed scan
+covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
+local mods, archives, and reports zero collisions.
+
+Pacific identity and asset boundaries are explicit: HAW and FSM use vanilla
+flags; HBX uses the researched flat 1911 Bear Flag; PFX uses the audited flat
+ImageGen flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
+portrait blocks are present; accepted male large portraits are separate
+country-leader assets, and protected BAY/RHI hashes remain unchanged. The
+earlier Pacific handoffs that recorded HOLD/FAIL-CLOSED admission are preserved
+as historical evidence; this current section records their superseding parent
+promotion.
 
 ## Release transaction
 
@@ -145,12 +177,16 @@ leader of a qualifying radical league; or three successfully committed
 league-backed DM-57 sponsorship contracts.
 
 Four routes are presently reachable. The hidden-formable predicate is wired,
-but FORM-42 and FORM-48 are the only registered `hidden_high_chaos` families
-and both remain fail-closed with their carrier packages incomplete. That route
-cannot publish until one of those formables is implemented and promoted; no
-ordinary formable is accepted as a substitute. Revisionist pressure is a
-visible scalar, while each completed high-chaos focus or qualifying league
-operation adds exactly one completed action to the separate three-action gate.
+and FORM-42 and FORM-48 are the registered `hidden_high_chaos` families. FORM-48
+has its exact carrier/member transaction, human ballot, post-formation work
+program, radical-league leadership, and direct reason-4 publication path. Its
+family-48 registration now binds the six shared readiness flags and attests the
+carrier/member package after the coordinated PASS audits. Publication still
+requires a qualifying hidden-high-chaos league and action proof; FORM-42 remains
+fail-closed and no ordinary formable is accepted as a substitute. Revisionist
+pressure is a visible scalar, while each completed high-chaos focus or
+qualifying league operation adds exactly one completed action to the separate
+three-action gate.
 
 The qualifying actor and reason are frozen at the mutation boundary. Event 6
 history receives payload 6002 without creating a sixth evolution. The shared

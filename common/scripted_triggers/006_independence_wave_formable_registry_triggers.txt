@@ -65,6 +65,9 @@ can_independence_wave_discover_selected_formable_family = {
 	has_country_flag = independence_wave_unlock_formable_discovery
 	has_country_flag = independence_wave_formable_family_registered
 	has_valid_independence_wave_formable_family_selection = yes
+	# FORM-05 is registered here for shared readiness and achievements, but its
+	# sovereign charter is the only authoritative formation transaction.
+	NOT = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mediterranean_island_league } }
 	# The registry matrix supplies internal working labels only. Discovery stays
 	# closed until the owning family certifies its final identity, flags,
 	# territory, integration, and member policy through the full readiness gate.
@@ -129,6 +132,10 @@ is_valid_independence_wave_formable_founding_carrier = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
 			is_independence_wave_form04_eligible_member = yes
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
+			has_independence_wave_form48_exact_carrier_anchor = yes
+		}
 	}
 }
 
@@ -174,6 +181,10 @@ has_valid_independence_wave_formable_founding_invitation = {
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.rhine_federation }
 			is_independence_wave_form04_eligible_member = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.pacific_regional_federation }
+			is_independence_wave_form48_eligible_member = yes
 		}
 	}
 	var:independence_wave_formable_inviting_carrier = {
@@ -375,13 +386,20 @@ is_independence_wave_formable_consent_rule_input_compatible = {
 				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
 				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.dynastic_traditional_union }
 				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+				AND = {
+					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+				}
 			}
 		}
 		AND = {
 			check_variable = { independence_wave_formable_consent_rule_input = constant:independence_wave_formable_consent_rule.controlled_settlement }
 			OR = {
 				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.military_settlement }
-				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+				AND = {
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+					NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } }
+				}
 			}
 		}
 	}
@@ -399,6 +417,7 @@ can_independence_wave_prepare_selected_formable_transaction = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 			}
 			has_valid_independence_wave_formable_founding_proposal = yes
 		}
@@ -408,6 +427,7 @@ can_independence_wave_prepare_selected_formable_transaction = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 			}
 		}
 	}
@@ -490,12 +510,22 @@ has_independence_wave_formable_commit_readiness = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
 				has_country_flag = independence_wave_form04_readiness_attested
 			}
+			AND = {
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mediterranean_island_league }
+				has_country_flag = independence_wave_form05_readiness_attested
+			}
+			AND = {
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
+				has_country_flag = independence_wave_form48_readiness_attested
+			}
 			NOT = {
 				OR = {
 					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
 					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mediterranean_island_league }
+					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				}
 			}
 		}
@@ -522,12 +552,18 @@ can_independence_wave_commit_selected_formable = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
 			has_independence_wave_form04_strict_mutation_preconditions = yes
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
+			has_independence_wave_form48_runtime_commit_proof = yes
+		}
 		NOT = {
 			OR = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mediterranean_island_league }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 			}
 		}
 	}
@@ -570,13 +606,19 @@ can_pay_independence_wave_selected_formable_commit_cost = {
 should_independence_wave_ai_pursue_selected_formable = {
 	is_ai = yes
 	has_independence_wave_formable_commit_readiness = yes
-	check_variable = {
-		var = independence_wave_formable_ai_willingness
-		value = constant:independence_wave_formable_ai_willingness.moderate
-		compare = greater_than_or_equals
+	OR = {
+		should_independence_wave_form48_ai_pursue = yes
+		AND = {
+			NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } }
+			check_variable = {
+				var = independence_wave_formable_ai_willingness
+				value = constant:independence_wave_formable_ai_willingness.moderate
+				compare = greater_than_or_equals
+			}
+			NOT = { has_independence_wave_severe_instability = yes }
+			NOT = { should_independence_wave_form04_ai_avoid_german_dominance = yes }
+		}
 	}
-	NOT = { has_independence_wave_severe_instability = yes }
-	NOT = { should_independence_wave_form04_ai_avoid_german_dominance = yes }
 }
 
 is_registered_independence_wave_formable_integration_state = {

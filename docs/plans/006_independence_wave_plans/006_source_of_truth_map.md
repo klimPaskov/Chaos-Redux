@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Curated: 2026-07-16 after the audited Mediterranean IW-017/IW-018/IW-019 and FORM-05 tranche
+Curated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 tranche
 
 Completion state: **incomplete and active**.
 
@@ -8,6 +8,12 @@ This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The committed portrait baseline is `95f7529c7`.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
+
+The 2026-07-18 parent promotion supersedes the admission disposition (but not
+the findings) in the earlier Pacific country-package and FORM-48 handoffs. Those
+historical handoffs intentionally retain their HOLD/FAIL-CLOSED verdicts from
+the time they were written. Use this map and the resume packet for current
+runtime admission state.
 
 ## Authority order
 
@@ -50,8 +56,9 @@ not a current runtime report.
 | Accepted design | Accepted and unchanged | Seven specification parts remain binding |
 | Main event source | Implemented foundation, not complete | `events/006_independence_wave.txt` contains the entry chain, evolution events, scenario events, and regional progression events. It is not a placeholder |
 | Mechanics, decisions, focus, forces, evolutions, scenario | Materially implemented | Commits `e7a84fced`, `fc785387e`, `84e7257c5`, `c6ef74f66`, `a777e48a9`, and `d617ef049`. This does not certify every accepted route or package |
-| Installed tag architecture | Audited snapshot | 206 packages resolve to 102 reserved `X` tags, 91 reused vanilla tags, and 13 overlays. The 2026-07-15 installed-mod audit found zero collision for all 102 reserved tags across the scanned environment |
+| Installed tag architecture | Audited snapshot | 206 packages resolve to 102 reserved `X` tags, 91 reused vanilla tags, and 13 overlays. The 2026-07-18 installed-mod audit covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling local mods, archives, and reports zero collisions |
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
+| Allocator and joint reservation | Audited and current | 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering; runtime host, anchor, reservation, and wave-size gates remain authoritative |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
@@ -61,14 +68,26 @@ not a current runtime report.
 | IW-008 RHI and IW-009 BAY | Promoted for automatic and SCN-008 admission | Both exact Level 2 branches, incidents, AI, cleanup, unique art, and package proofs passed `006_rhi_bay_final_admission_audit_2026_07_16.md`. RHI delegation is a binding FORM-04 precondition; BAY keeps its package-owned South German settlement. All runtime gates remain authoritative |
 | IW-004 BRI and IW-010 AJX | Promoted for automatic and SCN-008 admission | Their bounded packages were implemented in `7368cc0bf` and independently promoted by `5d17e55b3` and `f64d9640e`. Exact identity, formable, host, collision, force, and transaction gates still apply |
 | IW-017 COR, IW-018 ARX, and IW-019 ASX | Promoted for automatic and SCN-008 admission | Corsica uses the dormant vanilla COR identity without history or country overwrite; Sardinia and Sicily use collision-cleared ARX and ASX identities. Their country-package, focus, decision/mission, localisation, asset, FORM-05, cleanup, host-survival, and exact-ID audits pass. Exact runtime availability remains binding |
+| IW-173 HAW, IW-179 FSM, and IW-184 HBX | Promoted for automatic and SCN-008 admission | The Pacific country packages and FORM-48 carrier/member surfaces passed their coordinated 2026-07-18 audits. HAW and FSM remain sovereign autonomous members; HBX is the carrier. Exact dormant-tag, host, anchor, reservation, Event 005 collision, FORM-48, force, and transaction gates still apply |
 | IW-003 Cornwall | Blocked | No legal collision-free contiguous state ID exists on the accepted installed-map contract. ACX remains reserved and dormant. No fallback is authorized |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Commit `a2c274d1e` implements the overlay and its independent re-audit passes the bounded source surface. It preserves Belgium and is not a selectable Event 006 release package. The one-day timeout versus `on_daily_BEL` edge remains a documented static ordering caveat because engine order is unspecified, and AI garrison completion remains opportunistic |
 | FORM-01 through FORM-05 | Implemented, audited, and readiness-promoted | `98ec32e93` plus the operational, FORM-03, readiness-promotion, and Mediterranean FORM-05 audit chains. FORM-05 is the sovereign, charter-driven Mediterranean Island League using cosmetic identity `MIX`; it performs no annexation, core transfer, subject creation, or forced state transfer |
-| FORM-06 through FORM-48 | Fail-closed | No readiness promotion is authorized. Their gameplay identities, emblems, flags, and route integration remain incomplete |
-| Static visual package | Materially produced | Static icon families, report scenes, country flags, FORM-01 through FORM-05 flag packages, and two Event 006 super-event images exist. The portrait authorities own twenty-eight male fictional large portraits and ten commander-small dossiers, plus the protected historical Rupprecht and Matthes portraits. AFX, AGX, AJX, ARX, ASX, BAY, BRI, COR, RHI, SCO, and WLS retain live consumers, while ACX and AEX are unregistered readiness-pool art only. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons. Older portrait checksum commits are historical, not current visual/hash authority |
-| Super-event `6002` | Runtime implemented; one route dormant | Final OGG/WAV, wrappers, zero-random station entry, slot-24 dispatch, Event Log payload, settings-aware FIFO, and five predicates exist. Packages 1, 2, 3, and 5 are reachable. Package 4 remains dormant until a fully implemented FORM-42 or FORM-48 hidden-high-chaos carrier is readiness-promoted |
+| FORM-06 through FORM-47 | Fail-closed | No readiness promotion is authorized for these families. FORM-42 remains fail-closed because its accepted founding set has no legal current-map contract; FORM-48 is the sole promoted family in this range |
+| FORM-48 Pacific Regional Federation | Promoted and readiness-attested | Family 48 binds HBX as carrier, sovereign autonomous HAW/FSM members, and cosmetic identity PFX. `independence_wave_form48_register_readiness` sets the six shared adapter flags, `independence_wave_form48_registry_surface_registered`, and `independence_wave_form48_readiness_attested` after the coordinated PASS audits. No annexation or integration fallback is used |
+| Static visual package | Materially produced | Static icon families, report scenes, country flags, FORM-01 through FORM-05 flag packages, the audited HBX/PFX Pacific flag package, and two Event 006 super-event images exist. HAW/FSM use vanilla flags; HBX uses the researched flat 1911 Bear Flag; PFX uses the audited flat ImageGen flag. The portrait authorities own the accepted male large portraits and commander-small dossiers, plus the protected historical Rupprecht and Matthes portraits. Exactly zero custom Event 006 advisor icons/assets/sprites/portrait blocks are present; protected BAY/RHI hashes remain unchanged. Gameplay advisor offices are asset-neutral |
+| Super-event `6002` | Runtime implemented; FORM-48 carrier now available | Final OGG/WAV, wrappers, zero-random station entry, slot-24 dispatch, Event Log payload, settings-aware FIFO, and five predicates exist. Packages 1, 2, 3, and 5 are reachable. The hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league and action proofs; FORM-42 remains fail-closed |
 | Audio `6001` | Hard blocked | The specified recording does not have verified redistribution rights for this repository. No substitute or fallback is authorized |
-| Documentation and workbook alignment | Not completion-audited | Current gameplay facts have advanced beyond older status prose. The event detail workbook and every event-log/detail surface were not re-audited in this curator pass |
+| Documentation and workbook alignment | Pacific tranche reconciled; overall completion audit pending | Current gameplay facts have advanced beyond older status prose. The Pacific docs are current after this pass, but the event detail workbook, every event-log/detail surface, and the parent-wide completion audit remain outstanding |
+
+The six FORM-48 shared readiness flags are
+`independence_wave_formable_territory_adapter_ready`,
+`independence_wave_formable_x_tag_reserved`,
+`independence_wave_formable_flag_package_ready`,
+`independence_wave_formable_identity_adapter_ready`,
+`independence_wave_formable_integration_adapter_ready`, and
+`independence_wave_formable_member_policy_audited`. They are bound to family 48
+by `independence_wave_form48_register_readiness`; the family-specific registry
+and readiness markers are not a generic fallback for another family.
 
 ## Frozen map and tag facts
 
@@ -83,16 +102,18 @@ registry, or installed map changes:
 - 55 selectable packages without a legal installed-map binding.
 - 13 overlay rows outside both selectable lists.
 - 111 accepted reservation groups.
-- Zero detected collision for the 102 reserved tags across vanilla, 122 Workshop
-  directories, inspected Workshop archives, sibling mods, localisation, history,
-  flags, aliases, and cosmetic calls in the 2026-07-15 audit.
+- Zero detected collision for all 108 Event 006-owned identifiers across vanilla,
+  122 Workshop directories, inspected Workshop archives, three sibling local
+  mods, localisation, history, flags, aliases, and cosmetic calls in the
+  2026-07-18 audit.
 
 Primary evidence:
 
 - `package_bindings/006_current_installed_map_package_bindings.csv`
 - `package_bindings/006_current_map_reservation_groups.csv`
 - `package_bindings/006_current_installed_map_binding_audit.md`
-- `tag_audit/006_installed_tag_collision_audit_2026_07_15.md`
+- `tag_audit/006_installed_tag_collision_audit_2026_07_18.md`
+- `tag_audit/006_installed_tag_collision_audit_2026_07_18.json`
 
 The earlier unresolved Trabzon and Kashmir notes are superseded. IW-067 Lazistan
 and IW-068 Pontus retain separate accepted groups but share an explicit state-354
@@ -119,18 +140,23 @@ The committed compile-time content-attestation set is currently:
 | IW-017 | COR, Corsica | Promoted | Exact absence, host, anchor 1, reservation group 1, Event 005 collision, FORM-05, force, chaos-band, generic-tree preservation, and transaction preflight checks |
 | IW-018 | ARX, Sardinia | Promoted | Exact absence, Italian host, anchor 114, reservation group 114, Event 005 collision, FORM-05, force, chaos-band, and transaction preflight checks |
 | IW-019 | ASX, Sicily | Promoted | Exact absence, Italian host, anchor 115, reservation group 115, Event 005 collision, FORM-05, force, chaos-band, and transaction preflight checks |
+| IW-173 | HAW, Hawai'i | Promoted | Exact absence, vanilla-tag dormant proof, host, anchor 629, reservation, Event 005 collision, FORM-48 sovereign-member, force, and transaction preflight checks |
+| IW-179 | FSM, Micronesia | Promoted | Exact absence, vanilla-tag dormant proof, host, anchor 684, reservation, Event 005 collision, FORM-48 sovereign-member, force, and transaction preflight checks |
+| IW-184 | HBX, California | Promoted | Exact absence, host, anchor 378, reservation, Event 005 collision, FORM-48 carrier, force, and transaction preflight checks |
 
 The exact compile-time set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
-IW-009, IW-010, IW-017, IW-018, and IW-019. IW-005 is a living-BEL route overlay
-and remains outside the selectable-release registry. No other package should be
-described as automatically selectable.
+IW-009, IW-010, IW-017, IW-018, IW-019, IW-173, IW-179, and IW-184. IW-005 is a
+living-BEL route overlay and remains outside the selectable-release registry.
+FORM-48 is readiness-attested for the Pacific family; no other unlisted package
+or formable family should be described as automatically selectable.
 
-Eleven attested IDs cover ten disjoint reservation groups and can structurally
-supply the 3, 4, 5, 7, and 10-country bands when enough mutually compatible
-hosts, anchors, tags, reservations, forces, and Event 5 exclusions survive the
-frozen transaction. World Collapse remains exactly ten; it does not increase
-the release count. Static source audits do not prove an in-engine release,
-scenario load, or every possible host-state combination.
+Fourteen attested IDs now cover the previously admitted reservation groups plus
+the Pacific anchors and can structurally supply the 3, 4, 5, 7, and 10-country
+bands when enough mutually compatible hosts, anchors, tags, reservations,
+forces, and Event 5 exclusions survive the frozen transaction. World Collapse
+remains exactly ten; it does not increase the release count. Static source audits
+do not prove an in-engine release, scenario load, or every possible host-state
+combination.
 
 ## Implemented and audited architecture
 
@@ -183,16 +209,18 @@ The accepted portrait ledgers are
 and `../../assets/006_independence_wave/mediterranean_portraits_2026_07_16/manifest.md`.
 Their runtime hash inventories and audits supersede every 2026-07-15 fictional
 portrait and army-small ledger. ACX and AEX remain readiness-pool only,
-Rupprecht and Matthes remain protected, and no custom Event 006 advisor icon is
-live.
+Rupprecht and Matthes remain protected, and exactly zero custom Event 006 advisor
+icons/assets/sprites/portrait blocks are live. The accepted Pacific male large
+portraits are separate country-leader assets, not advisor blocks.
 
 - The Assyria survival achievement icon is blocked pending an exact approved
   Assyrian motif and ownership/date decision.
 - ASSET-040 through ASSET-043 are real animation tasks. They require authored
   source frames, static fallbacks, manifests, contact sheets, previews, and GUI
   handoff. Transform-only animation is not acceptable.
-- FORM-06 through FORM-48 flags and emblems remain blocked on final identities,
-  tags, motifs, palettes, routes, and consumers.
+- FORM-06 through FORM-47 flags and emblems remain blocked on final identities,
+  tags, motifs, palettes, routes, and consumers. FORM-48's HBX/PFX flag package
+  is audited and promoted; HAW/FSM intentionally retain vanilla flags.
 - Remaining regional report variants are readiness-controlled and cannot reuse
   FORM-03 art as a generic substitute.
 - ACX and AEX visual files do not prove package readiness. ACX is map-blocked.
@@ -204,8 +232,9 @@ hashes, loudness measurements, and exact wrappers are documented in
 `../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
 The audio registry, slot-24 dispatch, Event Log payload, and settings-aware FIFO
 submission are complete. Four qualification routes are reachable. The fifth
-predicate is wired but dormant because FORM-42 and FORM-48 remain fail-closed
-and no promoted carrier can yet hold `hidden_high_chaos`.
+predicate has a promoted FORM-48 carrier, but remains conditional on a valid
+hidden-high-chaos league and action proof; FORM-42 remains fail-closed. The
+parent Event 006 completion audit is still pending.
 
 Super-event `6001` remains absent from runtime dispatch, localisation, audio,
 and firing. ASSET-005's static DDS exists and its sprite is registered, but it
@@ -232,7 +261,9 @@ recording without explicit user approval.
 | AFX Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-006 gameplay, unique-art, cleanup, host-survival, collision, and admission authority |
 | RHI/BAY Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-008/IW-009 gameplay, FORM-04 delegation, unique-art, cleanup, host-survival, collision, and admission authority |
 | Mediterranean IW-017/IW-018/IW-019 and FORM-05 audit chain | Implemented evidence | `006_mediterranean_tranche_admission_closeout_2026_07_16.md` routes the current COR/ARX/ASX gameplay, FORM-05 charter and congress system, male HOI4 portraits, historical flat flags, exact readiness, cleanup, host-survival, collision, and admission evidence |
-| `006_form48_pacific_federation_implementation_plan_2026_07_16.md` | Accepted next tranche | Implement FORM-48 with HBX carrier, autonomous HAW/FSM members, and collision-cleared PFX cosmetic identity. FORM-42 remains fail-closed because its current founding set consumes protected capitals or lacks valid bindings |
+| Pacific IW-173/IW-179/IW-184 and FORM-48 audit chain | Promoted evidence | The 2026-07-18 parent promotion admits HAW, FSM, and HBX and attests family 48. Country-package, focus/icon, architecture, decision/mission, localisation, flag/portrait, and postformation PASS handoffs remain evidence; their earlier HOLD/FAIL-CLOSED admission wording is historical and superseded only for current status |
+| `006_form48_pacific_federation_implementation_plan_2026_07_16.md` | Implemented and superseded as a next-tranche plan | Retain the locked HBX/HAW/FSM/PFX design and FORM-42 blocker for traceability; current admission is recorded above and in the parent promotion note |
+| `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md` | Queued | Separate Volga Bulgaria and Assyria package/achievement work; not part of the Pacific promotion and not a completion claim |
 | `006_iw003_cornwall_map_feasibility_2026_07_16.md` | Blocked | Current no-fallback map blocker |
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
@@ -254,10 +285,11 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
 | Older portrait handoffs approve 2026-07-15 fictional or army-small art | Superseded by the 2026-07-16 male-HOI4 manifest and final independent audit |
-| Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable route is dormant behind FORM-42/48. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
+| Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof, while FORM-42 remains fail-closed. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
 | Earlier AFX source was revoked for missing Level 2 content | Resolved. The Sambre-Meuse lane and unique visual package passed the final exact-package audit, and IW-006 is restored to the exact registry |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
 | Older curator status for BRI and AJX | Superseded by implementation commit `7368cc0bf` and exact promotion commits `5d17e55b3` and `f64d9640e` |
+| Pacific admission handoffs say HOLD/FAIL-CLOSED | Historical verdicts are preserved. The 2026-07-18 parent promotion supersedes only their current admission disposition; their package, audit, and validation findings remain evidence |
 | Specification README still describes major implementation work as future | Preserve it as accepted-design context. Use this map for current implementation status |
 | Event documentation and workbook may lag current gameplay | Still unresolved. Perform a later fact-based alignment pass after active source work settles |
 
@@ -265,15 +297,16 @@ Parent decisions still required:
 
 1. Preserve IW-005 as a living-BEL `BEL_flanders` overlay. Do not add it to the
    selectable release registry.
-2. Preserve the eleven exact package attestations and ten disjoint capacity
-   groups that allow World Collapse to attempt exactly ten releases.
+2. Preserve the fourteen exact package attestations and the allocator's
+   reservation groups that allow World Collapse to attempt exactly ten releases.
 3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
    and settings-aware queued `6002` playback. Keep `6001` blocked unless its
    exact recording rights are cleared.
-4. Implement the accepted FORM-48 HBX/HAW/FSM/PFX tranche next so the dormant
-   hidden-formable super-event route gains a real carrier. Keep FORM-42 and all
-   other unfinished families fail-closed; use no generic flags, emblems,
-   portraits, or regional-report substitutes.
+4. Preserve the promoted FORM-48 HBX/HAW/FSM/PFX tranche and its exact
+   sovereign-autonomous membership contract. Keep FORM-42 and FORM-06 through
+   FORM-47 fail-closed; use no generic flags, emblems, portraits, or
+   regional-report substitutes. The parent Event 006 completion audit remains
+   pending.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
 
@@ -287,7 +320,7 @@ Parent decisions still required:
   or adapter exists.
 - Do not infer IW-005 as a selectable release package. It is a living-BEL route
   overlay.
-- Do not weaken the exact runtime gates for the eleven attested packages merely
+- Do not weaken the exact runtime gates for the fourteen attested packages merely
   because their compile-time content attestations are present.
 - Do not replace the Event 005 and Event 006 reservation-first transaction with
   an independent release path.

@@ -6,7 +6,7 @@
 #   package without creating forty-eight copied decision chains.
 # - Builds member, consent, and anchor ledgers only from the bounded Event 006
 #   active-country registry.
-# - Binds FORM-01 through FORM-04 replies to one carrier generation and
+# - Binds operational family replies to one carrier generation and
 #   proposal sequence, then freezes exact consenting rows at congress time.
 # - Owns discovery, preparation, risk, commit locking, and failure cleanup.
 # - Dispatches identity and integration only after an owning family adapter
@@ -796,7 +796,7 @@ independence_wave_formable_close_founding_proposal = {
 }
 
 # Carrier-country scope. Invitations are issued only to the exact bounded
-# FORM-01 through FORM-04 founding candidates accepted by their adapters.
+# operational founding candidates accepted by their exact family adapters.
 independence_wave_formable_issue_founding_invitations = {
 	if = {
 		limit = { can_issue_independence_wave_formable_founding_invitations = yes }
@@ -846,9 +846,14 @@ independence_wave_formable_issue_founding_invitations = {
 									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation } }
 									is_independence_wave_form04_eligible_member = yes
 								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } }
+									is_independence_wave_form48_eligible_member = yes
+								}
 							}
 						}
 						independence_wave_formable_store_founding_invitation_from_root = yes
+						independence_wave_form48_resolve_ai_invitation_from_root = yes
 						save_event_target_as = independence_wave_formable_invited_candidate
 						set_temp_variable = { independence_wave_formable_invited_candidate_generation = independence_wave_generation_id }
 						ROOT = {
@@ -943,6 +948,7 @@ independence_wave_formable_evaluate_candidate_consent = {
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 			}
 		}
 		# Operational families require an exact reply to this carrier's proposal.
@@ -1010,6 +1016,10 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 						has_variable = independence_wave_anchor_state
 						check_variable = { var = independence_wave_generation_id value = independence_wave_formable_candidate_generation compare = equals }
 						check_variable = { var = independence_wave_formable_family value = ROOT.independence_wave_formable_profile_family compare = equals }
+						OR = {
+							ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } } }
+							is_independence_wave_form48_eligible_member = yes
+						}
 					}
 					save_event_target_as = independence_wave_formable_candidate_country
 					set_temp_variable = { independence_wave_formable_candidate_anchor = independence_wave_anchor_state }
@@ -1218,6 +1228,10 @@ independence_wave_formable_fail_transaction = {
 		independence_wave_form03_rollback_identity = yes
 	}
 	if = {
+		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } }
+		independence_wave_form48_rollback_identity = yes
+	}
+	if = {
 		limit = { NOT = { has_country_flag = independence_wave_formable_transaction_failed } }
 		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_decisive_loss }
 		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major_loss }
@@ -1371,6 +1385,10 @@ independence_wave_formable_commit_selected_family = {
 			clr_country_flag = independence_wave_formable_commit_pending
 			clr_country_flag = independence_wave_formable_commit_blocked
 			independence_wave_formable_apply_commit_outcome = yes
+			if = {
+				limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.pacific_regional_federation } }
+				independence_wave_form48_initialize_postformation = yes
+			}
 			independence_wave_evaluate_danger_milestone = yes
 			if = {
 				limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.low_countries_federation } }
@@ -1430,6 +1448,7 @@ independence_wave_formable_cleanup_runtime = {
 	remove_mission = independence_wave_convene_formation_congress
 	independence_wave_formable_close_founding_proposal = yes
 	independence_wave_form0124_cleanup_runtime = yes
+	independence_wave_form48_origin_cleanup = yes
 	independence_wave_formable_clear_member_ledgers = yes
 	independence_wave_formable_clear_loaded_profile = yes
 	independence_wave_formable_clear_consent_declaration = yes
