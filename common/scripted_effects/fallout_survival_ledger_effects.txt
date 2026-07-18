@@ -8,8 +8,14 @@
 
 # Supported scope: STATE
 fallout_survival_clear_state_row = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = fallout_state_supply_access } }
+		remove_dynamic_modifier = { modifier = fallout_state_supply_access }
+	}
+	force_update_dynamic_modifier = yes
 	clr_state_flag = fallout_survival_state_identity_staged
 	clr_state_flag = fallout_survival_state_row_committed
+	clr_state_flag = fallout_state_supply_access_row_committed
 	clear_variable = fallout_survival_state_schema_version
 	clear_variable = fallout_survival_state_generation
 	clear_variable = fallout_survival_state_index
@@ -31,6 +37,22 @@ fallout_survival_clear_state_row = {
 	clear_array = fallout_survival_state_replay_share_entries
 	clr_state_flag = fallout_survival_state_numerical_reconciled
 	clear_variable = fallout_survival_state_numerical_generation
+	clear_variable = fallout_state_supply_access_initial
+	clear_variable = fallout_state_supply_access_current
+	clear_variable = fallout_state_supply_access_generation
+	clear_variable = fallout_state_supply_access_schema_version
+	clear_variable = fallout_state_supply_impact_factor
+	clear_variable = fallout_state_supply_impact_current_receipt
+	clear_variable = fallout_state_supply_access_replay_initial
+	clear_variable = fallout_state_supply_impact_replay_factor
+	clear_variable = fallout_orientation_state_grade
+	clear_variable = fallout_orientation_state_phase
+	clear_variable = fallout_orientation_state_exposure
+	clear_variable = fallout_orientation_state_shelter
+	clear_variable = fallout_orientation_state_recovery
+	clear_variable = fallout_orientation_state_adaptation
+	clear_variable = fallout_orientation_state_reclamation
+	clear_variable = fallout_orientation_state_supply
 }
 
 # Supported scope: COUNTRY
@@ -66,6 +88,14 @@ fallout_survival_clear_country_row = {
 	clear_variable = fallout_survival_country_produced_state_count
 	clear_variable = fallout_survival_country_replay_state_count
 	clear_variable = fallout_survival_country_replay_produced_state_count
+	clr_country_flag = fallout_survival_cohesion_row_committed
+	clear_variable = fallout_survival_cohesion_initial
+	clear_variable = fallout_survival_cohesion_current
+	clear_variable = fallout_survival_cohesion_generation
+	clear_variable = fallout_survival_cohesion_schema_version
+	clear_variable = fallout_survival_cohesion_replay_initial
+	clear_variable = fallout_orientation_cohesion
+	clear_variable = fallout_orientation_state_result_surface_status
 }
 
 # Supported scope: COUNTRY coordinator. A committed ledger is immutable and
@@ -221,8 +251,14 @@ fallout_stage_survival_ledger_identity_transaction = {
 
 # Supported scope: STATE. Identity and producer provenance remain immutable.
 fallout_survival_clear_state_numerical_row = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = fallout_state_supply_access } }
+		remove_dynamic_modifier = { modifier = fallout_state_supply_access }
+	}
+	force_update_dynamic_modifier = yes
 	clr_state_flag = fallout_survival_state_row_committed
 	clr_state_flag = fallout_survival_state_numerical_reconciled
+	clr_state_flag = fallout_state_supply_access_row_committed
 	clear_variable = fallout_survival_state_numerical_generation
 	clear_array = fallout_survival_state_raw_numerator_entries
 	clear_array = fallout_survival_state_raw_denominator_entries
@@ -230,6 +266,22 @@ fallout_survival_clear_state_numerical_row = {
 	clear_array = fallout_survival_state_replay_numerator_entries
 	clear_array = fallout_survival_state_replay_denominator_entries
 	clear_array = fallout_survival_state_replay_share_entries
+	clear_variable = fallout_state_supply_access_initial
+	clear_variable = fallout_state_supply_access_current
+	clear_variable = fallout_state_supply_access_generation
+	clear_variable = fallout_state_supply_access_schema_version
+	clear_variable = fallout_state_supply_impact_factor
+	clear_variable = fallout_state_supply_impact_current_receipt
+	clear_variable = fallout_state_supply_access_replay_initial
+	clear_variable = fallout_state_supply_impact_replay_factor
+	clear_variable = fallout_orientation_state_grade
+	clear_variable = fallout_orientation_state_phase
+	clear_variable = fallout_orientation_state_exposure
+	clear_variable = fallout_orientation_state_shelter
+	clear_variable = fallout_orientation_state_recovery
+	clear_variable = fallout_orientation_state_adaptation
+	clear_variable = fallout_orientation_state_reclamation
+	clear_variable = fallout_orientation_state_supply
 }
 
 # Supported scope: COUNTRY. Identity and allocation provenance remain immutable.
@@ -254,6 +306,14 @@ fallout_survival_clear_country_numerical_row = {
 	clear_array = fallout_survival_replay_population_weight_sum_entries
 	clear_array = fallout_survival_replay_weighted_score_sum_entries
 	clear_array = fallout_survival_replay_hub_score_entries
+	clr_country_flag = fallout_survival_cohesion_row_committed
+	clear_variable = fallout_survival_cohesion_initial
+	clear_variable = fallout_survival_cohesion_current
+	clear_variable = fallout_survival_cohesion_generation
+	clear_variable = fallout_survival_cohesion_schema_version
+	clear_variable = fallout_survival_cohesion_replay_initial
+	clear_variable = fallout_orientation_cohesion
+	clear_variable = fallout_orientation_state_result_surface_status
 }
 
 # Supported scope: COUNTRY coordinator. A row flag remains provisional until
@@ -646,6 +706,66 @@ fallout_survival_calculate_state_resource_expected = {
 	}
 }
 
+# Supported scope: STATE. Calculates the opening State Supply Access from the
+# post-rewrite non-damaged infrastructure ledger. Not-applicable Air Winter
+# rows receive a typed zero and never become orientation targets.
+fallout_state_calculate_supply_access_expected = {
+	set_temp_variable = { fallout_state_expected_supply_access = constant:fallout_survival_numeric.minimum }
+	if = {
+		limit = {
+			check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+			has_variable = fallout_building_damage_after_non_damaged_infrastructure
+		}
+		set_temp_variable = { fallout_state_expected_supply_access = fallout_building_damage_after_non_damaged_infrastructure }
+		multiply_temp_variable = { fallout_state_expected_supply_access = constant:fallout_survival_numeric.logistics_per_infrastructure }
+		clamp_temp_variable = { var = fallout_state_expected_supply_access min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	}
+}
+
+# Supported scope: STATE. Recomputes the native local supply impact from the
+# mutable 0 to 100 Supply Access ledger.
+fallout_state_recompute_supply_access_factor = {
+	set_variable = { fallout_state_supply_impact_factor = constant:fallout_state_supply_access.impact_base }
+	set_temp_variable = { fallout_state_supply_impact_component = fallout_state_supply_access_current }
+	multiply_temp_variable = { fallout_state_supply_impact_component = constant:fallout_state_supply_access.impact_per_point }
+	add_to_variable = { fallout_state_supply_impact_factor = fallout_state_supply_impact_component }
+	clamp_variable = { var = fallout_state_supply_impact_factor min = constant:fallout_state_supply_access.impact_minimum max = constant:fallout_state_supply_access.impact_maximum }
+	set_variable = { fallout_state_supply_impact_current_receipt = fallout_state_supply_impact_factor }
+}
+
+# Supported scope: STATE. The ledger owns the modifier lifecycle. No recurring
+# iterator is required because opening commit and authenticated mutations call
+# this helper directly.
+fallout_state_refresh_supply_access_modifier = {
+	if = {
+		limit = {
+			has_state_flag = fallout_state_supply_access_row_committed
+			check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+		}
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = fallout_state_supply_access } } }
+			add_dynamic_modifier = { modifier = fallout_state_supply_access }
+		}
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = { modifier = fallout_state_supply_access } }
+		remove_dynamic_modifier = { modifier = fallout_state_supply_access }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# Supported scope: STATE. Input is the temporary
+# fallout_state_supply_access_delta. This is the sole mutable-current writer.
+fallout_state_apply_supply_access_delta = {
+	if = {
+		limit = { fallout_state_supply_access_row_is_current = yes }
+		add_to_variable = { fallout_state_supply_access_current = fallout_state_supply_access_delta }
+		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+		fallout_state_recompute_supply_access_factor = yes
+		fallout_state_refresh_supply_access_modifier = yes
+	}
+}
+
 # Supported scope: STATE. Produces one provisional row and immediately replays
 # it from frozen inputs before writing its row-commit flag.
 fallout_survival_stage_state_numerical_row = {
@@ -668,6 +788,12 @@ fallout_survival_stage_state_numerical_row = {
 			add_to_array = { array = fallout_survival_state_raw_denominator_entries value = fallout_survival_expected_state_denominator }
 			add_to_array = { array = fallout_survival_state_equal_share_entries value = fallout_survival_expected_state_share }
 		}
+		fallout_state_calculate_supply_access_expected = yes
+		set_variable = { fallout_state_supply_access_initial = fallout_state_expected_supply_access }
+		set_variable = { fallout_state_supply_access_current = fallout_state_expected_supply_access }
+		set_variable = { fallout_state_supply_access_generation = global.fallout_transition_generation }
+		set_variable = { fallout_state_supply_access_schema_version = constant:fallout_survival_ledger_schema.version }
+		fallout_state_recompute_supply_access_factor = yes
 		fallout_survival_replay_state_numerical_row = yes
 	}
 }
@@ -680,6 +806,8 @@ fallout_survival_replay_state_numerical_row = {
 	clear_array = fallout_survival_state_replay_numerator_entries
 	clear_array = fallout_survival_state_replay_denominator_entries
 	clear_array = fallout_survival_state_replay_share_entries
+	clear_variable = fallout_state_supply_access_replay_initial
+	clear_variable = fallout_state_supply_impact_replay_factor
 	set_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.zero }
 	if = {
 		limit = {
@@ -712,13 +840,35 @@ fallout_survival_replay_state_numerical_row = {
 				add_to_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.one }
 			}
 		}
+		fallout_state_calculate_supply_access_expected = yes
+		set_variable = { fallout_state_supply_access_replay_initial = fallout_state_expected_supply_access }
+		set_temp_variable = { fallout_state_expected_supply_impact = constant:fallout_state_supply_access.impact_base }
+		set_temp_variable = { fallout_state_expected_supply_impact_component = fallout_state_expected_supply_access }
+		multiply_temp_variable = { fallout_state_expected_supply_impact_component = constant:fallout_state_supply_access.impact_per_point }
+		add_to_temp_variable = { fallout_state_expected_supply_impact = fallout_state_expected_supply_impact_component }
+		clamp_temp_variable = { var = fallout_state_expected_supply_impact min = constant:fallout_state_supply_access.impact_minimum max = constant:fallout_state_supply_access.impact_maximum }
+		set_variable = { fallout_state_supply_impact_replay_factor = fallout_state_expected_supply_impact }
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { var = fallout_state_supply_access_initial value = fallout_state_expected_supply_access compare = equals } }
+					NOT = { check_variable = { var = fallout_state_supply_access_current value = fallout_state_expected_supply_access compare = equals } }
+					NOT = { check_variable = { var = fallout_state_supply_impact_factor value = fallout_state_expected_supply_impact compare = equals } }
+					NOT = { check_variable = { var = fallout_state_supply_access_generation value = global.fallout_transition_generation compare = equals } }
+					NOT = { check_variable = { fallout_state_supply_access_schema_version = constant:fallout_survival_ledger_schema.version } }
+				}
+			}
+			add_to_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.one }
+		}
 	}
 	else = { add_to_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.one } }
 	if = {
 		limit = { check_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.zero } }
 		set_variable = { fallout_survival_state_numerical_generation = global.fallout_transition_generation }
+		set_state_flag = fallout_state_supply_access_row_committed
 		set_state_flag = fallout_survival_state_numerical_reconciled
 		set_state_flag = fallout_survival_state_row_committed
+		fallout_state_refresh_supply_access_modifier = yes
 	}
 }
 
@@ -736,6 +886,32 @@ fallout_survival_calculate_recognition_adjustment = {
 	else_if = { limit = { check_variable = { fallout_survival_country_source_archetype = constant:fallout_government_archetype.technate } } set_temp_variable = { fallout_survival_recognition_adjustment_value = constant:fallout_survival_recognition_adjustment.technate } }
 	else_if = { limit = { check_variable = { fallout_survival_country_source_archetype = constant:fallout_government_archetype.mutant_polity } } set_temp_variable = { fallout_survival_recognition_adjustment_value = constant:fallout_survival_recognition_adjustment.mutant_polity } }
 	else_if = { limit = { check_variable = { fallout_survival_country_source_archetype = constant:fallout_government_archetype.religious_refuge } } set_temp_variable = { fallout_survival_recognition_adjustment_value = constant:fallout_survival_recognition_adjustment.religious_refuge } }
+}
+
+# Supported scope: COUNTRY. Recognition already includes the archetype
+# adjustment. This formula must not apply a second archetype adjustment.
+fallout_survival_calculate_country_cohesion_expected = {
+	set_temp_variable = { fallout_survival_expected_cohesion = fallout_survival_initial_entries^1 }
+	multiply_temp_variable = { fallout_survival_expected_cohesion = constant:fallout_survival_cohesion.food_weight }
+	set_temp_variable = { fallout_survival_cohesion_component = fallout_survival_initial_entries^8 }
+	multiply_temp_variable = { fallout_survival_cohesion_component = constant:fallout_survival_cohesion.shelter_weight }
+	add_to_temp_variable = { fallout_survival_expected_cohesion = fallout_survival_cohesion_component }
+	set_temp_variable = { fallout_survival_cohesion_component = fallout_survival_initial_entries^9 }
+	multiply_temp_variable = { fallout_survival_cohesion_component = constant:fallout_survival_cohesion.recognition_weight }
+	add_to_temp_variable = { fallout_survival_expected_cohesion = fallout_survival_cohesion_component }
+	divide_temp_variable = { fallout_survival_expected_cohesion = constant:fallout_survival_cohesion.denominator }
+	round_temp_variable = fallout_survival_expected_cohesion
+	clamp_temp_variable = { var = fallout_survival_expected_cohesion min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+}
+
+# Supported scope: COUNTRY. Input is the temporary
+# fallout_survival_cohesion_delta. This is the sole mutable-current writer.
+fallout_survival_apply_cohesion_delta = {
+	if = {
+		limit = { fallout_survival_country_cohesion_row_is_current = yes }
+		add_to_variable = { fallout_survival_cohesion_current = fallout_survival_cohesion_delta }
+		clamp_variable = { var = fallout_survival_cohesion_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	}
 }
 
 # Supported scope: COUNTRY. Input is fallout_survival_resource_build_index.
@@ -848,6 +1024,11 @@ fallout_survival_stage_country_numerical_row = {
 				set_variable = { fallout_survival_country_produced_state_count = fallout_survival_expected_country_produced_count }
 			}
 		}
+		fallout_survival_calculate_country_cohesion_expected = yes
+		set_variable = { fallout_survival_cohesion_initial = fallout_survival_expected_cohesion }
+		set_variable = { fallout_survival_cohesion_current = fallout_survival_expected_cohesion }
+		set_variable = { fallout_survival_cohesion_generation = global.fallout_transition_generation }
+		set_variable = { fallout_survival_cohesion_schema_version = constant:fallout_survival_ledger_schema.version }
 		fallout_survival_replay_country_numerical_row = yes
 	}
 }
@@ -864,6 +1045,7 @@ fallout_survival_replay_country_numerical_row = {
 	clear_array = fallout_survival_replay_population_weight_sum_entries
 	clear_array = fallout_survival_replay_weighted_score_sum_entries
 	clear_array = fallout_survival_replay_hub_score_entries
+	clear_variable = fallout_survival_cohesion_replay_initial
 	set_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.zero }
 	if = {
 		limit = {
@@ -917,6 +1099,19 @@ fallout_survival_replay_country_numerical_row = {
 				set_variable = { fallout_survival_country_replay_produced_state_count = fallout_survival_expected_country_produced_count }
 			}
 		}
+		fallout_survival_calculate_country_cohesion_expected = yes
+		set_variable = { fallout_survival_cohesion_replay_initial = fallout_survival_expected_cohesion }
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { var = fallout_survival_cohesion_initial value = fallout_survival_expected_cohesion compare = equals } }
+					NOT = { check_variable = { var = fallout_survival_cohesion_current value = fallout_survival_expected_cohesion compare = equals } }
+					NOT = { check_variable = { var = fallout_survival_cohesion_generation value = global.fallout_transition_generation compare = equals } }
+					NOT = { check_variable = { fallout_survival_cohesion_schema_version = constant:fallout_survival_ledger_schema.version } }
+				}
+			}
+			add_to_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.one }
+		}
 	}
 	else = { add_to_temp_variable = { fallout_survival_replay_mismatch_count = constant:fallout_event_runtime.one } }
 	if = {
@@ -926,6 +1121,8 @@ fallout_survival_replay_country_numerical_row = {
 			check_variable = { var = fallout_survival_country_aggregate_state_count value = fallout_survival_country_state_count compare = equals }
 		}
 		set_variable = { fallout_survival_country_numerical_generation = global.fallout_transition_generation }
+		set_variable = { fallout_orientation_state_result_surface_status = constant:fallout_orientation_surface_status.approved }
+		set_country_flag = fallout_survival_cohesion_row_committed
 		set_country_flag = fallout_survival_country_numerical_reconciled
 		set_country_flag = fallout_survival_country_row_committed
 	}

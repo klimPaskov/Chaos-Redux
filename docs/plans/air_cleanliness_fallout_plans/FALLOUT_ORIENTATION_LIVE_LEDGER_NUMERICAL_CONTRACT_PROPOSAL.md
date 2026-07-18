@@ -2,13 +2,13 @@
 
 ## Status
 
-Proposed for user approval. This document does not authorize gameplay edits until the user approves its numerical choices and repair disposition.
+Accepted for implementation on 2026-07-18. The accepted numerical choices are incorporated into the Fallout source specs and implemented as a dormant schema-3 ledger transaction.
 
 The accepted Ash-week orientation contract remains dormant. Events `chaosx.fallout.62` through `chaosx.fallout.65` remain uncounted pilot blocks. Events `66` through `84` remain incomplete. This proposal does not authorize a caller, successor materialization, scheduler activation, manual scenario activation, or any recurring country iterator.
 
-## Decision request
+## Accepted decisions
 
-Approval is requested for three exact live-ledger decisions:
+The approval covers three exact live-ledger decisions:
 
 1. initialize Survival Cohesion from the already committed Food, Shelter capacity, and Recognition values
 2. promote the already accepted state Logistics signal into an immutable opening and mutable current Supply Access ledger
@@ -18,14 +18,14 @@ Exact instant repair of one damaged infrastructure level remains a separate engi
 
 ## Evidence boundary
 
-The current repository proves the following facts.
+The pre-implementation audit proved the following facts. The accepted implementation result is recorded in `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`.
 
 | Surface | Current evidence | Disposition |
 | --- | --- | --- |
 | Food, Shelter capacity, and Recognition | committed country values from 0 through 100 with immutable initial and mutable current arrays | accepted inputs |
-| Survival Cohesion | described in the accepted baseline, but no opening numerical producer exists | formula requires approval |
-| state Logistics | accepted as `clamp(20 * fallout_building_damage_after_non_damaged_infrastructure, 0, 100)` during opening resource calculation | accepted formula, not yet persisted |
-| `fallout_orientation_state_supply` | written only inside the dormant orientation helper file and read by no native supply consumer | shadow value, must be removed |
+| Survival Cohesion | described in the accepted baseline, but no opening numerical producer existed | accepted for schema-3 implementation |
+| state Logistics | accepted as `clamp(20 * fallout_building_damage_after_non_damaged_infrastructure, 0, 100)` during opening resource calculation | accepted for persistent Supply Access |
+| `fallout_orientation_state_supply` | was written only inside the dormant orientation helper file and read by no native supply consumer | retired by the accepted implementation |
 | Air Winter ledgers | live state variables exist for Exposure, Recovery, Adaptation, Food Reserve, Shelter Capacity, Reclamation, and Water Security | accepted live state surfaces |
 | damaged infrastructure | `damaged_building_level@infrastructure` and `non_damaged_building_level@infrastructure` expose observed state | proven read surfaces |
 | infrastructure damage | `damage_building` is documented and used by vanilla | proven failure effect |
@@ -55,7 +55,7 @@ The orientation-only variable `fallout_orientation_cohesion` is retired. Orienta
 
 ### Opening formula
 
-The exact proposed formula is:
+The accepted formula is:
 
 ```text
 cohesion_numerator =
@@ -114,7 +114,7 @@ Air Winter not-applicable rows receive typed zero initial and current values. Th
 
 ### Opening formula
 
-The proposal promotes the already accepted Logistics calculation without changing its coefficient:
+The accepted contract promotes the already accepted Logistics calculation without changing its coefficient:
 
 ```text
 fallout_state_supply_access_initial = clamp(
@@ -132,7 +132,7 @@ The formula reads the durable post-rewrite non-damaged infrastructure receipt. I
 
 A dedicated Fallout state dynamic modifier consumes `fallout_state_supply_impact_factor` through the documented `local_supply_impact_factor` state modifier.
 
-The exact proposed translation is:
+The accepted translation is:
 
 ```text
 fallout_state_supply_impact_factor = clamp(
@@ -234,9 +234,7 @@ HOI4 will not be run. Runtime persistence, save interruption, dynamic-modifier r
 
 ## Approval record
 
-Not approved yet.
-
-User approval must explicitly cover:
+The user approved this contract on 2026-07-18 with the instruction, "yes i approve, continue with the goal". The approval covers:
 
 - the 35 Food, 35 Shelter capacity, and 30 Recognition opening Cohesion weights
 - use of Recognition after its accepted archetype adjustment with no second archetype bonus

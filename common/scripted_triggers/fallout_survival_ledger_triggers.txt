@@ -323,10 +323,58 @@ fallout_recoverable_survival_ledger_identity_error_is_active = {
 	NOT = { fallout_survival_ledger_identity_structure_is_current = yes }
 }
 
+# Supported scope: STATE. Opening Supply Access is bound to the independent
+# replay of surviving infrastructure. Mutable current values and their native
+# impact remain bounded and carry a same-write factor receipt.
+fallout_state_supply_access_row_is_durable = {
+	fallout_survival_state_identity_components_are_present = yes
+	has_state_flag = fallout_state_supply_access_row_committed
+	has_variable = fallout_state_supply_access_initial
+	has_variable = fallout_state_supply_access_current
+	has_variable = fallout_state_supply_access_generation
+	has_variable = fallout_state_supply_access_schema_version
+	has_variable = fallout_state_supply_impact_factor
+	has_variable = fallout_state_supply_impact_current_receipt
+	has_variable = fallout_state_supply_access_replay_initial
+	has_variable = fallout_state_supply_impact_replay_factor
+	check_variable = { fallout_state_supply_access_schema_version = constant:fallout_survival_ledger_schema.version }
+	check_variable = { var = fallout_state_supply_access_generation value = global.fallout_survival_ledger_generation compare = equals }
+	check_variable = { var = fallout_state_supply_access_initial value = fallout_state_supply_access_replay_initial compare = equals }
+	check_variable = { var = fallout_state_supply_impact_factor value = fallout_state_supply_impact_current_receipt compare = equals }
+	OR = {
+		check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+		check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable }
+	}
+	NOT = { check_variable = { fallout_state_supply_access_initial < constant:fallout_survival_numeric.minimum } }
+	NOT = { check_variable = { fallout_state_supply_access_initial > constant:fallout_survival_numeric.maximum } }
+	NOT = { check_variable = { fallout_state_supply_access_current < constant:fallout_survival_numeric.minimum } }
+	NOT = { check_variable = { fallout_state_supply_access_current > constant:fallout_survival_numeric.maximum } }
+	NOT = { check_variable = { fallout_state_supply_impact_factor < constant:fallout_state_supply_access.impact_minimum } }
+	NOT = { check_variable = { fallout_state_supply_impact_factor > constant:fallout_state_supply_access.impact_maximum } }
+	if = {
+		limit = { check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.produced } }
+		has_dynamic_modifier = { modifier = fallout_state_supply_access }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.not_applicable } }
+		check_variable = { fallout_state_supply_access_initial = constant:fallout_survival_numeric.minimum }
+		check_variable = { fallout_state_supply_access_current = constant:fallout_survival_numeric.minimum }
+		NOT = { has_dynamic_modifier = { modifier = fallout_state_supply_access } }
+	}
+}
+
+# Supported scope: STATE. Only produced Air Winter rows may accept live
+# orientation mutations.
+fallout_state_supply_access_row_is_current = {
+	fallout_state_supply_access_row_is_durable = yes
+	check_variable = { fallout_survival_state_source_air_winter_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+}
+
 # Supported scope: STATE. Exact arithmetic was replayed by the numerical
 # producer. Mirror arrays bind the committed row to that independent replay.
 fallout_survival_state_resource_row_is_durable = {
 	fallout_survival_state_identity_components_are_present = yes
+	fallout_state_supply_access_row_is_durable = yes
 	has_state_flag = fallout_survival_state_row_committed
 	has_state_flag = fallout_survival_state_numerical_reconciled
 	has_variable = fallout_survival_state_numerical_generation
@@ -372,10 +420,31 @@ fallout_survival_state_resource_row_is_durable = {
 	}
 }
 
+# Supported scope: COUNTRY. Opening Cohesion is bound to the independent replay
+# of Food, Shelter, and already-adjusted Recognition. Current remains mutable
+# only inside its inclusive 0 to 100 band.
+fallout_survival_country_cohesion_row_is_current = {
+	fallout_survival_country_identity_components_are_present = yes
+	has_country_flag = fallout_survival_cohesion_row_committed
+	has_variable = fallout_survival_cohesion_initial
+	has_variable = fallout_survival_cohesion_current
+	has_variable = fallout_survival_cohesion_generation
+	has_variable = fallout_survival_cohesion_schema_version
+	has_variable = fallout_survival_cohesion_replay_initial
+	check_variable = { fallout_survival_cohesion_schema_version = constant:fallout_survival_ledger_schema.version }
+	check_variable = { var = fallout_survival_cohesion_generation value = global.fallout_survival_ledger_generation compare = equals }
+	check_variable = { var = fallout_survival_cohesion_initial value = fallout_survival_cohesion_replay_initial compare = equals }
+	NOT = { check_variable = { fallout_survival_cohesion_initial < constant:fallout_survival_numeric.minimum } }
+	NOT = { check_variable = { fallout_survival_cohesion_initial > constant:fallout_survival_numeric.maximum } }
+	NOT = { check_variable = { fallout_survival_cohesion_current < constant:fallout_survival_numeric.minimum } }
+	NOT = { check_variable = { fallout_survival_cohesion_current > constant:fallout_survival_numeric.maximum } }
+}
+
 # Supported scope: COUNTRY. Current values remain mutable after global commit.
 # Every raw, diagnostic, and initial value remains bound to its replay mirror.
 fallout_survival_country_resource_row_is_durable = {
 	fallout_survival_country_identity_components_are_present = yes
+	fallout_survival_country_cohesion_row_is_current = yes
 	has_country_flag = fallout_survival_country_row_committed
 	has_country_flag = fallout_survival_country_numerical_reconciled
 	has_variable = fallout_survival_country_numerical_generation
@@ -444,6 +513,8 @@ fallout_survival_state_numerical_row_is_precommit_current = {
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	check_variable = { var = fallout_survival_state_numerical_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_state_supply_access_current value = fallout_state_supply_access_initial compare = equals }
+	check_variable = { var = fallout_state_supply_impact_factor value = fallout_state_supply_impact_replay_factor compare = equals }
 }
 
 # Supported scope: COUNTRY coordinator
@@ -460,6 +531,7 @@ fallout_survival_country_numerical_row_is_precommit_current = {
 	fallout_survival_country_identity_row_is_current = yes
 	fallout_survival_country_resource_row_is_durable = yes
 	check_variable = { var = fallout_survival_country_numerical_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = fallout_survival_cohesion_initial compare = equals }
 	all_of = {
 		array = fallout_survival_country_resource_id_entries
 		value = fallout_survival_precommit_resource_id

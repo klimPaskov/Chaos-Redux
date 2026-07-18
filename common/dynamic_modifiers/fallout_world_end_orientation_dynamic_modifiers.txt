@@ -1,9 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - FALLOUT ASH-WEEK ORIENTATION DYNAMIC MODIFIERS
 # ============================================================================
-# Owns the operational country modifiers produced by the accepted five-part
-# Fallout orientation contract. Durations are applied by the transaction
-# effects. Magnitudes live in Fallout event script constants.
+# Owns the operational country modifiers and the durable state Supply Access
+# translation produced by the accepted Fallout orientation contracts.
+# Durations are applied by transaction effects. Tunable magnitudes live in
+# Fallout event script constants.
 # ============================================================================
 
 fallout_orientation_command_authority = {
@@ -58,4 +59,12 @@ fallout_orientation_coercion_liability = {
 	enable = { always = yes }
 	attrition = constant:fallout_orientation_modifier.coercion_liability_attrition
 	supply_consumption_factor = constant:fallout_orientation_modifier.coercion_liability_supply
+}
+
+# State modifier. The numerical ledger owns addition, removal, and immediate
+# refresh. Not-applicable Air Winter rows never receive this modifier.
+fallout_state_supply_access = {
+	enable = { always = yes }
+	remove_trigger = { NOT = { has_state_flag = fallout_state_supply_access_row_committed } }
+	local_supply_impact_factor = var:fallout_state_supply_impact_factor
 }

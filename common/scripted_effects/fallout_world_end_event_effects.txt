@@ -3470,7 +3470,7 @@ fallout_orientation_begin_component = {
 		set_variable = { fallout_orientation_frozen_component = fallout_orientation_requested_component }
 		set_variable = { fallout_orientation_frozen_branch = constant:fallout_orientation_national_branch.none }
 		set_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.none }
-		set_variable = { fallout_orientation_frozen_cohesion = fallout_orientation_requested_cohesion }
+		set_variable = { fallout_orientation_frozen_cohesion = fallout_survival_cohesion_current }
 		set_variable = { fallout_orientation_frozen_tailored_resource = fallout_orientation_requested_tailored_resource }
 		set_variable = { fallout_orientation_frozen_resource_food = fallout_survival_current_entries^1 }
 		set_variable = { fallout_orientation_frozen_resource_clean_water = fallout_survival_current_entries^2 }
@@ -3481,7 +3481,6 @@ fallout_orientation_begin_component = {
 		set_variable = { fallout_orientation_frozen_resource_filters = fallout_survival_current_entries^7 }
 		set_variable = { fallout_orientation_frozen_resource_shelter = fallout_survival_current_entries^8 }
 		set_variable = { fallout_orientation_frozen_resource_recognition = fallout_survival_current_entries^9 }
-		set_variable = { fallout_orientation_frozen_target_supply = fallout_orientation_requested_state_supply }
 		set_variable = { fallout_orientation_frozen_receiving_capacity = fallout_orientation_requested_receiving_capacity }
 		set_variable = { fallout_orientation_frozen_receiving_shelter = fallout_orientation_requested_receiving_shelter }
 		set_variable = { fallout_orientation_frozen_archetype_match = fallout_orientation_requested_archetype_match }
@@ -3503,7 +3502,6 @@ fallout_orientation_begin_component = {
 		set_variable = { fallout_orientation_frozen_candidate_slot_1_archetype = fallout_orientation_requested_candidate_slot_1_archetype }
 		set_variable = { fallout_orientation_frozen_candidate_slot_2_archetype = fallout_orientation_requested_candidate_slot_2_archetype }
 		set_variable = { fallout_orientation_frozen_candidate_slot_3_archetype = fallout_orientation_requested_candidate_slot_3_archetype }
-		set_variable = { fallout_orientation_cohesion = fallout_orientation_requested_cohesion }
 		fallout_orientation_freeze_resource_extrema = yes
 		fallout_orientation_freeze_live_country_population = yes
 		var:fallout_successor_assignment_capital_state = {
@@ -3515,6 +3513,7 @@ fallout_orientation_begin_component = {
 			set_variable = { ROOT.fallout_orientation_frozen_target_recovery = air_winter_recovery }
 			set_variable = { ROOT.fallout_orientation_frozen_target_adaptation = air_winter_adaptation }
 			set_variable = { ROOT.fallout_orientation_frozen_target_reclamation = air_winter_reclamation }
+			set_variable = { ROOT.fallout_orientation_frozen_target_supply = fallout_state_supply_access_current }
 			set_temp_variable = { fallout_orientation_target_population_current = state_population_k }
 			multiply_temp_variable = { fallout_orientation_target_population_current = constant:fallout_runtime.population_scale }
 			round_temp_variable = fallout_orientation_target_population_current
@@ -3934,8 +3933,8 @@ fallout_orientation_choose_branch = {
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } }
-			if = { limit = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.ration } } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_cost.resource_ration_cohesion } }
-			else_if = { limit = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.requisition } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_cost.resource_requisition_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_cost.resource_requisition_cohesion } }
+			if = { limit = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.ration } } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_cost.resource_ration_cohesion } fallout_orientation_apply_cohesion_loss = yes }
+			else_if = { limit = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.requisition } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_cost.resource_requisition_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_cost.resource_requisition_cohesion } fallout_orientation_apply_cohesion_loss = yes }
 			else_if = { limit = { check_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.tailored } } subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_orientation_cost.resource_tailored_scrap } if = { limit = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.power } } subtract_from_variable = { fallout_survival_current_entries^6 = constant:fallout_orientation_cost.resource_tailored_support } } else_if = { limit = { check_variable = { fallout_orientation_frozen_tailored_resource = constant:fallout_survival_resource.fuel } } subtract_from_variable = { fallout_survival_current_entries^5 = constant:fallout_orientation_cost.resource_tailored_support } } }
 		}
 		else_if = {
@@ -4040,6 +4039,13 @@ fallout_orientation_calculate_score = {
 	set_variable = { fallout_orientation_score_exposure_deduction = fallout_orientation_score_exposure_deduction_value }
 }
 
+# Supported scope: COUNTRY. Input is a positive
+# fallout_survival_cohesion_delta magnitude.
+fallout_orientation_apply_cohesion_loss = {
+	multiply_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_runtime.negative_one }
+	fallout_survival_apply_cohesion_delta = yes
+}
+
 fallout_orientation_clamp_resources = {
 	clamp_variable = { var = fallout_survival_current_entries^1 min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 	clamp_variable = { var = fallout_survival_current_entries^2 min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
@@ -4050,10 +4056,6 @@ fallout_orientation_clamp_resources = {
 	clamp_variable = { var = fallout_survival_current_entries^7 min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 	clamp_variable = { var = fallout_survival_current_entries^8 min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 	clamp_variable = { var = fallout_survival_current_entries^9 min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-	if = {
-		limit = { has_variable = fallout_orientation_cohesion }
-		clamp_variable = { var = fallout_orientation_cohesion min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-	}
 }
 
 fallout_orientation_record_country_deaths = {
@@ -4139,47 +4141,53 @@ fallout_orientation_apply_national_result = {
 		if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
 			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_household_success_recognition }
-			add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_household_success_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_household_success_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
 			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_household_partial_recognition }
-			add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_household_partial_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_household_partial_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
 			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_household_failure_recognition }
-			subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_household_failure_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_household_failure_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
 			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_orientation_result.national_household_failure_food }
 			if = { limit = { check_variable = { fallout_orientation_frozen_resource_recognition < constant:fallout_orientation_deaths.national_authority_recognition_threshold } } set_temp_variable = { fallout_orientation_death_fraction = constant:fallout_orientation_deaths.national_authority } fallout_orientation_record_country_deaths = yes }
 		}
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_national_branch.district_settlement } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_success_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_district_success_cohesion } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_partial_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_district_partial_cohesion } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_failure_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_district_failure_cohesion } subtract_from_variable = { fallout_survival_current_entries^8 = constant:fallout_orientation_result.national_district_failure_shelter } }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_success_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_district_success_cohesion } fallout_survival_apply_cohesion_delta = yes }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_partial_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_district_partial_cohesion } fallout_survival_apply_cohesion_delta = yes }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_district_failure_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_district_failure_cohesion } fallout_orientation_apply_cohesion_loss = yes subtract_from_variable = { fallout_survival_current_entries^8 = constant:fallout_orientation_result.national_district_failure_shelter } }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_national_branch.emergency_command } }
 		if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
 			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_command_success_recognition }
-			add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_command_success_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_command_success_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
 			set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.command_authority_days }
 			add_dynamic_modifier = { modifier = fallout_orientation_command_authority days = fallout_orientation_modifier_days }
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
 			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_command_partial_recognition }
-			add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_command_partial_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_command_partial_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
 			set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.contested_command_days }
 			add_dynamic_modifier = { modifier = fallout_orientation_contested_command days = fallout_orientation_modifier_days }
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
 			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.national_command_failure_recognition }
-			subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.national_command_failure_cohesion }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.national_command_failure_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
 			set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.command_resistance_days }
 			add_dynamic_modifier = { modifier = fallout_orientation_command_resistance days = fallout_orientation_modifier_days }
 		}
@@ -4187,50 +4195,96 @@ fallout_orientation_apply_national_result = {
 	fallout_orientation_clamp_resources = yes
 }
 
-fallout_orientation_prepare_state_payload = {
-	var:fallout_orientation_state_target = {
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_grade } } set_variable = { fallout_orientation_state_grade = ROOT.fallout_orientation_frozen_target_state_grade } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_phase } } set_variable = { fallout_orientation_state_phase = ROOT.fallout_orientation_frozen_target_state_phase } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_exposure } } set_variable = { fallout_orientation_state_exposure = ROOT.fallout_orientation_frozen_target_exposure } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_shelter } } set_variable = { fallout_orientation_state_shelter = ROOT.fallout_orientation_frozen_target_shelter } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_recovery } } set_variable = { fallout_orientation_state_recovery = ROOT.fallout_orientation_frozen_target_recovery } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_adaptation } } set_variable = { fallout_orientation_state_adaptation = ROOT.fallout_orientation_frozen_target_adaptation } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_reclamation } } set_variable = { fallout_orientation_state_reclamation = ROOT.fallout_orientation_frozen_target_reclamation } }
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_supply } } set_variable = { fallout_orientation_state_supply = ROOT.fallout_orientation_frozen_target_supply } }
+fallout_orientation_reset_state_deltas = {
+	set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_state_adaptation_delta = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_state_reclamation_delta = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_orientation_runtime.zero }
+}
+
+# Supported scope: COUNTRY. The assigned capital is authenticated before any
+# state field changes. Recovery is written to both the durable bonus and live
+# value. Supply uses the sole clamp-owning state-ledger helper.
+fallout_orientation_apply_authenticated_state_deltas = {
+	if = {
+		limit = { fallout_orientation_state_target_is_current = yes }
+		var:fallout_orientation_state_target = {
+			add_to_variable = { air_winter_exposure = fallout_orientation_state_exposure_delta }
+			clamp_variable = { var = air_winter_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			add_to_variable = { air_winter_shelter_capacity = fallout_orientation_state_shelter_delta }
+			clamp_variable = { var = air_winter_shelter_capacity min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			if = {
+				limit = { NOT = { has_variable = air_winter_recovery_bonus } }
+				set_variable = { air_winter_recovery_bonus = constant:fallout_orientation_runtime.zero }
+			}
+			add_to_variable = { air_winter_recovery_bonus = fallout_orientation_state_recovery_delta }
+			add_to_variable = { air_winter_recovery = fallout_orientation_state_recovery_delta }
+			clamp_variable = { var = air_winter_recovery_bonus min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = air_winter_recovery min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			add_to_variable = { air_winter_adaptation = fallout_orientation_state_adaptation_delta }
+			clamp_variable = { var = air_winter_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			add_to_variable = { air_winter_reclamation = fallout_orientation_state_reclamation_delta }
+			clamp_variable = { var = air_winter_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			set_temp_variable = { fallout_state_supply_access_delta = fallout_orientation_state_supply_delta }
+			fallout_state_apply_supply_access_delta = yes
+		}
 	}
 }
 
 fallout_orientation_apply_capital_result = {
-	fallout_orientation_prepare_state_payload = yes
+	fallout_orientation_reset_state_deltas = yes
 	if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_capital_branch.seal_heat_civic } }
-		var:fallout_orientation_state_target = {
-			if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } subtract_from_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_seal_success_exposure } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_seal_success_shelter } add_to_variable = { fallout_orientation_state_recovery = constant:fallout_orientation_result.capital_seal_success_recovery } }
-			else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } subtract_from_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_seal_partial_exposure } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_seal_partial_shelter } add_to_variable = { fallout_orientation_state_recovery = constant:fallout_orientation_result.capital_seal_partial_recovery } }
-			else_if = {
-				limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
-				add_to_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_seal_failure_exposure }
-				subtract_from_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_seal_failure_shelter }
+		if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_seal_success_exposure }
+			multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_seal_success_shelter }
+			set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.capital_seal_success_recovery }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_seal_partial_exposure }
+			multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_seal_partial_shelter }
+			set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.capital_seal_partial_recovery }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
+			set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_seal_failure_exposure }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_seal_failure_shelter }
+			multiply_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_runtime.negative_one }
+			var:fallout_orientation_state_target = {
 				if = {
 					limit = { infrastructure > constant:fallout_orientation_runtime.zero }
 					damage_building = { type = infrastructure damage = constant:fallout_orientation_runtime.building_damage }
 				}
 			}
-			clamp_variable = { var = fallout_orientation_state_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-			clamp_variable = { var = fallout_orientation_state_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-			clamp_variable = { var = fallout_orientation_state_recovery min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		}
 		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } set_temp_variable = { fallout_orientation_death_fraction = constant:fallout_orientation_deaths.capital_seal } fallout_orientation_record_state_deaths = yes }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_capital_branch.disperse_stores_offices } }
-		var:fallout_orientation_state_target = {
-			if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_disperse_success_shelter } add_to_variable = { fallout_orientation_state_adaptation = constant:fallout_orientation_result.capital_disperse_success_adaptation } add_to_variable = { fallout_orientation_state_supply = constant:fallout_orientation_result.capital_disperse_success_supply } }
-			else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_disperse_partial_shelter } add_to_variable = { fallout_orientation_state_adaptation = constant:fallout_orientation_result.capital_disperse_partial_adaptation } add_to_variable = { fallout_orientation_state_supply = constant:fallout_orientation_result.capital_disperse_partial_supply } }
-			else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_disperse_failure_shelter } subtract_from_variable = { fallout_orientation_state_supply = constant:fallout_orientation_result.capital_disperse_failure_supply } }
-			clamp_variable = { var = fallout_orientation_state_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-			clamp_variable = { var = fallout_orientation_state_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-			clamp_variable = { var = fallout_orientation_state_supply min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+		if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_disperse_success_shelter }
+			set_temp_variable = { fallout_orientation_state_adaptation_delta = constant:fallout_orientation_result.capital_disperse_success_adaptation }
+			set_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_orientation_result.capital_disperse_success_supply }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_disperse_partial_shelter }
+			set_temp_variable = { fallout_orientation_state_adaptation_delta = constant:fallout_orientation_result.capital_disperse_partial_adaptation }
+			set_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_orientation_result.capital_disperse_partial_supply }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
+			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_disperse_failure_shelter }
+			multiply_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_runtime.negative_one }
+			set_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_orientation_result.capital_disperse_failure_supply }
+			multiply_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_runtime.negative_one }
 		}
 		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } set_temp_variable = { fallout_orientation_death_fraction = constant:fallout_orientation_deaths.capital_disperse } fallout_orientation_record_state_deaths = yes }
 	}
@@ -4238,6 +4292,7 @@ fallout_orientation_apply_capital_result = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_capital_branch.evacuate_poisoned_core } }
 		fallout_orientation_apply_capital_evacuation = yes
 	}
+	fallout_orientation_apply_authenticated_state_deltas = yes
 }
 
 fallout_orientation_apply_capital_evacuation = {
@@ -4282,18 +4337,19 @@ fallout_orientation_apply_capital_evacuation = {
 	set_variable = { fallout_orientation_migration_deaths_applied = fallout_orientation_migration_deaths }
 	if = { limit = { check_variable = { fallout_orientation_migration_movement > constant:fallout_orientation_runtime.zero } } var:fallout_orientation_receiving_state_target = { add_manpower = var:ROOT.fallout_orientation_migration_movement } }
 	if = { limit = { check_variable = { fallout_orientation_migration_deaths > constant:fallout_orientation_runtime.zero } } set_temp_variable = { fallout_orientation_death_count = fallout_orientation_migration_deaths } fallout_orientation_record_exact_country_deaths = yes }
-	var:fallout_orientation_state_target = {
-		if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } subtract_from_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_evacuation_success_exposure } }
-		else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } subtract_from_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_evacuation_partial_exposure } }
-		else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } add_to_variable = { fallout_orientation_state_exposure = constant:fallout_orientation_result.capital_evacuation_failure_exposure } }
-		clamp_variable = { var = fallout_orientation_state_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	if = {
+		limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
+		set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_evacuation_success_exposure }
+		multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
 	}
-	var:fallout_orientation_receiving_state_target = {
-		if = { limit = { NOT = { has_variable = fallout_orientation_state_shelter } } set_variable = { fallout_orientation_state_shelter = ROOT.fallout_orientation_frozen_receiving_shelter } }
-		if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_evacuation_success_shelter } }
-		else_if = { limit = { check_variable = { ROOT.fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_orientation_state_shelter = constant:fallout_orientation_result.capital_evacuation_partial_shelter } }
-		clamp_variable = { var = fallout_orientation_state_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	else_if = {
+		limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
+		set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_evacuation_partial_exposure }
+		multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
+		set_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_orientation_result.capital_evacuation_failure_exposure }
 	}
 }
 
@@ -4305,11 +4361,11 @@ fallout_orientation_apply_crisis_delta = {
 }
 
 fallout_orientation_apply_resource_result = {
-	fallout_orientation_prepare_state_payload = yes
+	fallout_orientation_reset_state_deltas = yes
 	if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_resource_branch.ration } }
 		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_ration_success_crisis } fallout_orientation_apply_crisis_delta = yes add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.resource_ration_success_recognition } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_ration_partial_crisis } fallout_orientation_apply_crisis_delta = yes add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.resource_ration_partial_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.resource_ration_partial_cohesion } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_ration_partial_crisis } fallout_orientation_apply_crisis_delta = yes add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.resource_ration_partial_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.resource_ration_partial_cohesion } fallout_orientation_apply_cohesion_loss = yes }
 		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.resource_ration_failure_recognition } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.ration_unrest_days } add_dynamic_modifier = { modifier = fallout_orientation_ration_unrest days = fallout_orientation_modifier_days } }
 	}
 	else_if = {
@@ -4320,8 +4376,8 @@ fallout_orientation_apply_resource_result = {
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_resource_branch.tailored } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_tailored_success_crisis } fallout_orientation_apply_crisis_delta = yes var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_reclamation = constant:fallout_orientation_result.resource_tailored_success_reclamation } } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_tailored_partial_crisis } fallout_orientation_apply_crisis_delta = yes var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_reclamation = constant:fallout_orientation_result.resource_tailored_partial_reclamation } } }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_tailored_success_crisis } fallout_orientation_apply_crisis_delta = yes set_temp_variable = { fallout_orientation_state_reclamation_delta = constant:fallout_orientation_result.resource_tailored_success_reclamation } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_orientation_crisis_delta = constant:fallout_orientation_result.resource_tailored_partial_crisis } fallout_orientation_apply_crisis_delta = yes set_temp_variable = { fallout_orientation_state_reclamation_delta = constant:fallout_orientation_result.resource_tailored_partial_reclamation } }
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
 			subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_orientation_result.resource_tailored_failure_scrap }
@@ -4334,9 +4390,7 @@ fallout_orientation_apply_resource_result = {
 		}
 	}
 	fallout_orientation_clamp_resources = yes
-	var:fallout_orientation_state_target = {
-		clamp_variable = { var = fallout_orientation_state_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-	}
+	fallout_orientation_apply_authenticated_state_deltas = yes
 }
 
 fallout_orientation_apply_archetype_effect = {
@@ -4346,23 +4400,24 @@ fallout_orientation_apply_archetype_effect = {
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.cohesion } }
-		add_to_variable = { fallout_orientation_cohesion = fallout_orientation_frozen_archetype_effect_value }
+		set_temp_variable = { fallout_survival_cohesion_delta = fallout_orientation_frozen_archetype_effect_value }
+		fallout_survival_apply_cohesion_delta = yes
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.recovery } }
-		var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_recovery = ROOT.fallout_orientation_frozen_archetype_effect_value } }
+		add_to_temp_variable = { fallout_orientation_state_recovery_delta = fallout_orientation_frozen_archetype_effect_value }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.adaptation } }
-		var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_adaptation = ROOT.fallout_orientation_frozen_archetype_effect_value } }
+		add_to_temp_variable = { fallout_orientation_state_adaptation_delta = fallout_orientation_frozen_archetype_effect_value }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.reclamation } }
-		var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_reclamation = ROOT.fallout_orientation_frozen_archetype_effect_value } }
+		add_to_temp_variable = { fallout_orientation_state_reclamation_delta = fallout_orientation_frozen_archetype_effect_value }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.supply } }
-		var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_supply = ROOT.fallout_orientation_frozen_archetype_effect_value } }
+		add_to_temp_variable = { fallout_orientation_state_supply_delta = fallout_orientation_frozen_archetype_effect_value }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_frozen_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.stability_modifier } }
@@ -4372,60 +4427,51 @@ fallout_orientation_apply_archetype_effect = {
 }
 
 fallout_orientation_apply_government_result = {
-	fallout_orientation_prepare_state_payload = yes
+	fallout_orientation_reset_state_deltas = yes
 	if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_government_branch.consolidate } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_success_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_consolidate_success_cohesion } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.consolidated_authority_days } add_dynamic_modifier = { modifier = fallout_orientation_consolidated_authority days = fallout_orientation_modifier_days } fallout_orientation_apply_archetype_effect = yes }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_partial_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_consolidate_partial_cohesion } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.contested_authority_days } add_dynamic_modifier = { modifier = fallout_orientation_contested_authority days = fallout_orientation_modifier_days } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_failure_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_consolidate_failure_cohesion } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.legitimacy_crisis_days } add_dynamic_modifier = { modifier = fallout_orientation_legitimacy_crisis days = fallout_orientation_modifier_days } }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_success_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_consolidate_success_cohesion } fallout_survival_apply_cohesion_delta = yes set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.consolidated_authority_days } add_dynamic_modifier = { modifier = fallout_orientation_consolidated_authority days = fallout_orientation_modifier_days } fallout_orientation_apply_archetype_effect = yes }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_partial_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_consolidate_partial_cohesion } fallout_survival_apply_cohesion_delta = yes set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.contested_authority_days } add_dynamic_modifier = { modifier = fallout_orientation_contested_authority days = fallout_orientation_modifier_days } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_consolidate_failure_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_consolidate_failure_cohesion } fallout_orientation_apply_cohesion_loss = yes set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.legitimacy_crisis_days } add_dynamic_modifier = { modifier = fallout_orientation_legitimacy_crisis days = fallout_orientation_modifier_days } }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_government_branch.division } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_success_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_division_success_cohesion } set_country_flag = fallout_orientation_institution_compact }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_partial_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_division_partial_cohesion } set_country_flag = fallout_orientation_institution_disputed }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_failure_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_division_failure_cohesion } set_country_flag = fallout_orientation_institution_dispute_ticket }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_success_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_division_success_cohesion } fallout_survival_apply_cohesion_delta = yes set_country_flag = fallout_orientation_institution_compact }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_partial_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_division_partial_cohesion } fallout_survival_apply_cohesion_delta = yes set_country_flag = fallout_orientation_institution_disputed }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_division_failure_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_division_failure_cohesion } fallout_orientation_apply_cohesion_loss = yes set_country_flag = fallout_orientation_institution_dispute_ticket }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_government_branch.rival } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_success_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_rival_success_cohesion } set_country_flag = fallout_orientation_rival_integrated }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_partial_recognition } add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_rival_partial_cohesion } set_country_flag = fallout_orientation_rival_autonomous }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_failure_recognition } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.government_rival_failure_cohesion } set_country_flag = fallout_orientation_rival_rupture }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_success_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_rival_success_cohesion } fallout_survival_apply_cohesion_delta = yes set_country_flag = fallout_orientation_rival_integrated }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_partial_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_rival_partial_cohesion } fallout_survival_apply_cohesion_delta = yes set_country_flag = fallout_orientation_rival_autonomous }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.government_rival_failure_recognition } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.government_rival_failure_cohesion } fallout_orientation_apply_cohesion_loss = yes set_country_flag = fallout_orientation_rival_rupture }
 	}
 	fallout_orientation_clamp_resources = yes
-	var:fallout_orientation_state_target = {
-		clamp_variable = { var = fallout_orientation_state_recovery min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_supply min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-	}
+	fallout_orientation_apply_authenticated_state_deltas = yes
 }
 
 fallout_orientation_apply_character_result = {
-	fallout_orientation_prepare_state_payload = yes
+	fallout_orientation_reset_state_deltas = yes
 	if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_character_branch.relief_administration } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_relief_candidate_installed add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_relief_success_recognition } var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_recovery = constant:fallout_orientation_result.character_relief_success_recovery } } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_relief_candidate_limited add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_relief_partial_recognition } var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_recovery = constant:fallout_orientation_result.character_relief_partial_recovery } } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.capacity_liability_days } add_dynamic_modifier = { modifier = fallout_orientation_capacity_liability days = fallout_orientation_modifier_days } }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_relief_candidate_installed add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_relief_success_recognition } set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.character_relief_success_recovery } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_relief_candidate_limited add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_relief_partial_recognition } set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.character_relief_partial_recovery } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.capacity_liability_days } add_dynamic_modifier = { modifier = fallout_orientation_capacity_liability days = fallout_orientation_modifier_days } }
 		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_orientation_result.character_relief_failure_medicine } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_relief_failure_recognition } set_country_flag = fallout_orientation_relief_candidate_refused }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_character_branch.security_extraction } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_security_candidate_installed add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.character_security_success_cohesion } var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_supply = constant:fallout_orientation_result.character_security_success_supply } } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_security_candidate_contested add_to_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.character_security_partial_cohesion } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_security_partial_recognition } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.coercion_liability_days } add_dynamic_modifier = { modifier = fallout_orientation_coercion_liability days = fallout_orientation_modifier_days } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_orientation_cohesion = constant:fallout_orientation_result.character_security_failure_cohesion } set_country_flag = fallout_orientation_security_candidate_rupture set_temp_variable = { fallout_orientation_death_fraction = constant:fallout_orientation_deaths.character_security } fallout_orientation_record_country_deaths = yes }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_security_candidate_installed set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.character_security_success_cohesion } fallout_survival_apply_cohesion_delta = yes set_temp_variable = { fallout_orientation_state_supply_delta = constant:fallout_orientation_result.character_security_success_supply } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_security_candidate_contested set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.character_security_partial_cohesion } fallout_survival_apply_cohesion_delta = yes subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_security_partial_recognition } set_temp_variable = { fallout_orientation_modifier_days = constant:fallout_orientation_duration.coercion_liability_days } add_dynamic_modifier = { modifier = fallout_orientation_coercion_liability days = fallout_orientation_modifier_days } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_orientation_result.character_security_failure_cohesion } fallout_orientation_apply_cohesion_loss = yes set_country_flag = fallout_orientation_security_candidate_rupture set_temp_variable = { fallout_orientation_death_fraction = constant:fallout_orientation_deaths.character_security } fallout_orientation_record_country_deaths = yes }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_character_branch.regional_institution } }
-		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_regional_institution_installed add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_institution_success_recognition } var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_reclamation = constant:fallout_orientation_result.character_institution_success_reclamation } } }
-		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_regional_institution_limited add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_institution_partial_recognition } var:fallout_orientation_state_target = { add_to_variable = { fallout_orientation_state_reclamation = constant:fallout_orientation_result.character_institution_partial_reclamation } } }
+		if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_regional_institution_installed add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_institution_success_recognition } set_temp_variable = { fallout_orientation_state_reclamation_delta = constant:fallout_orientation_result.character_institution_success_reclamation } }
+		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } } set_variable = { fallout_orientation_installed_candidate_id = fallout_orientation_selected_candidate_id } set_variable = { fallout_orientation_installed_candidate_type = fallout_orientation_selected_candidate_type } set_country_flag = fallout_orientation_regional_institution_limited add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_institution_partial_recognition } set_temp_variable = { fallout_orientation_state_reclamation_delta = constant:fallout_orientation_result.character_institution_partial_reclamation } }
 		else_if = { limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } } subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_orientation_result.character_institution_failure_recognition } subtract_from_variable = { fallout_survival_current_entries^8 = constant:fallout_orientation_result.character_institution_failure_shelter } set_country_flag = fallout_orientation_regional_institution_collapse }
 	}
 	fallout_orientation_clamp_resources = yes
-	var:fallout_orientation_state_target = {
-		clamp_variable = { var = fallout_orientation_state_recovery min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-		clamp_variable = { var = fallout_orientation_state_supply min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
-	}
+	fallout_orientation_apply_authenticated_state_deltas = yes
 }
 
 fallout_orientation_finish_component = {
@@ -4490,6 +4536,14 @@ fallout_orientation_resolve_component = {
 			fallout_orientation_finish_component = yes
 			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.one }
 		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = fallout_orientation_transaction_pending
+			NOT = { fallout_orientation_state_target_is_current = yes }
+		}
+		set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.state_ledger_not_current }
+		fallout_orientation_record_diagnostic = yes
 	}
 }
 

@@ -32,7 +32,8 @@ fallout_survival_ledger_schema = {
 		data = int
 	}
 
-	version = 2
+	version = 3
+	previous_without_orientation_live_ledgers = 2
 	previous_identity_only_version = 1
 }
 
@@ -220,6 +221,35 @@ fallout_survival_numeric = {
 	communication_infrastructure_per_level = 8
 	administrative_capital = 100
 	administrative_urban_factor = 0.50
+}
+
+# Country Cohesion is calculated once from the already archetype-adjusted
+# opening Food, Shelter, and Recognition rows. It is then mutable only through
+# the clamp-owning survival-ledger helper.
+fallout_survival_cohesion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	food_weight = 35
+	shelter_weight = 35
+	recognition_weight = 30
+	denominator = 100
+}
+
+# State Supply Access translates the post-rewrite surviving infrastructure
+# level into a durable 0 to 100 ledger and a native state supply penalty.
+fallout_state_supply_access = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	impact_base = -0.50
+	impact_per_point = 0.005
+	impact_minimum = -0.50
+	impact_maximum = 0
 }
 
 fallout_survival_access = {
@@ -826,7 +856,8 @@ fallout_orientation_diagnostic = {
 	regional_row_missing = 16
 	cause_memory_missing = 17
 	input_invalid = 18
-	upper_bound = 19
+	state_ledger_not_current = 19
+	upper_bound = 20
 }
 
 fallout_orientation_national_branch = {
