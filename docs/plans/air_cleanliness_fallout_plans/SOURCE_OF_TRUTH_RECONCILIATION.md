@@ -156,14 +156,14 @@ Implementation interpretation:
 
 ## Documentation disposition
 
-Working-plan disposition:
+Accepted Ash-week orientation disposition:
 
-- `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` is explicitly unaccepted and awaits user approval.
-- It is not source-spec authority and must not be promoted into `docs/specs/air_cleanliness_fallout_specs/` unless the user accepts it.
-- Proposed suffixes `62` through `84` remain free and are not reserved.
-- No matching events or localisation are defined.
+- The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18.
+- Its accepted sequence, identifier roles, delays, deterministic outcomes, parity, recovery, registry refusal, six-asset requirement, and non-activation rules are incorporated into `specs/01_living_world_event_ecosystem.md`, `specs/03_fallout_timeline_and_campaign_pacing.md`, and `specs/12_event_content_budget_and_acceptance.md`.
+- Suffixes `62` through `84` are reserved for the accepted package.
+- No matching events, localisation, callers, or assets are implemented.
 - Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
-- Implementation is forbidden until explicit approval is recorded.
+- The caller remains blocked until successor allocation, player continuation, and all required candidate registries are proven.
 
 Current implementation authority:
 

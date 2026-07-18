@@ -74,7 +74,7 @@ The file is organized into internal sections:
 10. recovery and late-game world order
 11. hidden AI resolution and cleanup
 
-The plan does not reserve event suffixes. Implementation scans the dedicated file and assigns the next free suffixes in stable sections.
+Future event work normally scans the dedicated file and assigns the next free suffixes in stable sections. The accepted Ash-week orientation contract is the documented exception and reserves `chaosx.fallout.62` through `chaosx.fallout.84` for its five components, result events, closure, and cleanup identities.
 
 ## Event identity model
 
@@ -106,7 +106,7 @@ An event may belong to more than one family, but it has one primary family for f
 
 Orientation events explain what survived and what is failing. They open decisions, reveal starting values, introduce the first recurring characters, and identify the country's immediate crisis.
 
-Every playable successor receives one orientation event during the reveal grace period.
+Every materialized playable successor receives the accepted five-component Ash-week orientation chain during the reveal grace period. The chain covers national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution. Its distinct visible and hidden roots, delayed results, closure, and cleanup use reserved suffixes `chaosx.fallout.62` through `chaosx.fallout.84`. The exact sequence, timing, identity, parity, recovery, asset, and non-activation contract is authoritative in `03_fallout_timeline_and_campaign_pacing.md`.
 
 ### Arc events
 

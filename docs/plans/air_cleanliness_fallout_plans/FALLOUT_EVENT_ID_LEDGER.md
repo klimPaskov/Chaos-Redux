@@ -4,11 +4,49 @@
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
-## Unaccepted Ash-week proposal
+## Reserved Ash-week orientation tranche
 
-`FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` proposes suffixes `62` through `84`, but the proposal is explicitly unaccepted and awaits user approval. This ledger does not reserve those suffixes. They remain free. No events or localisation for them are defined, and no implementation is authorized before approval.
+The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. This ledger reserves suffixes `62` through `84` with the following exact roles:
 
-Both scheduler activation flags remain unset. The proposal adds no countable content, so the Fallout living-world total remains 0 of 660.
+| Suffix | Component | Event role | Visibility | Follow-up |
+| ---: | --- | --- | --- | --- |
+| 62 | national orientation | root | human visible | 64 |
+| 63 | national orientation | root | hidden AI | 65 |
+| 64 | national orientation | result | human visible | 66 |
+| 65 | national orientation | result | hidden AI | 67 |
+| 66 | capital condition | root | human visible | 68 |
+| 67 | capital condition | root | hidden AI | 69 |
+| 68 | capital condition | result | human visible | 70 |
+| 69 | capital condition | result | hidden AI | 71 |
+| 70 | immediate resource crisis | root | human visible | 72 |
+| 71 | immediate resource crisis | root | hidden AI | 73 |
+| 72 | immediate resource crisis | result | human visible | 74 |
+| 73 | immediate resource crisis | result | hidden AI | 75 |
+| 74 | government archetype | root | human visible | 76 |
+| 75 | government archetype | root | hidden AI | 77 |
+| 76 | government archetype | result | human visible | 78 |
+| 77 | government archetype | result | hidden AI | 79 |
+| 78 | character or institution | root | human visible | 80 |
+| 79 | character or institution | root | hidden AI | 81 |
+| 80 | character or institution | result | human visible | 82 |
+| 81 | character or institution | result | hidden AI | 83 |
+| 82 | orientation | closure | human visible | 84 |
+| 83 | orientation | closure | hidden AI | 84 |
+| 84 | orientation | cleanup | hidden | none |
+
+The component sequence and delayed-result cadence are fixed:
+
+| Sequence | Component | Delay |
+| ---: | --- | ---: |
+| 1 | national orientation | 2 days |
+| 2 | capital condition | 3 days |
+| 3 | immediate resource crisis | 4 days |
+| 4 | government archetype | 3 days |
+| 5 | character or institution | 2 days |
+
+Every result uses the accepted deterministic bands of 70 or more for success, 45 through 69 for partial success, and below 45 for failure. Human and hidden-AI routes use identical costs, scoring, effects, memory, and cleanup. Save recovery preserves the exact generation, transaction, due-day, mode, and event-token identity so an unissued result can issue once and an issued result cannot issue again. Missing regional, archetype, country-memory, state-target, or curated character or institution registry rows refuse orientation with no generic fallback.
+
+The tranche requires six dedicated report assets for the five components and closure. No matching events, localisation, callers, logs, details, or assets are implemented. No caller may be wired until successor allocation, player continuation, and all required candidate registries are proven. Neither scheduler activation flag may be set by this tranche. The Fallout living-world total remains 0 of 660 until every reserved block is implemented, wired, manually reviewed, logged, detailed, and audited.
 
 The dedicated event file was scanned on 2026-07-15 before this reservation. Suffixes `100` through `126` were unused. This reservation does not count as implemented content. A row becomes countable only after final localisation, gameplay effects, AI behavior, memory or closure, cleanup, asset disposition, and manual audit are complete.
 
@@ -64,11 +102,11 @@ Suffixes `6` and `49` are allocated to implemented Air Winter results and are no
 
 ## Collision boundary
 
-The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This tranche does not reuse those identifiers. Suffixes `100` through `126` remain reserved for this exact batch even if implementation order changes.
+The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126` remain reserved for the living-world pilot even if implementation order changes.
 
 ## Pilot gates
 
-The ordinary scheduler remains locked until the ash-week orientation package has all five required parts: national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution.
+The ordinary scheduler remains locked until the Ash-week orientation package has all five required parts: national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution. Completing orientation still does not approve or activate the scheduler.
 
 The three pilot report assets exist and their sprites are registered in `interface/fallout_world_end.gfx`. They remain unattached because the corresponding event roots are not defined. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
 
@@ -76,10 +114,16 @@ The typed constants for suffixes `100` through `126` are identity reservations o
 
 ## Count status
 
-Reserved typed identities in this tranche: `27`.
+Reserved Ash-week orientation identities: `23`.
 
-Defined event blocks in this tranche: `0`.
+Reserved living-world pilot identities: `27`.
 
-Countable manually reviewed event blocks in this tranche: `0`.
+Total reserved documentation identities across both tranches: `50`.
+
+Defined Ash-week orientation blocks: `0`.
+
+Defined living-world pilot blocks: `0`.
+
+Countable manually reviewed Fallout living-world blocks: `0 of 660`.
 
 The release-floor counter must remain unchanged until individual rows pass implementation and audit.

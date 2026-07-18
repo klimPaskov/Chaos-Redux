@@ -9,6 +9,8 @@ The full Fallout event implementation should contain roughly 660 to 910 unique e
 
 The release floor is 660 manually reviewed event blocks. Expansion toward 910 is allowed only after every added block receives the same choice, AI, memory, effect, and cleanup review as the release floor.
 
+The accepted Ash-week orientation contract reserves 23 blocks at `chaosx.fallout.62` through `chaosx.fallout.84`. Reservation contributes zero blocks. The tranche enters the release count only after all events, localisation, AI, effects, delayed results, memory, cleanup, six dedicated assets, log entries, event-detail entries, callers, and audits are complete. The current Fallout living-world count remains 0 of 660.
+
 The implementation count target is detailed in `matrices/fallout_run_event_budget_matrix.md`.
 
 ## Coverage target
