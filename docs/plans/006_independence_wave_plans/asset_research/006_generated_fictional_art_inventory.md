@@ -12,11 +12,11 @@ This remains a planning inventory for unresolved Event 006 art. Any produced
 portrait rows or completion claims tied to the 2026-07-15 fictional portrait,
 mixed NWE portrait, BRI portrait, or army-small packages are superseded. The
 current produced authority is
-`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`,
+`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`,
 accepted by
-`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
-It covers twenty male fictional large portraits and ten commander-small
-dossiers. ACX and AEX remain unregistered readiness-pool art only, Rupprecht
+`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
+It covers twenty male fictional large portraits and ten commander-only 65x67
+miniatures. ACX and AEX remain unregistered readiness-pool art only, Rupprecht
 and Matthes remain protected historical exemptions, and custom Event 006
 advisor icons remain withdrawn.
 

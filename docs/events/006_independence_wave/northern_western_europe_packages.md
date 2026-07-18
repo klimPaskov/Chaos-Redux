@@ -11,11 +11,11 @@ Package sections:
 - Saar (IW-010)
 
 Current portrait authority is
-`docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`,
+`docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`,
 accepted by
-`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 It covers twenty male fictional `156x210` portraits and ten matching `65x67`
-commander-small dossiers. AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS retain
+commander-only miniatures. AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS retain
 their stable registrations; ACX and AEX are unregistered readiness-pool art
 only. The route-owned Rupprecht and Matthes portraits remain protected and
 byte-identical. Gameplay advisor offices remain active without custom Event 006
@@ -58,7 +58,7 @@ IW-001 verifies the existing p1 territorial-defense package with military tradit
 
 Scotland uses `SCO_independence_wave_civic_convention` as its multi-route civic institution and `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses `WLS_independence_wave_national_council` and `WLS_independence_wave_mountain_commandant` in the equivalent roles.
 
-These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `65x67` army dossiers. Each large portrait master was generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from its installed DDS file, and reviewed against the canonical vanilla portrait references.
+These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `65x67` commander miniatures. Each large portrait master was generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from its installed DDS file, and reviewed against the canonical vanilla portrait references.
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
@@ -137,7 +137,7 @@ Scotland and Wales retain their installed vanilla flag triplets because these ar
 
 ### Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander dossiers, asset-neutral advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Package-specific readiness remains independent: the later sections record the completed Wallonia, Rhineland, and Bavaria promotions. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander miniatures, asset-neutral advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Package-specific readiness remains independent: the later sections record the completed Wallonia, Rhineland, and Bavaria promotions. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
 
@@ -267,7 +267,7 @@ New portrait sprites are registered in `interface/006_independence_wave_brittany
 - `GFX_portrait_BRI_independence_wave_coastal_commandant` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`.
 - `GFX_portrait_BRI_independence_wave_coastal_commandant_small` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant_small.dds`.
 
-The commander's army-small asset is a separately composed `65x67` dossier texture, not a resized leader crop. Its current source, processing, review, runtime hash, and decoded-DDS evidence are in `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and `hashes/runtime_sha256_inventory.sha256`; the final independent audit named at the top of this document supplies the current visual verdict. The 2026-07-15 BRI and army-small evidence is historical and superseded for portrait acceptance. The separate Debeauvais rights blocker remains current and no generated likeness substitutes for him.
+The commander's army-small asset is a `65x67` derivative of its approved full commander portrait, not a leader or advisor card. Its current source, processing, review, runtime hash, and decoded-DDS evidence are in `docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md` and `hashes/runtime_sha256_inventory.sha256`; the reviewed handoff named at the top of this document supplies the current visual verdict. The 2026-07-15 and 2026-07-16 BRI and army-small evidence is historical and superseded for portrait acceptance. The separate Debeauvais rights blocker remains current and no generated likeness substitutes for him.
 
 The package reuses these registered Event 006 icons:
 
@@ -758,7 +758,7 @@ The fictional package roster is registered in `interface/006_independence_wave_r
 - `GFX_portrait_BAY_independence_wave_state_council`
 - `GFX_portrait_BAY_independence_wave_mountain_commandant` and its `_small` army sprite
 
-The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package is `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/`, with final acceptance in the independent audit cited above.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package is `docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/`, with acceptance in the reviewed handoff cited above.
 
 ### Readiness boundary
 
@@ -952,7 +952,7 @@ and bunker priority without assuming a fixed host tag.
 The character sprites are consumed by
 `common/characters/006_independence_wave_saar_characters.txt`. The installed
 portrait hashes are checked against
-`docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/hashes/runtime_sha256_inventory.sha256`;
+`docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`;
 the flag hashes remain checked against `generated_nwe_hashes.sha256`.
 
 #### Reused Event 006 icons
@@ -984,10 +984,10 @@ The three gameplay advisor records have role-title localisation and are
 recruited by the Event 006 setup event, but they deliberately carry no custom
 portrait handles. The focus base and shine handles are registered; the base
 handle identifies the neutral-commission entry focus while its three follow-up
-nodes retain their specific shared icons. The commander's separately composed
-`65x67` army dossier remains army-only and is not used by any advisor card. Its
+nodes retain their specific shared icons. The commander's `65x67` miniature is
+derived from the approved full commander portrait and remains army-only. Its
 current runtime hash and visual evidence are governed by the accepted
-2026-07-16 portrait package and final independent audit, not the superseded
+2026-07-18 portrait package and reviewed handoff, not the superseded
 2026-07-15 portrait ledgers.
 
 ### Implementation files

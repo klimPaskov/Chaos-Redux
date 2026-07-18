@@ -4,7 +4,8 @@ Updated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-Committed portrait baseline: `95f7529c7`.
+Current portrait authority: the reviewed
+`portrait_refresh_male_hoi4_2026_07_18` package and matching handoff.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains
 outside the selectable pool. IW-017 COR, IW-018 ARX, and IW-019 ASX have joined
@@ -19,8 +20,8 @@ the current runtime state.
 ## Read first
 
 1. `006_source_of_truth_map.md`
-2. `../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
-3. `subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`
+2. `../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
+3. `subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`
 4. `../../specs/006_independence_wave_specs/README.md`
 5. `subagent_handoffs/006_transaction_architecture_resolution_2026_07_15.md`
 6. `subagent_handoffs/006_form01_04_readiness_promotion_2026_07_16.md`
@@ -119,17 +120,17 @@ truth map for current implementation status and handoff dispositions.
   documented static ordering caveat because engine order is unspecified, and AI
   completion still depends on opportunistic placement of garrisons in states 6
   and 977.
-- The 2026-07-16 male-HOI4 portrait package and Mediterranean portrait ledger
+- The 2026-07-18 male-HOI4 portrait refresh and Mediterranean portrait ledger
   are the current portrait authorities: twenty-eight male fictional large
-  portraits and ten commander-small dossiers pass, while Rupprecht and Matthes
+  portraits and ten commander-only 65x67 miniatures pass, while Rupprecht and Matthes
   remain protected. ACX and AEX are unregistered readiness-pool art only.
   Earlier portrait and army-small checksum ledgers are historical and
   superseded.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
   the repaired FORM transaction integration. Exact promotions are committed in
   `5d17e55b3` and `f64d9640e`.
-- Static icon families, current male-HOI4 portraits and commander-small
-  dossiers, country flags, FORM-01 through FORM-04 flags, report scenes,
+- Static icon families, current male-HOI4 portraits and commander-only
+  miniatures, country flags, FORM-01 through FORM-04 flags, report scenes,
   super-event art, and final `6002` audio files materially exist. Gameplay
   advisor offices are asset-neutral after the user-directed withdrawal of all
   custom Event 006 advisor icons.
@@ -186,9 +187,10 @@ satisfy the synchronized frozen plan.
 - Installed-map binding and installed-mod tag audits.
 - FORM-01 through FORM-05 implementation, tags, flags, identity aliases, and
   readiness promotion.
-- Male-HOI4 portrait regeneration and final independent acceptance under the
-  2026-07-16 package, plus explicit custom-advisor-icon withdrawal. The
-  2026-07-15 fictional portrait and army-small packages are superseded.
+- Male-HOI4 portrait regeneration and reviewed acceptance under the
+  2026-07-18 package, plus explicit custom-advisor-icon withdrawal. The
+  2026-07-15 and 2026-07-16 fictional portrait and army-small packages are
+  superseded.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - AGX's coordinated static promotion remains admitted. AFX received its missing
   Level 2 Sambre-Meuse lane, three incidents, unique art, and a fresh exact-ID
@@ -196,7 +198,7 @@ satisfy the synchronized frozen plan.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
-  implementation evidence; the 2026-07-16 runtime ledger is current.
+  implementation evidence; the 2026-07-18 runtime ledger is current.
 - Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
   closeout in `7368cc0bf`, followed by their exact promotions in `5d17e55b3`
   and `f64d9640e`.

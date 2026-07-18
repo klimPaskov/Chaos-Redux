@@ -168,11 +168,9 @@ and the warning that historical symbol previews are provenance inputs rather
 than runtime flag sprites.
 
 The current full fictional portrait inventory and stable runtime contract are
-in `portrait_regeneration_male_hoi4_2026_07_16/manifest.md`, with production
-handoff
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_regeneration_2026_07_16.md`
-and independent acceptance in
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+in `portrait_refresh_male_hoi4_2026_07_18/manifest.md`, with production and
+root visual-review handoff
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 The registered AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS textures retain their
 existing registries and consumers. ACX and AEX remain unregistered
 readiness-pool art only. The rejected mixed generated-art portrait handoff is

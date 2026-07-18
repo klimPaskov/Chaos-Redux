@@ -18,9 +18,9 @@ The contextual source IDs already accepted in docs/specs/006_independence_wave_s
 This research ledger is not the authority for produced fictional portraits.
 Every 2026-07-15 fictional portrait and army-small visual/hash approval is
 superseded by
-`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
+`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
 and
-`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 Rupprecht and Matthes remain protected route-owned historical exemptions with
 their source and review evidence preserved in
 `../../../assets/006_independence_wave/northern_western_europe_source_manifest.md`.

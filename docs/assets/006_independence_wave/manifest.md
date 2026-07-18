@@ -262,16 +262,14 @@ and their flag comparisons. Its former portrait, commander-small, and portrait
 completion claims are superseded and are not portrait evidence. AEX remains a
 vanilla `BEL_flanders` overlay and has no standalone Event 006 flag family.
 
-## 2026-07-16 male HOI4 portrait authority
+## 2026-07-18 male HOI4 portrait authority
 
 The current portrait source of truth is
-`portrait_regeneration_male_hoi4_2026_07_16/manifest.md`, together with the
-production handoff
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_regeneration_2026_07_16.md`
-and the independent final audit
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+`portrait_refresh_male_hoi4_2026_07_18/manifest.md`, together with the
+production and root visual-review handoff
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 The audited package contains twenty distinct male `156x210` fictional portraits
-and ten matching `65x67` commander-small dossiers under the existing runtime
+and ten matching `65x67` commander-only miniatures under the existing runtime
 filenames. The twenty-four textures for AFX, AGX, AJX, BAY, BRI, RHI, SCO, and
 WLS retain their existing registrations and consumers. The six ACX and AEX
 textures are installed readiness-pool art only and deliberately have no live
@@ -283,7 +281,7 @@ The two user-approved historical portraits remain unchanged and hash-locked:
 - `portrait_RHI_josef_friedrich_matthes.dds`.
 
 The authoritative runtime checksum ledger is
-`portrait_regeneration_male_hoi4_2026_07_16/hashes/runtime_sha256_inventory.sha256`;
+`portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`;
 the package's merged visual review and final independent audit govern visual
 acceptance. Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
 portrait, and army-small package is historical and superseded for portrait
@@ -306,12 +304,12 @@ SHA-256 contracts remain in the focus-only package. Custom Event 006 advisor
 icons and their sprite registrations were removed by explicit user direction;
 the gameplay offices remain asset-neutral.
 
-## 2026-07-16 BRI portrait disposition
+## 2026-07-18 BRI portrait disposition
 
 IW-004 Brittany's current fictional civic, commander-large, and
 commander-small evidence is part of
-`portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and the independent
-final audit named above. Existing BRI filenames, sprite registrations, and
+`portrait_refresh_male_hoi4_2026_07_18/manifest.md` and the reviewed handoff
+named above. Existing BRI filenames, sprite registrations, and
 gameplay consumers remain stable; the 2026-07-15 BRI portrait package and its
 small-card evidence are superseded.
 

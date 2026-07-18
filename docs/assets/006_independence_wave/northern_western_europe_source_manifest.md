@@ -27,8 +27,8 @@ No generated route flag, fictional council portrait, or generated leader is
 included here. The four generated historical-design flag families remain in
 the flag-only `northern_western_europe_generated_art_manifest.md`. Current
 fictional portrait evidence instead lives in
-`portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and is accepted by
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+`portrait_refresh_male_hoi4_2026_07_18/manifest.md` and is accepted by
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 ACX and AEX portrait files are unregistered readiness-pool art only; they do not
 authorize standalone release packages. ACX, AFX, AGX, and AJX source PNGs are
 exact historical flag-design inputs; the AEX lion remains evidence for vanilla
@@ -64,7 +64,7 @@ runtime portraits. The rejected earlier BRI approval is retained solely through
 the blocker comparison and research record, never as a runtime asset. Those
 sheets remain the protected Rupprecht and Matthes exemption evidence; they are
 not the acceptance record for the twenty regenerated fictional large portraits
-or ten commander-small dossiers.
+or ten commander-only 65x67 miniatures.
 
 ## Package disposition
 
@@ -73,7 +73,7 @@ or ten commander-small dossiers.
 | IW-001 Scotland / SCO | Reuse the installed SCO ideology triplets. The Saltire is the civic/national identity. The Lion Rampant is a royal banner and is route-owned, not a neutral substitute. | No mod-owned real portrait delivered. | No rights-cleared, period-appropriate portrait for a supported 1936 Scottish nationalist leader was found. Roland Muirhead material at the National Library of Scotland is subject to copyright restrictions. |
 | IW-002 Wales / WLS | Reuse the installed WLS family only under the accepted registered-tag rule. | No mod-owned real portrait delivered. | The familiar red-dragon-on-green-and-white layout was officially adopted in 1959. Its dragon is historical, but the installed flag must not be described as an authentic 1936 Welsh state flag. The only cleared Saunders Lewis portrait found is from 1973 and is excluded by the period rule. |
 | IW-003 Cornwall / ACX | St Piran's Cross source delivered; the downstream package uses it as the exact design input for the live ACX historical triplet. | Accepted male fictional institutional and commander art exists only in the unregistered readiness pool. | This is a historical Cornish community flag, not evidence of a sovereign 1936 Cornish state; portrait presence does not resolve the map blocker. |
-| IW-004 Brittany / BRI | Reuse the installed BRI base family. The Gwenn-ha-du is a period regional identity, adopted as a Breton symbol in 1923. | Accepted male fictional civic and commander art is governed by the 2026-07-16 package. The historical Francois Debeauvais portrait remains blocked. | The rights-cleared 1928 group source is too weak for identity-preserving editing. Sharper 1932/1933 candidates do not establish defensible United States public-domain status; do not invent a Debeauvais likeness. |
+| IW-004 Brittany / BRI | Reuse the installed BRI base family. The Gwenn-ha-du is a period regional identity, adopted as a Breton symbol in 1923. | Accepted male fictional civic and commander art is governed by the 2026-07-18 package. The historical Francois Debeauvais portrait remains blocked. | The rights-cleared 1928 group source is too weak for identity-preserving editing. Sharper 1932/1933 candidates do not establish defensible United States public-domain status; do not invent a Debeauvais likeness. |
 | IW-005 Flanders / AEX | Historical Lion of Flanders arms source retained as overlay evidence. No standalone AEX TGA exists. | Accepted male fictional art exists only in the unregistered readiness pool. | Flanders remains the vanilla `BEL_flanders` cosmetic overlay. Neither the lion source nor readiness-pool portraits create a standalone AEX package. |
 | IW-006 Wallonia / AFX | CC0 rooster vector delivered; the downstream package uses it as the distributable flat reference for the 1913 coq hardi identity. | Institutional council remains the accepted opening mode. | Pierre Paulus's restricted original watercolor was not copied; the live triplet preserves the cited red-on-yellow single-charge design. |
 | IW-007 Frisia / AGX | West Frisian provincial flag source delivered; the downstream package uses its seven bands and seven pompeblêden as the exact live design. | Institutional council remains the accepted opening mode. | The flag is bounded to Friesland and is not universalized across every Frisian coast. |
@@ -170,8 +170,7 @@ the route locks above.
 This table covers only the two protected sourced exemptions and the blocked
 Debeauvais identifier. The current fictional runtime inventory, stable
 registrations, readiness-pool boundary, hashes, and visual acceptance are owned
-by `portrait_regeneration_male_hoi4_2026_07_16/manifest.md` and its final
-independent audit.
+by `portrait_refresh_male_hoi4_2026_07_18/manifest.md` and its reviewed handoff.
 
 | Proposed sprite | Texture file | Status |
 |---|---|---|
@@ -234,8 +233,8 @@ This source tranche alone does not complete the package art:
 
 - the downstream generated-art package completes the ACX, AFX, AGX, and AJX
   live historical triplets; AEX is deliberately absent as a standalone flag;
-- the accepted 2026-07-16 portrait package completes the twenty fictional large
-  portraits and ten commander-small dossiers. ACX and AEX remain unregistered
+- the accepted 2026-07-18 portrait package completes the twenty fictional large
+  portraits and ten commander-only 65x67 miniatures. ACX and AEX remain unregistered
   readiness-pool art only;
 - SCO, WLS, and ICE have no new rights-cleared real portrait in this source
   package. SCO and WLS use the accepted fictional male portrait package;

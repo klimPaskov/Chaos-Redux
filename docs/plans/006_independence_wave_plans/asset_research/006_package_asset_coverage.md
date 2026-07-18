@@ -36,9 +36,9 @@ The source and generated packages are under `docs/assets/006_independence_wave/m
 ### Current northern and western Europe portrait coverage
 
 The accepted portrait authority is
-`../../../assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/manifest.md`
-and its final independent audit at
-`../subagent_handoffs/006_event6_male_hoi4_portrait_final_independent_audit_2026_07_16.md`.
+`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
+and its reviewed production handoff at
+`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
 The following rows supersede all 2026-07-15 fictional portrait, mixed NWE, BRI,
 and army-small visual/hash claims:
 
