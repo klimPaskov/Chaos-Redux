@@ -3367,6 +3367,122 @@ fallout_event_release_issued_bilateral_cleanup = {
 # Dormant Ash-week Fallout orientation transaction substrate
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Clears only the derived resource pilot identity.
+# The future reviewed asset package receipt is separate and is not reset here.
+fallout_orientation_reset_resource_mapping = {
+	clr_country_flag = fallout_orientation_resource_registry_mapped
+	clear_variable = fallout_orientation_resource_registry_schema_version
+	clear_variable = fallout_orientation_resource_registry_generation
+	clear_variable = fallout_orientation_resource_registry_country_memory
+	clear_variable = fallout_orientation_resource_registry_region
+	clear_variable = fallout_orientation_resource_registry_archetype
+	clear_variable = fallout_orientation_resource_registry_support_resource
+	clear_variable = fallout_orientation_resource_registry_ai_preferred_branch
+}
+
+fallout_orientation_clear_resource_registry_diagnostic = {
+	clear_variable = fallout_orientation_resource_registry_diagnostic
+	clear_variable = fallout_orientation_resource_registry_diagnostic_generation
+	clear_variable = fallout_orientation_resource_registry_diagnostic_day
+}
+
+fallout_orientation_record_resource_registry_diagnostic = {
+	set_variable = { fallout_orientation_resource_registry_diagnostic = fallout_orientation_requested_resource_registry_diagnostic }
+	set_variable = { fallout_orientation_resource_registry_diagnostic_generation = constant:fallout_orientation_runtime.zero }
+	if = {
+		limit = { has_variable = global.fallout_transition_generation }
+		set_variable = { fallout_orientation_resource_registry_diagnostic_generation = global.fallout_transition_generation }
+	}
+	set_variable = { fallout_orientation_resource_registry_diagnostic_day = global.num_days }
+}
+
+# Supported scope: COUNTRY. Builds one of twelve exact successor-memory rows.
+# It chooses Fuel or Power but does not prove the capital asset, approve a
+# coverage surface, issue an event, or activate the ordinary scheduler.
+fallout_orientation_prepare_resource_mapping = {
+	set_temp_variable = { fallout_orientation_resource_mapping_accepted = constant:fallout_orientation_runtime.zero }
+	if = {
+		limit = { fallout_orientation_resource_mapping_is_current = yes }
+		fallout_orientation_clear_resource_registry_diagnostic = yes
+		set_temp_variable = { fallout_orientation_resource_mapping_accepted = constant:fallout_orientation_runtime.one }
+	}
+	else = {
+		fallout_orientation_reset_resource_mapping = yes
+		fallout_orientation_clear_resource_registry_diagnostic = yes
+		if = {
+			limit = { fallout_successor_assignment_country_row_is_current = yes }
+			set_variable = { fallout_orientation_resource_registry_schema_version = constant:fallout_orientation_resource_registry_schema.version }
+			set_variable = { fallout_orientation_resource_registry_generation = global.fallout_transition_generation }
+			set_variable = { fallout_orientation_resource_registry_country_memory = fallout_country_memory_id }
+			set_variable = { fallout_orientation_resource_registry_region = fallout_region_id }
+			set_variable = { fallout_orientation_resource_registry_archetype = fallout_government_archetype }
+
+			if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.federal_continuity_zone } check_variable = { fallout_region_id = constant:fallout_region.north_america } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.alpine_redoubt } check_variable = { fallout_region_id = constant:fallout_region.europe } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.rhine_dead_cities } check_variable = { fallout_region_id = constant:fallout_region.europe } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.scavenger_syndicate } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.don_steppe_hetmanates } check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.requisition } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.mekong_greenhouse_compact } check_variable = { fallout_region_id = constant:fallout_region.east_asia } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.bengal_delta_raft_republic } check_variable = { fallout_region_id = constant:fallout_region.south_asia } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.levant_quarantine_cities } check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.congo_green_basin } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.sahel_caravan_wards } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.ethiopian_highland_refuge } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state } check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government } check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
+
+			if = {
+				limit = { has_variable = fallout_orientation_resource_registry_support_resource has_variable = fallout_orientation_resource_registry_ai_preferred_branch }
+				set_country_flag = fallout_orientation_resource_registry_mapped
+				if = {
+					limit = { fallout_orientation_resource_mapping_is_current = yes }
+					set_temp_variable = { fallout_orientation_resource_mapping_accepted = constant:fallout_orientation_runtime.one }
+				}
+				else = {
+					fallout_orientation_reset_resource_mapping = yes
+					set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.payload_invalid }
+					fallout_orientation_record_resource_registry_diagnostic = yes
+				}
+			}
+			else = {
+				set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.identity_mismatch }
+				if = {
+					limit = { NOT = { fallout_orientation_country_memory_has_pilot_resource_mapping = yes } }
+					set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.unsupported_country_memory }
+				}
+				fallout_orientation_reset_resource_mapping = yes
+				fallout_orientation_record_resource_registry_diagnostic = yes
+			}
+		}
+		else = {
+			set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.allocation_not_current }
+			fallout_orientation_record_resource_registry_diagnostic = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Copies only a fully authenticated pilot package into
+# the temporary resource request. A missing package writes an explicit empty
+# support resource so caller data cannot bypass the reviewed evidence receipt.
+fallout_orientation_load_resource_request = {
+	set_temp_variable = { fallout_orientation_resource_request_loaded = constant:fallout_orientation_runtime.zero }
+	fallout_orientation_prepare_resource_mapping = yes
+	set_temp_variable = { fallout_orientation_requested_tailored_resource = constant:fallout_survival_resource.none }
+	if = {
+		limit = { fallout_orientation_resource_registry_is_usable = yes }
+		set_temp_variable = { fallout_orientation_requested_tailored_resource = fallout_orientation_resource_registry_support_resource }
+		set_temp_variable = { fallout_orientation_resource_request_loaded = constant:fallout_orientation_runtime.one }
+		fallout_orientation_clear_resource_registry_diagnostic = yes
+	}
+	else = {
+		set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.package_not_current }
+		if = {
+			limit = { NOT = { fallout_orientation_resource_mapping_is_current = yes } }
+			set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_resource_registry_diagnostic.payload_invalid }
+		}
+		fallout_orientation_record_resource_registry_diagnostic = yes
+	}
+}
+
 # Supported scope: COUNTRY. Clears only the derived candidate identity mapping.
 # Candidate package receipts belong to their future installer and are not reset
 # here. A new transition generation makes those receipts stale automatically.
@@ -3780,6 +3896,13 @@ fallout_orientation_begin_component = {
 		}
 		else_if = {
 			limit = {
+				check_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+				NOT = { fallout_orientation_requested_resource_has_affordable_branch = yes }
+			}
+			set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.branch_unaffordable }
+		}
+		else_if = {
+			limit = {
 				check_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution }
 				NOT = { fallout_orientation_candidate_registry_is_sufficient = yes }
 			}
@@ -3801,6 +3924,7 @@ fallout_orientation_begin_capital_condition = {
 
 fallout_orientation_begin_immediate_resource_crisis = {
 	set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+	fallout_orientation_load_resource_request = yes
 	fallout_orientation_begin_component = yes
 }
 
@@ -4051,6 +4175,8 @@ fallout_orientation_clear_transient_payload = {
 	clear_variable = fallout_orientation_migration_applied
 	clear_variable = fallout_orientation_migration_moved
 	clear_variable = fallout_orientation_migration_deaths_applied
+	clear_variable = fallout_orientation_current_result_deaths_applied
+	clear_variable = fallout_orientation_current_result_building_damage_applied
 }
 
 fallout_orientation_select_branch_candidate = {
@@ -4301,6 +4427,7 @@ fallout_orientation_record_exact_country_deaths = {
 		set_variable = { fallout_orientation_deaths_generation = global.fallout_transition_generation }
 		set_variable = { fallout_orientation_deaths_day = global.num_days }
 		set_variable = { fallout_orientation_deaths_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+		set_variable = { fallout_orientation_current_result_deaths_applied = fallout_orientation_death_count }
 	}
 }
 
@@ -4319,6 +4446,7 @@ fallout_orientation_record_state_deaths = {
 		apply_exact_state_civilian_population_loss = yes
 		set_variable = { ROOT.fallout_orientation_deaths_requested = ROOT.fallout_orientation_state_death_request }
 		set_variable = { ROOT.fallout_orientation_deaths_applied = state_civilian_population_loss_applied }
+		set_variable = { ROOT.fallout_orientation_current_result_deaths_applied = state_civilian_population_loss_applied }
 	}
 	set_variable = { fallout_orientation_deaths_generation = global.fallout_transition_generation }
 	set_variable = { fallout_orientation_deaths_day = global.num_days }
@@ -4575,6 +4703,7 @@ fallout_orientation_apply_resource_result = {
 				if = {
 					limit = { infrastructure > constant:fallout_orientation_runtime.zero }
 					damage_building = { type = infrastructure damage = constant:fallout_orientation_runtime.building_damage }
+					set_variable = { ROOT.fallout_orientation_current_result_building_damage_applied = constant:fallout_orientation_runtime.one }
 				}
 			}
 		}
@@ -4684,6 +4813,14 @@ fallout_orientation_finish_component = {
 	set_variable = { fallout_orientation_identity_archetype = fallout_orientation_frozen_archetype }
 	set_variable = { fallout_orientation_identity_country_memory = fallout_orientation_frozen_country_memory }
 	set_variable = { fallout_orientation_identity_cause_memory = fallout_orientation_frozen_cause_memory }
+	set_variable = { fallout_orientation_last_deaths_applied = fallout_orientation_current_result_deaths_applied }
+	set_variable = { fallout_orientation_last_building_damage_applied = fallout_orientation_current_result_building_damage_applied }
+	if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } }
+		set_variable = { fallout_orientation_last_crisis_resource = fallout_orientation_frozen_crisis_resource }
+		set_variable = { fallout_orientation_last_crisis_value = fallout_orientation_frozen_crisis_value }
+		set_variable = { fallout_orientation_last_tailored_resource = fallout_orientation_frozen_tailored_resource }
+	}
 	if = {
 		limit = {
 			check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.capital_condition }
@@ -4708,6 +4845,8 @@ fallout_orientation_resolve_component = {
 		limit = { fallout_orientation_result_event_is_authenticated = yes }
 		if = {
 			limit = { NOT = { has_country_flag = fallout_orientation_result_applied } }
+			set_variable = { fallout_orientation_current_result_deaths_applied = constant:fallout_orientation_runtime.zero }
+			set_variable = { fallout_orientation_current_result_building_damage_applied = constant:fallout_orientation_runtime.zero }
 			fallout_orientation_calculate_score = yes
 			if = { limit = { fallout_orientation_score_is_success = yes } set_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
 			else_if = { limit = { fallout_orientation_score_is_partial = yes } set_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
@@ -4861,6 +5000,14 @@ fallout_orientation_ai_apply_survival_weight = {
 		multiply_temp_variable = { fallout_orientation_ai_need_weight = constant:fallout_orientation_ai_weight.weak_factor }
 	}
 	else = { set_temp_variable = { fallout_orientation_ai_need_weight = constant:fallout_orientation_runtime.zero } }
+	if = {
+		limit = {
+			check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+			fallout_orientation_resource_mapping_is_current = yes
+			check_variable = { var = fallout_orientation_requested_branch value = fallout_orientation_resource_registry_ai_preferred_branch compare = equals }
+		}
+		add_to_temp_variable = { fallout_orientation_ai_need_weight = constant:fallout_orientation_ai_weight.cell_preference_bonus }
+	}
 }
 
 fallout_orientation_choose_ai_branch_and_schedule_result = {

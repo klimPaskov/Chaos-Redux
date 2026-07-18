@@ -60,7 +60,7 @@ Only authenticated event `84` writes `fallout_orientation_closure_complete`, `fa
 
 No caller for `fallout_orientation_begin_closure` was added. No setter for `fallout_event_scheduler_activation_approved` or `fallout_event_scheduler_active` was added. The missing regional, archetype, country-memory, capital-repair, government-row, and candidate-install approval surfaces remain blocked.
 
-Events `82` through `84` have no event-log rows or event-detail rows. The orientation tranche still lacks sixteen reserved component blocks, all callers, final runtime row producers, installable candidate packages, and final audits. These three events do not increase the Fallout release-floor count. The count remains 0 of 660.
+Events `82` through `84` have no event-log rows or event-detail rows. After the later immediate-resource pilot, the orientation tranche still lacks twelve reserved component blocks, all callers, final runtime row producers, installable candidate packages, and final audits. These three events do not increase the Fallout release-floor count. The count remains 0 of 660.
 
 ## Asset disposition
 
