@@ -3367,6 +3367,177 @@ fallout_event_release_issued_bilateral_cleanup = {
 # Dormant Ash-week Fallout orientation transaction substrate
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Clears only the derived candidate identity mapping.
+# Candidate package receipts belong to their future installer and are not reset
+# here. A new transition generation makes those receipts stale automatically.
+fallout_orientation_reset_candidate_mapping = {
+	clr_country_flag = fallout_orientation_candidate_registry_mapped
+	clear_variable = fallout_orientation_candidate_registry_schema_version
+	clear_variable = fallout_orientation_candidate_registry_generation
+	clear_variable = fallout_orientation_candidate_registry_country_memory
+	clear_variable = fallout_orientation_candidate_registry_region
+	clear_variable = fallout_orientation_candidate_registry_archetype
+	clear_variable = fallout_orientation_candidate_registry_count
+	clear_variable = fallout_orientation_candidate_registry_slot_1_id
+	clear_variable = fallout_orientation_candidate_registry_slot_2_id
+	clear_variable = fallout_orientation_candidate_registry_slot_3_id
+	clear_variable = fallout_orientation_candidate_registry_slot_1_type
+	clear_variable = fallout_orientation_candidate_registry_slot_2_type
+	clear_variable = fallout_orientation_candidate_registry_slot_3_type
+	clear_variable = fallout_orientation_candidate_registry_slot_1_region
+	clear_variable = fallout_orientation_candidate_registry_slot_2_region
+	clear_variable = fallout_orientation_candidate_registry_slot_3_region
+	clear_variable = fallout_orientation_candidate_registry_slot_1_archetype
+	clear_variable = fallout_orientation_candidate_registry_slot_2_archetype
+	clear_variable = fallout_orientation_candidate_registry_slot_3_archetype
+}
+
+fallout_orientation_clear_candidate_registry_diagnostic = {
+	clear_variable = fallout_orientation_candidate_registry_diagnostic
+	clear_variable = fallout_orientation_candidate_registry_diagnostic_generation
+	clear_variable = fallout_orientation_candidate_registry_diagnostic_day
+}
+
+fallout_orientation_record_candidate_registry_diagnostic = {
+	set_variable = { fallout_orientation_candidate_registry_diagnostic = fallout_orientation_requested_candidate_registry_diagnostic }
+	set_variable = { fallout_orientation_candidate_registry_diagnostic_generation = constant:fallout_orientation_runtime.zero }
+	if = {
+		limit = { has_variable = global.fallout_transition_generation }
+		set_variable = { fallout_orientation_candidate_registry_diagnostic_generation = global.fallout_transition_generation }
+	}
+	set_variable = { fallout_orientation_candidate_registry_diagnostic_day = global.num_days }
+}
+
+# Supported scope: COUNTRY. Builds one reviewed pilot mapping after successor
+# allocation has committed the exact region, archetype, and country memory. It
+# does not install candidates, approve package receipts, or activate orientation.
+fallout_orientation_prepare_candidate_mapping = {
+	set_temp_variable = { fallout_orientation_candidate_mapping_accepted = constant:fallout_orientation_runtime.zero }
+	if = {
+		limit = { fallout_orientation_candidate_mapping_is_current = yes }
+		fallout_orientation_clear_candidate_registry_diagnostic = yes
+		set_temp_variable = { fallout_orientation_candidate_mapping_accepted = constant:fallout_orientation_runtime.one }
+	}
+	else = {
+		fallout_orientation_reset_candidate_mapping = yes
+		fallout_orientation_clear_candidate_registry_diagnostic = yes
+		if = {
+			limit = { fallout_successor_assignment_country_row_is_current = yes }
+			set_variable = { fallout_orientation_candidate_registry_schema_version = constant:fallout_orientation_candidate_registry_schema.version }
+			set_variable = { fallout_orientation_candidate_registry_generation = global.fallout_transition_generation }
+			set_variable = { fallout_orientation_candidate_registry_country_memory = fallout_country_memory_id }
+			set_variable = { fallout_orientation_candidate_registry_region = fallout_region_id }
+			set_variable = { fallout_orientation_candidate_registry_archetype = fallout_government_archetype }
+			set_variable = { fallout_orientation_candidate_registry_count = constant:fallout_orientation_runtime.three }
+			set_variable = { fallout_orientation_candidate_registry_slot_1_type = constant:fallout_orientation_candidate_type.character }
+			set_variable = { fallout_orientation_candidate_registry_slot_2_type = constant:fallout_orientation_candidate_type.character }
+			set_variable = { fallout_orientation_candidate_registry_slot_3_type = constant:fallout_orientation_candidate_type.institution }
+			set_variable = { fallout_orientation_candidate_registry_slot_1_region = fallout_region_id }
+			set_variable = { fallout_orientation_candidate_registry_slot_2_region = fallout_region_id }
+			set_variable = { fallout_orientation_candidate_registry_slot_3_region = fallout_region_id }
+			set_variable = { fallout_orientation_candidate_registry_slot_1_archetype = fallout_government_archetype }
+			set_variable = { fallout_orientation_candidate_registry_slot_2_archetype = fallout_government_archetype }
+			set_variable = { fallout_orientation_candidate_registry_slot_3_archetype = fallout_government_archetype }
+
+			if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.federal_continuity_zone } check_variable = { fallout_region_id = constant:fallout_region.north_america } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.federal_emergency_records_commissioner } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.federal_state_guard_supply_custodian } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.federal_emergency_congress_secretariat } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.alpine_redoubt } check_variable = { fallout_region_id = constant:fallout_region.europe } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.alpine_tunnel_medical_mediator } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.alpine_redoubt_quartermaster } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.alpine_glacier_water_board } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.rhine_dead_cities } check_variable = { fallout_region_id = constant:fallout_region.europe } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.scavenger_syndicate } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.rhine_dead_city_permit_physician } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.rhine_factory_recovery_marshal } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.rhine_salvage_court } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.don_steppe_hetmanates } check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.don_grain_road_ration_clerk } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.don_steppe_host_quartermaster } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.don_dnipro_barge_rada } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.mekong_greenhouse_compact } check_variable = { fallout_region_id = constant:fallout_region.east_asia } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.mekong_river_seed_clinician } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.mekong_ferry_militia_supply_captain } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.mekong_seed_bank_council } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.bengal_delta_raft_republic } check_variable = { fallout_region_id = constant:fallout_region.south_asia } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.bengal_raft_clinic_director } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.bengal_boat_militia_harbor_captain } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.bengal_delta_grain_barge_council } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.levant_quarantine_cities } check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.levant_field_hospital_registrar } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.levant_medical_cordon_commissioner } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.levant_municipal_health_compact } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.congo_green_basin } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.congo_river_family_clinic_coordinator } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.congo_basin_safe_work_marshal } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.congo_altered_river_assembly } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.sahel_caravan_wards } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.sahel_mobile_well_medic } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.sahel_well_guardian_escort_captain } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.sahel_caravan_court_radio_market_council } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.ethiopian_highland_refuge } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.ethiopian_highland_storehouse_relief_coordinator } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.ethiopian_mountain_road_protection_captain } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.ethiopian_highland_sanctuary_council } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state } check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.atacama_desert_pump_engineer } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.atacama_mine_port_supply_captain } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.atacama_observatory_data_council } }
+			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government } check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } } set_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.antarctic_human_survival_records_officer } set_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.antarctic_station_maintenance_chief } set_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.antarctic_weather_rescue_protocol_council } }
+
+			if = {
+				limit = {
+					has_variable = fallout_orientation_candidate_registry_slot_1_id
+					has_variable = fallout_orientation_candidate_registry_slot_2_id
+					has_variable = fallout_orientation_candidate_registry_slot_3_id
+				}
+				set_country_flag = fallout_orientation_candidate_registry_mapped
+				if = {
+					limit = { fallout_orientation_candidate_mapping_is_current = yes }
+					set_temp_variable = { fallout_orientation_candidate_mapping_accepted = constant:fallout_orientation_runtime.one }
+				}
+				else = {
+					fallout_orientation_reset_candidate_mapping = yes
+					set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.payload_invalid }
+					fallout_orientation_record_candidate_registry_diagnostic = yes
+				}
+			}
+			else = {
+				set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.identity_mismatch }
+				if = {
+					limit = { NOT = { fallout_orientation_country_memory_has_pilot_candidate_mapping = yes } }
+					set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.unsupported_country_memory }
+				}
+				fallout_orientation_reset_candidate_mapping = yes
+				fallout_orientation_record_candidate_registry_diagnostic = yes
+			}
+		}
+		else = {
+			set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.allocation_not_current }
+			fallout_orientation_record_candidate_registry_diagnostic = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Copies an authenticated installed package into the
+# temporary request fields consumed by the character component. A two-candidate
+# package writes an explicit empty third slot so stale temporary data cannot leak.
+fallout_orientation_load_candidate_request = {
+	set_temp_variable = { fallout_orientation_candidate_request_loaded = constant:fallout_orientation_runtime.zero }
+	fallout_orientation_prepare_candidate_mapping = yes
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_1_id = constant:fallout_orientation_candidate_id.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_2_id = constant:fallout_orientation_candidate_id.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_3_id = constant:fallout_orientation_candidate_id.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_1_type = constant:fallout_orientation_candidate_type.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_2_type = constant:fallout_orientation_candidate_type.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_3_type = constant:fallout_orientation_candidate_type.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_1_region = constant:fallout_region.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_2_region = constant:fallout_region.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_3_region = constant:fallout_region.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_1_archetype = constant:fallout_government_archetype.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_2_archetype = constant:fallout_government_archetype.none }
+	set_temp_variable = { fallout_orientation_requested_candidate_slot_3_archetype = constant:fallout_government_archetype.none }
+	if = {
+		limit = { fallout_orientation_candidate_registry_is_usable = yes }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_id = fallout_orientation_candidate_registry_slot_1_id }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_id = fallout_orientation_candidate_registry_slot_2_id }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_type = fallout_orientation_candidate_registry_slot_1_type }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_type = fallout_orientation_candidate_registry_slot_2_type }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_region = fallout_orientation_candidate_registry_slot_1_region }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_region = fallout_orientation_candidate_registry_slot_2_region }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_archetype = fallout_orientation_candidate_registry_slot_1_archetype }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_archetype = fallout_orientation_candidate_registry_slot_2_archetype }
+		if = {
+			limit = { check_variable = { fallout_orientation_candidate_package_count = constant:fallout_orientation_runtime.three } }
+			set_temp_variable = { fallout_orientation_requested_candidate_slot_3_id = fallout_orientation_candidate_registry_slot_3_id }
+			set_temp_variable = { fallout_orientation_requested_candidate_slot_3_type = fallout_orientation_candidate_registry_slot_3_type }
+			set_temp_variable = { fallout_orientation_requested_candidate_slot_3_region = fallout_orientation_candidate_registry_slot_3_region }
+			set_temp_variable = { fallout_orientation_requested_candidate_slot_3_archetype = fallout_orientation_candidate_registry_slot_3_archetype }
+		}
+		set_temp_variable = { fallout_orientation_candidate_request_loaded = constant:fallout_orientation_runtime.one }
+		fallout_orientation_clear_candidate_registry_diagnostic = yes
+	}
+	else = {
+		set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.package_not_current }
+		if = {
+			limit = { NOT = { fallout_orientation_candidate_mapping_is_current = yes } }
+			set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.payload_invalid }
+		}
+		else_if = {
+			limit = { NOT = { fallout_orientation_character_install_surface_is_approved = yes } }
+			set_temp_variable = { fallout_orientation_requested_candidate_registry_diagnostic = constant:fallout_orientation_candidate_registry_diagnostic.install_surface_blocked }
+		}
+		fallout_orientation_record_candidate_registry_diagnostic = yes
+	}
+}
+
 # Supported scope: COUNTRY. Freezes the strongest, weakest, and immediate-crisis
 # resource identities from the committed current resource array. Exact ties keep
 # the lowest stable resource id.
@@ -3490,18 +3661,35 @@ fallout_orientation_begin_component = {
 		set_variable = { fallout_orientation_frozen_archetype_effect_value = fallout_orientation_requested_archetype_effect_value }
 		set_variable = { fallout_orientation_frozen_archetype_effect_days = fallout_orientation_requested_archetype_effect_days }
 		set_variable = { fallout_orientation_frozen_archetype_effect_token = fallout_orientation_requested_archetype_effect_token }
-		set_variable = { fallout_orientation_frozen_candidate_slot_1_id = fallout_orientation_requested_candidate_slot_1_id }
-		set_variable = { fallout_orientation_frozen_candidate_slot_2_id = fallout_orientation_requested_candidate_slot_2_id }
-		set_variable = { fallout_orientation_frozen_candidate_slot_3_id = fallout_orientation_requested_candidate_slot_3_id }
-		set_variable = { fallout_orientation_frozen_candidate_slot_1_type = fallout_orientation_requested_candidate_slot_1_type }
-		set_variable = { fallout_orientation_frozen_candidate_slot_2_type = fallout_orientation_requested_candidate_slot_2_type }
-		set_variable = { fallout_orientation_frozen_candidate_slot_3_type = fallout_orientation_requested_candidate_slot_3_type }
-		set_variable = { fallout_orientation_frozen_candidate_slot_1_region = fallout_orientation_requested_candidate_slot_1_region }
-		set_variable = { fallout_orientation_frozen_candidate_slot_2_region = fallout_orientation_requested_candidate_slot_2_region }
-		set_variable = { fallout_orientation_frozen_candidate_slot_3_region = fallout_orientation_requested_candidate_slot_3_region }
-		set_variable = { fallout_orientation_frozen_candidate_slot_1_archetype = fallout_orientation_requested_candidate_slot_1_archetype }
-		set_variable = { fallout_orientation_frozen_candidate_slot_2_archetype = fallout_orientation_requested_candidate_slot_2_archetype }
-		set_variable = { fallout_orientation_frozen_candidate_slot_3_archetype = fallout_orientation_requested_candidate_slot_3_archetype }
+		set_variable = { fallout_orientation_frozen_candidate_count = constant:fallout_orientation_runtime.zero }
+		set_variable = { fallout_orientation_frozen_candidate_slot_1_id = constant:fallout_orientation_candidate_id.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_2_id = constant:fallout_orientation_candidate_id.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_3_id = constant:fallout_orientation_candidate_id.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_1_type = constant:fallout_orientation_candidate_type.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_2_type = constant:fallout_orientation_candidate_type.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_3_type = constant:fallout_orientation_candidate_type.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_1_region = constant:fallout_region.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_2_region = constant:fallout_region.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_3_region = constant:fallout_region.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_1_archetype = constant:fallout_government_archetype.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_2_archetype = constant:fallout_government_archetype.none }
+		set_variable = { fallout_orientation_frozen_candidate_slot_3_archetype = constant:fallout_government_archetype.none }
+		if = {
+			limit = { check_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution } }
+			set_variable = { fallout_orientation_frozen_candidate_count = fallout_orientation_candidate_package_count }
+			set_variable = { fallout_orientation_frozen_candidate_slot_1_id = fallout_orientation_requested_candidate_slot_1_id }
+			set_variable = { fallout_orientation_frozen_candidate_slot_2_id = fallout_orientation_requested_candidate_slot_2_id }
+			set_variable = { fallout_orientation_frozen_candidate_slot_3_id = fallout_orientation_requested_candidate_slot_3_id }
+			set_variable = { fallout_orientation_frozen_candidate_slot_1_type = fallout_orientation_requested_candidate_slot_1_type }
+			set_variable = { fallout_orientation_frozen_candidate_slot_2_type = fallout_orientation_requested_candidate_slot_2_type }
+			set_variable = { fallout_orientation_frozen_candidate_slot_3_type = fallout_orientation_requested_candidate_slot_3_type }
+			set_variable = { fallout_orientation_frozen_candidate_slot_1_region = fallout_orientation_requested_candidate_slot_1_region }
+			set_variable = { fallout_orientation_frozen_candidate_slot_2_region = fallout_orientation_requested_candidate_slot_2_region }
+			set_variable = { fallout_orientation_frozen_candidate_slot_3_region = fallout_orientation_requested_candidate_slot_3_region }
+			set_variable = { fallout_orientation_frozen_candidate_slot_1_archetype = fallout_orientation_requested_candidate_slot_1_archetype }
+			set_variable = { fallout_orientation_frozen_candidate_slot_2_archetype = fallout_orientation_requested_candidate_slot_2_archetype }
+			set_variable = { fallout_orientation_frozen_candidate_slot_3_archetype = fallout_orientation_requested_candidate_slot_3_archetype }
+		}
 		fallout_orientation_freeze_resource_extrema = yes
 		fallout_orientation_freeze_live_country_population = yes
 		var:fallout_successor_assignment_capital_state = {
@@ -3623,6 +3811,7 @@ fallout_orientation_begin_government_archetype = {
 
 fallout_orientation_begin_character_or_institution = {
 	set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution }
+	fallout_orientation_load_candidate_request = yes
 	fallout_orientation_begin_component = yes
 }
 
@@ -3835,6 +4024,7 @@ fallout_orientation_clear_transient_payload = {
 	clear_variable = fallout_orientation_frozen_archetype_effect_value
 	clear_variable = fallout_orientation_frozen_archetype_effect_days
 	clear_variable = fallout_orientation_frozen_archetype_effect_token
+	clear_variable = fallout_orientation_frozen_candidate_count
 	clear_variable = fallout_orientation_frozen_candidate_slot_1_id
 	clear_variable = fallout_orientation_frozen_candidate_slot_2_id
 	clear_variable = fallout_orientation_frozen_candidate_slot_3_id

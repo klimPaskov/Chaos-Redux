@@ -160,4 +160,6 @@ The future runtime producer must validate the exact country-memory id, region, a
 
 The future asset package needs twenty-four fictional character portraits and twelve dedicated institution icons. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
 
-Until those assets, installation effects, final localisation, and candidate row validators exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, and memory row approval surfaces also remain blocked.
+The typed candidate ids, exact twelve-memory mapper, country-owned mapping fields, and request authenticator are implemented. The mapper has no caller and cannot make a candidate usable by itself. No candidate package receipt setter exists.
+
+Until the assets, installation effects, final localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, and memory row approval surfaces also remain blocked.

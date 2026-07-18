@@ -2,7 +2,7 @@
 
 Date: 2026-07-18
 
-Status: pilot source design complete, runtime registry blocked
+Status: source design and dormant identity mapper complete, installed packages blocked
 
 ## Pilot result
 
@@ -36,6 +36,8 @@ The future asset tranche requires twenty-four character portrait packages and tw
 
 ## Deliberate non-activation
 
-The source registry is not a live candidate array. No candidate has an install effect, final localisation, sprite, current-generation runtime row, or approved installation surface. The memory, character-install, regional, and archetype surface variables remain blocked. The orientation caller and living-world scheduler remain unwired.
+The country-owned typed identity mapper now creates a current-generation three-slot design row only after exact successor assignment, memory, region, and archetype proof. A separate installed-package receipt controls whether two or three of those candidates can be loaded into a request. No setter for that receipt exists.
+
+No candidate has an install effect, final localisation, sprite, or approved installation surface. The memory, character-install, regional, and archetype surface variables remain blocked. The orientation caller and living-world scheduler remain unwired.
 
 Successor allocation, player continuation, and exact tag conflict resolution remain separate hard prerequisites before any pilot country can receive orientation.
