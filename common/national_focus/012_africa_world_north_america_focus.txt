@@ -1,0 +1,390 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 NORTH AMERICA WORLD-ORDER PACKAGE
+# ============================================================================
+# The Continental Bargain treats North America as a negotiation among the
+# United States, Canada, Mexico, Central America, the Caribbean, northern
+# islands, indigenous nations, and regional governments. No single country is
+# granted default continental ownership.
+# ============================================================================
+
+@world_package_cost = 5
+@world_package_final_cost = 8
+@world_package_tree_weight = 100
+@world_package_ai_low = 5
+@world_package_ai_normal = 10
+@world_package_ai_high = 20
+@world_package_ai_urgent = 40
+@world_package_route_popularity = 0.15
+@world_package_factory = 1
+
+focus_tree = {
+	id = africa_north_america_world_focus_tree
+	country = { factor = 0 modifier = { add = @world_package_tree_weight has_country_flag = africa_world_north_america_package } }
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 24 y = 11 }
+	initial_show_position = { x = 24 y = 0 }
+
+	focus = {
+		id = africa_north_america_convene_continental_bargain
+		icon = GFX_goal_012_africa_continent_sponsorship_north_america_continental_bargain
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24 y = 0 cost = @world_package_cost
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_bargain }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_north_america_continental_bargain_open
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_industrial_grid_and_transport
+		icon = GFX_goal_012_africa_continent_sponsorship_north_america_industrial_grid
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 12 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_convene_continental_bargain }
+		completion_reward = {
+			add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			capital_scope = {
+				add_extra_state_shared_building_slots = @world_package_factory
+				add_building_construction = { type = industrial_complex level = @world_package_factory instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_industrial_balance < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_north_america_caribbean_and_central_membership
+		icon = GFX_goal_012_africa_continental_representation_north_america_caribbean_central
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 20 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_convene_continental_bargain }
+		completion_reward = {
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_north_america_caribbean_central_votes_protected
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_caribbean_inclusion < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_north_america_indigenous_and_regional_settlement
+		icon = GFX_goal_012_africa_continental_representation_north_america_indigenous_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_convene_continental_bargain }
+		completion_reward = {
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_north_america_indigenous_consent_and_land_review
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_indigenous_settlement < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_north_america_citizenship_and_mobility_compact
+		icon = GFX_goal_012_africa_continental_representation_north_america_citizenship
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 36 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_convene_continental_bargain }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_citizenship }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_north_america_equal_citizenship_guaranteed
+			set_country_flag = africa_north_america_voluntary_return_only
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_migration_compact < constant:africa_measure.medium } } }
+	}
+
+	# Five settlements. The storm route remains disabled until its separate
+	# nonhuman, ecological, text, and asset review has been accepted.
+	focus = {
+		id = africa_north_america_republic_of_republics
+		icon = GFX_goal_012_africa_continent_union_north_america_republics
+		x = 8 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_caribbean_and_central_membership }
+		prerequisite = { focus = africa_north_america_indigenous_and_regional_settlement }
+		mutually_exclusive = { focus = africa_north_america_continental_commonwealth focus = africa_north_america_hemisphere_command focus = africa_north_america_socialist_continental_union focus = africa_north_america_storm_frontier_compact }
+		completion_reward = {
+			set_country_flag = africa_north_america_republics_route
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = 2 democratic > 0.4 } }
+	}
+
+	focus = {
+		id = africa_north_america_continental_commonwealth
+		icon = GFX_goal_012_africa_continent_union_north_america_commonwealth
+		x = 16 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_industrial_grid_and_transport }
+		prerequisite = { focus = africa_north_america_citizenship_and_mobility_compact }
+		mutually_exclusive = { focus = africa_north_america_republic_of_republics focus = africa_north_america_hemisphere_command focus = africa_north_america_socialist_continental_union focus = africa_north_america_storm_frontier_compact }
+		completion_reward = {
+			set_country_flag = africa_north_america_commonwealth_route
+			add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = 2 neutrality > 0.35 } modifier = { factor = 2 democratic > 0.45 } }
+	}
+
+	focus = {
+		id = africa_north_america_hemisphere_command
+		icon = GFX_goal_012_africa_continent_union_north_america_hemisphere_command
+		x = 24 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_industrial_grid_and_transport }
+		prerequisite = { focus = africa_north_america_caribbean_and_central_membership }
+		mutually_exclusive = { focus = africa_north_america_republic_of_republics focus = africa_north_america_continental_commonwealth focus = africa_north_america_socialist_continental_union focus = africa_north_america_storm_frontier_compact }
+		completion_reward = {
+			set_country_flag = africa_north_america_command_route
+			add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+			subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+			add_popularity = { ideology = fascism popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_low modifier = { factor = 4 fascism > 0.35 } modifier = { factor = 2 has_war = yes } }
+	}
+
+	focus = {
+		id = africa_north_america_socialist_continental_union
+		icon = GFX_goal_012_africa_continent_union_north_america_socialist_union
+		x = 32 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_industrial_grid_and_transport }
+		prerequisite = { focus = africa_north_america_indigenous_and_regional_settlement }
+		mutually_exclusive = { focus = africa_north_america_republic_of_republics focus = africa_north_america_continental_commonwealth focus = africa_north_america_hemisphere_command focus = africa_north_america_storm_frontier_compact }
+		completion_reward = {
+			set_country_flag = africa_north_america_socialist_union_route
+			add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = communism popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_low modifier = { factor = 4 communism > 0.35 } }
+	}
+
+	focus = {
+		id = africa_north_america_storm_frontier_compact
+		icon = GFX_goal_012_africa_continent_union_north_america_storm_compact
+		x = 40 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_indigenous_and_regional_settlement }
+		prerequisite = { focus = africa_north_america_citizenship_and_mobility_compact }
+		mutually_exclusive = { focus = africa_north_america_republic_of_republics focus = africa_north_america_continental_commonwealth focus = africa_north_america_hemisphere_command focus = africa_north_america_socialist_continental_union }
+		available = { has_global_flag = africa_north_america_high_chaos_package_reviewed check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		completion_reward = {
+			set_country_flag = africa_north_america_storm_compact_route
+			set_country_flag = africa_north_america_nonhuman_storm_actors_recognised
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	# Route-specific constitutional institutions advance the federal-power step.
+	focus = {
+		id = africa_north_america_bicameral_congress
+		icon = GFX_goal_012_africa_continental_representation_north_america_bicameral_congress
+		x = 8 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_republic_of_republics }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_federal_power }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_council_of_governments
+		icon = GFX_goal_012_africa_continental_representation_north_america_governments_council
+		x = 16 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_continental_commonwealth }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_federal_power }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_civilian_command_statute
+		icon = GFX_goal_012_africa_continental_representation_north_america_command_statute
+		x = 24 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_hemisphere_command }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_federal_power }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_north_america_command_civilian_oversight
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_congress_of_workers_and_republics
+		icon = GFX_goal_012_africa_continental_representation_north_america_workers_republics
+		x = 32 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_socialist_continental_union }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_federal_power }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+			subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_publish_storm_containment_law
+		icon = GFX_goal_012_africa_continental_representation_north_america_storm_law
+		x = 40 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_storm_frontier_compact }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_federal_power }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_north_america_nonhuman_storm_terms_published
+		}
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	# The shared lanes call route-aware effects. Representation, resources,
+	# command, withdrawal, island obligations, and the Africa treaty therefore
+	# remain constitution-specific after the branches converge.
+	focus = {
+		id = africa_north_america_resources_and_withdrawal_law
+		icon = GFX_goal_012_africa_continental_representation_north_america_resources_withdrawal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 24 y = 4 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_bicameral_congress focus = africa_north_america_council_of_governments focus = africa_north_america_civilian_command_statute focus = africa_north_america_congress_of_workers_and_republics focus = africa_north_america_publish_storm_containment_law }
+		prerequisite = { focus = africa_north_america_industrial_grid_and_transport }
+		prerequisite = { focus = africa_north_america_citizenship_and_mobility_compact }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_resources }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			africa_north_america_apply_resources_and_withdrawal_law = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_atlantic_and_pacific_defence
+		icon = GFX_goal_012_africa_continent_sponsorship_north_america_two_ocean_defence
+		search_filters = { FOCUS_FILTER_MILITARY FOCUS_FILTER_NAVY }
+		x = 24 y = 5 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_resources_and_withdrawal_law }
+		prerequisite = { focus = africa_north_america_caribbean_and_central_membership }
+		prerequisite = { focus = africa_north_america_indigenous_and_regional_settlement }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_command }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			africa_north_america_apply_two_ocean_defence_law = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = 2 has_war = yes } }
+	}
+
+	focus = {
+		id = africa_north_america_caribbean_and_atlantic_islands_settlement
+		icon = GFX_goal_012_africa_continental_representation_north_america_islands_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 24 y = 6 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_atlantic_and_pacific_defence }
+		completion_reward = { africa_north_america_apply_islands_settlement = yes }
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_north_america_africa_diaspora_citizenship_treaty
+		icon = GFX_goal_012_africa_continent_union_north_america_africa_diaspora_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 24 y = 7 cost = @world_package_cost
+		prerequisite = { focus = africa_north_america_caribbean_and_atlantic_islands_settlement }
+		completion_reward = { africa_north_america_apply_africa_diaspora_treaty = yes }
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_north_america_ratify_continental_bargain
+		icon = GFX_goal_012_africa_continent_union_north_america_ratification
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24 y = 8 cost = @world_package_final_cost
+		prerequisite = { focus = africa_north_america_africa_diaspora_citizenship_treaty }
+		available = {
+			has_country_flag = africa_world_package_withdrawal_law_ratified
+			has_country_flag = africa_north_america_islands_settlement_ratified
+			has_country_flag = africa_north_america_africa_diaspora_treaty_ready
+			africa_north_america_continental_bargain_is_balanced = yes
+		}
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_settlement }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_world_package_constitution_ratified
+			africa_world_finalize_distinct_package_identity = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+}
