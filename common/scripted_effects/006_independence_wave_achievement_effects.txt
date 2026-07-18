@@ -1,0 +1,610 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 ACHIEVEMENT EFFECTS
+# ============================================================================
+# Historical proof hooks for the sixteen Independence Wave achievements. The
+# effects are called from existing Event 006 transactions and narrow engine
+# on-actions. They never award gameplay resources and never scan the world.
+# ============================================================================
+
+# Country scope. Clears proof owned by one Event 006 origin generation. Host
+# remnant proof is also cleared because a country cannot remain a former-host
+# remnant after becoming a new Event 006 origin itself.
+independence_wave_achievement_reset_country_trackers = {
+	clr_country_flag = independence_wave_achievement_subject_status_ever
+	clr_country_flag = independence_wave_achievement_host_war_ever
+	clr_country_flag = independence_wave_achievement_forced_host_settlement
+	clr_country_flag = independence_wave_achievement_host_reconquest_defender
+	clr_country_flag = independence_wave_achievement_host_reconquest_survived
+	clr_country_flag = independence_wave_achievement_capital_loss_active
+	clr_country_flag = independence_wave_achievement_capital_loss_failed
+	clr_country_flag = independence_wave_achievement_league_founding_actor
+	clr_country_flag = independence_wave_achievement_cross_regional_clock_active
+	clr_country_flag = independence_wave_achievement_rescue_protected
+	clr_country_flag = independence_wave_achievement_rescue_target_rejoined_host
+	clr_country_flag = independence_wave_achievement_institutional_major
+	clr_country_flag = independence_wave_achievement_successful_league_goal
+	clr_country_flag = independence_wave_achievement_radical_bloc_qualified
+	clr_country_flag = independence_wave_achievement_containment_engaged
+	clr_country_flag = independence_wave_achievement_scenario_forced_danger
+	clr_country_flag = independence_wave_achievement_patron_dependency_ever
+	clr_country_flag = independence_wave_achievement_concessions_bought_out
+	clr_country_flag = independence_wave_achievement_arbitration_term_active
+	clr_country_flag = independence_wave_achievement_member_war_during_term
+	clr_country_flag = independence_wave_achievement_coercive_settlement_during_term
+	clr_country_flag = independence_wave_achievement_member_expulsion_during_term
+	clr_country_flag = independence_wave_achievement_host_settlement_counted
+	clr_country_flag = independence_wave_achievement_scenario_survivor_counted
+	clr_country_flag = independence_wave_achievement_scenario_survival_actor
+	clr_country_flag = independence_wave_achievement_host_remnant_candidate
+	clr_country_flag = independence_wave_achievement_host_remnant_subject_ever
+	clr_country_flag = independence_wave_achievement_host_reconquest_used
+	clr_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
+	clr_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+	clr_country_flag = independence_wave_assyria_anchor_population_protected
+	clr_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+	clr_country_flag = independence_wave_assyria_host_conflict_survived
+	clear_variable = independence_wave_achievement_peace_settlement_date
+	clear_variable = independence_wave_achievement_capital_loss_date
+	clear_variable = independence_wave_achievement_cross_regional_start_date
+	clear_variable = independence_wave_achievement_rescue_target
+	clear_variable = independence_wave_achievement_rescue_actor
+	clear_variable = independence_wave_achievement_rescue_protected_date
+	clear_variable = independence_wave_achievement_containment_start_date
+	clear_variable = independence_wave_achievement_arbitration_count
+	clear_variable = independence_wave_achievement_scenario_start_date
+	clear_variable = independence_wave_achievement_scenario_plan_id
+	clear_variable = independence_wave_achievement_host_remnant_date
+	clear_variable = independence_wave_achievement_required_breakaway_settlements
+	clear_variable = independence_wave_achievement_completed_breakaway_settlements
+	clear_array = independence_wave_achievement_major_patron_country_entries
+}
+
+# Country scope. Refreshes proof whose eligibility can be determined from the
+# five public values, the bilateral settlement, patron dominance, or country
+# scale. Called by the existing Event 006 state refresh transaction.
+independence_wave_achievement_refresh_country_state = {
+	if = {
+		limit = { is_independence_wave_active_country = yes }
+		if = {
+			limit = { is_subject = yes }
+			set_country_flag = independence_wave_achievement_subject_status_ever
+		}
+		if = {
+			limit = { has_independence_wave_patron_dependency = yes }
+			set_country_flag = independence_wave_achievement_patron_dependency_ever
+		}
+		if = {
+			limit = {
+				has_country_flag = independence_wave_anchor_opening
+				is_major = yes
+				NOT = { has_country_flag = independence_wave_formable_active }
+			}
+			set_country_flag = independence_wave_achievement_institutional_major
+		}
+		if = {
+			limit = {
+				has_independence_wave_living_former_host = yes
+				has_country_flag = independence_wave_host_recognized_separation
+				has_country_flag = independence_wave_dm25_property_settled
+				has_country_flag = independence_wave_dm26_citizenship_settled
+				NOT = { has_country_flag = independence_wave_achievement_host_war_ever }
+				NOT = { has_country_flag = independence_wave_achievement_forced_host_settlement }
+				var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			}
+			if = {
+				limit = { NOT = { has_variable = independence_wave_achievement_peace_settlement_date } }
+				set_variable = { independence_wave_achievement_peace_settlement_date = global.date }
+			}
+			if = {
+				limit = { NOT = { has_country_flag = independence_wave_achievement_host_settlement_counted } }
+				set_country_flag = independence_wave_achievement_host_settlement_counted
+				var:independence_wave_former_host = {
+					if = {
+						limit = { NOT = { has_variable = independence_wave_achievement_completed_breakaway_settlements } }
+						set_variable = { independence_wave_achievement_completed_breakaway_settlements = constant:independence_wave_achievement.zero }
+					}
+					add_to_variable = { independence_wave_achievement_completed_breakaway_settlements = constant:independence_wave_achievement.one }
+				}
+			}
+		}
+		else = {
+			clear_variable = independence_wave_achievement_peace_settlement_date
+		}
+	}
+}
+
+# Country scope. Called after the patron row identified by
+# `independence_wave_patron_row` has been clamped and its strongest patron has
+# been refreshed. The action patron event target is still valid.
+independence_wave_achievement_record_patron_history = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_event_target = independence_wave_action_patron
+			check_variable = { var = independence_wave_patron_aid_value_entries^independence_wave_patron_row value = constant:independence_wave_patron.channel_major compare = greater_than_or_equals }
+			NOT = { is_in_array = { array = independence_wave_achievement_major_patron_country_entries value = event_target:independence_wave_action_patron } }
+		}
+		add_to_array = { array = independence_wave_achievement_major_patron_country_entries value = event_target:independence_wave_action_patron }
+	}
+	if = {
+		limit = { has_independence_wave_patron_dependency = yes }
+		set_country_flag = independence_wave_achievement_patron_dependency_ever
+	}
+}
+
+# Any scope. Starts or breaks the continuous two-year ten-member/four-region
+# league proof for each current member.
+independence_wave_achievement_refresh_cross_regional_clock = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+			}
+			check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_achievement.cross_regional_members compare = greater_than_or_equals }
+			check_variable = { var = global.independence_wave_league_region_count value = constant:independence_wave_achievement.cross_regional_regions compare = greater_than_or_equals }
+			check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_achievement.cross_regional_cohesion compare = greater_than_or_equals }
+			NOT = { check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist } }
+			NOT = { has_global_flag = independence_wave_achievement_scenario_preformed_league }
+		}
+		for_each_scope_loop = {
+			array = global.independence_wave_league_member_country_entries
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_country_flag = independence_wave_scenario_common_congress }
+					NOT = { has_country_flag = independence_wave_radical_charter_member }
+				}
+				if = {
+					limit = { NOT = { has_country_flag = independence_wave_achievement_cross_regional_clock_active } }
+					set_country_flag = independence_wave_achievement_cross_regional_clock_active
+					set_variable = { independence_wave_achievement_cross_regional_start_date = global.date }
+				}
+			}
+			else = {
+				clr_country_flag = independence_wave_achievement_cross_regional_clock_active
+				clear_variable = independence_wave_achievement_cross_regional_start_date
+			}
+		}
+	}
+	else = {
+		for_each_scope_loop = {
+			array = global.independence_wave_league_member_country_entries
+			clr_country_flag = independence_wave_achievement_cross_regional_clock_active
+			clear_variable = independence_wave_achievement_cross_regional_start_date
+		}
+	}
+}
+
+# Any scope. Marks the exact countries that entered a naturally negotiated
+# formal charter as founders. The global scenario provenance marker blocks the
+# entire pre-formed congress, including members that joined it later.
+independence_wave_achievement_mark_formal_league_founders = {
+	if = {
+		limit = { NOT = { has_global_flag = independence_wave_achievement_scenario_preformed_league } }
+		for_each_scope_loop = {
+			array = global.independence_wave_league_founder_entries
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				set_country_flag = independence_wave_achievement_league_founding_actor
+			}
+		}
+	}
+}
+
+# Country scope. Starts a fresh arbitration term only when leadership actually
+# changes; an upgrade from consultative to formal status does not erase work by
+# the same leader.
+independence_wave_achievement_begin_leadership_term = {
+	set_temp_variable = { independence_wave_achievement_leader_changed = constant:independence_wave_achievement.one }
+	if = {
+		limit = { has_variable = global.independence_wave_achievement_arbitration_term_leader }
+		var:global.independence_wave_achievement_arbitration_term_leader = {
+			if = {
+				limit = { tag = ROOT }
+				ROOT = { set_temp_variable = { independence_wave_achievement_leader_changed = constant:independence_wave_achievement.zero } }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { independence_wave_achievement_leader_changed = constant:independence_wave_achievement.one } }
+		set_country_flag = independence_wave_achievement_arbitration_term_active
+		clr_country_flag = independence_wave_achievement_member_war_during_term
+		clr_country_flag = independence_wave_achievement_coercive_settlement_during_term
+		clr_country_flag = independence_wave_achievement_member_expulsion_during_term
+		set_variable = { independence_wave_achievement_arbitration_count = constant:independence_wave_achievement.zero }
+	}
+	set_variable = { global.independence_wave_achievement_arbitration_term_leader = THIS }
+}
+
+# Country scope. Records a peacefully completed league arbitration.
+independence_wave_achievement_record_arbitration = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_league_current_leader
+			has_country_flag = independence_wave_achievement_arbitration_term_active
+			NOT = { has_country_flag = independence_wave_achievement_member_war_during_term }
+			NOT = { has_country_flag = independence_wave_achievement_coercive_settlement_during_term }
+			NOT = { has_country_flag = independence_wave_achievement_member_expulsion_during_term }
+		}
+		add_to_variable = { independence_wave_achievement_arbitration_count = constant:independence_wave_achievement.one }
+		set_country_flag = independence_wave_achievement_successful_league_goal
+	}
+}
+
+# Country scope. A border ultimatum by the current league leader disqualifies
+# the current arbitration term even when the target yields without a battle.
+independence_wave_achievement_record_coercive_settlement = {
+	if = {
+		limit = { has_country_flag = independence_wave_league_current_leader }
+		set_country_flag = independence_wave_achievement_coercive_settlement_during_term
+	}
+}
+
+# Country scope. Successful rescue, arbitration, and league-sponsored release
+# callers use this proof after the exact objective resolves.
+independence_wave_achievement_record_successful_league_goal = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_league_current_leader
+			has_country_flag = independence_wave_league_member
+		}
+		set_country_flag = independence_wave_achievement_successful_league_goal
+	}
+}
+
+# Country scope. Input: event target `independence_wave_rescue_member`.
+independence_wave_achievement_record_rescue = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_event_target = independence_wave_rescue_member
+			event_target:independence_wave_rescue_member = { is_independence_wave_active_country = yes }
+		}
+		set_variable = { independence_wave_achievement_rescue_target = event_target:independence_wave_rescue_member }
+		clr_country_flag = independence_wave_achievement_rescue_target_rejoined_host
+		event_target:independence_wave_rescue_member = {
+			set_country_flag = independence_wave_achievement_rescue_protected
+			set_variable = { independence_wave_achievement_rescue_actor = ROOT }
+			set_variable = { independence_wave_achievement_rescue_protected_date = global.date }
+		}
+		independence_wave_achievement_record_successful_league_goal = yes
+	}
+}
+
+# Country scope. Called by the exact radical-offensive-league super-event
+# witness. Qualification is recorded here; the one-year survival clock starts
+# only when the first qualifying external containment war begins.
+independence_wave_achievement_begin_radical_containment = {
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_achievement_radical_bloc_qualified } }
+		set_country_flag = independence_wave_achievement_radical_bloc_qualified
+		clr_country_flag = independence_wave_achievement_containment_engaged
+		clear_variable = independence_wave_achievement_containment_start_date
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_scenario_application_open }
+		set_country_flag = independence_wave_achievement_scenario_forced_danger
+	}
+}
+
+# Country scope. Removes this released candidate from the bounded SCN-008
+# survival count exactly once.
+independence_wave_achievement_remove_scenario_survivor = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_achievement_scenario_survivor_counted
+			has_variable = independence_wave_scenario_plan_id
+			has_variable = global.independence_wave_achievement_scenario_plan_id
+			check_variable = { var = independence_wave_scenario_plan_id value = global.independence_wave_achievement_scenario_plan_id compare = equals }
+		}
+		clr_country_flag = independence_wave_achievement_scenario_survivor_counted
+		subtract_from_variable = { global.independence_wave_achievement_scenario_survivor_count = constant:independence_wave_achievement.one }
+		clamp_variable = {
+			var = global.independence_wave_achievement_scenario_survivor_count
+			min = constant:independence_wave_achievement.zero
+			max = global.independence_wave_achievement_scenario_initial_count
+		}
+	}
+}
+
+# Country scope. Reconciles a single SCN-008 release after a subject/free or
+# other event-driven status change.
+independence_wave_achievement_refresh_scenario_survivor = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_scenario_origin
+			has_variable = independence_wave_scenario_plan_id
+			has_variable = global.independence_wave_achievement_scenario_plan_id
+			check_variable = { var = independence_wave_scenario_plan_id value = global.independence_wave_achievement_scenario_plan_id compare = equals }
+		}
+		if = {
+			limit = {
+				is_independence_wave_active_country = yes
+				is_subject = no
+				NOT = { has_country_flag = independence_wave_achievement_scenario_survivor_counted }
+			}
+			set_country_flag = independence_wave_achievement_scenario_survivor_counted
+			add_to_variable = { global.independence_wave_achievement_scenario_survivor_count = constant:independence_wave_achievement.one }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = independence_wave_achievement_scenario_survivor_counted
+				OR = {
+					NOT = { is_independence_wave_active_country = yes }
+					is_subject = yes
+				}
+			}
+			independence_wave_achievement_remove_scenario_survivor = yes
+		}
+	}
+}
+
+# Country scope: the player who launched SCN-008. The challenge exists only at
+# Low intensity and never for the pre-formed Common Congress type.
+independence_wave_achievement_begin_scenario_survival_challenge = {
+	if = {
+		limit = {
+			has_event_target = independence_wave_achievement_scenario_owner
+		}
+		event_target:independence_wave_achievement_scenario_owner = {
+			clr_country_flag = independence_wave_achievement_scenario_survival_actor
+			clear_variable = independence_wave_achievement_scenario_start_date
+			clear_variable = independence_wave_achievement_scenario_plan_id
+		}
+	}
+	clear_global_event_target = independence_wave_achievement_scenario_owner
+	clear_variable = global.independence_wave_achievement_scenario_plan_id
+	set_variable = { global.independence_wave_achievement_scenario_initial_count = constant:independence_wave_achievement.zero }
+	set_variable = { global.independence_wave_achievement_scenario_survivor_count = constant:independence_wave_achievement.zero }
+	for_each_scope_loop = {
+		array = global.independence_wave_scenario_country_entries
+		clr_country_flag = independence_wave_achievement_scenario_survivor_counted
+	}
+	if = {
+		limit = {
+			check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.low }
+			NOT = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.common_congress } }
+			check_variable = { var = global.independence_wave_scenario_country_entries^num value = constant:independence_wave_achievement.one compare = greater_than_or_equals }
+		}
+		set_country_flag = independence_wave_achievement_scenario_survival_actor
+		set_variable = { independence_wave_achievement_scenario_start_date = global.date }
+		set_variable = { independence_wave_achievement_scenario_plan_id = global.independence_wave_scenario_last_plan_id }
+		set_variable = { global.independence_wave_achievement_scenario_plan_id = global.independence_wave_scenario_last_plan_id }
+		set_variable = { global.independence_wave_achievement_scenario_initial_count = global.independence_wave_scenario_country_entries^num }
+		save_global_event_target_as = independence_wave_achievement_scenario_owner
+		for_each_scope_loop = {
+			array = global.independence_wave_scenario_country_entries
+			independence_wave_achievement_refresh_scenario_survivor = yes
+		}
+	}
+}
+
+# Released-country scope. Permanently disqualifies its former host from the
+# remnant achievement when the host reabsorbs or subordinates the breakaway.
+independence_wave_achievement_disqualify_former_host_remnant = {
+	if = {
+		limit = { has_variable = independence_wave_former_host }
+		var:independence_wave_former_host = {
+			set_country_flag = independence_wave_achievement_host_reconquest_used
+			clear_variable = independence_wave_achievement_host_remnant_date
+		}
+	}
+}
+
+# Country scope. Maintains the host-remnant achievement's continuous peace
+# clock. Subject status and a former-host reconquest are permanent failures;
+# any war clears the current ten-year attempt, and full peace begins a new one.
+independence_wave_achievement_refresh_host_remnant_peace = {
+	if = {
+		limit = { has_country_flag = independence_wave_achievement_host_remnant_candidate }
+		if = {
+			limit = { is_subject = yes }
+			set_country_flag = independence_wave_achievement_host_remnant_subject_ever
+			clear_variable = independence_wave_achievement_host_remnant_date
+		}
+		else_if = {
+			limit = { has_war = yes }
+			clear_variable = independence_wave_achievement_host_remnant_date
+		}
+		else_if = {
+			limit = {
+				NOT = { has_country_flag = independence_wave_achievement_host_remnant_subject_ever }
+				NOT = { has_country_flag = independence_wave_achievement_host_reconquest_used }
+				NOT = { has_variable = independence_wave_achievement_host_remnant_date }
+			}
+			set_variable = { independence_wave_achievement_host_remnant_date = global.date }
+		}
+	}
+}
+
+# Any scope. Called after every frozen Event 006 origin is committed while the
+# unique host array and each host's relation ledger are still live.
+independence_wave_achievement_initialize_committed_wave = {
+	for_each_scope_loop = {
+		array = global.independence_wave_plan_hosts
+		if = {
+			limit = {
+				exists = yes
+				check_variable = { num_owned_states = constant:independence_wave_achievement.host_remnant_owned_states }
+				NOT = { has_country_flag = independence_wave_achievement_host_remnant_candidate }
+				check_variable = { var = independence_wave_host_country_entries^num value = constant:independence_wave_achievement.one compare = greater_than_or_equals }
+			}
+			set_country_flag = independence_wave_achievement_host_remnant_candidate
+			set_variable = { independence_wave_achievement_required_breakaway_settlements = independence_wave_host_country_entries^num }
+			if = {
+				limit = { NOT = { has_variable = independence_wave_achievement_completed_breakaway_settlements } }
+				set_variable = { independence_wave_achievement_completed_breakaway_settlements = constant:independence_wave_achievement.zero }
+			}
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+		}
+	}
+}
+
+# Country scope. Called before Event 006 origin cleanup removes active/scenario
+# provenance.
+independence_wave_achievement_handle_origin_end = {
+	independence_wave_achievement_remove_scenario_survivor = yes
+	if = {
+		limit = {
+			check_variable = { independence_wave_cleanup_reason = constant:independence_wave_origin_end_reason.voluntary_reunion }
+		}
+		independence_wave_achievement_disqualify_former_host_remnant = yes
+		if = {
+			limit = { has_variable = independence_wave_achievement_rescue_actor }
+			var:independence_wave_achievement_rescue_actor = {
+				set_country_flag = independence_wave_achievement_rescue_target_rejoined_host
+			}
+		}
+	}
+}
+
+# Country scope. Evaluates the conclusion of a former-host reconquest war.
+independence_wave_achievement_resolve_country_peace = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_achievement_host_reconquest_defender
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+		if = {
+			limit = {
+				has_country_flag = independence_wave_achievement_capital_loss_active
+				has_variable = independence_wave_achievement_capital_loss_date
+			}
+			set_temp_variable = { independence_wave_achievement_capital_loss_days = global.date }
+			subtract_from_temp_variable = { independence_wave_achievement_capital_loss_days = independence_wave_achievement_capital_loss_date }
+			if = {
+				limit = { check_variable = { var = independence_wave_achievement_capital_loss_days value = constant:independence_wave_achievement.capital_loss_grace_days compare = greater_than_or_equals } }
+				set_country_flag = independence_wave_achievement_capital_loss_failed
+			}
+		}
+		clr_country_flag = independence_wave_achievement_capital_loss_active
+		clear_variable = independence_wave_achievement_capital_loss_date
+		if = {
+			limit = {
+				is_subject = no
+				has_capitulated = no
+				NOT = { has_country_flag = independence_wave_achievement_capital_loss_failed }
+				var:independence_wave_anchor_state = { is_owned_by = ROOT is_controlled_by = ROOT }
+			}
+			set_country_flag = independence_wave_achievement_host_reconquest_survived
+		}
+	}
+	independence_wave_achievement_refresh_host_remnant_peace = yes
+}
+
+# Country scope. Input: event target `independence_wave_achievement_changed_state`.
+independence_wave_achievement_record_anchor_loss = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_achievement_host_reconquest_defender
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = ROOT }
+			has_event_target = independence_wave_achievement_changed_state
+			var:independence_wave_anchor_state = { state = event_target:independence_wave_achievement_changed_state }
+			NOT = { has_country_flag = independence_wave_achievement_capital_loss_active }
+		}
+		set_country_flag = independence_wave_achievement_capital_loss_active
+		set_variable = { independence_wave_achievement_capital_loss_date = global.date }
+	}
+}
+
+# Country scope. Input: event target `independence_wave_achievement_changed_state`.
+independence_wave_achievement_record_anchor_recovery = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_event_target = independence_wave_achievement_changed_state
+			var:independence_wave_anchor_state = { state = event_target:independence_wave_achievement_changed_state }
+			has_country_flag = independence_wave_achievement_capital_loss_active
+			has_variable = independence_wave_achievement_capital_loss_date
+		}
+		set_temp_variable = { independence_wave_achievement_capital_loss_days = global.date }
+		subtract_from_temp_variable = { independence_wave_achievement_capital_loss_days = independence_wave_achievement_capital_loss_date }
+		if = {
+			limit = { check_variable = { var = independence_wave_achievement_capital_loss_days value = constant:independence_wave_achievement.capital_loss_grace_days compare = greater_than_or_equals } }
+			set_country_flag = independence_wave_achievement_capital_loss_failed
+		}
+		clr_country_flag = independence_wave_achievement_capital_loss_active
+		clear_variable = independence_wave_achievement_capital_loss_date
+	}
+}
+
+# Any scope. Inputs: regular event targets
+# `independence_wave_achievement_war_attacker` and
+# `independence_wave_achievement_war_defender`.
+independence_wave_achievement_record_war = {
+	if = {
+		limit = {
+			event_target:independence_wave_achievement_war_attacker = { is_independence_wave_active_country = yes }
+			event_target:independence_wave_achievement_war_attacker = { var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_war_defender } }
+		}
+		event_target:independence_wave_achievement_war_attacker = {
+			set_country_flag = independence_wave_achievement_host_war_ever
+			clear_variable = independence_wave_achievement_peace_settlement_date
+		}
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_achievement_war_defender = { is_independence_wave_active_country = yes }
+			event_target:independence_wave_achievement_war_defender = { var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_war_attacker } }
+		}
+		event_target:independence_wave_achievement_war_defender = {
+			set_country_flag = independence_wave_achievement_host_war_ever
+			set_country_flag = independence_wave_achievement_host_reconquest_defender
+			clear_variable = independence_wave_achievement_peace_settlement_date
+			if = {
+				limit = {
+					var:independence_wave_anchor_state = { NOT = { is_controlled_by = ROOT } }
+					NOT = { has_country_flag = independence_wave_achievement_capital_loss_active }
+				}
+				set_country_flag = independence_wave_achievement_capital_loss_active
+				set_variable = { independence_wave_achievement_capital_loss_date = global.date }
+			}
+		}
+		event_target:independence_wave_achievement_war_attacker = {
+			set_country_flag = independence_wave_achievement_host_reconquest_used
+		}
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_achievement_war_attacker = { has_country_flag = independence_wave_league_member }
+			event_target:independence_wave_achievement_war_defender = { has_country_flag = independence_wave_league_member }
+			has_event_target = independence_wave_league_leader_target
+		}
+		event_target:independence_wave_league_leader_target = {
+			set_country_flag = independence_wave_achievement_member_war_during_term
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = independence_wave_danger_milestone_actor
+			event_target:independence_wave_danger_milestone_actor = { has_country_flag = independence_wave_achievement_radical_bloc_qualified }
+			event_target:independence_wave_achievement_war_attacker = { NOT = { has_country_flag = independence_wave_league_member } }
+			event_target:independence_wave_achievement_war_defender = { has_country_flag = independence_wave_league_member }
+		}
+		event_target:independence_wave_danger_milestone_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = independence_wave_achievement_containment_engaged } }
+				set_country_flag = independence_wave_achievement_containment_engaged
+				set_variable = { independence_wave_achievement_containment_start_date = global.date }
+			}
+		}
+	}
+	event_target:independence_wave_achievement_war_attacker = {
+		if = {
+			limit = { has_country_flag = independence_wave_achievement_host_remnant_candidate }
+			clear_variable = independence_wave_achievement_host_remnant_date
+		}
+	}
+	event_target:independence_wave_achievement_war_defender = {
+		if = {
+			limit = { has_country_flag = independence_wave_achievement_host_remnant_candidate }
+			clear_variable = independence_wave_achievement_host_remnant_date
+		}
+	}
+}

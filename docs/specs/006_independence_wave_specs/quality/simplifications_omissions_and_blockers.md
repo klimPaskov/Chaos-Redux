@@ -28,6 +28,17 @@ ImageGen PFX flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
 portrait blocks are present; accepted male large portraits are separate leader
 assets, and protected BAY/RHI hashes are unchanged.
 
+The bounded IW-043/IW-058 tranche is also recorded: exact base content for
+vanilla carriers `CHU` and `ASY` is admitted by the shared runtime registry.
+The package audits and manifests record eight all-male institutional portraits,
+ten flat flags, two report images, and the final 27-icon static package,
+  including the three-state Assyria survival triplet. No custom advisor assets
+  were created. The exact vanilla CHU/ASY shortcut guards passed the parent
+  compatibility re-audit and preserve ordinary and Event 005 carrier behavior.
+  FORM-12, FORM-13, FORM-18, and the two signature achievements remain
+  **PARTIALLY IMPLEMENTED / HOLD** because their exact adapter-attestation and
+  proof writers are absent.
+
 FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
 006 completion audit, final balance audit, catalog alignment, and unrelated
 package/achievement work remain incomplete. Earlier Pacific handoffs that state
@@ -80,17 +91,24 @@ English localisation, centralized thresholds, and event-driven proof logic.
 Country, patron, league, scenario, host-remnant, war, peace, subject, and anchor
 control history is wired through bounded Event 006 transactions and narrow
 engine on-actions; no periodic world scan is used. Fifteen have final normal,
-grey, and not-eligible DDS triplets. `chaosx_006_assyria_survives` remains
-fail-closed because IW-058 is not runtime-admitted and its researched Assyrian
-icon triplet is still absent. IW-043 Volga Bulgaria is also definition-complete
-but fail-closed until its package and signature routes are admitted. The full
-achievement audit and live validation matrix remain required before completion.
+grey, and not-eligible DDS triplets. The bounded Assyria triplet is final and
+reviewed, but the two signature achievements remain hidden/fail-closed because
+their proof writers and exact formable adapter-attestation are absent. The
+vanilla CHU/ASY shortcut guards have independently passed. IW-043 Volga
+Bulgaria is likewise base-admitted while its signature writers and FORM-12/13
+routes remain held. The full achievement audit and live validation matrix remain
+required before completion.
 
 ### Super-event production
 
 Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution and is absent from runtime. The `6002` United States Marine Band OGG/WAV derivatives, image, sound definitions, GFX, localisation, history row, five predicates, and settings-aware queued playback are implemented and documented in `docs/super_events/006_independence_wave_super_event_research.md`. Four qualification routes are reachable. The hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof; FORM-42 remains fail-closed. Radical Bloc records its exact radical-league milestone actor, excludes scenario-forced qualification, requires an external containment attack, and evaluates one year of sovereign survival; its final audit remains pending.
 
 ### Visual assets
+
+The historical planning-only sentence below predates the bounded IW-043/IW-058
+asset delivery. Current produced files are governed by the generated-visuals and
+static-icon package manifests; the broader Event 006 asset families remain
+separately queued.
 
 The package defines source mode, motifs, sizes, animated states, static fallbacks, and asset families. It does not create PNG, DDS, TGA, portrait, flag, UI, or animation files. Historical material requires sourced evidence. Fictional material requires the approved generation workflow.
 
@@ -108,6 +126,11 @@ scenario, focus-tree layout, AI behavior, map release, unit spawn, or
 super-event playback completion audit is claimed here.
 
 ## Research status
+
+Package-specific research and final IW-043/IW-058 asset provenance are resolved
+for the admitted base tranche. The CHU/ASY vanilla compatibility adapter has
+passed; signature formable/achievement promotion remains explicitly held for
+missing adapter-attestation and proof writers.
 
 Every package has a final representation, research disposition, and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding is complete for the 2026-07-14 snapshot and the accepted tag scan is complete for the 2026-07-15 scan universe. Compatibility adapters, overlay hooks, final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 

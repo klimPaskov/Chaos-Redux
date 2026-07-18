@@ -1,0 +1,130 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 ACHIEVEMENT ON ACTIONS
+# ============================================================================
+# Narrow, event-driven history hooks for war, peace, annexation, subject status,
+# and original-capital control. No daily, weekly, monthly, or world iteration is
+# used.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			save_event_target_as = independence_wave_achievement_war_attacker
+			FROM = { save_event_target_as = independence_wave_achievement_war_defender }
+			independence_wave_achievement_record_war = yes
+		}
+	}
+
+	on_peace = {
+		effect = {
+			independence_wave_achievement_resolve_country_peace = yes
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			independence_wave_achievement_resolve_country_peace = yes
+			FROM = { independence_wave_achievement_resolve_country_peace = yes }
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = { save_event_target_as = independence_wave_achievement_changed_state }
+			FROM = { independence_wave_achievement_record_anchor_loss = yes }
+			independence_wave_achievement_record_anchor_recovery = yes
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+			if = {
+				limit = {
+					has_country_flag = independence_wave_active_origin
+					has_variable = independence_wave_former_host
+					var:independence_wave_former_host = { tag = FROM }
+				}
+				independence_wave_achievement_disqualify_former_host_remnant = yes
+			}
+			if = {
+				limit = { has_country_flag = independence_wave_active_origin }
+				set_country_flag = independence_wave_achievement_subject_status_ever
+				independence_wave_achievement_refresh_scenario_survivor = yes
+			}
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+			if = {
+				limit = {
+					has_country_flag = independence_wave_active_origin
+					has_variable = independence_wave_former_host
+					var:independence_wave_former_host = { tag = FROM }
+				}
+				independence_wave_achievement_disqualify_former_host_remnant = yes
+			}
+			if = {
+				limit = { has_country_flag = independence_wave_active_origin }
+				set_country_flag = independence_wave_achievement_subject_status_ever
+				independence_wave_achievement_refresh_scenario_survivor = yes
+			}
+		}
+	}
+
+	on_subject_autonomy_level_change = {
+		effect = {
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+			if = {
+				limit = {
+					has_country_flag = independence_wave_active_origin
+					is_subject = yes
+					has_variable = independence_wave_former_host
+					var:independence_wave_former_host = { tag = FROM }
+				}
+				independence_wave_achievement_disqualify_former_host_remnant = yes
+			}
+			if = {
+				limit = {
+					has_country_flag = independence_wave_active_origin
+					is_subject = yes
+				}
+				set_country_flag = independence_wave_achievement_subject_status_ever
+			}
+			independence_wave_achievement_refresh_scenario_survivor = yes
+		}
+	}
+
+	on_subject_free = {
+		effect = {
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+			independence_wave_achievement_refresh_scenario_survivor = yes
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			independence_wave_achievement_refresh_host_remnant_peace = yes
+			independence_wave_achievement_refresh_scenario_survivor = yes
+		}
+	}
+
+	on_annex = {
+		effect = {
+			save_event_target_as = independence_wave_achievement_annexer
+			FROM = {
+				independence_wave_achievement_remove_scenario_survivor = yes
+				if = {
+					limit = {
+						has_country_flag = independence_wave_active_origin
+						has_variable = independence_wave_former_host
+						var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_annexer }
+					}
+					independence_wave_achievement_disqualify_former_host_remnant = yes
+				}
+			}
+		}
+	}
+}

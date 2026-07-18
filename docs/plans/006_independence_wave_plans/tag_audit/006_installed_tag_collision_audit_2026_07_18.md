@@ -48,6 +48,30 @@ No Event 006-owned country, formable, or cosmetic identifier collides with the s
 
 All 6 tags are X-ending, unique against the 102 country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.
 
+### IW-043 and IW-058 long-form cosmetic identities
+
+The following route identities are cosmetic tags rather than three-character
+country tags. A supplementary literal scan on 2026-07-18 checked their exact
+identifiers across vanilla, the complete installed Workshop tree, and every
+sibling local mod, covering `.txt`, `.yml`, `.gfx`, and `.gui` surfaces. It
+found no external occurrence:
+
+- `CHU_independence_wave_middle_volga_congressX`
+- `CHU_independence_wave_volga_bulgariaX`
+- `CHU_independence_wave_volga_federationX`
+- `VOLGA_URAL_FEDERATIONX`
+- `IDEL_URAL_COMPACTX`
+- `ASY_independence_wave_national_councilX`
+- `ASY_independence_wave_church_compactX`
+- `ASY_independence_wave_civic_federationX`
+- `ASY_independence_wave_security_guardianshipX`
+- `MESOPOTAMIAN_FEDERATIONX`
+
+These identifiers therefore pass the installed textual alias/cosmetic
+collision gate. They do not create new countries: IW-043 continues to reuse
+vanilla `CHU`, IW-058 continues to reuse vanilla `ASY`, and FORM-12, FORM-13,
+and FORM-18 preserve their successful Event 006 carrier tags.
+
 ## Vanilla identity comparison
 
 | Event 006 package | Proposed identity/tag | Vanilla candidate | Confidence |
