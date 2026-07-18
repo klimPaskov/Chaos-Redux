@@ -38,7 +38,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-The Middle East, Europe, Asia, North America, and South America packages currently have their dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Oceania is not marked implementation-ready until its complete package file exists. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
+All six packages have dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Their package registry gates are implementation-ready because each now has a distinct playable constitutional structure. The broader political, decision, AI, identity, and asset surfaces remain separate completion requirements and cannot be replaced by a generic or copied package.
 
 ## Middle East implementation
 
@@ -148,6 +148,49 @@ All twenty-one sprites are registered in `interface/012_africa_world_order.gfx`.
 - `GFX_goal_012_africa_continent_union_south_america_south_atlantic_partnership` uses `goal_012_south_america_south_atlantic_partnership.dds`.
 - `GFX_goal_012_africa_continent_union_south_america_ratification` uses `goal_012_south_america_ratification.dds`.
 
+## Oceania implementation
+
+The Ocean Network treats Australia, New Zealand, Melanesia, Micronesia, Polynesia, and the island governments as negotiating partners joined by protected sea and air links. It begins with an island sovereignty congress, a convoy network, dispersed air and industrial capacity, locally accepted development and voluntary evacuation guarantees, and anti-colonial land settlements. It is not an expanded-Australia route, and it does not treat islands as empty bases.
+
+Five mutually exclusive settlements follow: maritime federation, treaty dominion, indigenous-led ocean union, socialist maritime commonwealth, and a reviewed deep-sea covenant. Every route has its own constitutional institution before converging on withdrawal law, Pacific defence and disaster reserves, an Indian Ocean and southern sea treaty with Africa, and final ratification. The dominion route carries a real indigenous-settlement loss when central authority is established, then must recover consent through its island council and treaty obligations. The deep-sea covenant is limited to explicitly nonhuman actors and remains locked until `africa_oceania_high_chaos_package_reviewed` confirms its separate ecological, containment, text, and asset review.
+
+The shared lanes remain constitution-specific. The maritime federation favours island votes and federal convoy administration. The treaty dominion concentrates naval command and dispersed industry under treaty limits. The indigenous-led union gives indigenous nations and island governments the strongest land and representation guarantees. The socialist commonwealth gives shipping and industry to workers, ports, cooperatives, and republics. The deep-sea covenant prioritises containment, ecological law, air warning, and human refusal rights.
+
+The Africa treaty covers convoy protection, island obligations, and Indian Ocean and southern sea access. Every base requires treaty consent. It establishes no integration right, and it records rivalry management where dominion and African strategic claims overlap.
+
+| Settlement | Convoy reach | Island representation | Naval protection | Indigenous settlement | Air network | Dispersed industry |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Maritime federation | 85 | 100 | 45 | 85 | 65 | 55 |
+| Treaty dominion | 55 | 100 | 100 | 50 | 55 | 95 |
+| Indigenous-led ocean union | 45 | 100 | 45 | 100 | 65 | 75 |
+| Socialist maritime commonwealth | 100 | 95 | 45 | 55 | 45 | 100 |
+| Deep-sea covenant | 55 | 65 | 100 | 100 | 95 | 55 |
+
+### Oceania focus icon contracts
+
+All twenty sprites are registered in `interface/012_africa_world_order.gfx`. Their final DDS files belong under `gfx/interface/goals/012_africa/world_order/` and remain blocked until each one has approved source, processed PNG, DDS, manifest, and review evidence.
+
+- `GFX_goal_012_africa_continent_sponsorship_oceania_ocean_network` uses `goal_012_oceania_ocean_network.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_island_congress` uses `goal_012_oceania_island_congress.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_oceania_convoy_network` uses `goal_012_oceania_convoy_network.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_oceania_air_industry` uses `goal_012_oceania_air_industry.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_development_evacuation` uses `goal_012_oceania_development_evacuation.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_liberation_land` uses `goal_012_oceania_liberation_land.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_maritime_federation` uses `goal_012_oceania_maritime_federation.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_treaty_dominion` uses `goal_012_oceania_treaty_dominion.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_indigenous_union` uses `goal_012_oceania_indigenous_union.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_socialist_commonwealth` uses `goal_012_oceania_socialist_commonwealth.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_deep_sea_covenant` uses `goal_012_oceania_deep_sea_covenant.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_federal_chamber` uses `goal_012_oceania_federal_chamber.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_dominion_council` uses `goal_012_oceania_dominion_council.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_peoples_congress` uses `goal_012_oceania_peoples_congress.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_workers_ports` uses `goal_012_oceania_workers_ports.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_deep_sea_law` uses `goal_012_oceania_deep_sea_law.dds`.
+- `GFX_goal_012_africa_continental_representation_oceania_constitution_withdrawal` uses `goal_012_oceania_constitution_withdrawal.dds`.
+- `GFX_goal_012_africa_continent_sponsorship_oceania_pacific_defence` uses `goal_012_oceania_pacific_defence.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_africa_sea_treaty` uses `goal_012_oceania_africa_sea_treaty.dds`.
+- `GFX_goal_012_africa_continent_union_oceania_ratification` uses `goal_012_oceania_ratification.dds`.
+
 ## Asset contracts
 
 The accepted matrix entries are registered in `interface/012_africa_world_order.gfx`. No generic texture redirection is used.
@@ -159,6 +202,7 @@ The accepted matrix entries are registered in `interface/012_africa_world_order.
 - Asia focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_asia_<focus_slug>.dds`
 - North America focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_north_america_<focus_slug>.dds`
 - South America focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_south_america_<focus_slug>.dds`
+- Oceania focus icons: `gfx/interface/goals/012_africa/world_order/goal_012_oceania_<focus_slug>.dds`
 - Package ideas: `gfx/interface/ideas/012_africa/world_order/idea_012_<continent>_<identity>.dds`
 - Route flags: the seven `continent_package_*` identity packages in `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`
 - Scramble super-event: `GFX_super_event_012_africa_scramble_response`
@@ -173,7 +217,7 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 
 ## Future implementation work
 
-- Finish and audit the Oceania focus tree, then complete the political, military, AI, decision, identity, and asset surfaces still required for all six continent packages.
+- Complete the political, military, AI, decision, identity, and asset surfaces still required for all six continent packages.
 - Add route-specific post-settlement decisions and breakup rules for every two-continent union.
 - Bind all 64 Event 12 AI profiles to the Scramble and world-order action choices.
 - Complete the accepted news, focus, idea, flag, super-event, animation, and audio assets with no substitutions.
