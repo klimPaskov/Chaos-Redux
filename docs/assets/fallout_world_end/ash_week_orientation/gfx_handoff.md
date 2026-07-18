@@ -40,6 +40,6 @@ Repeat the same `spriteType` shape for the other five names and texture paths. T
 
 ## Risks / notes
 
-- Sprite registration is complete. Event consumers remain pending until the matching orientation blocks are implemented.
+- Sprite registration is complete. The national sprite is bound to visible events `62` and `64`. The other five event consumers remain pending until their matching orientation blocks are implemented.
 - The female-presenting water engineer appears only as a fictional scene subject. This package does not authorize a leader/advisor portrait or a personal gameplay identity.
 - The report processor supplies the consistent tilt, shadow, sepia, grain, and transparent-edge treatment. Do not feed the processed cards back into ImageGen or reprocess them a second time.

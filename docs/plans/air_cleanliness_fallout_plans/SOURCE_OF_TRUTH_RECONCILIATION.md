@@ -161,7 +161,7 @@ Accepted Ash-week orientation disposition:
 - The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18.
 - Its accepted sequence, identifier roles, delays, deterministic outcomes, parity, recovery, registry refusal, six-asset requirement, and non-activation rules are incorporated into `specs/01_living_world_event_ecosystem.md`, `specs/03_fallout_timeline_and_campaign_pacing.md`, and `specs/12_event_content_budget_and_acceptance.md`.
 - Suffixes `62` through `84` are reserved for the accepted package.
-- No matching events, localisation, callers, or assets are implemented.
+- Four matching event blocks at `62` through `65`, their localisation, all six dedicated assets, and sprite registrations are implemented. The nineteen remaining blocks, caller, log and detail rows, manual coverage rows, and registry-backed late components are not implemented.
 - Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
 - The caller remains blocked until successor allocation, player continuation, and all required candidate registries are proven.
 

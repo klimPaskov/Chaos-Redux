@@ -745,3 +745,515 @@ fallout_event_114_branch = {
 	abandon_line = 3
 	request_neighbor_access = 4
 }
+
+# Dormant Ash-week Fallout orientation transaction constants. These values are
+# consumed only by the orientation substrate. No scheduler activation flag is
+# implied by any value in this section.
+fallout_orientation_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
+fallout_orientation_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	root = 1
+	result = 2
+	closure = 3
+	cleanup = 4
+	upper_bound = 5
+}
+
+fallout_orientation_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pending = 1
+	result_scheduled = 2
+	resolved = 3
+	cancelled = 4
+	blocked = 5
+	upper_bound = 6
+}
+
+# Typed fail-closed gates for substrate surfaces that require an exact engine or
+# registry-backed implementation before callers may use them. This substrate
+# does not write any of these approval variables.
+fallout_orientation_surface_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	blocked = 0
+	approved = 1
+	upper_bound = 2
+}
+
+fallout_orientation_diagnostic = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	registry_not_current = 1
+	allocation_not_current = 2
+	survival_ledger_not_current = 3
+	state_target_missing = 4
+	receiving_state_missing = 5
+	archetype_row_missing = 6
+	memory_row_missing = 7
+	candidate_registry_insufficient = 8
+	target_invalid = 9
+	branch_unaffordable = 10
+	stale_generation = 11
+	issued_receipt_mismatch = 12
+	due_day_invalid = 13
+	score_invalid = 14
+	cleanup_auth_invalid = 15
+	regional_row_missing = 16
+	cause_memory_missing = 17
+	input_invalid = 18
+	upper_bound = 19
+}
+
+fallout_orientation_national_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	household_workplace = 1
+	district_settlement = 2
+	emergency_command = 3
+	upper_bound = 4
+}
+
+fallout_orientation_capital_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	seal_heat_civic = 1
+	disperse_stores_offices = 2
+	evacuate_poisoned_core = 3
+	upper_bound = 4
+}
+
+fallout_orientation_resource_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ration = 1
+	requisition = 2
+	tailored = 3
+	upper_bound = 4
+}
+
+fallout_orientation_government_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	consolidate = 1
+	division = 2
+	rival = 3
+	upper_bound = 4
+}
+
+fallout_orientation_character_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	relief_administration = 1
+	security_extraction = 2
+	regional_institution = 3
+	upper_bound = 4
+}
+
+fallout_orientation_candidate_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	character = 1
+	institution = 2
+	upper_bound = 3
+}
+
+fallout_orientation_archetype_effect_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	recognition = 1
+	cohesion = 2
+	recovery = 3
+	adaptation = 4
+	reclamation = 5
+	supply = 6
+	stability_modifier = 7
+	upper_bound = 8
+}
+
+fallout_orientation_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 50
+	success = 70
+	partial = 45
+	resource_high = 60
+	resource_mid = 40
+	resource_low = 20
+	resource_high_bonus = 15
+	resource_mid_bonus = 8
+	resource_low_penalty = 12
+	recognition_high = 50
+	recognition_low = 25
+	recognition_high_bonus = 5
+	recognition_low_penalty = 8
+	archetype_match_bonus = 10
+	regional_match_bonus = 6
+	exposure_band_1 = 20
+	exposure_band_2 = 40
+	exposure_band_3 = 60
+	exposure_band_4 = 80
+	exposure_deduction_1 = 4
+	exposure_deduction_2 = 8
+	exposure_deduction_3 = 12
+	exposure_deduction_4 = 15
+	recovery_adaptation_factor = 0.06
+	support_minimum = 0
+	support_maximum = 200
+	support_score_maximum = 12
+	unresolved_crisis_penalty = 10
+	match_flag = 1
+	clamp_minimum = 0
+	clamp_maximum = 100
+	upper_bound = 101
+}
+
+fallout_orientation_delay = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	national_orientation_days = 2
+	capital_condition_days = 3
+	immediate_resource_crisis_days = 4
+	government_archetype_days = 3
+	character_or_institution_days = 2
+	upper_bound = 5
+}
+
+fallout_orientation_runtime = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	minimum_remaining_people = 1
+	population_scale = 1000
+	infrastructure_delta = 1
+	building_damage = 1
+	candidate_minimum = 2
+	branch_minimum = 1
+	branch_maximum = 3
+	upper_bound = 4
+}
+
+fallout_orientation_deaths = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	national_authority = 0.001
+	national_authority_recognition_threshold = 20
+	capital_seal = 0.002
+	capital_disperse = 0.0015
+	resource_requisition = 0.0015
+	character_security = 0.001
+	migration_success_share = 0.20
+	migration_partial_share = 0.12
+	migration_failure_share = 0.06
+	migration_failure_death_share = 0.04
+	upper_bound = 1
+}
+
+fallout_orientation_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	national_household_food = 4
+	national_household_water = 3
+	national_household_filters = 2
+	national_district_food = 3
+	national_district_shelter = 5
+	national_district_scrap = 2
+	national_command_fuel = 4
+	national_command_filters = 4
+	national_command_scrap = 3
+	capital_seal_filters = 6
+	capital_seal_fuel = 6
+	capital_seal_scrap = 4
+	capital_disperse_food = 4
+	capital_disperse_scrap = 6
+	capital_disperse_power = 4
+	capital_evacuation_fuel = 8
+	capital_evacuation_food = 6
+	capital_evacuation_shelter = 5
+	resource_ration_cohesion = 5
+	resource_requisition_recognition = 7
+	resource_requisition_cohesion = 4
+	resource_tailored_scrap = 6
+	resource_tailored_support = 4
+	government_consolidate_food = 3
+	government_consolidate_fuel = 3
+	government_division_food = 4
+	government_division_shelter = 4
+	government_rival_scrap = 5
+	government_rival_fuel = 4
+	character_relief_medicine = 5
+	character_relief_food = 5
+	character_security_fuel = 5
+	character_security_scrap = 5
+	character_institution_power = 4
+	character_institution_shelter = 4
+	character_institution_scrap = 4
+	upper_bound = 9
+}
+
+fallout_orientation_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	national_household_success_recognition = 10
+	national_household_success_cohesion = 6
+	national_household_partial_recognition = 5
+	national_household_partial_cohesion = 2
+	national_household_failure_recognition = 6
+	national_household_failure_cohesion = 5
+	national_household_failure_food = 4
+	national_district_success_recognition = 7
+	national_district_success_cohesion = 10
+	national_district_partial_recognition = 3
+	national_district_partial_cohesion = 5
+	national_district_failure_recognition = 5
+	national_district_failure_cohesion = 7
+	national_district_failure_shelter = 4
+	national_command_success_recognition = 5
+	national_command_success_cohesion = 8
+	national_command_partial_recognition = 2
+	national_command_partial_cohesion = 3
+	national_command_failure_recognition = 9
+	national_command_failure_cohesion = 6
+	capital_seal_success_exposure = 10
+	capital_seal_success_shelter = 8
+	capital_seal_success_recovery = 6
+	capital_seal_partial_exposure = 5
+	capital_seal_partial_shelter = 4
+	capital_seal_partial_recovery = 2
+	capital_seal_failure_exposure = 7
+	capital_seal_failure_shelter = 5
+	capital_disperse_success_shelter = 10
+	capital_disperse_success_adaptation = 7
+	capital_disperse_success_supply = 6
+	capital_disperse_partial_shelter = 5
+	capital_disperse_partial_adaptation = 3
+	capital_disperse_partial_supply = 2
+	capital_disperse_failure_shelter = 6
+	capital_disperse_failure_supply = 5
+	capital_evacuation_success_share = 0.20
+	capital_evacuation_partial_share = 0.12
+	capital_evacuation_failure_share = 0.06
+	capital_evacuation_failure_death_share = 0.04
+	capital_evacuation_success_exposure = 8
+	capital_evacuation_success_shelter = 6
+	capital_evacuation_partial_exposure = 4
+	capital_evacuation_partial_shelter = 2
+	capital_evacuation_failure_exposure = 5
+	resource_ration_success_crisis = 10
+	resource_ration_success_recognition = 6
+	resource_ration_partial_crisis = 5
+	resource_ration_partial_recognition = 2
+	resource_ration_partial_cohesion = 2
+	resource_ration_failure_recognition = 5
+	resource_requisition_success_crisis = 16
+	resource_requisition_partial_crisis = 7
+	resource_requisition_partial_recognition = 3
+	resource_requisition_failure_recognition = 8
+	resource_tailored_success_crisis = 13
+	resource_tailored_success_reclamation = 5
+	resource_tailored_partial_crisis = 6
+	resource_tailored_partial_reclamation = 2
+	resource_tailored_failure_scrap = 4
+	government_consolidate_success_recognition = 7
+	government_consolidate_success_cohesion = 8
+	government_consolidate_partial_recognition = 3
+	government_consolidate_partial_cohesion = 4
+	government_consolidate_failure_recognition = 8
+	government_consolidate_failure_cohesion = 6
+	government_division_success_recognition = 11
+	government_division_success_cohesion = 7
+	government_division_partial_recognition = 5
+	government_division_partial_cohesion = 2
+	government_division_failure_recognition = 6
+	government_division_failure_cohesion = 5
+	government_rival_success_recognition = 5
+	government_rival_success_cohesion = 10
+	government_rival_partial_recognition = 1
+	government_rival_partial_cohesion = 4
+	government_rival_failure_recognition = 10
+	government_rival_failure_cohesion = 7
+	character_relief_success_recognition = 8
+	character_relief_success_recovery = 5
+	character_relief_partial_recognition = 4
+	character_relief_partial_recovery = 2
+	character_relief_failure_medicine = 3
+	character_relief_failure_recognition = 5
+	character_security_success_cohesion = 7
+	character_security_success_supply = 5
+	character_security_partial_cohesion = 3
+	character_security_partial_recognition = 3
+	character_security_failure_cohesion = 6
+	character_institution_success_recognition = 7
+	character_institution_success_reclamation = 6
+	character_institution_partial_recognition = 3
+	character_institution_partial_reclamation = 3
+	character_institution_failure_recognition = 7
+	character_institution_failure_shelter = 4
+	upper_bound = 17
+}
+
+fallout_orientation_ai_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	primary = 10
+	secondary = 8
+	tertiary = 6
+	strong_factor = 2
+	weak_factor = 0.5
+	upper_bound = 3
+}
+
+fallout_orientation_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	command_authority_supply = -0.08
+	command_authority_mobilization = 0.10
+	contested_command_supply = 0.05
+	contested_command_mobilization = -0.05
+	command_resistance_stability = -0.08
+	command_resistance_supply = 0.08
+	ration_unrest_stability = -0.05
+	ration_unrest_consumer_goods = 0.05
+	consolidated_authority_stability = 0.08
+	consolidated_authority_supply = -0.05
+	contested_authority_stability = -0.05
+	contested_authority_mobilization = -0.05
+	legitimacy_crisis_stability = -0.10
+	legitimacy_crisis_supply = 0.08
+	capacity_liability_production = -0.08
+	capacity_liability_repair = -0.05
+	coercion_liability_attrition = 0.05
+	coercion_liability_supply = 0.05
+	upper_bound = 1
+}
+
+fallout_orientation_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	command_authority_days = 90
+	contested_command_days = 45
+	command_resistance_days = 90
+	ration_unrest_days = 60
+	consolidated_authority_days = 180
+	contested_authority_days = 90
+	legitimacy_crisis_days = 120
+	capacity_liability_days = 120
+	coercion_liability_days = 120
+	upper_bound = 181
+}
+
+# Reserved event identifiers remain inert until the parent wires event files.
+fallout_orientation_event_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	national_human_root = 62
+	national_ai_root = 63
+	national_human_result = 64
+	national_ai_result = 65
+	capital_human_root = 66
+	capital_ai_root = 67
+	capital_human_result = 68
+	capital_ai_result = 69
+	resource_human_root = 70
+	resource_ai_root = 71
+	resource_human_result = 72
+	resource_ai_result = 73
+	government_human_root = 74
+	government_ai_root = 75
+	government_human_result = 76
+	government_ai_result = 77
+	character_human_root = 78
+	character_ai_root = 79
+	character_human_result = 80
+	character_ai_result = 81
+	closure_human = 82
+	closure_ai = 83
+	cleanup = 84
+	upper_bound = 85
+}
