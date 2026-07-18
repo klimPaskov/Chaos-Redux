@@ -9,6 +9,8 @@ Government archetypes define how a successor interprets survival. They must prod
 
 The complete matrix is in `matrices/fallout_archetype_event_matrix.md`.
 
+The Ash-week orientation coverage for all twelve archetypes across the nine live regions is in `matrices/fallout_orientation_region_archetype_coverage_matrix.md`. Its rows are working design directions. They do not replace country-memory research or final localisation.
+
 ## Composition rule
 
 A country event is built from three layers:

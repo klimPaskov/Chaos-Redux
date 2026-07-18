@@ -2,6 +2,8 @@
 
 Working labels are not final localisation. These events combine with government archetype, country memory, cause memory, local state class, and recurring characters.
 
+This older matrix is a thematic event-family inventory. Its combined South Asia and Middle East, Africa, South America, and Polar labels are not runtime region ids. Ash-week eligibility and its exact nine-region identity use `fallout_orientation_region_archetype_coverage_matrix.md`. A remote station inherits a live region.
+
 | Region | Working label | Earliest band | Trigger | Choice directions | Actual effects | Continuation |
 | --- | --- | --- | --- | --- | --- | --- |
 | North America | The Interstate Parliament | Year 2 onward | Several successor states share a highway corridor. | Create toll congress, military road command, free corridor, competing checkpoints. | Changes trade, fuel, recognition, raider pressure, and compact cohesion. | Can become continental road compact or highway war. |
