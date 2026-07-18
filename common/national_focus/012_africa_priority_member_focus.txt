@@ -1,0 +1,274 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PRIORITY MEMBER FOCUS OVERLAY
+# ============================================================================
+# One replacement overlay is loaded only after a full Action 102 promotion.
+# Eight non-linear focuses provide equivalent depth to every accepted priority
+# package; package-aware effects, localisation, lifecycle ideas, and AI weights
+# supply the country-specific content without cloning sixteen parallel trees.
+# ============================================================================
+
+@africa_priority_focus_short = 6
+@africa_priority_focus_standard = 8
+@africa_priority_focus_long = 10
+@africa_priority_focus_tree_weight = 100
+@africa_priority_ai_low = 5
+@africa_priority_ai_normal = 10
+@africa_priority_ai_high = 20
+@africa_priority_ai_urgent = 40
+@africa_priority_ai_preferred = 2
+@africa_priority_ai_deferred = 0.5
+
+focus_tree = {
+	id = africa_priority_member_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = @africa_priority_focus_tree_weight
+			has_country_flag = africa_priority_member_focus_tree_loaded
+		}
+	}
+
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 20 y = 8 }
+	initial_show_position = { x = 20 y = 0 }
+
+	focus = {
+		id = africa_priority_define_compact_country
+		icon = GFX_goal_012_africa_priority_compact_country
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 0
+		cost = @africa_priority_focus_short
+		available = { africa_priority_member_has_package = yes }
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_define_compact_country_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.compact_country }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = { factor = @africa_priority_ai_urgent }
+	}
+
+	focus = {
+		id = africa_priority_ratify_political_settlement
+		icon = GFX_goal_012_africa_priority_political_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 1
+		cost = @africa_priority_focus_standard
+		prerequisite = { focus = africa_priority_define_compact_country }
+		available = { has_country_flag = africa_priority_member_politics_settled }
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_ratify_political_settlement_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.political_settlement }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_high
+			modifier = { factor = @africa_priority_ai_preferred has_country_flag = africa_priority_member_politics_settled }
+		}
+	}
+
+	focus = {
+		id = africa_priority_build_distinct_institution
+		icon = GFX_goal_012_africa_priority_distinct_institution
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 1
+		cost = @africa_priority_focus_standard
+		prerequisite = { focus = africa_priority_define_compact_country }
+		available = {
+			OR = {
+				africa_priority_member_can_advance_mechanic = yes
+				has_country_flag = africa_priority_member_mechanic_complete
+			}
+		}
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_build_distinct_institution_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.distinct_institution }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_normal
+			modifier = {
+				factor = @africa_priority_ai_preferred
+				OR = {
+					africa_priority_member_package_is_asante = yes
+					africa_priority_member_package_is_sokoto = yes
+					africa_priority_member_package_is_buganda = yes
+					africa_priority_member_package_is_aksum = yes
+					africa_priority_member_package_is_great_zimbabwe = yes
+					africa_priority_member_package_is_zulu = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = africa_priority_secure_economic_function
+		icon = GFX_goal_012_africa_priority_economic_function
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESOURCES }
+		x = 30
+		y = 1
+		cost = @africa_priority_focus_standard
+		prerequisite = { focus = africa_priority_define_compact_country }
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_secure_economic_function_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.economic_function }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_normal
+			modifier = {
+				factor = @africa_priority_ai_preferred
+				OR = {
+					africa_priority_member_package_is_oyo = yes
+					africa_priority_member_package_is_kanem_bornu = yes
+					africa_priority_member_package_is_manden = yes
+					africa_priority_member_package_is_harar = yes
+					africa_priority_member_package_is_kilwa = yes
+					africa_priority_member_package_is_luba = yes
+					africa_priority_member_package_is_lunda = yes
+					africa_priority_member_package_is_merina = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = africa_priority_negotiate_league_role
+		icon = GFX_goal_012_africa_priority_league_role
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 2
+		cost = @africa_priority_focus_standard
+		prerequisite = { focus = africa_priority_ratify_political_settlement }
+		available = { has_country_flag = africa_priority_member_league_disposition_recorded }
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_negotiate_league_role_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.league_role }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_high
+			modifier = {
+				factor = @africa_priority_ai_preferred
+				OR = {
+					africa_priority_member_package_is_asante = yes
+					africa_priority_member_package_is_kongo = yes
+					africa_priority_member_package_is_buganda = yes
+					africa_priority_member_package_is_nubia = yes
+					africa_priority_member_package_is_merina = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = africa_priority_field_national_force
+		icon = GFX_goal_012_africa_priority_national_force
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 30
+		y = 2
+		cost = @africa_priority_focus_standard
+		prerequisite = { focus = africa_priority_secure_economic_function }
+		available = {
+			OR = {
+				africa_priority_member_can_reinforce_force = yes
+				has_country_flag = africa_priority_member_force_ready
+			}
+		}
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_field_national_force_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.national_force }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_normal
+			modifier = { factor = @africa_priority_ai_preferred has_war = yes }
+			modifier = {
+				factor = @africa_priority_ai_preferred
+				OR = {
+					africa_priority_member_package_is_oyo = yes
+					africa_priority_member_package_is_kanem_bornu = yes
+					africa_priority_member_package_is_aksum = yes
+					africa_priority_member_package_is_kilwa = yes
+					africa_priority_member_package_is_zulu = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = africa_priority_resolve_overlap_question
+		icon = GFX_goal_012_africa_priority_overlap_question
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 3
+		cost = @africa_priority_focus_long
+		prerequisite = { focus = africa_priority_negotiate_league_role }
+		prerequisite = { focus = africa_priority_build_distinct_institution }
+		available = { has_country_flag = africa_priority_member_overlap_disposition_recorded }
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_resolve_overlap_question_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.overlap_question }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = {
+			factor = @africa_priority_ai_high
+			modifier = { factor = @africa_priority_ai_deferred has_war = yes }
+			modifier = {
+				factor = @africa_priority_ai_preferred
+				OR = {
+					africa_priority_member_package_is_kongo = yes
+					africa_priority_member_package_is_nubia = yes
+					africa_priority_member_package_is_luba = yes
+					africa_priority_member_package_is_lunda = yes
+					africa_priority_member_package_is_great_zimbabwe = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = africa_priority_write_post_settlement_programme
+		icon = GFX_goal_012_africa_priority_post_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 20
+		y = 4
+		cost = @africa_priority_focus_long
+		prerequisite = { focus = africa_priority_resolve_overlap_question }
+		prerequisite = { focus = africa_priority_field_national_force }
+		available = { africa_priority_member_settlement_is_recorded = yes }
+		cancel_if_invalid = yes
+		completion_reward = {
+			custom_effect_tooltip = africa_priority_write_post_settlement_programme_tt
+			hidden_effect = {
+				set_temp_variable = { africa_priority_focus_step_id = constant:africa_priority_member_focus_step.post_settlement }
+				africa_priority_member_apply_focus_step = yes
+			}
+		}
+		ai_will_do = { factor = @africa_priority_ai_urgent }
+	}
+}
