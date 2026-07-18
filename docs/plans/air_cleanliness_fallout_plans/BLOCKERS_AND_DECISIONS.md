@@ -276,6 +276,14 @@ The installed documentation and close precedents establish the selector grammar 
 
 Runtime acceptance remains required for railway topology, supply-node removal, immediate read visibility, save interruption, and multiplayer synchronization. `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md` records the exact static basis and test boundary.
 
+## B12: Ash-week orientation contract approval
+
+Status: open, explicit user approval required before implementation
+
+`FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` is an unaccepted working proposal. It is not an accepted decision and must not be promoted into the source specs. Proposed suffixes `62` through `84` remain free and are not reserved. No matching events or localisation are defined. `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` remain unset. The living-world count remains 0 of 660.
+
+No gameplay, localisation, asset, caller, reservation, or activation work from that proposal is authorized until the user explicitly approves it.
+
 ## Design decisions already resolved
 
 ### D1: normal super-event removal
