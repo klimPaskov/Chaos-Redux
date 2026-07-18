@@ -172,3 +172,30 @@ The registered AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS textures retain their
 existing registries and consumers. ACX and AEX remain unregistered
 readiness-pool art only. The rejected mixed generated-art portrait handoff is
 not a wiring authority, and custom Event 006 advisor icons remain withdrawn.
+
+## 2026-07-18 FORM-48 Pacific supersession
+
+The older blocked range above is superseded for `FORM-48` only. The final
+texture is installed at
+`gfx/interface/006_independence_wave/emblems/independence_wave_formable_form_48.dds`.
+The parent implementation should register it, preferably in a dedicated
+`interface/006_independence_wave_form48.gfx`, without changing either stable
+identifier:
+
+```text
+spriteTypes = {
+	spriteType = {
+		name = "GFX_independence_wave_formable_form_48"
+		texturefile = "gfx/interface/006_independence_wave/emblems/independence_wave_formable_form_48.dds"
+	}
+}
+```
+
+The complete `HBX` and `PFX` normal, medium, and small ideology ladders are
+already installed and resolve through HOI4's country-tag filename lookup; they
+need no sprite definitions. `HBX` now uses the historical 1911 Bear Flag
+arrangement with the exact `CALIFORNIA REPUBLIC` legend; the prior textless
+adaptation is no longer a runtime source. The parent must connect `PFX` to the FORM-48
+cosmetic/formable path and point the stable UI consumer at the sprite above.
+Detailed evidence and exact filenames are in
+`form48_pacific_assets_2026_07_17/gfx_handoff.md`.

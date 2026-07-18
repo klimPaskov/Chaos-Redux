@@ -63,6 +63,7 @@ EVENT6_FORMABLE_COSMETIC_IDENTITIES = {
 	"LCX": ("FORM-03", "Confederation of the Low Countries"),
 	"RLX": ("FORM-04", "Rhenish League"),
 	"MIX": ("FORM-05", "Mediterranean Island League"),
+	"PFX": ("FORM-48", "Pacific Regional Federation"),
 }
 REQUIRED_MANUAL_IDENTITY_PACKAGES = {
 	"IW-011",
@@ -979,6 +980,7 @@ def main() -> None:
 	formable_localisation_files = [
 		repo_root / "localisation" / "english" / "006_independence_wave_form01_02_04_l_english.yml",
 		repo_root / "localisation" / "english" / "006_independence_wave_form05_l_english.yml",
+		repo_root / "localisation" / "english" / "006_independence_wave_pacific_l_english.yml",
 		repo_root / "localisation" / "english" / "006_independence_wave_formable_registry_l_english.yml",
 	]
 	manual_identity_file = repo_root / "docs" / "plans" / "006_independence_wave_plans" / "tag_audit" / "006_vanilla_identity_manual_dispositions_2026_07_16.csv"

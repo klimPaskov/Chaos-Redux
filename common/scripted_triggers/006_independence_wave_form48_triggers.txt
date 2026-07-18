@@ -1,0 +1,454 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-48 TRIGGERS
+# ============================================================================
+# Exact HBX/HAW/FSM package, hidden-reveal, consent-ledger, AI, and commit
+# proofs for the Pacific Regional Federation (PFX). FORM-48 never infers a
+# Pacific member from geography, culture, or an all-country scan.
+# ============================================================================
+
+@FORM48_HBX_ANCHOR = 378
+@FORM48_HAW_ANCHOR = 629
+@FORM48_FSM_ANCHOR = 684
+
+is_independence_wave_form48_eligible_member = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_family_selected
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_form48_autonomous_member }
+	OR = {
+		AND = {
+			original_tag = HBX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 }
+			check_variable = { independence_wave_anchor_state = @FORM48_HBX_ANCHOR }
+			owns_state = @FORM48_HBX_ANCHOR
+			controls_state = @FORM48_HBX_ANCHOR
+			capital_scope = { state = @FORM48_HBX_ANCHOR }
+		}
+		AND = {
+			original_tag = HAW
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 }
+			check_variable = { independence_wave_anchor_state = @FORM48_HAW_ANCHOR }
+			owns_state = @FORM48_HAW_ANCHOR
+			controls_state = @FORM48_HAW_ANCHOR
+			capital_scope = { state = @FORM48_HAW_ANCHOR }
+		}
+		AND = {
+			original_tag = FSM
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_179 }
+			check_variable = { independence_wave_anchor_state = @FORM48_FSM_ANCHOR }
+			owns_state = @FORM48_FSM_ANCHOR
+			controls_state = @FORM48_FSM_ANCHOR
+			capital_scope = { state = @FORM48_FSM_ANCHOR }
+		}
+	}
+}
+
+has_independence_wave_form48_exact_carrier_anchor = {
+	is_independence_wave_form48_eligible_member = yes
+	original_tag = HBX
+	NOT = { has_cosmetic_tag = PFX }
+	NOT = { has_global_flag = independence_wave_form48_pfx_identity_in_use }
+	NOT = { has_country_flag = independence_wave_form48_dissolved }
+}
+
+has_independence_wave_form48_researched_maritime_congress_route = {
+	original_tag = HBX
+	has_country_flag = independence_wave_form48_maritime_congress_researched
+}
+
+has_independence_wave_form48_high_chaos_signature_route = {
+	has_country_flag = independence_wave_signature_extension_anchor_reached
+	has_country_flag = independence_wave_high_chaos_sovereignty_complete
+	can_independence_wave_use_high_chaos_actions = yes
+}
+
+has_independence_wave_form48_hidden_reveal_gate = {
+	has_independence_wave_form48_exact_carrier_anchor = yes
+	OR = {
+		has_independence_wave_form48_researched_maritime_congress_route = yes
+		has_independence_wave_form48_high_chaos_signature_route = yes
+	}
+}
+
+# Carrier-country scope. The three country rows and three anchor rows must be
+# exact. Frozen acceptance is still bound to this carrier generation, FORM-48,
+# and the current proposal sequence by the shared invitation trigger.
+has_independence_wave_form48_exact_founding_ledger = {
+	independence_wave_formable_member_arrays_are_aligned = yes
+	independence_wave_formable_invitation_arrays_are_aligned = yes
+	check_variable = { var = independence_wave_formable_member_country_entries^num value = independence_wave_formable_minimum_members compare = equals }
+	check_variable = { var = independence_wave_formable_invited_country_entries^num value = independence_wave_formable_minimum_members compare = equals }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = HBX }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = HAW }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = FSM }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = HBX }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = HAW }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = FSM }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM48_HBX_ANCHOR }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM48_HAW_ANCHOR }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM48_FSM_ANCHOR }
+	HBX = {
+		is_independence_wave_form48_eligible_member = yes
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+	}
+	HAW = {
+		is_independence_wave_form48_eligible_member = yes
+		has_country_flag = independence_wave_haw_pacific_delegation_ready
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+		NOT = { has_war_with = ROOT }
+	}
+	FSM = {
+		is_independence_wave_form48_eligible_member = yes
+		has_country_flag = independence_wave_fsm_pacific_delegation_ready
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+has_independence_wave_form48_strict_mutation_preconditions = {
+	has_independence_wave_form48_exact_carrier_anchor = yes
+	independence_wave_formable_profile_matches_selected_family = yes
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	has_country_flag = independence_wave_formable_discovered
+	has_country_flag = independence_wave_formable_hidden_reveal_ready
+	has_independence_wave_form48_hidden_reveal_gate = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	OR = {
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+			has_independence_wave_form48_researched_maritime_congress_route = yes
+			OR = {
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+			}
+		}
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+			has_independence_wave_form48_high_chaos_signature_route = yes
+			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+		}
+	}
+	has_independence_wave_form48_exact_founding_ledger = yes
+}
+
+has_independence_wave_form48_runtime_commit_proof = {
+	has_independence_wave_form48_strict_mutation_preconditions = yes
+	has_independence_wave_formable_commit_readiness = yes
+}
+
+# HBX/PFX scope. Unlike readiness, this is a post-mutation proof: it becomes
+# true only after the shared transaction has committed the identity, installed
+# both exact sovereign members, and published its committed state.
+has_independence_wave_form48_successful_integration_proof = {
+	is_independence_wave_active_country = yes
+	original_tag = HBX
+	has_cosmetic_tag = PFX
+	has_global_flag = independence_wave_form48_pfx_identity_in_use
+	has_country_flag = independence_wave_form48_federal_carrier
+	has_country_flag = independence_wave_form48_all_autonomous_members_bound
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_formable_family
+	has_variable = independence_wave_formable_transaction_state
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 }
+	check_variable = { independence_wave_anchor_state = @FORM48_HBX_ANCHOR }
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	owns_state = @FORM48_HBX_ANCHOR
+	controls_state = @FORM48_HBX_ANCHOR
+	capital_scope = { state = @FORM48_HBX_ANCHOR }
+	HAW = {
+		is_independence_wave_active_country = yes
+		is_subject = no
+		original_tag = HAW
+		has_country_flag = independence_wave_form48_autonomous_member
+		has_variable = independence_wave_form48_autonomous_carrier
+		has_variable = independence_wave_form48_autonomous_carrier_generation
+		has_variable = independence_wave_form48_autonomous_family
+		check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 }
+		check_variable = { independence_wave_anchor_state = @FORM48_HAW_ANCHOR }
+		var:independence_wave_form48_autonomous_carrier = { tag = ROOT }
+		check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
+		check_variable = { independence_wave_form48_autonomous_family = constant:independence_wave_formable_family.pacific_regional_federation }
+		owns_state = @FORM48_HAW_ANCHOR
+		controls_state = @FORM48_HAW_ANCHOR
+		capital_scope = { state = @FORM48_HAW_ANCHOR }
+	}
+	FSM = {
+		is_independence_wave_active_country = yes
+		is_subject = no
+		original_tag = FSM
+		has_country_flag = independence_wave_form48_autonomous_member
+		has_variable = independence_wave_form48_autonomous_carrier
+		has_variable = independence_wave_form48_autonomous_carrier_generation
+		has_variable = independence_wave_form48_autonomous_family
+		check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_179 }
+		check_variable = { independence_wave_anchor_state = @FORM48_FSM_ANCHOR }
+		var:independence_wave_form48_autonomous_carrier = { tag = ROOT }
+		check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
+		check_variable = { independence_wave_form48_autonomous_family = constant:independence_wave_formable_family.pacific_regional_federation }
+		owns_state = @FORM48_FSM_ANCHOR
+		controls_state = @FORM48_FSM_ANCHOR
+		capital_scope = { state = @FORM48_FSM_ANCHOR }
+	}
+}
+
+# Carrier-country scope. FORM-48's low willingness never reaches the generic
+# moderate-willingness AI branch. The carrier requires both an actual former-
+# host collapse and the completed high-chaos signature route.
+should_independence_wave_form48_ai_pursue = {
+	is_ai = yes
+	has_independence_wave_form48_exact_carrier_anchor = yes
+	has_independence_wave_formable_commit_readiness = yes
+	check_variable = { independence_wave_formable_ai_willingness = constant:independence_wave_formable_ai_willingness.low }
+	has_country_flag = independence_wave_host_collapse
+	has_independence_wave_form48_high_chaos_signature_route = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+	HAW = { should_independence_wave_form48_ai_consent_to_root = yes }
+	FSM = { should_independence_wave_form48_ai_consent_to_root = yes }
+}
+
+# Candidate-country scope with ROOT as the FORM-48 carrier. Future member-facing
+# decisions may use this preference, but only an explicit invitation reply is
+# accepted by the ledger and strict commit proof.
+should_independence_wave_form48_ai_consent_to_root = {
+	is_ai = yes
+	is_independence_wave_form48_eligible_member = yes
+	OR = {
+		AND = {
+			original_tag = HAW
+			has_country_flag = independence_wave_haw_pacific_delegation_ready
+		}
+		AND = {
+			original_tag = FSM
+			has_country_flag = independence_wave_fsm_pacific_delegation_ready
+		}
+	}
+	is_independence_wave_recognized_or_later = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+	NOT = { has_war_with = ROOT }
+	ROOT = {
+		has_independence_wave_form48_exact_carrier_anchor = yes
+		has_independence_wave_formable_commit_readiness = yes
+		check_variable = { independence_wave_formable_ai_willingness = constant:independence_wave_formable_ai_willingness.low }
+		has_country_flag = independence_wave_host_collapse
+		has_independence_wave_form48_high_chaos_signature_route = yes
+	}
+}
+
+# Human HAW/FSM scope. Pacific invitations deliberately bypass the generic
+# FORM-01/02/04 integration ballot: FORM-48 can preserve only sovereign,
+# autonomous founding members.
+has_independence_wave_form48_pending_human_invitation = {
+	is_ai = no
+	has_pending_independence_wave_formable_founding_invitation = yes
+	check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	is_independence_wave_form48_eligible_member = yes
+	OR = {
+		original_tag = HAW
+		original_tag = FSM
+	}
+	var:independence_wave_formable_inviting_carrier = {
+		has_independence_wave_form48_exact_carrier_anchor = yes
+	}
+}
+
+# HBX/PFX scope after the shared transaction has proved both the identity and
+# autonomous-member integration. This does not require readiness itself; it can
+# become true only after the readiness-gated shared commit has succeeded.
+is_independence_wave_form48_postformation_carrier = {
+	original_tag = HBX
+	has_cosmetic_tag = PFX
+	has_country_flag = independence_wave_form48_federal_carrier
+	has_country_flag = independence_wave_form48_postformation_initialized
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 }
+	check_variable = { independence_wave_anchor_state = @FORM48_HBX_ANCHOR }
+	owns_state = @FORM48_HBX_ANCHOR
+	controls_state = @FORM48_HBX_ANCHOR
+	capital_scope = { state = @FORM48_HBX_ANCHOR }
+}
+
+# Autonomous-member scope. This deliberately proves less than the active-member
+# trigger below so rollback and origin cleanup can use it before or after the
+# postformation surface is initialized. It still fails closed unless the saved
+# carrier, FORM-48 family, and both sides' Event 006 generation are identical.
+has_independence_wave_form48_current_autonomous_binding = {
+	has_country_flag = independence_wave_form48_autonomous_member
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_form48_autonomous_carrier
+	has_variable = independence_wave_form48_autonomous_carrier_generation
+	has_variable = independence_wave_form48_autonomous_family
+	check_variable = { independence_wave_form48_autonomous_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	check_variable = { var = independence_wave_generation_id value = independence_wave_form48_autonomous_carrier_generation compare = equals }
+	var:independence_wave_form48_autonomous_carrier = {
+		exists = yes
+		has_variable = independence_wave_generation_id
+		has_variable = independence_wave_formable_family
+		check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.pacific_regional_federation }
+		check_variable = { var = independence_wave_generation_id value = PREV.independence_wave_form48_autonomous_carrier_generation compare = equals }
+	}
+}
+
+# HAW/FSM scope. The carrier pointer and generation bind every obligation to
+# the exact successful FORM-48 transaction that installed the member.
+is_independence_wave_form48_active_autonomous_member = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_form48_autonomous_member
+	has_variable = independence_wave_form48_autonomous_carrier
+	has_variable = independence_wave_form48_autonomous_carrier_generation
+	has_variable = independence_wave_form48_autonomous_family
+	check_variable = { independence_wave_form48_autonomous_family = constant:independence_wave_formable_family.pacific_regional_federation }
+	OR = {
+		AND = {
+			original_tag = HAW
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 }
+			check_variable = { independence_wave_anchor_state = @FORM48_HAW_ANCHOR }
+		}
+		AND = {
+			original_tag = FSM
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_179 }
+			check_variable = { independence_wave_anchor_state = @FORM48_FSM_ANCHOR }
+		}
+	}
+	var:independence_wave_form48_autonomous_carrier = {
+		is_independence_wave_form48_postformation_carrier = yes
+		check_variable = { var = independence_wave_generation_id value = PREV.independence_wave_form48_autonomous_carrier_generation compare = equals }
+	}
+}
+
+has_independence_wave_form48_bound_member_compact = {
+	is_independence_wave_form48_postformation_carrier = yes
+	has_country_flag = independence_wave_form48_all_autonomous_members_bound
+	NOT = { has_country_flag = independence_wave_form48_member_departed }
+	HAW = { is_independence_wave_form48_active_autonomous_member = yes }
+	FSM = { is_independence_wave_form48_active_autonomous_member = yes }
+}
+
+has_independence_wave_form48_active_carrier_project = {
+	OR = {
+		has_decision = independence_wave_form48_commission_convoy_defense_rotation
+		has_decision = independence_wave_form48_allocate_shared_procurement_contracts
+		has_decision = independence_wave_form48_negotiate_island_basing_convention
+		has_active_mission = independence_wave_form48_convoy_defense_deadline
+		has_active_mission = independence_wave_form48_procurement_deadline
+		has_active_mission = independence_wave_form48_basing_deadline
+		has_country_flag = independence_wave_form48_convoy_cycle_active
+		has_country_flag = independence_wave_form48_procurement_cycle_active
+		has_country_flag = independence_wave_form48_basing_cycle_active
+	}
+}
+
+has_independence_wave_form48_invitation_response_in_progress = {
+	OR = {
+		has_decision = independence_wave_form48_accept_autonomous_membership
+		has_decision = independence_wave_form48_withhold_autonomous_membership
+	}
+}
+
+has_independence_wave_form48_member_response_in_progress = {
+	OR = {
+		has_decision = independence_wave_form48_fulfill_convoy_obligation
+		has_decision = independence_wave_form48_withhold_convoy_obligation
+		has_decision = independence_wave_form48_fulfill_procurement_obligation
+		has_decision = independence_wave_form48_withhold_procurement_obligation
+		has_decision = independence_wave_form48_grant_limited_basing_consent
+		has_decision = independence_wave_form48_withhold_basing_consent
+	}
+}
+
+can_pay_independence_wave_form48_carrier_convoy_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_form48_cost.carrier_convoy_factories
+	command_power > constant:independence_wave_form48_cost.carrier_command_power_availability_threshold
+	has_equipment = { convoy > constant:independence_wave_form48_cost.carrier_convoys_availability_threshold }
+	has_fuel > constant:independence_wave_form48_cost.carrier_fuel_availability_threshold
+}
+
+can_pay_independence_wave_form48_carrier_procurement_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_form48_cost.carrier_procurement_factories
+	has_equipment = { convoy > constant:independence_wave_form48_cost.carrier_procurement_convoys_availability_threshold }
+	has_equipment = { infantry_equipment > constant:independence_wave_form48_cost.carrier_infantry_equipment_availability_threshold }
+	has_equipment = { support_equipment > constant:independence_wave_form48_cost.carrier_support_equipment_availability_threshold }
+}
+
+can_pay_independence_wave_form48_carrier_basing_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_form48_cost.carrier_basing_factories
+	command_power > constant:independence_wave_form48_cost.carrier_command_power_availability_threshold
+	has_equipment = { support_equipment > constant:independence_wave_form48_cost.carrier_support_equipment_availability_threshold }
+}
+
+can_pay_independence_wave_form48_member_convoy_cost = {
+	command_power > constant:independence_wave_form48_cost.member_command_power_availability_threshold
+	has_equipment = { convoy > constant:independence_wave_form48_cost.member_convoys_availability_threshold }
+}
+
+can_pay_independence_wave_form48_member_procurement_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_form48_cost.member_factories
+	has_equipment = { infantry_equipment > constant:independence_wave_form48_cost.member_infantry_equipment_availability_threshold }
+	has_equipment = { support_equipment > constant:independence_wave_form48_cost.member_support_equipment_availability_threshold }
+}
+
+can_pay_independence_wave_form48_member_basing_cost = {
+	command_power > constant:independence_wave_form48_cost.member_command_power_availability_threshold
+	has_equipment = { support_equipment > constant:independence_wave_form48_cost.member_support_equipment_availability_threshold }
+}
+
+has_independence_wave_form48_convoy_obligations_complete = {
+	has_country_flag = independence_wave_form48_convoy_cycle_active
+	HAW = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_convoy_obligation_fulfilled
+	}
+	FSM = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_convoy_obligation_fulfilled
+	}
+}
+
+has_independence_wave_form48_procurement_obligations_complete = {
+	has_country_flag = independence_wave_form48_procurement_cycle_active
+	HAW = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_procurement_obligation_fulfilled
+	}
+	FSM = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_procurement_obligation_fulfilled
+	}
+}
+
+has_independence_wave_form48_basing_consents_complete = {
+	has_country_flag = independence_wave_form48_basing_cycle_active
+	HAW = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_basing_consent_granted
+	}
+	FSM = {
+		is_independence_wave_form48_active_autonomous_member = yes
+		has_country_flag = independence_wave_form48_basing_consent_granted
+	}
+}
+
+has_independence_wave_form48_dissolution_pressure = {
+	is_independence_wave_form48_postformation_carrier = yes
+	OR = {
+		has_country_flag = independence_wave_form48_member_departed
+		NOT = { has_country_flag = independence_wave_form48_all_autonomous_members_bound }
+		check_variable = {
+			var = independence_wave_form48_compact_strain
+			value = constant:independence_wave_form48_value.dissolution_warning
+			compare = greater_than_or_equals
+		}
+	}
+}

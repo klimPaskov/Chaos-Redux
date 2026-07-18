@@ -2,16 +2,25 @@
 
 Date: 2026-07-16
 
-Status: accepted next implementation tranche
+Status: implemented and superseded as a next-tranche status document (parent
+promotion: 2026-07-18)
+
+> Current-state note: the locked FORM-48 design in this plan has been
+> implemented and promoted. IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` are
+> present in the runtime content-attestation set; family 48 readiness is
+> attested after coordinated PASS audits. The historical fail-closed language
+> below records the pre-promotion boundary and is retained for traceability.
+> Use `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md`
+> for current status. FORM-42 and FORM-06 through FORM-47 remain fail-closed.
 
 ## Locked direction
 
 Implement FORM-48, the Pacific Regional Federation, as Event 006's first
 operational hidden-high-chaos formable. Use:
 
-- IW-173 `HBX` California as carrier, anchored on state 378;
-- IW-179 `HAW` Hawaii as an autonomous consenting member, anchored on state 629;
-- IW-184 `FSM` Micronesia as an autonomous consenting member, anchored on state
+- IW-184 `HBX` California as carrier, anchored on state 378;
+- IW-173 `HAW` Hawaii as an autonomous consenting member, anchored on state 629;
+- IW-179 `FSM` Micronesia as an autonomous consenting member, anchored on state
   684;
 - `PFX` as the collision-cleared Event 006 cosmetic federation identity.
 
@@ -57,10 +66,14 @@ through:
 - `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`.
 
 Replace the legacy unset `independence_wave_package_content_ready` dependency
-with exact attested availability wrappers. HBX may receive the full shared Event
-006 framework after tree-ownership review. HAW and FSM require safe additive
-Event 006 content unless an audit proves their current tree can be replaced
-without losing meaningful vanilla or mod content.
+with exact attested availability wrappers. HBX may receive the full shared
+Event 006 framework after tree-ownership review. Exact dormant IW-173 HAW may
+also receive the full framework only while its current tree is `generic_focus`;
+it receives a bespoke seven-focus Hawaiian shared group, and cleanup restores
+`generic_focus` only while its current tree is still the Event 006 framework.
+Living, non-Event-006, Soviet-collapse, and meaningful non-generic HAW remain
+untouched. FSM keeps safe additive Event 006 content and never loads a
+replacement tree.
 
 ## FORM-48 adapters and transaction
 

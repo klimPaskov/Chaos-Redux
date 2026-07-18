@@ -316,3 +316,37 @@ defensible United States public-domain basis. No Debeauvais asset or generated
 likeness is wired. The accepted fictional BRI civic portrait does not clear or
 replace that historical-person rights blocker, and portrait presence does not
 grant runtime content attestation or SCN008 scenario-preflight readiness.
+
+## 2026-07-18 FORM-48 Pacific visual-asset handoff
+
+This section is the later authority for `FORM-48` and supersedes the older
+“remaining FORM-05 through FORM-48” blocked statement only for this one family.
+The accepted Pacific plan now supplies the stable `HBX` California carrier,
+`PFX` federal identity, researched motifs, palette, and FORM-48 UI-emblem
+contract.
+
+The bounded production package is
+`form48_pacific_assets_2026_07_17/`. It contains official ImageGen sources,
+the public-domain California reference, direct research links and rights notes,
+exact prompts, no-dither flat masters, processed PNG ladders, two review sheets,
+full validation, checksums, and a parent wiring handoff. The `HBX` source and
+runtime ladder were corrected to retain the historically attested
+`CALIFORNIA REPUBLIC` legend; the prior textless adaptation is superseded.
+
+Delivered runtime finals:
+
+- complete `HBX` and `PFX` base plus democratic, communism, fascism, and
+  neutrality ladders at 82x52, 41x26, and 10x7 under `gfx/flags/`;
+- `gfx/interface/006_independence_wave/emblems/independence_wave_formable_form_48.dds`;
+- proposed stable sprite `GFX_independence_wave_formable_form_48`.
+
+All 30 TGAs are flat, opaque, uncompressed 32-bit bottom-left-origin files and
+decode exactly to their processed PNGs. Within each tag and size, the five
+ideology filenames are intentionally byte-identical constitutional/civic
+identity aliases. `HBX` and `PFX` remain visually and bytewise distinct.
+
+The emblem texture is installed and validated but is not registered or consumed
+by this asset-only tranche. Parent implementation owns the `PFX` cosmetic/formable
+wiring, the sprite registration, and the live FORM-48 UI consumer. No portrait,
+advisor icon, BAY/RHI protected portrait, gameplay, localisation, registry,
+`.gfx`, or `.gui` file was changed by the HBX correction.

@@ -6,6 +6,33 @@ This package is the accepted source specification; implementation status is reco
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
+## Current implementation reconciliation (2026-07-18)
+
+The accepted specification remains unchanged; this section is the current
+implementation ledger rather than a rewrite of the planning baseline. The parent
+promotion admits IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` to the exact runtime
+content-attestation set and promotes FORM-48 family readiness. FORM-48 uses HBX
+as carrier, HAW/FSM as sovereign autonomous members, and cosmetic identity PFX;
+no annexation or integration fallback is used. Its registration binds family 48,
+sets all six shared adapter readiness flags, and sets
+`independence_wave_form48_registry_surface_registered` and
+`independence_wave_form48_readiness_attested` after coordinated PASS audits.
+
+The 2026-07-18 installed scan covers 108 Event 006-owned identifiers, 122
+Workshop directories, three sibling local mods, archives, and reports zero
+collisions. The allocator passes 149 publishers, 126 automatic/high-chaos
+selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
+and Event 005-first joint reservation ordering. Pacific assets use vanilla
+HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and the audited flat
+ImageGen PFX flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
+portrait blocks are present; accepted male large portraits are separate leader
+assets, and protected BAY/RHI hashes are unchanged.
+
+FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
+006 completion audit, final balance audit, catalog alignment, and unrelated
+package/achievement work remain incomplete. Earlier Pacific handoffs that state
+HOLD/FAIL-CLOSED are historical records and are not rewritten here.
+
 ## Design simplifications
 
 No requested design surface was intentionally simplified into a weaker substitute.
@@ -48,16 +75,20 @@ All titles and labels in the source specification are working labels. Event text
 
 ### Achievements
 
-Sixteen Event 006 achievements are accepted in design. None currently has a
-gameplay definition or localisation set. Fifteen have final normal, grey, and
-not-eligible DDS triplets; only `chaosx_006_assyria_survives` lacks its approved
-art package. Radical Bloc records only its dangerous-milestone prerequisite and
-does not award. Tracking, disqualifiers, containment survival, registry wiring,
-and localisation remain implementation work for all sixteen.
+All sixteen accepted Event 006 achievements have registered definitions, final
+English localisation, centralized thresholds, and event-driven proof logic.
+Country, patron, league, scenario, host-remnant, war, peace, subject, and anchor
+control history is wired through bounded Event 006 transactions and narrow
+engine on-actions; no periodic world scan is used. Fifteen have final normal,
+grey, and not-eligible DDS triplets. `chaosx_006_assyria_survives` remains
+fail-closed because IW-058 is not runtime-admitted and its researched Assyrian
+icon triplet is still absent. IW-043 Volga Bulgaria is also definition-complete
+but fail-closed until its package and signature routes are admitted. The full
+achievement audit and live validation matrix remain required before completion.
 
 ### Super-event production
 
-Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution and is absent from runtime. The `6002` United States Marine Band OGG/WAV derivatives, image, sound definitions, GFX, localisation, history row, five predicates, and settings-aware queued playback are implemented and documented in `docs/super_events/006_independence_wave_super_event_research.md`. Four qualification routes are reachable. The hidden-formable route remains dormant until the fail-closed FORM-42 or FORM-48 family and a valid carrier package are fully implemented and readiness-promoted. The accepted Radical Bloc achievement definition and containment-survival award path also remain implementation work.
+Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution and is absent from runtime. The `6002` United States Marine Band OGG/WAV derivatives, image, sound definitions, GFX, localisation, history row, five predicates, and settings-aware queued playback are implemented and documented in `docs/super_events/006_independence_wave_super_event_research.md`. Four qualification routes are reachable. The hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof; FORM-42 remains fail-closed. Radical Bloc records its exact radical-league milestone actor, excludes scenario-forced qualification, requires an external containment attack, and evaluates one year of sovereign survival; its final audit remains pending.
 
 ### Visual assets
 
@@ -69,7 +100,12 @@ The uploaded CSV catalogs were read but not edited. The event catalog workbook s
 
 ### Repository and game validation
 
-No Clausewitz files were edited. No parser, game load, live scenario, focus-tree layout, AI behavior, map release, unit spawn, or super-event playback validation was possible in this planning-only pass.
+No Clausewitz files were edited in this planning-only pass. That historical
+statement does not describe the current implementation snapshot; the Pacific
+promotion and its gameplay validation evidence are recorded above and in the
+Event 006 source-of-truth map. No final whole-event parser, game load, live
+scenario, focus-tree layout, AI behavior, map release, unit spawn, or
+super-event playback completion audit is claimed here.
 
 ## Research status
 
