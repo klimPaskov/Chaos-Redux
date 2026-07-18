@@ -2,8 +2,9 @@
 # CHAOS REDUX - FALLOUT LIVING-WORLD EVENT CONSTANTS
 # ============================================================================
 # Dormant scheduler schemas, stable identities, survival initialization,
-# timeline boundaries, cadence, and reserved pilot ids. Event-choice tuning
-# remains excluded until its reviewed producer contracts exist.
+# timeline boundaries, numerical cadence, review receipts, and reserved pilot
+# ids. Event-choice tuning remains excluded until its reviewed producer
+# contracts exist.
 # ============================================================================
 
 fallout_event_schema = {
@@ -52,8 +53,8 @@ fallout_event_arc_schema = {
 		data = int
 	}
 
-	version = 2
-	previous_empty_version = 1
+	version = 3
+	previous_empty_version = 2
 }
 
 fallout_event_delayed_queue_schema = {
@@ -62,8 +63,8 @@ fallout_event_delayed_queue_schema = {
 		data = int
 	}
 
-	version = 2
-	previous_empty_version = 1
+	version = 3
+	previous_empty_version = 2
 }
 
 fallout_event_bilateral_schema = {
@@ -72,8 +73,8 @@ fallout_event_bilateral_schema = {
 		data = int
 	}
 
-	version = 2
-	previous_empty_version = 1
+	version = 3
+	previous_empty_version = 2
 }
 
 # Backward-compatible fixed receipt added outside the compact transaction
@@ -85,7 +86,22 @@ fallout_event_ordinary_receipt_schema = {
 		data = int
 	}
 
+	version = 2
+	previous_empty_version = 1
+}
+
+# Numerical scheduler receipts are promoted independently of the transaction
+# schema. Promotion is allowed only for a completely dormant current-
+# generation registry row. No historical opening, target, or player choice is
+# fabricated while this receipt is added.
+fallout_event_numerical_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
 	version = 1
+	previous_unpromoted_version = 0
 }
 
 fallout_event_subject_type = {
@@ -139,6 +155,83 @@ fallout_event_dispatch_mode = {
 	human_visible = 1
 	hidden_ai = 2
 	hidden_cleanup = 3
+	upper_bound = 4
+}
+
+fallout_event_country_size = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	small = 1
+	medium = 2
+	large = 3
+	upper_bound = 4
+}
+
+fallout_event_review_phase_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	neutral = 0
+	preferred = 1
+	secondary = 2
+	required = 3
+	upper_bound = 4
+}
+
+fallout_event_repeatability = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	nonrepeatable = 0
+	repeatable = 1
+	upper_bound = 2
+}
+
+fallout_event_crisis_break_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	eligible = 1
+	upper_bound = 2
+}
+
+fallout_event_air_winter_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	phase_zero = 0
+	phase_one = 1
+	phase_two = 2
+	phase_three = 3
+	phase_four = 4
+	phase_five = 5
+	phase_six = 6
+	upper_bound = 7
+}
+
+fallout_event_pressure_source_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	event_owned = 1
+	survival_resource = 2
+	air_winter = 3
 	upper_bound = 4
 }
 
@@ -658,26 +751,153 @@ fallout_event_runtime = {
 	first_array_index = 0
 	first_ticket_id = 1
 	no_ticket = 0
+	no_registry_index = -1
 	maximum_major_arcs = 3
-	days_8_30_small_cooldown_days = 14
-	days_8_30_medium_cooldown_days = 12
-	days_8_30_large_cooldown_days = 12
-	days_31_90_small_cooldown_days = 14
-	days_31_90_medium_cooldown_days = 12
-	days_31_90_large_cooldown_days = 10
-	months_4_12_small_cooldown_days = 14
-	months_4_12_medium_cooldown_days = 12
-	months_4_12_large_cooldown_days = 10
-	year_2_small_cooldown_days = 14
-	year_2_medium_cooldown_days = 12
-	year_2_large_cooldown_days = 10
-	years_3_4_cooldown_minimum_days = 12
-	years_3_4_cooldown_maximum_days = 18
-	years_5_10_cooldown_days = 14
-	year_10_plus_cooldown_minimum_days = 14
-	year_10_plus_cooldown_maximum_days = 21
+	maximum_delayed_rows = 8
+	maximum_bilateral_rows = 6
+	maximum_visible_budget_cost = 4
+	visible_history_size = 2
+	minimum_due_delay_days = 1
+	maximum_due_delay_days = 730
+	fatigue_decay_per_day = 1
+	fatigue_opening_add = 60
+	maximum_fatigue = 100
+	resource_pressure_midpoint = 50
+	resource_pressure_multiplier = 2
+	small_state_upper_bound = 4
+	medium_state_upper_bound = 10
+	air_winter_phase_upper_bound = 7
+	score_input_upper_bound = 101
+	crisis_break_pressure = 80
+	crisis_break_gap_days = 7
+	crisis_break_cooldown_days = 180
+	crisis_break_days_per_budget = 42
+	repetition_penalty_window_days = 90
+	repetition_state_window_days = 120
+	repeatable_lockout_days = 90
+	repeatable_penalty_days = 365
 	broadcast_cooldown_days = 30
 	quiet_period_days = 7
+	player_relevance_none = 0
+	player_relevance_human_recipient = 100
+	player_relevance_human_bilateral_partner = 50
+	player_relevance_human_named_target = 25
+}
+
+# The ordinary opening cooldown is selected from this typed phase-and-frozen-
+# size table. These values supersede the unused 10 through 14 day draft
+# constants that previously lived in fallout_event_runtime.
+fallout_event_cooldown_days = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = int
+			}
+		}
+	}
+
+	first_season = { small = 24 medium = 18 large = 14 }
+	first_winter_year = { small = 28 medium = 24 large = 20 }
+	consolidation = { small = 32 medium = 28 large = 24 }
+	rival_orders = { small = 34 medium = 30 large = 26 }
+	new_states = { small = 36 medium = 32 large = 28 }
+	soot_retreat = { small = 38 medium = 34 large = 30 }
+	second_world = { small = 40 medium = 36 large = 32 }
+	open_continuation = { small = 46 medium = 42 large = 38 }
+}
+
+fallout_event_ai_review_batch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Exclusive upper bounds produce inclusive bands 1-30, 31-60,
+	# 61-90, and 91+ in the review effect.
+	first_threshold = 31
+	second_threshold = 61
+	third_threshold = 91
+	first_batch = 1
+	second_batch = 2
+	third_batch = 3
+	maximum_batch = 4
+}
+
+fallout_event_primary_family_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	global_survival_and_society = 40
+	regional_and_biome = 42
+	government_archetype = 42
+	successor_country_memory = 48
+	character_and_leader = 44
+	diplomacy_trade_war_settlement = 40
+	cause_memory_and_altered_fiction = 38
+	recovery_and_late_world_order = 42
+}
+
+fallout_event_score_contribution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	preferred_phase = 30
+	supported_secondary_phase = 15
+	exact_region = 20
+	exact_government_archetype = 20
+	exact_country_memory = 20
+	exact_terminal_cause_memory = 15
+	exact_air_winter_condition = 15
+	exact_survival_resource_crisis = 25
+	recurring_character_available = 15
+	bilateral_opportunity = 15
+	exact_route = 15
+	previous_choice = 12
+	recent_war_or_crisis = 20
+	severity_factor = 0.30
+	mechanic_pressure_factor = 0.25
+	player_relevance_factor = 0.10
+	state_value_factor = 0.10
+	repeated_state_penalty = 35
+	repeatable_event_penalty = 50
+	arc_capacity_two_penalty = 20
+	arc_capacity_zero_bonus = 10
+	authored_adjustment_minimum = -10
+	authored_adjustment_maximum = 10
+}
+
+fallout_event_air_winter_phase_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	phase_zero = 0
+	phase_one = 15
+	phase_two = 30
+	phase_three = 45
+	phase_four = 65
+	phase_five = 85
+	phase_six = 100
+}
+
+fallout_event_tie_priority = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	crisis_incident = 1
+	major_arc = 2
+	relationship = 3
+	routine_incident = 4
+	broadcast = 5
 }
 
 # Inclusive end days measured from the successful map-return day. Day 0 is the

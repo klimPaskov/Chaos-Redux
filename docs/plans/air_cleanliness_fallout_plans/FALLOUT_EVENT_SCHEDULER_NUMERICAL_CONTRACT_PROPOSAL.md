@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for explicit user approval. None of the values in this document are authorized for gameplay implementation until the user accepts the contract.
+Accepted for dormant numerical implementation. The user approved the complete contract on 2026-07-18. This approval authorizes the numerical substrate and its bounded activation-gated review lanes. It does not authorize either scheduler activation setter, a living-world content caller, an unreviewed candidate row, or release-floor credit.
 
 This proposal fills the numerical gaps deliberately left out of the dormant schema-2 scheduler substrate. It defines ordinary candidate scoring, fatigue, cadence, visible-budget reservation, queue caps, deterministic selection, and coordinator batch limits. It does not define event prose, event choices, branch results, successor packages, or scheduler activation.
 
@@ -26,9 +26,9 @@ This proposal does not reopen these implemented and accepted facts:
 
 The dormant 10 through 14 day ordinary cooldown constants are not an accepted pacing contract. Several are shorter than the accepted normal fourteen-day popup floor. They also count only the opening and would overshoot the ten-year visible target when delayed results are included. Approval of this proposal supersedes those unused values with the table below.
 
-## Proposed decisions
+## Accepted decisions
 
-Approval accepts all decisions in this document as one numerical contract.
+The approval accepts all decisions in this document as one numerical contract.
 
 1. Country size uses the frozen successor assignment state count.
 2. Human successors receive a bounded daily review lane. AI successors use a bounded registry batch.
@@ -362,7 +362,7 @@ Activation remains blocked until all of these are true:
 
 Expansion toward 910 blocks begins only after the 660-block floor passes review. No reservation, generated draft, or hidden helper counts as an event block.
 
-## Proposed implementation order after approval
+## Accepted implementation order
 
 1. Promote this accepted numerical design into the living-world source specs.
 2. Replace the dormant cooldown constants with typed phase-and-size values.
@@ -406,4 +406,4 @@ HOI4 was not run. Runtime cost, save interruption, multiplayer observation, popu
 
 ## Approval record
 
-No approval is recorded yet. If accepted, record the user's approval here and promote the complete contract into the source specifications before implementing its values.
+The user explicitly approved this numerical contract for implementation on 2026-07-18. The contract must be promoted into the living-world source specifications before the numerical values are treated as current gameplay design. Scheduler activation remains a separate blocked approval surface.
