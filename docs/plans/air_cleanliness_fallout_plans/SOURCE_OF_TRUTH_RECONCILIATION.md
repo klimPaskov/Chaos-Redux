@@ -156,6 +156,15 @@ Implementation interpretation:
 
 ## Documentation disposition
 
+Working-plan disposition:
+
+- `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` is explicitly unaccepted and awaits user approval.
+- It is not source-spec authority and must not be promoted into `docs/specs/air_cleanliness_fallout_specs/` unless the user accepts it.
+- Proposed suffixes `62` through `84` remain free and are not reserved.
+- No matching events or localisation are defined.
+- Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
+- Implementation is forbidden until explicit approval is recorded.
+
 Current implementation authority:
 
 - `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.

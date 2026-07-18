@@ -4,6 +4,12 @@
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
+## Unaccepted Ash-week proposal
+
+`FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` proposes suffixes `62` through `84`, but the proposal is explicitly unaccepted and awaits user approval. This ledger does not reserve those suffixes. They remain free. No events or localisation for them are defined, and no implementation is authorized before approval.
+
+Both scheduler activation flags remain unset. The proposal adds no countable content, so the Fallout living-world total remains 0 of 660.
+
 The dedicated event file was scanned on 2026-07-15 before this reservation. Suffixes `100` through `126` were unused. This reservation does not count as implemented content. A row becomes countable only after final localisation, gameplay effects, AI behavior, memory or closure, cleanup, asset disposition, and manual audit are complete.
 
 ## Reserved living-world pilot tranche
