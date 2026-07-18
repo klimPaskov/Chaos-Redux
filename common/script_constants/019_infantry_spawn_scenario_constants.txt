@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 TRIGGERABLE SCENARIO CONSTANTS
 # ============================================================================
-# The source package proposed SCN-008, but the live registry already assigns
-# IDs 1 through 11. Keep this package unassigned until the next stable ID is
-# explicitly approved; no existing scenario is repurposed.
+# The source package proposed SCN-008, but that identity belongs to the live
+# Independence Wave scenario and Event 020 reserves raw ID 12. Event 019 uses
+# the next collision-free identity, SCN-013; no existing scenario is repurposed.
 # ============================================================================
 
 infantry_spawn_scenario = {
@@ -12,13 +12,16 @@ infantry_spawn_scenario = {
 		data = int
 	}
 
-	pending_unassigned_id = 0
 	type_conventional_flood = 1
 	type_arsenal_lottery = 2
 	type_general_mutiny = 3
 	type_anomalous_rising = 4
 	minimum_type = 1
 	maximum_type = 4
+	intensity_low = 1
+	intensity_medium = 2
+	intensity_high = 3
+	intensity_maximum = 4
 	minimum_intensity = 1
 	maximum_intensity = 4
 }
@@ -33,14 +36,66 @@ infantry_spawn_scenario_intensity = {
 	regional_country_share = 0.25
 	continental_country_share = 0.50
 	global_country_share = 1.00
-	localized_generation_multiplier = 1.00
-	regional_generation_multiplier = 1.35
-	continental_generation_multiplier = 1.70
-	global_generation_multiplier = 2.10
 	localized_revolt_pressure = 45
 	regional_revolt_pressure = 60
 	continental_revolt_pressure = 75
 	global_revolt_pressure = 90
+}
+
+infantry_spawn_scenario_state_coverage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	localized = 0.20
+	regional = 0.35
+	continental = 0.55
+	global = 0.80
+}
+
+infantry_spawn_scenario_package = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	localized_generation_passes = 3
+	regional_generation_passes = 4
+	continental_generation_passes = 5
+	global_generation_passes = 6
+	localized_random_lots = 2
+	regional_random_lots = 4
+	continental_random_lots = 6
+	global_random_lots = 8
+	localized_family_formations = 2
+	regional_family_formations = 4
+	continental_family_formations = 6
+	global_family_formations = 8
+	localized_fronts = 1
+	regional_fronts = 1
+	continental_fronts = 2
+	global_fronts = 3
+	localized_regional_wars = 0
+	regional_regional_wars = 0
+	continental_regional_wars = 2
+	global_regional_wars = 8
+	localized_manpower = 50000
+	regional_manpower = 80000
+	continental_manpower = 120000
+	global_manpower = 180000
+}
+
+infantry_spawn_scenario_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid_index = -1
+	zero = 0
+	one = 1
+	percentage_scale = 100
 }
 
 infantry_spawn_scenario_safety = {
@@ -49,10 +104,27 @@ infantry_spawn_scenario_safety = {
 		data = int
 	}
 
-	setup_bypass_days = 2
-	war_delay_hours = 6
 	microstate_maximum_states = 1
-	minimum_revolt_states = 2
 	maximum_immediate_targets = 8
-	cleanup_delay_days = 1
+	rollback_retry_days = 7
+}
+
+infantry_spawn_scenario_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	common_build_army = 100
+	common_infantry_production = 80
+	common_support_production = 45
+	conventional_artillery_production = 65
+	conventional_template_priority = 80
+	arsenal_motorized_production = 100
+	arsenal_artillery_production = 90
+	arsenal_mobile_reserve = 15
+	general_command_offense = 120
+	general_mobile_reserve = 25
+	anomalous_host_offense = 130
+	anomalous_mobile_reserve = 30
 }

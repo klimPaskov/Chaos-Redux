@@ -1,15 +1,130 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY DECISIONS AND MISSIONS
 # ============================================================================
-# Provider-priced family reinforcement, state-targeted sustainment and
-# integration, claimant continuity, former-parent survival, and a warned
-# neighboring submission demand. No action can target a special/nonhuman
-# country or unlock ghost/golem recruitment.
+# Provider-priced family reinforcement, route governance, family-specific
+# district integration, bounded neighbor agreements, claimant continuity,
+# former-parent survival, and warned neighboring submission demands. No action
+# can target a special/nonhuman country or unlock ghost/golem recruitment.
 # ============================================================================
 
+# ai_hint_pp_cost does not parse script_constants in this decision field.
+# These file-scoped aliases mirror the authoritative values in
+# infantry_spawn_derivative_decision_cost and exist only for AI budgeting.
+@infantry_spawn_derivative_collective_rotate_pp_hint = 35
+@infantry_spawn_derivative_collective_centralize_pp_hint = 40
+@infantry_spawn_derivative_species_compacts_pp_hint = 40
+@infantry_spawn_derivative_species_primacy_pp_hint = 45
+@infantry_spawn_derivative_zombie_containment_pp_hint = 30
+@infantry_spawn_derivative_ghost_recognition_pp_hint = 40
+@infantry_spawn_derivative_golem_agreement_pp_hint = 35
+@infantry_spawn_derivative_zombie_integration_pp_hint = 35
+@infantry_spawn_derivative_ghost_integration_pp_hint = 45
+@infantry_spawn_derivative_golem_integration_pp_hint = 45
+@infantry_spawn_derivative_fragmentation_pp_hint = 40
+
 infantry_spawn_derivative_operations_category = {
+	infantry_spawn_derivative_rotate_collective_commands_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_preserve_claimant
+		visible = {
+			infantry_spawn_derivative_has_collective_route = yes
+			has_country_flag = infantry_spawn_derivative_district_councils_bound
+			NOT = { has_country_flag = infantry_spawn_derivative_collective_rotating_commands }
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_rotate_collective_commands_requirements_tt infantry_spawn_derivative_can_rotate_collective_commands = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_rotate_collective_commands = yes }
+		custom_cost_text = infantry_spawn_derivative_rotate_collective_commands_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_collective_rotate_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_rotate_collective_commands_decision_tt
+			hidden_effect = { infantry_spawn_derivative_rotate_collective_commands = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_stability < constant:infantry_spawn_derivative_expansion.governance_stability_threshold }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes }
+		}
+	}
+
+	infantry_spawn_derivative_centralize_collective_muster_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_replace_claimant
+		visible = {
+			infantry_spawn_derivative_has_collective_route = yes
+			has_country_flag = infantry_spawn_derivative_district_councils_bound
+			NOT = { has_country_flag = infantry_spawn_derivative_collective_central_muster }
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_centralize_collective_muster_requirements_tt infantry_spawn_derivative_can_centralize_collective_muster = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_centralize_collective_muster = yes }
+		custom_cost_text = infantry_spawn_derivative_centralize_collective_muster_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_collective_centralize_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_centralize_collective_muster_decision_tt
+			hidden_effect = { infantry_spawn_derivative_centralize_collective_muster = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_stability < constant:infantry_spawn_derivative_expansion.governance_stability_threshold }
+		}
+	}
+
+	infantry_spawn_derivative_ratify_species_compacts_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_preserve_claimant
+		visible = {
+			infantry_spawn_derivative_has_species_route = yes
+			has_country_flag = infantry_spawn_derivative_family_domain_marked
+			NOT = { has_country_flag = infantry_spawn_derivative_species_compact_governance }
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_ratify_species_compacts_requirements_tt infantry_spawn_derivative_can_ratify_species_compacts = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_ratify_species_compacts = yes }
+		custom_cost_text = infantry_spawn_derivative_ratify_species_compacts_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_species_compacts_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_ratify_species_compacts_decision_tt
+			hidden_effect = { infantry_spawn_derivative_ratify_species_compacts = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_stability < constant:infantry_spawn_derivative_expansion.governance_stability_threshold }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes }
+		}
+	}
+
+	infantry_spawn_derivative_proclaim_family_primacy_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_demand_submission
+		visible = {
+			infantry_spawn_derivative_has_species_route = yes
+			has_country_flag = infantry_spawn_derivative_family_domain_marked
+			NOT = { has_country_flag = infantry_spawn_derivative_species_family_primacy }
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_proclaim_family_primacy_requirements_tt infantry_spawn_derivative_can_proclaim_family_primacy = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_proclaim_family_primacy = yes }
+		custom_cost_text = infantry_spawn_derivative_proclaim_family_primacy_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_species_primacy_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_proclaim_family_primacy_decision_tt
+			hidden_effect = { infantry_spawn_derivative_proclaim_family_primacy = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_stability < constant:infantry_spawn_derivative_expansion.governance_stability_threshold }
+		}
+	}
+
 	infantry_spawn_derivative_secure_muster_depot_decision = {
-		icon = GFX_decision_seize_depots
+		icon = GFX_decision_infantry_spawn_derivative_sustainment_site
 		state_target = yes
 		on_map_mode = map_and_decisions_view
 		visible = { has_country_flag = infantry_spawn_derivative_depot_operations_unlocked }
@@ -27,7 +142,7 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_authorize_base_zombie_training_decision = {
-		icon = GFX_decision_generic_prepare_civil_war
+		icon = GFX_decision_infantry_spawn_derivative_zombie_training
 		visible = { infantry_spawn_derivative_is_zombie = yes has_country_flag = infantry_spawn_derivative_zombie_training_operation_unlocked NOT = { has_country_flag = infantry_spawn_derivative_zombie_training_authorized } }
 		available = {
 			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_authorize_base_zombie_training_requirements_tt infantry_spawn_derivative_can_authorize_zombie_training = yes }
@@ -42,7 +157,7 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_rally_zombie_band_decision = {
-		icon = GFX_decision_mobilize_defense_units
+		icon = GFX_decision_infantry_spawn_derivative_zombie_rally
 		visible = { infantry_spawn_derivative_is_zombie = yes has_country_flag = infantry_spawn_derivative_zombie_bands_numbered }
 		available = {
 			custom_trigger_tooltip = {
@@ -68,7 +183,7 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_manifest_ghost_host_decision = {
-		icon = GFX_decision_mobilize_defense_units
+		icon = GFX_decision_infantry_spawn_derivative_ghost_manifest
 		visible = { infantry_spawn_derivative_is_ghost = yes has_country_flag = infantry_spawn_derivative_ghost_manifestation_operation_unlocked }
 		available = {
 			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_manifest_ghost_host_requirements_tt infantry_spawn_derivative_can_manifest_ghost = yes infantry_spawn_all_ledgers_are_aligned = yes }
@@ -83,7 +198,7 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_bind_golem_host_decision = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_infantry_spawn_derivative_golem_bind
 		visible = { infantry_spawn_derivative_is_golem = yes has_country_flag = infantry_spawn_derivative_golem_binding_operation_unlocked }
 		available = {
 			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_bind_golem_host_requirements_tt infantry_spawn_derivative_can_bind_golem = yes infantry_spawn_all_ledgers_are_aligned = yes }
@@ -98,8 +213,8 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_pay_family_sustainment_decision = {
-		icon = GFX_decision_generic_industry
-		visible = { infantry_spawn_derivative_package_is_active = yes has_country_flag = infantry_spawn_derivative_family_sustainment_unlocked }
+		icon = GFX_decision_infantry_spawn_family_sustainment
+		visible = { infantry_spawn_derivative_package_is_active = yes is_infantry_spawn_nonhuman_derivative_country = yes has_country_flag = infantry_spawn_derivative_family_sustainment_unlocked }
 		available = {
 			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_pay_family_sustainment_requirements_tt infantry_spawn_derivative_can_pay_family_sustainment = yes }
 		}
@@ -112,8 +227,34 @@ infantry_spawn_derivative_operations_category = {
 		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
 	}
 
+	infantry_spawn_derivative_rally_claimant_guard_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_preserve_claimant
+		visible = {
+			infantry_spawn_derivative_package_is_active = yes
+			infantry_spawn_derivative_has_claimant_route = yes
+			has_country_flag = infantry_spawn_derivative_family_sustainment_unlocked
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_derivative_rally_claimant_guard_requirements_tt
+				infantry_spawn_derivative_can_rally_claimant_guard = yes
+			}
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_rally_claimant_guard = yes }
+		custom_cost_text = infantry_spawn_derivative_rally_claimant_guard_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_rally_claimant_guard_decision_tt
+			hidden_effect = { infantry_spawn_derivative_rally_claimant_guard = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.high
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes }
+		}
+	}
+
 	infantry_spawn_derivative_establish_sustainment_site_decision = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_infantry_spawn_derivative_sustainment_site
 		state_target = yes
 		on_map_mode = map_and_decisions_view
 		visible = { has_country_flag = infantry_spawn_derivative_sustainment_site_operations_unlocked }
@@ -130,26 +271,199 @@ infantry_spawn_derivative_operations_category = {
 		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
 	}
 
-	infantry_spawn_derivative_integrate_conquered_district_decision = {
-		icon = generic_colonial_administration
+	infantry_spawn_derivative_offer_zombie_containment_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_demand_submission
+		target_array = neighbors
+		visible = { infantry_spawn_derivative_is_zombie = yes has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete }
+		target_root_trigger = { infantry_spawn_derivative_can_offer_zombie_containment = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_zombie_diplomacy_target_is_valid = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_offer_zombie_containment_requirements_tt infantry_spawn_derivative_can_offer_zombie_containment = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_offer_zombie_containment = yes }
+		custom_cost_text = infantry_spawn_derivative_offer_zombie_containment_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_zombie_containment_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_offer_zombie_containment_decision_tt
+			hidden_effect = { infantry_spawn_derivative_offer_zombie_containment = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { check_variable = { var = manpower value = constant:infantry_spawn_derivative_expansion.zombie_neighbor_manpower_capacity compare = greater_than_or_equals } }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { NOT = { num_of_controlled_states < constant:infantry_spawn_derivative_expansion.neighbor_state_capacity } }
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_zombie_hunger_disciplined }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_collective_rotating_commands }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_country_flag = infantry_spawn_derivative_species_family_primacy }
+		}
+	}
+
+	infantry_spawn_derivative_offer_ghost_border_recognition_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_preserve_claimant
+		target_array = neighbors
+		visible = { infantry_spawn_derivative_is_ghost = yes has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete }
+		target_root_trigger = { infantry_spawn_derivative_can_offer_ghost_recognition = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_ghost_diplomacy_target_is_valid = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_offer_ghost_border_recognition_requirements_tt infantry_spawn_derivative_can_offer_ghost_recognition = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_offer_ghost_recognition = yes }
+		custom_cost_text = infantry_spawn_derivative_offer_ghost_border_recognition_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_ghost_recognition_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_offer_ghost_border_recognition_decision_tt
+			hidden_effect = { infantry_spawn_derivative_offer_ghost_border_recognition = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { has_stability > constant:infantry_spawn_derivative_expansion.ghost_neighbor_stability_capacity }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { NOT = { num_of_controlled_states < constant:infantry_spawn_derivative_expansion.neighbor_state_capacity } }
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_ghost_procession_anchored }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_species_compact_governance }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_country_flag = infantry_spawn_derivative_species_family_primacy }
+		}
+	}
+
+	infantry_spawn_derivative_offer_golem_material_agreement_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_sustainment_site
+		target_array = neighbors
+		visible = { infantry_spawn_derivative_is_golem = yes has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete }
+		target_root_trigger = { infantry_spawn_derivative_can_offer_golem_material_agreement = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_golem_diplomacy_target_is_valid = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_offer_golem_material_agreement_requirements_tt infantry_spawn_derivative_can_offer_golem_material_agreement = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_offer_golem_material_agreement = yes }
+		custom_cost_text = infantry_spawn_derivative_offer_golem_material_agreement_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_golem_agreement_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_offer_golem_material_agreement_decision_tt
+			hidden_effect = { infantry_spawn_derivative_offer_golem_material_agreement = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { NOT = { num_of_civilian_factories_available_for_projects < constant:infantry_spawn_derivative_expansion.golem_neighbor_factory_capacity } }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { NOT = { num_of_controlled_states < constant:infantry_spawn_derivative_expansion.neighbor_state_capacity } }
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_golem_pattern_shared }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_species_compact_governance }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_country_flag = infantry_spawn_derivative_species_family_primacy }
+		}
+	}
+
+	infantry_spawn_derivative_integrate_zombie_muster_district_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_integrate_district
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = { has_country_flag = infantry_spawn_derivative_integration_operations_unlocked NOT = { has_country_flag = infantry_spawn_derivative_integration_active } }
-		target_root_trigger = { infantry_spawn_derivative_package_is_active = yes has_country_flag = infantry_spawn_derivative_integration_operations_unlocked NOT = { has_country_flag = infantry_spawn_derivative_integration_active } }
-		target_trigger = { FROM = { infantry_spawn_derivative_state_can_be_integrated = yes } }
+		visible = { infantry_spawn_derivative_is_zombie = yes has_country_flag = infantry_spawn_derivative_integration_operations_unlocked has_country_flag = infantry_spawn_derivative_zombie_barracks_scavenged NOT = { has_country_flag = infantry_spawn_derivative_integration_active } }
+		target_root_trigger = { infantry_spawn_derivative_can_start_zombie_district_integration = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_zombie_state_can_be_integrated = yes } }
 		available = {
-			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_integrate_conquered_district_requirements_tt infantry_spawn_derivative_package_is_active = yes NOT = { has_war = yes } }
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_integrate_zombie_muster_district_requirements_tt infantry_spawn_derivative_can_start_zombie_district_integration = yes }
 		}
-		cost = constant:infantry_spawn_derivative_decision_cost.integrate_district_pp
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_start_zombie_district_integration = yes }
+		custom_cost_text = infantry_spawn_derivative_integrate_zombie_muster_district_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_zombie_integration_pp_hint
 		complete_effect = {
-			custom_effect_tooltip = infantry_spawn_derivative_integrate_conquered_district_decision_tt
-			hidden_effect = { infantry_spawn_derivative_start_district_integration = yes }
+			custom_effect_tooltip = infantry_spawn_derivative_integrate_zombie_muster_district_decision_tt
+			hidden_effect = { infantry_spawn_derivative_start_zombie_district_integration = yes }
 		}
-		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes } }
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.high
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { check_variable = { state_population_k > constant:infantry_spawn_derivative_expansion.zombie_district_population_capacity } }
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_zombie_bands_numbered }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes }
+		}
+	}
+
+	infantry_spawn_derivative_recognize_ghost_anchor_district_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_integrate_district
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		visible = { infantry_spawn_derivative_is_ghost = yes has_country_flag = infantry_spawn_derivative_integration_operations_unlocked has_country_flag = infantry_spawn_derivative_ghost_anchors_marked NOT = { has_country_flag = infantry_spawn_derivative_integration_active } }
+		target_root_trigger = { infantry_spawn_derivative_can_start_ghost_district_integration = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_ghost_state_can_be_integrated = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_recognize_ghost_anchor_district_requirements_tt infantry_spawn_derivative_can_start_ghost_district_integration = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_start_ghost_district_integration = yes }
+		custom_cost_text = infantry_spawn_derivative_recognize_ghost_anchor_district_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_ghost_integration_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_recognize_ghost_anchor_district_decision_tt
+			hidden_effect = { infantry_spawn_derivative_start_ghost_district_integration = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.high
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { check_variable = { state_population_k > constant:infantry_spawn_derivative_expansion.ghost_district_population_capacity } }
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_ghost_procession_anchored }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes }
+		}
+	}
+
+	infantry_spawn_derivative_bind_golem_foundry_district_decision = {
+		icon = GFX_decision_infantry_spawn_derivative_integrate_district
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		visible = { infantry_spawn_derivative_is_golem = yes has_country_flag = infantry_spawn_derivative_integration_operations_unlocked has_country_flag = infantry_spawn_derivative_golem_coal_recovered NOT = { has_country_flag = infantry_spawn_derivative_integration_active } }
+		target_root_trigger = { infantry_spawn_derivative_can_start_golem_district_integration = yes }
+		target_trigger = { FROM = { infantry_spawn_derivative_golem_state_can_be_integrated = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_bind_golem_foundry_district_requirements_tt infantry_spawn_derivative_can_start_golem_district_integration = yes }
+		}
+		cost = 0
+		custom_cost_trigger = { infantry_spawn_derivative_can_start_golem_district_integration = yes }
+		custom_cost_text = infantry_spawn_derivative_bind_golem_foundry_district_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_golem_integration_pp_hint
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_derivative_bind_golem_foundry_district_decision_tt
+			hidden_effect = { infantry_spawn_derivative_start_golem_district_integration = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.high
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = {
+					OR = {
+						industrial_complex > constant:infantry_spawn_derivative_package_value.zero
+						rail_way > constant:infantry_spawn_derivative_package_value.zero
+					}
+				}
+			}
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_golem_foundries_open }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes }
+		}
 	}
 
 	infantry_spawn_derivative_integrate_conquered_district_mission = {
-		icon = generic_colonial_administration
+		icon = GFX_decision_infantry_spawn_derivative_integrate_district
 		activation = { has_country_flag = infantry_spawn_derivative_integration_active }
 		days_mission_timeout = var:infantry_spawn_derivative_integration_days
 		is_good = yes
@@ -163,38 +477,40 @@ infantry_spawn_derivative_operations_category = {
 		}
 		cancel_effect = { hidden_effect = { infantry_spawn_derivative_cancel_district_integration = yes } }
 		timeout_effect = {
-			custom_effect_tooltip = infantry_spawn_derivative_integrate_conquered_district_mission_tt
+			if = { limit = { infantry_spawn_derivative_is_zombie = yes } custom_effect_tooltip = infantry_spawn_derivative_integrate_zombie_muster_district_mission_tt }
+			if = { limit = { infantry_spawn_derivative_is_ghost = yes } custom_effect_tooltip = infantry_spawn_derivative_recognize_ghost_anchor_district_mission_tt }
+			if = { limit = { infantry_spawn_derivative_is_golem = yes } custom_effect_tooltip = infantry_spawn_derivative_bind_golem_foundry_district_mission_tt }
 			hidden_effect = { infantry_spawn_derivative_complete_district_integration = yes }
 		}
 	}
 
 	infantry_spawn_derivative_suppress_fragmentation_decision = {
-		icon = GFX_decision_restore_party_control
+		icon = GFX_decision_infantry_spawn_derivative_suppress_fragmentation
 		visible = { infantry_spawn_derivative_package_is_active = yes has_country_flag = infantry_spawn_derivative_fragmentation_operations_unlocked }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = infantry_spawn_derivative_suppress_fragmentation_requirements_tt
 				NOT = { has_country_flag = infantry_spawn_derivative_fragmentation_cooldown }
+				NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_pp }
 				check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp compare = greater_than_or_equals }
 			}
 		}
-		cost = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_pp
-		custom_cost_trigger = { check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp compare = greater_than_or_equals } }
+		cost = 0
+		custom_cost_trigger = {
+			NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_pp }
+			check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp compare = greater_than_or_equals }
+		}
 		custom_cost_text = infantry_spawn_derivative_suppress_fragmentation_cost
+		ai_hint_pp_cost = @infantry_spawn_derivative_fragmentation_pp_hint
 		complete_effect = {
 			custom_effect_tooltip = infantry_spawn_derivative_suppress_fragmentation_decision_tt
-			hidden_effect = {
-				set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-				subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp }
-				add_army_experience = infantry_spawn_derivative_negative_cost
-				infantry_spawn_derivative_suppress_fragmentation = yes
-			}
+			hidden_effect = { infantry_spawn_derivative_suppress_fragmentation = yes }
 		}
 		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
 	}
 
 	infantry_spawn_derivative_break_former_parent_command_net_decision = {
-		icon = GFX_decision_cut_rebel_supply_routes
+		icon = GFX_decision_infantry_spawn_derivative_break_command_net
 		visible = { infantry_spawn_derivative_package_is_active = yes has_country_flag = infantry_spawn_derivative_command_net_operations_unlocked NOT = { has_country_flag = infantry_spawn_derivative_former_parent_pressure_resolved } }
 		available = {
 			custom_trigger_tooltip = {
@@ -217,7 +533,7 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_demand_local_submission_decision = {
-		icon = GFX_decision_attack
+		icon = GFX_decision_infantry_spawn_derivative_demand_submission
 		target_array = neighbors
 		visible = { infantry_spawn_derivative_package_is_active = yes has_country_flag = infantry_spawn_derivative_submission_operations_unlocked NOT = { has_country_flag = infantry_spawn_derivative_submission_warning_active } }
 		target_root_trigger = {
@@ -236,11 +552,20 @@ infantry_spawn_derivative_operations_category = {
 			custom_effect_tooltip = infantry_spawn_derivative_demand_local_submission_decision_tt
 			hidden_effect = { infantry_spawn_derivative_start_submission_warning = yes }
 		}
-		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_species_route = yes } }
+		ai_will_do = {
+			base = constant:infantry_spawn_derivative_ai_weight.standard
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_species_route = yes }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_country_flag = infantry_spawn_derivative_species_family_primacy }
+			modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_country_flag = infantry_spawn_derivative_species_compact_governance }
+			modifier = {
+				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
+				FROM = { num_of_controlled_states < constant:infantry_spawn_derivative_expansion.neighbor_state_capacity }
+			}
+		}
 	}
 
 	infantry_spawn_derivative_submission_warning_mission = {
-		icon = GFX_decision_attack
+		icon = GFX_decision_infantry_spawn_derivative_demand_submission
 		activation = { has_country_flag = infantry_spawn_derivative_submission_warning_active }
 		days_mission_timeout = var:infantry_spawn_derivative_submission_days
 		is_good = yes
@@ -260,25 +585,25 @@ infantry_spawn_derivative_operations_category = {
 	}
 
 	infantry_spawn_derivative_preserve_claimant_decision = {
-		icon = GFX_decision_send_loyalist_officers
-		visible = { infantry_spawn_derivative_package_is_active = yes infantry_spawn_derivative_has_claimant_route = yes NOT = { has_country_flag = infantry_spawn_derivative_claimant_continuity_decided } }
-		available = { custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_preserve_claimant_requirements_tt has_variable = infantry_spawn_derivative_claimant_uid } }
+		icon = GFX_decision_infantry_spawn_derivative_preserve_claimant
+		visible = { infantry_spawn_derivative_package_is_active = yes infantry_spawn_derivative_has_claimant_route = yes has_country_flag = infantry_spawn_derivative_command_estates_assigned NOT = { has_country_flag = infantry_spawn_derivative_claimant_continuity_decided } }
+		available = { custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_preserve_claimant_requirements_tt has_variable = infantry_spawn_derivative_claimant_uid has_country_flag = infantry_spawn_derivative_command_estates_assigned } }
 		cost = constant:infantry_spawn_derivative_decision_cost.preserve_claimant_pp
 		complete_effect = { custom_effect_tooltip = infantry_spawn_derivative_preserve_claimant_decision_tt hidden_effect = { infantry_spawn_derivative_preserve_claimant = yes } }
 		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
 	}
 
 	infantry_spawn_derivative_replace_claimant_decision = {
-		icon = GFX_decision_restore_party_control
-		visible = { infantry_spawn_derivative_package_is_active = yes infantry_spawn_derivative_has_claimant_route = yes NOT = { has_country_flag = infantry_spawn_derivative_claimant_continuity_decided } }
-		available = { custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_replace_claimant_requirements_tt has_variable = infantry_spawn_derivative_claimant_uid } }
+		icon = GFX_decision_infantry_spawn_derivative_replace_claimant
+		visible = { infantry_spawn_derivative_package_is_active = yes infantry_spawn_derivative_has_claimant_route = yes has_country_flag = infantry_spawn_derivative_command_estates_assigned NOT = { has_country_flag = infantry_spawn_derivative_claimant_continuity_decided } }
+		available = { custom_trigger_tooltip = { tooltip = infantry_spawn_derivative_replace_claimant_requirements_tt infantry_spawn_derivative_can_replace_claimant = yes } }
 		cost = constant:infantry_spawn_derivative_decision_cost.replace_claimant_pp
 		complete_effect = { custom_effect_tooltip = infantry_spawn_derivative_replace_claimant_decision_tt hidden_effect = { infantry_spawn_derivative_replace_claimant = yes } }
 		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.low modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor NOT = { has_country_flag = infantry_spawn_derivative_claimant_preserved } } }
 	}
 
 	infantry_spawn_derivative_survive_former_parent_front = {
-		icon = GFX_decision_generic_protection
+		icon = GFX_decision_infantry_spawn_derivative_survive_front
 		activation = { has_country_flag = infantry_spawn_derivative_opening_crisis_active }
 		days_mission_timeout = var:infantry_spawn_derivative_opening_crisis_days
 		is_good = yes

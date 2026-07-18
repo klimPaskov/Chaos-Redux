@@ -1,0 +1,293 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 TRIGGERABLE SCENARIO TRIGGERS
+# ============================================================================
+# Owns the direct and shared Event 19 scenario launch contracts, host and
+# revolt-region safety, regional war targeting, and derivative-family preflight.
+# ============================================================================
+
+# COUNTRY scope. A direct-scenario takeover can remain provisional across
+# delayed rollback retries. No ordinary Event 19 pulse, decision, scripted-GUI
+# action, incident response, evolution application, or ledger compaction may
+# mutate that country until the exact transaction has committed or rolled back.
+# The dynamic-actor cleanup flag receives the same protection until annexation.
+infantry_spawn_scenario_transaction_is_idle = {
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_setup_in_progress }
+	NOT = {
+		OR = {
+			has_country_flag = infantry_spawn_scenario_same_tag_transaction_active
+			has_country_flag = infantry_spawn_scenario_same_tag_cleanup_pending
+			has_country_flag = infantry_spawn_scenario_rollback_cleanup_pending
+		}
+	}
+}
+
+infantry_spawn_scenario_same_tag_transaction_can_unlock = {
+	has_country_flag = infantry_spawn_scenario_same_tag_transaction_active
+	infantry_spawn_all_ledgers_are_aligned = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+}
+
+infantry_spawn_scenario_launch_inputs_are_valid = {
+	OR = {
+		check_variable = {
+			var = infantry_spawn_scenario_launch_type_input
+			value = constant:infantry_spawn_scenario.type_conventional_flood
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_type_input
+			value = constant:infantry_spawn_scenario.type_arsenal_lottery
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_type_input
+			value = constant:infantry_spawn_scenario.type_general_mutiny
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_type_input
+			value = constant:infantry_spawn_scenario.type_anomalous_rising
+			compare = equals
+		}
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_scenario_launch_intensity_input
+			value = constant:infantry_spawn_scenario.intensity_low
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_intensity_input
+			value = constant:infantry_spawn_scenario.intensity_medium
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_intensity_input
+			value = constant:infantry_spawn_scenario.intensity_high
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_launch_intensity_input
+			value = constant:infantry_spawn_scenario.intensity_maximum
+			compare = equals
+		}
+	}
+}
+
+infantry_spawn_scenario_pending_inputs_are_valid = {
+	OR = {
+		check_variable = {
+			var = infantry_spawn_scenario_pending_type
+			value = constant:infantry_spawn_scenario.type_conventional_flood
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_type
+			value = constant:infantry_spawn_scenario.type_arsenal_lottery
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_type
+			value = constant:infantry_spawn_scenario.type_general_mutiny
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_type
+			value = constant:infantry_spawn_scenario.type_anomalous_rising
+			compare = equals
+		}
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_scenario_pending_intensity
+			value = constant:infantry_spawn_scenario.intensity_low
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_intensity
+			value = constant:infantry_spawn_scenario.intensity_medium
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_intensity
+			value = constant:infantry_spawn_scenario.intensity_high
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_scenario_pending_intensity
+			value = constant:infantry_spawn_scenario.intensity_maximum
+			compare = equals
+		}
+	}
+}
+
+infantry_spawn_scenario_country_is_valid_host = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	uses_normal_civilian_systems = yes
+	infantry_spawn_parent_event_identity_is_absent = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
+	infantry_spawn_achievement_combat_trial_scenario_host_is_safe = yes
+	NOT = { has_country_flag = infantry_spawn_scenario_host_processed }
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	any_owned_state = {
+		is_controlled_by = PREV
+		impassable = no
+	}
+}
+
+infantry_spawn_scenario_can_launch_unregistered = {
+	infantry_spawn_scenario_launch_inputs_are_valid = yes
+	infantry_spawn_scenario_country_is_valid_host = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_setup_in_progress }
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_launched }
+}
+
+# COUNTRY scope. Pure shared-window eligibility using the same exact enum and
+# launch-state contract as the temporary-input path used by direct callers.
+infantry_spawn_scenario_can_launch_from_triggerable_scenarios = {
+	OR = {
+		check_variable = {
+			var = triggerable_scenarios_infantry_spawn_type
+			value = constant:infantry_spawn_scenario.type_conventional_flood
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_infantry_spawn_type
+			value = constant:infantry_spawn_scenario.type_arsenal_lottery
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_infantry_spawn_type
+			value = constant:infantry_spawn_scenario.type_general_mutiny
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_infantry_spawn_type
+			value = constant:infantry_spawn_scenario.type_anomalous_rising
+			compare = equals
+		}
+	}
+	OR = {
+		check_variable = {
+			var = triggerable_scenarios_intensity
+			value = constant:infantry_spawn_scenario.intensity_low
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_intensity
+			value = constant:infantry_spawn_scenario.intensity_medium
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_intensity
+			value = constant:infantry_spawn_scenario.intensity_high
+			compare = equals
+		}
+		check_variable = {
+			var = triggerable_scenarios_intensity
+			value = constant:infantry_spawn_scenario.intensity_maximum
+			compare = equals
+		}
+	}
+	infantry_spawn_scenario_country_is_valid_host = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_setup_in_progress }
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_launched }
+}
+
+infantry_spawn_scenario_can_request_unregistered = {
+	infantry_spawn_scenario_can_launch_unregistered = yes
+	NOT = { has_country_flag = infantry_spawn_scenario_confirmation_pending }
+}
+
+# Initiating player-country scope. Exact actors are rostered at creation and
+# share one frozen launch serial. A capitulated actor is already defeated when
+# the on-capitulation achievement hook evaluates this trigger; an annexed
+# actor no longer satisfies exists = yes. The initiating country is excluded
+# only when a microstate/tiny-island takeover made it an actor itself.
+infantry_spawn_scenario_launch_has_no_surviving_hostile_actors = {
+	has_variable = infantry_spawn_scenario_launch_serial
+	check_variable = {
+		var = global.infantry_spawn_scenario_hostile_actor_total
+		value = constant:infantry_spawn_scenario_value.zero
+		compare = greater_than
+	}
+	NOT = {
+		any_country = {
+			exists = yes
+			has_country_flag = infantry_spawn_scenario_actor
+			NOT = { has_country_flag = infantry_spawn_scenario_origin_actor }
+			is_in_array = {
+				array = global.infantry_spawn_scenario_actor_countries
+				value = THIS
+			}
+			check_variable = {
+				var = infantry_spawn_scenario_launch_serial
+				value = ROOT.infantry_spawn_scenario_launch_serial
+				compare = equals
+			}
+			has_capitulated = no
+		}
+	}
+}
+
+infantry_spawn_scenario_country_can_split = {
+	num_of_controlled_states > constant:infantry_spawn_scenario_safety.microstate_maximum_states
+	any_owned_state = {
+		is_controlled_by = PREV
+		impassable = no
+		NOT = { is_capital = yes }
+		NOT = { is_island_state = yes }
+	}
+}
+
+# State scope. The first safe non-capital mainland state anchors a front.
+# Later states must touch the already-selected temporary region.
+infantry_spawn_scenario_revolt_state_is_candidate = {
+	is_owned_and_controlled_by = PREV
+	impassable = no
+	NOT = { is_capital = yes }
+	NOT = { is_island_state = yes }
+	NOT = {
+		is_in_array = {
+			array = infantry_spawn_scenario_selected_revolt_states
+			value = THIS
+		}
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_scenario_selected_revolt_states^num
+			value = constant:infantry_spawn_scenario_value.one
+			compare = less_than
+		}
+		any_neighbor_state = {
+			is_in_array = {
+				array = infantry_spawn_scenario_selected_revolt_states
+				value = THIS
+			}
+		}
+	}
+}
+
+# Country scope on a neighboring target. ROOT remains the scenario actor.
+infantry_spawn_scenario_regional_war_target_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
+	has_event_target = infantry_spawn_scenario_regional_war_actor
+	NOT = { has_war_with = event_target:infantry_spawn_scenario_regional_war_actor }
+	event_target:infantry_spawn_scenario_regional_war_actor = {
+		can_declare_war_on = PREV
+	}
+}
+
+# The family row must explicitly permit Event 19 spawning and derivative use.
+# A future family participates only by publishing the same complete contract.
+infantry_spawn_scenario_current_registry_row_can_form_derivative = {
+	infantry_spawn_current_registry_row_can_form_derivative = yes
+}

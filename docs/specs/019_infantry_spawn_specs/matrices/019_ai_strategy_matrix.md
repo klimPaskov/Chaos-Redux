@@ -55,6 +55,25 @@
 | Catastrophic burden | low | low | low to medium | high | high | high only for reckless claimant |
 | Anomalous family | profile-specific | low | family-specific | family-specific | family-specific | high only if claimant and risk permit |
 
+## Evolution II prototype disposition
+
+AI prototype handling evaluates every active unmanaged advanced lot through the
+same exact-ledger gates used by the selected-lot player actions.
+
+| Condition | Preservation weight | Cannibalization weight | Guard |
+| --- | ---: | ---: | --- |
+| Major country or adequate military/civilian industry | high | low | full preservation payment and exact live cohort must exist |
+| Strongest sustainable prototype, adequate fuel, manageable congestion | high | low | only one maintenance trial may run |
+| Severe Army Congestion | low | high | no substitution if the selected lot fails proof |
+| Fuel below one quarter | zero | high | preservation cannot consume unaffordable fuel |
+| Severe equipment debt | low | high | only settled, unit-backed obligations become salvage |
+| Capital-adjacent wartime threat | situational | zero | AI does not dismantle an advanced formation during immediate capital defense |
+| Preserved prototype later becomes unsustainable | none | medium to high | preserved disposition remains cannibalizable through the same exact teardown |
+
+Successful preservation adds a restricted-reinforcement national burden and one
+finite profile-specific research insight. Cannibalization never counts as
+supervised demobilization and never receives its achievement credit.
+
 ## Claimant AI reactions
 
 | State | Preferred action | Avoid |
@@ -73,6 +92,37 @@
 | Zombie | survive and secure population or depots | base zombie training | every reachable ordinary country, with populated former-parent districts first | parent mutation systems and unsupported naval wars |
 | Ghost | preserve manifestations and anchors | slow spawn through anchors | every reachable ordinary country, with devastated and weak-control states first | repeated wasteful frontal attacks |
 | Golem | secure industry, resources, and rail | quarry and binding | every reachable ordinary country, with material-rich connected states first | broad fronts and inaccessible distant territory |
+
+## Derivative governance policy AI
+
+| Route and condition | Preferred policy | AI consequence |
+| --- | --- | --- |
+| Collective Host below the stability threshold or at peace | Rotate the District Commands | defensive garrisoning, infrastructure, and moderate war restraint |
+| Collective Host at war with adequate stability | Centralize the Common Muster | army growth and a larger operational reserve |
+| Species Realm below the stability threshold or at peace | Ratify the District Compacts | garrisoning, infrastructure, and moderate war restraint |
+| Species Realm at war with adequate stability | Proclaim the Family's Primacy | army growth, family force bias, and aggressive war release once the outward campaign opens |
+
+All four policies use the same payment triggers as the player decisions and a
+shared governance cooldown. Their AI weights read stability and war state; the
+resulting flags activate self-removing AI strategy profiles.
+
+## Derivative target selection
+
+| Action family | Eligible targets | Positive AI markers | Hard rejection |
+| --- | --- | --- | --- |
+| Zombie containment bargain | neighboring ordinary country | surveyed frontier, scavenged barracks, compact government | war, faction partner, subject, special/nonhuman/derivative actor, prior family agreement, existing pact or war goal |
+| Ghost border recognition | neighboring ordinary country | surveyed frontier, marked anchors, compact government | same shared diplomacy exclusions; missing political or command payment |
+| Golem material agreement | neighboring ordinary country able to pay support equipment | surveyed frontier, recovered coal, shared-pattern or compact government | same shared diplomacy exclusions; missing coal-golem payment |
+| Zombie district integration | owned, controlled, populated non-core state | high population and numbered bands | war, active integration, missing manpower/equipment, ineligible or already integrated state |
+| Ghost district integration | owned, controlled, populated non-core state | high population and anchored procession | war, active integration, missing political/command payment, ineligible or already integrated state |
+| Golem district integration | owned, controlled industrial or rail-served non-core state | industry/rail and open foundries | war, active integration, infrastructure cap, missing coal-golem/trains payment |
+| Local submission demand | neighboring ordinary country | species route, family primacy, small target | active demand/cooldown, war, invalid or protected target, no expansion readiness |
+
+The Regional Predator capstone is not granted from a route label alone. AI and
+players must prove a consolidated hierarchy, completed family transformation,
+sustainable reinforcement, resolved former-state pressure, at least one
+integrated district, the centralized controlled-state threshold, and the
+centralized recorded-war-victory threshold.
 
 ## AI blockers
 

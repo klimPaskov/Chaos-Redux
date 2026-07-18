@@ -51,6 +51,10 @@ initialize_triggerable_scenarios_settings = {
 		limit = { NOT = { has_variable = triggerable_scenarios_cannibalism_type } }
 		set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_discipline_collapse }
 	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_infantry_spawn_type } }
+		set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.type_conventional_flood }
+	}
 	independence_wave_scenario_initialize_settings = yes
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
@@ -151,6 +155,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.africa_is_one_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.infantry_spawn
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.infantry_spawn_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -236,6 +248,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.infantry_spawn
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.world_in_fury
 		}
 		add_to_array = {
@@ -272,6 +292,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.world_in_fury_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.infantry_spawn
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -350,6 +378,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.infantry_spawn
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -528,6 +564,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.infantry_spawn
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
 		}
 	}
 }
@@ -759,6 +803,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_maximum }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.infantry_spawn } }
+		subtract_from_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario_value.one }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_infantry_spawn_type < constant:infantry_spawn_scenario.minimum_type } }
+			set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.maximum_type }
+		}
+	}
 }
 
 triggerable_scenario_type_next = {
@@ -833,6 +885,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_cannibalism_type > constant:cannibalism_scenario.type_maximum } }
 			set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_minimum }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.infantry_spawn } }
+		add_to_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario_value.one }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_infantry_spawn_type > constant:infantry_spawn_scenario.maximum_type } }
+			set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.minimum_type }
 		}
 	}
 }
@@ -958,6 +1018,22 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_cannibalism_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.infantry_spawn
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			infantry_spawn_scenario_launch_type_input = triggerable_scenarios_infantry_spawn_type
+		}
+		set_temp_variable = {
+			infantry_spawn_scenario_launch_intensity_input = triggerable_scenarios_intensity
+		}
+		infantry_spawn_scenario_launch_unregistered = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
@@ -1159,6 +1235,7 @@ triggerable_scenario_randomize_zombie_profile_attributes = {
 
 triggerable_scenario_apply_zombie_profile_to_current_country = {
 	set_country_flag = zombie_outbreak_dynamic_country
+	set_country_flag = chaos_unit_family_parent_actor
 	set_country_flag = weaponized_zombie_outbreak_country
 	set_country_flag = weaponized_zombie_independent_outbreak
 	set_country_flag = weaponized_zombie_triggerable_scenario
@@ -1415,6 +1492,7 @@ triggerable_scenario_spawn_standard_zombie_outbreak = {
 		copy_tag = ZZZ
 		set_temp_variable = { triggerable_zombie_new_country = this }
 		set_country_flag = zombie_outbreak_dynamic_country
+		set_country_flag = chaos_unit_family_parent_actor
 		set_country_flag = zombie_triggerable_scenario_standard
 		clr_country_flag = events_activated
 		set_popularities = {

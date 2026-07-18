@@ -1,11 +1,72 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY LIFECYCLE ON ACTIONS
+# CHAOS REDUX - EVENT 019 COUNTRY LIFECYCLE ON ACTIONS
 # ============================================================================
-# Narrow victory, capitulation, and annex hooks only. Recurring derivative
-# work is dispatched by the Event 019 country event pulse, never a world scan.
+# Country-local war, peace, release, civil-war, annexation, victory, and
+# derivative-defeat hooks. They maintain exact evolution membership receipts;
+# recurring work remains on the Event 019 country pulse, never a world scan.
 # ============================================================================
 
 on_actions = {
+	on_war = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				infantry_spawn_reconcile_world_evolution_memberships = yes
+			}
+		}
+	}
+
+	on_peace = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				infantry_spawn_reconcile_world_evolution_memberships = yes
+			}
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				infantry_spawn_reconcile_all_evolution_memberships = yes
+			}
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				infantry_spawn_reconcile_all_evolution_memberships = yes
+			}
+		}
+	}
+
+	on_government_change = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				infantry_spawn_reconcile_all_evolution_memberships = yes
+			}
+		}
+	}
+
 	on_capitulation = {
 		effect = {
 			if = {
@@ -26,8 +87,21 @@ on_actions = {
 	on_annex = {
 		effect = {
 			if = {
-				limit = { FROM = { is_infantry_spawn_derivative_country = yes } }
-				ROOT = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+				limit = { has_global_flag = infantry_spawn_event_has_fired }
+				FROM = { infantry_spawn_unregister_all_evolution_memberships = yes }
+			}
+			if = {
+				limit = {
+					NOT = { has_global_flag = infantry_spawn_natural_derivative_recovery_annex_bypass }
+					FROM = { is_infantry_spawn_derivative_country = yes }
+				}
+				ROOT = {
+					save_event_target_as = infantry_spawn_achievement_derivative_winner
+					save_event_target_as = infantry_spawn_annexing_country
+					save_event_target_as = infantry_spawn_next_annex_cleanup_owner
+				}
+				FROM = { save_event_target_as = infantry_spawn_previous_annex_cleanup_owner }
+				ROOT = { infantry_spawn_migrate_annex_cleanup_retry_queue = yes }
 				FROM = {
 					if = {
 						limit = { NOT = { has_country_flag = infantry_spawn_derivative_defeat_recorded } }
@@ -36,6 +110,22 @@ on_actions = {
 					}
 					infantry_spawn_derivative_final_cleanup = yes
 				}
+			}
+			if = {
+				limit = {
+					has_global_flag = infantry_spawn_event_has_fired
+					has_global_flag = infantry_spawn_evolution_counters_ready
+				}
+				ROOT = { infantry_spawn_reconcile_all_evolution_memberships = yes }
+			}
+		}
+	}
+
+	on_subject_annexed = {
+		effect = {
+			if = {
+				limit = { has_global_flag = infantry_spawn_event_has_fired }
+				ROOT = { infantry_spawn_unregister_all_evolution_memberships = yes }
 			}
 		}
 	}

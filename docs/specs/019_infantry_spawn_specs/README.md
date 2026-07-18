@@ -1,5 +1,17 @@
 # Event 19 Infantry Spawn Planning Package
 
+> **Current-state routing (2026-07-18):** This source specification is paired
+> with the implemented and resolved near-completion addendum at
+> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`.
+> Older references below to a closure without an addendum or to two pending
+> owner decisions are historical. Exactly two engine-constrained substitutes
+> were approved: exact recorded-formation recreate/prove/delete and controlled
+> one-formation combat trials. The addendum findings were implemented. The 27
+> fixed technical identity slots are 20 claimant army/muster scenes, 6
+> fantastical massed-host scenes, and 1 neutral unassigned muster scene, never
+> an individual focal person. Their stable `GFX_portrait_*` names remain engine
+> and UI terminology, not a description of the depicted content.
+
 This folder is the source planning package for Chaos Redux Event ID `19`, **Infantry Spawn**.
 
 The request label `017# Infantry Spawn` is preserved in the package history, but the catalog and current repository identify the canonical event as ID `19`. All event, file, registry, achievement, scenario, and documentation identifiers in this package therefore use `019` or event ID `19`.
@@ -24,6 +36,67 @@ The design keeps the event repeatable, prevents free equipment farming, separate
 - `research/` records repository findings and historical design anchors.
 - `review/` records full source reading, anti-bloat review, manual role-equivalent subagent reviews, uncertainty, and completion auditing.
 
+## Live source-of-truth map
+
+- This folder owns the accepted Event 19 design. Event 19 is ID `19`, `Minor
+  Repeatable`, unclustered, nonterminal, and has no fixed derivative tag.
+- `docs/events/019_infantry_spawn.md` owns the canonical implemented-system
+  explanation.
+- `docs/systems/019_infantry_spawn_triggerable_scenario.md` owns the direct
+  scenario contract. The live identity is `SCN-013`; proposed `SCN-008`
+  collided with Independence Wave.
+- `docs/systems/chaos_unit_family_registry.md` owns registry contract version 4.
+  Event 19 has exactly one dedicated registry code file:
+  `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
+- `common/scripted_triggers/chaosx_dynamic_triggers.md` owns the shared special
+  and nonhuman classifier documentation, and
+  `docs/achievements/019_infantry_spawn_achievements.md` owns the eleven
+  achievement proof contracts.
+- The accepted near-completion addendum named above owns the disposition of its
+  three findings. Dated implementation and audit evidence lives under
+  `docs/plans/019_infantry_spawn_plans/subagent_handoffs/`.
+- `docs/assets/019_infantry_spawn/manifest.md` and `gfx_handoff.md` are the asset
+  worker's live evidence surfaces. The 27 fixed identity scenes are separate
+  from the 7/18 regional flag candidate. The current approved candidate chain
+  is 91 unmodified full-flag ImageGen raws, 91 deterministic 820 by 520 spot
+  masters, 273 native PNGs, and 273 runtime TGAs. The independent remediation
+  re-audit is PASS and clears the regional asset gate for parent-owned package
+  promotion. See
+  `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`.
+  The machine JSON retains its immutable literal
+  `candidate_requires_independent_visual_review` processor-state value. Parent
+  workbook/catalog export and reconciliation are complete, Event 19 and SCN-013
+  now read `Fully Functional`, and package inventory is complete at 33/33
+  current files. The final completion audit is PASS with P0/P1/P2 = 0, so no
+  closure gate remains.
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable
+  catalog source. Event 19 and SCN-013 are `Fully Functional`; the exported CSVs
+  match those promoted workbook rows and remain generated outputs rather than
+  source documents.
+
+The live focus-tree, decision/mission, country-package, localisation,
+registry/scenario, evolution-counter, and AI, balance, performance, isolation,
+scenario-safety, and exploit specialist audits are clean. The live-final AI
+reaudit reports zero P0, P1, or P2 findings. All gameplay specialist gates are
+therefore closed. Its evidence is
+`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_ai_balance_performance_live_final_reaudit_2026_07_16.md`.
+
+The owner-approved Event 19-only deterministic spot-colour flattening exception
+is now the current regional source route. The 7/18 raws, spot masters, native
+PNG/TGA ladders, validation JSON, and checksum file are the current evidence.
+The independent remediation re-audit handoff
+`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+is PASS and clears the regional asset gate for parent-owned package promotion.
+The machine JSON's literal `candidate_requires_independent_visual_review` value
+remains an immutable processor-state record and is superseded for approval by
+that PASS handoff. The seven retained GHOST_BASE prompt records were recovered
+exactly from the original archive and independently matched by the parent. The
+7/16 `regional_variants/` composites, motif/composite notes, validation/checksum
+pair, and contact sheets remain archival superseded evidence. Workbook/catalog
+export and reconciliation, the 33/33 package inventory, and the final
+completion audit are complete. Event 19 and SCN-013 now read `Fully Functional`.
+The three accepted exceptions and no-other-fallback rule remain explicit.
+
 ## Reading order
 
 1. `specs/019_infantry_spawn_spec_part_1_core.md`
@@ -41,12 +114,25 @@ The matrices and prompts should be read after the sequential specification.
 
 The event has no terminal world-end outcome. The derivative countries are dangerous regional actors, not substitutes for the Zombie Outbreak, Death, golem, or future parent event endgames. No super-event is planned because the normal event, its evolutions, and its requested triggerable scenario do not meet the project threshold for a campaign-defining presentation moment. A later globally dominant derivative revolt could justify a separate improvement proposal, but it is outside this source design.
 
-The design does not prescribe final player-facing localisation. All names in the specification are working labels or internal design labels unless the text explicitly identifies a stable script-facing identifier. Implementation must write final in-world text from the supplied tone and information directions.
+The planning text distinguishes working labels from stable script identifiers.
+Final in-world English wording is owned by
+`localisation/english/019_infrantry_spawn_l_english.yml` and its aligned Event
+19 documentation and catalog fields.
 
 ## Process disclosure
 
-All 30 supplied project files were read in full before this package was drafted. Their hashes and line counts are recorded in `review/source_reading_manifest.md`.
+All 30 supplied project files were read in full before this package was drafted.
+Their hashes and line counts are recorded in `review/source_reading_manifest.md`.
 
-The custom project subagent runtime was not available in this environment. The required specialist passes were therefore performed manually as role-equivalent reviews and recorded in `review/manual_subagent_role_reviews.md`. The mandatory near-completion improvement-loop review was also performed manually and recorded separately. This does not count as an actual `chaosx_improvement_loop_planner` spawn, so the implementation agent must run the real project subagent when that runtime is available before claiming implementation completion.
+The planning environment initially lacked the custom project-agent runtime, so
+its early role-equivalent reviews are preserved as historical design evidence.
+Implementation subsequently used project agents with no inherited parent
+context. A later required near-completion planner pass produced the routed
+addendum named above; its findings were implemented. Dated specialist handoffs
+live under `docs/plans/019_infantry_spawn_plans/`.
 
-The public repository was inspected selectively for current Event 19 behavior and parent-system isolation risks. The full local Chaos Redux repository, offline Paradox wiki snapshot, and installed vanilla game documentation were not mounted here. Implementation must verify all engine syntax and current identifiers against those local sources.
+Implementation also inspected the full local repository, required offline
+Paradox wiki snapshot, installed vanilla documentation and source precedents,
+and approved reference mods where needed. Current engine limitations,
+transaction invariants, and remaining audit gates are recorded in
+`review/blockers_and_uncertainty.md`.

@@ -43,7 +43,7 @@ Do not unlock technology merely because equipment appears. Technology-locked for
 
 ### Claimants
 
-Create a reusable system for up to three active claimants per country and a 20-portrait pool. Use gender-matched regional personal-name pools. Claimant revolts transfer only recorded loyal event formations and coherent territory. Implement one-state takeover logic.
+Create a reusable system for up to three active claimants per country and a 20-profile male claimant pool. Use regional male personal-name pools and male-default leader metadata. Each fixed technical portrait slot displays a separate region-compatible army/muster identity scene with no individual focal human/person. Claimant revolts transfer only recorded loyal event formations and coherent territory. Implement one-state takeover logic.
 
 ### Chaos unit registry
 
@@ -58,6 +58,12 @@ Initial requirements:
 - derivative states never set or satisfy parent Zombie, Death, golem, super-event, evolution, or world-end progression
 
 Verify actual local unit and parent-system identifiers before writing call sites.
+
+Keep all Event 19-specific registry tables and provider callbacks in the sole
+consolidated Event 19 registry code file. Fold registry constants and triggers
+into the existing Event 19 constants and trigger files, and keep startup calls
+in existing parent on-actions. Do not create family-specific or additional
+Event 19 registry files.
 
 ### Derivative countries
 
@@ -88,7 +94,7 @@ Wire every final visible asset from the Event 19 asset package. Wire the three f
 
 ### Triggerable scenario
 
-Register the final approved scenario identity based on proposed `SCN-008`.
+Register The Unbidden Muster with the final approved identity `SCN-013`.
 
 Implement four type directions and four intensity stops. Launch is direct and independent of normal chaos, evolution, date, or prior event prerequisites. Create immediate revolt or takeover and wars. Clear every launch bypass after setup. Do not set the terminal world-end flag.
 

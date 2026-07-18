@@ -43,9 +43,9 @@ Anomalous families default to separate family lots. Mixed anomalous templates re
 
 Management is by lot, district, claimant, or family.
 
-### Twenty animated claimant portraits
+### Twenty animated claimant army/muster scenes
 
-Static portraits provide diversity. State animation belongs in the UI.
+Static army/muster identity scenes provide diversity. State animation belongs in the UI panel border.
 
 ### Dedicated super-event package
 
@@ -69,4 +69,4 @@ Reopen broad design only when:
 - several reworked military events can support a coherent event cluster
 - implementation reveals a recurring registry workflow that belongs in a project skill
 
-Do not expand simply because another possible unit, portrait, focus, or incident can be imagined.
+Do not expand simply because another possible unit, identity scene, focus, or incident can be imagined.

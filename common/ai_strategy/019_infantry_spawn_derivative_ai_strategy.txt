@@ -40,6 +40,18 @@ infantry_spawn_derivative_claimant_profile = {
 	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
 }
 
+infantry_spawn_derivative_claimant_estates_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_package_is_active = yes
+		infantry_spawn_derivative_has_claimant_route = yes
+		has_country_flag = infantry_spawn_derivative_command_estates_assigned
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
+	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+}
+
 infantry_spawn_derivative_collective_profile = {
 	allowed = { always = yes }
 	enable = {
@@ -51,6 +63,31 @@ infantry_spawn_derivative_collective_profile = {
 	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.collective_route_defense }
 	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
 	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+}
+
+infantry_spawn_derivative_collective_rotating_commands_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_package_is_active = yes
+		has_country_flag = infantry_spawn_derivative_district_councils_bound
+		has_country_flag = infantry_spawn_derivative_collective_rotating_commands
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.moderate_war_restraint }
+	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+}
+
+infantry_spawn_derivative_collective_central_muster_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_package_is_active = yes
+		has_country_flag = infantry_spawn_derivative_district_councils_bound
+		has_country_flag = infantry_spawn_derivative_collective_central_muster
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.former_parent_attack }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.collective_route_defense }
 }
 
 infantry_spawn_derivative_species_profile = {
@@ -66,13 +103,73 @@ infantry_spawn_derivative_species_profile = {
 	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.species_route_family }
 }
 
+infantry_spawn_derivative_species_compact_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_package_is_active = yes
+		has_country_flag = infantry_spawn_derivative_family_domain_marked
+		has_country_flag = infantry_spawn_derivative_species_compact_governance
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.moderate_war_restraint }
+	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+}
+
+infantry_spawn_derivative_species_primacy_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_package_is_active = yes
+		has_country_flag = infantry_spawn_derivative_family_domain_marked
+		has_country_flag = infantry_spawn_derivative_species_family_primacy
+		has_country_flag = infantry_spawn_derivative_outward_campaign_ready
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.aggressive_war_release }
+	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.opening_defense }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.species_route_family }
+}
+
 infantry_spawn_derivative_zombie_profile = {
 	allowed = { always = yes }
 	enable = { infantry_spawn_derivative_is_zombie = yes }
 	abort_when_not_enabled = yes
 	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.zombie_quantity_bias }
+	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
+}
+
+infantry_spawn_derivative_zombie_numbered_bands_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_zombie = yes
+		has_country_flag = infantry_spawn_derivative_zombie_barracks_scavenged
+		has_country_flag = infantry_spawn_derivative_zombie_bands_numbered
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.zombie_quantity_bias }
 	ai_strategy = { type = role_ratio id = infantry value = constant:infantry_spawn_derivative_ai.zombie_quantity_bias }
+}
+
+infantry_spawn_derivative_zombie_controlled_training_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_zombie = yes
+		has_country_flag = infantry_spawn_derivative_zombie_training_authorized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.former_parent_attack }
+}
+
+infantry_spawn_derivative_zombie_disciplined_column_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_zombie = yes
+		has_country_flag = infantry_spawn_derivative_zombie_hunger_disciplined
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
 }
 
 infantry_spawn_derivative_ghost_profile = {
@@ -81,7 +178,37 @@ infantry_spawn_derivative_ghost_profile = {
 	abort_when_not_enabled = yes
 	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
 	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+}
+
+infantry_spawn_derivative_ghost_anchor_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_ghost = yes
+		has_country_flag = infantry_spawn_derivative_ghost_anchors_marked
+	}
+	abort_when_not_enabled = yes
 	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+}
+
+infantry_spawn_derivative_ghost_stable_procession_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_ghost = yes
+		has_country_flag = infantry_spawn_derivative_ghost_procession_anchored
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+}
+
+infantry_spawn_derivative_ghost_reduced_hunger_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_ghost = yes
+		has_country_flag = infantry_spawn_derivative_ghost_decline_managed
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.strong_war_restraint }
 }
 
 infantry_spawn_derivative_golem_profile = {
@@ -90,6 +217,36 @@ infantry_spawn_derivative_golem_profile = {
 	abort_when_not_enabled = yes
 	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai.golem_preservation_bias }
 	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.golem_preservation_bias }
+}
+
+infantry_spawn_derivative_golem_recovered_coal_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_golem = yes
+		has_country_flag = infantry_spawn_derivative_golem_coal_recovered
+	}
+	abort_when_not_enabled = yes
 	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = constant:infantry_spawn_derivative_ai.resource_state_priority }
+}
+
+infantry_spawn_derivative_golem_foundry_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_golem = yes
+		has_country_flag = infantry_spawn_derivative_golem_foundries_open
+	}
+	abort_when_not_enabled = yes
 	ai_strategy = { type = build_building id = arms_factory value = constant:infantry_spawn_derivative_ai.industry_state_priority }
+	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = constant:infantry_spawn_derivative_ai.resource_state_priority }
+}
+
+infantry_spawn_derivative_golem_shared_pattern_profile = {
+	allowed = { always = yes }
+	enable = {
+		infantry_spawn_derivative_is_golem = yes
+		has_country_flag = infantry_spawn_derivative_golem_pattern_shared
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = equipment_production_factor id = support value = constant:infantry_spawn_derivative_ai.adjacent_attack }
+	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
 }

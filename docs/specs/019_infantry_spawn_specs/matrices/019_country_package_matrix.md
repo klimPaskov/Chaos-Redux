@@ -4,18 +4,18 @@
 
 | Surface | Shared requirement |
 | --- | --- |
-| Creation | Dynamic civil-war or dynamic-country path preferred, safe fixed-tag fallback requires user approval |
+| Creation | Safe dynamic country for multi-state releases; verified same-tag takeover for one-state countries; no fixed-tag fallback |
 | Origin | Event 19 derivative origin flag plus family-specific derivative flag |
 | Parent isolation | No parent tag, original tag, actor flag, stage, evolution, super-event, or world-end count |
-| Territory | Coherent region around loyal units, claimant headquarters, depots, and weak central control |
+| Territory | Coherent non-capital region around loyal units and claimant headquarters; mainland is preferred, and islands are eligible only when no viable mainland base exists |
 | Starting forces | Actual revolting Event 19 formations, no unrelated free army |
 | Leader | Existing claimant, family-specific fictional person, or collective body |
 | Identity | Direct regional public name, adjective, distinct flag family |
 | Classification | Shared special Chaos country trigger, plus nonhuman trigger when applicable |
 | Politics | Fixed-purpose hierarchy choices rather than four generic ideology routes |
-| Ideas | Unrecognized Host, Seized Muster Districts, family Species Burden, Pursued by Former State |
-| Tree | Roughly 25 to 35 focuses or equivalent shared modules with family adaptation |
-| Decisions | Survival, supply, reinforcement, former-parent war, expansion, integration, hierarchy |
+| Ideas | Four simultaneous live tracks: government recognition, family command, logistics/doctrine/sustainment, and former-parent/expansion |
+| Tree | 45 live focuses: 30 shared plus five per family, yielding a 35-focus adapted route for each derivative |
+| Decisions | Survival, supply, reinforcement, former-parent war, claimant continuity, governance policy, family diplomacy, expansion, family-specific integration, hierarchy |
 | AI | Survive, secure sustainment, fight former parent, expand regionally, avoid impossible distant wars |
 | Defeat | Clean Event 19 targets and flags, stop family effects, preserve parent isolation |
 
@@ -43,9 +43,15 @@
 | Zombie burden | Fragmented Command | Bound to the Commander | Coordinated Bands | Instinct Hierarchy | Devouring Fragments |
 | Ghost burden | Unstable Manifestation | Bound Procession | Chorus of Anchors | Haunting Without Masters | Fading Host |
 | Golem burden | Broken Pattern | Master-Bound Constructs | Distributed Binding | Living Pattern | Crumbling Host |
-| Former parent pressure | Pursued by Former State | Decisive War Plan | Defensive Compact | Extinction of Old Rule | Encircled Remnant |
+| Former parent and expansion | Pursued by Former State | Decisive War Plan | Defensive Compact | Extinction of Old Rule | Encircled Remnant |
 
-All names are working labels and need final in-world localisation.
+These are the live in-world idea names. Each country carries four simultaneous
+tracks: one government form, one territory/logistics or later doctrine form,
+one family-command form, and one former-parent/expansion form. Route swaps are
+mutually exclusive inside a track. Once the former state's pressure is
+resolved, its route-specific form becomes *The Outward Muster*; the late
+capstone replaces that bridge with *Regional Predator*. Defeat replaces all
+four live tracks with the matching remnant forms.
 
 ## Starting force scaling
 
@@ -78,13 +84,27 @@ All names are working labels and need final in-world localisation.
 | Postwar integration | Integrate Conquered Districts | family-specific costs and effects | staged integration |
 | Late payoff | Regional Predator | distinct final flag or identity | serious regional threat, no world end |
 
+The live capstone requires hierarchy consolidation, family transformation,
+sustainable reinforcement, former-parent resolution, at least one integrated
+district, the controlled-state threshold, and the recorded-war-victory
+threshold. It cannot be obtained by selecting an aggressive hierarchy alone.
+
+## Live governance, diplomacy, and integration
+
+| Surface | Collective route | Species route | Family adaptation |
+| --- | --- | --- | --- |
+| Government policy | rotating district commands or centralized common muster | district compacts or family primacy | stability-first versus war-first AI profiles |
+| Neighbor agreement | route may favor compact government | primacy favors predation; compacts favor agreement | zombie containment bargain, ghost border recognition, or golem material agreement; one agreement per neighbor |
+| Territorial integration | shared operation unlock and one active project at a time | shared operation unlock and one active project at a time | zombie muster district, ghost anchor district, or golem foundry district with distinct costs, timers, effects, and AI targeting |
+| Expansion | warned local submission demand | warned local submission demand | bounded target checks, timed warning, limited war goal, and cooldown |
+
 ## Asset family coverage
 
 | Asset | Zombie | Ghost | Golem |
 | --- | --- | --- | --- |
 | Base flag set | generated, fragmented dead-host motif | generated, spectral regional motif | generated, bound-stone motif |
 | Route flag variants | claimant, collective, species command when identity changes visibly | same | same |
-| Leader portrait | claimant reuse or generated fictional leader/council | claimant reuse or generated spectral leader/council | claimant reuse or generated master-builder/council |
+| Fixed leader portrait-slot art | claimant army/muster reuse or massed undead host scene | claimant army/muster reuse or massed spectral host scene | claimant army/muster reuse or collective geological host scene |
 | Focus icons | coordinated family set | coordinated family set | coordinated family set |
 | Ideas | fragmentation and recruitment | manifestation and slow decline | material and replacement |
 | Decisions | training and control | anchor and manifestation | quarry and binding |

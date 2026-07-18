@@ -8,7 +8,7 @@
 
 infantry_spawn_formation_management_category = {
 	infantry_spawn_open_muster_board = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_board_open
 		visible = { infantry_spawn_has_evolution_iii = yes }
 		available = {
 			infantry_spawn_muster_board_is_available = yes
@@ -26,7 +26,7 @@ infantry_spawn_formation_management_category = {
 	# -----------------------------------------------------------------------
 
 	infantry_spawn_select_next_ordinary_lot = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_lot_cycle
 		visible = { infantry_spawn_has_unresolved_generation = yes }
 		available = { infantry_spawn_management_is_available = yes }
 		complete_effect = {
@@ -36,8 +36,50 @@ infantry_spawn_formation_management_category = {
 		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
 	}
 
+	infantry_spawn_select_next_unaccounted_lot = {
+		icon = GFX_decision_infantry_spawn_lot_cycle
+		visible = {
+			has_country_flag = infantry_spawn_unaccounted_formation_detected
+			check_variable = { infantry_spawn_unaccounted_division_count > 0 }
+		}
+		available = { infantry_spawn_management_is_available = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_select_next_unaccounted_lot_tt
+			hidden_effect = { infantry_spawn_select_next_unaccounted_lot = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_settle_selected_lot_obligations = {
+		icon = GFX_decision_infantry_spawn_audit
+		visible = {
+			infantry_spawn_selected_lot_index_is_valid = yes
+			OR = {
+				check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.demobilized compare = less_than }
+				check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.unaccounted }
+			}
+			OR = {
+				check_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_selected_lot_index > 0 }
+				check_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_selected_lot_index > 0 }
+			}
+		}
+		available = { infantry_spawn_selected_lot_exact_obligations_are_affordable = yes }
+		custom_cost_trigger = { infantry_spawn_selected_lot_exact_obligations_are_affordable = yes }
+		custom_cost_text = infantry_spawn_selected_lot_exact_obligation_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_settle_selected_lot_obligations_tt
+			hidden_effect = { infantry_spawn_settle_selected_lot_exact_obligations = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.standard
+			modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.unaccounted } }
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong NOT = { has_war = yes } }
+		}
+	}
+
 	infantry_spawn_audit_selected_lot = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_audit
 		visible = {
 			infantry_spawn_can_audit_generation = yes
 			infantry_spawn_selected_lot_is_unresolved = yes
@@ -59,7 +101,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_assign_territorial_roles = {
-		icon = GFX_decision_generic_reorganize_irregulars
+		icon = GFX_decision_infantry_spawn_territorial_roles
 		visible = {
 			infantry_spawn_can_assign_territorial_role = yes
 			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
@@ -80,7 +122,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_open_standardization_cycle = {
-		icon = GFX_decision_generic_merge_plant_materiel
+		icon = GFX_decision_infantry_spawn_standardization
 		visible = {
 			infantry_spawn_can_standardize_selected_lot = yes
 			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
@@ -103,7 +145,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_supervised_demobilization = {
-		icon = GFX_decision_generic_disband_irregulars
+		icon = GFX_decision_infantry_spawn_demobilization
 		visible = {
 			infantry_spawn_can_demobilize_selected_lot = yes
 			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
@@ -125,7 +167,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_emergency_field_integration = {
-		icon = GFX_decision_generic_military
+		icon = GFX_decision_infantry_spawn_emergency_integration
 		visible = {
 			infantry_spawn_can_emergency_integrate_selected_lot = yes
 			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
@@ -148,7 +190,7 @@ infantry_spawn_formation_management_category = {
 	# -----------------------------------------------------------------------
 
 	infantry_spawn_establish_muster_districts = {
-		icon = GFX_decision_generic_colonial_administration
+		icon = GFX_decision_infantry_spawn_muster_district
 		visible = {
 			infantry_spawn_has_evolution_i = yes
 			check_variable = { infantry_spawn_active_lot_count > 0 }
@@ -179,7 +221,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_appoint_integration_staff = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_integration_staff
 		visible = {
 			infantry_spawn_has_evolution_i = yes
 			NOT = { has_country_flag = infantry_spawn_integration_staff_appointed }
@@ -205,7 +247,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_issue_common_tables = {
-		icon = GFX_decision_generic_merge_plant_materiel
+		icon = GFX_decision_infantry_spawn_standardization
 		visible = {
 			infantry_spawn_has_evolution_i = yes
 			infantry_spawn_can_standardize_selected_lot = yes
@@ -214,14 +256,8 @@ infantry_spawn_formation_management_category = {
 			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
 			NOT = { has_country_flag = infantry_spawn_standardization_running }
 		}
-		available = {
-			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
-			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
-		}
-		custom_cost_trigger = {
-			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
-			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
-		}
+		available = { infantry_spawn_can_execute_selected_lot_standardization = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_standardization = yes }
 		custom_cost_text = infantry_spawn_standardization_cycle_cost
 		complete_effect = {
 			custom_effect_tooltip = infantry_spawn_issue_common_tables_tt
@@ -235,7 +271,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_preserve_specialist_companies = {
-		icon = GFX_decision_generic_research
+		icon = GFX_decision_infantry_spawn_specialist_preservation
 		visible = {
 			infantry_spawn_has_evolution_i = yes
 			infantry_spawn_can_demobilize_selected_lot = yes
@@ -260,7 +296,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_recognize_emergency_reserve = {
-		icon = GFX_decision_generic_protection
+		icon = GFX_decision_infantry_spawn_emergency_reserve
 		visible = {
 			infantry_spawn_has_evolution_i = yes
 			infantry_spawn_selected_lot_is_unresolved = yes
@@ -287,7 +323,7 @@ infantry_spawn_formation_management_category = {
 	# -----------------------------------------------------------------------
 
 	infantry_spawn_survey_formation_lots = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_audit
 		visible = { infantry_spawn_has_evolution_ii = yes check_variable = { infantry_spawn_active_lot_count > 0 } }
 		available = { infantry_spawn_management_is_available = yes }
 		complete_effect = {
@@ -302,7 +338,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_open_training_cycle = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_training_cycle
 		visible = {
 			infantry_spawn_has_evolution_ii = yes
 			infantry_spawn_selected_lot_is_unresolved = yes
@@ -326,7 +362,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_reserve_rail_corridors = {
-		icon = GFX_decision_generic_train
+		icon = GFX_decision_infantry_spawn_rail_corridor
 		visible = {
 			infantry_spawn_has_evolution_ii = yes
 			infantry_spawn_selected_lot_index_is_valid = yes
@@ -355,8 +391,89 @@ infantry_spawn_formation_management_category = {
 		}
 	}
 
+	infantry_spawn_preserve_prototype_formation = {
+		icon = GFX_decision_infantry_spawn_prototype_preservation
+		visible = {
+			infantry_spawn_has_evolution_ii = yes
+			OR = {
+				AND = {
+					is_ai = yes
+					has_country_flag = infantry_spawn_prototype_preservation_available
+				}
+				AND = {
+					is_ai = no
+					infantry_spawn_selected_lot_is_unmanaged_prototype = yes
+				}
+			}
+		}
+		available = { infantry_spawn_can_begin_prototype_preservation = yes }
+		custom_cost_trigger = { infantry_spawn_can_begin_prototype_preservation = yes }
+		custom_cost_text = infantry_spawn_preserve_prototype_formation_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_preserve_prototype_formation_tt
+			hidden_effect = { infantry_spawn_execute_selected_prototype_preservation_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.half
+			modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
+			modifier = {
+				factor = constant:infantry_spawn_factor.double
+				OR = {
+					num_of_military_factories > constant:infantry_spawn_prototype.industrial_military_factory_floor
+					num_of_civilian_factories > constant:infantry_spawn_prototype.industrial_civilian_factory_floor
+				}
+			}
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
+		}
+	}
+
+	infantry_spawn_cannibalize_advanced_lot = {
+		icon = GFX_decision_infantry_spawn_prototype_cannibalization
+		visible = {
+			infantry_spawn_has_evolution_ii = yes
+			OR = {
+				AND = {
+					is_ai = yes
+					has_country_flag = infantry_spawn_prototype_cannibalization_available
+				}
+				AND = {
+					is_ai = no
+					infantry_spawn_selected_lot_is_cannibalizable_prototype = yes
+				}
+			}
+		}
+		available = { infantry_spawn_can_begin_prototype_cannibalization = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_cannibalize_advanced_lot_tt
+			hidden_effect = { infantry_spawn_execute_selected_prototype_cannibalization_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.double fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = { factor = constant:infantry_spawn_factor.double check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
+			modifier = {
+				factor = constant:infantry_spawn_factor.quarter
+				OR = {
+					is_major = yes
+					num_of_military_factories > constant:infantry_spawn_prototype.industrial_military_factory_floor
+					num_of_civilian_factories > constant:infantry_spawn_prototype.industrial_civilian_factory_floor
+				}
+			}
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				has_war = yes
+				any_controlled_state = {
+					is_capital = yes
+					any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
+				}
+			}
+		}
+	}
+
 	infantry_spawn_request_field_reinforcement = {
-		icon = GFX_decision_generic_military
+		icon = GFX_decision_infantry_spawn_request_field
 		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_field_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_field_request = yes }
@@ -377,7 +494,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_mobile_reserve = {
-		icon = GFX_decision_generic_motorized
+		icon = GFX_decision_infantry_spawn_request_mobile
 		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_mobile_reserve_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_mobile_reserve_request = yes }
@@ -399,7 +516,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_territorial_defenders = {
-		icon = GFX_decision_generic_protection
+		icon = GFX_decision_infantry_spawn_request_territorial
 		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_territorial_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_territorial_request = yes }
@@ -421,7 +538,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_specialist_firepower = {
-		icon = GFX_decision_generic_research
+		icon = GFX_decision_infantry_spawn_request_firepower
 		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_specialist_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_specialist_request = yes }
@@ -447,7 +564,7 @@ infantry_spawn_formation_management_category = {
 	# -----------------------------------------------------------------------
 
 	infantry_spawn_request_numbers = {
-		icon = GFX_decision_generic_military
+		icon = GFX_decision_infantry_spawn_request_numbers
 		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_numbers_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_numbers_request = yes }
@@ -465,7 +582,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_discipline = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_request_discipline
 		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_discipline_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_discipline_request = yes }
@@ -483,7 +600,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_firepower = {
-		icon = GFX_decision_generic_research
+		icon = GFX_decision_infantry_spawn_request_firepower
 		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_firepower_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_firepower_request = yes }
@@ -501,7 +618,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_mobility = {
-		icon = GFX_decision_generic_motorized
+		icon = GFX_decision_infantry_spawn_request_mobile
 		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_mobility_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_mobility_request = yes }
@@ -519,7 +636,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_request_anything = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_request_anything
 		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
 		available = { infantry_spawn_can_pay_anything_request = yes }
 		custom_cost_trigger = { infantry_spawn_can_pay_anything_request = yes }
@@ -541,7 +658,7 @@ infantry_spawn_formation_management_category = {
 	# -----------------------------------------------------------------------
 
 	infantry_spawn_request_selected_anomalous_family = {
-		icon = GFX_decision_generic_military
+		icon = GFX_decision_infantry_spawn_request_anomalous
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_execute_selected_family_reinforcement = yes }
 		custom_cost_trigger = { infantry_spawn_can_execute_selected_family_reinforcement = yes }
@@ -554,7 +671,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_open_selected_family_cantonment_decision = {
-		icon = GFX_decision_generic_construction
+		icon = GFX_decision_infantry_spawn_cantonment
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_open_selected_family_cantonment = yes }
 		custom_cost_trigger = { infantry_spawn_can_open_selected_family_cantonment = yes }
@@ -567,7 +684,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_appoint_selected_family_liaison_decision = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_liaison
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_appoint_selected_family_liaison = yes }
 		custom_cost_trigger = { infantry_spawn_can_appoint_selected_family_liaison = yes }
@@ -580,7 +697,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_restrict_selected_family_deployment_decision = {
-		icon = GFX_decision_generic_protection
+		icon = GFX_decision_infantry_spawn_restricted_deployment
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_issue_selected_family_restricted_deployment = yes }
 		custom_cost_trigger = { infantry_spawn_can_issue_selected_family_restricted_deployment = yes }
@@ -593,7 +710,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_sustain_selected_family_decision = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_infantry_spawn_family_sustainment
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_sustain_selected_family = yes }
 		custom_cost_trigger = { infantry_spawn_can_sustain_selected_family = yes }
@@ -606,7 +723,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_seal_selected_family_breach_decision = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_breach_sealing
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_seal_selected_family_breach = yes }
 		custom_cost_trigger = { infantry_spawn_can_seal_selected_family_breach = yes }
@@ -619,7 +736,7 @@ infantry_spawn_formation_management_category = {
 	}
 
 	infantry_spawn_disperse_selected_anomalous_lot_decision = {
-		icon = GFX_decision_generic_disband_irregulars
+		icon = GFX_decision_infantry_spawn_anomalous_disperse
 		visible = { infantry_spawn_has_evolution_iv = yes }
 		available = { infantry_spawn_can_disperse_selected_anomalous_lot = yes }
 		custom_cost_trigger = { infantry_spawn_can_disperse_selected_anomalous_lot = yes }
@@ -632,11 +749,179 @@ infantry_spawn_formation_management_category = {
 	}
 
 	# -----------------------------------------------------------------------
+	# Controlled one-formation achievement trials
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_achievement_one_battalion_combat_trial = {
+		icon = GFX_decision_infantry_spawn_training_cycle
+		visible = {
+			infantry_spawn_country_is_active = yes
+			NOT = { has_country_flag = infantry_spawn_achievement_one_battalion_wonder_ready }
+			NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+		}
+		state_target = any_owned_state
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = infantry_spawn_achievement_one_battalion_trial_target_tt
+					infantry_spawn_achievement_one_battalion_trial_state_is_eligible = yes
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_achievement_combat_trial_country_available_tt
+				infantry_spawn_achievement_combat_trial_country_is_available = yes
+			}
+			FROM = { infantry_spawn_achievement_one_battalion_trial_state_is_eligible = yes }
+		}
+		custom_cost_trigger = { infantry_spawn_achievement_one_battalion_trial_cost_is_available = yes }
+		custom_cost_text = infantry_spawn_achievement_one_battalion_trial_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_one_battalion_combat_trial_tt
+			hidden_effect = {
+				set_temp_variable = { infantry_spawn_achievement_current_combat_trial_type = constant:infantry_spawn_achievement_combat_trial.type_one_battalion_wonder }
+				infantry_spawn_achievement_start_combat_trial_from_target_state = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.tenth }
+	}
+
+	infantry_spawn_achievement_combined_arms_combat_trial = {
+		icon = GFX_decision_infantry_spawn_training_cycle
+		visible = {
+			infantry_spawn_country_is_active = yes
+			NOT = { has_country_flag = infantry_spawn_achievement_combined_arms_accident_ready }
+			NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+		}
+		state_target = any_owned_state
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = infantry_spawn_achievement_combined_arms_trial_target_tt
+					infantry_spawn_achievement_combined_arms_trial_state_is_eligible = yes
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_achievement_combat_trial_country_available_tt
+				infantry_spawn_achievement_combat_trial_country_is_available = yes
+			}
+			FROM = { infantry_spawn_achievement_combined_arms_trial_state_is_eligible = yes }
+		}
+		custom_cost_trigger = { infantry_spawn_achievement_combined_arms_trial_cost_is_available = yes }
+		custom_cost_text = infantry_spawn_achievement_combined_arms_trial_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_combined_arms_combat_trial_tt
+			hidden_effect = {
+				set_temp_variable = { infantry_spawn_achievement_current_combat_trial_type = constant:infantry_spawn_achievement_combat_trial.type_combined_arms_accident }
+				infantry_spawn_achievement_start_combat_trial_from_target_state = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.tenth }
+	}
+
+	infantry_spawn_achievement_borrowed_future_combat_trial = {
+		icon = GFX_decision_infantry_spawn_training_cycle
+		visible = {
+			infantry_spawn_country_is_active = yes
+			NOT = { has_country_flag = infantry_spawn_achievement_borrowed_future_ready }
+			NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+		}
+		state_target = any_owned_state
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = infantry_spawn_achievement_borrowed_future_trial_target_tt
+					infantry_spawn_achievement_borrowed_future_trial_state_is_eligible = yes
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_achievement_combat_trial_country_available_tt
+				infantry_spawn_achievement_combat_trial_country_is_available = yes
+			}
+			FROM = { infantry_spawn_achievement_borrowed_future_trial_state_is_eligible = yes }
+		}
+		custom_cost_trigger = { infantry_spawn_achievement_borrowed_future_trial_cost_is_available = yes }
+		custom_cost_text = infantry_spawn_achievement_borrowed_future_trial_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_borrowed_future_combat_trial_tt
+			hidden_effect = {
+				set_temp_variable = { infantry_spawn_achievement_current_combat_trial_type = constant:infantry_spawn_achievement_combat_trial.type_borrowed_future }
+				infantry_spawn_achievement_start_combat_trial_from_target_state = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.tenth }
+	}
+
+	infantry_spawn_achievement_barracks_of_babel_combat_trial = {
+		icon = GFX_decision_infantry_spawn_training_cycle
+		visible = {
+			infantry_spawn_country_is_active = yes
+			NOT = { has_country_flag = infantry_spawn_achievement_barracks_of_babel_ready }
+			NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+		}
+		state_target = any_owned_state
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = infantry_spawn_achievement_barracks_of_babel_trial_target_tt
+					infantry_spawn_achievement_barracks_of_babel_trial_state_is_eligible = yes
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_achievement_combat_trial_country_available_tt
+				infantry_spawn_achievement_combat_trial_country_is_available = yes
+			}
+			FROM = { infantry_spawn_achievement_barracks_of_babel_trial_state_is_eligible = yes }
+		}
+		custom_cost_trigger = { infantry_spawn_achievement_barracks_of_babel_trial_cost_is_available = yes }
+		custom_cost_text = infantry_spawn_achievement_barracks_of_babel_trial_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_barracks_of_babel_combat_trial_tt
+			hidden_effect = {
+				set_temp_variable = { infantry_spawn_achievement_current_combat_trial_type = constant:infantry_spawn_achievement_combat_trial.type_barracks_of_babel }
+				infantry_spawn_achievement_start_combat_trial_from_target_state = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.tenth }
+	}
+
+	# -----------------------------------------------------------------------
 	# Activated missions. Targets are stable lot UIDs stored by their starters.
 	# -----------------------------------------------------------------------
 
+	infantry_spawn_achievement_combat_trial_mission = {
+		icon = GFX_decision_infantry_spawn_training_cycle
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = constant:infantry_spawn_achievement_combat_trial.timeout_days
+		available = { always = no }
+		cancel_trigger = { NOT = { infantry_spawn_achievement_combat_trial_is_live = yes } }
+		cancel_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_combat_trial_cancel_tt
+			hidden_effect = { infantry_spawn_achievement_cancel_active_combat_trial = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = infantry_spawn_achievement_combat_trial_timeout_tt
+			hidden_effect = { infantry_spawn_achievement_cancel_active_combat_trial = yes }
+		}
+	}
+
 	infantry_spawn_formation_roll_call_mission = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_audit
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_audit_decision_running }
@@ -644,11 +929,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_audit_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_selected_lot_audit = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_selected_lot_audit = yes }
 	}
 
 	infantry_spawn_standardization_cycle_mission = {
-		icon = GFX_decision_generic_merge_plant_materiel
+		icon = GFX_decision_infantry_spawn_standardization
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_standardization_running }
@@ -656,11 +941,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_standardization_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_selected_lot_standardization = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_selected_lot_standardization = yes }
 	}
 
 	infantry_spawn_supervised_demobilization_mission = {
-		icon = GFX_decision_generic_disband_irregulars
+		icon = GFX_decision_infantry_spawn_demobilization
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_demobilization_running }
@@ -668,11 +953,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_demobilization_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_supervised_demobilization = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_supervised_demobilization = yes }
 	}
 
 	infantry_spawn_training_cycle_mission = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_training_cycle
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_training_cycle_running }
@@ -680,11 +965,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_training_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_selected_lot_training = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_selected_lot_training = yes }
 	}
 
 	infantry_spawn_muster_districts_mission = {
-		icon = GFX_decision_generic_colonial_administration
+		icon = GFX_decision_infantry_spawn_muster_district
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_muster_districts_running }
@@ -692,11 +977,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_muster_district_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_muster_districts = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_muster_districts = yes }
 	}
 
 	infantry_spawn_officer_search_mission = {
-		icon = GFX_decision_generic_army_support
+		icon = GFX_decision_infantry_spawn_integration_staff
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_integration_staff_search_running }
@@ -704,11 +989,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_officer_search_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_integration_staff_search = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_integration_staff_search = yes }
 	}
 
 	infantry_spawn_specialist_preservation_mission = {
-		icon = GFX_decision_generic_research
+		icon = GFX_decision_infantry_spawn_specialist_preservation
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_specialist_preservation_running }
@@ -716,11 +1001,23 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_specialist_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_specialist_preservation = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_specialist_preservation = yes }
+	}
+
+	infantry_spawn_prototype_maintenance_trial_mission = {
+		icon = GFX_decision_infantry_spawn_prototype_preservation
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_prototype_trial_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_prototype_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_defer_or_complete_prototype_maintenance_trial = yes }
 	}
 
 	infantry_spawn_rail_corridor_mission = {
-		icon = GFX_decision_generic_train
+		icon = GFX_decision_infantry_spawn_rail_corridor
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_rail_corridor_running }
@@ -728,11 +1025,11 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_rail_corridor_mission_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_complete_rail_corridor_mission = yes }
+		timeout_effect = { infantry_spawn_defer_or_complete_rail_corridor_mission = yes }
 	}
 
 	infantry_spawn_request_cooldown_mission = {
-		icon = GFX_decision_generic_operation
+		icon = GFX_decision_infantry_spawn_request_cooldown
 		allowed = { always = no }
 		activation = { always = no }
 		visible = { has_country_flag = infantry_spawn_request_cooldown }
@@ -740,6 +1037,6 @@ infantry_spawn_formation_management_category = {
 		is_good = yes
 		days_mission_timeout = infantry_spawn_request_cooldown_days
 		available = { always = no }
-		timeout_effect = { infantry_spawn_finish_request_cooldown = yes }
+		timeout_effect = { infantry_spawn_defer_or_finish_request_cooldown = yes }
 	}
 }

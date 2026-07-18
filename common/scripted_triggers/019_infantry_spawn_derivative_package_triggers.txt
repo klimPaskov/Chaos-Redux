@@ -15,24 +15,51 @@ infantry_spawn_derivative_package_is_active = {
 
 infantry_spawn_derivative_is_zombie = {
 	infantry_spawn_derivative_package_is_active = yes
-	has_country_flag = infantry_spawn_zombie_derivative
-	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_zombie_family.family_id compare = equals }
+	is_infantry_spawn_zombie_derivative_country = yes
 }
 
 infantry_spawn_derivative_is_ghost = {
 	infantry_spawn_derivative_package_is_active = yes
-	has_country_flag = infantry_spawn_ghost_derivative
-	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_ghost_family.family_id compare = equals }
+	is_infantry_spawn_ghost_derivative_country = yes
 }
 
 infantry_spawn_derivative_is_golem = {
 	infantry_spawn_derivative_package_is_active = yes
-	has_country_flag = infantry_spawn_golem_derivative
-	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_golem_family.family_id compare = equals }
+	is_infantry_spawn_golem_derivative_country = yes
 }
 
 infantry_spawn_derivative_has_claimant_route = {
 	check_variable = { var = infantry_spawn_derivative_route value = constant:infantry_spawn_derivative_route.claimant_sovereignty compare = equals }
+}
+
+infantry_spawn_derivative_has_live_claimant_character = {
+	has_variable = infantry_spawn_derivative_claimant_uid
+	check_variable = { infantry_spawn_derivative_claimant_uid > constant:infantry_spawn_event.invalid_uid }
+	any_unit_leader = {
+		meta_trigger = {
+			text = { has_id = [CLAIMANT_ID] }
+			CLAIMANT_ID = "[?infantry_spawn_derivative_claimant_uid|.0]"
+		}
+		is_army_leader = yes
+		is_female = no
+	}
+}
+
+infantry_spawn_derivative_can_crown_claimant = {
+	infantry_spawn_derivative_package_is_active = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	OR = {
+		AND = {
+			infantry_spawn_derivative_has_live_claimant_character = yes
+		}
+		AND = {
+			has_country_flag = infantry_spawn_nonhuman_derivative
+			infantry_spawn_claimant_ledgers_are_aligned = yes
+			check_variable = { var = infantry_spawn_active_claimant_count value = constant:infantry_spawn_event.maximum_claimants compare = less_than }
+			capital_scope = { exists = yes }
+		}
+	}
 }
 
 infantry_spawn_derivative_has_collective_route = {
@@ -41,6 +68,17 @@ infantry_spawn_derivative_has_collective_route = {
 
 infantry_spawn_derivative_has_species_route = {
 	check_variable = { var = infantry_spawn_derivative_route value = constant:infantry_spawn_derivative_route.species_command compare = equals }
+}
+
+infantry_spawn_derivative_can_replace_claimant = {
+	infantry_spawn_derivative_package_is_active = yes
+	infantry_spawn_derivative_has_claimant_route = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	has_variable = infantry_spawn_derivative_claimant_uid
+	check_variable = { infantry_spawn_derivative_claimant_uid > constant:infantry_spawn_event.invalid_uid }
+	has_country_flag = infantry_spawn_derivative_command_estates_assigned
+	NOT = { has_country_flag = infantry_spawn_derivative_claimant_continuity_decided }
+	NOT = { has_country_flag = infantry_spawn_derivative_identity_creation_failure }
 }
 
 infantry_spawn_derivative_has_concentrated_doctrine = {
@@ -53,6 +91,110 @@ infantry_spawn_derivative_has_scattered_doctrine = {
 
 infantry_spawn_derivative_has_captured_auxiliaries_doctrine = {
 	check_variable = { var = infantry_spawn_derivative_doctrine value = constant:infantry_spawn_derivative_doctrine.captured_auxiliaries compare = equals }
+}
+
+infantry_spawn_derivative_hierarchy_is_consolidated = {
+	OR = {
+		AND = {
+			infantry_spawn_derivative_has_claimant_route = yes
+			has_country_flag = infantry_spawn_derivative_claimant_command_consolidated
+		}
+		AND = {
+			infantry_spawn_derivative_has_collective_route = yes
+			has_country_flag = infantry_spawn_derivative_collective_command_consolidated
+		}
+		AND = {
+			infantry_spawn_derivative_has_species_route = yes
+			has_country_flag = infantry_spawn_derivative_species_command_consolidated
+		}
+	}
+}
+
+infantry_spawn_derivative_family_transformation_is_complete = {
+	OR = {
+		AND = {
+			has_country_flag = infantry_spawn_claimant_breakaway
+			has_country_flag = infantry_spawn_derivative_claimant_continuity_decided
+			has_country_flag = infantry_spawn_derivative_claimant_command_consolidated
+		}
+		AND = {
+			infantry_spawn_derivative_is_zombie = yes
+			has_country_flag = infantry_spawn_derivative_zombie_identity_complete
+		}
+		AND = {
+			infantry_spawn_derivative_is_ghost = yes
+			has_country_flag = infantry_spawn_derivative_ghost_identity_complete
+		}
+		AND = {
+			infantry_spawn_derivative_is_golem = yes
+			has_country_flag = infantry_spawn_derivative_golem_identity_complete
+		}
+	}
+}
+
+infantry_spawn_derivative_sustainable_reinforcement_is_established = {
+	has_country_flag = infantry_spawn_derivative_family_sustainment_unlocked
+	OR = {
+		check_variable = { var = infantry_spawn_derivative_reinforcement_count value = constant:infantry_spawn_derivative_package_value.one compare = greater_than_or_equals }
+		check_variable = { var = infantry_spawn_derivative_sustainment_actions value = constant:infantry_spawn_derivative_package_value.one compare = greater_than_or_equals }
+		AND = {
+			has_country_flag = infantry_spawn_claimant_breakaway
+			check_variable = { var = infantry_spawn_derivative_sustainment_site_count value = constant:infantry_spawn_derivative_package_value.one compare = greater_than_or_equals }
+		}
+		AND = {
+			infantry_spawn_derivative_is_zombie = yes
+			has_country_flag = infantry_spawn_derivative_zombie_training_authorized
+		}
+	}
+}
+
+# Claimant hosts use the shared route but do not expose a species-specific
+# district-integration operation. Their established sustainment district is the
+# adapted territorial proof for the common Regional Predator capstone.
+infantry_spawn_derivative_has_regional_territorial_foothold = {
+	OR = {
+		check_variable = { var = infantry_spawn_derivative_integrated_districts value = constant:infantry_spawn_derivative_package_value.one compare = greater_than_or_equals }
+		AND = {
+			has_country_flag = infantry_spawn_claimant_breakaway
+			check_variable = { var = infantry_spawn_derivative_sustainment_site_count value = constant:infantry_spawn_derivative_package_value.one compare = greater_than_or_equals }
+		}
+	}
+}
+
+infantry_spawn_derivative_can_rotate_collective_commands = {
+	infantry_spawn_derivative_has_collective_route = yes
+	has_country_flag = infantry_spawn_derivative_district_councils_bound
+	NOT = { has_country_flag = infantry_spawn_derivative_governance_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_collective_rotating_commands }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.collective_rotate_commands_pp }
+	NOT = { command_power < constant:infantry_spawn_derivative_decision_cost.collective_rotate_commands_cp }
+}
+
+infantry_spawn_derivative_can_centralize_collective_muster = {
+	infantry_spawn_derivative_has_collective_route = yes
+	has_country_flag = infantry_spawn_derivative_district_councils_bound
+	NOT = { has_country_flag = infantry_spawn_derivative_governance_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_collective_central_muster }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.collective_centralize_muster_pp }
+	check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.collective_centralize_muster_xp compare = greater_than_or_equals }
+}
+
+infantry_spawn_derivative_can_ratify_species_compacts = {
+	infantry_spawn_derivative_has_species_route = yes
+	has_country_flag = infantry_spawn_derivative_family_domain_marked
+	NOT = { has_country_flag = infantry_spawn_derivative_governance_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_species_compact_governance }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.species_ratify_compacts_pp }
+	NOT = { command_power < constant:infantry_spawn_derivative_decision_cost.species_ratify_compacts_cp }
+}
+
+infantry_spawn_derivative_can_proclaim_family_primacy = {
+	infantry_spawn_derivative_has_species_route = yes
+	has_country_flag = infantry_spawn_derivative_family_domain_marked
+	NOT = { has_country_flag = infantry_spawn_derivative_governance_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_species_family_primacy }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.species_proclaim_primacy_pp }
+	check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.species_proclaim_primacy_xp compare = greater_than_or_equals }
 }
 
 infantry_spawn_derivative_has_live_family_division = {
@@ -112,6 +254,86 @@ infantry_spawn_derivative_can_pay_family_sustainment = {
 	}
 }
 
+infantry_spawn_derivative_can_rally_claimant_guard = {
+	infantry_spawn_derivative_package_is_active = yes
+	infantry_spawn_derivative_has_claimant_route = yes
+	has_country_flag = infantry_spawn_derivative_family_sustainment_unlocked
+	has_variable = infantry_spawn_derivative_claimant_uid
+	check_variable = { infantry_spawn_derivative_claimant_uid > constant:infantry_spawn_event.invalid_uid }
+	infantry_spawn_all_ledgers_are_aligned = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	NOT = { has_country_flag = infantry_spawn_derivative_reinforcement_cooldown }
+	check_variable = { var = army_experience value = constant:infantry_spawn_claimant_cost.another_formation_army_experience compare = greater_than_or_equals }
+	infantry_spawn_country_has_eligible_state = yes
+}
+
+infantry_spawn_derivative_can_offer_zombie_containment = {
+	infantry_spawn_derivative_is_zombie = yes
+	has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete
+	has_country_flag = infantry_spawn_derivative_zombie_barracks_scavenged
+	NOT = { has_country_flag = infantry_spawn_derivative_diplomacy_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_submission_warning_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.zombie_containment_pp }
+	check_variable = { var = manpower value = constant:infantry_spawn_derivative_decision_cost.zombie_containment_manpower compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_decision_cost.zombie_containment_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_derivative_can_offer_ghost_recognition = {
+	infantry_spawn_derivative_is_ghost = yes
+	has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete
+	has_country_flag = infantry_spawn_derivative_ghost_anchors_marked
+	NOT = { has_country_flag = infantry_spawn_derivative_diplomacy_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_submission_warning_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.ghost_recognition_pp }
+	NOT = { command_power < constant:infantry_spawn_derivative_decision_cost.ghost_recognition_cp }
+}
+
+infantry_spawn_derivative_can_offer_golem_material_agreement = {
+	infantry_spawn_derivative_is_golem = yes
+	has_country_flag = infantry_spawn_derivative_frontier_intelligence_complete
+	has_country_flag = infantry_spawn_derivative_golem_coal_recovered
+	NOT = { has_country_flag = infantry_spawn_derivative_diplomacy_cooldown }
+	NOT = { has_country_flag = infantry_spawn_derivative_submission_warning_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_pp }
+	check_variable = { var = num_equipment@coal_golem_equipment_1 value = constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_coal compare = greater_than_or_equals }
+}
+
+infantry_spawn_derivative_diplomacy_target_is_valid = {
+	exists = yes
+	is_neighbor_of = ROOT
+	is_subject = no
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war = yes }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_non_aggression_pact_with = ROOT }
+	NOT = { has_wargoal_against = ROOT }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_capitulated = yes }
+	NOT = { is_in_array = { array = ROOT.infantry_spawn_derivative_diplomacy_target_countries value = THIS } }
+	ROOT = {
+		is_subject = no
+		NOT = { has_wargoal_against = PREV }
+	}
+}
+
+infantry_spawn_derivative_zombie_diplomacy_target_is_valid = {
+	infantry_spawn_derivative_diplomacy_target_is_valid = yes
+}
+
+infantry_spawn_derivative_ghost_diplomacy_target_is_valid = {
+	infantry_spawn_derivative_diplomacy_target_is_valid = yes
+}
+
+infantry_spawn_derivative_golem_diplomacy_target_is_valid = {
+	infantry_spawn_derivative_diplomacy_target_is_valid = yes
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_support compare = greater_than_or_equals }
+}
+
 infantry_spawn_derivative_state_can_host_depot = {
 	ROOT = { has_variable = infantry_spawn_derivative_package_owner_uid }
 	is_owned_by = ROOT
@@ -141,19 +363,77 @@ infantry_spawn_derivative_state_can_be_integrated = {
 	impassable = no
 	NOT = { is_core_of = ROOT }
 	NOT = { has_state_flag = infantry_spawn_derivative_integration_underway }
+	NOT = { has_state_flag = infantry_spawn_derivative_integrated_district }
+}
+
+infantry_spawn_derivative_can_start_zombie_district_integration = {
+	infantry_spawn_derivative_is_zombie = yes
+	has_country_flag = infantry_spawn_derivative_integration_operations_unlocked
+	has_country_flag = infantry_spawn_derivative_zombie_barracks_scavenged
+	NOT = { has_country_flag = infantry_spawn_derivative_integration_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.zombie_integration_pp }
+	check_variable = { var = manpower value = constant:infantry_spawn_derivative_decision_cost.zombie_integration_manpower compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_decision_cost.zombie_integration_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_derivative_can_start_ghost_district_integration = {
+	infantry_spawn_derivative_is_ghost = yes
+	has_country_flag = infantry_spawn_derivative_integration_operations_unlocked
+	has_country_flag = infantry_spawn_derivative_ghost_anchors_marked
+	NOT = { has_country_flag = infantry_spawn_derivative_integration_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.ghost_integration_pp }
+	NOT = { command_power < constant:infantry_spawn_derivative_decision_cost.ghost_integration_cp }
+}
+
+infantry_spawn_derivative_can_start_golem_district_integration = {
+	infantry_spawn_derivative_is_golem = yes
+	has_country_flag = infantry_spawn_derivative_integration_operations_unlocked
+	has_country_flag = infantry_spawn_derivative_golem_coal_recovered
+	NOT = { has_country_flag = infantry_spawn_derivative_integration_active }
+	NOT = { has_war = yes }
+	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.golem_integration_pp }
+	check_variable = { var = num_equipment@coal_golem_equipment_1 value = constant:infantry_spawn_derivative_decision_cost.golem_integration_coal compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_derivative_decision_cost.golem_integration_trains compare = greater_than_or_equals }
+}
+
+infantry_spawn_derivative_zombie_state_can_be_integrated = {
+	infantry_spawn_derivative_state_can_be_integrated = yes
+	check_variable = { state_population_k > constant:infantry_spawn_derivative_package_value.zero }
+}
+
+infantry_spawn_derivative_ghost_state_can_be_integrated = {
+	infantry_spawn_derivative_state_can_be_integrated = yes
+	check_variable = { state_population_k > constant:infantry_spawn_derivative_package_value.zero }
+}
+
+infantry_spawn_derivative_golem_state_can_be_integrated = {
+	infantry_spawn_derivative_state_can_be_integrated = yes
+	infrastructure < constant:infantry_spawn_derivative_expansion.golem_infrastructure_max_level
+	OR = {
+		industrial_complex > constant:infantry_spawn_derivative_package_value.zero
+		rail_way > constant:infantry_spawn_derivative_package_value.zero
+	}
 }
 
 infantry_spawn_derivative_submission_target_is_valid = {
 	exists = yes
-	NOT = { is_subject_of = ROOT }
+	is_neighbor_of = ROOT
+	is_subject = no
 	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war = yes }
 	NOT = { has_war_with = ROOT }
+	NOT = { has_non_aggression_pact_with = ROOT }
+	NOT = { has_wargoal_against = ROOT }
 	NOT = { is_special_chaos_country = yes }
 	NOT = { is_actual_nonhuman_country = yes }
 	NOT = { is_infantry_spawn_derivative_country = yes }
 	NOT = { has_capitulated = yes }
+	NOT = { is_in_array = { array = ROOT.infantry_spawn_derivative_diplomacy_target_countries value = THIS } }
 	NOT = { num_of_controlled_states < constant:infantry_spawn_derivative_expansion.minimum_target_states }
 	NOT = { num_of_controlled_states > constant:infantry_spawn_derivative_expansion.maximum_target_states }
+	ROOT = { NOT = { has_wargoal_against = PREV } }
 }
 
 infantry_spawn_derivative_has_live_former_parent = {

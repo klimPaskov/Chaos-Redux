@@ -34,20 +34,84 @@ infantry_spawn_achievement_threshold = {
 	unresolved_debt_epsilon = 0.01
 	claimant_survival_days = 365
 	scenario_survival_days = 365
+	rail_proof_expiry_days = 180
+	continuity_pulse_days = 1
 }
 
-# A future exact-division combat caller must supply all three measurements.
-# The public on_army_leader_won_combat callback does not expose them or the
-# participating division, so this package never manufactures substitute data.
-infantry_spawn_achievement_battle = {
+# Controlled one-formation border trials replace unobservable ordinary-battle
+# casualty and force-ratio proxies. The engine enforces the minimum duration,
+# while the trial lifecycle freezes both state scopes and both exact divisions.
+infantry_spawn_achievement_combat_trial = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	type_none = 0
+	type_one_battalion_wonder = 1
+	type_combined_arms_accident = 2
+	type_borrowed_future = 3
+	type_barracks_of_babel = 4
+	minimum_duration_days = 14
+	timeout_days = 45
+	cooldown_days = 90
+	combat_width = 80
+	num_provinces = 1
+	attacker_divisions = 1
+	defender_divisions = 1
+	participant_upper_exclusive = 2
+	defender_unit_id = 1919019019
+}
+
+infantry_spawn_achievement_combat_trial_cost = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	minimum_enemy_strength_ratio = 0.50
-	minimum_duration_hours = 24
-	minimum_enemy_casualties = 500
+	one_battalion_army_experience = 15
+	one_battalion_command_power = 10
+	combined_arms_army_experience = 25
+	combined_arms_command_power = 15
+	borrowed_future_army_experience = 20
+	borrowed_future_command_power = 15
+	barracks_of_babel_army_experience = 30
+	barracks_of_babel_command_power = 20
+}
+
+infantry_spawn_achievement_combat_trial_readiness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one_battalion_strength = 0.90
+	one_battalion_organization = 0.75
+	combined_arms_strength = 0.90
+	combined_arms_organization = 0.70
+	borrowed_future_strength = 0.85
+	borrowed_future_organization = 0.65
+	barracks_of_babel_strength = 0.95
+	barracks_of_babel_organization = 0.80
+	defender_start_experience = 0.30
+	defender_start_equipment = 1.00
+	defender_start_manpower = 1.00
+}
+
+infantry_spawn_achievement_combat_trial_quality = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	one_battalion_material = 2
+	one_battalion_coherence = 2
+	combined_arms_material = 3
+	combined_arms_coherence = 3
+	borrowed_future_material = 3
+	borrowed_future_coherence = 3
+	barracks_of_babel_material = 4
+	barracks_of_babel_coherence = 3
 }
 
 infantry_spawn_achievement_technology_gate = {
@@ -76,4 +140,3 @@ infantry_spawn_achievement_technology_gate = {
 	self_propelled_super_heavy_artillery = 18
 	super_heavy_armor = 19
 }
-

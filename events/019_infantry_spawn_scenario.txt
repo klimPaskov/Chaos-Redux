@@ -1,0 +1,104 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 TRIGGERABLE SCENARIO INTERNAL EVENTS
+# ============================================================================
+# Owns actor-root dispatch, direct-caller confirmation, and setup result
+# reports. SCN-013 uses the shared window's confirmation before raw dispatch.
+# ============================================================================
+
+add_namespace = chaosx
+
+country_event = {
+	id = chaosx.nr19.950
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		infantry_spawn_scenario_finalize_actor_setup = yes
+	}
+}
+
+# Direct-caller confirmation. The requesting country persists the selected
+# type and intensity so this event never depends on temporary values.
+country_event = {
+	id = chaosx.nr19.951
+	title = infantry_spawn_scenario_confirmation.t
+	desc = infantry_spawn_scenario_confirmation.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = infantry_spawn_scenario_confirmation.confirm
+		trigger = {
+			has_country_flag = infantry_spawn_scenario_confirmation_pending
+			infantry_spawn_scenario_pending_inputs_are_valid = yes
+		}
+		custom_effect_tooltip = infantry_spawn_scenario_launch_unregistered_tt
+		ai_chance = { factor = 1 }
+		hidden_effect = {
+			set_temp_variable = {
+				infantry_spawn_scenario_launch_type_input = infantry_spawn_scenario_pending_type
+			}
+			set_temp_variable = {
+				infantry_spawn_scenario_launch_intensity_input = infantry_spawn_scenario_pending_intensity
+			}
+			clr_country_flag = infantry_spawn_scenario_confirmation_pending
+			clear_variable = infantry_spawn_scenario_pending_type
+			clear_variable = infantry_spawn_scenario_pending_intensity
+			infantry_spawn_scenario_launch_unregistered = yes
+		}
+	}
+
+	option = {
+		name = infantry_spawn_scenario_confirmation.cancel
+		ai_chance = { factor = 0 }
+		hidden_effect = {
+			clr_country_flag = infantry_spawn_scenario_confirmation_pending
+			clear_variable = infantry_spawn_scenario_pending_type
+			clear_variable = infantry_spawn_scenario_pending_intensity
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.952
+	title = infantry_spawn_scenario_setup_complete.t
+	desc = infantry_spawn_scenario_setup_complete.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = infantry_spawn_scenario_setup_complete.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.953
+	title = infantry_spawn_scenario_setup_failed.t
+	desc = infantry_spawn_scenario_setup_failed.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = infantry_spawn_scenario_setup_failed.a
+	}
+}
+
+# Hidden actor-scoped retry for a provisional dynamic country whose army could
+# not be proven empty during the synchronous rollback frame.
+country_event = {
+	id = chaosx.nr19.954
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { infantry_spawn_scenario_retry_pending_rollback_cleanup = yes }
+}
+
+# Hidden same-tag retry. The original country's ordinary army and pre-existing
+# Event 19 ledger rows remain outside the frozen transaction boundaries.
+country_event = {
+	id = chaosx.nr19.955
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { infantry_spawn_scenario_retry_same_tag_rollback = yes }
+}

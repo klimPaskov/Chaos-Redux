@@ -9,9 +9,11 @@
 @INFANTRY_SPAWN_MANAGEMENT_PRIORITY = 94
 
 infantry_spawn_formation_management_category = {
-	icon = GFX_decision_category_army_reform
+	icon = GFX_decision_category_infantry_spawn_formation_management
 	visible = {
 		infantry_spawn_country_is_active = yes
+		infantry_spawn_scenario_transaction_is_idle = yes
+		NOT = { is_infantry_spawn_derivative_country = yes }
 		OR = {
 			infantry_spawn_has_evolution_iii = yes
 			infantry_spawn_has_unresolved_generation = yes
@@ -29,10 +31,7 @@ infantry_spawn_formation_management_category = {
 			has_country_flag = infantry_spawn_muster_board_open
 		}
 	}
-	allowed = {
-		infantry_spawn_country_is_active = yes
-		NOT = { is_infantry_spawn_derivative_country = yes }
-	}
+	allowed = { always = yes }
 	visible_when_empty = yes
 	priority = @INFANTRY_SPAWN_MANAGEMENT_PRIORITY
 }

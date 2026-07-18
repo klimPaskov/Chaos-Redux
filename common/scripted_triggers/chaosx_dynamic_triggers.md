@@ -36,8 +36,15 @@ Current coverage includes:
 - Event 014 cannibal warlord countries
 - the unified Event 014 country
 - the transformed Event 014 Wendigo country
-- Event 019 derivative countries, including dynamically created claimant-led
-  and family-host actors
+- Event 019 derivative countries through
+  `is_infantry_spawn_derivative_country`. A human claimant breakaway requires
+  the derivative marker, claimant marker, positive claimant UID,
+  ordinary-family sentinel, and no nonhuman marker. A nonhuman family host
+  requires the derivative and nonhuman markers, a positive registered family
+  ID, parent-isolation proof, and public-package proof. Future registered
+  families therefore need no classifier list edit.
+- The fixed Event 016 `KRG` country and any host transformed by proven
+  institutional capture. Hosted Directorates remain ordinary countries.
 
 ## is_actual_nonhuman_country
 
@@ -53,5 +60,16 @@ Current coverage includes:
 - `DTH` / original `DTH` / countries with the Death country marker
 - `DHO` / original `DHO` / countries with the Event 018 cave-country marker
 - the transformed Event 014 Wendigo country; ordinary cannibal warlords and the ordinary unified country remain human
-- Event 019 derivatives carrying the nonhuman marker; claimant-only human
-  breakaways remain special without being classified as nonhuman
+- Event 019 derivatives through
+  `is_infantry_spawn_nonhuman_derivative_country`, which requires the nonhuman
+  marker, positive registered family ID, parent-isolation proof, and
+  public-package proof; claimant-only human breakaways remain special without
+  being classified as nonhuman
+- Event 016 Kruger sovereignties only after an explicit machine, clone-only,
+  engineered-biological, or alien-government population transition. A human
+  Kruger State remains special without being classified as nonhuman.
+
+The current Event 019 registry/scenario v4 reaudit is clean for both shared
+classifier routes. Neither trigger contains a zombie, ghost, golem, or future
+provider list, and neither classifier contributes to a parent event's actor,
+stage, evolution, super-event, or world-end state.

@@ -33,8 +33,19 @@
 | Arrest failure | hand off to revolt setup without duplicating units |
 | Takeover | migrate claimant to country leader, close civil-war-only actions, preserve Event 19 origin history |
 | Revolt | transfer only loyal lots, set former parent and derivative targets, clear parent-side assignment |
-| Claimant death | resolve succession or rival claimant, never leave portrait or target stale |
+| Claimant death | resolve succession or rival claimant, never leave the identity sprite or target stale |
 | Country annexed | clear claimant targets and missions unless claimant becomes a valid exile through explicit content |
+
+Current implementation note: ordinary-country annex cleanup removes claimant
+characters from both removed and annexer scopes, deletes only the exact verified
+Event 19 unit UID/delete-cohort set, proves its templates absent, and clears the
+package only after all absence checks pass. The first successful preflight
+freezes its UID, delete-cohort, and template evidence in persistent country
+arrays before destructive work begins. A failed proof quarantines the removed
+country with that immutable set intact and places its exact country scope in a
+deduplicated annexer-owned retry queue. The queue processes one country per
+hidden firing, removes it only after the real finalizer flag, and migrates to a
+new annexer if its current owner is itself annexed.
 
 ## Anomalous family cleanup
 
@@ -47,6 +58,16 @@
 | Derivative defeated | stop family territorial effects, close decisions, clean origin targets |
 | Registry entry removed or changed | run migration rule, do not leave invalid templates |
 | Evolution disabled | prevent new family content, preserve or safely resolve existing units through defined alternate path |
+
+Current implementation note: natural Evolution IV release evaluates the generic
+provider contract, selects the strongest eligible family, constructs a connected
+non-capital region, and freezes the exact family and claimant-loyal rows in that
+region. Because the engine has no documented division-scoped transfer effect,
+the approved implementation recreates the frozen recorded formations in a
+locked dynamic actor, proves the complete destination ledger, territory, and
+replacement set, then deletes only the matching source cohorts. Pre-commit
+failure runs exact remove, annex-without-troops, recreate-missing-source, and
+full-source-proof recovery; post-commit failure locks both scopes.
 
 ## Scenario cleanup
 

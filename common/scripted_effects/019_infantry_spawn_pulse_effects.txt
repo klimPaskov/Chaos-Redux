@@ -9,27 +9,76 @@
 infantry_spawn_run_country_pulse = {
 	clr_country_flag = infantry_spawn_audit_pulse_scheduled
 	if = {
-		limit = { infantry_spawn_country_can_continue_pulse = yes }
-		infantry_spawn_validate_all_ledgers = yes
+		limit = { infantry_spawn_scenario_transaction_is_idle = yes }
+		infantry_spawn_resume_deferred_event19_actions = yes
 		if = {
-			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
-			infantry_spawn_run_country_management_pulse = yes
-			infantry_spawn_recalculate_country_pressure = yes
-			infantry_spawn_run_claimant_pulse = yes
+			limit = { infantry_spawn_country_can_continue_pulse = yes }
+			infantry_spawn_achievement_country_pulse = yes
 			if = {
-				limit = { has_country_flag = infantry_spawn_claimant_system_active }
-				infantry_spawn_refresh_active_claimant_archetype_ideas = yes
-			}
-			if = {
-				limit = {
-					has_idea = infantry_spawn_claimant_emergency_command
-					NOT = { has_country_flag = infantry_spawn_claimant_emergency_powers }
+				limit = { infantry_spawn_derivative_package_is_active = yes }
+				infantry_spawn_validate_all_ledgers = yes
+				if = {
+					limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+					infantry_spawn_reconcile_live_unit_ledger = yes
+					infantry_spawn_derivative_run_country_pulse = yes
 				}
-				remove_ideas = infantry_spawn_claimant_emergency_command
 			}
-			infantry_spawn_maybe_advance_global_evolution = yes
+			else = {
+				infantry_spawn_validate_all_ledgers = yes
+				infantry_spawn_try_dispatch_first_family_reception = yes
+				if = {
+					limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+					infantry_spawn_reconcile_live_unit_ledger = yes
+				}
+				if = {
+					limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+					infantry_spawn_run_country_management_pulse = yes
+					infantry_spawn_cleanup_expired_family_management = yes
+					infantry_spawn_recalculate_country_pressure = yes
+					set_temp_variable = { infantry_spawn_natural_transfer_attempted_this_pulse = constant:infantry_spawn_weight_result.zero }
+					infantry_spawn_run_claimant_pulse = yes
+					if = {
+						limit = {
+							check_variable = { infantry_spawn_natural_transfer_attempted_this_pulse = constant:infantry_spawn_weight_result.zero }
+							NOT = { has_country_flag = infantry_spawn_natural_family_breach_deferred }
+							infantry_spawn_natural_family_candidate_selection_is_safe = yes
+						}
+						infantry_spawn_begin_natural_independent_family_breach = yes
+					}
+					if = {
+						limit = { NOT = { is_infantry_spawn_derivative_country = yes } }
+						infantry_spawn_run_anomalous_family_ai = yes
+					}
+					if = {
+						limit = { has_country_flag = infantry_spawn_claimant_system_active }
+						infantry_spawn_refresh_active_claimant_archetype_ideas = yes
+					}
+					if = {
+						limit = {
+							has_idea = infantry_spawn_claimant_emergency_command
+							NOT = { has_country_flag = infantry_spawn_claimant_emergency_powers }
+						}
+						remove_ideas = infantry_spawn_claimant_emergency_command
+					}
+					infantry_spawn_reconcile_all_evolution_memberships = yes
+					if = {
+						limit = { infantry_spawn_contributes_to_ordinary_evolution_history = yes }
+						infantry_spawn_maybe_advance_global_evolution = yes
+					}
+				}
+			}
+			infantry_spawn_schedule_country_pulse = yes
 		}
-		infantry_spawn_schedule_country_pulse = yes
+		else = { infantry_spawn_apply_staged_ideas = yes }
+		infantry_spawn_run_lifetime_ledger_compaction = yes
+		if = {
+			limit = {
+				has_country_flag = infantry_spawn_ledger_compaction_active
+				NOT = { has_country_flag = infantry_spawn_audit_pulse_scheduled }
+			}
+			set_country_flag = infantry_spawn_audit_pulse_scheduled
+			set_temp_variable = { infantry_spawn_compaction_resume_delay = constant:infantry_spawn_event.audit_pulse_days }
+			country_event = { id = chaosx.nr19.900 days = infantry_spawn_compaction_resume_delay }
+		}
 	}
-	else = { infantry_spawn_apply_staged_ideas = yes }
 }

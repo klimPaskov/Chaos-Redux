@@ -23,6 +23,9 @@ scripted_gui = {
 			infantry_spawn_muster_close_click = { infantry_spawn_muster_board_close = yes }
 			infantry_spawn_muster_refresh_click = { infantry_spawn_muster_board_rebuild_view = yes }
 			infantry_spawn_muster_animation_toggle_click = { infantry_spawn_muster_board_toggle_animations = yes }
+			infantry_spawn_muster_overview_audit_click = { infantry_spawn_execute_selected_lot_audit_action = yes }
+			infantry_spawn_muster_overview_standardize_click = { infantry_spawn_execute_selected_lot_standardization_action = yes }
+			infantry_spawn_muster_overview_close_generation_click = { infantry_spawn_execute_generation_close_action = yes }
 
 			infantry_spawn_muster_tab_overview_click = {
 				set_variable = { infantry_spawn_muster_gui_tab = constant:infantry_spawn_muster_gui_tab.overview }
@@ -56,6 +59,8 @@ scripted_gui = {
 			infantry_spawn_muster_lot_cadres_click = { infantry_spawn_execute_selected_lot_specialist_preservation_action = yes }
 			infantry_spawn_muster_lot_demobilize_click = { infantry_spawn_execute_selected_lot_demobilization_action = yes }
 			infantry_spawn_muster_lot_emergency_click = { infantry_spawn_execute_selected_lot_emergency_integration_action = yes }
+			infantry_spawn_muster_lot_prototype_preserve_click = { infantry_spawn_execute_selected_prototype_preservation_action = yes }
+			infantry_spawn_muster_lot_prototype_cannibalize_click = { infantry_spawn_execute_selected_prototype_cannibalization_action = yes }
 
 			infantry_spawn_muster_request_numbers_click = { infantry_spawn_request_numbers_action = yes }
 			infantry_spawn_muster_request_discipline_click = { infantry_spawn_request_discipline_action = yes }
@@ -101,13 +106,20 @@ scripted_gui = {
 			infantry_spawn_muster_close_click_enabled = { always = yes }
 			infantry_spawn_muster_refresh_click_enabled = { infantry_spawn_management_is_available = yes }
 			infantry_spawn_muster_animation_toggle_click_enabled = { always = yes }
+			infantry_spawn_muster_overview_audit_click_enabled = { infantry_spawn_can_execute_selected_lot_audit = yes }
+			infantry_spawn_muster_overview_standardize_click_enabled = { infantry_spawn_can_execute_selected_lot_standardization = yes }
+			infantry_spawn_muster_overview_close_generation_click_enabled = {
+				infantry_spawn_scenario_transaction_is_idle = yes
+				infantry_spawn_management_is_available = yes
+				check_variable = { infantry_spawn_unresolved_generation_count > constant:infantry_spawn_muster_gui_value.zero }
+			}
 
 			infantry_spawn_muster_tab_overview_click_enabled = { always = yes }
 			infantry_spawn_muster_tab_lots_click_enabled = { always = yes }
 			infantry_spawn_muster_tab_command_visible = { infantry_spawn_has_active_claimant = yes }
 			infantry_spawn_muster_tab_command_click_enabled = { infantry_spawn_has_active_claimant = yes }
-			infantry_spawn_muster_tab_anomalous_visible = { infantry_spawn_has_evolution_iv = yes }
-			infantry_spawn_muster_tab_anomalous_click_enabled = { infantry_spawn_has_evolution_iv = yes }
+			infantry_spawn_muster_tab_anomalous_visible = { infantry_spawn_muster_board_has_relevant_anomalous_family = yes }
+			infantry_spawn_muster_tab_anomalous_click_enabled = { infantry_spawn_muster_board_has_relevant_anomalous_family = yes }
 			infantry_spawn_muster_tab_history_click_enabled = { always = yes }
 
 			infantry_spawn_muster_overview_panel_visible = { check_variable = { infantry_spawn_muster_gui_tab = constant:infantry_spawn_muster_gui_tab.overview } }
@@ -118,7 +130,7 @@ scripted_gui = {
 			}
 			infantry_spawn_muster_anomalous_panel_visible = {
 				check_variable = { infantry_spawn_muster_gui_tab = constant:infantry_spawn_muster_gui_tab.anomalous_registry }
-				infantry_spawn_has_evolution_iv = yes
+				infantry_spawn_muster_board_has_relevant_anomalous_family = yes
 			}
 			infantry_spawn_muster_history_panel_visible = { check_variable = { infantry_spawn_muster_gui_tab = constant:infantry_spawn_muster_gui_tab.generation_history } }
 
@@ -133,17 +145,26 @@ scripted_gui = {
 				OR = { has_country_flag = infantry_spawn_claimant_revolt_warning_active infantry_spawn_primary_claimant_is_critical = yes }
 			}
 			infantry_spawn_muster_anomalous_emblem_animated_visible = {
-				infantry_spawn_has_evolution_iv = yes
+				infantry_spawn_muster_board_has_relevant_anomalous_family = yes
 				NOT = { has_country_flag = infantry_spawn_muster_gui_animations_disabled }
 			}
 			infantry_spawn_muster_anomalous_emblem_static_visible = {
-				infantry_spawn_has_evolution_iv = yes
+				infantry_spawn_muster_board_has_relevant_anomalous_family = yes
 				has_country_flag = infantry_spawn_muster_gui_animations_disabled
 			}
 
-			infantry_spawn_muster_lot_entry_select_click_enabled = { always = yes }
-			infantry_spawn_muster_family_entry_select_click_enabled = { always = yes }
-			infantry_spawn_muster_claimant_cycle_click_enabled = { infantry_spawn_has_active_claimant = yes }
+			infantry_spawn_muster_lot_entry_select_click_enabled = { infantry_spawn_scenario_transaction_is_idle = yes }
+			infantry_spawn_muster_family_entry_select_click_enabled = { infantry_spawn_scenario_transaction_is_idle = yes }
+			infantry_spawn_muster_claimant_cycle_click_enabled = {
+				infantry_spawn_scenario_transaction_is_idle = yes
+				infantry_spawn_has_active_claimant = yes
+				NOT = { has_country_flag = infantry_spawn_claimant_demand_pending }
+			}
+			infantry_spawn_muster_claimant_portrait_visible = {
+				infantry_spawn_selected_claimant_index_is_valid = yes
+				check_variable = { infantry_spawn_muster_gui_claimant_profile > constant:infantry_spawn_event.first_index }
+				check_variable = { infantry_spawn_muster_gui_claimant_profile < constant:infantry_spawn_event.claimant_portrait_upper_exclusive }
+			}
 			infantry_spawn_muster_selected_lot_card_visible = { infantry_spawn_selected_lot_index_is_valid = yes }
 
 			infantry_spawn_muster_lot_audit_click_enabled = { infantry_spawn_can_execute_selected_lot_audit = yes }
@@ -153,6 +174,10 @@ scripted_gui = {
 			infantry_spawn_muster_lot_cadres_click_enabled = { infantry_spawn_can_execute_selected_lot_specialist_preservation = yes }
 			infantry_spawn_muster_lot_demobilize_click_enabled = { infantry_spawn_can_execute_selected_lot_demobilization = yes }
 			infantry_spawn_muster_lot_emergency_click_enabled = { infantry_spawn_can_execute_selected_lot_emergency_integration = yes }
+			infantry_spawn_muster_lot_prototype_preserve_visible = { infantry_spawn_selected_lot_is_unmanaged_prototype = yes }
+			infantry_spawn_muster_lot_prototype_preserve_click_enabled = { infantry_spawn_can_execute_selected_prototype_preservation = yes }
+			infantry_spawn_muster_lot_prototype_cannibalize_visible = { infantry_spawn_selected_lot_is_cannibalizable_prototype = yes }
+			infantry_spawn_muster_lot_prototype_cannibalize_click_enabled = { infantry_spawn_can_execute_selected_prototype_cannibalization = yes }
 
 			infantry_spawn_muster_request_numbers_click_enabled = { infantry_spawn_can_pay_numbers_request = yes }
 			infantry_spawn_muster_request_discipline_click_enabled = { infantry_spawn_can_pay_discipline_request = yes }
@@ -161,13 +186,10 @@ scripted_gui = {
 			infantry_spawn_muster_request_anything_click_enabled = { infantry_spawn_can_pay_anything_request = yes }
 
 			infantry_spawn_muster_claimant_recognize_click_enabled = { infantry_spawn_can_recognize_selected_claimant = yes }
-			infantry_spawn_muster_claimant_accept_visible = { has_country_flag = infantry_spawn_claimant_demand_pending }
-			infantry_spawn_muster_claimant_accept_click_enabled = { infantry_spawn_selected_claimant_demand_can_be_paid = yes }
-			infantry_spawn_muster_claimant_refuse_visible = { has_country_flag = infantry_spawn_claimant_demand_pending }
-			infantry_spawn_muster_claimant_refuse_click_enabled = {
-				has_country_flag = infantry_spawn_claimant_demand_pending
-				infantry_spawn_selected_claimant_index_is_valid = yes
-			}
+			infantry_spawn_muster_claimant_accept_visible = { infantry_spawn_selected_claimant_owns_pending_demand = yes }
+			infantry_spawn_muster_claimant_accept_click_enabled = { infantry_spawn_can_accept_selected_claimant_demand = yes }
+			infantry_spawn_muster_claimant_refuse_visible = { infantry_spawn_selected_claimant_owns_pending_demand = yes }
+			infantry_spawn_muster_claimant_refuse_click_enabled = { infantry_spawn_can_refuse_selected_claimant_demand = yes }
 			infantry_spawn_muster_claimant_counter_click_enabled = { infantry_spawn_can_counter_command_selected_claimant = yes }
 			infantry_spawn_muster_claimant_discredit_click_enabled = { infantry_spawn_can_discredit_selected_claimant = yes }
 			infantry_spawn_muster_claimant_arrest_visible = { has_country_flag = infantry_spawn_claimant_revolt_warning_active }
@@ -207,7 +229,7 @@ scripted_gui = {
 		}
 
 		properties = {
-			infantry_spawn_muster_claimant_portrait = { image = "GFX_portrait_infantry_spawn_claimant_[GetInfantrySpawnSelectedClaimantPortraitToken]" }
+			infantry_spawn_muster_claimant_portrait = { image = "[GetInfantrySpawnSelectedClaimantPortraitSprite]" }
 		}
 
 		ai_enabled = { always = no }

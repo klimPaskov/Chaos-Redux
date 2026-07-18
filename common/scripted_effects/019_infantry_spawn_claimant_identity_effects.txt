@@ -8,41 +8,74 @@
 
 infantry_spawn_set_current_claimant_profile_metadata = {
 	if = {
-		limit = { check_variable = { infantry_spawn_current_claimant_profile < 5 } }
+		limit = { check_variable = { infantry_spawn_current_claimant_profile < constant:infantry_spawn_claimant_archetype_profile_boundary.field_prophet_start } }
 		set_temp_variable = { infantry_spawn_current_claimant_archetype = constant:infantry_spawn_claimant_archetype.quartermaster_sovereign }
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_current_claimant_profile < 9 } }
+		limit = { check_variable = { infantry_spawn_current_claimant_profile < constant:infantry_spawn_claimant_archetype_profile_boundary.barracks_tribune_start } }
 		set_temp_variable = { infantry_spawn_current_claimant_archetype = constant:infantry_spawn_claimant_archetype.field_prophet }
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_current_claimant_profile < 13 } }
+		limit = { check_variable = { infantry_spawn_current_claimant_profile < constant:infantry_spawn_claimant_archetype_profile_boundary.iron_saint_start } }
 		set_temp_variable = { infantry_spawn_current_claimant_archetype = constant:infantry_spawn_claimant_archetype.barracks_tribune }
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_current_claimant_profile < 17 } }
+		limit = { check_variable = { infantry_spawn_current_claimant_profile < constant:infantry_spawn_claimant_archetype_profile_boundary.hollow_marshal_start } }
 		set_temp_variable = { infantry_spawn_current_claimant_archetype = constant:infantry_spawn_claimant_archetype.iron_saint }
 	}
 	else = {
 		set_temp_variable = { infantry_spawn_current_claimant_archetype = constant:infantry_spawn_claimant_archetype.hollow_marshal }
 	}
-	set_temp_variable = { infantry_spawn_current_claimant_female = 0 }
+}
+
+# A portrait profile is unavailable only while the same country still has a
+# live claimant identity using it. Retired, arrested, revolted, and defeated
+# rows remain as history but release their profile for later claimant churn.
+# A takeover and a staged revolt still own their identity even though their
+# status values sit beyond the ordinary active-status range.
+infantry_spawn_evaluate_current_claimant_profile_availability = {
+	set_temp_variable = { infantry_spawn_current_claimant_profile_available = 1 }
+	set_temp_variable = { infantry_spawn_claimant_profile_usage_scan_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { infantry_spawn_current_claimant_profile_available > 0 }
+			check_variable = { var = infantry_spawn_claimant_profile_usage_scan_index value = infantry_spawn_claimant_profile_entries^num compare = less_than }
+		}
+		if = {
+			limit = {
+				check_variable = { var = infantry_spawn_claimant_profile_entries^infantry_spawn_claimant_profile_usage_scan_index value = infantry_spawn_current_claimant_profile compare = equals }
+				OR = {
+					check_variable = { var = infantry_spawn_claimant_status_entries^infantry_spawn_claimant_profile_usage_scan_index value = constant:infantry_spawn_claimant_status.retired compare = less_than }
+					check_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_claimant_profile_usage_scan_index = constant:infantry_spawn_claimant_status.takeover }
+					check_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_claimant_profile_usage_scan_index = constant:infantry_spawn_claimant_status.revolt_staged }
+				}
+			}
+			set_temp_variable = { infantry_spawn_current_claimant_profile_available = 0 }
+		}
+		add_to_temp_variable = { infantry_spawn_claimant_profile_usage_scan_index = 1 }
+	}
+}
+
+# Country localisation context shared by reports and the Muster Board. Input:
+# infantry_spawn_claimant_localisation_index. Invalid or misaligned input clears
+# the visible identity instead of leaking the previously selected claimant.
+infantry_spawn_load_claimant_localisation_context = {
+	clear_variable = infantry_spawn_muster_gui_claimant_profile
+	clear_variable = infantry_spawn_muster_gui_claimant_name_variant
+	clear_variable = infantry_spawn_muster_gui_claimant_archetype
+	clear_variable = infantry_spawn_muster_gui_claimant_uid
+	clear_variable = infantry_spawn_muster_gui_claimant_headquarters
 	if = {
 		limit = {
-			OR = {
-				check_variable = { infantry_spawn_current_claimant_profile = 2 }
-				check_variable = { infantry_spawn_current_claimant_profile = 4 }
-				check_variable = { infantry_spawn_current_claimant_profile = 6 }
-				check_variable = { infantry_spawn_current_claimant_profile = 8 }
-				check_variable = { infantry_spawn_current_claimant_profile = 10 }
-				check_variable = { infantry_spawn_current_claimant_profile = 12 }
-				check_variable = { infantry_spawn_current_claimant_profile = 14 }
-				check_variable = { infantry_spawn_current_claimant_profile = 16 }
-				check_variable = { infantry_spawn_current_claimant_profile = 18 }
-				check_variable = { infantry_spawn_current_claimant_profile = 20 }
-			}
+			infantry_spawn_claimant_ledgers_are_aligned = yes
+			check_variable = { infantry_spawn_claimant_localisation_index > constant:infantry_spawn_event.invalid_index }
+			check_variable = { var = infantry_spawn_claimant_localisation_index value = infantry_spawn_claimant_uid_entries^num compare = less_than }
 		}
-		set_temp_variable = { infantry_spawn_current_claimant_female = 1 }
+		set_variable = { infantry_spawn_muster_gui_claimant_profile = infantry_spawn_claimant_profile_entries^infantry_spawn_claimant_localisation_index }
+		set_variable = { infantry_spawn_muster_gui_claimant_name_variant = infantry_spawn_claimant_name_variant_entries^infantry_spawn_claimant_localisation_index }
+		set_variable = { infantry_spawn_muster_gui_claimant_archetype = infantry_spawn_claimant_archetype_entries^infantry_spawn_claimant_localisation_index }
+		set_variable = { infantry_spawn_muster_gui_claimant_uid = infantry_spawn_claimant_uid_entries^infantry_spawn_claimant_localisation_index }
+		set_variable = { infantry_spawn_muster_gui_claimant_headquarters = infantry_spawn_claimant_headquarters_state_entries^infantry_spawn_claimant_localisation_index }
 	}
 }
 
@@ -64,9 +97,10 @@ infantry_spawn_select_current_claimant_profile = {
 			max = constant:infantry_spawn_claimant_profile.maximum_exclusive
 			integer = yes
 		}
+		infantry_spawn_evaluate_current_claimant_profile_availability = yes
 		if = {
 			limit = {
-				infantry_spawn_current_claimant_profile_is_unused = yes
+				infantry_spawn_current_claimant_profile_is_available = yes
 				infantry_spawn_current_claimant_profile_is_regionally_compatible = yes
 			}
 			set_temp_variable = { infantry_spawn_claimant_profile_selected = 1 }
@@ -87,9 +121,10 @@ infantry_spawn_select_current_claimant_profile = {
 					compare = less_than
 				}
 			}
+			infantry_spawn_evaluate_current_claimant_profile_availability = yes
 			if = {
 				limit = {
-					infantry_spawn_current_claimant_profile_is_unused = yes
+					infantry_spawn_current_claimant_profile_is_available = yes
 					infantry_spawn_current_claimant_profile_is_regionally_compatible = yes
 				}
 				set_temp_variable = { infantry_spawn_claimant_profile_selected = 1 }
@@ -101,7 +136,7 @@ infantry_spawn_select_current_claimant_profile = {
 		limit = { check_variable = { infantry_spawn_claimant_profile_selected > 0 } }
 		set_temp_variable_to_random = {
 			var = infantry_spawn_current_claimant_name_variant
-			min = 1
+			min = constant:infantry_spawn_claimant_profile.name_variant_minimum
 			max = constant:infantry_spawn_claimant_profile.name_variant_maximum_exclusive
 			integer = yes
 		}
@@ -156,59 +191,30 @@ infantry_spawn_create_current_claimant_commander = {
 	set_variable = { infantry_spawn_claimant_meta_profile = infantry_spawn_current_claimant_profile }
 	set_variable = { infantry_spawn_claimant_meta_name_variant = infantry_spawn_current_claimant_name_variant }
 	set_variable = { infantry_spawn_claimant_meta_archetype = infantry_spawn_current_claimant_archetype }
-	if = {
-		limit = { check_variable = { infantry_spawn_current_claimant_female > 0 } }
-		meta_effect = {
-			text = {
-				create_corps_commander = {
-					name = "[CLAIMANT_NAME]"
-					picture = GFX_portrait_infantry_spawn_claimant_[PORTRAIT]
-					id = [CLAIMANT_ID]
-					female = yes
-					traits = { [CLAIMANT_TRAITS] }
-					skill = [SKILL]
-					attack_skill = [ATTACK]
-					defense_skill = [DEFENSE]
-					planning_skill = [PLANNING]
-					logistics_skill = [LOGISTICS]
-				}
+	meta_effect = {
+		text = {
+			create_corps_commander = {
+				name = "[CLAIMANT_NAME]"
+				picture = [PORTRAIT]
+				id = [CLAIMANT_ID]
+				female = no
+				traits = { [CLAIMANT_TRAITS] }
+				skill = [SKILL]
+				attack_skill = [ATTACK]
+				defense_skill = [DEFENSE]
+				planning_skill = [PLANNING]
+				logistics_skill = [LOGISTICS]
 			}
-			CLAIMANT_NAME = "[This.GetInfantrySpawnClaimantName]"
-			PORTRAIT = "[This.GetInfantrySpawnClaimantPortraitToken]"
-			CLAIMANT_ID = "[?infantry_spawn_current_claimant_uid|.0]"
-			CLAIMANT_TRAITS = "[This.GetInfantrySpawnClaimantTraitTokens]"
-			SKILL = "[?infantry_spawn_claimant_skill|.0]"
-			ATTACK = "[?infantry_spawn_claimant_attack|.0]"
-			DEFENSE = "[?infantry_spawn_claimant_defense|.0]"
-			PLANNING = "[?infantry_spawn_claimant_planning|.0]"
-			LOGISTICS = "[?infantry_spawn_claimant_logistics|.0]"
 		}
-	}
-	else = {
-		meta_effect = {
-			text = {
-				create_corps_commander = {
-					name = "[CLAIMANT_NAME]"
-					picture = GFX_portrait_infantry_spawn_claimant_[PORTRAIT]
-					id = [CLAIMANT_ID]
-					traits = { [CLAIMANT_TRAITS] }
-					skill = [SKILL]
-					attack_skill = [ATTACK]
-					defense_skill = [DEFENSE]
-					planning_skill = [PLANNING]
-					logistics_skill = [LOGISTICS]
-				}
-			}
-			CLAIMANT_NAME = "[This.GetInfantrySpawnClaimantName]"
-			PORTRAIT = "[This.GetInfantrySpawnClaimantPortraitToken]"
-			CLAIMANT_ID = "[?infantry_spawn_current_claimant_uid|.0]"
-			CLAIMANT_TRAITS = "[This.GetInfantrySpawnClaimantTraitTokens]"
-			SKILL = "[?infantry_spawn_claimant_skill|.0]"
-			ATTACK = "[?infantry_spawn_claimant_attack|.0]"
-			DEFENSE = "[?infantry_spawn_claimant_defense|.0]"
-			PLANNING = "[?infantry_spawn_claimant_planning|.0]"
-			LOGISTICS = "[?infantry_spawn_claimant_logistics|.0]"
-		}
+		CLAIMANT_NAME = "[This.GetInfantrySpawnClaimantName]"
+		PORTRAIT = "[This.GetInfantrySpawnClaimantPortraitSprite]"
+		CLAIMANT_ID = "[?infantry_spawn_current_claimant_uid|.0]"
+		CLAIMANT_TRAITS = "[This.GetInfantrySpawnClaimantTraitTokens]"
+		SKILL = "[?infantry_spawn_claimant_skill|.0]"
+		ATTACK = "[?infantry_spawn_claimant_attack|.0]"
+		DEFENSE = "[?infantry_spawn_claimant_defense|.0]"
+		PLANNING = "[?infantry_spawn_claimant_planning|.0]"
+		LOGISTICS = "[?infantry_spawn_claimant_logistics|.0]"
 	}
 	clear_variable = infantry_spawn_claimant_meta_profile
 	clear_variable = infantry_spawn_claimant_meta_name_variant
@@ -267,13 +273,16 @@ infantry_spawn_append_current_claimant_row = {
 		set_variable = { infantry_spawn_selected_claimant_index = infantry_spawn_claimant_uid_entries^num }
 		subtract_from_variable = { infantry_spawn_selected_claimant_index = 1 }
 		add_to_variable = { infantry_spawn_active_claimant_count = 1 }
-		add_to_variable = { global.infantry_spawn_total_claimant_crises = 1 }
 		if = {
-			limit = { check_variable = { infantry_spawn_active_claimant_count = 1 } }
+			limit = { infantry_spawn_contributes_to_ordinary_evolution_history = yes }
+			add_to_variable = { global.infantry_spawn_total_claimant_crises = 1 }
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_active_claimant_count = constant:infantry_spawn_claimant_count.first } }
 			set_country_flag = infantry_spawn_claimant_one_active
 		}
 		else_if = {
-			limit = { check_variable = { infantry_spawn_active_claimant_count = 2 } }
+			limit = { check_variable = { infantry_spawn_active_claimant_count = constant:infantry_spawn_claimant_count.second } }
 			set_country_flag = infantry_spawn_claimant_two_active
 		}
 		else = { set_country_flag = infantry_spawn_claimant_three_active }
@@ -281,6 +290,7 @@ infantry_spawn_append_current_claimant_row = {
 		set_country_flag = infantry_spawn_muster_board_available
 	}
 	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+	infantry_spawn_reconcile_participant_evolution_memberships = yes
 }
 
 infantry_spawn_create_claimant = {
@@ -299,16 +309,21 @@ infantry_spawn_create_claimant = {
 						text = { has_id = [CLAIMANT_ID] }
 						CLAIMANT_ID = "[?infantry_spawn_current_claimant_uid|.0]"
 					}
+					is_female = no
 				}
 				set_temp_variable = { infantry_spawn_claimant_commander_found = 1 }
 			}
 			if = {
 				limit = { check_variable = { infantry_spawn_claimant_commander_found > 0 } }
 				infantry_spawn_append_current_claimant_row = yes
+				set_temp_variable = { infantry_spawn_new_claimant_index = infantry_spawn_selected_claimant_index }
 				infantry_spawn_assign_first_eligible_lot_to_selected_claimant = yes
 				infantry_spawn_refresh_active_claimant_archetype_ideas = yes
+				infantry_spawn_record_claimant_appearance_history = yes
 				if = {
 					limit = { is_ai = no }
+					set_temp_variable = { infantry_spawn_claimant_localisation_index = infantry_spawn_new_claimant_index }
+					infantry_spawn_load_claimant_localisation_context = yes
 					country_event = { id = chaosx.nr19.200 }
 				}
 			}

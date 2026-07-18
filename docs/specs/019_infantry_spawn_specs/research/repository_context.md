@@ -4,6 +4,12 @@
 
 July 10, 2026.
 
+> **Historical inspection snapshot:** The implementation descriptions below
+> record the pre-rework public repository and are not live status. Use the
+> package `README.md` source-of-truth map, `docs/events/019_infantry_spawn.md`,
+> and `review/blockers_and_uncertainty.md` for current implementation and
+> closure state.
+
 ## Current public Event 19 implementation
 
 The current public repository file is:

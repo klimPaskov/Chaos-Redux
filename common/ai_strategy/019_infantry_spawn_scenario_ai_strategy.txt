@@ -1,0 +1,77 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 TRIGGERABLE SCENARIO AI STRATEGIES
+# ============================================================================
+# Self-removing actor profiles for the direct, registration-independent
+# scenario. Each actor freezes its launch type before these strategies become
+# active, so later global state cannot change its production or force posture.
+# ============================================================================
+
+infantry_spawn_scenario_actor_common_ai = {
+	allowed = { always = yes }
+	enable = { has_country_flag = infantry_spawn_scenario_actor }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:infantry_spawn_scenario_ai.common_build_army }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_scenario_ai.common_infantry_production }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:infantry_spawn_scenario_ai.common_support_production }
+}
+
+infantry_spawn_scenario_conventional_actor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = infantry_spawn_scenario_actor
+		check_variable = {
+			var = infantry_spawn_scenario_actor_type
+			value = constant:infantry_spawn_scenario.type_conventional_flood
+			compare = equals
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:infantry_spawn_scenario_ai.conventional_artillery_production }
+	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_scenario_ai.conventional_template_priority }
+}
+
+infantry_spawn_scenario_arsenal_actor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = infantry_spawn_scenario_actor
+		check_variable = {
+			var = infantry_spawn_scenario_actor_type
+			value = constant:infantry_spawn_scenario.type_arsenal_lottery
+			compare = equals
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = equipment_production_factor id = motorized value = constant:infantry_spawn_scenario_ai.arsenal_motorized_production }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:infantry_spawn_scenario_ai.arsenal_artillery_production }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_scenario_ai.arsenal_mobile_reserve }
+}
+
+infantry_spawn_scenario_general_actor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = infantry_spawn_scenario_actor
+		check_variable = {
+			var = infantry_spawn_scenario_actor_type
+			value = constant:infantry_spawn_scenario.type_general_mutiny
+			compare = equals
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:infantry_spawn_scenario_ai.general_command_offense }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_scenario_ai.general_mobile_reserve }
+}
+
+infantry_spawn_scenario_anomalous_actor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = infantry_spawn_scenario_actor
+		check_variable = {
+			var = infantry_spawn_scenario_actor_type
+			value = constant:infantry_spawn_scenario.type_anomalous_rising
+			compare = equals
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:infantry_spawn_scenario_ai.anomalous_host_offense }
+	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_scenario_ai.anomalous_mobile_reserve }
+}

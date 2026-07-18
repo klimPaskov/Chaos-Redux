@@ -3,7 +3,8 @@
 # ============================================================================
 # Assigns recorded lots and units, recalculates loyal formation membership,
 # handles bounded claimant appearance, advances influence, selects the primary
-# claimant, and opens demand or revolt-warning state.
+# claimant, opens demand or revolt-warning state, and routes natural
+# Generalissimo rival takeovers into the existing failed-coup resolver.
 # ============================================================================
 
 infantry_spawn_find_claimant_row = {
@@ -24,6 +25,7 @@ infantry_spawn_find_claimant_row = {
 
 infantry_spawn_score_current_lot_for_selected_claimant = {
 	set_temp_variable = { infantry_spawn_claimant_lot_score = 1 }
+	add_to_temp_variable = { infantry_spawn_claimant_lot_score = infantry_spawn_lot_claimant_susceptibility_entries^infantry_spawn_claimant_lot_scan_index }
 	set_temp_variable = { infantry_spawn_claimant_current_archetype = infantry_spawn_claimant_archetype_entries^infantry_spawn_selected_claimant_index }
 	if = {
 		limit = { check_variable = { infantry_spawn_claimant_current_archetype = constant:infantry_spawn_claimant_archetype.quartermaster_sovereign } }
@@ -136,7 +138,11 @@ infantry_spawn_refresh_claimant_loyal_lot_counts = {
 	while_loop_effect = {
 		limit = { check_variable = { var = infantry_spawn_claimant_lot_scan_index value = infantry_spawn_lot_uid_entries^num compare = less_than } }
 		if = {
-			limit = { check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_claimant_lot_scan_index > 0 } }
+			limit = {
+				check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_claimant_lot_scan_index > 0 }
+				check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_claimant_lot_scan_index value = constant:infantry_spawn_lot_state.demobilized compare = less_than }
+				check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_claimant_lot_scan_index > 0 }
+			}
 			set_temp_variable = { infantry_spawn_lookup_claimant_uid = infantry_spawn_lot_claimant_uid_entries^infantry_spawn_claimant_lot_scan_index }
 			infantry_spawn_find_claimant_row = yes
 			if = {
@@ -167,9 +173,13 @@ infantry_spawn_calculate_claimant_appearance_chance = {
 		add_to_temp_variable = { infantry_spawn_claimant_appearance_chance = constant:infantry_spawn_claimant.appearance_stacked_bonus }
 	}
 	set_temp_variable = { infantry_spawn_claimant_existing_penalty = infantry_spawn_active_claimant_count }
-	multiply_temp_variable = { infantry_spawn_claimant_existing_penalty = 4 }
+	multiply_temp_variable = { infantry_spawn_claimant_existing_penalty = constant:infantry_spawn_claimant.appearance_per_existing_claimant_penalty }
 	subtract_from_temp_variable = { infantry_spawn_claimant_appearance_chance = infantry_spawn_claimant_existing_penalty }
-	clamp_temp_variable = { var = infantry_spawn_claimant_appearance_chance min = 0 max = 40 }
+	clamp_temp_variable = {
+		var = infantry_spawn_claimant_appearance_chance
+		min = constant:infantry_spawn_claimant.appearance_minimum_chance
+		max = constant:infantry_spawn_claimant.appearance_maximum_chance
+	}
 }
 
 infantry_spawn_maybe_create_claimant = {
@@ -231,7 +241,7 @@ infantry_spawn_advance_claimant_influence = {
 				subtract_from_temp_variable = { infantry_spawn_claimant_influence_delta = constant:infantry_spawn_claimant_pulse.high_control_loss }
 			}
 			if = {
-				limit = { check_variable = { infantry_spawn_active_claimant_count > 1 } }
+				limit = { check_variable = { infantry_spawn_active_claimant_count > constant:infantry_spawn_claimant_count.first } }
 				add_to_temp_variable = { infantry_spawn_claimant_influence_delta = constant:infantry_spawn_claimant_pulse.rival_pressure_gain }
 			}
 			add_to_variable = { infantry_spawn_claimant_influence_entries^infantry_spawn_claimant_scan_index = infantry_spawn_claimant_influence_delta }
@@ -258,9 +268,22 @@ infantry_spawn_stage_selected_claimant_revolt_warning = {
 		add_to_variable = { infantry_spawn_claimant_revolt_due_date = constant:infantry_spawn_timer.derivative_revolt_warning_days }
 		if = {
 			limit = { is_ai = no }
+			set_temp_variable = { infantry_spawn_claimant_localisation_index = infantry_spawn_selected_claimant_index }
+			infantry_spawn_load_claimant_localisation_context = yes
 			country_event = { id = chaosx.nr19.202 }
 		}
 	}
+}
+
+# Natural microstate takeovers cannot silently displace a different living
+# Event 67 Generalissimo. Direct scenario takeovers intentionally keep calling
+# the underlying takeover effect and therefore retain their scripted outcome.
+infantry_spawn_resolve_selected_claimant_natural_takeover = {
+	if = {
+		limit = { infantry_spawn_selected_claimant_rivals_event67_generalissimo = yes }
+		infantry_spawn_execute_selected_claimant_failed_coup = yes
+	}
+	else = { infantry_spawn_execute_selected_claimant_takeover = yes }
 }
 
 infantry_spawn_resolve_due_claimant_crisis = {
@@ -278,17 +301,22 @@ infantry_spawn_resolve_due_claimant_crisis = {
 					infantry_spawn_selected_claimant_can_take_over = yes
 					check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_claimant_state_package.failed_coup_control }
 				}
-				infantry_spawn_execute_selected_claimant_takeover = yes
+				infantry_spawn_resolve_selected_claimant_natural_takeover = yes
 			}
 			else = { infantry_spawn_execute_selected_claimant_failed_coup = yes }
 		}
-		else = { infantry_spawn_begin_selected_claimant_revolt = yes }
+		else = {
+			infantry_spawn_begin_selected_claimant_natural_revolt = yes
+		}
 	}
 }
 
 infantry_spawn_run_claimant_pulse = {
 	if = {
-		limit = { infantry_spawn_has_evolution_iii = yes }
+		limit = {
+			infantry_spawn_scenario_transaction_is_idle = yes
+			infantry_spawn_has_evolution_iii = yes
+		}
 		infantry_spawn_maybe_create_claimant = yes
 		if = {
 			limit = { check_variable = { infantry_spawn_active_claimant_count > 0 } }

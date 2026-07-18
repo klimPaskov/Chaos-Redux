@@ -26,7 +26,7 @@ Every report image receives the project report-card processing and sepia treatme
 | Supply | rail corridor, depot, relocation | decision 32 by 32 | train, depot, route, convoy |
 | Demobilization | supervised demobilization, breakup, disarm | decision 32 by 32 | stacked rifles, opened formation mark, guarded depot |
 | Requests | field, mobile, territorial, firepower, anything, anomalous | decision 32 by 32 | distinct request silhouettes at tiny scale |
-| Claimant | command, counter-command, arrest, retirement, takeover | decision 32 by 32 | epaulette, split command baton, guarded portrait |
+| Claimant | command, counter-command, arrest, retirement, takeover | decision 32 by 32 | epaulette, split command baton, guarded muster-card symbol |
 | Anomalous | cantonment, liaison, restriction, sustainment, seal breach | decision 32 by 32 | seal, barrier, family-neutral anomaly symbols |
 | Core values | Muster Control, Army Congestion, Claimant Influence, Anomalous Saturation | idea or UI icons 64 by 64 | distinct consistent symbols and color identities |
 | Temporary burdens | supply strain, command confusion, training saturation, equipment debt | idea icons 64 by 64 | strong central symbolic art |
@@ -41,7 +41,7 @@ Decision, idea, and focus icons require separate source artwork designed for the
 | Overview header | inactive, active, critical | layout-specific | critical can use seal pulse overlay |
 | Formation lot card | normal, selected, locked, resolved, dangerous | layout-specific | no |
 | Quality and coherence markers | four bands each | small UI | no |
-| Command portrait frame | normal, demand, critical, revolt | 156 by 210 frame-compatible | critical border animated |
+| Command identity-scene frame | normal, demand, critical, revolt | fixed portrait-slot 156 by 210 frame-compatible | critical border animated |
 | Registry family card | unavailable, available, active, contained, breach | layout-specific | active emblem can animate |
 | Cost and warning markers | met, missing, cooldown, invalid target | small UI | no |
 
@@ -50,26 +50,27 @@ Decision, idea, and focus icons require separate source artwork designed for the
 | Package | Frames | Frame target | FPS | Loop | Required deliverables |
 | --- | ---: | --- | ---: | --- | --- |
 | Muster seal pulse | 8 | determined by category or GUI layout | 6 to 8 | yes | source frames, processed frames, sheet PNG and DDS, static fallback, GIF preview, contact sheet |
-| Critical command border | 8 | portrait-frame dimensions | 5 to 7 | yes while critical | same full package |
+| Critical command border | 8 | fixed identity-scene panel dimensions | 5 to 7 | yes while critical | same full package |
 | Anomalous registry emblem | 10 | determined by registry tab | 4 to 6 | yes | same full package |
 
 Every frame must be a real generated or edited source frame. Local transform-only motion is forbidden.
 
-## Claimant portraits
+## Claimant army/muster identity scenes
 
-- 20 fictional generated portraits at 156 by 210.
-- 10 male-presenting and 10 female-presenting.
+- 20 separate fictional generated army/muster scenes at 156 by 210, delivered through the fixed technical portrait slots.
+- No individual focal human/person, face, bust, officer, or commander.
+- The 20 gameplay claimant profiles retain male-default leader metadata and regional male name pools.
 - Exact slot directions are in `019_possessed_general_matrix.md`.
 - Static only.
-- Each manifest entry records presentation and matching name-pool requirement.
+- Each manifest entry records the region/profile binding and distinct army/muster scene identity.
 
-## Derivative country flags and portraits
+## Derivative country flags and host identity scenes
 
 | Family | Base flags | Route flags | Leader assets |
 | --- | --- | --- | --- |
-| Zombie derivative | normal, medium, small | claimant, collective, species command when visually distinct | claimant reuse plus generated alternate leader or council |
-| Ghost derivative | normal, medium, small | same route logic | claimant reuse plus generated spectral leader or council |
-| Golem derivative | normal, medium, small | same route logic | claimant reuse plus generated master-builder or construct council |
+| Zombie derivative | normal, medium, small | claimant, collective, species command when visually distinct | claimant army/muster reuse plus massed undead host; council slot uses exactly three legion masses |
+| Ghost derivative | normal, medium, small | same route logic | claimant army/muster reuse plus massed spectral host; council slot uses exactly three spectral formations |
+| Golem derivative | normal, medium, small | same route logic | claimant army/muster reuse plus collective quarry host; council slot uses exactly three geological cohorts |
 
 Flags are fictional generated art and need separate intentional route designs, not recolors.
 
@@ -89,7 +90,8 @@ Each focus tree route needs icon coverage. The exact final focus count belongs t
 - family transformation
 - late regional predator payoff
 
-Focus icons are 94 by 86 and need focus-specific source art.
+Focus icons are 100 by 88, matching the current vanilla focus-icon canvas, and
+need focus-specific source art.
 
 ## Achievement assets
 

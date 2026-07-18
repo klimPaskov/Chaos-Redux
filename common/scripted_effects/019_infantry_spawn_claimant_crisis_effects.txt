@@ -55,29 +55,32 @@ infantry_spawn_refresh_claimant_presence_flags = {
 	clr_country_flag = infantry_spawn_claimant_one_active
 	clr_country_flag = infantry_spawn_claimant_two_active
 	clr_country_flag = infantry_spawn_claimant_three_active
-	clamp_variable = { var = infantry_spawn_active_claimant_count min = 0 max = constant:infantry_spawn_event.maximum_claimants }
+	clamp_variable = { var = infantry_spawn_active_claimant_count min = constant:infantry_spawn_claimant_count.none max = constant:infantry_spawn_event.maximum_claimants }
 	if = {
-		limit = { check_variable = { infantry_spawn_active_claimant_count = 1 } }
+		limit = { check_variable = { infantry_spawn_active_claimant_count = constant:infantry_spawn_claimant_count.first } }
 		set_country_flag = infantry_spawn_claimant_one_active
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_active_claimant_count = 2 } }
+		limit = { check_variable = { infantry_spawn_active_claimant_count = constant:infantry_spawn_claimant_count.second } }
 		set_country_flag = infantry_spawn_claimant_two_active
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_active_claimant_count > 2 } }
+		limit = { check_variable = { infantry_spawn_active_claimant_count > constant:infantry_spawn_claimant_count.second } }
 		set_country_flag = infantry_spawn_claimant_three_active
 	}
 	if = {
-		limit = { check_variable = { infantry_spawn_active_claimant_count < 1 } }
+		limit = { check_variable = { infantry_spawn_active_claimant_count < constant:infantry_spawn_claimant_count.first } }
 		clr_country_flag = infantry_spawn_claimant_system_active
 		clr_country_flag = infantry_spawn_claimant_demand_pending
+		clear_variable = infantry_spawn_claimant_demand_owner_uid
 		clr_country_flag = infantry_spawn_claimant_revolt_warning_active
 	}
+	infantry_spawn_reconcile_participant_evolution_memberships = yes
 }
 
 infantry_spawn_clear_claimant_crisis_state = {
 	clr_country_flag = infantry_spawn_claimant_demand_pending
+	clear_variable = infantry_spawn_claimant_demand_owner_uid
 	clr_country_flag = infantry_spawn_claimant_revolt_warning_active
 	clear_variable = infantry_spawn_claimant_revolt_warning_index
 	clear_variable = infantry_spawn_claimant_revolt_due_date
@@ -211,13 +214,23 @@ infantry_spawn_execute_selected_claimant_takeover = {
 			infantry_spawn_clear_claimant_crisis_state = yes
 			infantry_spawn_refresh_claimant_presence_flags = yes
 			infantry_spawn_promote_selected_claimant_character = yes
+			infantry_spawn_achievement_register_claimant_takeover = yes
 			infantry_spawn_apply_selected_claimant_archetype_idea = yes
 			set_country_flag = infantry_spawn_claimant_takeover_complete
 			set_country_flag = infantry_spawn_claimant_history
 			add_ideas = infantry_spawn_claimant_takeover_regime
-			add_to_variable = { global.infantry_spawn_total_claimant_takeovers = 1 }
+			if = {
+				limit = { infantry_spawn_contributes_to_ordinary_evolution_history = yes }
+				add_to_variable = { global.infantry_spawn_total_claimant_takeovers = 1 }
+			}
+			infantry_spawn_record_claimant_takeover_history = yes
 			infantry_spawn_recalculate_country_pressure = yes
-			if = { limit = { is_ai = no } country_event = { id = chaosx.nr19.203 } }
+			if = {
+				limit = { is_ai = no }
+				set_temp_variable = { infantry_spawn_claimant_localisation_index = infantry_spawn_selected_claimant_index }
+				infantry_spawn_load_claimant_localisation_context = yes
+				country_event = { id = chaosx.nr19.203 }
+			}
 		}
 		else = {
 			set_country_flag = infantry_spawn_claimant_identity_creation_failure
@@ -242,7 +255,11 @@ infantry_spawn_execute_selected_claimant_failed_coup = {
 		infantry_spawn_refresh_claimant_presence_flags = yes
 		set_temp_variable = { infantry_spawn_failed_coup_aftermath_days = constant:infantry_spawn_timer.failed_coup_aftermath_days }
 		add_timed_idea = { idea = infantry_spawn_failed_coup_aftermath days = infantry_spawn_failed_coup_aftermath_days }
-		add_to_variable = { global.infantry_spawn_total_claimant_failed_coups = 1 }
+		if = {
+			limit = { infantry_spawn_contributes_to_ordinary_evolution_history = yes }
+			add_to_variable = { global.infantry_spawn_total_claimant_failed_coups = 1 }
+		}
+		infantry_spawn_record_failed_coup_history = yes
 		infantry_spawn_recalculate_country_pressure = yes
 		if = { limit = { is_ai = no } country_event = { id = chaosx.nr19.204 } }
 	}

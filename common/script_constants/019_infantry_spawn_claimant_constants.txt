@@ -17,7 +17,61 @@ infantry_spawn_claimant_profile = {
 	maximum_exclusive = 21
 	selection_attempts = 60
 	name_variants = 4
+	name_variant_minimum = 1
 	name_variant_maximum_exclusive = 5
+}
+
+# Stable portrait-profile enum. Tokens are frozen compatibility identifiers.
+# They continue to map each slot to its region gate even when display names differ.
+infantry_spawn_claimant_profile_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	erik_vinterdal = 1
+	milena_vargova = 2
+	faris_al_mazhar = 3
+	devika_suryapala = 4
+	arkady_zorenko = 5
+	anika_senaviratne = 6
+	tadashi_morioka = 7
+	lucia_valcarcel = 8
+	lucien_vautrin = 9
+	nadja_karskaya = 10
+	samir_qazwini = 11
+	mai_tran_vinh = 12
+	matteo_vellani = 13
+	klara_weissen = 14
+	jabari_ndoye = 15
+	leila_al_hadri = 16
+	shunpei_arakida = 17
+	ingrid_solhavn = 18
+	elias_mercer = 19
+	mara_voss = 20
+}
+
+infantry_spawn_claimant_archetype_profile_boundary = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	field_prophet_start = 5
+	barracks_tribune_start = 9
+	iron_saint_start = 13
+	hollow_marshal_start = 17
+}
+
+infantry_spawn_claimant_count = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	first = 1
+	second = 2
 }
 
 infantry_spawn_claimant_status = {
@@ -111,6 +165,56 @@ infantry_spawn_claimant_cost = {
 	arrest_stability = 0.03
 }
 
+infantry_spawn_claimant_cost_resource = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	army_experience = 1
+	command_power = 2
+	political_power = 3
+	stability = 4
+}
+
+infantry_spawn_claimant_demand_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quartermaster_equipment_share = 50
+	quartermaster_autonomous_district = 30
+	quartermaster_formal_appointment = 20
+	prophet_another_formation = 40
+	prophet_political_seat = 30
+	prophet_formal_appointment = 30
+	tribune_formal_appointment = 45
+	tribune_political_seat = 30
+	tribune_equipment_share = 25
+	saint_emergency_powers = 45
+	saint_political_seat = 35
+	saint_formal_appointment = 20
+	marshal_formal_appointment = 35
+	marshal_political_seat = 35
+	marshal_emergency_powers = 30
+}
+
+infantry_spawn_claimant_demand_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accept_base = 40
+	accept_war_bonus = 25
+	accept_low_control_bonus = 20
+	accept_strong_control_penalty = 20
+	accept_minimum = 10
+	accept_maximum = 90
+}
+
 infantry_spawn_claimant_state_package = {
 	schema = {
 		any_key = yes
@@ -188,4 +292,72 @@ infantry_spawn_claimant_ai = {
 	urgent = 100
 	preferred_factor = 2
 	cautious_factor = 0.5
+}
+
+# Event 67 records the chosen Generalissimo by country and character ID. These
+# demand codes extend the claimant demand ledger without changing its existing
+# values, while the surrounding categories centralize every bridge-specific
+# threshold, payment, outcome, and AI preference.
+infantry_spawn_generalissimo_demand = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	subordinate_command = 7
+	parallel_command = 8
+}
+
+infantry_spawn_generalissimo_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	parallel_command_influence = 65
+}
+
+infantry_spawn_generalissimo_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	subordinate_command_army_experience = 15
+	subordinate_command_command_power = 20
+	parallel_command_political_power = 60
+	parallel_command_command_power = 25
+}
+
+infantry_spawn_generalissimo_outcome = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	subordinate_accept_influence_loss = 10
+	subordinate_accept_control_gain = 5
+	subordinate_refuse_influence_gain = 6
+	subordinate_refuse_control_loss = 2
+	parallel_accept_influence_gain = 10
+	parallel_accept_control_loss = 5
+	parallel_refuse_influence_gain = 10
+	parallel_refuse_control_loss = 4
+}
+
+infantry_spawn_generalissimo_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	exact_claimant_accept_bonus = 30
+	subordinate_command_accept_bonus = 25
+	parallel_command_accept_penalty = 25
+	exact_claimant_accept_factor = 2
+	exact_claimant_refuse_factor = 0.25
+	subordinate_command_accept_factor = 2
+	subordinate_command_refuse_factor = 0.5
+	parallel_command_accept_factor = 0.5
+	parallel_command_refuse_factor = 2
 }

@@ -1,8 +1,29 @@
 # Mandatory Near-Completion Improvement Loop Review
 
+> **Superseded process notice (2026-07-16):** This file preserves the manual
+> planning-stage review. A later mandatory planner pass produced
+> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`.
+> Its natural-release, pre-fire reception, documentation, and fixed
+> identity-scene findings have been implemented. That addendum and the newest
+> audit handoffs are the current authority. The live-final AI, balance,
+> performance, isolation, scenario-safety, and exploit reaudit is clean with
+> zero P0, P1, or P2 findings. All gameplay specialist gates are closed. The
+> owner-approved 7/18 regional candidate now contains 91 raw sources, 91
+> deterministic spot masters, and 273 native/runtime output pairs. Visual and
+> runtime rows pass. The independent remediation re-audit handoff
+> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+> is PASS and clears the regional asset gate for parent-owned package
+> promotion. The machine JSON retains its immutable literal
+> `candidate_requires_independent_visual_review` processor-state value. Parent
+> workbook/catalog reconciliation and export, the 33-file package inventory,
+> and the mandatory final completion audit are complete. Event 19 and SCN-013
+> are `Fully Functional`; no closure gate remains.
+
 ## Process status
 
-This is a manual role-equivalent review because the `chaosx_improvement_loop_planner` runtime was unavailable. It is not an actual subagent pass. The implementation agent must run the real planner near completion and resolve its result.
+This file preserves the planning-stage manual review that shaped the source
+specification. The first required planner run returned a dated closure handoff;
+the later planner pass and addendum named above supersede that process status.
 
 ## Feature promise
 
@@ -42,7 +63,7 @@ Resolution added:
 - actual loyal formation links
 - takeover, negotiation, arrest, and revolt
 - one-state handling
-- 20 portrait and name-pool plan
+- 20 male claimant profile/name-pool plan plus 20 separate regional army/muster identity scenes in the fixed portrait slots
 
 ### Gap 4: Chaos units could accidentally duplicate parent events
 
@@ -101,9 +122,9 @@ No normal threshold in this event changes the whole campaign’s meaning enough 
 
 Event 19 stays unclustered until other military manifestation events are reworked and can form a real incident group.
 
-### No animation for every claimant
+### No animation for every claimant identity scene
 
-Twenty animated portraits would create asset volume and visual noise. Static claimant portraits plus a critical-state frame animation communicate the mechanic better.
+Twenty animated army/muster scenes would create asset volume and visual noise. Static identity scenes plus a critical-state panel-border animation communicate the mechanic better.
 
 ### No automatic future-family inclusion
 
@@ -113,4 +134,21 @@ Dynamic support means one registry entry is enough. It does not mean every new u
 
 The planning design is deep enough to hand to implementation. Another broad planning expansion is not recommended now. The remaining work is implementation, local identifier verification, asset production, balance testing, specialist audits, final localisation, documentation, and catalog alignment.
 
-This is a manual closure recommendation only. The real improvement-loop planner must still run after a meaningful implementation tranche. If it finds a new gap created by implementation, that addendum must be implemented, promoted, queued with reason, or rejected with reason before completion.
+The planning-stage closure recommendation was superseded by the required
+project-agent planner after a meaningful implementation tranche. That pass did
+produce the accepted near-completion addendum named above. Its natural-release,
+first-family reception, fixed identity-scene, and documentation findings were
+promoted into implementation and are closed at addendum level; another broad
+expansion pass is not warranted unless a current audit finds a concrete gap.
+
+Exactly two engine-constrained substitutes are owner-approved and implemented:
+exact recorded-formation recreate/prove/delete and controlled one-formation
+combat trials. The owner-approved deterministic spot-colour route is also
+implemented for the 7/18 regional candidate. The independent remediation
+re-audit handoff
+`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+is PASS and clears the regional asset gate. Workbook/catalog reconciliation,
+export, the 33-file package inventory, and the final completion audit are
+complete. Event 19 and SCN-013 are `Fully Functional`; no closure gate remains.
+The current disposition is tracked in
+`review/blockers_and_uncertainty.md`.

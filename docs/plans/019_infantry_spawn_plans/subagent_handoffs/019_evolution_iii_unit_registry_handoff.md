@@ -3,11 +3,16 @@
 ## Scope and ownership
 
 This handoff covers only the Evolution III ordinary unit registry and its
-manifest materializer. The implementation is contained in:
+manifest materializer. Event 19 keeps exactly one dedicated registry file:
 
-- `common/script_constants/019_infantry_spawn_unit_registry_constants.txt`
 - `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`
-- `common/scripted_triggers/019_infantry_spawn_unit_registry_triggers.txt`
+
+Its tuning tables are consolidated into
+`common/script_constants/019_infantry_spawn_constants.txt`, and its validation
+contract is consolidated into
+`common/scripted_triggers/019_infantry_spawn_triggers.txt`. No additional Event
+19 registry constants, trigger, provider, or on-action files are part of the
+implementation.
 
 No management decision, event, localisation, asset, or claimant file was
 edited. The parent implementation owns those call sites and claimant demand
