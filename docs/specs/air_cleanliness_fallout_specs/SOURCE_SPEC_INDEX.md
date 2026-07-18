@@ -50,6 +50,7 @@
 - `matrices/fallout_regional_event_matrix.md`
 - `matrices/fallout_archetype_event_matrix.md`
 - `matrices/fallout_orientation_region_archetype_coverage_matrix.md`
+- `matrices/fallout_orientation_pilot_memory_candidate_registry.md`
 - `matrices/fallout_successor_event_overlay_matrix.md`
 - `matrices/fallout_character_arc_matrix.md`
 - `matrices/fallout_diplomacy_war_event_matrix.md`
