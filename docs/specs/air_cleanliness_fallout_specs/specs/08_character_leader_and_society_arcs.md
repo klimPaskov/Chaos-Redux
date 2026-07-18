@@ -9,6 +9,8 @@ A ten-year scenario needs people who persist across events. Recurring characters
 
 The full role matrix is in `matrices/fallout_character_arc_matrix.md`.
 
+The Ash-week pilot candidate registry is in `matrices/fallout_orientation_pilot_memory_candidate_registry.md`. Its twenty-four fictional character directions and twelve institution directions require dedicated Fallout assets, exact install effects, final localisation, and current-generation validators before use.
+
 ## Character state
 
 A recurring character can track:

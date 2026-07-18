@@ -9,6 +9,8 @@ The successor matrix contains 99 candidate countries. Shared archetype and regio
 
 The full matrix is in `matrices/fallout_successor_event_overlay_matrix.md`.
 
+The manually bounded Ash-week pilot registry is in `matrices/fallout_orientation_pilot_memory_candidate_registry.md`. It maps exact country-memory ids to opening overlays and candidate institutions or fictional characters. It does not select or materialize a live successor.
+
 ## Required arc package per selected successor
 
 ### Opening chain
