@@ -16,6 +16,10 @@
 @world_package_ai_urgent = 40
 @world_package_route_popularity = 0.15
 @world_package_factory = 1
+@world_package_ai_alignment = 0.35
+@world_package_ai_strong_alignment = 0.45
+@world_package_ai_preferred_factor = 2
+@world_package_ai_aligned_factor = 4
 
 focus_tree = {
 	id = africa_north_america_world_focus_tree
@@ -57,7 +61,7 @@ focus_tree = {
 			}
 			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
 		}
-		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_industrial_balance < constant:africa_measure.medium } } }
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_north_america_industrial_balance < constant:africa_measure.medium } } }
 	}
 
 	focus = {
@@ -73,7 +77,7 @@ focus_tree = {
 			set_country_flag = africa_north_america_caribbean_central_votes_protected
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
 		}
-		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_caribbean_inclusion < constant:africa_measure.medium } } }
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_north_america_caribbean_inclusion < constant:africa_measure.medium } } }
 	}
 
 	focus = {
@@ -88,7 +92,7 @@ focus_tree = {
 			africa_world_clamp_package_mechanic = yes
 			set_country_flag = africa_north_america_indigenous_consent_and_land_review
 		}
-		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_indigenous_settlement < constant:africa_measure.medium } } }
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_north_america_indigenous_settlement < constant:africa_measure.medium } } }
 	}
 
 	focus = {
@@ -109,7 +113,7 @@ focus_tree = {
 			set_country_flag = africa_north_america_equal_citizenship_guaranteed
 			set_country_flag = africa_north_america_voluntary_return_only
 		}
-		ai_will_do = { factor = @world_package_ai_high modifier = { factor = 2 check_variable = { africa_north_america_migration_compact < constant:africa_measure.medium } } }
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_north_america_migration_compact < constant:africa_measure.medium } } }
 	}
 
 	# Five settlements. The storm route remains disabled until its separate
@@ -129,7 +133,7 @@ focus_tree = {
 			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
 			africa_world_clamp_package_mechanic = yes
 		}
-		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = 2 democratic > 0.4 } }
+		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = @world_package_ai_preferred_factor democratic > @world_package_ai_alignment } }
 	}
 
 	focus = {
@@ -147,7 +151,7 @@ focus_tree = {
 			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
 			africa_world_clamp_package_mechanic = yes
 		}
-		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = 2 neutrality > 0.35 } modifier = { factor = 2 democratic > 0.45 } }
+		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = @world_package_ai_preferred_factor neutrality > @world_package_ai_alignment } modifier = { factor = @world_package_ai_preferred_factor democratic > @world_package_ai_strong_alignment } }
 	}
 
 	focus = {
@@ -165,7 +169,7 @@ focus_tree = {
 			add_popularity = { ideology = fascism popularity = @world_package_route_popularity }
 			africa_world_clamp_package_mechanic = yes
 		}
-		ai_will_do = { factor = @world_package_ai_low modifier = { factor = 4 fascism > 0.35 } modifier = { factor = 2 has_war = yes } }
+		ai_will_do = { factor = @world_package_ai_low modifier = { factor = @world_package_ai_aligned_factor fascism > @world_package_ai_alignment } modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
 	}
 
 	focus = {
@@ -183,7 +187,7 @@ focus_tree = {
 			add_popularity = { ideology = communism popularity = @world_package_route_popularity }
 			africa_world_clamp_package_mechanic = yes
 		}
-		ai_will_do = { factor = @world_package_ai_low modifier = { factor = 4 communism > 0.35 } }
+		ai_will_do = { factor = @world_package_ai_low modifier = { factor = @world_package_ai_aligned_factor communism > @world_package_ai_alignment } }
 	}
 
 	focus = {
@@ -341,7 +345,7 @@ focus_tree = {
 			africa_world_apply_package_focus_progress = yes
 			africa_north_america_apply_two_ocean_defence_law = yes
 		}
-		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = 2 has_war = yes } }
+		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
 	}
 
 	focus = {

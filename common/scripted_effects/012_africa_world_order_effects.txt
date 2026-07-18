@@ -47,6 +47,10 @@ africa_world_register_current_candidate = {
 			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.north_america } }
 			set_country_flag = africa_world_package_implementation_ready
 		}
+		else_if = {
+			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.south_america } }
+			set_country_flag = africa_world_package_implementation_ready
+		}
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_world_package_candidates value = PREV } } }
@@ -471,6 +475,7 @@ africa_world_install_current_package = {
 		set_variable = { africa_world_package_status = africa_world_install_status }
 		set_variable = { africa_world_package_install_outcome = africa_world_install_outcome }
 		set_variable = { africa_world_package_step = constant:africa_world_package_step.none }
+		set_variable = { africa_world_package_completed_step_count = constant:africa_value.zero }
 		if = {
 			limit = { check_variable = { africa_world_install_status = constant:africa_world_package_status.sponsored } }
 			set_country_flag = africa_world_package_sponsored
@@ -588,16 +593,21 @@ africa_world_default_current_sponsorship_obligation = {
 }
 
 # COUNTRY scope on a package actor. Input: temporary africa_world_step_id.
+# Each one-time focus call contributes, including parallel siblings. The public
+# package-step variable retains the highest numbered milestone reached.
 africa_world_complete_package_step = {
 	if = {
 		limit = {
 			africa_world_package_is_installed = yes
 			check_variable = { africa_world_step_id > constant:africa_world_package_step.none }
-			check_variable = { africa_world_step_id > africa_world_package_step }
 		}
-		set_variable = { africa_world_package_step = africa_world_step_id }
+		add_to_variable = { africa_world_package_completed_step_count = constant:africa_value.one }
 		add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
 		add_to_variable = { africa_world_package_capacity = constant:africa_world_order.package_minor_gain }
+		if = {
+			limit = { check_variable = { africa_world_step_id > africa_world_package_step } }
+			set_variable = { africa_world_package_step = africa_world_step_id }
+		}
 		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 		clamp_variable = { var = africa_world_package_capacity min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 	}
@@ -868,6 +878,154 @@ africa_north_america_apply_africa_diaspora_treaty = {
 		event_target:africa_host = {
 			set_country_flag = africa_north_america_diaspora_treaty_partner
 			set_country_flag = africa_north_america_return_requires_local_acceptance
+		}
+	}
+}
+
+# COUNTRY scope on the installed South American package actor.
+africa_south_america_apply_resource_and_debt_law = {
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	if = {
+		limit = { has_country_flag = africa_south_america_republics_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_republican_concessions_review
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_federation_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_federal_resource_compacts
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_socialist_union_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_social_resource_congress
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_command_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		subtract_from_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_major_loss }
+		subtract_from_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_major_loss }
+		set_country_flag = africa_south_america_command_concessions_review
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_royal_concert_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_concert_debt_compacts
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_sun_covenant_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_sun_resource_limits
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope on the installed South American package actor.
+africa_south_america_apply_defence_and_corridors = {
+	set_country_flag = africa_south_america_continental_defence_settled
+	add_command_power = constant:africa_world_package_reward.command_power
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	if = {
+		limit = { has_country_flag = africa_south_america_republics_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_republican_regional_commands
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_federation_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_federal_corridor_boards
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_socialist_union_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_workers_corridor_councils
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_command_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_major_gain }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:africa_world_package_reward.support_equipment }
+		set_country_flag = africa_south_america_command_emergency_review_due
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_royal_concert_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_concert_defence_council
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_sun_covenant_route }
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_ecological_defence_corridors
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope on the installed South American package actor.
+africa_south_america_apply_south_atlantic_partnership = {
+	set_country_flag = africa_south_america_africa_partnership_ready
+	set_country_flag = africa_south_america_diaspora_links_voluntary
+	set_country_flag = africa_south_america_cultural_projects_require_local_acceptance
+	if = {
+		limit = { has_country_flag = africa_south_america_republics_route }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_republican_south_atlantic_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_federation_route }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_federal_cultural_partnership
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_socialist_union_route }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_social_resource_alliance
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_command_route }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_atlantic_leadership_rivalry_managed
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_royal_concert_route }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_concert_south_atlantic_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_south_america_sun_covenant_route }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_south_america_ecological_south_atlantic_treaty
+	}
+	africa_world_clamp_package_mechanic = yes
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			set_country_flag = africa_south_america_partnership_treaty_partner
+			set_country_flag = africa_south_america_cultural_projects_require_local_acceptance
 		}
 	}
 }
@@ -1391,7 +1549,7 @@ africa_form_terminal_world_identity = {
 }
 
 # COUNTRY scope on the host after the Scramble coalition defeats the
-# continental order. The original host tag remains; the crisis records a
+# continental order. The original host tag remains. The crisis records a
 # constitutional fragmentation state rather than manufacturing a successor.
 africa_scramble_record_continental_defeat = {
 	if = {
