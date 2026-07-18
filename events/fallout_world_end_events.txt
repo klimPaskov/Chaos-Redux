@@ -7581,6 +7581,54 @@ country_event = {
 	immediate = { fallout_orientation_resolve_national_orientation = yes }
 }
 
+country_event = {
+	id = chaosx.fallout.82
+	title = chaosx.fallout.82.t
+	desc = chaosx.fallout.82.d
+	picture = GFX_report_event_fallout_orientation_closure
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_closure_event_can_enter = yes
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.closure_human }
+	}
+
+	option = {
+		name = chaosx.fallout.82.a
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			fallout_orientation_schedule_cleanup = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.82.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.83
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_closure_event_can_enter = yes
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.closure_ai }
+	}
+	immediate = {
+		set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+		fallout_orientation_schedule_cleanup = yes
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.84
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_orientation_cleanup_event_can_enter = yes }
+	immediate = {
+		set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+		fallout_orientation_cleanup_event84 = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Air Winter terminal response results
 # ---------------------------------------------------------------------------

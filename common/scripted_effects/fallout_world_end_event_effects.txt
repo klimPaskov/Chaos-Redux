@@ -4778,9 +4778,12 @@ fallout_orientation_begin_closure = {
 		set_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.closure }
 		set_variable = { fallout_orientation_transaction_branch = constant:fallout_orientation_national_branch.none }
 		set_variable = { fallout_orientation_transaction_status = constant:fallout_orientation_status.result_scheduled }
+		set_variable = { fallout_orientation_frozen_region = fallout_orientation_identity_region }
+		set_variable = { fallout_orientation_frozen_archetype = fallout_orientation_identity_archetype }
+		set_variable = { fallout_orientation_frozen_country_memory = fallout_orientation_identity_country_memory }
+		set_variable = { fallout_orientation_frozen_cause_memory = fallout_orientation_identity_cause_memory }
 		set_country_flag = fallout_orientation_transaction_pending
 		fallout_orientation_issue_next = yes
-		set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.one }
 	}
 }
 
@@ -4788,17 +4791,13 @@ fallout_orientation_schedule_cleanup = {
 	set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
 	if = {
 		limit = {
-			fallout_orientation_transaction_is_current = yes
-			check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.closure }
-			has_country_flag = fallout_orientation_event_issued
-			check_variable = { fallout_orientation_issued_stage = constant:fallout_orientation_stage.closure }
+			fallout_orientation_closure_event_can_enter = yes
 			check_variable = { var = fallout_orientation_requested_event_token value = fallout_orientation_issued_event_token compare = equals }
 		}
 		fallout_orientation_clear_issued_receipt = yes
 		set_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.cleanup }
 		set_variable = { fallout_orientation_transaction_status = constant:fallout_orientation_status.result_scheduled }
 		fallout_orientation_issue_next = yes
-		set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.one }
 	}
 }
 

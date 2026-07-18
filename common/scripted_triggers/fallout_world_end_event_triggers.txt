@@ -2196,6 +2196,16 @@ fallout_orientation_score_is_failure = {
 fallout_orientation_closure_is_eligible = {
 	fallout_orientation_activation_is_dormant = yes
 	fallout_event_registry_country_row_is_current = yes
+	has_variable = fallout_orientation_identity_generation
+	has_variable = fallout_orientation_identity_region
+	has_variable = fallout_orientation_identity_archetype
+	has_variable = fallout_orientation_identity_country_memory
+	has_variable = fallout_orientation_identity_cause_memory
+	check_variable = { var = fallout_orientation_identity_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_orientation_identity_region value = fallout_region_id compare = equals }
+	check_variable = { var = fallout_orientation_identity_archetype value = fallout_government_archetype compare = equals }
+	check_variable = { var = fallout_orientation_identity_country_memory value = fallout_country_memory_id compare = equals }
+	check_variable = { var = fallout_orientation_identity_cause_memory value = global.fallout_cause_memory_source compare = equals }
 	fallout_event_orientation_national_receipt_is_current = yes
 	fallout_event_orientation_capital_receipt_is_current = yes
 	fallout_event_orientation_resource_receipt_is_current = yes
@@ -2206,15 +2216,40 @@ fallout_orientation_closure_is_eligible = {
 	NOT = { has_country_flag = fallout_orientation_closure_complete }
 }
 
-fallout_orientation_cleanup_event_is_authenticated = {
+fallout_orientation_closure_event_can_enter = {
+	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_transaction_is_current = yes
+	check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.closure }
+	check_variable = { fallout_orientation_transaction_status = constant:fallout_orientation_status.result_scheduled }
+	has_country_flag = fallout_orientation_event_issued
+	check_variable = { fallout_orientation_issued_stage = constant:fallout_orientation_stage.closure }
+	check_variable = { fallout_orientation_issued_generation = global.fallout_transition_generation }
+	check_variable = { var = fallout_orientation_issued_component value = fallout_orientation_transaction_component compare = equals }
+	check_variable = { var = fallout_orientation_issued_mode value = fallout_orientation_transaction_mode compare = equals }
+	check_variable = { var = fallout_orientation_issued_branch value = fallout_orientation_transaction_branch compare = equals }
+	fallout_event_orientation_is_complete = yes
+	NOT = { has_country_flag = fallout_orientation_closure_complete }
+}
+
+fallout_orientation_cleanup_event_can_enter = {
 	fallout_orientation_activation_is_dormant = yes
 	has_country_flag = fallout_orientation_transaction_pending
+	fallout_orientation_transaction_is_current = yes
 	check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.cleanup }
 	check_variable = { fallout_orientation_transaction_status = constant:fallout_orientation_status.result_scheduled }
 	has_country_flag = fallout_orientation_event_issued
 	check_variable = { fallout_orientation_issued_stage = constant:fallout_orientation_stage.cleanup }
 	check_variable = { fallout_orientation_issued_generation = global.fallout_transition_generation }
+	check_variable = { var = fallout_orientation_issued_component value = fallout_orientation_transaction_component compare = equals }
+	check_variable = { var = fallout_orientation_issued_mode value = fallout_orientation_transaction_mode compare = equals }
+	check_variable = { var = fallout_orientation_issued_branch value = fallout_orientation_transaction_branch compare = equals }
+	check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.cleanup }
 	fallout_event_orientation_is_complete = yes
+	NOT = { has_country_flag = fallout_orientation_closure_complete }
+}
+
+fallout_orientation_cleanup_event_is_authenticated = {
+	fallout_orientation_cleanup_event_can_enter = yes
 	has_variable = fallout_orientation_requested_event_token
 	check_variable = { var = fallout_orientation_requested_event_token value = fallout_orientation_issued_event_token compare = equals }
 }
