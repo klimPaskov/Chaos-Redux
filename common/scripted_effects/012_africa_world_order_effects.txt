@@ -51,6 +51,10 @@ africa_world_register_current_candidate = {
 			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.south_america } }
 			set_country_flag = africa_world_package_implementation_ready
 		}
+		else_if = {
+			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.oceania } }
+			set_country_flag = africa_world_package_implementation_ready
+		}
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_world_package_candidates value = PREV } } }
@@ -1026,6 +1030,137 @@ africa_south_america_apply_south_atlantic_partnership = {
 		event_target:africa_host = {
 			set_country_flag = africa_south_america_partnership_treaty_partner
 			set_country_flag = africa_south_america_cultural_projects_require_local_acceptance
+		}
+	}
+}
+
+# COUNTRY scope on the installed Oceanian package actor.
+africa_oceania_apply_constitution_and_withdrawal_law = {
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	if = {
+		limit = { has_country_flag = africa_oceania_maritime_federation_route }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_federal_island_withdrawal_law
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_dominion_route }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_loss }
+		set_country_flag = africa_oceania_dominion_treaty_withdrawal_law
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_indigenous_union_route }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_peoples_refusal_and_withdrawal_law
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_socialist_commonwealth_route }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_commonwealth_withdrawal_congress
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_deep_sea_covenant_route }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_deep_sea_refusal_and_containment_law
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope on the installed Oceanian package actor.
+africa_oceania_apply_pacific_defence_and_disaster_reserve = {
+	set_country_flag = africa_oceania_pacific_defence_settled
+	add_command_power = constant:africa_world_package_reward.command_power
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	if = {
+		limit = { has_country_flag = africa_oceania_maritime_federation_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_federal_pacific_commands
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_dominion_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_dominion_pacific_command_review
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_indigenous_union_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_peoples_rescue_commands
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_socialist_commonwealth_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_commonwealth_rescue_fleet
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_deep_sea_covenant_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_deep_sea_containment_commands
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope on the installed Oceanian package actor.
+africa_oceania_apply_africa_sea_treaty = {
+	set_country_flag = africa_oceania_africa_sea_treaty_ready
+	set_country_flag = africa_oceania_indian_ocean_bases_require_consent
+	set_country_flag = africa_oceania_island_protection_obligation
+	if = {
+		limit = { has_country_flag = africa_oceania_maritime_federation_route }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_federal_africa_sea_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_dominion_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_indian_ocean_base_rivalry_managed
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_indigenous_union_route }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_peoples_africa_sea_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_socialist_commonwealth_route }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_commonwealth_africa_sea_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_oceania_deep_sea_covenant_route }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_ecological_africa_sea_treaty
+	}
+	africa_world_clamp_package_mechanic = yes
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			set_country_flag = africa_oceania_sea_treaty_partner
+			set_country_flag = africa_oceania_indian_ocean_bases_require_consent
 		}
 	}
 }

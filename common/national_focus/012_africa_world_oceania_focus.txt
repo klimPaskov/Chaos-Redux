@@ -1,0 +1,384 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 OCEANIA WORLD-ORDER PACKAGE
+# ============================================================================
+# The Ocean Network treats Australia, New Zealand, Melanesia, Micronesia,
+# Polynesia, and island governments as connected by negotiated sea lanes. It is
+# not an expanded-Australia tree and does not treat islands as empty bases.
+# ============================================================================
+
+@world_package_cost = 5
+@world_package_final_cost = 8
+@world_package_tree_weight = 100
+@world_package_ai_low = 5
+@world_package_ai_normal = 10
+@world_package_ai_high = 20
+@world_package_ai_urgent = 40
+@world_package_route_popularity = 0.15
+@world_package_ai_alignment = 0.35
+@world_package_ai_preferred_factor = 2
+@world_package_ai_aligned_factor = 4
+
+focus_tree = {
+	id = africa_oceania_world_focus_tree
+	country = { factor = 0 modifier = { add = @world_package_tree_weight has_country_flag = africa_world_oceania_package } }
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 24 y = 11 }
+	initial_show_position = { x = 24 y = 0 }
+
+	focus = {
+		id = africa_oceania_convene_ocean_network
+		icon = GFX_goal_012_africa_continent_sponsorship_oceania_ocean_network
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		x = 24 y = 0 cost = @world_package_cost
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_ocean_network }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_oceania_ocean_network_congress_open
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_island_congress_and_sovereignty
+		icon = GFX_goal_012_africa_continental_representation_oceania_island_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convene_ocean_network }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_island_sovereignty }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_island_government_votes_protected
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_oceania_island_representation < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_oceania_convoy_and_shipping_network
+		icon = GFX_goal_012_africa_continent_sponsorship_oceania_convoy_network
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		x = 16 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convene_ocean_network }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_shipping }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_oceania_convoy_reach < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_oceania_air_routes_and_dispersed_industry
+		icon = GFX_goal_012_africa_continent_sponsorship_oceania_air_industry
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		x = 24 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convene_ocean_network }
+		completion_reward = {
+			add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_island_air_relays_open
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_oceania_air_network < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_oceania_island_development_and_evacuation
+		icon = GFX_goal_012_africa_continental_representation_oceania_development_evacuation
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 32 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convene_ocean_network }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_disaster_reserve }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_consent_based_evacuation_network
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_oceania_dispersed_industry < constant:africa_measure.medium } } }
+	}
+
+	focus = {
+		id = africa_oceania_anti_colonial_liberation_and_land_settlement
+		icon = GFX_goal_012_africa_continental_representation_oceania_liberation_land
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 40 y = 1 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convene_ocean_network }
+		completion_reward = {
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_anti_colonial_land_review
+			set_country_flag = africa_oceania_island_refusal_rights
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor check_variable = { africa_oceania_indigenous_settlement < constant:africa_measure.medium } } }
+	}
+
+	# Five constitutional settlements. The deep-sea covenant remains disabled
+	# until its nonhuman, ecological, text, and asset review has been accepted.
+	focus = {
+		id = africa_oceania_maritime_federation
+		icon = GFX_goal_012_africa_continent_union_oceania_maritime_federation
+		x = 8 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_island_congress_and_sovereignty }
+		prerequisite = { focus = africa_oceania_convoy_and_shipping_network }
+		mutually_exclusive = { focus = africa_oceania_treaty_dominion focus = africa_oceania_indigenous_led_ocean_union focus = africa_oceania_socialist_maritime_commonwealth focus = africa_oceania_deep_sea_covenant }
+		completion_reward = {
+			set_country_flag = africa_oceania_maritime_federation_route
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor democratic > @world_package_ai_alignment } }
+	}
+
+	focus = {
+		id = africa_oceania_treaty_dominion
+		icon = GFX_goal_012_africa_continent_union_oceania_treaty_dominion
+		x = 16 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_air_routes_and_dispersed_industry }
+		prerequisite = { focus = africa_oceania_island_development_and_evacuation }
+		mutually_exclusive = { focus = africa_oceania_maritime_federation focus = africa_oceania_indigenous_led_ocean_union focus = africa_oceania_socialist_maritime_commonwealth focus = africa_oceania_deep_sea_covenant }
+		completion_reward = {
+			set_country_flag = africa_oceania_dominion_route
+			add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = neutrality popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_normal modifier = { factor = @world_package_ai_aligned_factor neutrality > @world_package_ai_alignment } }
+	}
+
+	focus = {
+		id = africa_oceania_indigenous_led_ocean_union
+		icon = GFX_goal_012_africa_continent_union_oceania_indigenous_union
+		x = 24 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_island_congress_and_sovereignty }
+		prerequisite = { focus = africa_oceania_anti_colonial_liberation_and_land_settlement }
+		mutually_exclusive = { focus = africa_oceania_maritime_federation focus = africa_oceania_treaty_dominion focus = africa_oceania_socialist_maritime_commonwealth focus = africa_oceania_deep_sea_covenant }
+		completion_reward = {
+			set_country_flag = africa_oceania_indigenous_union_route
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = democratic popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_high modifier = { factor = @world_package_ai_preferred_factor democratic > @world_package_ai_alignment } }
+	}
+
+	focus = {
+		id = africa_oceania_socialist_maritime_commonwealth
+		icon = GFX_goal_012_africa_continent_union_oceania_socialist_commonwealth
+		x = 32 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_convoy_and_shipping_network }
+		prerequisite = { focus = africa_oceania_air_routes_and_dispersed_industry }
+		mutually_exclusive = { focus = africa_oceania_maritime_federation focus = africa_oceania_treaty_dominion focus = africa_oceania_indigenous_led_ocean_union focus = africa_oceania_deep_sea_covenant }
+		completion_reward = {
+			set_country_flag = africa_oceania_socialist_commonwealth_route
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			add_popularity = { ideology = communism popularity = @world_package_route_popularity }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_low modifier = { factor = @world_package_ai_aligned_factor communism > @world_package_ai_alignment } }
+	}
+
+	focus = {
+		id = africa_oceania_deep_sea_covenant
+		icon = GFX_goal_012_africa_continent_union_oceania_deep_sea_covenant
+		x = 40 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_island_development_and_evacuation }
+		prerequisite = { focus = africa_oceania_anti_colonial_liberation_and_land_settlement }
+		mutually_exclusive = { focus = africa_oceania_maritime_federation focus = africa_oceania_treaty_dominion focus = africa_oceania_indigenous_led_ocean_union focus = africa_oceania_socialist_maritime_commonwealth }
+		available = { has_global_flag = africa_oceania_high_chaos_package_reviewed check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		completion_reward = {
+			set_country_flag = africa_oceania_deep_sea_covenant_route
+			set_country_flag = africa_oceania_nonhuman_deep_sea_actors_recognised
+			add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	# Route-specific institutions advance the common-council milestone.
+	focus = {
+		id = africa_oceania_federal_island_chamber
+		icon = GFX_goal_012_africa_continental_representation_oceania_federal_chamber
+		x = 8 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_maritime_federation }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_common_council }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_dominion_island_council
+		icon = GFX_goal_012_africa_continental_representation_oceania_dominion_council
+		x = 16 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_treaty_dominion }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_common_council }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_dominion_island_consent_statute
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_peoples_ocean_congress
+		icon = GFX_goal_012_africa_continental_representation_oceania_peoples_congress
+		x = 24 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_indigenous_led_ocean_union }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_common_council }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_workers_and_ports_congress
+		icon = GFX_goal_012_africa_continental_representation_oceania_workers_ports
+		x = 32 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_socialist_maritime_commonwealth }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_common_council }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_publish_deep_sea_containment_law
+		icon = GFX_goal_012_africa_continental_representation_oceania_deep_sea_law
+		x = 40 y = 3 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_deep_sea_covenant }
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_common_council }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_minor_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+			add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+			add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+			africa_world_clamp_package_mechanic = yes
+			set_country_flag = africa_oceania_nonhuman_deep_sea_terms_published
+		}
+		ai_will_do = { factor = @world_package_ai_low }
+	}
+
+	focus = {
+		id = africa_oceania_ocean_constitution_and_withdrawal_law
+		icon = GFX_goal_012_africa_continental_representation_oceania_constitution_withdrawal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24 y = 4 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_federal_island_chamber focus = africa_oceania_dominion_island_council focus = africa_oceania_peoples_ocean_congress focus = africa_oceania_workers_and_ports_congress focus = africa_oceania_publish_deep_sea_containment_law }
+		prerequisite = { focus = africa_oceania_anti_colonial_liberation_and_land_settlement }
+		completion_reward = { africa_oceania_apply_constitution_and_withdrawal_law = yes }
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+
+	focus = {
+		id = africa_oceania_pacific_defence_and_disaster_reserve
+		icon = GFX_goal_012_africa_continent_sponsorship_oceania_pacific_defence
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AIR_XP FOCUS_FILTER_STABILITY }
+		x = 24 y = 5 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_ocean_constitution_and_withdrawal_law }
+		prerequisite = { focus = africa_oceania_convoy_and_shipping_network }
+		prerequisite = { focus = africa_oceania_air_routes_and_dispersed_industry }
+		prerequisite = { focus = africa_oceania_island_development_and_evacuation }
+		completion_reward = { africa_oceania_apply_pacific_defence_and_disaster_reserve = yes }
+		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
+	}
+
+	focus = {
+		id = africa_oceania_indian_ocean_and_southern_sea_treaty
+		icon = GFX_goal_012_africa_continent_union_oceania_africa_sea_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		x = 24 y = 6 cost = @world_package_cost
+		prerequisite = { focus = africa_oceania_pacific_defence_and_disaster_reserve }
+		completion_reward = { africa_oceania_apply_africa_sea_treaty = yes }
+		ai_will_do = { factor = @world_package_ai_high }
+	}
+
+	focus = {
+		id = africa_oceania_ratify_ocean_network
+		icon = GFX_goal_012_africa_continent_union_oceania_ratification
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24 y = 7 cost = @world_package_final_cost
+		prerequisite = { focus = africa_oceania_indian_ocean_and_southern_sea_treaty }
+		available = {
+			has_country_flag = africa_world_package_withdrawal_law_ratified
+			has_country_flag = africa_oceania_pacific_defence_settled
+			has_country_flag = africa_oceania_africa_sea_treaty_ready
+			africa_oceania_ocean_network_is_connected = yes
+		}
+		completion_reward = {
+			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_settlement }
+			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
+			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
+			africa_world_apply_package_focus_progress = yes
+			set_country_flag = africa_world_package_constitution_ratified
+			africa_world_finalize_distinct_package_identity = yes
+		}
+		ai_will_do = { factor = @world_package_ai_urgent }
+	}
+}
