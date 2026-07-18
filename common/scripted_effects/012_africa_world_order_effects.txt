@@ -43,6 +43,10 @@ africa_world_register_current_candidate = {
 			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.asia } }
 			set_country_flag = africa_world_package_implementation_ready
 		}
+		else_if = {
+			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.north_america } }
+			set_country_flag = africa_world_package_implementation_ready
+		}
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_world_package_candidates value = PREV } } }
@@ -705,6 +709,167 @@ africa_world_apply_package_focus_progress = {
 	clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 	clamp_variable = { var = africa_world_package_capacity min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 	clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+}
+
+# COUNTRY scope on the installed North American package actor. These four
+# effects keep the converged lanes constitution-specific instead of applying a
+# single generic settlement after the route choice.
+africa_north_america_apply_resources_and_withdrawal_law = {
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_gain }
+		set_country_flag = africa_north_america_republican_equalisation_law
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_commonwealth_transfer_compacts
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+		set_country_flag = africa_north_america_command_appropriation_review
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_social_resource_congress
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_storm_compact_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_storm_resource_limits
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_apply_two_ocean_defence_law = {
+	add_command_power = constant:africa_world_package_reward.command_power
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_package_reward.infantry_equipment }
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_republican_regional_commands
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+		set_country_flag = africa_north_america_commonwealth_defence_boards
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_major_gain }
+		subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:africa_world_package_reward.support_equipment }
+		set_country_flag = africa_north_america_command_emergency_review_due
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_workers_defence_councils
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_storm_compact_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		add_fuel = constant:africa_world_package_reward.fuel
+		set_country_flag = africa_north_america_storm_containment_commands
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_apply_islands_settlement = {
+	set_country_flag = africa_north_america_islands_settlement_ratified
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_island_republic_votes
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_island_commonwealth_compacts
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_island_basing_consent_required
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_island_workers_councils
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_storm_compact_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_island_ecological_refusal
+	}
+	africa_world_clamp_package_mechanic = yes
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+}
+
+africa_north_america_apply_africa_diaspora_treaty = {
+	set_country_flag = africa_north_america_africa_diaspora_treaty_ready
+	set_country_flag = africa_north_america_voluntary_return_only
+	set_country_flag = africa_north_america_return_requires_local_acceptance
+	set_country_flag = africa_north_america_skills_and_investment_compact
+	add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_major_gain }
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_dual_citizenship_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_commonwealth_skills_investment_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_civilian_diaspora_compact
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_labour_citizenship_treaty
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_storm_compact_route }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_north_america_disaster_shelter_consent_law
+	}
+	africa_world_clamp_package_mechanic = yes
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			set_country_flag = africa_north_america_diaspora_treaty_partner
+			set_country_flag = africa_north_america_return_requires_local_acceptance
+		}
+	}
 }
 
 # COUNTRY scope on any installed package actor.
