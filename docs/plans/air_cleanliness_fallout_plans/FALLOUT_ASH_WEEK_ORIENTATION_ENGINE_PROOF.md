@@ -119,24 +119,23 @@ The pilot remains outside the 660-event release floor. It has no caller, event-l
 
 The required `hoi4.event_inspect` lint was invoked with a manifest limited to events `chaosx.fallout.62` through `chaosx.fallout.65`. The selector was accepted, but the inspector returned `EVENT_HELPER_PROJECTION_LIMIT` because the repository event graph exceeded its fixed projection ceiling of 200000 helpers. A second attempt with helper expansion disabled returned the same blocker. No lint pass is claimed.
 
-Repository-local checks confirmed balanced script blocks, unique event identities for `62` through `65`, a UTF-8 BOM on the new English localisation, no orientation caller, no scheduler activation setter, and no setter for any blocked approval surface. These checks do not replace runtime proof or the blocked event inspector.
+Repository-local checks confirmed balanced script blocks, unique event identities for `62` through `65`, a UTF-8 BOM on the new English localisation, no orientation caller, no scheduler activation setter, and no setter for the approval surfaces that were blocked during the pilot review. The later accepted live-ledger tranche now owns only the exact state-result approval. These checks do not replace runtime proof or the blocked event inspector.
 
-## Post-pilot live-ledger review
+## Accepted post-pilot live-ledger implementation
 
-`FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` records a proposed opening Cohesion formula, persistent State Supply Access, a native local-supply translation, and direct Air Winter state ownership. These choices are not accepted implementation facts until the user approves them.
+The user approved `FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` on 2026-07-18. The accepted implementation promotes survival ledger schema 3 with opening Cohesion, persistent State Supply Access, a native local-supply translation, and direct Air Winter state ownership. The exact formulas and ownership proof are recorded in `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`.
 
-The accepted survival calculation already derives a temporary 0 through 100 Logistics signal from post-rewrite non-damaged infrastructure. It does not persist that signal. `fallout_orientation_state_supply` remains confined to the orientation helper file and has no native supply consumer. The existing `air_winter_local_supply_factor` is a phase-derived penalty input, not a 0 through 100 supply ledger.
+Opening Cohesion uses 35 Food, 35 Shelter capacity, and 30 already-adjusted Recognition. Opening State Supply Access persists the accepted surviving-infrastructure formula. Its mutable current value drives a dedicated state `local_supply_impact_factor` from minus 0.50 at zero access to 0 at full access. The retired `fallout_orientation_cohesion` and `fallout_orientation_state_*` shadows are cleared and are no longer result stores.
 
-The live Air Winter state values for Exposure, Recovery, Adaptation, Food Reserve, Shelter Capacity, Reclamation, and Water Security are proven. `air_winter_recovery_bonus` is a documented repository integration input to the state recovery calculation. Orientation ownership of that bonus still requires the proposed numerical contract.
+Authenticated orientation results write live Exposure, Shelter capacity, Adaptation, Reclamation, and Supply Access values on the assigned capital. Recovery writes the same delta to `air_winter_recovery_bonus` and current `air_winter_recovery`. The schema-3 country replay is the sole setter of `fallout_orientation_state_result_surface_status`, and an uncommitted reset clears it.
 
 The independent architecture evidence is recorded in `subagent_handoffs/fallout_orientation_live_ledger_architecture_2026-07-18.md`. Its read-only event inspection returned partial artifacts and the same fixed 200000-edge projection ceiling. No event lint pass is claimed.
 
 ## Unresolved blockers
 
 - The exact one-level infrastructure repair surface is not proven.
-- The durable opening value for Cohesion has not been accepted. The queued numerical contract proposes a formula, but gameplay must remain blocked until the user approves it.
 - The nine regional orientation rows, twelve archetype rows, and manually reviewed country-memory overlays are not implemented. Their typed approval gates remain unset.
-- Components two through five remain blocked by `fallout_orientation_state_result_surface_status`. Their current shadow state variables are not accepted substitutes for live Air Winter and post-transition Supply Access values. The queued numerical contract is not yet authority to replace them.
+- The government-archetype effect rows are not implemented. Their approval gate remains unset.
 - No curated character or institution registry exists. The fifth component must fail closed and may not invent candidates.
 - Successor materialization and live tag-conflict allocation are not proven, so no orientation caller may be wired.
 - The stale-generation reconcile helper has no authorized recurring caller. No daily or monthly world-country iterator was added.
