@@ -4,7 +4,7 @@ Package scope: generated source masters, processed transparent PNGs, final DDS m
 
 Counts: 11 technologies, 14 equipment cards/archetypes, 2 decision categories, 19 decisions, and 5 state dynamic-modifier icons - 51 complete assets.
 
-All sources are `imagegen` masters using the prompt key recorded below and expanded in [stage_2_prompts.md](prompts/stage_2_prompts.md). Sources use a uniform neon-green chroma key only as a processing field. Processed PNGs use real alpha. Final DDS files were produced with `.tools/convert_to_dds.py` using the verified uncompressed 32-bit BGRA convention, exact dimensions, and no mip chain.
+All sources are `imagegen` masters using the prompt key recorded below and expanded in [stage_2_prompts.md](prompts/stage_2_prompts.md). Sources use a uniform neon-green chroma key only as a processing field. Processed PNGs use real alpha. Final DDS files were produced with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` using the verified uncompressed 32-bit BGRA convention, exact dimensions, and no mip chain.
 
 Verified contracts used here:
 

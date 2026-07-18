@@ -13,10 +13,10 @@ This package replaces the exact category, decision, mission, idea, and state-spi
 - Prompt and generation-output evidence: `prompts/registered_static_icons_prompts.md`.
 - Provenance repair: `idea_cannibalism_closed_muster_rolls`, `idea_cannibalism_archipelago_hunt`, `idea_cannibalism_city_that_eats`, and `idea_cannibalism_moving_front` have independent spirit-specific source compositions, exact prompts, and built-in output hints recorded on 2026-07-15. The other 26 registered sources remain unchanged.
 - Source/license record: generated fictional art; no external source URL, archive, real victim, real atrocity image, or third-party license claim. Use remains governed by the applicable OpenAI service terms and project rules.
-- Reference inspection: the pass inspected the canonical skill-local idea references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/`, the matching gameplay-icon contact sheet and catalog entries, the original vanilla DDS precedents, the existing Event 014 spirit package, and the approved `.tools/convert_to_dds.py` workflow.
+- Reference inspection: the pass inspected the canonical skill-local idea references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/`, the matching gameplay-icon contact sheet and catalog entries, the original vanilla DDS precedents, the existing Event 014 spirit package, and the approved `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` workflow.
 - Visual direction: invented 1936-1945 military evidence, logistics, field medicine, transport, bureaucracy, and fortifications; explicit fictional gore; no real sacred, national, religious, Indigenous, or borrowed cultural motif.
 - Transparent processing: official imagegen `remove_chroma_key.py`, then centered resize, dark outline, subtle shadow, and exact zero-alpha corners.
-- DDS processing: `.tools/convert_to_dds.py`, one-mip uncompressed 32-bit BGRA/B8G8R8A8-style DDS.
+- DDS processing: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, one-mip uncompressed 32-bit BGRA/B8G8R8A8-style DDS.
 - Validation: `validation/registered_static_icons_validation.tsv`.
 - Reproducible processor: `process_registered_static_icons.py`.
 - Contact sheets:

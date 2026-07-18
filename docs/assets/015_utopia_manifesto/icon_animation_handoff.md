@@ -2,7 +2,75 @@
 
 Runtime sprite registry: `interface/015_utopia_manifesto.gfx`
 
-## Current Exact Package (2026-07-14)
+Snapshot: `2026-07-16`
+
+Status: **PASS - the current icon, static Ledger, animation, GUI, and binding slice is complete.**
+
+Machine animation, registry, GUI, and state-binding authority: `final_icon_frame_audit.json`, SHA-256 `c85df258c4aaaf37e905fdc14883cda6b0f8a1f41840df745a3136c830a66d01`. Its frozen decision-mapping subsection is historical. Current mapping authority is `decision_icon_mapping.csv`, SHA-256 `757ec0c51edca25b5453899f28816a3d34e8a5b330be268bed6ff4d27e0abcc0`.
+
+## Current exact package
+
+- Focuses: `124` assignments, `74` unique base sprites, matching shine registrations, `111` physical DDS files.
+- Decisions/categories/missions: `174` mapping rows (`9` categories, `121` decisions, `44` missions), with `165` live gameplay icon assignments.
+- Ideas: `50` entries, `12` unique live pictures.
+- Achievements: `14` exact current IDs and `42` current base/grey/not-eligible variants.
+- Registry: `459` base definitions plus `5` route-super-event definitions = `464`, duplicate names `0`.
+- Ledger GUI: `46` unique sprite references, unresolved references `0`.
+- Repaired static Ledger families: Values `4`, Callings `6`, Case cards `10`, District roles `7`, District states `6`; all runtime hashes are unique within each family.
+
+District role cards and state overlays are deliberately in `utopia_ledger_stores_panel`, the **Stores/Settlements tab**. Case cards are in `utopia_ledger_ground_panel`, the Necessary Ground tab.
+
+## Authored-frame package matrix
+
+| Package | Role | Frames | Frame/sheet | FPS | Loop | Static frame | Binding |
+| --- | --- | ---: | --- | ---: | --- | ---: | --- |
+| `utopia_ledger_seal` | required Ledger seal | `8` | `64x64` / `512x64` | `12` | yes | `000` | generic header until a route emblem exists |
+| `utopia_need_warning` | required critical warning | `8` | `64x64` / `512x64` | `5` | yes | `004` | high Need, low Plenty, or constitutional crisis |
+| `utopia_reserve_fill` | extra reserve presentation | `8` | `300x24` / `2400x24` | `4` | yes | `004` | reserve-band variable exists |
+| `utopia_balance_to_choice` | required balance direction | `8` | `158x24` / `1264x24` | `5` | no | `007` | route-resolved band crossing toward Choice |
+| `utopia_balance_to_assignment` | required balance direction | `8` | `158x24` / `1264x24` | `5` | no | `007` | route-resolved band crossing toward Assignment |
+| `utopia_formation_ready_seal` | required formation proof | `10` | `96x96` / `960x96` | `5` | yes | `005` | current route can form and is not formed |
+
+The five standardized packages (Need, reserve, Choice, Assignment, formation) pass exact source-count, source-distinctness, processed-count, processed-distinctness, frame-size, horizontal-concatenation, static-frame, strict one-level BGRA DDS, PNG/DDS pixel-equality, GFX metadata, GIF-frame-count, contact-sheet, GUI-reference, and state-binding checks. Reserve is explicitly extra and is not used to substitute for an accepted row.
+
+Choice and Assignment each use eight separate built-in ImageGen objects. Their manifest hashes are `639d2e6e75f082b5a139b7e26222b061a41906005ac139f0685c3931cab74e4f` and `6fbc91cc8fe69d35c7d778c090ff29fd61fa59ca14b4f972a2e7a9cd13c072ce`. Their final frames show opposite authored structural changes rather than transform-only movement.
+
+## Independently frozen legacy Ledger seal
+
+The Ledger seal uses an older folder layout, so it is intentionally outside the standardized JSON animation map and was audited separately.
+
+- Generated source sheet: `1536x1024`, SHA-256 `e09067700aebd0d627e83f211890f497844f95b370503610f931b07db06deb2d`.
+- Source slices: eight unique `443x443` PNGs.
+- Processed frames: eight unique `64x64` PNGs.
+- Exact sheet PNG: `512x64`, SHA-256 `9404dc2e8af552c24c6a6bbec35e736573e017b6f04c57e5e6dacc3a62d789a1`.
+- Static PNG equals frame `000`, SHA-256 `9ead13f7beef549b87fc077527019686f1b0e3018daab61f8acd5499c3eeb4d9`.
+- Runtime sheet DDS: strict uncompressed BGRA, `131200` bytes, SHA-256 `17a5c98dcdc3cf9ba5317ecfb61ba9811e77152b603929675d6ab4c027114bd4`, pixel-identical to sheet PNG.
+- Runtime static DDS: strict uncompressed BGRA, `16512` bytes, SHA-256 `9a423fcf63ac58fa63fa24b4c77b29fc6636b97a0f282dcb0a21254622ddef2c`, pixel-identical to static PNG.
+- Review GIF: eight frames, looping, `120 ms` per review frame, SHA-256 `f73bad0e1cbec016d2fe43063e75490553692446ce030aead805e5702485d37b`.
+- Contact sheet: `320x156`, SHA-256 `6780acdccb83eb308dcd3b6e03cffcdc3bb1ccc0aca1c4e065747e6db22f901d`.
+- Runtime GFX: `8` frames, `12 fps`, looping, `play_on_show = yes`; live GUI consumer at `(18,16)` with exact route-emblem replacement visibility.
+
+The GIF is review-only. Its `120 ms` preview cadence is recorded exactly and does not override the runtime's independently defined `12 fps` playback.
+
+## Repaired static package proof
+
+- Values/Callings: frozen built-in ImageGen atlas SHA-256 `7a1704f1c6d720ff72b9cdc3715101361bb8b836033607d0ff244dbb31c7d440`; validator SHA-256 `aa9a249348fb5bd864bb8ffc2a46ba6a67fc595cb58a08261cf32e8e5e61e007`; decoded review contact SHA-256 `b461f61933ff53b43480ed8233a103ed6f20564f4525eb40666fe59d9de5a8bf`.
+- Case cards: ten independent ImageGen masters; validator SHA-256 `924f2fc5a164ce6756ff453922a3e75cea6b8c79639b5254cec59072e746e1c4`; decoded review contact SHA-256 `e8a4583f6d35e7fd4a6dc2345bac0356ee7adcfc20625102f9c1df7790d70a2f`.
+- District cards: thirteen independent ImageGen masters; validator SHA-256 `cc20a3bf3d48aa2f873af421a5c07ccce8943ee19edbaf785c040200b25eae84`; role review contact SHA-256 `31b6c48fbd3436b40cbc04ac42fc1993a5d11a5d345ef5507e4d04bd7ad9ec96`; state review contact SHA-256 `0365e42264fdbe30e4b075b9ebddf8c85c897f081a41951063e0a9a0835a9807`.
+
+Every repaired runtime DDS has the expected size/header, matches its packaged file, decodes to the processed pixels, and resolves through one GFX definition and one intended GUI consumer. The original Value/Calling generation prompt is not present in the repository; the preserved generated atlas and prior provenance are reported honestly instead of inventing a prompt.
+
+## Visual review and limits
+
+Original-resolution contact sheets show distinct, legible Values/Callings, ten semantically distinct Case states, seven people-free role cards, six distinct state overlays, a cracking Need measure, opposite balance structures, a progressive formation seal, a real Ledger-seal glow cycle, and the extra reserve sequence. No required animation is a transform-only still.
+
+This was a static package, image, DDS, GFX, GUI, and script-binding audit. GIF metadata and contact sheets were reviewed; HOI4 runtime playback was not launched. That is a tool limit, not a missing asset or fallback.
+
+Simplifications: none. Omissions: none. Fallbacks: none. Open blockers: none.
+
+## Historical exact package snapshot (2026-07-14, superseded)
+
+The older notes below are retained only as package history. Their counts and missing-parent language are superseded by the current authority above.
 
 - Focus use: `122` assignments, `72` unique base sprites, `72` matching `_shine` sprites, all current textures `94x86`. The folder retains `109` family DDS files in total.
 - Decisions/categories/missions: `decision_icon_mapping.csv` contains `139` exact rows (`9` categories, `98` decisions, `32` missions). Every mapped sprite has a registered `32x32` DDS. The parent implementation agent still needs to add the gameplay `icon =` assignments.

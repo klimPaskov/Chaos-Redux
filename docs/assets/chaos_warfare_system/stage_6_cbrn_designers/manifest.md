@@ -114,7 +114,7 @@ The package follows the observed compact HOI4 idea treatment: centered single su
 - Source preservation: each original imagegen PNG was copied unchanged into `source_png/`.
 - Transparency: official `remove_chroma_key.py` with `--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill`.
 - Final PNG processing: FFmpeg Lanczos resize to exact 64x64 RGBA PNG.
-- DDS conversion: `.tools/convert_to_dds.py --width 64 --height 64`, producing legacy uncompressed BGRA.
+- DDS conversion: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 64 --height 64`, producing legacy uncompressed BGRA.
 - Runtime copy: each archive DDS was copied byte-for-byte to its exact runtime path.
 - Contact sheet: `contact_sheets/stage_6_cbrn_designers_checkerboard.png`, with each final 64x64 PNG shown at 4x nearest-neighbor on a checkerboard.
 - Validation record: `notes/validation.md`.

@@ -1,20 +1,24 @@
 # Achievement Matrix
 
-All titles are working labels, not final localisation. IDs are proposed stable keys.
+The IDs and titles below are the final implemented achievement keys and English localisation.
 
-| ID | Working label | Eligibility | Unlock conditions | Disqualifiers | Visibility | Difficulty | Icon direction |
+| ID | Final title | Eligibility | Unlock conditions | Disqualifiers | Visibility | Difficulty | Icon direction |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `utopia_manifesto_no_place_but_home` | No Place but Home | accepted human player | form the voluntary commonwealth, complete island or capital-ring project, win no offensive war | issued coercive ultimatum, formed Assigned Colony | visible | hard | open island and linked homes |
 | `utopia_manifesto_need_not_greed` | Need, Not Greed | any player route | resolve three distinct Need cases through purchase, lease, joint rule, or domestic substitution, renounce one obsolete case | annexed unrelated territory through a case | visible | hard | balanced scale with land and full store |
 | `utopia_manifesto_every_calling_chosen` | Every Calling Chosen | Consent or hidden humanist | maintain no severe calling shortage, high Choice, high Concord, and stable Plenty for a long period | used assignment quota beyond emergency limit | visible | hard | six tools around an open hand |
-| `utopia_manifesto_two_year_table` | Two Years at the Table | any route | complete and maintain the two-year reserve objective through a major war or blockade period | reserve objective reset by manual exploit | visible | hard | full store and long calendar ring |
-| `utopia_manifesto_archipelago_of_small_places` | Archipelago of Small Places | any non-Closed-Island founder | lead a league of at least five independent or autonomous members, complete shared reserve and defense goals | annexed a league member, became subject of a major | visible | very hard | five small islands linked by lines |
+| `utopia_manifesto_two_year_table` | The Two-Year Table | any route | complete and maintain the two-year reserve objective through a major war or blockade period | reserve objective reset by manual exploit | visible | hard | full store and long calendar ring |
+| `utopia_manifesto_archipelago_of_small_places` | An Archipelago of Small Places | any non-Closed-Island founder | lead a league of at least five independent or autonomous members, complete shared reserve and defense goals | annexed a league member, became subject of a major | visible | very hard | five small islands linked by lines |
 | `utopia_manifesto_inland_island` | The Inland Island | landlocked recipient at acceptance | complete Inland Island, form route identity, maintain capital supply through a major war | acquired coastline before variant selection, project invalidated | hidden | very hard | fortified garden ring around rail hub |
 | `utopia_manifesto_gold_for_common_use` | Gold for Common Use | any route | complete the anti-luxury or common-use policy, finance emergency imports, then reach surplus Plenty | severe household shortage at unlock | visible | medium-hard | broken gold ornament beside grain and tools |
 | `utopia_manifesto_the_joke_understood` | The Joke Understood | hidden humanist route | reveal hidden route, form practical commonwealth, preserve open debate, complete one peaceful case and one district network | penal labor, Assigned Colony, censored debate | hidden | very hard | open book reflected in a mirror |
 | `utopia_manifesto_consent_of_the_governed` | Consent of the Governed | Consent or hidden humanist | integrate or federate three external areas through charter and status vote, with no failed coercive administration | imposed Assigned Colony, repeated a vote | visible | very hard | three charter seals around a house |
 | `utopia_manifesto_the_perfect_measure` | The Perfect Measure | Guardians route | complete five functioning district roles, reach high Plenty, maintain stable Concord, and form planned Utopia | active data scandal, district revolt at unlock | visible | very hard | compass over a living city grid |
 | `utopia_manifesto_closed_circle` | The Closed Circle | Closed Island | at World Collapse chaos, complete Perfect Island, survive a major war, maintain highest reserve band and high Assignment | regime collapsed or island project reopened before unlock | hidden | extreme | sealed fortress ring and stocked gate |
-| `utopia_manifesto_no_foreign_hands` | No Foreign Hands in Our Wars | any route | defeat a stronger attacking major or faction while Event 15 is active, without hiring auxiliaries | any auxiliary contract | visible | extreme | citizen watch holding a gate |
+| `utopia_manifesto_no_foreign_hands` | No Foreign Hands | any route | defeat a stronger attacking major or faction while Event 15 is active, without hiring auxiliaries | any auxiliary contract | visible | extreme | citizen watch holding a gate |
 | `utopia_manifesto_the_stores_remain` | The Stores Remain | any route | enter constitutional crisis, recover to stable Plenty and Concord, complete final identity without abandoning all public provision | crisis resolved through total repeal | hidden | hard | damaged store rebuilt under an open roof |
 | `utopia_manifesto_no_one_in_chains` | No One in Chains | Common Table, Consent, or hidden humanist | form final identity with no penal labor, no Assigned Colony, no forced relocation, and at least one autonomous associate | any coercive labor or colony flag | visible | very hard | open chain beside a common table |
+
+## Current implementation proof
+
+All 14 stable IDs in this matrix are defined in `common/achievements/chaos_redux_achievements.txt`. Event 15 effects and on-actions record their positive evidence and durable disqualifiers. The final icon audit confirms 14 achievements with 42 registered active, complete, and failed variants. No proposed achievement remains unwired.

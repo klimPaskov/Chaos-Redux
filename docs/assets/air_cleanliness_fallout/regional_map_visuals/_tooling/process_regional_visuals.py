@@ -29,7 +29,7 @@ PREVIEW_ROOT = PACKAGE_ROOT / "previews"
 MODEL_ROOT = REPO_ROOT / "gfx/models/air_cleanliness_winter/regional"
 PARTICLE_ROOT = REPO_ROOT / "gfx/particles/air_cleanliness_winter"
 GRADE_ROOT = REPO_ROOT / "gfx/interface/air_cleanliness_winter/regional_grades"
-CONVERTER = REPO_ROOT / ".tools/convert_to_dds.py"
+CONVERTER = REPO_ROOT / ".agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py"
 
 
 REGIONS = [

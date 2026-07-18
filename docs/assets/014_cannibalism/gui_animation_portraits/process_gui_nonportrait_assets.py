@@ -136,7 +136,7 @@ STATIC_GUIDES: dict[str, list[tuple[int, int, int, int]]] = {
 
 
 def load_dds_writer():
-    path = ROOT / ".tools" / "convert_to_dds.py"
+    path = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
     spec = importlib.util.spec_from_file_location("chaos_dds", path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Could not load DDS writer: {path}")

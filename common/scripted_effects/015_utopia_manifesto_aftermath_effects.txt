@@ -1,0 +1,288 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015: CONSTITUTIONAL REPEAL AND AFTERMATH
+# ============================================================================
+# Owns the terminal choice chain after a deliberate repeal or regime collapse.
+# Live stewardship and Assigned Colony scopes resolve before Event 015 runtime
+# is cleared. Practical legacies are reapplied only after identity teardown, and
+# a viable external league can transfer leadership instead of being dismantled.
+# ============================================================================
+
+utopia_manifesto_begin_total_repeal_aftermath = {
+	clr_country_flag = utopia_manifesto_total_repeal_active
+	clear_variable = utopia_manifesto_total_repeal_days
+	set_country_flag = utopia_manifesto_aftermath_from_total_repeal
+	country_event = { id = chaosx.nr15.120 }
+}
+
+utopia_manifesto_begin_regime_collapse_aftermath = {
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_identity_formed
+			NOT = { has_country_flag = utopia_manifesto_kernel_disabled }
+			NOT = { has_country_flag = utopia_manifesto_commonwealth_dissolved }
+			NOT = { has_country_flag = utopia_manifesto_aftermath_event_scheduled }
+			NOT = { has_country_flag = utopia_manifesto_aftermath_chain_pending }
+			NOT = { has_country_flag = utopia_manifesto_aftermath_resolved }
+			NOT = { has_country_flag = utopia_manifesto_aftermath_from_total_repeal }
+			NOT = { has_country_flag = utopia_manifesto_aftermath_from_regime_collapse }
+			NOT = { has_country_flag = utopia_manifesto_total_repeal_active }
+		}
+		set_country_flag = utopia_manifesto_aftermath_event_scheduled
+		set_country_flag = utopia_manifesto_aftermath_from_regime_collapse
+		utopia_manifesto_record_achievement_regime_collapse = yes
+		country_event = { id = chaosx.nr15.120 }
+	}
+}
+
+utopia_manifesto_cancel_total_repeal = {
+	clr_country_flag = utopia_manifesto_total_repeal_active
+	clear_variable = utopia_manifesto_total_repeal_days
+	set_country_flag = utopia_manifesto_total_repeal_interrupted
+	if = {
+		limit = { utopia_manifesto_has_ledger = yes }
+		set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_decision_change.ledger_nudge }
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_decision_change.ledger_nudge_loss }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_decision_change.ledger_step_loss }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_decision_change.ledger_nudge }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+}
+
+utopia_manifesto_enter_annexation_safe_state = {
+	clr_country_flag = utopia_manifesto_aftermath_event_scheduled
+	clr_country_flag = utopia_manifesto_aftermath_from_total_repeal
+	clr_country_flag = utopia_manifesto_aftermath_from_regime_collapse
+	clr_country_flag = utopia_manifesto_aftermath_chain_pending
+	clr_country_flag = utopia_manifesto_aftermath_colonies_pending
+	clr_country_flag = utopia_manifesto_aftermath_practical_pending
+	clr_country_flag = utopia_manifesto_aftermath_book_pending
+	clr_country_flag = utopia_manifesto_aftermath_store_available
+	clr_country_flag = utopia_manifesto_aftermath_district_available
+	clr_country_flag = utopia_manifesto_aftermath_colonies_available
+	clr_country_flag = utopia_manifesto_aftermath_book_available
+	clr_country_flag = utopia_manifesto_aftermath_store_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_district_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_practical_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_debate_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_history_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_banned_selected
+	clr_country_flag = utopia_manifesto_aftermath_restitution_refused
+	set_country_flag = utopia_manifesto_commonwealth_dissolved
+	set_country_flag = utopia_manifesto_aftermath_resolved
+	utopia_manifesto_enter_disable_safe_state = yes
+}
+
+utopia_manifesto_prepare_aftermath_snapshot = {
+	clr_country_flag = utopia_manifesto_aftermath_chain_pending
+	clr_country_flag = utopia_manifesto_aftermath_colonies_pending
+	clr_country_flag = utopia_manifesto_aftermath_practical_pending
+	clr_country_flag = utopia_manifesto_aftermath_book_pending
+	clr_country_flag = utopia_manifesto_aftermath_store_available
+	clr_country_flag = utopia_manifesto_aftermath_district_available
+	clr_country_flag = utopia_manifesto_aftermath_colonies_available
+	clr_country_flag = utopia_manifesto_aftermath_book_available
+	clr_country_flag = utopia_manifesto_aftermath_store_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_district_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_practical_legacy_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_debate_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_history_selected
+	clr_country_flag = utopia_manifesto_aftermath_book_banned_selected
+	clr_country_flag = utopia_manifesto_aftermath_restitution_refused
+
+	if = {
+		limit = { utopia_manifesto_has_store_aftermath = yes }
+		set_country_flag = utopia_manifesto_aftermath_store_available
+		set_country_flag = utopia_manifesto_aftermath_practical_pending
+	}
+	if = {
+		limit = { utopia_manifesto_has_district_aftermath = yes }
+		set_country_flag = utopia_manifesto_aftermath_district_available
+		set_country_flag = utopia_manifesto_aftermath_practical_pending
+	}
+	if = {
+		limit = { utopia_manifesto_has_colonial_aftermath = yes }
+		set_country_flag = utopia_manifesto_aftermath_colonies_available
+		set_country_flag = utopia_manifesto_aftermath_colonies_pending
+	}
+	if = {
+		limit = { utopia_manifesto_has_book_aftermath = yes }
+		set_country_flag = utopia_manifesto_aftermath_book_available
+		set_country_flag = utopia_manifesto_aftermath_book_pending
+	}
+	set_country_flag = utopia_manifesto_aftermath_chain_pending
+}
+
+utopia_manifesto_preserve_league_after_founder = {
+	if = {
+		limit = { utopia_manifesto_has_viable_post_founder_league_successor = yes }
+		random_scope_in_array = {
+			array = utopia_manifesto_league_members
+			limit = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				is_subject = no
+				has_capitulated = no
+				has_civil_war = no
+				OR = {
+					ROOT = { NOT = { has_country_flag = utopia_manifesto_league_formal_defense } }
+					is_in_faction_with = ROOT
+				}
+			}
+			save_event_target_as = utopia_manifesto_post_founder_league_successor
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_post_founder_league_successor }
+			for_each_scope_loop = {
+				array = utopia_manifesto_league_members
+				if = {
+					limit = { exists = yes }
+					set_country_flag = utopia_manifesto_post_founder_league_member
+					add_opinion_modifier = {
+						target = event_target:utopia_manifesto_post_founder_league_successor
+						modifier = utopia_manifesto_opinion_partnership
+					}
+				}
+			}
+			event_target:utopia_manifesto_post_founder_league_successor = {
+				set_country_flag = utopia_manifesto_post_founder_league_successor
+			}
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_league_formal_defense
+					is_faction_leader = yes
+					event_target:utopia_manifesto_post_founder_league_successor = { is_in_faction_with = ROOT }
+				}
+				event_target:utopia_manifesto_post_founder_league_successor = { set_faction_leader = yes }
+				leave_faction = yes
+				set_country_flag = utopia_manifesto_post_founder_defense_league_survives
+			}
+			set_country_flag = utopia_manifesto_league_survives_founder
+			set_country_flag = utopia_manifesto_league_survival_prepared
+		}
+	}
+	# Prevent the ordinary runtime cleanup from dismantling a defense league whose
+	# leadership was transferred. Non-faction compacts retain only their durable
+	# post-founder member records.
+	clr_country_flag = utopia_manifesto_league_formal_defense
+}
+
+utopia_manifesto_release_aftermath_colonies = {
+	if = {
+		limit = { has_country_flag = utopia_manifesto_assigned_colony_active }
+		utopia_manifesto_end_assigned_revolt_administration = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_stewardship_active }
+		utopia_manifesto_return_stewardship = yes
+	}
+	utopia_manifesto_clear_stewardship_revolt_runtime = yes
+	utopia_manifesto_clear_stewardship_runtime = yes
+	utopia_manifesto_clear_active_need_case = yes
+	utopia_manifesto_clear_stewardship_idea_stages = yes
+}
+
+utopia_manifesto_resolve_aftermath_colonies_as_independence = {
+	set_country_flag = utopia_manifesto_former_colonies_independent
+	utopia_manifesto_release_aftermath_colonies = yes
+}
+
+utopia_manifesto_resolve_aftermath_colonies_as_compact = {
+	for_each_scope_loop = {
+		array = utopia_manifesto_stewardship_revolt_targets
+		set_country_flag = utopia_manifesto_post_commonwealth_reconstruction_partner
+		add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_partnership }
+	}
+	for_each_scope_loop = {
+		array = utopia_manifesto_active_case_targets
+		set_country_flag = utopia_manifesto_post_commonwealth_reconstruction_partner
+		add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_partnership }
+	}
+	set_country_flag = utopia_manifesto_former_colonies_reconstruction_compact
+	utopia_manifesto_release_aftermath_colonies = yes
+}
+
+utopia_manifesto_resolve_aftermath_colonies_without_restitution = {
+	set_country_flag = utopia_manifesto_aftermath_restitution_refused
+	utopia_manifesto_release_aftermath_colonies = yes
+}
+
+utopia_manifesto_continue_aftermath_chain = {
+	if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_colonies_pending }
+		clr_country_flag = utopia_manifesto_aftermath_colonies_pending
+		country_event = { id = chaosx.nr15.122 }
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_practical_pending }
+		clr_country_flag = utopia_manifesto_aftermath_practical_pending
+		country_event = { id = chaosx.nr15.121 }
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_book_pending }
+		clr_country_flag = utopia_manifesto_aftermath_book_pending
+		country_event = { id = chaosx.nr15.123 }
+	}
+	else = { utopia_manifesto_finalize_aftermath = yes }
+}
+
+utopia_manifesto_finalize_aftermath = {
+	set_temp_variable = { utopia_manifesto_aftermath_total_repeal_snapshot = constant:utopia_manifesto_math.zero }
+	if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_from_total_repeal }
+		set_temp_variable = { utopia_manifesto_aftermath_total_repeal_snapshot = constant:utopia_manifesto_math.one }
+	}
+	if = { limit = { has_active_mission = mission_utopia_repeal_the_founding_charter } remove_mission = mission_utopia_repeal_the_founding_charter }
+	utopia_manifesto_enter_disable_safe_state = yes
+	set_country_flag = utopia_manifesto_commonwealth_dissolved
+	set_country_flag = utopia_manifesto_aftermath_resolved
+
+	if = {
+		limit = { check_variable = { utopia_manifesto_aftermath_total_repeal_snapshot = constant:utopia_manifesto_math.one } }
+		clr_country_flag = utopia_manifesto_achievement_disqualifier_regime_collapsed
+		set_country_flag = utopia_manifesto_total_repeal_enacted
+		utopia_manifesto_record_achievement_total_repeal = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_store_legacy_selected }
+		utopia_manifesto_rotate_common_store_network = yes
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_district_legacy_selected }
+		utopia_manifesto_link_garden_district_network = yes
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_practical_legacy_selected }
+		add_ideas = utopia_manifesto_practical_commonwealth_mitigated
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_book_debate_selected }
+		clr_country_flag = utopia_manifesto_conduct_censorship
+		clr_country_flag = utopia_manifesto_conduct_book_dogma
+		utopia_manifesto_publish_public_edition = yes
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_book_banned_selected }
+		set_country_flag = utopia_manifesto_conduct_censorship
+		utopia_manifesto_dogmatize_found_manifesto = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_aftermath_restitution_refused }
+		set_country_flag = utopia_manifesto_conduct_former_colony_restitution_refused
+		set_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim
+	}
+
+	clr_country_flag = utopia_manifesto_aftermath_chain_pending
+	clr_country_flag = utopia_manifesto_aftermath_colonies_pending
+	clr_country_flag = utopia_manifesto_aftermath_practical_pending
+	clr_country_flag = utopia_manifesto_aftermath_book_pending
+	clr_country_flag = utopia_manifesto_aftermath_store_available
+	clr_country_flag = utopia_manifesto_aftermath_district_available
+	clr_country_flag = utopia_manifesto_aftermath_colonies_available
+	clr_country_flag = utopia_manifesto_aftermath_book_available
+	clr_country_flag = utopia_manifesto_aftermath_event_scheduled
+	clr_country_flag = utopia_manifesto_aftermath_from_total_repeal
+	clr_country_flag = utopia_manifesto_aftermath_from_regime_collapse
+	clear_variable = utopia_manifesto_total_repeal_days
+}

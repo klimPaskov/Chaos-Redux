@@ -1,0 +1,146 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 REACTION AND MILESTONE REACHABILITY
+# ============================================================================
+# One-shot, actor-scoped dispatch for real foreign recipients and actual public
+# milestones. Reaction acknowledgements are deliberately separate from league
+# membership and recognized-partner arrays, so interest cannot create network
+# proof, formation credit, or proclamation credit.
+# ============================================================================
+
+utopia_manifesto_try_dispatch_route_foreign_reaction = {
+	if = {
+		limit = { utopia_manifesto_household_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_household_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_household_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_household_reaction_target }
+			set_country_flag = utopia_manifesto_household_reaction_dispatched
+			event_target:utopia_manifesto_household_reaction_target = {
+				country_event = { id = chaosx.nr15.110 }
+			}
+		}
+	}
+	if = {
+		limit = { utopia_manifesto_common_table_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_common_table_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_common_table_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_common_table_reaction_target }
+			set_country_flag = utopia_manifesto_common_table_reaction_dispatched
+			event_target:utopia_manifesto_common_table_reaction_target = {
+				country_event = { id = chaosx.nr15.111 }
+			}
+		}
+	}
+	if = {
+		limit = { utopia_manifesto_planning_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_planning_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_planning_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_planning_reaction_target }
+			set_country_flag = utopia_manifesto_planning_reaction_dispatched
+			event_target:utopia_manifesto_planning_reaction_target = {
+				country_event = { id = chaosx.nr15.112 }
+			}
+		}
+	}
+}
+
+utopia_manifesto_try_dispatch_colonial_reaction = {
+	if = {
+		limit = { utopia_manifesto_colonial_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_colonial_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_colonial_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_colonial_reaction_target }
+			set_country_flag = utopia_manifesto_colonial_reaction_dispatched
+			event_target:utopia_manifesto_colonial_reaction_target = {
+				country_event = { id = chaosx.nr15.113 }
+			}
+		}
+	}
+}
+
+utopia_manifesto_try_dispatch_regional_foreign_reactions = {
+	if = {
+		limit = { utopia_manifesto_major_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_major_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_major_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_major_reaction_target }
+			set_country_flag = utopia_manifesto_major_reaction_dispatched
+			event_target:utopia_manifesto_major_reaction_target = {
+				country_event = { id = chaosx.nr15.114 }
+			}
+		}
+	}
+	if = {
+		limit = { utopia_manifesto_small_reformist_reaction_is_reachable = yes }
+		random_country = {
+			limit = { utopia_manifesto_small_reformist_reaction_candidate_is_valid = yes }
+			save_event_target_as = utopia_manifesto_small_reformist_reaction_target
+		}
+		if = {
+			limit = { has_event_target = utopia_manifesto_small_reformist_reaction_target }
+			set_country_flag = utopia_manifesto_small_reformist_reaction_dispatched
+			event_target:utopia_manifesto_small_reformist_reaction_target = {
+				country_event = { id = chaosx.nr15.115 }
+			}
+		}
+	}
+}
+
+utopia_manifesto_try_emit_league_news = {
+	if = {
+		limit = { utopia_manifesto_league_news_is_reachable = yes }
+		set_country_flag = utopia_manifesto_league_news_emitted
+		news_event = { id = chaosx.nr15.160 }
+	}
+}
+
+utopia_manifesto_refresh_event_reachability = {
+	if = {
+		limit = { has_country_flag = utopia_manifesto_accepted }
+		utopia_manifesto_try_dispatch_route_foreign_reaction = yes
+		utopia_manifesto_try_emit_league_news = yes
+		utopia_manifesto_try_dispatch_regional_foreign_reactions = yes
+	}
+}
+
+# Actor scope, with FROM as the verified active Necessary Ground target.
+utopia_manifesto_record_enforcement_war_milestone = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_case_enforcement_war_active
+			has_country_flag = utopia_manifesto_need_case_active
+			FROM = { has_country_flag = utopia_manifesto_active_case_target }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_necessary_ground_war_news_emitted } }
+			set_country_flag = utopia_manifesto_necessary_ground_war_news_emitted
+			news_event = { id = chaosx.nr15.161 }
+		}
+		utopia_manifesto_try_dispatch_colonial_reaction = yes
+	}
+}
+
+# Actor scope immediately after genuine stewardship-revolt scopes are captured.
+utopia_manifesto_record_assigned_colony_revolt_milestone = {
+	if = {
+		limit = { utopia_manifesto_assigned_colony_revolt_news_is_reachable = yes }
+		set_country_flag = utopia_manifesto_assigned_colony_revolt_news_emitted
+		news_event = { id = chaosx.nr15.162 }
+	}
+	utopia_manifesto_try_dispatch_colonial_reaction = yes
+}

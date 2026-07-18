@@ -1,5 +1,7 @@
 # Event 015 Final Generated Non-Icon Art Handoff
 
+> Current disposition, `2026-07-15`: the production package remains authoritative for provenance. Its parent registration task is complete through `non_icon_asset_wiring_handoff.md`. All 14 report, 3 news, and 5 route super-event sprites are registered and consumed.
+
 Date: `2026-07-14`  
 Owner: `chaosx_generated_event_art_final_retry`  
 Status: asset production complete; parent registration/event-picture wiring remains

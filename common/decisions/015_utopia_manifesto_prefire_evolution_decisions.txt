@@ -1,0 +1,110 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 PREFIRE EVOLUTION DECISIONS AND MISSIONS
+# ============================================================================
+# Playable obligations unique to evolved openings: a real domestic alternative
+# to an early Necessary Ground case and the two Perfect Island deadlines.
+# ============================================================================
+
+utopia_manifesto_ledger_category = {
+	mission_utopia_prefire_perfect_store_deadline = {
+		icon = GFX_decision_utopia_common_storehouse
+		activation = { has_country_flag = utopia_manifesto_prefire_store_deadline_active }
+		days_mission_timeout = var:utopia_manifesto_prefire_store_deadline_days
+		is_good = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { utopia_manifesto_prefire_store_deadline_is_supported = yes }
+				has_country_flag = utopia_manifesto_capital_store_complete
+			}
+		}
+		cancel_effect = { hidden_effect = { utopia_manifesto_complete_prefire_store_deadline = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = mission_utopia_prefire_perfect_store_deadline_timeout_tt
+			hidden_effect = { utopia_manifesto_fail_prefire_store_deadline = yes }
+		}
+	}
+
+	mission_utopia_prefire_perfect_island_deadline = {
+		icon = GFX_decision_utopia_island_project
+		activation = { has_country_flag = utopia_manifesto_prefire_island_deadline_active }
+		days_mission_timeout = var:utopia_manifesto_prefire_island_deadline_days
+		is_good = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { utopia_manifesto_prefire_island_deadline_is_supported = yes }
+				has_country_flag = utopia_manifesto_island_project_complete
+			}
+		}
+		cancel_effect = { hidden_effect = { utopia_manifesto_complete_prefire_island_deadline = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = mission_utopia_prefire_perfect_island_deadline_timeout_tt
+			hidden_effect = { utopia_manifesto_fail_prefire_island_deadline = yes }
+		}
+	}
+}
+
+utopia_manifesto_necessary_ground_category = {
+	decision_utopia_prefire_domestic_shore_repair = {
+		icon = GFX_decision_utopia_need_case
+		visible = {
+			has_country_flag = utopia_manifesto_prefire_domestic_shore_repair_available
+			utopia_manifesto_prefire_shores_package_is_live = yes
+			NOT = { has_country_flag = utopia_manifesto_prefire_domestic_repair_completed }
+			NOT = { has_country_flag = utopia_manifesto_prefire_domestic_repair_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_prefire_domestic_shore_repair_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_prefire_domestic_shore_repair = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		custom_cost_trigger = {
+			NOT = { has_equipment = { support_equipment < constant:utopia_manifesto_decision_cost.support_medium } }
+			NOT = { has_equipment = { train_equipment < constant:utopia_manifesto_decision_cost.trains_small } }
+		}
+		custom_cost_text = utopia_manifesto_cost_prefire_domestic_shore_repair
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_prefire_domestic_shore_repair_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+				set_temp_variable = { utopia_manifesto_cost_trains = constant:utopia_manifesto_decision_cost.trains_small }
+				utopia_manifesto_pay_prepared_decision_cost = yes
+				utopia_manifesto_prepare_prefire_domestic_repair_duration = yes
+				set_country_flag = utopia_manifesto_prefire_domestic_repair_active
+				activate_mission = mission_utopia_prefire_domestic_shore_repair
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.priority
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_need_is_severe = yes }
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.preferred has_war = no }
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.avoid utopia_manifesto_is_closed_island_route = yes }
+		}
+	}
+
+	mission_utopia_prefire_domestic_shore_repair = {
+		icon = GFX_decision_utopia_need_case
+		activation = { has_country_flag = utopia_manifesto_prefire_domestic_repair_active }
+		days_mission_timeout = var:utopia_manifesto_prefire_domestic_repair_days
+		is_good = yes
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { utopia_manifesto_prefire_shores_package_is_live = yes }
+				NOT = { utopia_manifesto_has_ledger = yes }
+				utopia_manifesto_has_active_constitutional_crisis = yes
+				NOT = { utopia_manifesto_has_any_case_deficit = yes }
+			}
+		}
+		cancel_effect = { hidden_effect = { utopia_manifesto_cancel_prefire_domestic_shore_repair = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = mission_utopia_prefire_domestic_shore_repair_timeout_tt
+			hidden_effect = { utopia_manifesto_complete_prefire_domestic_shore_repair = yes }
+		}
+	}
+}

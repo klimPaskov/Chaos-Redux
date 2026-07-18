@@ -29,7 +29,7 @@ VALIDATION = PACKAGE / "validation" / "unified_focus_asset_validation.tsv"
 GFX_HANDOFF = PACKAGE / "validation" / "unified_focus_gfx_handoff.tsv"
 LIVE = ROOT / "gfx" / "interface" / "goals" / "014_cannibalism"
 FOCUS_FILE = ROOT / "common" / "national_focus" / "014_cannibalism_unified_focus.txt"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 CHROMA_HELPER = Path("C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py")
 SIZE = (94, 86)
 

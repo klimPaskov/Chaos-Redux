@@ -27,7 +27,7 @@ UI_RUNTIME = ROOT / "gfx" / "interface" / "019_infantry_spawn"
 REPORT_PROCESSOR = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "process_report_event_image.py"
 REPORT_PROCESSOR_SHA256 = "5b51613f391934960a8310268041c66b00fdd31bc12da2393eb02c8f3dc87bd9"
 CHROMA_REMOVER = Path("C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py")
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 
 REPORT_STEMS = (
 	"report_event_019_infantry_spawn_manifestation",

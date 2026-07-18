@@ -94,15 +94,15 @@ The processing retains a measured `9.20 LU` final range. The final fade reaches 
 | Decoded 44.1 kHz stereo PCM SHA-256 | `80c6bb438dcd427edf21a2213b4a5bf8f66fdf43713a01e6c5d982c4fb8a5c01` |
 | Decode result | Complete FFmpeg decode with exit code `0` |
 
-A current repository-wide title, source, filename, and definition search found no other event using Brahms's Third Symphony or this movement. A `2026-07-14` scan covered all `54` OGG files under `music/` and all `52` WAV files under `sound/`. The final cue's first 20 seconds produced exactly one OGG Chromaprint match, its Event 015 OGG, and exactly one WAV match, the expected Event 015 sound-channel mirror. The OGG container SHA-256 is also unique. No other event silently reuses this work, recording, derivative, audio ID, music helper family, or sound wrapper.
+A current repository-wide title, source, filename, and definition search found no other event using Brahms's Third Symphony or this movement. A `2026-07-15` scan covered all `55` OGG files under `music/` and all `53` WAV files under `sound/`. The Event 015 OGG and its expected sound-channel WAV each have a unique container hash within those runtime folders. The final cue's first 20 seconds had already produced exactly one OGG Chromaprint match, its Event 015 OGG, and exactly one WAV match, the expected Event 015 mirror. No other event silently reuses this work, recording, derivative, audio ID, music helper family, or sound wrapper.
 
 ## Preserved source and licence evidence
 
 | File | Bytes | SHA-256 |
 | --- | ---: | --- |
 | `brahms_symphony_3_iii_poco_allegretto_musopen_cc0_original.ogg` | `8,770,243` | `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df` |
-| `source_evidence/commons_brahms_symphony_3_iii_oldid_956414568.html` | `90,710` | `27ab8419ae2b13e0898098d8d5598757203604ff86aa9af013a729366c749edd` |
-| `source_evidence/commons_brahms_symphony_3_iii_metadata.json` | `4,631` | `a75b299c8743bed3ca3a252e4b378e14682b4e7a5c31c0c8c69cbeb01a660d82` |
+| `source_evidence/commons_brahms_symphony_3_iii_oldid_956414568.html` | `90,710` | `a69ac110ca1caf7f1142c997f5bab1317e97eec7dc41e1d3a828bbadcc27ff9d` |
+| `source_evidence/commons_brahms_symphony_3_iii_metadata.json` | `3,874` | `a235ab4a2ee72420ab025eb0280e532bba81c379904647a8eec9d9e6ebab6b7f` |
 | `source_evidence/cc0_1_0_deed_en.html` | `30,476` | `4ceb8ae6835f2f5263caa0e39c9e1adca9469686c267475049b33521dabbe339` |
 | `source_evidence/cc0_1_0_legalcode_en.html` | `32,451` | `001e3d1c905c18b1d034b34200cc952026abb38457c2294c23eaef7f6bda64df` |
 
@@ -150,4 +150,4 @@ The required offline wiki core pages were consulted together with `Music modding
 
 There is no source, licence, duration, format, loudness, uniqueness, or attribution blocker for the final OGG. No fallback, placeholder, ambiguous-rights recording, generated cue, or reused track remains in the delivered package.
 
-Music registration, music localisation, sound/WAV registration, script constants, settings-aware playback, and the five route display slots are integrated. The remaining Event 015 super-event blocker is visual rather than audio: the five route-specific image files registered for display slots `96`-`100` do not yet exist. That image gap must not be hidden by reusing either legacy Event 015 super-event image.
+Music registration, music localisation, sound/WAV registration, script constants, settings-aware playback, and the five route display slots are integrated. The five route-specific image files for slots `96` through `100` exist and are registered in `interface/015_utopia_manifesto_super_event.gfx`. No text, audio, licence, attribution, uniqueness, or visual blocker remains in the super-event package. The two legacy Event 15 images remain historical assets and are not used as fallbacks.

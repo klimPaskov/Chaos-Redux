@@ -1,5 +1,7 @@
 # Event 15 Implementation Sequence
 
+> Historical execution plan: the phases below were used to organize implementation. They are not an outstanding task list. Use the current implementation proof matrix and source-of-truth resume packet for present state and remaining closing gates.
+
 ## Phase 1: recover and classify
 
 1. Use the repo explorer handoff to find every Event 15 mapping.

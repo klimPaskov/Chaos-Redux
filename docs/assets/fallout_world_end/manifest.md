@@ -28,7 +28,7 @@ Reference review:
 - Registered sprite name: `GFX_fallout_blackout_tile`
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`
 - Localisation key: not needed
-- Source note: a temporary `10x10` RGBA raster with pixel value `(0, 0, 0, 255)` was converted through `.tools/convert_to_dds.py` and removed after conversion
+- Source note: a temporary `10x10` RGBA raster with pixel value `(0, 0, 0, 255)` was converted through `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and removed after conversion
 - DDS format: legacy one-level uncompressed 32-bit BGRA, equivalent to `B8G8R8A8`, with no mipmaps
 - Alpha result: all `100` pixels have alpha `255`
 - Asset status: `registered_and_referenced_runtime_gui_pending`
@@ -79,7 +79,7 @@ Avoid: photorealism, 3D render, cartoon style, modern survival-game UI, tiny int
 4. Reduced the subject to `60x52` with Lanczos resampling.
 5. Applied restrained readability corrections of contrast `1.10`, brightness `1.06`, and sharpness `1.35`.
 6. Centered the subject at offset `(2, 6)` on a transparent `64x64` canvas.
-7. Converted the processed PNG through `.tools/convert_to_dds.py` without resizing beyond the `64x64` target.
+7. Converted the processed PNG through `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` without resizing beyond the `64x64` target.
 
 ### Format and visual validation
 

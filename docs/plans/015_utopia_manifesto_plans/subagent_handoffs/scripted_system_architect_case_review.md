@@ -1,5 +1,7 @@
 # Event 15 Necessary Ground and Stewardship Architecture Review
 
+> Current disposition, 2026-07-15: this is a historical architecture snapshot. The lifecycle defects and four open design questions were dispositioned during implementation. Temporary market access was omitted in favor of exact resource rights. Target disappearance now uses reverse founder records, a narrow annexation callback, successor adoption during active stewardship, explicit founder-extinction failure, pre-steward invalidation, enforcement-peace cleanup, and last-state transfer gates. Settlement, long-supply, association, and island-lease terms are centrally timed. Integrated-state ownership loss removes its flag, modifier, and array record. `decision_mission_completion_current_reaudit_2026_07_15.md` passes the current target lifecycle, founder attribution, auxiliary atomicity, and founder-local prefire state with no open P0 through P3 finding.
+
 ## Handoff metadata
 
 - Role: `chaosx_scripted_system_architect`

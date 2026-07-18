@@ -1,0 +1,543 @@
+# days_re_enable is static-only, so this file retains one file-scoped cooldown.
+@utopia_evolution_policy_cooldown = 180
+
+# ============================================================================
+# CHAOS REDUX - EVENT 015 EVOLUTION CONSUMPTION DECISIONS
+# ============================================================================
+# Fifteen interpretation-specific policy actions consume the five accepted
+# evolution stages without adding another stage or decision category. Every
+# action pays real capacity, changes one existing system immediately, and then
+# resolves a second system through one shared dynamically timed obligation.
+# ============================================================================
+
+utopia_manifesto_governance_category = {
+	decision_utopia_hold_open_interpretation_audit = {
+		icon = GFX_decision_utopia_publish_accounts
+		visible = {
+			has_country_flag = utopia_manifesto_interpretation_schools_open
+			utopia_manifesto_glosses_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_hold_open_interpretation_audit_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_has_resolved_route = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_small
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_civic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_civic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_hold_open_interpretation_audit_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.measured
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_open_schools_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.preferred NOT = { utopia_manifesto_concord_is_trusted = yes } }
+		}
+	}
+
+	decision_utopia_consolidate_chartered_schools = {
+		icon = GFX_decision_utopia_constitutional_correction
+		visible = {
+			has_country_flag = utopia_manifesto_interpretation_schools_chartered
+			utopia_manifesto_glosses_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_consolidate_chartered_schools_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_has_resolved_route = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_transport_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_transport
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_consolidate_chartered_schools_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.measured
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_chartered_schools_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.preferred has_country_flag = utopia_manifesto_calling_civic_works_shortage }
+		}
+	}
+
+	decision_utopia_police_censored_margins = {
+		icon = GFX_decision_utopia_just_cause_review
+		visible = {
+			has_country_flag = utopia_manifesto_conduct_margins_censored
+			utopia_manifesto_glosses_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_police_censored_margins_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_has_resolved_route = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_control_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_control
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_police_censored_margins_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_censored_margins_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_concord_is_trusted = yes }
+		}
+	}
+
+	mission_utopia_evolution_policy_obligation = {
+		icon = GFX_decision_utopia_constitutional_correction
+		activation = { has_country_flag = utopia_manifesto_evolution_policy_action_active }
+		days_mission_timeout = var:utopia_manifesto_evolution_policy_action_days
+		is_good = yes
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = { NOT = { utopia_manifesto_evolution_policy_action_is_supported = yes } }
+		cancel_effect = { hidden_effect = { utopia_manifesto_cancel_evolution_policy_action = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = mission_utopia_evolution_policy_obligation_timeout_tt
+			hidden_effect = { utopia_manifesto_complete_evolution_policy_action = yes }
+		}
+	}
+}
+
+utopia_manifesto_necessary_ground_category = {
+	decision_utopia_fund_domestic_repairs = {
+		icon = GFX_decision_utopia_need_case
+		visible = {
+			has_country_flag = utopia_manifesto_necessary_shores_domestic_alternative
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_fund_domestic_repairs_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_necessary_ground_decisions_are_unlocked = yes
+					has_country_flag = utopia_manifesto_need_case_active
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_transport_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_transport
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_fund_domestic_repairs_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_domestic_alternative_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_need_is_severe = yes }
+		}
+	}
+
+	decision_utopia_bind_peaceful_case_order = {
+		icon = GFX_decision_utopia_boundary_arbitration
+		visible = {
+			has_country_flag = utopia_manifesto_necessary_shores_peaceful_priority
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_bind_peaceful_case_order_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_necessary_ground_decisions_are_unlocked = yes
+					has_country_flag = utopia_manifesto_need_case_active
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_diplomatic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_diplomatic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_bind_peaceful_case_order_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_peaceful_priority_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty has_war = yes }
+		}
+	}
+
+	decision_utopia_invoke_shores_emergency_warrant = {
+		icon = GFX_decision_utopia_ultimatum
+		visible = {
+			has_country_flag = utopia_manifesto_necessary_shores_emergency_powers
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_invoke_shores_emergency_warrant_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_necessary_ground_decisions_are_unlocked = yes
+					has_country_flag = utopia_manifesto_need_case_active
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_large
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_security_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_security
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_invoke_shores_emergency_warrant_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_emergency_powers_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_need_is_severe = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_concord_is_trusted = yes }
+		}
+	}
+}
+
+utopia_manifesto_district_category = {
+	decision_utopia_renew_local_charters = {
+		icon = GFX_decision_utopia_district_foundation
+		visible = {
+			has_country_flag = utopia_manifesto_cities_local_charters
+			utopia_manifesto_cities_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_renew_local_charters_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_district_decisions_are_unlocked = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_civic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_civic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_renew_local_charters_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_local_charters_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.preferred has_country_flag = utopia_manifesto_calling_civic_works_shortage }
+		}
+	}
+
+	decision_utopia_coordinate_linked_standard = {
+		icon = GFX_decision_utopia_technical_mission
+		visible = {
+			has_country_flag = utopia_manifesto_cities_linked_standard
+			utopia_manifesto_cities_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_coordinate_linked_standard_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_district_decisions_are_unlocked = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_transport_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_transport
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_coordinate_linked_standard_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_linked_standard_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty has_country_flag = utopia_manifesto_conduct_data_suppression }
+		}
+	}
+
+	decision_utopia_open_foreign_municipal_circle = {
+		icon = GFX_decision_utopia_recognize_friend
+		visible = {
+			has_country_flag = utopia_manifesto_cities_foreign_circle
+			utopia_manifesto_cities_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_open_foreign_municipal_circle_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_district_decisions_are_unlocked = yes
+					utopia_manifesto_league_decisions_are_unlocked = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_diplomatic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_diplomatic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_open_foreign_municipal_circle_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.measured
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_foreign_circle_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.preferred is_in_faction = yes }
+		}
+	}
+}
+
+utopia_manifesto_league_category = {
+	decision_utopia_ratify_plural_league_law = {
+		icon = GFX_decision_utopia_recognize_friend
+		visible = {
+			has_country_flag = utopia_manifesto_nowhere_law_plural
+			utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_ratify_plural_league_law_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_league_decisions_are_unlocked = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_diplomatic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_diplomatic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_ratify_plural_league_law_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_plural_law_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.preferred utopia_manifesto_concord_is_trusted = yes }
+		}
+	}
+
+	decision_utopia_honor_sponsored_law = {
+		icon = GFX_decision_utopia_league_aid_corridor
+		visible = {
+			has_country_flag = utopia_manifesto_nowhere_law_sponsored
+			utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_honor_sponsored_law_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_league_decisions_are_unlocked = yes
+					OR = {
+						has_country_flag = utopia_manifesto_league_sponsorship_accepted
+						has_country_flag = utopia_manifesto_prefire_foreign_support_accepted
+					}
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_diplomatic_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_diplomatic
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_honor_sponsored_law_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.measured
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_sponsored_law_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty NOT = { utopia_manifesto_plenty_is_stable = yes } }
+		}
+	}
+
+	decision_utopia_broadcast_route_law = {
+		icon = GFX_decision_utopia_send_magistrates
+		visible = {
+			has_country_flag = utopia_manifesto_nowhere_law_route_propaganda
+			utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_broadcast_route_law_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					utopia_manifesto_league_decisions_are_unlocked = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_control_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_control
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_broadcast_route_law_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_route_propaganda_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_concord_is_trusted = yes }
+		}
+	}
+}
+
+utopia_manifesto_island_category = {
+	decision_utopia_provision_refuge_network = {
+		icon = GFX_decision_utopia_common_harbor
+		visible = {
+			has_country_flag = utopia_manifesto_perfect_island_refuge_network
+			utopia_manifesto_perfect_island_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_provision_refuge_network_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					has_country_flag = utopia_manifesto_commonwealth_formed
+					NOT = { utopia_manifesto_is_closed_island_route = yes }
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_large
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_refuge_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_refuge
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_provision_refuge_network_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_refuge_network_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis has_country_flag = utopia_manifesto_migration_pressure }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty NOT = { utopia_manifesto_reserve_is_secure = yes } }
+		}
+	}
+
+	decision_utopia_stock_bounded_self_sufficiency = {
+		icon = GFX_decision_utopia_seasonal_reserve
+		visible = {
+			has_country_flag = utopia_manifesto_perfect_island_bounded_self_sufficiency
+			utopia_manifesto_perfect_island_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_stock_bounded_self_sufficiency_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					has_country_flag = utopia_manifesto_commonwealth_formed
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_medium
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_transport_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_transport
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_stock_bounded_self_sufficiency_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.active
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_bounded_self_sufficiency_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis NOT = { utopia_manifesto_reserve_is_secure = yes } }
+		}
+	}
+
+	decision_utopia_enforce_closed_order = {
+		icon = GFX_decision_utopia_household_guard
+		visible = {
+			has_country_flag = utopia_manifesto_perfect_island_closed_order
+			utopia_manifesto_perfect_island_delivery_is_enabled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = decision_utopia_enforce_closed_order_requirements_tt
+				hidden_trigger = {
+					utopia_manifesto_can_start_evolution_policy_action = yes
+					has_country_flag = utopia_manifesto_commonwealth_formed
+					utopia_manifesto_is_closed_island_route = yes
+				}
+			}
+		}
+		cost = constant:utopia_manifesto_decision_cost.pp_large
+		days_re_enable = @utopia_evolution_policy_cooldown
+		custom_cost_trigger = { utopia_manifesto_can_pay_evolution_policy_closed_cost = yes }
+		custom_cost_text = utopia_manifesto_cost_evolution_policy_closed
+		complete_effect = {
+			custom_effect_tooltip = decision_utopia_enforce_closed_order_effect_tt
+			hidden_effect = {
+				set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+				utopia_manifesto_start_prepared_evolution_policy_action = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:utopia_manifesto_decision_ai.low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_closed_order_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis has_war = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_concord_is_trusted = yes }
+		}
+	}
+}

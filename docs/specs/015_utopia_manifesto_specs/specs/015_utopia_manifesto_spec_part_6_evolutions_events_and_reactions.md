@@ -519,6 +519,8 @@ Choice direction for target:
 - refuse
 - request guarantee
 
+Hidden founder bridge `.212` validates either the exact full-invitation pair or the exact reserve-compact pair against a live, initialized League. It requires one response permitted by that request type, closes the pair and response flags before applying the accepted role, and treats a delayed answer after collapse or terminal teardown as cleanup only.
+
 ### The stores are tested
 
 Trigger direction:
@@ -538,24 +540,27 @@ Consequences:
 - Plenty
 - member trust
 
-### A major offers sponsorship
+### The League requests major-power sponsorship
 
 Trigger direction:
 
-- league has regional relevance
+- the League is stable and has regional relevance
+- the founder selects an eligible major and opens the variable League response term
+- no sponsor or guarantee exists before the target answers
 
 Options:
 
-- accept technical aid
-- accept defense guarantee
-- refuse dependency
-- balance rival sponsors
+- offer technical aid without a guarantee
+- offer sponsorship with a sponsor-created guarantee
+- refuse the request
 
 Risks:
 
 - sponsor pressure
 - member division
 - loss of small-state autonomy
+
+The exact founder and target are recorded on both sides until the response bridge resolves. Technical sponsorship records no guarantee. A defensive sponsorship records the sponsor-to-founder guarantee only when Event 15 created it, allowing exact cleanup without revoking pre-existing diplomacy.
 
 ### Member disputes
 
@@ -1107,3 +1112,18 @@ Each evolution detail should explain the new public form the experiment takes, s
 ### Actor direction
 
 The Event 15 actor is the selected recipient. History and evolution rows should show that country's flag when available.
+
+## Implemented evolution and event record
+
+The current Event 15 event file contains 106 event definitions, including consentful sponsorship events `.215` and `.216`, wartime League response events `.217` and `.218`, two hidden founder-rooted annexation bridges, one hidden founder-rooted state-control bridge, hidden association-review reservation bridge `.207`, and visible review `.221`. All twelve hidden definitions use documented `hidden = yes`. Events `.116`, `.150`, `.163`, `.164`, `.165`, `.205`, `.207`, `.212`, `.214`, `.216`, `.218`, and `.220` use `hidden = yes` rather than `hide_window`. Five evolution tracks retain the baseline and prefire entry model described above. The implemented evolution decision layer contains 15 paid choices, three for each track, plus the shared evolution mission and prefire controls.
+
+Every evolution choice has two durable consequences:
+
+1. a paid route or policy action that records the selected interpretation
+2. a shared obligation that is consumed by a second Event 15 system
+
+The consumers reach Ledger and calling pressure, reserves and common stores, districts and route charters, association and league duties, defense, sponsorship, island or refuge obligations, or Necessary Ground conduct as appropriate to the choice. Repeated setup is idempotent. An obligation cannot be duplicated by reopening the same evolution surface.
+
+The old one-time-delta interpretation is superseded for current implementation. Evolution flags remain historical evidence, while downstream obligations make the interpretation continue to affect play. The formal improvement addendum is promoted into this specification through this record.
+
+Event log, recipient actor, Event Details, evolution details, and history mappings use the implemented Event 15 wording. Old World Tension Subsides naming is historical catalog provenance only and is not a current Event 15 mapping.

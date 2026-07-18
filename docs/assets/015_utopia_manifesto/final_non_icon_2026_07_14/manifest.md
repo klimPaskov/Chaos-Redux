@@ -62,4 +62,4 @@ The selected final sheets were visually inspected after conversion. The earlier 
 
 ## Runtime Registration Ownership
 
-The five super-event sprites are already registered in `interface/015_utopia_manifesto_super_event.gfx`. The `14` report and `3` news sprite blocks are intentionally left for the parent implementation agent to add to `interface/015_utopia_manifesto.gfx`; that file is owned by the concurrent icon/registration pass and was not edited by this package.
+At this package's production freeze, the five super-event sprites were registered and the 14 report plus 3 news blocks were handed to the parent. That dated ownership boundary is closed. `interface/015_utopia_manifesto.gfx` currently registers all 17 report and news sprites, and the event source consumes all 17 identities. The implementation evidence is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/non_icon_asset_wiring_handoff.md`.

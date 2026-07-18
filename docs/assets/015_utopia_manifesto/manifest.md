@@ -1,11 +1,79 @@
-# Event 015 Utopia Manifesto Asset Manifest
+# Event 015 Asset Authority Index
 
 Event id: `015`
 Event slug: `utopia_manifesto`
 General runtime sprite registry: `interface/015_utopia_manifesto.gfx`
 Current route super-event registry: `interface/015_utopia_manifesto_super_event.gfx`
 
-## Installed Runtime Assets and Current Super-Event Registration
+Snapshot: `2026-07-18`
+
+Verdict: **PASS - every one of the 24 accepted asset-matrix rows is implemented, registered, consumed, and state-bound where required. No fallback, simplification, omission, or open blocker remains.**
+
+## Current authority
+
+Use these records in this order:
+
+1. Live runtime files under `gfx/`, `interface/`, `common/characters/`, Event 015 gameplay script, scripted GUI, scripted localisation, music, and sound.
+2. `requirement_to_runtime_coverage_2026_07_16.md` for the exact 24-row source-to-runtime crosswalk.
+3. `decision_icon_mapping.csv` for the current decision, category, and mission mapping and assignment inventory. `final_icon_frame_audit.json` remains current only for its icon, animation, registry, GUI, and state-binding records; its frozen decision-mapping subsection is superseded by the CSV.
+4. `final_non_icon_2026_07_14/asset_records.json` for reports, news, and five route-super-event images.
+5. `route_identity_2026_07_14/asset_records.json` plus the dated flag, institutional-tableau, advisor, and built-in-source validators.
+6. `value_calling_icon_repair_2026_07_16`, `ledger_case_cards_2026_07_16`, and `ledger_district_cards_2026_07_16` for the repaired Ledger families.
+7. `gfx_handoff.md` and `icon_animation_handoff.md` for current live wiring.
+
+`final_icon_frame_audit.json` has SHA-256 `c85df258c4aaaf37e905fdc14883cda6b0f8a1f41840df745a3136c830a66d01` and status `pass`. Its historical `173`-row, `43`-mission, and `164`-assignment mapping record is not current authority.
+
+## Current proven inventory
+
+| Surface | Current proof |
+| --- | --- |
+| Registry | `459` unique definitions in `015_utopia_manifesto.gfx` plus `5` in `015_utopia_manifesto_super_event.gfx` = `464`; duplicate names `0` |
+| Ledger GUI | `46` unique sprite references; unresolved references `0` |
+| Reports/news/super-event art | `14` reports, `3` news images, `5` route-super-event images; `22/22` source/processed/package/runtime records match and all final hashes are unique |
+| Focuses | `124` uses, `74` unique sprites, `111` physical DDS files |
+| Decisions/categories/missions | `174` mapping rows: `9` categories, `121` decisions, `44` missions; `165` live assignments |
+| Ideas | `50` entries, `12` unique pictures |
+| Achievements | `14` current IDs, `42` current base/grey/not-eligible variants |
+| Repaired Ledger statics | Values `4`, Callings `6`, Case cards `10`, District roles `7`, District states `6` |
+| Route identity | `21` independent built-in ImageGen flag designs plus `4` aliases = `75` TGAs; `4` people-free institutional tableaux; `16` independent advisor dossiers; `5` League emblems |
+
+The seven District role cards and six state overlays are intentionally live in the **Stores/Settlements tab**, inside `utopia_ledger_stores_panel`. Necessary Ground Case cards remain in `utopia_ledger_ground_panel`.
+
+## Current animation delivery
+
+Five standardized packages are machine-audited: Need warning (`8` frames), reserve fill (`8`, extra presentation package), balance toward Choice (`8`), balance toward Assignment (`8`), and formation-ready seal (`10`). The required legacy-layout Ledger seal is independently frozen at `8` frames. Every package has distinct source and processed frames, exact sheet PNG, strict BGRA sheet DDS, static fallback, review GIF, contact sheet, GFX definitions, and a live GUI consumer. Sheet/static DDS pixels match their PNGs.
+
+Runtime state binding is exact:
+
+- Ledger seal: generic header seal until a route emblem is selected.
+- Need warning: high Need, low Plenty, or constitutional crisis.
+- balance directions: route-resolved Assignment-band crossings, three-day direction flags, first-refresh suppression, opposite-flag clearing, and terminal cleanup.
+- formation-ready: the current route can form and the commonwealth is not formed.
+- reserve fill: a live reserve-band value exists.
+
+## Source constraints and visual review
+
+- Four institutional masters are separate people-free built-in ImageGen tableaux. Native review confirms no people, faces, heads, bodies, hands, crowds, silhouettes, statues, busts, mannequins, framed portraits, photographs, or human shadows.
+- Sixteen advisors use sixteen independent built-in ImageGen fictional portrait masters plus separately generated frame and paper/seal overlays. The visible dossier treatment is not drawn programmatically.
+- Flags use 21 separate built-in ImageGen compositions. Only the four documented unsuffixed/canonical lookup pairs alias approved art.
+- Value/Calling art comes from the frozen built-in ImageGen atlas SHA-256 `7a1704f1c6d720ff72b9cdc3715101361bb8b836033607d0ff244dbb31c7d440`. The exact original prompt was not present in the repository and was not reconstructed or invented; this provenance limitation does not alter the preserved generated source or delivered finals.
+- Case and District cards use independent built-in ImageGen masters; rejected drafts remain outside runtime.
+
+## Final super-event presentation
+
+Slots `96`-`100` bind five route-distinct images, matching route descriptions, the shared title `UTOPIA HAS NEIGHBORS`, the verified public-domain Thomas More quotation, and audio ID `57`. `utopia_manifesto_emit_regional_proclamation` sets the exact route slot and audio ID, then calls the settings-aware playback helper.
+
+The final OGG is Vorbis, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`. The WAV is PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`. Both are unique in the current runtime audio folders. Frozen CC0 source and licence evidence is documented in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
+
+## Prior P2 history and completion boundary
+
+The earlier `2026-07-16` requirement audit correctly found four P2 gaps: Values, Callings, Case cards, and District cards/bindings. The three repair packages and current runtime wiring resolve all four. No decision icon, text-only value, decorative panel, or other unrelated surface was accepted as a substitute.
+
+Simplifications: none. Omissions: none. Fallbacks: none. Open blockers: none.
+
+## Historical package notes (superseded by the current authority above)
+
+Everything below this heading is retained only as earlier package history. Any older counts, missing-wiring instructions, or parent-handoff language below is non-authoritative.
 
 - Event pictures:
   - The final non-icon package installs `14` report DDS files and `3` news DDS files under `gfx/event_pictures/015_utopia_manifesto/`.
@@ -204,7 +272,7 @@ Exact achievement ids, each with base, `_grey`, and `_not_eligible` runtime file
 - `utopia_manifesto_the_stores_remain`
 - `utopia_manifesto_no_one_in_chains`
 
-The `_not_eligible` variant is the grayscale variant composited with `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`. The final `42` files are `64x64` uncompressed BGRA DDS with one mip level and exact aliases in `interface/015_utopia_manifesto.gfx`.
+The `_not_eligible` variant is the grayscale variant composited with `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`. The final `42` files are `64x64` uncompressed BGRA DDS with one mip level and exact aliases in `interface/015_utopia_manifesto.gfx`.
 
 The older `015_utopia_*` set remains a historical package only. Its `36` runtime files were not deleted because `docs/plans/015_utopia_manifesto_plans/repo_explorer_handoff.md` still references them.
 

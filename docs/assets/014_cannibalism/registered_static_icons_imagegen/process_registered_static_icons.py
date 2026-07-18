@@ -20,7 +20,7 @@ PROCESSED = PACKAGE / "processed_png"
 DDS_PACKAGE = PACKAGE / "dds"
 CONTACT = PACKAGE / "contact_sheets"
 VALIDATION = PACKAGE / "validation" / "registered_static_icons_validation.tsv"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 LIVE_DECISIONS = ROOT / "gfx" / "interface" / "decisions" / "014_cannibalism"
 LIVE_IDEAS = ROOT / "gfx" / "interface" / "ideas" / "014_cannibalism"
 

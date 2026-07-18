@@ -81,6 +81,286 @@ scripted_gui = {
 					has_country_flag = utopia_manifesto_constitutional_crisis
 				}
 			}
+			utopia_ledger_balance_to_choice_visible = {
+				has_country_flag = utopia_manifesto_balance_shift_to_choice_recent
+			}
+			utopia_ledger_balance_to_assignment_visible = {
+				has_country_flag = utopia_manifesto_balance_shift_to_assignment_recent
+			}
+
+			# Necessary Ground case cards use mutually exclusive live-state priority.
+			utopia_ledger_case_stewardship_active_visible = {
+				has_country_flag = utopia_manifesto_stewardship_active
+			}
+			utopia_ledger_case_refusal_visible = {
+				has_country_flag = utopia_manifesto_need_case_active
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				OR = {
+					has_country_flag = utopia_manifesto_case_settlement_refused
+					has_country_flag = utopia_manifesto_case_ultimatum_refused
+					has_country_flag = utopia_manifesto_case_target_refused
+				}
+			}
+			utopia_ledger_case_counteroffer_visible = {
+				has_country_flag = utopia_manifesto_need_case_active
+				has_country_flag = utopia_manifesto_case_counteroffer_recorded
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOR = {
+					has_country_flag = utopia_manifesto_case_settlement_refused
+					has_country_flag = utopia_manifesto_case_ultimatum_refused
+					has_country_flag = utopia_manifesto_case_target_refused
+				}
+			}
+			utopia_ledger_case_ultimatum_available_visible = {
+				has_country_flag = utopia_manifesto_need_case_active
+				utopia_manifesto_case_can_issue_ultimatum = yes
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOR = {
+					has_country_flag = utopia_manifesto_case_response_active
+					has_country_flag = utopia_manifesto_case_counteroffer_recorded
+					has_country_flag = utopia_manifesto_case_settlement_refused
+					has_country_flag = utopia_manifesto_case_ultimatum_refused
+					has_country_flag = utopia_manifesto_case_target_refused
+				}
+			}
+			utopia_ledger_case_offer_pending_visible = {
+				has_country_flag = utopia_manifesto_need_case_active
+				has_country_flag = utopia_manifesto_case_response_active
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOR = {
+					has_country_flag = utopia_manifesto_case_counteroffer_recorded
+					has_country_flag = utopia_manifesto_case_settlement_refused
+					has_country_flag = utopia_manifesto_case_ultimatum_refused
+					has_country_flag = utopia_manifesto_case_target_refused
+				}
+			}
+			utopia_ledger_case_target_selected_visible = {
+				OR = {
+					has_country_flag = utopia_manifesto_need_case_active
+					has_variable = utopia_manifesto_selected_country_id
+				}
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOR = {
+					has_country_flag = utopia_manifesto_case_response_active
+					has_country_flag = utopia_manifesto_case_counteroffer_recorded
+					has_country_flag = utopia_manifesto_case_settlement_refused
+					has_country_flag = utopia_manifesto_case_ultimatum_refused
+					has_country_flag = utopia_manifesto_case_target_refused
+				}
+				NOT = {
+					AND = {
+						has_country_flag = utopia_manifesto_need_case_active
+						utopia_manifesto_case_can_issue_ultimatum = yes
+					}
+				}
+			}
+			utopia_ledger_case_target_eligible_visible = {
+				NOT = { has_country_flag = utopia_manifesto_need_case_active }
+				NOT = { has_variable = utopia_manifesto_selected_country_id }
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				check_variable = {
+					var = utopia_manifesto_case_candidate_targets^num
+					value = constant:utopia_manifesto_math.zero
+					compare = greater_than
+				}
+			}
+			utopia_ledger_case_associate_established_visible = {
+				NOT = { has_country_flag = utopia_manifesto_need_case_active }
+				NOT = { has_variable = utopia_manifesto_selected_country_id }
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				check_variable = {
+					var = utopia_manifesto_case_candidate_targets^num
+					value = constant:utopia_manifesto_math.zero
+					compare = equals
+				}
+				OR = {
+					has_country_flag = utopia_manifesto_first_associate_recognized
+					check_variable = {
+						var = utopia_manifesto_recognized_associates^num
+						value = constant:utopia_manifesto_math.zero
+						compare = greater_than
+					}
+				}
+			}
+			utopia_ledger_case_expired_visible = {
+				has_country_flag = utopia_manifesto_case_expired
+				NOT = { has_country_flag = utopia_manifesto_need_case_active }
+				NOT = { has_variable = utopia_manifesto_selected_country_id }
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOT = { has_country_flag = utopia_manifesto_first_associate_recognized }
+				check_variable = {
+					var = utopia_manifesto_recognized_associates^num
+					value = constant:utopia_manifesto_math.zero
+					compare = equals
+				}
+				check_variable = {
+					var = utopia_manifesto_case_candidate_targets^num
+					value = constant:utopia_manifesto_math.zero
+					compare = equals
+				}
+			}
+			utopia_ledger_case_no_target_visible = {
+				NOT = { has_country_flag = utopia_manifesto_need_case_active }
+				NOT = { has_variable = utopia_manifesto_selected_country_id }
+				NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+				NOT = { has_country_flag = utopia_manifesto_case_expired }
+				NOT = { has_country_flag = utopia_manifesto_first_associate_recognized }
+				check_variable = {
+					var = utopia_manifesto_recognized_associates^num
+					value = constant:utopia_manifesto_math.zero
+					compare = equals
+				}
+				check_variable = {
+					var = utopia_manifesto_case_candidate_targets^num
+					value = constant:utopia_manifesto_math.zero
+					compare = equals
+				}
+			}
+
+			# District role cards use a durable presentation role; state overlays
+			# remain derived from the active project's exact phase and conduct.
+			utopia_ledger_district_role_market_garden_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.market_garden }
+			}
+			utopia_ledger_district_role_industrial_housing_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.industrial_housing }
+			}
+			utopia_ledger_district_role_rail_junction_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.rail_junction }
+			}
+			utopia_ledger_district_role_port_town_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.port_town }
+			}
+			utopia_ledger_district_role_research_town_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.research_town }
+			}
+			utopia_ledger_district_role_refugee_municipality_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.refugee_municipality }
+			}
+			utopia_ledger_district_role_inland_island_ring_visible = {
+				check_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.inland_island_ring }
+			}
+			utopia_ledger_district_state_disputed_visible = {
+				OR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					AND = {
+						has_variable = utopia_manifesto_district_project_state
+						var:utopia_manifesto_district_project_state = {
+							OR = {
+								has_state_flag = utopia_manifesto_district_obligations_breached
+								has_state_flag = utopia_manifesto_district_project_refused
+								has_state_flag = utopia_manifesto_district_project_lost
+							}
+						}
+					}
+				}
+			}
+			utopia_ledger_district_state_blocked_visible = {
+				NOR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					AND = {
+						has_variable = utopia_manifesto_district_project_state
+						var:utopia_manifesto_district_project_state = {
+							OR = {
+								has_state_flag = utopia_manifesto_district_obligations_breached
+								has_state_flag = utopia_manifesto_district_project_refused
+								has_state_flag = utopia_manifesto_district_project_lost
+							}
+						}
+					}
+				}
+				OR = {
+					has_country_flag = utopia_manifesto_district_survey_found_no_role
+					has_country_flag = utopia_manifesto_district_project_debt
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+					AND = {
+						has_variable = utopia_manifesto_district_project_state
+						var:utopia_manifesto_district_project_state = { has_state_flag = utopia_manifesto_district_project_delayed }
+					}
+				}
+			}
+			utopia_ledger_district_state_complete_visible = {
+				NOR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					has_country_flag = utopia_manifesto_district_project_debt
+					has_country_flag = utopia_manifesto_district_survey_found_no_role
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+					AND = {
+						has_variable = utopia_manifesto_district_project_state
+						var:utopia_manifesto_district_project_state = {
+							OR = {
+								has_state_flag = utopia_manifesto_district_obligations_breached
+								has_state_flag = utopia_manifesto_district_project_refused
+								has_state_flag = utopia_manifesto_district_project_lost
+								has_state_flag = utopia_manifesto_district_project_delayed
+							}
+						}
+					}
+				}
+				OR = {
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+				}
+			}
+			utopia_ledger_district_state_planned_visible = {
+				has_country_flag = utopia_manifesto_district_plan_committed_recent
+				has_variable = utopia_manifesto_district_project_state
+				NOR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					has_country_flag = utopia_manifesto_district_project_debt
+					has_country_flag = utopia_manifesto_district_survey_found_no_role
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+					var:utopia_manifesto_district_project_state = {
+						OR = {
+							has_state_flag = utopia_manifesto_district_obligations_breached
+							has_state_flag = utopia_manifesto_district_project_refused
+							has_state_flag = utopia_manifesto_district_project_lost
+							has_state_flag = utopia_manifesto_district_project_delayed
+						}
+					}
+				}
+			}
+			utopia_ledger_district_state_building_visible = {
+				has_variable = utopia_manifesto_district_project_state
+				NOT = { has_country_flag = utopia_manifesto_district_plan_committed_recent }
+				NOR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					has_country_flag = utopia_manifesto_district_project_debt
+					has_country_flag = utopia_manifesto_district_survey_found_no_role
+					var:utopia_manifesto_district_project_state = {
+						OR = {
+							has_state_flag = utopia_manifesto_district_obligations_breached
+							has_state_flag = utopia_manifesto_district_project_refused
+							has_state_flag = utopia_manifesto_district_project_lost
+							has_state_flag = utopia_manifesto_district_project_delayed
+						}
+					}
+				}
+				OR = {
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+					check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				}
+			}
+			utopia_ledger_district_state_surveyed_visible = {
+				has_variable = utopia_manifesto_district_project_state
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+				NOT = { has_country_flag = utopia_manifesto_district_plan_committed_recent }
+				NOT = { has_country_flag = utopia_manifesto_district_survey_found_no_role }
+				NOR = {
+					has_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+					has_country_flag = utopia_manifesto_district_project_debt
+					var:utopia_manifesto_district_project_state = {
+						OR = {
+							has_state_flag = utopia_manifesto_district_obligations_breached
+							has_state_flag = utopia_manifesto_district_project_refused
+							has_state_flag = utopia_manifesto_district_project_lost
+							has_state_flag = utopia_manifesto_district_project_delayed
+						}
+					}
+				}
+			}
 			utopia_ledger_seal_visible = {
 				NOR = {
 					has_country_flag = utopia_manifesto_identity_household_congress_emblem

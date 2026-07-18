@@ -24,7 +24,7 @@ DDS_PACKAGE = PACKAGE / "dds"
 CONTACT = PACKAGE / "contact_sheets"
 VALIDATION = PACKAGE / "validation" / "remaining_registered_icons_validation.tsv"
 VALIDATION_SUMMARY = PACKAGE / "validation" / "validation_summary.md"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 CHROMA_HELPER = Path(
     "C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py"
 )

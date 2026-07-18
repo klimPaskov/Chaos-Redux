@@ -67,7 +67,7 @@ python C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.p
 The retained `process_icons.py` then performed only alpha-bound cropping,
 aspect-preserving resize, centered placement, one-pixel dark silhouette, and a
 restrained soft shadow.  It did not draw or replace artwork.  Final conversion
-used `.tools/convert_to_dds.py` with the exact target width and height.
+used `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` with the exact target width and height.
 
 ## Asset registry
 

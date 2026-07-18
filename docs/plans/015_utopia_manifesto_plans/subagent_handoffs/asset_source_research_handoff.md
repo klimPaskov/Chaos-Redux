@@ -1,5 +1,7 @@
 # Event 015 asset source and attribution audit handoff
 
+> Current disposition, 2026-07-15: the quotation and audio conclusions remain current. The route-image blocker recorded later in this dated handoff is closed by the five generated 457x328 route images, their source records, runtime DDS files, and `interface/015_utopia_manifesto_super_event.gfx` registrations. The two older images remain historical assets and are not fallbacks.
+
 Audit date: `2026-07-14`  
 Role: `chaosx_asset_source_researcher`  
 Scope: report/news/super-event image provenance, Thomas More quotation attribution/public-domain compatibility, and Event 015 super-event audio source/licence/uniqueness only

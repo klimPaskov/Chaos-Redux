@@ -1,6 +1,6 @@
 # Event 15 Target Eligibility Matrix
 
-All thresholds are design bands. Exact constants require live-repository balance review.
+All thresholds are implemented through the centralized Event 15 candidate-limit, candidate-threshold, and candidate-score constants. This matrix describes the live gate and score rather than an unresolved tuning proposal.
 
 | Check | Preferred | Eligible | Excluded | Reason |
 | --- | --- | --- | --- | --- |
@@ -36,20 +36,28 @@ Positive weight:
 - low infrastructure
 - small state count
 - stable capital
-- generic tree
-- no major ally
+- independence
+- no faction
 - migration or trade pressure
 - island, coastal, or strong Inland Island context
 
 Negative weight:
 
-- active war
-- high focus completion
+- defensive war
 - subject network
-- strong economy
 - extensive occupied territory
+- major guarantee
+- recent industrial growth
 - recent major event package
 
 ## Manual trigger behavior
 
-Manual force mode can bypass scarcity and ordinary weighting. It should still require an explicit stronger override before targeting a special Chaos country, nonhuman country, protected event package, or invalid country.
+Manual firing bypasses the random ticket draw but uses the same absolute safety boundary. It cannot target a major, industrial power, special or terminal actor, protected or mature tree, active event package, dominant faction leader, civil-war or offensive-war country, near-capitulated country, subject empire, extensive occupier, insecure capital, or unsafe subject.
+
+## Current implementation proof
+
+The live entry selector applies one reusable absolute gate and a bounded dynamic ticket score. It builds separate human-generic, AI-generic, and approved-light-tree arrays, then chooses from the first non-empty class. Acceptance and rejection are explicit player paths, while an AI recipient accepts with certainty. Manual firing remains separate from ordinary weighted selection but retains the absolute gate.
+
+Necessary Ground uses a second, case-specific target pipeline. A case requires a live relevant calling deficit, a valid selected country, a valid selected state, and method-specific reachability. State-transfer methods show and enforce the requirement that the selected target survive the transfer.
+
+The target country and selected state record independent exact reverse founder arrays. Cleanup removes only the current founder and preserves the shared marker while another founder remains. The narrow Event 15 annexation hook snapshots the country array before clearing the annexed country. The one-shot state-control hook snapshots the changed state's case and association-charter founder arrays and dispatches founder-rooted `.165` after one hour for independent validation, allowing a full annexation's `.163` disposition to run first. The private wargoal injects the exact saved state ID and requires ROOT membership in the state array plus ownership by PREV. Country disposition is successor adoption during active stewardship, explicit founder-extinction failure, or clean pre-steward invalidation. The current decision and country reports pass this contract against the repaired source snapshot. The implementation does not authorize a recurring world scan, arbitrary successor search, or silent integration.

@@ -36,7 +36,7 @@ The accepted source files were cover-cropped with Pillow `ImageOps.fit` using La
 
 An in-memory replay of that pipeline reproduced every processed PNG pixel exactly.
 
-Runtime DDS conversion used `.tools/convert_to_dds.py`, whose contract is `BGRA` / `B8G8R8A8_UNORM` with `MIP_LEVELS = "1"`.
+Runtime DDS conversion used `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, whose contract is `BGRA` / `B8G8R8A8_UNORM` with `MIP_LEVELS = "1"`.
 
 ## Accepted assets
 

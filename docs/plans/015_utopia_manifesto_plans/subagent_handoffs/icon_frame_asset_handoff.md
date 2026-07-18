@@ -82,7 +82,7 @@ Created final `64x64` base, `_grey`, and mandated-overlay `_not_eligible` triple
 - `utopia_manifesto_the_stores_remain`
 - `utopia_manifesto_no_one_in_chains`
 
-All `42` explicit aliases are registered as `GFX_achievement_<id>{,_grey,_not_eligible}` in `interface/015_utopia_manifesto.gfx`. The `_not_eligible` files are verified pixel-for-pixel against the grayscale image composited with `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`.
+All `42` explicit aliases are registered as `GFX_achievement_<id>{,_grey,_not_eligible}` in `interface/015_utopia_manifesto.gfx`. The `_not_eligible` files are verified pixel-for-pixel against the grayscale image composited with `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`.
 
 The older `36` `gfx/achievements/015_utopia_*.dds` files were not removed: `docs/plans/015_utopia_manifesto_plans/repo_explorer_handoff.md` still references them, so the parent's deletion condition was not met. They are documented as historical, not current.
 

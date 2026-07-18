@@ -1,5 +1,7 @@
 # Event 015 Documentation Curator Interim
 
+> Superseded status, 2026-07-15: this dated inspection remains useful provenance, but its current-state conclusions are superseded by `docs/events/015_utopia_manifesto.md`, the rebuilt asset manifest, the implementation proof matrix, and `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md`.
+
 Date: `2026-07-14`
 
 Role: `chaosx_documentation_curator`

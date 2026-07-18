@@ -61,7 +61,7 @@ Chaos Redux reference assets inspected before generation: `.agents/skills/chaos-
 - Source preservation: generated PNGs copied unchanged from the independent built-in imagegen outputs into `source_png/`.
 - Transparency processing: `remove_chroma_key.py --auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill`, using the generated flat `#00ff00` key background.
 - Final PNG processing: FFmpeg Lanczos resize to exact 64x64 RGBA PNG.
-- DDS conversion: repository `.tools/convert_to_dds.py`, which used its standard FFmpeg BGRA fallback because `texconv` was unavailable.
+- DDS conversion: repository `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, which used its standard FFmpeg BGRA fallback because `texconv` was unavailable.
 - DDS header: `DDS ` magic; header size 124; flags 4111; width/height 64x64; pitch 256; pixel-format size 32; flags 65; fourCC 0; bits 32; masks `0x00FF0000/0x0000FF00/0x000000FF/0xFF000000`; texture caps `0x00001000`; no mipmaps; no caps2 flags.
 - Payload: exact `128 + 64*64*4 = 16,512` bytes for both archive and runtime DDS files.
 - Identity: each archive/runtime pair is byte-identical; the two final DDS SHA-256 hashes are distinct.

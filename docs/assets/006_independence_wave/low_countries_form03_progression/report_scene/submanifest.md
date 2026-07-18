@@ -55,7 +55,7 @@ That standard profile produced the 210x176 RGBA sepia and black-and-white report
 
 The processed PNG was converted with:
 
-    python .tools/convert_to_dds.py --input <processed> --output gfx/event_pictures/006_independence_wave/report_event_006_form03_charter_convention.dds --width 210 --height 176
+    python .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <processed> --output gfx/event_pictures/006_independence_wave/report_event_006_form03_charter_convention.dds --width 210 --height 176
 
 The output is a one-level legacy uncompressed 32-bit BGRA DDS.
 

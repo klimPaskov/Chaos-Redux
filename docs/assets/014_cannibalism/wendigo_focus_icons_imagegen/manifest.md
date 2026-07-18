@@ -23,7 +23,7 @@ No source is a stock icon, borrowed focus icon, locally drawn placeholder, recol
 
 The dedicated focus-reference folder named by the asset skill was absent. The reference set therefore used vanilla HOI4 focus art, the existing Event 014 imagegen focus family, and the established Chaos Redux Wendigo palette and body-horror presentation. The accepted prompts explicitly exclude antlers, deer skulls, dreamcatchers, totem poles, headdresses, medicine wheels, sacred objects, tribal runes, ceremonial regalia, and insignia borrowed from living Indigenous traditions. They also exclude real-world political and military insignia, text, logos, and identifiable real victims.
 
-Every source was generated against a flat #ff00ff field. The installed imagegen chroma-removal helper created the alpha masters. Local processing only cropped transparent margins, resized, added a consistent one-pixel dark outline and subtle shadow, applied mild contrast/sharpening for final-size legibility, and converted the accepted PNGs with `.tools/convert_to_dds.py`.
+Every source was generated against a flat #ff00ff field. The installed imagegen chroma-removal helper created the alpha masters. Local processing only cropped transparent margins, resized, added a consistent one-pixel dark outline and subtle shadow, applied mild contrast/sharpening for final-size legibility, and converted the accepted PNGs with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 
 ## Hash definitions
 

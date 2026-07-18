@@ -18,5 +18,6 @@ Create separate source art and final packages for:
 - achievement icons, 64 by 64 with completed, grey, and not-eligible variants
 - Ledger value icons and calling icons
 - Ledger seal, Need warning, balance-shift, and formation-ready animated sprites
+- all implemented advisor dossier icons at `65x67`, using one independent fictional ImageGen portrait master per advisor plus separate generated frame and paper/seal overlays
 
-Do not derive one icon type by resizing another. Transparent assets need real transparency. Animated assets need real source frames, static fallback, sheet, DDS, GIF review, contact sheet, manifest, and GFX handoff. Do not edit GFX or gameplay files.
+Do not derive one icon type by resizing another. Advisor processing may only crop, grade, angle, derive alpha shadows, composite generated layers, resize, validate, and export; it must not draw the visible dossier card. Transparent assets need real transparency. Animated assets need real source frames, static fallback, sheet, DDS, GIF review, contact sheet, manifest, and GFX handoff. Do not edit GFX or gameplay files.

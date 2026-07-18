@@ -124,7 +124,7 @@ The 16 separated particle source frames live under `source_png/particles/source_
 
 Raster conversion used Microsoft DirectXTex `texconv.exe`, version `2026.5.8.1` (DirectXTex May 2026). Executable SHA-256 at build time: `DCFDEC10244E02CF5037FBA089C55FB7E1326B1C8181742D77D15FA5CB5EEF06`. The executable was used from a temporary tool location and is not committed.
 
-The build forced `TEXCONV_PATH` into `.tools/convert_to_dds.py`. The fallback converter path was not used. Final regional material/prop/static-mesh textures are 256x256. Particle atlases are 1024x256. Grade plates are 512x512. `build_report.json` records every final DDS width, height, byte count, and the source-image hashes.
+The build forced `TEXCONV_PATH` into `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. The fallback converter path was not used. Final regional material/prop/static-mesh textures are 256x256. Particle atlases are 1024x256. Grade plates are 512x512. `build_report.json` records every final DDS width, height, byte count, and the source-image hashes.
 
 Meshes were exported through Blender 5.1 and the installed PDX mesh exporter. `mesh_export_report.json` records 85 mesh hashes and exact material bindings: 54 `PdxMeshAdvanced` meshes and 31 `PdxMeshAlphaBlend` meshes. Text-form exports under `mesh_exports/` provide inspectable proof of diffuse, specular, normal, vertex, UV, and shader data. `source_blend/air_winter_regional_mesh_templates.blend` is the editable scene source.
 

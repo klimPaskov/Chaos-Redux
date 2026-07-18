@@ -1,5 +1,7 @@
 # Unresolved Verification Blockers
 
+> Historical planning snapshot: these environment blockers were resolved in the mounted live repository. The offline wiki, vanilla documentation, repository precedents, implementation files, assets, and audit surfaces were consulted during implementation. This file is retained as provenance and does not describe current blockers. Current gates are recorded in `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md`.
+
 These are environment blockers from the planning run. They are not design omissions.
 
 ## Repository file map
@@ -52,9 +54,7 @@ Required resolution:
 
 ## Asset production
 
-Most final icon, flag, report/news, GUI, and animation packages now exist under `docs/assets/015_utopia_manifesto/` and their runtime folders. The source audit dated `2026-07-14` confirms preserved OpenAI `image_gen` masters, prompts, processed previews, final DDS files, and SHA-256 records for the installed opening report, boundary-crisis news image, and two legacy super-event images.
-
-The current route-specific super-event image package remains blocked. `interface/015_utopia_manifesto_super_event.gfx` and display slots `96`-`100` require five DDS files that do not exist:
+Historical blocked state, resolved: at the time of this planning snapshot, `interface/015_utopia_manifesto_super_event.gfx` and display slots `96`-`100` required five DDS files that did not yet exist:
 
 - `gfx/super_events/015_utopia_manifesto/super_event_015_consent_of_households.dds`
 - `gfx/super_events/015_utopia_manifesto/super_event_015_common_table.dds`
@@ -62,13 +62,7 @@ The current route-specific super-event image package remains blocked. `interface
 - `gfx/super_events/015_utopia_manifesto/super_event_015_closed_island.dds`
 - `gfx/super_events/015_utopia_manifesto/super_event_015_joke_understood.dds`
 
-Prompts exist for all five, but no generated source PNG, processed PNG, package DDS, runtime DDS, or checksum record exists. The two installed legacy super-event images do not satisfy these route sprites.
-
-Required resolution:
-
-- generate each of the five route-specific masters from its recorded prompt
-- preserve each source PNG, process to `457x328`, export each final DDS, and add source/final checksums and sprite rows to the manifest
-- do not silently reuse either legacy super-event image as a fallback
+All five route-specific masters, processed PNGs, final DDS files, source records, checksums, sprite registrations, and route mappings now exist. The two legacy images are unregistered historical files and are not fallbacks. Current evidence is in `docs/assets/015_utopia_manifesto/manifest.md`, `docs/assets/015_utopia_manifesto/gfx_handoff.md`, and the completion coverage matrix.
 
 ## Super-event research package
 
@@ -82,10 +76,9 @@ Text and audio research are complete and integrated.
 - catalogue: active row in `music/chaosx_music_track_list.html`
 - uniqueness: no matching cue under any other event in the current `54`-OGG and `52`-WAV scan; the only WAV match is the expected Event 015 mirror
 
-Required resolution:
+Resolved disposition:
 
-- no text-source, audio-source, licence, attribution, or uniqueness action remains
-- finish the five blocked route-specific images before calling the overall super-event package complete
+- no text-source, audio-source, licence, attribution, uniqueness, or route-image action remains
 
 ## Workbook
 

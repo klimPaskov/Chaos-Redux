@@ -20,7 +20,7 @@ PROCESSED = PACKAGE / "processed_png" / "decisions"
 DECODED = PACKAGE / "dds_decoded_png" / "decisions"
 CONTACT = PACKAGE / "contact_sheets" / "air_winter_decision_icons_dds_decoded_contact_sheet.png"
 RUNTIME = ROOT / "gfx" / "interface" / "air_cleanliness_winter" / "decisions"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 APPROVED_TEXCONV = Path(
     "C:/Users/klimp/AppData/Local/Temp/chaos_redux_tools/texconv-may2026.exe"
 )

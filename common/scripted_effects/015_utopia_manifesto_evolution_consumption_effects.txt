@@ -1,0 +1,1005 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 EVOLUTION CONSUMPTION EFFECTS
+# ============================================================================
+# Idempotent interpretation setup plus a single bounded policy-obligation
+# lifecycle shared by all fifteen evolution options. Active event options and
+# explicit prepared prefire choices enter through the same setup dispatcher.
+# Ordinary setting-enabled prefire snapshots remain staged for later delivery.
+# ============================================================================
+
+# Input: temporary utopia_manifesto_evolution_choice_input.
+# Output: temporary utopia_manifesto_evolution_choice_applied (0/1).
+# Each stage accepts exactly one interpretation. Repeating the same prepared
+# choice is idempotent; a later conflicting choice cannot replace the first.
+utopia_manifesto_apply_prepared_evolution_choice = {
+	set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.zero }
+
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+			OR = {
+				has_country_flag = utopia_manifesto_interpretation_schools_open
+				NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_glosses_choice_setup
+			set_country_flag = utopia_manifesto_interpretation_schools_open
+			set_country_flag = utopia_manifesto_open_interpretation
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+			OR = {
+				has_country_flag = utopia_manifesto_interpretation_schools_chartered
+				NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_glosses_choice_setup
+			set_country_flag = utopia_manifesto_interpretation_schools_chartered
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+			OR = {
+				has_country_flag = utopia_manifesto_conduct_margins_censored
+				NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_glosses_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_glosses_choice_setup
+			set_country_flag = utopia_manifesto_conduct_margins_censored
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+			OR = {
+				has_country_flag = utopia_manifesto_necessary_shores_domestic_alternative
+				NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_shores_choice_setup
+			set_country_flag = utopia_manifesto_necessary_shores_domestic_alternative
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+			OR = {
+				has_country_flag = utopia_manifesto_necessary_shores_peaceful_priority
+				NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_shores_choice_setup
+			set_country_flag = utopia_manifesto_necessary_shores_peaceful_priority
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+			OR = {
+				has_country_flag = utopia_manifesto_necessary_shores_emergency_powers
+				NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_shores_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_shores_choice_setup
+			set_country_flag = utopia_manifesto_necessary_shores_emergency_powers
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+			OR = {
+				has_country_flag = utopia_manifesto_cities_local_charters
+				NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_cities_choice_setup
+			set_country_flag = utopia_manifesto_cities_local_charters
+			utopia_manifesto_link_garden_district_network = yes
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+			OR = {
+				has_country_flag = utopia_manifesto_cities_linked_standard
+				NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_cities_choice_setup
+			set_country_flag = utopia_manifesto_cities_linked_standard
+			utopia_manifesto_link_garden_district_network = yes
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+			OR = {
+				has_country_flag = utopia_manifesto_cities_foreign_circle
+				NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_cities_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_cities_choice_setup
+			set_country_flag = utopia_manifesto_cities_foreign_circle
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+			OR = {
+				has_country_flag = utopia_manifesto_nowhere_law_plural
+				NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_nowhere_choice_setup
+			set_country_flag = utopia_manifesto_nowhere_law_plural
+			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+			OR = {
+				has_country_flag = utopia_manifesto_nowhere_law_sponsored
+				NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_nowhere_choice_setup
+			set_country_flag = utopia_manifesto_nowhere_law_sponsored
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+			OR = {
+				has_country_flag = utopia_manifesto_nowhere_law_route_propaganda
+				NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_nowhere_choice_setup
+			set_country_flag = utopia_manifesto_nowhere_law_route_propaganda
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+			NOT = { utopia_manifesto_is_closed_island_route = yes }
+			OR = {
+				has_country_flag = utopia_manifesto_perfect_island_refuge_network
+				NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_perfect_choice_setup
+			set_country_flag = utopia_manifesto_perfect_island_refuge_network
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.large }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+			OR = {
+				has_country_flag = utopia_manifesto_perfect_island_bounded_self_sufficiency
+				NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_perfect_choice_setup
+			set_country_flag = utopia_manifesto_perfect_island_bounded_self_sufficiency
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+			utopia_manifesto_is_closed_island_route = yes
+			OR = {
+				has_country_flag = utopia_manifesto_perfect_island_closed_order
+				NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_evolution_perfect_choice_setup } }
+			set_country_flag = utopia_manifesto_evolution_perfect_choice_setup
+			set_country_flag = utopia_manifesto_perfect_island_closed_order
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one }
+	}
+
+	set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.none }
+}
+
+# Consumes only an explicit country-scoped prepared token. Merely enabling an
+# evolution in the prefire snapshot does not set this token and therefore does
+# not skip staged delivery. The explicit path shares the setup dispatcher and
+# records the corresponding stage only after setup succeeds.
+utopia_manifesto_consume_one_prepared_prefire_evolution_choice = {
+	if = {
+		limit = {
+			has_variable = utopia_manifesto_prefire_evolution_choice
+			NOT = {
+				AND = {
+					utopia_manifesto_has_unresolved_route = yes
+					OR = {
+						check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+						check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+						check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+					}
+				}
+			}
+		}
+		set_temp_variable = { utopia_manifesto_evolution_choice_input = utopia_manifesto_prefire_evolution_choice }
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						utopia_manifesto_glosses_delivery_is_enabled = yes
+						OR = {
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+						}
+					}
+					AND = {
+						utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+						OR = {
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+						}
+					}
+					AND = {
+						utopia_manifesto_cities_delivery_is_enabled = yes
+						OR = {
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+						}
+					}
+					AND = {
+						utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+						OR = {
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+						}
+					}
+					AND = {
+						utopia_manifesto_perfect_island_delivery_is_enabled = yes
+						OR = {
+							AND = { check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_refuge_network } NOT = { utopia_manifesto_is_closed_island_route = yes } }
+							check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+							AND = { check_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_closed_order } utopia_manifesto_is_closed_island_route = yes }
+						}
+					}
+				}
+			}
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			if = {
+				limit = { check_variable = { utopia_manifesto_evolution_choice_applied = constant:utopia_manifesto_math.one } }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+						}
+						NOT = { has_country_flag = utopia_manifesto_evolution_glosses_recorded }
+					}
+					utopia_manifesto_apply_glosses_in_the_margin_evolution = yes
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+						}
+						NOT = { has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded }
+					}
+					utopia_manifesto_apply_necessary_shores_evolution = yes
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+						}
+						NOT = { has_country_flag = utopia_manifesto_evolution_cities_recorded }
+					}
+					utopia_manifesto_apply_cities_of_one_measure_evolution = yes
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+						}
+						NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_law_recorded }
+					}
+					utopia_manifesto_apply_nowhere_made_law_evolution = yes
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+							check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+						}
+						NOT = { has_country_flag = utopia_manifesto_evolution_perfect_island_recorded }
+					}
+					utopia_manifesto_apply_perfect_island_evolution = yes
+				}
+			}
+		}
+		else = { set_country_flag = utopia_manifesto_evolution_disabled_before_delivery }
+		clear_variable = utopia_manifesto_prefire_evolution_choice
+	}
+}
+
+# A scenario may prepare one explicit choice per accepted stage. Each token is
+# consumed independently through the one-choice validator above, so multiple
+# genuinely pre-delivered evolutions remain possible without treating enabled
+# settings as choices. The generic token remains available for a one-off call.
+utopia_manifesto_consume_prepared_prefire_evolution_choice = {
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_evolution_choice }
+		utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_glosses_choice }
+		set_variable = { utopia_manifesto_prefire_evolution_choice = utopia_manifesto_prefire_glosses_choice }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+				}
+			}
+			utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+		}
+		else = {
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+			set_country_flag = utopia_manifesto_evolution_disabled_before_delivery
+		}
+		clear_variable = utopia_manifesto_prefire_glosses_choice
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_shores_choice }
+		set_variable = { utopia_manifesto_prefire_evolution_choice = utopia_manifesto_prefire_shores_choice }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+				}
+			}
+			utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+		}
+		else = {
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+			set_country_flag = utopia_manifesto_evolution_disabled_before_delivery
+		}
+		clear_variable = utopia_manifesto_prefire_shores_choice
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_cities_choice }
+		set_variable = { utopia_manifesto_prefire_evolution_choice = utopia_manifesto_prefire_cities_choice }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+				}
+			}
+			utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+		}
+		else = {
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+			set_country_flag = utopia_manifesto_evolution_disabled_before_delivery
+		}
+		clear_variable = utopia_manifesto_prefire_cities_choice
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_nowhere_choice }
+		set_variable = { utopia_manifesto_prefire_evolution_choice = utopia_manifesto_prefire_nowhere_choice }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+				}
+			}
+			utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+		}
+		else = {
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+			set_country_flag = utopia_manifesto_evolution_disabled_before_delivery
+		}
+		clear_variable = utopia_manifesto_prefire_nowhere_choice
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_prefire_perfect_choice }
+		set_variable = { utopia_manifesto_prefire_evolution_choice = utopia_manifesto_prefire_perfect_choice }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+					check_variable = { utopia_manifesto_prefire_evolution_choice = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+				}
+			}
+			utopia_manifesto_consume_one_prepared_prefire_evolution_choice = yes
+		}
+		else = {
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+			set_country_flag = utopia_manifesto_evolution_disabled_before_delivery
+		}
+		if = {
+			limit = { has_variable = utopia_manifesto_prefire_evolution_choice }
+			clear_variable = utopia_manifesto_prefire_evolution_choice
+		}
+		else = { clear_variable = utopia_manifesto_prefire_perfect_choice }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# One bounded policy-obligation lifecycle
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_pay_evolution_policy_action_cost = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+			}
+		}
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+			}
+		}
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+		set_temp_variable = { utopia_manifesto_cost_trains = constant:utopia_manifesto_decision_cost.trains_small }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+			}
+		}
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+		set_temp_variable = { utopia_manifesto_cost_convoys = constant:utopia_manifesto_decision_cost.convoys_small }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+			}
+		}
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+		set_temp_variable = { utopia_manifesto_cost_command_power = constant:utopia_manifesto_decision_cost.command_power_small }
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_emergency_powers } }
+		set_temp_variable = { utopia_manifesto_cost_infantry = constant:utopia_manifesto_decision_cost.infantry_medium }
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+		set_temp_variable = { utopia_manifesto_cost_command_power = constant:utopia_manifesto_decision_cost.command_power_small }
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_refuge_network } }
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_large }
+		set_temp_variable = { utopia_manifesto_cost_convoys = constant:utopia_manifesto_decision_cost.convoys_medium }
+		set_temp_variable = { utopia_manifesto_cost_trains = constant:utopia_manifesto_decision_cost.trains_small }
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_closed_order } }
+		set_temp_variable = { utopia_manifesto_cost_infantry = constant:utopia_manifesto_decision_cost.infantry_large }
+		set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
+		set_temp_variable = { utopia_manifesto_cost_command_power = constant:utopia_manifesto_decision_cost.command_power_medium }
+		set_temp_variable = { utopia_manifesto_cost_stability = constant:utopia_manifesto_decision_cost.stability_small }
+	}
+	utopia_manifesto_pay_prepared_decision_cost = yes
+}
+
+utopia_manifesto_prepare_evolution_policy_action_duration = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+			}
+		}
+		utopia_manifesto_prepare_survey_decision_duration = yes
+		set_variable = { utopia_manifesto_evolution_policy_action_days = utopia_manifesto_survey_days }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+			}
+		}
+		utopia_manifesto_prepare_case_decision_duration = yes
+		set_variable = { utopia_manifesto_evolution_policy_action_days = utopia_manifesto_case_days }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+			}
+		}
+		utopia_manifesto_prepare_district_decision_duration = yes
+		set_variable = { utopia_manifesto_evolution_policy_action_days = utopia_manifesto_district_days }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+			}
+		}
+		utopia_manifesto_prepare_league_decision_duration = yes
+		set_variable = { utopia_manifesto_evolution_policy_action_days = utopia_manifesto_league_days }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+				check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+			}
+		}
+		utopia_manifesto_prepare_island_decision_duration = yes
+		set_variable = { utopia_manifesto_evolution_policy_action_days = utopia_manifesto_island_days }
+	}
+}
+
+utopia_manifesto_apply_evolution_policy_action_start = {
+	if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_open_schools } }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools } }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_censored_margins } }
+		set_country_flag = utopia_manifesto_conduct_censorship
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative } }
+		add_to_variable = { utopia_manifesto_case_integrity = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_case_local_support_delta = constant:utopia_manifesto_narrative_delta.medium }
+		utopia_manifesto_apply_prepared_case_local_support_delta = yes
+		clamp_variable = { var = utopia_manifesto_case_integrity min = constant:utopia_manifesto_case_limits.integrity_minimum max = constant:utopia_manifesto_case_limits.integrity_maximum }
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority } }
+		add_to_variable = { utopia_manifesto_case_integrity = constant:utopia_manifesto_narrative_delta.medium }
+		set_temp_variable = { utopia_manifesto_case_local_support_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_case_local_support_delta = yes
+		clamp_variable = { var = utopia_manifesto_case_integrity min = constant:utopia_manifesto_case_limits.integrity_minimum max = constant:utopia_manifesto_case_limits.integrity_maximum }
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_emergency_powers } }
+		subtract_from_variable = { utopia_manifesto_case_integrity = constant:utopia_manifesto_narrative_delta.medium }
+		set_temp_variable = { utopia_manifesto_case_local_support_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_case_local_support_delta = yes
+		clamp_variable = { var = utopia_manifesto_case_integrity min = constant:utopia_manifesto_case_limits.integrity_minimum max = constant:utopia_manifesto_case_limits.integrity_maximum }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_local_charters } }
+		utopia_manifesto_link_garden_district_network = yes
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_linked_standard } }
+		utopia_manifesto_link_garden_district_network = yes
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_foreign_circle } }
+		set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_plural_law } }
+		set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.medium }
+		utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law } }
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda } }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_refuge_network } }
+		set_country_flag = utopia_manifesto_evolution_refuge_intake_obligation
+		set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency } }
+		set_country_flag = utopia_manifesto_evolution_reserve_target_raised
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_closed_order } }
+		set_country_flag = utopia_manifesto_conduct_household_confined
+		set_country_flag = utopia_manifesto_evolution_closed_order_reserve_hoarding
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+}
+
+# Input: temporary utopia_manifesto_evolution_policy_action_input.
+utopia_manifesto_start_prepared_evolution_policy_action = {
+	if = {
+		limit = {
+			utopia_manifesto_can_start_evolution_policy_action = yes
+			has_variable = utopia_manifesto_evolution_policy_action_input
+		}
+		set_variable = { utopia_manifesto_evolution_policy_action = utopia_manifesto_evolution_policy_action_input }
+		set_country_flag = utopia_manifesto_evolution_policy_action_active
+		if = {
+			limit = { utopia_manifesto_evolution_policy_action_is_supported = yes }
+			utopia_manifesto_pay_evolution_policy_action_cost = yes
+			utopia_manifesto_prepare_evolution_policy_action_duration = yes
+			utopia_manifesto_apply_evolution_policy_action_start = yes
+			activate_mission = mission_utopia_evolution_policy_obligation
+		}
+		else = { utopia_manifesto_cancel_evolution_policy_action = yes }
+	}
+	set_temp_variable = { utopia_manifesto_evolution_policy_action_input = constant:utopia_manifesto_evolution_choice.none }
+}
+
+utopia_manifesto_apply_evolution_policy_action_completion = {
+	if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_open_schools } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.learning_and_care }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.open_call }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		set_country_flag = utopia_manifesto_evolution_public_audit_completed
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.civic_works }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.guaranteed_placement }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		set_country_flag = utopia_manifesto_evolution_charter_consolidated
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.glosses_censored_margins } }
+		if = {
+			limit = { utopia_manifesto_concord_is_cooperative = yes }
+			set_country_flag = utopia_manifesto_evolution_censorship_resisted
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+		else = {
+			set_country_flag = utopia_manifesto_data_scandal
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = utopia_manifesto_case_family }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.open_call }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+		set_country_flag = utopia_manifesto_evolution_domestic_repair_completed
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority } }
+		set_country_flag = utopia_manifesto_case_peaceful_steps_restored
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.shores_emergency_powers } }
+		set_country_flag = utopia_manifesto_evolution_emergency_case_exception_used
+		set_country_flag = utopia_manifesto_foreign_opposition_from_case_shortcut
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+		if = {
+			limit = { utopia_manifesto_league_decisions_are_unlocked = yes }
+			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_local_charters } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.civic_works }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.open_call }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		if = {
+			limit = { utopia_manifesto_league_decisions_are_unlocked = yes }
+			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_linked_standard } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.workshops }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.guaranteed_placement }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		if = {
+			limit = { has_country_flag = utopia_manifesto_conduct_data_suppression }
+			set_country_flag = utopia_manifesto_data_scandal
+		}
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.cities_foreign_circle } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.open_call }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_plural_law } }
+		set_country_flag = utopia_manifesto_evolution_plural_obligation_fulfilled
+		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+		set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law } }
+		set_country_flag = utopia_manifesto_evolution_sponsor_obligation_fulfilled
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.medium }
+		utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda } }
+		set_country_flag = utopia_manifesto_evolution_route_propaganda_condemned
+		set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+		utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_refuge_network } }
+		clr_country_flag = utopia_manifesto_evolution_refuge_intake_obligation
+		set_country_flag = utopia_manifesto_evolution_refuge_intake_fulfilled
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.guaranteed_placement }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.provisioning }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.guaranteed_placement }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		if = {
+			limit = { utopia_manifesto_reserve_is_secure = yes }
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+		}
+		else = { set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small } }
+		utopia_manifesto_apply_prepared_ledger_delta = yes
+	}
+	else_if = {
+		limit = { check_variable = { utopia_manifesto_evolution_policy_action = constant:utopia_manifesto_evolution_choice.perfect_closed_order } }
+		set_temp_variable = { utopia_manifesto_calling_family_input = constant:utopia_manifesto_calling_family.defense_and_watches }
+		set_temp_variable = { utopia_manifesto_calling_severity_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+		set_temp_variable = { utopia_manifesto_calling_method_input = constant:utopia_manifesto_calling_method.assignment_quota }
+		utopia_manifesto_apply_prepared_calling_change = yes
+		if = {
+			limit = { NOT = { utopia_manifesto_concord_is_cooperative = yes } }
+			set_country_flag = utopia_manifesto_assignment_revolt
+		}
+		else_if = {
+			limit = { utopia_manifesto_league_decisions_are_unlocked = yes }
+			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+		}
+	}
+}
+
+utopia_manifesto_cancel_evolution_policy_action = {
+	clr_country_flag = utopia_manifesto_evolution_policy_action_active
+	clear_variable = utopia_manifesto_evolution_policy_action
+	clear_variable = utopia_manifesto_evolution_policy_action_days
+}
+
+utopia_manifesto_complete_evolution_policy_action = {
+	if = {
+		limit = { utopia_manifesto_evolution_policy_action_is_supported = yes }
+		utopia_manifesto_apply_evolution_policy_action_completion = yes
+	}
+	utopia_manifesto_cancel_evolution_policy_action = yes
+}
+
+utopia_manifesto_clear_evolution_consumption_runtime = {
+	remove_mission = mission_utopia_evolution_policy_obligation
+	utopia_manifesto_cancel_evolution_policy_action = yes
+	clear_variable = utopia_manifesto_prefire_evolution_choice
+	clear_variable = utopia_manifesto_prefire_glosses_choice
+	clear_variable = utopia_manifesto_prefire_shores_choice
+	clear_variable = utopia_manifesto_prefire_cities_choice
+	clear_variable = utopia_manifesto_prefire_nowhere_choice
+	clear_variable = utopia_manifesto_prefire_perfect_choice
+
+	clr_country_flag = utopia_manifesto_evolution_glosses_choice_setup
+	clr_country_flag = utopia_manifesto_evolution_shores_choice_setup
+	clr_country_flag = utopia_manifesto_evolution_cities_choice_setup
+	clr_country_flag = utopia_manifesto_evolution_nowhere_choice_setup
+	clr_country_flag = utopia_manifesto_evolution_perfect_choice_setup
+
+	clr_country_flag = utopia_manifesto_interpretation_schools_open
+	clr_country_flag = utopia_manifesto_interpretation_schools_chartered
+	clr_country_flag = utopia_manifesto_conduct_margins_censored
+	clr_country_flag = utopia_manifesto_necessary_shores_domestic_alternative
+	clr_country_flag = utopia_manifesto_necessary_shores_peaceful_priority
+	clr_country_flag = utopia_manifesto_necessary_shores_emergency_powers
+	clr_country_flag = utopia_manifesto_cities_local_charters
+	clr_country_flag = utopia_manifesto_cities_linked_standard
+	clr_country_flag = utopia_manifesto_cities_foreign_circle
+	clr_country_flag = utopia_manifesto_nowhere_law_plural
+	clr_country_flag = utopia_manifesto_nowhere_law_sponsored
+	clr_country_flag = utopia_manifesto_nowhere_law_route_propaganda
+	clr_country_flag = utopia_manifesto_perfect_island_refuge_network
+	clr_country_flag = utopia_manifesto_perfect_island_bounded_self_sufficiency
+	clr_country_flag = utopia_manifesto_perfect_island_closed_order
+
+	clr_country_flag = utopia_manifesto_evolution_public_audit_completed
+	clr_country_flag = utopia_manifesto_evolution_charter_consolidated
+	clr_country_flag = utopia_manifesto_evolution_censorship_resisted
+	clr_country_flag = utopia_manifesto_evolution_domestic_repair_completed
+	clr_country_flag = utopia_manifesto_evolution_emergency_case_exception_used
+	clr_country_flag = utopia_manifesto_evolution_plural_obligation_fulfilled
+	clr_country_flag = utopia_manifesto_evolution_sponsor_obligation_fulfilled
+	clr_country_flag = utopia_manifesto_evolution_route_propaganda_condemned
+	clr_country_flag = utopia_manifesto_evolution_refuge_intake_obligation
+	clr_country_flag = utopia_manifesto_evolution_refuge_intake_fulfilled
+	clr_country_flag = utopia_manifesto_evolution_reserve_target_raised
+	clr_country_flag = utopia_manifesto_evolution_closed_order_reserve_hoarding
+}

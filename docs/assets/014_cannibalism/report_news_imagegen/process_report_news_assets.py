@@ -27,7 +27,7 @@ CONTACTS = PACKAGE / "contact_sheets"
 VALIDATION = PACKAGE / "validation" / "report_news_asset_validation.tsv"
 GFX_HANDOFF = PACKAGE / "validation" / "report_news_gfx_handoff.tsv"
 LIVE = ROOT / "gfx" / "event_pictures" / "014_cannibalism"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 
 
 @dataclass(frozen=True)

@@ -31,7 +31,7 @@ The report-event references under `.agents/skills/chaos-redux-event-assets/asset
 - Final DDS format: legacy one-level uncompressed 32-bit BGRA/B8G8R8A8, `210x176`, 128-byte DDS header, no mipmaps, `147,968` bytes.
 - Report treatment: `192x153` documentary card on a transparent `210x176` canvas, 2-pixel paper border, soft shadow at `(4, 5)`, shadow blur `4.5`, opacity `0.50`, grain `6`, paper grain `2`, 4x rotation supersampling, edge soften `0.35`.
 - Processing tool: `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py`.
-- DDS converter: `.tools/convert_to_dds.py`. `texconv` was not available on `PATH`, so the converter used its supported ffmpeg raw-BGRA backend. The resulting files pass the complete legacy-header and exact-length checks below.
+- DDS converter: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. `texconv` was not available on `PATH`, so the converter used its supported ffmpeg raw-BGRA backend. The resulting files pass the complete legacy-header and exact-length checks below.
 - Contact sheet: `docs/assets/fallout_world_end/living_world_pilot/contact_sheets/fallout_living_world_pilot_report_events_contact_sheet.png`, RGB PNG, `1420x1435`, SHA-256 `1ed7492865e512f3ee89497287f04e2682f8ae1fddae0c2ab6c6d30b31128b53`.
 - Rights and provenance: each master was generated in this Codex task by OpenAI built-in ImageGen on 2026-07-15. No external source image, named person, brand asset, or third-party visual reference was supplied to the model. The depicted people and places are fictional. Project use and distribution remain subject to the applicable OpenAI output terms and repository distribution policy; this manifest records provenance and is not legal advice.
 

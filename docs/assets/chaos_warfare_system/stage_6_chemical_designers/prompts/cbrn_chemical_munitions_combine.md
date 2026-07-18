@@ -18,4 +18,4 @@ Constraints: create the requested subject as a real generated raster source imag
 Avoid: any text or letters, national flag, company logo, national emblem, skull, modern biohazard symbol, radiation trefoil, medical cross, contemporary PPE, generic bomb-lock icon, UI labels, frame, checkerboard, gradient background, opaque non-green square background.
 ```
 
-Processing record: source PNG preserved at native generated size, green chroma removed with `C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py` using border auto-key, soft matte, despill, and thresholds 12/220; final preview resized to 64x64 with FFmpeg Lanczos RGBA encoding; DDS converted with the repository `.tools/convert_to_dds.py` workflow.
+Processing record: source PNG preserved at native generated size, green chroma removed with `C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py` using border auto-key, soft matte, despill, and thresholds 12/220; final preview resized to 64x64 with FFmpeg Lanczos RGBA encoding; DDS converted with the repository `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` workflow.

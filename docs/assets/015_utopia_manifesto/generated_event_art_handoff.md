@@ -1,5 +1,7 @@
 # Event 015 Utopian Manifesto generated event art handoff
 
+> Historical package notice, `2026-07-15`: this first-generation record is superseded for current coverage by `final_non_icon_2026_07_14/manifest.md`. All five route images exist and are registered. The two images documented here remain historical assets and are not fallbacks.
+
 Source mode: generated non-icon bitmap art through official `image_gen`
 Prompt record: `docs/assets/015_utopia_manifesto/prompts/generated_event_art_prompts.md`
 Contact sheets:
@@ -92,5 +94,5 @@ Provenance note: these are fictional generated scenes with no internet source im
 
 - `utopia_ledger_header_plate` and `utopia_ledger_warning_panel` are safe static derivatives, not implementation-proven sliced GUI states.
 - The super-event images were normalized to monochrome for readability and consistency with existing repo super-event art. If the implementation later prefers warmer sepia or color treatment, these would need a targeted reprocess, not a gameplay change.
-- The repo DDS helper needed a small local bug fix in `.tools/convert_to_dds.py` before standard conversion succeeded. That fix is included in this change set.
+- The repo DDS helper needed a small local bug fix before standard conversion succeeded. The corrected converter now lives at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; the former `.tools/convert_to_dds.py` path was removed and is not an active workflow.
 - The two documented super-event images are legacy assets from the superseded two-image presentation. Current slots `96`-`100` select five different route-specific sprites registered in `interface/015_utopia_manifesto_super_event.gfx`; those five images have prompt records only and remain blocked until generated source, processed, DDS, and checksum evidence exists.

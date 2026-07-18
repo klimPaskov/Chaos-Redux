@@ -1,5 +1,7 @@
 # Event 015 super-event audio researcher handoff
 
+> Current disposition, `2026-07-15`: the visual blocker recorded later in this dated audio handoff is closed. The five route-specific DDS files exist and are registered. Audio ID 57 and the source, licence, and uniqueness evidence remain authoritative.
+
 > Integration audit, `2026-07-14`: the package is implemented under playback audio ID `57`. The final OGG and Event 015 WAV mirror, music helpers, sound wrappers, localisation, script constant, settings-aware playback, and music-catalogue row are present. Current verification and checksums are canonical in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
 
 ## Final result

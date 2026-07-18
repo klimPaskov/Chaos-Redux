@@ -129,18 +129,28 @@ focus_tree = {
 		y = 3
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_first_common_store_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_first_common_store
-			utopia_manifesto_unlock_reserve_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_first_common_store
+				utopia_manifesto_unlock_reserve_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				country_event = { id = chaosx.nr15.13 }
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_urgent }
@@ -186,6 +196,7 @@ focus_tree = {
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
 			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
+			country_event = { id = chaosx.nr15.4 }
 		}
 
 		ai_will_do = { factor = @utopia_ai_urgent }
@@ -212,6 +223,7 @@ focus_tree = {
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
 			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
+			country_event = { id = chaosx.nr15.12 }
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -259,7 +271,12 @@ focus_tree = {
 			focus = utopia_manifesto_one_island_one_measure
 			focus = utopia_manifesto_read_island_as_a_mirror
 		}
-		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_consent }
+		bypass = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_household_gives_consent_bypass_tt
+				has_country_flag = utopia_manifesto_crisis_corrected_by_consent
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_consent_of_households_route = yes
@@ -293,7 +310,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_household_gives_consent }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_free_callings_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_free_callings
@@ -316,7 +338,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_household_gives_consent }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_municipal_charters_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_municipal_charters
@@ -339,7 +366,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_free_callings }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_paid_public_lectures_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_public_lectures_funded
@@ -362,7 +394,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_municipal_charters }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_transparent_store_accounts_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_transparent_store_accounts
@@ -385,7 +422,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_paid_public_lectures }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_independent_need_review_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_independent_need_review
@@ -409,19 +451,26 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_transparent_store_accounts }
 		available = {
-			has_country_flag = utopia_manifesto_route_consent_of_households
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_cooperative_land_trusts_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_cooperative_land_trusts
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_cooperative_land_trusts
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -436,7 +485,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_independent_need_review }
 		prerequisite = { focus = utopia_manifesto_cooperative_land_trusts }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_constitution_of_provision_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_constitution_of_provision
@@ -459,7 +513,12 @@ focus_tree = {
 		y = 11
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_constitution_of_provision }
-		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_voluntary_commonwealth_league_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_voluntary_league_charter
@@ -483,21 +542,28 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_voluntary_commonwealth_league }
 		available = {
-			has_country_flag = utopia_manifesto_route_consent_of_households
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_commonwealth_by_consent_available_tt
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_route_capstone_consent
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_route_capstone_consent
+				utopia_manifesto_apply_route_institution_final = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -521,7 +587,12 @@ focus_tree = {
 			focus = utopia_manifesto_one_island_one_measure
 			focus = utopia_manifesto_read_island_as_a_mirror
 		}
-		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_councils }
+		bypass = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_nothing_private_in_necessity_bypass_tt
+				has_country_flag = utopia_manifesto_crisis_corrected_by_councils
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_common_table_route = yes
@@ -555,7 +626,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_nothing_private_in_necessity }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_councils_of_callings_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_calling_councils
@@ -578,7 +654,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_nothing_private_in_necessity }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_common_table_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_common_table_provision
@@ -602,19 +683,26 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_councils_of_callings }
 		available = {
-			has_country_flag = utopia_manifesto_route_common_table
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_social_workshops_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_social_workshops
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_social_workshops
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -628,7 +716,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_common_table }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_council_property_transition_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_council_property_transition
@@ -651,7 +744,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_social_workshops }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_delegates_under_recall_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_delegates_under_recall
@@ -674,7 +772,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_council_property_transition }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_congress_of_communes_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_congress_of_communes
@@ -699,7 +802,12 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_delegates_under_recall }
 		prerequisite = { focus = utopia_manifesto_congress_of_communes }
 		mutually_exclusive = { focus = utopia_manifesto_emergency_central_plan }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_council_autonomy_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_council_autonomy
@@ -730,7 +838,12 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_delegates_under_recall }
 		prerequisite = { focus = utopia_manifesto_congress_of_communes }
 		mutually_exclusive = { focus = utopia_manifesto_council_autonomy }
-		available = { has_country_flag = utopia_manifesto_route_common_table }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_emergency_central_plan_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_emergency_central_plan
@@ -763,21 +876,28 @@ focus_tree = {
 			focus = utopia_manifesto_emergency_central_plan
 		}
 		available = {
-			has_country_flag = utopia_manifesto_route_common_table
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_union_of_tables_available_tt
+				has_country_flag = utopia_manifesto_route_common_table
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_route_capstone_common_table
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_route_capstone_common_table
+				utopia_manifesto_apply_route_institution_final = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -801,7 +921,12 @@ focus_tree = {
 			focus = utopia_manifesto_one_island_one_measure
 			focus = utopia_manifesto_read_island_as_a_mirror
 		}
-		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_measure }
+		bypass = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_country_measured_bypass_tt
+				has_country_flag = utopia_manifesto_crisis_corrected_by_measure
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_guardians_of_measure_route = yes
@@ -836,20 +961,27 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_country_measured }
 		available = {
-			has_country_flag = utopia_manifesto_route_guardians_of_measure
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_standard_houses_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_standard_houses
-			utopia_manifesto_unlock_district_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_standard_houses
+				utopia_manifesto_unlock_district_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -863,7 +995,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_country_measured }
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_tables_of_need_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_tables_of_need
@@ -888,7 +1025,12 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_standard_houses }
 		prerequisite = { focus = utopia_manifesto_tables_of_need }
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_board_of_measure_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_board_of_measure
@@ -911,7 +1053,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_board_of_measure }
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_shortage_forecasting_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_shortage_forecasting
@@ -935,21 +1082,28 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_board_of_measure }
 		available = {
-			has_country_flag = utopia_manifesto_route_guardians_of_measure
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_cities_in_series_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_cities_in_series
-			set_country_flag = utopia_manifesto_city_network_proven
-			utopia_manifesto_unlock_district_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_cities_in_series
+				set_country_flag = utopia_manifesto_city_network_proven
+				utopia_manifesto_unlock_district_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -965,7 +1119,12 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_shortage_forecasting }
 		prerequisite = { focus = utopia_manifesto_cities_in_series }
 		mutually_exclusive = { focus = utopia_manifesto_exact_obedience }
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_useful_freedom_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_useful_freedom
@@ -1001,7 +1160,12 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_shortage_forecasting }
 		prerequisite = { focus = utopia_manifesto_cities_in_series }
 		mutually_exclusive = { focus = utopia_manifesto_useful_freedom }
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_exact_obedience_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_exact_obedience
@@ -1033,7 +1197,12 @@ focus_tree = {
 			focus = utopia_manifesto_useful_freedom
 			focus = utopia_manifesto_exact_obedience
 		}
-		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_technical_missions_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_technical_missions
@@ -1057,21 +1226,28 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_technical_missions }
 		available = {
-			has_country_flag = utopia_manifesto_route_guardians_of_measure
-			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_perfect_measure_available_tt
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+				utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_route_capstone_guardians
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_route_capstone_guardians
+				utopia_manifesto_apply_route_institution_final = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1095,7 +1271,12 @@ focus_tree = {
 			focus = utopia_manifesto_country_measured
 			focus = utopia_manifesto_read_island_as_a_mirror
 		}
-		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_separation }
+		bypass = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_one_island_one_measure_bypass_tt
+				has_country_flag = utopia_manifesto_crisis_corrected_by_separation
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_closed_island_route = yes
@@ -1130,21 +1311,28 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_one_island_one_measure }
 		available = {
-			has_country_flag = utopia_manifesto_route_closed_island
-			utopia_manifesto_can_pay_military_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_households_of_service_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+				utopia_manifesto_can_pay_military_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.service_formation }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_households_of_service
-			utopia_manifesto_unlock_calling_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_households_of_service
+				utopia_manifesto_unlock_calling_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1159,20 +1347,27 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_one_island_one_measure }
 		available = {
-			has_country_flag = utopia_manifesto_route_closed_island
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_closed_store_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_closed_store
-			utopia_manifesto_unlock_reserve_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_closed_store
+				utopia_manifesto_unlock_reserve_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1187,21 +1382,26 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_households_of_service }
 		available = {
-			has_country_flag = utopia_manifesto_route_closed_island
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_penal_works_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_penal_works
-			set_country_flag = utopia_manifesto_conduct_penal_labor
-			set_country_flag = utopia_manifesto_penal_labour_used
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_penal_works
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1215,7 +1415,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_households_of_service }
-		available = { has_country_flag = utopia_manifesto_route_closed_island }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_auxiliary_contracts_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_auxiliary_contracts_unlocked
@@ -1237,7 +1442,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_closed_store }
-		available = { has_country_flag = utopia_manifesto_route_closed_island }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_natural_right_of_need_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_natural_right_doctrine
@@ -1261,7 +1471,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_penal_works }
 		prerequisite = { focus = utopia_manifesto_natural_right_of_need }
-		available = { has_country_flag = utopia_manifesto_route_closed_island }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_assigned_colonies_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_assigned_colonies
@@ -1287,21 +1502,28 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_auxiliary_contracts }
 		prerequisite = { focus = utopia_manifesto_assigned_colonies }
 		available = {
-			has_country_flag = utopia_manifesto_route_closed_island
-			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_cut_the_channel_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+				utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_channel_separation_project
-			set_country_flag = utopia_manifesto_separation_project_complete
-			utopia_manifesto_prepare_island_variant = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_channel_separation_project
+				set_country_flag = utopia_manifesto_separation_project_complete
+				utopia_manifesto_prepare_island_variant = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1316,22 +1538,29 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_cut_the_channel }
 		available = {
-			has_country_flag = utopia_manifesto_route_closed_island
-			utopia_manifesto_can_pay_military_growth_capstone = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_perfect_island_available_tt
+				has_country_flag = utopia_manifesto_route_closed_island
+				utopia_manifesto_can_pay_military_growth_capstone = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.service_formation }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_route_capstone_closed_island
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_route_capstone_closed_island
+				utopia_manifesto_apply_route_institution_final = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1355,7 +1584,12 @@ focus_tree = {
 			focus = utopia_manifesto_country_measured
 			focus = utopia_manifesto_one_island_one_measure
 		}
-		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_revision }
+		bypass = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_read_island_as_a_mirror_bypass_tt
+				has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+			}
+		}
 		allow_branch = {
 			OR = {
 				utopia_manifesto_can_reveal_joke_understood = yes
@@ -1363,9 +1597,12 @@ focus_tree = {
 			}
 		}
 		available = {
-			OR = {
-				utopia_manifesto_can_reveal_joke_understood = yes
-				has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_read_island_as_a_mirror_available_tt
+				OR = {
+					utopia_manifesto_can_reveal_joke_understood = yes
+					has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+				}
 			}
 		}
 
@@ -1407,7 +1644,12 @@ focus_tree = {
 				has_country_flag = utopia_manifesto_route_joke_understood
 			}
 		}
-		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_institutions_that_can_be_left_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_lawful_institutional_exit
@@ -1440,20 +1682,27 @@ focus_tree = {
 			}
 		}
 		available = {
-			has_country_flag = utopia_manifesto_route_joke_understood
-			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_mixed_commonwealth_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_mixed_property_settlement
-			set_country_flag = utopia_manifesto_mixed_property_proven
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_mixed_property_settlement
+				set_country_flag = utopia_manifesto_mixed_property_proven
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1468,7 +1717,12 @@ focus_tree = {
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_institutions_that_can_be_left }
 		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
-		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_sunset_clauses_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_sunset_clauses
@@ -1492,7 +1746,12 @@ focus_tree = {
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_a_mixed_commonwealth }
 		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
-		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_satire_in_government_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_satire_protected
@@ -1517,7 +1776,12 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_sunset_clauses }
 		prerequisite = { focus = utopia_manifesto_satire_in_government }
 		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
-		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_public_audit_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_public_audit
@@ -1542,20 +1806,27 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_public_audit }
 		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
 		available = {
-			has_country_flag = utopia_manifesto_route_joke_understood
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_reform_without_paradise_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_reform_without_paradise
-			utopia_manifesto_unlock_league_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_reform_without_paradise
+				utopia_manifesto_unlock_league_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1571,21 +1842,28 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_reform_without_paradise }
 		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
 		available = {
-			has_country_flag = utopia_manifesto_route_joke_understood
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_good_place_that_admits_its_limits_available_tt
+				has_country_flag = utopia_manifesto_route_joke_understood
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_route_capstone_joke
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_route_capstone_joke
+				utopia_manifesto_apply_route_institution_final = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1628,18 +1906,27 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_every_hand_knows_the_soil }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_schools_of_calling_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_schools_of_calling
-			set_country_flag = utopia_manifesto_public_education_proven
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_schools_of_calling
+				set_country_flag = utopia_manifesto_public_education_proven
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1718,7 +2005,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_learn_a_second_trade }
-		available = { utopia_manifesto_can_adopt_short_workday = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_six_hours_and_the_evening_lecture_available_tt
+				utopia_manifesto_can_adopt_short_workday = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_six_hour_workday
@@ -1743,18 +2035,27 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_six_hours_and_the_evening_lecture }
 		prerequisite = { focus = utopia_manifesto_emergency_calling_review }
-		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_nation_of_many_skills_available_tt
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_many_skills_network
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_many_skills_network
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1773,18 +2074,27 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_first_common_store }
 		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_capital_store_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_capital_store_complete
-			utopia_manifesto_unlock_reserve_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_capital_store_complete
+				utopia_manifesto_unlock_reserve_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1798,17 +2108,26 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_the_capital_store }
-		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_regional_storehouses_available_tt
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_regional_storehouse_network
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_regional_storehouse_network
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1822,17 +2141,26 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_capital_store }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_useful_industry_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_useful_industry
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_useful_industry
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1891,7 +2219,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_rotate_old_stores }
 		prerequisite = { focus = utopia_manifesto_useful_industry }
-		available = { utopia_manifesto_can_secure_two_year_reserve = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_two_years_against_hunger_available_tt
+				utopia_manifesto_can_secure_two_year_reserve = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_two_year_reserve
@@ -1916,7 +2249,12 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_two_years_against_hunger }
 		prerequisite = { focus = utopia_manifesto_release_emergency_stores }
-		available = { utopia_manifesto_has_exportable_surplus = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_surplus_beyond_the_shore_available_tt
+				utopia_manifesto_has_exportable_surplus = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_surplus_aid_enabled
@@ -1940,7 +2278,7 @@ focus_tree = {
 		id = utopia_manifesto_homes_near_work
 		icon = GFX_goal_utopia_settlement_charter
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 16
+		x = 15
 		y = 6
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
@@ -1969,17 +2307,26 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_homes_near_work }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_rail_road_and_common_ground_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_common_transport_ground
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_common_transport_ground
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -1993,18 +2340,27 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_homes_near_work }
-		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_ring_of_social_cities_available_tt
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_social_city_ring
-			utopia_manifesto_unlock_district_decisions = yes
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_social_city_ring
+				utopia_manifesto_unlock_district_decisions = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2048,8 +2404,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_inland_island
 		}
 		available = {
-			has_country_flag = utopia_manifesto_island_variant_choice_open
-			utopia_manifesto_can_select_existing_island_variant = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_existing_island_available_tt
+				has_country_flag = utopia_manifesto_island_variant_choice_open
+				utopia_manifesto_can_select_existing_island_variant = yes
+			}
 		}
 
 		completion_reward = {
@@ -2080,8 +2439,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_inland_island
 		}
 		available = {
-			has_country_flag = utopia_manifesto_island_variant_choice_open
-			utopia_manifesto_can_select_archipelago_network_variant = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_archipelago_network_available_tt
+				has_country_flag = utopia_manifesto_island_variant_choice_open
+				utopia_manifesto_can_select_archipelago_network_variant = yes
+			}
 		}
 
 		completion_reward = {
@@ -2118,8 +2480,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_inland_island
 		}
 		available = {
-			has_country_flag = utopia_manifesto_island_variant_choice_open
-			utopia_manifesto_can_select_leased_island_variant = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_leased_island_available_tt
+				has_country_flag = utopia_manifesto_island_variant_choice_open
+				utopia_manifesto_can_select_leased_island_variant = yes
+			}
 		}
 
 		completion_reward = {
@@ -2157,8 +2522,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_inland_island
 		}
 		available = {
-			has_country_flag = utopia_manifesto_island_variant_choice_open
-			utopia_manifesto_can_select_coastal_refuge_variant = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_coastal_refuge_available_tt
+				has_country_flag = utopia_manifesto_island_variant_choice_open
+				utopia_manifesto_can_select_coastal_refuge_variant = yes
+			}
 		}
 
 		completion_reward = {
@@ -2189,8 +2557,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_coastal_refuge
 		}
 		available = {
-			has_country_flag = utopia_manifesto_island_variant_choice_open
-			utopia_manifesto_can_select_inland_island_variant = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_inland_island_available_tt
+				has_country_flag = utopia_manifesto_island_variant_choice_open
+				utopia_manifesto_can_select_inland_island_variant = yes
+			}
 		}
 
 		completion_reward = {
@@ -2221,19 +2592,26 @@ focus_tree = {
 			focus = utopia_manifesto_the_inland_island
 		}
 		available = {
-			utopia_manifesto_can_pay_institutional_growth_capstone = yes
-			utopia_manifesto_selected_island_variant_site_is_ready = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_build_the_island_available_tt
+				utopia_manifesto_can_pay_institutional_growth_capstone = yes
+				utopia_manifesto_selected_island_variant_site_is_ready = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_island_project_built
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_island_project_built
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2247,7 +2625,12 @@ focus_tree = {
 		y = 12
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_build_the_island }
-		available = { utopia_manifesto_island_project_proof_met = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_island_made_real_available_tt
+				utopia_manifesto_island_project_proof_met = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_island_project_complete
@@ -2277,7 +2660,13 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_an_interim_charter }
 		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
-		available = { utopia_manifesto_can_pay_military_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_citizen_watch_available_tt
+				utopia_manifesto_can_pay_military_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
@@ -2288,13 +2677,16 @@ focus_tree = {
 			else = {
 				set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.citizen_watch }
 			}
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_citizen_watch
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_citizen_watch
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2308,18 +2700,27 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_citizen_watch }
-		available = { utopia_manifesto_can_pay_military_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_engineers_before_generals_available_tt
+				utopia_manifesto_can_pay_military_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.engineer_corps }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_engineer_defense
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_engineer_defense
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2333,18 +2734,27 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_the_citizen_watch }
-		available = { utopia_manifesto_can_pay_military_growth_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_small_army_well_housed_available_tt
+				utopia_manifesto_can_pay_military_growth_network = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.professional_guard }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_small_professional_army
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_small_professional_army
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2387,7 +2797,12 @@ focus_tree = {
 		y = 8
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
-		available = { utopia_manifesto_has_valid_auxiliary_source = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_foreign_hands_in_our_wars_available_tt
+				utopia_manifesto_has_valid_auxiliary_source = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_auxiliary_contracts_unlocked
@@ -2423,7 +2838,12 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
 		mutually_exclusive = { focus = utopia_manifesto_no_glory_in_the_field }
-		available = { utopia_manifesto_has_valid_escalation_case = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_necessary_victory_available_tt
+				utopia_manifesto_has_valid_escalation_case = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_necessary_victory_doctrine
@@ -2470,7 +2890,7 @@ focus_tree = {
 		id = utopia_manifesto_commonwealth_defense_compact
 		icon = GFX_goal_utopia_guard_ledger
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
-		x = 50
+		x = 48
 		y = 9
 		cost = @utopia_focus_long
 		prerequisite = {
@@ -2478,20 +2898,29 @@ focus_tree = {
 			focus = utopia_manifesto_necessary_victory
 		}
 		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
-		available = { utopia_manifesto_can_pay_military_growth_capstone = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_commonwealth_defense_compact_available_tt
+				utopia_manifesto_can_pay_military_growth_capstone = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.league_defense }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_defense_compact_ready
-			set_country_flag = utopia_manifesto_defense_proof_complete
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_defense_compact_ready
+				set_country_flag = utopia_manifesto_defense_proof_complete
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2534,7 +2963,12 @@ focus_tree = {
 		y = 7
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_show_the_stores }
-		available = { utopia_manifesto_has_exportable_surplus = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_offer_the_first_surplus_available_tt
+				utopia_manifesto_has_exportable_surplus = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_first_surplus_offered
@@ -2579,7 +3013,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_offer_the_first_surplus }
 		prerequisite = { focus = utopia_manifesto_houses_across_borders }
-		available = { utopia_manifesto_has_eligible_league_partner = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_league_of_small_places_available_tt
+				utopia_manifesto_has_eligible_league_partner = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_small_places_compact_framework
@@ -2602,17 +3041,26 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_a_league_of_small_places }
-		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_common_reserve_council_available_tt
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_common_reserve_council
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_common_reserve_council
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2627,21 +3075,28 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_a_league_of_small_places }
 		available = {
-			utopia_manifesto_can_pay_military_growth_network = yes
-			utopia_manifesto_has_defense_compact_partner = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_mutual_defense_without_mastery_available_tt
+				utopia_manifesto_can_pay_military_growth_network = yes
+				utopia_manifesto_has_defense_compact_partner = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.league_defense }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_mutual_defense_without_mastery
-			set_country_flag = utopia_manifesto_member_sovereignty_protected
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_mutual_defense_without_mastery
+				set_country_flag = utopia_manifesto_member_sovereignty_protected
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2656,7 +3111,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_common_reserve_council }
 		prerequisite = { focus = utopia_manifesto_mutual_defense_without_mastery }
-		available = { utopia_manifesto_super_event_network_threshold_met = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_regional_commonwealth_available_tt
+				utopia_manifesto_super_event_network_threshold_met = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_regional_commonwealth
@@ -2805,7 +3265,12 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_ask_before_we_demand }
 		mutually_exclusive = { focus = utopia_manifesto_the_limit_of_need }
-		available = { utopia_manifesto_can_take_coercive_need_fork = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_natural_right_available_tt
+				utopia_manifesto_can_take_coercive_need_fork = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_coercive_case_escalation
@@ -2839,8 +3304,11 @@ focus_tree = {
 			focus = utopia_manifesto_the_natural_right
 		}
 		available = {
-			utopia_manifesto_has_resolved_first_need_case = yes
-			has_country_flag = utopia_manifesto_first_associate_recognized
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_first_associate_available_tt
+				utopia_manifesto_has_resolved_first_need_case = yes
+				has_country_flag = utopia_manifesto_first_associate_recognized
+			}
 		}
 
 		completion_reward = {
@@ -2866,7 +3334,12 @@ focus_tree = {
 		y = 10
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_the_first_associate }
-		available = { utopia_manifesto_has_valid_associate_network = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_commonwealth_of_places_available_tt
+				utopia_manifesto_has_valid_associate_network = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_commonwealth_of_places
@@ -2894,7 +3367,12 @@ focus_tree = {
 		y = 9
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_ground_held_in_trust }
-		available = { utopia_manifesto_has_stewardship_obligation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_stewardship_obligations_available_tt
+				utopia_manifesto_has_stewardship_obligation = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_stewardship_obligations
@@ -2939,17 +3417,26 @@ focus_tree = {
 		y = 10
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_stewardship_obligations }
-		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_restore_the_route_available_tt
+				utopia_manifesto_can_pay_institutional_growth_foundation = yes
+			}
+		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_stewardship_route_restored
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_stewardship_route_restored
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -2986,7 +3473,12 @@ focus_tree = {
 		y = 12
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_convene_the_local_charter }
-		available = { utopia_manifesto_stewardship_charter_period_met = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_charter_period_available_tt
+				utopia_manifesto_stewardship_charter_period_met = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_stewardship_charter_period_complete
@@ -3008,7 +3500,12 @@ focus_tree = {
 		y = 13
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_the_charter_period }
-		available = { utopia_manifesto_stewardship_status_vote_ready = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_status_by_consent_available_tt
+				utopia_manifesto_stewardship_status_vote_ready = yes
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_stewardship_status_vote_enabled
@@ -3037,7 +3534,12 @@ focus_tree = {
 		cost = @utopia_focus_short
 		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_founding_crisis_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_enter_constitutional_crisis = yes
@@ -3067,7 +3569,12 @@ focus_tree = {
 			focus = utopia_manifesto_admit_the_book_was_a_question
 		}
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_restore_consent_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_consent_of_households_route = yes
@@ -3110,7 +3617,12 @@ focus_tree = {
 			focus = utopia_manifesto_admit_the_book_was_a_question
 		}
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_empower_the_councils_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_common_table_route = yes
@@ -3153,7 +3665,12 @@ focus_tree = {
 			focus = utopia_manifesto_admit_the_book_was_a_question
 		}
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_give_the_surveyors_authority_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_guardians_of_measure_route = yes
@@ -3196,7 +3713,12 @@ focus_tree = {
 			focus = utopia_manifesto_admit_the_book_was_a_question
 		}
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_seal_the_island_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_set_closed_island_route = yes
@@ -3240,8 +3762,11 @@ focus_tree = {
 		}
 		allow_branch = { utopia_manifesto_can_reveal_joke_understood = yes }
 		available = {
-			has_country_flag = utopia_manifesto_constitutional_crisis
-			utopia_manifesto_can_reveal_joke_understood = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_admit_the_book_was_a_question_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis
+				utopia_manifesto_can_reveal_joke_understood = yes
+			}
 		}
 
 		completion_reward = {
@@ -3285,7 +3810,12 @@ focus_tree = {
 			focus = utopia_manifesto_admit_the_book_was_a_question
 		}
 		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis_resolved }
-		available = { has_country_flag = utopia_manifesto_constitutional_crisis_resolved }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_settled_interim_charter_available_tt
+				has_country_flag = utopia_manifesto_constitutional_crisis_resolved
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_interim_charter_settled
@@ -3324,7 +3854,12 @@ focus_tree = {
 			focus = utopia_manifesto_a_ring_of_social_cities
 		}
 		prerequisite = { focus = utopia_manifesto_the_first_associate }
-		available = { utopia_manifesto_can_form_current_route = yes }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_proof_of_the_commonwealth_available_tt
+				utopia_manifesto_can_form_current_route = yes
+			}
+		}
 
 		completion_reward = {
 			utopia_manifesto_refresh_formation_proof = yes
@@ -3351,8 +3886,11 @@ focus_tree = {
 		cost = @utopia_focus_standard
 		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
 		available = {
-			has_country_flag = utopia_manifesto_commonwealth_formed
-			utopia_manifesto_super_event_network_threshold_met = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_regional_proclamation_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+				utopia_manifesto_super_event_network_threshold_met = yes
+			}
 		}
 
 		completion_reward = {
@@ -3376,19 +3914,27 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
 		available = {
-			has_country_flag = utopia_manifesto_commonwealth_formed
-			utopia_manifesto_can_pay_institutional_growth_network = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_integrate_the_ring_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+				utopia_manifesto_can_pay_institutional_growth_network = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_ring_integrated
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_ring_integrated
+				utopia_manifesto_complete_garden_district_network = yes
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }
@@ -3402,7 +3948,12 @@ focus_tree = {
 		y = 14
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
-		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_second_generation_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_second_generation
@@ -3430,7 +3981,12 @@ focus_tree = {
 		y = 14
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
-		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_a_rule_for_need_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_mature_need_law
@@ -3462,7 +4018,12 @@ focus_tree = {
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_manifesto_integrate_the_ring }
 		prerequisite = { focus = utopia_manifesto_the_second_generation }
-		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+		available = {
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_beyond_the_founders_island_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = utopia_manifesto_beyond_founders_island
@@ -3487,20 +4048,27 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_the_second_generation }
 		prerequisite = { focus = utopia_manifesto_a_rule_for_need }
 		available = {
-			has_country_flag = utopia_manifesto_commonwealth_formed
-			utopia_manifesto_can_pay_military_growth_capstone = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_the_commonwealth_at_war_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+				utopia_manifesto_can_pay_military_growth_capstone = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.commonwealth_guard }
-			utopia_manifesto_apply_paid_military_growth = yes
-			set_country_flag = utopia_manifesto_mature_war_rules
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_apply_paid_focus_military_growth = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_mature_war_rules
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+			}
 		}
 
 		ai_will_do = {
@@ -3522,21 +4090,28 @@ focus_tree = {
 		prerequisite = { focus = utopia_manifesto_beyond_the_founders_island }
 		prerequisite = { focus = utopia_manifesto_the_commonwealth_at_war }
 		available = {
-			has_country_flag = utopia_manifesto_commonwealth_formed
-			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			custom_override_tooltip = {
+				tooltip = utopia_manifesto_plenty_in_an_age_of_chaos_available_tt
+				has_country_flag = utopia_manifesto_commonwealth_formed
+				utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			}
 		}
+		cancel_if_invalid = yes
 
 		completion_reward = {
 			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
 			utopia_manifesto_apply_paid_institutional_growth = yes
-			set_country_flag = utopia_manifesto_mature_commonwealth
-			set_country_flag = utopia_manifesto_plenty_survives_chaos
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-			utopia_manifesto_refresh_formation_proof = yes
+			if = {
+				limit = { NOT = { has_country_flag = utopia_manifesto_institutional_growth_payment_failed } }
+				set_country_flag = utopia_manifesto_mature_commonwealth
+				set_country_flag = utopia_manifesto_plenty_survives_chaos
+				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+				set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+				set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+				utopia_manifesto_apply_prepared_ledger_delta = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
 		}
 
 		ai_will_do = { factor = @utopia_ai_high }

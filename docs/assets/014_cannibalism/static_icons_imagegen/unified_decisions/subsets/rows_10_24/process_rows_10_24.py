@@ -22,7 +22,7 @@ PROCESSED = PACKAGE / "processed_png"
 RUNTIME = ROOT / "gfx" / "interface" / "decisions" / "014_cannibalism"
 GFX_FILE = ROOT / "interface" / "014_cannibalism.gfx"
 ALPHA_WORK = SUBSET / "_alpha_work"
-CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 CHROMA_HELPER = Path(
     "C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py"
 )

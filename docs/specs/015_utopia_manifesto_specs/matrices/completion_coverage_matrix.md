@@ -1,35 +1,100 @@
-# Completion Coverage Matrix
+# Event 15 Implementation Proof Matrix
 
-| Surface | Spec coverage | Implementation proof required | Completion blocker when missing |
+## Purpose and status
+
+This matrix records the frozen completed Event 15 surface and the evidence that supports it. It replaces the earlier planning-only coverage checklist. All 63 data rows are closed: 11 runtime-inventory rows, 30 system-proof rows, 13 visual-proof rows, and 9 closing-gate rows. The fresh read-only whole-event audit passes in `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`, with 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2`.
+
+## Runtime inventory
+
+| Surface | Exact current inventory | Primary implementation evidence | Proof state |
+| --- | ---: | --- | --- |
+| Event definitions | 106, including 12 hidden definitions | `events/015_utopia_manifesto.txt` | implemented, with all hidden definitions using documented `hidden = yes` |
+| National focuses | 124 | `common/national_focus/015_utopia_manifesto_focus_tree.txt` | focus re-audit passes |
+| Decisions | 121 total, 105 main, 15 evolution, 1 prefire | `common/decisions/015_utopia_manifesto_decisions.txt`, evolution and prefire decision files | current decision and mission re-audit PASS |
+| Missions | 44 total, 40 main, 1 evolution, 3 prefire | Event 15 decision files | current duration, outcome, cancellation, AI, lifecycle, and public-parity re-audit PASS |
+| Decision categories | 9 | `common/decisions/categories/015_utopia_manifesto_categories.txt` | implemented |
+| Ideas | 50 definitions, 12 unique pictures | `common/ideas/015_utopia_manifesto_ideas.txt`, `interface/015_utopia_manifesto.gfx` | implemented |
+| Characters | 24 total | `common/characters/015_utopia_manifesto_characters.txt` | current country-package re-audit PASS |
+| Institutional entries | 8 founder and successor entries sharing 4 people-free built-in ImageGen institutional tableaux | Event 15 character file and portrait registry | current people-free ImageGen tableau, registration, and country-package checks PASS |
+| Advisors | 16 | Event 15 character file, advisor portrait registry, v5 approval package, and installed-validation report | current ImageGen dossier, registration, independent visual approval, and decoded runtime equality checks PASS |
+| Achievements | 14 | `common/achievements/chaos_redux_achievements.txt` | implemented with active, complete, and failed icon variants |
+| Cosmetic identities | 5 | `common/countries/cosmetic.txt`, Event 15 formation effects, route flags | current ImageGen flag, formation-timing, and country-package checks PASS |
+
+## System proof
+
+| Surface | Implemented invariant | Evidence | Current gate |
 | --- | --- | --- | --- |
-| Event classification | Part 1 | ID 15 in fire-once registry, old repeatable behavior removed | wrong type or duplicate old event |
-| Target selection | Part 1 and target matrix | safe candidate trigger, score, debug reason | majors or protected trees can be targeted |
-| Player choice | Part 1 | accept and reject tested | rejection leaves state or acceptance warning missing |
-| Focus replacement | Part 3 | complete tree, safe loader, route coverage audit | generic or shallow tree, unsafe replacement |
-| Ledger | Part 2 | visible values, breakdown, AI equivalent | hidden variables or decorative GUI only |
-| Callings | Parts 2 and 4 | methods, shortages, costs, AI | static bonuses or PP store |
-| Common stores | Parts 2 and 4 | reserve bands, missions, emergency release | free reserve loop or no real costs |
-| Districts | Parts 2, 3, and 4 | map-grounded projects and charters | abstract bonus-only settlements |
-| Island variants | Parts 2, 3, and 4 | island, coastal, and landlocked paths | dead geography or false coastline |
-| Necessary Ground | Parts 2 and 4 | case integrity, ladder, expiration | free claim and war-goal spam |
-| Stewardship | Parts 2 and 4 | provision, charter, status, cleanup | indefinite occupation with no consequence |
-| Political routes | Part 3 | five distinct routes and AI | renamed copies or missing hidden route |
-| Ideas | Part 5 and idea matrix | staged lifecycle | one idea per focus or dead penalties |
-| Country identity | Part 5 | cosmetic tags, parties, leaders, flags | tag-only or identical identity |
-| Military | Parts 3, 4, and 5 | paid institutional growth | free division spam or empty defense path |
-| League | Parts 3, 4, and 5 | cohesion, membership, shared actions | faction name with no mechanic |
-| Formation | Parts 3 and 5 | conduct thresholds and post-play | focus-only rename or free cores |
-| Evolutions | Part 6 | five logged stages, active and pre-fire handling | baseline stages mislabeled or disabled path trap |
-| Event families | Part 6 | founding, route, contradiction, reaction events | popup-only opening with no consequence memory |
-| AI | Part 7 and AI matrix | route plans, decisions, target safety | generic weights or human-only GUI |
-| Multiplayer | Part 7 | target choice, invitation, negotiation | host bias or silent human war goal |
-| Assets | Part 8 and asset plan | files, manifests, wiring, static fallbacks | placeholder or unwired art |
-| Animation | Part 8 | real source frames and frame sheet | transform-only fake animation |
-| Super-event | Parts 5, 6, and 8 | sourced text, unique audio, route-aligned image | placeholder quote, audio, or unjustified trigger |
-| Achievements | achievement matrix | triggers, disqualifiers, icons, docs | trivial unlocks or missing tracking |
-| Localisation | Part 8 | final in-world text and audit | prompt fragments, raw triggers, missing keys |
-| Event log | Part 6 | names, actor, details, evolutions | stale World Tension Subsides mapping |
-| Documentation | Part 8 | event doc, source-of-truth map | stale specs or unresolved plans |
-| Catalog | Part 8 and catalog plan | workbook row matches in-game text | old row or mechanical Details text |
-| Improvement loop | manual review plus required subagent pass | planner closure or resolved addendum | skipped formal pass |
-| Completion audit | prompts and handoff | read-only audit with evidence | undisclosed simplification or missing surface |
+| Event classification and entry | Event 15 uses the fire-once entry root `chaosx.nr15.1`, with category registration, recipient selection, player acceptance, and rejection cleanup | Event file, category registration, on-actions, English localisation | implemented |
+| Replacement focus tree | One 124-focus tree covers opening, four public routes, hidden humanist recovery, stores, callings, districts, island variants, defense, league, Necessary Ground, stewardship, crisis, formation, and post-formation play | focus source and `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/focus_tree_completion_post_ui_reaudit_2026_07_15.md` | PASS |
+| Focus AI | Every focus has an AI block, route mutexes and shared-lane reachability were reviewed | focus source and focus re-audit | PASS, bounded static and existing render evidence |
+| Paid focus atomicity | All 34 paid focuses, split into 26 institutional and 8 military, explicitly cancel when invalid, refresh and recheck their live tier price, deduct before proof or deployment, and keep the full reward tail behind the matching success guard. ROOT and FROM state-control cost refreshes sit outside the Fallout-only callback guard | focus source, on-actions source, root structural parser, current focus/country/decision/localisation reports | PASS, exact-snapshot static proof with no unguarded tail |
+| Living Ledger | Displayed Need, Plenty, Concord, and Choice or Assignment are rebuilt as clamped base plus durable policy plus current live contributions. Repeated refreshes are idempotent | Event 15 scripted effects, constants, ledger GUI | implemented |
+| Ledger GUI | The decision category attaches `scripted_gui = utopia_manifesto_ledger_scripted_gui`, with 46 audited GUI sprite references | category source, ledger GUI, current asset report and `docs/assets/015_utopia_manifesto/final_icon_frame_audit.json` | implemented |
+| Callings | Six families use structural pressure, raw and effective durable adjustment, temporary adjustment, present severity, uncovered severity, and hysteresis | Event 15 effects, triggers, constants, decisions | implemented |
+| Evolution obligations | All 15 evolution choices have a paid action and a shared-obligation consumer that reaches a second Event 15 system. Setup is idempotent | evolution decisions, evolution effects, evolution implementation handoff | implemented |
+| Districts | Four ordinary suitability roles use state evidence. Build and charter stages track three obligations, partial and failure outcomes, and route-specific charters. The Ledger reports the active state and role through 7 district-role cards and 6 district-state overlays paired on Stores and Settlements | district decisions, decision effects, triggers, scripted localisation, ledger GUI | implemented |
+| Penal Works | The Closed Island route can attach a paid penal method to a valid district project. It consumes manpower, equipment, reserve, and exact state civilian population, creates local output and resistance, and has completion, halt, failure, ownership-loss, and cleanup paths | Event 15 decisions and decision effects | implemented |
+| Exact Deaths integration | Penal Works calls state-scope `apply_exact_state_civilian_population_loss`, which registers through `chaos_meter_register_deaths` using `constant:chaos_meter_deaths_reason.gulag_repression`, localised as "From camps and forced labor" | `common/scripted_effects/015_utopia_manifesto_decision_effects.txt`, `common/scripted_effects/chaosx_dynamic_effects.txt`, Deaths localisation | implemented |
+| Necessary Ground cases | Seven case types use a live relevant deficit, selected country and state targets, integrity and local support, peaceful and coercive methods, terms, stewardship, cleanup, and AI | Event 15 decisions, effects, triggers, constants, on-actions, current decision and country reports | PASS |
+| Target survival and succession | State-transfer methods require the selected country to survive the transfer. Exact country and state reverse founder records support one-shot annexation and state-control handling. Active stewardship adopts a surviving third-party annexer with integrity, support, and Ledger costs. Founder extinction becomes explicit conduct, achievement, and stewardship failure. Pre-steward loss invalidates cleanly | Event 15 decisions, triggers, effects, narrow annexation or state-control hooks, final decision and mission re-audit | PASS |
+| Multiplayer case isolation | Country and state cleanup removes only the current founder. Case, island, association, autonomy, and League access or founder-guarantee sources keep separate exact founder records and share an exact-pair creator gate. A later Event 15 source may co-own an already attributed relation, while unattributed pre-existing diplomacy remains outside Event 15 ownership. Source-first teardown revokes only after the final creator disappears. Settlement, supply, duty, compact, and shared state packages likewise clear only after their final founder leaves. The private wargoal generator injects the exact saved state ID, while `take_states` requires ROOT membership in the state reverse-founder array and ownership by PREV. State-control bridge `.165` waits one hour so a full annexation's `.163` disposition runs first | Event 15 effects, triggers, on-actions, events `.163` and `.165`, private wargoal, `decision_final_audit_2026_07_18.md`, and `country_final_audit_2026_07_18.md` | PASS, stress row 40 closed by current decision and country evidence |
+| Enforcement cleanup | Peace resolution has an invalid-target branch before possession or refusal resolution | Event 15 scripted effects and final decision and mission re-audit | PASS |
+| Case terms | Settlement runs 365 to 540 days, long supply runs 540 to 720 days, association duties run 365 to 540 days. Island lease uses 2190 initial days, 1095-day renewal, and 730-day counteroffer extension | Event 15 constants and effects | implemented |
+| Resource rights | Long supply records exact founder, partner, and state reverse links. It tests for pre-existing resource rights before granting them and removes only rights attributed to Event 15 for that founder and state. A pre-existing agreement survives contract cleanup, and a temporary market-access substitute is not part of the design | Event 15 case effects and trigger documentation | implemented |
+| Integrated-state ownership | `utopia_manifesto_reconcile_integrated_commonwealth_state_ownership` removes the integration flag, modifier, and array entry after ownership loss | Event 15 scripted effects and bounded ownership hooks | implemented |
+| Association-charter lifecycle | Completed charters create exact founder, host, and state reverse indexes. Military access and guarantees use the shared exact-pair creator gate, so cleanup preserves pre-existing diplomacy, other founders, and another live Event 15 source. Review scheduling uses one target-wide non-reusable reservation: hidden `.207` releases the delayed slot, visible `.221` opens only for a live generation, invalidated human popups are inert, and a later association receives a fresh full-duration schedule. Active-duty target annexation fails cleanly. Later annexation, withdrawal, teardown, control transfer, or owner-only transfer removes only the affected founder's link, preserves other founders, removes stale state modifiers, and refreshes Ledger and network proof. Coverage combines `on_annex`, `on_state_control_changed`, bridges `.165` and `.207`, the peace-conference callback, and bounded actor pulse `.150`, without a world scan | Event 15 effects, triggers, on-actions, hidden bridges, `decision_final_audit_2026_07_18.md`, and `country_final_audit_2026_07_18.md` | PASS, stress row 45 closed by current decision and country evidence |
+| Decisions and missions | Costs, durations, target validity, AI weights, collapse cleanup, calling mutexes, evolution consumers, non-recurring maintenance, district ownership loss, Necessary Ground, and association-charter cleanup are implemented. All 124 entry requirement wrappers and the case-target survival wrapper have exact localisation parity. Auxiliary hiring uses the same combined contract-and-formation affordability trigger for availability, custom cost, and final pre-charge validation. Failure refunds political power and cannot consume partial contract materials | decision and mission source plus current decision and localisation reports | PASS |
+| AI plans | 12 route and context plans support the same resources and gates used by the player | Event 15 AI strategy plan file and AI matrix | implemented |
+| Decision AI | All 121 decisions contain `ai_will_do` | decision source and decision audit evidence | implemented |
+| Ideas | Three concurrent idea slots separate administration, social order, and institutions. All 50 definitions have localisation and registered pictures | idea source, English localisation, idea GFX | implemented |
+| Country identity | Five route identities retain the original tag and apply route flag, name, people-free institution, leader, and policy packages. League and charter relations have exact reverse-index cleanup | country files, cosmetic definitions, effects, character files, current country report | PASS |
+| Localisation | Nine Event 15 English files contain 2,480 quoted definitions, 2,480 exact unique keys, and 2,480 case-folded unique keys. No duplicate, missing, or unaccounted orphan key remains. Current proof covers 106 events including 12 hidden, 124 focuses, 121 decisions, 44 missions, 9 categories, 50 ideas, 24 characters, 14 achievements, 5 identities, 5 super-event slots, 25 Ledger GUI references, and 8 dynamic formation names | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17` | PASS after two idea-ID collision corrections and six prose-definition normalizations |
+| Event log and details | Event 15 name, recipient actor, details, evolution details, and history mappings are wired to the implemented event | event log effects, details files, scripted localisation, English localisation | implemented |
+| Super-events | Route outcomes use slots 96 through 100 with five distinct 457x328 images, final route text, and audio ID 57 | super-event effects, scripted localisation, GFX, English localisation | implemented |
+| Super-event audio | All five route presentations share the unique Event 15 edit `super_event_57_utopia_has_neighbors`, derived from the CC0 Musopen performance of Brahms, Symphony No. 3, third movement | Event 15 audio research, package ledger, music and sound registries | implemented |
+| Achievements | Fourteen route, conduct, reserve, district, defense, crisis, and association achievements have durable evidence and disqualifier tracking | achievements file, Event 15 effects and on-actions | implemented |
+| No recurring global scan | Event 15 maintenance uses actor-scoped event pulses and narrow affected-country hooks. It does not add daily, weekly, or monthly world iteration | Event 15 event and on-action sources | implemented |
+
+## Visual proof
+
+| Family | Exact audit evidence | Proof state |
+| --- | --- | --- |
+| Focus icons | 124 usages, 74 unique sprites | PASS |
+| Decision map | 174 mapped rows, 9 categories, 121 decisions, 44 missions | PASS |
+| Gameplay assignments | 165 decision and mission assignments | PASS |
+| Idea icons | 50 idea assignments, 12 unique sprites | PASS |
+| Achievement icons | 14 achievements, 42 active variants | PASS |
+| Scripted GUI | 46 unique sprite references | PASS |
+| Static Ledger families | 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays | PASS |
+| Required animation families | Ledger seal 8, Need 8, Choice 8, Assignment 8, and formation 10 genuine source frames, with processed frames, sheets, previews, static fallbacks, and GFX wiring | PASS |
+| Additional runtime animation | Reserve fill 8 genuine source frames, outside the required-family count | PASS |
+| Sprite registry | 459 base definitions plus 5 route-super-event definitions, 464 total and 0 duplicate sprite names | PASS |
+| Flags | 21 independent built-in ImageGen designs plus 4 intentional engine-lookup aliases produce 75 runtime TGAs. These are ImageGen-authored designs, not simple-shape substitutes. The processor preserves generated geometry and tonal detail without quantization, tracing, primitive redraw, motif substitution, or a palette ceiling | PASS |
+| Institutional portraits | Four people-free built-in ImageGen, vanilla-HOI4-style institutional tableaux at 156x210 serve the eight founder and successor entries. Empty chambers, council tables, ledgers, apparatus, stores, seals, and route emblems replace human portraits | PASS |
+| Advisor portraits | Sixteen distinct 65x67 dossier cards use independent fictional ImageGen portrait masters plus separate generated frame and paper/seal overlays. The frozen v5 processor only crops, grades, angles, derives alpha shadows, composites the generated layers, validates, and exports; it does not draw the card. All 16 exact candidates passed producer-independent native-size and 4x review against six frozen vanilla references. Their package/runtime DDS files are byte-identical and decode pixel-identically to the approved PNGs | PASS |
+
+Current visual audit authority is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693`. The July 16 requirement report and crosswalk remain supporting evidence for unchanged families. `docs/assets/015_utopia_manifesto/decision_icon_mapping.csv`, SHA-256 `757ec0c51edca25b5453899f28816a3d34e8a5b330be268bed6ff4d27e0abcc0`, confirms 9 category, 121 decision, and 44 mission rows, for 174 mapped rows and 165 gameplay assignments. The decision-mapping subsection of `final_icon_frame_audit.json` remains frozen at the older 173/43/164 snapshot and is superseded for those counts only. Its animation and Ledger-binding evidence remains separately usable.
+
+Current integrated source evidence: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/direct_integrated_validation_2026_07_15.md`.
+
+## Closing gates
+
+| Gate | State | Required proof |
+| --- | --- | --- |
+| Current focus-tree snapshot | PASS after one narrow P2 token correction, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/focus_final_audit_2026_07_18.md`, SHA-256 `29ffa7c45d601bde8c90a4a717a4b19f4bcccab2ba92f0a832f232a499a043fa` |
+| Current English-localisation completion snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17`; 2,480 exact and case-folded unique Event-owned definitions |
+| Current country-package and reverse-link snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/country_final_audit_2026_07_18.md`, SHA-256 `ada264c49b233b0fb287693a5e685d57c0ee81eb91924b9c5b03bc86a3f72b1f`; frozen runtime-text manifest `F8E5F75FF910C753A8D1F2357933CA58931BE200E8CD6A03841FFD85B1A301E9` |
+| Current decision-and-mission snapshot | PASS, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_final_audit_2026_07_18.md`, SHA-256 `a5bb24e63977f5185872b1b11e0c054524a50816d1096a29a34cbaf20661826f` |
+| Spreadsheet and catalog alignment | PASS, no Event 15 workbook change required | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_current_hash_followup_2026_07_18.md`, SHA-256 `e0ba36c5805e0aca01b6bf74fec4f6dc29a24aecf4a3ec36382c334e5c741bd1`; current workbook SHA-256 `ed52b1f3ee3f0e602b3cc6a4b5fd7bc0d340445a3c085c6c8531fbcd2c0430f4`; `Events!A16:M16` passes 13/13 parity with normalized row SHA-256 `e330489603bd739e64fc356b8bb79498c4a34d54433f28cda4c2ba459dadab1e`. The older spreadsheet and localisation audit workbook snapshot `729e48a3135094d210b70e74ce3694ff0b66dbd5d2bc448051db931a41f4bd80` is pre-drift but Event 15-row-equivalent |
+| Formal improvement-loop closure | STOP, closed with no unresolved accepted addendum | `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_final_improvement_loop_closure_2026-07-18.md`, SHA-256 `deaef9e886974048fa05c61c6cb2ca377bf4f0b43637a6476bf544a371c9a268` |
+| Current complete asset-package snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693` |
+| Independent documentation audit | PASS for the pre-final documentation gate | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/documentation_final_audit_2026_07_18.md` |
+| Final event-completion audit | PASS, no open P0 through P3 finding, fallback, simplification, omission, blocker, or queued accepted plan | `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`; 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2` |
+
+All 63 rows are closed. `docs/plans/015_utopia_manifesto_plans/completion_audit.md` is the current whole-event PASS authority. The former FAIL snapshot previously stored at that path, SHA-256 `be9d0be100eed6ccae223ed60db7ce36a07dc2f3eb38442b099799feab40a093`, remains superseded historical evidence for its 43-mission inventory and missing Choice/Assignment finding.
+
+## Historical P2 dispositions
+
+- The 2026-07-15 focus audit's two P2 findings covered two `95x85` focus textures and one `64x64` decision texture. The focus re-audit verified the normalized `94x86` and `32x32` contracts and closed both findings.
+- The 2026-07-16 repaired asset snapshot's four P2 findings covered missing value icons, Calling icons, case cards, and district role or state presentations. The Ledger tranche supplied all 33 static assets and the Ledger architecture re-audit verified exact script, GFX, GUI, file, and dimension parity.
+- The 2026-07-18 focus audit found `constant:utopia_manifesto_case_method.none` in the peaceful-case achievement helper. The declared sentinel is `.unset`; the one-token correction closes that P2 and the current focus-adjacent constant set resolves 388/388.

@@ -26,7 +26,7 @@ PROCESSED_ROOT = ASSET_ROOT / "processed_png" / "generated_nwe"
 DECODED_ROOT = ASSET_ROOT / "dds_decoded_png" / "generated_nwe"
 CONTACT_ROOT = ASSET_ROOT / "contact_sheets"
 RUNTIME_ROOT = ROOT / "gfx" / "leaders" / "006_independence_wave"
-DDS_CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
+DDS_CONVERTER = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 HASH_LEDGER = ASSET_ROOT / "generated_nwe_registered_civic_portraits_hashes.sha256"
 
 

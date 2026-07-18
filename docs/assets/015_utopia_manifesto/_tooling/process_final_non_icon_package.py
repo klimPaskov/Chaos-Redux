@@ -29,7 +29,7 @@ DDS = BASE / "dds"
 TGA = BASE / "tga/flags"
 DECODED = BASE / "decoded_png"
 CONTACT = BASE / "contact_sheets"
-CONVERTER = REPO / ".tools/convert_to_dds.py"
+CONVERTER = REPO / ".agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py"
 REPORT_PROCESSOR = REPO / ".agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py"
 
 REPORTS = [

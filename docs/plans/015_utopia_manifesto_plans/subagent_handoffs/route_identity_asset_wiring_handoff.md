@@ -1,5 +1,7 @@
 # Event 015 route-identity asset wiring handoff
 
+> Current disposition, `2026-07-15`: the missing decision-category attachment recorded in this dated handoff is closed. `utopia_manifesto_ledger_category` now contains `scripted_gui = utopia_manifesto_ledger_scripted_gui`. The sprite, portrait, advisor, and emblem evidence below remains valid.
+
 Handoff date: `2026-07-14`  
 Role: route-identity asset wiring specialist  
 Source package: `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/`
@@ -90,14 +92,14 @@ Before this pass:
 After this pass:
 
 - the four institutional handles resolve to their delivered `156x210` DDS portraits
-- every advisor resolves to its delivered role-specific `64x64` portrait
+- every advisor resolves to its delivered role-specific `65x67` dossier portrait
 - the existing Ledger header selects the matching `64x64` route emblem after formation and retains its existing animated seal before formation
 
 ## Meaningful validation
 
 - Parsed the package's `gfx_handoff.md` and compared all `25` supplied name/path pairs against `interface/015_utopia_manifesto.gfx`; every pair matches exactly.
 - Searched all repository `interface/*.gfx` files for the `25` names; every sprite definition occurs exactly once.
-- Confirmed every registered runtime DDS path exists. All `25` files have the required one-level legacy BGRA header, exact file length, and declared dimensions: `4` at `156x210`, `16` at `64x64`, and `5` at `64x64`. Portrait alpha is opaque; emblem alpha spans `0..255` as intended.
+- Confirmed every registered runtime DDS path exists. All `25` files have the required one-level legacy BGRA header, exact file length, and declared dimensions: `4` at `156x210`, `16` advisor dossier cards at `65x67`, and `5` emblems at `64x64`. Institutional portrait alpha is opaque; advisor-card and emblem alpha span `0..255` as intended.
 - Compared the package finals with runtime files by SHA-256: `4` institutional portraits, `16` advisor portraits, `5` league emblems, and `39` cosmetic-tag flags all match their package copies exactly (`64` pairs, no missing files or mismatches).
 - Parsed all `16` character replacement rows from the supplied handoff and verified each character block contains exactly its assigned handle. The character file contains `16` dedicated small portrait references and zero advisor idea-icon stand-ins.
 - Verified all five Ledger `iconType` elements consume the exact stable sprite, all five scripted-GUI visibility triggers consume the exact matching identity flag, and the generic Ledger seal excludes all five formed-emblem states.

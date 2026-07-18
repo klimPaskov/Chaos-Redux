@@ -1,18 +1,41 @@
 # Event 015 route-identity generation prompts
 
-Generation date: `2026-07-14`  
-Generator: OpenAI `image_gen`  
-Source mode: original fictional generation without an uploaded reference image, archival source, real-person likeness, or third-party character reference
+Generation date: `2026-07-14`; corrected flag/institution pass: `2026-07-15`  
+Generator: OpenAI built-in ImageGen  
+Source mode: original fictional generation. Flags use text-only calls; institutional leaders are people-free symbolic establishments; advisor masters are fictional specialists; bundled vanilla portraits are style and scale references only. No real-person identity, archival source, or third-party character is copied.
+
+The authoritative per-call handles, corrected flag compositions, institutional prompts, and rejection log are in `prompts/corrected_flag_and_institutional_prompts_2026_07_15.md`.
 
 ## Shared art direction
 
-All portraits use fictional late-1930s documentary oil-painted realism suitable for a Hearts of Iron IV character card. Clothing, interiors, tools, and paperwork are period-appropriate. Faces must remain legible after a `64x64` advisor crop or `156x210` institutional crop. No readable text, national flags, contemporary logos, famous people, military insignia, watermarks, frames, or mockups.
+Advisor masters use fictional late-1930s documentary oil-painted realism suitable for a Hearts of Iron IV specialist card. Clothing, interiors, tools, and paperwork are period-appropriate, and each face remains legible after its separate `65x67` dossier composition. Institutional leader masters contain no people: they use empty chambers, seals, ledgers, instruments, stores, and vacant furniture to represent the governing establishment at `156x210`. No readable text, contemporary logo, famous person, military insignia, watermark, or UI mockup is permitted.
 
-All flags are flat rectangular designs that fill the canvas edge-to-edge. They use simple, original civic geometry with no pole, folds, fabric lighting, shadows, lettering, coat-of-arms text, real-world party marks, or presentation mockup. Each design must remain legible at `10x7`.
+All flags are flat rectangular identity designs that fill the canvas edge-to-edge. Each carries detailed, original civic heraldry through route-specific institutions and material culture; none is reducible to a few primitive shapes. No pole, folds, fabric, lettering, coat-of-arms text, real-world party mark, or presentation mockup is permitted. Each design must retain a clear dominant silhouette at `10x7`.
 
-The frozen source atlases for the five base flags, five league emblems, and four institutional portraits were generated from the canonical briefs in `docs/assets/015_utopia_manifesto/prompts/generated_event_art_final_prompts.md`. Copies of those atlases are preserved in this package under `source_png/atlases/`; split source masters are preserved beside the newly generated sources.
+The historical atlases under `source_png/atlases/` are retained only as superseded package evidence. Every active flag composition and every active institutional portrait has its own built-in ImageGen source master. League-emblem history remains recorded in the original Event 015 asset prompt package.
 
 ## Advisor portrait masters
+
+Each active advisor master was generated independently and processed with the reusable generated dossier overlay kit. The frame source is `exec-e3c2e24d-4275-41ba-a25c-bdbfdb2a94ff`; the paper, paperclip, illegible notes, and wax-seal source is `exec-44055cbe-b80e-4e91-9f84-b47e46ded6c8`. Their exact sources, transparent derivatives, hashes, and composition contract are recorded in `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`.
+
+| Advisor master | Built-in ImageGen handle |
+| --- | --- |
+| `advisor_utopia_manifesto_interpreter_source.png` | `exec-318c2c63-58d6-4a2f-9cb5-718ef18c6de1` |
+| `advisor_utopia_manifesto_general_provisioner_source.png` | `exec-6b0c1b48-d330-4144-91d1-dc367319e57d` |
+| `advisor_utopia_manifesto_secretary_of_callings_source.png` | `exec-f3e680fa-37a2-4b9d-970e-beee317232b7` |
+| `advisor_utopia_manifesto_surveyor_of_shores_source.png` | `exec-3fc3983f-f015-4b6e-a927-2eef3849e010` |
+| `advisor_utopia_manifesto_civic_engineer_source.png` | `exec-bf4c97ae-06d8-4094-ace4-83c890a045fd` |
+| `advisor_utopia_manifesto_keeper_of_stores_source.png` | `exec-e5a3b596-fc22-4135-b3c0-589b6db39a11` |
+| `advisor_utopia_manifesto_league_envoy_source.png` | `exec-b18eea3a-aed0-4c2e-8e50-794b2782a512` |
+| `advisor_utopia_manifesto_advocate_of_limits_source.png` | `exec-5719ffab-e9e6-4438-bb4d-3d83e10db5e5` |
+| `advisor_utopia_manifesto_public_auditor_source.png` | `exec-404fe8c4-4b80-4175-84fe-66febf347924` |
+| `advisor_utopia_manifesto_constitutional_jurist_source.png` | `exec-2bd33604-a9fc-4ac3-a386-521f0d9d094f` |
+| `advisor_utopia_manifesto_council_organizer_source.png` | `exec-72e6c3bc-46b9-4ea5-a67c-2ec02439dfa8` |
+| `advisor_utopia_manifesto_social_workshop_planner_source.png` | `exec-1cf9ae16-4a2d-46e8-b38e-afe3c91d937d` |
+| `advisor_utopia_manifesto_chief_surveyor_source.png` | `exec-729994e1-13a2-45a9-bcc4-975363fe8109` |
+| `advisor_utopia_manifesto_standards_engineer_source.png` | `exec-169da878-4be4-400c-9a78-dd454aea8550` |
+| `advisor_utopia_manifesto_steward_of_service_source.png` | `exec-cd7f2d8e-156c-4b28-8128-6afd643dbed9` |
+| `advisor_utopia_manifesto_contract_broker_source.png` | `exec-c2d49770-163f-4430-ace5-6c9d3e3af528` |
 
 ### `advisor_utopia_manifesto_interpreter_source.png`
 
@@ -78,7 +101,9 @@ Fictional late-1930s civilian advisor portrait for a strategy game: a stern male
 
 Fictional late-1930s civilian advisor portrait for a strategy game: an astute female-presenting contract broker holds an unsigned agreement between merchants, cooperative delegates, and aid crates in a crowded exchange hall, dark brown suit, muted indigo and brass palette, documentary oil-painted realism, centered head-and-shoulders composition, no readable text.
 
-## Practical Commonwealth ideology-variant flag masters
+## Historical Practical Commonwealth flag briefs
+
+These briefs record the original design intent. The active built-in handles and final corrected prompt wording are in `corrected_flag_and_institutional_prompts_2026_07_15.md`.
 
 The Practical Commonwealth may preserve any ideology at formation. These four sources therefore use separate compositions, not palette swaps, and remain free of real-world ideological symbols.
 
@@ -98,7 +123,9 @@ Original fictional national flag, flat landscape composition filling the canvas 
 
 Original fictional national flag, flat landscape composition filling the canvas edge-to-edge: teal field crossed by several diagonal cream bands that become an open bridge, one small amber public lamp at the center, and a separate indigo band at the upper left; pragmatic non-alignment and many routes to cooperation, bold limited geometry, distinct at tiny size, no text, no real flag resemblance.
 
-## Ideology-completion flag masters
+## Historical ideology-completion flag briefs
+
+These briefs record the original design intent. The active package uses `21` separate built-in calls for the `21` distinct compositions and only four documented unsuffixed aliases.
 
 Each source below was created in a separate `image_gen` call using only its route's frozen base master as the visual reference. Shared direction: preserve the route's geometry language and civic motif; make an independent composition rather than a recolor; use a flat edge-to-edge flag; remain legible at `10x7`; exclude text, mockups, real flags, and real political or extremist symbols.
 
@@ -119,9 +146,8 @@ Each source below was created in a separate `image_gen` call using only its rout
 
 ## Processing record
 
-- Base flags were split from the frozen flag atlas and resized independently to `82x52`, `41x26`, and `10x7` before uncompressed bottom-left-origin 32-bit TGA export.
-- The twelve ideology-completion masters were center-fitted to `82x52`, then independently resized to `41x26` and `10x7` before the same TGA export.
-- Institutional portraits were split from the frozen portrait atlas, cropped and graded to `156x210`, and exported as one-level uncompressed BGRA DDS.
-- Advisor masters were cropped around the face and shoulders, graded to `64x64`, and exported as one-level uncompressed BGRA DDS.
+- Twenty-one independent built-in ImageGen flag masters were aspect-fitted, restrainedly graded and sharpened, resized independently to `82x52`, `41x26`, and `10x7`, and exported as uncompressed bottom-left-origin 32-bit TGA. The processor does not quantize, flatten, trace, redraw, or simplify the ImageGen heraldry. Four unsuffixed stems are exact documented aliases.
+- Four built-in ImageGen people-free symbolic institutional masters use the complete generated canvas through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader --source-kind symbolic`, per-asset metadata, and individual bundled-vanilla style-comparison sheets before `156x210` one-level uncompressed BGRA DDS export.
+- Sixteen independent fictional advisor masters use `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor --source-kind fictional` plus the generated frame and paper/seal overlays. The script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports; it draws no visible dossier artwork. The resulting `65x67` cards have transparent outer corners and one-level uncompressed BGRA DDS finals.
 - League emblems were split from the frozen atlas, passed through the official image-generation chroma-key helper with a soft alpha matte and spill cleanup, fitted to `64x64`, and exported as one-level uncompressed BGRA DDS.
 - `asset_records.json` binds every source, processed derivative, package final, runtime final, dimensions, and SHA-256. `validation.json` records format, decode, alpha, and distinctness checks.

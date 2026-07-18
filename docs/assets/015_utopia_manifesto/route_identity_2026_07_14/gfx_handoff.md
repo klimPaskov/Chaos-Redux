@@ -1,5 +1,7 @@
 # Event 015 route-identity GFX handoff
 
+> Current status, `2026-07-15`: all 25 supplied sprites and 16 advisor handles are wired, all five League emblems have Ledger consumers, and the Ledger decision category attaches `utopia_manifesto_ledger_scripted_gui`.
+
 This file is a wiring handoff only. The asset producer did not edit `interface/015_utopia_manifesto.gfx`, `common/characters/015_utopia_manifesto_characters.txt`, or scripted GUI/gameplay files.
 
 ## Sprite definitions
@@ -29,7 +31,11 @@ Insert the following `spriteType` entries inside the existing `spriteTypes = { .
 
 These names already exist in `common/characters/015_utopia_manifesto_characters.txt`; no leader-character reference needs renaming.
 
+The four texture files were replaced in place with people-free symbolic establishments generated in the HOI4 painted leader style and processed at `156x210` with explicit `symbolic` metadata and vanilla-style comparison sheets. Empty chambers, route seals, ledgers, instruments, stores, and vacant furniture carry the identity; no person, face, hand, crowd, silhouette, statue, bust, framed portrait, or human shadow appears. The handles and founder/successor sharing remain unchanged.
+
 ### Advisors
+
+All sixteen textures below are final `65x67` advisor dossier-card DDS files. Their sprite handles and runtime paths are unchanged by the advisor-pipeline correction, so no `.gfx` or character edit is required for this asset replacement. Each file was made from an independent fictional ImageGen portrait master with a separate head-and-shoulders crop through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. The visible dark frame and paper/seal are also generated overlay assets; the script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports. None is a resized leader portrait or a programmatically drawn dossier card.
 
 ```txt
 	spriteType = {
@@ -125,11 +131,11 @@ These use the stable IDs supplied in the country-package implementation handoff.
 	}
 ```
 
-## Character-file replacements
+## Character-file advisor handle map
 
-Replace only the `small =` handle inside each listed advisor's existing `portraits` block in `common/characters/015_utopia_manifesto_characters.txt`.
+The current `common/characters/015_utopia_manifesto_characters.txt` already uses the handle shown for each advisor. The `65x67` asset correction does not require or authorize a character-file edit.
 
-| Character | Replace current idea-icon handle with |
+| Character | Current `small` portrait handle |
 | --- | --- |
 | `utopia_manifesto_interpreter` | `GFX_portrait_utopia_manifesto_interpreter_small` |
 | `utopia_manifesto_general_provisioner` | `GFX_portrait_utopia_manifesto_general_provisioner_small` |
@@ -158,7 +164,7 @@ Flags require no `.gfx` sprite registration. HOI4 resolves the installed TGA fil
 - `gfx/flags/medium/<stem>.tga` — `41x26`
 - `gfx/flags/small/<stem>.tga` — `10x7`
 
-The four force-ideology routes intentionally alias only their unsuffixed file to the canonical ideology composition. All other ideology files are independent designs. Practical Commonwealth's five-file family is unchanged.
+The four force-ideology routes intentionally alias only their unsuffixed file to the canonical ideology composition. All other files are independent designs: `21` built-in ImageGen compositions cover the `25` wired stems, and Practical Commonwealth has five distinct compositions. No flag sprite registration or gameplay edit is required.
 
 ## League UI consumer
 
@@ -170,8 +176,8 @@ The five stable country flags already exist in `common/scripted_effects/015_utop
 - `utopia_manifesto_identity_island_hierarchy_emblem`
 - `utopia_manifesto_identity_plural_compact_emblem`
 
-No current Event 015 interface or scripted-GUI consumer resolves those state flags to a sprite. The parent should register the five sprites above, then select the matching sprite in the intended country-details, ledger, or league UI surface. The asset package does not guess a consumer or add a fallback image.
+The five sprites are registered in `interface/015_utopia_manifesto.gfx`. `interface/015_utopia_manifesto_ledger.gui` contains one icon widget per emblem, and `common/scripted_guis/015_utopia_manifesto_scripted_gui.txt` exposes the widget matching the five stable country flags. The Ledger category and decisions attach `utopia_manifesto_ledger_scripted_gui`; no fallback image is used.
 
 ## Post-wiring check
 
-After the parent edit, verify that every one of the four existing leader handles and sixteen new advisor handles resolves exactly once in the Event 015 GFX file, that none of the sixteen character entries still uses a `GFX_idea_...` stand-in, and that all five stable league handles have a real UI consumer rather than only a definition.
+The corrected package verifies that all sixteen advisor handles resolve in the Event 015 GFX file, all sixteen character entries use those handles rather than `GFX_idea_...` stand-ins, all four leader handles still resolve, all 75 route flag TGAs occupy their engine paths, and all five League emblem widgets have scripted visibility consumers.

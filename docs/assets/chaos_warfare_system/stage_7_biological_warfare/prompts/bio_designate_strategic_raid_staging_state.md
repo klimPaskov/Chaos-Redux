@@ -38,6 +38,6 @@ Avoid: gore, blood, exposed material, casualties, medical imagery, generic bioha
 2. The generated PNG was preserved unchanged under `source_png/`.
 3. The flat chroma-key background was removed with the installed `remove_chroma_key.py` helper using border auto-keying, soft matte, thresholded transparency, and despill.
 4. The transparent cutout was square-cropped around its alpha bounds, padded, and resized with Lanczos to exactly `32x32` RGBA.
-5. The processed PNG was converted to the required final DDS with `.tools/convert_to_dds.py`.
+5. The processed PNG was converted to the required final DDS with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 
 The source prompt intentionally uses fictional sealed-containment terminology for image generation while the asset id, package, manifest, and handoff preserve the Stage 7 biological-warfare role.

@@ -2,10 +2,11 @@
 """Finish and validate the corrected Event 015 cosmetic flag package.
 
 Every independent composition consumed here is an OpenAI ImageGen source PNG.
-This script performs deterministic solid-fill normalization, crop/resize,
-bottom-left-origin TGA export, decoded review output, contact-sheet assembly,
-checksum recording, and optional targeted merging into ``asset_records.json``.
-It never draws substitute motifs or creates palette-swap compositions.
+This script performs deterministic aspect fitting, restrained colour finishing,
+detail-preserving resize, bottom-left-origin TGA export, decoded review output,
+contact-sheet assembly, checksum recording, and optional targeted merging into
+``asset_records.json``. It never draws, traces, flattens, quantizes, or replaces
+ImageGen-authored heraldry and never creates palette-swap compositions.
 """
 
 from __future__ import annotations
@@ -16,10 +17,9 @@ import json
 import shutil
 import struct
 import subprocess
-from collections import Counter
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps, ImageStat
 
 
 REPO = Path(__file__).resolve().parents[5]
@@ -41,88 +41,88 @@ SIZES = {
 # One built-in ImageGen call produced every composition in this mapping.
 COMPOSITIONS = {
     "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_democratic": {
-        "handle": "exec-d221430b-6b27-4ee3-86d9-ce9b79ef8471",
-        "note": "Five equal households gather around a shared sprouting table.",
+        "handle": "exec-a00b7dd5-e6df-43f7-a5ec-961eac40b43e",
+        "note": "Households, lamp, ledger, bridge, wheat, and olive form an open democratic civic wreath.",
     },
     "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_communism": {
-        "handle": "exec-637487dd-a5a2-4ffd-98e3-e5095026979a",
-        "note": "Household roofs, grain, and a broad common table form one shared foundation.",
+        "handle": "exec-4830bcae-7f57-427d-81d3-3a977aeb5adf",
+        "note": "Three households, shared provisions, ledger, bridge, keys, and garden vines bind a collective covenant.",
     },
     "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_neutrality": {
-        "handle": "exec-e2e2e1b7-94f4-42a7-8dec-2dc2b8d4a7dc",
-        "note": "Households shelter a central sprout within a balanced diamond.",
+        "handle": "exec-4c0b4e46-07d2-456b-8f17-89bdfe14fa93",
+        "note": "A household shelter surrounds a lamp, sprout, common table, charter knot, and bridge.",
     },
     "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH_fascism": {
-        "handle": "exec-4bfd5bd2-6634-4f2b-b06a-27a81723c8d7",
-        "note": "A dominant household and two lesser roofs stand inside rigid command braces.",
+        "handle": "exec-75a8d15a-ca56-4fea-b2a7-ca646cec33b8",
+        "note": "A tall storehouse and two households are held by ledger clasps, chain, keys, grain, and a command lamp.",
     },
     "UTOPIA_MANIFESTO_COUNCIL_UNION_democratic": {
-        "handle": "exec-166408fb-5532-49a1-98a9-7931534ce029",
-        "note": "Tools and wheat open around a round deliberative table.",
+        "handle": "exec-a02699ba-d65a-4800-9b65-b79d7b56d511",
+        "note": "Six vocational chambers, an empty table, open doorway, and civic branches form a deliberative seal.",
     },
     "UTOPIA_MANIFESTO_COUNCIL_UNION_communism": {
-        "handle": "exec-a213e972-6856-429d-9b8d-a47a37d6ac06",
-        "note": "Four equal callings face inward around a common round table.",
+        "handle": "exec-5e7e4a0e-330e-4300-86e7-c07ac28008e8",
+        "note": "Six callings radiate around a shared ledger table inside a broken cooperative tool-wheel.",
     },
     "UTOPIA_MANIFESTO_COUNCIL_UNION_neutrality": {
-        "handle": "exec-18384790-b692-41fc-82f8-2c3caba11393",
-        "note": "Six registered callings occupy two measured rows around a central mark.",
+        "handle": "exec-9b9a068d-d3d0-4caa-93a5-488c880c168c",
+        "note": "Six registry cabinets surround an empty council table, balance, seal, cord, and paired keys.",
     },
     "UTOPIA_MANIFESTO_COUNCIL_UNION_fascism": {
-        "handle": "exec-d90ef2e5-098f-44c9-8ed8-893d4052cb73",
-        "note": "Regimented tools rise behind a sharp command chevron.",
+        "handle": "exec-ac754d06-492a-4672-aa64-f7f71078797b",
+        "note": "A fortified vocational register locks six callings behind a chained council table and command beacon.",
     },
     "UTOPIA_MANIFESTO_PLANNED_UTOPIA_democratic": {
-        "handle": "exec-eabafa44-47d8-45c9-98de-7a8a0fbedde2",
-        "note": "A drafting divider spans three equal open civic frames.",
+        "handle": "exec-9311272b-6ed7-41a5-b45d-3f1496d9a8ab",
+        "note": "A compass spans three bridged garden neighborhoods, a balance, ledger, open gate, and network nodes.",
     },
     "UTOPIA_MANIFESTO_PLANNED_UTOPIA_communism": {
-        "handle": "exec-6bb7fe09-3064-4e3a-9a82-9a8c1d1770a2",
-        "note": "A drafting divider measures five equal work nodes on a common planning table.",
+        "handle": "exec-cc3f3dc5-776a-4d90-9bd2-a4dcdcaf4ec4",
+        "note": "A compass binds five settlement nodes to rail, water, a common plan table, gear, and bridge.",
     },
     "UTOPIA_MANIFESTO_PLANNED_UTOPIA_neutrality": {
-        "handle": "exec-456c432e-2b37-4ae7-a380-52d7733a500c",
-        "note": "A single drafting divider is registered to one square and two measured guide lines.",
+        "handle": "exec-7263b637-a24e-4569-ade3-a441f8372f3e",
+        "note": "Standards instruments encircle a reservoir settlement plan, survey chain, ledger, weights, and bridge.",
     },
     "UTOPIA_MANIFESTO_PLANNED_UTOPIA_fascism": {
-        "handle": "exec-51695f4d-df59-4963-9802-28b774cc60d3",
-        "note": "A drafting divider is locked into a strict vertical measurement monument.",
+        "handle": "exec-c1d34458-0883-4df8-86ba-562dc7ebfc56",
+        "note": "A compass and plumb bob lock a city, dam, granary, rail plan, sealed ledger, keys, chains, and weights.",
     },
     "UTOPIA_MANIFESTO_CLOSED_ISLAND_democratic": {
-        "handle": "exec-a2424d89-6954-42f7-bb42-7ff1e047be13",
-        "note": "An island remains open through separated gateways and a civic bridge.",
+        "handle": "exec-43161b07-9f43-4ee4-bb93-4cf87e226a6c",
+        "note": "Lighthouse, granary, civic hall, broken seawalls, open gates, bridge, harbor, and branches mark an open island.",
     },
     "UTOPIA_MANIFESTO_CLOSED_ISLAND_communism": {
-        "handle": "exec-9ebdee8a-a027-4499-aa3e-8b737e0c145e",
-        "note": "An island rests inside equal boundary segments joined to one foundation.",
+        "handle": "exec-38dff557-bd42-4911-9fc5-6255f59d9fe3",
+        "note": "A beacon, granary, cistern, cooperative store, provision ledger, chain, and segmented seawall form one island reserve.",
     },
     "UTOPIA_MANIFESTO_CLOSED_ISLAND_neutrality": {
-        "handle": "exec-91acc487-c80c-4436-a40c-330d7c2a1609",
-        "note": "An island sits between balanced half-rings and a controlled causeway.",
+        "handle": "exec-94ddbc41-34a5-4345-a34e-c5215ada68df",
+        "note": "A settled island lies behind balanced seawalls and a controlled causeway above a sealed ledger and harbor keys.",
     },
     "UTOPIA_MANIFESTO_CLOSED_ISLAND_fascism": {
-        "handle": "exec-d3bea27e-81b9-4edb-990d-4f1e8cd5a674",
-        "note": "An island is enclosed by a hard ring and four inward locking teeth.",
+        "handle": "exec-bd341026-0f7d-4d7d-9933-f55af966e035",
+        "note": "A fortress island, reserve store, beacon, cistern, locks, chained gate, keys, and emergency causeway form a closed reserve.",
     },
     "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH": {
-        "handle": "exec-912fb135-9772-4900-acce-20bc32f1fc66",
-        "note": "A handshake and sprout sit beneath two broad civic arches.",
+        "handle": "exec-13569204-8901-4da9-9f98-e30baf9ce967",
+        "note": "An open ledger, bridge, lamp, water pump, store, garden, road, compass, service nodes, keys, and charter cord define the route.",
     },
     "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_democratic": {
-        "handle": "exec-74a82e3c-4309-4148-b459-1c2dbf753ecb",
-        "note": "Three open arches share a civic lamp above a turquoise bridge.",
+        "handle": "exec-828d91f8-92de-4bc2-86fc-8a75be943fd8",
+        "note": "Five borough gates surround an empty ledger table, public lamp, bridge, garden, water outlet, rail wheel, and open gate.",
     },
     "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_communism": {
-        "handle": "exec-acee6c41-999a-403f-bd38-07c60ea9691e",
-        "note": "Four delegates share one table, doorway, and civic lamp.",
+        "handle": "exec-5d2e9889-30d2-4406-a8bb-af2f258f0b34",
+        "note": "Workshop, provision store, field, and rail-water transport share one ledger table above a bridge and grain braid.",
     },
     "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_neutrality": {
-        "handle": "exec-5bc343f9-6007-4b76-9943-1de4da3c7802",
-        "note": "Crossed civic bands carry a central service light over a practical bridge.",
+        "handle": "exec-43f01089-3ec4-4c5e-9c4a-e6a9b9fc101b",
+        "note": "A lamp, bridge, standards ledger, pump, garden, crate, rail, compass, balance, conduits, keys, and charter seal form a municipal escutcheon.",
     },
     "UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH_fascism": {
-        "handle": "exec-4e4f5847-f124-4dcb-9ab2-798e90a69bbd",
-        "note": "A broken enclosure channels one streetlight and path through ordered blocks.",
+        "handle": "exec-ad67e6bd-46d0-4379-85d7-4e41840429df",
+        "note": "A fortified store, command lamp, sealed ledger, controlled bridge, locked service conduits, keys, and chains impose assignment.",
     },
 }
 
@@ -176,38 +176,37 @@ def path_for(root: Path, stem: str, size_name: str, suffix: str) -> Path:
     return root / f"{stem}{suffix}" if size_name == "main" else root / size_name / f"{stem}{suffix}"
 
 
-def flatten_to_size(image: Image.Image, size: tuple[int, int], colors: int) -> Image.Image:
+def finish_to_size(image: Image.Image, size: tuple[int, int]) -> Image.Image:
+    """Preserve generated geometry while preparing a readable HOI4 flag size."""
     fitted = ImageOps.fit(image, size, method=Image.Resampling.LANCZOS, centering=(0.5, 0.5)).convert("RGB")
-    quantized = fitted.quantize(
-        colors=colors,
-        method=Image.Quantize.MAXCOVERAGE,
-        dither=Image.Dither.NONE,
-    ).convert("RGB")
-    # Collapse low-level generated background shading to the modal border fill.
-    border = []
-    width, height = quantized.size
-    for x in range(width):
-        border.extend((quantized.getpixel((x, 0)), quantized.getpixel((x, height - 1))))
-    for y in range(height):
-        border.extend((quantized.getpixel((0, y)), quantized.getpixel((width - 1, y))))
-    background = Counter(border).most_common(1)[0][0]
-    pixels = list(quantized.getdata())
-    collapsed = []
-    for pixel in pixels:
-        distance = sum((int(pixel[index]) - int(background[index])) ** 2 for index in range(3)) ** 0.5
-        collapsed.append(background if distance < 48 else pixel)
-    quantized.putdata(collapsed)
-    return quantized.convert("RGBA")
+    fitted = ImageEnhance.Contrast(fitted).enhance(1.045)
+    fitted = ImageEnhance.Color(fitted).enhance(1.025)
+    if min(size) > 20:
+        fitted = fitted.filter(ImageFilter.UnsharpMask(radius=0.55, percent=62, threshold=3))
+    else:
+        fitted = fitted.filter(ImageFilter.UnsharpMask(radius=0.30, percent=42, threshold=3))
+    return fitted.convert("RGBA")
 
 
 def process_source(source: Path) -> dict[str, Image.Image]:
     with Image.open(source) as opened:
         image = ImageOps.exif_transpose(opened).convert("RGB")
     return {
-        "main": flatten_to_size(image, SIZES["main"], 6),
-        "medium": flatten_to_size(image, SIZES["medium"], 6),
-        "small": flatten_to_size(image, SIZES["small"], 5),
+        size_name: finish_to_size(image, size)
+        for size_name, size in SIZES.items()
     }
+
+
+def source_preservation_rms(source: Path, processed: Image.Image) -> float:
+    with Image.open(source) as opened:
+        reference = ImageOps.fit(
+            ImageOps.exif_transpose(opened).convert("RGB"),
+            processed.size,
+            method=Image.Resampling.LANCZOS,
+            centering=(0.5, 0.5),
+        )
+    difference = ImageChops.difference(reference, processed.convert("RGB"))
+    return round(sum(ImageStat.Stat(difference).rms) / 3.0, 4)
 
 
 def write_tga_bottom_left(image: Image.Image, path: Path) -> None:
@@ -323,7 +322,7 @@ def export_composition(stem: str, details: dict[str, str]) -> list[dict[str, obj
                 "runtime_final": rel(runtime_final),
                 "runtime_sha256": sha256(runtime_final),
                 "validation": validation,
-                "provenance": "OpenAI built-in ImageGen source; deterministic flat-fill normalization, crop/resize, and bottom-left TGA export",
+                "provenance": "OpenAI built-in ImageGen source; deterministic aspect fit, restrained colour finishing, detail-preserving resize, and bottom-left TGA export",
                 "license": "Original generated fictional asset; no third-party source or character reference",
                 "notes": details["note"],
             }
@@ -394,13 +393,10 @@ def validate_package(records: list[dict[str, object]]) -> dict[str, object]:
             processed = REPO / str(row["processed"])
             result = validate_tga(runtime, expected)
             with Image.open(processed) as opened:
-                palette = opened.convert("RGBA").getcolors(maxcolors=256)
-            if palette is None:
-                raise ValueError(f"processed flag exceeds the flat-palette review ceiling: {processed}")
-            unique_colors = len(palette)
-            ceiling = 5 if size_name == "small" else 6
-            if unique_colors > ceiling:
-                raise ValueError(f"processed flag has {unique_colors} colors; expected at most {ceiling}: {processed}")
+                unique_colors = len(opened.convert("RGBA").getcolors(maxcolors=expected[0] * expected[1]) or [])
+            preservation_rms = source_preservation_rms(REPO / str(row["source"]), Image.open(processed).convert("RGBA"))
+            if preservation_rms > 18.0:
+                raise ValueError(f"flag finishing diverged too far from the ImageGen master: {processed}: {preservation_rms}")
             files.append(
                 {
                     "identifier": stem,
@@ -408,7 +404,8 @@ def validate_package(records: list[dict[str, object]]) -> dict[str, object]:
                     "path": rel(runtime),
                     "dimensions": list(expected),
                     "alpha_range": result["alpha_range"],
-                    "unique_solid_colors": unique_colors,
+                    "unique_rgba_colors": unique_colors,
+                    "source_preservation_rms": preservation_rms,
                     "sha256": result["sha256"],
                     "file_description": file_description(runtime),
                 }
@@ -434,7 +431,7 @@ def validate_package(records: list[dict[str, object]]) -> dict[str, object]:
         "documented_aliases": ALIASES,
         "wired_stems": len(stems),
         "runtime_tga_files": len(files),
-        "solid_fill_normalization": "maximum six colors, no dithering; low-level border shading collapsed",
+        "imagegen_detail_preservation": "no quantization, tracing, primitive redraw, motif substitution, or palette ceiling; only aspect fit, restrained colour finishing, sharpening, and resize",
         "route_ideology_distinctness": route_distinctness,
         "checks": [
             "exact 25-stem coverage at 82x52, 41x26, and 10x7",
@@ -443,7 +440,8 @@ def validate_package(records: list[dict[str, object]]) -> dict[str, object]:
             "uncompressed bottom-left-origin 32-bit TGA contract",
             "decoded pixel equality with processed PNG",
             "fully opaque alpha",
-            "maximum six solid colors without dithering (five at 10x7)",
+            "source-to-output colour RMS remains inside the restrained finishing threshold",
+            "ImageGen-authored heraldic geometry and tonal detail are retained without quantization or redraw",
             "file(1) reports no top-origin marker",
         ],
         "files": files,
@@ -525,6 +523,36 @@ def make_size_ladder(stems: list[str]) -> None:
     shutil.copyfile(output, CONTACT / "ideology_flag_variants_size_ladder_decoded_contact_sheet.png")
 
 
+def make_source_size_comparison(stems: list[str]) -> None:
+    columns = 2
+    cell_width, cell_height = 680, 210
+    rows = (len(stems) + columns - 1) // columns
+    sheet = Image.new("RGB", (columns * cell_width, rows * cell_height), (38, 40, 42))
+    draw = ImageDraw.Draw(sheet)
+    label_font = font(11)
+    size_font = font(10)
+    for index, stem in enumerate(stems):
+        x = (index % columns) * cell_width
+        y = (index // columns) * cell_height
+        source = fit_preview(SOURCE / f"{stem}_source.png", (205, 130))
+        sheet.paste(source, (x + 10, y + 28))
+        draw.text((x + 10, y + 8), stem.replace("UTOPIA_MANIFESTO_", ""), font=label_font, fill=(240, 240, 236))
+        draw.text((x + 10, y + 164), "ImageGen source", font=size_font, fill=(188, 194, 196))
+        placements = {
+            "main": (230, 40, 2),
+            "medium": (410, 52, 3),
+            "small": (550, 58, 10),
+        }
+        for size_name, (image_x, image_y, scale) in placements.items():
+            with Image.open(path_for(DECODED, stem, size_name, ".png")) as opened:
+                flag = opened.convert("RGB")
+            shown = flag.resize((flag.width * scale, flag.height * scale), Image.Resampling.NEAREST)
+            sheet.paste(shown, (x + image_x, y + image_y))
+            draw.text((x + image_x, y + 164), f"{size_name} {flag.width}x{flag.height}", font=size_font, fill=(188, 194, 196))
+        draw.line((x, y + cell_height - 1, x + cell_width, y + cell_height - 1), fill=(72, 75, 78), width=1)
+    sheet.save(CONTACT / "flag_imagegen_source_normal_medium_small_comparison.png")
+
+
 def make_small_readability_sheet(stems: list[str]) -> None:
     columns = 5
     cell_width, cell_height = 260, 175
@@ -586,6 +614,7 @@ def main() -> None:
     make_decoded_contact_sheet(stems)
     make_small_readability_sheet(stems)
     make_size_ladder(stems)
+    make_source_size_comparison(stems)
     if args.merge_shared_records:
         merge_shared_records(records)
     print(

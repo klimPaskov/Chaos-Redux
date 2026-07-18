@@ -15,6 +15,8 @@ from PIL import Image, ImageChops
 REPO = Path(__file__).resolve().parents[5]
 BASE = REPO / "docs/assets/015_utopia_manifesto/route_identity_2026_07_14"
 FILE_EXE = Path(r"C:/Program Files/Git/usr/bin/file.exe")
+ADVISOR_APPROVAL = BASE / "approvals/advisor_v5_independent_visual_approval_2026_07_16.json"
+ADVISOR_INSTALLED_VALIDATION = BASE / "advisor_installed_validation_2026_07_16.json"
 
 ROUTES = {
     "voluntary_commonwealth": "UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH",
@@ -201,7 +203,7 @@ def validate_identity(records: list[dict[str, object]]) -> dict[str, object]:
     if len(institutions) != 4 or len({row["processed_sha256"] for row in institutions}) != 4:
         raise ValueError("institutional portrait distinctness failed")
     for row in institutions:
-        if row.get("source_kind") != "collective" or not row.get("imagegen_handle"):
+        if row.get("source_kind") != "symbolic" or not row.get("imagegen_handle"):
             raise ValueError(f"institutional source evidence is incomplete: {row['identifier']}")
         metadata = json.loads((REPO / str(row["metadata"])).read_text(encoding="utf-8"))
         if metadata.get("status") != "approved_after_visual_comparison":
@@ -210,14 +212,47 @@ def validate_identity(records: list[dict[str, object]]) -> dict[str, object]:
     emblems = [row for row in records if row["kind"] == "league_emblem"]
     if len(advisors) != 16 or len({row["processed_sha256"] for row in advisors}) != 16:
         raise ValueError("advisor distinctness failed")
+    advisor_ids = {str(row["identifier"]) for row in advisors}
+    approval = json.loads(ADVISOR_APPROVAL.read_text(encoding="utf-8"))
+    installed = json.loads(ADVISOR_INSTALLED_VALIDATION.read_text(encoding="utf-8"))
+    approval_ids = {str(row["identifier"]) for row in approval["assets"]}
+    installed_by_id = {str(row["identifier"]): row for row in installed["assets"]}
+    if approval["package"]["approval_decision"] != "approved" or approval_ids != advisor_ids:
+        raise ValueError("advisor independent visual approval is incomplete")
+    if installed["status"] != "passed" or set(installed_by_id) != advisor_ids:
+        raise ValueError("advisor installed validation is incomplete")
+    approval_hash = sha256(ADVISOR_APPROVAL)
+    installed_hash = sha256(ADVISOR_INSTALLED_VALIDATION)
+    for row in advisors:
+        identifier = str(row["identifier"])
+        decoded = REPO / str(row["decoded"])
+        if row.get("status") != "approved":
+            raise ValueError(f"advisor asset record is not approved: {identifier}")
+        if row.get("approval_record_sha256") != approval_hash:
+            raise ValueError(f"advisor approval record hash drift: {identifier}")
+        if row.get("installed_validation_report_sha256") != installed_hash:
+            raise ValueError(f"advisor installed-validation hash drift: {identifier}")
+        if row["validation"].get("visual_approval_record_present") is not True:
+            raise ValueError(f"advisor visual approval marker is absent: {identifier}")
+        if row["validation"].get("dds_state") != "installed_and_pixel_verified_against_approved_png":
+            raise ValueError(f"advisor DDS state is not installed/verified: {identifier}")
+        if sha256(decoded) != row.get("decoded_sha256"):
+            raise ValueError(f"advisor decoded PNG hash drift: {identifier}")
+        installed_row = installed_by_id[identifier]
+        if installed_row["approved_png_sha256"] != row["processed_sha256"]:
+            raise ValueError(f"advisor approved PNG evidence mismatch: {identifier}")
+        if installed_row["dds_sha256"] != row["runtime_sha256"]:
+            raise ValueError(f"advisor DDS evidence mismatch: {identifier}")
+        if installed_row["decoded_png_sha256"] != row["decoded_sha256"] or installed_row["pixel_equal"] is not True:
+            raise ValueError(f"advisor decoded equality evidence mismatch: {identifier}")
     if len(emblems) != 5 or len({row["processed_sha256"] for row in emblems}) != 5:
         raise ValueError("league emblem distinctness failed")
     return {
         "route_ideology_families": route_distinctness,
         "flag_imagegen_compositions": "21 of 21 independently generated sources have unique processed hashes and recorded built-in handles",
         "intentional_unsuffixed_aliases": [f"{alias} -> {canonical}" for alias, canonical in ALIASES.items()],
-        "institutional_portraits": "4 of 4 distinct, source-kind collective, built-in ImageGen handles recorded, vanilla comparison approval recorded",
-        "advisor_portraits": "16 of 16 unique 65x67 dossier-card processed hashes",
+        "institutional_portraits": "4 of 4 distinct people-free symbolic institutions, built-in ImageGen handles recorded, vanilla-style comparison approval recorded",
+        "advisor_portraits": "16 of 16 unique 65x67 dossier cards independently approved, installed, and decoded pixel-identically to their approved PNGs",
         "league_emblems": "5 of 5 unique processed hashes",
     }
 
@@ -249,7 +284,9 @@ def main() -> None:
         "focused_validation": {
             "flags": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/flag_identity_validation_2026_07_15.json",
             "institutional_portraits": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/institutional_portrait_validation_2026_07_15.json",
-            "advisors": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_validation_2026_07_15.json",
+            "advisor_candidates": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_validation_2026_07_16.json",
+            "advisor_visual_approval": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/approvals/advisor_v5_independent_visual_approval_2026_07_16.json",
+            "advisor_installed_validation": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_installed_validation_2026_07_16.json",
             "imagegen_source_evidence": "docs/assets/015_utopia_manifesto/route_identity_2026_07_14/imagegen_source_evidence_2026_07_15.json",
         },
         "checks": [
@@ -258,8 +295,9 @@ def main() -> None:
             "runtime decodes are pixel-identical to processed PNGs",
             "all flags are uncompressed bottom-left-origin 32-bit TGA without a top-origin marker",
             "all portraits and emblems are one-level uncompressed BGRA DDS",
-            "21 independent flag compositions carry built-in ImageGen evidence; only four documented aliases repeat art",
-            "institutional portraits carry collective-source metadata and approved vanilla comparison sheets",
+            "21 independent flag compositions carry built-in ImageGen evidence; only four documented aliases repeat designs",
+            "institutional portraits carry symbolic people-free source metadata and approved vanilla-style comparison sheets",
+            "all sixteen advisor cards carry producer-independent visual approval and installed DDS pixel-equality evidence",
         ],
         "files": files,
     }

@@ -1,6 +1,66 @@
-# Event 015 Utopian Manifesto GFX handoff
+# Event 015 Current GFX Handoff
 
-## Event pictures
+Snapshot: `2026-07-16`
+
+Status: **PASS - current runtime wiring is complete.**
+
+## Registry truth
+
+| Surface | Result |
+| --- | --- |
+| `interface/015_utopia_manifesto.gfx` | `459` unique definitions, duplicate names `0` |
+| `interface/015_utopia_manifesto_super_event.gfx` | `5` unique route-super-event definitions |
+| Combined | `464` unique definitions, cross-file duplicate names `0` |
+| `interface/015_utopia_manifesto_ledger.gui` | `46` unique sprite references, unresolved references `0` |
+| `common/scripted_guis/015_utopia_manifesto_scripted_gui.txt` | exact visibility/state bindings for live Ledger elements |
+
+The Event 015 decision category attaches `utopia_manifesto_ledger_scripted_gui`; the four panels are controlled by the Overview, Callings, Stores/Settlements, and Necessary Ground tab flags.
+
+## Live repaired Ledger statics
+
+| Family | Sprite/consumer contract | Live layout and state |
+| --- | --- | --- |
+| Values | `GFX_utopia_ledger_value_need`, `_plenty`, `_concord`, `_balance` | Four distinct `32x32` icons at root `(30,104)`, `(194,104)`, `(358,104)`, `(522,104)`; live score text sits beside each icon |
+| Callings | `GFX_utopia_ledger_calling_provisioning`, `_workshops`, `_civic_works`, `_learning_and_care`, `_maritime_and_settlement`, `_defense_and_watches` | Six `48x48` icons, scaled `0.75`, at panel-relative x `280` or `606` and y `4`, `74`, `144`; visible with `utopia_ledger_callings_panel` |
+| Case cards | `GFX_utopia_ledger_case_*` for ten exact states | Ten `300x96` consumers share `(8,4)` in `utopia_ledger_ground_panel`; scripted visibility is mutually exclusive across no target, eligible, selected, pending, counteroffer, refusal, ultimatum, expired, stewardship, and associate |
+| District roles | `GFX_utopia_ledger_district_role_*` for seven exact roles | Seven `300x96` consumers share `(334,4)` in **`utopia_ledger_stores_panel` (Stores/Settlements tab)**; `utopia_manifesto_district_visual_role` binds all seven constants |
+| District states | `GFX_utopia_ledger_district_state_*` for six exact states | Six `48x48` overlays share `(578,12)` in the same Stores/Settlements panel; surveyed, planned, building, blocked, complete, and disputed use exact phase/flag priority |
+
+The planned District state is not an alias: `utopia_manifesto_district_plan_committed_recent` is set for `constant:utopia_manifesto_durations.district_plan_card_days` (`7` days) when a plan is committed and is cleared by terminal cleanup. Port town, research town, and Inland Island ring have explicit durable role assignments; they do not reuse another role card.
+
+## Live animation wiring
+
+| Animation | Registered sprites | GUI consumer | Runtime state |
+| --- | --- | --- | --- |
+| Ledger seal, `8` frames, `64x64`, `12 fps`, loop | `GFX_utopia_ledger_seal_{static,animated}` | `utopia_ledger_seal` at `(18,16)` | visible until one of five identity-emblem flags selects a route emblem |
+| Need warning, `8`, `64x64`, `5 fps`, loop | `GFX_utopia_need_warning_{static,animated}` | `utopia_ledger_need_warning` at `(24,430)` | high Need, low Plenty, or constitutional crisis |
+| Reserve fill, `8`, `300x24`, `4 fps`, loop | `GFX_utopia_reserve_fill_{static,animated}` | `utopia_ledger_reserve_fill` at Stores-panel `(8,12)` | `utopia_reserve_band` exists; extra presentation animation, not an accepted-row substitute |
+| Toward Choice, `8`, `158x24`, `5 fps`, no loop | `GFX_utopia_balance_to_choice_{static,animated}` | `utopia_ledger_balance_to_choice` at `(516,70)` | route-resolved Assignment-band crossing downward; three-day direction flag |
+| Toward Assignment, `8`, `158x24`, `5 fps`, no loop | `GFX_utopia_balance_to_assignment_{static,animated}` | `utopia_ledger_balance_to_assignment` at `(516,70)` | route-resolved Assignment-band crossing upward; three-day direction flag |
+| Formation-ready, `10`, `96x96`, `5 fps`, loop | `GFX_utopia_formation_ready_seal_{static,animated}` | `utopia_ledger_formation_ready_seal` at `(610,0)`, scale `0.72` | current route can form and commonwealth is not formed |
+
+All animated definitions use sheet DDS paths, exact `noOfFrames`, `play_on_show = yes`, and the audited loop setting. Static fallbacks are registered. First-refresh suppression, opposite balance-flag clearing, and terminal cleanup are present; no daily, weekly, or monthly scan drives the balance animations.
+
+## Other live registrations
+
+- Reports/news: all `14` report and `3` news sprites are registered in `015_utopia_manifesto.gfx` and consumed by Event 015 events.
+- Route super-events: five `457x328` sprites are registered separately and selected by scripted-localisation slots `96`-`100`.
+- Focuses: `74` live base sprites plus matching shine registrations cover `124` focus uses.
+- Decisions/categories/missions: `174` mapping rows resolve to live `32x32` registrations, covering `9` categories, `121` decisions, and `44` missions. `165` gameplay assignments are present. Current mapping authority is `decision_icon_mapping.csv`.
+- Ideas: `12` registered pictures cover `50` entries.
+- Achievements: `42` current base/grey/not-eligible variants are registered.
+- Institutional characters: four `156x210` people-free tableau sprites serve eight leader entries.
+- Advisors: sixteen `65x67` dossier sprites serve sixteen advisor entries.
+- League emblems: five `64x64` sprites occupy the header position and use five exact route flags.
+- Flags: no GFX registration is required; `25` filenames at three engine sizes provide `75` TGAs.
+
+## Completion gate
+
+The previous Values, Callings, Case-card, and District-card P2 gaps are resolved. No reserved-but-unimplemented name remains in this handoff. Simplifications, omissions, fallbacks, and open blockers: none.
+
+## Historical event-picture handoff (already integrated; superseded)
+
+The older instructions below are retained only as package history. Every referenced report/news registration and consumer is already integrated; do not re-add duplicate blocks.
 
 The final package installs these exact runtime identities under `gfx/event_pictures/015_utopia_manifesto/`:
 

@@ -67,4 +67,4 @@ The parent-registered sprite names and runtime texture paths were verified in `i
 - Equipment processing: alpha trim, aspect-preserving fit into a transparent `131x52` canvas.
 - Raid processing: alpha trim, aspect-preserving fit into a transparent `32x32` canvas, with a separate map/type composition rather than a resized equipment source.
 - Idea processing: alpha trim, aspect-preserving fit into a transparent `64x64` canvas.
-- DDS conversion: `.tools/convert_to_dds.py`, one-level uncompressed BGRA output, no mip chain.
+- DDS conversion: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, one-level uncompressed BGRA output, no mip chain.

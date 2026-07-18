@@ -28,4 +28,4 @@ Source mode summary: generated period-documentary scenes were appropriate becaus
 - Super-event images were cover-cropped to `457x328`, normalized to high-contrast monochrome, and exported as DDS through the repo helper.
 - GUI background art was cover-cropped to `700x500`.
 - `utopia_ledger_header_plate` and `utopia_ledger_warning_panel` were derived from the same generated ledger tableau source to keep the GUI pack visually consistent.
-- The repo DDS helper `.tools/convert_to_dds.py` required a local header-pack fix from `"<4sIIIIIII11I"+"IIIII"+"IIIII"+"IIIII"` to `"<4s31I"` before standard DDS export succeeded in this workspace.
+- The canonical skill-local DDS helper `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` carries the required `"<4s31I"` header-pack fix used by this workspace.

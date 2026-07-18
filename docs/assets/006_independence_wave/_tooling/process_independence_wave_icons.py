@@ -35,7 +35,7 @@ CHROMA_HELPER = (
     / "scripts"
     / "remove_chroma_key.py"
 )
-DDS_CONVERTER = REPO_ROOT / ".tools" / "convert_to_dds.py"
+DDS_CONVERTER = REPO_ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
 ACHIEVEMENT_OVERLAY = (
     REPO_ROOT
     / ".agents"

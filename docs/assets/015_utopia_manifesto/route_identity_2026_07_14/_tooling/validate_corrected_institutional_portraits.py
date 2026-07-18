@@ -25,20 +25,20 @@ RUNTIME = REPO / "gfx/leaders/015_utopia_manifesto"
 
 PORTRAITS = {
     "leader_household_assembly": {
-        "handle": "exec-59ff2fa1-755d-4e86-9df8-1a9586d9f629",
-        "brief": "Three household delegates, with an older woman centered as the institutional voice.",
+        "handle": "exec-117c963f-9206-4364-b717-7ccc445eb02a",
+        "brief": "An empty municipal chamber gathered around the common table, with an open household ledger and the assembly seal as the focal authority.",
     },
     "leader_council_of_callings": {
-        "handle": "exec-db5ac931-dd5a-4f4c-b56c-f0a13d7ced05",
-        "brief": "Three skilled-worker delegates in practical interwar clothing, with a woman centered.",
+        "handle": "exec-cf3a6e16-ae0a-47d7-b0d2-ac80159b3939",
+        "brief": "An empty cooperative congress-workshop organized around six calling stations and the council's tool-wheel seal.",
     },
     "leader_board_of_measure": {
-        "handle": "exec-a710c8a9-e1bc-4b67-bc73-da2db13f8851",
-        "brief": "Three technical administrators, with an older bespectacled man centered.",
+        "handle": "exec-dda8c28b-0625-4bd7-a686-65afef28a489",
+        "brief": "An empty standards chamber of balances, gauges, compass work, and a measured network plan beneath the board's seal.",
     },
     "leader_stewardship_council": {
-        "handle": "exec-6fae8a6d-e911-4667-b258-f8173bdf73df",
-        "brief": "Three stern stewardship officials, with an older man centered.",
+        "handle": "exec-b5e1e53d-ed19-4d3b-9baa-c2edb1dfc0a3",
+        "brief": "A dark empty reserve chamber with a sealed ledger, four vacant chairs, and the fortified tower-and-keys stewardship seal.",
     },
 }
 
@@ -115,8 +115,9 @@ def approve_metadata(stem: str, details: dict[str, str], record: dict[str, objec
             "package_dds": record["package_final"],
             "runtime_dds": record["runtime_final"],
             "runtime_sha256": record["runtime_sha256"],
-            "visual_review": "Approved against the bundled vanilla HOI4 leader portrait references: close readable bust grouping, interwar clothing, subdued painted finish, quiet background, no photographic or modern concept-art treatment.",
-            "source_reference_mode": "collective fictional institution; vanilla references used for painted style only, never identity",
+            "visual_review": "Approved against the bundled vanilla HOI4 leader portrait references for tonal hierarchy and painted finish. The portrait is a people-free institutional tableau with a readable central seal, apparatus, empty furniture, and route-specific material culture; it contains no person, face, hand, crowd, silhouette, statue, bust, mannequin, framed portrait, or human shadow.",
+            "source_reference_mode": "people-free symbolic fictional institution; vanilla references used for painted style and value structure only",
+            "composition_contract": "full_generated_master_crop_grade_export_only; no programmatically drawn leader subject, emblem, or institutional scene",
         }
     )
     path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
@@ -138,6 +139,12 @@ def validate_portraits() -> tuple[list[dict[str, object]], dict[str, object]]:
                 raise FileNotFoundError(path)
         with Image.open(source) as opened:
             source_dimensions = [opened.width, opened.height]
+        metadata_payload = json.loads(metadata.read_text(encoding="utf-8"))
+        expected_crop = [0, 0, source_dimensions[0], source_dimensions[1]]
+        if metadata_payload.get("source_kind") != "symbolic":
+            raise ValueError(f"institutional portrait is not recorded as symbolic: {stem}")
+        if metadata_payload.get("crop") != expected_crop:
+            raise ValueError(f"institutional portrait does not use the full generated master: {stem}")
         with Image.open(processed) as opened:
             processed_rgba = opened.convert("RGBA")
         if processed_rgba.size != (156, 210):
@@ -157,9 +164,9 @@ def validate_portraits() -> tuple[list[dict[str, object]], dict[str, object]]:
             "source_dimensions": source_dimensions,
             "source_sha256": sha256(source),
             "imagegen_handle": details["handle"],
-            "source_kind": "collective",
-            "crop": [5, 0, 1075, 1440],
-            "processor": ".tools/process_hoi4_portrait.py leader",
+            "source_kind": "symbolic",
+            "crop": expected_crop,
+            "processor": ".agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader",
             "processed": rel(processed),
             "processed_dimensions": [156, 210],
             "processed_sha256": sha256(processed),
@@ -174,8 +181,8 @@ def validate_portraits() -> tuple[list[dict[str, object]], dict[str, object]]:
                 "decoded_pixel_equality": True,
                 "package_runtime_byte_equality": True,
             },
-            "provenance": "Original fictional collective produced with OpenAI built-in ImageGen; deterministic official HOI4 leader portrait finishing and DDS conversion",
-            "license": "Original generated fictional asset; no third-party person or identity reference",
+            "provenance": "Original people-free symbolic institution produced with OpenAI built-in ImageGen; deterministic HOI4 leader portrait finishing and DDS conversion",
+            "license": "Original generated fictional asset; no third-party person, identity, or visual source",
             "notes": details["brief"],
         }
         records.append(record)
@@ -198,15 +205,16 @@ def validate_portraits() -> tuple[list[dict[str, object]], dict[str, object]]:
     validation = {
         "status": "passed",
         "source_mode": "OpenAI built-in ImageGen",
-        "source_kind": "collective",
+        "source_kind": "symbolic",
         "portrait_count": 4,
         "runtime_dds_files": 4,
         "output_dimensions": [156, 210],
-        "crop": [5, 0, 1075, 1440],
+        "crop_mode": "full generated symbolic master",
         "visual_approval": "passed against bundled vanilla leader portrait references",
         "checks": [
             "four distinct built-in ImageGen source hashes",
-            "official processor metadata records source-kind collective and explicit crop",
+            "official processor metadata records source-kind symbolic and the full generated master crop",
+            "visual approval records a people-free institutional tableau and explicit human-figure exclusions",
             "individual vanilla comparison sheet exists for every portrait",
             "one-level uncompressed BGRA DDS contract",
             "package/runtime byte equality",

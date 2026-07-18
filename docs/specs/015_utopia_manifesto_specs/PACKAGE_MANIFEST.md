@@ -1,5 +1,7 @@
 # Package Manifest
 
+> Historical inventory note: the counts below describe the original planning package before implementation and later documentation promotion. They are not current runtime counts. Use `matrices/completion_coverage_matrix.md` for the exact implemented inventory and the Event 15 source-of-truth resume packet for current closing gates.
+
 - Event ID: 15
 - Event slug: `utopia_manifesto`
 - Package files: 50 before this manifest

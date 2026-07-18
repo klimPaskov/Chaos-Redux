@@ -27,10 +27,10 @@ DDS_ROOT = ASSET_ROOT / "dds/final_icons"
 CHROMA_HELPER = Path(
     "C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py"
 )
-DDS_HELPER = REPO_ROOT / ".tools/convert_to_dds.py"
+DDS_HELPER = REPO_ROOT / ".agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py"
 ACHIEVEMENT_OVERLAY = (
     REPO_ROOT
-    / ".agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png"
+    / ".agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png"
 )
 
 DECISION_SOURCE = SOURCE_ROOT / "utopia_final_decision_category_imagegen_atlas.png"

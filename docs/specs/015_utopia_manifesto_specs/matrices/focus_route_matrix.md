@@ -19,3 +19,9 @@
 | Crisis branch | Turn failure into political choice | Route correction | Consent, councils, planners, sealing, reinterpretation | Losses from prior failure remain | Return to stable route |
 | Formation lane | Prove the manifesto works | Conduct and value thresholds | Cosmetic identity, league variant, final decisions | No free annexation or cores | Route-specific Utopia identity |
 | Post-formation | Keep the country playable | Succession, associates, world-order policy | Second generation, claim law, late defense | Founding contradictions persist | Mature regional role |
+
+## Current implementation proof
+
+The implemented replacement tree contains 124 focuses across all rows in this matrix. The graph has 174 prerequisite edges, every focus has AI logic, public routes are mutually exclusive, the hidden humanist route is reachable only through its accepted correction path, and shared support lanes remain reachable from the intended routes.
+
+`focus_tree_completion_post_ui_reaudit_2026_07_15.md` reports no P0 through P3 findings and passes the focus surface at hashes that match the current focus and focus-localisation files. Its proof is bounded to static source, the existing render artifact, and graph evidence because a fresh engine-backed render was unavailable to that auditor.

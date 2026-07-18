@@ -1,6 +1,8 @@
 # Event 15 Catalog Replacement Plan
 
-## Current CSV source row
+> Historical catalog migration plan: `World Tension Subsides`, `Reserved`, and `To Be Reworked` are the pre-implementation source row. The live workbook row is Event 15 `Utopia Manifesto`, classified `Minor Fire-Once` and audited `Fully Functional`. Current catalog proof is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_catalog_completion_audit_2026_07_15.md`.
+
+## Historical source row
 
 | Field | Current value |
 | --- | --- |

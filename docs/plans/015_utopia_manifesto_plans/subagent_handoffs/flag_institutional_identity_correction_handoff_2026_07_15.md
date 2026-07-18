@@ -1,5 +1,7 @@
 # Event 015 flag and institutional identity correction handoff
 
+> Historical snapshot superseded for current flag finishing, source handles, and institutional portraits by `asset_workflow_and_identity_regeneration_handoff_2026_07_15.md`. Its quantized flag pipeline and human collective portraits are not active. This body remains provenance for the earlier pass.
+
 Handoff date: `2026-07-15`
 
 Subagent: `chaosx_generated_event_art`
@@ -91,12 +93,12 @@ Each source is an original fictional three-person institutional collective. The 
 
 Processing was identical and explicit for all four:
 
-- `.tools/process_hoi4_portrait.py leader`
+- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`
 - crop `[5, 0, 1075, 1440]`
 - `--source-kind collective`
 - output `156x210`
-- per-portrait comparison against `assets/leader_portraits`
-- `.tools/convert_to_dds.py --width 156 --height 210`
+- per-portrait comparison against `assets/vanilla_reference/portraits/leaders`
+- `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 156 --height 210`
 
 Review sheets:
 
