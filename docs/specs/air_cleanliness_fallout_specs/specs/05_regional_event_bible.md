@@ -11,6 +11,8 @@ Country-memory overlays and final implementation research must add local names, 
 
 The complete event matrix is in `matrices/fallout_regional_event_matrix.md`.
 
+The Ash-week orientation package uses the exact live identities in `matrices/fallout_orientation_region_archetype_coverage_matrix.md`. Those identities are North America, Europe, Eurasian Interior, East Asia, South Asia, Middle East and North Africa, Sub-Saharan Africa, Latin America and Caribbean, and Oceania and Remote Islands. Broader event-family labels in the older regional matrix are thematic inventories, not runtime region ids.
+
 ## North America
 
 Core themes:
@@ -50,7 +52,7 @@ Core themes:
 
 European restoration politics should create real disputes. Old borders, capitals, parliaments, crowns, republics, and resistance memories compete with new survivor institutions.
 
-## Former Soviet Space and Central Asia
+## Eurasian Interior
 
 Core themes:
 
@@ -90,7 +92,7 @@ Core themes:
 
 High population density should create strong shelter, food, public health, and citizenship pressure.
 
-## South Asia and Middle East
+## South Asia
 
 Core themes:
 
@@ -100,16 +102,35 @@ Core themes:
 - mass refugee cities
 - mountain shelters
 - religious relief networks
-- oil and grain trade
+- grain distribution
+- coastal fisheries and ports
+- rail and road migration
+- cold damage to warm-climate agriculture
+- dense camp health
+- water and power allocation
+
+Water law should be a central political system. Food, power, religion, refugee governance, and military routes should intersect with canal and reservoir control.
+
+## Middle East and North Africa
+
+Core themes:
+
 - desalination
+- reservoirs and irrigated basins
+- oasis and well law
+- oil and grain trade
 - pipeline control
-- pilgrimage roads
-- frost damage in warm agriculture
+- pilgrimage and refugee roads
+- date and staple-crop frost
 - generator cities
+- port food landings
+- mountain shelters
+- water charity and religious relief
+- urban and tribal or local authority negotiation
 
-Water law should be a central political system. Food, power, religion, refugee governance, and military routes should intersect with water control.
+Water, fuel, food imports, and movement corridors should create connected political disputes. Country-memory research must determine the appropriate constitutional, monarchical, republican, municipal, tribal, religious, and military institutions for each successor.
 
-## Africa
+## Sub-Saharan Africa
 
 Core themes:
 
@@ -128,13 +149,15 @@ Core themes:
 
 Africa must not be written as one undifferentiated disaster zone. The event pool needs clear subregional variants during implementation.
 
-## South America
+## Latin America and Caribbean
 
 Core themes:
 
 - Andean passes
 - southern food refuges
 - grain ports
+- Caribbean lifeboat law
+- island and coastal fisheries
 - hydro power
 - Amazon and river settlements
 - mineral basins
@@ -147,7 +170,7 @@ Core themes:
 
 The region can become a major food and migration center, but survival should still depend on infrastructure, distribution, politics, and refugee policy.
 
-## Oceania and Islands
+## Oceania and Remote Islands
 
 Core themes:
 
@@ -163,10 +186,12 @@ Core themes:
 - island burial and land limits
 - undersea communication
 - post-Fallout navigation schools
+- weather and scientific stations
+- remote airfields and fuel horizons
 
 Island safety creates moral and strategic pressure. It does not grant automatic prosperity.
 
-## Polar and Remote Stations
+## Remote-station route overlay
 
 Core themes:
 
@@ -183,7 +208,7 @@ Core themes:
 - rescue law
 - polar congress
 
-Remote stations can become small but influential actors through data, radio, rescue, airfields, and routes.
+Remote stations can become small but influential actors through data, radio, rescue, airfields, and routes. They inherit the runtime region of their location or controlling country. They never form a tenth runtime region and cannot bypass the regional eligibility ledger.
 
 ## Regional overlay rules
 
@@ -234,10 +259,10 @@ Uncertain material must be marked or replaced.
 | --- | --- |
 | North America | 12 |
 | Europe | 12 |
-| Former Soviet Space and Central Asia | 12 |
+| Eurasian Interior | 12 |
 | East Asia | 12 |
-| South Asia and Middle East | 12 |
-| Africa | 12 |
-| South America | 12 |
-| Oceania and Islands | 12 |
-| Polar and Remote Stations | 12 |
+| South Asia | 12 |
+| Middle East and North Africa | 12 |
+| Sub-Saharan Africa | 12 |
+| Latin America and Caribbean | 12 |
+| Oceania and Remote Islands | 12 |
