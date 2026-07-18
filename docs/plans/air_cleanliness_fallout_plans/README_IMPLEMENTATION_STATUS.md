@@ -14,7 +14,7 @@ The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` and `FALLO
 
 The source design now includes a manually reviewed 108-cell Ash-week orientation matrix covering every live region and government archetype pair. It reconciles the runtime region ids, treats remote stations as inherited regional overlays, and supplies authority, capital, resource, rival, candidate-class, AI-preference, and branch-prohibition directions for every cell. This is not a runtime registry. The regional, archetype, and country-memory approval variables remain unset until researched final text, event blocks, AI, delayed results, cleanup, and implementation audits exist.
 
-A twelve-successor Ash-week pilot registry now maps exact country-memory ids across all nine live regions and all twelve archetypes. It provides country-specific opening overlays, twenty-four fictional character directions, twelve institution directions, exact evidence gates, install obligations, and failure memories. The registry is source design only. No candidate has a final portrait, icon, localisation block, install effect, or runtime current-generation row, so all memory and character installation gates remain blocked.
+A twelve-successor Ash-week pilot registry now maps exact country-memory ids across all nine live regions and all twelve archetypes. It provides country-specific opening overlays, twenty-four fictional character directions, twelve institution directions, exact evidence gates, install obligations, and failure memories. Its 36 typed ids, idempotent exact-memory mapper, country-owned identity row, optional third-slot authentication, and request loader are implemented. The loader additionally requires a separate current installed-package receipt and the character-install approval surface. Neither has a setter. No candidate has a final portrait, icon, localisation block, or install effect, so all memory and character installation gates remain blocked.
 
 Fallout remains an unnumbered system package with dedicated ownership of:
 
@@ -189,6 +189,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Orientation live-ledger proof: `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`
 - Orientation region and archetype source review: `FALLOUT_ORIENTATION_REGION_ARCHETYPE_COVERAGE_REVIEW.md`
 - Orientation pilot memory and candidate review: `FALLOUT_ORIENTATION_PILOT_MEMORY_CANDIDATE_REVIEW.md`
+- Orientation pilot candidate runtime proof: `FALLOUT_ORIENTATION_PILOT_CANDIDATE_RUNTIME_PROOF.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
 - Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`
 - Manual runtime constants: `common/script_constants/fallout_manual_scenario_constants.txt`
