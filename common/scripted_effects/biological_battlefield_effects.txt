@@ -1,0 +1,530 @@
+# ============================================================================
+# CHAOS REDUX - BATTLEFIELD BIOLOGICAL RAID SCRIPTED EFFECTS
+# ============================================================================
+# Overview:
+# - Resolves four native exact-state land raids through one private battlefield
+#   route adapter and the shared ordinary biological lifecycle dispatcher.
+# - Treats native essential equipment as the full physical payload debit.
+# - Records release, deaths, contamination, saturation, evidence, attribution,
+#   and Condemnation only through the shared lifecycle after exact validation.
+# - Resolves bounded adjacent friendly blowback without a scan or alternate
+#   target and never refunds biological payload equipment.
+# ============================================================================
+
+bio_battlefield_present_failure_actor = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_failure_actor_tt }
+	}
+	else = {
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_context_rejected_actor_tt }
+	}
+}
+
+bio_battlefield_present_failure_target = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:target_state = { custom_effect_tooltip = bio_battlefield_failure_target_tt }
+	}
+	else = {
+		var:target_state = { custom_effect_tooltip = bio_battlefield_context_rejected_target_tt }
+	}
+}
+
+bio_battlefield_present_limited_actor = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_limited_actor_tt }
+	}
+	else = {
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_context_rejected_actor_tt }
+	}
+}
+
+bio_battlefield_present_limited_target = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:target_state = { custom_effect_tooltip = bio_battlefield_limited_target_tt }
+	}
+	else = {
+		var:target_state = { custom_effect_tooltip = bio_battlefield_context_rejected_target_tt }
+	}
+}
+
+bio_battlefield_present_success_actor = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_success_actor_tt }
+	}
+	else = {
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_context_rejected_actor_tt }
+	}
+}
+
+bio_battlefield_present_success_target = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:target_state = { custom_effect_tooltip = bio_battlefield_success_target_tt }
+	}
+	else = {
+		var:target_state = { custom_effect_tooltip = bio_battlefield_context_rejected_target_tt }
+	}
+}
+
+bio_battlefield_present_critical_actor = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_critical_actor_tt }
+	}
+	else = {
+		var:actor_country = { custom_effect_tooltip = bio_battlefield_context_rejected_actor_tt }
+	}
+}
+
+bio_battlefield_present_critical_target = {
+	if = {
+		limit = { hidden_trigger = { bio_battlefield_native_tooltip_context_is_valid = yes } }
+		var:target_state = { custom_effect_tooltip = bio_battlefield_critical_target_tt }
+	}
+	else = {
+		var:target_state = { custom_effect_tooltip = bio_battlefield_context_rejected_target_tt }
+	}
+}
+
+bio_battlefield_set_payload_internal = {
+	set_temp_variable = { bio_battlefield_payload_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_payload_consumed = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_battlefield_command_cost = constant:bio_lifecycle_math.zero }
+
+	if = {
+		limit = { check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		set_temp_variable = { bio_battlefield_payload_required = constant:bio_battlefield_reservation.anthrax }
+		set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_battlefield_agent_profile.anthrax.potency_mult }
+		set_temp_variable = { bio_battlefield_command_cost = constant:bio_battlefield_command.anthrax_cost }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		set_temp_variable = { bio_battlefield_payload_required = constant:bio_battlefield_reservation.plague }
+		set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_battlefield_agent_profile.plague.potency_mult }
+		set_temp_variable = { bio_battlefield_command_cost = constant:bio_battlefield_command.plague_cost }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_temp_variable = { bio_battlefield_payload_required = constant:bio_battlefield_reservation.tularemia }
+		set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_battlefield_agent_profile.tularemia.potency_mult }
+		set_temp_variable = { bio_battlefield_command_cost = constant:bio_battlefield_command.tularemia_cost }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		set_temp_variable = { bio_battlefield_payload_required = constant:bio_battlefield_reservation.smallpox }
+		set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_battlefield_agent_profile.smallpox.potency_mult }
+		set_temp_variable = { bio_battlefield_command_cost = constant:bio_battlefield_command.smallpox_cost }
+	}
+
+	set_temp_variable = { bio_battlefield_payload_consumed = bio_battlefield_payload_required }
+}
+
+bio_battlefield_map_engine_result_internal = {
+	set_temp_variable = { bio_battlefield_lifecycle_result = constant:bio_lifecycle_result.partial }
+	if = {
+		limit = { check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.limited_success compare = equals } }
+		set_temp_variable = { bio_battlefield_lifecycle_result = constant:bio_lifecycle_result.partial }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.success compare = equals } }
+		set_temp_variable = { bio_battlefield_lifecycle_result = constant:bio_lifecycle_result.success }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.critical_success compare = equals } }
+		set_temp_variable = { bio_battlefield_lifecycle_result = constant:bio_lifecycle_result.catastrophic }
+	}
+}
+
+# State scope. Only the currently strongest actor lead is retained. Failed
+# release evidence is persistent; it is not placed in a shared dynamic registry.
+bio_battlefield_record_failed_attempt_evidence_internal = {
+	set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
+	if = {
+		limit = { NOT = { has_variable = bio_battlefield_attempt_actor } }
+		set_variable = { bio_battlefield_attempt_actor = event_target:bio_battlefield_actor }
+		set_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
+	}
+	else_if = {
+		limit = { var:bio_battlefield_attempt_actor = { tag = event_target:bio_battlefield_actor } }
+		add_to_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = bio_battlefield_attempt_evidence }
+				check_variable = { var = bio_battlefield_attempt_evidence value = constant:bio_battlefield_attempt.evidence compare = less_than }
+			}
+		}
+		set_variable = { bio_battlefield_attempt_actor = event_target:bio_battlefield_actor }
+		set_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
+	}
+
+	if = {
+		limit = { has_variable = bio_battlefield_attempt_evidence }
+		clamp_variable = {
+			var = bio_battlefield_attempt_evidence
+			min = constant:bio_battlefield_attempt.evidence_minimum
+			max = constant:bio_battlefield_attempt.evidence_maximum
+		}
+	}
+	set_state_flag = bio_battlefield_failed_attempt_history
+	if = {
+		limit = { check_variable = { var = bio_battlefield_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		set_variable = { bio_battlefield_attempt_agent = bio_battlefield_agent }
+		set_variable = { bio_battlefield_attempt_date = global.num_days }
+	}
+}
+
+# Actor country scope. Failure is an attributable attempted release, not a
+# completed biological use. Doctrine can reduce only visible Condemnation.
+bio_battlefield_apply_failed_attempt_condemnation_internal = {
+	set_temp_variable = { bio_battlefield_attempt_condemnation_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = constant:bio_battlefield_attempt.condemnation }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	if = {
+		limit = {
+			check_variable = { var = bio_battlefield_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_battlefield_target_state = {
+				check_variable = { var = bio_battlefield_attempt_evidence value = constant:bio_lifecycle_evidence.confirmed_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_battlefield_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_battlefield_target_state = {
+				check_variable = { var = bio_battlefield_attempt_evidence value = constant:bio_lifecycle_evidence.probable_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_battlefield_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_battlefield_target_state = {
+				check_variable = { var = bio_battlefield_attempt_evidence value = constant:bio_lifecycle_evidence.suspicious_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.suspected }
+	}
+
+	if = {
+		limit = {
+			NOT = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+			has_idea = cbrn_terminal_hazard_doctrine_spirit
+		}
+		set_temp_variable = { bio_battlefield_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.terminal_hazard.condemnation_mult }
+	}
+	else_if = {
+		limit = {
+			NOT = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+			has_idea = cbrn_theater_contamination_doctrine_spirit
+		}
+		set_temp_variable = { bio_battlefield_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	multiply_temp_variable = { condemnation_base_gain = bio_battlefield_attempt_condemnation_mult }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
+	set_temp_variable = { condemnation_civilian_deaths = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.concern }
+	set_temp_variable = { condemnation_victim_country = event_target:bio_battlefield_victim }
+	condemnation_add_source = yes
+}
+
+# Raid-instance scope. The selected state is the only primary release state.
+bio_battlefield_dispatch_primary_release_internal = {
+	bio_battlefield_map_engine_result_internal = yes
+	bio_lifecycle_reset_seed_record = yes
+	set_temp_variable = { bio_seed_agent = bio_battlefield_agent }
+	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.battlefield_dissemination }
+	set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+	set_temp_variable = { bio_seed_result = bio_battlefield_lifecycle_result }
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_required = bio_battlefield_payload_required }
+	set_temp_variable = { bio_seed_payload_consumed = bio_battlefield_payload_consumed }
+	set_temp_variable = { bio_seed_weaponization_mult = bio_battlefield_weaponization_mult }
+	event_target:bio_battlefield_actor = { save_event_target_as = bio_seed_actor }
+	event_target:bio_battlefield_victim = { save_event_target_as = bio_seed_victim }
+
+	# Enemy occupation of friendly-owned ground raises the exposed-population
+	# share; it does not change payload, evidence, or consequence history.
+	if = {
+		limit = {
+			event_target:bio_battlefield_target_state = {
+				OWNER = {
+					OR = {
+						tag = event_target:bio_battlefield_actor
+						is_in_faction_with = event_target:bio_battlefield_actor
+						is_subject_of = event_target:bio_battlefield_actor
+						event_target:bio_battlefield_actor = { is_subject_of = PREV }
+					}
+				}
+			}
+		}
+		set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_route_profile.battlefield_dissemination.exposed_share }
+		multiply_temp_variable = { bio_seed_exposed_share_override = constant:bio_battlefield_target.occupied_friendly_exposed_mult }
+	}
+
+	event_target:bio_battlefield_target_state = { bio_lifecycle_dispatch_seed = yes }
+	set_temp_variable = { bio_battlefield_dispatch_status = bio_seed_dispatch_status }
+}
+
+# Raid-instance scope. A successful primary dispatch may expose one exact
+# adjacent actor-controlled state. If no eligible neighbor exists, nothing is
+# selected and no alternate state or search is attempted.
+bio_battlefield_attempt_friendly_blowback_internal = {
+	set_temp_variable = { bio_battlefield_blowback_chance = constant:bio_battlefield_blowback.base_chance }
+	event_target:bio_battlefield_actor = { cbrn_refresh_country_mask_snapshot = yes }
+	if = {
+		limit = { event_target:bio_battlefield_actor = { cbrn_country_has_full_readiness = yes } }
+		multiply_temp_variable = { bio_battlefield_blowback_chance = constant:bio_battlefield_blowback.full_readiness_mult }
+	}
+	if = {
+		limit = {
+			event_target:bio_battlefield_actor = {
+				check_variable = {
+					var = cbrn_military_respiratory_protection
+					value = constant:cbrn_protection_band.very_high
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		multiply_temp_variable = { bio_battlefield_blowback_chance = constant:bio_battlefield_blowback.very_high_protection_mult }
+	}
+	if = {
+		limit = { event_target:bio_battlefield_actor = { has_idea = cbrn_terminal_hazard_doctrine_spirit } }
+		multiply_temp_variable = { bio_battlefield_blowback_chance = constant:bio_battlefield_blowback.terminal_doctrine_chance_mult }
+	}
+	else_if = {
+		limit = { event_target:bio_battlefield_actor = { has_idea = cbrn_theater_contamination_doctrine_spirit } }
+		multiply_temp_variable = { bio_battlefield_blowback_chance = constant:bio_battlefield_blowback.theater_doctrine_chance_mult }
+	}
+	clamp_temp_variable = {
+		var = bio_battlefield_blowback_chance
+		min = constant:bio_battlefield_blowback.minimum_chance
+		max = constant:bio_battlefield_blowback.maximum_chance
+	}
+	set_temp_variable = { bio_battlefield_no_blowback_chance = constant:bio_lifecycle_math.hundred }
+	subtract_from_temp_variable = { bio_battlefield_no_blowback_chance = bio_battlefield_blowback_chance }
+
+	random_list = {
+		bio_battlefield_blowback_chance = {
+			event_target:bio_battlefield_target_state = {
+				random_neighbor_state = {
+					limit = {
+						is_controlled_by = event_target:bio_battlefield_actor
+						bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+						any_state_division = { OWNER = { tag = event_target:bio_battlefield_actor } }
+					}
+					save_event_target_as = bio_battlefield_friendly_state
+				}
+			}
+		}
+		bio_battlefield_no_blowback_chance = { }
+	}
+
+	if = {
+		limit = { has_event_target = bio_battlefield_friendly_state }
+		set_temp_variable = { bio_battlefield_friendly_intensity = constant:bio_lifecycle_route_profile.battlefield_dissemination.seed_intensity }
+		multiply_temp_variable = { bio_battlefield_friendly_intensity = bio_battlefield_weaponization_mult }
+		multiply_temp_variable = { bio_battlefield_friendly_intensity = constant:bio_battlefield_blowback.intensity_mult }
+		set_temp_variable = { bio_battlefield_friendly_exposed_share = constant:bio_lifecycle_route_profile.battlefield_dissemination.exposed_share }
+		multiply_temp_variable = { bio_battlefield_friendly_exposed_share = bio_battlefield_weaponization_mult }
+		multiply_temp_variable = { bio_battlefield_friendly_exposed_share = constant:bio_battlefield_blowback.exposed_share_mult }
+
+		event_target:bio_battlefield_friendly_state = {
+			bio_lifecycle_reset_seed_record = yes
+			set_temp_variable = { bio_seed_agent = bio_battlefield_agent }
+			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.connected_spread }
+			set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.spread }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.spread }
+			set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_intensity_override = bio_battlefield_friendly_intensity }
+			set_temp_variable = { bio_seed_exposed_share_override = bio_battlefield_friendly_exposed_share }
+			set_temp_variable = { bio_seed_evidence_override = constant:bio_battlefield_blowback.evidence }
+			event_target:bio_battlefield_actor = {
+				save_event_target_as = bio_seed_actor
+				save_event_target_as = bio_seed_victim
+			}
+			bio_lifecycle_dispatch_seed = yes
+			if = {
+				limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+				set_state_flag = bio_battlefield_friendly_blowback_history
+				set_variable = { bio_battlefield_blowback_actor = event_target:bio_battlefield_actor }
+				set_variable = { bio_battlefield_blowback_agent = bio_battlefield_agent }
+				set_variable = { bio_battlefield_blowback_date = global.num_days }
+			}
+			else = {
+				event_target:bio_battlefield_actor = { set_country_flag = bio_battlefield_blowback_dispatch_failure_history }
+			}
+		}
+	}
+}
+
+# Actor country scope after a valid native resolution. Doctrine refunds only
+# Command Power; native payload equipment remains fully consumed.
+bio_battlefield_apply_command_refund_internal = {
+	set_temp_variable = { bio_battlefield_command_refund = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		set_temp_variable = { bio_battlefield_command_refund = constant:bio_battlefield_command.terminal_refund }
+	}
+	else_if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		set_temp_variable = { bio_battlefield_command_refund = constant:bio_battlefield_command.theater_refund }
+	}
+	if = {
+		limit = { check_variable = { var = bio_battlefield_command_refund value = bio_battlefield_command_cost compare = greater_than } }
+		set_temp_variable = { bio_battlefield_command_refund = bio_battlefield_command_cost }
+	}
+	if = {
+		limit = { check_variable = { bio_battlefield_command_refund > constant:bio_lifecycle_math.zero } }
+		add_command_power = bio_battlefield_command_refund
+		if = {
+			limit = { NOT = { has_variable = bio_battlefield_command_refund_total } }
+			set_variable = { bio_battlefield_command_refund_total = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_battlefield_command_refund_total = bio_battlefield_command_refund }
+	}
+}
+
+# Actor country scope after a fully accepted reservation and resolution.
+bio_battlefield_record_actor_history_internal = {
+	if = {
+		limit = { NOT = { has_variable = bio_battlefield_attempt_count } }
+		set_variable = { bio_battlefield_attempt_count = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = bio_battlefield_payload_consumed_total } }
+		set_variable = { bio_battlefield_payload_consumed_total = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_battlefield_attempt_count = constant:bio_battlefield_history.one_attempt }
+	add_to_variable = { bio_battlefield_payload_consumed_total = bio_battlefield_payload_consumed }
+	set_variable = { bio_last_battlefield_agent = bio_battlefield_agent }
+	set_variable = { bio_last_battlefield_engine_outcome = bio_battlefield_engine_outcome }
+	set_variable = { bio_last_battlefield_payload_consumed = bio_battlefield_payload_consumed }
+	set_variable = { bio_last_battlefield_target_state = event_target:bio_battlefield_target_state }
+	set_variable = { bio_last_battlefield_victim = event_target:bio_battlefield_victim }
+	set_variable = { bio_last_battlefield_date = global.num_days }
+	if = {
+		limit = { bio_battlefield_engine_outcome_has_no_release = yes }
+		set_country_flag = bio_battlefield_failed_release_history
+	}
+	else = {
+		set_country_flag = bio_battlefield_release_history
+	}
+}
+
+# Actor country scope. A shared-lifecycle rejection records the consumed native
+# reservation but creates no release, evidence substitute, use history, or refund.
+bio_battlefield_record_dispatch_failure_internal = {
+	set_country_flag = bio_battlefield_dispatch_failure_history
+	if = {
+		limit = { NOT = { has_variable = bio_battlefield_dispatch_failure_count } }
+		set_variable = { bio_battlefield_dispatch_failure_count = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = bio_battlefield_payload_consumed_total } }
+		set_variable = { bio_battlefield_payload_consumed_total = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_battlefield_dispatch_failure_count = constant:bio_battlefield_history.one_attempt }
+	add_to_variable = { bio_battlefield_payload_consumed_total = bio_battlefield_payload_consumed }
+	set_variable = { bio_last_battlefield_dispatch_failure_agent = bio_battlefield_agent }
+	set_variable = { bio_last_battlefield_dispatch_failure_outcome = bio_battlefield_engine_outcome }
+	set_variable = { bio_last_battlefield_dispatch_failure_payload = bio_battlefield_payload_consumed }
+	set_variable = { bio_last_battlefield_dispatch_failure_target_state = event_target:bio_battlefield_target_state }
+	set_variable = { bio_last_battlefield_dispatch_failure_date = global.num_days }
+}
+
+# Raid-instance scope. Context rejection occurs after native reservation and
+# therefore records full physical loss without fabricating a biological event.
+bio_battlefield_record_rejected_reservation_internal = {
+	bio_battlefield_set_payload_internal = yes
+	if = {
+		limit = { has_event_target = bio_battlefield_actor }
+		event_target:bio_battlefield_actor = {
+			set_country_flag = bio_battlefield_context_rejected_history
+			if = {
+				limit = { NOT = { has_variable = bio_battlefield_context_rejected_count } }
+				set_variable = { bio_battlefield_context_rejected_count = constant:bio_lifecycle_math.zero }
+			}
+			if = {
+				limit = { NOT = { has_variable = bio_battlefield_payload_consumed_total } }
+				set_variable = { bio_battlefield_payload_consumed_total = constant:bio_lifecycle_math.zero }
+			}
+			add_to_variable = { bio_battlefield_context_rejected_count = constant:bio_battlefield_history.one_attempt }
+			add_to_variable = { bio_battlefield_payload_consumed_total = bio_battlefield_payload_consumed }
+			set_variable = { bio_last_battlefield_rejected_agent = bio_battlefield_agent }
+			set_variable = { bio_last_battlefield_rejected_outcome = bio_battlefield_engine_outcome }
+			set_variable = { bio_last_battlefield_rejected_payload = bio_battlefield_payload_consumed }
+			set_variable = { bio_last_battlefield_rejected_date = global.num_days }
+		}
+	}
+}
+
+# Native raid outcome entry point. Inputs are the immutable agent code supplied
+# by the raid type and one of the four native engine result codes.
+bio_resolve_battlefield_dissemination = {
+	set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_battlefield_dispatch_status = constant:bio_lifecycle_proof.missing }
+	var:actor_country = { save_event_target_as = bio_battlefield_actor }
+	var:victim_country = { save_event_target_as = bio_battlefield_victim }
+	var:target_state = { save_event_target_as = bio_battlefield_target_state }
+
+	if = {
+		limit = { bio_battlefield_native_context_is_valid = yes }
+		bio_battlefield_set_payload_internal = yes
+		if = {
+			limit = { bio_battlefield_payload_record_is_valid = yes }
+			if = {
+				limit = { bio_battlefield_engine_outcome_has_no_release = yes }
+				event_target:bio_battlefield_target_state = { bio_battlefield_record_failed_attempt_evidence_internal = yes }
+				event_target:bio_battlefield_actor = {
+					bio_battlefield_apply_failed_attempt_condemnation_internal = yes
+					bio_battlefield_record_actor_history_internal = yes
+					bio_battlefield_apply_command_refund_internal = yes
+				}
+				set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.supplied }
+			}
+			else = {
+				bio_battlefield_dispatch_primary_release_internal = yes
+				if = {
+					limit = { check_variable = { var = bio_battlefield_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					bio_battlefield_attempt_friendly_blowback_internal = yes
+					event_target:bio_battlefield_actor = {
+						bio_battlefield_record_actor_history_internal = yes
+						bio_battlefield_apply_command_refund_internal = yes
+					}
+					set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.supplied }
+				}
+				else = {
+					event_target:bio_battlefield_actor = { bio_battlefield_record_dispatch_failure_internal = yes }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_event_target = bio_battlefield_actor
+			bio_battlefield_agent_is_valid = yes
+			bio_battlefield_engine_outcome_is_valid = yes
+		}
+		bio_battlefield_record_rejected_reservation_internal = yes
+	}
+}

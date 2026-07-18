@@ -18,7 +18,7 @@ No broad `on_daily`, `on_weekly`, or `on_monthly` biological pass is permitted. 
 
 ## Current tranche ledger
 
-Implemented in the completed strategic-raid and operative-release tranches:
+Implemented in the completed strategic-raid, operative-release, and battlefield-dissemination tranches:
 
 - `common/on_actions/chaosx_on_actions_biowarfare.txt` is absent. Legacy startup and weekly calls to `initialize_smallpox_vaccination_protection`, `progress_smallpox_vaccination`, and `check_all_states_for_contamination_cleanup` are absent.
 - `smallpox_vaccination_program_idea` has no legacy `on_add` or `on_remove` state-scan hooks. The ordinary lifecycle reads the country idea directly when applying agent-specific growth, spread, and death multipliers.
@@ -32,6 +32,12 @@ Implemented in the completed strategic-raid and operative-release tranches:
 - Operative AI applies policy and route gates, defensive-profile suppression, domestic-safety preference, and agent-specific target-country profiles. Native AI cannot rank the eventual selected state, and no estimator is retained.
 - Theater Contamination and Terminal Hazard increase success and refund 2 or 4 Command Power once after resolution while leaving equipment, evidence, history, deaths, and physical consequences intact.
 - `docs/plans/chaos_warfare_system_plans/2026-07-16_stage_7_operative_release_validation.md` records the bounded source and scenario audit for this tranche.
+- Four native exact-state land raids cover Anthrax, Plague, Tularemia, and Smallpox battlefield dissemination. Deployment is never a decision click. Each raid uses a supply-node origin, one assigned infantry, motorized, or mechanized formation, native essential-equipment reservation, and all four current raid result callbacks.
+- A valid active Combined CBRN Overmatch command proves theater authorization and preparation. The native selected state and assigned formation prove release context. Current-version scripting exposes no exact HQ-to-selected-state link or raid launch callback, so no inferred state, estimator, proxy, or fallback is retained.
+- Failure loses the complete reservation and records attempt evidence without completed-use history. Releasing outcomes enter the same ordinary lifecycle through the private `battlefield_dissemination` route. A successful primary dispatch may create one bounded adjacent friendly connected-spread seed without a second payload debit or deliberate-use record.
+- Battlefield doctrine raises biological harm and friendly-blowback risk while refunding only bounded Command Power after valid resolution. Payload, evidence, attribution, deaths, contamination, saturation, history, and public-harm floors remain intact; only Condemnation may be reduced.
+- Battlefield raids reuse the existing Anthrax, Plague, Tularemia, Smallpox, and biological-category military-raid DDS assets byte-for-byte. Generated decision-icon drafts are not wired to this route.
+- `docs/plans/chaos_warfare_system_plans/2026-07-18_stage_7_battlefield_dissemination_validation.md` records the bounded source and scenario audit for this tranche.
 
 Still queued under this active plan:
 
@@ -105,7 +111,7 @@ The seed dispatcher performs this order:
 
 - Strategic biological raids reserve and consume the exact agent payload, select an exact state, and resolve failed, partial, hidden, detected, successful, and attacker-accident outcomes before seeding.
 - Operative planting covers all four ordinary agents and separates acquire, transport, infiltration, release/abort, and capture. Captured operatives provide confirmed attribution and coverup consequences.
-- Battlefield dissemination requires readiness, policy, selected agent, prepared headquarters, route equipment, and payload. It applies troop, supply, friendly, occupied-population, and front-spread risk.
+- Battlefield dissemination is four native exact-state land raids, not a decision family. It requires readiness, policy, the matching agent project and payload, a valid active Combined CBRN Overmatch command, a supply-node origin, and an assigned infantry, motorized, or mechanized formation. Native failure records the lost attempt; all releasing outcomes enter the shared lifecycle and may create bounded adjacent friendly spread.
 - Food, water, and medical-chain sabotage uses a covert low-dose seed with uncertain initial attribution and severe later discovery consequences.
 - Doomsday release requires the explicit route, extreme policy, near-capitulation or world-end conditions, a real arsenal, and a domestic-risk warning. It consumes the arsenal, seeds own and nearby fronts, records maximum evidence, and harms allies and the user.
 

@@ -1,0 +1,405 @@
+# ============================================================================
+# CHAOS REDUX - BATTLEFIELD BIOLOGICAL DISSEMINATION RAIDS
+# ============================================================================
+# Overview:
+# - Four native exact-state land raids: Anthrax, Plague, Tularemia, Smallpox.
+# - Combined CBRN Overmatch supplies the 14-30 day theater preparation; these
+#   raids model the final one-day release assembly and assigned delivery unit.
+# - Native essential equipment is the full payload debit. The matching shared
+#   script constants in biological_battlefield_constants.txt are the lifecycle
+#   and history values; keep both parser surfaces equal.
+# - Existing Chaos Redux military-raid icons are reused without alteration.
+# ============================================================================
+
+@BIO_BATTLEFIELD_PREPARATION_DAYS = 1
+@BIO_BATTLEFIELD_TARGET_COOLDOWN_DAYS = 180
+@BIO_BATTLEFIELD_SPEED_MULTIPLIER = 10
+@BIO_BATTLEFIELD_AI_MIN_SUCCESS_CHANCE = 0.35
+
+@BIO_BATTLEFIELD_ANTHRAX_RESERVATION = 50
+@BIO_BATTLEFIELD_PLAGUE_RESERVATION = 25
+@BIO_BATTLEFIELD_TULAREMIA_RESERVATION = 25
+@BIO_BATTLEFIELD_SMALLPOX_RESERVATION = 10
+
+@BIO_BATTLEFIELD_ANTHRAX_COMMAND_POWER = 10
+@BIO_BATTLEFIELD_PLAGUE_COMMAND_POWER = 12
+@BIO_BATTLEFIELD_TULAREMIA_COMMAND_POWER = 10
+@BIO_BATTLEFIELD_SMALLPOX_COMMAND_POWER = 15
+
+@BIO_BATTLEFIELD_ANTHRAX_AI_BASE = 1
+@BIO_BATTLEFIELD_PLAGUE_AI_BASE = 0.60
+@BIO_BATTLEFIELD_TULAREMIA_AI_BASE = 1.50
+@BIO_BATTLEFIELD_SMALLPOX_AI_BASE = 0.40
+
+@BIO_BATTLEFIELD_ANTHRAX_SUCCESS_BASE = 0.50
+@BIO_BATTLEFIELD_PLAGUE_SUCCESS_BASE = 0.45
+@BIO_BATTLEFIELD_TULAREMIA_SUCCESS_BASE = 0.55
+@BIO_BATTLEFIELD_SMALLPOX_SUCCESS_BASE = 0.40
+
+@BIO_BATTLEFIELD_EXPERIENCE_WEIGHT = 0.25
+@BIO_BATTLEFIELD_EXPERIENCE_START = -0.20
+@BIO_BATTLEFIELD_EXPERIENCE_REFERENCE = 1
+@BIO_BATTLEFIELD_ORGANISATION_WEIGHT = 0.10
+@BIO_BATTLEFIELD_ORGANISATION_START = -0.10
+@BIO_BATTLEFIELD_ORGANISATION_REFERENCE = 100
+@BIO_BATTLEFIELD_STRENGTH_WEIGHT = 0.10
+@BIO_BATTLEFIELD_STRENGTH_START = -0.10
+@BIO_BATTLEFIELD_STRENGTH_REFERENCE = 1
+@BIO_BATTLEFIELD_RECON_WEIGHT = 0.05
+@BIO_BATTLEFIELD_RECON_REFERENCE = 10
+@BIO_BATTLEFIELD_RESISTANCE_WEIGHT = 0.15
+@BIO_BATTLEFIELD_RESISTANCE_START = 15
+@BIO_BATTLEFIELD_RESISTANCE_REFERENCE = 100
+@BIO_BATTLEFIELD_AIR_SUPERIORITY_WEIGHT = 0.10
+@BIO_BATTLEFIELD_AIR_SUPERIORITY_START = 0.50
+@BIO_BATTLEFIELD_AIR_SUPERIORITY_REFERENCE = 1
+@BIO_BATTLEFIELD_INTEL_WEIGHT = 0.20
+@BIO_BATTLEFIELD_INTEL_REFERENCE = 100
+
+@BIO_BATTLEFIELD_FAILURE_ORG_DAMAGE = 0.65
+@BIO_BATTLEFIELD_FAILURE_STRENGTH_DAMAGE = 0.30
+@BIO_BATTLEFIELD_LIMITED_ORG_DAMAGE = 0.35
+@BIO_BATTLEFIELD_LIMITED_STRENGTH_DAMAGE = 0.10
+@BIO_BATTLEFIELD_SUCCESS_ORG_DAMAGE = 0.20
+@BIO_BATTLEFIELD_SUCCESS_STRENGTH_DAMAGE = 0.05
+@BIO_BATTLEFIELD_CRITICAL_ORG_DAMAGE = 0.10
+@BIO_BATTLEFIELD_CRITICAL_STRENGTH_DAMAGE = 0.02
+@BIO_BATTLEFIELD_FAILURE_EXPERIENCE = 0.05
+@BIO_BATTLEFIELD_LIMITED_EXPERIENCE = 0.15
+@BIO_BATTLEFIELD_SUCCESS_EXPERIENCE = 0.25
+@BIO_BATTLEFIELD_CRITICAL_EXPERIENCE = 0.35
+
+types = {
+	anthrax_battlefield_dissemination = {
+		days_to_prepare = @BIO_BATTLEFIELD_PREPARATION_DAYS
+		days_re_enable = @BIO_BATTLEFIELD_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_BATTLEFIELD_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_BATTLEFIELD_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_battlefield_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_battlefield_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_BATTLEFIELD_ANTHRAX_COMMAND_POWER
+
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+
+		ai_will_do = {
+			base = @BIO_BATTLEFIELD_ANTHRAX_AI_BASE
+			modifier = { factor = constant:bio_battlefield_ai.disabled ROOT = { NOT = { bio_battlefield_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:bio_battlefield_ai.retaliation_factor ROOT = { OR = { has_country_flag = cbrn_retaliation_authorized FROM = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_battlefield_ai.first_use_route_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.unrestricted_route_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = {
+				factor = constant:bio_battlefield_ai.sanction_vulnerability_factor
+				ROOT = {
+					check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold }
+					check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold }
+					NOT = { bio_battlefield_ai_is_desperate_route = yes }
+				}
+			}
+		}
+
+		visible = {
+			is_special_project_completed = sp:anthrax_bomb
+			bio_kruger_last_resort_authority_is_valid = yes
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_battlefield_target_available_tt
+				hidden_trigger = { bio_battlefield_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			is_special_project_completed = sp:anthrax_bomb
+			custom_trigger_tooltip = {
+				tooltip = bio_battlefield_preparation_available_tt
+				hidden_trigger = { bio_battlefield_can_prepare_against_from = yes }
+			}
+		}
+		launchable = {
+			is_special_project_completed = sp:anthrax_bomb
+			custom_trigger_tooltip = {
+				tooltip = bio_battlefield_launch_available_tt
+				hidden_trigger = { bio_battlefield_can_prepare_against_from = yes }
+			}
+		}
+
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { anthrax_bomb_equipment = @BIO_BATTLEFIELD_ANTHRAX_RESERVATION }
+
+		success_factors = {
+			success = {
+				base = @BIO_BATTLEFIELD_ANTHRAX_SUCCESS_BASE
+				experience = { weight = @BIO_BATTLEFIELD_EXPERIENCE_WEIGHT start_weight = @BIO_BATTLEFIELD_EXPERIENCE_START reference = @BIO_BATTLEFIELD_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_BATTLEFIELD_ORGANISATION_WEIGHT start_weight = @BIO_BATTLEFIELD_ORGANISATION_START reference = @BIO_BATTLEFIELD_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_BATTLEFIELD_STRENGTH_WEIGHT start_weight = @BIO_BATTLEFIELD_STRENGTH_START reference = @BIO_BATTLEFIELD_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_BATTLEFIELD_RECON_WEIGHT reference = @BIO_BATTLEFIELD_RECON_REFERENCE }
+				resistance = { weight = @BIO_BATTLEFIELD_RESISTANCE_WEIGHT start_reference = @BIO_BATTLEFIELD_RESISTANCE_START reference = @BIO_BATTLEFIELD_RESISTANCE_REFERENCE }
+				air_superiority = { weight = @BIO_BATTLEFIELD_AIR_SUPERIORITY_WEIGHT start_reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_START reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_REFERENCE }
+				intel = { weight = @BIO_BATTLEFIELD_INTEL_WEIGHT reference = @BIO_BATTLEFIELD_INTEL_REFERENCE }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					bio_battlefield_present_failure_actor = yes
+					hidden_effect = {
+						set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.failure }
+						bio_resolve_battlefield_dissemination = yes
+					}
+					raid_damage_units = { org_damage = @BIO_BATTLEFIELD_FAILURE_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_FAILURE_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_BATTLEFIELD_FAILURE_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				victim_effects = { bio_battlefield_present_failure_target = yes }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					bio_battlefield_present_limited_actor = yes
+					hidden_effect = {
+						set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.limited_success }
+						bio_resolve_battlefield_dissemination = yes
+					}
+					raid_damage_units = { org_damage = @BIO_BATTLEFIELD_LIMITED_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_LIMITED_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_BATTLEFIELD_LIMITED_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				victim_effects = { bio_battlefield_present_limited_target = yes }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					bio_battlefield_present_success_actor = yes
+					hidden_effect = {
+						set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.success }
+						bio_resolve_battlefield_dissemination = yes
+					}
+					raid_damage_units = { org_damage = @BIO_BATTLEFIELD_SUCCESS_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_SUCCESS_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_BATTLEFIELD_SUCCESS_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				victim_effects = { bio_battlefield_present_success_target = yes }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					bio_battlefield_present_critical_actor = yes
+					hidden_effect = {
+						set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.anthrax }
+						set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.critical_success }
+						bio_resolve_battlefield_dissemination = yes
+					}
+					raid_damage_units = { org_damage = @BIO_BATTLEFIELD_CRITICAL_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_CRITICAL_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_BATTLEFIELD_CRITICAL_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				victim_effects = { bio_battlefield_present_critical_target = yes }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	plague_battlefield_dissemination = {
+		days_to_prepare = @BIO_BATTLEFIELD_PREPARATION_DAYS
+		days_re_enable = @BIO_BATTLEFIELD_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_BATTLEFIELD_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_BATTLEFIELD_AI_MIN_SUCCESS_CHANCE
+		category = biological_battlefield_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_battlefield_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_BATTLEFIELD_PLAGUE_COMMAND_POWER
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = @BIO_BATTLEFIELD_PLAGUE_AI_BASE
+			modifier = { factor = constant:bio_battlefield_ai.disabled ROOT = { NOT = { bio_battlefield_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:bio_battlefield_ai.retaliation_factor ROOT = { OR = { has_country_flag = cbrn_retaliation_authorized FROM = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_battlefield_ai.first_use_route_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.unrestricted_route_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
+		}
+		visible = { is_special_project_completed = sp:plague_bomb bio_kruger_last_resort_authority_is_valid = yes }
+		show_target = { custom_trigger_tooltip = { tooltip = bio_battlefield_target_available_tt hidden_trigger = { bio_battlefield_target_from_is_valid = yes } } }
+		available = { is_special_project_completed = sp:plague_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_preparation_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		launchable = { is_special_project_completed = sp:plague_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_launch_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { plague_bomb_equipment = @BIO_BATTLEFIELD_PLAGUE_RESERVATION }
+		success_factors = {
+			success = {
+				base = @BIO_BATTLEFIELD_PLAGUE_SUCCESS_BASE
+				experience = { weight = @BIO_BATTLEFIELD_EXPERIENCE_WEIGHT start_weight = @BIO_BATTLEFIELD_EXPERIENCE_START reference = @BIO_BATTLEFIELD_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_BATTLEFIELD_ORGANISATION_WEIGHT start_weight = @BIO_BATTLEFIELD_ORGANISATION_START reference = @BIO_BATTLEFIELD_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_BATTLEFIELD_STRENGTH_WEIGHT start_weight = @BIO_BATTLEFIELD_STRENGTH_START reference = @BIO_BATTLEFIELD_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_BATTLEFIELD_RECON_WEIGHT reference = @BIO_BATTLEFIELD_RECON_REFERENCE }
+				resistance = { weight = @BIO_BATTLEFIELD_RESISTANCE_WEIGHT start_reference = @BIO_BATTLEFIELD_RESISTANCE_START reference = @BIO_BATTLEFIELD_RESISTANCE_REFERENCE }
+				air_superiority = { weight = @BIO_BATTLEFIELD_AIR_SUPERIORITY_WEIGHT start_reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_START reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_REFERENCE }
+				intel = { weight = @BIO_BATTLEFIELD_INTEL_WEIGHT reference = @BIO_BATTLEFIELD_INTEL_REFERENCE }
+			}
+		}
+		success_levels = {
+			failure = { actor_effects = { bio_battlefield_present_failure_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.plague } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.failure } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_FAILURE_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_FAILURE_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_FAILURE_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_failure_target = yes } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_limited_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.plague } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.limited_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_LIMITED_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_LIMITED_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_LIMITED_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_limited_target = yes } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_success_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.plague } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_SUCCESS_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_SUCCESS_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_SUCCESS_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_success_target = yes } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_critical_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.plague } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.critical_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_CRITICAL_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_CRITICAL_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_CRITICAL_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_critical_target = yes } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+
+	tularemia_battlefield_dissemination = {
+		days_to_prepare = @BIO_BATTLEFIELD_PREPARATION_DAYS
+		days_re_enable = @BIO_BATTLEFIELD_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_BATTLEFIELD_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_BATTLEFIELD_AI_MIN_SUCCESS_CHANCE
+		category = biological_battlefield_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_battlefield_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_BATTLEFIELD_TULAREMIA_COMMAND_POWER
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = @BIO_BATTLEFIELD_TULAREMIA_AI_BASE
+			modifier = { factor = constant:bio_battlefield_ai.disabled ROOT = { NOT = { bio_battlefield_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:bio_battlefield_ai.retaliation_factor ROOT = { OR = { has_country_flag = cbrn_retaliation_authorized FROM = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_battlefield_ai.first_use_route_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.unrestricted_route_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
+		}
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_kruger_last_resort_authority_is_valid = yes }
+		show_target = { custom_trigger_tooltip = { tooltip = bio_battlefield_target_available_tt hidden_trigger = { bio_battlefield_target_from_is_valid = yes } } }
+		available = { is_special_project_completed = sp:tularemia_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_preparation_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		launchable = { is_special_project_completed = sp:tularemia_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_launch_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { tularemia_bomb_equipment = @BIO_BATTLEFIELD_TULAREMIA_RESERVATION }
+		success_factors = {
+			success = {
+				base = @BIO_BATTLEFIELD_TULAREMIA_SUCCESS_BASE
+				experience = { weight = @BIO_BATTLEFIELD_EXPERIENCE_WEIGHT start_weight = @BIO_BATTLEFIELD_EXPERIENCE_START reference = @BIO_BATTLEFIELD_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_BATTLEFIELD_ORGANISATION_WEIGHT start_weight = @BIO_BATTLEFIELD_ORGANISATION_START reference = @BIO_BATTLEFIELD_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_BATTLEFIELD_STRENGTH_WEIGHT start_weight = @BIO_BATTLEFIELD_STRENGTH_START reference = @BIO_BATTLEFIELD_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_BATTLEFIELD_RECON_WEIGHT reference = @BIO_BATTLEFIELD_RECON_REFERENCE }
+				resistance = { weight = @BIO_BATTLEFIELD_RESISTANCE_WEIGHT start_reference = @BIO_BATTLEFIELD_RESISTANCE_START reference = @BIO_BATTLEFIELD_RESISTANCE_REFERENCE }
+				air_superiority = { weight = @BIO_BATTLEFIELD_AIR_SUPERIORITY_WEIGHT start_reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_START reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_REFERENCE }
+				intel = { weight = @BIO_BATTLEFIELD_INTEL_WEIGHT reference = @BIO_BATTLEFIELD_INTEL_REFERENCE }
+			}
+		}
+		success_levels = {
+			failure = { actor_effects = { bio_battlefield_present_failure_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.tularemia } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.failure } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_FAILURE_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_FAILURE_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_FAILURE_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_failure_target = yes } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_limited_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.tularemia } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.limited_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_LIMITED_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_LIMITED_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_LIMITED_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_limited_target = yes } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_success_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.tularemia } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_SUCCESS_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_SUCCESS_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_SUCCESS_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_success_target = yes } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_critical_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.tularemia } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.critical_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_CRITICAL_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_CRITICAL_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_CRITICAL_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_critical_target = yes } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+
+	smallpox_battlefield_dissemination = {
+		days_to_prepare = @BIO_BATTLEFIELD_PREPARATION_DAYS
+		days_re_enable = @BIO_BATTLEFIELD_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_BATTLEFIELD_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_BATTLEFIELD_AI_MIN_SUCCESS_CHANCE
+		category = biological_battlefield_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_battlefield_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_BATTLEFIELD_SMALLPOX_COMMAND_POWER
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = @BIO_BATTLEFIELD_SMALLPOX_AI_BASE
+			modifier = { factor = constant:bio_battlefield_ai.disabled ROOT = { NOT = { bio_battlefield_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:bio_battlefield_ai.retaliation_factor ROOT = { OR = { has_country_flag = cbrn_retaliation_authorized FROM = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_battlefield_ai.first_use_route_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.unrestricted_route_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
+		}
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_kruger_last_resort_authority_is_valid = yes }
+		show_target = { custom_trigger_tooltip = { tooltip = bio_battlefield_target_available_tt hidden_trigger = { bio_battlefield_target_from_is_valid = yes } } }
+		available = { is_special_project_completed = sp:smallpox_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_preparation_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		launchable = { is_special_project_completed = sp:smallpox_bomb custom_trigger_tooltip = { tooltip = bio_battlefield_launch_available_tt hidden_trigger = { bio_battlefield_can_prepare_against_from = yes } } }
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { smallpox_bomb_equipment = @BIO_BATTLEFIELD_SMALLPOX_RESERVATION }
+		success_factors = {
+			success = {
+				base = @BIO_BATTLEFIELD_SMALLPOX_SUCCESS_BASE
+				experience = { weight = @BIO_BATTLEFIELD_EXPERIENCE_WEIGHT start_weight = @BIO_BATTLEFIELD_EXPERIENCE_START reference = @BIO_BATTLEFIELD_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_BATTLEFIELD_ORGANISATION_WEIGHT start_weight = @BIO_BATTLEFIELD_ORGANISATION_START reference = @BIO_BATTLEFIELD_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_BATTLEFIELD_STRENGTH_WEIGHT start_weight = @BIO_BATTLEFIELD_STRENGTH_START reference = @BIO_BATTLEFIELD_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_BATTLEFIELD_RECON_WEIGHT reference = @BIO_BATTLEFIELD_RECON_REFERENCE }
+				resistance = { weight = @BIO_BATTLEFIELD_RESISTANCE_WEIGHT start_reference = @BIO_BATTLEFIELD_RESISTANCE_START reference = @BIO_BATTLEFIELD_RESISTANCE_REFERENCE }
+				air_superiority = { weight = @BIO_BATTLEFIELD_AIR_SUPERIORITY_WEIGHT start_reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_START reference = @BIO_BATTLEFIELD_AIR_SUPERIORITY_REFERENCE }
+				intel = { weight = @BIO_BATTLEFIELD_INTEL_WEIGHT reference = @BIO_BATTLEFIELD_INTEL_REFERENCE }
+			}
+		}
+		success_levels = {
+			failure = { actor_effects = { bio_battlefield_present_failure_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.smallpox } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.failure } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_FAILURE_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_FAILURE_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_FAILURE_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_failure_target = yes } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_limited_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.smallpox } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.limited_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_LIMITED_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_LIMITED_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_LIMITED_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_limited_target = yes } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_success_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.smallpox } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_SUCCESS_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_SUCCESS_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_SUCCESS_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_success_target = yes } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { bio_battlefield_present_critical_actor = yes hidden_effect = { set_temp_variable = { bio_battlefield_agent = constant:bio_lifecycle_agent.smallpox } set_temp_variable = { bio_battlefield_engine_outcome = constant:bio_battlefield_engine_outcome.critical_success } bio_resolve_battlefield_dissemination = yes } raid_damage_units = { org_damage = @BIO_BATTLEFIELD_CRITICAL_ORG_DAMAGE str_damage = @BIO_BATTLEFIELD_CRITICAL_STRENGTH_DAMAGE ratio = yes } raid_add_unit_experience = @BIO_BATTLEFIELD_CRITICAL_EXPERIENCE add_raid_history_entry = yes } victim_effects = { bio_battlefield_present_critical_target = yes } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+}
