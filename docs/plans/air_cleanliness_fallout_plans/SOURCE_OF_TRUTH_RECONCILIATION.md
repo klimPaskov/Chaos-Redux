@@ -161,7 +161,7 @@ Accepted Ash-week orientation disposition:
 - The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18.
 - Its accepted sequence, identifier roles, delays, deterministic outcomes, parity, recovery, registry refusal, six-asset requirement, and non-activation rules are incorporated into `specs/01_living_world_event_ecosystem.md`, `specs/03_fallout_timeline_and_campaign_pacing.md`, and `specs/12_event_content_budget_and_acceptance.md`.
 - Suffixes `62` through `84` are reserved for the accepted package.
-- Four matching event blocks at `62` through `65`, their localisation, all six dedicated assets, and sprite registrations are implemented. The nineteen remaining blocks, caller, log and detail rows, manual coverage rows, and registry-backed late components are not implemented.
+- Fifteen matching event blocks at `62` through `65`, `70` through `77`, and `82` through `84`, their localisation, all six dedicated assets, and sprite registrations are implemented. National, resource, government, and closure art is bound to the visible consumers. Capital and character art remains ready but unwired because events `66` through `69` and `78` through `81` are absent. Those eight blocks, the caller, log and detail rows, the other 96 region and archetype runtime cells, and the installable character package remain incomplete.
 - Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
 - The caller remains blocked until successor allocation, player continuation, and all required candidate registries are proven.
 
@@ -174,7 +174,7 @@ Accepted post-pilot live-ledger disposition:
 - Survival ledger schema 3 owns exact opening replay, bounded mutable values, typed not-applicable state rows, and no fabricated schema-2 migration.
 - The accepted design is incorporated into the source specs and proven in `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`.
 - The exact one-damaged-level infrastructure repair result remains blocked. No construction, total-level, repair-speed, or variable-only substitute is approved.
-- The approval does not authorize events `66` through `84`, a caller, or scheduler activation.
+- The live-ledger approval does not by itself authorize the eight missing orientation blocks, a caller, or scheduler activation. Later accepted resource, government, and closure plans own the implemented blocks in their exact ranges.
 
 Current implementation authority:
 
