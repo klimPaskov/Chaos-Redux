@@ -6,7 +6,7 @@ Date: 2026-07-18
 
 The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
 
-This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, institutional-council portrait DDS files, national flags, and final visual assets remain parent-owned integration work. All sixteen promoted packages now apply a persistent direct-name cosmetic identity with complete ideology variants while retaining the carrier's original tag, history, states, and cores. Each package also recruits one distinct collective council and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching council leader role. All current priority-member focus, idea, decision, category, report-picture, and council-portrait sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
+This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, institutional-council portrait DDS files, national flags, and the remaining visual assets remain parent-owned integration work. All sixteen promoted packages now apply a persistent direct-name cosmetic identity with complete ideology variants while retaining the carrier's original tag, history, states, and cores. Each package also recruits one distinct collective council and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching council leader role. All current priority-member focus, idea, decision, category, report-picture, and council-portrait sprite IDs are registered under stable final paths. Forty decision DDS files now resolve: eight shared actions, sixteen distinct mechanics, and sixteen national-force actions. The remaining sixty-three focus, idea, decision, and report DDS files plus sixteen council portraits remain unresolved.
 
 Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
@@ -89,6 +89,13 @@ Vanilla documentation and precedents:
 - common/scripted_effects/006_independence_wave_decision_effects.txt
 - common/decisions/African_Union_decisions.txt
 - common/decisions/categories/African_Union_decision_categories.txt
+- docs/assets/012_africa_priority_members/manifest.md
+- docs/assets/012_africa_priority_members/gfx_handoff.md
+- docs/assets/012_africa_priority_members/source_png/
+- docs/assets/012_africa_priority_members/processed_png/
+- docs/assets/012_africa_priority_members/contact_sheets/
+- docs/assets/012_africa_priority_members/validation/review.md
+- gfx/interface/decisions/012_africa/priority_members/
 
 Event 012 sources:
 
@@ -413,7 +420,7 @@ The mechanic identifier and filename pattern matches the existing Event 012 asse
 | GFX_report_event_012_africa_priority_member_overlap_settlement | report_event_012_africa_priority_member_overlap_settlement.dds |
 | GFX_report_event_012_africa_priority_member_departure | report_event_012_africa_priority_member_departure.dds |
 
-The expanded registration now covers the package focus and idea icons in addition to these 60 decision and report references. Direct identity localisation is complete. National flags and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
+The expanded registration covers the package focus and idea icons in addition to these 60 decision and report references. Direct identity localisation is complete. Forty of the fifty-six decision references now have reviewed final DDS files. The sixteen post-settlement decisions, eight focus icons, thirty-five idea icons, four report pictures, national flags, and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
 
 ### Institutional-council portraits
 
@@ -509,7 +516,7 @@ Static path checks confirmed:
 
 The HOI4 focus inspector accepted the authored tree and resolved all eight focus titles, descriptions, and registered icon IDs. Deterministic rendering was attempted, but the MCP artifact store returned ARTIFACT_STORAGE_LIMIT before it could write the render outputs. Local focus topology, prerequisites, load references, scripted payloads, icon registration, and localisation checks therefore remain the visual-review evidence for this tranche.
 
-The HOI4 event-inspection MCP could not complete because its artifact store returned ARTIFACT_STORAGE_LIMIT. Local event namespace, ID, description, option, trigger, reference, and localisation audits were completed instead. This tooling limit is not evidence that the missing custom GFX assets exist.
+The HOI4 event-inspection MCP could not complete because its artifact store returned ARTIFACT_STORAGE_LIMIT. Local event namespace, ID, description, option, trigger, reference, and localisation audits were completed instead. This tooling limit is not evidence that the remaining custom GFX assets exist. The priority-member asset manifest and neutral-background runtime contact sheets now provide bounded visual evidence for the forty completed decision assets.
 
 ## Simplifications, omissions, and blockers
 
@@ -523,8 +530,9 @@ Whole package layer remains incomplete until the parent integrates:
 
 - final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
 - the 16 final institutional-council portrait DDS files registered in this handoff
-- national flags for `AFRICA_PRIORITY_<PACKAGE>` at the base, medium, and small flag sizes, plus all 103 focus, idea, decision, and report DDS assets in this handoff
-- asset manifests; the sprite definitions and final paths are registered, but the DDS files are not yet produced
+- national flags for `AFRICA_PRIORITY_<PACKAGE>` at the base, medium, and small flag sizes
+- 63 unresolved focus, idea, post-settlement decision, and report DDS assets; 40 decision DDS files are present and documented
+- verified source-generation provenance for the 40 present decision icons; their retained source files have no embedded generator, prompt, author, or licence metadata
 - parent victory or peace callsites for africa_priority_member_record_rival_bloc_victory
 - authorised post-registration player-switch callsites for africa_achievement_register_valid_priority_player
 - parent terminal cleanup callsite after achievement and ending evaluation
