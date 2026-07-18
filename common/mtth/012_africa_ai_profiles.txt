@@ -295,7 +295,17 @@ africa_ai_world_order_context_factor = {
 	base = constant:africa_ai_policy.context_neutral
 	modifier = {
 		factor = constant:africa_ai_policy.context_blocked
-		NOT = { has_global_flag = africa_world_order_open }
+		NOT = {
+			OR = {
+				has_global_flag = africa_world_order_open
+				has_global_flag = world_end_africa_the_world
+				africa_world_package_sponsorship_gate_is_open = yes
+				AND = {
+					has_event_target = africa_host
+					event_target:africa_host = { africa_world_package_sponsorship_gate_is_open = yes }
+				}
+			}
+		}
 	}
 	modifier = {
 		factor = constant:africa_ai_policy.context_preferred
@@ -311,6 +321,7 @@ africa_ai_world_order_context_factor = {
 	modifier = {
 		factor = constant:africa_ai_policy.context_blocked
 		has_global_flag = world_end
+		NOT = { has_global_flag = world_end_africa_the_world }
 	}
 }
 

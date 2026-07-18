@@ -1147,8 +1147,19 @@ africa_action_quote_phase_is_available = {
 				}
 				AND = {
 					check_variable = { africa_quote_phase = constant:africa_action_phase.terminal }
-					has_global_flag = africa_continental_wars_active
-					check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal compare = greater_than_or_equals }
+					OR = {
+						AND = {
+							has_global_flag = africa_continental_wars_active
+							check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal compare = greater_than_or_equals }
+						}
+						AND = {
+							has_global_flag = world_end_africa_the_world
+							OR = {
+								check_variable = { africa_quote_action_id = constant:africa_action.administer_world_regions }
+								check_variable = { africa_quote_action_id = constant:africa_action.contain_terminal_high_chaos }
+							}
+						}
+					}
 				}
 			}
 		}

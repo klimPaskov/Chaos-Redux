@@ -13,7 +13,10 @@
 
 africa_ai_profile_common_is_valid = {
 	exists = yes
-	NOT = { has_global_flag = world_end }
+	OR = {
+		NOT = { has_global_flag = world_end }
+		has_global_flag = world_end_africa_the_world
+	}
 }
 
 africa_ai_host_profile_base_is_active = {
@@ -50,7 +53,10 @@ africa_ai_chaos_profile_base_is_active = {
 
 africa_ai_world_profile_base_is_active = {
 	africa_ai_profile_common_is_valid = yes
-	has_global_flag = africa_world_order_open
+	OR = {
+		has_global_flag = africa_world_order_open
+		has_global_flag = world_end_africa_the_world
+	}
 	africa_is_valid_external_action_target = yes
 }
 
@@ -219,6 +225,7 @@ africa_ai_profile_power_expedition_coalition_is_active = {
 	has_country_flag = africa_scramble_coalition_member
 	OR = {
 		has_country_flag = africa_scramble_expedition_accelerated
+		has_country_flag = africa_scramble_expedition_planner
 		has_war_with = event_target:africa_host
 	}
 }
@@ -237,6 +244,7 @@ africa_ai_profile_power_recognition_partner_is_active = {
 	OR = {
 		has_country_flag = africa_world_order_partner
 		has_country_flag = africa_international_recognition_obtained
+		has_country_flag = africa_scramble_recognised_africa
 	}
 }
 
@@ -247,6 +255,7 @@ africa_ai_profile_power_opportunist_patron_is_active = {
 	OR = {
 		has_country_flag = africa_foreign_patronage_active
 		has_country_flag = africa_world_order_rivalry_intensified
+		has_country_flag = africa_scramble_conditional_recognition
 	}
 }
 
@@ -381,7 +390,10 @@ africa_ai_profile_world_oceania_is_active = {
 
 africa_ai_profile_world_africa_world_is_active = {
 	africa_ai_host_profile_base_is_active = yes
-	has_global_flag = africa_world_order_open
+	OR = {
+		has_global_flag = africa_world_order_open
+		has_global_flag = world_end_africa_the_world
+	}
 	has_global_flag = africa_is_one
 	check_variable = {
 		var = africa_charter_authority
@@ -561,5 +573,297 @@ africa_ai_policy_is_protection_first = {
 		var = africa_ai_weight_protection
 		value = africa_ai_weight_integration
 		compare = greater_than
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Bounded host dispatcher predicates for Actions 77-92
+# ---------------------------------------------------------------------------
+
+africa_ai_late_action_controller_is_active = {
+	is_ai = yes
+	africa_is_current_host = yes
+	africa_has_open_action_capacity = yes
+	NOT = { has_country_flag = africa_first_proof_active }
+	NOT = { has_country_flag = africa_first_proof_failed }
+	OR = {
+		has_global_flag = africa_scramble_response_active
+		has_global_flag = africa_world_order_open
+		has_global_flag = world_end_africa_the_world
+	}
+}
+
+# Uses the prepared temporary action profile without writing a player quote.
+africa_ai_prepared_action_phase_is_available = {
+	OR = {
+		check_variable = { africa_profile_phase = constant:africa_action_phase.any }
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.opening }
+			africa_action_phase_has_reached_opening = yes
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.regional }
+			africa_action_phase_has_reached_regional = yes
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.late }
+			africa_action_phase_has_reached_late = yes
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.high_chaos }
+			has_global_flag = africa_evolution_iii_logged
+			check_variable = { var = africa_current_phase value = constant:africa_action_phase.high_chaos compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.post_unification }
+			has_global_flag = africa_is_one
+			check_variable = { var = africa_current_phase value = constant:africa_action_phase.post_unification compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.terminal_approach }
+			has_global_flag = africa_world_order_open
+			check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal_approach compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { africa_profile_phase = constant:africa_action_phase.terminal }
+			OR = {
+				AND = {
+					has_global_flag = africa_continental_wars_active
+					check_variable = { var = africa_current_phase value = constant:africa_action_phase.terminal compare = greater_than_or_equals }
+				}
+				AND = {
+					has_global_flag = world_end_africa_the_world
+					OR = {
+						check_variable = { africa_requested_action_id = constant:africa_action.administer_world_regions }
+						check_variable = { africa_requested_action_id = constant:africa_action.contain_terminal_high_chaos }
+					}
+				}
+			}
+		}
+	}
+	OR = {
+		check_variable = { africa_profile_required_constitution = constant:africa_constitution.uncommitted }
+		check_variable = {
+			var = africa_constitution
+			value = africa_profile_required_constitution
+			compare = equals
+		}
+	}
+}
+
+africa_ai_retry_stance_allows_current_target = {
+	OR = {
+		africa_ai_has_persistent_retry_stance = yes
+		africa_ai_will_retry_when_valid = yes
+		AND = {
+			africa_ai_will_retry_after_recovery = yes
+			has_stability > constant:africa_ai_controller.recovery_stability
+			has_war_support > constant:africa_ai_controller.recovery_war_support
+		}
+	}
+}
+
+# The target's immutable last-action ledger makes retry policy observable.
+africa_ai_selected_target_retry_policy_allows_action = {
+	has_event_target = africa_action_target
+	OR = {
+		event_target:africa_action_target = { NOT = { has_country_flag = africa_has_action_history } }
+		event_target:africa_action_target = {
+			NOT = {
+				check_variable = {
+					var = africa_last_action_id
+					value = africa_requested_action_id
+					compare = equals
+				}
+			}
+		}
+		AND = {
+			event_target:africa_action_target = { check_variable = { africa_last_action_outcome = constant:africa_action_outcome.partial } }
+			NOT = { africa_ai_accepts_partial_outcome = yes }
+			africa_ai_retry_stance_allows_current_target = yes
+		}
+		AND = {
+			event_target:africa_action_target = {
+				OR = {
+					check_variable = { africa_last_action_outcome = constant:africa_action_outcome.failure }
+					check_variable = { africa_last_action_outcome = constant:africa_action_outcome.cancelled }
+				}
+			}
+			africa_ai_retry_stance_allows_current_target = yes
+		}
+	}
+}
+
+africa_ai_action_77_has_target = {
+	has_global_flag = africa_scramble_response_active
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_participant
+		NOT = { has_country_flag = africa_scramble_expedition_leader }
+		NOT = { has_country_flag = africa_scramble_recognised_africa }
+	}
+}
+
+africa_ai_action_78_has_target = {
+	has_global_flag = africa_scramble_response_active
+	NOT = { has_country_flag = africa_anti_sanctions_network_ready }
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_participant
+		OR = {
+			has_country_flag = africa_scramble_sanctions_active
+			has_country_flag = africa_scramble_recognition_candidate
+		}
+	}
+}
+
+africa_ai_action_79_has_target = {
+	has_global_flag = africa_scramble_response_active
+	NOT = { has_country_flag = africa_foreign_ultimatum_answered }
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_ultimatum_issuer
+	}
+}
+
+africa_ai_action_80_has_target = {
+	has_global_flag = africa_scramble_response_active
+	africa_scramble_phase_is_intervention = yes
+	NOT = { has_country_flag = africa_continental_defence_mobilised }
+}
+
+africa_ai_action_81_has_target = {
+	has_global_flag = africa_scramble_response_active
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_coalition_member
+		has_country_flag = africa_scramble_expedition_planner
+		NOT = { has_country_flag = africa_scramble_expedition_leader }
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+africa_ai_action_82_has_target = {
+	has_global_flag = africa_scramble_response_active
+	NOT = { has_war = yes }
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_foreign_base_holder
+		NOT = { has_country_flag = africa_scramble_base_access_converted_to_treaty }
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+africa_ai_action_83_has_target = {
+	has_global_flag = africa_scramble_response_active
+	NOT = { has_country_flag = africa_global_anti_colonial_conference_held }
+}
+
+africa_ai_action_84_has_target = {
+	has_global_flag = africa_scramble_response_active
+	any_of_scopes = {
+		array = africa_scramble_participants
+		africa_action_target_is_usable = yes
+		has_country_flag = africa_scramble_coalition_member
+	}
+}
+
+africa_ai_action_85_has_target = {
+	africa_world_package_sponsorship_gate_is_open = yes
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_action_target_is_usable = yes
+		africa_world_package_is_candidate = yes
+		has_country_flag = africa_world_package_implementation_ready
+	}
+}
+
+africa_ai_action_86_has_target = {
+	has_global_flag = africa_world_order_open
+	any_of_scopes = {
+		array = africa_world_package_actors
+		africa_action_target_is_usable = yes
+		africa_world_union_target_is_compatible = yes
+		NOT = { has_country_flag = africa_two_continent_union_plan_complete }
+	}
+}
+
+africa_ai_action_87_has_target = {
+	has_global_flag = africa_world_order_open
+	africa_world_order_route_is_terminal = yes
+	NOT = { has_country_flag = africa_continental_war_plan_ready }
+	any_of_scopes = {
+		array = africa_world_package_actors
+		africa_action_target_is_usable = yes
+		africa_world_continental_war_target_is_eligible = yes
+		ROOT = { can_declare_war_on = PREV }
+	}
+}
+
+africa_ai_action_88_has_target = {
+	has_global_flag = africa_world_order_open
+	any_of_scopes = {
+		array = africa_world_package_actors
+		africa_action_target_is_usable = yes
+		africa_world_defeated_continent_is_eligible = yes
+	}
+}
+
+africa_ai_action_89_has_target = {
+	has_global_flag = africa_world_order_open
+	has_country_flag = africa_two_continent_union_plan_complete
+	any_of_scopes = {
+		array = africa_world_package_actors
+		africa_action_target_is_usable = yes
+		africa_world_union_target_is_compatible = yes
+	}
+}
+
+africa_ai_action_90_has_target = {
+	africa_terminal_world_identity_can_commit = yes
+}
+
+africa_ai_action_91_has_target = {
+	has_global_flag = world_end_africa_the_world
+	any_of_scopes = {
+		array = africa_world_package_actors
+		africa_action_target_is_usable = yes
+		africa_world_region_target_is_eligible = yes
+		capital_scope = {
+			is_controlled_by = PREV
+			NOT = { has_state_flag = africa_action_project_active }
+		}
+	}
+}
+
+africa_ai_terminal_chaos_target_is_eligible = {
+	africa_action_target_is_usable = yes
+	has_country_flag = africa_registered_high_chaos_actor
+	OR = {
+		has_country_flag = africa_high_chaos_actor_hostile
+		has_country_flag = africa_containment_breach_active
+	}
+}
+
+africa_ai_action_92_has_target = {
+	has_global_flag = world_end_africa_the_world
+	OR = {
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_ai_terminal_chaos_target_is_eligible = yes
+		}
+		any_of_scopes = {
+			array = africa_world_package_actors
+			africa_ai_terminal_chaos_target_is_eligible = yes
+		}
+		any_of_scopes = {
+			array = africa_scramble_participants
+			africa_ai_terminal_chaos_target_is_eligible = yes
+		}
 	}
 }

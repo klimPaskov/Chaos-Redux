@@ -2047,6 +2047,7 @@ africa_select_action_for_quote = {
 		}
 		set_variable = { africa_selected_action_id = africa_requested_action_id }
 		set_variable = { africa_selected_action_family = africa_profile_family }
+		africa_refresh_selected_action_state_candidates = yes
 		africa_refresh_selected_action_quote = yes
 	}
 }
@@ -3251,7 +3252,10 @@ africa_prepare_action_state_target = {
 					has_state_flag = africa_selected_action_state
 					has_state_flag = africa_selected_action_state_candidate
 					NOT = { has_state_flag = africa_action_project_active }
-					is_on_continent = africa
+					OR = {
+						is_on_continent = africa
+						ROOT = { check_variable = { africa_selected_action_id = constant:africa_action.administer_world_regions } }
+					}
 					is_controlled_by = event_target:africa_action_target
 				}
 			}
@@ -3270,7 +3274,10 @@ africa_prepare_action_state_target = {
 					has_state_flag = africa_selected_action_state
 					has_state_flag = africa_selected_action_state_candidate
 					NOT = { has_state_flag = africa_action_project_active }
-					is_on_continent = africa
+					OR = {
+						is_on_continent = africa
+						ROOT = { check_variable = { africa_selected_action_id = constant:africa_action.administer_world_regions } }
+					}
 					is_controlled_by = event_target:africa_action_target
 				}
 			}

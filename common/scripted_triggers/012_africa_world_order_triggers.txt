@@ -201,8 +201,8 @@ africa_scramble_intervention_requirement_met = {
 
 africa_scramble_has_no_active_intervention_war = {
 	NOT = {
-		any_country = {
-			has_country_flag = africa_scramble_participant
+		any_of_scopes = {
+			array = africa_scramble_participants
 			has_war_with = ROOT
 		}
 	}
@@ -311,8 +311,8 @@ africa_terminal_world_identity_can_commit = {
 	NOT = { has_global_flag = world_end_disabled }
 	NOT = { has_country_flag = africa_postwar_constitutional_review_pending }
 	NOT = {
-		any_country = {
-			has_country_flag = africa_world_package_actor
+		any_of_scopes = {
+			array = africa_world_package_actors
 			has_war_with = ROOT
 		}
 	}
@@ -320,7 +320,9 @@ africa_terminal_world_identity_can_commit = {
 
 # COUNTRY scope after The World exists.
 africa_world_region_target_is_eligible = {
-	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_actor
+	has_country_flag = africa_world_package_installed
+	africa_world_package_has_valid_identifier = yes
 	has_country_flag = africa_world_order_resolved_under_africa
 	NOT = { has_country_flag = africa_world_region_administration_complete }
 	has_global_flag = world_end_africa_the_world
