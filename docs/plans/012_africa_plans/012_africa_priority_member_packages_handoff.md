@@ -6,7 +6,7 @@ Date: 2026-07-18
 
 The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
 
-This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, leaders or council portraits, national flags, and final visual assets remain parent-owned integration work. All sixteen promoted packages now apply a persistent direct-name cosmetic identity with complete ideology variants while retaining the carrier's original tag, history, government, states, and cores. All current priority-member focus, idea, decision, category, and report-picture sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
+This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, institutional-council portrait DDS files, national flags, and final visual assets remain parent-owned integration work. All sixteen promoted packages now apply a persistent direct-name cosmetic identity with complete ideology variants while retaining the carrier's original tag, history, states, and cores. Each package also recruits one distinct collective council and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching council leader role. All current priority-member focus, idea, decision, category, report-picture, and council-portrait sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
 
 Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
@@ -15,10 +15,12 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 ## Owned files
 
 - common/script_constants/012_africa_priority_member_constants.txt
+- common/characters/012_africa_priority_member_characters.txt
 - common/ideas/012_africa_priority_member_ideas.txt
 - common/national_focus/012_africa_priority_member_focus.txt
 - common/scripted_triggers/012_africa_priority_member_triggers.txt
 - common/scripted_effects/012_africa_priority_member_effects.txt
+- common/scripted_effects/012_africa_priority_member_character_effects.txt
 - common/scripted_effects/012_africa_priority_member_force_effects.txt
 - common/scripted_effects/012_africa_action_effects.txt
 - common/scripted_localisation/012_africa_scripted_localisation.txt
@@ -29,8 +31,10 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 - events/012_africa_priority_member_events.txt
 - localisation/english/012_africa_priority_member_l_english.yml
 - localisation/english/012_africa_priority_member_countries_l_english.yml
+- localisation/english/012_africa_priority_member_characters_l_english.yml
 - localisation/english/012_africa_priority_member_focus_l_english.yml
 - interface/012_africa_priority_member_assets.gfx
+- interface/012_africa_priority_member_characters.gfx
 
 Focus texture folder:
 
@@ -68,6 +72,9 @@ Required offline wiki pages:
 - AI modding
 - National focus modding
 - Division modding
+- Country creation
+- Character modding
+- Portrait modding
 
 Vanilla documentation and precedents:
 
@@ -101,7 +108,7 @@ No web research was used.
 2. Existing Action 102, promote_priority_member_package, resolves either a full promotion or negotiated compact result.
 3. A full result invokes africa_priority_member_register_from_origin. A partial result stops at Protected status for an outside candidate or Associate status for an already Protected candidate, records one access, overlap, or local-ratification obstacle, and does not activate the full package.
 4. The bounded requalification decision checks the live obstacle requirement, rebuilds the dossier, and permits another Action 102 attempt. Registration validates the later full result and exact origin, assigns one stable package ID, applies the matching direct public identity without replacing the original tag, creates no territory or core change, and opens the political settlement.
-5. The country chooses one of three political routes with a package-specific named council, civic government, or producer institution.
+5. Full registration recruits one package-specific collective council without retiring, killing, or replacing the inherited ruler. The country then chooses one of three political routes. Ratification promotes that council into the matching non-aligned, democratic, or communist leader role, installs the corresponding elections rule, and gives the ruling party the package-specific council, civic-government, or producer-institution name.
 6. The country advances a four-step distinct mechanic and a separate four-step force-reinforcement track.
 7. League bargaining uses only the shared africa_apply_relationship_transition state machine.
 8. The overlap event records congress, local consent, autonomy, or rivalry without automatic cores, annexation, or maximal borders.
@@ -406,7 +413,11 @@ The mechanic identifier and filename pattern matches the existing Event 012 asse
 | GFX_report_event_012_africa_priority_member_overlap_settlement | report_event_012_africa_priority_member_overlap_settlement.dds |
 | GFX_report_event_012_africa_priority_member_departure | report_event_012_africa_priority_member_departure.dds |
 
-The expanded registration now covers the package focus and idea icons in addition to these 60 decision and report references. National flags, ideology variants, and leader or council portraits are separate unresolved rows in the Event 012 asset tranche.
+The expanded registration now covers the package focus and idea icons in addition to these 60 decision and report references. Direct identity localisation is complete. National flags and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
+
+### Institutional-council portraits
+
+Every package key uses `GFX_portrait_012_africa_priority_<package>_council` and the final 156x210 file `gfx/leaders/012_africa/priority_members/portrait_012_africa_priority_<package>_council.dds`. All sixteen sprite IDs and paths are registered. No generic or random portrait is wired as a substitute; the final DDS files remain asset-tranche work.
 
 ## Validation evidence
 
@@ -460,7 +471,17 @@ Country-identity inventory:
 - 16 direct base names, definitions, and adjectives
 - 16 complete democratic, communist, fascist, and non-aligned name families
 - 240 localisation keys with no administrative placeholder names
-- original tags, country histories, governments, territory, and cores preserved beneath each cosmetic identity
+- public-identity application preserves original tags, country histories, governments, territory, and cores until an explicit settlement changes the government
+
+Political-roster inventory:
+
+- 16 package-specific collective council characters
+- 16 registered 156x210 council portrait paths
+- 48 route-specific country-leader installation branches; exactly one non-aligned council, democratic civic, or communist producer role is added per package playthrough
+- 48 package-and-route-specific ruling-party names with short and long forms
+- inherited rulers retained through registration and replaced only by explicit political-settlement ratification
+- democratic civic settlements permit elections; council and producer settlements do not
+- no leader is killed, retired, or silently installed by package discovery
 
 Reference integrity:
 
@@ -501,8 +522,8 @@ Owned gameplay overlay:
 Whole package layer remains incomplete until the parent integrates:
 
 - final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
-- leader or council characters and portraits
-- national flags for `AFRICA_PRIORITY_<PACKAGE>` at the base, medium, and small flag sizes, plus all 103 custom priority-member DDS assets in this handoff
+- the 16 final institutional-council portrait DDS files registered in this handoff
+- national flags for `AFRICA_PRIORITY_<PACKAGE>` at the base, medium, and small flag sizes, plus all 103 focus, idea, decision, and report DDS assets in this handoff
 - asset manifests; the sprite definitions and final paths are registered, but the DDS files are not yet produced
 - parent victory or peace callsites for africa_priority_member_record_rival_bloc_victory
 - authorised post-registration player-switch callsites for africa_achievement_register_valid_priority_player
