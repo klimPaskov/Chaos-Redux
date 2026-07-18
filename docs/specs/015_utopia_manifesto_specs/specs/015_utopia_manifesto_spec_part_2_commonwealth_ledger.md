@@ -831,3 +831,29 @@ The Ledger remains active through ordinary formation and late play. It closes or
 - another approved transformation explicitly supersedes the mechanic
 
 Temporary external cases, stewardship missions, selected targets, emergency levies, and local project flags must clean up when targets disappear, wars end, states change hands, or the country changes route.
+
+## Implemented living-system record
+
+This section is canonical for the implemented Ledger, callings, and district presentation.
+
+### Ledger rebuild contract
+
+The displayed value for each Ledger axis is rebuilt as:
+
+`clamp(base + durable policy + current live contribution, 0, 100)`
+
+Durable policy records the lasting effect of focuses, decisions, missions, route conduct, cases, evolutions, and league choices. Live contributions are replaced during refresh from the actor's current war, occupation, reserve, industry, infrastructure, transport, migration, housing, territorial, and other accepted conditions. A refresh never adds the same current condition to its earlier result. Repeating a refresh without a world-state change therefore produces the same four totals.
+
+The actor-scoped Event 15 pulse, GUI refresh, decision and mission terminals, and narrow affected-country hooks are the refresh entry points. The system does not use a daily, weekly, or monthly world scan.
+
+### Calling pressure contract
+
+Each of the six calling families keeps separate structural pressure, raw durable adjustment, effective durable adjustment, temporary adjustment, present severity, and uncovered severity. Structural pressure comes from current material conditions. Durable relief records lasting investment. Temporary relief represents an active emergency method. Entry and exit thresholds provide hysteresis so a family does not oscillate at one boundary.
+
+A resolved method cannot permanently hide an unresolved material deficit. A new war, exhausted transport pool, damaged infrastructure, lost reserve, migration shock, or similar accepted condition can restore the relevant pressure. Necessary Ground and island-variant gates read the live relevant family rather than a generic high-Need state.
+
+### District presentation contract
+
+The Ledger identifies the active district state, selected role, current build or charter phase, and the three accepted obligation groups. The four ordinary role families are market garden, industrial housing, rail junction, and refugee municipality. Provision Ring remains the separate fifth achievement role and is not duplicated as an ordinary role button.
+
+District survey results come from state suitability. Full completion requires housing or settlement preparation, transport access, and a role-appropriate industry, reserve, or calling plan. Partial and failed outcomes do not increment full completion proof. Charter completion records a route-specific institutional settlement.

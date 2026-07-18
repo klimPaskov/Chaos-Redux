@@ -1059,3 +1059,17 @@ Expected:
 - geographic variant valid
 - no false coastline
 - strong power and strong costs
+
+## Implemented AI and balance record
+
+The current package has 12 Event 15 AI strategy plans. All 124 focuses contain AI selection logic. All 121 decisions contain `ai_will_do`. AI reads the same Ledger, calling, reserve, case-integrity, local-support, target-survival, district-suitability, and obligation gates as the player.
+
+The living Ledger and calling refresh is actor-scoped and idempotent. AI selects the highest uncovered calling pressure after recomputation. It avoids launching a second method for a family already under an active method or cooldown. Necessary Ground remains unavailable without a live relevant deficit, and state-transfer methods remain unavailable when they would erase the selected target.
+
+District AI chooses among suitable state roles, considers whether it can meet the three project obligations, and rejects likely ownership loss. Closed Island weighs garrison, resistance, supply, reserve, and foreign reaction before Penal Works. Penal Works is attractive only when construction pressure and district need justify its material and social cost.
+
+Evolution AI pays the same action cost and inherits the same shared obligation as the player. Route preference cannot bypass obligation setup, case cleanup, district proof, stewardship disposition, or conduct history.
+
+No Event 15 AI or maintenance behavior uses a daily, weekly, or monthly iteration over every country. The accepted cadence is the actor pulse plus narrow affected-country hooks and direct decision or mission terminals.
+
+The current focus-tree atomic re-audit passes with 124 reachable focuses, 174 valid prerequisite references, zero node-through connector cases in the conservative static check, and no open P0 through P3 finding. All 34 paid focuses, split into 26 institutional and 8 military, cancel if their live gate becomes invalid, refresh and recheck the current price, and guard the full reward tail behind payment success. ROOT and FROM dynamic-cost refreshes remain outside the Fallout-only part of the state-control callback. The current decision and country re-audits also pass. Player and AI case choices use the same target-survival, exact-state, cleanup, affordability, and disposition contracts.

@@ -1,0 +1,121 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015: SETTLEMENT AND DISTRICT CONSTANTS
+# ============================================================================
+# Shared tuning for Garden Settlement suitability, live project obligations,
+# route charter state modifiers, calling relief, and the bounded Penal Works
+# method. Gameplay callers use explicit constant:category.key access.
+# ============================================================================
+
+utopia_manifesto_district_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	market_population_floor_k = 200
+	housing_population_floor_k = 400
+	rail_population_floor_k = 100
+	refugee_population_floor_k = 100
+	viable_infrastructure_floor = 1
+	secure_transport_floor = 2
+	market_infrastructure_ceiling = 5
+	rail_infrastructure_ceiling = 4
+	industry_factory_floor = 0
+	free_shared_slot_floor = 0
+	maintenance_support = 20
+	maintenance_trains = 5
+	maintenance_motorized = 25
+	market_support_start = 70
+	market_trains_start = 15
+	housing_support_start = 120
+	housing_motorized_start = 75
+	rail_support_start = 70
+	rail_trains_start = 25
+	refugee_support_start = 120
+	refugee_trains_start = 15
+	refugee_motorized_start = 75
+	refugee_reserve_floor = 20
+	refugee_reserve_start = 30
+}
+
+utopia_manifesto_district_calling_relief = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	primary = -10
+	secondary = -5
+}
+
+utopia_manifesto_district_state_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	incomplete_supply = -0.05
+	incomplete_construction = -0.10
+	incomplete_resistance = 0.05
+	consent_supply = -0.01
+	consent_resistance = -0.05
+	common_table_supply = 0.05
+	common_table_resources = 0.03
+	guardians_construction = 0.10
+	guardians_resistance = 0.03
+	closed_island_supply = 0.10
+	closed_island_resistance = 0.08
+	humanist_supply = 0.03
+	humanist_resistance = -0.03
+}
+
+utopia_manifesto_district_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	consent_charter_addition = 30
+	humanist_review_days = 365
+}
+
+utopia_manifesto_district_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	surveying = 1
+	surveyed = 2
+	building = 3
+	delayed = 4
+	built = 5
+	chartering = 6
+	chartered = 7
+}
+
+utopia_manifesto_penal_method = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power_cost = 15
+	manpower_cost = 3000
+	infantry_equipment_cost = 500
+	support_equipment_cost = 100
+	reserve_cost = 10
+	reserve_floor_after_cost = 20
+	reserve_start_floor = 30
+	ai_resistance_ceiling = 30
+	start_civilian_loss = 500
+	completion_civilian_loss = 1000
+	minimum_state_population_remaining = 10000
+	construction_speed = 0.25
+	local_supply = -0.10
+	required_garrison = 0.25
+	resistance_target = 0.12
+	supervised_resistance_target = 0.08
+	hardened_resistance_target = 0.18
+}

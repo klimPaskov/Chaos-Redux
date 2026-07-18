@@ -1,5 +1,9 @@
 # Event 015 route-identity asset handoff
 
+> Advisor correction, `2026-07-15`: the sixteen advisor assets were rebuilt through the native `65x67` advisor dossier pipeline. The corrected dimensions, crops, metadata, comparisons, DDS proof, and unchanged-wiring record are authoritative in `advisor_icon_correction_handoff.md` and supersede the original advisor-size and integration statements below.
+
+> Flag and institutional correction, `2026-07-15`: all active flag compositions and all four institutional portraits were replaced with individual built-in ImageGen sources. The authoritative call handles, exact aliases, processor metadata, review sheets, runtime proof, and rejection record are in `flag_institutional_identity_correction_handoff_2026_07_15.md` and supersede the atlas/split-source and 39-flag statements below.
+
 Handoff date: `2026-07-14`  
 Role: `chaosx_icon_artist`  
 Scope: Event 015 cosmetic-tag flags, institutional leader portraits, advisor portraits, league emblems, source/processed/final packages, validation, and exact GFX handoff only
@@ -74,7 +78,7 @@ Installed under `gfx/leaders/015_utopia_manifesto/advisors/`:
 - `advisor_utopia_manifesto_steward_of_service.dds`
 - `advisor_utopia_manifesto_contract_broker.dds`
 
-All sixteen are distinct, role-specific civilian portraits. `gfx_handoff.md` supplies the sixteen new `GFX_portrait_utopia_manifesto_<token>_small` definitions and the exact character-entry replacement table.
+All sixteen are distinct, role-specific civilian portraits. `gfx_handoff.md` records the sixteen stable `GFX_portrait_utopia_manifesto_<token>_small` definitions and the exact character mapping already present in the character file.
 
 ## League emblems
 
@@ -115,7 +119,7 @@ The shared root file `docs/assets/015_utopia_manifesto/manifest.md` was delibera
 
 - `39` uncompressed bottom-left-origin 32-bit TGA flags at exact normal/medium/small dimensions
 - `4` uncompressed one-level BGRA institutional portrait DDS files at `156x210`
-- `16` uncompressed one-level BGRA advisor portrait DDS files at `64x64`
+- `16` uncompressed one-level BGRA advisor portrait DDS files at `65x67`, rebuilt through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`
 - `5` uncompressed one-level BGRA league emblem DDS files at `64x64`, with alpha spanning `0..255`
 
 Every runtime file decoded successfully and was pixel-identical to its processed PNG. File lengths, DDS masks/caps, TGA origin and bit depth, dimensions, and alpha ranges match the required contracts. Hash-based family checks confirmed four distinct Practical Commonwealth ideology variants, four distinct institutional portraits, sixteen distinct advisor portraits, and five distinct league emblems. The four documented fixed-ideology flag aliases are the only intended duplicates.
@@ -124,8 +128,8 @@ The contact sheets were assembled from decoded runtime files and visually inspec
 
 ## Parent integration checklist
 
-1. Add the four existing leader, sixteen new advisor, and five stable league `spriteType` entries from `gfx_handoff.md` to `interface/015_utopia_manifesto.gfx`.
-2. Replace the sixteen `GFX_idea_...` advisor `small` handles in `common/characters/015_utopia_manifesto_characters.txt` with the supplied portrait handles.
+1. Retain the existing advisor `spriteType` entries in `interface/015_utopia_manifesto.gfx`; the corrected DDS files replace their texture targets in place.
+2. Retain the sixteen existing advisor `small` handles in `common/characters/015_utopia_manifesto_characters.txt`; the correction requires no reference replacement.
 3. Connect each stable league-emblem sprite to the intended current UI surface using the five existing route-state flags.
 4. Link or merge this dedicated package into the shared Event 015 asset manifest after concurrent asset work is reconciled.
 5. Include the runtime assets and package evidence in the parent Event 015 audit/commit.
@@ -155,5 +159,5 @@ The required offline Paradox wiki core pages were consulted along with Country C
 - Fallbacks: none.
 - Missing requested assets: none.
 - Unresolved asset blocker: none.
-- Parent-owned integration still required: GFX registration, advisor reference replacement, and league UI consumption, as listed above.
+- Parent-owned integration still required: league UI consumption only. Advisor GFX registration and character references are already present and were deliberately left unchanged by the `2026-07-15` correction.
 - Commit: not created; the parent owns the integrated Event 015 commit and concurrent untracked Event 015 work is present in the shared tree.

@@ -44,16 +44,71 @@ approved portrait master, but their crop, subject scale, background, frame,
 corners, and paper overlay must be composed independently at `65x67`; never
 shrink a leader, commander, or operative portrait into a dossier card.
 
+Fictional councils, committees, juntas, boards, offices, and symbolic bodies
+must use people-free institutional portraits: one readable institutional
+symbol, empty chamber, desk, machine, seal, or document arrangement with no
+human figure, face, silhouette, or crowd. Use institutional names rather than
+personal random-name pools. A design centered on a specific person belongs in
+the one-person portrait workflow instead.
+
 Reusable generated dossier components live under
 `advisor_dossier_overlays/`. Read
 `advisor_dossier_overlays/advisor_dossier_overlay_manifest.json` before use.
-The active manifest is self-contained: it pins the approved frame and paper
-source/overlay hashes and all six canonical advisor-style references inside
-this skill. It must not require an event asset package, a user-specific
-ImageGen store, or an external source copy. The frame and paper/seal are
-original ImageGen outputs with transparent derivatives; they are compositing
-inputs, not permission to recreate visible card art with rectangles, polygons,
-lines, ellipses, procedural patina, or other primitive drawing.
+The active provenance-schema-4 manifest is self-contained: it pins the
+approved frame and paper ImageGen records, prompts, generation inputs,
+source/overlay paths and hashes, alpha-extraction tool and arguments, and all
+six canonical advisor-style references inside this skill. It must not require
+an event asset package, a user-specific ImageGen store, or an external source
+copy. Reject a pair when any retained source, prompt, input, overlay,
+dimension, extraction record, or hash differs from the manifest.
+
+The frame source must be shadowless and unrotated. The separate paper source
+must be shadowless, unrotated, visibly opaque, and textured. Produce the
+transparent derivatives with alpha extraction/despill only; preserve the
+ImageGen-authored visible RGB and do not locally redraw, repair, recolour,
+relight, texture, seal, write on, or synthesize either component. The paper
+must remain continuous and hole/fringe-free after extraction and native-size
+composition. Rectangles, polygons, lines, ellipses, procedural patina, and
+other primitive drawing may not supply visible card art.
+
+Processor/render v5.0 at `../tools/advisor_icon_processing.py` owns the exact
+`65x67` export, calibrated geometry, fail-closed palette/opacity/geometry
+checks, the two-stage identity-preservation search and both face-identity
+comparisons, nine native style bands with a `0.03`
+minimum normalized interior margin, content-based deterministic seed,
+authored-alpha-derived RGB shadows, visible-RGB support proof, transactional
+candidate/review/metadata output, and all-six-reference review sheet. The
+frozen contract is Python `3.9.12`, Pillow `11.1.0`, processor SHA-256
+`e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and
+advisor render-configuration SHA-256
+`e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`.
+
+Every run also requires a repo-contained schema-1 portrait-provenance manifest.
+The reusable 16-source package retains all 16 approved source records in one
+manifest, while each invocation must match exactly one source record and its
+hash, dimensions, source kind, crop, face box, prompt/generation provenance,
+and ImageGen handle or archival attribution/license. The package count is not
+a hard-coded processor assumption; an unpinned individual source is invalid.
+
+At runtime, v5 derives and verifies the six-reference alpha and paper families.
+Final opacity is the rounded per-pixel mean of the six frozen vanilla alpha
+channels, with decoded hash
+`5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993`;
+the paper-family aggregate hash is
+`c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`.
+The alpha envelope is opacity only. Visible RGB must be supported by the
+approved portrait, ImageGen-authored frame/paper, permitted alpha-derived
+shadows, or the faint black low-alpha fringe backing; no visible vanilla RGB
+may be copied, blended, traced, or shipped.
+
+Processor output is a candidate, not visual approval. Retain separate
+manifest-linked human or independent-review evidence for the exact candidate
+and review sheet hashes. The evidence must identify different producer and
+reviewer identities and record native-size plus `4x` comparison against all
+six references. Passing the identity, style, alpha, paper, and RGB-support
+gates does not claim one-to-one visual approval. An automated validator or
+producing agent must never approve its own candidate, and DDS conversion must
+wait for that separate approval.
 
 ### Flags and event art
 

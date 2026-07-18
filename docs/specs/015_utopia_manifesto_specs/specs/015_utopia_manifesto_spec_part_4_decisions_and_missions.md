@@ -1078,6 +1078,37 @@ Target AI factors:
 - relation
 - evidence that the Utopia actor honors autonomy
 
+### Decision and Mission: Request League Sponsorship
+
+Requirements:
+
+- stable League cohesion
+- cooperative Concord
+- no other open League undertaking
+- an eligible major-power target
+
+The decision records an exact founder-target request and opens a targeted mission using the variable League duration. The major chooses technical sponsorship, sponsorship with a defensive guarantee, or refusal. Technical sponsorship never creates a guarantee. A defensive guarantee is attributed on the sponsor to the exact founder only when Event 15 creates it. Silence resolves as refusal and clears both sides of the request.
+
+Sponsor AI factors:
+
+- founder legitimacy and autonomy conduct
+- shortages and reserve weakness
+- world threat and current wars
+- ideology and opinion
+- stale claims and coercive conduct
+
+Full invitations and reserve compacts use hidden founder bridge `.212`. It accepts an answer only while the founder's League is initialized and neither collapsing nor cleaning up, the exact founder target array and matching target flag remain live, and exactly one response allowed by that request type is set. The resolver closes the targeted mission, exact pair, and response flags before applying any accepted role. Invalid or delayed answers close state without calling a role recorder, so an event window left open across terminal teardown cannot resurrect the League.
+
+### League guarantee and wartime integrity
+
+Founder-to-member, member-to-founder, and sponsor-to-founder guarantees use separate partner-side creator-attribution arrays. Exit, expulsion, collapse, terminal cleanup, and annexation revoke only the exact attributed direction. Every recognition-bearing League role records the shared package source even when a compact or association already exposed the partner. Ending membership retains that marker while another exact same-founder League role remains; after the final League role ends, the marker is removed and visible recognition survives only while a compact or association is still live. Later loss of that final independent source therefore cannot be masked by stale League provenance.
+
+Compatible roles may layer into one package for the same founder: membership may carry aid, reserve, or defense duties, and sponsorship carries observer status. Only one Event 15 founder may own that active or pending package. `utopia_manifesto_has_conflicting_league_partner_relationship_for_root` filters the generic reverse-founder array through every founder's exact active and pending role arrays; candidate-only and unrelated external-network links do not claim ownership. Candidate and sponsor eligibility reject an already active package, while paid League actions and every role recorder allow an unowned target or the current founder's package and reject a different founder before costs or diplomacy change. The exact sponsorship response trigger also rechecks that no active package was acquired after the request opened. Shared partner flags therefore remain single-owner without forbidding the designed member-plus-defense or sponsor-plus-observer combinations.
+
+Formal defense uses `faction_template_utopia_manifesto_commonwealth_league`. A member is added only while factionless, and the partner records `utopia_manifesto_league_faction_founders` only after the live template-backed faction relation exists. Exit and teardown require both exact founder attribution and the unique template before removing faction membership. Founder collapse and terminal teardown additionally require the same template before `dismantle_faction`, so a stale League flag cannot dismantle an unrelated faction. When `utopia_manifesto_preserve_league_after_founder` transfers leadership and marks `utopia_manifesto_post_founder_defense_league_survives`, runtime cleanup removes the former founder's attribution but deliberately skips `leave_faction`; the successor and members remain in the preserved League. The template uses the existing vanilla `GFX_faction_logo_generic_democratic`; no new icon asset or `.gfx` registration is required.
+
+`on_war_relation_added` resolves exact pairs without a recurring scan. A member attack on its founder records an obligation breach. A founder attack on its member opens a one-shot leave-or-remain event, records the founder's coercive failure, and clears the response pair after resolution.
+
 ### Mission: Prove the League Is Not a Mask
 
 Objective:
@@ -1359,3 +1390,45 @@ The implementation must prevent:
 - infinite auxiliary recruitment
 - entering a route, collecting rewards, then switching without institutional cost
 - using formation to reset integration or case penalties
+
+## Implemented decision and mission record
+
+The current package contains 121 decisions and 44 missions across 9 categories. The decision total is 105 main-system decisions, 15 evolution decisions, and 1 prefire decision. The mission total is 40 main-system missions, 1 evolution mission, and 3 prefire missions.
+
+### Necessary Ground target lifecycle
+
+Every active case records exact reverse founder relationships on the selected country and selected state. Cleanup unregisters only the current founder. A shared country or state marker remains until the final reverse founder entry is removed. The narrow Event 15 `on_annex` hook snapshots all exact country founders before the annexed target record is cleared, then runs one founder-side disposition for each snapshot entry.
+
+When a third party annexes a target during active stewardship, the surviving annexer becomes the successor target. The transition reduces case integrity and local support, applies Ledger costs, rebuilds the selected target record, and validates the case. When the founder extinguishes the target, the case records coercive conduct, the relevant achievement consequence, and an explicit stewardship failure before cleanup. Loss before stewardship invalidates the case cleanly. Enforcement peace checks invalid-target cleanup before possession or refusal resolution.
+
+Purchase, accepted ultimatum, and unilateral enforcement require the selected country to survive the chosen state transfer. The player sees the survival requirement in the decision tooltip. The system does not perform an arbitrary successor search, silent integration, or recurring country scan.
+
+Wargoal creation uses `meta_effect` to inject the founder's exact saved state ID into the static generator. The private wargoal's `take_states` block requires the shared active marker, ROOT membership in `utopia_manifesto_case_state_founders`, and ownership by the exact target in PREV. A one-shot state-control hook snapshots that state's exact founders and fires hidden founder-rooted `.165` after one hour for independent validation. The delay lets a full annexation's `.163` country disposition run before state validation. Two founders can therefore select the same state without one founder's cleanup erasing the other's link or wargoal selection.
+
+### Case terms and resource disposition
+
+- Settlement agreements run for 365 to 540 days.
+- Long supply contracts run for 540 to 720 days.
+- Association duties run for 365 to 540 days.
+- Island leases begin at 2190 days.
+- Lease renewal adds 1095 days.
+- A lease counteroffer adds 730 days.
+- Long supply uses exact resource rights and removes them with `remove_resource_rights` at expiry or cleanup.
+- Temporary market access is not part of the implemented contract.
+- `utopia_manifesto_reconcile_integrated_commonwealth_state_ownership` removes the integrated-state flag, modifier, and array record when the actor loses ownership.
+
+### Association-charter lifecycle
+
+A completed association charter must outlive its proof mission without becoming an orphaned state modifier. The implemented contract records exact reverse indexes on the founder, host, and charter state. Active-duty target annexation fails and cleans the mission. Completed-partner annexation, voluntary withdrawal, founder teardown, or ownership transfer away from the recorded host removes only the affected founder's charter link. Another founder's valid charter on the same state remains until its own relationship ends. The final founder-link removal clears the state modifier and flag.
+
+The one-shot state-control bridge `.165` validates both Necessary Ground case-state founders and association-charter founders. Charter loss records Need and Concord consequences and refreshes external-network and formation proof. Annexation cleanup reads the founder's durable charter-state index filtered by the recorded host, so partner-side terminal array cleanup cannot erase its input. No recurring country or world scan is used.
+
+### District and Penal Works lifecycle
+
+District projects use state suitability, three obligation groups, partial and failed outcomes, and route-specific charter terminals. Ownership loss clears active survey, build, charter, role, obligation, and method records without granting completion.
+
+Closed Island can attach Penal Works to a valid active district. Starting the method consumes manpower, infantry equipment, support equipment, and reserve. It applies state construction and local-supply output together with garrison and resistance pressure. The method has completion, halt, project failure, revolt, ownership-loss, route-exit, and terminal cleanup paths.
+
+Penal Works uses the shared state-scope effect `apply_exact_state_civilian_population_loss`. That effect passes exact applied loss into `chaos_meter_register_deaths` with `constant:chaos_meter_deaths_reason.gulag_repression`, localised as “From camps and forced labor”. Activation requests 500 civilian population loss, and successful completion requests 1000. The shared helper clamps against the minimum surviving state population and records the applied amount.
+
+The current decision and mission gate passes in `decision_mission_completion_current_reaudit_2026_07_15.md` with no open P0 through P3 finding. It verifies target survival, exact country and state reverse registries, founder-specific wargoals, ordered `.163`, `.164`, and `.165` bridges, and no recurring repair scan. It also verifies exact founder attribution for charter-created diplomacy, one atomic auxiliary contract-and-formation affordability contract with failure refund, founder-local prefire district/contact state, and the intended single category-level Ledger `scripted_gui` attachment.

@@ -46,7 +46,7 @@ Identity:
 Leadership presentation:
 
 - retain an elected or constitutional head of state where suitable
-- create a government council or assembly portrait only if the route replaces personal leadership
+- when the route replaces personal leadership, use a people-free Household Assembly tableau built from the empty chamber, table, ledger, seal, and route emblem rather than portraits of council members
 
 ### Council of Callings
 
@@ -61,9 +61,8 @@ Identity:
 
 Leadership presentation:
 
-- institutional council or route-appropriate personal chair
-- if a fictional chair is created, use a real personal name from a matching regional and gender pool
-- if the portrait depicts a council, use an institutional name
+- institutional Council of Callings entry with a people-free council-chamber tableau
+- use the institutional name; do not create a fictional chair or put people in the leader image
 
 ### Board of Measure
 
@@ -78,7 +77,7 @@ Identity:
 
 Leadership presentation:
 
-- institutional board portrait or a fictional chief surveyor with a regional personal name
+- institutional Board of Measure entry with a people-free standards, survey, ledger, and empty-boardroom tableau; the Chief Surveyor remains an advisor rather than a substitute personal leader image
 
 ### First Steward Regime
 
@@ -93,8 +92,8 @@ Identity:
 
 Leadership presentation:
 
-- retained leader can become First Steward through a trait and cosmetic office
-- an institutional command portrait can replace the leader only when the route establishes collective rule
+- the Closed Island route uses its institutional Stewardship Council entry
+- its leader image is a people-free command-and-stores tableau with route emblems, not a portrait of a steward, command staff, or council members
 
 ### Humanist Cabinet
 
@@ -313,13 +312,13 @@ Cost:
 
 ## Leader and portrait rules
 
-- Real existing leaders keep sourced portraits already present in the country package.
-- New fictional personal leaders use generated portraits and plausible regional personal names.
-- Female-presenting portraits use female name pools and supported female metadata.
-- Male-presenting portraits use male name pools and no female metadata.
-- Institutional councils use institutional names and council portraits.
-- The event should not generate a false portrait for a real historical person.
-- A dramatic route can use an animated institutional seal or category emblem. Animated leader portraits are not required by default because the event can communicate transformation through the Ledger and final seal without replacing every recipient's leader art.
+- Practical Commonwealth preserves the saved surviving constitutional leader and that leader's existing portrait.
+- The four routes that replace personal leadership use institutional names and people-free ImageGen tableaux.
+- Institutional tableaux can show empty chambers, council tables, ledgers, standards apparatus, stores, seals, tools, empty seats, and route emblems.
+- Institutional tableaux must not show people, faces, heads, bodies, hands, crowds, silhouettes, statues, busts, mannequins, framed portraits, photographs, or human shadows.
+- The event does not create fictional personal route leaders or false portraits for real historical people.
+- Advisors remain fictional named specialists with independent ImageGen portrait masters; they are not reused as leader images.
+- A dramatic route can use an animated institutional seal or category emblem. Animated leader portraits are not required because the Ledger and final seal communicate institutional transformation.
 
 ## Starting ideas
 
@@ -521,7 +520,7 @@ Motif direction:
 - open book, lamp, or incomplete ring
 - communicates revision and openness
 
-Flags are fictional alternate-history assets and can use generated source art, then be processed into HOI4 sizes. The original base flag remains unchanged until route transformation.
+Flags are fictional alternate-history assets and can use generated source designs, then be processed into HOI4 sizes. The original base flag remains unchanged until route transformation.
 
 ## The League of Small Places
 

@@ -27,37 +27,6 @@ country_event = {
 		custom_effect_tooltip = utopia_manifesto_accept_tree_warning_tt
 		hidden_effect = {
 			utopia_manifesto_accept_manifesto = yes
-			recruit_character = utopia_manifesto_household_assembly
-			recruit_character = utopia_manifesto_commonwealth_council
-			recruit_character = utopia_manifesto_council_of_callings
-			recruit_character = utopia_manifesto_rotating_congress
-			recruit_character = utopia_manifesto_board_of_measure
-			recruit_character = utopia_manifesto_college_of_measure
-			recruit_character = utopia_manifesto_stewardship_council
-			recruit_character = utopia_manifesto_directorate_of_service
-			recruit_character = utopia_manifesto_interpreter
-			recruit_character = utopia_manifesto_general_provisioner
-			recruit_character = utopia_manifesto_secretary_of_callings
-			recruit_character = utopia_manifesto_surveyor_of_shores
-			recruit_character = utopia_manifesto_civic_engineer
-			recruit_character = utopia_manifesto_keeper_of_stores
-			recruit_character = utopia_manifesto_league_envoy
-			recruit_character = utopia_manifesto_advocate_of_limits
-			recruit_character = utopia_manifesto_public_auditor
-			recruit_character = utopia_manifesto_constitutional_jurist
-			recruit_character = utopia_manifesto_council_organizer
-			recruit_character = utopia_manifesto_social_workshop_planner
-			recruit_character = utopia_manifesto_chief_surveyor
-			recruit_character = utopia_manifesto_standards_engineer
-			recruit_character = utopia_manifesto_steward_of_service
-			recruit_character = utopia_manifesto_contract_broker
-			utopia_manifesto_initialize_identity_package = yes
-			utopia_manifesto_initialize_achievement_lifecycle = yes
-			utopia_manifesto_initialize_country_idea_lifecycles = yes
-			set_temp_variable = { utopia_manifesto_event_delay = constant:utopia_manifesto_narrative_days.public_circulation }
-			country_event = { id = chaosx.nr15.2 days = utopia_manifesto_event_delay }
-			set_temp_variable = { utopia_manifesto_event_delay = mtth:utopia_manifesto_incident_interval }
-			country_event = { id = chaosx.nr15.150 days = utopia_manifesto_event_delay }
 		}
 	}
 
@@ -190,12 +159,16 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_ledger
 
 	is_triggered_only = yes
+	fire_only_once = yes
 
 	trigger = { has_country_flag = utopia_manifesto_accepted }
 
 	option = {
 		name = chaosx.nr15.4.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced_low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_country_flag = utopia_manifesto_prefire_delegate_voluntary_strength }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_delegate_households
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
@@ -206,7 +179,10 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.4.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.cautious }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.cautious
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_country_flag = utopia_manifesto_prefire_delegate_planning_strength }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_delegate_tables
 			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
@@ -217,7 +193,10 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.4.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.guarded }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_country_flag = utopia_manifesto_prefire_delegate_planning_strength }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_delegate_measure
 			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
@@ -228,7 +207,10 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.4.option_d
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.extreme has_country_flag = utopia_manifesto_prefire_delegate_closed_strength }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_delegate_island
 			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
@@ -240,7 +222,10 @@ country_event = {
 	option = {
 		name = chaosx.nr15.4.e
 		trigger = { has_country_flag = utopia_manifesto_open_interpretation }
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_country_flag = utopia_manifesto_prefire_delegate_voluntary_strength }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_delegate_humanists
 			set_country_flag = utopia_manifesto_joke_route_revealed
@@ -352,6 +337,7 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
+	fire_only_once = yes
 	trigger = { NOT = { has_country_flag = utopia_manifesto_commonwealth_formed } }
 
 	option = {
@@ -359,7 +345,6 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.favored }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_public_correction_promised
-			utopia_manifesto_enter_constitutional_crisis = yes
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
 		}
@@ -492,6 +477,13 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_formation_publicly_ratified
 			utopia_manifesto_form_current_route_identity = yes
+			utopia_manifesto_record_achievement_crisis_recovery = yes
+			if = {
+				limit = { has_country_flag = utopia_manifesto_commonwealth_formed }
+				set_country_flag = utopia_manifesto_formation_transition_complete
+				clr_country_flag = utopia_manifesto_formation_proof_partial
+				clr_country_flag = utopia_manifesto_formation_proof_failed
+			}
 		}
 	}
 
@@ -556,6 +548,7 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_ledger
 
 	is_triggered_only = yes
+	fire_only_once = yes
 
 	option = {
 		name = chaosx.nr15.12.a
@@ -610,6 +603,7 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_store
 
 	is_triggered_only = yes
+	fire_only_once = yes
 
 	option = {
 		name = chaosx.nr15.13.a
@@ -1078,6 +1072,7 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_market_garden
+			set_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.market_garden }
 			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
 			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
@@ -1089,6 +1084,7 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.cautious }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_industrial_housing
+			set_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.industrial_housing }
 			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
 			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
@@ -1100,6 +1096,7 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.guarded }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_rail_junction
+			set_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.rail_junction }
 			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
 		}
@@ -1110,6 +1107,7 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.low }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_learning_and_care
+			set_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.research_town }
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
 			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
@@ -1121,6 +1119,7 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_refugee_municipality
+			set_variable = { utopia_manifesto_district_visual_role = constant:utopia_manifesto_decision_district_role.refugee_municipality }
 			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.small }
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.large }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
@@ -1305,6 +1304,315 @@ country_event = {
 			set_country_flag = utopia_manifesto_inland_island_defense_ring
 			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr15.45
+	title = chaosx.nr15.45.t
+	desc = {
+		trigger = { has_country_flag = utopia_manifesto_district_survey_found_no_role }
+		text = chaosx.nr15.45.survey.d
+	}
+	desc = {
+		trigger = { has_country_flag = utopia_manifesto_district_project_debt }
+		text = chaosx.nr15.45.obligations.d
+	}
+	picture = GFX_report_event_utopia_manifesto_settlement
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr15.45.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				has_country_flag = utopia_manifesto_district_project_debt
+				utopia_manifesto_concord_is_cooperative = yes
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_district_shortfall_published
+			if = {
+				limit = { has_country_flag = utopia_manifesto_district_survey_found_no_role }
+				if = {
+					limit = { has_variable = utopia_manifesto_district_project_state }
+					var:utopia_manifesto_district_project_state = {
+						clr_state_flag = utopia_manifesto_district_project_refused
+						set_state_flag = utopia_manifesto_district_survey_reopened
+					}
+				}
+				clr_country_flag = utopia_manifesto_district_survey_found_no_role
+				clear_variable = utopia_manifesto_district_project_state
+				set_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.none }
+			}
+			else = {
+				set_country_flag = utopia_manifesto_district_remediation_declared
+			}
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.45.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_need_is_high = yes
+				NOT = { utopia_manifesto_concord_is_cooperative = yes }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_district_scope_reduced
+			if = {
+				limit = { has_country_flag = utopia_manifesto_district_survey_found_no_role }
+				clr_country_flag = utopia_manifesto_district_survey_found_no_role
+				clear_variable = utopia_manifesto_district_project_state
+				set_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.none }
+			}
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.45.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_is_closed_island_route = yes
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_conduct_district_timetable_imposed
+			set_country_flag = utopia_manifesto_district_obligation_dispute_unresolved
+			if = {
+				limit = { has_country_flag = utopia_manifesto_district_survey_found_no_role }
+				clr_country_flag = utopia_manifesto_district_survey_found_no_role
+				clear_variable = utopia_manifesto_district_project_state
+				set_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.none }
+			}
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_large }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr15.46
+	title = chaosx.nr15.46.t
+	desc = chaosx.nr15.46.d
+	picture = GFX_report_event_utopia_manifesto_settlement
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr15.46.a
+		trigger = { political_power > constant:utopia_manifesto_decision_cost.pp_medium }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_concord_is_cooperative = yes
+			}
+		}
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_district_appeal_power_cost = constant:utopia_manifesto_decision_cost.pp_medium }
+			multiply_temp_variable = { utopia_manifesto_district_appeal_power_cost = constant:utopia_manifesto_decision_value.cost_negation_multiplier }
+			add_political_power = utopia_manifesto_district_appeal_power_cost
+			set_country_flag = utopia_manifesto_district_assignment_repaired
+			set_country_flag = utopia_manifesto_district_assigned_charter_appeals_funded
+			if = {
+				limit = { has_variable = utopia_manifesto_district_project_state }
+				var:utopia_manifesto_district_project_state = {
+					set_state_flag = utopia_manifesto_district_assigned_charter_appeals
+					set_variable = { utopia_manifesto_state_district_closed_resistance = constant:utopia_manifesto_district_state_modifier.guardians_resistance }
+				}
+			}
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_wary }
+			}
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.large }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.46.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				has_country_flag = utopia_manifesto_first_associate_recognized
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_district_assignment_repaired
+			set_country_flag = utopia_manifesto_district_assigned_charter_observed
+			if = {
+				limit = { has_variable = utopia_manifesto_district_project_state }
+				var:utopia_manifesto_district_project_state = {
+					set_state_flag = utopia_manifesto_district_assigned_charter_observers
+					set_variable = { utopia_manifesto_state_district_closed_resistance = constant:utopia_manifesto_district_state_modifier.guardians_resistance }
+				}
+			}
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_partnership }
+			}
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.46.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_is_closed_island_route = yes
+				NOT = { utopia_manifesto_concord_is_cooperative = yes }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_coercive_conduct_used
+			set_country_flag = utopia_manifesto_foreign_opposition_from_district_assignment
+			set_country_flag = utopia_manifesto_district_assignment_unresolved
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_opposed }
+			}
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_large }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr15.47
+	title = chaosx.nr15.47.t
+	desc = chaosx.nr15.47.d
+	picture = GFX_report_event_utopia_manifesto_settlement
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr15.47.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_concord_is_cooperative = yes
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_penal_works_rolls_published
+			if = {
+				limit = { has_variable = utopia_manifesto_penal_works_project_state }
+				var:utopia_manifesto_penal_works_project_state = {
+					set_state_flag = utopia_manifesto_penal_works_supervised
+					set_variable = { utopia_manifesto_state_penal_works_resistance = constant:utopia_manifesto_penal_method.supervised_resistance_target }
+				}
+			}
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.47.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.cautious
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_has_external_network = yes
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_penal_works_foreign_inspection
+			if = {
+				limit = { has_variable = utopia_manifesto_penal_works_project_state }
+				var:utopia_manifesto_penal_works_project_state = {
+					set_state_flag = utopia_manifesto_penal_works_observed
+					set_variable = { utopia_manifesto_state_penal_works_resistance = constant:utopia_manifesto_penal_method.supervised_resistance_target }
+				}
+			}
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_partnership }
+			}
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.47.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_need_is_severe = yes
+				NOT = { utopia_manifesto_concord_is_cooperative = yes }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_penal_works_timetable_hardened
+			set_country_flag = utopia_manifesto_foreign_opposition_from_penal_works
+			if = {
+				limit = { has_variable = utopia_manifesto_penal_works_project_state }
+				var:utopia_manifesto_penal_works_project_state = {
+					set_state_flag = utopia_manifesto_penal_works_hardened
+					set_variable = { utopia_manifesto_state_penal_works_resistance = constant:utopia_manifesto_penal_method.hardened_resistance_target }
+				}
+			}
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_opposed }
+			}
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.47.option_d
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				utopia_manifesto_concord_is_trusted = yes
+				NOT = { utopia_manifesto_need_is_high = yes }
+			}
+		}
+		hidden_effect = {
+			utopia_manifesto_halt_penal_works_method = yes
+			every_neighbor_country = {
+				limit = { uses_normal_civilian_systems = yes }
+				add_opinion_modifier = { target = ROOT modifier = utopia_manifesto_opinion_partnership }
+			}
 		}
 	}
 }
@@ -1527,9 +1835,26 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = utopia_manifesto_need_case_active
+				NOT = { has_country_flag = utopia_manifesto_obsolete_case_review_pending }
+			}
+			utopia_manifesto_begin_obsolete_case_review = yes
+		}
+	}
+
 	option = {
 		name = chaosx.nr15.54.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_strong }
+		custom_effect_tooltip = chaosx.nr15.54.a.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_strong
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				NOT = { utopia_manifesto_obsolete_case_can_continue = yes }
+			}
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_case_renounced_when_need_ended
 			set_country_flag = utopia_manifesto_case_closed_for_domestic_alternative
@@ -1543,26 +1868,33 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.54.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		trigger = { utopia_manifesto_obsolete_case_can_convert_to_limited_treaty = yes }
+		custom_effect_tooltip = chaosx.nr15.54.b.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				any_of_scopes = {
+					array = utopia_manifesto_active_case_targets
+					has_opinion = {
+						target = ROOT
+						value > constant:utopia_manifesto_decision_threshold.positive_opinion
+					}
+				}
+			}
+		}
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_case_converted_to_treaty
-			utopia_manifesto_accept_case_settlement = yes
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_offer_obsolete_case_limited_treaty = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.54.c
+		trigger = { utopia_manifesto_obsolete_case_can_continue = yes }
+		custom_effect_tooltip = chaosx.nr15.54.c.tt
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.minimal }
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_conduct_obsolete_case_restitution_refused
-			set_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim
-			utopia_manifesto_clear_stewardship_runtime = yes
-			utopia_manifesto_clear_active_need_case = yes
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_severe }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_continue_obsolete_case_at_political_cost = yes
 		}
 	}
 }
@@ -1772,7 +2104,13 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.63.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		trigger = { utopia_manifesto_stewardship_vote_integration_is_available = yes }
+		custom_effect_tooltip = chaosx.nr15.63.a.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_country_flag = utopia_manifesto_case_status_vote_promised }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked utopia_manifesto_stewardship_vote_has_cultural_continuity = yes }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_stewardship_integration_selected
 			set_temp_variable = { utopia_manifesto_stewardship_vote_support_input = constant:utopia_manifesto_narrative_delta.large }
@@ -1782,7 +2120,13 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.63.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		trigger = { utopia_manifesto_stewardship_vote_association_is_available = yes }
+		custom_effect_tooltip = chaosx.nr15.63.b.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity utopia_manifesto_stewardship_vote_has_cultural_continuity = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked utopia_manifesto_stewardship_vote_has_repression_history = yes }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_stewardship_associate_partnership
 			set_temp_variable = { utopia_manifesto_stewardship_vote_support_input = constant:utopia_manifesto_narrative_delta.medium }
@@ -1792,7 +2136,14 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.63.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.cautious }
+		trigger = { utopia_manifesto_stewardship_vote_autonomy_is_available = yes }
+		custom_effect_tooltip = chaosx.nr15.63.c.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.cautious
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity utopia_manifesto_stewardship_vote_has_cultural_continuity = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure utopia_manifesto_stewardship_vote_has_war_damage = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure utopia_manifesto_stewardship_vote_has_repression_history = yes }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_stewardship_autonomy_selected
 			set_temp_variable = { utopia_manifesto_stewardship_vote_support_input = constant:utopia_manifesto_narrative_delta.small }
@@ -1802,11 +2153,17 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.63.option_d
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
+		custom_effect_tooltip = chaosx.nr15.63.option_d.tt
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity utopia_manifesto_stewardship_vote_has_war_damage = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity utopia_manifesto_stewardship_vote_has_repression_history = yes }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_stewardship_return_selected
 			utopia_manifesto_record_stewardship_vote = yes
-			utopia_manifesto_return_stewardship = yes
+			utopia_manifesto_record_stewardship_return_achievement_evidence = yes
+			utopia_manifesto_finalize_stewardship_return_vote = yes
 			utopia_manifesto_clear_stewardship_idea_stages = yes
 		}
 	}
@@ -1969,48 +2326,19 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_league
 
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_league_sponsorship_accepted
+		OR = {
+			has_country_flag = utopia_manifesto_sponsor_technical_aid
+			has_country_flag = utopia_manifesto_sponsor_defense_guarantee
+		}
+		is_in_array = { array = utopia_manifesto_league_sponsors value = FROM }
+		FROM = { has_country_flag = utopia_manifesto_league_sponsor }
+	}
 
 	option = {
 		name = chaosx.nr15.72.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
-		hidden_effect = {
-			set_country_flag = utopia_manifesto_sponsor_technical_aid
-			utopia_manifesto_record_from_league_sponsor = yes
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
-		}
-	}
-
-	option = {
-		name = chaosx.nr15.72.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.cautious }
-		hidden_effect = {
-			set_country_flag = utopia_manifesto_sponsor_defense_guarantee
-			utopia_manifesto_record_from_league_sponsor = yes
-			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
-		}
-	}
-
-	option = {
-		name = chaosx.nr15.72.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
-		hidden_effect = {
-			set_country_flag = utopia_manifesto_sponsor_refused
-			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
-		}
-	}
-
-	option = {
-		name = chaosx.nr15.72.option_d
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
-		hidden_effect = {
-			set_country_flag = utopia_manifesto_sponsors_balanced
-			utopia_manifesto_record_from_league_sponsor = yes
-			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
-		}
+		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.certain }
 	}
 }
 
@@ -2502,6 +2830,19 @@ country_event = {
 			utopia_manifesto_apply_prepared_ledger_delta = yes
 		}
 	}
+
+	option = {
+		name = chaosx.nr15.93.option_d
+		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.minimal }
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_conduct_forced_relocation
+			utopia_manifesto_record_achievement_forced_relocation = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_large }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+	}
 }
 
 country_event = {
@@ -2517,6 +2858,8 @@ country_event = {
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.strong }
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_island_external_dependence_admitted
+			utopia_manifesto_record_achievement_island_reopened = yes
+			utopia_manifesto_apply_route_institution_mitigation = yes
 			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
 			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
@@ -2823,7 +3166,7 @@ country_event = {
 # Founder-side case response bridge. FROM is the selected target.
 country_event = {
 	id = chaosx.nr15.205
-	hide_window = yes
+	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
@@ -2860,22 +3203,66 @@ country_event = {
 	}
 }
 
-# An associate municipality periodically confirms or withdraws its voluntary charter.
+# Target-wide association review reservation bridge. It always runs so a stale
+# delayed callback can release its non-reusable slot. Only the exact currently
+# pending association opens the public review; a later association merely waits
+# for this bridge and receives a fresh full-duration schedule.
 country_event = {
 	id = chaosx.nr15.207
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_association_review_slot_reserved
+		if = {
+			limit = {
+				has_country_flag = utopia_manifesto_association_review_pending
+				NOT = { has_country_flag = utopia_manifesto_association_review_open }
+				has_country_flag = utopia_manifesto_associate_partner
+				check_variable = {
+					var = utopia_manifesto_association_founders^num
+					value = constant:utopia_manifesto_math.one
+					compare = greater_than_or_equals
+				}
+			}
+			clr_country_flag = utopia_manifesto_association_review_pending
+			clr_country_flag = utopia_manifesto_association_review_waiting_for_slot
+			clr_country_flag = utopia_manifesto_association_review_invalidated
+			set_country_flag = utopia_manifesto_association_review_open
+			country_event = { id = chaosx.nr15.221 }
+		}
+		else = {
+			clr_country_flag = utopia_manifesto_association_review_pending
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_association_review_waiting_for_slot
+					NOT = { has_country_flag = utopia_manifesto_association_review_open }
+					has_country_flag = utopia_manifesto_associate_partner
+					check_variable = {
+						var = utopia_manifesto_association_founders^num
+						value = constant:utopia_manifesto_math.one
+						compare = greater_than_or_equals
+					}
+				}
+				clr_country_flag = utopia_manifesto_association_review_waiting_for_slot
+				utopia_manifesto_schedule_association_review = yes
+			}
+			else = { clr_country_flag = utopia_manifesto_association_review_waiting_for_slot }
+		}
+	}
+}
+
+# An associate municipality periodically confirms or withdraws its voluntary
+# charter. The open marker is invalidated, rather than reused, if the underlying
+# association ends while this popup is waiting for a human answer.
+country_event = {
+	id = chaosx.nr15.221
 	title = chaosx.nr15.207.t
 	desc = chaosx.nr15.207.d
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
-	trigger = {
-		has_country_flag = utopia_manifesto_associate_partner
-		check_variable = {
-			var = utopia_manifesto_association_founders^num
-			value = constant:utopia_manifesto_math.one
-			compare = greater_than_or_equals
-		}
-	}
+	trigger = { has_country_flag = utopia_manifesto_association_review_open }
 
 	option = {
 		name = chaosx.nr15.207.a
@@ -2884,7 +3271,29 @@ country_event = {
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_country_flag = utopia_manifesto_association_review_confirmed }
 		}
-		hidden_effect = { utopia_manifesto_continue_association = yes }
+		hidden_effect = {
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_association_review_open
+					NOT = { has_country_flag = utopia_manifesto_association_review_invalidated }
+					has_country_flag = utopia_manifesto_associate_partner
+					check_variable = { var = utopia_manifesto_association_founders^num value = constant:utopia_manifesto_math.one compare = greater_than_or_equals }
+				}
+				clr_country_flag = utopia_manifesto_association_review_open
+				utopia_manifesto_continue_association = yes
+			}
+			else = {
+				clr_country_flag = utopia_manifesto_association_review_open
+				clr_country_flag = utopia_manifesto_association_review_invalidated
+				if = {
+					limit = {
+						has_country_flag = utopia_manifesto_associate_partner
+						check_variable = { var = utopia_manifesto_association_founders^num value = constant:utopia_manifesto_math.one compare = greater_than_or_equals }
+					}
+					utopia_manifesto_schedule_association_review = yes
+				}
+			}
+		}
 	}
 
 	option = {
@@ -2893,7 +3302,29 @@ country_event = {
 			base = constant:utopia_manifesto_narrative_ai_weight.guarded
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
 		}
-		hidden_effect = { utopia_manifesto_withdraw_from_association = yes }
+		hidden_effect = {
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_association_review_open
+					NOT = { has_country_flag = utopia_manifesto_association_review_invalidated }
+					has_country_flag = utopia_manifesto_associate_partner
+					check_variable = { var = utopia_manifesto_association_founders^num value = constant:utopia_manifesto_math.one compare = greater_than_or_equals }
+				}
+				clr_country_flag = utopia_manifesto_association_review_open
+				utopia_manifesto_withdraw_from_association = yes
+			}
+			else = {
+				clr_country_flag = utopia_manifesto_association_review_open
+				clr_country_flag = utopia_manifesto_association_review_invalidated
+				if = {
+					limit = {
+						has_country_flag = utopia_manifesto_associate_partner
+						check_variable = { var = utopia_manifesto_association_founders^num value = constant:utopia_manifesto_math.one compare = greater_than_or_equals }
+					}
+					utopia_manifesto_schedule_association_review = yes
+				}
+			}
+		}
 	}
 }
 
@@ -2906,16 +3337,7 @@ country_event = {
 
 	is_triggered_only = yes
 	trigger = {
-		has_country_flag = utopia_manifesto_island_project_lessor
-		NOT = { has_war_with = FROM }
-		FROM = {
-			has_country_flag = utopia_manifesto_island_project_lease_active
-			check_variable = {
-				var = utopia_manifesto_island_project_lessor_targets^num
-				value = constant:utopia_manifesto_island_project_limits.single_site_required_states
-				compare = equals
-			}
-		}
+		utopia_manifesto_has_live_island_lease_renewal_request = yes
 	}
 
 	option = {
@@ -2932,7 +3354,11 @@ country_event = {
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
 		}
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_island_lease_renewal_accept
+			if = {
+				limit = { utopia_manifesto_has_live_island_lease_renewal_request = yes }
+				set_country_flag = utopia_manifesto_island_lease_renewal_accept
+				add_to_array = { array = utopia_manifesto_island_lease_renewal_accept_founders value = FROM }
+			}
 			FROM = { country_event = { id = chaosx.nr15.214 } }
 		}
 	}
@@ -2941,7 +3367,11 @@ country_event = {
 		name = chaosx.nr15.213.b
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_island_lease_renewal_counter
+			if = {
+				limit = { utopia_manifesto_has_live_island_lease_renewal_request = yes }
+				set_country_flag = utopia_manifesto_island_lease_renewal_counter
+				add_to_array = { array = utopia_manifesto_island_lease_renewal_counter_founders value = FROM }
+			}
 			FROM = { country_event = { id = chaosx.nr15.214 } }
 		}
 	}
@@ -2953,7 +3383,11 @@ country_event = {
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
 		}
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_island_lease_renewal_refuse
+			if = {
+				limit = { utopia_manifesto_has_live_island_lease_renewal_request = yes }
+				set_country_flag = utopia_manifesto_island_lease_renewal_refuse
+				add_to_array = { array = utopia_manifesto_island_lease_renewal_refuse_founders value = FROM }
+			}
 			FROM = { country_event = { id = chaosx.nr15.214 } }
 		}
 	}
@@ -2962,17 +3396,16 @@ country_event = {
 # Founder-side renewal response bridge. FROM is the recorded lessor.
 country_event = {
 	id = chaosx.nr15.214
-	hide_window = yes
+	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
 		if = {
 			limit = {
-				has_country_flag = utopia_manifesto_island_project_lease_active
-				FROM = { has_country_flag = utopia_manifesto_island_project_lessor }
+				utopia_manifesto_has_live_island_lease_renewal_response = yes
 			}
 			if = {
-				limit = { FROM = { has_country_flag = utopia_manifesto_island_lease_renewal_accept } }
+				limit = { FROM = { is_in_array = { array = utopia_manifesto_island_lease_renewal_accept_founders value = ROOT } } }
 				set_temp_variable = { utopia_manifesto_island_lease_extension_input = constant:utopia_manifesto_island_project_limits.lease_renewal_days }
 				utopia_manifesto_extend_island_project_lease = yes
 				set_country_flag = utopia_manifesto_island_lease_renewed
@@ -2983,13 +3416,13 @@ country_event = {
 				utopia_manifesto_apply_prepared_ledger_delta = yes
 			}
 			else_if = {
-				limit = { FROM = { has_country_flag = utopia_manifesto_island_lease_renewal_counter } }
+				limit = { FROM = { is_in_array = { array = utopia_manifesto_island_lease_renewal_counter_founders value = ROOT } } }
 				set_temp_variable = { utopia_manifesto_island_lease_extension_input = constant:utopia_manifesto_island_project_limits.lease_counteroffer_days }
 				utopia_manifesto_extend_island_project_lease = yes
 				set_country_flag = utopia_manifesto_island_lease_counteroffer_accepted
 			}
 			else_if = {
-				limit = { FROM = { has_country_flag = utopia_manifesto_island_lease_renewal_refuse } }
+				limit = { FROM = { is_in_array = { array = utopia_manifesto_island_lease_renewal_refuse_founders value = ROOT } } }
 				set_country_flag = utopia_manifesto_island_lease_renewal_refused
 				set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
 				set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
@@ -2999,9 +3432,8 @@ country_event = {
 			}
 		}
 		FROM = {
-			clr_country_flag = utopia_manifesto_island_lease_renewal_accept
-			clr_country_flag = utopia_manifesto_island_lease_renewal_counter
-			clr_country_flag = utopia_manifesto_island_lease_renewal_refuse
+			utopia_manifesto_clear_root_island_lease_response = yes
+			utopia_manifesto_clear_root_island_lease_renewal_reservation = yes
 		}
 	}
 }
@@ -3017,7 +3449,18 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.210.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.preferred modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM } }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_league_response_join
 			FROM = { country_event = { id = chaosx.nr15.212 } }
@@ -3026,7 +3469,14 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.210.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.guarded }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_league_response_observer
 			FROM = { country_event = { id = chaosx.nr15.212 } }
@@ -3035,7 +3485,15 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.210.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.guarded }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { utopia_manifesto_need_is_high = yes } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { NOT = { utopia_manifesto_reserve_is_secure = yes } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_league_response_reserve
 			FROM = { country_event = { id = chaosx.nr15.212 } }
@@ -3044,7 +3502,16 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.210.option_d
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM } }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_league_response_refuse
 			FROM = { country_event = { id = chaosx.nr15.212 } }
@@ -3053,7 +3520,19 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.210.e
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.minimal }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.minimal
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+		}
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_league_response_guarantee
 			FROM = { country_event = { id = chaosx.nr15.212 } }
@@ -3092,37 +3571,285 @@ country_event = {
 # Founder-side league response bridge. FROM is the invited country.
 country_event = {
 	id = chaosx.nr15.212
-	hide_window = yes
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		utopia_manifesto_resolve_from_league_invitation_response = yes
+	}
+}
+
+# The selected major answers an exact, time-bounded sponsorship request.
+country_event = {
+	id = chaosx.nr15.215
+	title = chaosx.nr15.215.t
+	desc = chaosx.nr15.215.d
+	picture = GFX_report_event_utopia_manifesto_league
+
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_league_sponsorship_request_pending
+		is_in_array = { array = utopia_manifesto_league_sponsorship_pending_founders value = FROM }
+		FROM = {
+			has_country_flag = utopia_manifesto_league_sponsorship_pending
+			is_in_array = { array = utopia_manifesto_league_sponsorship_pending_targets value = ROOT }
+		}
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_league_sponsorship_response_technical
+		clr_country_flag = utopia_manifesto_league_sponsorship_response_guarantee
+		clr_country_flag = utopia_manifesto_league_sponsorship_response_refuse
+	}
+
+	option = {
+		name = chaosx.nr15.215.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.strong
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { utopia_manifesto_need_is_high = yes } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { NOT = { utopia_manifesto_reserve_is_secure = yes } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_league_sponsorship_response_technical
+			FROM = { country_event = { id = chaosx.nr15.216 } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.215.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced_low
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_war = yes } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_league_sponsorship_response_guarantee
+			FROM = { country_event = { id = chaosx.nr15.216 } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.215.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_league_sponsorship_response_refuse
+			FROM = { country_event = { id = chaosx.nr15.216 } }
+		}
+	}
+}
+
+# Founder-side exact sponsorship response bridge. FROM is the responding major.
+country_event = {
+	id = chaosx.nr15.216
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_temp_variable = { utopia_manifesto_sponsorship_response_accepted = constant:utopia_manifesto_math.zero }
+		if = {
+			limit = {
+				utopia_manifesto_from_is_exact_pending_league_sponsorship_response = yes
+				FROM = {
+					OR = {
+						has_country_flag = utopia_manifesto_league_sponsorship_response_technical
+						has_country_flag = utopia_manifesto_league_sponsorship_response_guarantee
+					}
+				}
+			}
+			set_temp_variable = { utopia_manifesto_sponsorship_response_accepted = constant:utopia_manifesto_math.one }
+		}
+		utopia_manifesto_resolve_from_league_sponsorship_response = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = utopia_manifesto_sponsorship_response_accepted
+					value = constant:utopia_manifesto_math.one
+					compare = equals
+				}
+				has_country_flag = utopia_manifesto_league_sponsorship_accepted
+				is_in_array = { array = utopia_manifesto_league_sponsors value = FROM }
+				FROM = { has_country_flag = utopia_manifesto_league_sponsor }
+			}
+			country_event = { id = chaosx.nr15.72 }
+		}
+	}
+}
+
+# A member attacked by its exact League founder chooses whether membership can
+# survive the founder's breach.
+country_event = {
+	id = chaosx.nr15.217
+	title = chaosx.nr15.217.t
+	desc = chaosx.nr15.217.d
+	picture = GFX_report_event_utopia_manifesto_league
+
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_league_member
+		has_country_flag = utopia_manifesto_league_founder_betrayal_pending
+		is_in_array = { array = utopia_manifesto_league_betrayal_pending_founders value = FROM }
+		FROM = {
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_league_betrayal_pending
+			is_in_array = { array = utopia_manifesto_league_betrayal_pending_targets value = ROOT }
+		}
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_league_betrayal_response_leave
+		clr_country_flag = utopia_manifesto_league_betrayal_response_remain
+	}
+
+	option = {
+		name = chaosx.nr15.217.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.strong
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_league_betrayal_response_leave
+			FROM = { country_event = { id = chaosx.nr15.218 } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.217.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.cautious
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_league_betrayal_response_remain
+			FROM = { country_event = { id = chaosx.nr15.218 } }
+		}
+	}
+}
+
+# Founder-side exact betrayal response bridge. FROM is the responding member.
+country_event = {
+	id = chaosx.nr15.218
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { utopia_manifesto_resolve_from_league_betrayal_response = yes }
+}
+
+# A target considers the founder's offer to replace a suspended case with one
+# bounded commercial, settlement, or defensive treaty. The recorded state is
+# context for the agreement; this event cannot transfer ownership or create a
+# wargoal.
+country_event = {
+	id = chaosx.nr15.219
+	title = chaosx.nr15.219.t
+	desc = chaosx.nr15.219.d
+	picture = GFX_report_event_utopia_manifesto_necessary_ground
+
+	is_triggered_only = yes
+	trigger = { utopia_manifesto_obsolete_case_treaty_offer_is_live_for_target = yes }
+
+	option = {
+		name = chaosx.nr15.219.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				has_opinion = {
+					target = FROM
+					value > constant:utopia_manifesto_decision_threshold.positive_opinion
+				}
+			}
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_obsolete_case_treaty_accept
+			FROM = { country_event = { id = chaosx.nr15.220 } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.219.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
+				FROM = {
+					OR = {
+						has_country_flag = utopia_manifesto_coercive_conduct_used
+						has_country_flag = utopia_manifesto_conduct_obsolete_case_continued
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_obsolete_case_treaty_refuse
+			FROM = { country_event = { id = chaosx.nr15.220 } }
+		}
+	}
+}
+
+# Founder-side exact response bridge. FROM is the recorded case target.
+country_event = {
+	id = chaosx.nr15.220
+	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
 		if = {
-			limit = { FROM = { has_country_flag = utopia_manifesto_league_response_join } }
-			utopia_manifesto_add_from_as_league_member = yes
+			limit = {
+				has_country_flag = utopia_manifesto_obsolete_case_treaty_pending
+				has_country_flag = utopia_manifesto_case_response_active
+				utopia_manifesto_from_is_selected_country_target = yes
+				FROM = { has_country_flag = utopia_manifesto_obsolete_case_treaty_offered }
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_obsolete_case_treaty_accept } }
+				utopia_manifesto_accept_obsolete_case_limited_treaty = yes
+			}
+			else = { utopia_manifesto_close_obsolete_case_after_treaty_refusal = yes }
 		}
-		else_if = {
-			limit = { FROM = { has_country_flag = utopia_manifesto_league_response_observer } }
-			utopia_manifesto_record_from_league_observer = yes
-		}
-		else_if = {
-			limit = { FROM = { has_country_flag = utopia_manifesto_league_response_reserve } }
-			utopia_manifesto_record_from_league_reserve_contribution = yes
-		}
-		else_if = {
-			limit = { FROM = { has_country_flag = utopia_manifesto_league_response_guarantee } }
-			utopia_manifesto_add_from_as_league_member = yes
-			utopia_manifesto_record_from_league_defense_consultation = yes
-		}
-		else_if = {
-			limit = { FROM = { has_country_flag = utopia_manifesto_league_response_refuse } }
-			utopia_manifesto_record_from_league_refusal = yes
+		else = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_need_case_active }
+				utopia_manifesto_close_obsolete_case_after_treaty_refusal = yes
+			}
 		}
 		FROM = {
-			clr_country_flag = utopia_manifesto_league_response_join
-			clr_country_flag = utopia_manifesto_league_response_observer
-			clr_country_flag = utopia_manifesto_league_response_reserve
-			clr_country_flag = utopia_manifesto_league_response_refuse
-			clr_country_flag = utopia_manifesto_league_response_guarantee
+			clr_country_flag = utopia_manifesto_obsolete_case_treaty_offered
+			clr_country_flag = utopia_manifesto_obsolete_case_treaty_accept
+			clr_country_flag = utopia_manifesto_obsolete_case_treaty_refuse
 		}
 	}
 }
@@ -3149,34 +3876,43 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.100.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.favored }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.favored
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_open_schools_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_ai_prefers_censored_margins_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_100_a_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_interpretation_schools_open
-			set_country_flag = utopia_manifesto_open_interpretation
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.100.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_chartered_schools_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty utopia_manifesto_ai_prefers_open_schools_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_100_b_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_interpretation_schools_chartered
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.100.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_censored_margins_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_ai_prefers_open_schools_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_100_c_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_conduct_margins_censored
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 }
@@ -3199,33 +3935,43 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.101.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.even }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.even
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_domestic_alternative_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty utopia_manifesto_ai_prefers_emergency_powers_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_101_a_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_necessary_shores_domestic_alternative
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.101.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.leaning }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.leaning
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_peaceful_priority_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_ai_prefers_emergency_powers_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_101_b_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_necessary_shores_peaceful_priority
-			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.101.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_emergency_powers_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_ai_prefers_peaceful_priority_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_101_c_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_necessary_shores_emergency_powers
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 }
@@ -3248,34 +3994,43 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.102.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.preferred }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_local_charters_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty utopia_manifesto_ai_prefers_linked_standard_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_102_a_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_cities_local_charters
-			utopia_manifesto_link_garden_district_network = yes
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.102.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_linked_standard_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty has_country_flag = utopia_manifesto_conduct_data_suppression }
+		}
+		custom_effect_tooltip = chaosx_nr15_102_b_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_cities_linked_standard
-			utopia_manifesto_link_garden_district_network = yes
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.102.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.guarded }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_foreign_circle_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty utopia_manifesto_ai_prefers_closed_island_route = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_102_c_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_cities_foreign_circle
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 }
@@ -3298,34 +4053,43 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.103.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.even }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.even
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_plural_law_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty utopia_manifesto_ai_prefers_route_propaganda_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_103_a_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_nowhere_law_plural
-			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.medium }
-			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.103.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_sponsored_law_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.blocked NOT = { has_country_flag = utopia_manifesto_league_sponsorship_accepted } }
+		}
+		custom_effect_tooltip = chaosx_nr15_103_b_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_nowhere_law_sponsored
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			set_temp_variable = { utopia_manifesto_league_cohesion_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			utopia_manifesto_apply_prepared_league_cohesion_delta = yes
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.103.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_route_propaganda_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_ai_prefers_plural_law_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_103_c_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_nowhere_law_route_propaganda
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 }
@@ -3349,36 +4113,455 @@ country_event = {
 	option = {
 		name = chaosx.nr15.104.a
 		trigger = { NOT = { has_country_flag = utopia_manifesto_route_closed_island } }
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.strong }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.strong
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_refuge_network_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.penalty NOT = { utopia_manifesto_reserve_is_secure = yes } }
+		}
+		custom_effect_tooltip = chaosx_nr15_104_a_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_perfect_island_refuge_network
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.large }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.104.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.strong utopia_manifesto_ai_prefers_bounded_self_sufficiency_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis NOT = { utopia_manifesto_reserve_is_secure = yes } }
+		}
+		custom_effect_tooltip = chaosx_nr15_104_b_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_perfect_island_bounded_self_sufficiency
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
-			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.104.c
 		trigger = { has_country_flag = utopia_manifesto_route_closed_island }
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_strong }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_strong
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.crisis utopia_manifesto_ai_prefers_closed_order_evolution = yes }
+			modifier = { factor = constant:utopia_manifesto_evolution_ai_factor.severe_penalty utopia_manifesto_concord_is_trusted = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_104_c_evolution_policy_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_perfect_island_closed_order
-			utopia_manifesto_apply_route_institution_final = yes
-			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
-			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
-			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.large }
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Five evolved openings. These are exclusive to a pre-fire recipient and run
+# before the ordinary active-event requirements would be reached.
+# ---------------------------------------------------------------------------
+
+# Glosses in the Margin: annotated schools convene the route debate during the
+# founding survey, without deciding the eventual constitutional route.
+country_event = {
+	id = chaosx.nr15.105
+	title = chaosx.nr15.105.t
+	desc = chaosx.nr15.105.d
+	picture = GFX_report_event_utopia_manifesto_evolution
+
+	is_triggered_only = yes
+
+	trigger = {
+		utopia_manifesto_prefire_glosses_package_is_live = yes
+		has_country_flag = utopia_manifesto_survey_active
+		NOT = { has_country_flag = utopia_manifesto_prefire_glosses_survey_event_seen }
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_prefire_glosses_survey_event_scheduled
+		set_country_flag = utopia_manifesto_prefire_glosses_survey_event_seen
+	}
+
+	option = {
+		name = chaosx.nr15.105.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.favored
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_open_schools_evolution = yes }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_delegate_voluntary_strength
+			set_country_flag = utopia_manifesto_public_debate_proven
+			set_country_flag = utopia_manifesto_criticism_permitted
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_open_schools }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			country_event = { id = chaosx.nr15.4 }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.105.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_chartered_schools_evolution = yes }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_delegate_planning_strength
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_chartered_schools }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			country_event = { id = chaosx.nr15.4 }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.105.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.extreme utopia_manifesto_ai_prefers_censored_margins_evolution = yes }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_delegate_closed_strength
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.glosses_censored_margins }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			country_event = { id = chaosx.nr15.4 }
+		}
+	}
+}
+
+# Necessary Shores: the completed survey exposes a real pressure and preserves
+# a paid domestic repair alongside the external case ladder.
+country_event = {
+	id = chaosx.nr15.106
+	title = chaosx.nr15.106.t
+	desc = chaosx.nr15.106.d
+	picture = GFX_report_event_utopia_manifesto_necessary_ground
+
+	is_triggered_only = yes
+
+	trigger = {
+		utopia_manifesto_prefire_shores_package_is_live = yes
+		has_country_flag = utopia_manifesto_foundation_survey_complete
+		NOT = { has_country_flag = utopia_manifesto_prefire_shores_report_seen }
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_prefire_shores_report_scheduled
+		set_country_flag = utopia_manifesto_prefire_shores_report_seen
+		utopia_manifesto_prepare_dominant_case_family = yes
+		utopia_manifesto_prepare_case_candidate_targets = yes
+	}
+
+	option = {
+		name = chaosx.nr15.106.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.favored
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_domestic_alternative_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_106_a_domestic_alternative_tt
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_domestic_alternative }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.106.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_peaceful_priority_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_106_b_peaceful_ladder_tt
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_peaceful_priority }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.106.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.very_low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.extreme utopia_manifesto_ai_prefers_emergency_powers_evolution = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_106_c_emergency_warrant_tt
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.shores_emergency_powers }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+}
+
+# Cities of One Measure: a real domestic state and a real foreign contact are
+# already marked before one planning interpretation is selected.
+country_event = {
+	id = chaosx.nr15.107
+	title = chaosx.nr15.107.t
+	desc = chaosx.nr15.107.d
+	picture = GFX_report_event_utopia_manifesto_evolution
+
+	is_triggered_only = yes
+
+	trigger = {
+		utopia_manifesto_prefire_cities_package_is_live = yes
+		NOT = { has_country_flag = utopia_manifesto_prefire_cities_report_seen }
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_prefire_cities_report_scheduled
+		set_country_flag = utopia_manifesto_prefire_cities_report_seen
+	}
+
+	option = {
+		name = chaosx.nr15.107.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_local_charters_evolution = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_local_charters }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.107.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_linked_standard_evolution = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_linked_standard }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.107.c
+		trigger = { utopia_manifesto_prefire_has_live_foreign_contact = yes }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.guarded
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_ai_prefers_foreign_circle_evolution = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.cities_foreign_circle }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+		}
+	}
+}
+
+# Nowhere Made Law: the selected observer responds as a real country. A human
+# observer retains the same support, scrutiny, or opposition choice as AI.
+country_event = {
+	id = chaosx.nr15.108
+	title = chaosx.nr15.108.t
+	desc = chaosx.nr15.108.d
+	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = {
+			utopia_manifesto_prefire_nowhere_package_is_live = yes
+			is_in_array = {
+				array = utopia_manifesto_prefire_foreign_contacts
+				value = ROOT
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.108.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.preferred has_government = democratic }
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.avoid has_war_with = FROM }
+		}
+		add_opinion_modifier = { target = FROM modifier = utopia_manifesto_opinion_sponsor }
+		hidden_effect = {
+			FROM = {
+				set_country_flag = utopia_manifesto_prefire_observer_support
+				utopia_manifesto_prepare_prefire_foreign_observer_delay = yes
+				country_event = { id = chaosx.nr15.109 days = utopia_manifesto_prefire_event_delay }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.108.b
+		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.even }
+		add_opinion_modifier = { target = FROM modifier = utopia_manifesto_opinion_wary }
+		hidden_effect = {
+			FROM = {
+				set_country_flag = utopia_manifesto_prefire_observer_watch
+				utopia_manifesto_prepare_prefire_foreign_observer_delay = yes
+				country_event = { id = chaosx.nr15.109 days = utopia_manifesto_prefire_event_delay }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.108.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.preferred has_government = fascism }
+		}
+		add_opinion_modifier = { target = FROM modifier = utopia_manifesto_opinion_opposed }
+		hidden_effect = {
+			FROM = {
+				set_country_flag = utopia_manifesto_prefire_observer_oppose
+				utopia_manifesto_prepare_prefire_foreign_observer_delay = yes
+				country_event = { id = chaosx.nr15.109 days = utopia_manifesto_prefire_event_delay }
+			}
+		}
+	}
+}
+
+# Founder-side answer to the selected observer. Support is a bounded planning
+# credit and Plenty shift, never a generic stockpile grant or free formation.
+country_event = {
+	id = chaosx.nr15.109
+	title = chaosx.nr15.109.t
+	desc = chaosx.nr15.109.d
+	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
+
+	is_triggered_only = yes
+
+	trigger = {
+		utopia_manifesto_prefire_nowhere_package_is_live = yes
+		is_in_array = {
+			array = utopia_manifesto_prefire_foreign_contacts
+			value = FROM
+		}
+		OR = {
+			has_country_flag = utopia_manifesto_prefire_observer_support
+			has_country_flag = utopia_manifesto_prefire_observer_watch
+			has_country_flag = utopia_manifesto_prefire_observer_oppose
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.109.a
+		trigger = { has_country_flag = utopia_manifesto_prefire_observer_support }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.avoid utopia_manifesto_concord_is_trusted = yes }
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong NOT = { utopia_manifesto_plenty_is_stable = yes } }
+		}
+		custom_effect_tooltip = chaosx_nr15_109_a_support_dependency_tt
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_foreign_support_accepted
+			set_country_flag = utopia_manifesto_prefire_store_planning_credit
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_prefire_change.foreign_support_plenty }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_prefire_change.foreign_support_assignment }
 			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_sponsored_law }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			utopia_manifesto_apply_prefire_route_resolved_effects = yes
+			clr_country_flag = utopia_manifesto_prefire_observer_support
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.109.b
+		trigger = { has_country_flag = utopia_manifesto_prefire_observer_support }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong utopia_manifesto_concord_is_trusted = yes }
+		}
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_foreign_support_refused
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_prefire_change.annotated_debate_concord }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			clr_country_flag = utopia_manifesto_prefire_observer_support
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.109.c
+		trigger = { has_country_flag = utopia_manifesto_prefire_observer_watch }
+		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.certain }
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_foreign_observer_received
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_prefire_change.foreign_scrutiny_concord }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_plural_law }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			clr_country_flag = utopia_manifesto_prefire_observer_watch
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.109.option_d
+		trigger = { has_country_flag = utopia_manifesto_prefire_observer_oppose }
+		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.certain }
+		hidden_effect = {
+			set_country_flag = utopia_manifesto_prefire_foreign_opposition_received
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_prefire_change.foreign_scrutiny_concord }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_prefire_change.foreign_opposition_assignment }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			set_temp_variable = { utopia_manifesto_evolution_choice_input = constant:utopia_manifesto_evolution_choice.nowhere_route_propaganda }
+			utopia_manifesto_apply_prepared_evolution_choice = yes
+			clr_country_flag = utopia_manifesto_prefire_observer_oppose
+		}
+	}
+}
+
+# The Perfect Island: the player records an opening interpretation now; the
+# existing validator consumes it only when the eventual route can support it.
+country_event = {
+	id = chaosx.nr15.117
+	title = chaosx.nr15.117.t
+	desc = chaosx.nr15.117.d
+	picture = GFX_report_event_utopia_manifesto_island
+
+	is_triggered_only = yes
+
+	trigger = {
+		utopia_manifesto_prefire_perfect_package_is_live = yes
+		NOT = { has_country_flag = utopia_manifesto_prefire_perfect_report_seen }
+	}
+
+	immediate = {
+		clr_country_flag = utopia_manifesto_prefire_perfect_report_scheduled
+		set_country_flag = utopia_manifesto_prefire_perfect_report_seen
+	}
+
+	option = {
+		name = chaosx.nr15.117.a
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_government = democratic }
+		}
+		custom_effect_tooltip = chaosx_nr15_117_a_refuge_preparation_tt
+		hidden_effect = {
+			set_variable = { utopia_manifesto_prefire_perfect_choice = constant:utopia_manifesto_evolution_choice.perfect_refuge_network }
+			set_country_flag = utopia_manifesto_open_interpretation
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.117.b
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.preferred
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong NOT = { utopia_manifesto_reserve_is_secure = yes } }
+		}
+		custom_effect_tooltip = chaosx_nr15_117_b_bounded_preparation_tt
+		hidden_effect = {
+			set_variable = { utopia_manifesto_prefire_perfect_choice = constant:utopia_manifesto_evolution_choice.perfect_bounded_self_sufficiency }
+		}
+	}
+
+	option = {
+		name = chaosx.nr15.117.c
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.extreme utopia_manifesto_ai_prefers_closed_island_route = yes }
+			modifier = { factor = constant:utopia_manifesto_prefire_ai_factor.strong has_war = yes }
+		}
+		custom_effect_tooltip = chaosx_nr15_117_c_closed_preparation_tt
+		hidden_effect = {
+			set_variable = { utopia_manifesto_prefire_perfect_choice = constant:utopia_manifesto_evolution_choice.perfect_closed_order }
+			set_country_flag = utopia_manifesto_prefire_delegate_closed_strength
 		}
 	}
 }
@@ -3395,6 +4578,21 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		is_major = no
+		has_government = democratic
+		OR = {
+			is_neighbor_of = FROM
+			is_on_same_continent_as = FROM
+		}
+		FROM = {
+			has_country_flag = utopia_manifesto_household_reaction_dispatched
+			has_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+			has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.110.a
@@ -3424,6 +4622,21 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		is_major = no
+		has_government = communism
+		OR = {
+			is_neighbor_of = FROM
+			is_on_same_continent_as = FROM
+		}
+		FROM = {
+			has_country_flag = utopia_manifesto_common_table_reaction_dispatched
+			has_country_flag = utopia_manifesto_identity_council_union
+			has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.111.a
@@ -3453,6 +4666,24 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		is_major = no
+		OR = {
+			has_government = neutrality
+			has_government = fascism
+		}
+		OR = {
+			is_neighbor_of = FROM
+			is_on_same_continent_as = FROM
+		}
+		FROM = {
+			has_country_flag = utopia_manifesto_planning_reaction_dispatched
+			has_country_flag = utopia_manifesto_identity_planned_utopia
+			has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.112.a
@@ -3482,6 +4713,15 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		any_subject_country = { exists = yes }
+		FROM = {
+			has_country_flag = utopia_manifesto_colonial_reaction_dispatched
+			has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+			utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.113.a
@@ -3511,6 +4751,16 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		is_major = yes
+		FROM = {
+			has_country_flag = utopia_manifesto_major_reaction_dispatched
+			has_country_flag = utopia_manifesto_evolution_nowhere_law_recorded
+			utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+			utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.114.a
@@ -3549,6 +4799,24 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_foreign_commonwealth
 
 	is_triggered_only = yes
+	trigger = {
+		utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = yes
+		is_major = no
+		OR = {
+			has_government = democratic
+			has_government = communism
+		}
+		OR = {
+			is_neighbor_of = FROM
+			is_on_same_continent_as = FROM
+		}
+		FROM = {
+			has_country_flag = utopia_manifesto_small_reformist_reaction_dispatched
+			has_country_flag = utopia_manifesto_evolution_cities_recorded
+			utopia_manifesto_cities_delivery_is_enabled = yes
+			utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.115.a
@@ -3575,33 +4843,35 @@ country_event = {
 	}
 }
 
-# Founder-side foreign partnership bridge. FROM is the reacting country.
+# Founder-side reaction acknowledgement. FROM is the reacting country; a
+# favorable response records contact but never grants league/network proof.
 country_event = {
 	id = chaosx.nr15.116
-	hide_window = yes
+	hidden = yes
 	is_triggered_only = yes
+	trigger = { FROM = { exists = yes } }
 
 	immediate = {
 		if = {
 			limit = {
+				has_country_flag = utopia_manifesto_accepted
 				FROM = {
 					exists = yes
 					NOT = {
 						is_in_array = {
-							array = ROOT.utopia_manifesto_recognized_external_partners
+							array = ROOT.utopia_manifesto_foreign_reaction_contacts
 							value = THIS
 						}
 					}
 				}
 			}
 			add_to_array = {
-				array = utopia_manifesto_recognized_external_partners
+				array = utopia_manifesto_foreign_reaction_contacts
 				value = FROM
 			}
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
 		}
-		utopia_manifesto_refresh_league_state = yes
-		set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
-		utopia_manifesto_apply_prepared_ledger_delta = yes
 		FROM = {
 			clr_country_flag = utopia_manifesto_reaction_partner
 			clr_country_flag = utopia_manifesto_reaction_worker_mission
@@ -3626,36 +4896,70 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_accepted
+		NOT = { has_country_flag = utopia_manifesto_aftermath_chain_pending }
+		NOT = { has_country_flag = utopia_manifesto_aftermath_resolved }
+	}
+	immediate = { clr_country_flag = utopia_manifesto_aftermath_event_scheduled }
 
 	option = {
 		name = chaosx.nr15.120.a
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.even }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.even
+			modifier = {
+				add = constant:utopia_manifesto_narrative_ai_weight.balanced_low
+				NOT = { utopia_manifesto_has_viable_post_founder_league_successor = yes }
+			}
+		}
+		custom_effect_tooltip = utopia_manifesto_aftermath_dissolution_tt
 		hidden_effect = {
+			utopia_manifesto_prepare_aftermath_snapshot = yes
 			set_country_flag = utopia_manifesto_commonwealth_dissolved
-			utopia_manifesto_clear_route_institution_idea_stages = yes
-			utopia_manifesto_clear_evolution_runtime = yes
-			utopia_manifesto_clear_active_need_case = yes
-			utopia_manifesto_clear_stewardship_runtime = yes
+			set_country_flag = utopia_manifesto_ordinary_government_restored
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.120.b
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
+		trigger = { utopia_manifesto_has_viable_post_founder_league_successor = yes }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.balanced
+			modifier = {
+				add = constant:utopia_manifesto_narrative_ai_weight.strong
+				has_country_flag = utopia_manifesto_league_strong
+			}
+			modifier = {
+				factor = constant:utopia_manifesto_narrative_ai_factor.avoid
+				has_country_flag = utopia_manifesto_league_failure
+			}
+		}
+		custom_effect_tooltip = utopia_manifesto_aftermath_league_survival_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_league_survives_founder
-			utopia_manifesto_clear_route_institution_idea_stages = yes
-			utopia_manifesto_clear_active_need_case = yes
-			utopia_manifesto_clear_stewardship_runtime = yes
+			utopia_manifesto_prepare_aftermath_snapshot = yes
+			utopia_manifesto_preserve_league_after_founder = yes
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.120.c
-		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.low }
+		ai_chance = {
+			base = constant:utopia_manifesto_narrative_ai_weight.low
+			modifier = {
+				add = constant:utopia_manifesto_narrative_ai_weight.balanced_low
+				has_country_flag = utopia_manifesto_aftermath_from_regime_collapse
+			}
+		}
+		custom_effect_tooltip = utopia_manifesto_aftermath_abandonment_tt
 		hidden_effect = {
+			utopia_manifesto_prepare_aftermath_snapshot = yes
 			set_country_flag = utopia_manifesto_institutions_abandoned
-			utopia_manifesto_enter_disable_safe_state = yes
+			clr_country_flag = utopia_manifesto_aftermath_practical_pending
+			clr_country_flag = utopia_manifesto_aftermath_store_available
+			clr_country_flag = utopia_manifesto_aftermath_district_available
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 }
@@ -3667,34 +4971,46 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_store
 
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_aftermath_chain_pending
+		OR = {
+			has_country_flag = utopia_manifesto_aftermath_store_available
+			has_country_flag = utopia_manifesto_aftermath_district_available
+		}
+	}
 
 	option = {
 		name = chaosx.nr15.121.a
+		trigger = { has_country_flag = utopia_manifesto_aftermath_store_available }
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.favored }
+		custom_effect_tooltip = utopia_manifesto_aftermath_store_legacy_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_store_legacy_preserved
-			utopia_manifesto_rotate_common_store_network = yes
-			utopia_manifesto_clear_route_institution_idea_stages = yes
+			set_country_flag = utopia_manifesto_aftermath_store_legacy_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.121.b
+		trigger = { has_country_flag = utopia_manifesto_aftermath_district_available }
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		custom_effect_tooltip = utopia_manifesto_aftermath_district_legacy_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_district_legacy_preserved
-			utopia_manifesto_link_garden_district_network = yes
-			utopia_manifesto_clear_route_institution_idea_stages = yes
+			set_country_flag = utopia_manifesto_aftermath_district_legacy_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.121.c
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.low }
+		custom_effect_tooltip = utopia_manifesto_aftermath_practical_legacy_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_practical_legacy_preserved
-			utopia_manifesto_clear_route_institution_idea_stages = yes
-			add_ideas = utopia_manifesto_practical_commonwealth_mitigated
+			set_country_flag = utopia_manifesto_aftermath_practical_legacy_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 }
@@ -3706,37 +5022,38 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_stewardship
 
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_aftermath_chain_pending
+		has_country_flag = utopia_manifesto_aftermath_colonies_available
+	}
 
 	option = {
 		name = chaosx.nr15.122.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_strong }
+		custom_effect_tooltip = utopia_manifesto_aftermath_colony_independence_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_former_colonies_independent
-			utopia_manifesto_return_stewardship = yes
-			utopia_manifesto_clear_active_need_case = yes
-			utopia_manifesto_clear_stewardship_idea_stages = yes
+			utopia_manifesto_resolve_aftermath_colonies_as_independence = yes
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.122.b
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		custom_effect_tooltip = utopia_manifesto_aftermath_colony_compact_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_former_colonies_reconstruction_compact
-			utopia_manifesto_return_stewardship = yes
-			utopia_manifesto_clear_active_need_case = yes
-			utopia_manifesto_complete_stewardship_settlement = yes
+			utopia_manifesto_resolve_aftermath_colonies_as_compact = yes
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.122.c
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.minimal }
+		custom_effect_tooltip = utopia_manifesto_aftermath_colony_refusal_tt
 		hidden_effect = {
-			set_country_flag = utopia_manifesto_conduct_former_colony_restitution_refused
-			set_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim
-			utopia_manifesto_clear_stewardship_runtime = yes
-			utopia_manifesto_clear_active_need_case = yes
+			utopia_manifesto_resolve_aftermath_colonies_without_restitution = yes
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 }
@@ -3748,33 +5065,41 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_found
 
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_aftermath_chain_pending
+		has_country_flag = utopia_manifesto_aftermath_book_available
+	}
 
 	option = {
 		name = chaosx.nr15.123.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.strong }
+		custom_effect_tooltip = utopia_manifesto_aftermath_book_debate_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_book_returns_to_public_debate
-			clr_country_flag = utopia_manifesto_conduct_censorship
-			clr_country_flag = utopia_manifesto_conduct_book_dogma
-			utopia_manifesto_publish_public_edition = yes
+			set_country_flag = utopia_manifesto_aftermath_book_debate_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.123.b
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced_low }
+		custom_effect_tooltip = utopia_manifesto_aftermath_book_history_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_book_kept_as_history
-			utopia_manifesto_clear_found_manifesto_idea_stages = yes
+			set_country_flag = utopia_manifesto_aftermath_book_history_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr15.123.c
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_low }
+		custom_effect_tooltip = utopia_manifesto_aftermath_book_ban_tt
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_book_banned_after_failure
-			utopia_manifesto_dogmatize_found_manifesto = yes
+			set_country_flag = utopia_manifesto_aftermath_book_banned_selected
+			utopia_manifesto_continue_aftermath_chain = yes
 		}
 	}
 }
@@ -3807,12 +5132,15 @@ country_event = {
 # Actor-scoped MTTH pulse for conditional incidents and evolution delivery.
 country_event = {
 	id = chaosx.nr15.150
-	hide_window = yes
+	hidden = yes
 	is_triggered_only = yes
 
 	trigger = { has_country_flag = utopia_manifesto_accepted }
 
 	immediate = {
+		utopia_manifesto_reconcile_tracked_district_state_control = yes
+		utopia_manifesto_reconcile_external_term_integrity = yes
+		utopia_manifesto_refresh_ledger = yes
 		utopia_manifesto_evaluate_active_evolutions = yes
 		utopia_manifesto_validate_scheduled_evolution = yes
 		if = {
@@ -3930,8 +5258,17 @@ country_event = {
 		if = {
 			limit = {
 				has_country_flag = utopia_manifesto_need_case_active
+				NOT = { has_country_flag = utopia_manifesto_obsolete_case_review_pending }
+				NOT = { has_country_flag = utopia_manifesto_obsolete_case_treaty_pending }
+				check_variable = {
+					var = utopia_manifesto_case_stage
+					value = constant:utopia_manifesto_case_stage.stewardship
+					compare = less_than
+				}
 				check_variable = { utopia_need < constant:utopia_manifesto_ledger_limits.band_three }
 			}
+			set_country_flag = utopia_manifesto_obsolete_case_review_due_to_deficit
+			utopia_manifesto_begin_obsolete_case_review = yes
 			country_event = { id = chaosx.nr15.54 }
 		}
 		else_if = {
@@ -4011,7 +5348,12 @@ news_event = {
 	desc = chaosx.nr15.160.d
 	picture = GFX_news_event_utopia_manifesto_league
 
+	major = yes
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_league_news_emitted
+		utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+	}
 
 	option = { name = chaosx.nr15.160.a }
 }
@@ -4022,7 +5364,14 @@ news_event = {
 	desc = chaosx.nr15.161.d
 	picture = GFX_news_event_utopia_manifesto_necessary_ground_war
 
+	major = yes
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_accepted
+		has_country_flag = utopia_manifesto_necessary_ground_war_news_emitted
+		has_country_flag = utopia_manifesto_case_enforcement_war_active
+		has_country_flag = utopia_manifesto_need_case_active
+	}
 
 	option = { name = chaosx.nr15.161.a }
 }
@@ -4033,7 +5382,78 @@ news_event = {
 	desc = chaosx.nr15.162.d
 	picture = GFX_news_event_utopia_manifesto_colony_revolt
 
+	major = yes
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = utopia_manifesto_accepted
+		has_country_flag = utopia_manifesto_assigned_colony_revolt_news_emitted
+		has_country_flag = utopia_manifesto_conduct_assigned_colony
+		utopia_manifesto_is_closed_island_route = yes
+	}
 
 	option = { name = chaosx.nr15.162.a }
+}
+
+# Founder-rooted bridge for Necessary Ground and League-partner annexation. The
+# regular event targets saved by on_annex carry the annexer and annexed target
+# into this event, while ROOT is reset to each deduplicated exact Event 15
+# founder. Each handler is a no-op when that relationship was not recorded.
+country_event = {
+	id = chaosx.nr15.163
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		utopia_manifesto_handle_active_case_target_annexation = yes
+		utopia_manifesto_handle_annexed_league_partner = yes
+	}
+}
+
+# Founder-rooted terminal cleanup for an annexed Event 15 actor. Firing a
+# hidden event is required because changing scope to FROM inside on_annex does
+# not change the on-action ROOT used by nested cleanup helpers.
+country_event = {
+	id = chaosx.nr15.164
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		utopia_manifesto_enter_annexation_safe_state = yes
+	}
+}
+
+# Founder-rooted bridge for a Necessary Ground case state whose controller
+# changed. The state event target and reverse founder snapshot come from the
+# one-shot on_state_control_changed chain; ROOT is the exact founder here.
+country_event = {
+	id = chaosx.nr15.165
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = utopia_manifesto_accepted
+				has_country_flag = utopia_manifesto_need_case_active
+				any_of_scopes = {
+					array = utopia_manifesto_active_case_targets
+					exists = yes
+				}
+				has_event_target = utopia_manifesto_changed_case_state
+				event_target:utopia_manifesto_changed_case_state = {
+					is_in_array = {
+						array = utopia_manifesto_case_state_founders
+						value = ROOT
+					}
+					check_variable = {
+						var = id
+						value = ROOT.utopia_manifesto_case_state_id
+						compare = equals
+					}
+				}
+			}
+			utopia_manifesto_validate_active_need_case = yes
+		}
+		utopia_manifesto_reconcile_external_term_integrity = yes
+	}
 }

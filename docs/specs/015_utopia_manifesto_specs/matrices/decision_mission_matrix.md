@@ -43,9 +43,28 @@ All names are working labels, not final localisation.
 | League | Technical Mission | candidate country | advisors, equipment, transport | medium | influence and project | limited access | rejection |
 | League | Reserve Compact | member pair | reserve commitment | ongoing | mutual aid | narrow compact | agreement lapses |
 | League | Invite to League | candidate country | credibility and autonomy guarantee | negotiation | membership | observer status | refusal |
+| League | Request Sponsorship | major sponsor candidate | political capital and public terms | variable negotiation | technical sponsorship or exact sponsor guarantee | no partial installation | refusal or silence |
 | League | Prove It Is Not a Mask | founder and members | real aid and restraint | long | cohesion and formation proof | one member dissatisfied | exits and sponsor pressure |
 | Defense | Raise Citizen Watch | founder districts | manpower and equipment | medium | capped militia | understrength watch | wasted equipment |
 | Defense | Form Engineer Companies | founder army | army XP, support equipment, trucks | medium | repair capability | limited cadres | delay |
 | Defense | Hire Auxiliaries | foreign source | equipment, convoys, payment | contract | temporary force | smaller contract | no force or bad terms |
 | Defense | End the Contract | auxiliary force | settlement or demobilization cost | medium | clean demobilization | partial integration | mutiny or banditry |
 | Formation | Prove the Commonwealth | founder and network | sustained thresholds | long | formation decision available | one missing proof | crisis or delay |
+
+## Current implementation proof
+
+| Inventory | Count |
+| --- | ---: |
+| Main-system decisions | 105 |
+| Evolution decisions | 15 |
+| Prefire decisions | 1 |
+| Total decisions | 121 |
+| Main-system missions | 40 |
+| Evolution missions | 1 |
+| Prefire missions | 3 |
+| Total missions | 44 |
+| Decision categories | 9 |
+
+Costs, durations, target validity, AI weights, collapse cleanup, calling mutexes, evolution obligation consumers, and actor-scoped maintenance are implemented. All 15 evolution choices have a paid action plus a shared obligation that reaches another Event 15 system. Districts use four suitability roles, three obligation groups, partial and failed outcomes, and route-specific charters. Penal Works is a paid Closed Island district method with exact state civilian loss and shared Deaths registration.
+
+The latest frozen whole-surface decision and mission gate is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_final_audit_2026_07_18.md`, SHA-256 `a5bb24e63977f5185872b1b11e0c054524a50816d1096a29a34cbaf20661826f`. The live inventory is 121 decisions and 44 missions. Exact founder-attribution arrays protect association-created and League-created guarantees without revoking pre-existing diplomacy or another founder's relation. The exact-pair island-renewal reservation keeps stale `.213` answers from applying to a later lease and always releases the pair through `.214`. Auxiliary hiring uses one combined contract-and-formation affordability proof, deploys only after formation payment succeeds, and refunds political power without consuming contract resources on failure. Prefire district and contact candidates, response flags, and selection records are founder-local, and the decision source contains no stray decision-level `scripted_gui` attachment.

@@ -1,0 +1,86 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 PREFIRE EVOLUTION TRIGGERS
+# ============================================================================
+# Settings-aware gates for the five evolved openings and their selected state
+# and foreign-contact scopes. Every delayed window rechecks these gates.
+# ============================================================================
+
+utopia_manifesto_prefire_glosses_package_is_live = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_prefire_glosses_opening_applied
+	utopia_manifesto_glosses_delivery_is_enabled = yes
+}
+
+utopia_manifesto_prefire_shores_package_is_live = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_prefire_shores_opening_applied
+	utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+}
+
+utopia_manifesto_prefire_cities_package_is_live = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_prefire_cities_opening_applied
+	utopia_manifesto_cities_delivery_is_enabled = yes
+}
+
+utopia_manifesto_prefire_nowhere_package_is_live = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_prefire_nowhere_opening_applied
+	utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+}
+
+utopia_manifesto_prefire_perfect_package_is_live = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_prefire_perfect_opening_applied
+	utopia_manifesto_perfect_island_delivery_is_enabled = yes
+}
+
+# Country scope, with ROOT as the Event 15 actor.
+utopia_manifesto_prefire_foreign_observer_candidate_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+}
+
+utopia_manifesto_prefire_has_live_district_candidate = {
+	any_of_scopes = {
+		array = utopia_manifesto_prefire_district_candidate_states
+		is_owned_and_controlled_by = ROOT
+	}
+}
+
+utopia_manifesto_prefire_has_live_foreign_contact = {
+	any_of_scopes = {
+		array = utopia_manifesto_prefire_foreign_contacts
+		exists = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+utopia_manifesto_prefire_store_deadline_is_supported = {
+	utopia_manifesto_prefire_perfect_package_is_live = yes
+	NOT = { has_country_flag = utopia_manifesto_capital_store_complete }
+	NOT = { has_country_flag = utopia_manifesto_prefire_store_deadline_failed }
+}
+
+utopia_manifesto_prefire_island_deadline_is_supported = {
+	utopia_manifesto_prefire_perfect_package_is_live = yes
+	has_country_flag = utopia_manifesto_island_variant_selected
+	NOT = { has_country_flag = utopia_manifesto_island_project_complete }
+	NOT = { has_country_flag = utopia_manifesto_prefire_island_deadline_failed }
+}
+
+utopia_manifesto_can_start_prefire_domestic_shore_repair = {
+	utopia_manifesto_prefire_shores_package_is_live = yes
+	utopia_manifesto_has_resolved_route = yes
+	utopia_manifesto_has_any_case_deficit = yes
+	NOT = { has_country_flag = utopia_manifesto_prefire_domestic_repair_active }
+	NOT = { has_country_flag = utopia_manifesto_prefire_domestic_repair_completed }
+	NOT = { utopia_manifesto_has_active_constitutional_crisis = yes }
+}

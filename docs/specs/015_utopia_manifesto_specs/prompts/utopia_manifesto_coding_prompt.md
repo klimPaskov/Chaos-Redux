@@ -105,7 +105,7 @@ Implement temporary stewardship, provision, route restoration, local charter, as
 
 ### Country identity
 
-Preserve the original tag and base flag before transformation. Add route-specific cosmetic identities, parties, institutions, advisors, flags, league emblems, and leadership changes. Existing leaders remain unless the route changes the office. New fictional personal leaders need regionally plausible gender-matched names and portraits. Institutional portraits use institutional names.
+Preserve the original tag and base flag before transformation. Add route-specific cosmetic identities, parties, institutions, advisors, ImageGen flags, league emblems, and leadership changes. Practical Commonwealth preserves the saved surviving constitutional leader. The four routes that replace personal leadership use institutional names and people-free ImageGen tableaux built from empty chambers, tables, ledgers, apparatus, stores, seals, tools, empty seats, and route emblems; do not depict people or human representations. Advisors use independent fictional ImageGen portrait masters plus separately generated dossier overlays and regionally plausible gender-matched names.
 
 ### AI
 

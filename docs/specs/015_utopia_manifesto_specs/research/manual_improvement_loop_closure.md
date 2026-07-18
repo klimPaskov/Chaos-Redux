@@ -1,5 +1,7 @@
 # Manual Improvement-Loop and Anti-Bloat Review
 
+> Historical planning review: the formal implementation-stage improvement planner later ran and produced `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_formal_improvement_loop_addendum_2026-07-15.md`. Its accepted findings are implemented and promoted into Parts 2, 4, 6, and 7 plus the proof matrices. The fresh closure audit in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/improvement_loop_closure_audit_2026_07_15.md` reports PASS with no open P0 through P3 finding.
+
 ## Status
 
 This review applies the supplied Chaos Redux improvement-loop, focus-tree, decision, event, asset, super-event, and completion-audit standards to the assembled Event 15 package.

@@ -16,9 +16,62 @@ defined_text = {
 	text = { localization_key = utopia_manifesto_route_unresolved }
 }
 
+# Route organisations are visible public institutions without overwriting any
+# pre-event ideology group's short or long party-name localisation.
+defined_text = {
+	name = GetUtopiaManifestoPoliticalOrganization
+	text = { trigger = { utopia_manifesto_is_consent_of_households_route = yes } localization_key = utopia_manifesto_household_cooperative_party_long }
+	text = { trigger = { utopia_manifesto_is_common_table_route = yes } localization_key = utopia_manifesto_congress_of_common_tables_party_long }
+	text = { trigger = { utopia_manifesto_is_guardians_of_measure_route = yes } localization_key = utopia_manifesto_planning_movement_party_long }
+	text = { trigger = { utopia_manifesto_is_closed_island_route = yes } localization_key = utopia_manifesto_service_and_unity_movement_party_long }
+	text = { trigger = { utopia_manifesto_is_joke_understood_route = yes } localization_key = utopia_manifesto_humanist_reform_coalition_party_long }
+	text = { localization_key = utopia_manifesto_organization_inherited }
+}
+
+# The paid military-growth helper injects the selected localised name into both
+# the template definition and the matching create_unit payload.
+defined_text = {
+	name = GetUtopiaManifestoMilitaryFormationName
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.citizen_watch } }
+		localization_key = utopia_manifesto_military_formation_citizen_watch
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.worker_defense } }
+		localization_key = utopia_manifesto_military_formation_worker_defense
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.engineer_corps } }
+		localization_key = utopia_manifesto_military_formation_engineer_corps
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.service_formation } }
+		localization_key = utopia_manifesto_military_formation_service_formation
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.professional_guard } }
+		localization_key = utopia_manifesto_military_formation_professional_guard
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.league_defense } }
+		localization_key = utopia_manifesto_military_formation_league_defense
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.auxiliary_column } }
+		localization_key = utopia_manifesto_military_formation_auxiliary_column
+	}
+	text = {
+		trigger = { check_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.commonwealth_guard } }
+		localization_key = utopia_manifesto_military_formation_commonwealth_guard
+	}
+	text = { localization_key = utopia_manifesto_military_formation_citizen_watch }
+}
+
 defined_text = {
 	name = GetUtopiaManifestoGeography
 	text = { trigger = { has_country_flag = utopia_manifesto_geography_existing_island } localization_key = utopia_manifesto_geography_existing_island }
+	text = { trigger = { has_country_flag = utopia_manifesto_geography_archipelago_network } localization_key = utopia_manifesto_geography_archipelago_network }
+	text = { trigger = { has_country_flag = utopia_manifesto_geography_leased_island } localization_key = utopia_manifesto_geography_leased_island }
 	text = { trigger = { has_country_flag = utopia_manifesto_geography_coastal_island } localization_key = utopia_manifesto_geography_coastal_island }
 	text = { trigger = { has_country_flag = utopia_manifesto_geography_inland_island } localization_key = utopia_manifesto_geography_inland_island }
 	text = { localization_key = utopia_manifesto_geography_unprepared }
@@ -120,6 +173,8 @@ defined_text = {
 	text = { trigger = { check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.ultimatum } } localization_key = utopia_manifesto.case_method.ultimatum }
 	text = { trigger = { check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.unilateral_enforcement } } localization_key = utopia_manifesto.case_method.enforcement }
 	text = { trigger = { check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.renunciation } } localization_key = utopia_manifesto.case_method.renunciation }
+	text = { trigger = { check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.settlement_agreement } } localization_key = utopia_manifesto.case_method.settlement_agreement }
+	text = { trigger = { check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.autonomy_pact } } localization_key = utopia_manifesto.case_method.autonomy_pact }
 	text = { localization_key = utopia_manifesto.case_method.unset }
 }
 
@@ -142,10 +197,534 @@ defined_text = {
 
 defined_text = {
 	name = GetUtopiaManifestoIslandProjectStatus
+	text = { trigger = { has_country_flag = utopia_manifesto_island_project_stranded } localization_key = utopia_manifesto.island_status.stranded }
+	text = { trigger = { has_country_flag = utopia_manifesto_island_project_lease_active } localization_key = utopia_manifesto.island_status.lease_active }
+	text = {
+		trigger = {
+			has_country_flag = utopia_manifesto_geography_archipelago_network
+			NOT = { utopia_manifesto_archipelago_network_project_proof_met = yes }
+		}
+		localization_key = utopia_manifesto.island_status.archipelago_incomplete
+	}
 	text = { trigger = { utopia_manifesto_island_project_proof_met = yes } localization_key = utopia_manifesto.island_status.proven }
 	text = { trigger = { has_country_flag = utopia_manifesto_island_project_built } localization_key = utopia_manifesto.island_status.built_unproven }
 	text = { trigger = { has_variable = utopia_manifesto_geography_variant } localization_key = utopia_manifesto.island_status.surveyed }
 	text = { localization_key = utopia_manifesto.island_status.unprepared }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictProjectSummary
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.summary.active }
+	text = { localization_key = utopia_manifesto.district.summary.none }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictPhase
+	text = { trigger = { has_country_flag = utopia_manifesto_district_survey_found_no_role has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.phase.survey_review }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveying } } localization_key = utopia_manifesto.district.phase.surveying }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed } } localization_key = utopia_manifesto.district.phase.surveyed }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building } } localization_key = utopia_manifesto.district.phase.building }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed } } localization_key = utopia_manifesto.district.phase.delayed }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built } } localization_key = utopia_manifesto.district.phase.built }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering } } localization_key = utopia_manifesto.district.phase.chartering }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered } } localization_key = utopia_manifesto.district.phase.chartered }
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.phase.none }
+	text = { localization_key = utopia_manifesto.district.phase.no_project }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictRole
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveying }
+		}
+		localization_key = utopia_manifesto.district.role.surveying
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_all
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_industrial_rail
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_industrial_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_rail_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_industrial_rail_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_industrial
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_rail
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_industrial_rail
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_industrial_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_rail_refugee
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_market_garden_suitable
+				utopia_manifesto_state_is_suitable_for_market_garden = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_market
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_industrial_housing_suitable
+				utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_industrial
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_rail_junction_suitable
+				utopia_manifesto_state_is_suitable_for_rail_junction = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_rail
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = {
+				has_state_flag = utopia_manifesto_district_refugee_municipality_suitable
+				utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+			}
+		}
+		localization_key = utopia_manifesto.district.role.suitable_refugee
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.market_garden }
+		}
+		localization_key = utopia_manifesto.district.role.market
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.industrial_housing }
+		}
+		localization_key = utopia_manifesto.district.role.industrial
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.rail_junction }
+		}
+		localization_key = utopia_manifesto.district.role.rail
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.refugee_municipality }
+		}
+		localization_key = utopia_manifesto.district.role.refugee
+	}
+	text = { localization_key = utopia_manifesto.district.role.none }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictHousingRequirement
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.market_garden } } localization_key = utopia_manifesto.district.housing_requirement.market }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.industrial_housing } } localization_key = utopia_manifesto.district.housing_requirement.industrial }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.rail_junction } } localization_key = utopia_manifesto.district.housing_requirement.rail }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.refugee_municipality } } localization_key = utopia_manifesto.district.housing_requirement.refugee }
+	text = { localization_key = utopia_manifesto.district.requirement.unset }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictTransportRequirement
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.industrial_housing } } localization_key = utopia_manifesto.district.transport_requirement.industrial }
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.market_garden }
+				check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.rail_junction }
+				check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.refugee_municipality }
+			}
+		}
+		localization_key = utopia_manifesto.district.transport_requirement.trains
+	}
+	text = { localization_key = utopia_manifesto.district.requirement.unset }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictRolePlanRequirement
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.market_garden } } localization_key = utopia_manifesto.district.role_plan_requirement.market }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.industrial_housing } } localization_key = utopia_manifesto.district.role_plan_requirement.industrial }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.rail_junction } } localization_key = utopia_manifesto.district.role_plan_requirement.rail }
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.refugee_municipality } } localization_key = utopia_manifesto.district.role_plan_requirement.refugee }
+	text = { localization_key = utopia_manifesto.district.requirement.unset }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictHousingStatus
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { utopia_manifesto_district_housing_obligation_met = yes }
+		}
+		localization_key = utopia_manifesto.district.obligation.housing_met
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building } } localization_key = utopia_manifesto.district.obligation.housing_unmet }
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed } } localization_key = utopia_manifesto.district.obligation.housing_failed }
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+		}
+		localization_key = utopia_manifesto.district.obligation.housing_passed
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.obligation.pending }
+	text = { localization_key = utopia_manifesto.district.obligation.no_project }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictTransportStatus
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { utopia_manifesto_district_transport_obligation_met = yes }
+		}
+		localization_key = utopia_manifesto.district.obligation.transport_met
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building } } localization_key = utopia_manifesto.district.obligation.transport_unmet }
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed } } localization_key = utopia_manifesto.district.obligation.transport_failed }
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+		}
+		localization_key = utopia_manifesto.district.obligation.transport_passed
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.obligation.pending }
+	text = { localization_key = utopia_manifesto.district.obligation.no_project }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictRolePlanStatus
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { has_state_flag = utopia_manifesto_penal_works_method_active }
+		}
+		localization_key = utopia_manifesto.district.obligation.role_plan_penal
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { utopia_manifesto_district_role_plan_obligation_met = yes }
+		}
+		localization_key = utopia_manifesto.district.obligation.role_plan_met
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building } } localization_key = utopia_manifesto.district.obligation.role_plan_unmet }
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed } } localization_key = utopia_manifesto.district.obligation.role_plan_failed }
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+		}
+		localization_key = utopia_manifesto.district.obligation.role_plan_passed
+	}
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state } localization_key = utopia_manifesto.district.obligation.pending }
+	text = { localization_key = utopia_manifesto.district.obligation.no_project }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictCallingRelief
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveying } } localization_key = utopia_manifesto.district.calling_relief.awaiting_survey }
+	text = { trigger = { has_variable = utopia_manifesto_district_project_state check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed } } localization_key = utopia_manifesto.district.calling_relief.awaiting_role }
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.market_garden }
+		}
+		localization_key = utopia_manifesto.district.calling_relief.market
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.industrial_housing }
+		}
+		localization_key = utopia_manifesto.district.calling_relief.industrial
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.rail_junction }
+		}
+		localization_key = utopia_manifesto.district.calling_relief.rail
+	}
+	text = {
+		trigger = {
+			has_variable = utopia_manifesto_district_project_state
+			OR = {
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.built }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+				check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartered }
+			}
+			check_variable = { utopia_manifesto_district_project_type = constant:utopia_manifesto_decision_district_role.refugee_municipality }
+		}
+		localization_key = utopia_manifesto.district.calling_relief.refugee
+	}
+	text = { localization_key = utopia_manifesto.district.calling_relief.none }
+}
+
+defined_text = {
+	name = GetUtopiaManifestoDistrictInvalidationReason
+	text = { trigger = { NOT = { has_variable = utopia_manifesto_district_project_state } } localization_key = utopia_manifesto.district.reason.no_project }
+	text = { trigger = { NOT = { utopia_manifesto_has_ledger = yes } } localization_key = utopia_manifesto.district.reason.ledger_closed }
+	text = { trigger = { has_country_flag = utopia_manifesto_district_survey_found_no_role } localization_key = utopia_manifesto.district.reason.no_suitable_role }
+	text = { trigger = { var:utopia_manifesto_district_project_state = { NOT = { is_controlled_by = ROOT } } } localization_key = utopia_manifesto.district.reason.control_lost }
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveying }
+			var:utopia_manifesto_district_project_state = { NOT = { utopia_manifesto_state_has_any_suitable_district_role = yes } }
+		}
+		localization_key = utopia_manifesto.district.reason.survey_at_risk
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.surveyed }
+			var:utopia_manifesto_district_project_state = { NOT = { utopia_manifesto_state_has_any_suitable_district_role = yes } }
+		}
+		localization_key = utopia_manifesto.district.reason.survey_stale
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { NOT = { is_core_of = ROOT } }
+		}
+		localization_key = utopia_manifesto.district.reason.core_lost
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.building }
+			var:utopia_manifesto_district_project_state = { NOT = { utopia_manifesto_district_project_obligations_met = yes } }
+		}
+		localization_key = utopia_manifesto.district.reason.obligations_at_risk
+	}
+	text = { trigger = { check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.delayed } } localization_key = utopia_manifesto.district.reason.obligations_failed }
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+			utopia_manifesto_has_unresolved_route = yes
+		}
+		localization_key = utopia_manifesto.district.reason.route_unresolved
+	}
+	text = {
+		trigger = {
+			check_variable = { utopia_manifesto_district_project_phase = constant:utopia_manifesto_district_phase.chartering }
+			var:utopia_manifesto_district_project_state = {
+				OR = {
+					NOT = { has_state_flag = utopia_manifesto_district_built }
+					has_state_flag = utopia_manifesto_district_project_refused
+				}
+			}
+		}
+		localization_key = utopia_manifesto.district.reason.charter_invalid
+	}
+	text = { localization_key = utopia_manifesto.district.reason.clear }
 }
 
 defined_text = {
@@ -229,6 +808,9 @@ defined_text = {
 	text = { trigger = { utopia_manifesto_candidate_has_terminal_identity = yes } localization_key = utopia_manifesto.availability.terminal_identity }
 	text = { trigger = { NOT = { uses_normal_civilian_systems = yes } } localization_key = utopia_manifesto.availability.nonstandard_country }
 	text = { trigger = { is_major = yes } localization_key = utopia_manifesto.availability.major }
+	text = { trigger = { utopia_manifesto_candidate_has_active_event_package = yes } localization_key = utopia_manifesto.availability.active_event_package }
+	text = { trigger = { utopia_manifesto_candidate_has_protected_package = yes } localization_key = utopia_manifesto.availability.protected_package }
+	text = { trigger = { utopia_manifesto_candidate_has_mature_generic_tree = yes } localization_key = utopia_manifesto.availability.mature_tree }
 	text = {
 		trigger = {
 			NOT = {
@@ -240,9 +822,6 @@ defined_text = {
 		}
 		localization_key = utopia_manifesto.availability.non_generic_tree
 	}
-	text = { trigger = { utopia_manifesto_candidate_has_active_event_package = yes } localization_key = utopia_manifesto.availability.active_event_package }
-	text = { trigger = { utopia_manifesto_candidate_has_protected_package = yes } localization_key = utopia_manifesto.availability.protected_package }
-	text = { trigger = { utopia_manifesto_candidate_has_mature_generic_tree = yes } localization_key = utopia_manifesto.availability.mature_tree }
 	text = { trigger = { has_civil_war = yes } localization_key = utopia_manifesto.availability.civil_war }
 	text = { trigger = { has_offensive_war = yes } localization_key = utopia_manifesto.availability.offensive_war }
 	text = { trigger = { NOT = { surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress } } localization_key = utopia_manifesto.availability.near_capitulation }

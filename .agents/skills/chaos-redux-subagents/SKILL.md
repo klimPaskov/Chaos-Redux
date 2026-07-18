@@ -221,23 +221,15 @@ Use:
 
 The parent agent must give each asset subagent a bounded prompt with exact asset names, target sizes, source mode, final folders, sprite names when already registered, reference folders, and constraints.
 
-Country-identity asset work must not start until the parent has audited the
-candidate tag against vanilla, Chaos Redux, every installed Workshop mod, and
-other local mods, and has checked whether the national identity already exists
-in vanilla. A conflicting new tag must be remapped; a vanilla country identity
-must reuse the vanilla tag and preserve its meaningful content. Pass the
-locked tag and audit evidence into the context-free subagent prompt.
+Country-identity asset work must not start until the parent has audited the candidate tag against vanilla, Chaos Redux, every installed Workshop mod, and other local mods, and has checked whether the national identity already exists in vanilla. A conflicting new tag must be remapped; a vanilla country identity must reuse the vanilla tag and preserve its meaningful content. Pass the locked tag and audit evidence into the context-free subagent prompt.
 
-Portrait prompts must name the canonical skill-local leader and advisor
-references under
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`.
-Real people require an attributed source, explicit
-head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop
-metadata, and comparison sheet. Fictional portraits require imagegen with the
-leader references as style inputs. Advisor, theorist, and high-command icons
-are separate `65x67` dossier-card assets made from approved portrait masters,
-not resized leader portraits; require `.tools/process_hoi4_portrait.py` and its
-comparison output.
+Portrait prompts must name the canonical skill-local leader and advisor references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`. Real people require an attributed source, explicit head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop metadata, and comparison sheet. Fictional one-person portraits require ImageGen with the leader references as style inputs. Fictional councils, committees, juntas, boards, offices, and symbolic bodies require people-free institutional ImageGen compositions and institutional names; do not generate a crowd or invented officeholder.
+
+Advisor, theorist, and high-command icons are separate exact `65x67` dossier-card assets made from approved portrait masters, not resized leader portraits. Require processor/render v5.0 at `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, explicit crop and face bounds, a repo-contained schema-1 portrait-provenance manifest, separate shadowless ImageGen frame and opaque textured paper sources, alpha-extracted overlays, and the self-contained provenance-schema-4 overlay manifest. When the parent routes a 16-source package, pass its one intact 16-record manifest and require each invocation to match exactly one approved record; the batch count is provenance, not a hard-coded processor assumption.
+
+Require the frozen Python `3.9.12`, Pillow `11.1.0`, processor hash `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, render-configuration hash `e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`, and content-seed metadata. Require the two-stage identity-preservation search and both face-identity gates, every one of the nine native style bands with `0.03` interior margin, frame/paper geometry and palette validation, hole/fringe-free paper opacity, runtime-derived six-reference alpha hash `5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993` and paper-family hash `c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`, zero unsupported visible RGB, protected provenance inputs, and transactionally committed distinct repo-contained candidate PNG, review PNG, and metadata JSON. Vanilla alpha may supply opacity only; no visible vanilla artwork may enter the candidate. Paperless, primitive-drawn, synthesized, or unpinned-source fallbacks are not permitted.
+
+The parent must keep advisor production and visual approval separate. The producer may return only `candidate_requires_visual_approval`; passing provenance, identity, style, alpha, paper, and RGB-support gates is not one-to-one visual approval. A different human or agent must review the candidate and all six frozen references at native size and `4x`, then write separate manifest-linked approval evidence with candidate/review-sheet hashes and producer/reviewer identities. The automated processor, validator, and producing subagent must never self-stamp approval. Convert the independently approved PNG only through `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` at `65x67`, then decode the DDS and prove exact RGBA equality with the approved PNG.
 
 For `chaosx_icon_artist`, the parent prompt must require `$imagegen` source atlas or source PNG evidence, prompt and source-mode notes, transparent-background processing, contact sheets, dimension and alignment QA, no white matte or opaque square backgrounds, and confirmation that final generated icons are not primitive local drawings or resized unrelated icons.
 
@@ -324,6 +316,7 @@ Before final completion, the parent should check:
 - plan handoffs are either implemented, queued, or rejected with a reason
 - documentation curator handoffs identify promoted, queued, rejected, superseded, and unresolved documents when one was used
 - assets are wired or reported as pending
+- advisor candidates have separate manifest-linked native-plus-`4x` visual approval from a reviewer who is not the producer; automated validation alone is not approval
 - validation reflects the final repo state
 - docs, specs, plans, and spreadsheet surfaces agree
 

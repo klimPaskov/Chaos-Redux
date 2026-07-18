@@ -15,14 +15,14 @@ All route and asset labels below are working labels, not final localisation.
 
 Before producing each asset type, inspect the matching Chaos Redux reference folder.
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- focus icons: `.agents/skills/chaos-redux-event-assets/assets/focuses`
-- idea icons: `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- decision icons: `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/achievements`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/flags`
+- report images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- news images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- focus icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
+- idea icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- decision icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- flags: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
 
 ## Working output package
 
@@ -475,7 +475,9 @@ Final TGA sizes:
 
 Validate orientation and header convention against vanilla. Ideology variants must be distinct designs when they are required.
 
-## Institutional portraits
+Every active flag must begin as a built-in ImageGen heraldic design. Flags are identity designs and assets rather than scene artwork, but do not replace the generated design with simple programmatic shapes. Preserve ImageGen-authored geometry and tonal detail. Finishing may aspect-fit, resize, apply restrained colour and contrast adjustment, mildly sharpen, and validate source preservation. Do not quantize, collapse to solid fills, trace, redraw, substitute motifs, or impose a palette ceiling. Produce and inspect a source/normal/medium/small comparison.
+
+## Institutional leader tableaux
 
 Create only the bodies the implementation actually uses.
 
@@ -490,9 +492,11 @@ Final size:
 
 - 156 by 210
 
-These are institutional portraits. Use institutional names, not random personal names.
+These are people-free institutional leader images. Use institutional names, not random personal names. Depict each establishment through an empty chamber, council table, ledger, standards apparatus, stores, seals, tools, empty seats, and route emblems. Do not depict people, faces, heads, bodies, hands, crowds, silhouettes, statues, busts, mannequins, framed portraits, photographs, or human shadows.
 
-For any generated one-person leader or advisor, record apparent gender presentation and require a matching regional name pool.
+## Advisor dossier icons
+
+Create a distinct fictional ImageGen portrait master for every implemented advisor and record the matching regional name and apparent gender presentation. Generate the dossier frame as a separate ImageGen overlay and generate paper, paperclip, illegible-note, and wax-seal elements as another ImageGen overlay where needed. The processing script may only crop, grade, angle, derive alpha shadows, composite generated layers, resize, validate, and export. It must not draw the visible card, border, paper, seal, emblem, or overlay art. Final advisor icons are `65x67`, not square, and must not be resized leader images.
 
 ## League emblems
 

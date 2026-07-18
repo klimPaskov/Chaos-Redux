@@ -22,3 +22,22 @@
 | AI at low Concord | route-specific reform or repression | ambitious voluntary formation | revolt or constitutional crisis | resolve temporary emergency flags |
 | AI at high Need | domestic alternatives, emergency provision, one case | multiple opportunistic cases | blockade, migration, loss of port | close cases after remedy |
 | AI at high chaos | reserve, defense, stronger route choices | ordinary peacetime assumptions | evolution conditions | preserve baseline path when evolution disabled |
+
+## Current implementation proof
+
+The current AI package defines 12 plans in `common/ai_strategy/015_utopia_manifesto_ai_strategy.txt`:
+
+- `utopia_manifesto_foundation_restraint`
+- `utopia_manifesto_consent_route_strategy`
+- `utopia_manifesto_common_table_route_strategy`
+- `utopia_manifesto_guardians_route_strategy`
+- `utopia_manifesto_closed_island_route_strategy`
+- `utopia_manifesto_closed_island_valid_case_escalation`
+- `utopia_manifesto_joke_understood_route_strategy`
+- `utopia_manifesto_low_plenty_recovery_strategy`
+- `utopia_manifesto_high_need_recovery_strategy`
+- `utopia_manifesto_low_concord_restraint_strategy`
+- `utopia_manifesto_constitutional_crisis_strategy`
+- `utopia_manifesto_mature_commonwealth_strategy`
+
+All 124 focuses contain AI logic. All 121 decisions contain AI weights or an intentional zero-use behavior. The same live Ledger, calling, reserve, district, case, target-survival, stewardship, and obligation gates apply to player and AI action. No Event 15 maintenance plan uses recurring global iteration.

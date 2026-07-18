@@ -51,6 +51,151 @@ utopia_manifesto_clear_succession_identity_flags = {
 	clr_country_flag = utopia_manifesto_successor_constitutional_election
 }
 
+utopia_manifesto_clear_original_political_state = {
+	clr_country_flag = utopia_manifesto_original_elections_allowed
+	clear_variable = utopia_manifesto_original_ruling_ideology
+	clear_variable = utopia_manifesto_original_leader_ideology
+	clear_variable = utopia_manifesto_original_country_leader
+}
+
+# The loaded ideology database is finite. Record the active leader role's exact
+# ideology type so characters with several country-leader roles can be restored
+# without passing an ideology-group token to promote_character.
+utopia_manifesto_record_original_leader_ideology = {
+	if = {
+		limit = { has_country_leader_ideology = conservatism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:conservatism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = liberalism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:liberalism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = socialism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:socialism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = populism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:populism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = marxism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:marxism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = leninism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:leninism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = stalinism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:stalinism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = anti_revisionism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:anti_revisionism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = anarchist_communism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:anarchist_communism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = buddhist_socialism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:buddhist_socialism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = nazism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:nazism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = gen_nazism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:gen_nazism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = fascism_ideology }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:fascism_ideology }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = falangism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:falangism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = rexism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:rexism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = emperor_fascism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:emperor_fascism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = despotism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:despotism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = oligarchism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:oligarchism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = anarchism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:anarchism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = moderatism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:moderatism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = centrism }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:centrism }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = japan_militarism_ideology }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:japan_militarism_ideology }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = ritual_predation }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:ritual_predation }
+	}
+	else_if = {
+		limit = { has_country_leader_ideology = resonant_brood_hierarchy }
+		set_variable = { utopia_manifesto_original_leader_ideology = token:resonant_brood_hierarchy }
+	}
+}
+
+# The ideology tokens and character value are typed variables, not numeric
+# tuning values. Existing party names are deliberately never overwritten.
+utopia_manifesto_record_original_political_state = {
+	utopia_manifesto_clear_original_political_state = yes
+	set_variable = {
+		utopia_manifesto_original_ruling_ideology = current_party_ideology_group
+	}
+	set_variable = {
+		utopia_manifesto_original_country_leader = country_leader
+	}
+	utopia_manifesto_record_original_leader_ideology = yes
+	if = {
+		limit = { has_elections = yes }
+		set_country_flag = utopia_manifesto_original_elections_allowed
+	}
+}
+
+utopia_manifesto_clear_advisor_active_flags = {
+	clr_country_flag = utopia_manifesto_advisor_public_interpreter_active
+	clr_country_flag = utopia_manifesto_advisor_general_provisioner_active
+	clr_country_flag = utopia_manifesto_advisor_secretary_of_callings_active
+	clr_country_flag = utopia_manifesto_advisor_surveyor_of_shores_active
+	clr_country_flag = utopia_manifesto_advisor_civic_engineer_active
+	clr_country_flag = utopia_manifesto_advisor_keeper_of_stores_active
+	clr_country_flag = utopia_manifesto_advisor_league_envoy_active
+	clr_country_flag = utopia_manifesto_advisor_advocate_of_limits_active
+	clr_country_flag = utopia_manifesto_advisor_public_auditor_active
+	clr_country_flag = utopia_manifesto_advisor_constitutional_jurist_active
+	clr_country_flag = utopia_manifesto_advisor_council_organizer_active
+	clr_country_flag = utopia_manifesto_advisor_social_workshop_planner_active
+	clr_country_flag = utopia_manifesto_advisor_chief_surveyor_active
+	clr_country_flag = utopia_manifesto_advisor_standards_engineer_active
+	clr_country_flag = utopia_manifesto_advisor_steward_of_service_active
+	clr_country_flag = utopia_manifesto_advisor_contract_broker_active
+}
+
 utopia_manifesto_clear_identity_achievement_tracking = {
 	clr_country_flag = utopia_manifesto_achievement_peaceful_cases_proven
 	clr_country_flag = utopia_manifesto_achievement_obsolete_case_renounced
@@ -96,21 +241,59 @@ utopia_manifesto_clear_identity_achievement_tracking = {
 utopia_manifesto_initialize_identity_package = {
 	if = {
 		limit = { NOT = { has_country_flag = utopia_manifesto_identity_package_initialized } }
+		utopia_manifesto_record_original_political_state = yes
 		utopia_manifesto_clear_route_institution_identity_flags = yes
 		utopia_manifesto_clear_formed_identity_flags = yes
 		utopia_manifesto_clear_succession_identity_flags = yes
 		utopia_manifesto_clear_identity_achievement_tracking = yes
+		utopia_manifesto_clear_advisor_active_flags = yes
 		clr_country_flag = utopia_manifesto_route_institution_established
 		clr_country_flag = utopia_manifesto_identity_formed
 		set_country_flag = utopia_manifesto_identity_package_initialized
 	}
 }
 
-# Terminal disable policy: the original country tag and owned forces remain.
-# Event 15 characters retire, its cosmetic identity drops, and its staged
-# political/achievement state is removed. Route party names are supplied by
-# the cosmetic identities, so dropping the cosmetic tag restores the original
-# recipient's country-specific party localisation without mutating it.
+# Terminal disable policy: Event 15 never mutates party-name localisation,
+# election frequency, or last-election date. Formed routes pause native
+# elections; the Practical Commonwealth's second generation explicitly
+# reopens them and calls the engine election effect. Teardown restores the saved
+# ideology, exact surviving leader, and original election permission without
+# substituting another character.
+utopia_manifesto_restore_original_political_state = {
+	if = {
+		limit = { has_variable = utopia_manifesto_original_ruling_ideology }
+		set_politics = {
+			ruling_party = var:utopia_manifesto_original_ruling_ideology
+			elections_allowed = no
+		}
+	}
+	if = {
+		limit = {
+			has_variable = utopia_manifesto_original_country_leader
+			has_variable = utopia_manifesto_original_leader_ideology
+			has_character = var:utopia_manifesto_original_country_leader
+			var:utopia_manifesto_original_country_leader = {
+				can_be_country_leader = yes
+			}
+		}
+		meta_effect = {
+			text = {
+				var:utopia_manifesto_original_country_leader = {
+					promote_character = [ORIGINAL_IDEOLOGY]
+				}
+			}
+			ORIGINAL_IDEOLOGY = "[?utopia_manifesto_original_leader_ideology.GetTokenKey]"
+		}
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_original_elections_allowed }
+		set_politics = { elections_allowed = yes }
+	}
+	else = {
+		set_politics = { elections_allowed = no }
+	}
+}
+
 utopia_manifesto_teardown_identity_package = {
 	remove_country_leader_role = { character = utopia_manifesto_household_assembly ideology = socialism }
 	remove_country_leader_role = { character = utopia_manifesto_commonwealth_council ideology = socialism }
@@ -144,17 +327,22 @@ utopia_manifesto_teardown_identity_package = {
 	retire_character = utopia_manifesto_standards_engineer
 	retire_character = utopia_manifesto_steward_of_service
 	retire_character = utopia_manifesto_contract_broker
+	utopia_manifesto_restore_original_political_state = yes
 	drop_cosmetic_tag = yes
 	utopia_manifesto_clear_route_institution_identity_flags = yes
 	utopia_manifesto_clear_formed_identity_flags = yes
 	utopia_manifesto_clear_succession_identity_flags = yes
 	utopia_manifesto_clear_identity_achievement_tracking = yes
+	utopia_manifesto_clear_advisor_active_flags = yes
+	utopia_manifesto_clear_original_political_state = yes
 	clr_country_flag = utopia_manifesto_route_institution_established
 	clr_country_flag = utopia_manifesto_identity_formed
 	clr_country_flag = utopia_manifesto_identity_package_initialized
 }
 
 utopia_manifesto_name_current_party_humanist = {
+	# The Humanist Reform Coalition is represented through its cabinet,
+	# institution flags, decisions, and route idea. Existing party names stay.
 	set_country_flag = utopia_manifesto_humanist_party_declared
 }
 
@@ -216,8 +404,7 @@ utopia_manifesto_commit_current_route_identity = {
 utopia_manifesto_form_voluntary_commonwealth_identity = {
 	set_politics = {
 		ruling_party = democratic
-		elections_allowed = yes
-		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+		elections_allowed = no
 	}
 	add_country_leader_role = {
 		character = utopia_manifesto_household_assembly
@@ -289,8 +476,7 @@ utopia_manifesto_form_closed_island_identity = {
 utopia_manifesto_form_practical_commonwealth_identity = {
 	utopia_manifesto_name_current_party_humanist = yes
 	set_politics = {
-		elections_allowed = yes
-		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+		elections_allowed = no
 	}
 	set_cosmetic_tag = UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH
 	set_country_flag = utopia_manifesto_identity_practical_commonwealth
@@ -340,6 +526,10 @@ utopia_manifesto_form_current_route_identity = {
 			set_country_flag = utopia_manifesto_identity_formed
 		}
 	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_identity_formed }
+		utopia_manifesto_refresh_event_reachability = yes
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -361,8 +551,7 @@ utopia_manifesto_install_commonwealth_council_successor = {
 	}
 	set_politics = {
 		ruling_party = democratic
-		elections_allowed = yes
-		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+		elections_allowed = no
 	}
 	set_country_flag = utopia_manifesto_successor_commonwealth_council
 }
@@ -416,10 +605,11 @@ utopia_manifesto_install_directorate_of_service_successor = {
 }
 
 utopia_manifesto_install_constitutional_election_successor = {
-	set_politics = {
-		elections_allowed = yes
-		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
-	}
+	# The practical route retains its surviving constitutional leader and native
+	# portrait, but succession must still be an engine-visible constitutional
+	# act. Reopen elections and hold the route's first post-founding ballot.
+	set_politics = { elections_allowed = yes }
+	hold_election = ROOT
 	set_country_flag = utopia_manifesto_successor_constitutional_election
 }
 
@@ -492,6 +682,8 @@ utopia_manifesto_record_achievement_peaceful_case_resolution = {
 				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.settlement_agreement }
 				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.joint_administration }
 				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.association }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.autonomy_pact }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.renunciation }
 				has_country_flag = utopia_manifesto_case_closed_for_domestic_alternative
 			}
 			NOT = {
@@ -518,7 +710,7 @@ utopia_manifesto_record_achievement_peaceful_case_resolution = {
 		}
 	}
 	set_temp_variable = { utopia_manifesto_achievement_case_target_input = constant:utopia_manifesto_narrative_count.zero }
-	set_temp_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.none }
+	set_temp_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.unset }
 }
 
 utopia_manifesto_record_achievement_obsolete_case_renunciation = {

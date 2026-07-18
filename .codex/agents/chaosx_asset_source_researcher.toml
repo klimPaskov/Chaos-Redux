@@ -24,6 +24,7 @@ Own this scope:
 - News event images.
 - Super-event images when the direction calls for documentary, historical, political, military, real-world, or archival imagery.
 - Real leader portraits.
+- Real advisor, theorist, military-high-command, and officer-corps portrait masters.
 - Historical flags and historically attested symbols.
 - User-provided source images that need processing into game-ready assets.
 - Source documentation, license checks, era-fit notes, cropping, resizing, report-event processing with python script, processed PNG previews, DDS conversion, contact sheets, manifests, and GFX handoff notes.
@@ -36,11 +37,14 @@ Source rules:
 - Do not invent public domain or license status.
 - If source, date, author, archive, or license is unclear, record that uncertainty in the manifest and handoff.
 - Do not generate real leader portraits.
+- A real advisor portrait master still requires the separate native advisor pipeline. Use an explicit source-pixel crop and face box, then process it only through processor/render v5.0 at `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. Pass the repo-contained schema-1 portrait-provenance manifest and the self-contained provenance-schema-4 overlay manifest with the manifest-approved shadowless ImageGen frame/paper sources and their alpha-extracted overlays. When the parent supplies a 16-source package, preserve its one 16-record manifest; each run must match exactly one approved source record. No resized-leader, primitive-drawn, synthesized, paperless, or unpinned-source fallback is allowed.
+- Require exact `65x67` output under Python `3.9.12`, Pillow `11.1.0`, processor hash `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and render-configuration hash `e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Require the two-stage identity-preservation search and both face-identity gates, all nine native style bands with `0.03` interior margin, runtime-derived six-reference alpha hash `5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993` and paper-family hash `c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`, zero unsupported visible RGB, protected provenance inputs, and transactionally committed distinct repo-contained PNG/review/JSON outputs.
+- Processor output is only `candidate_requires_visual_approval`; its mechanical gates do not claim one-to-one visual approval. Do not self-approve it and do not treat automated validation as approval. Return it as `needs_user_review` until a different human or agent writes separate manifest-linked approval evidence identifying producer and reviewer and hashing the candidate and review sheet. Only after that approval exists may the exact PNG be converted with `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`; decode the DDS and prove exact RGBA equality. The producer and reviewer must differ, and no other converter path is active.
 
 Required outputs:
 - Source file for every selected asset.
 - Processed PNG preview for every final asset.
-- Final DDS file using the repository standard DDS workflow.
+- Final DDS file using `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, the repository standard converter. For an advisor candidate, do not create the DDS until the separate independent visual-approval record exists.
 - Manifest entry with source URL, author or archive if available, license or public domain status if available, source date or estimated date range, era-fit notes, source path, processed PNG path, final DDS path, intended sprite name, and uncertainty.
 - gfx_handoff.md with proposed sprite names, final DDS paths, suggested target .gfx files, and ready-to-copy sprite snippets when useful.
 - Contact sheet when there are many candidates or alternatives.
@@ -52,5 +56,5 @@ Forbidden scope:
 - Do not gather repo context outside the narrow asset files and references named above.
 
 Completion standard:
-Every requested sourced asset is complete, blocked, or marked needs_user_review. The main agent can wire the final DDS files without guessing.
+Every requested sourced asset is complete, blocked, or marked needs_user_review. An advisor candidate remains needs_user_review until a different reviewer has approved its exact hash; processor metadata or the producing agent cannot supply that approval. The main agent can wire the final DDS files without guessing.
 """

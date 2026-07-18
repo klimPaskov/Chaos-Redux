@@ -1,5 +1,7 @@
 # Event 15 Subagent Orchestration
 
+> Historical planning handoff: the runtime limitation below applied only to the original planning run. Repository exploration, implementation, asset production, specialised research, spreadsheet work, and multiple completion audits were later executed in the live repository. Current handoffs and gates are indexed by the Event 15 source-of-truth resume packet.
+
 ## Status
 
 The custom subagent runtime was unavailable during this planning run. None of the subagents below were executed. The package provides explicit prompts so the implementation parent can spawn them with `fork_context=false` and reproducible inputs.

@@ -1,0 +1,206 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 REACTION AND MILESTONE REACHABILITY
+# ============================================================================
+# Actor and recipient gates for one-shot foreign reactions, internationally
+# visible milestones, and genuine post-formation constitutional collapse.
+# Selection stays actor-triggered; no recurring country-wide on_action is used.
+# ============================================================================
+
+# Country scope, with ROOT as the Event 15 actor selecting a real recipient.
+utopia_manifesto_foreign_reaction_candidate_is_safe = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_subject = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { has_war_with = ROOT }
+	surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+		has_opinion = { target = ROOT value > constant:utopia_manifesto_decision_threshold.positive_opinion }
+	}
+}
+
+utopia_manifesto_household_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	is_major = no
+	has_government = democratic
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+	}
+}
+
+utopia_manifesto_common_table_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	is_major = no
+	has_government = communism
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+	}
+}
+
+utopia_manifesto_planning_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	is_major = no
+	OR = {
+		has_government = neutrality
+		has_government = fascism
+	}
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+	}
+}
+
+utopia_manifesto_colonial_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	any_subject_country = { exists = yes }
+}
+
+utopia_manifesto_major_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	is_major = yes
+}
+
+utopia_manifesto_small_reformist_reaction_candidate_is_valid = {
+	utopia_manifesto_foreign_reaction_candidate_is_safe = yes
+	is_major = no
+	OR = {
+		has_government = democratic
+		has_government = communism
+	}
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+	}
+}
+
+# Reacting-country scope, with FROM as the Event 15 actor that sent the event.
+utopia_manifesto_foreign_reaction_sender_and_recipient_are_safe = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_subject = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = FROM }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	NOT = { has_war_with = FROM }
+	FROM = {
+		exists = yes
+		has_country_flag = utopia_manifesto_accepted
+		NOT = { has_country_flag = utopia_manifesto_aftermath_resolved }
+	}
+}
+
+# Event 15 actor scope.
+utopia_manifesto_household_reaction_is_reachable = {
+	has_country_flag = utopia_manifesto_identity_formed
+	has_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+	has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+	utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_household_reaction_dispatched }
+}
+
+utopia_manifesto_common_table_reaction_is_reachable = {
+	has_country_flag = utopia_manifesto_identity_formed
+	has_country_flag = utopia_manifesto_identity_council_union
+	has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+	utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_common_table_reaction_dispatched }
+}
+
+utopia_manifesto_planning_reaction_is_reachable = {
+	has_country_flag = utopia_manifesto_identity_formed
+	has_country_flag = utopia_manifesto_identity_planned_utopia
+	has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+	utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_planning_reaction_dispatched }
+}
+
+utopia_manifesto_colonial_reaction_is_reachable = {
+	has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded
+	utopia_manifesto_necessary_shores_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_colonial_reaction_dispatched }
+	OR = {
+		AND = {
+			has_country_flag = utopia_manifesto_case_enforcement_war_active
+			has_country_flag = utopia_manifesto_need_case_active
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_stewardship_active
+			has_country_flag = utopia_manifesto_conduct_assigned_colony
+			has_idea = utopia_manifesto_stewardship_burden_failure
+		}
+	}
+}
+
+utopia_manifesto_actual_regional_league_milestone_is_reached = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_commonwealth_formed
+	has_country_flag = utopia_manifesto_league_initialized
+	has_country_flag = utopia_manifesto_regional_commonwealth
+	utopia_manifesto_has_regional_proclamation_network = yes
+	any_of_scopes = {
+		array = utopia_manifesto_external_network_members
+		exists = yes
+		has_capitulated = no
+	}
+}
+
+utopia_manifesto_major_reaction_is_reachable = {
+	utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+	has_country_flag = utopia_manifesto_evolution_nowhere_law_recorded
+	utopia_manifesto_nowhere_law_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_major_reaction_dispatched }
+}
+
+utopia_manifesto_small_reformist_reaction_is_reachable = {
+	utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+	has_country_flag = utopia_manifesto_evolution_cities_recorded
+	utopia_manifesto_cities_delivery_is_enabled = yes
+	NOT = { has_country_flag = utopia_manifesto_small_reformist_reaction_dispatched }
+}
+
+utopia_manifesto_league_news_is_reachable = {
+	utopia_manifesto_actual_regional_league_milestone_is_reached = yes
+	NOT = { has_country_flag = utopia_manifesto_league_news_emitted }
+}
+
+utopia_manifesto_assigned_colony_revolt_news_is_reachable = {
+	has_country_flag = utopia_manifesto_accepted
+	utopia_manifesto_is_closed_island_route = yes
+	has_country_flag = utopia_manifesto_stewardship_active
+	has_country_flag = utopia_manifesto_conduct_assigned_colony
+	has_idea = utopia_manifesto_stewardship_burden_failure
+	NOT = { has_country_flag = utopia_manifesto_assigned_colony_revolt_news_emitted }
+}
+
+utopia_manifesto_current_identity_has_been_constitutionally_abandoned = {
+	has_country_flag = utopia_manifesto_accepted
+	has_country_flag = utopia_manifesto_identity_formed
+	OR = {
+		AND = {
+			has_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+			NOT = { has_government = democratic }
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_identity_council_union
+			NOT = { has_government = communism }
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_identity_planned_utopia
+			NOT = { has_government = neutrality }
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_identity_closed_island
+			NOT = { has_government = fascism }
+		}
+	}
+}

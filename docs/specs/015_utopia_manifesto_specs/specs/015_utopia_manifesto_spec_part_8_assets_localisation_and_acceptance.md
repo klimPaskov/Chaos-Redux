@@ -14,7 +14,7 @@ Generated art is appropriate for:
 
 - fictional report events
 - route flags and emblems
-- institutional council portraits
+- people-free institutional leader tableaux
 - focus icons
 - idea icons
 - decision icons
@@ -199,6 +199,8 @@ Needed states:
 
 ### District cards
 
+District role cards and state overlays are presented together on the Ledger's Stores and Settlements page.
+
 Needed roles:
 
 - market garden
@@ -260,7 +262,7 @@ Purpose:
 
 Frame plan direction:
 
-- 6 to 8 separately created warning states
+- 8 separately created warning states
 - changing emptiness, cracking measure, or tightening supply symbol
 - static fallback
 - state-driven visibility
@@ -277,9 +279,12 @@ Purpose:
 
 Frame plan direction:
 
-- separate frame sequence for movement toward Choice
-- separate frame sequence for movement toward Assignment, or one reversible state set if the engine pattern supports it
-- 8 real source frames per sequence or a verified lower count with a documented reason
+- separate 8-frame source sequence for movement toward Choice
+- separate 8-frame source sequence for movement toward Assignment
+
+### Reserve-fill animation
+
+The Stores-page reserve gauge has one additional 8-frame source sequence. It is runtime presentation beyond the five required animation families and does not replace any required sequence.
 
 ### Formation-ready seal
 
@@ -308,7 +313,7 @@ Do not animate:
 - every calling icon
 - every advisor portrait
 
-Animated leader portraits are not part of the baseline asset requirement. The institutional identity can be communicated through static portraits and animated mechanic seals. A later improvement pass can add a route-specific animated council portrait only if it has a clear state and does not create asset bloat.
+Animated leader portraits are not part of the asset requirement. Institutional identity is communicated through static people-free tableaux and animated mechanic seals. Do not create an animated council portrait containing people as a substitute.
 
 ## Focus icon families
 
@@ -458,32 +463,24 @@ Decision category icons:
 
 ## Portrait family
 
-### Institutional portraits
+### Institutional leader tableaux
 
-Potential generated portraits:
+Required generated institutions:
 
 - Household Assembly
 - Council of Callings
 - Board of Measure
 - command or stewardship council
 
-Each portrait should show a clear governing body rather than a cluttered crowd.
+Each leader image represents the governing body through an empty chamber, council table, ledger, standards apparatus, stores, seals, tools, empty seats, or route emblems. No people, faces, heads, bodies, hands, crowds, silhouettes, statues, busts, mannequins, framed portraits, photographs, or human shadows are allowed.
 
-### Fictional personal leaders
+### Personal leaders
 
-Only required when implementation creates a personal route leader.
-
-Rules:
-
-- period-appropriate clothing
-- regional visual identity
-- apparent gender recorded
-- matching name pool
-- no generic office-title name for a one-person portrait
+Event 15 does not create a generated personal route leader. Practical Commonwealth preserves the saved surviving constitutional leader and existing portrait. The other four route identities use the institutional tableaux above.
 
 ### Advisors
 
-Advisor portraits can reuse existing country people when appropriate. Fictional new advisors need separate portrait direction and regional names.
+Each of the sixteen advisors requires its own fictional ImageGen portrait master and regional personal identity. A separate ImageGen dossier-frame overlay and separate ImageGen paper, paperclip, illegible-note, and wax-seal overlay provide the visible card artwork. The processing script may crop, grade, angle, derive alpha shadows, composite generated layers, resize, validate, and export. It must not programmatically draw the card, border, paper, seal, emblem, or visible overlay art. Advisor cards are `65x67`, are not square, and are not resized leader images.
 
 ## Flag family
 
@@ -504,6 +501,8 @@ Required route states:
 Additional ideology variants are required only when the route can retain more than one ideology after formation. They must use distinct designs.
 
 The event should not overwrite the original base flag before route transformation.
+
+Every active route flag must begin as a distinct built-in ImageGen heraldic design. Flags are flat identity designs and assets rather than narrative artwork, but they must not be replaced by simple programmatic shapes. Finishing may aspect-fit, resize, apply restrained colour and contrast adjustment, sharpen mildly, and validate preservation. It must not quantize, collapse to solid fills, trace, redraw, substitute motifs, impose a palette ceiling, or normalize away ImageGen-authored detail. Review source, normal, medium, and small versions together.
 
 ## Faction and league emblems
 
@@ -821,3 +820,51 @@ Ready-to-use prompts are provided in `prompts/subagents/`.
 - localisation audit passes.
 - mandatory improvement-loop pass is resolved.
 - event completion audit finds no undisclosed simplifications, fallbacks, missing assets, missing AI, stale docs, or unresolved accepted plans.
+
+## Current final presentation record
+
+This section is the current authority for the implemented Event 15 super-event, visual, localisation, and catalog presentation. It is not the final whole-event completion verdict. Earlier placeholder requests, two-image route proposals, and World Tension Subsides replacement language remain historical planning provenance only.
+
+### Super-event package
+
+The route presentation uses five display slots and five distinct 457x328 images:
+
+| Slot | Route presentation | Sprite |
+| ---: | --- | --- |
+| 96 | Consent of Households | `GFX_super_event_015_consent_of_households` |
+| 97 | Common Table | `GFX_super_event_015_common_table` |
+| 98 | Guardians of Measure | `GFX_super_event_015_guardians_of_measure` |
+| 99 | Closed Island | `GFX_super_event_015_closed_island` |
+| 100 | The Joke Understood | `GFX_super_event_015_joke_understood` |
+
+All five use the final title `UTOPIA HAS NEIGHBORS`, route-specific descriptions, Thomas More quotation text, and the response `Nowhere has a timetable.` The route effect selects the matching slot through Event 15 script constants.
+
+Audio ID 57 uses `super_event_57_utopia_has_neighbors`. The source is the Musopen performance of Johannes Brahms, *Symphony No. 3 in F major, Op. 90*, third movement, published through Wikimedia Commons under CC0. The frozen source, license evidence, hashes, edit record, music file, sound file, registries, and uniqueness proof are documented in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md` and `docs/super_events/super_event_audio_packages.md`.
+
+### Current visual inventory
+
+- 14 report-event images and 3 news-event images are registered.
+- Five route super-event images are registered in `interface/015_utopia_manifesto_super_event.gfx`.
+- 124 focus usages resolve to 74 unique focus sprites.
+- The decision map contains 174 rows, covering 9 categories, 121 decisions, and 44 missions.
+- There are 165 gameplay decision and mission icon assignments.
+- Fifty ideas resolve to 12 unique idea sprites.
+- Fourteen achievements have 42 active, complete, and failed variants.
+- Forty-six unique scripted-GUI sprite references resolve.
+- The static Ledger family contains 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays. District role and state art is paired on Stores and Settlements.
+- The five required animation families contain 8 Ledger-seal frames, 8 Need frames, 8 Choice frames, 8 Assignment frames, and 10 formation frames. The reserve-fill presentation contributes one additional 8-frame runtime family outside the required-family count.
+- The base Event 15 registry contains 459 sprite definitions and the route-super-event registry contains 5, for 464 total registrations with no duplicate names.
+
+The July 16 requirement-first asset report passes all `24/24` accepted rows. Its SHA-256 is `a05d4c53f2ff775754ecdc00f9ee26789da16a13a05c0146044b095ff6891f33`, and the requirement crosswalk SHA-256 is `8cf869a2f6f53ee9119a2bf2148c6eff4efae8c70ceae6c6d0e052f7dcae19bd`. Current final asset authority is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693`. It independently passes the advisor dossiers, active flag and institutional portrait packages, and the Choice and Assignment frame-by-frame packages. The current mapping CSV records 174 rows and 165 gameplay assignments. The older decision-mapping subsection of `final_icon_frame_audit.json` is superseded for those counts only.
+
+### Flags and portraits
+
+Every active route flag has a genuine built-in ImageGen source and a flat heraldic flag design in the runtime package. Twenty-one independent designs plus four intentional engine-lookup aliases produce 75 runtime TGAs. These are ImageGen-authored designs, not simple-shape substitutes. The finishing pipeline preserves generated geometry and tonal detail without quantization, tracing, primitive redraw, motif substitution, or a palette ceiling.
+
+Four people-free built-in ImageGen, vanilla-HOI4-style institutional tableaux are 156x210. Eight founder and successor institutional entries share those four images by durable institution. Sixteen advisors use distinct 65x67 dossier cards built from independent fictional ImageGen portrait masters plus separate generated frame and paper/seal overlays. Processor v5.0 only crops, grades, angles, derives alpha shadows, composites the generated layers, validates, and exports. It does not draw the advisor card. Advisor cards are not square portraits or resized institutional leaders.
+
+### Localisation and audit state
+
+The final English-localisation gate passes at the static-source level. Its nine Event 15-owned files contain 2,480 quoted definitions, 2,480 exact unique keys, and 2,480 case-folded unique keys. No duplicate, missing, or unaccounted orphan key remains across the audited event, focus, decision, mission, category, idea, character, achievement, identity, Ledger, scripted-localisation, super-event, and formation-name surfaces. The audit renamed two founding idea IDs to explicit `_idea` suffixes to remove case-only collisions with stable cosmetic identity keys. It also normalized six player-facing definitions without changing their requirements, costs, or outcomes. The report is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17`.
+
+The live Ledger vocabulary is Need, Plenty, Concord, and Choice versus Assignment. `Surplus` remains only in historical working labels or stable engine-facing identifiers. Player-visible implementation-language families are absent from the final scan. The current workbook SHA-256 is `ed52b1f3ee3f0e602b3cc6a4b5fd7bc0d340445a3c085c6c8531fbcd2c0430f4`. Fresh read-only proof in `spreadsheet_current_hash_followup_2026_07_18.md`, SHA-256 `e0ba36c5805e0aca01b6bf74fec4f6dc29a24aecf4a3ec36382c334e5c741bd1`, confirms 13/13 parity for `Events!A16:M16` and normalized row SHA-256 `e330489603bd739e64fc356b8bb79498c4a34d54433f28cda4c2ba459dadab1e`. The older spreadsheet and localisation audit workbook snapshot `729e48a3135094d210b70e74ce3694ff0b66dbd5d2bc448051db931a41f4bd80` is pre-drift but Event 15-row-equivalent. Localisation `\\n` is decoded to workbook LF characters for the details comparison. The current focus, country, decision, localisation, asset, catalog, improvement-loop, and independent documentation evidence passes. The fresh whole-event completion audit also passes in `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`, with 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2`. It closes the final acceptance gate with no open P0 through P3 finding, fallback, simplification, omission, blocker, or queued accepted plan.
