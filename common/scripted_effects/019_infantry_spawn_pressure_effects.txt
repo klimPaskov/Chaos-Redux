@@ -94,20 +94,61 @@ infantry_spawn_recalculate_anomalous_saturation = {
 	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_claimant_anomalous_lot_count }
 	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.per_claimant_lot }
 	add_to_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
-	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_request_count_generation }
+	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_anomalous_request_count }
 	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.per_request }
 	add_to_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
 	if = {
-		limit = { has_country_flag = infantry_spawn_anomalous_cantonment_active }
-		subtract_from_variable = { infantry_spawn_anomalous_saturation = constant:infantry_spawn_saturation.cantonment_relief }
+		limit = { has_variable = infantry_spawn_evolution_saturation_pressure }
+		add_to_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_evolution_saturation_pressure }
 	}
-	if = {
-		limit = { has_country_flag = infantry_spawn_restricted_deployment_active }
-		subtract_from_variable = { infantry_spawn_anomalous_saturation = constant:infantry_spawn_saturation.restricted_deployment_relief }
+	set_temp_variable = { infantry_spawn_active_cantonment_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_active_restricted_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_active_sustainment_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_active_containment_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_pressure_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_pressure_scan_index value = infantry_spawn_family_management_action_entries^num compare = less_than } }
+		if = {
+			limit = {
+				check_variable = { var = infantry_spawn_family_management_until_date_entries^infantry_spawn_pressure_scan_index value = global.date compare = greater_than }
+			}
+			if = {
+				limit = { check_variable = { var = infantry_spawn_family_management_action_entries^infantry_spawn_pressure_scan_index value = constant:infantry_spawn_family_management_action.cantonment compare = equals } }
+				add_to_temp_variable = { infantry_spawn_active_cantonment_count = 1 }
+			}
+			else_if = {
+				limit = { check_variable = { var = infantry_spawn_family_management_action_entries^infantry_spawn_pressure_scan_index value = constant:infantry_spawn_family_management_action.restricted_deployment compare = equals } }
+				add_to_temp_variable = { infantry_spawn_active_restricted_count = 1 }
+			}
+			else_if = {
+				limit = { check_variable = { var = infantry_spawn_family_management_action_entries^infantry_spawn_pressure_scan_index value = constant:infantry_spawn_family_management_action.sustainment compare = equals } }
+				add_to_temp_variable = { infantry_spawn_active_sustainment_count = 1 }
+			}
+			else_if = {
+				limit = { check_variable = { var = infantry_spawn_family_management_action_entries^infantry_spawn_pressure_scan_index value = constant:infantry_spawn_family_management_action.containment compare = equals } }
+				add_to_temp_variable = { infantry_spawn_active_containment_count = 1 }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_pressure_scan_index = 1 }
 	}
+	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_active_sustainment_count }
+	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.sustainment_gain }
+	add_to_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
+	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_active_cantonment_count }
+	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.cantonment_relief }
+	subtract_from_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
+	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_active_restricted_count }
+	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.restricted_deployment_relief }
+	subtract_from_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
+	set_temp_variable = { infantry_spawn_pressure_component = infantry_spawn_active_containment_count }
+	multiply_temp_variable = { infantry_spawn_pressure_component = constant:infantry_spawn_saturation.containment_success_relief }
+	subtract_from_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_pressure_component }
 	if = {
-		limit = { has_country_flag = infantry_spawn_containment_completed }
-		subtract_from_variable = { infantry_spawn_anomalous_saturation = constant:infantry_spawn_saturation.containment_success_relief }
+		limit = {
+			has_variable = infantry_spawn_scenario_saturation_floor
+			check_variable = { var = infantry_spawn_anomalous_saturation value = infantry_spawn_scenario_saturation_floor compare = less_than }
+		}
+		set_variable = { infantry_spawn_anomalous_saturation = infantry_spawn_scenario_saturation_floor }
 	}
 	clamp_variable = {
 		var = infantry_spawn_anomalous_saturation
@@ -115,6 +156,94 @@ infantry_spawn_recalculate_anomalous_saturation = {
 		max = constant:infantry_spawn_saturation.maximum
 	}
 	clear_temp_array = infantry_spawn_active_anomalous_family_ids
+}
+
+# Selects the strongest locally present derivative-capable registry family.
+# The selection is deterministic by pressure, then live formation count, so a
+# future provider needs only its aligned registry entry and callbacks.
+infantry_spawn_select_natural_derivative_revolt_candidate = {
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_registry_index = constant:infantry_spawn_event.invalid_index }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_family_id = constant:infantry_spawn_lot_family.none }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_provider_id = constant:infantry_spawn_lot_family.none }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_pressure = constant:infantry_spawn_event.invalid_index }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_division_count = constant:infantry_spawn_weight_result.zero }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_uid = constant:infantry_spawn_weight_result.zero }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_influence = constant:infantry_spawn_weight_result.zero }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_archetype = constant:infantry_spawn_weight_result.zero }
+	set_temp_variable = { infantry_spawn_natural_derivative_selected_origin_generation_uid = constant:infantry_spawn_weight_result.zero }
+	if = {
+		limit = { infantry_spawn_natural_family_candidate_selection_is_safe = yes }
+		set_temp_variable = { chaos_unit_family_registry_index = constant:chaos_unit_family_registry.first_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = chaos_unit_family_registry_index
+					value = global.chaos_unit_family_id_entries^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = { infantry_spawn_current_registry_row_can_form_derivative = yes }
+				infantry_spawn_evaluate_current_registry_row = yes
+				if = {
+					limit = { check_variable = { chaos_unit_family_candidate_eligible > constant:infantry_spawn_weight_result.zero } }
+					set_temp_variable = { infantry_spawn_current_family_id = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index }
+					set_temp_variable = { infantry_spawn_current_registry_provider_id = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index }
+					infantry_spawn_calculate_current_family_state = yes
+					set_temp_variable = { infantry_spawn_family_dispersible_division_count = infantry_spawn_family_live_division_count }
+					subtract_from_temp_variable = { infantry_spawn_family_dispersible_division_count = infantry_spawn_family_claimant_loyal_division_count }
+					set_temp_variable = { infantry_spawn_natural_derivative_current_division_count = infantry_spawn_family_live_division_count }
+					if = {
+						limit = { check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family } }
+						set_temp_variable = { infantry_spawn_natural_derivative_current_division_count = infantry_spawn_family_dispersible_division_count }
+					}
+					if = {
+						limit = {
+							OR = {
+								AND = {
+									check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family }
+									infantry_spawn_natural_current_registry_row_can_form_independent_breach = yes
+								}
+								AND = {
+									NOT = { check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family } }
+									infantry_spawn_natural_current_registry_row_can_form_derivative = yes
+								}
+							}
+							OR = {
+								check_variable = { infantry_spawn_family_current_pressure > infantry_spawn_natural_derivative_selected_pressure }
+								AND = {
+									check_variable = { var = infantry_spawn_family_current_pressure value = infantry_spawn_natural_derivative_selected_pressure compare = equals }
+									check_variable = { infantry_spawn_natural_derivative_current_division_count > infantry_spawn_natural_derivative_selected_division_count }
+								}
+							}
+						}
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_registry_index = chaos_unit_family_registry_index }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_family_id = infantry_spawn_current_family_id }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_provider_id = infantry_spawn_current_registry_provider_id }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_pressure = infantry_spawn_family_current_pressure }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_division_count = infantry_spawn_natural_derivative_current_division_count }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_uid = infantry_spawn_family_primary_claimant_uid }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_influence = infantry_spawn_family_primary_claimant_influence }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_archetype = infantry_spawn_family_primary_claimant_archetype }
+						set_temp_variable = { infantry_spawn_natural_derivative_selected_origin_generation_uid = infantry_spawn_family_latest_generation_uid }
+					}
+				}
+			}
+			add_to_temp_variable = { chaos_unit_family_registry_index = constant:infantry_spawn_weight_result.one }
+		}
+	}
+	# Independent family breaches deliberately discard any primary claimant
+	# reported by family-state calculation. The exact set is family-only and the
+	# actor receives the registered council or family leadership profile.
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family }
+			check_variable = { infantry_spawn_natural_derivative_selected_registry_index > constant:infantry_spawn_event.invalid_index }
+		}
+		set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_uid = constant:infantry_spawn_event.invalid_uid }
+		set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_influence = constant:infantry_spawn_weight_result.zero }
+		set_temp_variable = { infantry_spawn_natural_derivative_selected_claimant_archetype = constant:infantry_spawn_weight_result.zero }
+	}
 }
 
 infantry_spawn_remove_staged_pressure_ideas = {

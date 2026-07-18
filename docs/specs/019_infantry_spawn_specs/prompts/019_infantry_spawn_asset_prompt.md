@@ -19,7 +19,7 @@ Read the event asset skill, frame animation skill, and the bounded source files 
 
 Split production by asset type.
 
-- Use `chaosx_generated_event_art` for fictional report and news scenes, the 20 fictional claimant portraits, derivative leader or council portraits, fictional flags, and GUI background art.
+- Use `chaosx_generated_event_art` for fictional report and news scenes, the 20 claimant army/muster identity scenes delivered through fixed portrait slots, six derivative massed-host identity scenes, fictional flags, and GUI background art.
 - Use `chaosx_icon_artist` for decision, decision-category, idea, national-spirit, focus, achievement, warning, meter, seal, and small animated UI assets.
 - Do not use generated art for a real historical person or attested historical flag. This source design does not require either. Mark any later real-person or historical-symbol addition for `chaosx_asset_source_researcher`.
 - Animated work must follow `chaos-redux-frame-animation` with real separate source frames.
@@ -76,7 +76,7 @@ Required report scenes at 210 by 176 after processing:
 1. initial manifestation across a rail siding, schoolyard, depot, or town square, with recruits, horses, trucks, and guns visibly mismatched
 2. organized muster with coherent columns and an unexplained parallel staff
 3. arsenal lottery with serious incompatible vehicles and infantry occupying one logistics site
-4. claimant emergence with a frightening fictional commander inspecting a mixed formation
+4. claimant emergence shown through a mixed formation realigning around an impossible command order, with no individual commander as the focal subject
 5. anomalous muster showing bounded ordinary, zombie, ghost, and golem visual cues without copying parent-event imagery
 6. zombie derivative release and defeat
 7. ghost derivative release and defeat
@@ -86,39 +86,43 @@ Use the repository report-event processing script and house style. Preserve sour
 
 Use 397 by 153 black-and-white news images only when implementation confirms that derivative release or regional dominance receives a news event. Do not create unused news assets blindly.
 
-## Twenty claimant portraits
+## Twenty claimant army/muster identity scenes
 
-Create all 20 fictional portraits in `matrices/019_possessed_general_matrix.md`.
+Create all 20 fictional army/muster scenes in `matrices/019_possessed_general_matrix.md`. Preserve the fixed technical portrait filenames and sprite identifiers.
 
 Requirements:
 
 - final 156 by 210
-- HOI4-style bust or upper torso
-- period-appropriate regional military or improvised command clothing
-- severe, uncanny, or possessed identity
-- subtle supernatural disturbance
+- HOI4-style vertical army/muster identity composition
+- period-appropriate regional troops, logistics, terrain, transport, guns, animals, craft, or field infrastructure
+- a distinct formation geometry and operational posture for every slot
+- severe, uncanny, or possessed collective identity with subtle supernatural disturbance
 - no gore-centered caricature
 - no text or watermark
-- strong face readability
-- 10 male-presenting and 10 female-presenting
-- record presentation and matching regional name-pool requirement in every manifest entry
+- no individual focal human/person, readable face, bust, officer, or commander
+- no real national/state/party emblem or copied historical identity
+- strong massed-army silhouette at runtime size
+- retain all 20 male gameplay claimant profiles and matching regional male name-pool requirements as metadata, without depicting the named person
+- record the region/profile binding and scene identity in every manifest entry
 
-These portraits are static. Do not create animated versions.
+These fixed portrait-slot scenes are static. Do not create animated versions.
 
-## Derivative leaders and councils
+The no-focal-person rule is scoped to the 27 fixed identity slots and any Event 19 UI, scenario, or authority display that reuses them. Independent report, focus, decision, and achievement illustrations remain governed by their own briefs and never serve as claimant, commander, council, or derivative identity art.
+
+## Derivative host and council-as-massed-entities scenes
 
 Produce a bounded reusable set after implementation confirms the final leader model.
 
 Minimum plan:
 
-- one zombie claimant-independent fictional leader
-- one zombie collective or symbolic council portrait
-- one ghost claimant-independent fictional or spectral leader
-- one ghost collective or symbolic council portrait
-- one golem claimant-independent fictional master-builder or construct leader
-- one golem collective or symbolic council portrait
+- one massed zombie army wall for the commander-labelled slot
+- one zombie council expressed as exactly three undead legion masses
+- one massed spectral spearhead for the ghost commander-labelled slot
+- one ghost council expressed as exactly three genderless spectral formations
+- one collective quarry builder-host for the golem master-builder-labelled slot
+- one golem council expressed as exactly three geological cohorts
 
-One-person portraits need gender presentation and matching name-pool notes. Collective portraits use institutional names.
+All six slots depict hosts, never individual leaders, councillors, people, faces, busts, or anthropomorphic close-ups. Commander/master-builder labels are gameplay and technical identifiers. Council slots use institutional names and exactly three massed formations/cohorts.
 
 ## Flags
 
@@ -182,7 +186,7 @@ Create only the artwork required by the final layout:
 - overview header
 - formation lot card states
 - quality and coherence markers
-- command portrait frame states
+- command army/muster identity-scene frame states
 - registry family card states
 - cost, warning, cooldown, and invalid-target markers
 
@@ -203,7 +207,7 @@ Create three final frame-sheet packages.
 ### Critical command border
 
 - 8 real source frames
-- target fits the claimant portrait panel
+- target fits the claimant army/muster identity-scene panel while retaining the fixed portrait-slot dimensions
 - 5 to 7 frames per second
 - looping while revolt risk is critical
 
@@ -274,7 +278,7 @@ Every asset entry must record:
 - sprite name
 - target GFX file
 - status
-- presentation and name-pool note for one-person portraits
+- region/profile and male gameplay name-pool note for claimant identity scenes
 - frame data for animations
 - uncertainty or blocker
 

@@ -12,16 +12,47 @@
 # ---------------------------------------------------------------------------
 
 infantry_spawn_calculate_selected_state_target = {
-	# selected = round(N * (asymptotic + variable / (1 + (N - 1) / scale)))
-	set_temp_variable = { infantry_spawn_coverage_decay = infantry_spawn_eligible_state_count }
-	subtract_from_temp_variable = { infantry_spawn_coverage_decay = 1 }
-	divide_temp_variable = { infantry_spawn_coverage_decay = constant:infantry_spawn_coverage.decay_scale_states }
-	add_to_temp_variable = { infantry_spawn_coverage_decay = 1 }
-	set_temp_variable = { infantry_spawn_current_coverage_share = constant:infantry_spawn_coverage.variable_share }
-	divide_temp_variable = { infantry_spawn_current_coverage_share = infantry_spawn_coverage_decay }
-	add_to_temp_variable = { infantry_spawn_current_coverage_share = constant:infantry_spawn_coverage.asymptotic_share }
-	set_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_eligible_state_count }
-	multiply_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_current_coverage_share }
+	# Continuous count-space ladder with joined anchors and decreasing marginal
+	# additions. Selected-state count never falls at a boundary, has no cap, and
+	# converges toward a 25-percent share for continental empires.
+	if = {
+		limit = { check_variable = { infantry_spawn_eligible_state_count < constant:infantry_spawn_coverage_threshold.regional_start } }
+		set_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_eligible_state_count }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_eligible_state_count < constant:infantry_spawn_coverage_threshold.medium_start } }
+		set_temp_variable = { infantry_spawn_coverage_growth = infantry_spawn_eligible_state_count }
+		subtract_from_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage_threshold.regional_start }
+		multiply_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.regional_growth_numerator }
+		divide_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.regional_growth_denominator }
+		set_temp_variable = { infantry_spawn_selected_state_target = constant:infantry_spawn_coverage.regional_base_selected }
+		add_to_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_coverage_growth }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_eligible_state_count < constant:infantry_spawn_coverage_threshold.large_start } }
+		set_temp_variable = { infantry_spawn_coverage_growth = infantry_spawn_eligible_state_count }
+		subtract_from_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage_threshold.medium_start }
+		multiply_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.medium_growth_numerator }
+		divide_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.medium_growth_denominator }
+		set_temp_variable = { infantry_spawn_selected_state_target = constant:infantry_spawn_coverage.medium_base_selected }
+		add_to_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_coverage_growth }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_eligible_state_count < constant:infantry_spawn_coverage_threshold.continental_start } }
+		set_temp_variable = { infantry_spawn_coverage_growth = infantry_spawn_eligible_state_count }
+		subtract_from_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage_threshold.large_start }
+		multiply_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.large_growth_numerator }
+		divide_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.large_growth_denominator }
+		set_temp_variable = { infantry_spawn_selected_state_target = constant:infantry_spawn_coverage.large_base_selected }
+		add_to_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_coverage_growth }
+	}
+	else = {
+		set_temp_variable = { infantry_spawn_coverage_growth = infantry_spawn_eligible_state_count }
+		subtract_from_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage_threshold.continental_start }
+		multiply_temp_variable = { infantry_spawn_coverage_growth = constant:infantry_spawn_coverage.continental_growth_share }
+		set_temp_variable = { infantry_spawn_selected_state_target = constant:infantry_spawn_coverage.continental_base_selected }
+		add_to_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_coverage_growth }
+	}
 	round_temp_variable = infantry_spawn_selected_state_target
 	clamp_temp_variable = {
 		var = infantry_spawn_selected_state_target
@@ -72,7 +103,11 @@ infantry_spawn_score_current_state = {
 		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.major_port }
 	}
 	if = {
-		limit = { OR = { terrain = urban state_population_k > constant:infantry_spawn_state_threshold.high_population_k } }
+		limit = { terrain = urban }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.urban }
+	}
+	if = {
+		limit = { state_population_k > constant:infantry_spawn_state_threshold.high_population_k }
 		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.high_population }
 	}
 	if = {
@@ -166,6 +201,7 @@ infantry_spawn_select_native_registered_family = {
 					chaos_unit_family_current_row_is_enabled = yes
 					chaos_unit_family_current_row_allows_event19_family_lot = yes
 					chaos_unit_family_current_row_can_spawn = yes
+					chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
 				}
 				infantry_spawn_evaluate_current_registry_row = yes
 				if = {
@@ -201,6 +237,7 @@ infantry_spawn_select_native_registered_family = {
 					chaos_unit_family_current_row_is_enabled = yes
 					chaos_unit_family_current_row_allows_event19_family_lot = yes
 					chaos_unit_family_current_row_can_spawn = yes
+					chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
 				}
 				infantry_spawn_evaluate_current_registry_row = yes
 				if = {
@@ -259,6 +296,7 @@ infantry_spawn_recalculate_country_pressure = {
 	}
 	infantry_spawn_recalculate_anomalous_saturation = yes
 	infantry_spawn_apply_staged_ideas = yes
+	infantry_spawn_reconcile_participant_evolution_memberships = yes
 }
 
 infantry_spawn_schedule_country_pulse = {
@@ -321,6 +359,7 @@ infantry_spawn_prepare_request_generation_context = {
 			add_to_variable = { infantry_spawn_generation = 1 }
 			add_to_variable = { infantry_spawn_unresolved_generation_count = 1 }
 			set_variable = { infantry_spawn_request_count_generation = 0 }
+			set_variable = { infantry_spawn_anomalous_request_count = 0 }
 			set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.arsenal_lottery }
 			set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.arsenal }
 			if = {
@@ -368,6 +407,7 @@ infantry_spawn_begin_country_generation = {
 		add_to_variable = { infantry_spawn_generation = 1 }
 		add_to_variable = { infantry_spawn_unresolved_generation_count = 1 }
 		set_variable = { infantry_spawn_request_count_generation = 0 }
+		set_variable = { infantry_spawn_anomalous_request_count = 0 }
 		set_country_flag = infantry_spawn_generation_audit_active
 		infantry_spawn_choose_current_generation_profile = yes
 		set_variable = { infantry_spawn_country_stage = infantry_spawn_current_evolution_stage }
@@ -439,24 +479,168 @@ infantry_spawn_fire_manifestation = {
 	add_to_variable = { global.infantry_spawn_generation = 1 }
 	set_global_flag = infantry_spawn_system_started
 	set_global_flag = infantry_spawn_event_has_fired
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = infantry_spawn_evolution_counters_ready }
+				has_global_flag = infantry_spawn_evolution_counter_invariant_failure
+			}
+		}
+		infantry_spawn_begin_evolution_counter_rebuild = yes
+	}
 	set_temp_variable = { infantry_spawn_countries_processed_this_generation = 0 }
 	set_temp_variable = { infantry_spawn_formations_before_generation = global.infantry_spawn_total_formations }
 	every_country = {
-		limit = { infantry_spawn_country_can_receive_generation = yes }
-		infantry_spawn_initialize_country_system = yes
-		infantry_spawn_apply_prefire_evolution_entry = yes
+		infantry_spawn_reconcile_world_evolution_memberships = yes
+		infantry_spawn_reconcile_participant_evolution_memberships = yes
 		if = {
-			limit = { infantry_spawn_has_evolution_iii = yes }
-			infantry_spawn_initialize_command_fracture_entry = yes
+			limit = { infantry_spawn_country_can_receive_generation = yes }
+			if = {
+				limit = { infantry_spawn_derivative_package_is_active = yes }
+				infantry_spawn_derivative_process_global_manifestation = yes
+			}
+			else = {
+				infantry_spawn_initialize_country_system = yes
+				infantry_spawn_apply_prefire_evolution_entry = yes
+				if = {
+					limit = { infantry_spawn_has_evolution_iii = yes }
+					infantry_spawn_initialize_command_fracture_entry = yes
+				}
+				else = { infantry_spawn_begin_country_generation = yes }
+			}
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.nr19.2 days = 1 }
+			}
+			if = {
+				limit = { infantry_spawn_contributes_to_ordinary_evolution_history = yes }
+				add_to_temp_variable = { infantry_spawn_countries_processed_this_generation = 1 }
+			}
 		}
-		else = { infantry_spawn_begin_country_generation = yes }
-		if = {
-			limit = { is_ai = no }
-			country_event = { id = chaosx.nr19.2 days = 1 }
-		}
-		add_to_temp_variable = { infantry_spawn_countries_processed_this_generation = 1 }
+	}
+	infantry_spawn_validate_evolution_counter_state = yes
+	if = {
+		limit = { has_global_flag = infantry_spawn_evolution_counters_ready }
+		infantry_spawn_ensure_evolution_check_is_scheduled = yes
 	}
 	set_variable = { global.infantry_spawn_last_generation_country_count = infantry_spawn_countries_processed_this_generation }
 	set_variable = { global.infantry_spawn_last_generation_formation_count = global.infantry_spawn_total_formations }
 	subtract_from_variable = { global.infantry_spawn_last_generation_formation_count = infantry_spawn_formations_before_generation }
+}
+
+# ---------------------------------------------------------------------------
+# Event Log country follow-ups
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Input: infantry_spawn_history_payload_value and optional
+# Event Log secondary-actor override temporaries. The normal Event 19 firing
+# count and last-fired display are restored after appending the history row.
+infantry_spawn_record_country_followup_history = {
+	set_temp_variable = { infantry_spawn_history_previous_last_event_id = global.last_fired_event_id }
+	set_temp_variable = { events_log_history_payload_override = infantry_spawn_history_payload_value }
+	set_temp_variable = { events_log_history_payload_override_active = 1 }
+	set_temp_variable = { events_log_history_actor_override = THIS }
+	set_temp_variable = { events_log_history_actor_override_active = 1 }
+	set_variable = { global.last_fired_event_id = constant:infantry_spawn_event.id }
+	record_events_log_history_entry = yes
+	set_variable = { global.last_fired_event_id = infantry_spawn_history_previous_last_event_id }
+}
+
+infantry_spawn_record_claimant_appearance_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.claimant_appearance }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_claimant_takeover_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.claimant_takeover }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_failed_coup_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.failed_coup }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_first_family_cantonment_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.first_family_cantonment }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_first_family_negotiated_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.first_family_negotiated }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_first_family_refused_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.first_family_refused }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_first_family_reception_failed_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.first_family_reception_failed }
+	infantry_spawn_record_country_followup_history = yes
+}
+
+# COUNTRY scope on the newly created actor. The persistent former-parent scope
+# variable becomes the secondary actor without changing either country's event
+# counters, wars, casualties, or parent-event progression.
+infantry_spawn_record_derivative_revolt_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	if = {
+		limit = { has_country_flag = infantry_spawn_claimant_breakaway }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.claimant_revolt }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_zombie_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.zombie_revolt }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_ghost_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.ghost_revolt }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_golem_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.golem_revolt }
+	}
+	else = { set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.anomalous_revolt } }
+	if = {
+		limit = { has_variable = infantry_spawn_derivative_former_parent }
+		set_temp_variable = { events_log_history_secondary_actor_override = infantry_spawn_derivative_former_parent }
+		set_temp_variable = { events_log_history_secondary_actor_override_active = 1 }
+	}
+	infantry_spawn_record_country_followup_history = yes
+}
+
+infantry_spawn_record_derivative_defeat_history = {
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+	if = {
+		limit = { has_country_flag = infantry_spawn_claimant_breakaway }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.claimant_defeat }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_zombie_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.zombie_defeat }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_ghost_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.ghost_defeat }
+	}
+	else_if = {
+		limit = { is_infantry_spawn_golem_derivative_country = yes }
+		set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.golem_defeat }
+	}
+	else = { set_temp_variable = { infantry_spawn_history_payload_value = constant:infantry_spawn_history_payload.anomalous_defeat } }
+	if = {
+		limit = { has_variable = infantry_spawn_derivative_defeated_by }
+		set_temp_variable = { events_log_history_secondary_actor_override = infantry_spawn_derivative_defeated_by }
+		set_temp_variable = { events_log_history_secondary_actor_override_active = 1 }
+	}
+	infantry_spawn_record_country_followup_history = yes
 }

@@ -27,6 +27,7 @@ Deaths are currently registered from:
 6. Genocide crisis camp, gulag, experiment-site, biowarfare experiment-site, and restricted chemical site monthly processing.
 7. Event 20 Black Plague state mortality through the exact state-population transaction.
 8. Fallout's one-time grade-based state loss through an observed post-mutation Deaths transaction.
+9. Event 19 ghost-derivative decline through its long-cadence exact state-population transaction.
 
 Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
 
@@ -92,6 +93,11 @@ Genocide crisis helpers:
 These helpers route state population loss through the same Chaos Meter Deaths pipeline used by chemical and biological contamination systems.
 
 Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. Stored before, after, and delta receipts cover the global Deaths total, Deaths log sequence, and state Deaths ledger. When the optional Deaths display is disabled, the exact state mutation still occurs and the receipt records a disabled accounting outcome with zero Deaths-ledger movement.
+
+Event 19 ghost decline uses Deaths reason `20`, `infantry_spawn_ghost_decline`,
+and a `0.10` deaths-to-chaos weight. It records the real population loss once
+through the shared pipeline while keeping the cause separate from Event 10's
+`death_consumption` attribution and progression.
 
 ## Icons and GFX Wiring
 

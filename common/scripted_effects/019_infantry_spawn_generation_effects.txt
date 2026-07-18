@@ -68,6 +68,31 @@ infantry_spawn_prepare_current_state_context = {
 }
 
 infantry_spawn_add_current_family_candidate = {
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_incident_preserved_depot_affinity
+			check_variable = { infantry_spawn_current_candidate_profile > constant:infantry_spawn_lot_family.composite_territorial_division }
+			check_variable = { infantry_spawn_current_candidate_profile < constant:infantry_spawn_lot_family.fully_random }
+		}
+		add_to_temp_variable = { infantry_spawn_current_candidate_weight = constant:infantry_spawn_incident.advanced_affinity_weight }
+	}
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_incident_mounted_tradition_affinity
+			check_variable = { infantry_spawn_current_candidate_profile = constant:infantry_spawn_lot_family.mounted_patrol }
+		}
+		add_to_temp_variable = { infantry_spawn_current_candidate_weight = constant:infantry_spawn_incident.mounted_affinity_weight }
+	}
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_incident_motor_standardization_affinity
+			OR = {
+				check_variable = { infantry_spawn_current_candidate_profile = constant:infantry_spawn_lot_family.mobile_reserve }
+				check_variable = { infantry_spawn_current_candidate_profile = constant:infantry_spawn_lot_family.motor_rifle_formation }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_current_candidate_weight = constant:infantry_spawn_incident.motor_affinity_weight }
+	}
 	multiply_temp_variable = { infantry_spawn_current_candidate_weight = infantry_spawn_current_pool_scale }
 	round_temp_variable = infantry_spawn_current_candidate_weight
 	if = {
@@ -369,24 +394,24 @@ infantry_spawn_roll_weighted_five = {
 	add_to_temp_variable = { infantry_spawn_weight_total = infantry_spawn_weight_four }
 	add_to_temp_variable = { infantry_spawn_weight_total = infantry_spawn_weight_five }
 	set_temp_variable = { infantry_spawn_weight_roll_max = infantry_spawn_weight_total }
-	add_to_temp_variable = { infantry_spawn_weight_roll_max = 1 }
-	set_temp_variable_to_random = { var = infantry_spawn_weight_roll min = 1 max = infantry_spawn_weight_roll_max integer = yes }
-	set_temp_variable = { infantry_spawn_weight_result = 1 }
+	add_to_temp_variable = { infantry_spawn_weight_roll_max = constant:infantry_spawn_weight_result.one }
+	set_temp_variable_to_random = { var = infantry_spawn_weight_roll min = constant:infantry_spawn_weight_result.one max = infantry_spawn_weight_roll_max integer = yes }
+	set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.one }
 	if = {
 		limit = { check_variable = { var = infantry_spawn_weight_roll value = infantry_spawn_weight_one compare = greater_than } }
 		subtract_from_temp_variable = { infantry_spawn_weight_roll = infantry_spawn_weight_one }
-		set_temp_variable = { infantry_spawn_weight_result = 2 }
+		set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.two }
 		if = {
 			limit = { check_variable = { var = infantry_spawn_weight_roll value = infantry_spawn_weight_two compare = greater_than } }
 			subtract_from_temp_variable = { infantry_spawn_weight_roll = infantry_spawn_weight_two }
-			set_temp_variable = { infantry_spawn_weight_result = 3 }
+			set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.three }
 			if = {
 				limit = { check_variable = { var = infantry_spawn_weight_roll value = infantry_spawn_weight_three compare = greater_than } }
 				subtract_from_temp_variable = { infantry_spawn_weight_roll = infantry_spawn_weight_three }
-				set_temp_variable = { infantry_spawn_weight_result = 4 }
+				set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.four }
 				if = {
 					limit = { check_variable = { var = infantry_spawn_weight_roll value = infantry_spawn_weight_four compare = greater_than } }
-					set_temp_variable = { infantry_spawn_weight_result = 5 }
+					set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.five }
 				}
 			}
 		}
@@ -394,11 +419,11 @@ infantry_spawn_roll_weighted_five = {
 }
 
 infantry_spawn_roll_weighted_four = {
-	set_temp_variable = { infantry_spawn_weight_five = 0 }
+	set_temp_variable = { infantry_spawn_weight_five = constant:infantry_spawn_weight_result.zero }
 	infantry_spawn_roll_weighted_five = yes
 	if = {
-		limit = { check_variable = { infantry_spawn_weight_result > 4 } }
-		set_temp_variable = { infantry_spawn_weight_result = 4 }
+		limit = { check_variable = { infantry_spawn_weight_result > constant:infantry_spawn_weight_result.four } }
+		set_temp_variable = { infantry_spawn_weight_result = constant:infantry_spawn_weight_result.four }
 	}
 }
 
@@ -659,11 +684,11 @@ infantry_spawn_build_ordinary_template_101 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.local_rifle_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.local_rifle_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
 
@@ -686,7 +711,7 @@ infantry_spawn_build_ordinary_template_102 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.irregular_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -710,7 +735,7 @@ infantry_spawn_build_ordinary_template_103 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.cavalry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.mounted_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -737,11 +762,11 @@ infantry_spawn_build_ordinary_template_104 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.light_gun_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_brigade }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.light_gun_artillery }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -770,17 +795,17 @@ infantry_spawn_build_ordinary_template_105 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.support_rich_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.engineer }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.recon }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 2 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.third }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -801,7 +826,7 @@ infantry_spawn_build_ordinary_template_106 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.garrison_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -830,14 +855,14 @@ infantry_spawn_build_ordinary_template_201 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.line_infantry_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 3 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.line_infantry_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -865,18 +890,18 @@ infantry_spawn_build_ordinary_template_202 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.gun_line_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.gun_line_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_brigade }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 2 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.third }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.gun_line_artillery }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -926,11 +951,11 @@ infantry_spawn_build_ordinary_template_203 = {
 		}
 		set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.cavalry }
 	}
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.mobile_reserve_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.mobile_reserve_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
 
@@ -959,17 +984,17 @@ infantry_spawn_build_ordinary_template_204 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.engineer_reserve_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.engineer_reserve_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.engineer }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.logistics_company }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -995,15 +1020,15 @@ infantry_spawn_build_ordinary_template_205 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.anti_armor_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_tank_brigade }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.anti_armor_line }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_tank_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -1029,15 +1054,15 @@ infantry_spawn_build_ordinary_template_206 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.air_defense_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_air_brigade }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.air_defense_line }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_air_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -1064,11 +1089,11 @@ infantry_spawn_build_ordinary_template_207 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.composite_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.cavalry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.composite_cavalry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1094,11 +1119,11 @@ infantry_spawn_build_ordinary_template_301 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.light_armor }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.armored_reserve_tanks }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.mechanized }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.armored_reserve_mechanized }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1123,7 +1148,7 @@ infantry_spawn_build_ordinary_template_302 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.mechanized }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.mechanized_column_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1150,11 +1175,11 @@ infantry_spawn_build_ordinary_template_303 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.motorized }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.motor_rifle_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 2 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.motor_rifle_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
 
@@ -1180,11 +1205,11 @@ infantry_spawn_build_ordinary_template_304 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.assault_gun_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.light_armor }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.assault_gun_artillery }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1210,11 +1235,11 @@ infantry_spawn_build_ordinary_template_305 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.armored_car }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 5 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.armored_car_primary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
-	set_temp_variable = { infantry_spawn_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
+	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.armored_car_secondary_column }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
 
@@ -1237,11 +1262,11 @@ infantry_spawn_build_ordinary_template_306 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.air_mobile_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.helicopter_brigade }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -1264,7 +1289,7 @@ infantry_spawn_build_ordinary_template_307 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.amphibious_mechanized }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.amphibious_reserve_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1294,23 +1319,23 @@ infantry_spawn_build_ordinary_template_308 = {
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 	}
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.infantry }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.heavy_support_infantry }
 	infantry_spawn_append_current_combat_column_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.engineer }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.recon }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 1 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.second }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.artillery_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 2 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.third }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_tank_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 3 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.fourth }
 	infantry_spawn_append_current_support_manifest = yes
 	set_temp_variable = { infantry_spawn_manifest_component_profile = constant:infantry_spawn_component_token.anti_air_support }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 4 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.fifth }
 	infantry_spawn_append_current_support_manifest = yes
 }
 
@@ -1403,25 +1428,33 @@ infantry_spawn_build_single_arm_cars = {
 }
 
 infantry_spawn_build_ordinary_template_309 = {
-	set_temp_variable_to_random = { var = infantry_spawn_single_arm_roll min = 1 max = 5 integer = yes }
+	set_temp_variable_to_random = {
+		var = infantry_spawn_single_arm_roll
+		min = constant:infantry_spawn_single_arm_roll.minimum
+		max = constant:infantry_spawn_single_arm_roll.maximum_exclusive
+		integer = yes
+	}
 	if = {
-		limit = { check_variable = { infantry_spawn_single_arm_roll = 1 } }
+		limit = { check_variable = { infantry_spawn_single_arm_roll = constant:infantry_spawn_single_arm_roll.cavalry } }
 		infantry_spawn_build_single_arm_cavalry = yes
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_single_arm_roll = 2 } }
+		limit = { check_variable = { infantry_spawn_single_arm_roll = constant:infantry_spawn_single_arm_roll.artillery } }
 		infantry_spawn_build_single_arm_artillery = yes
 	}
 	else_if = {
-		limit = { check_variable = { infantry_spawn_single_arm_roll = 3 } }
+		limit = { check_variable = { infantry_spawn_single_arm_roll = constant:infantry_spawn_single_arm_roll.armor } }
 		infantry_spawn_build_single_arm_armor = yes
 	}
 	else_if = {
-		limit = { has_dlc = "La Resistance" }
+		limit = {
+			check_variable = { infantry_spawn_single_arm_roll = constant:infantry_spawn_single_arm_roll.armored_car }
+			has_dlc = "La Resistance"
+		}
 		infantry_spawn_build_single_arm_cars = yes
 	}
 	else = { infantry_spawn_build_single_arm_armor = yes }
-	set_temp_variable = { infantry_spawn_manifest_component_column = 0 }
+	set_temp_variable = { infantry_spawn_manifest_component_column = constant:infantry_spawn_manifest_column.first }
 	set_temp_variable = { infantry_spawn_manifest_component_count = constant:infantry_spawn_family_size.single_arm_combat }
 	infantry_spawn_append_current_combat_column_manifest = yes
 }
@@ -1552,8 +1585,8 @@ infantry_spawn_create_current_ordinary_lot = {
 	infantry_spawn_set_current_lot_mobility_mismatch = yes
 	if = {
 		limit = {
-			check_variable = { infantry_spawn_current_lot_profile > 300 }
-			check_variable = { infantry_spawn_current_lot_profile < 400 }
+			check_variable = { infantry_spawn_current_lot_profile > constant:infantry_spawn_lot_family.finite_prototype_lower_exclusive }
+			check_variable = { infantry_spawn_current_lot_profile < constant:infantry_spawn_lot_family.finite_prototype_upper_exclusive }
 		}
 		set_temp_variable = { infantry_spawn_current_equipment_state = constant:infantry_spawn_equipment_state.finite_prototype }
 	}
@@ -1569,8 +1602,8 @@ infantry_spawn_create_current_ordinary_lot = {
 		infantry_spawn_append_current_template_row = yes
 		if = {
 			limit = {
-				check_variable = { infantry_spawn_current_lot_profile > 300 }
-				check_variable = { infantry_spawn_current_lot_profile < 400 }
+				check_variable = { infantry_spawn_current_lot_profile > constant:infantry_spawn_lot_family.finite_prototype_lower_exclusive }
+				check_variable = { infantry_spawn_current_lot_profile < constant:infantry_spawn_lot_family.finite_prototype_upper_exclusive }
 			}
 			add_to_array = { array = infantry_spawn_technology_locked_template_uid_entries value = infantry_spawn_current_template_uid }
 		}
@@ -2062,8 +2095,8 @@ infantry_spawn_record_current_ordinary_unit_obligations = {
 	infantry_spawn_append_all_current_template_obligations = yes
 	if = {
 		limit = {
-			check_variable = { infantry_spawn_current_lot_profile > 300 }
-			check_variable = { infantry_spawn_current_lot_profile < 400 }
+			check_variable = { infantry_spawn_current_lot_profile > constant:infantry_spawn_lot_family.finite_prototype_lower_exclusive }
+			check_variable = { infantry_spawn_current_lot_profile < constant:infantry_spawn_lot_family.finite_prototype_upper_exclusive }
 		}
 		infantry_spawn_mark_current_unit_pretechnology_if_applicable = yes
 		infantry_spawn_grant_current_finite_prototype_package = yes
@@ -2123,9 +2156,78 @@ infantry_spawn_capture_and_mark_current_live_division = {
 	}
 }
 
+# Rolls back only the unit/obligation rows appended by the current create-unit
+# transaction. The immutable UID allocators are deliberately not rewound.
+infantry_spawn_rollback_current_unit_transaction = {
+	delete_unit = { id = infantry_spawn_current_delete_cohort_id disband = no }
+	if = {
+		limit = { check_variable = { var = infantry_spawn_unit_uid_entries^num value = infantry_spawn_unit_row_count_before_create compare = greater_than } }
+		remove_from_array = { array = infantry_spawn_unit_uid_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_delete_cohort_id_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_generation_uid_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_lot_uid_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_template_uid_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_origin_state_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_scope_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_spawn_province_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_family_id_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_start_experience_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_start_equipment_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_start_manpower_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_status_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_previous_status_entries index = infantry_spawn_unit_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_unit_claimant_uid_entries index = infantry_spawn_unit_row_count_before_create }
+	}
+	if = {
+		limit = { is_in_array = { array = infantry_spawn_transfer_eligible_unit_uid_entries value = infantry_spawn_current_unit_uid } }
+		remove_from_array = { array = infantry_spawn_transfer_eligible_unit_uid_entries value = infantry_spawn_current_unit_uid }
+	}
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_row_count_before_create compare = greater_than } }
+		remove_from_array = { array = infantry_spawn_obligation_uid_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_generation_uid_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_lot_uid_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_unit_uid_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_resource_profile_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_issued_amount_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_paid_amount_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_salvageable_paid_amount_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_outstanding_amount_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_outstanding_debt_value_entries index = infantry_spawn_obligation_row_count_before_create }
+		remove_from_array = { array = infantry_spawn_obligation_status_entries index = infantry_spawn_obligation_row_count_before_create }
+	}
+	set_variable = { infantry_spawn_active_division_count = infantry_spawn_active_division_count_before_create }
+	set_variable = { global.infantry_spawn_total_formations = infantry_spawn_global_formation_count_before_create }
+	set_temp_variable = { infantry_spawn_current_generation_unit_count = infantry_spawn_generation_unit_count_before_create }
+	set_variable = { infantry_spawn_equipment_debt = infantry_spawn_equipment_debt_before_create }
+	set_variable = { infantry_spawn_manpower_liability = infantry_spawn_manpower_liability_before_create }
+	if = {
+		limit = { check_variable = { infantry_spawn_lot_row_before_create > constant:infantry_spawn_event.invalid_index } }
+		set_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_lot_row_before_create = infantry_spawn_lot_unit_count_before_create }
+		set_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_lot_row_before_create = infantry_spawn_lot_debt_before_create }
+		set_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_lot_row_before_create = infantry_spawn_lot_manpower_before_create }
+	}
+}
+
 infantry_spawn_spawn_current_template_unit = {
 	infantry_spawn_allocate_unit_uid = yes
 	infantry_spawn_allocate_delete_cohort_id = yes
+	set_temp_variable = { infantry_spawn_unit_row_count_before_create = infantry_spawn_unit_uid_entries^num }
+	set_temp_variable = { infantry_spawn_obligation_row_count_before_create = infantry_spawn_obligation_uid_entries^num }
+	set_temp_variable = { infantry_spawn_active_division_count_before_create = infantry_spawn_active_division_count }
+	set_temp_variable = { infantry_spawn_global_formation_count_before_create = global.infantry_spawn_total_formations }
+	set_temp_variable = { infantry_spawn_generation_unit_count_before_create = infantry_spawn_current_generation_unit_count }
+	set_temp_variable = { infantry_spawn_equipment_debt_before_create = infantry_spawn_equipment_debt }
+	set_temp_variable = { infantry_spawn_manpower_liability_before_create = infantry_spawn_manpower_liability }
+	set_temp_variable = { infantry_spawn_lookup_lot_uid = infantry_spawn_current_lot_uid }
+	infantry_spawn_find_lot_row = yes
+	set_temp_variable = { infantry_spawn_lot_row_before_create = infantry_spawn_lot_row_index }
+	if = {
+		limit = { check_variable = { infantry_spawn_lot_row_before_create > constant:infantry_spawn_event.invalid_index } }
+		set_temp_variable = { infantry_spawn_lot_unit_count_before_create = infantry_spawn_lot_unit_count_entries^infantry_spawn_lot_row_before_create }
+		set_temp_variable = { infantry_spawn_lot_debt_before_create = infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_lot_row_before_create }
+		set_temp_variable = { infantry_spawn_lot_manpower_before_create = infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_lot_row_before_create }
+	}
 	set_temp_variable = { infantry_spawn_divisions_before_create = num_divisions }
 	clear_temp_array = infantry_spawn_precreate_division_scopes
 	every_country_division = {
@@ -2163,11 +2265,38 @@ infantry_spawn_spawn_current_template_unit = {
 			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
 			infantry_spawn_append_current_unit_row = yes
 			infantry_spawn_record_current_unit_obligations = yes
+		}
+		set_temp_variable = { infantry_spawn_unit_transaction_valid = 1 }
+		set_temp_variable = { infantry_spawn_expected_unit_rows_after_create = infantry_spawn_unit_row_count_before_create }
+		add_to_temp_variable = { infantry_spawn_expected_unit_rows_after_create = 1 }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = infantry_spawn_ledger_invariant_failure
+					NOT = { check_variable = { var = infantry_spawn_unit_uid_entries^num value = infantry_spawn_expected_unit_rows_after_create compare = equals } }
+					infantry_spawn_unit_ledger_is_aligned = no
+					infantry_spawn_obligation_ledger_is_aligned = no
+					NOT = { has_event_target = infantry_spawn_current_live_division }
+				}
+			}
+			set_temp_variable = { infantry_spawn_unit_transaction_valid = 0 }
+		}
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_unit_transaction_valid > 0 }
+				event_target:infantry_spawn_current_live_division = {
+					has_variable = infantry_spawn_event19_unit_uid
+					has_variable = infantry_spawn_event19_delete_cohort_id
+					check_variable = { var = infantry_spawn_event19_unit_uid value = infantry_spawn_current_unit_uid compare = equals }
+					check_variable = { var = infantry_spawn_event19_delete_cohort_id value = infantry_spawn_current_delete_cohort_id compare = equals }
+				}
+			}
+			infantry_spawn_achievement_register_current_generated_division = yes
 			if = {
 				limit = {
 					check_variable = { infantry_spawn_current_family_id = 0 }
-					check_variable = { infantry_spawn_current_lot_profile > 300 }
-					check_variable = { infantry_spawn_current_lot_profile < 400 }
+					check_variable = { infantry_spawn_current_lot_profile > constant:infantry_spawn_lot_family.finite_prototype_lower_exclusive }
+					check_variable = { infantry_spawn_current_lot_profile < constant:infantry_spawn_lot_family.finite_prototype_upper_exclusive }
 				}
 				add_to_array = { array = infantry_spawn_technology_locked_unit_uid_entries value = infantry_spawn_current_unit_uid }
 				set_country_flag = infantry_spawn_has_technology_locked_formation
@@ -2176,9 +2305,13 @@ infantry_spawn_spawn_current_template_unit = {
 				}
 			}
 		}
+		else = {
+			infantry_spawn_rollback_current_unit_transaction = yes
+			infantry_spawn_mark_ledger_invariant_failure = yes
+		}
 	}
 	else = {
-		delete_unit = { id = infantry_spawn_current_delete_cohort_id }
+		delete_unit = { id = infantry_spawn_current_delete_cohort_id disband = no }
 		infantry_spawn_mark_ledger_invariant_failure = yes
 	}
 	clear_temp_array = infantry_spawn_precreate_division_scopes

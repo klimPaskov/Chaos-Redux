@@ -2,7 +2,13 @@
 
 ## Process status
 
-The custom Chaos Redux subagent runtime was not available in this environment. No project subagent was actually spawned. To avoid silently skipping the specialist perspectives required by the source skills, the planning package received the role-equivalent reviews below.
+The custom Chaos Redux subagent runtime was not available in the original
+planning environment. No project subagent was spawned for this historical
+planning review, so the package received the role-equivalent perspectives below.
+Implementation later ran the required no-inherited-context project-agent
+planner and specialists; their dated handoffs under
+`docs/plans/019_infantry_spawn_plans/` supersede this file as live-source audit
+evidence.
 
 These reviews are planning evidence, not substitutes for the real implementation-time agents. The implementation prompt requires the actual subagents with `fork_context=false` when the runtime is available.
 
@@ -112,7 +118,7 @@ Every derivative package includes:
 - safe dynamic-country pattern
 - final golem identifiers
 - state-transfer and existing civil-war safety
-- portrait and name-pool helpers
+- fixed portrait-slot/army-scene selection and name-pool helpers
 - starting technology and equipment setup
 
 ## Focus Tree Auditor role
@@ -145,7 +151,7 @@ Planning labels could be mistaken for pasteable localisation.
 - the spec provides viewpoint, information, tone, and avoidance direction rather than final copy
 - Event Details is separated from mechanical effect text
 - cost and requirement text must be dynamic and clear
-- claimant names use regional and gender-matched pools
+- claimant names use regional male pools
 - no unresearched quote, lyric, or cultural line is supplied
 
 ### Implementation audit need
@@ -156,14 +162,14 @@ Check missing keys, duplicate keys, BOM encoding, dynamic-value formatting, raw 
 
 ### Findings
 
-The event’s scenes, claimants, derivative leaders, flags, and GUI art are fictional or supernatural.
+The event’s report scenes, claimant army/muster identity scenes, derivative massed hosts, flags, and GUI art are fictional or supernatural.
 
 ### Design response
 
 - generated art is the default source mode
 - report scenes use period-documentary direction and project card processing
-- 20 static claimant portraits are fully slotted
-- derivative flags and leaders are distinct from parent systems
+- 20 static claimant army/muster scenes are fully slotted with no individual focal human/person
+- derivative flags and massed-host scenes are distinct from parent systems
 - no generated real person is requested
 
 ## Icon Artist role
@@ -183,7 +189,7 @@ The system needs a large coordinated icon family and three useful animations.
 
 ### Finding
 
-No real leader portrait, historical flag, or real photographed event is required by the accepted design.
+No real leader portrait, historical flag, or real photographed event is required by the accepted design. Fixed `GFX_portrait_*` identifiers are compatibility slots whose Event 19 content depicts armies/hosts.
 
 ### Disposition
 
@@ -218,7 +224,9 @@ Event 19 needs one source-of-truth spec pack, one canonical event doc after impl
 ### Design response
 
 - this folder is the source spec area
-- there is no loose unresolved improvement addendum in this package
+- at the original planning stage there was no loose unresolved improvement
+  addendum; the later accepted near-completion addendum now owns its implemented
+  findings and closure disposition
 - future implementation handoffs belong under `docs/plans/019_infantry_spawn_plans/`
 - accepted implementation changes should be reconciled back into the spec if they alter design
 
@@ -240,4 +248,7 @@ The specification covers the user’s requested baseline, four evolutions, gener
 
 ### Disposition
 
-A planning completion audit appears in `spec_completion_audit.md`. A real implementation completion audit remains mandatory.
+A planning completion audit appears in `spec_completion_audit.md`. Current live
+status belongs to `blockers_and_uncertainty.md`: the named gameplay specialist
+scopes are clean, while regional 91-source flag regeneration and the fresh
+AI/balance/performance audit remain before parent completion reconciliation.

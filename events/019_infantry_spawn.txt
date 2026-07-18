@@ -5,7 +5,8 @@ add_namespace = chaosx.nr19
 # ============================================================================
 # .1 is the preserved hidden Minor Repeatable entry point. The generation,
 # accounting, management, evolution, claimant, and derivative systems live in
-# scripted effects; this file owns player reports and the bounded country pulse.
+# scripted effects; this file owns player reports, bounded country pulses, and
+# the annexer-owned exact-cleanup retry dispatcher.
 # ============================================================================
 
 country_event = {
@@ -19,25 +20,65 @@ country_event = {
 	}
 }
 
-# Country manifestation report. Scripted localisation selects the applicable
-# baseline/evolved direction and current generation facts.
+# Country manifestation report. Conditional descriptions select the applicable
+# baseline or pre-fire evolution direction.
 country_event = {
 	id = chaosx.nr19.2
 	title = chaosx.nr19.2.t
-	desc = chaosx.nr19.2.d
+	desc = {
+		trigger = { has_country_flag = infantry_spawn_evolution_iv_applied }
+		text = chaosx.nr19.2.evolution_iv.d
+	}
+	desc = {
+		trigger = {
+			has_country_flag = infantry_spawn_evolution_iii_applied
+			NOT = { has_country_flag = infantry_spawn_evolution_iv_applied }
+		}
+		text = chaosx.nr19.2.evolution_iii.d
+	}
+	desc = {
+		trigger = {
+			has_country_flag = infantry_spawn_evolution_ii_applied
+			NOT = { has_country_flag = infantry_spawn_evolution_iii_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_iv_applied }
+		}
+		text = chaosx.nr19.2.evolution_ii.d
+	}
+	desc = {
+		trigger = {
+			has_country_flag = infantry_spawn_evolution_i_applied
+			NOT = { has_country_flag = infantry_spawn_evolution_ii_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_iii_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_iv_applied }
+		}
+		text = chaosx.nr19.2.evolution_i.d
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = infantry_spawn_evolution_i_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_ii_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_iii_applied }
+			NOT = { has_country_flag = infantry_spawn_evolution_iv_applied }
+		}
+		text = chaosx.nr19.2.d
+	}
 	picture = GFX_report_event_infantry_spawn
 	is_triggered_only = yes
 
 	option = {
 		name = chaosx.nr19.2.a
 		trigger = { NOT = { has_country_flag = infantry_spawn_prefire_opening_pending } }
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 
 	option = {
 		name = chaosx.nr19.2.b
 		trigger = { has_country_flag = infantry_spawn_prefire_opening_pending }
-		infantry_spawn_execute_prefire_evolution_iii_initial_draw = yes
+		custom_effect_tooltip = chaosx.nr19.2.b.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_prefire_opening_choice_request = constant:infantry_spawn_deferred_prefire_choice.draw }
+			infantry_spawn_defer_or_resolve_prefire_opening_choice = yes
+		}
 		ai_chance = {
 			base = constant:infantry_spawn_prefire_opening.draw_ai_base
 			modifier = {
@@ -50,7 +91,11 @@ country_event = {
 	option = {
 		name = chaosx.nr19.2.c
 		trigger = { has_country_flag = infantry_spawn_prefire_opening_pending }
-		infantry_spawn_decline_prefire_evolution_iii_initial_draw = yes
+		custom_effect_tooltip = chaosx.nr19.2.c.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_prefire_opening_choice_request = constant:infantry_spawn_deferred_prefire_choice.decline }
+			infantry_spawn_defer_or_resolve_prefire_opening_choice = yes
+		}
 		ai_chance = {
 			base = constant:infantry_spawn_prefire_opening.decline_ai_base
 			modifier = {
@@ -72,7 +117,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.101.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -85,7 +130,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.102.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -98,7 +143,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.103.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -111,7 +156,92 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.104.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
+	}
+}
+
+# Pre-fire Evolution IV first-family reception. The frozen family and incident
+# nonce were selected before dispatch; every country, including AI countries,
+# resolves the same three-option event exactly once.
+country_event = {
+	id = chaosx.nr19.105
+	title = chaosx.nr19.105.t
+	desc = chaosx.nr19.105.d
+	picture = [GetInfantrySpawnFirstFamilyReceptionPicture]
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = infantry_spawn_first_family_reception_pending
+		has_country_flag = infantry_spawn_first_family_reception_dispatched
+		NOT = { has_country_flag = infantry_spawn_first_family_reception_resolved }
+		NOT = { is_infantry_spawn_derivative_country = yes }
+		NOT = { has_country_flag = infantry_spawn_scenario_actor }
+		NOT = { has_country_flag = infantry_spawn_scenario_dynamic_breakaway }
+		NOT = { has_country_flag = infantry_spawn_scenario_takeover_actor }
+		infantry_spawn_frozen_first_family_reception_row_is_valid = yes
+	}
+
+	immediate = {
+		infantry_spawn_load_frozen_first_family_reception_row = yes
+	}
+
+	option = {
+		name = chaosx.nr19.105.a
+		custom_effect_tooltip = chaosx.nr19.105.a.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_first_family_reception_choice_request = constant:infantry_spawn_first_family_reception_choice.cantonment }
+			infantry_spawn_execute_first_family_reception_choice = yes
+		}
+		ai_chance = {
+			base = constant:infantry_spawn_first_family_reception.ai_cantonment_base
+			modifier = {
+				factor = constant:infantry_spawn_first_family_reception.ai_low_control_cantonment_factor
+				infantry_spawn_control_is_low = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr19.105.b
+		custom_effect_tooltip = chaosx.nr19.105.b.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_first_family_reception_choice_request = constant:infantry_spawn_first_family_reception_choice.negotiated }
+			infantry_spawn_execute_first_family_reception_choice = yes
+		}
+		ai_chance = {
+			base = constant:infantry_spawn_first_family_reception.ai_negotiated_base
+			modifier = {
+				factor = constant:infantry_spawn_first_family_reception.ai_war_negotiated_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:infantry_spawn_first_family_reception.ai_low_manpower_negotiated_factor
+				manpower < constant:infantry_spawn_first_family_reception.low_manpower_threshold
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr19.105.c
+		custom_effect_tooltip = chaosx.nr19.105.c.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_first_family_reception_choice_request = constant:infantry_spawn_first_family_reception_choice.refusal }
+			infantry_spawn_execute_first_family_reception_choice = yes
+		}
+		ai_chance = {
+			base = constant:infantry_spawn_first_family_reception.ai_refusal_base
+			modifier = {
+				factor = constant:infantry_spawn_first_family_reception.ai_high_pressure_refusal_factor
+				NOT = { check_variable = { infantry_spawn_anomalous_saturation < constant:infantry_spawn_saturation.dominant } }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_first_family_reception.ai_cannot_afford_refusal_factor
+				OR = {
+					has_political_power < constant:infantry_spawn_first_family_reception.refusal_political_power_cost
+					command_power < constant:infantry_spawn_first_family_reception.refusal_command_power_cost
+				}
+			}
+		}
 	}
 }
 
@@ -126,7 +256,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.200.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -139,18 +269,27 @@ country_event = {
 	desc = chaosx.nr19.201.d
 	picture = GFX_report_event_infantry_spawn_evolution_iii
 	is_triggered_only = yes
+	immediate = { infantry_spawn_select_pending_claimant_demand_owner = yes }
 
 	option = {
 		name = chaosx.nr19.201.a
-		trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes }
-		infantry_spawn_accept_selected_claimant_demand = yes
-		ai_chance = { base = 50 }
+		trigger = { infantry_spawn_can_accept_selected_claimant_demand = yes }
+		custom_effect_tooltip = chaosx.nr19.201.a.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_claimant_demand_choice_request = constant:infantry_spawn_deferred_claimant_choice.accept }
+			infantry_spawn_defer_or_resolve_claimant_demand_choice = yes
+		}
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.claimant_accept }
 	}
 
 	option = {
 		name = chaosx.nr19.201.b
-		infantry_spawn_refuse_selected_claimant_demand = yes
-		ai_chance = { base = 50 }
+		custom_effect_tooltip = chaosx.nr19.201.b.tt
+		hidden_effect = {
+			set_temp_variable = { infantry_spawn_claimant_demand_choice_request = constant:infantry_spawn_deferred_claimant_choice.refuse }
+			infantry_spawn_defer_or_resolve_claimant_demand_choice = yes
+		}
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.claimant_refuse }
 	}
 }
 
@@ -163,7 +302,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.202.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -176,7 +315,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.203.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 }
 
@@ -189,7 +328,390 @@ country_event = {
 
 	option = {
 		name = chaosx.nr19.204.a
-		ai_chance = { base = 100 }
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
+	}
+}
+
+# A claimant-independent family breach failed its exact proof and was contained
+# for the current pulse window. The mechanical consequence is applied before
+# this acknowledgement, so AI and players share the same outcome.
+country_event = {
+	id = chaosx.nr19.206
+	title = chaosx.nr19.206.t
+	desc = chaosx.nr19.206.d
+	picture = GFX_report_event_infantry_spawn_evolution_iv
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.206.a
+		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
+	}
+}
+
+# Ledger-backed formation incidents. Each report is tied to a recorded live lot
+# and origin state; every option calls the same accounting and cooldown layer.
+country_event = {
+	id = chaosx.nr19.300
+	title = chaosx.nr19.300.t
+	desc = chaosx.nr19.300.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.300.a
+		custom_effect_tooltip = chaosx.nr19.300.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.barracks_local_authority } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.300.b
+		custom_effect_tooltip = chaosx.nr19.300.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.barracks_regular_army } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+	option = {
+		name = chaosx.nr19.300.c
+		custom_effect_tooltip = chaosx.nr19.300.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.barracks_provisional_committee } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_low = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.301
+	title = chaosx.nr19.301.t
+	desc = chaosx.nr19.301.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.301.a
+		trigger = { check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_incident.infantry_equipment_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.301.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.ammunition_divert_production } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.301.b
+		custom_effect_tooltip = chaosx.nr19.301.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.ammunition_cannibalize } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes } }
+	}
+	option = {
+		name = chaosx.nr19.301.c
+		custom_effect_tooltip = chaosx.nr19.301.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.ammunition_delay } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.302
+	title = chaosx.nr19.302.t
+	desc = chaosx.nr19.302.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.302.a
+		custom_effect_tooltip = chaosx.nr19.302.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.motor_pool_territorial } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.302.b
+		trigger = { check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.302.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.motor_pool_rebuild } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.302.c
+		custom_effect_tooltip = chaosx.nr19.302.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.motor_pool_accept_burden } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.303
+	title = chaosx.nr19.303.t
+	desc = chaosx.nr19.303.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.303.a
+		custom_effect_tooltip = chaosx.nr19.303.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.village_territorial_service } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.303.b
+		custom_effect_tooltip = chaosx.nr19.303.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.village_enforce_transfer } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+	option = {
+		name = chaosx.nr19.303.c
+		trigger = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.303.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.village_supply_bargain } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.304
+	title = chaosx.nr19.304.t
+	desc = chaosx.nr19.304.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.304.a
+		custom_effect_tooltip = chaosx.nr19.304.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.officers_regularize } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.304.b
+		custom_effect_tooltip = chaosx.nr19.304.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.officers_disperse } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes } }
+	}
+	option = {
+		name = chaosx.nr19.304.c
+		custom_effect_tooltip = chaosx.nr19.304.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.officers_preserve_cadre } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.305
+	title = chaosx.nr19.305.t
+	desc = chaosx.nr19.305.d
+	picture = GFX_report_event_infantry_spawn_evolution_i
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.305.a
+		custom_effect_tooltip = chaosx.nr19.305.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.staff_merge } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.305.b
+		custom_effect_tooltip = chaosx.nr19.305.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.staff_favor_regular } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.305.c
+		custom_effect_tooltip = chaosx.nr19.305.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.staff_reserve_command } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.306
+	title = chaosx.nr19.306.t
+	desc = chaosx.nr19.306.d
+	picture = GFX_report_event_infantry_spawn_evolution_i
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.306.a
+		custom_effect_tooltip = chaosx.nr19.306.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.depot_absorb } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.306.b
+		custom_effect_tooltip = chaosx.nr19.306.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.depot_preserve } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.306.c
+		custom_effect_tooltip = chaosx.nr19.306.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.depot_strip } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.307
+	title = chaosx.nr19.307.t
+	desc = chaosx.nr19.307.d
+	picture = GFX_report_event_infantry_spawn_evolution_i
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.307.a
+		custom_effect_tooltip = chaosx.nr19.307.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.colors_recognize } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.307.b
+		custom_effect_tooltip = chaosx.nr19.307.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.colors_refuse } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
+	}
+	option = {
+		name = chaosx.nr19.307.c
+		custom_effect_tooltip = chaosx.nr19.307.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.colors_territorial } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.308
+	title = chaosx.nr19.308.t
+	desc = chaosx.nr19.308.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.308.a
+		trigger = {
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = army_experience value = constant:infantry_spawn_incident.army_experience_cost compare = greater_than_or_equals }
+		}
+		custom_effect_tooltip = chaosx.nr19.308.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.tanks_engineers } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.308.b
+		custom_effect_tooltip = chaosx.nr19.308.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.tanks_one_offensive } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+	option = {
+		name = chaosx.nr19.308.c
+		custom_effect_tooltip = chaosx.nr19.308.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.tanks_dismantle } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.309
+	title = chaosx.nr19.309.t
+	desc = chaosx.nr19.309.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.309.a
+		trigger = {
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals }
+		}
+		custom_effect_tooltip = chaosx.nr19.309.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.rotorcraft_maintain } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.309.b
+		custom_effect_tooltip = chaosx.nr19.309.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.rotorcraft_ceremonial } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.309.c
+		custom_effect_tooltip = chaosx.nr19.309.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.rotorcraft_field } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.310
+	title = chaosx.nr19.310.t
+	desc = chaosx.nr19.310.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.310.a
+		trigger = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.310.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.radios_standardize } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.310.b
+		custom_effect_tooltip = chaosx.nr19.310.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.radios_accept_penalty } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low modifier = { factor = constant:infantry_spawn_factor.double has_war = yes } }
+	}
+	option = {
+		name = chaosx.nr19.310.c
+		custom_effect_tooltip = chaosx.nr19.310.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.radios_split_command } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.311
+	title = chaosx.nr19.311.t
+	desc = chaosx.nr19.311.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.311.a
+		custom_effect_tooltip = chaosx.nr19.311.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.cavalry_keep_horses } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.311.b
+		trigger = { check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.311.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.cavalry_force_trucks } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.311.c
+		custom_effect_tooltip = chaosx.nr19.311.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.cavalry_mixed_doctrine } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.312
+	title = chaosx.nr19.312.t
+	desc = chaosx.nr19.312.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.312.a
+		custom_effect_tooltip = chaosx.nr19.312.a.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.armored_cars_recon } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_preferred }
+	}
+	option = {
+		name = chaosx.nr19.312.b
+		trigger = { check_variable = { var = army_experience value = constant:infantry_spawn_incident.army_experience_cost compare = greater_than_or_equals } }
+		custom_effect_tooltip = chaosx.nr19.312.b.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.armored_cars_retrain } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_standard }
+	}
+	option = {
+		name = chaosx.nr19.312.c
+		custom_effect_tooltip = chaosx.nr19.312.c.tt
+		hidden_effect = { set_temp_variable = { infantry_spawn_incident_choice_request = constant:infantry_spawn_deferred_incident_choice.armored_cars_preserve } infantry_spawn_defer_or_resolve_incident_choice = yes }
+		ai_chance = { base = constant:infantry_spawn_incident.ai_low }
 	}
 }
 
@@ -202,5 +724,225 @@ country_event = {
 
 	immediate = {
 		infantry_spawn_run_country_pulse = yes
+	}
+}
+
+# Daily continuity proof only. The full Event 19 country pulse remains on its
+# normal cadence even when a year-long claimant or scenario proof is active.
+country_event = {
+	id = chaosx.nr19.901
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		infantry_spawn_run_achievement_continuity_pulse = yes
+	}
+}
+
+# Nonhuman derivative release and defeat reports. The derivative package owns
+# all history, achievement, and cleanup effects; these events are presentation
+# only and therefore cannot double-count a revolt or a defeat.
+country_event = {
+	id = chaosx.nr19.910
+	title = chaosx.nr19.910.t
+	desc = chaosx.nr19.910.d
+	picture = GFX_report_event_infantry_spawn_zombie_release
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.910.a }
+}
+
+country_event = {
+	id = chaosx.nr19.911
+	title = chaosx.nr19.911.t
+	desc = chaosx.nr19.911.d
+	picture = GFX_report_event_infantry_spawn_zombie_defeat
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.911.a }
+}
+
+country_event = {
+	id = chaosx.nr19.912
+	title = chaosx.nr19.912.t
+	desc = chaosx.nr19.912.d
+	picture = GFX_report_event_infantry_spawn_ghost_release
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.912.a }
+}
+
+country_event = {
+	id = chaosx.nr19.913
+	title = chaosx.nr19.913.t
+	desc = chaosx.nr19.913.d
+	picture = GFX_report_event_infantry_spawn_ghost_defeat
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.913.a }
+}
+
+country_event = {
+	id = chaosx.nr19.914
+	title = chaosx.nr19.914.t
+	desc = chaosx.nr19.914.d
+	picture = GFX_report_event_infantry_spawn_golem_release
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.914.a }
+}
+
+country_event = {
+	id = chaosx.nr19.915
+	title = chaosx.nr19.915.t
+	desc = chaosx.nr19.915.d
+	picture = GFX_report_event_infantry_spawn_golem_defeat
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.915.a }
+}
+
+# Annexer-owned exact Event 19 cleanup retry. The source country scope is stored
+# in a persistent array because regular event targets do not survive this
+# delayed firing. Processing removes no entry without the real finalizer.
+country_event = {
+	id = chaosx.nr19.916
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		infantry_spawn_process_annex_cleanup_retry_queue = yes
+	}
+}
+
+# Claimant breakaway defeat report. History, achievement, and cleanup effects
+# remain in the derivative package so this presentation event cannot double-count.
+country_event = {
+	id = chaosx.nr19.917
+	title = chaosx.nr19.917.t
+	desc = chaosx.nr19.917.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr19.917.a }
+}
+
+# Controlled combat-trial callbacks. Attacker-side events are authoritative.
+# Defender callbacks validate their opponent lock and nonce, then route through
+# the frozen attacker country ID into the same idempotent cleanup path.
+country_event = {
+	id = chaosx.nr19.920
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { infantry_spawn_achievement_resolve_combat_trial_attacker_win = yes }
+}
+
+country_event = {
+	id = chaosx.nr19.921
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { infantry_spawn_achievement_resolve_combat_trial_attacker_loss = yes }
+}
+
+country_event = {
+	id = chaosx.nr19.922
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { infantry_spawn_achievement_resolve_combat_trial_attacker_cancel = yes }
+}
+
+country_event = {
+	id = chaosx.nr19.923
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = infantry_spawn_achievement_combat_trial_opponent
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_nonce
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_attacker
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_type
+			}
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_nonce = infantry_spawn_achievement_combat_trial_opponent_nonce }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_type = infantry_spawn_achievement_combat_trial_opponent_type }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_defender_country = THIS.id }
+			var:infantry_spawn_achievement_combat_trial_opponent_attacker = {
+				if = {
+					limit = {
+						has_country_flag = infantry_spawn_achievement_combat_trial_active
+						check_variable = { var = infantry_spawn_achievement_combat_trial_nonce value = infantry_spawn_achievement_combat_trial_callback_nonce compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_type value = infantry_spawn_achievement_combat_trial_callback_type compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_defender_country value = infantry_spawn_achievement_combat_trial_callback_defender_country compare = equals }
+					}
+					country_event = { id = chaosx.nr19.921 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.924
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = infantry_spawn_achievement_combat_trial_opponent
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_nonce
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_attacker
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_type
+			}
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_nonce = infantry_spawn_achievement_combat_trial_opponent_nonce }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_type = infantry_spawn_achievement_combat_trial_opponent_type }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_defender_country = THIS.id }
+			var:infantry_spawn_achievement_combat_trial_opponent_attacker = {
+				if = {
+					limit = {
+						has_country_flag = infantry_spawn_achievement_combat_trial_active
+						check_variable = { var = infantry_spawn_achievement_combat_trial_nonce value = infantry_spawn_achievement_combat_trial_callback_nonce compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_type value = infantry_spawn_achievement_combat_trial_callback_type compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_defender_country value = infantry_spawn_achievement_combat_trial_callback_defender_country compare = equals }
+					}
+					country_event = { id = chaosx.nr19.920 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.925
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = infantry_spawn_achievement_combat_trial_opponent
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_nonce
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_attacker
+				has_variable = infantry_spawn_achievement_combat_trial_opponent_type
+			}
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_nonce = infantry_spawn_achievement_combat_trial_opponent_nonce }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_type = infantry_spawn_achievement_combat_trial_opponent_type }
+			set_temp_variable = { infantry_spawn_achievement_combat_trial_callback_defender_country = THIS.id }
+			var:infantry_spawn_achievement_combat_trial_opponent_attacker = {
+				if = {
+					limit = {
+						has_country_flag = infantry_spawn_achievement_combat_trial_active
+						check_variable = { var = infantry_spawn_achievement_combat_trial_nonce value = infantry_spawn_achievement_combat_trial_callback_nonce compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_type value = infantry_spawn_achievement_combat_trial_callback_type compare = equals }
+						check_variable = { var = infantry_spawn_achievement_combat_trial_defender_country value = infantry_spawn_achievement_combat_trial_callback_defender_country compare = equals }
+					}
+					country_event = { id = chaosx.nr19.922 }
+				}
+			}
+		}
 	}
 }

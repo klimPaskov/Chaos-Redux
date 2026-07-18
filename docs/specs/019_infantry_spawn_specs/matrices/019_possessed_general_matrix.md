@@ -1,42 +1,42 @@
-# Event 19 Possessed General Portrait and Archetype Matrix
+# Event 19 Possessed General Army-Identity and Archetype Matrix
 
-The asset package needs 20 fictional one-person leader portraits. All personal names are generated during implementation from matching regional and gender pools. The table defines production slots, not final characters.
+The gameplay package uses 20 fictional male claimant profiles with regional male name pools and male-default leader metadata. Each fixed technical portrait slot visually represents the claimant through a distinct regional army or muster, not through an individual person. The table defines the frozen gameplay/profile binding and final visual production slot.
 
 ## Shared rules
 
-- 10 male-presenting and 10 female-presenting portraits.
-- Apparent gender presentation is recorded in the asset manifest.
-- Female-presenting portraits use female name pools and female leader metadata where supported.
-- Male-presenting portraits use male name pools and must not use female metadata.
+- Exactly 20 male claimant gameplay profiles.
+- Every profile uses a regional male name pool and male-default leader metadata.
 - Names should sound plausible for the country and period while allowing unsettling surnames, epithets, or nicknames.
-- No portrait receives a generic office title as its personal name.
-- Every portrait is 156 by 210, HOI4-style bust or upper torso, fictional, and generated.
-- All are static. The claimant UI warning border carries the animation.
+- No claimant receives a generic office title as his personal name.
+- Every fixed `GFX_portrait_*` slot is a static 156 by 210 fictional generated army/muster scene.
+- No scene has an individual focal human/person, readable face, officer bust, commander portrait, real national emblem, or copied historical identity.
+- Regional identity is carried by terrain, period matériel, logistics, formation geometry, weather, and operational posture.
+- The claimant UI warning border carries animation; the army/muster scenes remain static.
 
-## Portrait slots
+## Fixed identity-scene slots
 
-| Slot | Presentation | Primary archetype | Secondary tendency | Regional pool direction | Visual direction |
+| Slot | Gameplay metadata | Primary archetype | Secondary tendency | Regional pool/runtime direction | Final army/muster visual direction |
 | ---: | --- | --- | --- | --- | --- |
-| 01 | male | Quartermaster Sovereign | Hollow Marshal | Northern and Western Europe | severe logistics officer, impossible medal ribbon, depot dust |
-| 02 | female | Quartermaster Sovereign | Barracks Tribune | Central and Eastern Europe | railway command coat, ledger clasp, unnaturally calm stare |
-| 03 | male | Quartermaster Sovereign | Iron Saint | Middle East and North Africa | desert staff uniform, dark supply maps, ritual insignia |
-| 04 | female | Quartermaster Sovereign | Field Prophet | South and Southeast Asia | transport officer, mixed regional uniform, wrong-direction shadow |
-| 05 | male | Field Prophet | Iron Saint | Eastern Europe and Eurasian steppe | weathered field coat, luminous eyes, old cavalry emblem |
-| 06 | female | Field Prophet | Barracks Tribune | South Asia | improvised command dress, prophetic calm, dust and signal flags |
-| 07 | male | Field Prophet | Hollow Marshal | East Asia | precise officer dress, blank insignia, distant impossible light |
-| 08 | female | Field Prophet | Quartermaster Sovereign | Latin America | regional military coat, strange radio headset, severe expression |
-| 09 | male | Barracks Tribune | Quartermaster Sovereign | Western Europe | enlisted-origin commander, crowded barracks background, hard gaze |
-| 10 | female | Barracks Tribune | Field Prophet | Eastern Europe | soldier committee leader, battered coat, subtle spectral reflection |
-| 11 | male | Barracks Tribune | Iron Saint | Middle East and Central Asia | local militia commander, bandolier and formal staff insignia |
-| 12 | female | Barracks Tribune | Hollow Marshal | East and Southeast Asia | disciplined field organizer, muted uniform, impossible shadow line |
-| 13 | male | Iron Saint | Field Prophet | Southern Europe and Mediterranean | ceremonial combat coat, severe religious or martial symbols |
-| 14 | female | Iron Saint | Quartermaster Sovereign | Central Europe | rigid staff portrait, strange decorations, cold barracks light |
-| 15 | male | Iron Saint | Barracks Tribune | Sub-Saharan Africa | regional military attire, scarred command standard, possessed intensity |
-| 16 | female | Iron Saint | Hollow Marshal | Middle East and North Africa | austere command dress, unnatural stillness, dark halo-like smoke |
-| 17 | male | Hollow Marshal | Quartermaster Sovereign | East Asia | immaculate unknown officer, unmarked decorations, empty backdrop |
-| 18 | female | Hollow Marshal | Field Prophet | Northern Europe | severe general coat, pale side light, no verifiable insignia |
-| 19 | male | Hollow Marshal | Barracks Tribune | Americas | improvised senior commander, polished boots, unsettling composure |
-| 20 | female | Hollow Marshal | Iron Saint | Global fallback pool | adaptable period uniform, strong face, subtle supernatural disturbance |
+| 01 | male | Quartermaster Sovereign | Hollow Marshal | Northern and Western Europe | European railhead logistics muster with diagonal ranks, trains, trucks, depots, and converging supply lanes |
+| 02 | male | Quartermaster Sovereign | Barracks Tribune | Central and Eastern Europe | frozen river bridgehead with rectangular battalion block, pontoon works, and layered supply columns |
+| 03 | male | Quartermaster Sovereign | Iron Saint | Middle East and North Africa | circular oasis-fort defence with concentric ranks, gun pits, pack supply, and an empty center |
+| 04 | male | Quartermaster Sovereign | Field Prophet | South and Southeast Asia and Australasia diaspora-compatible | monsoon port-and-rail muster in a fan of columns radiating from docks, warehouses, and flooded sidings |
+| 05 | male | Field Prophet | Iron Saint | Eastern Europe and Eurasian steppe | winter-steppe horse-artillery host in an arrowhead with limbers and cavalry screens |
+| 06 | male | Field Prophet | Barracks Tribune | South Asia | monsoon floodplain crossing with serpentine infantry columns, pontoon craft, and pack supply |
+| 07 | male | Field Prophet | Hollow Marshal | East Asia | dark snowy forest infiltration with several layered echelons and dispersed supply sledges |
+| 08 | male | Field Prophet | Quartermaster Sovereign | Latin America | highland pack-artillery muster in a chevron across terraced slopes and storm light |
+| 09 | male | Barracks Tribune | Quartermaster Sovereign | Western Europe and North America | industrial tram-square front with infantry blocks, streetcars, trucks, barricades, and factories |
+| 10 | male | Barracks Tribune | Field Prophet | Eastern Europe | winter industrial grid of artillery batteries and infantry ranks distributed through ruined works |
+| 11 | male | Barracks Tribune | Iron Saint | Middle East and Central Asia | tiered high-plateau canyon shield formation with pack trains and successive stone breastworks |
+| 12 | male | Barracks Tribune | Hollow Marshal | East and Southeast Asia and Australasia diaspora-compatible | amphibious wavefront with landing craft, shallow-water infantry bands, and several advancing lines |
+| 13 | male | Iron Saint | Field Prophet | Southern Europe, Mediterranean, and South America | symbol-free coastal-cliff artillery defence in a zigzag with gun terraces and switchback supply paths |
+| 14 | male | Iron Saint | Quartermaster Sovereign | Central Europe | machineworks muster in checkerboard infantry and vehicle blocks inside an immense industrial yard |
+| 15 | male | Iron Saint | Barracks Tribune | Sub-Saharan Africa | storm-savanna mobile echelon with truck columns, infantry screens, field guns, and rain-darkened grassland |
+| 16 | male | Iron Saint | Hollow Marshal | Middle East and North Africa | desert mobile crescent of trucks, mounted scouts, infantry files, and gun teams around an empty center |
+| 17 | male | Hollow Marshal | Quartermaster Sovereign | East Asia | blackout industrial-city bicycle host arranged in a strict street grid among factories and power lines |
+| 18 | male | Hollow Marshal | Field Prophet | Northern Europe | frozen-fjord ski host in a U-shaped envelopment around icebound supply craft and coastal guns |
+| 19 | male | Hollow Marshal | Barracks Tribune | Americas | hurricane river-delta defence with levee infantry, barges, trucks, and guns in a broken zigzag |
+| 20 | male | Hollow Marshal | Iron Saint | Australia only | outback salt-lake motor host in a hooked arc with trucks, field guns, dust lanes, and scrub horizon |
 
 ## Archetype mechanics
 
@@ -64,10 +64,9 @@ The asset package needs 20 fictional one-person leader portraits. All personal n
 Implementation should provide small pools for the major regional groups used by the country roster. Each pool needs:
 
 - male given names
-- female given names
 - surnames
 - optional patronymics or family-name order rules
 - optional military nicknames or epithets
-- a fallback that still matches portrait presentation
+- no fallback entry. If no unused profile matches the country's region, claimant identity selection fails closed
 
-The pool should draw from existing Chaos Redux regional naming helpers when available rather than create a duplicate system.
+The pool should draw from existing Chaos Redux regional naming helpers when available rather than create a duplicate system. Profiles 04 and 12 are the documented Asia/Australasia diaspora-compatible identities; profile 20 is Australia-only and must never serve as a global or cross-region substitute. The exact current source/runtime evidence is in `docs/assets/019_infantry_spawn/notes/claimant_portrait_asset_crosswalk_2026_07_16.md`.

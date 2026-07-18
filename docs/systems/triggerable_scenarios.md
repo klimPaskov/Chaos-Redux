@@ -45,6 +45,7 @@ Type controls cycle scenario-specific type variables:
 - Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
 - Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
 - The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
+- The Unbidden Muster: The Barracks Overflow, The Arsenal Draw, The Generals' Muster, or The Impossible Host.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -135,3 +136,33 @@ The Convergence profile uses a scenario contract only for the natural Chaos and 
 The public scenario name, descriptions, type labels, and intensity warnings never name the hidden leader, the Wendigo branch, or either terminal route. If the alternate host already exists, the later in-world convergence transaction may discover it through the normal guarded Event 014 route.
 
 The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, five type labels, five type descriptions, and four intensity descriptions mirror the final in-game localisation. Its status is `Fully Functional`.
+
+### SCN-013: The Unbidden Muster
+
+The Unbidden Muster launches Event 019 as an immediate military crisis without requiring the ordinary event, evolution, chaos, or date progression. The Barracks Overflow creates conventional formation revolts, The Arsenal Draw distributes uneven specialist materiel, The Generals' Muster places random formations under claimant commands, and The Impossible Host creates parent-isolated nonhuman derivatives from eligible registered families.
+
+Event 019's source proposal used `SCN-008`, but Every Banner Rises already owns
+that ID. IDs 1 through 11 are occupied and Event 020 reserves raw ID 12, so the
+live collision-free identity is `SCN-013`. The dedicated runtime contract is
+documented in `docs/systems/019_infantry_spawn_triggerable_scenario.md`.
+
+Low, Medium, High, and Maximum intensity scale the share of countries processed, connected revolt-region coverage, formation lots, front count, additional adjacent wars, and actor manpower. One-state and all-island countries use a same-tag military takeover instead of losing their only state. Every dynamic actor receives a connected noncapital region, new Event 019 formations, and an immediate former-parent war. Maximum is an ongoing global crisis and never sets `world_end`.
+
+The shared window stores the type and intensity until confirmation. Its pure eligibility bridge checks those persistent selectors and the same host, terminal, setup, and duplicate-launch conditions as direct Event 019 callers without writing temporary variables. Confirmation alone copies the live selectors into the raw Event 019 launch effect, so the shared path shows exactly one confirmation. The row sorts at name value `5.75`, after The Hunger Lines and before The World in Fury, while its stable numeric identity is `SCN-013`.
+
+The current registry/scenario specialist reaudit and live-final AI, balance,
+performance, isolation, scenario-safety, and exploit reaudit are clean with zero
+P0, P1, or P2 findings. Every gameplay specialist gate is closed. The catalog
+workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag
+package has 91 separate full-flag ImageGen raws, 91
+deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs.
+Visual and runtime rows pass, and the independent remediation re-audit handoff
+`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+is PASS, clearing the regional asset gate for parent-owned package promotion.
+The machine JSON retains its immutable literal
+`candidate_requires_independent_visual_review` processor-state value. Parent
+workbook/catalog export and reconciliation are complete, SCN-013 and Event 19
+now read `Fully Functional`, and package inventory is complete at 33/33 current
+files. The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate
+remains. The old `regional_variants/` seven-motif
+composite pipeline and its 7/16 validation records are archival evidence only.

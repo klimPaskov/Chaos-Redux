@@ -315,53 +315,53 @@ Removes the lot after a delay. It returns partial salvage and lowers congestion.
 
 The claimant system gives the event a political center. The generals are not cosmetic flavor. They provide military benefits, make demands, form networks, and can revolt with the units that follow them.
 
-The design calls for 20 generic portraits that look frightening, altered, or possessed. These portraits form a reusable pool. The same campaign should normally show only a small subset in one country.
+The design calls for 20 fixed claimant identity slots whose artwork shows frightening, altered, or impossible regional armies and musters. The army scenes form a reusable pool; the same campaign should normally show only a small subset in one country. The named claimant remains a gameplay character, but the visual focus is the force that embodies his command rather than his person.
 
 ### Identity rules
 
-Each one-person portrait must have:
+Each claimant profile must have:
 
-- apparent gender presentation recorded in the asset manifest
-- matching male or female leader metadata
+- male-default leader metadata
 - a matching regional personal-name pool
 - an actual-looking era-appropriate personal name
 - optional epithet, nickname, patronymic, or unsettling surname
 - no generic office title as the person’s name
+- a fixed region-compatible army/muster scene with no individual focal human/person
 
-Recommended pool balance:
+Required pool balance:
 
-- 10 male-presenting portraits
-- 10 female-presenting portraits
+- 20 male claimant gameplay profiles
+- 20 separate army/muster source scenes
 
 The implementation should use small regional name pools so the claimant’s identity fits the country while retaining Chaos Redux strangeness.
 
-A country can also generate an institutional claimant such as a junta or committee only when the visual is a council or collective body. The requested 20 portraits are one-person portraits, so they use personal names.
+A country can also generate an institutional claimant such as a junta or committee when its gameplay identity requires one. Derivative council artwork expresses collective identity through massed formations, not councillor figures. The supported council character and all twenty ordinary claimant characters explicitly use `female = no`; the council remains institutional in player-facing text, and every fixed technical identity slot depicts armies or hosts rather than a focal person.
 
 ### Visual direction
 
-The portraits should be fictional HOI4-style upper-torso or bust portraits.
+The fixed `GFX_portrait_*` slots should contain fictional vertical HOI4-style army/muster identity scenes composed for a 156 by 210 crop.
 
 Shared visual traits:
 
-- period military or improvised command clothing
-- severe, uncanny, or possessed expression
-- subtle supernatural disturbance rather than comedy
-- distinct silhouettes and regional uniform cues
+- massed period troops, transport, guns, animals, landing craft, bicycles, or field logistics appropriate to the region
+- distinct formation geometry, terrain, operational posture, and regional material cues
+- subtle supernatural disturbance in light, weather, spacing, or impossible organization rather than comedy
 - subdued painterly treatment
-- readable face at 156 by 210
+- readable army/host silhouette at 156 by 210
+- no individual focal person, face, bust, officer, or commander
 - no readable text
 - no gore as the primary identity
+- no real national, state, party, or extremist emblem
 
 Variation can include:
 
-- eyes reflecting an impossible light
 - shadow that falls in the wrong direction
-- ritual scars or strange medals
-- unnaturally rigid posture
-- smoke, dust, or dim barracks light
-- old uniforms mixed with unexplained insignia
+- concentric, wedge, chevron, crescent, grid, ring, or envelopment formations
+- railheads, ports, river crossings, industrial yards, highland tracks, deserts, forests, floodplains, fjords, deltas, or outback roads
+- smoke, dust, storm light, snow, monsoon rain, spectral vapor, or mineral glow
+- old equipment organized with uncanny precision
 
-The package should not animate all 20 portraits. Static portraits provide better variety and keep the asset scope practical. The claimant crisis is communicated through animated UI warning assets instead.
+The package should not animate the 20 army/muster scenes. Static scenes provide better variety and keep the asset scope practical. The claimant crisis is communicated through animated UI warning assets instead.
 
 ## Claimant archetypes
 
@@ -451,7 +451,7 @@ Risks:
 - can take over the state through elite command capture
 - may prefer a coup or one-state takeover over territorial revolt
 
-The 20 portraits should cover these archetypes with regional variation rather than creating 20 mechanically unique systems.
+The 20 fixed army/muster identity scenes should cover these archetypes through regional formation, terrain, logistics, and posture variation rather than creating 20 mechanically unique systems.
 
 ## Claimant generation
 
@@ -467,7 +467,7 @@ A claimant can appear through:
 
 A country normally tracks up to three active claimants. The system chooses one primary claimant and up to two rivals or subordinates.
 
-Additional generated portraits can replace removed claimants or appear in later generations.
+Unused region-compatible profiles and their fixed army/muster identity scenes can represent later claimants after earlier claimant lifecycles close. No mismatched-region or global visual fallback is permitted.
 
 ## Claimant demands
 
@@ -585,12 +585,16 @@ This is slower but can end the crisis peacefully.
 The state builds loyal command networks, reassigns units, and isolates depots.
 
 This costs army experience, equipment, and time. Failure can accelerate revolt.
+The shared response effect starts a dedicated officer-search lock consumed by
+the decision, Muster Board, and AI paths alike.
 
 ### Public Discrediting
 
 The state uses military failure, exposed fraud, or political opposition to lower influence.
 
 It is more effective against Field Prophets and Hollow Marshals than a claimant whose troops are winning battles.
+Its shared response effect starts an independent political-staff lock consumed
+by the decision, Muster Board, and AI paths alike.
 
 ### Arrest or Removal
 
@@ -619,6 +623,25 @@ A claimant revolt takes only units with a real loyalty link:
 The revolt must not randomly seize the entire ordinary national army.
 
 Regular divisions can defect only through a separate, explicit effect tied to severe command collapse.
+
+### Ordinary claimant release mode
+
+An ordinary claimant release is an Evolution III outcome. It does not require
+Evolution IV, an anomalous family, a registry row, or a provider callback. A
+multi-state country must have a valid male claimant and at least one exact,
+active Event 19 formation whose recorded claimant loyalty belongs to that
+claimant.
+
+The release freezes the ordinary-claimant mode, claimant UID, transaction nonce,
+loyal source rows, and a connected region built from the claimant headquarters
+and the recorded origins of those formations. The dynamic claimant breakaway
+recreates and proves exactly that frozen loyal set before deleting any source
+cohort. It receives the claimant's fixed identity and scene mapping, and it does
+not receive an unrelated family or substitute formation.
+
+If no exact loyal formation can be proved, the crisis resolves through the
+visible failed-coup outcome and its existing cleanup or cooldown. The release
+router never keeps a mature claimant crisis silently waiting for Evolution IV.
 
 ### Territorial base
 
@@ -747,7 +770,7 @@ Evolution III is satisfied when:
 - one-battalion and bloated divisions are possible but not the only bad outcomes
 - the player cannot reroll freely
 - poor management shifts the outcome distribution toward absurdity
-- 20 fictional claimant portraits are planned with gender-matched regional name pools
+- 20 fictional male claimant profiles have regional male name pools and separate region-compatible army/muster identity scenes with no focal person
 - claimant demands have real military and political effects
 - revolts use actual loyal event units
 - one-state countries use takeover logic rather than invalid partition

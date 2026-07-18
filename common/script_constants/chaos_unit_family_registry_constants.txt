@@ -1,8 +1,12 @@
 # ============================================================================
 # CHAOS REDUX - OPT-IN CHAOS UNIT FAMILY REGISTRY CONSTANTS
 # ============================================================================
-# Shared contracts only. Each family owns its numeric identity, metadata,
-# registration call, and provider effects outside Event 019.
+# Shared contracts only. Event 19's initial family identities, metadata,
+# registration entries, and provider callbacks are consolidated in its sole
+# dedicated registry effect file. A future family defines its complete provider
+# registration and Event 19 callbacks in that family's own integration surface,
+# then calls registration from its existing parent startup path. It requires no
+# Event 19 family-list, display-map, picture-map, or registry-file edit.
 # ============================================================================
 
 chaos_unit_family_availability = {
@@ -35,9 +39,31 @@ chaos_unit_family_registry = {
 		data = int
 	}
 
-	contract_version = 2
+	contract_version = 4
 	minimum_family_id = 500
 	minimum_provider_id = 500
 	not_found = -1
 	first_index = 0
+}
+
+chaos_unit_family_derivative_cleanup_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	defeat = 1
+	final = 2
+}
+
+# A future provider opts into the neutral army/host presentation explicitly.
+# Values 1-3 remain the three initial Event 19 bespoke integrations.
+chaos_unit_family_visual_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	provider_neutral_army = 999
 }

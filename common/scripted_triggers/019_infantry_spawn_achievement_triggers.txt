@@ -3,8 +3,8 @@
 # ============================================================================
 # Player eligibility, immutable history, exact claimant identity, rail proof,
 # technology gates, and the eleven achievement completion contracts.
-# Battle achievements require a ready flag produced only by the exact-division
-# combat effect; no country-level combat proxy is accepted.
+# Battle achievements require a ready flag produced only by a controlled,
+# frozen one-formation trial; no country-level combat proxy is accepted.
 # ============================================================================
 
 infantry_spawn_achievement_is_player = {
@@ -107,12 +107,347 @@ infantry_spawn_achievement_current_technology_gate_is_still_locked = {
 	}
 }
 
-# Input contract for the deliberately unwired exact-division combat effect.
-infantry_spawn_achievement_significant_battle_inputs_are_valid = {
-	has_event_target = infantry_spawn_achievement_battle_division
-	check_variable = { var = infantry_spawn_achievement_battle_enemy_strength_ratio value = constant:infantry_spawn_achievement_battle.minimum_enemy_strength_ratio compare = greater_than_or_equals }
-	check_variable = { var = infantry_spawn_achievement_battle_duration_hours value = constant:infantry_spawn_achievement_battle.minimum_duration_hours compare = greater_than_or_equals }
-	check_variable = { var = infantry_spawn_achievement_battle_enemy_casualties value = constant:infantry_spawn_achievement_battle.minimum_enemy_casualties compare = greater_than_or_equals }
+# ---------------------------------------------------------------------------
+# Controlled exact-division combat trials
+# ---------------------------------------------------------------------------
+
+# Scenario setup must not take custody of either side of a controlled trial.
+# The opponent remains excluded while unresolved cleanup is quarantined, so a
+# failed teardown cannot silently turn a temporary trial country into a host.
+infantry_spawn_achievement_combat_trial_scenario_host_is_safe = {
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_opponent }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_cleanup_quarantined }
+}
+
+infantry_spawn_achievement_combat_trial_country_is_available = {
+	infantry_spawn_management_is_available = yes
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_active }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_cooldown }
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+	has_war = no
+	has_border_war = no
+	has_capitulated = no
+	is_subject = no
+	NOT = { has_civil_war = yes }
+}
+
+infantry_spawn_achievement_one_battalion_trial_cost_is_available = {
+	check_variable = { var = army_experience value = constant:infantry_spawn_achievement_combat_trial_cost.one_battalion_army_experience compare = greater_than_or_equals }
+	check_variable = { var = command_power value = constant:infantry_spawn_achievement_combat_trial_cost.one_battalion_command_power compare = greater_than_or_equals }
+}
+
+infantry_spawn_achievement_combined_arms_trial_cost_is_available = {
+	check_variable = { var = army_experience value = constant:infantry_spawn_achievement_combat_trial_cost.combined_arms_army_experience compare = greater_than_or_equals }
+	check_variable = { var = command_power value = constant:infantry_spawn_achievement_combat_trial_cost.combined_arms_command_power compare = greater_than_or_equals }
+}
+
+infantry_spawn_achievement_borrowed_future_trial_cost_is_available = {
+	check_variable = { var = army_experience value = constant:infantry_spawn_achievement_combat_trial_cost.borrowed_future_army_experience compare = greater_than_or_equals }
+	check_variable = { var = command_power value = constant:infantry_spawn_achievement_combat_trial_cost.borrowed_future_command_power compare = greater_than_or_equals }
+}
+
+infantry_spawn_achievement_barracks_of_babel_trial_cost_is_available = {
+	check_variable = { var = army_experience value = constant:infantry_spawn_achievement_combat_trial_cost.barracks_of_babel_army_experience compare = greater_than_or_equals }
+	check_variable = { var = command_power value = constant:infantry_spawn_achievement_combat_trial_cost.barracks_of_babel_command_power compare = greater_than_or_equals }
+}
+
+# Division scope. The live scope, immutable unit row, and composition
+# disqualification ledger must all identify the same surviving Event 19 unit.
+infantry_spawn_achievement_combat_trial_division_has_exact_generated_identity = {
+	has_variable = infantry_spawn_event19_generated_identity
+	has_variable = infantry_spawn_event19_unit_uid
+	has_variable = infantry_spawn_event19_generation_uid
+	has_variable = infantry_spawn_event19_lot_uid
+	has_variable = infantry_spawn_event19_template_uid
+	has_variable = infantry_spawn_event19_material_quality
+	has_variable = infantry_spawn_event19_coherence
+	check_variable = { var = infantry_spawn_event19_generated_identity value = constant:infantry_spawn_achievement_value.one compare = equals }
+	NOT = { has_variable = infantry_spawn_achievement_combat_trial_nonce }
+	ROOT = {
+		is_in_array = { array = infantry_spawn_unit_scope_entries value = PREV }
+		NOT = { is_in_array = { array = infantry_spawn_achievement_composition_disqualified_unit_uid_entries value = PREV.infantry_spawn_event19_unit_uid } }
+	}
+}
+
+# Division scope. These markers are recorded beside the immutable gate ledger
+# when the formation is created, then checked against present-day technology.
+infantry_spawn_achievement_combat_trial_division_has_locked_recorded_gate = {
+	OR = {
+		AND = { has_variable = infantry_spawn_event19_gate_infantry_weapons ROOT = { NOT = { has_tech = infantry_weapons } } }
+		AND = { has_variable = infantry_spawn_event19_gate_motorised_infantry ROOT = { NOT = { has_tech = motorised_infantry } } }
+		AND = { has_variable = infantry_spawn_event19_gate_mechanised_infantry ROOT = { NOT = { has_tech = mechanised_infantry } } }
+		AND = { has_variable = infantry_spawn_event19_gate_armored_car ROOT = { NOT = { has_tech = armored_car1 } } }
+		AND = { has_variable = infantry_spawn_event19_gate_artillery ROOT = { NOT = { has_tech = gw_artillery } } }
+		AND = { has_variable = infantry_spawn_event19_gate_rocket_artillery ROOT = { NOT = { has_tech = rocket_artillery } } }
+		AND = { has_variable = infantry_spawn_event19_gate_anti_air ROOT = { NOT = { has_tech = interwar_antiair } } }
+		AND = { has_variable = infantry_spawn_event19_gate_anti_tank ROOT = { NOT = { has_tech = interwar_antitank } } }
+		AND = { has_variable = infantry_spawn_event19_gate_light_armor ROOT = { NOT = { OR = { has_tech = basic_light_tank_chassis has_tech = basic_light_tank } } } }
+		AND = { has_variable = infantry_spawn_event19_gate_medium_armor ROOT = { NOT = { OR = { has_tech = basic_medium_tank_chassis has_tech = basic_medium_tank } } } }
+		AND = { has_variable = infantry_spawn_event19_gate_heavy_armor ROOT = { NOT = { OR = { has_tech = basic_heavy_tank_chassis has_tech = basic_heavy_tank } } } }
+		AND = { has_variable = infantry_spawn_event19_gate_modern_armor ROOT = { NOT = { OR = { has_tech = main_battle_tank_chassis has_tech = main_battle_tank } } } }
+		AND = { has_variable = infantry_spawn_event19_gate_amphibious_armor ROOT = { NOT = { OR = { has_tech = amphibious_tank_chassis has_tech = amphibious_tank } } } }
+		AND = { has_variable = infantry_spawn_event19_gate_amphibious_mechanized ROOT = { NOT = { has_tech = amphibious_mechanized_infantry } } }
+		AND = { has_variable = infantry_spawn_event19_gate_helicopter ROOT = { NOT = { is_special_project_completed = sp:sp_air_helicopter } } }
+		AND = { has_variable = infantry_spawn_event19_gate_land_cruiser ROOT = { NOT = { is_special_project_completed = sp:sp_land_land_cruiser } } }
+		AND = { has_variable = infantry_spawn_event19_gate_super_heavy_artillery ROOT = { NOT = { is_special_project_completed = sp:sp_land_super_heavy_howitzer } } }
+		AND = { has_variable = infantry_spawn_event19_gate_self_propelled_super_heavy_artillery ROOT = { NOT = { is_special_project_completed = sp:sp_land_self_propelled_super_heavy_howitzer } } }
+		AND = { has_variable = infantry_spawn_event19_gate_super_heavy_armor ROOT = { NOT = { OR = { has_tech = super_heavy_tank_chassis has_tech = super_heavy_tank } } } }
+	}
+}
+
+# Division-scope type contracts. Material quality and coherence are immutable
+# generation properties; strength and organization are live launch readiness.
+infantry_spawn_achievement_one_battalion_trial_division_is_eligible = {
+	infantry_spawn_achievement_combat_trial_division_has_exact_generated_identity = yes
+	check_variable = { var = infantry_spawn_event19_combat_component_count value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.one_battalion_material compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_event19_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.one_battalion_coherence compare = greater_than_or_equals }
+	NOT = { unit_strength < constant:infantry_spawn_achievement_combat_trial_readiness.one_battalion_strength }
+	NOT = { unit_organization < constant:infantry_spawn_achievement_combat_trial_readiness.one_battalion_organization }
+}
+
+infantry_spawn_achievement_combined_arms_trial_division_is_eligible = {
+	infantry_spawn_achievement_combat_trial_division_has_exact_generated_identity = yes
+	check_variable = { var = infantry_spawn_event19_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+	check_variable = { var = infantry_spawn_event19_distinct_combat_component_types value = constant:infantry_spawn_achievement_threshold.combined_arms_distinct_component_types compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_event19_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.combined_arms_material compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_event19_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.combined_arms_coherence compare = greater_than_or_equals }
+	NOT = { unit_strength < constant:infantry_spawn_achievement_combat_trial_readiness.combined_arms_strength }
+	NOT = { unit_organization < constant:infantry_spawn_achievement_combat_trial_readiness.combined_arms_organization }
+}
+
+infantry_spawn_achievement_borrowed_future_trial_division_is_eligible = {
+	infantry_spawn_achievement_combat_trial_division_has_exact_generated_identity = yes
+	check_variable = { var = infantry_spawn_event19_pretechnology_formation value = constant:infantry_spawn_achievement_value.one compare = equals }
+	infantry_spawn_achievement_combat_trial_division_has_locked_recorded_gate = yes
+	check_variable = { var = infantry_spawn_event19_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.borrowed_future_material compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_event19_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.borrowed_future_coherence compare = greater_than_or_equals }
+	NOT = { unit_strength < constant:infantry_spawn_achievement_combat_trial_readiness.borrowed_future_strength }
+	NOT = { unit_organization < constant:infantry_spawn_achievement_combat_trial_readiness.borrowed_future_organization }
+}
+
+infantry_spawn_achievement_barracks_of_babel_trial_division_is_eligible = {
+	infantry_spawn_achievement_combat_trial_division_has_exact_generated_identity = yes
+	check_variable = { var = infantry_spawn_event19_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_camelry value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_bicycle value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_amphibious_tank value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_flame_element value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_artillery value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_babel_has_engineers value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_event19_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.barracks_of_babel_material compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_event19_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.barracks_of_babel_coherence compare = greater_than_or_equals }
+	NOT = { unit_strength < constant:infantry_spawn_achievement_combat_trial_readiness.barracks_of_babel_strength }
+	NOT = { unit_organization < constant:infantry_spawn_achievement_combat_trial_readiness.barracks_of_babel_organization }
+}
+
+# Country scope for the deliberately passive AI opponent.
+infantry_spawn_achievement_combat_trial_defender_country_is_safe = {
+	exists = yes
+	is_ai = yes
+	is_subject = no
+	has_war = no
+	has_border_war = no
+	has_capitulated = no
+	NOT = { has_civil_war = yes }
+	NOT = { has_country_flag = infantry_spawn_participant }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_opponent }
+	NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_cleanup_quarantined }
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { tag = ROOT }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_template = "Event 19 Controlled Trial Detachment" }
+}
+
+# State scope. No division of any owner may be present before the exact trial
+# detachment is created, which also makes one-state opponents safe participants.
+infantry_spawn_achievement_combat_trial_defender_state_is_safe = {
+	impassable = no
+	has_border_war = no
+	OWNER = { infantry_spawn_achievement_combat_trial_defender_country_is_safe = yes }
+	CONTROLLER = { owns_state = PREV }
+	NOT = { any_state_division = { always = yes } }
+}
+
+# State scope. ROOT is the initiating Event 19 country. Both root-owned and
+# allied formations are excluded by the exact country count and owner check.
+infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = {
+	impassable = no
+	has_border_war = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	ROOT = {
+		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
+		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+	}
+	NOT = { any_state_division = { OWNER = { NOT = { tag = ROOT } } } }
+	any_neighbor_state = { infantry_spawn_achievement_combat_trial_defender_state_is_safe = yes }
+}
+
+infantry_spawn_achievement_one_battalion_trial_state_is_eligible = {
+	infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = yes
+	any_state_division = { infantry_spawn_achievement_one_battalion_trial_division_is_eligible = yes }
+}
+
+infantry_spawn_achievement_combined_arms_trial_state_is_eligible = {
+	infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = yes
+	any_state_division = { infantry_spawn_achievement_combined_arms_trial_division_is_eligible = yes }
+}
+
+infantry_spawn_achievement_borrowed_future_trial_state_is_eligible = {
+	infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = yes
+	any_state_division = { infantry_spawn_achievement_borrowed_future_trial_division_is_eligible = yes }
+}
+
+infantry_spawn_achievement_barracks_of_babel_trial_state_is_eligible = {
+	infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = yes
+	any_state_division = { infantry_spawn_achievement_barracks_of_babel_trial_division_is_eligible = yes }
+}
+
+# Division scope during the launch transaction. The temporary trial type is
+# intentionally unscoped so this remains valid after entering a division scope.
+infantry_spawn_achievement_current_combat_trial_division_is_eligible = {
+	OR = {
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_one_battalion_wonder compare = equals }
+			infantry_spawn_achievement_one_battalion_trial_division_is_eligible = yes
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_combined_arms_accident compare = equals }
+			infantry_spawn_achievement_combined_arms_trial_division_is_eligible = yes
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_borrowed_future compare = equals }
+			infantry_spawn_achievement_borrowed_future_trial_division_is_eligible = yes
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_barracks_of_babel compare = equals }
+			infantry_spawn_achievement_barracks_of_babel_trial_division_is_eligible = yes
+		}
+	}
+}
+
+# Country scope after the immutable signature and technology scans have run.
+infantry_spawn_achievement_exact_division_matches_current_combat_trial = {
+	check_variable = { var = infantry_spawn_achievement_exact_division_is_valid value = constant:infantry_spawn_achievement_value.one compare = equals }
+	check_variable = { var = infantry_spawn_achievement_exact_signature_is_present value = constant:infantry_spawn_achievement_value.one compare = equals }
+	OR = {
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_one_battalion_wonder compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_combat_component_count value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.one_battalion_material compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_exact_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.one_battalion_coherence compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_combined_arms_accident compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_distinct_component_count value = constant:infantry_spawn_achievement_threshold.combined_arms_distinct_component_types compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_exact_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.combined_arms_material compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_exact_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.combined_arms_coherence compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_borrowed_future compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_unit_has_locked_gate value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.borrowed_future_material compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_exact_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.borrowed_future_coherence compare = greater_than_or_equals }
+			event_target:infantry_spawn_achievement_battle_division = {
+				check_variable = { var = infantry_spawn_event19_pretechnology_formation value = constant:infantry_spawn_achievement_value.one compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_barracks_of_babel compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_camelry value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_bicycle value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_amphibious_tank value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_flame_element value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_artillery value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_babel_has_engineers value = constant:infantry_spawn_achievement_value.one compare = equals }
+			check_variable = { var = infantry_spawn_achievement_exact_material_quality value = constant:infantry_spawn_achievement_combat_trial_quality.barracks_of_babel_material compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_exact_coherence value = constant:infantry_spawn_achievement_combat_trial_quality.barracks_of_babel_coherence compare = greater_than_or_equals }
+		}
+	}
+}
+
+# State-scope post-launch identity checks. Exact one-unit counts and the absence
+# of foreign divisions prove literal one-versus-one participation at resolution.
+infantry_spawn_achievement_combat_trial_attacker_state_matches_frozen_division = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	ROOT = {
+		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
+		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+	}
+	NOT = { any_state_division = { OWNER = { NOT = { tag = ROOT } } } }
+	any_state_division = {
+		OWNER = { tag = ROOT }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_nonce value = ROOT.infantry_spawn_achievement_combat_trial_nonce compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_type value = ROOT.infantry_spawn_achievement_combat_trial_type compare = equals }
+		check_variable = { var = infantry_spawn_event19_unit_uid value = ROOT.infantry_spawn_achievement_combat_trial_unit_uid compare = equals }
+		check_variable = { var = infantry_spawn_event19_generation_uid value = ROOT.infantry_spawn_achievement_combat_trial_generation_uid compare = equals }
+		check_variable = { var = infantry_spawn_event19_lot_uid value = ROOT.infantry_spawn_achievement_combat_trial_lot_uid compare = equals }
+		check_variable = { var = infantry_spawn_event19_template_uid value = ROOT.infantry_spawn_achievement_combat_trial_template_uid compare = equals }
+	}
+}
+
+infantry_spawn_achievement_combat_trial_defender_state_matches_frozen_division = {
+	OWNER = {
+		check_variable = { var = THIS.id value = ROOT.infantry_spawn_achievement_combat_trial_defender_country compare = equals }
+		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
+		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+	}
+	CONTROLLER = { owns_state = PREV }
+	NOT = {
+		any_state_division = {
+			OWNER = { NOT = { check_variable = { var = THIS.id value = ROOT.infantry_spawn_achievement_combat_trial_defender_country compare = equals } } }
+		}
+	}
+	any_state_division = {
+		check_variable = { var = infantry_spawn_achievement_combat_trial_defender_identity value = constant:infantry_spawn_achievement_value.one compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_nonce value = ROOT.infantry_spawn_achievement_combat_trial_nonce compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_type value = ROOT.infantry_spawn_achievement_combat_trial_type compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_attacker_country value = ROOT.id compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_defender_unit_id value = constant:infantry_spawn_achievement_combat_trial.defender_unit_id compare = equals }
+	}
+}
+
+infantry_spawn_achievement_combat_trial_frozen_pair_is_intact = {
+	has_country_flag = infantry_spawn_achievement_combat_trial_active
+	has_variable = infantry_spawn_achievement_combat_trial_nonce
+	has_variable = infantry_spawn_achievement_combat_trial_type
+	has_variable = infantry_spawn_achievement_combat_trial_attacker_state
+	has_variable = infantry_spawn_achievement_combat_trial_defender_state
+	has_variable = infantry_spawn_achievement_combat_trial_defender_country
+	var:infantry_spawn_achievement_combat_trial_attacker_state = { infantry_spawn_achievement_combat_trial_attacker_state_matches_frozen_division = yes }
+	var:infantry_spawn_achievement_combat_trial_defender_state = { infantry_spawn_achievement_combat_trial_defender_state_matches_frozen_division = yes }
+	var:infantry_spawn_achievement_combat_trial_defender_country = {
+		exists = yes
+		has_country_flag = infantry_spawn_achievement_combat_trial_opponent
+		check_variable = { var = infantry_spawn_achievement_combat_trial_opponent_nonce value = ROOT.infantry_spawn_achievement_combat_trial_nonce compare = equals }
+		check_variable = { var = infantry_spawn_achievement_combat_trial_opponent_attacker value = ROOT.id compare = equals }
+	}
+}
+
+infantry_spawn_achievement_combat_trial_is_live = {
+	has_country_flag = infantry_spawn_achievement_combat_trial_started
+	infantry_spawn_achievement_combat_trial_frozen_pair_is_intact = yes
+	var:infantry_spawn_achievement_combat_trial_attacker_state = { has_border_war = yes }
+	var:infantry_spawn_achievement_combat_trial_defender_state = { has_border_war = yes }
+	has_war = no
+	has_capitulated = no
+	NOT = { has_civil_war = yes }
+	NOT = { has_global_flag = world_end }
+	var:infantry_spawn_achievement_combat_trial_defender_country = {
+		has_war = no
+		has_capitulated = no
+		NOT = { has_civil_war = yes }
+	}
 }
 
 infantry_spawn_achievement_rail_connection_is_live = {
@@ -140,6 +475,7 @@ infantry_spawn_achievement_scenario_history_is_maximum_crisis = {
 	has_capitulated = no
 	NOT = { has_global_flag = world_end }
 	NOT = { has_country_flag = infantry_spawn_achievement_scenario_world_end_seen }
+	NOT = { has_country_flag = infantry_spawn_achievement_scenario_capitulated }
 	NOT = { has_country_flag = infantry_spawn_achievement_scenario_intensity_changed }
 	NOT = { has_country_flag = infantry_spawn_achievement_scenario_tag_switched }
 }
@@ -151,6 +487,8 @@ infantry_spawn_achievement_scenario_history_is_maximum_crisis = {
 infantry_spawn_achievement_every_rifle_accounted_for_is_complete = {
 	infantry_spawn_achievement_has_unforced_history = yes
 	has_country_flag = infantry_spawn_achievement_every_rifle_accounted_for_ready
+	NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+	NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
 }
 
 infantry_spawn_achievement_one_battalion_wonder_is_complete = {
@@ -161,7 +499,10 @@ infantry_spawn_achievement_one_battalion_wonder_is_complete = {
 infantry_spawn_achievement_the_army_has_voted_is_complete = {
 	infantry_spawn_achievement_has_unforced_history = yes
 	has_country_flag = infantry_spawn_achievement_claimant_takeover_started
+	NOT = { has_country_flag = infantry_spawn_achievement_claimant_leadership_broken }
+	NOT = { has_country_flag = infantry_spawn_achievement_claimant_country_capitulated }
 	infantry_spawn_achievement_claimant_is_still_country_leader = yes
+	has_capitulated = no
 	OR = {
 		has_country_flag = infantry_spawn_achievement_claimant_major_victory
 		NOT = { has_country_flag = infantry_spawn_achievement_claimant_survival_pending }
@@ -184,6 +525,7 @@ infantry_spawn_achievement_combined_arms_accident_is_complete = {
 infantry_spawn_achievement_no_room_on_the_train_is_complete = {
 	infantry_spawn_achievement_has_unforced_history = yes
 	has_country_flag = infantry_spawn_achievement_no_room_on_the_train_ready
+	NOT = { has_country_flag = infantry_spawn_achievement_emergency_integration_used }
 }
 
 infantry_spawn_achievement_borrowed_future_is_complete = {
@@ -208,6 +550,10 @@ infantry_spawn_achievement_barracks_of_babel_is_complete = {
 infantry_spawn_achievement_quiet_demobilisation_is_complete = {
 	infantry_spawn_achievement_has_unforced_history = yes
 	has_country_flag = infantry_spawn_achievement_quiet_demobilisation_ready
+	NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+	NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
+	NOT = { has_country_flag = infantry_spawn_achievement_emergency_integration_used }
+	NOT = { has_country_flag = infantry_spawn_achievement_teardown_invariant_failure }
 }
 
 infantry_spawn_achievement_every_barracks_a_front_is_complete = {

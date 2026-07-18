@@ -1,9 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY IDEAS
 # ============================================================================
-# Four-role opening burdens evolve into route, family, territorial, and
-# former-parent identities. Defeat swaps the surviving package into remnant
-# penalties; final annex cleanup removes every idea defined here.
+# Four opening burdens evolve into diplomatic-command, logistics/doctrine,
+# family-command, and former-parent identities. Doctrine and sustainment replace
+# the logistics track instead of stacking over it. Defeat swaps all four tracks
+# into remnant penalties; final annex cleanup removes every idea defined here.
 # ============================================================================
 
 ideas = {
@@ -27,10 +28,22 @@ ideas = {
 			}
 		}
 
-		infantry_spawn_derivative_zombie_fragmented_command = {
-			picture = infantry_spawn_army_congestion
+		infantry_spawn_derivative_claimant_disputed_command = {
+			picture = infantry_spawn_claimant_command
 			allowed_civil_war = { always = yes }
 			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.minor_stability
+				army_org_factor = constant:infantry_spawn_derivative_idea.moderate_org
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.minor_command_power
+			}
+		}
+
+		infantry_spawn_derivative_zombie_fragmented_command = {
+			picture = infantry_spawn_command_confusion
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.moderate_stability
+				political_power_factor = constant:infantry_spawn_derivative_idea.moderate_political_power
 				army_org_factor = constant:infantry_spawn_derivative_idea.moderate_org
 				supply_consumption_factor = constant:infantry_spawn_derivative_idea.severe_supply
 				training_time_army_factor = constant:infantry_spawn_derivative_idea.moderate_training
@@ -38,9 +51,10 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_ghost_unstable_manifestation = {
-			picture = infantry_spawn_army_congestion
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
+				political_power_factor = constant:infantry_spawn_derivative_idea.moderate_political_power
 				stability_factor = constant:infantry_spawn_derivative_idea.minor_stability
 				army_org_factor = constant:infantry_spawn_derivative_idea.moderate_org
 				army_morale_factor = constant:infantry_spawn_derivative_idea.minor_morale
@@ -48,9 +62,11 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_golem_broken_pattern = {
-			picture = infantry_spawn_equipment_debt
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.moderate_stability
+				political_power_factor = constant:infantry_spawn_derivative_idea.moderate_political_power
 				army_speed_factor = constant:infantry_spawn_derivative_idea.minor_speed
 				supply_consumption_factor = constant:infantry_spawn_derivative_idea.moderate_supply
 				production_factory_max_efficiency_factor = constant:infantry_spawn_derivative_idea.minor_efficiency
@@ -95,10 +111,22 @@ ideas = {
 			}
 		}
 
+		infantry_spawn_derivative_claimant_personal_staff = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_derivative_idea.minor_org_bonus
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.moderate_command_power
+				land_reinforce_rate = constant:infantry_spawn_derivative_idea.minor_reinforce_bonus
+			}
+		}
+
 		infantry_spawn_derivative_zombie_bound_to_commander = {
 			picture = infantry_spawn_claimant_command
 			allowed_civil_war = { always = yes }
 			modifier = {
+				political_power_factor = constant:infantry_spawn_derivative_idea.minor_command_power
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.moderate_command_power
 				army_org_factor = constant:infantry_spawn_derivative_idea.minor_org_bonus
 				land_reinforce_rate = constant:infantry_spawn_derivative_idea.minor_reinforce_bonus
 			}
@@ -108,6 +136,8 @@ ideas = {
 			picture = infantry_spawn_claimant_command
 			allowed_civil_war = { always = yes }
 			modifier = {
+				political_power_factor = constant:infantry_spawn_derivative_idea.minor_command_power
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.moderate_command_power
 				army_org_factor = constant:infantry_spawn_derivative_idea.minor_org_bonus
 				army_morale_factor = constant:infantry_spawn_derivative_idea.minor_morale_bonus
 			}
@@ -117,6 +147,8 @@ ideas = {
 			picture = infantry_spawn_claimant_command
 			allowed_civil_war = { always = yes }
 			modifier = {
+				political_power_factor = constant:infantry_spawn_derivative_idea.minor_command_power
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.moderate_command_power
 				army_attack_factor = constant:infantry_spawn_derivative_idea.minor_attack
 				max_planning_factor = constant:infantry_spawn_derivative_idea.minor_max_planning
 			}
@@ -124,7 +156,7 @@ ideas = {
 
 		# Collective host ------------------------------------------------------
 		infantry_spawn_derivative_collective_command_host = {
-			picture = infantry_spawn_muster_control
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
 				stability_factor = constant:infantry_spawn_derivative_idea.minor_defence
@@ -133,7 +165,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_collective_district_network = {
-			picture = infantry_spawn_supply_strain
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
 				supply_consumption_factor = constant:infantry_spawn_derivative_idea.minor_org
@@ -142,7 +174,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_collective_defensive_compact = {
-			picture = infantry_spawn_muster_control
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
 				army_defence_factor = constant:infantry_spawn_derivative_idea.minor_defence
@@ -155,24 +187,30 @@ ideas = {
 			picture = infantry_spawn_army_congestion
 			allowed_civil_war = { always = yes }
 			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.minor_defence
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.minor_command_power
 				army_org_factor = constant:infantry_spawn_derivative_idea.minor_org_bonus
 				training_time_army_factor = constant:infantry_spawn_derivative_idea.minor_training
 			}
 		}
 
 		infantry_spawn_derivative_ghost_chorus_of_anchors = {
-			picture = infantry_spawn_muster_control
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.minor_defence
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.minor_command_power
 				army_defence_factor = constant:infantry_spawn_derivative_idea.minor_defence
 				army_morale_factor = constant:infantry_spawn_derivative_idea.minor_morale_bonus
 			}
 		}
 
 		infantry_spawn_derivative_golem_distributed_binding = {
-			picture = infantry_spawn_equipment_debt
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
+				stability_factor = constant:infantry_spawn_derivative_idea.minor_defence
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.minor_command_power
 				army_defence_factor = constant:infantry_spawn_derivative_idea.minor_defence
 				supply_consumption_factor = constant:infantry_spawn_derivative_idea.minor_org
 			}
@@ -180,7 +218,7 @@ ideas = {
 
 		# Species command ------------------------------------------------------
 		infantry_spawn_derivative_species_realm = {
-			picture = infantry_spawn_claimant_command
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
 				war_support_factor = constant:infantry_spawn_derivative_idea.minor_attack
@@ -189,7 +227,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_species_family_domain = {
-			picture = infantry_spawn_supply_strain
+			picture = infantry_spawn_family_registry
 			allowed_civil_war = { always = yes }
 			modifier = {
 				local_resources_factor = constant:infantry_spawn_derivative_idea.minor_resource_gain
@@ -198,7 +236,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_species_extinction_of_old_rule = {
-			picture = infantry_spawn_claimant_command
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
 				army_attack_factor = constant:infantry_spawn_derivative_idea.moderate_attack
@@ -207,27 +245,33 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_zombie_instinct_hierarchy = {
-			picture = infantry_spawn_army_congestion
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
+				war_support_factor = constant:infantry_spawn_derivative_idea.minor_attack
+				mobilization_speed = constant:infantry_spawn_derivative_idea.minor_mobilization
 				army_attack_factor = constant:infantry_spawn_derivative_idea.minor_attack
 				army_speed_factor = constant:infantry_spawn_derivative_idea.minor_speed_bonus
 			}
 		}
 
 		infantry_spawn_derivative_ghost_haunting_without_masters = {
-			picture = infantry_spawn_muster_control
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
+				war_support_factor = constant:infantry_spawn_derivative_idea.minor_attack
+				mobilization_speed = constant:infantry_spawn_derivative_idea.minor_mobilization
 				army_attack_factor = constant:infantry_spawn_derivative_idea.minor_attack
 				planning_speed = constant:infantry_spawn_derivative_idea.minor_planning
 			}
 		}
 
 		infantry_spawn_derivative_golem_living_pattern = {
-			picture = infantry_spawn_equipment_debt
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
+				war_support_factor = constant:infantry_spawn_derivative_idea.minor_attack
+				mobilization_speed = constant:infantry_spawn_derivative_idea.minor_mobilization
 				army_org_factor = constant:infantry_spawn_derivative_idea.minor_org_bonus
 				army_attack_factor = constant:infantry_spawn_derivative_idea.minor_attack
 			}
@@ -274,6 +318,53 @@ ideas = {
 			}
 		}
 
+		infantry_spawn_derivative_concentrated_sustainment_method = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_derivative_idea.moderate_org_bonus
+				max_planning_factor = constant:infantry_spawn_derivative_idea.minor_max_planning
+				supply_consumption_factor = constant:infantry_spawn_derivative_idea.minor_org
+				production_speed_rail_way_factor = constant:infantry_spawn_derivative_idea.minor_rail_speed
+				production_speed_infrastructure_factor = constant:infantry_spawn_derivative_idea.minor_infrastructure_speed
+			}
+		}
+
+		infantry_spawn_derivative_scattered_sustainment_method = {
+			picture = infantry_spawn_muster_control
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = constant:infantry_spawn_derivative_idea.minor_speed_bonus
+				land_reinforce_rate = constant:infantry_spawn_derivative_idea.minor_reinforce_bonus
+				max_planning_factor = constant:infantry_spawn_derivative_idea.minor_org
+				supply_consumption_factor = constant:infantry_spawn_derivative_idea.moderate_org
+				production_speed_rail_way_factor = constant:infantry_spawn_derivative_idea.minor_rail_speed
+				production_speed_infrastructure_factor = constant:infantry_spawn_derivative_idea.minor_infrastructure_speed
+			}
+		}
+
+		infantry_spawn_derivative_auxiliary_sustainment_method = {
+			picture = infantry_spawn_equipment_debt
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = constant:infantry_spawn_derivative_idea.minor_attack
+				army_defence_factor = constant:infantry_spawn_derivative_idea.minor_defence
+				consumer_goods_factor = constant:infantry_spawn_derivative_idea.minor_consumer_goods
+				supply_consumption_factor = constant:infantry_spawn_derivative_idea.moderate_org
+				production_speed_rail_way_factor = constant:infantry_spawn_derivative_idea.minor_rail_speed
+				production_speed_infrastructure_factor = constant:infantry_spawn_derivative_idea.minor_infrastructure_speed
+			}
+		}
+
+		infantry_spawn_derivative_outward_muster = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				planning_speed = constant:infantry_spawn_derivative_idea.outward_muster_planning
+				army_speed_factor = constant:infantry_spawn_derivative_idea.outward_muster_speed
+			}
+		}
+
 		infantry_spawn_derivative_regional_predator = {
 			picture = infantry_spawn_claimant_command
 			allowed_civil_war = { always = yes }
@@ -305,8 +396,27 @@ ideas = {
 			}
 		}
 
+		infantry_spawn_derivative_encircled_remnant = {
+			picture = infantry_spawn_command_confusion
+			allowed_civil_war = { always = yes }
+			modifier = {
+				war_support_factor = constant:infantry_spawn_derivative_idea.minor_war_support
+				land_reinforce_rate = constant:infantry_spawn_derivative_idea.minor_reinforce
+				planning_speed = constant:infantry_spawn_derivative_idea.minor_org
+			}
+		}
+
+		infantry_spawn_derivative_claimant_broken_staff = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_derivative_idea.severe_org
+				command_power_gain_mult = constant:infantry_spawn_derivative_idea.moderate_political_power
+			}
+		}
+
 		infantry_spawn_derivative_zombie_devouring_fragments = {
-			picture = infantry_spawn_army_congestion
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
 				army_org_factor = constant:infantry_spawn_derivative_idea.severe_org
@@ -315,7 +425,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_ghost_fading_host = {
-			picture = infantry_spawn_army_congestion
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
 				army_org_factor = constant:infantry_spawn_derivative_idea.severe_org
@@ -324,7 +434,7 @@ ideas = {
 		}
 
 		infantry_spawn_derivative_golem_crumbling_host = {
-			picture = infantry_spawn_equipment_debt
+			picture = infantry_spawn_anomalous_saturation
 			allowed_civil_war = { always = yes }
 			modifier = {
 				army_speed_factor = constant:infantry_spawn_derivative_idea.moderate_org

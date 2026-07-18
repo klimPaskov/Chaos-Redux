@@ -32,18 +32,17 @@ infantry_spawn_claimant_category = {
 	}
 
 	infantry_spawn_accept_claimant_demand = {
-		icon = GFX_decision_infantry_spawn_claimant_accept_demand
+		icon = GFX_decision_infantry_spawn_claimant_accept
 		visible = {
-			has_country_flag = infantry_spawn_claimant_demand_pending
-			infantry_spawn_selected_claimant_index_is_valid = yes
+			infantry_spawn_selected_claimant_owns_pending_demand = yes
 		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = infantry_spawn_accept_claimant_demand_requirements_tt
-				hidden_trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes }
+				hidden_trigger = { infantry_spawn_can_accept_selected_claimant_demand = yes }
 			}
 		}
-		custom_cost_trigger = { hidden_trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes } }
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_accept_selected_claimant_demand = yes } }
 		custom_cost_text = infantry_spawn_accept_claimant_demand_cost_text
 		complete_effect = {
 			custom_effect_tooltip = infantry_spawn_accept_claimant_demand_effect_tt
@@ -53,16 +52,22 @@ infantry_spawn_claimant_category = {
 			base = constant:infantry_spawn_claimant_ai.high
 			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_low = yes }
 			modifier = { factor = constant:infantry_spawn_claimant_ai.cautious_factor infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_generalissimo_ai.exact_claimant_accept_factor infantry_spawn_selected_claimant_is_event67_generalissimo = yes }
+			modifier = {
+				factor = constant:infantry_spawn_generalissimo_ai.subordinate_command_accept_factor
+				check_variable = { infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_generalissimo_demand.subordinate_command }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_generalissimo_ai.parallel_command_accept_factor
+				check_variable = { infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_generalissimo_demand.parallel_command }
+			}
 		}
 	}
 
 	infantry_spawn_refuse_claimant_demand = {
-		icon = GFX_decision_infantry_spawn_claimant_refuse_demand
-		visible = {
-			has_country_flag = infantry_spawn_claimant_demand_pending
-			infantry_spawn_selected_claimant_index_is_valid = yes
-		}
-		available = { always = yes }
+		icon = GFX_decision_infantry_spawn_claimant_refuse
+		visible = { infantry_spawn_selected_claimant_owns_pending_demand = yes }
+		available = { infantry_spawn_can_refuse_selected_claimant_demand = yes }
 		complete_effect = {
 			custom_effect_tooltip = infantry_spawn_refuse_claimant_demand_effect_tt
 			hidden_effect = { infantry_spawn_refuse_selected_claimant_demand = yes }
@@ -70,6 +75,15 @@ infantry_spawn_claimant_category = {
 		ai_will_do = {
 			base = constant:infantry_spawn_claimant_ai.low
 			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_generalissimo_ai.exact_claimant_refuse_factor infantry_spawn_selected_claimant_is_event67_generalissimo = yes }
+			modifier = {
+				factor = constant:infantry_spawn_generalissimo_ai.subordinate_command_refuse_factor
+				check_variable = { infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_generalissimo_demand.subordinate_command }
+			}
+			modifier = {
+				factor = constant:infantry_spawn_generalissimo_ai.parallel_command_refuse_factor
+				check_variable = { infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_generalissimo_demand.parallel_command }
+			}
 		}
 	}
 

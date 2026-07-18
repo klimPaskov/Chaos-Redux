@@ -1,10 +1,13 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 ACHIEVEMENT ON ACTIONS
 # ============================================================================
-# One-shot capitulation and annexation history only. Vanilla documentation
-# gives on_army_leader_won_combat ROOT = unit leader and FROM = owner country;
-# it exposes no combat or participating-division scope. The four division-
-# battle achievements are therefore intentionally not wired to that callback.
+# One-shot capitulation/annexation history plus exact ordinary-country terminal
+# cleanup. History is recorded before cleanup in the same on_annex block so
+# file-load ordering cannot erase scenario or claimant proof first. Vanilla
+# documentation gives on_army_leader_won_combat ROOT = unit leader and FROM =
+# owner country; it exposes no participating-division proof. The four exact
+# formation achievements instead resolve through their controlled border-trial
+# callbacks and never infer a result from an ordinary battle.
 # No daily, weekly, or monthly country/world iteration is used here.
 # ============================================================================
 
@@ -15,6 +18,7 @@ on_actions = {
 			ROOT = { save_event_target_as = infantry_spawn_achievement_defeated_country }
 			ROOT = { save_event_target_as = infantry_spawn_achievement_defeated_derivative }
 			FROM = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+			ROOT = { infantry_spawn_achievement_country_pulse = yes }
 			ROOT = { infantry_spawn_achievement_record_current_derivative_defeat = yes }
 			FROM = {
 				infantry_spawn_achievement_record_claimant_major_victory = yes
@@ -26,15 +30,33 @@ on_actions = {
 	# ROOT is the annexer and FROM is the annexed country.
 	on_annex = {
 		effect = {
-			FROM = { save_event_target_as = infantry_spawn_achievement_defeated_country }
-			FROM = { save_event_target_as = infantry_spawn_achievement_defeated_derivative }
-			ROOT = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
-			FROM = { infantry_spawn_achievement_record_current_derivative_defeat = yes }
-			ROOT = {
-				infantry_spawn_achievement_record_claimant_major_victory = yes
-				infantry_spawn_achievement_record_scenario_actor_victory = yes
+			if = {
+				limit = { NOT = { has_global_flag = infantry_spawn_natural_derivative_recovery_annex_bypass } }
+				ROOT = { save_event_target_as = infantry_spawn_annexing_country }
+				ROOT = { save_event_target_as = infantry_spawn_next_annex_cleanup_owner }
+				FROM = { save_event_target_as = infantry_spawn_previous_annex_cleanup_owner }
+				ROOT = { infantry_spawn_migrate_annex_cleanup_retry_queue = yes }
+				FROM = { save_event_target_as = infantry_spawn_achievement_defeated_country }
+				FROM = { save_event_target_as = infantry_spawn_achievement_defeated_derivative }
+				ROOT = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+				FROM = { infantry_spawn_achievement_record_current_derivative_defeat = yes }
+				ROOT = {
+					if = {
+						limit = { event_target:infantry_spawn_achievement_defeated_country = { has_capitulated = yes } }
+						infantry_spawn_achievement_record_claimant_major_victory = yes
+					}
+					infantry_spawn_achievement_record_scenario_actor_victory = yes
+				}
+				if = {
+					limit = {
+						FROM = {
+							has_country_flag = infantry_spawn_participant
+							NOT = { is_infantry_spawn_derivative_country = yes }
+						}
+					}
+					FROM = { infantry_spawn_cleanup_annexed_ordinary_country = yes }
+				}
 			}
 		}
 	}
 }
-

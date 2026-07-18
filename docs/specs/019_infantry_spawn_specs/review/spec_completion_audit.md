@@ -1,5 +1,29 @@
 # Event 19 Planning Completion Audit
 
+> **Planning-only and superseded for live status (2026-07-18):** This audit
+> proves specification coverage, not current runtime completion. The later
+> near-completion addendum at
+> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
+> identified and routed additional implementation findings, which have since
+> been implemented. The current focus-tree, decision/mission, country-package,
+> localisation, registry/scenario, and evolution-counter reaudits are clean.
+> The owner-approved regional route now has 91 separate built-in ImageGen raw
+> flags, 91 deterministic spot-colour masters, and the complete 273-row native
+> PNG/runtime-TGA ladder. Visual and runtime rows pass, and the seven recovered
+> GHOST_BASE prompt records remain in their existing ghost-owned provenance
+> surfaces. The independent remediation re-audit handoff
+> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+> is PASS and clears the regional asset gate for parent-owned package
+> promotion. The machine validator's literal
+> `candidate_requires_independent_visual_review` value remains an immutable
+> processor-state record and was not edited. This historical planning audit is
+> not a live completion verdict.
+
+This is the planning-package audit. Live implementation status and evidence are
+owned by `review/blockers_and_uncertainty.md` and the consolidated parent audit
+packet. The later improvement-loop addendum supersedes the first closure-only
+planner disposition.
+
 ## User requirement coverage
 
 | Requirement | Coverage | Source files |
@@ -15,7 +39,7 @@
 | Evolution III no normal automatic unit by default | Complete design | Part 4 |
 | Fully random battalions, counts, and support | Complete design with safety rules | Part 4, spawn matrix |
 | Possessed generals, demands, revolt | Complete design | Part 4, general matrix |
-| Twenty scary generic portraits | Complete production plan | general matrix, asset prompt |
+| Twenty scary regional claimant army/muster identity scenes with no individual focal person | Complete production plan | general matrix, asset prompt |
 | Evolution IV zombies, ghosts, golems, and future units | Complete registry design | Part 5 |
 | Dynamic future-unit onboarding | Complete opt-in registry design | Part 5 |
 | Train-versus-spawn distinction | Complete | Part 5 |
@@ -54,7 +78,9 @@
 
 ## Accepted plans and disposition
 
-This package contains no separate unresolved improvement addendum. The manual improvement review’s accepted changes were folded directly into the source specification.
+This planning package originally contained no separate unresolved improvement
+addendum. The later dated near-completion addendum is now implemented and is the
+authoritative disposition for its three findings.
 
 Future implementation plans and subagent handoffs must receive one of these dispositions:
 
@@ -91,6 +117,20 @@ Future implementation plans and subagent handoffs must receive one of these disp
 
 ## Completion recommendation
 
-The event planning package is ready for implementation, subject to the blockers and local verification in `blockers_and_uncertainty.md`.
+The event planning package was accepted for implementation. The named
+improvement-loop planner's findings are implemented, and exactly two
+engine-constrained substitutes were approved: exact recorded-formation
+recreate/prove/delete and controlled one-formation combat trials. The 27 fixed
+identity scenes are wired. The 7/18 regional candidate contains the accepted
+raw-to-spot-master-to-native-PNG/runtime-TGA chain, with visual/runtime rows
+passing. The independent remediation re-audit handoff
+`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
+is PASS and clears the regional asset gate for parent-owned package promotion.
+The catalog records Event 19 and SCN-013 as `Fully Functional` after the final
+completion audit authorized promotion.
 
-The implementation goal must not be marked complete until the real improvement-loop planner and final completion auditor have run, all assets exist and are wired, all derivative parent-isolation checks pass, and the catalog mirrors final in-game text.
+Live closure state is owned by `blockers_and_uncertainty.md`. Workbook/catalog
+reconciliation and export, the 33/33 package inventory, and the final completion
+audit are complete. Event 19 and SCN-013 now read `Fully Functional`. The
+approved engine contracts and regional asset gate are resolved, and no
+unresolved owner decision or closure gate remains in this planning audit.

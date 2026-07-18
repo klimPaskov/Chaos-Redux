@@ -99,6 +99,26 @@ sanitize_events_log_history_actor_entries = {
         add_to_temp_variable = { events_log_sanitize_index = 1 }
     }
 	sanitize_events_log_history_secondary_actor_entries = yes
+	sanitize_events_log_history_payload_entries = yes
+}
+
+sanitize_events_log_history_payload_entries = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.events_log_history_event_id_entries^num
+				value = global.events_log_history_payload_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { events_log_missing_payload_entries = global.events_log_history_event_id_entries^num }
+		subtract_from_temp_variable = { events_log_missing_payload_entries = global.events_log_history_payload_entries^num }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_missing_payload_entries > 0 } }
+			add_to_array = { array = global.events_log_history_payload_entries value = 0 }
+			subtract_from_temp_variable = { events_log_missing_payload_entries = 1 }
+		}
+	}
 }
 
 sanitize_events_log_history_secondary_actor_entries = {
@@ -415,6 +435,11 @@ record_events_log_history_entry = {
     set_temp_variable = { events_log_entry_event_id = global.last_fired_event_id }
     set_temp_variable = { event_id = events_log_entry_event_id }
     get_event_type = yes
+	set_temp_variable = { events_log_entry_payload = 0 }
+	if = {
+		limit = { check_variable = { events_log_history_payload_override_active > 0 } }
+		set_temp_variable = { events_log_entry_payload = events_log_history_payload_override }
+	}
 
     set_temp_variable = { total_unfired_events = global.unfired_major_events_count }
     add_to_temp_variable = { total_unfired_events = global.unfired_fire_once_events_count }
@@ -442,7 +467,17 @@ record_events_log_history_entry = {
         value = event_type
         index = 0
     }
+	add_to_array = {
+		array = global.events_log_history_payload_entries
+		value = events_log_entry_payload
+		index = 0
+	}
     events_log_set_default_actor_for_current_event = yes
+	if = {
+		limit = { check_variable = { events_log_history_actor_override_active > 0 } }
+		set_temp_variable = { events_log_default_actor = events_log_history_actor_override }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
     add_to_array = {
         array = global.events_log_history_actor_entries
         value = events_log_default_actor
@@ -453,14 +488,21 @@ record_events_log_history_entry = {
         value = events_log_default_has_actor
         index = 0
     }
+	set_temp_variable = { events_log_entry_secondary_actor = 0 }
+	set_temp_variable = { events_log_entry_has_secondary_actor = 0 }
+	if = {
+		limit = { check_variable = { events_log_history_secondary_actor_override_active > 0 } }
+		set_temp_variable = { events_log_entry_secondary_actor = events_log_history_secondary_actor_override }
+		set_temp_variable = { events_log_entry_has_secondary_actor = 1 }
+	}
 	add_to_array = {
 		array = global.events_log_history_secondary_actor_entries
-		value = 0
+		value = events_log_entry_secondary_actor
 		index = 0
 	}
 	add_to_array = {
 		array = global.events_log_history_has_secondary_actor_entries
-		value = 0
+		value = events_log_entry_has_secondary_actor
 		index = 0
 	}
     add_to_array = {
@@ -504,6 +546,9 @@ record_events_log_history_entry = {
 			}
 		}
 	}
+	set_temp_variable = { events_log_history_payload_override_active = 0 }
+	set_temp_variable = { events_log_history_actor_override_active = 0 }
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
 	if = {
 		limit = { check_variable = { event_id = constant:independence_wave_event.id } }
 		clr_global_flag = independence_wave_event_log_actor_ready
@@ -1307,6 +1352,7 @@ events_log_close_history_details_view = {
     set_variable = { events_log_history_selected_event_type = 0 }
     set_variable = { events_log_history_selected_date = 0 }
     set_variable = { events_log_history_selected_sequence = 0 }
+	set_variable = { events_log_history_selected_payload = 0 }
     set_variable = { events_log_history_selected_actor = 0 }
     set_variable = { events_log_history_selected_has_actor = 0 }
 	set_variable = { events_log_history_selected_secondary_actor = 0 }
@@ -1892,6 +1938,33 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:africa_event.evolution_iii_stage }
 			events_log_add_event_detail_evolution_preview = yes
 		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:infantry_spawn_event.id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:infantry_spawn_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:infantry_spawn_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:infantry_spawn_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:infantry_spawn_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:infantry_spawn_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:infantry_spawn_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:infantry_spawn_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:infantry_spawn_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:infantry_spawn_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:infantry_spawn_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:infantry_spawn_event.evolution_iv_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:infantry_spawn_event.evolution_iv_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
 		if = {
 			limit = {
 				check_variable = {
@@ -2202,6 +2275,7 @@ events_log_add_event_details_entry = {
         set_variable = { events_log_history_selected_event_type = events_log_selected_event_type }
         set_variable = { events_log_history_selected_date = 0 }
         set_variable = { events_log_history_selected_sequence = 0 }
+		set_variable = { events_log_history_selected_payload = 0 }
         set_variable = { events_log_history_selected_actor = 0 }
         set_variable = { events_log_history_selected_has_actor = 0 }
 		set_variable = { events_log_history_selected_secondary_actor = 0 }
@@ -2665,6 +2739,10 @@ events_log_append_view_row_from_source = {
         array = global.events_log_view_event_type_entries
         value = global.events_log_history_event_type_entries^events_log_source_index
     }
+	add_to_array = {
+		array = global.events_log_view_payload_entries
+		value = global.events_log_history_payload_entries^events_log_source_index
+	}
     add_to_array = {
         array = global.events_log_view_actor_entries
         value = global.events_log_history_actor_entries^events_log_source_index
@@ -2712,6 +2790,7 @@ events_log_append_cluster_history_row_from_source = {
         array = global.events_log_view_event_type_entries
         value = 0
     }
+	add_to_array = { array = global.events_log_view_payload_entries value = 0 }
     add_to_array = {
         array = global.events_log_view_actor_entries
         value = global.events_log_cluster_actor_entries^events_log_cluster_history_source_index
@@ -2949,6 +3028,7 @@ rebuild_events_log_history_view = {
     clear_array = global.events_log_view_date_entries
     clear_array = global.events_log_view_event_id_entries
     clear_array = global.events_log_view_event_type_entries
+	clear_array = global.events_log_view_payload_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
 	clear_array = global.events_log_view_secondary_actor_entries

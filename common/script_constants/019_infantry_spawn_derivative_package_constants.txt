@@ -2,7 +2,8 @@
 # CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY PACKAGE CONSTANTS
 # ============================================================================
 # Runtime tuning used only by the zombie, ghost, and golem derivative package.
-# Family-provider prices remain authoritative in their registry provider files.
+# Family-provider prices remain authoritative in the existing Event 19
+# constants and its single registry adapter.
 # ============================================================================
 
 infantry_spawn_derivative_package_value = {
@@ -18,6 +19,109 @@ infantry_spawn_derivative_package_value = {
 	four = 4
 	five = 5
 	negative_one = -1
+}
+
+# Frozen natural-release modes. The value is selected once before preflight,
+# copied to the provisional actor, and proved again before source deletion.
+infantry_spawn_natural_release_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ordinary_claimant = 1
+	anomalous_claimant = 2
+	independent_family = 3
+}
+
+# One-time Evolution IV reception choice and balance table. The selected
+# provider row and incident nonce are country variables; these values only tune
+# the three common outcomes and their AI evaluation.
+infantry_spawn_first_family_reception_choice = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	cantonment = 1
+	negotiated = 2
+	refusal = 3
+}
+
+infantry_spawn_first_family_reception = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial_nonce = 1
+	incident_delay_days = 2
+	cantonment_control_gain = 4
+	cantonment_pressure_relief = 8
+	negotiated_army_experience_gain = 10
+	negotiated_control_loss = 8
+	negotiated_pressure_gain = 12
+	refusal_political_power_cost = 35
+	refusal_command_power_cost = 10
+	refusal_control_gain = 6
+	refusal_pressure_relief = 10
+	failed_reception_control_loss = 5
+	failed_reception_pressure_gain = 8
+	ai_cantonment_base = 60
+	ai_negotiated_base = 35
+	ai_refusal_base = 25
+	ai_war_negotiated_factor = 2
+	ai_low_control_cantonment_factor = 2
+	ai_low_manpower_negotiated_factor = 2
+	ai_high_pressure_refusal_factor = 2
+	ai_cannot_afford_refusal_factor = 0.25
+	low_manpower_threshold = 250000
+}
+
+# Frozen origin-region identifiers used by the derivative cosmetic matrix.
+# The value is recorded once, before the first public identity is installed,
+# so later conquest or capital relocation cannot rewrite a country's origin.
+infantry_spawn_derivative_region = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid = 0
+	europe = 1
+	middle_east = 2
+	africa = 3
+	asia = 4
+	australia = 5
+	north_america = 6
+	south_america = 7
+}
+
+# Cosmetic identity stems. These combine with the frozen origin-region token
+# through one meta effect; adding a future derivative identity therefore needs
+# one value, one scripted-localisation token, and its regional asset/loc matrix.
+infantry_spawn_derivative_cosmetic_identity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid = 0
+	claimant_breakaway = 1
+	zombie_base = 2
+	zombie_claimant = 3
+	zombie_collective = 4
+	zombie_species = 5
+	ghost_base = 6
+	ghost_claimant = 7
+	ghost_collective = 8
+	ghost_species = 9
+	golem_base = 10
+	golem_claimant = 11
+	golem_collective = 12
+	golem_species = 13
 }
 
 infantry_spawn_derivative_reward = {
@@ -41,8 +145,9 @@ infantry_spawn_derivative_reward = {
 	infantry_equipment_medium = 200
 	coal_golem_equipment_small = 20
 	coal_golem_equipment_medium = 40
-	compliance_gain = 0.15
-	resistance_loss = -0.10
+	# State compliance/resistance effects use percentage points.
+	compliance_gain = 15
+	resistance_loss = -10
 }
 
 infantry_spawn_derivative_idea = {
@@ -97,6 +202,8 @@ infantry_spawn_derivative_idea = {
 	minor_rail_speed = 0.10
 	minor_resource_gain = 0.10
 	minor_factory_efficiency = 0.05
+	outward_muster_planning = 0.05
+	outward_muster_speed = 0.03
 }
 
 infantry_spawn_derivative_ghost_decline = {
@@ -107,6 +214,7 @@ infantry_spawn_derivative_ghost_decline = {
 
 	interval_days = 180
 	base_population_fraction = 0.0025
+	anchored_population_fraction = 0.0020
 	managed_population_fraction = 0.0015
 	minimum_population_fraction = 0.001
 	maximum_population_fraction = 0.005
@@ -127,6 +235,9 @@ infantry_spawn_derivative_runtime = {
 	fragmentation_cooldown_days = 90
 	pulse_days = 30
 	defeat_cleanup_days = 1
+	natural_family_deferred_days = 30
+	natural_family_deferred_control_loss = 4
+	natural_family_deferred_pressure_gain = 6
 	regional_predator_states = 8
 	regional_predator_wars = 2
 }

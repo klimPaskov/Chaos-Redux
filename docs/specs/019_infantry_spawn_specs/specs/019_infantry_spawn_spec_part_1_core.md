@@ -394,7 +394,7 @@ The following boundaries protect the event’s identity and prevent scope drift.
 - The event does not copy the full Zombie Outbreak, Death, golem, or future parent event mechanics.
 - The event does not create a unique focus tree for every ordinary country.
 - The event does not require individual decisions for every spawned division.
-- The event does not animate all 20 claimant portraits.
+- The event does not animate all 20 claimant army/muster identity scenes held in the fixed portrait slots.
 - The event does not unlock advanced zombie variants through Evolution IV.
 - The event does not allow all future Chaos units automatically. Future unit families require explicit registry opt-in.
 - The event does not use one-member event clusters.

@@ -8,6 +8,7 @@
 # ============================================================================
 
 infantry_spawn_muster_board_is_available = {
+	infantry_spawn_scenario_transaction_is_idle = yes
 	infantry_spawn_country_is_active = yes
 	infantry_spawn_has_evolution_iii = yes
 	NOT = { is_infantry_spawn_derivative_country = yes }
@@ -15,7 +16,19 @@ infantry_spawn_muster_board_is_available = {
 	NOT = { has_global_flag = world_end }
 }
 
+# Country scope. The registry tab is relevant only after Evolution IV and only
+# when the rebuilt country view contains at least one locally eligible family.
+infantry_spawn_muster_board_has_relevant_anomalous_family = {
+	infantry_spawn_has_evolution_iv = yes
+	check_variable = {
+		var = infantry_spawn_muster_gui_family_id_entries^num
+		value = constant:infantry_spawn_muster_gui_value.zero
+		compare = greater_than
+	}
+}
+
 infantry_spawn_muster_board_selected_family_index_is_valid = {
+	infantry_spawn_scenario_transaction_is_idle = yes
 	has_variable = infantry_spawn_muster_gui_selected_family_view_index
 	check_variable = { infantry_spawn_muster_gui_selected_family_view_index > constant:infantry_spawn_muster_gui_value.invalid_index }
 	check_variable = { var = infantry_spawn_muster_gui_selected_family_view_index value = infantry_spawn_muster_gui_family_id_entries^num compare = less_than }
@@ -58,8 +71,18 @@ infantry_spawn_can_execute_selected_lot_standardization = {
 	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = less_than }
 	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
 	NOT = { has_country_flag = infantry_spawn_standardization_running }
-	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+	OR = {
+		AND = {
+			has_variable = infantry_spawn_canonical_template_uid
+			check_variable = { infantry_spawn_canonical_template_uid > 0 }
+			has_template = "National Muster Standard"
+		}
+		AND = {
+			NOT = { has_variable = infantry_spawn_canonical_template_uid }
+			NOT = { has_template = "National Muster Standard" }
+		}
+	}
+	infantry_spawn_selected_lot_standardization_loss_is_affordable = yes
 }
 
 infantry_spawn_can_execute_selected_lot_specialist_preservation = {
@@ -84,8 +107,63 @@ infantry_spawn_can_execute_selected_lot_demobilization = {
 
 infantry_spawn_can_execute_selected_lot_emergency_integration = {
 	infantry_spawn_can_emergency_integrate_selected_lot = yes
+	infantry_spawn_selected_lot_has_zero_exact_obligations = yes
 	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
 	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+}
+
+infantry_spawn_can_pay_prototype_preservation_cost = {
+	check_variable = { var = army_experience value = constant:infantry_spawn_prototype.preserve_army_experience_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_prototype.preserve_support_equipment_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_prototype.preserve_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:infantry_spawn_prototype.preserve_fuel_cost_k compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_prototype_preservation = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unmanaged_prototype = yes
+	infantry_spawn_can_pay_prototype_preservation_cost = yes
+	NOT = { has_country_flag = infantry_spawn_prototype_trial_running }
+}
+
+infantry_spawn_can_execute_selected_prototype_cannibalization = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_cannibalizable_prototype = yes
+	NOT = { has_country_flag = infantry_spawn_prototype_trial_running }
+}
+
+# Decisions and the Muster Board share these entry gates. AI countries may
+# expose the decision before their selected-lot cursor reaches the target; the
+# action effect then selects and revalidates the exact lot before mutation.
+infantry_spawn_can_begin_prototype_preservation = {
+	OR = {
+		AND = {
+			is_ai = no
+			infantry_spawn_can_execute_selected_prototype_preservation = yes
+		}
+		AND = {
+			is_ai = yes
+			infantry_spawn_management_is_available = yes
+			has_country_flag = infantry_spawn_prototype_preservation_available
+			infantry_spawn_can_pay_prototype_preservation_cost = yes
+			NOT = { has_country_flag = infantry_spawn_prototype_trial_running }
+		}
+	}
+}
+
+infantry_spawn_can_begin_prototype_cannibalization = {
+	OR = {
+		AND = {
+			is_ai = no
+			infantry_spawn_can_execute_selected_prototype_cannibalization = yes
+		}
+		AND = {
+			is_ai = yes
+			infantry_spawn_management_is_available = yes
+			has_country_flag = infantry_spawn_prototype_cannibalization_available
+			NOT = { has_country_flag = infantry_spawn_prototype_trial_running }
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -253,7 +331,8 @@ infantry_spawn_can_seal_selected_family_breach = {
 
 infantry_spawn_can_disperse_selected_anomalous_lot = {
 	infantry_spawn_muster_board_selected_family_index_is_valid = yes
-	check_variable = { infantry_spawn_muster_gui_family_lot_count_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	check_variable = { infantry_spawn_muster_gui_family_dispersible_lot_count_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	NOT = { has_country_flag = infantry_spawn_demobilization_running }
 	NOT = { command_power < constant:infantry_spawn_family_management_cost.dispersal_command_power }
 	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_family_management_cost.dispersal_support_equipment compare = greater_than_or_equals }
 }

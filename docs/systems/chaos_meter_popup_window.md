@@ -169,6 +169,7 @@ Deaths view arrays:
 - `global.chaos_meter_deaths_view_cause_air_winter_exposure_entries`
 - `global.chaos_meter_deaths_view_cause_black_plague_entries`
 - `global.chaos_meter_deaths_view_cause_fallout_aftermath_entries`
+- `global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries`
 
 Contaminated winter exposure follows the shared per-cause aggregation path:
 
@@ -188,6 +189,12 @@ Fallout aftermath follows the same three-step projection:
 - `temp_chaos_meter_deaths_unsorted_cause_fallout_aftermath_entries` carries that total through sorted rebuilds.
 - `global.chaos_meter_deaths_view_cause_fallout_aftermath_entries` supplies the country-row tooltip.
 
+Event 19 ghost decline has an isolated three-step projection:
+
+- `chaos_meter_deaths_country_cause_infantry_spawn_ghost_decline` stores the country total.
+- `temp_chaos_meter_deaths_unsorted_cause_infantry_spawn_ghost_decline_entries` carries that total through sorted rebuilds.
+- `global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries` supplies the country-row tooltip without attributing the loss to Event 10.
+
 ## Integration Notes
 
 - Core chaos updates (`add_chaos_meter_value`) now write to history.
@@ -197,6 +204,7 @@ Fallout aftermath follows the same three-step projection:
 - Contaminated winter exposure is Deaths reason `17` and uses `chaos_meter_deaths.air_winter_exposure_chaos_weight = 0.10` during chaos synchronization.
 - Black Plague is Deaths reason `18` and uses the normal `1` chaos per `1,000,000` recorded deaths conversion.
 - Fallout aftermath is Deaths reason `19` and uses the normal `1` chaos per `1,000,000` recorded deaths conversion.
+- Event 19 ghost decline is Deaths reason `20` and uses `chaos_meter_deaths.infantry_spawn_ghost_decline_chaos_weight = 0.10` during chaos synchronization.
 - Country totals shown in the deaths tab are maintained on country-scoped variables and legacy raw logs are backfilled through bounded rebuild chunks when needed.
 
 ## Icons and GFX Wiring

@@ -8,6 +8,7 @@
 # ============================================================================
 
 chaos_unit_family_registry_is_aligned = {
+	NOT = { has_global_flag = chaos_unit_family_registry_invariant_failure }
 	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_provider_id_entries^num compare = equals }
 	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_source_event_id_entries^num compare = equals }
 	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_availability_mode_entries^num compare = equals }
@@ -87,6 +88,79 @@ chaos_unit_family_current_row_can_spawn = {
 			var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
 			value = constant:chaos_unit_family_availability.trainable_and_spawnable
 			compare = equals
+		}
+	}
+}
+
+# Registration-time visual ownership. Profiles 1-3 are reserved for the three
+# initial provider packages and are valid only with their exact family/provider
+# identities. A future provider opts into the neutral army/host presentation
+# explicitly with profile 999; an unknown positive number is never a display
+# substitute.
+chaos_unit_family_registration_has_supported_event19_visual_contract = {
+	OR = {
+		AND = {
+			check_variable = { chaos_unit_family_register_id = constant:event19_zombie_family.family_id }
+			check_variable = { chaos_unit_family_register_provider_id = constant:event19_zombie_family.provider_id }
+			check_variable = { chaos_unit_family_register_visual_profile = constant:event19_zombie_family.visual_profile }
+		}
+		AND = {
+			check_variable = { chaos_unit_family_register_id = constant:event19_ghost_family.family_id }
+			check_variable = { chaos_unit_family_register_provider_id = constant:event19_ghost_family.provider_id }
+			check_variable = { chaos_unit_family_register_visual_profile = constant:event19_ghost_family.visual_profile }
+		}
+		AND = {
+			check_variable = { chaos_unit_family_register_id = constant:event19_golem_family.family_id }
+			check_variable = { chaos_unit_family_register_provider_id = constant:event19_golem_family.provider_id }
+			check_variable = { chaos_unit_family_register_visual_profile = constant:event19_golem_family.visual_profile }
+		}
+		AND = {
+			check_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_visual_profile.provider_neutral_army }
+			NOT = {
+				OR = {
+					check_variable = { chaos_unit_family_register_id = constant:event19_zombie_family.family_id }
+					check_variable = { chaos_unit_family_register_id = constant:event19_ghost_family.family_id }
+					check_variable = { chaos_unit_family_register_id = constant:event19_golem_family.family_id }
+					check_variable = { chaos_unit_family_register_provider_id = constant:event19_zombie_family.provider_id }
+					check_variable = { chaos_unit_family_register_provider_id = constant:event19_ghost_family.provider_id }
+					check_variable = { chaos_unit_family_register_provider_id = constant:event19_golem_family.provider_id }
+				}
+			}
+		}
+	}
+}
+
+# Row-time equivalent used by every Event 19 consumer. This protects saves and
+# hand-authored rows even if they did not pass through the current registrar.
+chaos_unit_family_current_row_has_supported_event19_visual_contract = {
+	OR = {
+		AND = {
+			check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_zombie_family.family_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_zombie_family.provider_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_visual_profile_entries^chaos_unit_family_registry_index value = constant:event19_zombie_family.visual_profile compare = equals }
+		}
+		AND = {
+			check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_ghost_family.family_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_ghost_family.provider_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_visual_profile_entries^chaos_unit_family_registry_index value = constant:event19_ghost_family.visual_profile compare = equals }
+		}
+		AND = {
+			check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_golem_family.family_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_golem_family.provider_id compare = equals }
+			check_variable = { var = global.chaos_unit_family_visual_profile_entries^chaos_unit_family_registry_index value = constant:event19_golem_family.visual_profile compare = equals }
+		}
+		AND = {
+			check_variable = { var = global.chaos_unit_family_visual_profile_entries^chaos_unit_family_registry_index value = constant:chaos_unit_family_visual_profile.provider_neutral_army compare = equals }
+			NOT = {
+				OR = {
+					check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_zombie_family.family_id compare = equals }
+					check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_ghost_family.family_id compare = equals }
+					check_variable = { var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index value = constant:event19_golem_family.family_id compare = equals }
+					check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_zombie_family.provider_id compare = equals }
+					check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_ghost_family.provider_id compare = equals }
+					check_variable = { var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index value = constant:event19_golem_family.provider_id compare = equals }
+				}
+			}
 		}
 	}
 }

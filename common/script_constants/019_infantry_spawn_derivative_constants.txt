@@ -67,17 +67,37 @@ infantry_spawn_derivative_decision_cost = {
 	}
 
 	secure_depot_pp = 35
-	rally_formations_pp = 25
-	rally_formations_equipment = 200
 	break_command_net_cp = 20
 	sustainment_site_pp = 50
-	sustainment_site_factory_days = 180
-	integrate_district_pp = 45
 	suppress_fragmentation_pp = 40
 	suppress_fragmentation_xp = 10
 	demand_submission_pp = 35
 	preserve_claimant_pp = 25
 	replace_claimant_pp = 60
+	collective_rotate_commands_pp = 35
+	collective_rotate_commands_cp = 15
+	collective_centralize_muster_pp = 40
+	collective_centralize_muster_xp = 8
+	species_ratify_compacts_pp = 40
+	species_ratify_compacts_cp = 15
+	species_proclaim_primacy_pp = 45
+	species_proclaim_primacy_xp = 10
+	zombie_containment_pp = 30
+	zombie_containment_manpower = 2000
+	zombie_containment_equipment = 150
+	ghost_recognition_pp = 40
+	ghost_recognition_cp = 15
+	golem_material_agreement_pp = 35
+	golem_material_agreement_coal = 20
+	golem_material_agreement_support = 50
+	zombie_integration_pp = 35
+	zombie_integration_manpower = 3000
+	zombie_integration_equipment = 200
+	ghost_integration_pp = 45
+	ghost_integration_cp = 20
+	golem_integration_pp = 45
+	golem_integration_coal = 30
+	golem_integration_trains = 2
 }
 
 infantry_spawn_derivative_timer = {
@@ -86,15 +106,16 @@ infantry_spawn_derivative_timer = {
 		data = int
 	}
 
-	secure_depot_days = 35
-	rally_formations_days = 45
-	break_command_net_days = 42
-	sustainment_site_days = 70
-	integrate_district_days = 90
-	suppress_fragmentation_days = 56
+	governance_cooldown_days = 120
+	diplomacy_cooldown_days = 90
+	zombie_integration_days = 70
+	zombie_numbered_integration_days = 55
+	ghost_integration_days = 150
+	ghost_anchored_integration_days = 120
+	golem_integration_days = 105
+	golem_foundry_integration_days = 84
 	submission_warning_days = 21
 	postwar_recognition_days = 180
-	defeat_cleanup_days = 1
 }
 
 infantry_spawn_derivative_ai = {
@@ -109,8 +130,6 @@ infantry_spawn_derivative_ai = {
 	supply_state_priority = 50
 	resource_state_priority = 40
 	industry_state_priority = 40
-	weak_target_bonus = 35
-	distant_target_penalty = 100
 	zombie_quantity_bias = 20
 	ghost_preservation_bias = 35
 	golem_preservation_bias = 50
@@ -145,10 +164,41 @@ infantry_spawn_derivative_expansion = {
 
 	minimum_target_states = 1
 	maximum_target_states = 12
-	weak_target_division_ratio = 0.75
-	integration_compliance = 0.45
-	integration_resistance = 0.15
-	core_compliance = 0.80
-	regional_predator_state_minimum = 8
-	regional_predator_war_wins = 2
+
+	# Targeted-decision AI capacity gates. All searches remain neighbor- or
+	# selected-state-bounded; none of these values drive a recurring world scan.
+	zombie_neighbor_manpower_capacity = 250000
+	ghost_neighbor_stability_capacity = 0.50
+	golem_neighbor_factory_capacity = 4
+	neighbor_state_capacity = 4
+	zombie_district_population_capacity = 250
+	ghost_district_population_capacity = 100
+	governance_stability_threshold = 0.50
+
+	# Family district outcomes. Zombie districts trade easier administration for
+	# persistent population pressure; ghost and golem projects are slower, safer
+	# administrative settlements purchased through their family resources.
+	# add_compliance/add_resistance consume percentage points, not modifier
+	# fractions. Keep these values in the same unit used by vanilla state effects.
+	zombie_integration_compliance = 10
+	zombie_integration_resistance = 3
+	ghost_integration_compliance = 20
+	ghost_integration_resistance = -10
+	golem_integration_compliance = 15
+	golem_integration_resistance = -7
+	golem_infrastructure_levels = 1
+	golem_infrastructure_max_level = 5
+	governance_stability_shift = 0.03
+	governance_war_support_shift = 0.03
+}
+
+infantry_spawn_derivative_integration_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zombie_muster = 1
+	ghost_anchor = 2
+	golem_foundry = 3
 }

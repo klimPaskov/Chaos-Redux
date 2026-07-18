@@ -45,22 +45,54 @@ A country entering Event 19 for the first time under Evolution IV receives the M
 The starting package depends on:
 
 - which registered families are globally or locally eligible
-- whether the family’s parent event has revealed the unit, if the registry requires that condition
+- whether the family's parent event has revealed the unit, if the registry requires that condition
 - country ideology and special-country identity
 - local terrain and industry
 - current war state
 - Muster Control and Army Congestion
 - scenario overrides
 
-The first anomalous formation should be a major country-level incident with real handling choices. It is not a global super-event.
+The first anomalous formation is a one-time country-level reception incident.
+The registry selects one currently eligible complete provider row, then freezes
+its index, family identity, provider identity, visual profile, and a monotonic
+transaction nonce before dispatch. The selected host-scene profile and provider
+package cannot be replaced by a same-tick eligibility change. Delayed execution
+requires those exact values, a positive nonce, the same aligned row, and contract
+version 4, but does not rerun current provider eligibility after the promise is
+issued. Partial, mismatched, or out-of-range frozen evidence fails visibly and
+never substitutes another family.
+
+The visible incident offers guarded cantonment, a negotiated command compact,
+and refusal. Either acceptance creates exactly one provider package through the
+existing snapshot, materialize, prove, and rollback transaction; it consumes no
+ordinary provider price, request overhead, cooldown, or request counter.
+Cantonment increases control and relieves anomalous pressure. Negotiation grants
+more immediate military value while conceding control and accepting pressure.
+Refusal creates no family formation and pays political and command costs for a
+stronger containment position.
+
+Outcome flags and Event Log history are written only after the selected effects
+prove. A proved rollback produces a visible failed-reception consequence; an
+unproved rollback locks and quarantines the management surface. If no provider
+is eligible on entry, the country retains one pending state and retries only on
+its country-local Event 19 pulse. A normal active Evolution IV transition, a
+scenario actor, or a derivative country never receives or consumes this
+pre-fire incident.
 
 ## Chaos unit family registry
 
 ### Registry purpose
 
-The registry provides one source of truth for Event 19 compatibility. It can also support future systems that need to know whether a unit is trainable, spawn-only, derivative-capable, or isolated from its parent event.
+The registry provides one source of truth for Event 19 compatibility. It can also support future systems that need to know whether a unit is trainable, spawn-only, derivative-capable, or isolated from its parent event. The live provider contract is version 4.
 
-The registry should live in a shared, documented scripted system rather than an Event 19-only hardcoded block.
+The event-agnostic Chaos family contract should remain a shared, documented
+scripted system. This implementation uses exactly one dedicated Event 19
+registry code file for the ordinary table and the initial zombie, ghost, and
+golem provider integrations. Registry constants and triggers belong in the
+existing Event 19 constants and trigger files, and startup calls belong in
+existing parent on-actions. A future family keeps its complete registration and
+provider callbacks in its own existing integration surface. Do not create
+family-specific or additional Event 19 registry files.
 
 ### Required registry fields
 
@@ -81,11 +113,48 @@ Each family entry needs the following design fields.
 | Derivative profile | Which derivative country package, if any, it can create |
 | Parent isolation rule | Flags, tags, counts, triggers, and super-events that Event 19 must not set |
 | AI class | How ordinary and derivative AI value the family |
-| Visual family | Icons, portrait, flag, report image, and UI motif |
-| Cleanup rule | How stale units, flags, or targets are handled |
+| Visual family | Icons, massed-host identity scene in the fixed portrait slot, flag, report image, and UI motif |
+| Cleanup profile and callback | Which cleanup contract applies and how provider-owned public additions are removed before shared teardown |
 | Migration note | What happens when the family definition changes in a later mod version |
 
-### Registry default rule
+Contract version 4 makes the parent-isolation rule executable. Parent event
+actors carry `chaos_unit_family_parent_actor`. Before derivative creation, the
+shared `infantry_spawn_parent_event_identity_is_absent` boundary rejects that
+marker together with provider-specific parent tags, original tags, country flags,
+stages, counts, evolutions, super-events, and terminal progression. Event 19
+clears `infantry_spawn_derivative_provider_parent_isolation_proved` before setup.
+The provider sets a positive proof only after every shared and parent-specific
+check passes, then calls the shared derivative initializer. Missing proof fails
+closed. The provider owns these family-specific checks beside its one registration
+entry, so a future family does not require an Event 19 list, map, or registry-file
+edit.
+
+The shared initializer owns only the private ledger, isolation boundary, generic
+opening burdens, and lifecycle locks. Provider setup owns its public identity,
+leadership or council, family ideas, route package or adapted equivalent, and
+release report. Event 19 clears
+`infantry_spawn_derivative_provider_public_package_proved` before dispatch, and
+the provider sets that positive proof only after its complete public surface
+succeeds. Future-family public identity must not be implemented as another switch
+inside Event 19. A nonhuman derivative with either proof missing cannot classify,
+materialize, enter a scenario roster, or unlock.
+
+For defeat and final teardown, Event 19 clears the cleanup proof and dispatches
+`chaos_unit_family_provider_[provider]_event19_cleanup_derivative`. The provider
+must remove every provider-owned public addition before setting
+`infantry_spawn_derivative_provider_cleanup_proved` for the requested phase. Event
+19 owns exact tracked-formation proofs, private ledgers, common derivative ideas
+and missions, common state markers, common flags and variables, and the remaining
+shared cleanup surfaces. Cleanup selects the immutable lifecycle owner by the
+actor's exact stored family/provider pair rather than current generation policy,
+so a disabled or spawn-forbidden row cannot strand a derivative. Initial-provider
+authority is retired only while its provider-leadership receipt remains; claimant
+promotion clears that receipt. Provider 501 must also revoke its trainable-family
+entry and lock every recorded family-501 template, including templates with no
+remaining live divisions. Missing provider proof fails closed and blocks the
+shared commit.
+
+### Explicit opt-in and visual profile rule
 
 A future Chaos unit family is excluded until it has an explicit registry entry.
 
@@ -98,7 +167,24 @@ This prevents accidental inclusion of:
 - units whose equipment cannot be represented safely
 - units that would trigger an unrelated world-end or country package
 
-The developer adding a new family should update only the registry and its documentation. Event 19’s generic query and generation logic should require no family-specific edit unless the family needs a genuinely unique mechanic.
+The developer adding a new family defines one complete generic provider
+registration and its Event 19 callbacks in that family's own integration
+surface, adds one startup registration call to the family's existing parent
+on-action, and updates its documentation. Event 19's generic query and
+generation logic requires no family-list, localisation-map, picture-map, or
+registry-file edit. This is one external registration row plus the complete
+provider callbacks, including derivative setup and cleanup. It never adds another
+Event 19 registry file.
+
+The initial visual profiles are exact owned bindings. Profile 1 belongs only to
+family 501 and provider 501, profile 2 only to family 502 and provider 502, and
+profile 3 only to family 503 and provider 503. An external future provider must
+explicitly register `constant:chaos_unit_family_visual_profile.provider_neutral_army`,
+value 999, unless a later supported provider-owned profile exists. Profile 999
+uses only the identity-neutral Event 19 army or massed-host presentation and
+rejects the family and provider IDs reserved by the three initial bindings. An
+unknown positive profile fails registration, and every Event 19 consumer rejects
+an unsupported or mismatched runtime row.
 
 ### Registry compatibility audit
 
@@ -206,7 +292,7 @@ Eligible under Evolution IV once the actual golem unit and parent system are ver
 
 #### Availability mode
 
-Spawn-only by default.
+The live provider 503 row is spawn-only.
 
 #### Training rule
 
@@ -226,7 +312,10 @@ The current public repository inspection did not establish the final golem ident
 
 ### Family reception incident
 
-The first time a country receives a family, it gets a family-specific report event direction.
+The pre-fire Evolution IV opening uses the one-time frozen-row reception
+transaction above. Later first contact with another family can use a
+family-specific report direction, but it must not reopen or duplicate the
+initial provider package.
 
 The report should show what soldiers and civilians can observe:
 
@@ -346,14 +435,14 @@ This prevents a country with many well-contained zombie units from automatically
 
 Ordinary Evolution IV draws can produce more than one anomalous family only when every involved registry entry allows mixed use.
 
-Default rule:
+Current registry policy:
 
 - zombies are family-only
 - ghosts are family-only
 - golems are family-only
 - future families choose explicitly
 
-Mixed anomalous formations are reserved for rare high-chaos content and need their own compatibility review. They should not be the default source of absurdity because Evolution III already provides mixed ordinary battalions.
+Mixed anomalous formations are reserved for rare high-chaos content and need their own compatibility review. They should not be the routine source of absurdity because Evolution III already provides mixed ordinary battalions.
 
 ## Claimant interaction
 
@@ -371,6 +460,11 @@ Assigning anomalous formations to a claimant raises both Claimant Influence and 
 
 A claimant revolt with anomalous units can form a derivative state when the registry profile permits it.
 
+The release router records an anomalous-claimant mode for that union. Its exact
+transfer set contains only claimant-loyal rows and exact rows belonging to the
+selected family. Claimant identity remains the political cause, while the
+provider profile supplies the host identity and derivative family package.
+
 ## Derivative revolt trigger
 
 A derivative country can form when all relevant conditions align:
@@ -383,6 +477,25 @@ A derivative country can form when all relevant conditions align:
 - no conflicting active terminal transition makes the release unsafe
 
 The revolt should not occur from one accidental unit under otherwise excellent control except through the maximum triggerable scenario.
+
+Natural Evolution IV release has two distinct family-capable modes:
+
+- An anomalous claimant release requires a valid claimant plus a complete
+  eligible provider row and transfers the exact union described above.
+- A claimant-independent family breach requires no claimant. It requires exact
+  claimant-free formations of one eligible registered family, sufficient family
+  presence, the centralized pressure and saturation gates, and weak central
+  control. It transfers only those family rows and installs the provider's
+  commander or council identity.
+
+Both modes freeze the selected row and release mode before actor creation and
+use the shared exact recreate, prove, delete transaction. A pre-commit family
+failure restores the source and exposes a visible deferred-containment outcome.
+For a one-state source, a claimant-independent family breach can use the same
+tag only after proving that the country has exactly one controlled state, every
+live Event 19 formation belongs to the selected claimant-free family set, and
+all private ledgers align. Only then does the provider takeover replace the
+ordinary package; it never creates a zero-state actor or a self-war.
 
 ## Derivative country strength principle
 
@@ -407,6 +520,13 @@ They do not begin with:
 - parent boss units
 - free reinforcement beyond their family profile
 
+Paid reinforcement materialization is atomic. The post-payment snapshot owns
+all provisional engine templates and divisions, aligned generation, lot, unit,
+obligation, and auxiliary tails, and affected aggregates. Provider failure must
+prove exact rollback before any payment refund. An unproved rollback remains
+quarantined and unrefunded so a surviving partial formation cannot be obtained
+for free.
+
 Their danger comes from surprise, local force concentration, unusual units, and a hostile regional plan.
 
 ## Derivative identity isolation
@@ -425,7 +545,7 @@ Requirements:
 - record the former parent country and revolt generation through safe event targets or variables
 - use distinct cosmetic names and flags
 
-A fixed pool of permanent tags is a fallback only if the engine cannot safely support the dynamic model. Any fallback requires explicit user approval during implementation.
+Dynamic country creation and the proved same-tag takeover are the only supported identity paths. Event 19 has no fixed pool of permanent tags and no fixed-tag fallback.
 
 ### Shared classification
 
@@ -449,7 +569,7 @@ Parent event triggers must be audited for all identity tests they use:
 - state marker
 - scripted trigger
 
-A derivative state is excluded from parent progression by explicit origin logic. It can still interact with the parent system through later deliberately designed compatibility events, but isolation is the default.
+A derivative state is excluded from parent progression by explicit origin logic. It can still interact with the parent system through later deliberately designed compatibility events, but isolation remains the mandatory baseline.
 
 ## Zombie derivative profile
 
@@ -570,8 +690,16 @@ A profile defines:
 - aggression
 - territorial effect
 - parent isolation
+- provider-owned public package
+- provider-owned public cleanup
 - focus overlay modules
 - assets
+
+Its provider implementation also owns the exact positive parent-isolation and
+public-package proofs required by the shared derivative classifier. It owns the
+defeat and final cleanup callback for its public additions as well. Profile
+metadata without those executable proofs is not sufficient to release or cleanly
+retire a derivative.
 
 The Event 19 implementation should be modular enough that future families reuse profile logic rather than copy the entire country package.
 
@@ -579,7 +707,7 @@ The Event 19 implementation should be modular enough that future families reuse 
 
 A country with several dominant anomalous families can experience a multi-family crisis.
 
-Default outcome:
+Current outcome:
 
 - the strongest family receives derivative priority
 - weaker families remain with the parent, are destroyed, or become contested lots
@@ -615,14 +743,20 @@ AI behavior direction:
 Evolution IV is satisfied when:
 
 - Event 19 reads an explicit Chaos unit family registry
-- future unit families can be added through one registry entry and documentation update
-- default future families remain excluded until opt-in
+- Event 19 keeps exactly one dedicated registry code file
+- a future family joins through one external registration row, its complete provider callbacks, and a startup call without an Event 19 list, map, or file edit
+- unregistered future families remain excluded until explicit opt-in
+- profiles 1, 2, and 3 remain bound to the exact 501, 502, and 503 family-provider pairs
+- an external provider explicitly chooses profile 999 unless a later supported owned profile exists, while unknown positive profiles fail registration and all Event 19 consumers
 - base zombies are the only zombie variant made trainable
-- ghosts and golems remain spawn-only by default
+- ghosts and golems remain registered as spawn-only
 - family-specific sustainment and containment exist
 - Anomalous Saturation is visible and component-based
 - claimant control increases anomalous risk
 - derivative countries use distinct origin, identity, flags, and packages
+- shared and parent-specific identity checks block parent actors before derivative creation
+- every nonhuman derivative has positive parent-isolation and public-package proofs
+- provider cleanup removes provider-owned public additions and proves defeat or final cleanup before Event 19 clears private ledgers and common surfaces
 - parent Zombie Outbreak, Death, golem, and future event progression remain isolated
 - derivative countries are registered in shared special and nonhuman classifiers
 - zombie, ghost, and golem derivatives are weaker than parent-event countries

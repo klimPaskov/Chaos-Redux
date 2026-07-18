@@ -37,13 +37,18 @@ infantry_spawn_lot_ledger_is_aligned = {
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_previous_status_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_unit_count_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_outstanding_debt_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_outstanding_manpower_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_supply_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_training_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_equipment_state_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_prototype_disposition_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_claimant_uid_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_combat_count_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_support_count_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_mobility_mismatch_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_incident_count_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_claimant_susceptibility_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_lot_demobilization_resistance_entries^num compare = equals }
 }
 
 infantry_spawn_template_ledger_is_aligned = {
@@ -83,7 +88,9 @@ infantry_spawn_obligation_ledger_is_aligned = {
 	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_resource_profile_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_issued_amount_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_paid_amount_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_salvageable_paid_amount_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_outstanding_amount_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_outstanding_debt_value_entries^num compare = equals }
 	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_obligation_status_entries^num compare = equals }
 }
 
@@ -95,4 +102,145 @@ infantry_spawn_all_ledgers_are_aligned = {
 	infantry_spawn_template_component_ledger_is_aligned = yes
 	infantry_spawn_unit_ledger_is_aligned = yes
 	infantry_spawn_obligation_ledger_is_aligned = yes
+}
+
+# ---------------------------------------------------------------------------
+# Lifetime-ledger compaction safety
+# ---------------------------------------------------------------------------
+
+infantry_spawn_compaction_auxiliary_evidence_is_aligned = {
+	check_variable = { var = infantry_spawn_achievement_pretech_unit_uid_entries^num value = infantry_spawn_achievement_pretech_gate_entries^num compare = equals }
+}
+
+# Compaction pauses around every Event 19 transaction whose rollback or mission
+# target depends on a stable tail boundary. The transaction resumes unchanged;
+# no row is touched while any of these gates is present.
+infantry_spawn_ledger_compaction_may_advance = {
+	infantry_spawn_all_ledgers_are_aligned = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	infantry_spawn_compaction_auxiliary_evidence_is_aligned = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	NOT = { has_global_flag = infantry_spawn_triggerable_scenario_setup_in_progress }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+	NOT = { has_country_flag = infantry_spawn_scenario_same_tag_transaction_active }
+	NOT = { has_country_flag = infantry_spawn_scenario_same_tag_cleanup_pending }
+	NOT = { has_country_flag = infantry_spawn_scenario_rollback_cleanup_pending }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	NOT = { has_country_flag = infantry_spawn_training_cycle_running }
+	NOT = { has_country_flag = infantry_spawn_standardization_running }
+	NOT = { has_country_flag = infantry_spawn_demobilization_running }
+	NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
+	NOT = { has_country_flag = infantry_spawn_generation_audit_active }
+	NOT = { has_country_flag = infantry_spawn_achievement_rail_attempt_active }
+	NOT = { has_country_flag = infantry_spawn_rail_corridor_running }
+	NOT = { has_country_flag = infantry_spawn_selected_lot_demobilization_pending }
+	NOT = { has_country_flag = infantry_spawn_incident_pending }
+	NOT = { has_country_flag = infantry_spawn_prefire_opening_pending }
+	NOT = { has_country_flag = infantry_spawn_claimant_demand_pending }
+	NOT = { has_country_flag = division_template_lock_event_active }
+	NOT = { infantry_spawn_has_deferred_event19_action = yes }
+}
+
+infantry_spawn_compaction_candidate_lot_is_terminal_and_clear = {
+	check_variable = { var = infantry_spawn_compaction_candidate_lot_index value = constant:infantry_spawn_event.invalid_index compare = greater_than }
+	check_variable = { var = infantry_spawn_compaction_candidate_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than }
+	OR = {
+		check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_compaction_candidate_lot_index value = constant:infantry_spawn_lot_state.demobilized compare = equals }
+		check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_compaction_candidate_lot_index value = constant:infantry_spawn_lot_state.destroyed compare = equals }
+		check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_compaction_candidate_lot_index value = constant:infantry_spawn_lot_state.unaccounted_settled compare = equals }
+	}
+	check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_compaction_candidate_lot_index = constant:infantry_spawn_ledger_compaction.zero }
+	check_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_compaction_candidate_lot_index = constant:infantry_spawn_ledger_compaction.zero }
+	check_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_compaction_candidate_lot_index = constant:infantry_spawn_ledger_compaction.zero }
+	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_compaction_candidate_lot_index = constant:infantry_spawn_ledger_compaction.zero }
+	NOT = { check_variable = { var = infantry_spawn_selected_lot_index value = infantry_spawn_compaction_candidate_lot_index compare = equals } }
+}
+
+infantry_spawn_compaction_candidate_lot_generation_is_closed = {
+	check_variable = { infantry_spawn_compaction_candidate_lot_generation_match_count = constant:infantry_spawn_ledger_compaction.one }
+	check_variable = { var = infantry_spawn_compaction_candidate_lot_generation_index value = constant:infantry_spawn_event.invalid_index compare = greater_than }
+	check_variable = { var = infantry_spawn_compaction_candidate_lot_generation_index value = infantry_spawn_generation_uid_entries^num compare = less_than }
+	check_variable = { var = infantry_spawn_generation_uid_entries^infantry_spawn_compaction_candidate_lot_generation_index value = infantry_spawn_compaction_candidate_generation_uid compare = equals }
+	OR = {
+		check_variable = { var = infantry_spawn_generation_status_entries^infantry_spawn_compaction_candidate_lot_generation_index value = constant:infantry_spawn_generation_status.resolved compare = equals }
+		check_variable = { var = infantry_spawn_generation_status_entries^infantry_spawn_compaction_candidate_lot_generation_index value = constant:infantry_spawn_generation_status.archived compare = equals }
+	}
+}
+
+infantry_spawn_compaction_candidate_unit_row_is_terminal_and_clear = {
+	OR = {
+		check_variable = { var = infantry_spawn_unit_status_entries^infantry_spawn_compaction_scan_cursor value = constant:infantry_spawn_unit_status.demobilized compare = equals }
+		check_variable = { var = infantry_spawn_unit_status_entries^infantry_spawn_compaction_scan_cursor value = constant:infantry_spawn_unit_status.destroyed compare = equals }
+		check_variable = { var = infantry_spawn_unit_status_entries^infantry_spawn_compaction_scan_cursor value = constant:infantry_spawn_unit_status.unaccounted_settled compare = equals }
+	}
+	check_variable = { infantry_spawn_unit_claimant_uid_entries^infantry_spawn_compaction_scan_cursor = constant:infantry_spawn_ledger_compaction.zero }
+}
+
+infantry_spawn_compaction_candidate_obligation_row_is_exactly_clear = {
+	OR = {
+		check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_compaction_scan_cursor value = constant:infantry_spawn_obligation_state.settled compare = equals }
+		check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_compaction_scan_cursor value = constant:infantry_spawn_obligation_state.forfeited compare = equals }
+	}
+	check_variable = { infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_compaction_scan_cursor = constant:infantry_spawn_ledger_compaction.zero }
+	check_variable = { infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_compaction_scan_cursor = constant:infantry_spawn_ledger_compaction.zero }
+}
+
+# A multi-pulse lot proof is valid only while every source and auxiliary table
+# retains its captured size. Appends are legitimate, but they invalidate the
+# proof and force a clean restart before any removal.
+infantry_spawn_compaction_lot_snapshot_matches = {
+	OR = {
+		AND = {
+			NOT = { has_variable = infantry_spawn_scenario_launch_serial }
+			check_variable = { infantry_spawn_compaction_snapshot_scenario_launch_serial = constant:infantry_spawn_ledger_compaction.zero }
+		}
+		check_variable = { var = infantry_spawn_scenario_launch_serial value = infantry_spawn_compaction_snapshot_scenario_launch_serial compare = equals }
+	}
+	check_variable = { var = infantry_spawn_generation_uid_entries^num value = infantry_spawn_compaction_snapshot_generation_rows compare = equals }
+	check_variable = { var = infantry_spawn_selected_state_generation_uid_entries^num value = infantry_spawn_compaction_snapshot_selected_state_rows compare = equals }
+	check_variable = { var = infantry_spawn_lot_uid_entries^num value = infantry_spawn_compaction_snapshot_lot_rows compare = equals }
+	check_variable = { var = infantry_spawn_template_uid_entries^num value = infantry_spawn_compaction_snapshot_template_rows compare = equals }
+	check_variable = { var = infantry_spawn_template_component_template_uid_entries^num value = infantry_spawn_compaction_snapshot_component_rows compare = equals }
+	check_variable = { var = infantry_spawn_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_unit_rows compare = equals }
+	check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_compaction_snapshot_obligation_rows compare = equals }
+	check_variable = { var = infantry_spawn_locked_template_uid_entries^num value = infantry_spawn_compaction_snapshot_locked_template_rows compare = equals }
+	check_variable = { var = infantry_spawn_spawn_only_template_uid_entries^num value = infantry_spawn_compaction_snapshot_spawn_only_template_rows compare = equals }
+	check_variable = { var = infantry_spawn_technology_locked_template_uid_entries^num value = infantry_spawn_compaction_snapshot_technology_template_rows compare = equals }
+	check_variable = { var = infantry_spawn_technology_locked_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_technology_unit_rows compare = equals }
+	check_variable = { var = infantry_spawn_transfer_eligible_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_transfer_unit_rows compare = equals }
+	check_variable = { var = infantry_spawn_pretechnology_template_uid_entries^num value = infantry_spawn_compaction_snapshot_pretechnology_template_rows compare = equals }
+	check_variable = { var = infantry_spawn_pretechnology_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_pretechnology_unit_rows compare = equals }
+	check_variable = { var = infantry_spawn_achievement_pretech_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_achievement_pretech_rows compare = equals }
+	check_variable = { var = infantry_spawn_achievement_composition_disqualified_unit_uid_entries^num value = infantry_spawn_compaction_snapshot_composition_evidence_rows compare = equals }
+	check_variable = { var = infantry_spawn_achievement_supervised_demobilized_lot_uids^num value = infantry_spawn_compaction_snapshot_supervised_demobilization_rows compare = equals }
+	check_variable = { var = infantry_spawn_compaction_candidate_unit_row_indexes^num value = infantry_spawn_compaction_candidate_unit_uids^num compare = equals }
+}
+
+infantry_spawn_compaction_candidate_generation_is_detached_summary = {
+	check_variable = { var = infantry_spawn_compaction_candidate_generation_index value = constant:infantry_spawn_event.invalid_index compare = greater_than }
+	check_variable = { var = infantry_spawn_compaction_candidate_generation_index value = infantry_spawn_generation_uid_entries^num compare = less_than }
+	check_variable = { var = infantry_spawn_generation_uid_entries^infantry_spawn_compaction_candidate_generation_index value = infantry_spawn_compaction_candidate_generation_uid compare = equals }
+	OR = {
+		check_variable = { var = infantry_spawn_generation_status_entries^infantry_spawn_compaction_candidate_generation_index value = constant:infantry_spawn_generation_status.resolved compare = equals }
+		check_variable = { var = infantry_spawn_generation_status_entries^infantry_spawn_compaction_candidate_generation_index value = constant:infantry_spawn_generation_status.archived compare = equals }
+	}
+	NOT = {
+		AND = {
+			has_variable = infantry_spawn_last_closed_generation_uid
+			check_variable = { var = infantry_spawn_last_closed_generation_uid value = infantry_spawn_compaction_candidate_generation_uid compare = equals }
+		}
+	}
+	NOT = {
+		AND = {
+			has_variable = infantry_spawn_derivative_origin_generation_uid
+			check_variable = { var = infantry_spawn_derivative_origin_generation_uid value = infantry_spawn_compaction_candidate_generation_uid compare = equals }
+		}
+	}
+	NOT = {
+		AND = {
+			has_variable = infantry_spawn_scenario_claimant_origin_generation_uid
+			check_variable = { var = infantry_spawn_scenario_claimant_origin_generation_uid value = infantry_spawn_compaction_candidate_generation_uid compare = equals }
+		}
+	}
 }

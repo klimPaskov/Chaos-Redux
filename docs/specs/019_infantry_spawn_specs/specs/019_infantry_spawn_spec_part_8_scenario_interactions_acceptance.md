@@ -5,17 +5,19 @@
 
 ### Registry identity
 
-- **Proposed scenario ID:** `SCN-008`
-- **Working internal label:** Event 19 Immediate Mutiny
-- **Catalog relationship:** first new scenario after the currently supplied SCN-001 through SCN-007 list
+- **Approved scenario ID:** `SCN-013`
+- **Final player-facing label:** The Unbidden Muster
+- **Catalog relationship:** first collision-free identity after live IDs 1 through 11 and Event 20's raw ID 12 reservation
 
-The label is not final player-facing localisation.
+The shared name-sort value is `5.75`, placing The Unbidden Muster after The Hunger Lines and before The World in Fury. The generic Triggerable Scenarios window supplies its dynamic row, four-stop intensity control, type arrows, launch button, and confirmation flow.
 
 ### Scenario promise
 
 The scenario creates an immediate world military crisis. Countries receive large event formation packages and those formations revolt or attempt takeover at once. Wars begin as part of setup rather than after a long claimant-management phase.
 
 The scenario is a sandbox or challenge launch. It is separate from automatic Event 19 eligibility, chaos, evolution timing, date, and prior event history.
+
+Each ordinary actor commits the full country-entry state required by its selected package as a minimum profile: I-II for Conventional Flood and Arsenal Lottery, I-III for General Mutiny, and I-IV for Anomalous Rising. A fresh actor keeps exactly that profile. A pre-existing same-tag Event 19 participant keeps any fully applied higher stage so setup does not destroy live claimant, registry, or management transactions. Once marked as a scenario actor, its proved applied set is frozen against later global evolution activation. Nonhuman and claimant derivatives instead keep their private derivative package and no ordinary applied-stage surface.
 
 ### Launch gates
 
@@ -337,7 +339,12 @@ Each evolution is recorded once globally with the correct Event 19 ID, type, sta
 
 ### Country follow-up history
 
-Claimant appearance, takeover, military revolt, derivative release, and derivative defeat are normal follow-up history events. They are not additional evolution stages.
+Claimant appearance, takeover, military revolt, derivative release, derivative
+defeat, and the four first-family reception outcomes are normal follow-up history
+events. They are not additional evolution stages. First-family cantonment,
+negotiated reception, refusal, and failed reception use stable Event 19 payloads
+while the visible reception event uses the frozen provider's identity and host
+scene.
 
 ### Event Details evolution catalog
 
@@ -417,9 +424,11 @@ Required major asset families:
 - idea and national spirit icons
 - Muster Board panel and state icons
 - three animated UI packages with static fallbacks
-- 20 claimant portraits
+- 20 fixed claimant portrait-slot assets displaying distinct regional army/muster scenes with no individual focal person
 - derivative country flags
-- derivative leader or council portraits
+- six fixed derivative portrait-slot assets displaying massed zombie, ghost, or golem hosts; councils use exactly three formations/cohorts
+- one identity-neutral technical muster scene for unresolved UI and unknown-provider display states; it assigns no gameplay identity
+- direct-scenario provisional authorities use those army/muster and massed-host scenes; no SCN-013 government identity uses a focal human or generic unknown portrait
 - derivative focus icon family
 - derivative decision and idea icons
 - achievement icons
@@ -440,7 +449,7 @@ Implementation must update:
 - asset manifest and GFX handoff
 - achievement documentation
 - event catalog workbook row for Event 19
-- scenario catalog workbook row for SCN-008 if the workbook includes scenario entries
+- scenario catalog workbook row for SCN-013 if the workbook includes scenario entries
 
 The spreadsheet mirror fields must use final in-game wording rather than this planning language.
 
@@ -488,8 +497,11 @@ The implementation is not complete unless every item below is finished or explic
 - one to 25 combat battalion design range or verified safe equivalent
 - quality and coherence axes
 - claimant generals, demands, influence, and revolts
-- 20 portrait assets and regional gender-matched names
+- 20 male claimant gameplay profiles with regional male names and 20 separate region-compatible army/muster identity scenes
 - one-state takeover handling
+- ordinary claimant releases work without Evolution IV or a family row
+- exact claimant-loyal formations are the only ordinary release force
+- an unprovable ordinary release resolves as a visible failed coup
 - active-event and pre-fire paths
 
 ### Evolution IV
@@ -500,6 +512,11 @@ The implementation is not complete unless every item below is finished or explic
 - future explicit opt-in
 - saturation and containment
 - derivative release and parent isolation
+- one-time pre-fire first-family reception with three proved outcomes
+- pending country-local retry when no provider is eligible
+- anomalous claimant and claimant-independent family release modes
+- exact claimant-free family breach under weak control
+- verified one-state same-tag provider takeover
 - active-event and pre-fire paths
 
 ### Derivative countries
@@ -510,6 +527,8 @@ The implementation is not complete unless every item below is finished or explic
 - leader identity
 - starting ideas and lifecycle
 - starting units from revolt
+- mode-aware exact recreate, prove, delete transfer
+- claimant and family pre-commit consequences remain visible
 - reinforcement path
 - focus-scale route content
 - decisions, AI, expansion, defeat cleanup
@@ -517,7 +536,7 @@ The implementation is not complete unless every item below is finished or explic
 
 ### Triggerable scenario
 
-- SCN-008 registration or final approved ID
+- SCN-013 registration with aligned ID/name arrays and all four sort orders
 - four scenario types
 - four intensity stops
 - direct launch without normal prerequisites
@@ -551,6 +570,8 @@ The implementation is not complete unless every item below is finished or explic
 - event history
 - four evolutions
 - Event Details
+- first-family reception outcome history
+- natural release-mode and containment wording
 - scenario docs
 - helper docs
 - classifiers
@@ -560,6 +581,6 @@ The implementation is not complete unless every item below is finished or explic
 
 ## Completion boundaries
 
-A final implementation report must list any simplification, omitted family, missing portrait, unwired animation, fallback tag model, missing AI path, unverified parent isolation, stale spreadsheet field, or skipped scenario validation.
+A final implementation report must list any simplification, omitted family, missing army/host identity scene, individual-focal-subject violation, unwired animation, fallback tag model, missing AI path, unverified parent isolation, stale spreadsheet field, or skipped scenario validation.
 
 The current planning package deliberately leaves exact script syntax, constant values, final localisation, final tags, and final asset filenames for implementation after inspection of the local repository, offline Paradox wiki, vanilla documentation, and existing Chaos Redux patterns.

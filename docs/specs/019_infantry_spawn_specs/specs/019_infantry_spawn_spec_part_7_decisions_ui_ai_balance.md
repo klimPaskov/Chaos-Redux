@@ -432,6 +432,8 @@ Effect direction:
 - creates loyal officer and depot networks
 - lowers revolt risk over time
 - expensive in army experience, equipment, and political stability
+- starts the same dedicated response lock whether invoked from the decision,
+  Muster Board, or AI path
 
 ### Meet the Demand
 
@@ -641,7 +643,7 @@ Visible only when a claimant exists.
 
 Displays:
 
-- primary claimant portrait
+- primary claimant army/muster identity scene in the fixed portrait-slot widget
 - personal name
 - archetype summary
 - influence
@@ -737,7 +739,7 @@ Use:
 
 Target:
 
-- Command tab portrait or panel border
+- Command tab army/muster identity-scene panel border
 
 Plan:
 
@@ -766,7 +768,7 @@ Plan:
 
 ### Static-only decisions
 
-The 20 claimant portraits remain static. Individual lot icons remain static. Animating all of them would add visual noise and a disproportionate asset burden.
+The 20 claimant army/muster identity scenes remain static in their fixed portrait slots. Individual lot icons remain static. Animating all of them would add visual noise and a disproportionate asset burden.
 
 Every final animation must follow the frame-sheet skill with separate source frames, processed frames, horizontal sheet, DDS, static fallback, contact sheet, and GIF review preview. A transformed still is not acceptable final animation.
 
@@ -1026,7 +1028,9 @@ Expected:
 
 - spawn-only reinforcement
 - slow population and wasteland effects
-- no Death counts or super-events
+- genuine population loss enters the shared Deaths ledger exactly once under
+  the Event 19 ghost-decline cause
+- no Event 10 actor counts, souls, consumed-state progression, or super-events
 
 ### Triggerable maximum mutiny
 

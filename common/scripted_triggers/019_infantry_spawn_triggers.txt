@@ -16,8 +16,11 @@ infantry_spawn_country_has_eligible_state = {
 
 infantry_spawn_country_can_receive_generation = {
 	exists = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
 	NOT = { has_country_flag = infantry_spawn_processing_deferred }
 	NOT = { has_country_flag = infantry_spawn_defeat_cleanup_in_progress }
+	NOT = { has_country_flag = infantry_spawn_annex_cleanup_invariant_failure }
 	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
 	infantry_spawn_country_has_eligible_state = yes
 }
@@ -35,14 +38,94 @@ infantry_spawn_country_is_active = {
 	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
 }
 
+# Country scope. Direct-scenario actors keep complete private Event 19 ledgers,
+# but their units, decisions, claimants, and management outcomes must never
+# advance the ordinary manifestation or evolution history.
+infantry_spawn_contributes_to_ordinary_evolution_history = {
+	infantry_spawn_scenario_transaction_is_idle = yes
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = {
+		OR = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_scenario_dynamic_breakaway
+			has_country_flag = infantry_spawn_scenario_takeover_actor
+			has_country_flag = infantry_spawn_scenario_setup_bypass
+		}
+	}
+}
+
+# Stable country membership for the maintained global evolution population.
+# The transient scenario transaction gate remains on scoring callers: a setup
+# transaction pauses evolution, while its persistent actor flags remove only
+# the exact country from ordinary history.
+infantry_spawn_is_ordinary_evolution_counter_country = {
+	exists = yes
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_country_flag = infantry_spawn_derivative_country }
+	NOT = {
+		OR = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_scenario_dynamic_breakaway
+			has_country_flag = infantry_spawn_scenario_takeover_actor
+			has_country_flag = infantry_spawn_scenario_setup_bypass
+		}
+	}
+}
+
+# Country-scope receipt inventory used by epoch synchronization and exact
+# lifecycle removal. The legacy war receipt is included so migration evidence
+# cannot be silently adopted into a current epoch.
+infantry_spawn_has_any_evolution_counter_receipt = {
+	OR = {
+		has_country_flag = infantry_spawn_evolution_world_country_contributor
+		has_country_flag = infantry_spawn_evolution_world_war_contributor
+		has_country_flag = infantry_spawn_evolution_participant_contributor
+		has_country_flag = infantry_spawn_evolution_low_control_contributor
+		has_country_flag = infantry_spawn_evolution_severe_congestion_contributor
+		has_country_flag = infantry_spawn_evolution_claimant_crisis_contributor
+		has_country_flag = infantry_spawn_evolution_anomalous_preservation_contributor
+		has_country_flag = infantry_spawn_evolution_war_contributor
+	}
+}
+
+# Country-scope backstop for transaction records which must survive until the
+# original exact action can be replayed or explicitly quarantined. Keeping this
+# as one trigger prevents pulse scheduling and compaction from drifting apart.
+infantry_spawn_has_deferred_event19_action = {
+	OR = {
+		has_country_flag = infantry_spawn_deferred_audit_completion_pending
+		has_country_flag = infantry_spawn_deferred_standardization_completion_pending
+		has_country_flag = infantry_spawn_deferred_demobilization_completion_pending
+		has_country_flag = infantry_spawn_deferred_training_completion_pending
+		has_country_flag = infantry_spawn_deferred_muster_districts_completion_pending
+		has_country_flag = infantry_spawn_deferred_integration_staff_completion_pending
+		has_country_flag = infantry_spawn_deferred_specialist_completion_pending
+		has_country_flag = infantry_spawn_deferred_prototype_completion_pending
+		has_country_flag = infantry_spawn_deferred_rail_corridor_completion_pending
+		has_country_flag = infantry_spawn_deferred_request_cooldown_completion_pending
+		has_country_flag = infantry_spawn_deferred_incident_choice_pending
+		has_country_flag = infantry_spawn_deferred_prefire_opening_choice_pending
+		has_country_flag = infantry_spawn_deferred_claimant_demand_choice_pending
+	}
+}
+
 infantry_spawn_country_can_continue_pulse = {
 	exists = yes
-	infantry_spawn_country_is_active = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
 	OR = {
-		check_variable = { infantry_spawn_active_lot_count > 0 }
-		has_country_flag = infantry_spawn_claimant_system_active
-		has_country_flag = infantry_spawn_anomalous_registry_active
-		is_infantry_spawn_derivative_country = yes
+		AND = {
+			infantry_spawn_country_is_active = yes
+			OR = {
+				check_variable = { infantry_spawn_active_lot_count > 0 }
+				has_country_flag = infantry_spawn_claimant_system_active
+				has_country_flag = infantry_spawn_anomalous_registry_active
+			}
+		}
+		infantry_spawn_derivative_package_is_active = yes
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+			infantry_spawn_has_deferred_event19_action = yes
+		}
 	}
 }
 
@@ -65,29 +148,441 @@ infantry_spawn_normal_automatic_generation_is_enabled = {
 
 infantry_spawn_has_evolution_i = {
 	OR = {
-		has_global_flag = infantry_spawn_evolution_i_active
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_scenario_profile_locked }
+			NOT = { has_country_flag = infantry_spawn_scenario_actor }
+			has_global_flag = infantry_spawn_evolution_i_active
+		}
 		has_country_flag = infantry_spawn_scenario_force_evolution_i
+		AND = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_evolution_i_applied
+		}
 	}
 }
 
 infantry_spawn_has_evolution_ii = {
 	OR = {
-		has_global_flag = infantry_spawn_evolution_ii_active
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_scenario_profile_locked }
+			NOT = { has_country_flag = infantry_spawn_scenario_actor }
+			has_global_flag = infantry_spawn_evolution_ii_active
+		}
 		has_country_flag = infantry_spawn_scenario_force_evolution_ii
+		AND = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_evolution_ii_applied
+		}
 	}
 }
 
 infantry_spawn_has_evolution_iii = {
 	OR = {
-		has_global_flag = infantry_spawn_evolution_iii_active
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_scenario_profile_locked }
+			NOT = { has_country_flag = infantry_spawn_scenario_actor }
+			has_global_flag = infantry_spawn_evolution_iii_active
+		}
 		has_country_flag = infantry_spawn_scenario_force_evolution_iii
+		AND = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_evolution_iii_applied
+		}
 	}
 }
 
 infantry_spawn_has_evolution_iv = {
 	OR = {
-		has_global_flag = infantry_spawn_evolution_iv_active
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_scenario_profile_locked }
+			NOT = { has_country_flag = infantry_spawn_scenario_actor }
+			has_global_flag = infantry_spawn_evolution_iv_active
+		}
 		has_country_flag = infantry_spawn_scenario_force_evolution_iv
+		AND = {
+			has_country_flag = infantry_spawn_scenario_actor
+			has_country_flag = infantry_spawn_evolution_iv_applied
+		}
+	}
+}
+
+# Generic registry contract used by direct scenarios and natural Evolution IV
+# pressure. A future family participates through its one aligned registry row;
+# neither caller maintains a family enumeration.
+infantry_spawn_current_registry_row_can_form_derivative = {
+	chaos_unit_family_registry_is_aligned = yes
+	chaos_unit_family_current_row_is_enabled = yes
+	chaos_unit_family_current_row_allows_event19_family_lot = yes
+	chaos_unit_family_current_row_can_spawn = yes
+	chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
+	check_variable = {
+		var = global.chaos_unit_family_derivative_profile_entries^chaos_unit_family_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.chaos_unit_family_parent_isolation_profile_entries^chaos_unit_family_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = { global.chaos_unit_family_cleanup_profile_entries^chaos_unit_family_registry_index > constant:infantry_spawn_weight_result.zero }
+	check_variable = {
+		var = global.chaos_unit_family_contract_version_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_registry.contract_version
+		compare = equals
+	}
+}
+
+# Cleanup is a lifecycle contract, not a current generation policy. An actor
+# must remain cleanable when its registered family later becomes disabled,
+# train-only, or excluded from new Event 19 lots.
+infantry_spawn_current_registry_row_can_clean_derivative = {
+	chaos_unit_family_registry_is_aligned = yes
+	chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
+	check_variable = {
+		var = global.chaos_unit_family_derivative_profile_entries^chaos_unit_family_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.chaos_unit_family_parent_isolation_profile_entries^chaos_unit_family_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = { global.chaos_unit_family_cleanup_profile_entries^chaos_unit_family_registry_index > constant:infantry_spawn_weight_result.zero }
+	check_variable = {
+		var = global.chaos_unit_family_contract_version_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_registry.contract_version
+		compare = equals
+	}
+}
+
+# A first-family reception needs a complete provider package and a fixed visual
+# profile, but it does not require the family to opt into derivative countries.
+infantry_spawn_current_registry_row_can_supply_first_reception = {
+	chaos_unit_family_registry_is_aligned = yes
+	chaos_unit_family_current_row_is_enabled = yes
+	chaos_unit_family_current_row_allows_event19_family_lot = yes
+	chaos_unit_family_current_row_can_spawn = yes
+	check_variable = {
+		var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_registry.minimum_family_id
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_registry.minimum_provider_id
+		compare = greater_than_or_equals
+	}
+	chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
+	check_variable = { global.chaos_unit_family_cleanup_profile_entries^chaos_unit_family_registry_index > constant:infantry_spawn_weight_result.zero }
+	check_variable = { global.chaos_unit_family_parent_isolation_profile_entries^chaos_unit_family_registry_index > constant:infantry_spawn_weight_result.zero }
+	check_variable = {
+		var = global.chaos_unit_family_contract_version_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_registry.contract_version
+		compare = equals
+	}
+}
+
+# Country scope. The first reception freezes row identity, not availability.
+# This pure trigger can therefore protect a delayed event without re-running a
+# provider eligibility callback or substituting another family after dispatch.
+infantry_spawn_frozen_first_family_reception_row_is_valid = {
+	chaos_unit_family_registry_is_aligned = yes
+	has_variable = infantry_spawn_first_family_reception_registry_index
+	has_variable = infantry_spawn_first_family_reception_family_id
+	has_variable = infantry_spawn_first_family_reception_provider_id
+	has_variable = infantry_spawn_first_family_reception_visual_profile
+	has_variable = infantry_spawn_first_family_reception_nonce
+	check_variable = {
+		var = infantry_spawn_first_family_reception_registry_index
+		value = constant:chaos_unit_family_registry_index.invalid
+		compare = greater_than
+	}
+	check_variable = {
+		var = infantry_spawn_first_family_reception_registry_index
+		value = global.chaos_unit_family_id_entries^num
+		compare = less_than
+	}
+	check_variable = {
+		var = global.chaos_unit_family_id_entries^infantry_spawn_first_family_reception_registry_index
+		value = infantry_spawn_first_family_reception_family_id
+		compare = equals
+	}
+	check_variable = {
+		var = global.chaos_unit_family_provider_id_entries^infantry_spawn_first_family_reception_registry_index
+		value = infantry_spawn_first_family_reception_provider_id
+		compare = equals
+	}
+	check_variable = {
+		var = global.chaos_unit_family_visual_profile_entries^infantry_spawn_first_family_reception_registry_index
+		value = infantry_spawn_first_family_reception_visual_profile
+		compare = equals
+	}
+	check_variable = {
+		var = infantry_spawn_first_family_reception_family_id
+		value = constant:chaos_unit_family_registry.minimum_family_id
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = infantry_spawn_first_family_reception_provider_id
+		value = constant:chaos_unit_family_registry.minimum_provider_id
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = infantry_spawn_first_family_reception_nonce
+		value = constant:infantry_spawn_first_family_reception.initial_nonce
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.chaos_unit_family_cleanup_profile_entries^infantry_spawn_first_family_reception_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.chaos_unit_family_parent_isolation_profile_entries^infantry_spawn_first_family_reception_registry_index
+		value = constant:infantry_spawn_weight_result.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = global.chaos_unit_family_contract_version_entries^infantry_spawn_first_family_reception_registry_index
+		value = constant:chaos_unit_family_registry.contract_version
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_zombie_family.family_id }
+			check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_zombie_family.provider_id }
+			check_variable = { infantry_spawn_first_family_reception_visual_profile = constant:event19_zombie_family.visual_profile }
+		}
+		AND = {
+			check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_ghost_family.family_id }
+			check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_ghost_family.provider_id }
+			check_variable = { infantry_spawn_first_family_reception_visual_profile = constant:event19_ghost_family.visual_profile }
+		}
+		AND = {
+			check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_golem_family.family_id }
+			check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_golem_family.provider_id }
+			check_variable = { infantry_spawn_first_family_reception_visual_profile = constant:event19_golem_family.visual_profile }
+		}
+		AND = {
+			check_variable = { infantry_spawn_first_family_reception_visual_profile = constant:chaos_unit_family_visual_profile.provider_neutral_army }
+			NOT = {
+				OR = {
+					check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_zombie_family.family_id }
+					check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_ghost_family.family_id }
+					check_variable = { infantry_spawn_first_family_reception_family_id = constant:event19_golem_family.family_id }
+					check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_zombie_family.provider_id }
+					check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_ghost_family.provider_id }
+					check_variable = { infantry_spawn_first_family_reception_provider_id = constant:event19_golem_family.provider_id }
+				}
+			}
+		}
+	}
+}
+
+# Shared natural-release isolation contract. Geography and evolution stage are
+# added by the claimant and family callers below.
+infantry_spawn_natural_release_common_is_safe = {
+	infantry_spawn_natural_recorded_formation_transfer_is_available = yes
+	infantry_spawn_country_is_active = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
+	infantry_spawn_all_ledgers_are_aligned = yes
+	infantry_spawn_claimant_ledgers_are_aligned = yes
+	infantry_spawn_compaction_auxiliary_evidence_is_aligned = yes
+	uses_normal_civilian_systems = yes
+	infantry_spawn_parent_event_identity_is_absent = yes
+	has_capitulated = no
+	NOT = { has_civil_war = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
+	NOT = { has_country_flag = infantry_spawn_scenario_dynamic_breakaway }
+	NOT = { has_country_flag = infantry_spawn_scenario_takeover_actor }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+	NOT = { has_country_flag = infantry_spawn_management_temporarily_locked }
+	NOT = { has_country_flag = division_template_lock_event_active }
+}
+
+# Ordinary and anomalous claimant releases are multi-state transactions. The
+# ordinary mode needs Evolution III but has no anomalous-family prerequisite.
+infantry_spawn_natural_release_has_preferred_mainland_state = {
+	any_owned_state = {
+		is_controlled_by = PREV
+		impassable = no
+		NOT = { is_capital = yes }
+		NOT = { is_island_state = yes }
+	}
+}
+
+# An island is viable only when no controlled, passable, non-capital mainland
+# state exists. This is the specification's only-viable-base rule, not a random
+# geographic substitute.
+infantry_spawn_natural_release_has_viable_region_state = {
+	OR = {
+		infantry_spawn_natural_release_has_preferred_mainland_state = yes
+		any_owned_state = {
+			is_controlled_by = PREV
+			impassable = no
+			NOT = { is_capital = yes }
+			is_island_state = yes
+		}
+	}
+}
+
+infantry_spawn_natural_claimant_release_base_is_safe = {
+	infantry_spawn_natural_release_common_is_safe = yes
+	infantry_spawn_has_evolution_iii = yes
+	num_of_controlled_states > constant:infantry_spawn_weight_result.one
+	infantry_spawn_natural_release_has_viable_region_state = yes
+}
+
+# Family selection is also used by the verified one-state takeover path, so it
+# stops at the common country contract and one controlled state. Dynamic
+# breakaways apply the stricter multi-state geography gate separately.
+infantry_spawn_natural_family_candidate_selection_is_safe = {
+	infantry_spawn_natural_release_common_is_safe = yes
+	infantry_spawn_has_evolution_iv = yes
+	chaos_unit_family_registry_is_aligned = yes
+	num_of_controlled_states > constant:infantry_spawn_weight_result.zero
+}
+
+infantry_spawn_natural_family_dynamic_release_base_is_safe = {
+	infantry_spawn_natural_family_candidate_selection_is_safe = yes
+	num_of_controlled_states > constant:infantry_spawn_weight_result.one
+	infantry_spawn_natural_release_has_viable_region_state = yes
+}
+
+# Compatibility alias retained for the existing region transaction.
+infantry_spawn_natural_derivative_revolt_base_is_safe = {
+	OR = {
+		AND = {
+			check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.ordinary_claimant }
+			infantry_spawn_natural_claimant_release_base_is_safe = yes
+		}
+		AND = {
+			check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.anomalous_claimant }
+			infantry_spawn_natural_claimant_release_base_is_safe = yes
+			infantry_spawn_has_evolution_iv = yes
+			chaos_unit_family_registry_is_aligned = yes
+		}
+		AND = {
+			check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family }
+			infantry_spawn_natural_family_dynamic_release_base_is_safe = yes
+		}
+	}
+}
+
+# Inputs are the current registry index plus the temporary family-state values
+# produced by infantry_spawn_calculate_current_family_state.
+infantry_spawn_natural_current_registry_row_can_form_derivative = {
+	infantry_spawn_current_registry_row_can_form_derivative = yes
+	check_variable = { chaos_unit_family_candidate_eligible > constant:infantry_spawn_weight_result.zero }
+	check_variable = {
+		var = infantry_spawn_family_live_division_count
+		value = constant:infantry_spawn_saturation.derivative_minimum_family_divisions
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_family_current_pressure
+			value = constant:infantry_spawn_family_pressure.breach
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = {
+				var = infantry_spawn_family_current_pressure
+				value = constant:infantry_spawn_family_pressure.critical
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = infantry_spawn_anomalous_saturation
+				value = constant:infantry_spawn_saturation.dominant
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	OR = {
+		check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_control.guarded }
+		check_variable = {
+			var = infantry_spawn_family_primary_claimant_influence
+			value = constant:infantry_spawn_claimant.revolt_threshold
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# Claimant-independent breaches use only the accepted weak-control branch.
+# A primary claimant may exist in the family ledger, but is neither required
+# nor copied into this release mode.
+infantry_spawn_natural_current_registry_row_can_form_independent_breach = {
+	infantry_spawn_current_registry_row_can_form_derivative = yes
+	check_variable = { chaos_unit_family_candidate_eligible > constant:infantry_spawn_weight_result.zero }
+	check_variable = {
+		var = infantry_spawn_family_dispersible_division_count
+		value = constant:infantry_spawn_saturation.derivative_minimum_family_divisions
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_family_current_pressure
+			value = constant:infantry_spawn_family_pressure.breach
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = {
+				var = infantry_spawn_family_current_pressure
+				value = constant:infantry_spawn_family_pressure.critical
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = infantry_spawn_anomalous_saturation
+				value = constant:infantry_spawn_saturation.dominant
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_control.guarded }
+}
+
+# State scope. PREV is the parent country. Mainland states are always preferred.
+# Island states enter the same connected-region transaction only when the
+# parent has no controlled, passable, non-capital mainland base.
+infantry_spawn_natural_derivative_revolt_state_is_safe = {
+	is_owned_and_controlled_by = PREV
+	impassable = no
+	NOT = { is_capital = yes }
+	OR = {
+		NOT = { is_island_state = yes }
+		AND = {
+			is_island_state = yes
+			PREV = {
+				NOT = { infantry_spawn_natural_release_has_preferred_mainland_state = yes }
+			}
+		}
+	}
+}
+
+infantry_spawn_natural_derivative_revolt_state_is_candidate = {
+	infantry_spawn_natural_derivative_revolt_state_is_safe = yes
+	NOT = {
+		is_in_array = {
+			array = infantry_spawn_natural_derivative_selected_revolt_states
+			value = THIS
+		}
+	}
+	OR = {
+		check_variable = {
+			var = infantry_spawn_natural_derivative_selected_revolt_states^num
+			value = constant:infantry_spawn_weight_result.one
+			compare = less_than
+		}
+		any_neighbor_state = {
+			is_in_array = {
+				array = infantry_spawn_natural_derivative_selected_revolt_states
+				value = THIS
+			}
+		}
 	}
 }
 
@@ -137,7 +632,28 @@ infantry_spawn_selected_lot_has_claimant = {
 	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index > 0 }
 }
 
+infantry_spawn_incident_lot_index_is_valid = {
+	has_variable = infantry_spawn_incident_lot_index
+	check_variable = { infantry_spawn_incident_lot_index > constant:infantry_spawn_event.invalid_index }
+	check_variable = { var = infantry_spawn_incident_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than }
+	check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_incident_lot_index = constant:infantry_spawn_lot_family.none }
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_incident_lot_index value = constant:infantry_spawn_lot_state.demobilized compare = less_than }
+	check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_incident_lot_index > 0 }
+}
+
+infantry_spawn_can_roll_lot_incident = {
+	infantry_spawn_scenario_transaction_is_idle = yes
+	infantry_spawn_country_is_active = yes
+	infantry_spawn_all_ledgers_are_aligned = yes
+	NOT = { infantry_spawn_has_evolution_iii = yes }
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_country_flag = infantry_spawn_incident_pending }
+	NOT = { has_country_flag = infantry_spawn_incident_cooldown }
+	check_variable = { infantry_spawn_lot_uid_entries^num > 0 }
+}
+
 infantry_spawn_management_is_available = {
+	infantry_spawn_scenario_transaction_is_idle = yes
 	infantry_spawn_country_is_active = yes
 	infantry_spawn_all_ledgers_are_aligned = yes
 	NOT = { has_country_flag = division_template_lock_event_active }
@@ -162,12 +678,20 @@ infantry_spawn_can_standardize_selected_lot = {
 	infantry_spawn_selected_lot_is_unresolved = yes
 	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
 	NOT = { infantry_spawn_selected_lot_has_claimant = yes }
+	infantry_spawn_selected_lot_has_zero_exact_obligations = yes
+}
+
+infantry_spawn_selected_lot_has_zero_exact_obligations = {
+	infantry_spawn_selected_lot_index_is_valid = yes
+	check_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_selected_lot_index < 1 }
+	check_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_selected_lot_index < 1 }
 }
 
 infantry_spawn_can_demobilize_selected_lot = {
 	infantry_spawn_management_is_available = yes
 	infantry_spawn_selected_lot_is_unresolved = yes
 	NOT = { has_country_flag = infantry_spawn_selected_lot_demobilization_pending }
+	infantry_spawn_selected_lot_has_zero_exact_obligations = yes
 }
 
 infantry_spawn_can_emergency_integrate_selected_lot = {
@@ -175,6 +699,250 @@ infantry_spawn_can_emergency_integrate_selected_lot = {
 	infantry_spawn_selected_lot_is_unresolved = yes
 	has_war = yes
 	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+}
+
+# Evolution II prototype identity is carried by the ordinary profile range and
+# its own aligned disposition entry. Status and claimant gates prevent a trial
+# from racing another lot operation or consuming a claimant-controlled cohort.
+infantry_spawn_selected_lot_is_active_prototype = {
+	infantry_spawn_selected_lot_index_is_valid = yes
+	infantry_spawn_has_evolution_ii = yes
+	check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_family.none }
+	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = greater_than_or_equals }
+	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.fully_random compare = less_than }
+	check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.revealed }
+	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index = 0 }
+	check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_selected_lot_index > 0 }
+}
+
+infantry_spawn_selected_lot_is_unmanaged_prototype = {
+	infantry_spawn_selected_lot_is_active_prototype = yes
+	check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
+}
+
+infantry_spawn_selected_lot_is_cannibalizable_prototype = {
+	infantry_spawn_selected_lot_is_active_prototype = yes
+	OR = {
+		check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
+		check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.preserved }
+	}
+}
+
+infantry_spawn_exact_profile_totals_are_affordable = {
+	OR = {
+		check_variable = { infantry_spawn_exact_manpower < 1 }
+		NOT = { has_manpower < infantry_spawn_exact_manpower }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_infantry_equipment < 1 }
+		check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_exact_infantry_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_artillery_equipment < 1 }
+		check_variable = { var = num_equipment@artillery_equipment value = infantry_spawn_exact_artillery_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_support_equipment < 1 }
+		check_variable = { var = num_equipment@support_equipment value = infantry_spawn_exact_support_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_motorized_equipment < 1 }
+		check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_exact_motorized_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_armored_car_equipment < 1 }
+		check_variable = { var = num_equipment@armored_car_equipment value = infantry_spawn_exact_armored_car_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_mechanized_equipment < 1 }
+		check_variable = { var = num_equipment@mechanized_equipment value = infantry_spawn_exact_mechanized_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_helicopter_equipment < 1 }
+		check_variable = { var = num_equipment@helicopter_equipment value = infantry_spawn_exact_helicopter_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_amphibious_mechanized_equipment < 1 }
+		check_variable = { var = num_equipment@amphibious_mechanized_equipment value = infantry_spawn_exact_amphibious_mechanized_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_fuel < 1 }
+		NOT = { has_fuel < infantry_spawn_exact_fuel }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_train_equipment < 1 }
+		check_variable = { var = num_equipment@train_equipment value = infantry_spawn_exact_train_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_coal_golem_equipment < 1 }
+		check_variable = { var = num_equipment@coal_golem_equipment value = infantry_spawn_exact_coal_golem_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_chassis value = infantry_spawn_exact_light_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_artillery_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_artillery_chassis value = infantry_spawn_exact_light_tank_artillery_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_anti_tank_equipment < 1 }
+		check_variable = { var = num_equipment@anti_tank_equipment value = infantry_spawn_exact_anti_tank_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_anti_air_equipment < 1 }
+		check_variable = { var = num_equipment@anti_air_equipment value = infantry_spawn_exact_anti_air_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_rocket_artillery_equipment < 1 }
+		check_variable = { var = num_equipment@rocket_artillery_equipment value = infantry_spawn_exact_rocket_artillery_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_amphibious_tank_chassis < 1 }
+		check_variable = { var = num_equipment@amphibious_tank_chassis value = infantry_spawn_exact_amphibious_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_armored_support_vehicle < 1 }
+		check_variable = { var = num_equipment@armored_support_vehicle value = infantry_spawn_exact_armored_support_vehicle compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_aa_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_aa_chassis value = infantry_spawn_exact_heavy_tank_aa_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_amphibious_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_amphibious_chassis value = infantry_spawn_exact_heavy_tank_amphibious_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_artillery_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_artillery_chassis value = infantry_spawn_exact_heavy_tank_artillery_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_chassis value = infantry_spawn_exact_heavy_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_destroyer_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_destroyer_chassis value = infantry_spawn_exact_heavy_tank_destroyer_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_heavy_tank_flame_chassis < 1 }
+		check_variable = { var = num_equipment@heavy_tank_flame_chassis value = infantry_spawn_exact_heavy_tank_flame_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_land_cruiser_chassis < 1 }
+		check_variable = { var = num_equipment@land_cruiser_chassis value = infantry_spawn_exact_land_cruiser_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_aa_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_aa_chassis value = infantry_spawn_exact_light_tank_aa_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_amphibious_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_amphibious_chassis value = infantry_spawn_exact_light_tank_amphibious_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_destroyer_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_destroyer_chassis value = infantry_spawn_exact_light_tank_destroyer_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_light_tank_flame_chassis < 1 }
+		check_variable = { var = num_equipment@light_tank_flame_chassis value = infantry_spawn_exact_light_tank_flame_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_aa_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_aa_chassis value = infantry_spawn_exact_medium_tank_aa_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_amphibious_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_amphibious_chassis value = infantry_spawn_exact_medium_tank_amphibious_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_artillery_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_artillery_chassis value = infantry_spawn_exact_medium_tank_artillery_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_chassis value = infantry_spawn_exact_medium_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_destroyer_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_destroyer_chassis value = infantry_spawn_exact_medium_tank_destroyer_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_medium_tank_flame_chassis < 1 }
+		check_variable = { var = num_equipment@medium_tank_flame_chassis value = infantry_spawn_exact_medium_tank_flame_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_modern_tank_aa_chassis < 1 }
+		check_variable = { var = num_equipment@modern_tank_aa_chassis value = infantry_spawn_exact_modern_tank_aa_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_modern_tank_artillery_chassis < 1 }
+		check_variable = { var = num_equipment@modern_tank_artillery_chassis value = infantry_spawn_exact_modern_tank_artillery_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_modern_tank_chassis < 1 }
+		check_variable = { var = num_equipment@modern_tank_chassis value = infantry_spawn_exact_modern_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_motorbike_equipment < 1 }
+		check_variable = { var = num_equipment@motorbike_equipment value = infantry_spawn_exact_motorbike_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_motorized_rocket_equipment < 1 }
+		check_variable = { var = num_equipment@motorized_rocket_equipment value = infantry_spawn_exact_motorized_rocket_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_self_propelled_super_heavy_artillery_equipment < 1 }
+		check_variable = { var = num_equipment@self_propelled_super_heavy_artillery_equipment value = infantry_spawn_exact_self_propelled_super_heavy_artillery_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_super_heavy_artillery_equipment < 1 }
+		check_variable = { var = num_equipment@super_heavy_artillery_equipment value = infantry_spawn_exact_super_heavy_artillery_equipment compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_super_heavy_tank_aa_chassis < 1 }
+		check_variable = { var = num_equipment@super_heavy_tank_aa_chassis value = infantry_spawn_exact_super_heavy_tank_aa_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_super_heavy_tank_artillery_chassis < 1 }
+		check_variable = { var = num_equipment@super_heavy_tank_artillery_chassis value = infantry_spawn_exact_super_heavy_tank_artillery_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_super_heavy_tank_chassis < 1 }
+		check_variable = { var = num_equipment@super_heavy_tank_chassis value = infantry_spawn_exact_super_heavy_tank_chassis compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis < 1 }
+		check_variable = { var = num_equipment@super_heavy_tank_destroyer_chassis value = infantry_spawn_exact_super_heavy_tank_destroyer_chassis compare = greater_than_or_equals }
+	}
+}
+
+infantry_spawn_selected_lot_exact_obligations_are_affordable = {
+	infantry_spawn_scenario_transaction_is_idle = yes
+	infantry_spawn_obligation_ledger_is_aligned = yes
+	infantry_spawn_lot_ledger_is_aligned = yes
+	infantry_spawn_selected_lot_index_is_valid = yes
+	has_country_flag = infantry_spawn_exact_settlement_ready
+	NOT = { has_country_flag = infantry_spawn_exact_settlement_invalid_profile }
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	check_variable = { infantry_spawn_exact_settlement_row_count > 0 }
+	check_variable = { var = infantry_spawn_exact_settlement_target_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
+	infantry_spawn_exact_profile_totals_are_affordable = yes
+}
+
+infantry_spawn_selected_lot_standardization_loss_is_affordable = {
+	infantry_spawn_obligation_ledger_is_aligned = yes
+	infantry_spawn_unit_ledger_is_aligned = yes
+	infantry_spawn_lot_ledger_is_aligned = yes
+	infantry_spawn_selected_lot_index_is_valid = yes
+	has_country_flag = infantry_spawn_standardization_loss_ready
+	NOT = { has_country_flag = infantry_spawn_exact_settlement_invalid_profile }
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	check_variable = { infantry_spawn_exact_manpower < 1 }
+	check_variable = { var = infantry_spawn_standardization_loss_target_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
+	infantry_spawn_exact_profile_totals_are_affordable = yes
 }
 
 infantry_spawn_can_request_formation = {
@@ -242,12 +1010,14 @@ infantry_spawn_current_registry_family_is_available = {
 	chaos_unit_family_current_row_is_enabled = yes
 	chaos_unit_family_current_row_allows_event19_family_lot = yes
 	chaos_unit_family_current_row_can_spawn = yes
+	chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
 }
 
 infantry_spawn_current_registry_family_is_trainable = {
 	chaos_unit_family_registry_is_aligned = yes
 	chaos_unit_family_current_row_is_enabled = yes
 	chaos_unit_family_current_row_can_train = yes
+	chaos_unit_family_current_row_has_supported_event19_visual_contract = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -257,10 +1027,50 @@ infantry_spawn_current_registry_family_is_trainable = {
 is_infantry_spawn_derivative_country = {
 	has_country_flag = infantry_spawn_derivative_country
 	OR = {
-		has_country_flag = infantry_spawn_zombie_derivative
-		has_country_flag = infantry_spawn_ghost_derivative
-		has_country_flag = infantry_spawn_golem_derivative
+		AND = {
+			has_country_flag = infantry_spawn_claimant_breakaway
+			NOT = { has_country_flag = infantry_spawn_nonhuman_derivative }
+			has_variable = infantry_spawn_derivative_claimant_uid
+			has_variable = infantry_spawn_derivative_family_id
+			check_variable = { var = infantry_spawn_derivative_family_id value = constant:infantry_spawn_lot_family.none compare = equals }
+		}
+		AND = {
+			NOT = { has_country_flag = infantry_spawn_claimant_breakaway }
+			has_country_flag = infantry_spawn_nonhuman_derivative
+			has_country_flag = infantry_spawn_derivative_provider_parent_isolation_proved
+			has_country_flag = infantry_spawn_derivative_provider_public_package_proved
+			has_variable = infantry_spawn_derivative_family_id
+			check_variable = { infantry_spawn_derivative_family_id > constant:infantry_spawn_lot_family.none }
+		}
 	}
+}
+
+is_infantry_spawn_claimant_breakaway_country = {
+	is_infantry_spawn_derivative_country = yes
+	has_country_flag = infantry_spawn_claimant_breakaway
+	NOT = { has_country_flag = infantry_spawn_nonhuman_derivative }
+	has_variable = infantry_spawn_derivative_claimant_uid
+}
+
+is_infantry_spawn_zombie_derivative_country = {
+	is_infantry_spawn_derivative_country = yes
+	has_country_flag = infantry_spawn_zombie_derivative
+	has_variable = infantry_spawn_derivative_family_id
+	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_zombie_family.family_id compare = equals }
+}
+
+is_infantry_spawn_ghost_derivative_country = {
+	is_infantry_spawn_derivative_country = yes
+	has_country_flag = infantry_spawn_ghost_derivative
+	has_variable = infantry_spawn_derivative_family_id
+	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_ghost_family.family_id compare = equals }
+}
+
+is_infantry_spawn_golem_derivative_country = {
+	is_infantry_spawn_derivative_country = yes
+	has_country_flag = infantry_spawn_golem_derivative
+	has_variable = infantry_spawn_derivative_family_id
+	check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_golem_family.family_id compare = equals }
 }
 
 is_infantry_spawn_nonhuman_derivative_country = {
@@ -268,15 +1078,28 @@ is_infantry_spawn_nonhuman_derivative_country = {
 	is_infantry_spawn_derivative_country = yes
 }
 
-infantry_spawn_derivative_is_parent_isolated = {
-	is_infantry_spawn_derivative_country = yes
+# Country scope. Reusable pre-creation and post-creation identity boundary for
+# the Zombie, Death, cave, and KMB provider parents. Rejecting KMB here is
+# necessary because its civilian classifier alone does not identify it as a
+# nonhuman country, while a dynamic child would retain original_tag = KMB.
+infantry_spawn_parent_event_identity_is_absent = {
+	NOT = { has_country_flag = chaos_unit_family_parent_actor }
 	NOT = { has_country_flag = zombie_outbreak_dynamic_country }
 	NOT = { has_country_flag = weaponized_zombies_completed }
 	NOT = { has_country_flag = death_country }
 	NOT = { has_country_flag = resources_found_cave_country }
 	NOT = { has_country_flag = kmb_coal_golem_template_created }
+	NOT = { has_country_flag = soviet_collapse_kuznetsk_mining_successor }
+	NOT = { has_country_flag = kmb_focus_open_the_subsoil_ledger }
+	NOT = { tag = KMB }
 	NOT = { original_tag = ZZZ }
 	NOT = { original_tag = DTH }
+	NOT = { original_tag = KMB }
+}
+
+infantry_spawn_derivative_is_parent_isolated = {
+	is_infantry_spawn_derivative_country = yes
+	infantry_spawn_parent_event_identity_is_absent = yes
 }
 
 infantry_spawn_derivative_can_expand = {
@@ -305,4 +1128,878 @@ infantry_spawn_scenario_type_is_valid = {
 infantry_spawn_scenario_intensity_is_valid = {
 	check_variable = { var = global.infantry_spawn_scenario_intensity value = constant:infantry_spawn_scenario.minimum_intensity compare = greater_than_or_equals }
 	check_variable = { var = global.infantry_spawn_scenario_intensity value = constant:infantry_spawn_scenario.maximum_intensity compare = less_than_or_equals }
+}
+
+# Event 19 registry triggers, embedded in the main Event 19 trigger file.
+# Candidate safety is evaluated in country scope against exact installed unit,
+# technology, doctrine, DLC,
+# special-project, slot, group, support-type, and family-provider gates.
+
+infantry_spawn_unit_registry_tables_are_aligned = {
+	check_variable = { var = infantry_spawn_unit_registry_row_ids^num value = constant:infantry_spawn_unit_registry_cardinality.registered_rows compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_token_ids^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_provider_ids^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_gate_provider_ids^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_slot_kinds^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_groups^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_equipment_profiles^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_quality_weights^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_compatibility_classes^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_mobility_classes^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_supply_burdens^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_finite_risks^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_same_support_type_primary^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_same_support_type_secondary^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_same_support_type_tertiary^num value = infantry_spawn_unit_registry_row_ids^num compare = equals }
+}
+
+infantry_spawn_unit_registry_current_gate_is_open = {
+	meta_trigger = {
+		text = {
+			infantry_spawn_unit_registry_gate_provider_[GATE_PROVIDER_ID] = yes
+		}
+		GATE_PROVIDER_ID = "[?infantry_spawn_unit_registry_current_gate_provider_id|.0]"
+	}
+}
+
+infantry_spawn_unit_registry_current_candidate_is_eligible = {
+	check_variable = {
+		var = infantry_spawn_unit_registry_current_slot_kind
+		value = infantry_spawn_unit_registry_requested_slot_kind
+		compare = equals
+	}
+	infantry_spawn_unit_registry_current_gate_is_open = yes
+	OR = {
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_slot_kind value = constant:infantry_spawn_unit_registry_slot_kind.combat compare = equals }
+			check_variable = { var = infantry_spawn_unit_registry_selected_combat_count value = constant:infantry_spawn_unit_registry_cardinality.combat_maximum compare = less_than }
+			check_variable = { var = infantry_spawn_unit_registry_current_group_count value = constant:infantry_spawn_unit_registry_cardinality.combat_group_row_maximum compare = less_than }
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_group_index value = constant:infantry_spawn_unit_registry_cardinality.missing_index compare = greater_than }
+				check_variable = { var = infantry_spawn_unit_registry_selected_combat_group_ids^num value = constant:infantry_spawn_unit_registry_cardinality.combat_group_maximum compare = less_than }
+			}
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_slot_kind value = constant:infantry_spawn_unit_registry_slot_kind.support compare = equals }
+			check_variable = { var = infantry_spawn_unit_registry_selected_support_count value = constant:infantry_spawn_unit_registry_cardinality.support_maximum compare = less_than }
+			NOT = {
+				is_in_array = {
+					array = infantry_spawn_unit_registry_selected_support_token_ids
+					value = infantry_spawn_unit_registry_current_token_id
+				}
+			}
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_same_support_type_primary value = constant:infantry_spawn_unit_registry_same_support_type.none compare = equals }
+				NOT = {
+					is_in_array = {
+						array = infantry_spawn_unit_registry_selected_support_type_ids
+						value = infantry_spawn_unit_registry_current_same_support_type_primary
+					}
+				}
+			}
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_same_support_type_secondary value = constant:infantry_spawn_unit_registry_same_support_type.none compare = equals }
+				NOT = {
+					is_in_array = {
+						array = infantry_spawn_unit_registry_selected_support_type_ids
+						value = infantry_spawn_unit_registry_current_same_support_type_secondary
+					}
+				}
+			}
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_same_support_type_tertiary value = constant:infantry_spawn_unit_registry_same_support_type.none compare = equals }
+				NOT = {
+					is_in_array = {
+						array = infantry_spawn_unit_registry_selected_support_type_ids
+						value = infantry_spawn_unit_registry_current_same_support_type_tertiary
+					}
+				}
+			}
+		}
+	}
+}
+
+infantry_spawn_unit_registry_manifest_is_complete = {
+	check_variable = {
+		var = infantry_spawn_unit_registry_selected_combat_count
+		value = infantry_spawn_unit_registry_target_combat_count
+		compare = equals
+	}
+	check_variable = {
+		var = infantry_spawn_unit_registry_selected_support_count
+		value = infantry_spawn_unit_registry_target_support_count
+		compare = equals
+	}
+	check_variable = {
+		var = infantry_spawn_unit_registry_manifest_token_ids^num
+		value = infantry_spawn_unit_registry_target_component_count
+		compare = equals
+	}
+	check_variable = { var = infantry_spawn_unit_registry_manifest_row_indices^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_static_tokens^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_provider_ids^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_slot_kinds^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_groups^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_columns^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_rows^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_equipment_profiles^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_quality_weights^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_compatibility_classes^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_mobility_classes^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_supply_burdens^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_finite_risks^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_same_support_type_primary^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_same_support_type_secondary^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+	check_variable = { var = infantry_spawn_unit_registry_manifest_same_support_type_tertiary^num value = infantry_spawn_unit_registry_manifest_token_ids^num compare = equals }
+}
+
+infantry_spawn_unit_registry_has_country_safe_origin = {
+	has_event_target = infantry_spawn_generation_country
+	has_event_target = infantry_spawn_current_origin_state
+	tag = event_target:infantry_spawn_generation_country
+	event_target:infantry_spawn_current_origin_state = {
+		infantry_spawn_state_is_eligible = yes
+		is_controlled_by = event_target:infantry_spawn_generation_country
+	}
+}
+
+infantry_spawn_unit_registry_request_inputs_are_valid = {
+	infantry_spawn_has_evolution_iii = yes
+	OR = {
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.field_reinforcement compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.mobile_reserve compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.territorial_defense compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.specialist compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.unrestricted compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.numbers compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.discipline compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.firepower compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.mobility compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_mode value = constant:infantry_spawn_request_mode.anything compare = equals }
+	}
+	OR = {
+		check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.evolution_iii_opening compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.country_request compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.claimant_request compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.scripted_scenario compare = equals }
+	}
+}
+
+infantry_spawn_unit_registry_command_owner_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.evolution_iii_opening compare = equals }
+			check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.state compare = equals }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.country_request compare = equals }
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.state compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.local_authority compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.claimant_request compare = equals }
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_one compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_two compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_three compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_request_context value = constant:infantry_spawn_unit_registry_request_context.scripted_scenario compare = equals }
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.state compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.local_authority compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_one compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_two compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_request_command_owner value = constant:infantry_spawn_command_owner.claimant_three compare = equals }
+			}
+		}
+	}
+}
+
+infantry_spawn_unit_registry_materialization_inputs_are_valid = {
+	infantry_spawn_unit_registry_has_country_safe_origin = yes
+	infantry_spawn_unit_registry_request_inputs_are_valid = yes
+	infantry_spawn_unit_registry_command_owner_is_valid = yes
+	infantry_spawn_unit_registry_tables_are_aligned = yes
+	infantry_spawn_unit_registry_manifest_is_complete = yes
+	infantry_spawn_all_ledgers_are_aligned = yes
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	is_in_array = {
+		array = infantry_spawn_unit_registry_outcome_tag_ids
+		value = constant:infantry_spawn_unit_registry_outcome_tag.draw_complete
+	}
+	NOT = {
+		is_in_array = {
+			array = infantry_spawn_unit_registry_outcome_tag_ids
+			value = constant:infantry_spawn_unit_registry_outcome_tag.materialized
+		}
+	}
+	check_variable = { var = infantry_spawn_unit_registry_manifest_token_ids^num value = constant:infantry_spawn_unit_registry_cardinality.zero compare = greater_than }
+	check_variable = {
+		var = infantry_spawn_unit_registry_manifest_slot_kinds^0
+		value = constant:infantry_spawn_unit_registry_slot_kind.combat
+		compare = equals
+	}
+}
+
+# True when the selected component needs an equipment technology or project the
+# country does not possess. Designer-variant uncertainty is returned separately.
+infantry_spawn_unit_registry_current_equipment_is_technology_locked = {
+	OR = {
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.infantry_equipment compare = equals }
+			NOT = { has_tech = infantry_weapons }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_rocket_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_tank compare = equals }
+			}
+			NOT = { has_tech = motorised_infantry }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.mechanized compare = equals }
+			NOT = { has_tech = mechanised_infantry }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.armored_car compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.armored_car_recon compare = equals }
+			}
+			NOT = { has_tech = armored_car1 }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_artillery compare = equals }
+			}
+			NOT = { has_tech = gw_artillery }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.rocket_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_rocket_artillery compare = equals }
+			}
+			NOT = { has_tech = rocket_artillery }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_anti_air compare = equals }
+			}
+			NOT = { has_tech = interwar_antiair }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.anti_tank compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_tank compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_tank_destroyer compare = equals }
+			}
+			NOT = { has_tech = interwar_antitank }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor_recon compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.airborne_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_light_tank_chassis has_tech = basic_light_tank } }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_medium_tank_chassis has_tech = basic_medium_tank } }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_heavy_tank_chassis has_tech = basic_heavy_tank } }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_artillery compare = equals }
+			}
+			NOT = { OR = { has_tech = main_battle_tank_chassis has_tech = main_battle_tank } }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.amphibious_armor compare = equals }
+			NOT = { OR = { has_tech = amphibious_tank_chassis has_tech = amphibious_tank } }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.amphibious_mechanized compare = equals }
+			NOT = { has_tech = amphibious_mechanized_infantry }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.helicopter compare = equals }
+			NOT = { is_special_project_completed = sp:sp_air_helicopter }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.land_cruiser compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_land_cruiser }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_artillery compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_super_heavy_howitzer }
+		}
+		AND = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.self_propelled_super_heavy_artillery compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_self_propelled_super_heavy_howitzer }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_tank_destroyer compare = equals }
+			}
+			NOT = { OR = { has_tech = super_heavy_tank_chassis has_tech = super_heavy_tank } }
+		}
+	}
+}
+
+infantry_spawn_unit_registry_current_equipment_variant_is_unresolved = {
+	has_dlc = "No Step Back"
+	OR = {
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.amphibious_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_anti_air compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_anti_air compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_anti_air compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_anti_air compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_artillery compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_artillery compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_artillery compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_artillery compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_tank_destroyer compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_tank_destroyer compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_tank_destroyer compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor_recon compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.airborne_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_flame_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_flame_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_flame_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_armor compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_anti_air compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_artillery compare = equals }
+		check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_tank_destroyer compare = equals }
+	}
+}
+
+# Gate provider 1: amphibious_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_1 = {
+	always = yes
+}
+
+# Gate provider 2: amphibious_light_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_2 = {
+	always = yes
+}
+
+# Gate provider 3: amphibious_medium_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_3 = {
+	always = yes
+}
+
+# Gate provider 4: amphibious_heavy_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_4 = {
+	always = yes
+}
+
+# Gate provider 5: light_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_5 = {
+	always = yes
+}
+
+# Gate provider 6: medium_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_6 = {
+	always = yes
+}
+
+# Gate provider 7: heavy_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_7 = {
+	always = yes
+}
+
+# Gate provider 8: modern_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_8 = {
+	always = yes
+}
+
+# Gate provider 9: light_sp_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_9 = {
+	always = yes
+}
+
+# Gate provider 10: medium_sp_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_10 = {
+	always = yes
+}
+
+# Gate provider 11: heavy_sp_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_11 = {
+	always = yes
+}
+
+# Gate provider 12: modern_sp_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_12 = {
+	always = yes
+}
+
+# Gate provider 13: light_sp_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_13 = {
+	always = yes
+}
+
+# Gate provider 14: medium_sp_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_14 = {
+	always = yes
+}
+
+# Gate provider 15: heavy_sp_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_15 = {
+	always = yes
+}
+
+# Gate provider 16: modern_sp_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_16 = {
+	always = yes
+}
+
+# Gate provider 17: light_tank_destroyer_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_17 = {
+	always = yes
+}
+
+# Gate provider 18: medium_tank_destroyer_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_18 = {
+	always = yes
+}
+
+# Gate provider 19: heavy_tank_destroyer_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_19 = {
+	always = yes
+}
+
+# Gate provider 20: anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_20 = {
+	always = yes
+}
+
+# Gate provider 21: anti_tank_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_21 = {
+	always = yes
+}
+
+# Gate provider 22: artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_22 = {
+	always = yes
+}
+
+# Gate provider 23: rocket_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_23 = {
+	always = yes
+}
+
+# Gate provider 24: infantry. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_24 = {
+	has_tech = infantry_weapons
+}
+
+# Gate provider 25: bicycle_battalion. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_25 = {
+	has_tech = bicycle_infantry
+}
+
+# Gate provider 26: marine. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_26 = {
+	has_tech = marines
+}
+
+# Gate provider 27: marine_commando. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_27 = {
+	has_dlc = "Arms Against Tyranny"
+	has_mastery_level = {
+		amount = constant:infantry_spawn_unit_registry_cardinality.first_mastery_reward
+		sub_doctrine = marines_1
+	}
+}
+
+# Gate provider 28: mountaineers. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_28 = {
+	has_tech = tech_mountaineers
+}
+
+# Gate provider 29: ranger_battalion. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_29 = {
+	has_dlc = "No Compromise, No Surrender"
+	has_tech = rangers_tech
+}
+
+# Gate provider 30: paratrooper. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_30 = {
+	has_tech = paratroopers
+}
+
+# Gate provider 32: penal_battalion. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_32 = {
+	has_tech = penal_infantry
+}
+
+# Gate provider 33: irregular_infantry. Installed active = no; explicit opt-in only.
+infantry_spawn_unit_registry_gate_provider_33 = {
+	has_country_flag = infantry_spawn_unit_registry_allow_irregular_infantry
+}
+
+# Gate provider 34: militia. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_34 = {
+	has_tech = militia_tech
+}
+
+# Gate provider 35: amphibious_mechanized. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_35 = {
+	always = yes
+}
+
+# Gate provider 36: armored_car. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_36 = {
+	always = yes
+}
+
+# Gate provider 38: cavalry. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_38 = {
+	always = yes
+}
+
+# Gate provider 39: camelry. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_39 = {
+	has_tech = camelry
+}
+
+# Gate provider 40: elephantry. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_40 = {
+	has_tech = elephantry
+}
+
+# Gate provider 41: motorized. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_41 = {
+	has_tech = motorised_infantry
+}
+
+# Gate provider 42: mechanized. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_42 = {
+	always = yes
+}
+
+# Gate provider 43: mot_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_43 = {
+	always = yes
+}
+
+# Gate provider 44: mot_anti_tank_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_44 = {
+	always = yes
+}
+
+# Gate provider 45: mot_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_45 = {
+	always = yes
+}
+
+# Gate provider 46: mot_rocket_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_46 = {
+	always = yes
+}
+
+# Gate provider 47: motorized_rocket_brigade. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_47 = {
+	has_tech = motorized_rocket_unit
+}
+
+# Gate provider 101: anti_air. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_101 = {
+	always = yes
+}
+
+# Gate provider 102: anti_tank. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_102 = {
+	always = yes
+}
+
+# Gate provider 103: artillery. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_103 = {
+	always = yes
+}
+
+# Gate provider 104: rocket_artillery. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_104 = {
+	always = yes
+}
+
+# Gate provider 105: super_heavy_artillery. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_105 = {
+	always = yes
+}
+
+# Gate provider 106: self_propelled_super_heavy_artillery. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_106 = {
+	always = yes
+}
+
+# Gate provider 107: engineer. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_107 = {
+	has_tech = tech_engineers
+}
+
+# Gate provider 108: pioneer_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_108 = {
+	has_dlc = "Arms Against Tyranny"
+	OR = {
+		has_doctrine = marines_1
+		has_doctrine = marines_2
+		has_completed_subdoctrine = marines_1
+		has_completed_subdoctrine = marines_2
+	}
+}
+
+# Gate provider 109: jungle_pioneers_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_109 = {
+	has_tech = TOA_jungle_pioneers_support_tech
+}
+
+# Gate provider 110: assault_engineer. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_110 = {
+	is_special_project_completed = sp:sp_land_military_engineering_vehicles
+}
+
+# Gate provider 111: armored_engineer. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_111 = {
+	is_special_project_completed = sp:sp_land_military_engineering_vehicles
+	has_tech = sp_armored_engineer_tech
+}
+
+# Gate provider 112: field_hospital. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_112 = {
+	has_tech = tech_field_hospital
+}
+
+# Gate provider 113: helicopter_field_hospital. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_113 = {
+	has_dlc = "Gotterdammerung"
+	is_special_project_completed = sp:sp_air_helicopter
+	has_tech = sp_helicopter_med_evac_tech
+}
+
+# Gate provider 114: light_flame_tank. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_114 = {
+	has_dlc = "No Step Back"
+	is_special_project_completed = sp:sp_land_flamethrower_tank
+}
+
+# Gate provider 115: medium_flame_tank. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_115 = {
+	has_dlc = "No Step Back"
+	is_special_project_completed = sp:sp_land_flamethrower_tank
+}
+
+# Gate provider 116: heavy_flame_tank. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_116 = {
+	has_dlc = "No Step Back"
+	is_special_project_completed = sp:sp_land_flamethrower_tank
+}
+
+# Gate provider 117: helicopter_brigade. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_117 = {
+	has_dlc = "Gotterdammerung"
+	is_special_project_completed = sp:sp_air_helicopter
+}
+
+# Gate provider 118: land_cruiser. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_118 = {
+	always = yes
+}
+
+# Gate provider 119: logistics_company. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_119 = {
+	has_tech = tech_logistics_company
+}
+
+# Gate provider 120: helicopter_transport. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_120 = {
+	has_dlc = "Gotterdammerung"
+	is_special_project_completed = sp:sp_air_helicopter
+	has_tech = sp_helicopter_transport_pods_tech
+}
+
+# Gate provider 121: maintenance_company. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_121 = {
+	has_tech = tech_maintenance_company
+}
+
+# Gate provider 122: armored_maintenance. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_122 = {
+	is_special_project_completed = sp:sp_land_military_engineering_vehicles
+	has_tech = sp_armored_maintenance_tech
+}
+
+# Gate provider 123: military_police. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_123 = {
+	has_tech = tech_military_police
+}
+
+# Gate provider 124: motorized_military_police. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_124 = {
+	has_dlc = "Gotterdammerung"
+	is_special_project_completed = sp:sp_land_military_engineering_vehicles
+	has_tech = sp_armored_motorized_military_police_tech
+}
+
+# Gate provider 125: recon. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_125 = {
+	has_tech = tech_recon
+}
+
+# Gate provider 126: mot_recon. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_126 = {
+	has_tech = tech_recon
+}
+
+# Gate provider 127: armored_car_recon. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_127 = {
+	has_tech = tech_recon
+}
+
+# Gate provider 128: light_tank_recon. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_128 = {
+	has_tech = tech_recon
+}
+
+# Gate provider 129: airborne_light_armor. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_129 = {
+	has_dlc = "Arms Against Tyranny"
+	OR = {
+		has_doctrine = paratroopers_1
+		has_doctrine = paratroopers_2
+		has_completed_subdoctrine = paratroopers_1
+		has_completed_subdoctrine = paratroopers_2
+	}
+}
+
+# Gate provider 130: rangers_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_130 = {
+	OR = {
+		AND = {
+			has_dlc = "Arms Against Tyranny"
+			OR = {
+				has_doctrine = mountaineers_1
+				has_doctrine = mountaineers_2
+				has_completed_subdoctrine = mountaineers_1
+				has_completed_subdoctrine = mountaineers_2
+			}
+		}
+		AND = {
+			has_dlc = "No Compromise, No Surrender"
+			OR = {
+				has_doctrine = rangers_1
+				has_doctrine = rangers_2
+				has_completed_subdoctrine = rangers_1
+				has_completed_subdoctrine = rangers_2
+			}
+		}
+	}
+}
+
+# Gate provider 131: northern_territory_recon_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_131 = {
+	has_tech = northern_territory_recon_support_tech
+}
+
+# Gate provider 132: winter_logistics_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_132 = {
+	has_tech = winter_logistics_support_tech
+}
+
+# Gate provider 133: long_range_patrol_support. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_133 = {
+	has_tech = long_range_patrol_support_tech
+}
+
+# Gate provider 134: helicopter_recon. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_134 = {
+	has_dlc = "Gotterdammerung"
+	is_special_project_completed = sp:sp_air_helicopter
+	has_tech = sp_helicopter_artillery_observers_tech
+}
+
+# Gate provider 135: signal_company. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_135 = {
+	has_tech = tech_signal_company
+}
+
+# Gate provider 136: armored_signal. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_136 = {
+	is_special_project_completed = sp:sp_land_military_engineering_vehicles
+	has_tech = sp_armored_signal_tech
+}
+
+# Gate provider 137: blackshirt_assault_battalion. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_137 = {
+	has_tech = blackshirt_assault_battalion_tech
+}
+
+# Gate provider 138: sturmtruppe_battalion. Installed active = no; mirrors its country unlock source.
+infantry_spawn_unit_registry_gate_provider_138 = {
+	has_tech = sturmtruppe_battalion_tech
+}
+
+# Gate provider 139: super_heavy_armor. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_139 = {
+	always = yes
+}
+
+# Gate provider 140: super_heavy_sp_anti_air_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_140 = {
+	always = yes
+}
+
+# Gate provider 141: super_heavy_sp_artillery_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_141 = {
+	always = yes
+}
+
+# Gate provider 142: super_heavy_tank_destroyer_brigade. Installed active = yes; structurally country-eligible.
+infantry_spawn_unit_registry_gate_provider_142 = {
+	always = yes
 }
