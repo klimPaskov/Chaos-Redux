@@ -7419,7 +7419,7 @@ country_event = {
 # ---------------------------------------------------------------------------
 
 # The future successor/player-continuation caller owns transaction setup. These
-# four blocks only consume a current, already-issued national transaction. They
+# blocks only consume current, already-issued orientation transactions. They
 # never activate the ordinary Fallout scheduler.
 country_event = {
 	id = chaosx.fallout.62
@@ -7579,6 +7579,141 @@ country_event = {
 		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.national_ai_result }
 	}
 	immediate = { fallout_orientation_resolve_national_orientation = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.70
+	title = chaosx.fallout.70.t
+	desc = chaosx.fallout.70.d
+	picture = GFX_report_event_fallout_resource_crisis
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_choose = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.resource_human_root }
+		fallout_orientation_resource_package_receipt_is_current = yes
+	}
+
+	option = {
+		name = chaosx.fallout.70.a
+		trigger = { fallout_orientation_resource_branch_1_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.ration }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.70.a.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.primary }
+	}
+
+	option = {
+		name = chaosx.fallout.70.b
+		trigger = { fallout_orientation_resource_branch_2_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.requisition }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.70.b.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.secondary }
+	}
+
+	option = {
+		name = chaosx.fallout.70.c
+		trigger = { fallout_orientation_resource_branch_3_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_resource_branch.tailored }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.70.c.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.tertiary }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.71
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_choose = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.resource_ai_root }
+		fallout_orientation_resource_package_receipt_is_current = yes
+	}
+	immediate = { fallout_orientation_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.72
+	title = chaosx.fallout.72.t
+	desc = {
+		text = chaosx.fallout.72.ration.success.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.ration } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.72.ration.partial.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.ration } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = {
+		text = chaosx.fallout.72.ration.failure.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.ration } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } }
+	}
+	desc = {
+		text = chaosx.fallout.72.requisition.success.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.requisition } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.72.requisition.partial.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.requisition } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = {
+		text = chaosx.fallout.72.requisition.failure.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.requisition } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } }
+	}
+	desc = {
+		text = chaosx.fallout.72.tailored.success.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.tailored } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.72.tailored.partial.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.tailored } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = {
+		text = chaosx.fallout.72.tailored.failure.d
+		trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_resource_branch.tailored } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } }
+	}
+	picture = GFX_report_event_fallout_resource_crisis
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_resolve = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.resource_human_result }
+	}
+	immediate = {
+		hidden_effect = { fallout_orientation_resolve_immediate_resource_crisis = yes }
+	}
+
+	option = {
+		name = chaosx.fallout.72.a
+		custom_effect_tooltip = chaosx.fallout.72.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.73
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_resolve = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.resource_ai_result }
+	}
+	immediate = { fallout_orientation_resolve_immediate_resource_crisis = yes }
 }
 
 country_event = {

@@ -46,7 +46,7 @@ The component sequence and delayed-result cadence are fixed:
 
 Every result uses the accepted deterministic bands of 70 or more for success, 45 through 69 for partial success, and below 45 for failure. Human and hidden-AI routes use identical costs, scoring, effects, memory, and cleanup. Save recovery preserves the exact generation, transaction, due-day, mode, and event-token identity so an unissued result can issue once and an issued result cannot issue again. Missing regional, archetype, country-memory, state-target, or curated character or institution registry rows refuse orientation with no generic fallback.
 
-The tranche requires six dedicated report assets for the five components and closure. All six assets and their sprite registrations exist. The dormant transaction substrate, the manually written national pilot at `62` through `65`, and the authenticated closure and cleanup events at `82` through `84` are blocked and uncounted. Dedicated localisation exists for the human national pilot and visible closure. The other sixteen blocks, caller, event-log rows, event-detail rows, complete regional and archetype coverage, and registry-backed late components remain absent. No caller may be wired until successor allocation, player continuation, and all required candidate registries are proven. Neither scheduler activation flag may be set by this tranche. The Fallout living-world total remains 0 of 660 until every reserved block is implemented, wired, manually reviewed, logged, detailed, and audited.
+The tranche requires six dedicated report assets for the five components and closure. All six assets and their sprite registrations exist. The dormant transaction substrate, the manually written national pilot at `62` through `65`, the exact twelve-memory resource pilot at `70` through `73`, and the authenticated closure and cleanup events at `82` through `84` are blocked and uncounted. Dedicated localisation exists for the human national pilot, human resource pilot, and visible closure. The other twelve blocks, caller, event-log rows, event-detail rows, complete regional and archetype coverage, and registry-backed late components remain absent. No caller may be wired until successor allocation, player continuation, and all required candidate registries are proven. Neither scheduler activation flag may be set by this tranche. The Fallout living-world total remains 0 of 660 until every reserved block is implemented, wired, manually reviewed, logged, detailed, and audited.
 
 The dedicated event file was scanned on 2026-07-15 before this reservation. Suffixes `100` through `126` were unused. This reservation does not count as implemented content. A row becomes countable only after final localisation, gameplay effects, AI behavior, memory or closure, cleanup, asset disposition, and manual audit are complete.
 
@@ -108,7 +108,7 @@ The scan found existing Fallout suffixes in the request, transition, manual stri
 
 The ordinary scheduler remains locked until the Ash-week orientation package has all five required parts: national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution. Completing orientation still does not approve or activate the scheduler.
 
-The three pilot report assets exist and their sprites are registered in `interface/fallout_world_end.gfx`. They remain unattached because the corresponding event roots are not defined. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
+The three pilot report assets exist and their sprites are registered in `interface/fallout_world_end.gfx`. The immediate-resource asset is attached to human events `70` and `72`. The capital and government assets remain unattached because their event roots are not defined. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
 
 The typed constants for suffixes `100` through `126` are identity reservations only. Primary ownership is `global survival and society`. Food, water, and transport are cooldown families and do not own release-floor counts.
 
@@ -120,7 +120,7 @@ Reserved living-world pilot identities: `27`.
 
 Total reserved documentation identities across both tranches: `50`.
 
-Defined Ash-week orientation blocks: `7`, covering the uncounted national-orientation pilot at `62` through `65` and dormant closure and cleanup at `82` through `84`.
+Defined Ash-week orientation blocks: `11`, covering the uncounted national-orientation pilot at `62` through `65`, immediate-resource pilot at `70` through `73`, and dormant closure and cleanup at `82` through `84`.
 
 Defined living-world pilot blocks: `0`.
 

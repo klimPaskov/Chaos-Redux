@@ -40,6 +40,27 @@ These are candidate identities, not guaranteed live countries. Each row remains 
 | Atacama Observatory State | National purpose is presented through observatory service, desert water accounting, mine settlements, and the Pacific supply line. | The assigned seat emphasizes instrument power, pump dependence, mine security, port distance, and sparse shelter capacity. | The tailored response uses pump scheduling, observation-guided convoy timing, mine repair shops, or port supply routing when the required asset is current. | Consolidation backs the observatory council. Division grants mine and port communities audited representation. The rival branch tests the mine guards' security claim. |
 | Antarctic Listening Government | The station population is governed through a fictional protocol that recognizes current human occupancy, rescue duty, maintenance, and finite stores. | The assigned station capital emphasizes its exact fuel horizon, food canisters, weather archive, mixed crew, and isolation from ordinary territory. | The tailored response uses weather-guided rationing, ice storage, radio rescue exchange, or power conservation only with current station systems. | Consolidation maintains the protocol under human review. Division grants the crew assembly formal exception power. The rival branch tests a closed machine-caretaker interpretation. |
 
+## Immediate resource pilot runtime rows
+
+The immediate resource pilot uses one exact supporting resource and one exact deterministic AI preference for each reviewed country-memory, region, and archetype row. These are authenticated runtime values, not generic regional substitutes.
+
+| Pilot successor | Supporting resource | AI preferred branch |
+| --- | --- | --- |
+| Federal Continuity Zone | Fuel | Public ration ledger |
+| Alpine Redoubt | Power | Tailored capital response |
+| Rhine Dead Cities | Power | Tailored capital response |
+| Don Steppe Hetmanates | Fuel | Emergency requisition |
+| Mekong Greenhouse Compact | Fuel | Tailored capital response |
+| Bengal Delta Raft Republic | Fuel | Tailored capital response |
+| Levant Quarantine Cities | Power | Public ration ledger |
+| Congo Green Basin | Fuel | Tailored capital response |
+| Sahel Caravan Wards | Fuel | Tailored capital response |
+| Ethiopian Highland Refuge | Fuel | Public ration ledger |
+| Atacama Observatory State | Power | Tailored capital response |
+| Antarctic Listening Government | Power | Public ration ledger |
+
+The tailored branch also requires a separate current-generation capital-asset package receipt that proves the exact assigned capital and supporting resource. No setter for that receipt exists. The other 96 region and archetype cells have no resource runtime row and cannot receive a generic substitution.
+
 ## Candidate slot contract
 
 Each pilot has three manually selected candidates. Slots use the already accepted branch costs and results:
@@ -160,6 +181,6 @@ The future runtime producer must validate the exact country-memory id, region, a
 
 The future asset package needs twenty-four fictional character portraits and twelve dedicated institution icons. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
 
-The typed candidate ids, exact twelve-memory mapper, country-owned mapping fields, and request authenticator are implemented. The mapper has no caller and cannot make a candidate usable by itself. No candidate package receipt setter exists.
+The typed candidate ids, exact twelve-memory candidate mapper, country-owned candidate fields, and candidate request authenticator are implemented. The immediate resource pilot also has an idempotent twelve-memory mapper, exact supporting-resource and AI-preference fields, country-specific text, and events `70` through `73`. Neither mapper has a caller. No candidate package receipt setter or resource capital-asset receipt setter exists.
 
-Until the assets, installation effects, final localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, and memory row approval surfaces also remain blocked.
+Until the candidate assets, installation effects, final candidate localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, and memory row approval surfaces also remain blocked. The four immediate-resource events remain unreachable and uncounted while those approval surfaces, the resource capital-asset receipt, and the orientation caller have no producer.
