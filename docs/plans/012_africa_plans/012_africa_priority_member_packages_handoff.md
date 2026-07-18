@@ -6,7 +6,7 @@ Date: 2026-07-18
 
 The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
 
-This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, country identities and ideology variants, leaders or council portraits, starting OOBs and templates, national flags, and final visual assets remain parent-owned integration work. All current priority-member focus, idea, decision, category, and report-picture sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
+This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, country identities and ideology variants, leaders or council portraits, national flags, and final visual assets remain parent-owned integration work. All current priority-member focus, idea, decision, category, and report-picture sprite IDs are registered under stable final paths, but their DDS files remain unresolved until the asset tranche produces them.
 
 Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
@@ -19,6 +19,7 @@ The other 36 Tier A entries in the 52-row Tier A polity catalog are not silently
 - common/national_focus/012_africa_priority_member_focus.txt
 - common/scripted_triggers/012_africa_priority_member_triggers.txt
 - common/scripted_effects/012_africa_priority_member_effects.txt
+- common/scripted_effects/012_africa_priority_member_force_effects.txt
 - common/scripted_effects/012_africa_action_effects.txt
 - common/scripted_localisation/012_africa_scripted_localisation.txt
 - common/scripted_localisation/012_africa_priority_member_scripted_localisation.txt
@@ -65,6 +66,7 @@ Required offline wiki pages:
 - Idea modding
 - AI modding
 - National focus modding
+- Division modding
 
 Vanilla documentation and precedents:
 
@@ -74,6 +76,9 @@ Vanilla documentation and precedents:
 - documentation/triggers_documentation.md
 - documentation/modifiers_documentation.md
 - common/national_focus/generic.txt
+- events/BBA_Ethiopia.txt
+- common/scripted_effects/006_independence_wave_force_effects.txt
+- common/scripted_effects/006_independence_wave_decision_effects.txt
 - common/decisions/African_Union_decisions.txt
 - common/decisions/categories/African_Union_decision_categories.txt
 
@@ -104,6 +109,9 @@ No web research was used.
 11. Full registration sets the package-selection flag before loading africa_priority_member_focus_tree. Engine `keep_completed` semantics retain only focus IDs shared by the former and replacement trees; the Event 012 host and its continental tree are not touched.
 12. The overlay consumes the existing political, distinct-mechanic, force, relationship, overlap, and post-settlement states. It does not create a duplicate legitimacy store or infer a Charter relationship from opinion.
 13. Completing the political focus replaces the starting problem with the selected council, civic, or producer settlement idea. Completing the final focus replaces that stage with the package's distinct mature compact.
+14. Full registration also defines one package-named force template and raises one understrength primary guard from owned, controlled territory. If the carrier still fields fewer than two divisions after that guard is raised, it receives one package-named reserve. Carriers with established forces retain them and receive only the identity-bearing guard.
+15. Starting equipment and manpower factors scale from Action 102's recorded local-support dossier. Initial experience uses the matrix's compact, standard, or trained force base. The existing four-step package reinforcement route remains the only readiness progression.
+16. A package promoted while all owned states are occupied does not spawn behind enemy lines. The same bounded initializer retries on the next legal force-reinforcement action.
 
 ## Action 102 integration contract
 
@@ -435,6 +443,16 @@ Focus and lifecycle inventory:
 - 103 unique gameplay sprite references registered without generic fallbacks
 - 8 additional focus-shine sprite registrations
 
+Starting-force inventory:
+
+- 16 direct-English template names
+- 16 primary formation names and 16 reserve formation names
+- 5 matrix-derived template structures: royal, river, mobile-frontier, highland-engineer, and coastal-island guards
+- 3 package experience bands and 3 local-support equipment/manpower bands
+- 1 guaranteed identity-bearing primary formation per full package
+- at most 1 compact reserve, created only while the carrier remains below the two-division floor
+- no fixed province, foreign territory, enemy-state spawn, heavy-industry grant, or second readiness store
+
 Reference integrity:
 
 - 83 priority-member script constants defined
@@ -457,6 +475,7 @@ Static path checks confirmed:
 - overlap options contain no annexation or automatic core grants
 - withdrawal is timed and preserves the country's playable package
 - no recurring world scan, opinion-based promotion, forced-diaspora effect, or all-country on-action was introduced
+- starting formations require owned, controlled territory and retry only through the existing bounded reinforcement path
 
 The HOI4 focus inspector accepted the authored tree and resolved all eight focus titles, descriptions, and registered icon IDs. Deterministic rendering was attempted, but the MCP artifact store returned ARTIFACT_STORAGE_LIMIT before it could write the render outputs. Local focus topology, prerequisites, load references, scripted payloads, icon registration, and localisation checks therefore remain the visual-review evidence for this tranche.
 
@@ -475,7 +494,6 @@ Whole package layer remains incomplete until the parent integrates:
 - final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
 - country names and ideology variants where the carrier identity does not already supply them
 - leader or council characters and portraits
-- starting divisions, templates, and OOBs
 - national flags and all 103 custom priority-member DDS assets in this handoff
 - asset manifests; the sprite definitions and final paths are registered, but the DDS files are not yet produced
 - parent victory or peace callsites for africa_priority_member_record_rival_bloc_victory
@@ -495,4 +513,4 @@ After the missing core package dependencies are implemented:
 
 ## Git
 
-No commit was created by this subagent.
+The original bounded overlay was delivered without a subagent commit. Parent integration records each accepted tranche in the repository history.

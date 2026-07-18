@@ -1,0 +1,277 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PRIORITY MEMBER STARTING FORCES
+# ============================================================================
+# Full Action 102 registration defines one package-named template and raises a
+# bounded understrength guard from the carrier's owned, controlled territory.
+# Five structural profiles cover the matrix's force families; the sixteen
+# packages keep distinct template names, formation names, readiness factors,
+# reinforcement decisions, and completion proofs.
+# ============================================================================
+
+# COUNTRY scope. Creates one package-named template exactly once.
+africa_priority_member_define_starting_force_template = {
+	if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_asante = yes
+				africa_priority_member_package_is_buganda = yes
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_profile_royal_guard
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[PRIORITY_TEMPLATE]"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { recon = { x = 0 y = 0 } }
+				}
+			}
+			PRIORITY_TEMPLATE = "[This.GetAfricaPriorityForceTemplateName]"
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_kongo = yes
+				africa_priority_member_package_is_luba = yes
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_profile_river_guard
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[PRIORITY_TEMPLATE]"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+					}
+				}
+			}
+			PRIORITY_TEMPLATE = "[This.GetAfricaPriorityForceTemplateName]"
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_oyo = yes
+				africa_priority_member_package_is_sokoto = yes
+				africa_priority_member_package_is_kanem_bornu = yes
+				africa_priority_member_package_is_manden = yes
+				africa_priority_member_package_is_harar = yes
+				africa_priority_member_package_is_nubia = yes
+				africa_priority_member_package_is_lunda = yes
+				africa_priority_member_package_is_zulu = yes
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_profile_mobile_guard
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[PRIORITY_TEMPLATE]"
+					regiments = {
+						cavalry = { x = 0 y = 0 }
+						cavalry = { x = 0 y = 1 }
+						cavalry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { recon = { x = 0 y = 0 } }
+				}
+			}
+			PRIORITY_TEMPLATE = "[This.GetAfricaPriorityForceTemplateName]"
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_aksum = yes
+				africa_priority_member_package_is_great_zimbabwe = yes
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_profile_highland_guard
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[PRIORITY_TEMPLATE]"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+					}
+				}
+			}
+			PRIORITY_TEMPLATE = "[This.GetAfricaPriorityForceTemplateName]"
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_kilwa = yes
+				africa_priority_member_package_is_merina = yes
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_profile_coastal_guard
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[PRIORITY_TEMPLATE]"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { engineer = { x = 0 y = 0 } }
+				}
+			}
+			PRIORITY_TEMPLATE = "[This.GetAfricaPriorityForceTemplateName]"
+		}
+	}
+	set_country_flag = africa_priority_member_starting_force_template_created
+}
+
+# COUNTRY scope. Builds material readiness from the recorded Action 102 dossier
+# and the matrix's attested force base. The low values deliberately create
+# understrength formations rather than conjuring a fully equipped field army.
+africa_priority_member_prepare_starting_force_factors = {
+	set_temp_variable = { africa_priority_start_experience = constant:africa_priority_member_starting_force.experience_standard }
+	if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_asante = yes
+				africa_priority_member_package_is_buganda = yes
+				africa_priority_member_package_is_aksum = yes
+				africa_priority_member_package_is_great_zimbabwe = yes
+				africa_priority_member_package_is_zulu = yes
+			}
+		}
+		set_temp_variable = { africa_priority_start_experience = constant:africa_priority_member_starting_force.experience_trained }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				africa_priority_member_package_is_harar = yes
+				africa_priority_member_package_is_kilwa = yes
+			}
+		}
+		set_temp_variable = { africa_priority_start_experience = constant:africa_priority_member_starting_force.experience_compact }
+	}
+
+	set_temp_variable = { africa_priority_start_equipment = constant:africa_priority_member_starting_force.equipment_low_support }
+	set_temp_variable = { africa_priority_start_manpower = constant:africa_priority_member_starting_force.manpower_low_support }
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_priority_local_support
+				value = constant:africa_priority_member_promotion.local_support_high
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { africa_priority_start_equipment = constant:africa_priority_member_starting_force.equipment_high_support }
+		set_temp_variable = { africa_priority_start_manpower = constant:africa_priority_member_starting_force.manpower_high_support }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = africa_priority_local_support
+				value = constant:africa_priority_member_promotion.local_support_medium
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { africa_priority_start_equipment = constant:africa_priority_member_starting_force.equipment_medium_support }
+		set_temp_variable = { africa_priority_start_manpower = constant:africa_priority_member_starting_force.manpower_medium_support }
+	}
+}
+
+# COUNTRY scope. Creates the package's primary named guard.
+africa_priority_member_spawn_primary_formation = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"[PRIORITY_UNIT]\" division_template = \"[PRIORITY_TEMPLATE]\" start_experience_factor = [PRIORITY_EXPERIENCE] start_equipment_factor = [PRIORITY_EQUIPMENT] start_manpower_factor = [PRIORITY_MANPOWER]"
+				owner = ROOT
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		PRIORITY_UNIT = "[ROOT.GetAfricaPriorityPrimaryFormationName]"
+		PRIORITY_TEMPLATE = "[ROOT.GetAfricaPriorityForceTemplateName]"
+		PRIORITY_EXPERIENCE = "[?africa_priority_start_experience|.2]"
+		PRIORITY_EQUIPMENT = "[?africa_priority_start_equipment|.2]"
+		PRIORITY_MANPOWER = "[?africa_priority_start_manpower|.2]"
+	}
+}
+
+# COUNTRY scope. Creates one reserve only while the field force is still below
+# the two-division compact-country floor after the primary guard is raised.
+africa_priority_member_spawn_reserve_formation = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"[PRIORITY_UNIT]\" division_template = \"[PRIORITY_TEMPLATE]\" start_experience_factor = [PRIORITY_EXPERIENCE] start_equipment_factor = [PRIORITY_EQUIPMENT] start_manpower_factor = [PRIORITY_MANPOWER]"
+				owner = ROOT
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		PRIORITY_UNIT = "[ROOT.GetAfricaPriorityReserveFormationName]"
+		PRIORITY_TEMPLATE = "[ROOT.GetAfricaPriorityForceTemplateName]"
+		PRIORITY_EXPERIENCE = "[?africa_priority_start_experience|.2]"
+		PRIORITY_EQUIPMENT = "[?africa_priority_start_equipment|.2]"
+		PRIORITY_MANPOWER = "[?africa_priority_start_manpower|.2]"
+	}
+}
+
+# COUNTRY scope. Idempotent registration hook and bounded retry for a package
+# promoted while every owned state was temporarily outside its control.
+africa_priority_member_initialize_starting_force = {
+	if = {
+		limit = {
+			africa_priority_member_has_package = yes
+			NOT = { has_country_flag = africa_priority_member_starting_force_initialized }
+			any_owned_state = { is_owned_and_controlled_by = ROOT }
+		}
+		if = {
+			limit = {
+				NOT = { num_divisions < constant:africa_priority_member_starting_force.minimum_field_divisions }
+			}
+			set_country_flag = africa_priority_member_inherited_carrier_forces
+		}
+		africa_priority_member_define_starting_force_template = yes
+		africa_priority_member_prepare_starting_force_factors = yes
+		random_owned_controlled_state = {
+			limit = { is_owned_and_controlled_by = ROOT }
+			africa_priority_member_spawn_primary_formation = yes
+			if = {
+				limit = {
+					ROOT = { num_divisions < constant:africa_priority_member_starting_force.minimum_field_divisions }
+				}
+				africa_priority_member_spawn_reserve_formation = yes
+				ROOT = { set_country_flag = africa_priority_member_compact_reserve_raised }
+			}
+		}
+		set_country_flag = africa_priority_member_starting_force_initialized
+	}
+}
