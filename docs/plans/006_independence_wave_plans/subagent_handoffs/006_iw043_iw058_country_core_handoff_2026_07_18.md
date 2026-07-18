@@ -4,7 +4,19 @@ Date: 2026-07-18
 
 Owner lane: `/root/iw043_iw058_country_core`
 
-Status: bounded country-core implementation complete; package runtime attestation remains false
+Status: bounded country-core implementation complete; historical runtime-attestation wording is superseded
+
+## Documentation reconciliation note (2026-07-18)
+
+This handoff is preserved as at-the-time country-core evidence. Its
+runtime-attestation-false and absent-asset statements describe the earlier
+country-core boundary and must not be used as the current package status.
+The final country-package audit and current manifests supersede those status
+claims: exact CHU/ASY setup now writes package, politics, institutional,
+force, visual, FORM-12/13/18, and signature-proof attestations for the
+admitted carriers. The reviewed package has eight all-male institutional
+portraits and deliberately no advisor assets. Historical findings below remain
+useful evidence and are not rewritten.
 
 ## Implemented surfaces
 

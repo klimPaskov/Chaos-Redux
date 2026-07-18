@@ -764,6 +764,58 @@ Formables use shared stages.
 
 Large formables grant claims first and cores through staged integration unless the participating regions voluntarily entered and the route has strong legitimacy.
 
+## Signature transaction contract: IW-043 and IW-058
+
+The 2026-07-18 signature tranche makes the shared formation model concrete for
+the two Level 3 packages. This is a current implementation reconciliation for
+the accepted design. It does not certify the wider Event 006 event.
+
+### Paid congress and consent ledger
+
+FORM-12 and FORM-13 are available only from the exact IW-043 carrier route.
+Each requires three external sovereign Event 006 member packages, three
+explicit consents, and three distinct anchors that the consenting members own
+and control. FORM-18 uses the exact IW-058 carrier route and requires two
+external members, two explicit consents, and two distinct controlled anchors.
+Each family opens a paid 180-day congress with a frozen invitation ledger.
+Human invitees answer through their authored reply events. AI invitees use the
+route, threat, recognition, relation, autonomy, dispute, and instability
+consent score. The terminal recount admits only consenting members and rejects
+stale generations, invalid members, lost anchors, and duplicate anchors.
+
+Failed or cancelled congresses consume committed costs, clear only the
+matching carrier and family ledger, and apply the bounded retry cooldown.
+Generic congress and commit decisions exclude these three signature families.
+
+### Carrier identity and staged integration
+
+Formation changes only the carrier's cosmetic identity. FORM-12 uses
+`VOLGA_URAL_FEDERATIONX`, FORM-13 uses `IDEL_URAL_COMPACTX`, and FORM-18 uses
+`MESOPOTAMIAN_FEDERATIONX`. Consenting members retain their tags, sovereignty,
+Event 006 origin, territory, focus content, and units. Two post-congress
+integration stages advance charter registration and defence or revenue work
+for the frozen consenting members. They do not annex members, create subjects,
+grant blanket cores, end member origin packages, or duplicate units.
+
+FORM-18's military settlement method is gated before payment by a tracked
+defensive former-host result, sovereign-anchor receipt, corridor-control
+receipt, and the absence of an offensive-pretext marker. The negotiated method
+does not need those military receipts. The sovereign-autonomy compact is a
+mutually exclusive bilateral settlement mode. It records boundary,
+protection, jurisdiction, transit, property, and security terms without
+creating a client relationship. The final Mesopotamian settlement presentation
+is written by the ratification focus after either the first federal integration
+stage or the complete sovereign compact.
+
+### Signature proof writers
+
+The two IW-043 route proofs are mutually exclusive and have sole capstone
+writers. The three IW-058 proof writers require the four-community guarantee
+contract, the exact Mesopotamian settlement, and a tracked former-host conflict
+or authored survival crisis. Client capture disqualifies the current IW-058
+generation. Exact package cleanup clears all adapter, ledger, integration, and
+proof receipts.
+
 ## High-chaos decision family
 
 Only suitable packages and routes see these actions.

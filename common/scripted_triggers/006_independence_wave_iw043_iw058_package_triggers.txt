@@ -7,10 +7,9 @@
 # - Exposes the setup/validation gates consumed by the shared Event 006
 #   dispatcher, focus lane, decision lane, AI strategy, and FORM-12/13/18
 #   adapters.
-# - Base IW-043/IW-058 content attestation and cosmetic surfaces are admitted
-#   through the shared origin-safe runtime registry. Optional achievement and
-#   FORM-12/13/18 adapter gates remain explicitly fail-closed. No trigger
-#   performs a world iteration.
+# - IW-043/IW-058 content, achievement writers, and FORM-12/13/18 adapters are
+#   admitted only through exact package setup attestations. Unattested or stale
+#   generations still fail closed. No trigger performs a world iteration.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -312,6 +311,377 @@ is_independence_wave_iw058_reachable_partner = {
 		is_independence_wave_iw058_patron_reach = yes
 		is_independence_wave_iw058_diaspora_reach = yes
 	}
+}
+
+# A named guarantor can carry the sovereign-autonomy treaty only when it is a
+# sovereign regional actor with a live bilateral guarantee. Event 006 peers
+# qualify through the shared region contract; the explicit vanilla list keeps
+# the bounded target surface available when no same-region Event 006 peer was
+# released in the current wave.
+is_independence_wave_iw058_legitimate_regional_settlement_partner = {
+	exists = yes
+	ROOT = { is_independence_wave_iw058_country = yes }
+	is_subject = no
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	has_guaranteed = ROOT
+	OR = {
+		is_valid_independence_wave_same_region_target = yes
+		tag = ARM
+		tag = AZR
+		tag = CJX
+		tag = EGY
+		tag = GEO
+		tag = GRE
+		tag = IRQ
+		tag = JOR
+		tag = KUR
+		tag = LEB
+		tag = PAL
+		tag = PER
+		tag = SAU
+		tag = SYR
+		tag = TUR
+	}
+}
+
+has_independence_wave_iw058_regional_settlement_partner = {
+	is_independence_wave_iw058_country = yes
+	has_country_flag = iw058_regional_settlement_partner_confirmed
+	has_event_target = independence_wave_iw058_regional_settlement_partner
+	event_target:independence_wave_iw058_regional_settlement_partner = {
+		is_independence_wave_iw058_legitimate_regional_settlement_partner = yes
+	}
+}
+
+has_independence_wave_iw058_valid_autonomy_treaty_partner = {
+	OR = {
+		AND = {
+			has_independence_wave_iw058_former_host = yes
+			has_country_flag = iw058_former_host_security_settlement_complete
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+		AND = {
+			has_independence_wave_iw058_regional_settlement_partner = yes
+			has_country_flag = iw058_external_security_treaty_record_complete
+			has_country_flag = iw058_external_guarantee_with_sovereignty_safeguards
+		}
+	}
+}
+
+has_independence_wave_iw058_autonomy_treaty_records = {
+	has_country_flag = iw058_autonomy_boundary_record_complete
+	has_country_flag = iw058_autonomy_boundary_settlement_complete
+	has_country_flag = iw058_autonomy_return_protection_record_complete
+	has_country_flag = iw058_autonomy_return_protection_complete
+	has_country_flag = iw058_autonomy_jurisdiction_record_complete
+	has_country_flag = iw058_autonomy_jurisdiction_complete
+	has_country_flag = iw058_autonomy_transit_property_record_complete
+	has_country_flag = iw058_autonomy_transit_property_complete
+	has_country_flag = iw058_autonomy_security_treaty_record_complete
+	has_country_flag = iw058_autonomy_security_treaty_complete
+}
+
+# ---------------------------------------------------------------------------
+# FORM-12 / FORM-13 / FORM-18 signature-extension contracts
+# ---------------------------------------------------------------------------
+#
+# These predicates are used by the shared formable registry while it walks
+# the reconciled Event 006 active-country array. They never search the world:
+# ROOT is the exact IW-043/IW-058 carrier and THIS is the one candidate row.
+# A candidate must be sovereign, Event 006-origin-safe, currently active, and
+# hold a nonzero owned-and-controlled anchor. The exact package/tag rows below
+# are intentionally narrower than generic reachability: FORM-12/13 use only
+# the researched Volga-Ural packages admitted by the current allocator, while
+# FORM-18 uses only the researched Kurdish/Khuzestan corridor rows. The
+# invitation/consent ledger then supplies generation, family, sequence, and
+# explicit reply receipt.
+
+is_independence_wave_formable_signature_family = {
+	OR = {
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
+	}
+}
+
+# Ordinary families still use the shared vanilla identity registry. Signature
+# families use their reviewed keyed adapter and must not be made to depend on
+# an unrelated selected identity row.
+has_independence_wave_formable_identity_compatibility_gate = {
+	OR = {
+		AND = {
+			NOT = { is_independence_wave_formable_signature_family = yes }
+			has_independence_wave_selected_formable_identity_available = yes
+		}
+		AND = {
+			is_independence_wave_formable_signature_family = yes
+			has_country_flag = independence_wave_formable_identity_adapter_ready
+		}
+	}
+}
+
+is_independence_wave_iw043_form12_carrier = {
+	is_independence_wave_iw043_country = yes
+	has_country_flag = independence_wave_iw043_setup_complete
+	has_country_flag = independence_wave_iw043_route_federal
+	NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.volga_ural_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+}
+
+is_independence_wave_iw043_form13_carrier = {
+	is_independence_wave_iw043_country = yes
+	has_country_flag = independence_wave_iw043_setup_complete
+	has_country_flag = independence_wave_iw043_route_restoration
+	NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.idel_ural }
+	has_country_flag = independence_wave_formable_profile_loaded
+}
+
+is_independence_wave_iw058_form18_carrier = {
+	is_independence_wave_iw058_country = yes
+	has_country_flag = independence_wave_iw058_setup_complete
+	has_country_flag = independence_wave_iw058_route_mesopotamian_autonomy
+	NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mesopotamian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+}
+
+is_independence_wave_iw043_formable_member_candidate = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { has_country_flag = soviet_collapse_event_created_republic }
+	NOT = { has_country_flag = soviet_collapse_breakaway_setup_complete }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	# Never reuse an active signature carrier/package identity as a member.
+	# This also rejects the shared CHU IW-046 row when IW-043 is the carrier.
+	NOT = { has_country_flag = independence_wave_package_iw043_volga_bulgaria }
+	NOT = { has_country_flag = independence_wave_package_iw046_chuvashia }
+	NOT = { has_country_flag = independence_wave_package_iw058_assyria }
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_package_id
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = {
+		NOT = { state = 0 }
+		is_owned_and_controlled_by = PREV
+	}
+	OR = {
+		ROOT = { is_independence_wave_iw043_form12_carrier = yes }
+		ROOT = { is_independence_wave_iw043_form13_carrier = yes }
+	}
+	# Exact Event 006 region-05 package/tag bindings. IW-043 and IW-046
+	# both publish CHU and are excluded above; only the distinct researched
+	# Tatar, Bashkir, Mari, Udmurt, and Komi rows can be invited.
+	OR = {
+		AND = {
+			original_tag = TAT
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_044 compare = equals }
+		}
+		AND = {
+			original_tag = BSK
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_045 compare = equals }
+		}
+		AND = {
+			original_tag = MEL
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_047 compare = equals }
+		}
+		AND = {
+			original_tag = UDM
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_048 compare = equals }
+		}
+		AND = {
+			original_tag = KOM
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_050 compare = equals }
+		}
+	}
+}
+
+is_independence_wave_iw058_formable_member_candidate = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { has_country_flag = soviet_collapse_event_created_republic }
+	NOT = { has_country_flag = soviet_collapse_breakaway_setup_complete }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	# Event 006 signature carriers and package identities cannot be nested in
+	# another signature formation or collide with the CHU/IW-043 mutex.
+	NOT = { has_country_flag = independence_wave_package_iw043_volga_bulgaria }
+	NOT = { has_country_flag = independence_wave_package_iw046_chuvashia }
+	NOT = { has_country_flag = independence_wave_package_iw058_assyria }
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_package_id
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = {
+		NOT = { state = 0 }
+		is_owned_and_controlled_by = PREV
+	}
+	ROOT = { is_independence_wave_iw058_form18_carrier = yes }
+	# Exact corridor package/tag bindings admitted by the current region-06
+	# allocator. IW-059 is an overlay rather than an active country and the
+	# surrounding Caucasus rows are not FORM-18 members.
+	OR = {
+		AND = {
+			original_tag = KUR
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_060 compare = equals }
+		}
+		AND = {
+			original_tag = CJX
+			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_062 compare = equals }
+		}
+	}
+}
+
+has_independence_wave_iw_formable_hidden_chaos_context = {
+	has_variable = independence_wave_origin_chaos_band
+	check_variable = {
+		var = independence_wave_origin_chaos_band
+		value = constant:independence_wave_chaos_band.chaos_tier
+		compare = greater_than_or_equals
+	}
+	can_independence_wave_use_high_chaos_actions = yes
+}
+
+has_independence_wave_iw_formable_league_transformation_permission = {
+	OR = {
+		NOT = { check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation } }
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+			has_country_flag = independence_wave_league_member
+			has_country_flag = independence_wave_league_charter_federal_transformation_permitted
+			has_country_flag = independence_wave_formable_league_transformation_record
+		}
+	}
+}
+
+has_independence_wave_iw_formable_method_policy = {
+	has_variable = independence_wave_formable_method
+	OR = {
+		AND = {
+			OR = {
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
+			}
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+				AND = {
+					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+					has_independence_wave_iw_formable_league_transformation_permission = yes
+				}
+				AND = {
+					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.hidden_high_chaos_proclamation }
+					has_independence_wave_iw_formable_hidden_chaos_context = yes
+				}
+			}
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+				AND = {
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.military_settlement }
+					has_country_flag = iw058_form18_defensive_war_victory_receipt
+					has_country_flag = iw058_form18_sovereign_anchor_receipt
+					has_country_flag = iw058_form18_corridor_control_receipt
+					has_country_flag = iw058_form18_member_consent_receipt
+					NOT = { has_country_flag = iw058_form18_offensive_pretext_active }
+				}
+			}
+		}
+	}
+}
+
+# Carrier-country scope. FORM-18 may begin its paid invitation phase with the
+# negotiated method, or with a completed defensive settlement. Member consent
+# is intentionally excluded: it is recorded only after the invitations exist.
+has_independence_wave_iw058_form18_pre_congress_method_policy = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
+	OR = {
+		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.military_settlement }
+			has_country_flag = iw058_form18_defensive_war_victory_receipt
+			has_country_flag = iw058_form18_sovereign_anchor_receipt
+			has_country_flag = iw058_form18_corridor_control_receipt
+			NOT = { has_country_flag = iw058_form18_offensive_pretext_active }
+		}
+	}
+}
+
+has_independence_wave_iw_formable_generation_receipts = {
+	is_independence_wave_formable_signature_family = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	has_country_flag = independence_wave_formable_signature_receipts_valid
+	has_variable = independence_wave_formable_receipt_generation
+	has_variable = independence_wave_formable_receipt_family
+	has_variable = independence_wave_formable_receipt_sequence
+	check_variable = { var = independence_wave_formable_receipt_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_formable_receipt_family value = independence_wave_formable_profile_family compare = equals }
+	check_variable = { var = independence_wave_formable_receipt_sequence value = independence_wave_formable_proposal_sequence compare = equals }
+	OR = {
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
+			check_variable = { var = independence_wave_formable_member_count value = constant:independence_wave_formable_signature.form12_minimum_members compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_formable_signature.form12_minimum_consents compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_signature_anchor_receipt_count value = constant:independence_wave_formable_signature.form12_minimum_anchors compare = greater_than_or_equals }
+			has_country_flag = independence_wave_form12_settlement_receipt
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
+			check_variable = { var = independence_wave_formable_member_count value = constant:independence_wave_formable_signature.form13_minimum_members compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_formable_signature.form13_minimum_consents compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_signature_anchor_receipt_count value = constant:independence_wave_formable_signature.form13_minimum_anchors compare = greater_than_or_equals }
+			has_country_flag = independence_wave_form13_settlement_receipt
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
+			check_variable = { var = independence_wave_formable_member_count value = constant:independence_wave_formable_signature.form18_minimum_members compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_formable_signature.form18_minimum_consents compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_signature_anchor_receipt_count value = constant:independence_wave_formable_signature.form18_minimum_anchors compare = greater_than_or_equals }
+			has_country_flag = independence_wave_form18_settlement_receipt
+		}
+	}
+	has_independence_wave_iw_formable_method_policy = yes
+	has_independence_wave_iw_formable_league_transformation_permission = yes
+}
+
+# Receipt gates used by the keyed identity/integration adapters. The flags are
+# deliberately paired with current generation, family, and proposal sequence
+# values so a stale save or a reused carrier cannot satisfy a later commit.
+has_independence_wave_iw_formable_identity_receipt = {
+	has_country_flag = independence_wave_formable_signature_identity_receipt
+	has_variable = independence_wave_formable_signature_identity_generation
+	has_variable = independence_wave_formable_signature_identity_family
+	has_variable = independence_wave_formable_signature_identity_sequence
+	check_variable = { var = independence_wave_formable_signature_identity_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_formable_signature_identity_family value = independence_wave_formable_profile_family compare = equals }
+	check_variable = { var = independence_wave_formable_signature_identity_sequence value = independence_wave_formable_proposal_sequence compare = equals }
+}
+
+has_independence_wave_iw_formable_integration_receipt = {
+	has_country_flag = independence_wave_formable_signature_integration_receipt
+	has_variable = independence_wave_formable_signature_integration_generation
+	has_variable = independence_wave_formable_signature_integration_family
+	has_variable = independence_wave_formable_signature_integration_sequence
+	check_variable = { var = independence_wave_formable_signature_integration_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_formable_signature_integration_family value = independence_wave_formable_profile_family compare = equals }
+	check_variable = { var = independence_wave_formable_signature_integration_sequence value = independence_wave_formable_proposal_sequence compare = equals }
 }
 
 # ---------------------------------------------------------------------------
@@ -714,8 +1084,8 @@ can_write_independence_wave_iw043_restoration_route_proof = {
 	has_country_flag = iw043_religious_civic_settlement_complete
 	NOT = { has_country_flag = independence_wave_volga_bulgaria_restoration_route_complete }
 	NOT = { has_country_flag = independence_wave_volga_bulgaria_federal_route_complete }
-	# Achievement proof writers are a later tranche. Until their exact call
-	# sites are audited, the focus surface is intentionally unavailable.
+	# Package setup attests the exact writer surface; this capstone transaction
+	# remains the only place that may write the restoration proof.
 	has_country_flag = independence_wave_iw043_achievement_writers_attested
 }
 
@@ -761,6 +1131,147 @@ can_complete_independence_wave_iw058_constitutional_route = {
 	has_valid_independence_wave_iw058_route_mutex = yes
 }
 
+# Local constitutional records required before a founding invitation may be
+# issued. External member consent is deliberately absent here and is proved
+# later by the generation-bound invitation ledger.
+has_independence_wave_form12_local_settlement_contract = {
+	is_independence_wave_iw043_form12_carrier = yes
+	has_country_flag = independence_wave_volga_bulgaria_federal_route_complete
+	has_country_flag = iw043_form12_consent_surface_open
+	has_country_flag = iw043_chamber_of_peoples_settlement_complete
+	has_country_flag = iw043_municipal_language_settlement_complete
+	has_country_flag = iw043_river_cities_federalized
+	has_country_flag = iw043_rail_ferry_survey_complete
+	has_country_flag = iw043_river_guard_created
+	has_country_flag = iw043_river_guard_under_civilian_law
+	has_country_flag = iw043_rights_compact_complete
+	has_country_flag = iw043_clause_tatar_bashkir_representation
+	has_country_flag = iw043_clause_chuvash_municipal_autonomy
+	has_country_flag = iw043_clause_mari_udmurt_language_rights
+	has_country_flag = iw043_clause_resident_civic_and_religious_equality
+	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.formable_river_threshold compare = greater_than_or_equals }
+	249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+}
+
+has_independence_wave_form13_local_settlement_contract = {
+	is_independence_wave_iw043_form13_carrier = yes
+	has_country_flag = independence_wave_volga_bulgaria_restoration_route_complete
+	has_country_flag = iw043_form13_consent_surface_open
+	has_country_flag = iw043_religious_civic_settlement_complete
+	has_country_flag = iw043_muftiate_civic_courts_settlement_complete
+	has_country_flag = iw043_municipal_language_settlement_complete
+	has_country_flag = iw043_rail_ferry_survey_complete
+	has_country_flag = iw043_river_guard_created
+	has_country_flag = iw043_river_guard_under_civilian_law
+	has_country_flag = iw043_rights_compact_complete
+	has_country_flag = iw043_clause_tatar_bashkir_representation
+	has_country_flag = iw043_clause_chuvash_municipal_autonomy
+	has_country_flag = iw043_clause_mari_udmurt_language_rights
+	has_country_flag = iw043_clause_resident_civic_and_religious_equality
+	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.formable_river_threshold compare = greater_than_or_equals }
+	249 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	256 = { is_owned_by = ROOT is_controlled_by = ROOT }
+}
+
+has_independence_wave_form18_local_settlement_contract = {
+	is_independence_wave_iw058_form18_carrier = yes
+	has_country_flag = independence_wave_iw058_constitutional_capstone_complete
+	has_independence_wave_iw058_all_community_guarantees = yes
+	has_country_flag = iw058_mesopotamian_settlement_surface_open
+	has_country_flag = iw058_church_civil_competence_settled
+	has_country_flag = iw058_autonomy_jurisdiction_complete
+	has_country_flag = iw058_council_seats_complete
+	has_country_flag = iw058_diaspora_liaison_active
+	has_country_flag = iw058_anchor_defense_mission_complete
+	has_country_flag = iw058_corridor_fortification_complete
+	has_country_flag = iw058_former_host_security_settlement_complete
+	has_country_flag = iw058_levies_board_under_civilian_law
+	has_country_flag = iw058_levies_service_recognized
+	NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
+	has_valid_independence_wave_iw058_route_mutex = yes
+	check_variable = { var = iw058_council_cohesion value = constant:independence_wave_iw058.stable_cohesion_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw058_corridor_security value = constant:independence_wave_iw058.stable_corridor_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw058_external_guarantee_credibility value = constant:independence_wave_iw058.settlement_credibility_threshold compare = greater_than_or_equals }
+	676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+}
+
+# IW-058 has exactly one terminal settlement transaction. The broad opening
+# gate rejects both successful modes, either transaction receipt, an already
+# formed federation, and an already written achievement proof. The two narrow
+# finalization gates allow the current transaction's own receipt while still
+# failing closed if the opposite mode appears before expiry.
+has_independence_wave_iw058_open_terminal_settlement_choice = {
+	NOT = {
+		OR = {
+			has_country_flag = iw058_mesopotamian_terminal_settlement_locked
+			has_country_flag = iw058_mesopotamian_settlement_mode_federation
+			has_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+			has_country_flag = iw058_form18_federal_congress_receipt
+			has_country_flag = iw058_form18_federal_congress_complete
+			has_country_flag = iw058_sovereign_autonomy_compact_receipt
+			has_country_flag = iw058_sovereign_autonomy_compact_complete
+			has_country_flag = independence_wave_formable_active
+			has_country_flag = independence_wave_form18_identity_applied
+			has_country_flag = independence_wave_form18_integration_applied
+			has_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+		}
+	}
+}
+
+can_finalize_independence_wave_iw058_form18_terminal_settlement = {
+	NOT = {
+		OR = {
+			has_country_flag = iw058_mesopotamian_terminal_settlement_locked
+			has_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+			has_country_flag = iw058_sovereign_autonomy_compact_receipt
+			has_country_flag = iw058_sovereign_autonomy_compact_complete
+			has_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+		}
+	}
+}
+
+can_finalize_independence_wave_iw058_sovereign_autonomy_terminal_settlement = {
+	NOT = {
+		OR = {
+			has_country_flag = iw058_mesopotamian_terminal_settlement_locked
+			has_country_flag = iw058_mesopotamian_settlement_mode_federation
+			has_country_flag = iw058_form18_federal_congress_receipt
+			has_country_flag = iw058_form18_federal_congress_complete
+			has_country_flag = independence_wave_formable_active
+			has_country_flag = independence_wave_form18_identity_applied
+			has_country_flag = independence_wave_form18_integration_applied
+			has_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+		}
+	}
+}
+
+can_begin_independence_wave_form12_congress = {
+	has_independence_wave_form12_local_settlement_contract = yes
+	has_country_flag = iw043_form12_terminal_surface_open
+	has_country_flag = independence_wave_form12_adapter_attested
+	NOT = { has_country_flag = iw043_form12_congress_retry_cooldown }
+	can_issue_independence_wave_formable_founding_invitations = yes
+}
+
+can_begin_independence_wave_form13_congress = {
+	has_independence_wave_form13_local_settlement_contract = yes
+	has_country_flag = iw043_form13_terminal_surface_open
+	has_country_flag = independence_wave_form13_adapter_attested
+	NOT = { has_country_flag = iw043_form13_congress_retry_cooldown }
+	can_issue_independence_wave_formable_founding_invitations = yes
+}
+
+can_begin_independence_wave_form18_congress = {
+	has_independence_wave_form18_local_settlement_contract = yes
+	has_independence_wave_iw058_open_terminal_settlement_choice = yes
+	has_country_flag = iw058_form18_terminal_surface_open
+	has_country_flag = independence_wave_form18_adapter_attested
+	NOT = { has_country_flag = iw058_form18_congress_retry_cooldown }
+	has_independence_wave_iw058_form18_pre_congress_method_policy = yes
+	can_issue_independence_wave_formable_founding_invitations = yes
+}
+
 # ---------------------------------------------------------------------------
 # FORM-12 / FORM-13 / FORM-18 staged readiness and terminal adapters
 # ---------------------------------------------------------------------------
@@ -781,10 +1292,9 @@ has_independence_wave_form12_readiness = {
 	has_country_flag = iw_form12_member_autonomy_complete
 	has_country_flag = iw_form12_defense_integration_complete
 	independence_wave_formable_member_arrays_are_aligned = yes
-	check_variable = { var = independence_wave_formable_member_count value = independence_wave_formable_minimum_members compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_anchor_count value = independence_wave_formable_minimum_anchors compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
-	# Explicit adapter attestation is intentionally absent in Tranche 1.
+	has_independence_wave_iw_formable_generation_receipts = yes
+	# Exact package setup writes adapter attestation after its full surface
+	# validates; this gate rejects stale or partially initialized carriers.
 	has_country_flag = independence_wave_form12_adapter_attested
 }
 
@@ -806,9 +1316,7 @@ has_independence_wave_form13_readiness = {
 	has_country_flag = iw_form13_member_consent_complete
 	has_country_flag = iw_form13_river_defense_complete
 	independence_wave_formable_member_arrays_are_aligned = yes
-	check_variable = { var = independence_wave_formable_member_count value = independence_wave_formable_minimum_members compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_anchor_count value = independence_wave_formable_minimum_anchors compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
+	has_independence_wave_iw_formable_generation_receipts = yes
 	has_country_flag = independence_wave_form13_adapter_attested
 }
 
@@ -822,23 +1330,21 @@ has_independence_wave_form18_readiness = {
 	has_independence_wave_iw058_anchor_secured = yes
 	has_independence_wave_iw058_all_community_guarantees = yes
 	has_valid_independence_wave_iw058_values = yes
-	check_variable = { var = iw058_council_cohesion value = constant:independence_wave_iw058.capstone_cohesion_threshold compare = greater_than_or_equals }
-	check_variable = { var = iw058_corridor_security value = constant:independence_wave_iw058.capstone_corridor_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw058_council_cohesion value = constant:independence_wave_iw058.stable_cohesion_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw058_corridor_security value = constant:independence_wave_iw058.stable_corridor_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw058_external_guarantee_credibility value = constant:independence_wave_iw058.settlement_credibility_threshold compare = greater_than_or_equals }
 	has_country_flag = iw_form18_federal_autonomy_charter_complete
 	has_country_flag = iw_form18_river_authority_complete
 	has_country_flag = iw_form18_minority_guarantees_complete
 	has_country_flag = iw_form18_member_army_settlement_complete
 	has_country_flag = iw_form18_capital_and_revenue_settlement_complete
 	independence_wave_formable_member_arrays_are_aligned = yes
-	check_variable = { var = independence_wave_formable_member_count value = independence_wave_formable_minimum_members compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_anchor_count value = independence_wave_formable_minimum_anchors compare = greater_than_or_equals }
-	check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
+	has_independence_wave_iw_formable_generation_receipts = yes
 	has_country_flag = independence_wave_form18_adapter_attested
 }
 
-# Correctly-spelled aliases used by the decision lane. The three adapter
-# flags above remain unset until the parent proves exact keyed vanilla and
-# Event 006 compatibility.
+# Correctly-spelled aliases used by the decision lane. The three adapter flags
+# are written only by the exact validated package setup and cleared on cleanup.
 can_independence_wave_form12_iw043_commit = {
 	has_independence_wave_form12_readiness = yes
 }
@@ -849,25 +1355,46 @@ can_independence_wave_form13_iw043_commit = {
 
 can_independence_wave_form18_iw058_commit = {
 	has_independence_wave_form18_readiness = yes
+	can_finalize_independence_wave_iw058_form18_terminal_settlement = yes
 }
 
 can_write_independence_wave_iw058_mesopotamian_settlement_complete = {
-	is_independence_wave_iw058_country = yes
-	has_country_flag = independence_wave_iw058_setup_complete
+	can_write_independence_wave_iw058_achievement_proof = yes
 	has_independence_wave_iw058_all_community_guarantees = yes
+	has_country_flag = iw058_mesopotamian_terminal_settlement_locked
 	NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
 	OR = {
 		AND = {
 			has_country_flag = iw058_mesopotamian_settlement_mode_federation
-			has_independence_wave_form18_readiness = yes
+			NOT = { has_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy }
+			has_country_flag = independence_wave_formable_active
+			has_country_flag = independence_wave_form18_identity_applied
+			has_country_flag = independence_wave_form18_integration_applied
+			has_country_flag = independence_wave_formable_first_stage_integration_complete
+			has_country_flag = iw_form18_federal_autonomy_charter_complete
+			has_country_flag = iw_form18_river_authority_complete
+			has_country_flag = iw_form18_minority_guarantees_complete
+			has_country_flag = iw_form18_member_army_settlement_complete
+			has_country_flag = iw_form18_capital_and_revenue_settlement_complete
 		}
 		AND = {
 			has_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
-			has_country_flag = iw058_autonomy_boundary_settlement_complete
-			has_country_flag = iw058_autonomy_return_protection_complete
-			has_country_flag = iw058_autonomy_jurisdiction_complete
-			has_country_flag = iw058_autonomy_transit_property_complete
-			has_country_flag = iw058_autonomy_security_treaty_complete
+			NOT = { has_country_flag = iw058_mesopotamian_settlement_mode_federation }
+			has_country_flag = iw058_sovereign_autonomy_compact_complete
+			has_independence_wave_iw058_autonomy_treaty_records = yes
+			OR = {
+				AND = {
+					has_country_flag = iw058_sovereign_autonomy_partner_former_host
+					has_independence_wave_iw058_former_host = yes
+					has_country_flag = iw058_former_host_security_settlement_complete
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = iw058_sovereign_autonomy_partner_regional
+					has_independence_wave_iw058_regional_settlement_partner = yes
+					has_country_flag = iw058_regional_settlement_partner_treaty_complete
+				}
+			}
 		}
 	}
 	has_valid_independence_wave_iw058_values = yes
@@ -883,5 +1410,33 @@ can_write_independence_wave_iw058_mesopotamian_settlement_complete = {
 		has_country_flag = iw058_regional_settlement_partner_confirmed
 	}
 	NOT = { has_country_flag = independence_wave_assyria_mesopotamian_settlement_complete }
+	has_country_flag = independence_wave_iw058_achievement_writers_attested
+}
+
+can_write_independence_wave_iw058_anchor_population_protected = {
+	can_write_independence_wave_iw058_achievement_proof = yes
+	has_independence_wave_iw058_all_community_guarantees = yes
+	has_country_flag = iw058_anchor_defense_mission_complete
+	has_country_flag = iw058_church_synod_seated
+	has_country_flag = iw058_secular_committee_seated
+	has_country_flag = iw058_village_municipal_delegation_seated
+	has_country_flag = iw058_levies_veterans_delegation_seated
+	check_variable = { var = iw058_council_cohesion value = constant:independence_wave_iw058.stable_cohesion_threshold compare = greater_than_or_equals }
+	NOT = { has_country_flag = independence_wave_assyria_anchor_population_protected }
+	has_country_flag = independence_wave_iw058_achievement_writers_attested
+}
+
+can_write_independence_wave_iw058_host_conflict_survived = {
+	can_write_independence_wave_iw058_achievement_proof = yes
+	has_independence_wave_iw058_former_host = yes
+	var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+	OR = {
+		AND = {
+			has_country_flag = iw058_reclamation_war_started
+			has_country_flag = iw058_reclamation_war_defensive
+		}
+		has_country_flag = iw058_reclamation_crisis_survived_without_war
+	}
+	NOT = { has_country_flag = independence_wave_assyria_host_conflict_survived }
 	has_country_flag = independence_wave_iw058_achievement_writers_attested
 }

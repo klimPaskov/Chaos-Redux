@@ -2,7 +2,7 @@
 
 ## Planning scope
 
-This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `6002` source has a produced game-ready derivative and runtime package. The catalog workbook still requires its final fact-based alignment pass.
+This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `6002` source has a produced game-ready derivative and runtime package. Direct comparison of the editable catalog workbook with the current Event Details, evolution, Liberations-cluster, and SCN-008 localisation found exact agreement, so the bounded catalog-alignment task is closed without a workbook rewrite.
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
@@ -35,14 +35,24 @@ ten flat flags, two report images, and the final 27-icon static package,
   including the three-state Assyria survival triplet. No custom advisor assets
   were created. The exact vanilla CHU/ASY shortcut guards passed the parent
   compatibility re-audit and preserve ordinary and Event 005 carrier behavior.
-  FORM-12, FORM-13, FORM-18, and the two signature achievements remain
-  **PARTIALLY IMPLEMENTED / HOLD** because their exact adapter-attestation and
-  proof writers are absent.
+  FORM-12, FORM-13, and FORM-18 are operational for their exact carriers with
+  setup attestations, paid 180-day congresses, consent and unique-anchor
+  ledgers, carrier-only cosmetics, and staged sovereignty-preserving
+  integration. The two IW-043 route proofs and three IW-058 proof writers are
+  sole, generation-gated call sites. Achievement visibility remains hidden and
+  depends on its route and survival conditions. The final focus is the sole
+  caller for the `.5810` Mesopotamian settlement presentation after the
+  sovereign-autonomy decision records its compact and mode. That transaction
+  deterministically locks either the completed former-host settlement or the
+  named sovereignty-bound regional guarantor, records all five treaty chapters,
+  and creates no subject or client relationship. FORM-18 and sovereign autonomy
+  share a permanent terminal-choice lock: start and finalization gates reject
+  crossover, and the final Mesopotamian proof requires that lock.
 
 FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
-006 completion audit, final balance audit, catalog alignment, and unrelated
-package/achievement work remain incomplete. Earlier Pacific handoffs that state
-HOLD/FAIL-CLOSED are historical records and are not rewritten here.
+006 completion audit, final balance audit, runtime scenario evidence, and
+unrelated package/achievement work remain incomplete. Earlier Pacific handoffs
+that state HOLD/FAIL-CLOSED are historical records and are not rewritten here.
 
 ## Design simplifications
 
@@ -92,12 +102,12 @@ Country, patron, league, scenario, host-remnant, war, peace, subject, and anchor
 control history is wired through bounded Event 006 transactions and narrow
 engine on-actions; no periodic world scan is used. Fifteen have final normal,
 grey, and not-eligible DDS triplets. The bounded Assyria triplet is final and
-reviewed, but the two signature achievements remain hidden/fail-closed because
-their proof writers and exact formable adapter-attestation are absent. The
-vanilla CHU/ASY shortcut guards have independently passed. IW-043 Volga
-Bulgaria is likewise base-admitted while its signature writers and FORM-12/13
-routes remain held. The full achievement audit and live validation matrix remain
-required before completion.
+reviewed. The two signature achievements remain hidden by their intended
+player-facing visibility rules, while their exact proof writers and formable
+adapter attestations are operational for the matching CHU and ASY package
+generations. The vanilla CHU/ASY shortcut guards have independently passed.
+The full achievement audit and live validation matrix remain required before
+whole-event completion.
 
 ### Super-event production
 
@@ -114,7 +124,12 @@ The package defines source mode, motifs, sizes, animated states, static fallback
 
 ### Catalog workbook
 
-The uploaded CSV catalogs were read but not edited. The event catalog workbook should be updated only after final in-game wording exists, so its mirror fields can match localisation exactly.
+The editable source workbook was compared directly with the stable in-game
+localisation. `Events!C7`, `Events!D7:H7`, `Clusters!B3:C3`, and
+`Scenarios!B9:E9` match the current Event Details, all five evolution title/body
+pairs, Liberations cluster wording, and SCN-008 name, premise, type labels, and
+intensity descriptions exactly. No workbook write or CSV export was needed
+because there was no content delta. Whole-event status remains **In progress / Needs Testing** for implementation and runtime reasons, not catalog drift.
 
 ### Repository and game validation
 
@@ -128,9 +143,13 @@ super-event playback completion audit is claimed here.
 ## Research status
 
 Package-specific research and final IW-043/IW-058 asset provenance are resolved
-for the admitted base tranche. The CHU/ASY vanilla compatibility adapter has
-passed; signature formable/achievement promotion remains explicitly held for
-missing adapter-attestation and proof writers.
+for the admitted tranche. The CHU/ASY vanilla compatibility adapter has passed.
+FORM-12/13/18 and the signature proof writers are operational for their exact
+carrier contracts. The sovereign-autonomy partner and terminal-ordering gap is
+closed in source with a permanent terminal-choice lock and proof requirement,
+and the bounded non-portrait visual families have a dated parent PASS. Remaining
+work is runtime scenario evidence and parent-wide Event 006 documentation,
+balance, asset/audio, package-registry, and completion validation.
 
 Every package has a final representation, research disposition, and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding is complete for the 2026-07-14 snapshot and the accepted tag scan is complete for the 2026-07-15 scan universe. Compatibility adapters, overlay hooks, final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 

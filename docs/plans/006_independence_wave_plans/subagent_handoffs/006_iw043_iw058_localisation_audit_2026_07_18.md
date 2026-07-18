@@ -3,6 +3,15 @@
 Date: 2026-07-18
 Scope: Middle Volga / CHU (IW-043) and Assyria / ASY (IW-058) player-facing English localisation only.
 
+## Documentation reconciliation note (2026-07-18)
+
+This earlier localisation audit remains evidence for wording and key coverage.
+Its fail-closed descriptions for FORM-12/13/18 capture the pre-promotion
+state and are superseded by the exact CHU/ASY transaction attestation. Current
+player-facing text should describe the paid 180-day consent congresses and
+staged sovereignty-preserving integration; the final localisation audit is the
+current key/encoding authority. Do not reopen the old missing-writer task.
+
 ## Changed files and keys
 
 - `localisation/english/006_independence_wave_achievements_l_english.yml`

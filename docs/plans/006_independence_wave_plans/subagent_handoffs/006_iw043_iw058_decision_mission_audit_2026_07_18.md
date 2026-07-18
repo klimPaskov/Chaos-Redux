@@ -1,5 +1,16 @@
 # IW-043 / IW-058 decision and mission audit — 18 July 2026
 
+## Documentation reconciliation note (2026-07-18)
+
+This decision/mission audit remains evidence for the cost localisation fixes,
+timed-operation lifecycle, and no-world-scan boundaries. Its force-provenance
+and FORM-12/13/18 fail-closed findings predate the current scripted-architecture
+and transaction passes: exact division/generation receipts now gate the bound
+formation, and the exact CHU/ASY signature adapters are operational for their
+admitted carriers. Preserve the historical static limitations, but do not
+reopen those superseded implementation tasks; whole-Event 006 closeout and
+live runtime validation remain pending.
+
 ## Scope and outcome
 
 Audited the two Event 006 decision categories, all 32 decisions, their six
@@ -7,9 +18,10 @@ formation-bound timed operations, the 20 owned incidents, the owned package
 helpers, and their dedicated English localisation. This review did not alter
 focuses, country definitions, global AI, GFX, portraits, advisors, or assets.
 
-Two local decision/UI corrections were applied. One high-severity provenance
-gap remains: the six force-bound operations cannot prove that the selected
-division came from the current generation's supplied force package.
+Two local decision/UI corrections were applied. At audit time one high-
+severity provenance gap remained; the later scripted-architecture pass added
+division/generation receipts to the bound formation contract. The historical
+finding and its validation limits are retained below.
 
 ## Changed files
 
@@ -92,10 +104,12 @@ the standard red/yellow decision-cost presentation.
 `can_independence_wave_form12_iw043_commit`,
 `can_independence_wave_form13_iw043_commit`, and
 `can_independence_wave_form18_iw058_commit` depend on their readiness
-contracts, each of which requires its `*_adapter_attested` flag. No writer
-for these three attestation flags is present in the audited Event 006 source.
-The three decisions and incident options recheck the same gate. This is safe
-and matches the required fail-closed behavior; no formable was promoted.
+contracts, each of which requires its `*_adapter_attested` flag. At audit
+  time no writer for these three attestation flags was present in the audited
+  Event 006 source. The later exact-carrier transaction pass supplies the
+  setup attestations and sole proof writers for CHU/ASY; wider families remain
+  fail-closed. The three decisions and incident options still recheck the same
+  exact gate.
 
 ## Category lifecycle
 
@@ -174,13 +188,14 @@ origin finding above is the remaining quality blocker.
 
 ## Skipped validation
 
-No in-engine runtime session was run. The unresolved provenance issue depends
-on allocator-level division identity, so static source evidence cannot prove
-the desired live distinction. No GUI MCP check was run because no owned
-decision GUI exists.
+No in-engine runtime session was run. Static source evidence cannot prove the
+full live distinction or whole-Event 006 sequence. No GUI MCP check was run
+because no owned decision GUI exists.
 
 ## Remaining work
 
-Implement and test the allocator-level division receipt contract described in
-the high-severity finding. FORM-12/13/18 must remain fail-closed until their
-exact registry/adapter contract is authored and proven.
+The allocator-level division/generation receipt contract is recorded as
+resolved by the later scripted-architecture pass. Parent closeout still needs
+to rerun the scoped decision/focus/country audits and verify the exact CHU/ASY
+transaction sequence in a bounded runtime scenario; wider FORM families remain
+fail-closed.

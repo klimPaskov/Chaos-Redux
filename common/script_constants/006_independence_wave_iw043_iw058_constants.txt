@@ -5,12 +5,10 @@
 # - Provides the single tuning source for the Middle Volga (IW-043) and
 #   Assyria (IW-058) package adapters.
 # - Keeps package values, route thresholds, transaction durations, force shares,
-#   country-core idea modifiers, leader modifiers, and AI weights out of the
-#   package effects and call sites.
-# - Base IW-043/IW-058 adapter admission is origin-safe after the package
-#   content, decisions, focuses, assets, and compatibility audits pass. The
-#   optional FORM-12/13/18 settlement-record gates remain fail-closed until
-#   those formable adapters receive their own exact attestations.
+#   political profiles, country-core idea modifiers, leader modifiers, and AI
+#   weights out of the package effects and call sites.
+# - IW-043/IW-058 admission and FORM-12/13/18 adapter attestations remain bound
+#   to exact Event 006 package setup and generation cleanup.
 # ============================================================================
 
 independence_wave_iw043 = {
@@ -38,6 +36,9 @@ independence_wave_iw043 = {
 	standard_mission_days = 150
 	river_mission_days = 120
 	settlement_mission_days = 180
+	formable_retry_cooldown_days = 45
+	formable_first_integration_days = 90
+	formable_full_integration_days = 120
 	standard_command_cost = 15
 	major_command_cost = 30
 	standard_command_cost_spend = -15
@@ -133,6 +134,9 @@ independence_wave_iw058 = {
 	anchor_mission_days = 120
 	institution_mission_days = 150
 	settlement_mission_days = 180
+	formable_retry_cooldown_days = 45
+	formable_first_integration_days = 90
+	formable_full_integration_days = 120
 	standard_command_cost = 15
 	major_command_cost = 30
 	standard_command_cost_spend = -15
@@ -200,6 +204,51 @@ independence_wave_iw058 = {
 	ai_train_min_factories = 1
 }
 
+# Opening and route party-popularity profiles shared by the two institutional
+# packages. Every four-value row sums to exactly 100, as required by
+# `set_popularities`.
+independence_wave_iw_signature_politics = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	opening_democratic = 55
+	opening_communism = 10
+	opening_neutrality = 30
+	opening_fascism = 5
+
+	constitutional_democratic = 70
+	constitutional_communism = 10
+	constitutional_neutrality = 15
+	constitutional_fascism = 5
+
+	popular_democratic = 20
+	popular_communism = 65
+	popular_neutrality = 10
+	popular_fascism = 5
+
+	restoration_democratic = 60
+	restoration_communism = 5
+	restoration_neutrality = 30
+	restoration_fascism = 5
+
+	traditional_democratic = 30
+	traditional_communism = 5
+	traditional_neutrality = 60
+	traditional_fascism = 5
+
+	emergency_democratic = 15
+	emergency_communism = 5
+	emergency_neutrality = 75
+	emergency_fascism = 5
+
+	patron_democratic = 20
+	patron_communism = 5
+	patron_neutrality = 70
+	patron_fascism = 5
+}
+
 # FORM-12/13/18 adapter gates. Numeric values are intentionally descriptive;
 # the readiness triggers still require explicit package proof flags, so a
 # registry profile alone can never authorize a terminal transaction.
@@ -215,6 +264,17 @@ independence_wave_iw_formable_adapter = {
 	form12_settlement_records = 4
 	form13_settlement_records = 4
 	form18_settlement_records = 5
+}
+
+independence_wave_iw_formable_stage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	founding = 1
+	charter_registered = 2
+	initial_integration_complete = 3
 }
 
 # Stable serials for the package-owned paid action transactions. Callers pass

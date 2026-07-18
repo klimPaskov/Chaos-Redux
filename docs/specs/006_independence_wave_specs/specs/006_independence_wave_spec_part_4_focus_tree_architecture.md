@@ -693,6 +693,15 @@ Themes:
 - relation to a wider Mesopotamian formable
 - defensive mountain and river corridor strategy
 
+The implemented IW-058 lane opens on the Mosul anchor, keeps Assyrian,
+Chaldean, Syriac, and Aramean guarantees distinct, and separates church-civic,
+civic-assembly, and temporary Levies guardianship routes. Its Mesopotamian
+settlement branch exposes the FORM-18 congress and the sovereign-autonomy
+alternative. The terminal ratification focus is the sole caller for the final
+`.5810` settlement presentation. The sovereign compact writes its mode and
+records first, then the focus presents the final settlement after its exact
+proof gate.
+
 ### Mesopotamia
 
 Themes:
@@ -714,6 +723,14 @@ Themes:
 - religious settlement
 - Idel-Ural or Volga-Ural formable paths
 - Event 5 origin separation
+
+The implemented IW-043 lane opens as a modern Middle Volga Congress at the
+Kazan anchor. Its four rights clauses, river-security mechanics, religious
+settlement, and emergency route feed two mutually exclusive constitutional
+capstones. The federal capstone leads to the paid FORM-12 congress. The
+restoration capstone leads to the paid FORM-13 compact. Both paths preserve
+member sovereignty through staged integration and use sole route-proof writers
+for the two Volga signature achievements.
 
 ### Asante
 

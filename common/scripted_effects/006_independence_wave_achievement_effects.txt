@@ -43,6 +43,13 @@ independence_wave_achievement_reset_country_trackers = {
 	clr_country_flag = independence_wave_assyria_anchor_population_protected
 	clr_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
 	clr_country_flag = independence_wave_assyria_host_conflict_survived
+	clr_country_flag = iw058_client_capture_ever
+	clr_country_flag = iw058_reclamation_war_started
+	clr_country_flag = iw058_reclamation_war_defensive
+	clr_country_flag = iw058_form18_defensive_war_victory_receipt
+	clr_country_flag = iw058_form18_sovereign_anchor_receipt
+	clr_country_flag = iw058_form18_corridor_control_receipt
+	clr_country_flag = iw058_form18_offensive_pretext_active
 	clear_variable = independence_wave_achievement_peace_settlement_date
 	clear_variable = independence_wave_achievement_capital_loss_date
 	clear_variable = independence_wave_achievement_cross_regional_start_date
@@ -59,6 +66,27 @@ independence_wave_achievement_reset_country_trackers = {
 	clear_array = independence_wave_achievement_major_patron_country_entries
 }
 
+# Country scope. Subject and patron-client transitions call this narrow helper.
+# The marker is generation-local but permanent until Event 006 origin cleanup,
+# so escaping a client relationship cannot restore signature eligibility.
+independence_wave_iw058_record_client_capture = {
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			OR = {
+				is_subject = yes
+				has_country_flag = independence_wave_route_patron_client
+				has_country_flag = independence_wave_client_route_locked
+				has_independence_wave_patron_dependency = yes
+			}
+		}
+		set_country_flag = iw058_client_capture_ever
+		clr_country_flag = independence_wave_assyria_anchor_population_protected
+		clr_country_flag = independence_wave_assyria_mesopotamian_settlement_complete
+		clr_country_flag = independence_wave_assyria_host_conflict_survived
+	}
+}
+
 # Country scope. Refreshes proof whose eligibility can be determined from the
 # five public values, the bilateral settlement, patron dominance, or country
 # scale. Called by the existing Event 006 state refresh transaction.
@@ -73,6 +101,7 @@ independence_wave_achievement_refresh_country_state = {
 			limit = { has_independence_wave_patron_dependency = yes }
 			set_country_flag = independence_wave_achievement_patron_dependency_ever
 		}
+		independence_wave_iw058_record_client_capture = yes
 		if = {
 			limit = {
 				has_country_flag = independence_wave_anchor_opening
@@ -493,6 +522,29 @@ independence_wave_achievement_resolve_country_peace = {
 			set_country_flag = independence_wave_achievement_host_reconquest_survived
 		}
 	}
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = iw058_host_reclamation_conflict_active
+			has_country_flag = iw058_reclamation_war_started
+			has_independence_wave_iw058_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+		if = {
+			limit = {
+				has_country_flag = iw058_reclamation_war_defensive
+				is_subject = no
+				has_capitulated = no
+				676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+				has_country_flag = iw058_corridor_fortification_complete
+				check_variable = { var = iw058_corridor_security value = constant:independence_wave_iw058.stable_corridor_threshold compare = greater_than_or_equals }
+			}
+			set_country_flag = iw058_form18_defensive_war_victory_receipt
+			set_country_flag = iw058_form18_sovereign_anchor_receipt
+			set_country_flag = iw058_form18_corridor_control_receipt
+		}
+		independence_wave_write_iw058_host_conflict_survived = yes
+	}
 	independence_wave_achievement_refresh_host_remnant_peace = yes
 }
 
@@ -510,6 +562,20 @@ independence_wave_achievement_record_anchor_loss = {
 		}
 		set_country_flag = independence_wave_achievement_capital_loss_active
 		set_variable = { independence_wave_achievement_capital_loss_date = global.date }
+	}
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_event_target = independence_wave_achievement_changed_state
+			676 = { state = event_target:independence_wave_achievement_changed_state }
+			OR = {
+				has_country_flag = iw058_anchor_crisis_active
+				has_country_flag = iw058_host_reclamation_conflict_active
+				has_country_flag = iw058_severe_security_crisis_active
+			}
+		}
+		set_country_flag = iw058_anchor_protection_breached
+		clr_country_flag = independence_wave_assyria_anchor_population_protected
 	}
 }
 
@@ -546,6 +612,13 @@ independence_wave_achievement_record_war = {
 		event_target:independence_wave_achievement_war_attacker = {
 			set_country_flag = independence_wave_achievement_host_war_ever
 			clear_variable = independence_wave_achievement_peace_settlement_date
+			if = {
+				limit = {
+					is_independence_wave_iw058_country = yes
+					has_country_flag = iw058_host_reclamation_conflict_active
+				}
+				set_country_flag = iw058_reclamation_war_started
+			}
 		}
 	}
 	if = {
@@ -557,6 +630,14 @@ independence_wave_achievement_record_war = {
 			set_country_flag = independence_wave_achievement_host_war_ever
 			set_country_flag = independence_wave_achievement_host_reconquest_defender
 			clear_variable = independence_wave_achievement_peace_settlement_date
+			if = {
+				limit = {
+					is_independence_wave_iw058_country = yes
+					has_country_flag = iw058_host_reclamation_conflict_active
+				}
+				set_country_flag = iw058_reclamation_war_started
+				set_country_flag = iw058_reclamation_war_defensive
+			}
 			if = {
 				limit = {
 					var:independence_wave_anchor_state = { NOT = { is_controlled_by = ROOT } }

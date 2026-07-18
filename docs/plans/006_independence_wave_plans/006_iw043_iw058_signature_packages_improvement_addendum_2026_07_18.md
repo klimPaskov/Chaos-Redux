@@ -2,10 +2,10 @@
 
 Date: 2026-07-18
 
-Status: **PARTIALLY IMPLEMENTED / HOLD** — the bounded CHU/ASY base-package
-tranche is admitted, its reviewed assets are installed, and its exact vanilla-
-formable shortcut guards passed the parent re-audit; FORM-12/13/18 adapter-
-attestation and signature-achievement proof writers remain open
+Status: **IMPLEMENTED / FINAL AUDIT** — the CHU/ASY package, FORM-12/13/18
+transactions, exact vanilla-formable guards, staged integration, sovereign-
+autonomy alternative, and signature-achievement writers are implemented;
+independent closeout audits and source-of-truth promotion remain in progress
 
 Owner: Event 006 parent implementation agent
 
@@ -16,9 +16,9 @@ Packages:
 
 ## Decision
 
-Both signature packages should be expanded. The accepted Event 006 design promises modern political bridges, distinct institutions, route play, local military problems, formable ambitions, and achievement proof. The bounded base tranche now admits the exact CHU and ASY package content through the shared runtime registry, with package-owned mechanics, routes, localisation, and reviewed visual assets. The exact compatibility adapter prevents active Event 006 IW-043/IW-058 carriers from using the vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` shortcuts while preserving ordinary and Event 005 behavior. The signature extensions remain held because their FORM-12/13/18 adapter-attestation and achievement proof writers are absent. Leaving those extensions open is intentional and fail-closed.
+Both signature packages are expanded. The accepted Event 006 design promises modern political bridges, distinct institutions, route play, local military problems, formable ambitions, and achievement proof. The exact CHU and ASY package content is admitted through the shared runtime registry with package-owned mechanics, routes, localisation, reviewed visual assets, FORM-12/13/18 transactions, staged sovereignty-preserving integration, and sole signature-proof writers. The exact compatibility adapter prevents active Event 006 IW-043/IW-058 carriers from using the vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` shortcuts while preserving ordinary and Event 005 behavior.
 
-This addendum is the only open improvement-loop layer for IW-043 and IW-058. No earlier addendum for either package exists. The earlier FORM-48 plan was implemented in its bounded tranche and remains separately readiness-blocked pending promotion and independent closure. It is not duplicated here.
+This addendum is the only open improvement-loop layer for IW-043 and IW-058. No earlier addendum for either package exists. The earlier FORM-48 plan was implemented in its bounded tranche and is separately promoted after its independent closure. It is not duplicated here.
 
 The accepted design should remain narrow in three ways:
 
@@ -59,39 +59,39 @@ The design uses these accepted research findings:
 
 Uncertainty remains at item level for individual portraits and symbols. Those assets require provenance review before generation or processing. The design-level historical dispositions above are accepted and do not need another broad research pass.
 
-## Current implementation gap
+## Current implementation status
 
-The status is tranche-specific. Base CHU/ASY package admission is current
-evidence; the gaps below describe the still-held signature extensions and must
-not be read as saying that the base package or its final assets are absent.
+The exact package loaders, allocator reservations, Event 005/Event 006 origin
+separation, opening anchors, package setup/final-validation/cleanup dispatch,
+country identities, routes, force transactions, AI, localisation, and reviewed
+assets are active for IW-043 and IW-058. The shared registry admits both base
+packages only after their exact content attestations pass.
 
-The repository already has:
+FORM-12, FORM-13, and FORM-18 use exact carrier and family profiles, frozen
+invitation ledgers, explicit human replies, scored AI consent, unique consenting-
+member anchors, immutable terminal recounts, paid 180-day congresses, bounded
+retry cooldowns, carrier-only cosmetic identities, and two sovereignty-
+preserving integration stages. FORM-18's military method requires tracked
+defensive-war receipts before the congress can begin. The mutually exclusive
+sovereign-autonomy path records boundary, protection, jurisdiction, transit,
+property, and security terms without subject or client conversion. Beginning
+either terminal settlement closes the other path permanently for the current
+package generation. Both start and finalization gates reject a second mode, and
+the final Mesopotamian proof requires the permanent terminal-choice lock.
 
-- exact package loaders `independence_wave_load_package_iw_043` and `independence_wave_load_package_iw_058`
-- package planning and reservation triggers and effects
-- the shared Event 006 allocator, cluster transaction, origin separation, generic mechanics, generic full-focus framework, cleanup entry point, formable registry, and achievement definitions
-- accepted anchor bindings `249 Kazan`, optional `256 Cheboksary`, and `676 Mosul`
-- achievement trigger shells with their required route or proof flags
+The two IW-043 route-proof writers are sole, mutually exclusive capstone call
+sites. The three IW-058 proof writers are tied to the four-community guarantee
+contract, the exact final Mesopotamian settlement event, and a tracked former-
+host war or authored survival crisis. Client capture permanently disqualifies
+the current IW-058 package generation. Exact package cleanup clears every
+adapter, ledger, receipt, and proof surface owned by that generation.
 
-The bounded base package now has runtime content attestation, setup/final
-validation/cleanup dispatch, package identity handling, route mechanics, force
-transactions, AI, localisation, and final reviewed route/portrait/flag/focus/
-decision/idea/report assets. The package manifest and shared runtime registry
-are the current evidence for that tranche.
-
-The following signature extensions remain open:
-
-- FORM-12, FORM-13, and FORM-18 adapters and their exact consent, territory,
-  integration, and cleanup transactions
-- authoritative writers for the two IW-043 achievement route flags
-- authoritative writers for the three IW-058 achievement proof flags
-- parent-reviewed operational FORM-12/13/18 adapters and their exact readiness
-  attestation; the separate vanilla CHU/ASY shortcut guards have passed
-- final achievement/localisation integration for the two signature routes
-
-The correct current behavior for these extensions is fail closed. Base package
-attestation must not be read as promotion of FORM-12/13/18 or either signature
-achievement.
+The independent country, focus, decision, localisation, documentation, and
+event-completion audits have closed the bounded source tranche. Historical
+handoffs retain their at-the-time fail-closed findings and are superseded by the
+final audit handoffs for the implemented transaction. Parent-wide live human and
+AI scenario evidence, congress failure and counterpart invalidation, crossover
+rejection, cleanup, balance, and whole-Event 006 closeout remain outstanding.
 
 ## Binding invariants
 
@@ -508,7 +508,8 @@ The existing achievement `chaosx_006_volga_bulgaria` requires either:
 - `independence_wave_volga_bulgaria_restoration_route_complete`
 - `independence_wave_volga_bulgaria_federal_route_complete`
 
-No writer currently exists. Add two sole-writer scripted effects:
+The two sole-writer scripted effects are implemented and remain the only
+accepted writers:
 
 - `independence_wave_write_iw043_restoration_route_proof`
 - `independence_wave_write_iw043_federal_route_proof`
@@ -842,7 +843,7 @@ The autonomy compact is the second valid settlement mode when FORM-18 membership
 - non-aggression or external security guarantee
 - no subject, client, puppet, or forced-garrison status
 
-This path writes `iw058_mesopotamian_settlement_mode_sovereign_autonomy`. FORM-18 writes `iw058_mesopotamian_settlement_mode_federation`. The two mode flags are mutually exclusive.
+This path writes `iw058_mesopotamian_settlement_mode_sovereign_autonomy`. FORM-18 writes `iw058_mesopotamian_settlement_mode_federation`. The two mode flags are mutually exclusive and share `iw058_mesopotamian_terminal_settlement_locked`: beginning or completing one mode permanently closes the other for the current package generation. Both terminal finalization gates revalidate the lock and their exact mode, while the final settlement proof requires the lock.
 
 ### Vanilla ASY formable compatibility
 
@@ -866,7 +867,8 @@ The existing `chaosx_006_assyria_survives` trigger requires:
 - `independence_wave_assyria_mesopotamian_settlement_complete`
 - `independence_wave_assyria_host_conflict_survived`
 
-Add three sole-writer effects and one shared eligibility trigger:
+The three sole-writer effects and one shared eligibility trigger are implemented
+and remain the only accepted writers:
 
 - `can_write_independence_wave_iw058_achievement_proof`
 - `independence_wave_write_iw058_anchor_population_protected`
@@ -988,9 +990,16 @@ First inspect `common/scripted_effects/chaosx_dynamic_effects.txt`. Reuse any ex
 
 ### Runtime attestation
 
-`independence_wave_package_content_is_attested` and the scenario equivalent may
-retain the base IW-043/IW-058 IDs only while the following held-extension gates
-remain closed; a future formable/achievement promotion requires every item:
+Reconciliation note (2026-07-18): the exact CHU/ASY signature tranche now has
+setup attestation for its package, FORM-12/13/18 transaction surfaces, and all
+five proof writers. The checklist below is retained as plan-time evidence for
+the wider Event 006 gate and for any future family promotion; it is not a
+current statement that the exact signature tranche is unattested.
+
+`independence_wave_package_content_is_attested` and the scenario equivalent
+remain the broader Event 006 admission gates. A future family promotion
+requires every item below; the exact CHU/ASY signature tranche has already
+passed its scoped package and transaction attestation:
 
 - all files load and exact package dispatch returns setup, validation, and cleanup
 - exact ID and tag pairs are admitted
@@ -1005,9 +1014,10 @@ remain closed; a future formable/achievement promotion requires every item:
 - all required localisation and final assets are wired
 - independent focus, decision, country-package, localisation, and event-completion audits report no blocker
 
-The loader being present is not attestation evidence for the held extension
-surfaces. Current base admission is evidenced by the exact registry and the
-bounded country/focus/decision/localisation audits, not by this addendum alone.
+The loader being present alone is not attestation evidence for any wider
+extension surface. Current exact-carrier admission is evidenced by the exact
+registry, setup receipts, transaction audits, and bounded
+country/focus/decision/localisation evidence, not by this addendum alone.
 
 ## Asset handoff
 
@@ -1113,8 +1123,10 @@ The IW-058 achievement triplet is final and reviewed in the static icon package,
 with normal, grey, and not-eligible DDS files for
 `chaosx_006_assyria_survives`. The art communicates protected community life
 around Mosul and survival, not a conquest map or an unattributed sacred symbol.
-The achievement remains hidden/fail-closed until its proof writer and the ASY
-compatibility adapter pass the parent re-audit.
+The achievement remains hidden when its intended route, survival, or terminal
+proof predicates are not met. The three IW-058 proof writers and the exact ASY
+compatibility attestation are operational for the admitted signature carrier;
+the parent-wide achievement audit remains open.
 
 ### Report and news images
 
@@ -1170,7 +1182,13 @@ IW-058 writing rules:
 - avoid population counts or identity distributions not supported by the accepted research
 - avoid triumphalist neo-imperial language on the baseline and achievement paths
 
-After implementation wording is stable, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` through the spreadsheet worker. Then run `python .tools/export_event_catalog_csv.py` from the mod root. Do not edit the export CSV files directly.
+The stable localisation was compared directly with the editable source workbook
+`docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Event Details, all five
+evolution title/body pairs, the Liberations cluster wording, and SCN-008 name,
+premise, type labels, and intensity descriptions match exactly. No workbook
+rewrite or CSV export was required because there was no content delta; package-
+specific names remain on package gameplay surfaces rather than being inserted
+into the deliberately generic Event 006 catalog description.
 
 ## Balance contract
 
@@ -1340,6 +1358,15 @@ IW-058:
 
 ## Implementation tranches
 
+### Reconciliation note (2026-07-18)
+
+Tranches 0–5 are complete for the exact IW-043 `CHU` and IW-058 `ASY`
+signature tranche. The exit criteria below are retained as plan-time history;
+they explain the original gates and are not a current claim that every Event
+006 package or every parent-wide audit is complete. Current closeout is scoped
+to balance and runtime-scenario review, independent closeout audits, and the
+remaining parent-wide Event 006 work.
+
 ### Tranche 0, admission blockers and exact architecture
 
 Owner surfaces:
@@ -1444,24 +1471,20 @@ Exit criteria:
 
 ### Current blockers
 
-1. The bounded base package is admitted, but the signature extensions remain
-   **PARTIALLY IMPLEMENTED / HOLD**.
-2. The exact vanilla CHU/ASY shortcut guards passed their parent re-audit and
-   must be preserved.
-3. FORM-12, FORM-13, and FORM-18 are registry concepts without parent-reviewed
-   operational adapters that preserve the exact Event 006 contracts.
-4. Neither IW-043 achievement route flag has a final parent-reviewed writer.
-5. None of the three IW-058 achievement proof flags has a final parent-reviewed
-   writer.
-6. The IW-058 achievement icon triplet is final, but the hidden achievement
-   remains closed until its proof and exact formable-attestation gates pass.
-7. The package-specific route and formable consumers must remain aligned with
-   the final reviewed assets; no advisor assets are permitted.
-8. Current installed-map adjacency and protected-host viability must be rebound
-   at implementation time. This may restrict a corridor or optional state but
-   may not broaden opening territory.
-9. The installed tooling has no Technology Tree Viewer. No technology-tree work
-   is in scope.
+1. Accepted live human and AI scenarios remain unrecorded for the CHU/ASY
+   transaction matrix: successful federation and sovereign-autonomy outcomes,
+   congress failure, counterpart invalidation, both crossover-rejection
+   directions, exact cleanup, and the applicable SCN-008 intensities.
+2. Parent-wide Event 006 completion evidence remains open, including the full
+   package registry, balance and scenario review, remaining assets and audio,
+   and whole-event completion audit.
+3. FORM-06 through FORM-47 remain outside this tranche and fail-closed except
+   for separately promoted families; no wider formable promotion is implied.
+4. Current installed-map adjacency and protected-host viability remain a
+   parent-wide runtime-review concern. They may restrict a corridor or
+   optional state but may not broaden opening territory.
+5. The installed tooling has no Technology Tree Viewer. No technology-tree
+   work is in scope.
 
 ### Questions resolved by this addendum
 
@@ -1507,46 +1530,60 @@ The following would add bloat or weaken the accepted feature:
 - periodic country scans for guarantors, communities, formable members, or former hosts
 - instant formable cores or auto-annexation of consenting human actors
 
-The packages are deep enough under this addendum. After it is implemented and independently audited, another broad improvement-loop pass should not be started unless an audit finds a concrete unresolved promise. Further routes or visual layers would likely be bloat.
+The exact CHU/ASY packages are deep enough under this addendum. Do not start
+another broad improvement-loop pass unless the parent-wide closeout audit finds
+a concrete unresolved promise; further routes or visual layers would likely
+be bloat.
 
 ## Acceptance checklist
 
-- [ ] Exact package triggers prove Event 006 origin, tag, package ID, package flag, and Event 005 exclusion.
-- [ ] CHU IW-043 and IW-046 flags are exclusive and match the package variable.
-- [ ] Living CHU and ASY remain untouched.
-- [ ] All ten proposed cosmetic tags still end in `X` and pass the final collision audit.
+Reconciliation note (2026-07-18): the exact-carrier implementation and scoped
+audits have satisfied the signature-tranche rows. Unchecked rows below retain
+plan-time evidence for broader Event 006 validation, live scenarios, or future
+formable families; they are not a request to reimplement the current CHU/ASY
+transaction surfaces.
+
+- [x] Exact package triggers prove Event 006 origin, tag, package ID, package flag, and Event 005 exclusion.
+- [x] CHU IW-043 and IW-046 flags are exclusive and match the package variable.
+- [x] Living CHU and ASY remain untouched.
+- [x] All ten proposed cosmetic tags still end in `X` and pass the final collision audit.
 - [x] Vanilla CHU and ASY formables behave exactly as vanilla outside Event 006.
-- [ ] IW-043 opens as the Middle Volga Congress in 249 with 256 only when safely reserved.
-- [ ] IW-043 has four distinct rights clauses, river-security play, religious settlement, and two constitutional achievement routes.
-- [ ] IW-043 emergency rule cannot write an achievement route flag.
-- [ ] IW-043 starting and conversion forces are paid, bounded, and non-repeatable.
-- [ ] FORM-12 and FORM-13 require their exact member, anchor, consent, rights, and integration settlements.
-- [ ] Both IW-043 achievement proof writers have sole call sites and cannot coexist.
-- [ ] IW-058 opens only in 676 and grants no broad opening territory or cores.
-- [ ] Assyrian, Chaldean, Syriac, and Aramean guarantees are separate in script and localisation.
-- [ ] Church, secular, diaspora, and Levies institutions are mechanically distinct.
-- [ ] IW-058 has a defensive mountain-river corridor, named external guarantees, and a tracked former-host conflict.
-- [ ] Levies guardianship is temporary, defensive, and civilian restoration is required.
-- [ ] FORM-18 and sovereign autonomy are exact, mutually exclusive settlement modes.
-- [ ] All three IW-058 proof writers require exact terminal transactions.
-- [ ] Client capture permanently disqualifies the current IW-058 package generation.
-- [ ] AI has route, action, reserve, threat, consent, and normalization behavior for both packages.
-- [ ] No decision is a political-power store, passive inventory checklist, or reward-dust button.
-- [ ] No force or equipment transaction has a duplication or refund loop.
-- [ ] No periodic world scan or global daily on-action is added.
-- [ ] All final leaders and visible personal characters are male and provenance-compliant.
-- [ ] Every final new flag is ImageGen-produced, flat, attributed, and delivered at all three sizes.
-- [ ] IW-058 achievement art is complete.
-- [ ] No Event 006 advisor asset or sprite is added.
-- [ ] Localisation, event log, event detail, evolution detail, system docs, asset manifests, and workbook agree with runtime facts.
-- [ ] Independent country-package, focus, decision-mission, localisation, and event-completion audits report no unresolved blocker.
-- [x] Base runtime and scenario attestation is limited to the audited package
-  content; FORM-12/13/18 and signature-achievement attestation remain false
-  until their own checklist items and audits are complete.
+- [x] IW-043 opens as the Middle Volga Congress in 249 with 256 only when safely reserved.
+- [x] IW-043 has four distinct rights clauses, river-security play, religious settlement, and two constitutional achievement routes.
+- [x] IW-043 emergency rule cannot write an achievement route flag.
+- [x] IW-043 starting and conversion forces are paid, bounded, and non-repeatable.
+- [x] FORM-12 and FORM-13 require their exact member, anchor, consent, rights, and integration settlements.
+- [x] Both IW-043 achievement proof writers have sole call sites and cannot coexist.
+- [x] IW-058 opens only in 676 and grants no broad opening territory or cores.
+- [x] Assyrian, Chaldean, Syriac, and Aramean guarantees are separate in script and localisation.
+- [x] Church, secular, diaspora, and Levies institutions are mechanically distinct.
+- [x] IW-058 has a defensive mountain-river corridor, named external guarantees, and a tracked former-host conflict.
+- [x] Levies guardianship is temporary, defensive, and civilian restoration is required.
+- [x] FORM-18 and sovereign autonomy are exact, permanently locked, mutually exclusive settlement modes whose final proof requires the terminal-choice lock.
+- [x] Sovereign autonomy locks either the completed former-host settlement or a named sovereignty-bound regional guarantor, records all five treaty chapters, and creates no subject or client relationship.
+- [x] All three IW-058 proof writers require exact terminal transactions.
+- [x] Client capture permanently disqualifies the current IW-058 package generation.
+- [x] AI has route, action, reserve, threat, consent, and normalization behavior for both packages.
+- [x] No decision is a political-power store, passive inventory checklist, or reward-dust button.
+- [x] No force or equipment transaction has a duplication or refund loop.
+- [x] No periodic world scan or global daily on-action is added.
+- [x] All final leaders and visible personal characters are male and provenance-compliant.
+- [x] Every final new flag is ImageGen-produced, flat, attributed, and delivered at all three sizes.
+- [x] IW-058 achievement art is complete.
+- [x] No Event 006 advisor asset or sprite is added.
+- [x] Localisation, event log, event detail, evolution detail, system docs, asset manifests, and workbook agree with the bounded package facts and accepted generic Event 6 catalog direction.
+- [x] Independent country-package, focus, decision-mission, localisation, and event-completion audits report no unresolved bounded source blocker.
+- [ ] Parent-wide runtime and scenario closeout is still pending. Exact CHU/ASY
+  package/setup attestation now covers FORM-12/13/18 transaction surfaces and
+  the five sole signature-proof writers; remaining family and whole-event
+  audits must not be inferred from this bounded admission.
 
 ## Promotion and closure handoff
 
-This file should remain under `docs/plans/006_independence_wave_plans/` while implementation is pending. If the parent accepts the addendum, merge the binding design into the Event 006 source of truth rather than leaving it as a permanent parallel plan:
+This file remains under `docs/plans/006_independence_wave_plans/` while
+parent-wide Event 006 closeout is pending. The exact CHU/ASY binding has been
+merged into the Event 006 source of truth; retain this dated addendum as
+implementation evidence rather than starting another parallel plan:
 
 - package identity, origins, territories, institutions, routes, focus maps, decisions, AI, and assets into Part 5
 - mechanics and package values into Part 3
@@ -1556,25 +1593,33 @@ This file should remain under `docs/plans/006_independence_wave_plans/` while im
 - exact registry, formable, achievement, AI, and asset rows into their corresponding matrices
 - research cautions and source IDs into the research dossiers only where the accepted wording needs clarification
 
-Current disposition: **PARTIALLY IMPLEMENTED / HOLD**. Base CHU/ASY package
-facts are promoted into the source-of-truth map and Parts 5/6/7. The vanilla-
-formable compatibility adapter has passed, but FORM-12/13/18 attestation and
-the signature proof writers remain open; do not mark this addendum implemented
-and promoted yet.
+Current disposition: **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY
+signature tranche. Package identity, centralized politics and institutional
+leaders, FORM-12/13/18 transactions and exact-carrier attestations, paid
+180-day consent congresses, staged sovereignty-preserving integration, and
+the five sole proof writers are promoted into the source-of-truth specs and
+runtime evidence. This disposition does not claim whole Event 006 completion;
+parent-wide balance, runtime-scenario evidence, and remaining family audits
+stay queued.
 
-After promotion, mark this addendum `implemented and promoted`, `queued with a reason`, or `rejected with a reason`. Do not start another IW-043 or IW-058 improvement-loop pass while its disposition is unresolved.
+Promotion is recorded above for the exact CHU/ASY signature tranche. Do not
+start another IW-043 or IW-058 improvement-loop pass while the parent-wide
+closeout disposition remains unresolved.
 
 When all tranches are complete, the final parent closure should contain only final localisation review, task-specific scenario validation, asset handoff verification, audit reruns, documentation and catalog reconciliation, and the attestation decision. Mark the wider goal complete only if no blockers, fallbacks, simplifications, missing assets, missing AI, missing proof writers, or unresolved accepted plans remain.
 
 ## Simplifications, omissions, and fallback disposition
 
-The bounded base tranche is not a fallback: it is admitted and backed by the
-current package manifests. The held FORM-12/13/18 and signature-achievement
-surfaces remain fail-closed until adapter-attestation and proof audits close.
+The exact CHU/ASY signature tranche is not a fallback: it is admitted and
+backed by the current package manifests. FORM-12/13/18 transactions and their
+adapter attestations are operational for the exact carriers, with paid
+180-day consent ledgers, anchor recounts, staged integration, and sole proof
+writers. Signature achievements remain hidden when their intended route,
+survival, or terminal-record predicates fail. The separate vanilla
+compatibility guard remains passed.
 
-No fallback or simplification is proposed. The held signature surfaces remain
-fail closed until their formable adapters, attestation, proof writers,
-achievements, documentation, and audits are complete; the separate vanilla
-compatibility guard has passed.
+No fallback or simplification is proposed. Whole-Event 006 completion,
+runtime-scenario evidence, and remaining family audits are still open and must
+not be inferred from this tranche.
 
 The deliberate non-additions are scope decisions rather than omissions: no new scripted GUI, technology tree, super-event, animation, standalone country, or advisor asset improves the core play enough to justify its cost.

@@ -165,16 +165,16 @@ The binding curated cases remain disabled: IW-169 must be distinct from SIK and 
 
 Shared tags require mutually exclusive package reservation and package-specific readiness/origin gates.
 
-## Shared BIA and CHU fail-closed review
+## Shared BIA and CHU readiness review
 
 | Tag | Package | Reservation group | Exact wrapper | Content attested | Scenario blocked | Runtime status |
 | --- | --- | --- | --- | --- | --- | --- |
 | `BIA` | IW-096 Benin Kingdom | `RG-NIGERIA-COARSE` | False | False | True | `fail_closed` |
 | `BIA` | IW-107 Biafran regional state | `RG-NIGERIA-COARSE` | False | False | False | `fail_closed` |
-| `CHU` | IW-043 Volga Bulgaria | `RG-MIDDLE-VOLGA-KAZAN` | False | False | False | `fail_closed` |
-| `CHU` | IW-046 Chuvashia | `RG-MIDDLE-VOLGA-KAZAN` | False | False | False | `fail_closed` |
+| `CHU` | IW-043 Volga Bulgaria | `RG-MIDDLE-VOLGA-KAZAN` | True | True | False | `attested` |
+| `CHU` | IW-046 Chuvashia | `RG-MIDDLE-VOLGA-KAZAN` | True | False | False | `fail_closed` |
 
-Both shared-tag pairs use one reservation group per tag, so the frozen planner cannot select both identities together. None has both an exact package wrapper and static content attestation; the legacy generic content-ready flag has zero grants. They therefore remain fail-closed until separate package-specific origin, identity, localisation, content, and audit gates are implemented.
+Both shared-tag pairs use one reservation group per tag, so the frozen planner cannot select both identities together. IW-043 has both an exact wrapper and static content attestation and is admitted only on its exact CHU package contract. IW-046 has the exact dormant-tag wrapper but no content attestation, while both BIA rows lack complete exact-package admission. Those three rows remain fail-closed. The legacy generic content-ready flag has zero grants.
 
 ## Safe replacement pool
 
@@ -195,9 +195,9 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 
 ## Input fingerprints
 
-- Audit script SHA-256: `6564962a57b3d92cfa456b54097cf4ea7ebea6989b514d177eaa2a2b71ee99db`
+- Audit script SHA-256: `2c67614fac2a5e63a1d39a3a863d2ecf208c6afd262425e583c3d28c24cdf90d`
 - Event 006 tag registry SHA-256: `81a5eb91c2f84cef458fa63750275dc8123574d858961a4b415c30d024d64461`
-- Event 006 formable/cosmetic registry SHA-256: `0722580b094e435ded4b5f550184a15a183ccbbf0867a8ffab2408e31f8196af`
+- Event 006 formable/cosmetic registry SHA-256: `e0309a19dbc937384fdff9d73ccda690d10bdf545e3d03cf60525596a59dd595`
 - Candidate matrix SHA-256: `5a9d5612e83689df591fbdad9aacf694debe34897e0cf2f19b5dfc4e3d8d51a8`
 - Formable-family matrix SHA-256: `816162e3ffd6ce702bfcab591fc85bc49c875343a6d857fa80475e6c2af23169`
 - Formable base-localisation inventory SHA-256: `b990e9d5006cdc3bc30bebfef9dface0ae4b7833d23e5622a5b09b8bc6d7c230`
@@ -210,6 +210,6 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Parsed sibling-mod tag-surface inventory SHA-256: `eaf2cadf169eb541a7d89b33ccac8d8d19d0953532c4a01e5815ff09ed28dc19`
 - Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `bb2b8a29136b8cfac7a63cf3f682b94cf042b2e120860bae6e5ede9e85e82bd9`
 - ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `bcfcaef9fe10e37d5afbacaf5c9061a00473a4801e9854f89c80ef6e0f5e73ad`
-- Package-origin wrapper source SHA-256: `892c9772e7f58cb092d9c8ad1ecafe9bda345109803efca28907f5be18dc61cc`
+- Runtime attestation source SHA-256: `e8ed1ad17d629f74320d918c03a973eac469eb7caf9b3bad3185b9b8bfe68c22`
+- Package-origin wrapper source inventory SHA-256: `1717dec66c8b1da93cbed4c9f6ab185c491f5b9c4c8bddb34a7ad25f827e96d7`
 - Scenario block source SHA-256: `c2e52e993305e4bd9220cef7f58edb418ff6479d707afbae988579ab2db8229f`

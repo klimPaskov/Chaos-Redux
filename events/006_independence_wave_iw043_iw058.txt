@@ -2,8 +2,8 @@
 # CHAOS REDUX - EVENT 006 IW-043 / IW-058 INCIDENT CHAINS
 # ============================================================================
 # Overview:
-# - Owns the reserved IW-043 incidents 4301-4310 and IW-058 incidents
-#   5801-5810.
+# - Owns the reserved IW-043 incidents 4301-4314 and IW-058 incidents
+#   5801-5812.
 # - Every incident is triggered from an exact package setup, decision, mission,
 #   focus, or bounded former-host transaction. There is no periodic search.
 # - Clause and guarantee options commit or roll back the matching paid
@@ -541,7 +541,6 @@ country_event = {
 		name = chaosx.nr006.4310.a
 		trigger = { has_country_flag = independence_wave_iw043_route_federal }
 		independence_wave_write_iw043_federal_route_proof = yes
-		if = { limit = { can_independence_wave_form12_iw043_commit = yes } independence_wave_form12_terminal_transaction = yes }
 		set_country_flag = iw043_federal_charter_capstone_presented
 		custom_effect_tooltip = chaosx.nr006.4310.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
@@ -551,7 +550,6 @@ country_event = {
 		name = chaosx.nr006.4310.b
 		trigger = { has_country_flag = independence_wave_iw043_route_restoration }
 		independence_wave_write_iw043_restoration_route_proof = yes
-		if = { limit = { can_independence_wave_form13_iw043_commit = yes } independence_wave_form13_terminal_transaction = yes }
 		set_country_flag = iw043_restoration_charter_capstone_presented
 		custom_effect_tooltip = chaosx.nr006.4310.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
@@ -834,6 +832,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = iw058_church_civil_competence_crisis } }
 		set_country_flag = iw058_church_civil_competence_settled
 		set_country_flag = iw058_church_personal_competence_delimited
+		set_country_flag = iw058_autonomy_jurisdiction_record_complete
 		set_country_flag = iw058_autonomy_jurisdiction_complete
 		clr_country_flag = iw058_church_civil_competence_crisis
 		subtract_from_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.major }
@@ -848,6 +847,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = iw058_church_civil_competence_crisis } }
 		set_country_flag = iw058_church_civil_competence_settled
 		set_country_flag = iw058_civic_public_law_has_primacy
+		set_country_flag = iw058_autonomy_jurisdiction_record_complete
 		set_country_flag = iw058_autonomy_jurisdiction_complete
 		clr_country_flag = iw058_church_civil_competence_crisis
 		add_to_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.major }
@@ -1026,6 +1026,19 @@ country_event = {
 		event_target:independence_wave_iw058_named_external_guarantee_target = { give_guarantee = ROOT }
 		set_country_flag = iw058_external_guarantee_with_sovereignty_safeguards
 		set_country_flag = iw058_external_security_treaty_record_complete
+		clr_country_flag = iw058_regional_settlement_partner_confirmed
+		clear_global_event_target = independence_wave_iw058_regional_settlement_partner
+		if = {
+			limit = {
+				event_target:independence_wave_iw058_named_external_guarantee_target = {
+					is_independence_wave_iw058_legitimate_regional_settlement_partner = yes
+				}
+			}
+			event_target:independence_wave_iw058_named_external_guarantee_target = {
+				save_global_event_target_as = independence_wave_iw058_regional_settlement_partner
+			}
+			set_country_flag = iw058_regional_settlement_partner_confirmed
+		}
 		add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.decisive }
 		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
 		independence_wave_clamp_iw058_package_values = yes
@@ -1172,7 +1185,6 @@ country_event = {
 			limit = { has_idea = independence_wave_iw058_civic_charter_idea }
 			swap_ideas = { remove_idea = independence_wave_iw058_civic_charter_idea add_idea = independence_wave_iw058_mesopotamian_federal_settlement_idea }
 		}
-		if = { limit = { can_independence_wave_form18_iw058_commit = yes } independence_wave_form18_terminal_transaction = yes }
 		independence_wave_write_iw058_mesopotamian_settlement_complete = yes
 		set_country_flag = iw058_mesopotamian_federal_settlement_presented
 		custom_effect_tooltip = chaosx.nr006.5810.a.tt
@@ -1193,6 +1205,179 @@ country_event = {
 		independence_wave_write_iw058_mesopotamian_settlement_complete = yes
 		set_country_flag = iw058_sovereign_autonomy_settlement_presented
 		custom_effect_tooltip = chaosx.nr006.5810.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+# Targeted founding replies. These events are dispatched only by the bounded
+# FORM-12/13/18 invitation adapters. The saved proposal identity remains the
+# authoritative generation/sequence check; no country is inferred by region.
+country_event = {
+	id = chaosx.nr006.4311
+	title = chaosx.nr006.4311.t
+	desc = chaosx.nr006.4311.desc
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		has_pending_independence_wave_formable_founding_invitation = yes
+		check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.volga_ural_federation }
+	}
+
+	option = {
+		name = chaosx.nr006.4311.a
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.volga_ural_federation }
+		}
+		independence_wave_formable_declare_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.4311.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.blocked }
+	}
+
+	option = {
+		name = chaosx.nr006.4311.b
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.volga_ural_federation }
+		}
+		independence_wave_formable_withhold_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.4311.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.4312
+	title = chaosx.nr006.4312.t
+	desc = chaosx.nr006.4312.desc
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		has_pending_independence_wave_formable_founding_invitation = yes
+		check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.idel_ural }
+	}
+
+	option = {
+		name = chaosx.nr006.4312.a
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.idel_ural }
+		}
+		independence_wave_formable_declare_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.4312.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.blocked }
+	}
+
+	option = {
+		name = chaosx.nr006.4312.b
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.idel_ural }
+		}
+		independence_wave_formable_withhold_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.4312.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.5811
+	title = chaosx.nr006.5811.t
+	desc = chaosx.nr006.5811.desc
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		has_pending_independence_wave_formable_founding_invitation = yes
+		check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.mesopotamian_federation }
+	}
+
+	option = {
+		name = chaosx.nr006.5811.a
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.mesopotamian_federation }
+		}
+		independence_wave_formable_declare_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.5811.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.blocked }
+	}
+
+	option = {
+		name = chaosx.nr006.5811.b
+		trigger = {
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.mesopotamian_federation }
+		}
+		independence_wave_formable_withhold_consent_for_selected_family = yes
+		custom_effect_tooltip = chaosx.nr006.5811.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+# Formation presentations are separate from the constitutional route
+# capstones and from the post-formation integration stages.
+country_event = {
+	id = chaosx.nr006.4313
+	title = chaosx.nr006.4313.t
+	desc = chaosx.nr006.4313.desc
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_iw043_form12_carrier = yes
+		has_country_flag = independence_wave_formable_active
+		has_country_flag = independence_wave_form12_integration_applied
+		has_cosmetic_tag = VOLGA_URAL_FEDERATIONX
+	}
+
+	option = {
+		name = chaosx.nr006.4313.a
+		set_country_flag = iw043_form12_foundation_presented
+		custom_effect_tooltip = chaosx.nr006.4313.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.4314
+	title = chaosx.nr006.4314.t
+	desc = chaosx.nr006.4314.desc
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_iw043_form13_carrier = yes
+		has_country_flag = independence_wave_formable_active
+		has_country_flag = independence_wave_form13_integration_applied
+		has_cosmetic_tag = IDEL_URAL_COMPACTX
+	}
+
+	option = {
+		name = chaosx.nr006.4314.a
+		set_country_flag = iw043_form13_foundation_presented
+		custom_effect_tooltip = chaosx.nr006.4314.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.5812
+	title = chaosx.nr006.5812.t
+	desc = chaosx.nr006.5812.desc
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_iw058_form18_carrier = yes
+		has_country_flag = independence_wave_formable_active
+		has_country_flag = independence_wave_form18_integration_applied
+		has_cosmetic_tag = MESOPOTAMIAN_FEDERATIONX
+	}
+
+	option = {
+		name = chaosx.nr006.5812.a
+		set_country_flag = iw058_form18_foundation_presented
+		custom_effect_tooltip = chaosx.nr006.5812.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
 }

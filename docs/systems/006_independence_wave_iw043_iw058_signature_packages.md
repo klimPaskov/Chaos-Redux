@@ -10,7 +10,7 @@ The package-level reusable logic lives in `common/scripted_triggers/006_independ
 
 ## Focus-framework integration
 
-Both setup transactions assign `independence_wave_focus_assignment.full_framework` only after the exact package identity, opening cosmetic, institutional surface, and force receipts exist. Setup then publishes the common route, host-policy, internal-power, ambition, league, formable, and signature-module registrations and marks the layout dirty before writing the package setup-complete flag. Final validation repeats the full-framework assignment and registration receipts. FORM-12, FORM-13, and FORM-18 remain fail-closed because their adapter attestation flags are still unwritten.
+Both setup transactions assign `independence_wave_focus_assignment.full_framework` only after the exact package identity, opening cosmetic, institutional surface, and force receipts exist. Setup then publishes the common route, host-policy, internal-power, ambition, league, formable, and signature-module registrations and marks the layout dirty before writing the package setup-complete flag. Final validation repeats the full-framework assignment and registration receipts. The exact package setup also writes the audited achievement-writer and FORM-12/13/18 adapter attestations; cleanup clears them with the package generation.
 
 | Package | Full-framework assignment | Common route/power profile | Formable profile at setup | Disconnected focus imports |
 |---|---|---|---|---|
@@ -39,7 +39,13 @@ Binding targets are short-lived global pointers. Bind preflight, `independence_w
 
 ### Formable compatibility status
 
-FORM-12, FORM-13, and FORM-18 remain fail-closed. Their readiness triggers require `independence_wave_form12_adapter_attested`, `independence_wave_form13_adapter_attested`, or `independence_wave_form18_adapter_attested` respectively. The keyed identity/integration adapters only set their own receipt flags when the corresponding readiness alias is true, while the achievement-writer hooks intentionally write no attestation. No owned call site sets any of the three adapter-attestation flags, so the compatibility adapters are not operational in this tranche. The IW-058 integration adapter's result constant is corrected to the declared `independence_wave_iw_formable_adapter` category, but this does not open the gate.
+FORM-12, FORM-13, and FORM-18 are operational only for their exact Event 006 package carriers. IW-043 setup writes `independence_wave_form12_adapter_attested`, `independence_wave_form13_adapter_attested`, and `independence_wave_iw043_achievement_writers_attested`; IW-058 setup writes `independence_wave_form18_adapter_attested` and `independence_wave_iw058_achievement_writers_attested`. Setup also publishes the shared territory, reserved-X-tag, flag-package, identity-adapter, and integration-adapter receipts. Exact package cleanup clears every package-owned attestation and transaction receipt.
+
+Each family uses a paid 180-day congress with a frozen invitation ledger. FORM-12 and FORM-13 require three consenting external Event 006 member packages and three distinct controlled member anchors. FORM-18 requires two consenting external Event 006 member packages and two distinct controlled anchors. Human invitees accept or reject explicitly; AI invitees use the package consent scorer. The final ledger recount admits only consenting members to the unique-anchor proof. Invalid or stale members fail the transaction, and a failed congress consumes its committed costs and applies the family retry cooldown.
+
+Identity conversion is carrier-only and cosmetic: `VOLGA_URAL_FEDERATIONX`, `IDEL_URAL_COMPACTX`, or `MESOPOTAMIAN_FEDERATIONX`. Member countries retain their tags, sovereignty, Event 006 origin, territory, and country content. The two post-congress integration stages advance only the frozen consenting members through charter and initial-integration receipts; they do not annex members, create subjects, grant blanket cores, or end their origin packages. IW-058's military settlement method is unavailable before a tracked defensive former-host victory, sovereign-anchor receipt, corridor-control receipt, and absence of an offensive-pretext marker. The sovereign-autonomy compact is a mutually exclusive bilateral alternative: its 180-day transaction deterministically locks either the completed peaceful former-host settlement or the named sovereignty-bound regional guarantor, records boundary, return/protection, church-civil jurisdiction, transit/property, and security chapters, and does not create a subject or client relationship. FORM-18 and sovereign autonomy share a permanent terminal-choice flag; start and finalization gates reject the opposite receipt, completion, mode, active formable, and final proof, so the first successful settlement cannot be overwritten. The final proof requires this lock, and exact package cleanup clears it. The regional partner must remain sovereign, at peace with ASY, and actively guarantee it through the locked mission; package setup and teardown clear the persistent target.
+
+The vanilla Idel-Ural, Neo-Assyria, and Neo-Mesopotamia decisions are redeclared with an exact negative Event 006 guard. This prevents vanilla broad-core/global-formation shortcuts from bypassing the Event 006 congress, consent, territory, and integration contracts while leaving their ordinary vanilla behavior intact.
 
 The migration path is intentionally narrow: callers that currently inspect pre-conversion composition should use the designated-formation receipts after discipline; callers that need the exact live formation during a timed mission should use the designated binding trigger; all old duplicated target selection remains in the package-owned bind effect until the owning decision lane migrates to these APIs.
 
@@ -120,7 +126,7 @@ The cosmetic localisation consumers are:
 
 ## Asset consumers and wiring handoff
 
-The stable portrait, focus, and national-spirit sprite registrations resolve to reviewed final textures in the IW-043/IW-058 asset package, and the base runtime content attestation is registered for both package IDs. Optional FORM-12/13/18 adapter flags and achievement-writer flags remain unset. No advisor sprite or advisor texture is registered.
+The stable portrait, focus, and national-spirit sprite registrations resolve to reviewed final textures in the IW-043/IW-058 asset package, and the base runtime content attestation is registered for both package IDs. The exact setup transaction writes the matching FORM-12/13/18 adapter and achievement-writer attestations only after package validation. No advisor sprite or advisor texture is registered.
 
 The eight large institutional portraits are registered in `interface/006_independence_wave_iw043_iw058_portraits.gfx` and resolve under `gfx/leaders/006_independence_wave/` with these sprite IDs:
 
@@ -148,6 +154,5 @@ The twenty focus icon families are registered with matching `_shine` sprites in 
 
 ## Future plans
 
-- Complete exact keyed compatibility audits before enabling the FORM-12, FORM-13, and FORM-18 adapter-attestation flags.
-- Keep achievement-writer attestation hooks inert until the corresponding completion contracts are authored and audited.
-- Recheck combined idea, trait, force, decision-cost, and AI pressure after live scenario balance review. Emergency routes should remain strong enough to survive a tracked crisis without becoming the best permanent civilian government.
+- Recheck combined idea, trait, force, congress-cost, staged-integration, and AI pressure during the whole-event scenario balance pass. Emergency routes should remain strong enough to survive a tracked crisis without becoming the best permanent civilian government.
+- Exercise mixed human/AI invitation ledgers, anchor loss during an active congress, defensive former-host peace, sovereign-autonomy rejection, and retry expiry in the whole-event integration suite.
