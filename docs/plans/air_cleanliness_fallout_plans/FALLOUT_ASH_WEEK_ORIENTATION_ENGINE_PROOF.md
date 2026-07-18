@@ -76,7 +76,7 @@ The accepted transaction order is:
 11. record the component receipt
 12. clear only the issued-event receipt before advancing
 
-A save before result issue may repeat the issue attempt because the issued marker is absent. A save after issue sees the marker and cannot issue a second result. A stale generation cancels the pending transaction and may not record a current receipt. The reconcile helper exists, but no recurring caller is authorized or implemented yet.
+A save before result issue may repeat the issue attempt because the issued marker is absent. A save after issue sees the marker and cannot issue a second result. A stale generation cancels the pending transaction and may not record a current receipt. The component-begin, issue-next, and closure-begin entry points invoke the same reconciliation effect before reading or writing transaction state. A future authorized caller therefore cannot promote, dispatch, or close a stale payload. No recurring country iterator is required or authorized for this recovery path.
 
 This ordering is a static transaction proof. Runtime scheduling and save-load behavior remain unobserved because the game is not being run.
 
@@ -138,7 +138,7 @@ The independent architecture evidence is recorded in `subagent_handoffs/fallout_
 - The government-archetype effect rows are not implemented. Their approval gate remains unset.
 - No curated character or institution registry exists. The fifth component must fail closed and may not invent candidates.
 - Successor materialization and live tag-conflict allocation are not proven, so no orientation caller may be wired.
-- The stale-generation reconcile helper has no authorized recurring caller. No daily or monthly world-country iterator was added.
+- The orientation package still has no caller. Stale payload recovery is owned by its dormant transaction entry points and does not add a daily or monthly world-country iterator.
 - Literal lobby-host identity is not exposed by a proven engine trigger.
 - The narrow event-inspector lint is blocked by `EVENT_HELPER_PROJECTION_LIMIT` at the tool's fixed 200000-helper ceiling.
 - Runtime save recovery, delayed dispatch, state migration, and event visibility have not been observed because the game is not being run.

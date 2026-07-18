@@ -8,6 +8,20 @@ HOI4 was not run at the user's direction. Runtime persistence, save interruption
 
 The read-only event inspector was pointed at `events/fallout_world_end_events.txt` with helper expansion and lint enabled. It stopped at its fixed `EVENT_HELPER_PROJECTION_LIMIT` of 200000 projected helper operations and returned no artifacts. This is a tooling ceiling, not a successful engine validation and not evidence against the dormant pilot.
 
+## Stale-generation recovery ownership
+
+`fallout_orientation_reconcile_stale_generation` clears only a pending transaction whose stored generation differs from the current transition generation. It preserves durable component results, resource values, Cohesion, State Supply Access, Deaths receipts, and orientation memory. It records the typed `stale_generation` diagnostic after clearing the transient payload.
+
+The three public transaction paths that can begin work without an already authenticated event now invoke that recovery effect first:
+
+- `fallout_orientation_begin_component`
+- `fallout_orientation_issue_next`
+- `fallout_orientation_begin_closure`
+
+This makes a repeated request attempt idempotent at the transaction boundary. A stale payload is cancelled before a new component can freeze inputs, before an event can be issued, or before closure can begin. A current payload is unchanged because the stale-generation trigger is false. The package remains dormant and callerless. No on-action, world-country loop, scheduler activation flag, or manual-scenario path was added.
+
+The installed documentation for `check_variable`, `has_variable`, country flags, variable clearing, and sequential effect execution supports the guard-and-clear structure. The vanilla Swiss Federal Council effects provide the structural precedent for invoking an idempotent cleanup effect before writing replacement state in the same public effect.
+
 ## Accepted numerical contract
 
 Country Cohesion opens as:
