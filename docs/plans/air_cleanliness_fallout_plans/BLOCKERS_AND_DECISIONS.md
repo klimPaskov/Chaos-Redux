@@ -231,7 +231,7 @@ Implemented structural proof:
 
 Missing release work:
 
-- numerical state rows, country aggregation, value validation, row commits, and the global ready setter remain absent because the numerical contract is not accepted
+- [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) defines the current proposed 0 to 100 formulas, aggregation, initialization, validation, and ready-last commit order. It is not accepted, so numerical state rows, country aggregation, value validation, row commits, and the global ready setter remain absent
 - no candidate selection, event definition, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
 - bilateral event content and callers remain absent. Human choices, hidden AI resolution, stale-subject cancellation, delayed results, and content-owned cleanup must invoke the exact wrappers and pass review before activation
 - family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes

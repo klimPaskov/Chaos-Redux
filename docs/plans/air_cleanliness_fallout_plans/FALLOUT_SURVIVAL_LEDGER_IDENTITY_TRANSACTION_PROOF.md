@@ -4,7 +4,7 @@
 
 The formula-neutral first phase of the Fallout survival ledger is implemented. It stages one exact country row for every finalized successor and one exact state row for every included state. It records transition generation, allocation provenance, region, archetype, and country-memory identities, destructive-phase provenance, stable physical indexes, and the fixed nine-resource identity order. An exact recovery transaction can discard and rebuild only a malformed uncommitted identity payload during survivor allocation.
 
-No survival resource value is produced. No state numerator, denominator, share, country initial value, or mutable value is written. No effect sets `fallout_survival_ledger_ready`. The blackout transition therefore remains unable to pass this barrier until the numerical contract is reviewed and implemented.
+No survival resource value is produced. No state numerator, denominator, share, country initial value, or mutable value is written. No effect sets `fallout_survival_ledger_ready`. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) records a complete proposed 0 to 100 numerical and transaction contract. It is not accepted. The blackout transition therefore remains unable to pass this barrier until that contract is accepted and implemented.
 
 ## Source files
 
@@ -48,7 +48,7 @@ Both state and country rows store an explicit resource identity array. Index zer
 
 The future state numerical row is reserved as aligned raw numerator, raw denominator, and share arrays. The future country row is reserved as aligned raw numerator, raw denominator, immutable initial, and mutable current arrays. Row commit flags exist only as required shape markers. No current effect writes them.
 
-The structural triggers do not approve coefficients, rounding, aggregation, range limits, modifier order, zero-state behavior, or the initialization relationship between immutable and mutable country arrays. Those checks must be added before the sole ready-flag setter is implemented.
+The structural triggers do not approve coefficients, rounding, aggregation, range limits, modifier order, zero-state behavior, or the initialization relationship between immutable and mutable country arrays. The proposal supplies one reviewed candidate for each of those rules, but it does not change their approval status. Those checks must be accepted and added before the sole ready-flag setter is implemented.
 
 ## Transition barrier
 
@@ -92,9 +92,9 @@ Living-world registry schema advances from 1 to 2 because the registry now carri
 
 ## Remaining blockers
 
-- The numerical source formula for every resource is unapproved.
-- Rounding, aggregation, range, zero-state, and overlay-order rules are unapproved.
-- The initialization relationship between immutable and mutable country arrays is unapproved.
+- The proposed numerical source formula for every resource is unaccepted.
+- The proposed rounding, aggregation, range, zero-state, and overlay-order rules are unaccepted.
+- The proposed initialization relationship between immutable and mutable country arrays is unaccepted.
 - No state numerical producer exists.
 - No country aggregation producer exists.
 - No numerical row commit effect exists.
