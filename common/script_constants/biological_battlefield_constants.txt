@@ -1,0 +1,158 @@
+# ============================================================================
+# CHAOS REDUX - BATTLEFIELD BIOLOGICAL RAID SCRIPT CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes native land-raid reservations, exact route potency, command
+#   refunds, friendly blowback, failed-attempt evidence, AI, and history tuning.
+# - The raid parser mirrors reservation and command values with file-local @
+#   constants because those native fields do not accept script constants.
+# - All releases still enter the ordinary biological lifecycle dispatcher.
+# ============================================================================
+
+bio_battlefield_engine_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	failure = 1
+	limited_success = 2
+	success = 3
+	critical_success = 4
+}
+
+bio_battlefield_reservation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 50
+	plague = 25
+	tularemia = 25
+	smallpox = 10
+}
+
+bio_battlefield_reservation_floor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 49
+	plague = 24
+	tularemia = 24
+	smallpox = 9
+}
+
+bio_battlefield_agent_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	anthrax = {
+		potency_mult = 1
+	}
+	plague = {
+		potency_mult = 0.70
+	}
+	tularemia = {
+		potency_mult = 1.35
+	}
+	smallpox = {
+		potency_mult = 0.60
+	}
+}
+
+bio_battlefield_command = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax_cost = 10
+	plague_cost = 12
+	tularemia_cost = 10
+	smallpox_cost = 15
+	theater_refund = 5
+	terminal_refund = 10
+}
+
+bio_battlefield_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concentrated_division_floor = 2
+	occupied_friendly_exposed_mult = 1.25
+}
+
+bio_battlefield_attempt = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evidence = 50
+	condemnation = 12
+	evidence_minimum = 0
+	evidence_maximum = 100
+}
+
+bio_battlefield_blowback = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_chance = 45
+	full_readiness_mult = 0.70
+	very_high_protection_mult = 0.60
+	theater_doctrine_chance_mult = 1.10
+	terminal_doctrine_chance_mult = 1.20
+	minimum_chance = 0
+	maximum_chance = 80
+	intensity_mult = 0.35
+	exposed_share_mult = 0.50
+	evidence = 35
+}
+
+bio_battlefield_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 1
+	disabled = 0
+	minimum_success_chance = 0.35
+	retaliation_factor = 4
+	first_use_route_factor = 2
+	unrestricted_route_factor = 2.50
+	defensive_profile_factor = 0.20
+	prepared_program_factor = 1.50
+	supply_hub_factor = 1.25
+	fortified_target_factor = 1.30
+	concentrated_army_factor = 1.30
+	active_outbreak_factor = 0.10
+	high_condemnation_threshold = 100
+	high_import_vulnerability_threshold = 0.50
+	sanction_vulnerability_factor = 0.20
+	desperate_surrender_threshold = 0.70
+}
+
+bio_battlefield_history = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one_attempt = 1
+}

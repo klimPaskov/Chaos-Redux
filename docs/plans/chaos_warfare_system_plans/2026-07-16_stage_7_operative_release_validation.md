@@ -72,4 +72,4 @@ No inferred launch state, replacement target, timer, periodic country scan, cont
 
 ## Remaining Stage 7 work
 
-Battlefield dissemination, food/water/medical sabotage, laboratory accidents, captured-facility release, doomsday release, full countermeasure and treatment routes, remaining assets and localisation, package scenarios, improvement-loop review, and Stage 7 completion audits remain active in the parent plan.
+Battlefield dissemination was implemented in the later native-raid tranche recorded by `2026-07-18_stage_7_battlefield_dissemination_validation.md`. Food/water/medical sabotage, laboratory accidents, captured-facility release, doomsday release, full countermeasure and treatment routes, remaining assets and localisation, package scenarios, improvement-loop review, and Stage 7 completion audits remain active in the parent plan.

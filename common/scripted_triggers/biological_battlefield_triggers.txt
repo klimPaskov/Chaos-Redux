@@ -1,0 +1,283 @@
+# ============================================================================
+# CHAOS REDUX - BATTLEFIELD BIOLOGICAL RAID SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates four native exact-state land raids for ordinary biological agents.
+# - Requires full readiness, battlefield policy, a live Combined CBRN Overmatch
+#   headquarters posture, an enemy-held front, and the exact completed project.
+# - Keeps player target eligibility and route-aware AI policy separate.
+# - Contains no decision deployment, inferred state, periodic scan, estimator,
+#   proxy launch hook, or weaponized-zombie authorization.
+# ============================================================================
+
+bio_battlefield_agent_is_valid = {
+	OR = {
+		check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+}
+
+bio_battlefield_engine_outcome_is_valid = {
+	OR = {
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.failure compare = equals }
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.limited_success compare = equals }
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.success compare = equals }
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.critical_success compare = equals }
+	}
+}
+
+# Country scope. Agent identity must match the project that owns the native
+# essential-equipment archetype reserved by the raid.
+bio_battlefield_actor_has_agent_project = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		AND = {
+			check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			is_special_project_completed = sp:plague_bomb
+		}
+		AND = {
+			check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			is_special_project_completed = sp:tularemia_bomb
+		}
+		AND = {
+			check_variable = { var = bio_battlefield_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			is_special_project_completed = sp:smallpox_bomb
+		}
+	}
+}
+
+bio_battlefield_country_has_any_agent_project = {
+	OR = {
+		is_special_project_completed = sp:anthrax_bomb
+		is_special_project_completed = sp:plague_bomb
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:smallpox_bomb
+	}
+}
+
+# Country scope. Used only before headquarters activation and AI template
+# selection. Native raid creation performs the exact essential-equipment debit.
+bio_battlefield_country_has_any_agent_reserve = {
+	OR = {
+		AND = {
+			is_special_project_completed = sp:anthrax_bomb
+			has_equipment = { anthrax_bomb_1 > constant:bio_battlefield_reservation_floor.anthrax }
+		}
+		AND = {
+			is_special_project_completed = sp:plague_bomb
+			has_equipment = { plague_bomb_1 > constant:bio_battlefield_reservation_floor.plague }
+		}
+		AND = {
+			is_special_project_completed = sp:tularemia_bomb
+			has_equipment = { tularemia_bomb_1 > constant:bio_battlefield_reservation_floor.tularemia }
+		}
+		AND = {
+			is_special_project_completed = sp:smallpox_bomb
+			has_equipment = { smallpox_bomb_1 > constant:bio_battlefield_reservation_floor.smallpox }
+		}
+	}
+}
+
+# Country scope. This proves a currently active, correctly coded, still-valid
+# Combined CBRN Overmatch command. The engine exposes no exact HQ-to-state link.
+bio_battlefield_country_has_active_overmatch_authorization = {
+	any_army_leader = {
+		has_trait = cbrn_hq_active_combined_overmatch
+		check_variable = {
+			var = cbrn_hq_operation_code
+			value = constant:cbrn_hq_operation.combined_overmatch
+			compare = equals
+		}
+		cbrn_hq_overmatch_command_is_valid = yes
+	}
+}
+
+bio_battlefield_country_can_operate = {
+	has_war = yes
+	has_tech = theater_cbrn_headquarters
+	cbrn_country_has_full_readiness = yes
+	cbrn_policy_allows_battlefield_use = yes
+	bio_battlefield_country_has_any_agent_project = yes
+	bio_battlefield_country_has_active_overmatch_authorization = yes
+	bio_kruger_last_resort_authority_is_valid = yes
+}
+
+# Country scope with FROM as the enemy country and var:target_state supplied by
+# the native raid. Human players may strike enemy-held friendly-owned ground;
+# that route receives higher exposed-population and blowback consequences.
+bio_battlefield_target_from_is_valid = {
+	FROM = { exists = yes }
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = ROOT } }
+	var:target_state = {
+		impassable = no
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		CONTROLLER = { tag = FROM }
+		OR = {
+			supply_node > constant:bio_lifecycle_math.zero
+			CONTROLLER = {
+				divisions_in_state = {
+					state = PREV
+					size > constant:bio_battlefield_target.concentrated_division_floor
+				}
+			}
+		}
+		any_neighbor_state = {
+			is_controlled_by = ROOT
+			bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			any_state_division = { OWNER = { tag = ROOT } }
+		}
+	}
+}
+
+bio_battlefield_can_prepare_against_from = {
+	bio_battlefield_country_can_operate = yes
+	bio_battlefield_target_from_is_valid = yes
+}
+
+# Raid-instance scope after resolver event targets have been saved.
+bio_battlefield_native_context_is_valid = {
+	has_event_target = bio_battlefield_actor
+	has_event_target = bio_battlefield_victim
+	has_event_target = bio_battlefield_target_state
+	bio_battlefield_agent_is_valid = yes
+	bio_battlefield_engine_outcome_is_valid = yes
+	event_target:bio_battlefield_actor = {
+		exists = yes
+		has_war_with = event_target:bio_battlefield_victim
+		NOT = { is_in_faction_with = event_target:bio_battlefield_victim }
+		NOT = { is_subject_of = event_target:bio_battlefield_victim }
+		bio_battlefield_actor_has_agent_project = yes
+		bio_battlefield_country_can_operate = yes
+	}
+	event_target:bio_battlefield_victim = {
+		exists = yes
+		NOT = { is_subject_of = event_target:bio_battlefield_actor }
+	}
+	event_target:bio_battlefield_target_state = {
+		impassable = no
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		CONTROLLER = { tag = event_target:bio_battlefield_victim }
+		OR = {
+			supply_node > constant:bio_lifecycle_math.zero
+			CONTROLLER = {
+				divisions_in_state = {
+					state = PREV
+					size > constant:bio_battlefield_target.concentrated_division_floor
+				}
+			}
+		}
+		any_neighbor_state = {
+			is_controlled_by = event_target:bio_battlefield_actor
+			bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			any_state_division = { OWNER = { tag = event_target:bio_battlefield_actor } }
+		}
+	}
+}
+
+# Raid-instance scope. Immutable agent identity is enforced by the resolver;
+# this helper verifies only the current-version native scopes available to the
+# result UI before temporary resolver inputs exist.
+bio_battlefield_native_tooltip_context_is_valid = {
+	var:actor_country = {
+		exists = yes
+		has_war_with = var:ROOT.victim_country
+		NOT = { is_in_faction_with = var:ROOT.victim_country }
+		NOT = { is_subject_of = var:ROOT.victim_country }
+		bio_battlefield_country_can_operate = yes
+	}
+	var:victim_country = {
+		exists = yes
+		NOT = { is_subject_of = var:ROOT.actor_country }
+	}
+	var:target_state = {
+		impassable = no
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		is_controlled_by = var:ROOT.victim_country
+		OR = {
+			supply_node > constant:bio_lifecycle_math.zero
+			CONTROLLER = {
+				divisions_in_state = {
+					state = PREV
+					size > constant:bio_battlefield_target.concentrated_division_floor
+				}
+			}
+		}
+		any_neighbor_state = {
+			is_controlled_by = var:ROOT.actor_country
+			bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			any_state_division = { OWNER = { tag = var:ROOT.actor_country } }
+		}
+	}
+}
+
+bio_battlefield_payload_record_is_valid = {
+	bio_battlefield_agent_is_valid = yes
+	bio_battlefield_engine_outcome_is_valid = yes
+	check_variable = { var = bio_battlefield_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_battlefield_payload_consumed value = bio_battlefield_payload_required compare = equals }
+}
+
+bio_battlefield_engine_outcome_has_release = {
+	OR = {
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.limited_success compare = equals }
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.success compare = equals }
+		check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.critical_success compare = equals }
+	}
+}
+
+bio_battlefield_engine_outcome_has_no_release = {
+	check_variable = { var = bio_battlefield_engine_outcome value = constant:bio_battlefield_engine_outcome.failure compare = equals }
+}
+
+# Country scope. The ordinary AI safety floor can be crossed only by the
+# explicit desperate route below; it never grants policy, project, or payload.
+bio_battlefield_ai_has_safe_domestic_program = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+bio_battlefield_ai_is_desperate_route = {
+	cbrn_ai_route_allows_unrestricted_use = yes
+	cbrn_policy_allows_extreme_use = yes
+	surrender_progress > constant:bio_battlefield_ai.desperate_surrender_threshold
+}
+
+# Country scope with FROM and var:target_state supplied by the native raid.
+bio_battlefield_ai_target_owner_is_friendly = {
+	var:target_state = {
+		OR = {
+			is_owned_by = ROOT
+			OWNER = {
+				OR = {
+					is_in_faction_with = ROOT
+					is_subject_of = ROOT
+					ROOT = { is_subject_of = PREV }
+				}
+			}
+		}
+	}
+}
+
+bio_battlefield_ai_may_target_from = {
+	bio_battlefield_can_prepare_against_from = yes
+	bio_kruger_last_resort_ai_is_valid = yes
+	NOT = { bio_battlefield_ai_target_owner_is_friendly = yes }
+	OR = {
+		bio_battlefield_ai_has_safe_domestic_program = yes
+		bio_battlefield_ai_is_desperate_route = yes
+	}
+	OR = {
+		has_country_flag = cbrn_retaliation_authorized
+		FROM = { has_country_flag = used_bioweapon }
+		cbrn_ai_route_allows_first_use = yes
+		bio_battlefield_ai_is_desperate_route = yes
+	}
+}

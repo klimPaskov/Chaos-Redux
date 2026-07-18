@@ -157,7 +157,18 @@ cbrn_hq_owner_has_overmatch_context = {
 		has_war = yes
 		cbrn_country_has_full_readiness = yes
 		cbrn_policy_allows_battlefield_use = yes
-		cbrn_country_has_any_chemical_payload_stock = yes
+		OR = {
+			cbrn_country_has_any_chemical_payload_stock = yes
+			bio_battlefield_country_has_any_agent_reserve = yes
+			PREV = {
+				has_trait = cbrn_hq_active_combined_overmatch
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.combined_overmatch
+					compare = equals
+				}
+			}
+		}
 		has_tech = theater_cbrn_headquarters
 	}
 }
@@ -912,7 +923,10 @@ cbrn_country_can_field_overmatch_hq = {
 	has_tech = theater_cbrn_headquarters
 	cbrn_country_has_full_readiness = yes
 	cbrn_policy_allows_battlefield_use = yes
-	cbrn_country_has_any_chemical_payload_stock = yes
+	OR = {
+		cbrn_country_has_any_chemical_payload_stock = yes
+		bio_battlefield_country_has_any_agent_reserve = yes
+	}
 	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
 	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.overmatch_masks } }
 	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.overmatch_decon } }
