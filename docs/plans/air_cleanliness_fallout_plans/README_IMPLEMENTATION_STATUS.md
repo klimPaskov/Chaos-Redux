@@ -10,7 +10,7 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 
 The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain authoritative. This plans directory records implementation evidence, blockers, accepted decisions, audits, and resume state. It does not narrow the source design.
 
-`FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` is explicitly unaccepted and awaits user approval. It is not implementation authority and must not be promoted into the source specs. Its proposed suffixes `62` through `84` remain free and are not reserved. No matching events or localisation are defined. Both scheduler activation flags remain unset, the living-world count remains 0 of 660, and implementation is forbidden until explicit approval is recorded.
+The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. Its accepted design is incorporated into the Fallout source specs. Suffixes `62` through `84` are reserved for the five-component orientation sequence, its visible and hidden results, both closures, and authenticated cleanup. No matching events, localisation, callers, or assets are implemented. Both scheduler activation flags remain unset. The living-world count remains 0 of 660 until the full tranche is wired, logged, detailed, manually reviewed, and audited.
 
 Fallout remains an unnumbered system package with dedicated ownership of:
 
@@ -165,7 +165,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 8. Close the tracked blackout input, scripted-GUI binding, and all-resolution drawing-order gates. The mapmode frame gate is resolved by `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
 9. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
 10. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
-11. Obtain explicit user approval for the Ash-week orientation contract before any orientation implementation. After approval, implement the five-part content, bounded candidate selection, event definitions, human choices, hidden AI resolution, content-owned cleanup, fatigue behavior, and runtime persistence proof before enabling the living-world scheduler. Survival numerical production, validation, row commits, and the ready-last setter are implemented.
+11. Implement the accepted Ash-week orientation contract with all five components, exact delays, deterministic outcomes, human and hidden-AI parity, save recovery, missing-registry refusal, six dedicated assets, logs, details, and audits. Do not wire its caller until successor allocation, player continuation, and the required candidate registries are proven. Do not enable the living-world scheduler. Survival numerical production, validation, row commits, and the ready-last setter are implemented.
 
 ## Resume map
 
@@ -192,7 +192,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Dormant scheduler proof: `FALLOUT_EVENT_SCHEDULER_PROOF.md`
 - Survival numerical proof: `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md`
 - Living-world suffix reservations: `FALLOUT_EVENT_ID_LEDGER.md`
-- Unaccepted Ash-week orientation proposal awaiting user approval: `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md`
+- Accepted Ash-week orientation contract and implementation boundary: `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md`
 
 ## Simplifications and fallbacks
 

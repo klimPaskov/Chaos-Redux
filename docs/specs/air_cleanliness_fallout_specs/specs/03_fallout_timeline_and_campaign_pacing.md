@@ -71,15 +71,63 @@ The normal event scheduler remains locked until the reveal grace period.
 
 ## Ash week
 
-Each playable country receives:
+The user approved the Ash-week orientation contract on 2026-07-18. Every materialized playable successor receives five distinct components in this exact order:
 
-1. one national orientation event
-2. one capital or main-state condition event
-3. one immediate resource crisis
-4. one government-archetype introduction
-5. one first recurring character or institution
+| Sequence | Component | Human root and result | Hidden AI root and result | Result delay | Receipt |
+| ---: | --- | --- | --- | ---: | --- |
+| 1 | national orientation | `62` and `64` | `63` and `65` | 2 days | `national_orientation` |
+| 2 | capital or main-state condition | `66` and `68` | `67` and `69` | 3 days | `capital_condition` |
+| 3 | immediate resource crisis | `70` and `72` | `71` and `73` | 4 days | `immediate_resource_crisis` |
+| 4 | government-archetype introduction | `74` and `76` | `75` and `77` | 3 days | `government_archetype` |
+| 5 | first character or institution | `78` and `80` | `79` and `81` | 2 days | `character_or_institution` |
 
-These may be combined into fewer popups when the country is small. The underlying effects remain distinct.
+The sequence closes through human event `82` or hidden AI event `83`. Hidden event `84` owns authenticated cleanup. These 23 `chaosx.fallout` suffixes are reserved with these exact roles:
+
+| Suffix | Event role | Visibility | Follow-up |
+| ---: | --- | --- | --- |
+| 62 | national orientation root | human visible | 64 |
+| 63 | national orientation root | hidden AI | 65 |
+| 64 | national orientation result | human visible | 66 |
+| 65 | national orientation result | hidden AI | 67 |
+| 66 | capital condition root | human visible | 68 |
+| 67 | capital condition root | hidden AI | 69 |
+| 68 | capital condition result | human visible | 70 |
+| 69 | capital condition result | hidden AI | 71 |
+| 70 | immediate resource crisis root | human visible | 72 |
+| 71 | immediate resource crisis root | hidden AI | 73 |
+| 72 | immediate resource crisis result | human visible | 74 |
+| 73 | immediate resource crisis result | hidden AI | 75 |
+| 74 | government archetype root | human visible | 76 |
+| 75 | government archetype root | hidden AI | 77 |
+| 76 | government archetype result | human visible | 78 |
+| 77 | government archetype result | hidden AI | 79 |
+| 78 | character or institution root | human visible | 80 |
+| 79 | character or institution root | hidden AI | 81 |
+| 80 | character or institution result | human visible | 82 |
+| 81 | character or institution result | hidden AI | 83 |
+| 82 | orientation closure | human visible | 84 |
+| 83 | orientation closure | hidden AI | 84 |
+| 84 | orientation cleanup | hidden | none |
+
+Each result uses one deterministic score calculated from its frozen component transaction. The accepted common outcome bands are:
+
+| Score | Outcome |
+| ---: | --- |
+| 70 or more | success |
+| 45 through 69 | partial success |
+| below 45 | failure |
+
+Human and hidden AI routes pay the same costs, use the same score, apply the same results, write the same memory, and run the same cleanup. Hidden AI cannot receive reduced costs or guaranteed success. Exact ties use the lowest stable branch identity.
+
+Each component transaction stores its transition generation, country registry index, component identity, mode, branch, required state or character target, region, archetype, frozen survival inputs, issue date, due day, event token, and result-issued identity. Payload fields commit before the pending marker. The result-issued marker commits only after event issue. Save recovery may issue an unissued result once and must preserve an issued token without issuing it again. A stale generation cancels its temporary transaction without promoting an orientation receipt.
+
+Orientation refuses to start when the successor allocation, player-continuation ownership, nine-region row, twelve-archetype row, country-memory row, main-state target, or curated character or institution registry is missing. A missing row records a typed diagnostic. It cannot select a generic fallback. The character or institution component requires at least two valid curated candidates.
+
+The package requires six dedicated Fallout report images for national orientation, capital condition, resource crisis, government authority, first character or institution, and orientation closure. The assets, events, localisation, callers, logs, details, and audits do not yet exist merely because the contract is accepted.
+
+No caller may be wired until successor allocation, player continuation, and every required candidate registry are proven. The closure and cleanup do not set `fallout_event_scheduler_activation_approved` or `fallout_event_scheduler_active`. The scheduler remains dormant. The 23 reserved blocks contribute zero to the release floor until the complete tranche is implemented, wired, localised, logged, detailed, manually reviewed, and audited. The Fallout living-world count therefore remains 0 of 660.
+
+The approved scoring inputs, branch costs, result values, regional and archetype coverage rules, human and AI ownership rules, recovery rules, asset requirements, and validation scenarios in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` are incorporated into this source spec as acceptance criteria.
 
 No country should begin with every decision visible. The orientation opens the first emergency set.
 

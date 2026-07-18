@@ -276,13 +276,13 @@ The installed documentation and close precedents establish the selector grammar 
 
 Runtime acceptance remains required for railway topology, supply-node removal, immediate read visibility, save interruption, and multiplayer synchronization. `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md` records the exact static basis and test boundary.
 
-## B12: Ash-week orientation contract approval
+## B12: Ash-week orientation implementation
 
-Status: open, explicit user approval required before implementation
+Status: accepted design, implementation and caller remain blocked
 
-`FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` is an unaccepted working proposal. It is not an accepted decision and must not be promoted into the source specs. Proposed suffixes `62` through `84` remain free and are not reserved. No matching events or localisation are defined. `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` remain unset. The living-world count remains 0 of 660.
+The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. Suffixes `62` through `84` are reserved with the accepted visible, hidden AI, result, closure, and cleanup roles. The accepted contract fixes the five-component sequence, 2, 3, 4, 3, and 2 day result delays, deterministic success bands, human and hidden-AI parity, save-recovery identity, missing-registry refusal, six dedicated assets, and non-activation rules.
 
-No gameplay, localisation, asset, caller, reservation, or activation work from that proposal is authorized until the user explicitly approves it.
+No matching event, localisation, caller, or asset is implemented. A caller remains forbidden until successor allocation, player continuation, every regional and archetype row, country memory, main-state target, and curated character or institution registry are proven. `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` remain unset. The living-world count remains 0 of 660 until the complete orientation tranche is wired, logged, detailed, manually reviewed, and audited.
 
 ## Design decisions already resolved
 

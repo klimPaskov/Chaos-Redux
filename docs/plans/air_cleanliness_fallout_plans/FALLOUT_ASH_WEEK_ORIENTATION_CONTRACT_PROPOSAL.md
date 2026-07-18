@@ -1,10 +1,10 @@
-# Fallout Ash-Week Orientation Contract Proposal
+# Fallout Ash-Week Orientation Contract
 
 ## Status
 
-This proposal is unaccepted. It requires explicit user approval before implementation.
+The user approved this contract on 2026-07-18. It is accepted Fallout source design and authorizes implementation within the scope boundaries below.
 
-The proposed package defines dormant event content only. It does not set `fallout_event_scheduler_activation_approved`, `fallout_event_scheduler_active`, any manual-scenario activation flag, or any transition request flag. It does not change the current Fallout living-world count of 0 out of 660 manually reviewed blocks.
+Approval does not claim that any event, localisation, caller, asset, log entry, event-detail entry, or audit already exists. The accepted package remains dormant. It does not set `fallout_event_scheduler_activation_approved`, `fallout_event_scheduler_active`, any manual-scenario activation flag, or any transition request flag. The Fallout living-world count remains 0 of 660 manually reviewed blocks until the full orientation tranche passes its implementation and audit gates.
 
 ## Purpose
 
@@ -43,9 +43,9 @@ The package must not implement or alter:
 
 No fallback successor, fallback character, generic country-memory row, or substitute asset is authorized.
 
-## Proposed identifier allocation
+## Reserved identifier allocation
 
-The dedicated Fallout event file was scanned before this proposal. Suffixes `62` through `84` are free. Suffixes `100` through `126` remain reserved for the living-world pilot and are not reused.
+The accepted contract reserves suffixes `62` through `84` for this orientation package. Suffixes `100` through `126` remain reserved for the living-world pilot and are not reused.
 
 | Suffix | Event role | Visibility | Follow-up |
 | ---: | --- | --- | --- |
@@ -61,10 +61,10 @@ The dedicated Fallout event file was scanned before this proposal. Suffixes `62`
 | 71 | immediate resource crisis root | hidden AI | 73 |
 | 72 | immediate resource crisis result | human visible | 74 |
 | 73 | immediate resource crisis result | hidden AI | 75 |
-| 74 | government-archetype root | human visible | 76 |
-| 75 | government-archetype root | hidden AI | 77 |
-| 76 | government-archetype result | human visible | 78 |
-| 77 | government-archetype result | hidden AI | 79 |
+| 74 | government archetype root | human visible | 76 |
+| 75 | government archetype root | hidden AI | 77 |
+| 76 | government archetype result | human visible | 78 |
+| 77 | government archetype result | hidden AI | 79 |
 | 78 | character or institution root | human visible | 80 |
 | 79 | character or institution root | hidden AI | 81 |
 | 80 | character or institution result | human visible | 82 |
@@ -73,7 +73,7 @@ The dedicated Fallout event file was scanned before this proposal. Suffixes `62`
 | 83 | orientation closure | hidden AI | 84 |
 | 84 | orientation cleanup | hidden | none |
 
-These 23 identities are proposed reservations only. They become countable only after their callers, localisation, effects, AI, delayed results, memory, cleanup, assets, log entries, event details, and manual review are complete.
+These 23 identities are reserved for the Ash-week orientation package. They become countable only after their callers, localisation, effects, AI, delayed results, memory, cleanup, six dedicated assets, log entries, event details, and manual review are complete.
 
 ## Eligibility barrier
 
@@ -127,7 +127,7 @@ Each root records one immutable component transaction with:
 
 Each result calculates a score from the frozen transaction. No random list, random country, random state, or variable timing is allowed.
 
-The proposed common score bands are:
+The accepted common score bands are:
 
 | Score | Outcome |
 | ---: | --- |
@@ -135,7 +135,7 @@ The proposed common score bands are:
 | 45 through 69 | partial success |
 | below 45 | failure |
 
-Each component receives a base score of 50. The approved implementation must put all additions and deductions in typed script constants. The shared allowed inputs are:
+Each component receives a base score of 50. Implementation must put all additions and deductions in typed script constants. The shared allowed inputs are:
 
 - plus 15 when the branch's primary resource is at least 60
 - plus 8 when it is at least 40 but below 60
@@ -176,7 +176,7 @@ The three required branch families are:
 
 Every branch spends a meaningful combination of Food, Clean water, Filters, Fuel, Scrap, or Shelter capacity. No branch spends political power. The delayed result must change Recognition and Cohesion by at least 4 points in opposite risk patterns. A failure must also create a concrete shortage, unrest, building-damage, or Deaths consequence. Success records the chosen national-authority memory. Partial success records both the authority memory and its contested form. Failure records the failed authority memory and closes the transaction without a retry reward.
 
-The accepted branch transaction would use these exact values:
+The accepted branch transaction uses these exact values:
 
 | Branch | Cost at root | Success result | Partial result | Failure result |
 | --- | --- | --- | --- | --- |
@@ -200,7 +200,7 @@ The root must show the target state's grade, phase, exposure, shelter, surviving
 
 The evacuation branch is available only with an exact prepared receiving state and a balanced migration transaction. The result must reconcile population movement, building damage or repair, shelter pressure, supply access, and Deaths. A failed evacuation may not delete population from the source without the matching Deaths and destination receipts.
 
-The accepted branch transaction would use these exact values:
+The accepted branch transaction uses these exact values:
 
 | Branch | Cost at root | Success result | Partial result | Failure result |
 | --- | --- | --- | --- | --- |
@@ -224,7 +224,7 @@ The third response must be manually selected for each region and archetype pair.
 
 Success must improve the selected crisis value by at least 8 points and consume at least 4 points from one supporting resource. Partial success improves it by 4 to 7 points and creates a durable dispute or fatigue memory. Failure may not grant the selected resource. It must apply a concrete supply, disease, Deaths, recognition, or building consequence.
 
-The accepted branch transaction would use these exact values:
+The accepted branch transaction uses these exact values:
 
 | Branch | Cost at root | Success result | Partial result | Failure result |
 | --- | --- | --- | --- | --- |
@@ -246,7 +246,7 @@ Each root must present:
 
 The result may set government memory, unlock later focus or decision layers, alter Recognition and Cohesion, and add a substantial timed or persistent country modifier. It must not perform a broad ideology or tag rewrite. Any later government change needs its own accepted country-package contract.
 
-The accepted branch transaction would use these exact values before archetype-specific additions:
+The accepted branch transaction uses these exact values before archetype-specific additions:
 
 | Branch | Cost at root | Success result | Partial result | Failure result |
 | --- | --- | --- | --- | --- |
@@ -264,7 +264,7 @@ The root presents two or three valid candidates with distinct survival roles, co
 
 Success installs the exact character or institution and records its relationship memory. Partial success installs a contested or limited form with a delayed liability. Failure consumes the committed cost and records injury, refusal, factional rupture, institutional collapse, or Deaths as appropriate. A failed branch cannot be selected repeatedly for free.
 
-The accepted branch transaction would use these exact values:
+The accepted branch transaction uses these exact values:
 
 | Branch | Cost at root | Success result | Partial result | Failure result |
 | --- | --- | --- | --- | --- |
@@ -324,7 +324,7 @@ The package may set an orientation-closure receipt. It must not set `fallout_eve
 
 ## Localisation direction
 
-Working labels in this proposal are not final localisation.
+Working labels in this contract are not final localisation.
 
 Final text must name concrete conditions, districts, institutions, resources, weather, and authority disputes. It must react to region, archetype, country memory, state grade, resource crisis, and outcome. It must not use generic apocalypse wording, implementation language, staged contrast formulas, em dashes, or semicolons.
 
@@ -332,17 +332,18 @@ Visible roots and results require event titles, descriptions, option text, effec
 
 ## Dedicated asset brief
 
-The package requires five dedicated Fallout report images:
+The package requires six dedicated Fallout report images:
 
 - national register under ash-darkened light
 - damaged capital administration and shelter routing
 - region-specific resource distribution under winter conditions
 - government authority meeting in a damaged civic interior
 - first character or institution presented in its actual setting
+- orientation closure showing the successor's first coordinated public response
 
 Each image needs a source or generation manifest, working PNG, final DDS, stable sprite name, dimensions, crop notes, provenance, and event binding. Real people and attested symbols require sourced assets. Fictional content uses the approved generated-art workflow. No zombie asset, audio, sprite, filename, or path may be reused.
 
-The five roots may share their component image with the matching result only when the result shows the same place and subject. The closure requires either a sixth dedicated image or an explicitly approved text-only disposition. No placeholder is permitted.
+The five roots may share their component image with the matching result only when the result shows the same place and subject. The closure uses the sixth dedicated image. No text-only disposition or placeholder is permitted.
 
 ## Validation scenarios
 
@@ -363,32 +364,33 @@ Implementation review must prove at least these deterministic cases without clai
 
 The audit must also check for free-resource loops, branch cycling, repeated failure rewards, invalid state or character targets, missing AI weights, stale decisions, tiny modifiers, and political-power storage.
 
-## Implementation order after approval
+## Implementation order
 
-1. reserve suffixes `62` through `84` in the event ID ledger
-2. approve the nine-region and twelve-archetype coverage matrices
-3. approve successor memory and character or institution registries for the pilot countries
-4. add typed constants and the idempotent component transaction
-5. define all 23 events with effects, AI, delayed results, memory, and cleanup
-6. write final regional and government-aware localisation
-7. produce and wire dedicated assets and manifests
-8. wire log and event-detail surfaces
-9. wire one future host-authority caller only after successor allocation and player continuation are accepted
-10. run event, localisation, asset, country-package, and completion audits
-11. update the workbook from implementation facts and export its CSV views
-12. count only the blocks that pass manual review
+The event ID ledger reserves suffixes `62` through `84`. Implementation proceeds in this order:
 
-## Approval checklist
+1. approve the nine-region and twelve-archetype coverage matrices
+2. approve successor memory and character or institution registries for the pilot countries
+3. add typed constants and the idempotent component transaction
+4. define all 23 events with effects, AI, delayed results, memory, and cleanup
+5. write final regional and government-aware localisation
+6. produce and wire all six dedicated assets and manifests
+7. wire log and event-detail surfaces
+8. wire one future host-authority caller only after successor allocation and player continuation are proven
+9. run event, localisation, asset, country-package, and completion audits
+10. update the workbook from implementation facts and export its CSV views
+11. count only the blocks that pass manual review
 
-Approval should confirm all of the following:
+## Approval record
 
-- suffixes `62` through `84` may be reserved for this package
+The user approved all of the following on 2026-07-18:
+
+- suffixes `62` through `84` are reserved for this package
 - the five components and their exact order are accepted
 - the deterministic score bands and listed inputs are accepted
 - the 2, 3, 4, 3, and 2 day delayed-result cadence is accepted
 - the package remains dormant until a separate caller and activation review
 - missing regional, archetype, memory, state, or character rows fail closed with no fallback
 - all 23 blocks remain outside the 660 count until fully wired and manually reviewed
-- dedicated Fallout assets are required before completion
+- six dedicated Fallout assets are required before completion
 
-Until that approval is recorded, no gameplay file should implement this proposal.
+Approval authorizes scoped implementation. No caller may be wired until successor allocation, player continuation, the nine-region rows, twelve-archetype rows, country-memory rows, main-state targets, and curated character or institution registries are proven. The package must not activate the ordinary scheduler.
