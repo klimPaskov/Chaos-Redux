@@ -7717,6 +7717,114 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.74
+	title = chaosx.fallout.74.t
+	desc = chaosx.fallout.74.d
+	picture = GFX_report_event_fallout_government_archetype
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_choose = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.government_human_root }
+		fallout_orientation_government_transaction_row_is_current = yes
+	}
+
+	option = {
+		name = chaosx.fallout.74.a
+		trigger = { fallout_orientation_government_branch_1_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_government_branch.consolidate }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.74.a.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.primary }
+	}
+
+	option = {
+		name = chaosx.fallout.74.b
+		trigger = { fallout_orientation_government_branch_2_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_government_branch.division }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.74.b.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.secondary }
+	}
+
+	option = {
+		name = chaosx.fallout.74.c
+		trigger = { fallout_orientation_government_branch_3_is_available = yes }
+		hidden_effect = {
+			set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
+			set_temp_variable = { fallout_orientation_requested_branch = constant:fallout_orientation_government_branch.rival }
+			fallout_orientation_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.74.c.tt
+		ai_chance = { base = constant:fallout_orientation_ai_weight.tertiary }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.75
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_choose = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.government_ai_root }
+		fallout_orientation_government_transaction_row_is_current = yes
+	}
+	immediate = { fallout_orientation_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.76
+	title = chaosx.fallout.76.t
+	desc = { text = chaosx.fallout.76.consolidate.success.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.consolidate } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.76.consolidate.partial.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.consolidate } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.76.consolidate.failure.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.consolidate } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.76.division.success.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.division } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.76.division.partial.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.division } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.76.division.failure.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.division } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.76.rival.success.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.rival } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.76.rival.partial.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.rival } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.76.rival.failure.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.rival } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_government_archetype
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_resolve = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.government_human_result }
+		fallout_orientation_government_transaction_row_is_current = yes
+	}
+	immediate = { hidden_effect = { fallout_orientation_resolve_government_archetype = yes } }
+
+	option = {
+		name = chaosx.fallout.76.a
+		custom_effect_tooltip = chaosx.fallout.76.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.77
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_orientation_component_can_resolve = yes
+		check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype }
+		check_variable = { fallout_orientation_transaction_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_orientation_issued_event_token = constant:fallout_orientation_event_id.government_ai_result }
+		fallout_orientation_government_transaction_row_is_current = yes
+	}
+	immediate = { fallout_orientation_resolve_government_archetype = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.82
 	title = chaosx.fallout.82.t
 	desc = chaosx.fallout.82.d

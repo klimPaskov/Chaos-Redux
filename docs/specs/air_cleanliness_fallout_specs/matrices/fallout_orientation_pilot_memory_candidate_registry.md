@@ -61,6 +61,27 @@ The immediate resource pilot uses one exact supporting resource and one exact de
 
 The tailored branch also requires a separate current-generation capital-asset package receipt that proves the exact assigned capital and supporting resource. No setter for that receipt exists. The other 96 region and archetype cells have no resource runtime row and cannot receive a generic substitution.
 
+## Government authority pilot runtime rows
+
+The government pilot binds each reviewed identity to one material benefit after successful consolidation and one deterministic AI preference. Division means a represented power-sharing compact. Rival means an attempted integration of the named competing authority.
+
+| Pilot successor | Successful consolidation benefit | AI preferred branch |
+| --- | --- | --- |
+| Federal Continuity Zone | Recognition 5 | Division |
+| Alpine Redoubt | Capital Recovery 4 | Division |
+| Rhine Dead Cities | Capital Reclamation 5 | Consolidation |
+| Don Steppe Hetmanates | Capital Supply Access 4 | Rival integration |
+| Mekong Greenhouse Compact | Capital Recovery 5 | Division |
+| Bengal Delta Raft Republic | Capital Supply Access 5 | Division |
+| Levant Quarantine Cities | Capital Recovery 5 | Division |
+| Congo Green Basin | Cohesion 5 | Division |
+| Sahel Caravan Wards | Capital Adaptation 5 | Division |
+| Ethiopian Highland Refuge | Cohesion 5 | Division |
+| Atacama Observatory State | Capital Supply Access 5 | Division |
+| Antarctic Listening Government | Capital Adaptation 4 | Division |
+
+The mapper has no authority to approve its own row. `fallout_orientation_government_row_surface_status` and the regional, archetype, and memory approval surfaces have no setter. The other 96 matrix cells have no government runtime row.
+
 ## Candidate slot contract
 
 Each pilot has three manually selected candidates. Slots use the already accepted branch costs and results:
@@ -181,6 +202,6 @@ The future runtime producer must validate the exact country-memory id, region, a
 
 The future asset package needs twenty-four fictional character portraits and twelve dedicated institution icons. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
 
-The typed candidate ids, exact twelve-memory candidate mapper, country-owned candidate fields, and candidate request authenticator are implemented. The immediate resource pilot also has an idempotent twelve-memory mapper, exact supporting-resource and AI-preference fields, country-specific text, and events `70` through `73`. Neither mapper has a caller. No candidate package receipt setter or resource capital-asset receipt setter exists.
+The typed candidate ids, exact twelve-memory candidate mapper, country-owned candidate fields, and candidate request authenticator are implemented. The immediate resource pilot has an idempotent twelve-memory mapper, exact supporting-resource and AI-preference fields, country-specific text, and events `70` through `73`. The government pilot has an idempotent twelve-memory mapper, exact material-effect and AI-preference fields, country-specific text, and events `74` through `77`. None of these mappers has a caller. No candidate package receipt setter or resource capital-asset receipt setter exists.
 
-Until the candidate assets, installation effects, final candidate localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, and memory row approval surfaces also remain blocked. The four immediate-resource events remain unreachable and uncounted while those approval surfaces, the resource capital-asset receipt, and the orientation caller have no producer.
+Until the candidate assets, installation effects, final candidate localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, memory, and government row approval surfaces also remain blocked. The immediate-resource and government events remain unreachable and uncounted while those approval surfaces, the resource capital-asset receipt, and the orientation caller have no producer.
