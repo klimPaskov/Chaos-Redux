@@ -38,7 +38,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-The Middle East package currently has its full dedicated focus architecture in `common/national_focus/012_africa_world_middle_east_focus.txt`. Other candidates are not marked implementation-ready until their complete package files exist. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
+The Middle East and Europe packages currently have their full dedicated focus architectures in `common/national_focus/012_africa_world_middle_east_focus.txt` and `common/national_focus/012_africa_world_europe_focus.txt`. Other candidates are not marked implementation-ready until their complete package files exist. This keeps unfinished packages unreachable and prevents a generic or copied focus-tree substitute.
 
 ## Middle East implementation
 
@@ -53,6 +53,10 @@ The Crossroads Balance begins by ending foreign mandates and establishing water,
 The Desert Covenant is additionally locked by `africa_middle_east_high_chaos_package_reviewed`. That flag must remain unset until the dedicated source and sensitivity review confirms its text, nonhuman actors, symbols, and asset treatment. It never turns a human Middle Eastern identity into a supernatural species.
 
 Every route must complete representation, command, Africa diplomacy, withdrawal law, and a final settlement congress before receiving a public cosmetic identity and replacing the founding-problem spirit.
+
+## Europe implementation
+
+The Continental Settlement begins with border guarantees, industrial and rail reconstruction, and a colonial reckoning. It has six mutually exclusive routes: democratic federation, socialist union, royal concert, continental command, neutral confederation, and a reviewed mythic compact. Each route receives its own representative institution before converging on common defence, withdrawal and crisis law, a post-colonial treaty with Africa, and final ratification. The mythic compact remains locked until `africa_europe_high_chaos_package_reviewed` confirms its separate source and sensitivity review.
 
 ## Asset contracts
 
