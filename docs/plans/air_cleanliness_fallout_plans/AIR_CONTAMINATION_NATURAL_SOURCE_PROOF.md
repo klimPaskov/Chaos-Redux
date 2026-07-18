@@ -26,6 +26,17 @@ The aggregate reservoir is clamped from `0 bp` through `4 bp` after every impact
 
 The largest single addition is an abnormal massive eruption at `1.25 bp`, equal to `0.0125 percent`. The smallest addition is `0.05 bp`, equal to `0.0005 percent`. Regional wildfire smoke begins at `0.10 bp`, equal to `0.001 percent`.
 
+The complete accepted source ladder is centralized in `common/script_constants/air_cleanliness_natural_source_constants.txt`.
+
+| Physical family | Local | Severe | Regional | Catastrophic | Abnormal |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Wildfire | 0 bp | 0 bp | 0.10 bp | 0.20 bp | 0.35 bp |
+| Volcanic eruption | 0.05 bp | 0.10 bp | 0.20 bp | 0.35 bp | 0.50 bp |
+| Ashfall | 0.05 bp | 0.15 bp | 0.30 bp | 0.50 bp | 0.75 bp |
+| Massive eruption | 0.25 bp | 0.50 bp | 0.75 bp | 1.00 bp | 1.25 bp |
+
+Event 013 defines severity as the ordered integer ladder from Local `1` through Abnormal `5`. The wildfire gate uses `greater_than_or_equals` against Regional `3`, then selects the exact Catastrophic and Abnormal overrides. Volcanic eruption, ashfall, and massive eruption select an exact value for every defined severity. No natural-source constant exceeds the shared `4 bp` ceiling.
+
 The reservoir decays by `0.25 bp` after its monthly value is copied. A full reservoir with no further inputs produces 16 monthly contributions from `4.00 bp` through `0.25 bp`. Their gross sum is `34 bp`, equal to `0.34 percent`, before normal recovery.
 
 Below 25 percent contamination, normal recovery is `3 bp` monthly. A full reservoir without further inputs can produce only `2.5 bp`, equal to `0.025 percent`, of temporary net growth before its monthly contribution falls to the recovery rate. If continuous disasters keep the reservoir full, the low-band net increase is limited to `1 bp` monthly, equal to `0.01 percent`.
@@ -37,6 +48,30 @@ Below 25 percent contamination, normal recovery is `3 bp` monthly. A full reserv
 A second call on the same date reuses the cached contribution and cannot apply a second decay. No new daily, weekly, monthly, country, or state on action was added. The current `on_monthly` host route remains the only periodic owner.
 
 Host acquisition and transfer continue while the Chaos Meter display is disabled. Air Cleanliness therefore retains its own monthly lifecycle for human, AI, and spectator coordinators. The independent Air Cleanliness toggle still controls whether the cached source enters contamination.
+
+## Engine-sensitive accounting proof
+
+The installed official `effects_documentation.md` records `add_to_variable`, `set_variable`, and `clamp_variable` as effects supported in any scope. It defines `clamp_variable` as `Max( Min( var, max ), min )`. Both bounds may be variables, so `constant:air_contamination_natural_source.monthly_cap_bp` is valid after script-constant injection.
+
+The installed official `script_concept_documentation.md` states that script constants are injected into scripts at load and that every scoped variable accepts a fixed-point constant through the `constant:` prefix. The installed `common/script_constants/documentation.md` defines the fixed-point schema used by the natural-source table.
+
+The offline Data structures page confirms that regular variables can be stored on states and in global scope. It also documents `add_to_variable`, `check_variable`, and `clamp_variable`. The offline Effects and Triggers pages agree with the installed documentation. The state-local impact identity and the global reservoir therefore use documented variable scopes and effects.
+
+The vanilla capped-variable precedent is `common/scripted_effects/BUL_scripted_effects.txt`. Its faction effects add to a variable and immediately clamp the result between a minimum and maximum. The natural-source registration follows the same add-then-clamp order. It adds a second clamp before monthly consumption so a loaded or externally modified reservoir cannot bypass the ceiling.
+
+`air_contamination_monthly_update` copies `air_monthly_natural_bp` into the displayed source ledger and adds it once to `air_contamination_delta_bp`. The same delta then passes through `air_contamination_apply_delta_bp`. There is no separate direct write from the natural-source helper to `global.air_contamination_bp`.
+
+## Static route audit
+
+The three Event 013 registration sites were checked in their surrounding state-scope effects.
+
+| Entry effect | Family and severity ready first | Physical identity ready first | Registration position |
+| --- | --- | --- | --- |
+| `natural_disaster_execute_impact` | Yes | Yes | Before population, building, aftermath, and spread resolution |
+| `natural_disaster_execute_repeated_impact` | Yes | Yes | Before population, building, chain, and report resolution |
+| `natural_disaster_apply_neighbor_impact` | Yes | Parent sequence and impact index copied first | Before population, building, aftermath, and report resolution |
+
+The regional-spread candidate is removed from `natural_disaster_neighbor_candidates` before its impact effect runs. Chained ashfall and massive-eruption work returns through the ordinary or repeated impact effects, so it reaches the same registration helper and ceiling. A repository-wide reference check found no fourth writer to `global.air_contamination_natural_source_reservoir_bp` outside initialization, registration, and monthly decay.
 
 ## Lock and save behavior
 
@@ -50,4 +85,4 @@ The existing Air Cleanliness monthly model line displays the cached wildfire-smo
 
 ## Static evidence boundary
 
-The implementation was reviewed against the offline wiki, installed official documentation, Event 013 runtime paths, the existing host monthly route, and the vanilla capped-variable precedent. HOI4 was not launched at the user's request. Runtime observation is therefore not claimed.
+The implementation was reviewed against the offline wiki, installed official documentation, Event 013 runtime paths, the existing host monthly route, and the vanilla capped-variable precedent. The read-only HOI4 event inspector was also attempted against `events/013_natural_disasters.txt`, but the Event 013 helper graph exceeded its fixed 200,000-projection ceiling even with helper expansion disabled. Source-level route review remains the evidence for the three call sites. HOI4 was not launched at the user's request. Runtime observation is therefore not claimed.
