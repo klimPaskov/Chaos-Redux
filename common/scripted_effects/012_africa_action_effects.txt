@@ -2881,8 +2881,12 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.seek_international_recognition }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = {
+				has_country_flag = africa_scramble_participant
+				NOT = { has_country_flag = africa_scramble_expedition_leader }
+				NOT = { has_country_flag = africa_scramble_recognised_africa }
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2892,8 +2896,14 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.prepare_anti_sanctions_network }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = {
+				has_country_flag = africa_scramble_participant
+				OR = {
+					has_country_flag = africa_scramble_sanctions_active
+					has_country_flag = africa_scramble_recognition_candidate
+				}
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2903,8 +2913,8 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.answer_foreign_ultimatum }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = { has_country_flag = africa_scramble_ultimatum_issuer }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2914,7 +2924,8 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.mobilise_continental_defence }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_is_current_host = yes }
-			has_global_flag = africa_is_one
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = { africa_scramble_phase_is_intervention = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2924,8 +2935,11 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.disrupt_expedition_planning }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = {
+				has_country_flag = africa_scramble_coalition_member
+				has_country_flag = africa_scramble_expedition_planner
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2935,8 +2949,8 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.offer_base_withdrawal_treaty }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = { has_country_flag = africa_scramble_foreign_base_holder }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2946,7 +2960,7 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.call_global_anti_colonial_conference }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_is_current_host = yes }
-			has_global_flag = africa_is_one
+			has_global_flag = africa_scramble_response_active
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2956,8 +2970,8 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.break_intervention_coalition }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_is_one
-			event_target:africa_action_target = { africa_is_valid_external_action_target = yes }
+			has_global_flag = africa_scramble_response_active
+			event_target:africa_action_target = { has_country_flag = africa_scramble_coalition_member }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2967,8 +2981,11 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.sponsor_continent_unifier }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_unique_continent_package_candidate }
+			africa_world_package_sponsorship_gate_is_open = yes
+			event_target:africa_action_target = {
+				africa_world_package_is_candidate = yes
+				has_country_flag = africa_world_package_implementation_ready
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2979,7 +2996,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_world_order_partner }
+			event_target:africa_action_target = { africa_world_union_target_is_compatible = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2990,7 +3007,8 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_world_order_partner }
+			event_target:africa_action_target = { africa_world_continental_war_target_is_eligible = yes }
+			africa_world_order_route_is_terminal = yes
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3001,7 +3019,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_defeated_continent_power }
+			event_target:africa_action_target = { africa_world_defeated_continent_is_eligible = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3012,7 +3030,8 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_world_order_partner }
+			event_target:africa_action_target = { africa_world_union_target_is_compatible = yes }
+			has_country_flag = africa_two_continent_union_plan_complete
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3023,7 +3042,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_is_current_host = yes }
 			has_global_flag = africa_world_order_open
-			has_global_flag = africa_terminal_world_identity_eligible
+			event_target:africa_action_target = { africa_terminal_world_identity_can_commit = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3033,8 +3052,8 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.administer_world_regions }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_world_region_settlement_target }
+			has_global_flag = world_end_africa_the_world
+			event_target:africa_action_target = { africa_world_region_target_is_eligible = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3044,8 +3063,14 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.contain_terminal_high_chaos }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_world_order_open
-			event_target:africa_action_target = { has_country_flag = africa_registered_high_chaos_actor }
+			has_global_flag = world_end_africa_the_world
+			event_target:africa_action_target = {
+				has_country_flag = africa_registered_high_chaos_actor
+				OR = {
+					has_country_flag = africa_high_chaos_actor_hostile
+					has_country_flag = africa_containment_breach_active
+				}
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -5869,6 +5894,7 @@ africa_apply_action_full_semantics = {
 		}
 		event_target:africa_host = { set_country_flag = africa_priority_package_commit_pending }
 	}
+	africa_world_order_apply_full_result = yes
 }
 
 # COUNTRY scope on the resolved target.
@@ -5982,6 +6008,7 @@ africa_apply_action_partial_semantics = {
 			add_to_variable = { africa_first_proof_recovery_attempts = constant:africa_value.one }
 		}
 	}
+	africa_world_order_apply_partial_result = yes
 }
 
 # COUNTRY scope on the resolved target.
@@ -6121,6 +6148,7 @@ africa_apply_action_failure_semantics = {
 		set_country_flag = africa_priority_promotion_refused
 		set_country_flag = africa_priority_overlap_or_access_failure
 	}
+	africa_world_order_apply_failure_result = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -6131,6 +6159,10 @@ africa_apply_action_failure_semantics = {
 africa_roll_action_outcome = {
 	set_variable = { africa_active_action_outcome = constant:africa_action_outcome.none }
 	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.declare_the_world_is_one } }
+		set_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+	}
+	else_if = {
 		limit = { check_variable = { africa_active_action_risk = constant:africa_action_risk.low } }
 		random_list = {
 			constant:africa_action_outcome_weight.low_full = { set_variable = { africa_active_action_outcome = constant:africa_action_outcome.full } }

@@ -1,0 +1,247 @@
+add_namespace = africa_world_order
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SCRAMBLE RESPONSE AND WORLD ORDER
+# ============================================================================
+# One-time foreign responses and the player-facing Scramble phase ledger.
+# Continent-package outcomes are presented by their dedicated focus trees and
+# targeted decisions. These events use only accepted Event 12 image contracts.
+# ============================================================================
+
+# Foreign participant response. Recognition is explicit. Opinion never grants
+# recognition, membership, integration, or territorial control.
+country_event = {
+	id = africa_world_order.1
+	title = africa_world_order.1.t
+	desc = africa_world_order.1.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_scramble_response_invited
+		NOT = { has_country_flag = africa_scramble_response_recorded }
+	}
+
+	immediate = { set_country_flag = africa_scramble_response_recorded }
+
+	option = {
+		name = africa_world_order.1.a
+		custom_effect_tooltip = africa_world_order.1.a.tt
+		ai_chance = {
+			base = constant:africa_world_order.response_event_base_chance
+			modifier = {
+				add = constant:africa_world_order.response_event_major_chance
+				has_country_flag = africa_scramble_recognition_candidate
+				NOT = { has_country_flag = africa_scramble_colonial_interest }
+			}
+		}
+		africa_scramble_choose_recognition = yes
+	}
+
+	option = {
+		name = africa_world_order.1.b
+		custom_effect_tooltip = africa_world_order.1.b.tt
+		ai_chance = {
+			base = constant:africa_world_order.response_event_preferred_chance
+			modifier = {
+				add = constant:africa_world_order.response_event_preferred_chance
+				has_country_flag = africa_scramble_major_power
+			}
+		}
+		africa_scramble_choose_conditional_recognition = yes
+	}
+
+	option = {
+		name = africa_world_order.1.c
+		custom_effect_tooltip = africa_world_order.1.c.tt
+		ai_chance = {
+			base = constant:africa_world_order.response_event_low_chance
+			modifier = {
+				add = constant:africa_world_order.response_event_major_chance
+				has_country_flag = africa_scramble_colonial_interest
+			}
+		}
+		africa_scramble_choose_sanctions = yes
+	}
+
+	option = {
+		name = africa_world_order.1.d
+		trigger = {
+			OR = {
+				has_country_flag = africa_scramble_ultimatum_candidate
+				has_country_flag = africa_scramble_major_power
+			}
+		}
+		custom_effect_tooltip = africa_world_order.1.d.tt
+		ai_chance = {
+			base = constant:africa_world_order.response_event_low_chance
+			modifier = {
+				add = constant:africa_world_order.response_event_preferred_chance
+				has_country_flag = africa_scramble_colonial_interest
+				is_faction_leader = yes
+			}
+		}
+		africa_scramble_choose_ultimatum = yes
+	}
+}
+
+country_event = {
+	id = africa_world_order.2
+	title = africa_world_order.2.t
+	desc = africa_world_order.2.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_scramble_phase_is_shock = yes
+	}
+
+	option = {
+		name = africa_world_order.2.a
+		set_country_flag = africa_scramble_recognition_phase
+		news_event = { id = africa_world_order.100 }
+	}
+}
+
+country_event = {
+	id = africa_world_order.3
+	title = africa_world_order.3.t
+	desc = africa_world_order.3.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_scramble_first_ultimatum_logged
+	}
+
+	option = {
+		name = africa_world_order.3.a
+		custom_effect_tooltip = africa_world_order.3.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_order.4
+	title = africa_world_order.4.t
+	desc = africa_world_order.4.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_scramble_phase_is_coalition = yes
+	}
+
+	option = {
+		name = africa_world_order.4.a
+		custom_effect_tooltip = africa_world_order.4.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_order.5
+	title = africa_world_order.5.t
+	desc = africa_world_order.5.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_scramble_phase_is_intervention = yes
+	}
+
+	option = {
+		name = africa_world_order.5.a
+		custom_effect_tooltip = africa_world_order.5.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_order.6
+	title = africa_world_order.6.t
+	desc = africa_world_order.6.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_scramble_phase_is_aftermath = yes
+	}
+
+	option = {
+		name = africa_world_order.6.a
+		custom_effect_tooltip = africa_world_order.6.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_order.7
+	title = africa_world_order.7.t
+	desc = africa_world_order.7.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_scramble_phase_is_settled = yes
+	}
+
+	option = {
+		name = africa_world_order.7.a
+		custom_effect_tooltip = africa_world_order.7.a.tt
+	}
+}
+
+# Defeat ends the intervention state without replacing the original host.
+country_event = {
+	id = africa_world_order.60
+	title = africa_world_order.60.t
+	desc = africa_world_order.60.d
+	picture = GFX_news_event_012_africa_continental_war
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_scramble_defensive_war_lost
+	}
+
+	option = {
+		name = africa_world_order.60.a
+		custom_effect_tooltip = africa_world_order.60.a.tt
+	}
+}
+
+news_event = {
+	id = africa_world_order.100
+	title = africa_world_order.100.t
+	desc = africa_world_order.100.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+	major = yes
+
+	option = { name = africa_world_order.100.a }
+}
+
+news_event = {
+	id = africa_world_order.101
+	title = africa_world_order.101.t
+	desc = africa_world_order.101.d
+	picture = GFX_news_event_012_africa_continental_war
+	is_triggered_only = yes
+	major = yes
+
+	option = { name = africa_world_order.101.a }
+}
+
+news_event = {
+	id = africa_world_order.102
+	title = africa_world_order.102.t
+	desc = africa_world_order.102.d
+	picture = GFX_news_event_012_africa_continental_war
+	is_triggered_only = yes
+	major = yes
+
+	option = { name = africa_world_order.102.a }
+}
