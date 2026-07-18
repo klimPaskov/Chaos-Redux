@@ -22,7 +22,10 @@ country_event = {
 		NOT = { has_country_flag = africa_scramble_response_recorded }
 	}
 
-	immediate = { set_country_flag = africa_scramble_response_recorded }
+	immediate = {
+		set_country_flag = africa_scramble_response_recorded
+		africa_ai_classify_scramble_response = yes
+	}
 
 	option = {
 		name = africa_world_order.1.a
@@ -30,10 +33,26 @@ country_event = {
 		ai_chance = {
 			base = constant:africa_world_order.response_event_base_chance
 			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_recognition_partner }
+			}
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_half
+				OR = {
+					check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_containment_sanctions }
+					check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_expedition_coalition }
+				}
+			}
+			modifier = {
 				add = constant:africa_world_order.response_event_major_chance
 				has_country_flag = africa_scramble_recognition_candidate
 				NOT = { has_country_flag = africa_scramble_colonial_interest }
 			}
+		}
+		if = {
+			limit = { is_ai = yes }
+			set_variable = { africa_ai_scramble_selected_response_profile = constant:africa_ai_profile.power_recognition_partner }
+			set_country_flag = africa_ai_scramble_response_profile_resolved
 		}
 		africa_scramble_choose_recognition = yes
 	}
@@ -44,9 +63,27 @@ country_event = {
 		ai_chance = {
 			base = constant:africa_world_order.response_event_preferred_chance
 			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				OR = {
+					check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_opportunist_patron }
+					check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_negotiated_withdrawal }
+				}
+			}
+			modifier = {
 				add = constant:africa_world_order.response_event_preferred_chance
 				has_country_flag = africa_scramble_major_power
 			}
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_negotiated_withdrawal } }
+				set_variable = { africa_ai_scramble_selected_response_profile = constant:africa_ai_profile.power_negotiated_withdrawal }
+			}
+			else = {
+				set_variable = { africa_ai_scramble_selected_response_profile = constant:africa_ai_profile.power_opportunist_patron }
+			}
+			set_country_flag = africa_ai_scramble_response_profile_resolved
 		}
 		africa_scramble_choose_conditional_recognition = yes
 	}
@@ -57,9 +94,22 @@ country_event = {
 		ai_chance = {
 			base = constant:africa_world_order.response_event_low_chance
 			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_containment_sanctions }
+			}
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_half
+				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_recognition_partner }
+			}
+			modifier = {
 				add = constant:africa_world_order.response_event_major_chance
 				has_country_flag = africa_scramble_colonial_interest
 			}
+		}
+		if = {
+			limit = { is_ai = yes }
+			set_variable = { africa_ai_scramble_selected_response_profile = constant:africa_ai_profile.power_containment_sanctions }
+			set_country_flag = africa_ai_scramble_response_profile_resolved
 		}
 		africa_scramble_choose_sanctions = yes
 	}
@@ -76,10 +126,23 @@ country_event = {
 		ai_chance = {
 			base = constant:africa_world_order.response_event_low_chance
 			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_expedition_coalition }
+			}
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_half
+				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_negotiated_withdrawal }
+			}
+			modifier = {
 				add = constant:africa_world_order.response_event_preferred_chance
 				has_country_flag = africa_scramble_colonial_interest
 				is_faction_leader = yes
 			}
+		}
+		if = {
+			limit = { is_ai = yes }
+			set_variable = { africa_ai_scramble_selected_response_profile = constant:africa_ai_profile.power_expedition_coalition }
+			set_country_flag = africa_ai_scramble_response_profile_resolved
 		}
 		africa_scramble_choose_ultimatum = yes
 	}

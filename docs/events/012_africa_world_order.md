@@ -27,6 +27,22 @@ No response grants African membership, integration, annexation, or cores. The fo
 - Candidate countries qualify only if they still use the generic focus tree or carry the explicit `africa_world_package_focus_replacement_approved` audit flag. Meaningful existing country trees are not replaced.
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 
+## AI policy binding
+
+The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table.
+
+- `africa_ai_run_profiled_late_action_cycle` is an AI-only host decision with a fourteen-day re-enable period. It runs only for the current Event 12 host and reads the maintained Scramble participant, package candidate, package actor, and relationship arrays. It performs no country census.
+- The host refresh composes its regional overlay, constitution, and full-host playbook. A selected target then contributes its relationship, foreign-power, high-chaos, or continent profile before final approval.
+- Actions 77 through 92 receive separate semantic priorities and exact availability checks. The dispatcher selects only a real target that satisfies the same action-specific validator used by the player quote path.
+- Every approved AI action passes through `africa_begin_quoted_action_against_target`. Dynamic costs, capacity, target cooldowns, shared missions, full and partial outcomes, failure, and cleanup therefore remain identical for player and AI use.
+- Partial-outcome tolerance changes high-risk action weighting. Retry stance reads the target's immutable last-action ledger and can require resource recovery before another attempt.
+- The host stores the last composite policy, all active layer IDs, selected action, selected target, partial tolerance, retry stance, and launch counters as normal variables for audit and save-state inspection.
+- Foreign participants are classified into the five accepted outside-power profiles before `africa_world_order.1` chooses recognition, conditions, sanctions, or an ultimatum. The chosen response profile is recorded separately from the pre-response forecast.
+- World-route decisions consume the saved profile risk, partial-tolerance, Scramble, and world-order weights alongside their constitutional preferences.
+- Action 91 uses the selected continent actor's controlled capital region as its AI state cursor. Human players can select any valid controlled state in that actor. This administration creates no automatic ownership transfer.
+
+Post-World Actions 91 and 92 remain available after `world_end_africa_the_world`. Their terminal phase and profile predicates recognise this specific Event 12 identity, while unrelated world ends continue to block the system. The World identity itself remains gated by the incomplete researched super-event package.
+
 ## Continent packages
 
 The six package mechanics are distinct and use separate public values:
@@ -219,7 +235,7 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 
 - Complete the political, military, AI, decision, identity, and asset surfaces still required for all six continent packages.
 - Add route-specific post-settlement decisions and breakup rules for every two-continent union.
-- Bind all 64 Event 12 AI profiles to the Scramble and world-order action choices.
+- Extend the same live profile dispatcher to the opening, protection, accession, congress, integration, economy, diaspora, rival, high-chaos, constitutional-crisis, and priority-package actions 1 through 76 and 93 through 102.
 - Complete the accepted news, focus, idea, flag, super-event, animation, and audio assets with no substitutions.
 - Research and approve the high-chaos continent routes before enabling their review flags.
 - Research and wire the four super-event roles only after final text, images, licensed music, slots, and unique audio IDs are complete.

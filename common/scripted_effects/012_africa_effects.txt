@@ -636,7 +636,10 @@ africa_refresh_selected_action_state_candidates = {
 		array = africa_selected_country_targets
 		every_controlled_state = {
 			limit = {
-				is_on_continent = africa
+				OR = {
+					is_on_continent = africa
+					ROOT = { check_variable = { africa_selected_action_id = constant:africa_action.administer_world_regions } }
+				}
 				NOT = { has_state_flag = africa_action_project_active }
 			}
 			set_state_flag = africa_selected_action_state_candidate
