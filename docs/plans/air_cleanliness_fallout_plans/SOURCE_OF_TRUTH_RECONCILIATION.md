@@ -165,6 +165,15 @@ Accepted Ash-week orientation disposition:
 - Both scheduler activation flags remain unset and the living-world count remains 0 of 660.
 - The caller remains blocked until successor allocation, player continuation, and all required candidate registries are proven.
 
+Proposed post-pilot live-ledger disposition:
+
+- `FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` is queued for user approval and is not accepted source design.
+- It proposes an opening Survival Cohesion formula from the committed Food, Shelter capacity, and Recognition values.
+- It proposes promoting the accepted state Logistics formula into immutable opening and mutable current Supply Access values with a native local-supply modifier.
+- It proposes mapping orientation state results directly into the live Air Winter ledgers instead of the isolated `fallout_orientation_state_*` mirrors.
+- The exact one-damaged-level infrastructure repair result remains blocked. No construction, total-level, repair-speed, or variable-only substitute is approved.
+- The accepted specs remain unchanged until the user approves the numerical choices. The proposal does not authorize events `66` through `84`, a caller, or scheduler activation.
+
 Current implementation authority:
 
 - `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.
