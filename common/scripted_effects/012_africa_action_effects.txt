@@ -3172,7 +3172,15 @@ africa_validate_action_specific_requirements = {
 			check_variable = { africa_requested_action_id = constant:africa_action.promote_priority_member_package }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			event_target:africa_action_target = { has_country_flag = africa_priority_promotion_candidate has_country_flag = africa_priority_viable_territory has_country_flag = africa_priority_functioning_institution has_country_flag = africa_priority_distinct_role has_country_flag = africa_priority_relationship_unresolved check_variable = { var = africa_priority_local_support value = constant:africa_action_threshold.minimum_confidence compare = greater_than_or_equals } }
+		}
+		event_target:africa_action_target = { africa_priority_member_evaluate_promotion_candidate = yes }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_requested_action_id = constant:africa_action.promote_priority_member_package }
+			has_event_target = africa_action_target
+			event_target:africa_action_target = { africa_action_target_is_usable = yes }
+			event_target:africa_action_target = { africa_priority_member_can_be_promoted = yes }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -5955,12 +5963,17 @@ africa_apply_action_partial_semantics = {
 		if = {
 			limit = { check_variable = { africa_active_action_id = constant:africa_action.promote_priority_member_package } }
 			set_country_flag = africa_priority_partial_autonomy
+			set_country_flag = africa_clause_federal_autonomy
 			clr_country_flag = africa_priority_promotion_candidate
-			africa_priority_member_register_from_origin = yes
 			if = {
-				limit = { africa_priority_member_can_open_political_settlement = yes }
-				country_event = { id = africa_priority_member.1200 }
+				limit = { africa_relationship_is_outside = yes }
+				africa_action_transition_to_protected = yes
 			}
+			else_if = {
+				limit = { africa_relationship_is_protected = yes }
+				africa_action_transition_to_associate = yes
+			}
+			africa_priority_member_record_partial_requalification_issue = yes
 		}
 	}
 	else_if = {

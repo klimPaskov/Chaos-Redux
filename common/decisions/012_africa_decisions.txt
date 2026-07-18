@@ -64,6 +64,58 @@ africa_charter_council_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	africa_survey_priority_member_candidate = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		target_array = africa_selected_targets
+		activation = {
+			africa_is_current_host = yes
+			africa_action_phase_has_reached_regional = yes
+			has_country_flag = africa_league_congress_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				has_country_flag = africa_selected_roster_target
+				africa_priority_member_promotion_survey_is_available = yes
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = africa_survey_priority_member_candidate_tt
+			hidden_effect = {
+				FROM = { africa_priority_member_evaluate_promotion_candidate = yes }
+				africa_save_from_as_selected_country_target = yes
+			}
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	africa_resolve_priority_member_requalification = {
+		icon = GFX_decision_generic_diplomatic_treaty
+		target_array = africa_selected_targets
+		activation = {
+			africa_is_current_host = yes
+			africa_action_phase_has_reached_regional = yes
+			has_country_flag = africa_league_congress_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				has_country_flag = africa_selected_roster_target
+				has_country_flag = africa_priority_promotion_requalification_pending
+			}
+		}
+		available = { FROM = { africa_priority_member_can_resolve_requalification = yes } }
+		cost = constant:africa_priority_member_cost.overlap_pp
+		complete_effect = {
+			custom_effect_tooltip = africa_resolve_priority_member_requalification_tt
+			hidden_effect = {
+				FROM = { africa_priority_member_resolve_requalification_issue = yes }
+				africa_save_from_as_selected_country_target = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_priority_member_ai.overlap }
+	}
+
 	africa_refresh_external_crisis_targets = {
 		icon = GFX_decision_generic_diplomatic_treaty
 		visible = { OR = { has_global_flag = africa_is_one has_global_flag = africa_world_order_open } }
