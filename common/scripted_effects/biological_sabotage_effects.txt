@@ -1,0 +1,589 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE SCRIPTED EFFECTS
+# ============================================================================
+# Overview:
+# - Starts and resolves exact-state covert contamination of public food, water,
+#   and medical supply chains for the four ordinary biological agents.
+# - Debits one exact payload model, support_equipment_1, and Command Power at
+#   commitment. Payload and support equipment are never refunded.
+# - Sends every proven release through the shared ordinary biological lifecycle
+#   and records failed or cancelled attempts without fabricating weapon use.
+# - Keeps all helpers private to this subsystem and excludes weaponized zombies.
+# ============================================================================
+
+bio_sabotage_prepare_anthrax_parameters = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.anthrax }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_sabotage_cost.anthrax_payload }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_sabotage_cost.anthrax_support }
+	set_temp_variable = { bio_sabotage_command_power_cost = constant:bio_sabotage_cost.anthrax_command_power }
+}
+
+bio_sabotage_prepare_plague_parameters = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.plague }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_sabotage_cost.plague_payload }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_sabotage_cost.plague_support }
+	set_temp_variable = { bio_sabotage_command_power_cost = constant:bio_sabotage_cost.plague_command_power }
+}
+
+bio_sabotage_prepare_tularemia_parameters = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.tularemia }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_sabotage_cost.tularemia_payload }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_sabotage_cost.tularemia_support }
+	set_temp_variable = { bio_sabotage_command_power_cost = constant:bio_sabotage_cost.tularemia_command_power }
+}
+
+bio_sabotage_prepare_smallpox_parameters = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.smallpox }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_sabotage_cost.smallpox_payload }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_sabotage_cost.smallpox_support }
+	set_temp_variable = { bio_sabotage_command_power_cost = constant:bio_sabotage_cost.smallpox_command_power }
+}
+
+bio_sabotage_prepare_base_doctrine_parameters = {
+	set_temp_variable = { bio_sabotage_command_power_refund = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_cooldown_days = constant:bio_sabotage_doctrine.base_cooldown_days }
+}
+
+bio_sabotage_prepare_theater_doctrine_parameters = {
+	set_temp_variable = { bio_sabotage_command_power_refund = constant:bio_sabotage_doctrine.theater_command_power_refund }
+	set_temp_variable = { bio_sabotage_cooldown_days = constant:bio_sabotage_doctrine.theater_cooldown_days }
+}
+
+bio_sabotage_prepare_terminal_doctrine_parameters = {
+	set_temp_variable = { bio_sabotage_command_power_refund = constant:bio_sabotage_doctrine.terminal_command_power_refund }
+	set_temp_variable = { bio_sabotage_cooldown_days = constant:bio_sabotage_doctrine.terminal_cooldown_days }
+}
+
+# Actor country scope with FROM as the exact selected state. The decision has
+# already charged Political Power; this effect revalidates every physical and
+# policy input immediately before creating the persistent state record.
+bio_sabotage_begin_operation = {
+	FROM = {
+		save_event_target_as = bio_sabotage_state_target
+		CONTROLLER = { save_event_target_as = bio_sabotage_victim_target }
+	}
+
+	if = {
+		limit = {
+			has_event_target = bio_sabotage_state_target
+			has_event_target = bio_sabotage_victim_target
+			bio_sabotage_actor_can_operate = yes
+			bio_sabotage_selected_agent_cost_is_available = yes
+			bio_sabotage_command_record_is_valid = yes
+			bio_sabotage_requested_doctrine_record_is_valid = yes
+			FROM = { bio_sabotage_selected_agent_target_is_valid = yes }
+		}
+		save_event_target_as = bio_sabotage_actor_target
+		set_temp_variable = { bio_sabotage_payload_debit = bio_sabotage_payload_required }
+		multiply_temp_variable = { bio_sabotage_payload_debit = constant:bio_lifecycle_math.negation }
+		set_temp_variable = { bio_sabotage_support_debit = bio_sabotage_support_required }
+		multiply_temp_variable = { bio_sabotage_support_debit = constant:bio_lifecycle_math.negation }
+		set_temp_variable = { bio_sabotage_command_debit = bio_sabotage_command_power_cost }
+		multiply_temp_variable = { bio_sabotage_command_debit = constant:bio_lifecycle_math.negation }
+		set_temp_variable = { bio_sabotage_record_agent = bio_sabotage_agent }
+		set_temp_variable = { bio_sabotage_record_payload_required = bio_sabotage_payload_required }
+		set_temp_variable = { bio_sabotage_record_support_required = bio_sabotage_support_required }
+		set_temp_variable = { bio_sabotage_record_command_power_cost = bio_sabotage_command_power_cost }
+		set_temp_variable = { bio_sabotage_record_command_power_refund = bio_sabotage_command_power_refund }
+		set_temp_variable = { bio_sabotage_record_cooldown_days = bio_sabotage_cooldown_days }
+
+		if = {
+			limit = { check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+			add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_sabotage_payload_debit }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+			add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_sabotage_payload_debit }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+			add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_sabotage_payload_debit }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+			add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_sabotage_payload_debit }
+		}
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = bio_sabotage_support_debit }
+		add_command_power = bio_sabotage_command_debit
+
+		set_country_flag = bio_sabotage_operation_in_progress
+		set_variable = { bio_sabotage_active_state = event_target:bio_sabotage_state_target }
+		if = {
+			limit = { NOT = { has_variable = bio_sabotage_attempt_started_count } }
+			set_variable = { bio_sabotage_attempt_started_count = constant:bio_lifecycle_math.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = bio_sabotage_payload_consumed_total } }
+			set_variable = { bio_sabotage_payload_consumed_total = constant:bio_lifecycle_math.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = bio_sabotage_support_consumed_total } }
+			set_variable = { bio_sabotage_support_consumed_total = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_sabotage_attempt_started_count = constant:bio_sabotage_history.one_attempt }
+		add_to_variable = { bio_sabotage_payload_consumed_total = bio_sabotage_payload_required }
+		add_to_variable = { bio_sabotage_support_consumed_total = bio_sabotage_support_required }
+		set_variable = { bio_last_sabotage_start_date = global.num_days }
+		set_variable = { bio_last_sabotage_agent = bio_sabotage_agent }
+		set_variable = { bio_last_sabotage_state = event_target:bio_sabotage_state_target }
+		set_variable = { bio_last_sabotage_victim = event_target:bio_sabotage_victim_target }
+
+		event_target:bio_sabotage_state_target = {
+			set_state_flag = bio_sabotage_operation_active
+			set_variable = { bio_sabotage_actor = event_target:bio_sabotage_actor_target }
+			set_variable = { bio_sabotage_victim = event_target:bio_sabotage_victim_target }
+			set_variable = { bio_sabotage_agent = bio_sabotage_record_agent }
+			set_variable = { bio_sabotage_payload_required = bio_sabotage_record_payload_required }
+			set_variable = { bio_sabotage_payload_consumed = bio_sabotage_record_payload_required }
+			set_variable = { bio_sabotage_support_required = bio_sabotage_record_support_required }
+			set_variable = { bio_sabotage_support_consumed = bio_sabotage_record_support_required }
+			set_variable = { bio_sabotage_command_power_cost = bio_sabotage_record_command_power_cost }
+			set_variable = { bio_sabotage_command_power_refund = bio_sabotage_record_command_power_refund }
+			set_variable = { bio_sabotage_cooldown_days = bio_sabotage_record_cooldown_days }
+			set_variable = { bio_sabotage_start_date = global.num_days }
+		}
+	}
+}
+
+# Actor country scope. Readiness and doctrine improve release reliability;
+# doctrine never changes the already-recorded payload or support debit.
+bio_sabotage_calculate_outcome_weights_internal = {
+	set_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.base_success }
+	if = {
+		limit = { cbrn_country_has_full_readiness = yes }
+		add_to_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.full_readiness_success_add }
+	}
+	else_if = {
+		limit = { cbrn_country_has_integrated_readiness = yes }
+		add_to_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.integrated_readiness_success_add }
+	}
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		add_to_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.terminal_doctrine_success_add }
+	}
+	else_if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		add_to_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.theater_doctrine_success_add }
+	}
+	clamp_temp_variable = {
+		var = bio_sabotage_success_chance
+		min = constant:bio_sabotage_resolution.minimum_success
+		max = constant:bio_sabotage_resolution.maximum_success
+	}
+	set_temp_variable = { bio_sabotage_partial_chance = bio_sabotage_success_chance }
+	multiply_temp_variable = { bio_sabotage_partial_chance = constant:bio_sabotage_resolution.partial_release_share }
+	round_temp_variable = bio_sabotage_partial_chance
+	set_temp_variable = { bio_sabotage_full_success_chance = bio_sabotage_success_chance }
+	subtract_from_temp_variable = { bio_sabotage_full_success_chance = bio_sabotage_partial_chance }
+	set_temp_variable = { bio_sabotage_failure_chance = constant:bio_lifecycle_math.hundred }
+	subtract_from_temp_variable = { bio_sabotage_failure_chance = bio_sabotage_success_chance }
+}
+
+# Actor country scope. Readiness raises physical weaponization while attribution
+# control contributes only concealment during later detection checks.
+bio_sabotage_prepare_program_values_internal = {
+	set_temp_variable = { bio_sabotage_weaponization_mult = constant:bio_sabotage_resolution.weaponization_operational }
+	if = {
+		limit = { cbrn_country_has_full_readiness = yes }
+		set_temp_variable = { bio_sabotage_weaponization_mult = constant:bio_sabotage_resolution.weaponization_full }
+	}
+	else_if = {
+		limit = { cbrn_country_has_integrated_readiness = yes }
+		set_temp_variable = { bio_sabotage_weaponization_mult = constant:bio_sabotage_resolution.weaponization_integrated }
+	}
+	set_temp_variable = { bio_sabotage_concealment = cbrn_attribution_control }
+	multiply_temp_variable = { bio_sabotage_concealment = constant:bio_sabotage_resolution.attribution_concealment_factor }
+	clamp_temp_variable = {
+		var = bio_sabotage_concealment
+		min = constant:bio_lifecycle_math.zero
+		max = constant:bio_sabotage_resolution.attribution_concealment_maximum
+	}
+}
+
+# Exact selected-state scope. A failed or cancelled attempt can accumulate a
+# low-confidence lead, but it never creates release, death, or use history.
+bio_sabotage_record_failed_attempt_evidence_internal = {
+	set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
+	if = {
+		limit = {
+			has_variable = bio_sabotage_attempt_actor
+			var:bio_sabotage_attempt_actor = { tag = event_target:bio_sabotage_actor_target }
+		}
+		if = {
+			limit = { NOT = { has_variable = bio_sabotage_attempt_evidence } }
+			set_variable = { bio_sabotage_attempt_evidence = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_sabotage_attempt_evidence = constant:bio_sabotage_resolution.failed_attempt_evidence }
+		set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = bio_sabotage_attempt_actor }
+				NOT = { has_variable = bio_sabotage_attempt_evidence }
+				check_variable = { var = bio_sabotage_attempt_evidence value = constant:bio_sabotage_resolution.failed_attempt_evidence compare = less_than }
+			}
+		}
+		set_variable = { bio_sabotage_attempt_actor = event_target:bio_sabotage_actor_target }
+		set_variable = { bio_sabotage_attempt_evidence = constant:bio_sabotage_resolution.failed_attempt_evidence }
+		set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
+	}
+	clamp_variable = {
+		var = bio_sabotage_attempt_evidence
+		min = constant:bio_lifecycle_math.zero
+		max = constant:bio_lifecycle_math.hundred
+	}
+	set_state_flag = bio_sabotage_attempt_history
+	if = {
+		limit = { check_variable = { var = bio_sabotage_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		set_variable = { bio_sabotage_attempt_agent = bio_sabotage_agent }
+		set_variable = { bio_sabotage_attempt_date = global.num_days }
+		set_variable = { bio_sabotage_attempt_victim = event_target:bio_sabotage_victim_target }
+	}
+	set_temp_variable = { bio_active_agent = bio_sabotage_agent }
+	meta_effect = {
+		text = { set_state_flag = bio_agent_[BIO_AGENT]_sabotage_attempt_history }
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+}
+
+# Actor country scope after the exact state evidence record is updated. Hidden
+# Condemnation is stored at full value; doctrine only reduces an exposed source.
+bio_sabotage_apply_failed_attempt_condemnation_internal = {
+	set_temp_variable = { bio_sabotage_attempt_condemnation_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = constant:bio_sabotage_resolution.failed_attempt_condemnation }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	if = {
+		limit = {
+			check_variable = { var = bio_sabotage_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_sabotage_state_target = {
+				check_variable = { var = bio_sabotage_attempt_evidence value = constant:bio_lifecycle_evidence.confirmed_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_sabotage_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_sabotage_state_target = {
+				check_variable = { var = bio_sabotage_attempt_evidence value = constant:bio_lifecycle_evidence.probable_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_sabotage_attempt_lead_matches_actor value = constant:bio_lifecycle_proof.supplied compare = equals }
+			event_target:bio_sabotage_state_target = {
+				check_variable = { var = bio_sabotage_attempt_evidence value = constant:bio_lifecycle_evidence.suspicious_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.suspected }
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+			has_idea = cbrn_terminal_hazard_doctrine_spirit
+		}
+		set_temp_variable = { bio_sabotage_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.terminal_hazard.condemnation_mult }
+	}
+	else_if = {
+		limit = {
+			NOT = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+			has_idea = cbrn_theater_contamination_doctrine_spirit
+		}
+		set_temp_variable = { bio_sabotage_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	multiply_temp_variable = { condemnation_base_gain = bio_sabotage_attempt_condemnation_mult }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_civilian_deaths = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.concern }
+	set_temp_variable = { condemnation_victim_country = event_target:bio_sabotage_victim_target }
+	condemnation_add_source = yes
+}
+
+# Exact selected-state scope after a validated debit record. The shared
+# lifecycle owns incubation, detection, attribution, spread, deaths,
+# contamination, medical saturation, evidence, and release Condemnation.
+bio_sabotage_dispatch_release_internal = {
+	bio_lifecycle_reset_seed_record = yes
+	set_temp_variable = { bio_seed_agent = bio_sabotage_agent }
+	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.food_water_medical_sabotage }
+	set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_required = bio_sabotage_payload_required }
+	set_temp_variable = { bio_seed_payload_consumed = bio_sabotage_payload_consumed }
+	set_temp_variable = { bio_seed_weaponization_mult = bio_sabotage_weaponization_mult }
+	set_temp_variable = { bio_seed_concealment = bio_sabotage_concealment }
+	if = {
+		limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.partial compare = equals } }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.partial }
+	}
+	else = { set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.success } }
+	event_target:bio_sabotage_actor_target = { save_event_target_as = bio_seed_actor }
+	event_target:bio_sabotage_victim_target = { save_event_target_as = bio_seed_victim }
+	bio_lifecycle_dispatch_seed = yes
+	set_temp_variable = { bio_sabotage_dispatch_status = bio_seed_dispatch_status }
+	if = {
+		limit = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		set_state_flag = bio_sabotage_release_history
+		set_variable = { bio_last_sabotage_release_date = global.num_days }
+		set_variable = { bio_last_sabotage_release_actor = event_target:bio_sabotage_actor_target }
+		set_variable = { bio_last_sabotage_release_victim = event_target:bio_sabotage_victim_target }
+		set_variable = { bio_last_sabotage_release_agent = bio_sabotage_agent }
+		set_variable = { bio_last_sabotage_release_result = bio_sabotage_result }
+		set_temp_variable = { bio_active_agent = bio_sabotage_agent }
+		meta_effect = {
+			text = { set_state_flag = bio_agent_[BIO_AGENT]_sabotage_release_history }
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+	}
+}
+
+# Actor country scope after an exact record has resolved, including a proven
+# no-release failure. This refund is bounded by the stored Command Power cost.
+bio_sabotage_apply_command_refund_and_cooldown_internal = {
+	set_temp_variable = { bio_sabotage_command_refund = event_target:bio_sabotage_state_target.bio_sabotage_command_power_refund }
+	set_temp_variable = { bio_sabotage_command_cost = event_target:bio_sabotage_state_target.bio_sabotage_command_power_cost }
+	if = {
+		limit = { check_variable = { var = bio_sabotage_command_refund value = bio_sabotage_command_cost compare = greater_than } }
+		set_temp_variable = { bio_sabotage_command_refund = bio_sabotage_command_cost }
+	}
+	if = {
+		limit = { check_variable = { var = bio_sabotage_command_refund value = constant:bio_lifecycle_math.zero compare = greater_than } }
+		add_command_power = bio_sabotage_command_refund
+		if = {
+			limit = { NOT = { has_variable = bio_sabotage_command_power_refunded_total } }
+			set_variable = { bio_sabotage_command_power_refunded_total = constant:bio_lifecycle_math.zero }
+		}
+		add_to_variable = { bio_sabotage_command_power_refunded_total = bio_sabotage_command_refund }
+		set_variable = { bio_last_sabotage_command_power_refund = bio_sabotage_command_refund }
+	}
+	set_variable = { bio_sabotage_next_allowed_day = global.num_days }
+	add_to_variable = { bio_sabotage_next_allowed_day = event_target:bio_sabotage_state_target.bio_sabotage_cooldown_days }
+}
+
+# Actor country scope after a committed attempt can no longer support a valid
+# release. The cooldown survives, but doctrine never refunds an invalid or
+# cancelled record.
+bio_sabotage_apply_cooldown_only_internal = {
+	set_variable = { bio_sabotage_next_allowed_day = global.num_days }
+	add_to_variable = { bio_sabotage_next_allowed_day = event_target:bio_sabotage_state_target.bio_sabotage_cooldown_days }
+}
+
+# Actor country scope. Records one completed decision resolution without
+# duplicating the shared lifecycle's deliberate-use history.
+bio_sabotage_record_resolution_history_internal = {
+	if = {
+		limit = { NOT = { has_variable = bio_sabotage_resolution_count } }
+		set_variable = { bio_sabotage_resolution_count = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_sabotage_resolution_count = constant:bio_sabotage_history.one_attempt }
+	set_variable = { bio_last_sabotage_resolution_date = global.num_days }
+	set_variable = { bio_last_sabotage_resolution_state = event_target:bio_sabotage_state_target }
+	set_variable = { bio_last_sabotage_resolution_victim = event_target:bio_sabotage_victim_target }
+	set_variable = { bio_last_sabotage_resolution_agent = event_target:bio_sabotage_state_target.bio_sabotage_agent }
+	set_variable = { bio_last_sabotage_resolution_result = bio_sabotage_result }
+	if = {
+		limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.failed compare = equals } }
+		set_country_flag = bio_sabotage_failed_attempt_history
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.partial compare = equals }
+				check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.success compare = equals }
+			}
+		}
+		set_country_flag = bio_sabotage_release_history
+	}
+	else = { set_country_flag = bio_sabotage_dispatch_failure_history }
+}
+
+# Exact selected-state scope. Operation fields are cleared after their values
+# have been copied into permanent history and lifecycle records.
+bio_sabotage_cleanup_state_record_internal = {
+	clr_state_flag = bio_sabotage_operation_active
+	clear_variable = bio_sabotage_actor
+	clear_variable = bio_sabotage_victim
+	clear_variable = bio_sabotage_agent
+	clear_variable = bio_sabotage_payload_required
+	clear_variable = bio_sabotage_payload_consumed
+	clear_variable = bio_sabotage_support_required
+	clear_variable = bio_sabotage_support_consumed
+	clear_variable = bio_sabotage_command_power_cost
+	clear_variable = bio_sabotage_command_power_refund
+	clear_variable = bio_sabotage_cooldown_days
+	clear_variable = bio_sabotage_start_date
+}
+
+# Actor country scope after the exact operation has resolved or failed closed.
+bio_sabotage_cleanup_actor_record_internal = {
+	clr_country_flag = bio_sabotage_operation_in_progress
+	clear_variable = bio_sabotage_active_state
+}
+
+# Actor country scope with FROM as the exact selected state at timer expiry.
+bio_sabotage_resolve_operation = {
+	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+	set_temp_variable = { bio_sabotage_dispatch_status = constant:bio_lifecycle_proof.missing }
+	set_variable = { bio_last_sabotage_resolution_result = constant:bio_sabotage_result.rejected }
+	FROM = {
+		save_event_target_as = bio_sabotage_state_target
+		if = {
+			limit = { has_variable = bio_sabotage_actor }
+			var:bio_sabotage_actor = { save_event_target_as = bio_sabotage_actor_target }
+		}
+		if = {
+			limit = { has_variable = bio_sabotage_victim }
+			var:bio_sabotage_victim = { save_event_target_as = bio_sabotage_victim_target }
+		}
+	}
+
+	if = {
+		limit = {
+			has_event_target = bio_sabotage_state_target
+			has_event_target = bio_sabotage_actor_target
+			has_event_target = bio_sabotage_victim_target
+			event_target:bio_sabotage_actor_target = { tag = ROOT }
+			event_target:bio_sabotage_state_target = { bio_sabotage_active_record_is_valid = yes }
+		}
+		event_target:bio_sabotage_actor_target = {
+			bio_sabotage_prepare_program_values_internal = yes
+			bio_sabotage_calculate_outcome_weights_internal = yes
+		}
+		random_list = {
+			bio_sabotage_failure_chance = {
+				set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.failed }
+				event_target:bio_sabotage_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+				event_target:bio_sabotage_actor_target = { bio_sabotage_apply_failed_attempt_condemnation_internal = yes }
+			}
+			bio_sabotage_partial_chance = {
+				set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.partial }
+				event_target:bio_sabotage_state_target = { bio_sabotage_dispatch_release_internal = yes }
+				if = {
+					limit = { NOT = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } } }
+					set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+				}
+			}
+			bio_sabotage_full_success_chance = {
+				set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.success }
+				event_target:bio_sabotage_state_target = { bio_sabotage_dispatch_release_internal = yes }
+				if = {
+					limit = { NOT = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } } }
+					set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+				}
+			}
+		}
+		event_target:bio_sabotage_actor_target = { bio_sabotage_record_resolution_history_internal = yes }
+		if = {
+			limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.rejected compare = equals } }
+			event_target:bio_sabotage_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+			event_target:bio_sabotage_actor_target = {
+				bio_sabotage_apply_failed_attempt_condemnation_internal = yes
+				bio_sabotage_apply_cooldown_only_internal = yes
+			}
+		}
+		else = {
+			event_target:bio_sabotage_actor_target = { bio_sabotage_apply_command_refund_and_cooldown_internal = yes }
+		}
+		event_target:bio_sabotage_state_target = { bio_sabotage_cleanup_state_record_internal = yes }
+		event_target:bio_sabotage_actor_target = { bio_sabotage_cleanup_actor_record_internal = yes }
+	}
+	else = {
+		if = {
+			limit = {
+				has_event_target = bio_sabotage_state_target
+				has_event_target = bio_sabotage_actor_target
+				has_event_target = bio_sabotage_victim_target
+				event_target:bio_sabotage_actor_target = { tag = ROOT }
+			}
+			if = {
+				limit = { event_target:bio_sabotage_state_target = { bio_sabotage_committed_attempt_record_is_valid = yes } }
+				event_target:bio_sabotage_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+				event_target:bio_sabotage_actor_target = {
+					bio_sabotage_apply_failed_attempt_condemnation_internal = yes
+					bio_sabotage_apply_cooldown_only_internal = yes
+				}
+			}
+			event_target:bio_sabotage_actor_target = { set_country_flag = bio_sabotage_context_rejected_history }
+			event_target:bio_sabotage_state_target = { bio_sabotage_cleanup_state_record_internal = yes }
+			event_target:bio_sabotage_actor_target = { bio_sabotage_cleanup_actor_record_internal = yes }
+		}
+		else = {
+			clr_country_flag = bio_sabotage_operation_in_progress
+			clear_variable = bio_sabotage_active_state
+		}
+	}
+}
+
+# Actor country scope with FROM as the exact selected state. Cancellation loses
+# all committed equipment and Command Power, records an attempt lead when the
+# stored actor/victim scopes remain exact, applies cooldown, and cleans up.
+bio_sabotage_cancel_operation = {
+	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.failed }
+	FROM = {
+		save_event_target_as = bio_sabotage_state_target
+		if = {
+			limit = { has_variable = bio_sabotage_actor }
+			var:bio_sabotage_actor = { save_event_target_as = bio_sabotage_actor_target }
+		}
+		if = {
+			limit = { has_variable = bio_sabotage_victim }
+			var:bio_sabotage_victim = { save_event_target_as = bio_sabotage_victim_target }
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = bio_sabotage_state_target
+			has_event_target = bio_sabotage_actor_target
+			has_event_target = bio_sabotage_victim_target
+			event_target:bio_sabotage_actor_target = { tag = ROOT }
+		}
+		if = {
+			limit = { event_target:bio_sabotage_state_target = { bio_sabotage_committed_attempt_record_is_valid = yes } }
+			event_target:bio_sabotage_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+			event_target:bio_sabotage_actor_target = {
+				bio_sabotage_apply_failed_attempt_condemnation_internal = yes
+				set_country_flag = bio_sabotage_cancelled_attempt_history
+				if = {
+					limit = { NOT = { has_variable = bio_sabotage_cancelled_attempt_count } }
+					set_variable = { bio_sabotage_cancelled_attempt_count = constant:bio_lifecycle_math.zero }
+				}
+				add_to_variable = { bio_sabotage_cancelled_attempt_count = constant:bio_sabotage_history.one_attempt }
+				set_variable = { bio_last_sabotage_cancelled_date = global.num_days }
+				bio_sabotage_apply_cooldown_only_internal = yes
+			}
+		}
+		event_target:bio_sabotage_state_target = { bio_sabotage_cleanup_state_record_internal = yes }
+		event_target:bio_sabotage_actor_target = { bio_sabotage_cleanup_actor_record_internal = yes }
+	}
+	else = {
+		clr_country_flag = bio_sabotage_operation_in_progress
+		clear_variable = bio_sabotage_active_state
+	}
+}
+
+# Actor country scope immediately after bio_sabotage_resolve_operation. These
+# are presentation-only summaries; all gameplay state is already committed.
+bio_sabotage_present_last_resolution = {
+	if = {
+		limit = { check_variable = { var = bio_last_sabotage_resolution_result value = constant:bio_sabotage_result.success compare = equals } }
+		custom_effect_tooltip = bio_sabotage_resolution_success_tt
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_last_sabotage_resolution_result value = constant:bio_sabotage_result.partial compare = equals } }
+		custom_effect_tooltip = bio_sabotage_resolution_partial_tt
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_last_sabotage_resolution_result value = constant:bio_sabotage_result.failed compare = equals } }
+		custom_effect_tooltip = bio_sabotage_resolution_failed_tt
+	}
+	else = { custom_effect_tooltip = bio_sabotage_resolution_rejected_tt }
+}

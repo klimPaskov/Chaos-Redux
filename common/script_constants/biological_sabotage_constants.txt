@@ -1,0 +1,173 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE SCRIPT CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes the exact payload, support-equipment, Command Power, timing,
+#   resolution, cooldown, AI, and history tuning for the covert food, water,
+#   and medical-chain sabotage route.
+# - Every successful release enters the ordinary biological lifecycle with
+#   route food_water_medical_sabotage. Weaponized zombies are excluded.
+# - Doctrine changes preparation, success, cooldown, and bounded Command Power
+#   refunds. It never changes physical payload debit or evidence.
+# ============================================================================
+
+bio_sabotage_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	failed = 1
+	partial = 2
+	success = 3
+}
+
+bio_sabotage_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power = 50
+	minimum_target_population_k = 100
+
+	anthrax_payload = 10
+	plague_payload = 12
+	tularemia_payload = 10
+	smallpox_payload = 8
+	anthrax_payload_floor = 9
+	plague_payload_floor = 11
+	tularemia_payload_floor = 9
+	smallpox_payload_floor = 7
+
+	anthrax_support = 40
+	plague_support = 50
+	tularemia_support = 40
+	smallpox_support = 60
+	anthrax_support_floor = 39
+	plague_support_floor = 49
+	tularemia_support_floor = 39
+	smallpox_support_floor = 59
+
+	anthrax_command_power = 12
+	plague_command_power = 15
+	tularemia_command_power = 12
+	smallpox_command_power = 20
+
+	anthrax_command_power_floor = 11
+	plague_command_power_floor = 14
+	tularemia_command_power_floor = 11
+	smallpox_command_power_floor = 19
+}
+
+bio_sabotage_preparation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# The accepted matrix range is 120-300 days. Doctrine savings remain inside
+	# that range and do not alter equipment consumption.
+	anthrax_base = 160
+	anthrax_theater = 136
+	anthrax_terminal = 120
+	plague_base = 240
+	plague_theater = 204
+	plague_terminal = 180
+	tularemia_base = 180
+	tularemia_theater = 153
+	tularemia_terminal = 135
+	smallpox_base = 300
+	smallpox_theater = 255
+	smallpox_terminal = 225
+}
+
+bio_sabotage_resolution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_success = 55
+	integrated_readiness_success_add = 10
+	full_readiness_success_add = 15
+	theater_doctrine_success_add = 5
+	terminal_doctrine_success_add = 10
+	minimum_success = 25
+	maximum_success = 90
+	partial_release_share = 0.35
+
+	weaponization_operational = 1
+	weaponization_integrated = 1.10
+	weaponization_full = 1.20
+	attribution_concealment_factor = 0.25
+	attribution_concealment_maximum = 25
+	failed_attempt_evidence = 10
+	failed_attempt_condemnation = 20
+}
+
+bio_sabotage_doctrine = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	theater_command_power_refund = 3
+	terminal_command_power_refund = 6
+	base_cooldown_days = 60
+	theater_cooldown_days = 45
+	terminal_cooldown_days = 30
+}
+
+bio_sabotage_target_profile = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	building_floor = 0
+	anthrax_industry_threshold = 4
+	plague_population_threshold_k = 3000
+	smallpox_population_threshold_k = 4000
+}
+
+bio_sabotage_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	anthrax_base = 1
+	plague_base = 1
+	tularemia_base = 0.85
+	smallpox_base = 1
+	retaliation_factor = 4
+	first_use_factor = 2
+	unrestricted_factor = 2.50
+	desperate_factor = 3
+	defensive_profile_factor = 0.20
+	prepared_program_factor = 1.50
+	theater_doctrine_factor = 1.25
+	terminal_doctrine_factor = 1.50
+	anthrax_target_factor = 1.25
+	plague_target_factor = 1.50
+	tularemia_target_factor = 1.35
+	smallpox_target_factor = 1.75
+	japan_china_factor = 4
+	active_outbreak_factor = 0.10
+	high_condemnation_threshold = 100
+	high_import_vulnerability_threshold = 0.50
+	sanction_vulnerability_factor = 0.20
+	desperate_surrender_threshold = 0.70
+}
+
+bio_sabotage_history = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one_attempt = 1
+}
