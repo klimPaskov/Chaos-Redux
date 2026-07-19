@@ -3,10 +3,10 @@
 ## Scope and current readiness
 
 This system document covers IW-093 Asante (`DOX`) and IW-098 Sokoto (`SOK`).
-Both are Event 006 origin packages. Their focus, decision, idea, AI, and icon
-surfaces are implemented against the frozen Independence Wave plan. They remain
-fail-closed while identity, leader, flag, command-roster, starting-force,
-formable, and final package audits are unfinished. Neither runtime
+Both are Event 006 origin packages. Their focus, decision, idea, AI, command,
+starting-force, and icon surfaces are implemented against the frozen
+Independence Wave plan. They remain fail-closed while identity, flag, formable,
+and final package audits are unfinished. Neither runtime
 content-attestation flag is granted, so neither package can enter an automatic
 wave or SCN-008.
 
@@ -140,12 +140,16 @@ Muslim chief while redirecting emirate responsibility to the British
 government. Sources: [Manhyia Archives, Ashanti Confederacy Council](https://www.manhyiaarchives.org/research-notes/35-the-ashanti-confederacy-asanteman-council)
 and [UK Parliament, Native Administration in Nigeria (1925)](https://hansard.parliament.uk/lords/1925-04-02/debates/a914c31b-2f09-4f1b-bfce-b7eb6565c08c/NativeAdministrationInNigeria).
 
-The 206-row force registry already maps IW-093 and IW-098 to their researched
-force profiles and reinforcement pathways. Starting forces may materialize
-only after an exact command roster sets the shared roster receipt; the shared
-one-time dynamic force effect then scales the package from the frozen scenario
-or chaos-band force level. The current packages do not set that receipt and
-therefore cannot create provisional forces prematurely.
+The 206-row force registry maps IW-093 to its river/jungle profile, military
+tradition 64, and exact reinforcement-pathway mask, while IW-098 receives its
+mounted/mobile profile, military tradition 70, and separate pathway mask. Each
+package recruits two distinct male corps commanders only inside its exact
+prepared Event 006 scope. The shared roster receipt is written only after both
+characters and both corps-commander roles are proven. The one-time dynamic
+force effect then scales divisions, equipment, and experience from the frozen
+scenario or chaos-band force level. Setup and final validation require the
+force receipt to match the current Event 006 generation, so retries cannot
+produce free formations.
 
 AI strategy profiles prioritize anchor defense, equipment production, and
 infrastructure while the package is weak; host crises raise defensive army
@@ -195,6 +199,12 @@ no mismatch. Real-country flags still require researched historical geometry
 and a clean flat ImageGen reconstruction; waving fabric, scenes, gradients,
 and painterly flag artwork are not accepted.
 
+Four military-only commander portraits and their true 65x67 army miniatures
+are registered in `interface/006_independence_wave_iw093_iw098_portraits.gfx`:
+Kwame Frimpong and Kwaku Ntim for Asante, and Umaru Gwadabawa and Bello Rabah
+for Sokoto. All four are explicitly male, visually distinct, and use the
+project's HOI4 portrait treatment. They do not expose political staff roles.
+
 Independence Wave has no advisor icons, advisor portraits, advisor sprites,
 advisor dossiers, or advisor asset manifests. Country-leader portraits and
 commander portraits are separate asset types. They must be male, distinct,
@@ -209,9 +219,9 @@ derivative of an approved full commander portrait.
 - source and wire a faithful pre-cutover Hasan dan Mu'azu Ahmadu portrait;
 - reuse the verified vanilla Siddiq surface only for the post-cutover branch;
 - verify and reconstruct exact period Asante and Sokoto flag designs;
-- complete route-specific political transitions, command rosters,
-  starting-force materialization, and diplomacy; opening institutional
-  politics and the Prempeh/post-cutover-Siddiq leader paths are implemented;
+- complete route-specific political transitions and bilateral diplomacy;
+  opening institutional politics, the Prempeh/post-cutover-Siddiq leader
+  paths, command rosters, and generation-bound starting forces are implemented;
 - complete FORM-24/FORM-25 family identities, territory, consent, and member
   policy;
 - pass focus, decision/mission, country-package, localisation, asset, scenario,

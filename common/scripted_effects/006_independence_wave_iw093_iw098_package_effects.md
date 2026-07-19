@@ -10,11 +10,12 @@ explicit runtime content-attestation flag after its complete audit.
 
 | Helper | Scope and inputs | Outputs and side effects |
 | --- | --- | --- |
-| `independence_wave_dispatch_iw093_iw098_package_setup` | Prepared country scope; `independence_wave_setup_package_id` | Routes only IDs 93/98, prepares the exact date-appropriate leader, then calls package setup |
+| `independence_wave_dispatch_iw093_iw098_package_setup` | Prepared country scope; `independence_wave_setup_package_id` | Routes only IDs 93/98, prepares the exact date-appropriate leader and all-male command roster, then calls package setup |
 | `independence_wave_dispatch_iw093_iw098_package_final_validation` | Country scope; same setup ID | Routes final validation and preserves the shared selected/no-candidates result contract |
 | `independence_wave_dispatch_iw093_iw098_package_cleanup` | Country scope; original tag and active package ID | Routes generation cleanup before the shared reset |
 | `independence_wave_prepare_iw093_leadership` | Exact prepared IW-093 `DOX` scope | Recruits and promotes the male Prempeh II character only for the Event 006 origin; no living unrelated DOX scope is touched |
 | `independence_wave_prepare_iw098_date_appropriate_leadership` | Exact prepared IW-098 `SOK` scope, Event 012 absent | On or after 17 June 1938, reuses and promotes vanilla `SOK_siddiq_abubakar` and writes the post-cutover role proof; the unresolved Hasan branch remains fail-closed |
+| `independence_wave_prepare_iw093_command_roster` / `_iw098_command_roster` | Exact prepared Event 006 package scope | Recruits two package-specific male corps commanders only after the immutable tag, package, region, depth, archetype, and Event 012 safety proofs agree |
 | `independence_wave_ensure_iw093_iw098_baseline_laws` | Admitted package setup scope | Installs civilian economy, export focus, and volunteer-only laws only when absent |
 | `independence_wave_initialize_iw093_politics` / `_iw098_politics` | Admitted package setup scope | Applies centralized opening popularities and researched institutional party names; both packages begin non-electoral and neutral-aligned |
 | `independence_wave_iw098_select_sultan_by_date` | Event 006 prepared/active `SOK` scope | Chooses the dated selection receipt only when the matching role attestation exists; the separate leadership proof requires an actual ruling character and currently admits only the post-cutover vanilla Siddiq branch |
@@ -22,10 +23,10 @@ explicit runtime content-attestation flag after its complete audit.
 | `independence_wave_clamp_iw093_values` / `_iw098_values` | Matching package country | Clamps authority/compact, institutional balance, economic network, host settlement, and security values to their documented ranges |
 | `independence_wave_configure_iw093_focus_surface` | Prepared IW-093 `DOX` | Assigns the full shared framework, publishes the reviewed constitutional/popular/traditional/emergency/patron and former-host routes, excludes the radical route, and registers league, FORM-24, ambition, power-struggle, and signature hooks |
 | `independence_wave_configure_iw098_focus_surface` | Prepared IW-098 `SOK` with a reviewed generic or already-loaded Event 006 tree | Assigns the full shared framework, publishes the reviewed constitutional/traditional/emergency/patron and former-host routes, excludes popular/radical routes, and registers league, FORM-25, ambition, power-struggle, and signature hooks |
-| `independence_wave_setup_iw093_asante` | Prepared `DOX`, fixed package 93, state 274 anchor | Records package-local anchor/point values, initializes the paid-decision lifecycle and focus surface, and writes setup receipts only after content, ownership, capital, host-survival, and focus proofs |
-| `independence_wave_setup_iw098_sokoto` | Prepared `SOK`, fixed package 98, state 902 anchor | Records package-local anchor, initializes the paid-decision lifecycle and reviewed full-tree surface only when Event 012 is absent, and writes setup receipts only after content, succession, ownership, host-survival, and focus proofs |
-| `independence_wave_validate_iw093_package` / `_iw098_package` | Active Event 006 package scope | Sets final validation success only when setup, fixed anchor, capital/succession, host survival, opening-or-completed staged idea, and runtime attestation still hold |
-| `independence_wave_cleanup_iw093_asante` / `_iw098_sokoto` | Matching original tag and package ID | Removes package decisions, focus receipts, shared focus/formable profiles, route exclusions, staged ideas, and package-local values, then restores the generic tree if the Event 006 tree was loaded. SOK cleanup never clears Event 012 focus or lifecycle flags |
+| `independence_wave_setup_iw093_asante` | Prepared `DOX`, fixed package 93, state 274 anchor | Records package-local anchor/point values, initializes the paid-decision and focus surfaces, proves the two corps commanders, loads force-registry row 93, and applies the generation-bound river/jungle opening force before writing setup receipts |
+| `independence_wave_setup_iw098_sokoto` | Prepared `SOK`, fixed package 98, state 902 anchor | Records package-local anchor, initializes the reviewed content only when Event 012 is absent, proves the two corps commanders, loads force-registry row 98, and applies the generation-bound mounted opening force before writing setup receipts |
+| `independence_wave_validate_iw093_package` / `_iw098_package` | Active Event 006 package scope | Sets final validation success only when setup, fixed anchor, capital/succession, host survival, actual command roles, exact mapped force profile and tradition, current-generation one-time force receipt, opening-or-completed staged idea, and runtime attestation still hold |
+| `independence_wave_cleanup_iw093_asante` / `_iw098_sokoto` | Matching original tag and package ID | Removes package decisions, focus receipts, shared focus/formable profiles, route exclusions, staged ideas, package-local values, and the four Event 006 fictional commanders, then restores the generic tree if the Event 006 tree was loaded. SOK cleanup never retires vanilla Siddiq or clears Event 012 focus or lifecycle flags |
 
 The trigger file supplies the exact tag/origin wrappers, planner candidate
 gates, fixed anchor proofs, Kumasi capital proof, host survival proof, date
@@ -96,6 +97,16 @@ The setup path also installs the opening staged idea through
 requires either that opening idea or its completed-project successor. Package
 cleanup removes decisions, active transaction receipts, and both lifecycle
 idea stages before shared origin metadata is cleared.
+
+Each package has two male corps commanders with distinct terrain and staff
+profiles. Setup writes `independence_wave_command_roster_ready` only after the
+country owns both characters and both are actual corps commanders. It then
+loads the canonical row from the 206-entry force registry and calls the shared
+dynamic starting-force effect. IW-093 proves the row-93 `river_jungle` profile
+and tradition 64; IW-098 proves the row-98 `mounted_mobile` profile and
+tradition 70. Setup and final validation both require the applied force receipt
+to match the current Event 006 generation, preventing reruns and stale force
+inheritance.
 
 The signature focus imports contain 43 package-specific focuses. Their effects
 unlock the 16 paid decision transactions without duplicating their costs or

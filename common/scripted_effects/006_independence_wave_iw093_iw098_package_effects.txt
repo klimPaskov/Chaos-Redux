@@ -4,8 +4,9 @@
 # Fail-closed adapters for Asante (`DOX`) and Sokoto (`SOK`). This file owns
 # fixed package proofs, package-local values, focus-framework configuration,
 # capital/succession validation hooks, central dispatch entries, and cleanup.
-# Decision and focus content is present, but identity, force, portrait, flag,
-# formable, and final package audits must provide the external runtime
+# Decision, focus, command-roster, and starting-force content is present, but
+# identity, flag, formable, and final presentation audits must provide the
+# external runtime
 # attestation flags before either setup path can return `selected`.
 # ============================================================================
 
@@ -23,6 +24,7 @@ independence_wave_dispatch_iw093_iw098_package_setup = {
 			}
 		}
 		independence_wave_prepare_iw093_leadership = yes
+		independence_wave_prepare_iw093_command_roster = yes
 		independence_wave_setup_iw093_asante = yes
 	}
 	else_if = {
@@ -34,6 +36,7 @@ independence_wave_dispatch_iw093_iw098_package_setup = {
 			}
 		}
 		independence_wave_prepare_iw098_date_appropriate_leadership = yes
+		independence_wave_prepare_iw098_command_roster = yes
 		independence_wave_setup_iw098_sokoto = yes
 	}
 }
@@ -146,6 +149,42 @@ independence_wave_prepare_iw098_date_appropriate_leadership = {
 			}
 			set_country_flag = independence_wave_iw098_post_cutover_role_attested
 		}
+	}
+}
+
+independence_wave_prepare_iw093_command_roster = {
+	if = {
+		limit = {
+			is_independence_wave_iw093_prepared_scope = yes
+			NOT = { has_character = DOX_kwame_frimpong }
+		}
+		recruit_character = DOX_kwame_frimpong
+	}
+	if = {
+		limit = {
+			is_independence_wave_iw093_prepared_scope = yes
+			NOT = { has_character = DOX_kwaku_ntim }
+		}
+		recruit_character = DOX_kwaku_ntim
+	}
+}
+
+independence_wave_prepare_iw098_command_roster = {
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+			NOT = { has_character = SOK_umaru_gwadabawa }
+		}
+		recruit_character = SOK_umaru_gwadabawa
+	}
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+			NOT = { has_character = SOK_bello_rabah }
+		}
+		recruit_character = SOK_bello_rabah
 	}
 }
 
@@ -376,13 +415,35 @@ independence_wave_setup_iw093_asante = {
 		set_variable = { independence_wave_iw093_kumasi_victory_point = constant:independence_wave_iw093.kumasi_victory_point }
 		independence_wave_ensure_iw093_iw098_baseline_laws = yes
 		independence_wave_initialize_iw093_politics = yes
+		if = {
+			limit = { has_independence_wave_iw093_command_roster = yes }
+			set_country_flag = independence_wave_command_roster_ready
+		}
 		independence_wave_initialize_iw093_values = yes
 		independence_wave_iw093_initialize_decision_content = yes
 		independence_wave_configure_iw093_focus_surface = yes
 		if = {
 			limit = {
+				has_country_flag = independence_wave_command_roster_ready
+				has_independence_wave_iw093_command_roster = yes
+			}
+			independence_wave_load_force_package_mapping = yes
+			if = {
+				limit = { has_current_independence_wave_force_package_mapping = yes }
+				independence_wave_apply_dynamic_starting_force = yes
+			}
+		}
+		if = {
+			limit = {
 				has_valid_independence_wave_iw093_values = yes
 				has_country_flag = independence_wave_iw093_focus_surface_configured
+				has_independence_wave_iw093_command_roster = yes
+				has_country_flag = independence_wave_command_roster_ready
+				has_current_independence_wave_force_package_mapping = yes
+				check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle }
+				check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p93 }
+				has_independence_wave_force_package_for_current_generation = yes
+				has_country_flag = independence_wave_force_package_applied
 			}
 			set_country_flag = independence_wave_iw093_kumasi_capital_secured
 			set_country_flag = independence_wave_iw093_setup_complete
@@ -415,13 +476,35 @@ independence_wave_setup_iw098_sokoto = {
 			set_variable = { independence_wave_iw098_anchor_state = event_target:independence_wave_setup_anchor_state }
 			independence_wave_ensure_iw093_iw098_baseline_laws = yes
 			independence_wave_initialize_iw098_politics = yes
+			if = {
+				limit = { has_independence_wave_iw098_command_roster = yes }
+				set_country_flag = independence_wave_command_roster_ready
+			}
 			independence_wave_initialize_iw098_values = yes
 			independence_wave_iw098_initialize_decision_content = yes
 			independence_wave_configure_iw098_focus_surface = yes
 			if = {
 				limit = {
+					has_country_flag = independence_wave_command_roster_ready
+					has_independence_wave_iw098_command_roster = yes
+				}
+				independence_wave_load_force_package_mapping = yes
+				if = {
+					limit = { has_current_independence_wave_force_package_mapping = yes }
+					independence_wave_apply_dynamic_starting_force = yes
+				}
+			}
+			if = {
+				limit = {
 					has_valid_independence_wave_iw098_values = yes
 					has_country_flag = independence_wave_iw098_focus_surface_configured
+					has_independence_wave_iw098_command_roster = yes
+					has_country_flag = independence_wave_command_roster_ready
+					has_current_independence_wave_force_package_mapping = yes
+					check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+					check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p98 }
+					has_independence_wave_force_package_for_current_generation = yes
+					has_country_flag = independence_wave_force_package_applied
 				}
 				set_country_flag = independence_wave_iw098_setup_complete
 				set_country_flag = independence_wave_package_setup_complete
@@ -452,6 +535,13 @@ independence_wave_validate_iw093_package = {
 			has_independence_wave_iw093_kumasi_capital_proof = yes
 			has_independence_wave_iw093_host_capital_survival_proof = yes
 			has_independence_wave_iw093_prempeh_leadership = yes
+			has_independence_wave_iw093_command_roster = yes
+			has_country_flag = independence_wave_command_roster_ready
+			has_current_independence_wave_force_package_mapping = yes
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle }
+			check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p93 }
+			has_independence_wave_force_package_for_current_generation = yes
+			has_country_flag = independence_wave_force_package_applied
 			has_valid_independence_wave_iw093_values = yes
 			OR = {
 				has_idea = independence_wave_iw093_unsettled_restoration_idea
@@ -478,6 +568,13 @@ independence_wave_validate_iw098_package = {
 			has_independence_wave_iw098_runtime_content_attestation = yes
 			has_independence_wave_iw098_date_appropriate_role_attestation = yes
 			has_independence_wave_iw098_date_appropriate_leadership = yes
+			has_independence_wave_iw098_command_roster = yes
+			has_country_flag = independence_wave_command_roster_ready
+			has_current_independence_wave_force_package_mapping = yes
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+			check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p98 }
+			has_independence_wave_force_package_for_current_generation = yes
+			has_country_flag = independence_wave_force_package_applied
 			has_independence_wave_iw098_sokoto_anchor_proof = yes
 			has_independence_wave_iw098_host_capital_survival_proof = yes
 			is_independence_wave_iw098_event012_state_safe = yes
@@ -535,6 +632,14 @@ independence_wave_cleanup_iw093_asante = {
 			retire_character = DOX_prempeh_ii
 		}
 		if = {
+			limit = { has_character = DOX_kwame_frimpong }
+			retire_character = DOX_kwame_frimpong
+		}
+		if = {
+			limit = { has_character = DOX_kwaku_ntim }
+			retire_character = DOX_kwaku_ntim
+		}
+		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
 		}
@@ -578,6 +683,14 @@ independence_wave_cleanup_iw098_sokoto = {
 		clr_country_flag = independence_wave_iw098_route_frontier_command
 		clr_country_flag = independence_wave_iw098_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw098_form25_preparation_complete
+		if = {
+			limit = { has_character = SOK_umaru_gwadabawa }
+			retire_character = SOK_umaru_gwadabawa
+		}
+		if = {
+			limit = { has_character = SOK_bello_rabah }
+			retire_character = SOK_bello_rabah
+		}
 		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
