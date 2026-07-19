@@ -20,9 +20,14 @@ runtime admission state.
 
 1. The seven files under `../../specs/006_independence_wave_specs/specs/` are
    the accepted design authority.
-2. Accepted package identities, dispositions, representation modes, reservation
-   groups, and prose research remain authoritative in the CSV and Markdown
-   sources under `../../specs/006_independence_wave_specs/research/`.
+2. The canonical country-identity source is
+   `../../specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`.
+   Use `package_bindings/006_current_installed_map_package_bindings.csv` for
+   current anchors, hosts, and bindings, and
+   `../../specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
+   for tag-safety and registered-identity reuse decisions. Other research
+   CSVs/Markdown files are supporting evidence and do not replace this
+   three-file authority set.
 3. The installed-map binding files under `package_bindings/` and the dated tag
    audit under `tag_audit/` are the numeric implementation authority for their
    stated environment snapshots. They may disable an unsafe package. They do
@@ -78,7 +83,7 @@ achievements remain hidden by their intended route and survival conditions.
 | Accepted design | Accepted and unchanged | Seven specification parts remain binding |
 | Main event source | Implemented foundation, not complete | `events/006_independence_wave.txt` contains the entry chain, evolution events, scenario events, and regional progression events. It is not a placeholder |
 | Mechanics, decisions, focus, forces, evolutions, scenario | Materially implemented | Commits `e7a84fced`, `fc785387e`, `84e7257c5`, `c6ef74f66`, `a777e48a9`, and `d617ef049`. This does not certify every accepted route or package |
-| Installed tag architecture | Audited snapshot | 206 packages resolve to 102 reserved `X` tags, 91 reused vanilla tags, and 13 overlays. The 2026-07-18 installed-mod audit covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling local mods, archives, and reports zero collisions |
+| Installed tag architecture | Audited snapshot | 206 packages resolve to 102 custom `X`-shell rows, 91 registered vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only identities: 191 unique nonblank carrier tags overall, with only `CHU` and `BIA` intentionally shared. The 2026-07-18 installed-mod audit covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling local mods, archives, and reports zero collisions |
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
 | Allocator and joint reservation | Audited and current | 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering; runtime host, anchor, reservation, and wave-size gates remain authoritative |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
@@ -119,9 +124,11 @@ The following facts are safe to reuse until the installed mod set, accepted tag
 registry, or installed map changes:
 
 - 206 accepted packages, `IW-001` through `IW-206`.
-- 102 reserved new tags, all ending in `X`.
-- 91 reused registered vanilla tags.
-- 13 non-selectable vanilla-route overlays.
+- 102 custom Event 006 `X`-shell rows, all ending in `X`.
+- 91 registered vanilla-tag reuse rows, using 89 unique reused carriers.
+- 13 non-selectable vanilla-route overlay rows.
+- 191 unique nonblank resolved carrier tags overall; only `CHU` and `BIA`
+  are intentionally shared by two package rows each.
 - 138 selectable packages with installed-map bindings.
 - 55 selectable packages without a legal installed-map binding.
 - 13 overlay rows outside both selectable lists.
@@ -133,7 +140,9 @@ registry, or installed map changes:
 
 Primary evidence:
 
+- `../../specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
 - `package_bindings/006_current_installed_map_package_bindings.csv`
+- `../../specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
 - `package_bindings/006_current_map_reservation_groups.csv`
 - `package_bindings/006_current_installed_map_binding_audit.md`
 - `tag_audit/006_installed_tag_collision_audit_2026_07_18.md`
@@ -286,12 +295,15 @@ recording without explicit user approval.
 | Artifact or family | Disposition | Current use |
 | --- | --- | --- |
 | `006_documentation_curator_handoff.md` | Superseded | Historical 2026-07-14 snapshot only |
+| `006_country_tag_registry_handoff.md` | Superseded | Historical 128-new-tag/107-shell/21-inert reservation snapshot; use the canonical candidate registry, current binding CSV, and tag collision/reuse audit |
 | `006_repository_explorer_handoff.md` | Superseded for current status | Useful only for historical discovery context |
 | `006_transaction_architecture_audit_2026_07_15.md` | Superseded | Its P0 findings were resolved by `006_transaction_architecture_resolution_2026_07_15.md` and commit `66f1a68bc` |
 | `006_transaction_architecture_resolution_2026_07_15.md` | Implemented evidence | Current transaction and rollback authority for its reviewed scope |
 | `006_cluster_integration_audit_2026_07_15.md` | Partly superseded | Cluster architecture remains useful. Its one-attested-package snapshot predates `2912e0a46` |
-| `006_current_installed_map_binding_audit_handoff.md` | Implemented evidence | Current installed-map binding authority. Its Trabzon and Kashmir protections are present |
-| `006_installed_tag_and_vanilla_identity_audit_handoff.md` and dated tag audit | Implemented evidence | Current tag snapshot until registry or environment changes |
+| `006_current_installed_map_binding_audit_handoff.md` | Implemented evidence with historical ledger | The package binding CSV and binding audit are current authority; this handoff preserves the original 149/57 all-row result and its Trabzon/Kashmir protections |
+| `006_package_allocator_integration_handoff.md` | Historical implementation snapshot | Its 149/57 and 128-shell coverage figures are at-time evidence; use the canonical identity/binding/safety files for current routing |
+| `006_installed_tag_and_vanilla_identity_audit_handoff.md` | Superseded first-pass evidence | Its 103/90 and 128/78 tables are historical; use the canonical candidate registry, current binding CSV, the 2026-07-18 tag audit, and the research collision/reuse audit |
+| `tag_audit/006_installed_tag_collision_audit_2026_07_18.md` and dated tag audit | Implemented evidence | Current tag-safety snapshot until the registry or installed environment changes |
 | All 2026-07-15 and 2026-07-16 fictional portrait, BRI portrait, mixed NWE portrait, and army-small handoffs | Superseded for portrait visuals, hashes, and approval | Use the 2026-07-18 male-HOI4 refresh manifest and handoff. Historical gameplay and flag findings remain bounded by each file's supersession note |
 | `006_event6_male_commander_portrait_refresh_2026_07_18.md` | Current portrait authority | Twenty male fictional large portraits and ten commander-only 65x67 miniatures accepted; ACX/AEX remain readiness-pool only; Rupprecht/Matthes remain protected; no Event 6 advisor icon or portrait asset is present |
 | `006_nwe_country_package_audit_2026_07_15.md` | Partly superseded | Use later remediation, FORM commits, package re-audits, and the current compile-time registry for readiness |
@@ -335,6 +347,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
 | Older curator status for BRI and AJX | Superseded by implementation commit `7368cc0bf` and exact promotion commits `5d17e55b3` and `f64d9640e` |
 | Pacific admission handoffs say HOLD/FAIL-CLOSED | Historical verdicts are preserved. The 2026-07-18 parent promotion supersedes only their current admission disposition; their package, audit, and validation findings remain evidence |
+| Older tag ledgers report 128 new tags, 107 shells, 21 inert identities, or 78/103/90 reuse splits | Superseded first-pass snapshots. The current identity authority is the candidate registry CSV, current binding CSV, and tag collision/reuse audit; only `CHU` and `BIA` are intentionally shared carriers |
 | IW-043/IW-058 improvement addendum says neither package is admitted and all assets are absent | Resolved. The addendum now records the admitted exact CHU/ASY signature tranche, final assets, and operational transactions. Historical fail-closed passages remain at-the-time evidence and are superseded by final audits |
 | Vanilla CHU/ASY formable decisions bypass exact Event 006 contracts | Compatibility PASS: `zz_006_independence_wave_vanilla_formable_compatibility_decisions.txt` blocks only active Event 006 CHU/ASY shortcuts; ordinary and Event 005 behavior remains vanilla. Attested FORM-12/13/18 use scoped consent, anchor, integration, and cleanup contracts |
 | Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical pre-admission snapshots. Their collision, proof-writer, and no-advisor findings remain useful; current admission and art status are recorded by this map and the package manifests |

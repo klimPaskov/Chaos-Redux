@@ -1,5 +1,14 @@
 # Event 006 current-installed-map binding audit handoff
 
+> **Historical all-row ledger note.** The `149` bound / `57` unbound figures in
+> this handoff are the original 2026-07-14 all-row map result, retained for
+> traceability. Current selection uses the binding CSV's `138` bound / `55`
+> unbound selectable rows plus `13` overlay rows. Use
+> `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
+> for identity and
+> `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`
+> for current package bindings.
+
 ## Scope completed
 
 Audited all 206 accepted Event 006 candidate packages against the currently installed 1–1081 Hearts of Iron IV state map. Resolved authoritative anchor, compact, and extended bindings where the accepted package definition and current map support them; left packages unbound where a unique current state or required named package does not exist.
@@ -26,7 +35,7 @@ This tranche is documentation-only. No gameplay, specification, localisation, wo
 - `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_binding_audit.md`
   - method, map authority, direct rebindings, disables, collisions, host-survival findings, and implementation gates.
 
-## Principal findings
+## Historical principal findings (original all-row ledger)
 
 - Bound: 149 packages.
 - Unbound: 57 packages.

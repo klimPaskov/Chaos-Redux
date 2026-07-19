@@ -1,5 +1,12 @@
 # Event 006 tag architecture documentation alignment handoff
 
+> **Historical architecture snapshot.** This 2026-07-15 alignment handoff is
+> retained for change history. Use the canonical candidate registry CSV for
+> identity, the current installed-map binding CSV for anchors/hosts/bindings,
+> and the tag collision/reuse audit for safety. Its `102/91/13` summary is
+> explanatory; it does not replace those sources or carry current runtime
+> admission status.
+
 Date: 2026-07-15
 
 ## Scope completed
@@ -14,6 +21,8 @@ This was a documentation-only curation tranche. No gameplay, localisation, scrip
 - Custom Event 6 countries: **102**.
 - Registered vanilla-tag reuses: **91**.
 - Non-selectable vanilla route overlays: **13**.
+- Unique nonblank resolved carrier tags: **191**; only `CHU` and `BIA` are
+  intentionally shared.
 - Selectable installed-map pool: **138 bound and 55 unbound**.
 - Superseded pre-overlay map result: **149 bound and 57 unbound**.
 - Current dispositions: 9 automatic, 44 automatic if not living, 73 automatic if unique, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 vanilla-route-overlay-only.

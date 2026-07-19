@@ -15,15 +15,121 @@
 # COUNTRY scope. These are exact carriers, not substitutes: each is an existing
 # playable African identity with a compact vanilla capital and state package.
 # Recording an origin changes no owner, controller, core, subject, or faction.
+# Direct Event 006 identity overlaps are recorded through the shared canonical
+# carrier predicates. This helper writes Event 012 flags only; it never writes
+# `liberation_origin` or any Event 006 marker.
+africa_priority_member_record_iw_overlap_origin = {
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_asante_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_asante
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_oyo_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_oyo
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_sokoto_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_sokoto
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_kanem_bornu_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_kanem_bornu
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_kongo_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_kongo
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_luba_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_luba
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_lunda_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_lunda
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_buganda_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_buganda
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_harar_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_harar
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_kilwa_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_kilwa
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_zulu_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_zulu
+	}
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_merina_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		set_country_flag = africa_priority_origin_merina
+	}
+}
+
 africa_priority_member_record_supported_carrier_origin = {
-	if = { limit = { original_tag = SOK } set_country_flag = africa_priority_origin_sokoto }
-	if = { limit = { original_tag = MLI } set_country_flag = africa_priority_origin_manden }
-	if = { limit = { original_tag = UGA } set_country_flag = africa_priority_origin_buganda }
-	if = { limit = { original_tag = TIG } set_country_flag = africa_priority_origin_aksum }
-	if = { limit = { original_tag = HAR } set_country_flag = africa_priority_origin_harar }
-	if = { limit = { original_tag = SUD } set_country_flag = africa_priority_origin_nubia }
-	if = { limit = { original_tag = ZIM } set_country_flag = africa_priority_origin_great_zimbabwe }
-	if = { limit = { original_tag = MAD } set_country_flag = africa_priority_origin_merina }
+	africa_priority_member_record_iw_overlap_origin = yes
+	if = {
+		limit = {
+			is_independence_wave_registry_africa_nonmatching_vanilla_carrier = yes
+			NOT = { is_independence_wave_registry_event6_origin = yes }
+			NOT = { is_independence_wave_registry_soviet_origin = yes }
+		}
+		if = { limit = { original_tag = MLI } set_country_flag = africa_priority_origin_manden }
+		if = { limit = { original_tag = TIG } set_country_flag = africa_priority_origin_aksum }
+		if = { limit = { original_tag = SUD } set_country_flag = africa_priority_origin_nubia }
+		if = { limit = { original_tag = ZIM } set_country_flag = africa_priority_origin_great_zimbabwe }
+	}
 }
 
 # COUNTRY scope on one bounded roster target. Rebuilds the six documented
@@ -148,19 +254,35 @@ africa_priority_member_resolve_requalification_issue = {
 	}
 }
 
-# COUNTRY scope after complete package registration. The overlay replaces the
-# promoted carrier's tree. keep_completed retains only any focus IDs shared by
-# both trees; the Event 012 host and its continental tree are not touched.
+# COUNTRY scope after complete package registration. Event 012 loads its tree
+# only for a generic carrier that is not owned by Event 006 or Event 005. A
+# meaningful existing tree is preserved; the Africa package's decisions,
+# ideas, forces, and AI still apply in that additive mode.
 africa_priority_member_ensure_focus_tree_loaded = {
 	if = {
-		limit = { africa_priority_member_has_package = yes }
-		set_country_flag = africa_priority_member_focus_tree_loaded
+		limit = {
+			africa_priority_member_has_package = yes
+			is_independence_wave_registry_africa_origin = yes
+		}
+		clr_country_flag = africa_priority_member_focus_tree_loaded
+		clr_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		if = {
-			limit = { NOT = { has_focus_tree = africa_priority_member_focus_tree } }
+			limit = {
+				NOT = { has_focus_tree = africa_priority_member_focus_tree }
+				has_focus_tree = generic_focus
+			}
 			load_focus_tree = {
 				tree = africa_priority_member_focus_tree
 				keep_completed = yes
 			}
+			set_country_flag = africa_priority_member_focus_tree_loaded
+		}
+		else_if = {
+			limit = { has_focus_tree = africa_priority_member_focus_tree }
+			set_country_flag = africa_priority_member_focus_tree_loaded
+		}
+		else = {
+			set_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		}
 		mark_focus_tree_layout_dirty = yes
 	}

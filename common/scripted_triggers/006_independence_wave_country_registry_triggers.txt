@@ -1,0 +1,312 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COUNTRY REGISTRY TRIGGERS
+# ============================================================================
+# Static exact-tag membership and provenance gates for the 206-row registry.
+# Country groups/collections provide the reusable array API; these triggers
+# provide safe country-scope predicates for gameplay call sites. Membership is
+# never sufficient to activate content: callers must also require the creating
+# event's package/origin markers.
+# ============================================================================
+
+is_independence_wave_registry_event6_origin = {
+	is_independence_wave_active_origin_country = yes
+}
+
+is_independence_wave_registry_soviet_origin = {
+	is_soviet_collapse_active_origin_country = yes
+}
+
+# Event 012 may use a carrier only after it has recorded its own package origin
+# and neither Event 006 nor Event 005 owns the live origin.
+is_independence_wave_registry_africa_origin = {
+	has_country_flag = africa_priority_member_package_active
+	has_country_flag = africa_priority_member_origin_validated
+	NOT = { is_independence_wave_registry_event6_origin = yes }
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+}
+
+is_independence_wave_registry_event6_owned_tag = {
+	OR = {
+		original_tag = ACX
+		original_tag = AFX
+		original_tag = AGX
+		original_tag = AJX
+		original_tag = AKX
+		original_tag = ARX
+		original_tag = ASX
+		original_tag = ATX
+		original_tag = AXX
+		original_tag = BAX
+		original_tag = BBX
+		original_tag = BFX
+		original_tag = BHX
+		original_tag = BJX
+		original_tag = BKX
+		original_tag = BWX
+		original_tag = CIX
+		original_tag = CJX
+		original_tag = CKX
+		original_tag = CLX
+		original_tag = COX
+		original_tag = CPX
+		original_tag = CQX
+		original_tag = CUX
+		original_tag = CVX
+		original_tag = CWX
+		original_tag = CXX
+		original_tag = CYX
+		original_tag = DAX
+		original_tag = DBX
+		original_tag = DFX
+		original_tag = DHX
+		original_tag = DJX
+		original_tag = DKX
+		original_tag = DLX
+		original_tag = DMX
+		original_tag = DNX
+		original_tag = DOX
+		original_tag = DPX
+		original_tag = DSX
+		original_tag = DUX
+		original_tag = DVX
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = EBX
+		original_tag = EEX
+		original_tag = EHX
+		original_tag = ELX
+		original_tag = EMX
+		original_tag = ENX
+		original_tag = EQX
+		original_tag = ERX
+		original_tag = ESX
+		original_tag = EUX
+		original_tag = EWX
+		original_tag = EXX
+		original_tag = EYX
+		original_tag = FAX
+		original_tag = FBX
+		original_tag = FDX
+		original_tag = FLX
+		original_tag = FNX
+		original_tag = FOX
+		original_tag = FPX
+		original_tag = FSX
+		original_tag = FUX
+		original_tag = FVX
+		original_tag = FXX
+		original_tag = GBX
+		original_tag = GCX
+		original_tag = GDX
+		original_tag = GGX
+		original_tag = GHX
+		original_tag = GIX
+		original_tag = GLX
+		original_tag = GMX
+		original_tag = GRX
+		original_tag = GTX
+		original_tag = GYX
+		original_tag = GZX
+		original_tag = HAX
+		original_tag = HBX
+		original_tag = HCX
+		original_tag = HDX
+		original_tag = HEX
+		original_tag = HFX
+		original_tag = HGX
+		original_tag = HHX
+		original_tag = HKX
+		original_tag = HMX
+		original_tag = HPX
+		original_tag = HQX
+		original_tag = HSX
+		original_tag = HTX
+		original_tag = HUX
+		original_tag = HWX
+		original_tag = HXX
+		original_tag = HYX
+		original_tag = HZX
+		original_tag = IAX
+		original_tag = IBX
+		original_tag = ICX
+	}
+}
+
+is_independence_wave_registry_registered_reuse_tag = {
+	OR = {
+		original_tag = AFA
+		original_tag = ALT
+		original_tag = ANU
+		original_tag = ARM
+		original_tag = ASY
+		original_tag = ATJ
+		original_tag = AZR
+		original_tag = BAN
+		original_tag = BAR
+		original_tag = BAY
+		original_tag = BIA
+		original_tag = BLC
+		original_tag = BLI
+		original_tag = BOS
+		original_tag = BRD
+		original_tag = BRI
+		original_tag = BSK
+		original_tag = BYA
+		original_tag = CAT
+		original_tag = CHM
+		original_tag = CHU
+		original_tag = CIN
+		original_tag = COR
+		original_tag = CRI
+		original_tag = DAG
+		original_tag = DAH
+		original_tag = DON
+		original_tag = EVE
+		original_tag = FER
+		original_tag = FIJ
+		original_tag = FSM
+		original_tag = GAL
+		original_tag = GAR
+		original_tag = GEO
+		original_tag = GLC
+		original_tag = HAR
+		original_tag = HAW
+		original_tag = HYD
+		original_tag = ICE
+		original_tag = IMO
+		original_tag = KAR
+		original_tag = KAS
+		original_tag = KHA
+		original_tag = KHL
+		original_tag = KOM
+		original_tag = KOS
+		original_tag = KUB
+		original_tag = KUR
+		original_tag = LAO
+		original_tag = LEB
+		original_tag = MAC
+		original_tag = MAD
+		original_tag = MAY
+		original_tag = MEL
+		original_tag = MEN
+		original_tag = MIS
+		original_tag = MNT
+		original_tag = MPU
+		original_tag = MYS
+		original_tag = NAV
+		original_tag = NEN
+		original_tag = OCC
+		original_tag = OKN
+		original_tag = ORO
+		original_tag = PAL
+		original_tag = PNG
+		original_tag = POK
+		original_tag = PSH
+		original_tag = QUE
+		original_tag = RAS
+		original_tag = RHI
+		original_tag = RIF
+		original_tag = RUT
+		original_tag = RWA
+		original_tag = SAM
+		original_tag = SCO
+		original_tag = SIN
+		original_tag = SKK
+		original_tag = SOK
+		original_tag = SOM
+		original_tag = TAT
+		original_tag = TIG
+		original_tag = TRA
+		original_tag = UDM
+		original_tag = UGA
+		original_tag = WLS
+		original_tag = WPG
+		original_tag = YAK
+		original_tag = YUC
+	}
+}
+
+is_independence_wave_registry_resolved_carrier_tag = {
+	OR = {
+		is_independence_wave_registry_event6_owned_tag = yes
+		is_independence_wave_registry_registered_reuse_tag = yes
+	}
+}
+
+# The 12 Event 012 direct identity overlaps. COG is intentionally overlay-only
+# for Event 006 and therefore is not part of the selectable subset below.
+is_independence_wave_registry_africa_overlap_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = COG
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EMX
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+is_independence_wave_registry_africa_overlap_non_overlay_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EMX
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+is_independence_wave_registry_africa_overlap_current_map_bound_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+# Event 012 package identities with direct Event 006 rows. These predicates
+# deliberately describe identity only; callers add the Event 012 origin gate.
+is_independence_wave_registry_africa_asante_carrier = { original_tag = DOX }
+is_independence_wave_registry_africa_oyo_carrier = { original_tag = DSX }
+is_independence_wave_registry_africa_sokoto_carrier = { original_tag = SOK }
+is_independence_wave_registry_africa_kanem_bornu_carrier = { original_tag = DUX }
+is_independence_wave_registry_africa_kongo_carrier = {
+	original_tag = COG
+	has_cosmetic_tag = COG_kingdom_of_kongo
+}
+is_independence_wave_registry_africa_luba_carrier = { original_tag = DYX }
+is_independence_wave_registry_africa_lunda_carrier = { original_tag = DZX }
+is_independence_wave_registry_africa_buganda_carrier = { original_tag = UGA }
+is_independence_wave_registry_africa_harar_carrier = { original_tag = HAR }
+is_independence_wave_registry_africa_kilwa_carrier = { original_tag = EMX }
+is_independence_wave_registry_africa_zulu_carrier = { original_tag = EQX }
+is_independence_wave_registry_africa_merina_carrier = { original_tag = MAD }
+
+# These Event 012 identities intentionally stay on vanilla carriers. They are
+# not asserted to be Event 006 same-identity overlaps (TIG's IW row is Tigray,
+# while Aksum is a separate Event 012 identity).
+is_independence_wave_registry_africa_nonmatching_vanilla_carrier = {
+	OR = {
+		original_tag = MLI
+		original_tag = TIG
+		original_tag = SUD
+		original_tag = ZIM
+	}
+}

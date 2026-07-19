@@ -1,5 +1,12 @@
 # Event 006 Repository Explorer Handoff
 
+> **Superseded discovery snapshot.** The registry and implementation findings
+> below predate the current Event 006 package work and retain the historical
+> `78` reused / `128` reserved-tag ledger plus placeholder claims. Do not use
+> this file to route current work. Read
+> `../006_source_of_truth_map.md`, the canonical candidate registry CSV, the
+> current installed-map binding CSV, and the tag collision/reuse audit first.
+
 ## Scope
 
 Read-only mapping of the current Event 006 implementation, shared event infrastructure, installed tags, current-map anchors, scenario IDs, super-event slots, and likely implementation surfaces. The explorer made no gameplay, documentation, asset, or workbook edits.
@@ -12,7 +19,7 @@ Read-only mapping of the current Event 006 implementation, shared event infrastr
 - `chaos-redux-events` and `chaos-redux-subagents`.
 - All seven accepted Event 006 specification parts and their registries.
 
-## Current implementation findings
+## Historical implementation findings (superseded)
 
 - `events/006_independence_wave.txt` is an inert placeholder: hidden, `fire_only_once = yes`, `always = no`, and an empty option.
 - The dedicated localisation file contains placeholder text only.
@@ -21,7 +28,7 @@ Read-only mapping of the current Event 006 implementation, shared event infrastr
 - Generic event-name selectors exist. Event actor mapping, Event Details data, evolution history, and preview reconstruction do not.
 - No Event 006 country, focus, decision, mission, idea, AI, network, league, formable, achievement, asset, super-event, or audio implementation exists.
 
-## Registry and map findings
+## Historical registry and map findings (superseded)
 
 - Accepted registry size: 206 packages.
 - Reused registered tags: 78; all are currently registered.

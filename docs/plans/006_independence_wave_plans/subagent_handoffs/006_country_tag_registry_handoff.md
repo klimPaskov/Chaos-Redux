@@ -1,5 +1,20 @@
 # Event 006 country-tag reservation handoff
 
+> **Superseded registry snapshot (2026-07-19).** This handoff preserves the
+> initial reservation tranche and its historical `128` new-tag, `107` shell,
+> and `21` inert-identity ledger. Do not use those counts or file lists as the
+> current Event 006 identity authority. The accepted current architecture is
+> the 206-row
+> `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`,
+> the current anchors/hosts/bindings in
+> `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`,
+> and the tag-safety/reuse decisions in
+> `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`.
+> Those sources resolve 102 custom `X`-shell rows, 91 registered vanilla-tag
+> reuse rows (89 unique reused carriers), and 13 overlay-only identities: 191
+> unique nonblank carrier tags overall, with only `CHU` and `BIA` intentionally
+> shared.
+
 ## Scope
 
 This tranche registers the collision-free X-ending tags needed by the accepted
@@ -17,9 +32,10 @@ Files in this tranche:
 - `common/countries/006_independence_wave_unresearched_reservations.txt`;
 - `localisation/english/006_independence_wave_countries_l_english.yml`.
 
-## Registration result
+## Historical registration result (superseded)
 
-The accepted registry needs 128 new tags. All 128 are registered, are unique in
+At this historical snapshot, the then-accepted registry was recorded as needing
+128 new tags. All 128 were registered and unique in
 the installed vanilla/mod registry, and end in `X`. The 107 identities with an
 accepted public-name direction receive an individual country definition,
 dormant history shell, and fifteen country-name localisation keys covering the
@@ -60,7 +76,7 @@ the package has all of the following wired and audited:
 This keeps registration from becoming permission for shallow bulk content and
 makes every incomplete or sensitive package fail before allocation.
 
-## Validation evidence
+## Historical validation evidence (superseded)
 
 - 128 registered tags, 128 unique tags, zero non-X tags, and zero collisions
   against every other installed country-tag registry file;
@@ -70,7 +86,7 @@ makes every incomplete or sensitive package fail before allocation.
   suffixes;
 - zero readiness-flag assignments in the dormant histories.
 
-## Remaining package work
+## Historical remaining package work (superseded ledger)
 
 This handoff does not claim a playable country package. Every registered
 identity still needs the complete readiness list above. The 21 inert identities

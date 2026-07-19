@@ -1,5 +1,14 @@
 # Event 006 documentation curator handoff
 
+> **Superseded historical reconciliation (2026-07-14).** This handoff retains
+> the first curation pass, including its `149/57`, `78`, and `128` map/tag
+> ledgers and unresolved-state notes. Use
+> `../006_source_of_truth_map.md` and
+> `../006_independence_wave_resume_packet.md` for current routing. For country
+> identity and tag safety, the current authority is the candidate registry CSV,
+> current installed-map binding CSV, and tag collision/reuse audit named in
+> those documents.
+
 Date: 2026-07-14
 
 Mode: documentation-only reconciliation. No gameplay, localisation, asset, workbook, skill, binary, or catalog file was edited. No commit was created.
@@ -14,7 +23,7 @@ Mode: documentation-only reconciliation. No gameplay, localisation, asset, workb
 - Carried the `6001` United States redistribution blocker into the README, source research, specification, quality gates, production prompt, and restart docs.
 - Created a concise source-of-truth map and resume packet.
 
-## Promoted facts
+## Historical promoted facts (superseded ledger)
 
 - 206 unique package rows cover `IW-001` through `IW-206`.
 - 149 packages are bound and 57 are unbound on the installed 2026-07-14 map.

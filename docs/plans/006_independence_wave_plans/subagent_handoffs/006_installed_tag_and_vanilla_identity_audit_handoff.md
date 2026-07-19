@@ -4,9 +4,21 @@ Audit date: 2026-07-15
 Mode: read-only audit; parent agent owns all implementation and migration work
 Status: superseded by the parent reconciliation and generated 2026-07-15 tag audit
 
-> Parent reconciliation: this handoff records the first read-only audit state and is not the current architecture authority. The accepted result is **102 custom X tags, 91 registered vanilla-tag reuses, and 13 non-selectable overlays**. `IW-153` reuses vanilla `POK`; it does not retain `FWX`. A subsequent reviewer also rejected `GFX` as HOI4's engine-reserved graphics namespace, so `IW-162` Kachin State uses the externally clean custom tag `IBX`. Current evidence is in `docs/plans/006_independence_wave_plans/tag_audit/006_installed_tag_collision_audit_2026_07_15.md` and `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`.
+> The tables below preserve at-time `103/90` and `128/78` counts, replacement-
+> pool hashes, and other first-pass evidence; do not reuse them as current
+> ledgers. The accepted current result is **102 custom `X`-shell rows, 91
+> registered vanilla-tag reuse rows (89 unique carriers), and 13 non-selectable
+> overlays**. There are **191 unique nonblank carrier tags**, with only `CHU`
+> and `BIA` intentionally shared. Current identity, binding, and safety
+> evidence is
+> `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`,
+> `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`,
+> and `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`;
+> the dated tag audits remain environment snapshots. `IW-153` reuses vanilla
+> `POK`; it does not retain `FWX`. `IW-162` Kachin State uses `IBX` because
+> `GFX` is HOI4's engine-reserved graphics namespace.
 
-## Binding result
+## Historical binding result (superseded first-pass table)
 
 The 206 Event 006 package rows should resolve as follows:
 

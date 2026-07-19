@@ -7,7 +7,13 @@ Runtime package rows reconcile these accepted sources:
 - `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
 - `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`
 - `docs/plans/006_independence_wave_plans/package_bindings/006_current_map_reservation_groups.csv`
+- `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
 - installed country tags and state history
+
+The candidate registry owns package identity and resolved representation; the
+installed-map binding CSV owns current anchors, hosts, and bindings; the tag
+collision/reuse audit owns tag-safety and vanilla-identity reuse decisions.
+Historical handoff ledgers do not override this split.
 
 Working names are never copied into player-facing localisation by this layer.
 
