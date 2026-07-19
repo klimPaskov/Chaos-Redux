@@ -1,5 +1,14 @@
 # Event 006 package allocator integration handoff
 
+> **Historical allocator snapshot.** This handoff retains an implementation
+> tranche whose coverage table used the original all-row `149` bound / `57`
+> unbound map split and the then-current `128` custom-tag shell ledger. Those
+> figures are not the current country-identity authority. Use
+> `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
+> for identity, the current installed-map binding CSV for anchors/hosts, and
+> the tag collision/reuse audit for safety. Current selection excludes the 13
+> overlay rows and uses 138 bound / 55 unbound selectable packages.
+
 ## Outcome
 
 The accepted 206-entry candidate registry now has a readiness-controlled, current-map allocator. It builds Event 006's full contribution inside the shared liberation transaction, freezes every country, state, host remnant, territory level, force level, and package metadata row, and makes no ownership change before the shared coordinator locks the complete incident.
@@ -18,7 +27,7 @@ This is an allocation tranche, not a playable-country completion claim. No count
 
 No nearby, broad, generic, or fallback territory was substituted for an unbound package.
 
-## Runtime coverage
+## Historical runtime coverage snapshot (superseded counts)
 
 | Contract | Count |
 | --- | ---: |
@@ -79,7 +88,7 @@ For every accepted candidate, the allocator records aligned arrays for package I
 
 The allocator never calls `release`, `transfer_state`, `set_state_owner`, or `set_state_controller`. Ownership execution remains a separate phase after the joint coordinator validates and locks the complete Event 5/Event 6 plan.
 
-## Validation evidence
+## Historical validation evidence (snapshot)
 
 The final source-to-runtime audit used fixed-anchor semantics correctly: the first `anchor_state_ids` entry is the unique coordinator anchor, while later entries in the accepted compact set are compact territory. It found:
 

@@ -4,6 +4,8 @@
 - Registered vanilla-tag reuse: **91**
 - New Event 6 `X` tags: **102**
 - Non-selectable vanilla route overlays: **13**
+- Unique nonblank resolved carrier tags: **191** (only `CHU` and `BIA` are
+  intentionally shared by two package rows each)
 
 ## Dispositions
 
@@ -39,4 +41,11 @@
 - Volga, Urals, Siberia, and Far East: **15**
 - West and Central Africa: **15**
 
-The binding per-package research is in `research/006_package_research_resolution.csv`. Installed-map bindings are recorded in `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`. Overlay rows are additive route packages, not release candidates.
+The candidate registry CSV above is the canonical country-identity source.
+Current anchors, hosts, and bindings are recorded in
+`docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`.
+Tag safety, vanilla-identity reuse, and overlay decisions are recorded in
+`../research/006_tag_collision_and_reuse_audit.md`. The per-package research in
+`../research/006_package_research_resolution.csv` remains supporting evidence and
+does not replace the candidate registry. Overlay rows are additive route
+packages, not release candidates.

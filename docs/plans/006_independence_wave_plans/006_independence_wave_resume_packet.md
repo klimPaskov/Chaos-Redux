@@ -46,12 +46,29 @@ the current runtime state.
 The seven specification parts remain the design authority. Use the source-of-
 truth map for current implementation status and handoff dispositions.
 
+For country identity, tag representation, and current map bindings, use this
+three-file authority set before consulting historical handoffs:
+
+- `../../specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
+  (206 package rows and accepted resolved identities);
+- `package_bindings/006_current_installed_map_package_bindings.csv`
+  (current anchors, hosts, and binding/readiness evidence);
+- `../../specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
+  (tag safety, vanilla-identity reuse, overlays, and intentional shared-tag
+  rules).
+
+The old `006_country_tag_registry_handoff.md`, explorer snapshot, and first-pass
+identity audit retain historical `128/107/21`, `128/78`, and `103/90` ledgers;
+they are not current routing documents.
+
 ## Safe current facts
 
 - The event source and localisation are substantial implementations, not
   placeholders.
-- The 206 accepted packages resolve to 102 reserved `X` tags, 91 reused vanilla
-  tags, and 13 overlay rows.
+- The 206 accepted packages resolve to 102 custom `X`-shell rows, 91 registered
+  vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only rows:
+  191 unique nonblank carrier tags overall, with only `CHU` and `BIA`
+  intentionally shared.
 - The 2026-07-18 installed-mod audit covers 108 Event 006-owned identifiers,
   122 Workshop directories, three sibling local mods, archives, and reports
   zero collisions.
