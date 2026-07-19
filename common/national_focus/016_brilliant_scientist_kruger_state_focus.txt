@@ -1,0 +1,2603 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE NATIONAL FOCUS TREE
+# ============================================================================
+# Exactly 100 individually authored focuses. Project lanes read operational
+# carried stages and never fabricate a project stage, force, agent, or unit.
+# ============================================================================
+
+@krg_focus_d21 = 3
+@krg_focus_d35 = 5
+@krg_focus_d70 = 10
+@krg_focus_d105 = 15
+@krg_focus_d140 = 20
+@krg_tree_priority = 100
+@krg_ai_blocked = 0
+@krg_ai_low = 1
+@krg_ai_standard = 5
+@krg_ai_high = 10
+@krg_ai_preferred = 20
+
+focus_tree = {
+	id = brilliant_scientist_kruger_state_focus_tree
+	country = {
+		factor = @krg_ai_blocked
+		modifier = {
+			add = @krg_tree_priority
+			brilliant_scientist_is_active_kruger_state = yes
+		}
+	}
+	default = no
+	reset_on_civilwar = no
+	initial_show_position = { x = 24 y = 0 }
+	continuous_focus_position = { x = 26 y = 22 }
+
+
+	focus = {
+		id = KRG_audit_inherited_portfolio
+		icon = GFX_goal_KRG_audit_inherited_portfolio
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 0
+		cost = @krg_focus_d35
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_audit_inherited_portfolio_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				brilliant_scientist_focus_begin_lifecycle_audit = yes
+				set_country_flag = brilliant_scientist_focus_unlock_kruger_state_administration
+				brilliant_scientist_refresh_kruger_focus_route_layout = yes
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+
+	focus = {
+		id = KRG_ratify_the_charter_transfer
+		icon = GFX_goal_KRG_ratify_the_charter_transfer
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 1
+		cost = @krg_focus_d21
+		prerequisite = { focus = KRG_audit_inherited_portfolio }
+		allow_branch = { brilliant_scientist_formed_by_charter = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_ratify_the_charter_transfer_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_charter_truce_monitor
+				set_country_flag = brilliant_scientist_focus_unlock_charter_rail_access
+				set_country_flag = brilliant_scientist_focus_unlock_charter_archive_access
+				set_country_flag = brilliant_scientist_focus_unlock_charter_research_access
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_hold_the_rebellion_perimeter
+		icon = GFX_goal_KRG_hold_the_rebellion_perimeter
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 1
+		cost = @krg_focus_d21
+		prerequisite = { focus = KRG_audit_inherited_portfolio }
+		allow_branch = { brilliant_scientist_formed_by_rebellion = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_hold_the_rebellion_perimeter_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_fortify_primary_facility = yes
+				set_country_flag = brilliant_scientist_focus_unlock_primary_facility_defense_mission
+				set_country_flag = brilliant_scientist_focus_unlock_former_host_military_planning
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_keep_the_enclave_alive
+		icon = GFX_goal_KRG_keep_the_enclave_alive
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 1
+		cost = @krg_focus_d21
+		prerequisite = { focus = KRG_audit_inherited_portfolio }
+		allow_branch = { brilliant_scientist_formed_as_enclave = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_keep_the_enclave_alive_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_enclave_corridor_or_patron_mission
+				set_country_flag = brilliant_scientist_focus_unlock_emergency_access_negotiations
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_secure_the_captured_ministries
+		icon = GFX_goal_KRG_secure_the_captured_ministries
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 1
+		cost = @krg_focus_d21
+		prerequisite = { focus = KRG_audit_inherited_portfolio }
+		allow_branch = { brilliant_scientist_formed_by_takeover = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_secure_the_captured_ministries_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_institutional_consolidation_mission
+				set_country_flag = brilliant_scientist_focus_unlock_captured_domain_audit
+				set_country_flag = brilliant_scientist_focus_unlock_host_appointment_review_event
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_count_the_surviving_staff
+		icon = GFX_goal_KRG_count_the_surviving_staff
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 2
+		cost = @krg_focus_d21
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_ratify_the_charter_transfer
+				has_completed_focus = KRG_hold_the_rebellion_perimeter
+				has_completed_focus = KRG_keep_the_enclave_alive
+				has_completed_focus = KRG_secure_the_captured_ministries
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_count_the_surviving_staff_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_finite_scientist_roster
+				set_country_flag = brilliant_scientist_focus_unlock_staff_amnesty_and_recruitment
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_secure_the_laboratory_heartland
+		icon = GFX_goal_KRG_secure_the_laboratory_heartland
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 2
+		cost = @krg_focus_d21
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_ratify_the_charter_transfer
+				has_completed_focus = KRG_hold_the_rebellion_perimeter
+				has_completed_focus = KRG_keep_the_enclave_alive
+				has_completed_focus = KRG_secure_the_captured_ministries
+			}
+			brilliant_scientist_primary_facility_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_secure_the_laboratory_heartland_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_repair_primary_facility = yes
+				set_country_flag = brilliant_scientist_focus_unlock_primary_site_security_mission
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_repair_the_supply_spine
+		icon = GFX_goal_KRG_repair_the_supply_spine
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 2
+		cost = @krg_focus_d21
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_ratify_the_charter_transfer
+				has_completed_focus = KRG_hold_the_rebellion_perimeter
+				has_completed_focus = KRG_keep_the_enclave_alive
+				has_completed_focus = KRG_secure_the_captured_ministries
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_repair_the_supply_spine_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_supply_spine_repairs
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_form_the_provisional_command
+		icon = GFX_goal_KRG_form_the_provisional_command
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 30
+		y = 2
+		cost = @krg_focus_d21
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_ratify_the_charter_transfer
+				has_completed_focus = KRG_hold_the_rebellion_perimeter
+				has_completed_focus = KRG_keep_the_enclave_alive
+				has_completed_focus = KRG_secure_the_captured_ministries
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_form_the_provisional_command_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_surviving_officer_appointments
+				set_country_flag = brilliant_scientist_focus_unlock_force_cap_readouts
+				set_country_flag = brilliant_scientist_focus_unlock_maintenance_readouts
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_complete_the_founding_audit
+		icon = GFX_goal_KRG_complete_the_founding_audit
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 3
+		cost = @krg_focus_d35
+		prerequisite = { focus = KRG_count_the_surviving_staff }
+		prerequisite = { focus = KRG_secure_the_laboratory_heartland }
+		prerequisite = { focus = KRG_repair_the_supply_spine }
+		prerequisite = { focus = KRG_form_the_provisional_command }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_complete_the_founding_audit_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_state_foundation_policy_event
+				set_country_flag = brilliant_scientist_focus_unlock_government_lane
+				set_country_flag = brilliant_scientist_focus_unlock_economy_lane
+				set_country_flag = brilliant_scientist_focus_unlock_security_lane
+				set_country_flag = brilliant_scientist_focus_unlock_foreign_policy_lane
+				brilliant_scientist_refresh_kruger_focus_route_layout = yes
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_define_the_states_purpose
+		icon = GFX_goal_KRG_define_the_states_purpose
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 4
+		cost = @krg_focus_d35
+		prerequisite = { focus = KRG_complete_the_founding_audit }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_define_the_states_purpose_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_constitutional_congress_event
+				set_country_flag = brilliant_scientist_focus_unlock_population_and_project_bloc_ledger
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_preserve_the_directorate
+		icon = GFX_goal_KRG_preserve_the_directorate
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_define_the_states_purpose }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_preserve_the_directorate_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_direct_appointments
+				set_country_flag = brilliant_scientist_focus_unlock_laboratory_decrees
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+
+	focus = {
+		id = KRG_rule_by_demonstration
+		icon = GFX_goal_KRG_rule_by_demonstration
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+		x = 16
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_preserve_the_directorate }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_has_successful_project_operation = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_rule_by_demonstration_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_public_project_demonstrations
+				set_country_flag = brilliant_scientist_focus_unlock_coercive_science_demonstrations
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_sovereign_directorate
+		icon = GFX_goal_KRG_the_sovereign_directorate
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_rule_by_demonstration }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_sovereign_directorate_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_sovereign_directorate = yes
+				set_country_flag = brilliant_scientist_focus_unlock_direct_rule_plan
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_restore_human_government
+		icon = GFX_goal_KRG_restore_human_government
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_define_the_states_purpose }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_restore_human_government_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_human_civil_service
+				set_country_flag = brilliant_scientist_focus_unlock_rights_commission
+				set_country_flag = brilliant_scientist_focus_clone_property_prohibited
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_convene_the_scientific_assembly
+		icon = GFX_goal_KRG_convene_the_scientific_assembly
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_restore_human_government }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_convene_the_scientific_assembly_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_scientific_assembly_event
+				set_country_flag = brilliant_scientist_focus_unlock_public_budget_and_inspection
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_human_scientific_republic
+		icon = GFX_goal_KRG_the_human_scientific_republic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_convene_the_scientific_assembly }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_human_scientific_republic_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_human_scientific_republic = yes
+				set_country_flag = brilliant_scientist_focus_unlock_rights_respecting_integration
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_hear_the_replicated_petition
+		icon = GFX_goal_KRG_hear_the_replicated_petition
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 24
+		y = 5
+		cost = @krg_focus_d35
+		prerequisite = { focus = KRG_define_the_states_purpose }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_hear_the_replicated_petition_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_clone_personhood_event
+				set_country_flag = brilliant_scientist_focus_unlock_clone_legal_status_decisions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_clones_are_citizens
+		icon = GFX_goal_KRG_clones_are_citizens
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_hear_the_replicated_petition }
+		mutually_exclusive = { focus = KRG_clones_are_cohorts }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_deployment_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_clones_are_citizens_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_clone_citizenship_law
+				set_country_flag = brilliant_scientist_focus_unlock_clone_settlement_and_education
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_clones_are_cohorts
+		icon = GFX_goal_KRG_clones_are_cohorts
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 25
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_hear_the_replicated_petition }
+		mutually_exclusive = { focus = KRG_clones_are_citizens }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_deployment_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_clones_are_cohorts_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_clone_cohort_law
+				set_country_flag = brilliant_scientist_focus_unlock_military_maturation_priorities
+				set_country_flag = brilliant_scientist_focus_unlock_clone_identity_pressure_crises
+			}
+		}
+		ai_will_do = { factor = @krg_ai_standard }
+	}
+
+
+	focus = {
+		id = KRG_replicated_sovereignty
+		icon = GFX_goal_KRG_replicated_sovereignty
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 24
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_hear_the_replicated_petition }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_clones_are_citizens
+				has_completed_focus = KRG_clones_are_cohorts
+			}
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+			brilliant_scientist_kruger_focus_cloning_weaponization_is_operational = yes
+			brilliant_scientist_kruger_focus_growth_site_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_replicated_sovereignty_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_replicated_state = yes
+				set_country_flag = brilliant_scientist_focus_unlock_clone_population_transition
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_hear_the_machine_network
+		icon = GFX_goal_KRG_hear_the_machine_network
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 30
+		y = 5
+		cost = @krg_focus_d35
+		prerequisite = { focus = KRG_define_the_states_purpose }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_hear_the_machine_network_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_machine_network_standing_event
+				set_country_flag = brilliant_scientist_focus_unlock_machine_status_decisions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_human_machine_partnership
+		icon = GFX_goal_KRG_human_machine_partnership
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 29
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_hear_the_machine_network }
+		mutually_exclusive = { focus = KRG_the_replacement_protocol }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_deployment_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_human_machine_partnership_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_human_supervisory_keys_locked
+				set_country_flag = brilliant_scientist_focus_unlock_mixed_administration_and_repair
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_replacement_protocol
+		icon = GFX_goal_KRG_the_replacement_protocol
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 31
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_hear_the_machine_network }
+		mutually_exclusive = { focus = KRG_human_machine_partnership }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_weaponization_is_operational = yes
+			brilliant_scientist_kruger_focus_machine_power_reserve_is_available = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_replacement_protocol_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_ministry_replacement_missions
+				set_country_flag = brilliant_scientist_focus_unlock_machine_sabotage_and_schism_crises
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_machine_ascendancy
+		icon = GFX_goal_KRG_machine_ascendancy
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_hear_the_machine_network }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_human_machine_partnership
+				has_completed_focus = KRG_the_replacement_protocol
+			}
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+			brilliant_scientist_kruger_focus_robotics_weaponization_is_operational = yes
+			brilliant_scientist_kruger_focus_machine_power_and_assembly_are_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_machine_ascendancy_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_machine_state = yes
+				set_country_flag = brilliant_scientist_focus_unlock_machine_population_transition
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_authenticate_krugers_continuity
+		icon = GFX_goal_KRG_authenticate_krugers_continuity
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 46
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_authenticate_the_temporal_ledger }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_define_the_states_purpose
+			brilliant_scientist_kruger_focus_temporal_is_operational = yes
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+			check_variable = { var = brilliant_scientist_temporal_debt value = constant:brilliant_scientist_temporal.debt_critical compare = less_than }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_authenticate_krugers_continuity_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_continuity_authentication_event
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_settle_the_succession_paradox
+		icon = GFX_goal_KRG_settle_the_succession_paradox
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 46
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_authenticate_krugers_continuity }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_deployment_is_operational = yes
+			OR = { has_completed_focus = KRG_accept_the_stabilization_window NOT = { has_country_flag = brilliant_scientist_temporal_stabilization_required } }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_settle_the_succession_paradox_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_succession_event
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_claimant_scar
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_temporal_continuum
+		icon = GFX_goal_KRG_the_temporal_continuum
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 45
+		y = 12
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_settle_the_succession_paradox }
+		prerequisite = { focus = KRG_accept_the_stabilization_window }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+			brilliant_scientist_kruger_focus_temporal_deployment_is_operational = yes
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+			check_variable = { var = brilliant_scientist_temporal_debt value = constant:brilliant_scientist_temporal.debt_critical compare = less_than }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_temporal_continuum_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_temporal_continuum = yes
+				set_country_flag = brilliant_scientist_focus_unlock_continuum_government_decisions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_xenobiological_ascendancy
+		icon = GFX_goal_KRG_xenobiological_ascendancy
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 33
+		y = 14
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_the_engineered_legion }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_define_the_states_purpose
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+			brilliant_scientist_kruger_focus_xenobiological_weaponization_is_operational = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_xenobiological_ascendancy_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_xenobiological_ascendancy = yes
+				set_country_flag = brilliant_scientist_focus_unlock_engineered_population_transition
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_project_synthesis
+		icon = GFX_goal_KRG_the_project_synthesis
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 28
+		y = 15
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_the_dinosaur_host }
+		prerequisite = { focus = KRG_the_engineered_legion }
+		allow_branch = { brilliant_scientist_has_multiple_sovereign_project_routes = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_define_the_states_purpose
+			custom_trigger_tooltip = {
+				tooltip = KRG_sovereign_identity_open_tt
+				brilliant_scientist_kruger_focus_identity_is_open = yes
+			}
+			brilliant_scientist_can_unlock_synthesis = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_project_synthesis_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_form_project_synthesis = yes
+				set_country_flag = brilliant_scientist_focus_unlock_project_synthesis_government
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_stabilize_the_laboratory_economy
+		icon = GFX_goal_KRG_stabilize_the_laboratory_economy
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 4
+		cost = @krg_focus_d35
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_complete_the_founding_audit
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_stabilize_the_laboratory_economy_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_facility_budget_ledger
+				set_country_flag = brilliant_scientist_focus_expansion_requires_paid_maintenance
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_restore_the_power_grid
+		icon = GFX_goal_KRG_restore_the_power_grid
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_stabilize_the_laboratory_economy }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_primary_facility_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_restore_the_power_grid_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_restore_primary_power_grid = yes
+				set_country_flag = brilliant_scientist_focus_unlock_paid_grid_expansion
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_reconnect_rail_and_port
+		icon = GFX_goal_KRG_reconnect_rail_and_port
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_stabilize_the_laboratory_economy }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_reconnect_rail_and_port_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_targeted_rail_repair
+				set_country_flag = brilliant_scientist_focus_unlock_coastal_port_alternative
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_document_the_carried_portfolio
+		icon = GFX_goal_KRG_document_the_carried_portfolio
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_stabilize_the_laboratory_economy }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_document_the_carried_portfolio_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_document_portfolio = yes
+				set_country_flag = brilliant_scientist_focus_unlock_exact_project_stage_ledger
+				set_country_flag = brilliant_scientist_focus_unlock_project_replication_standardization
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_reopen_the_prototype_works
+		icon = GFX_goal_KRG_reopen_the_prototype_works
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_restore_the_power_grid }
+		prerequisite = { focus = KRG_reconnect_rail_and_port }
+		prerequisite = { focus = KRG_document_the_carried_portfolio }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_prototype_works_are_ready = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_reopen_the_prototype_works_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_targeted_prototype_works_repair
+				set_country_flag = brilliant_scientist_focus_unlock_project_board_capacity_investment
+				set_country_flag = brilliant_scientist_focus_unlock_valid_production_lanes
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_conventional_supply_corps
+		icon = GFX_goal_KRG_conventional_supply_corps
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 7
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_reopen_the_prototype_works }
+		mutually_exclusive = { focus = KRG_automated_supply_network focus = KRG_portal_supply_network focus = KRG_biological_supply_network }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_conventional_supply_corps_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_conventional_supply = yes
+				set_country_flag = brilliant_scientist_focus_unlock_truck_and_train_depots
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_automated_supply_network
+		icon = GFX_goal_KRG_automated_supply_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 7
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_reopen_the_prototype_works }
+		mutually_exclusive = { focus = KRG_conventional_supply_corps focus = KRG_portal_supply_network focus = KRG_biological_supply_network }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_deployment_is_operational = yes
+			brilliant_scientist_kruger_focus_machine_power_and_assembly_are_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_automated_supply_network_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_automated_supply = yes
+				set_country_flag = brilliant_scientist_focus_unlock_node_repair_convoys
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_portal_supply_network
+		icon = GFX_goal_KRG_portal_supply_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 7
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_reopen_the_prototype_works }
+		mutually_exclusive = { focus = KRG_conventional_supply_corps focus = KRG_automated_supply_network focus = KRG_biological_supply_network }
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_teleportation_deployment_is_operational = yes
+			brilliant_scientist_has_teleportation_force_deployment = yes
+			brilliant_scientist_kruger_focus_has_two_controlled_terminals = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_portal_supply_network_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_portal_supply = yes
+				set_country_flag = brilliant_scientist_focus_unlock_terminal_depot_linking
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_biological_supply_network
+		icon = GFX_goal_KRG_biological_supply_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 7
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_reopen_the_prototype_works }
+		mutually_exclusive = { focus = KRG_conventional_supply_corps focus = KRG_automated_supply_network focus = KRG_portal_supply_network }
+		allow_branch = { OR = { brilliant_scientist_has_cloning_route_seed = yes brilliant_scientist_has_paleogenetics_route_seed = yes brilliant_scientist_has_xenobiological_route_seed = yes brilliant_scientist_has_biological_route_seed = yes } }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = { brilliant_scientist_kruger_focus_cloning_deployment_is_operational = yes brilliant_scientist_kruger_focus_paleogenetics_deployment_is_operational = yes brilliant_scientist_kruger_focus_xenobiological_deployment_is_operational = yes brilliant_scientist_kruger_focus_biological_deployment_is_operational = yes }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_biological_supply_network_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_biological_supply = yes
+				set_country_flag = brilliant_scientist_focus_unlock_family_specific_biological_logistics
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_sustainable_project_capacity
+		icon = GFX_goal_KRG_sustainable_project_capacity
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 3
+		y = 8
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_conventional_supply_corps focus = KRG_automated_supply_network focus = KRG_portal_supply_network focus = KRG_biological_supply_network }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			OR = {
+				has_completed_focus = KRG_conventional_supply_corps
+				has_completed_focus = KRG_automated_supply_network
+				has_completed_focus = KRG_portal_supply_network
+				has_completed_focus = KRG_biological_supply_network
+			}
+			brilliant_scientist_kruger_focus_maintenance_is_clear = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_sustainable_project_capacity_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_capped_project_force_board
+				set_country_flag = brilliant_scientist_focus_unlock_maintenance_audit_mission
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_restore_the_ordinary_chain_of_command
+		icon = GFX_goal_KRG_restore_the_ordinary_chain_of_command
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 4
+		cost = @krg_focus_d35
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_complete_the_founding_audit
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_restore_the_ordinary_chain_of_command_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_conventional_recruitment
+				set_country_flag = brilliant_scientist_focus_unlock_conventional_training
+				set_country_flag = brilliant_scientist_focus_unlock_conventional_garrison_templates
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_recall_the_defector_officers
+		icon = GFX_goal_KRG_recall_the_defector_officers
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 8
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_restore_the_ordinary_chain_of_command }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_recall_the_defector_officers_effect_tt
+			hidden_effect = {
+				army_experience = constant:brilliant_scientist_focus.defector_officer_army_experience
+				set_country_flag = brilliant_scientist_focus_unlock_officer_amnesty_or_purge_event
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_laboratory_engineer_battalions
+		icon = GFX_goal_KRG_laboratory_engineer_battalions
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_restore_the_ordinary_chain_of_command }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_laboratory_engineer_battalions_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_engineer_support
+				set_country_flag = brilliant_scientist_focus_unlock_paid_facility_repairs
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_found_the_counterintelligence_bureau
+		icon = GFX_goal_KRG_found_the_counterintelligence_bureau
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_restore_the_ordinary_chain_of_command }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_found_the_counterintelligence_bureau_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_found_counterintelligence_agency = yes
+				set_country_flag = brilliant_scientist_focus_unlock_counterintelligence_operations
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_shield_the_laboratory_airspace
+		icon = GFX_goal_KRG_shield_the_laboratory_airspace
+		search_filters = { FOCUS_FILTER_AIR_XP }
+		x = 11
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_laboratory_engineer_battalions }
+		prerequisite = { focus = KRG_found_the_counterintelligence_bureau }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_primary_facility_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_shield_the_laboratory_airspace_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_shield_primary_airspace = yes
+				set_country_flag = brilliant_scientist_focus_unlock_air_and_missile_warning_missions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_a_general_staff_for_the_state
+		icon = GFX_goal_KRG_a_general_staff_for_the_state
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_shield_the_laboratory_airspace }
+		mutually_exclusive = { focus = KRG_a_council_of_project_commanders }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_a_general_staff_for_the_state_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_general_staff_command = yes
+				set_country_flag = brilliant_scientist_focus_unlock_conventional_battle_plans
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_a_council_of_project_commanders
+		icon = GFX_goal_KRG_a_council_of_project_commanders
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 12
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_shield_the_laboratory_airspace }
+		mutually_exclusive = { focus = KRG_a_general_staff_for_the_state }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_has_multiple_sovereign_project_routes = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_a_council_of_project_commanders_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_set_project_council_command = yes
+				set_country_flag = brilliant_scientist_focus_unlock_multi_family_coordination
+				set_country_flag = brilliant_scientist_focus_unlock_project_rivalry_crises
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_audit_the_growth_halls
+		icon = GFX_goal_KRG_audit_the_growth_halls
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 14
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_cloning_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_audit_the_growth_halls_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_clone_infrastructure_category
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_secure_the_nutrient_chain
+		icon = GFX_goal_KRG_secure_the_nutrient_chain
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_audit_the_growth_halls }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_prototype_is_operational = yes
+			brilliant_scientist_kruger_focus_clone_growth_burden_is_payable = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_secure_the_nutrient_chain_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paid_growth_site_and_medical_decisions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_write_the_identity_register
+		icon = GFX_goal_KRG_write_the_identity_register
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_audit_the_growth_halls }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_write_the_identity_register_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_clone_identity_register
+				set_country_flag = brilliant_scientist_focus_unlock_infiltrator_detection
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_field_the_clone_cadres
+		icon = GFX_goal_KRG_field_the_clone_cadres
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 13
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_secure_the_nutrient_chain }
+		prerequisite = { focus = KRG_write_the_identity_register }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_deployment_is_operational = yes
+			brilliant_scientist_has_cloning_force_deployment = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_field_the_clone_cadres_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_replicated_guard_recruitment
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_stabilize_replication_drift
+		icon = GFX_goal_KRG_stabilize_replication_drift
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_write_the_identity_register }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_found_the_counterintelligence_bureau
+			brilliant_scientist_kruger_focus_cloning_deployment_is_operational = yes
+		}
+		bypass = { has_country_flag = brilliant_scientist_cloning_incident_resolved }
+		completion_reward = {
+			custom_effect_tooltip = KRG_stabilize_replication_drift_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_clone_drift_mission
+				set_country_flag = brilliant_scientist_focus_unlock_clone_registry_repair
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_the_replicated_host
+		icon = GFX_goal_KRG_the_replicated_host
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 14
+		y = 12
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_field_the_clone_cadres }
+		prerequisite = { focus = KRG_stabilize_replication_drift }
+		allow_branch = { brilliant_scientist_has_cloning_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_cloning_weaponization_is_operational = yes
+			brilliant_scientist_has_cloning_force_deployment = yes
+			brilliant_scientist_kruger_focus_clone_growth_cycle_is_sustainable = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_replicated_host_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_clone_production
+				if = { limit = { has_country_flag = brilliant_scientist_route_clone_sovereignty } brilliant_scientist_focus_set_clone_officer_command = yes }
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_wake_the_assembly_lines
+		icon = GFX_goal_KRG_wake_the_assembly_lines
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_robotics_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_wake_the_assembly_lines_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_robotics_production_category
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_secure_the_machine_power_backbone
+		icon = GFX_goal_KRG_secure_the_machine_power_backbone
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 19
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_wake_the_assembly_lines }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_prototype_is_operational = yes
+			brilliant_scientist_kruger_focus_machine_power_reserve_is_available = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_secure_the_machine_power_backbone_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paid_machine_power_nodes
+				set_country_flag = brilliant_scientist_focus_machine_power_burden_registered
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_standardize_frame_repair
+		icon = GFX_goal_KRG_standardize_frame_repair
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 21
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_wake_the_assembly_lines }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_standardize_frame_repair_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_frame_repair_and_salvage
+				set_country_flag = brilliant_scientist_focus_unlock_robotics_maintenance
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_write_the_machine_command_protocol
+		icon = GFX_goal_KRG_write_the_machine_command_protocol
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 20
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_secure_the_machine_power_backbone }
+		prerequisite = { focus = KRG_standardize_frame_repair }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_deployment_is_operational = yes
+			brilliant_scientist_has_robotics_force_deployment = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_write_the_machine_command_protocol_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_autonomous_frame_recruitment
+				set_country_flag = brilliant_scientist_focus_unlock_machine_command_choice
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_air_gap_the_rogue_nodes
+		icon = GFX_goal_KRG_air_gap_the_rogue_nodes
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 12
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_write_the_machine_command_protocol }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_found_the_counterintelligence_bureau
+			brilliant_scientist_kruger_focus_robotics_deployment_is_operational = yes
+		}
+		bypass = { has_country_flag = brilliant_scientist_robotics_incident_resolved }
+		completion_reward = {
+			custom_effect_tooltip = KRG_air_gap_the_rogue_nodes_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_rogue_node_containment
+				set_country_flag = brilliant_scientist_focus_unlock_controlled_node_recapture
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_an_army_of_machines
+		icon = GFX_goal_KRG_an_army_of_machines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 20
+		y = 13
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_write_the_machine_command_protocol }
+		prerequisite = { focus = KRG_air_gap_the_rogue_nodes }
+		allow_branch = { brilliant_scientist_has_robotics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_robotics_weaponization_is_operational = yes
+			brilliant_scientist_has_robotics_force_deployment = yes
+			brilliant_scientist_kruger_focus_machine_power_and_assembly_are_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_an_army_of_machines_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_robotics_production
+				if = { limit = { has_country_flag = brilliant_scientist_route_machine_ascendancy } brilliant_scientist_focus_set_machine_command = yes }
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_open_the_restoration_ledger
+		icon = GFX_goal_KRG_open_the_restoration_ledger
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 26
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_paleogenetics_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_open_the_restoration_ledger_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paleogenetics_category
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_designate_breeding_reserves
+		icon = GFX_goal_KRG_designate_breeding_reserves
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_open_the_restoration_ledger }
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_paleogenetics_prototype_is_operational = yes
+			brilliant_scientist_kruger_focus_reserve_candidate_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_designate_breeding_reserves_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paid_reserve_and_hatchery_designation
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_train_handlers_and_veterinarians
+		icon = GFX_goal_KRG_train_handlers_and_veterinarians
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 27
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_open_the_restoration_ledger }
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_paleogenetics_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_train_handlers_and_veterinarians_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_finite_handler_recruitment
+				set_country_flag = brilliant_scientist_focus_unlock_veterinary_support
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_build_the_transport_pens
+		icon = GFX_goal_KRG_build_the_transport_pens
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_designate_breeding_reserves }
+		prerequisite = { focus = KRG_train_handlers_and_veterinarians }
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_paleogenetics_deployment_is_operational = yes
+			brilliant_scientist_has_paleogenetics_force_deployment = yes
+			brilliant_scientist_kruger_focus_paleogenetic_sites_are_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_build_the_transport_pens_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_paleogenetic_shock_pack_recruitment
+				set_country_flag = brilliant_scientist_focus_unlock_transport_pen_construction
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_drill_for_the_great_escape
+		icon = GFX_goal_KRG_drill_for_the_great_escape
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 27
+		y = 12
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_build_the_transport_pens }
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_paleogenetics_deployment_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_drill_for_the_great_escape_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paleogenetic_escape_response
+				set_country_flag = brilliant_scientist_focus_unlock_paleogenetic_evacuation_and_recapture
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_the_dinosaur_host
+		icon = GFX_goal_KRG_the_dinosaur_host
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 13
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_build_the_transport_pens }
+		prerequisite = { focus = KRG_drill_for_the_great_escape }
+		allow_branch = { brilliant_scientist_has_paleogenetics_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_paleogenetics_weaponization_is_operational = yes
+			brilliant_scientist_has_paleogenetics_force_deployment = yes
+			brilliant_scientist_kruger_focus_paleogenetic_support_is_sustainable = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_dinosaur_host_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_paleogenetic_breeding
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_open_the_designed_organism_dossier
+		icon = GFX_goal_KRG_open_the_designed_organism_dossier
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 32
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_xenobiological_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_open_the_designed_organism_dossier_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_xenobiological_category
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_build_the_vat_complexes
+		icon = GFX_goal_KRG_build_the_vat_complexes
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 31
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_open_the_designed_organism_dossier }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_xenobiological_prototype_is_operational = yes
+			brilliant_scientist_kruger_focus_powered_medical_site_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_build_the_vat_complexes_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_paid_vat_complex_construction
+				set_country_flag = brilliant_scientist_focus_unlock_medical_fabrication
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_lock_the_control_channel
+		icon = GFX_goal_KRG_lock_the_control_channel
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 33
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_open_the_designed_organism_dossier }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_xenobiological_prototype_is_operational = yes
+			brilliant_scientist_project_mode_history_is_coherent = yes
+		}
+		bypass = { brilliant_scientist_has_exact_xeno_control_mode = yes }
+		completion_reward = {
+			custom_effect_tooltip = KRG_lock_the_control_channel_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_xeno_control_mode_event
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_seal_the_containment_cells
+		icon = GFX_goal_KRG_seal_the_containment_cells
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 32
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_build_the_vat_complexes }
+		prerequisite = { focus = KRG_lock_the_control_channel }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_xenobiological_deployment_is_operational = yes
+			brilliant_scientist_has_xenobiological_force_deployment = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+			brilliant_scientist_kruger_focus_xenobiological_sites_are_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_seal_the_containment_cells_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_xenobiological_assault_recruitment
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_red_team_the_autonomous_nest
+		icon = GFX_goal_KRG_red_team_the_autonomous_nest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 33
+		y = 12
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_seal_the_containment_cells }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_found_the_counterintelligence_bureau
+			brilliant_scientist_kruger_focus_xenobiological_deployment_is_operational = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_red_team_the_autonomous_nest_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_xeno_control_countertests
+				set_country_flag = brilliant_scientist_focus_unlock_autonomous_nest_containment
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_the_engineered_legion
+		icon = GFX_goal_KRG_the_engineered_legion
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 32
+		y = 13
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_seal_the_containment_cells }
+		prerequisite = { focus = KRG_red_team_the_autonomous_nest }
+		allow_branch = { brilliant_scientist_has_xenobiological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_xenobiological_weaponization_is_operational = yes
+			brilliant_scientist_has_xenobiological_force_deployment = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+			brilliant_scientist_kruger_focus_xenobiological_containment_is_sustainable = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_engineered_legion_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_xenobiological_production
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_recover_the_transit_logs
+		icon = GFX_goal_KRG_recover_the_transit_logs
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 38
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_teleportation_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_recover_the_transit_logs_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_terminal_audit_category
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_harden_the_terminal_rings
+		icon = GFX_goal_KRG_harden_the_terminal_rings
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 37
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_recover_the_transit_logs }
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_teleportation_deployment_is_operational = yes
+			brilliant_scientist_has_teleportation_force_deployment = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_harden_the_terminal_rings_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_terminal_fortification
+				set_country_flag = brilliant_scientist_focus_unlock_terminal_shutdown_and_dual_keys
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_link_the_depot_network
+		icon = GFX_goal_KRG_link_the_depot_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 39
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_recover_the_transit_logs }
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reconnect_rail_and_port
+			brilliant_scientist_kruger_focus_teleportation_deployment_is_operational = yes
+			brilliant_scientist_has_teleportation_force_deployment = yes
+			brilliant_scientist_kruger_focus_has_two_controlled_terminals = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_link_the_depot_network_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_terminal_transit
+				set_country_flag = brilliant_scientist_focus_unlock_terminal_supply_links
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_close_the_transit_breach
+		icon = GFX_goal_KRG_close_the_transit_breach
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 37
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_harden_the_terminal_rings }
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_teleportation_deployment_is_operational = yes
+		}
+		bypass = { has_country_flag = brilliant_scientist_teleportation_incident_resolved }
+		completion_reward = {
+			custom_effect_tooltip = KRG_close_the_transit_breach_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_transit_breach_missions
+				set_country_flag = brilliant_scientist_focus_unlock_compromised_terminal_closure
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_the_strategic_transit_corps
+		icon = GFX_goal_KRG_the_strategic_transit_corps
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 38
+		y = 12
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_link_the_depot_network }
+		prerequisite = { focus = KRG_close_the_transit_breach }
+		allow_branch = { brilliant_scientist_has_teleportation_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_teleportation_weaponization_is_operational = yes
+			brilliant_scientist_has_teleportation_force_deployment = yes
+			brilliant_scientist_kruger_focus_terminal_network_is_supplied = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_strategic_transit_corps_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_portal_recruitment
+				set_country_flag = brilliant_scientist_focus_unlock_paid_strategic_insertions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_authenticate_the_temporal_ledger
+		icon = GFX_goal_KRG_authenticate_the_temporal_ledger
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 44
+		y = 9
+		cost = @krg_focus_d35
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			has_completed_focus = KRG_found_the_counterintelligence_bureau
+			brilliant_scientist_kruger_focus_temporal_is_operational = yes
+			brilliant_scientist_kruger_focus_temporal_evidence_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_authenticate_the_temporal_ledger_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_authentication_missions
+				set_country_flag = brilliant_scientist_focus_unlock_anchor_discovery_missions
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_fortify_the_anchor
+		icon = GFX_goal_KRG_fortify_the_anchor
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 42
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_authenticate_the_temporal_ledger }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_deployment_is_operational = yes
+			brilliant_scientist_has_temporal_force_deployment = yes
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_fortify_the_anchor_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_fortify_temporal_anchor = yes
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_observer_teams
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_found_the_synchronization_bureau
+		icon = GFX_goal_KRG_found_the_synchronization_bureau
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 44
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_authenticate_the_temporal_ledger }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_deployment_is_operational = yes
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_found_the_synchronization_bureau_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_ledger_readouts
+				set_country_flag = brilliant_scientist_focus_unlock_paid_temporal_calibration
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_issue_bounded_future_warnings
+		icon = GFX_goal_KRG_issue_bounded_future_warnings
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 42
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_fortify_the_anchor }
+		prerequisite = { focus = KRG_found_the_synchronization_bureau }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_deployment_is_operational = yes
+			brilliant_scientist_kruger_focus_warning_operation_is_ready = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_issue_bounded_future_warnings_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_future_warning_operations
+				set_country_flag = brilliant_scientist_focus_temporal_warning_contract_required
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_accept_the_stabilization_window
+		icon = GFX_goal_KRG_accept_the_stabilization_window
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 44
+		y = 11
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_found_the_synchronization_bureau }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_is_operational = yes
+			OR = { brilliant_scientist_can_begin_temporal_stabilization = yes has_country_flag = brilliant_scientist_temporal_stabilization_completed }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_accept_the_stabilization_window_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_accept_stabilization_window = yes
+				set_country_flag = brilliant_scientist_focus_unlock_temporal_stabilization_mission
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_the_continuity_guard
+		icon = GFX_goal_KRG_the_continuity_guard
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 43
+		y = 12
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_issue_bounded_future_warnings }
+		prerequisite = { focus = KRG_accept_the_stabilization_window }
+		allow_branch = { brilliant_scientist_has_temporal_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_temporal_weaponization_is_operational = yes
+			brilliant_scientist_has_temporal_force_deployment = yes
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+			check_variable = { var = brilliant_scientist_temporal_debt value = constant:brilliant_scientist_temporal.debt_critical compare = less_than }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_continuity_guard_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_temporal_guard_operations
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_build_an_independent_reactor_grid
+		icon = GFX_goal_KRG_build_an_independent_reactor_grid
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 50
+		y = 9
+		cost = @krg_focus_d70
+		allow_branch = { brilliant_scientist_has_high_energy_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_reopen_the_prototype_works
+			brilliant_scientist_kruger_focus_has_high_energy_deployment = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_build_an_independent_reactor_grid_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_targeted_reactor_grid
+				set_country_flag = brilliant_scientist_focus_unlock_contamination_response
+				set_country_flag = brilliant_scientist_focus_unlock_rare_material_procurement
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_prepare_strategic_delivery_architecture
+		icon = GFX_goal_KRG_prepare_strategic_delivery_architecture
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 50
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_build_an_independent_reactor_grid }
+		allow_branch = { AND = { brilliant_scientist_has_high_energy_route_seed = yes OR = { brilliant_scientist_has_rocketry_route_seed = yes brilliant_scientist_has_teleportation_route_seed = yes } } }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_has_high_energy_deployment = yes
+			OR = { brilliant_scientist_kruger_focus_has_rocketry_deployment = yes brilliant_scientist_kruger_focus_teleportation_weaponization_is_operational = yes }
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_prepare_strategic_delivery_architecture_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_delivery_network_design
+				set_country_flag = brilliant_scientist_focus_unlock_hardened_command_nodes
+				set_country_flag = brilliant_scientist_focus_unlock_delivery_counterintelligence
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_train_the_interface_specialists
+		icon = GFX_goal_KRG_train_the_interface_specialists
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 48
+		y = 10
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_build_an_independent_reactor_grid }
+		allow_branch = { brilliant_scientist_has_alien_arms_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_alien_arms_deployment_is_operational = yes
+			brilliant_scientist_has_alien_arms_force_deployment = yes
+			brilliant_scientist_kruger_focus_interface_chamber_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_train_the_interface_specialists_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_finite_interface_specialists
+				set_country_flag = brilliant_scientist_focus_unlock_artifact_interface_security
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_arm_the_exotic_guard
+		icon = GFX_goal_KRG_arm_the_exotic_guard
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 49
+		y = 11
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_prepare_strategic_delivery_architecture }
+		prerequisite = { focus = KRG_train_the_interface_specialists }
+		allow_branch = { brilliant_scientist_has_alien_arms_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_alien_arms_weaponization_is_operational = yes
+			brilliant_scientist_has_alien_arms_force_deployment = yes
+			brilliant_scientist_kruger_focus_rare_material_supply_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_arm_the_exotic_guard_effect_tt
+			hidden_effect = {
+				brilliant_scientist_rebuild_project_force_runtime_package = yes
+				set_country_flag = brilliant_scientist_focus_unlock_bounded_exotic_guard_production
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_make_containment_the_first_doctrine
+		icon = GFX_goal_KRG_make_containment_the_first_doctrine
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 52
+		y = 10
+		cost = @krg_focus_d70
+		allow_branch = { brilliant_scientist_has_biological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_document_the_carried_portfolio
+			has_completed_focus = KRG_found_the_counterintelligence_bureau
+			brilliant_scientist_kruger_focus_biological_prototype_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_make_containment_the_first_doctrine_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_biological_quarantine
+				set_country_flag = brilliant_scientist_focus_unlock_vaccine_and_safe_stockpile_seizure
+				set_country_flag = brilliant_scientist_focus_unlock_delivery_authentication
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_authorize_agents_of_last_resort
+		icon = GFX_goal_KRG_authorize_agents_of_last_resort
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+		x = 51
+		y = 11
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_prepare_strategic_delivery_architecture }
+		prerequisite = { focus = KRG_make_containment_the_first_doctrine }
+		allow_branch = { brilliant_scientist_has_biological_route_seed = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_biological_weaponization_is_operational = yes
+			brilliant_scientist_kruger_focus_biological_delivery_is_valid = yes
+			brilliant_scientist_kruger_focus_biological_containment_is_operational = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_authorize_agents_of_last_resort_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_canonical_biological_last_resort_actions
+				set_country_flag = brilliant_scientist_focus_biological_consequence_ledger_required
+			}
+		}
+		ai_will_do = { factor = @krg_ai_low }
+	}
+
+
+	focus = {
+		id = KRG_a_state_without_friends
+		icon = GFX_goal_KRG_a_state_without_friends
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 44
+		y = 4
+		cost = @krg_focus_d35
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_complete_the_founding_audit
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_a_state_without_friends_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_foreign_interest_registry
+				set_country_flag = brilliant_scientist_focus_unlock_recognition_patron_and_containment_reactions
+				set_country_flag = brilliant_scientist_focus_unlock_invalid_foreign_target_cleanup
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_found_the_foreign_intelligence_bureau
+		icon = GFX_goal_KRG_found_the_foreign_intelligence_bureau
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 44
+		y = 5
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_a_state_without_friends }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_found_the_foreign_intelligence_bureau_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_found_foreign_intelligence_agency = yes
+				set_country_flag = brilliant_scientist_focus_unlock_foreign_intelligence_operations
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_settle_accounts_with_the_former_host
+		icon = GFX_goal_KRG_settle_accounts_with_the_former_host
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 44
+		y = 6
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_found_the_foreign_intelligence_bureau }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_has_valid_former_host = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_settle_accounts_with_the_former_host_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_origin_specific_former_host_settlement
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_open_the_scientific_commonwealth
+		icon = GFX_goal_KRG_open_the_scientific_commonwealth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 43
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_settle_accounts_with_the_former_host }
+		mutually_exclusive = { focus = KRG_build_the_submission_network }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_recognition_path_is_valid = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_open_the_scientific_commonwealth_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_open_commonwealth = yes
+				set_country_flag = brilliant_scientist_focus_unlock_voluntary_scientific_compacts
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_build_the_submission_network
+		icon = GFX_goal_KRG_build_the_submission_network
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+		x = 45
+		y = 7
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_settle_accounts_with_the_former_host }
+		mutually_exclusive = { focus = KRG_open_the_scientific_commonwealth }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_has_military_reach = yes
+			brilliant_scientist_kruger_focus_has_sustainable_project_force = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_build_the_submission_network_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_open_submission_network = yes
+				set_country_flag = brilliant_scientist_focus_unlock_submission_ultimatums_and_protectorates
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_secure_the_laboratory_corridors
+		icon = GFX_goal_KRG_secure_the_laboratory_corridors
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 16
+		cost = @krg_focus_d70
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_sustainable_project_capacity
+			OR = {
+				has_completed_focus = KRG_a_general_staff_for_the_state
+				has_completed_focus = KRG_a_council_of_project_commanders
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_secure_the_laboratory_corridors_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_targeted_laboratory_corridors
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_recover_the_stolen_facilities
+		icon = GFX_goal_KRG_recover_the_stolen_facilities
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 28
+		y = 17
+		cost = @krg_focus_d70
+		prerequisite = { focus = KRG_secure_the_laboratory_corridors }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			has_completed_focus = KRG_settle_accounts_with_the_former_host
+			brilliant_scientist_kruger_focus_has_recovery_evidence = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_recover_the_stolen_facilities_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_single_evidence_backed_recovery_target
+				set_country_flag = brilliant_scientist_focus_unlock_archive_capture_and_safe_dismantlement
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_integrate_by_project
+		icon = GFX_goal_KRG_integrate_by_project
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 17
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_secure_the_laboratory_corridors }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			OR = {
+				has_completed_focus = KRG_open_the_scientific_commonwealth
+				has_completed_focus = KRG_build_the_submission_network
+			}
+			OR = {
+				has_completed_focus = KRG_the_replicated_host
+				has_completed_focus = KRG_an_army_of_machines
+				has_completed_focus = KRG_the_dinosaur_host
+				has_completed_focus = KRG_the_engineered_legion
+				has_completed_focus = KRG_the_strategic_transit_corps
+				has_completed_focus = KRG_the_continuity_guard
+				has_completed_focus = KRG_arm_the_exotic_guard
+				has_completed_focus = KRG_authorize_agents_of_last_resort
+			}
+			brilliant_scientist_kruger_focus_has_integration_capacity = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_integrate_by_project_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_unlock_route_specific_integration
+				set_country_flag = brilliant_scientist_focus_integration_requires_compliance_and_time
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_the_continental_laboratory_network
+		icon = GFX_goal_KRG_the_continental_laboratory_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 18
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_recover_the_stolen_facilities }
+		prerequisite = { focus = KRG_integrate_by_project }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_overextension_is_clear = yes
+			brilliant_scientist_kruger_focus_continental_network_is_supplied = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_the_continental_laboratory_network_effect_tt
+			hidden_effect = {
+				set_country_flag = brilliant_scientist_focus_continental_network_registered
+				set_country_flag = brilliant_scientist_focus_unlock_global_administration_score
+			}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_evolution_four_sovereign_science
+		icon = GFX_goal_KRG_evolution_four_sovereign_science
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 19
+		cost = @krg_focus_d105
+		prerequisite = { focus = KRG_the_continental_laboratory_network }
+		allow_branch = { brilliant_scientist_kruger_focus_evolution_four_is_available = yes }
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_evolution_four_is_available = yes
+			OR = {
+				has_completed_focus = KRG_the_sovereign_directorate
+				has_completed_focus = KRG_the_human_scientific_republic
+				has_completed_focus = KRG_replicated_sovereignty
+				has_completed_focus = KRG_machine_ascendancy
+				has_completed_focus = KRG_the_temporal_continuum
+				has_completed_focus = KRG_xenobiological_ascendancy
+				has_completed_focus = KRG_the_project_synthesis
+			}
+			OR = {
+				has_completed_focus = KRG_the_replicated_host
+				has_completed_focus = KRG_an_army_of_machines
+				has_completed_focus = KRG_the_dinosaur_host
+				has_completed_focus = KRG_the_engineered_legion
+				has_completed_focus = KRG_the_strategic_transit_corps
+				has_completed_focus = KRG_the_continuity_guard
+				has_completed_focus = KRG_arm_the_exotic_guard
+				has_completed_focus = KRG_authorize_agents_of_last_resort
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_evolution_four_sovereign_science_effect_tt
+				hidden_effect = {
+					set_country_flag = brilliant_scientist_focus_unlock_global_program
+					set_country_flag = brilliant_scientist_focus_unlock_world_route_decisions
+					set_country_flag = brilliant_scientist_focus_unlock_global_scientist_and_facility_targets
+					set_country_flag = brilliant_scientist_focus_unlock_coalition_counterplay
+					brilliant_scientist_refresh_world_threat_source = yes
+				}
+		}
+		ai_will_do = { factor = @krg_ai_preferred }
+	}
+
+
+	focus = {
+		id = KRG_commit_to_the_laboratory_world
+		icon = GFX_goal_KRG_commit_to_the_laboratory_world
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 20
+		cost = @krg_focus_d140
+		prerequisite = { focus = KRG_evolution_four_sovereign_science }
+		mutually_exclusive = { focus = KRG_commit_to_the_strategic_singularity }
+		allow_branch = {
+			brilliant_scientist_kruger_focus_evolution_four_is_available = yes
+			brilliant_scientist_lab_world_scenario_is_enabled = yes
+		}
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_can_commit_to_lab_world = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_commit_to_the_laboratory_world_effect_tt
+			hidden_effect = {
+				brilliant_scientist_commit_to_lab_world = yes
+				set_country_flag = brilliant_scientist_focus_unlock_laboratory_world_program
+				set_country_flag = brilliant_scientist_focus_unlock_global_submission_integration_administration
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+
+	focus = {
+		id = KRG_commit_to_the_strategic_singularity
+		icon = GFX_goal_KRG_commit_to_the_strategic_singularity
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 28
+		y = 20
+		cost = @krg_focus_d140
+		prerequisite = { focus = KRG_evolution_four_sovereign_science }
+		mutually_exclusive = { focus = KRG_commit_to_the_laboratory_world }
+		allow_branch = {
+			brilliant_scientist_kruger_focus_evolution_four_is_available = yes
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+		}
+		available = {
+			brilliant_scientist_kruger_focus_is_active = yes
+			brilliant_scientist_kruger_focus_singularity_commitment_is_available = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = KRG_commit_to_the_strategic_singularity_effect_tt
+			hidden_effect = {
+				brilliant_scientist_focus_commit_to_singularity_doctrine = yes
+				set_country_flag = brilliant_scientist_focus_unlock_singularity_component_intelligence_event
+			}
+		}
+		ai_will_do = { factor = @krg_ai_high }
+	}
+
+}

@@ -1,0 +1,393 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE FOCUS EFFECTS
+# ============================================================================
+# Focus-owned lifecycle presentation, exact hidden mechanical transitions,
+# route helpers, targeted state rewards, and terminal handoffs. These effects
+# never grant a project stage, fabricate an agent, spawn a force, or create a
+# unit. Command and supply retain their canonical visible lifecycle ideas.
+# ============================================================================
+
+@brilliant_scientist_focus_index_singularity = 14
+
+brilliant_scientist_focus_clear_visible_lifecycle_summary = {
+	if = { limit = { has_idea = brilliant_scientist_audited_state_liabilities } remove_ideas = brilliant_scientist_audited_state_liabilities }
+	if = { limit = { has_idea = brilliant_scientist_documented_state_system } remove_ideas = brilliant_scientist_documented_state_system }
+	if = { limit = { has_idea = brilliant_scientist_coordinated_laboratory_state } remove_ideas = brilliant_scientist_coordinated_laboratory_state }
+	if = { limit = { has_idea = brilliant_scientist_sovereign_directorate_administration } remove_ideas = brilliant_scientist_sovereign_directorate_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_civic_administration } remove_ideas = brilliant_scientist_focus_civic_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_replication_administration } remove_ideas = brilliant_scientist_focus_replication_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_machine_administration } remove_ideas = brilliant_scientist_focus_machine_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_temporal_administration } remove_ideas = brilliant_scientist_focus_temporal_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_xenobiological_administration } remove_ideas = brilliant_scientist_focus_xenobiological_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_synthesis_administration } remove_ideas = brilliant_scientist_focus_synthesis_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_international_center } remove_ideas = brilliant_scientist_focus_international_center }
+	if = { limit = { has_idea = brilliant_scientist_focus_autonomous_network } remove_ideas = brilliant_scientist_focus_autonomous_network }
+}
+
+brilliant_scientist_focus_refresh_visible_lifecycle_summary = {
+	brilliant_scientist_focus_clear_visible_lifecycle_summary = yes
+	if = {
+		limit = { has_country_flag = brilliant_scientist_focus_scientific_population_commonwealth }
+		add_ideas = brilliant_scientist_focus_international_center
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_focus_scientific_population_autonomous }
+		add_ideas = brilliant_scientist_focus_autonomous_network
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_sovereign_directorate }
+		add_ideas = brilliant_scientist_sovereign_directorate_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_human_technocracy }
+		add_ideas = brilliant_scientist_focus_civic_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_clone_sovereignty }
+		add_ideas = brilliant_scientist_focus_replication_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_machine_ascendancy }
+		add_ideas = brilliant_scientist_focus_machine_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_temporal_continuum }
+		add_ideas = brilliant_scientist_focus_temporal_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_xenobiological_ascendancy }
+		add_ideas = brilliant_scientist_focus_xenobiological_administration
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_route_project_synthesis }
+		add_ideas = brilliant_scientist_focus_synthesis_administration
+	}
+	else_if = {
+		limit = {
+			has_country_flag = brilliant_scientist_focus_command_lifecycle_settled
+			has_country_flag = brilliant_scientist_focus_supply_lifecycle_settled
+		}
+		add_ideas = brilliant_scientist_coordinated_laboratory_state
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_focus_portfolio_documented }
+		add_ideas = brilliant_scientist_documented_state_system
+	}
+	else = { add_ideas = brilliant_scientist_audited_state_liabilities }
+}
+
+brilliant_scientist_focus_clear_hidden_administration = {
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_improvised_administration } remove_ideas = brilliant_scientist_focus_hidden_improvised_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_civic_administration } remove_ideas = brilliant_scientist_focus_hidden_civic_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_machine_administration } remove_ideas = brilliant_scientist_focus_hidden_machine_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_replication_administration } remove_ideas = brilliant_scientist_focus_hidden_replication_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_synthesis_administration } remove_ideas = brilliant_scientist_focus_hidden_synthesis_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_sovereign_directorate_administration } remove_ideas = brilliant_scientist_focus_hidden_sovereign_directorate_administration }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_laboratory_feudalism } remove_ideas = brilliant_scientist_focus_hidden_laboratory_feudalism }
+}
+
+brilliant_scientist_focus_clear_hidden_portfolio = {
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_inherited_portfolio } remove_ideas = brilliant_scientist_focus_hidden_inherited_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_documented_portfolio } remove_ideas = brilliant_scientist_focus_hidden_documented_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_weaponized_portfolio } remove_ideas = brilliant_scientist_focus_hidden_weaponized_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_fragmented_portfolio } remove_ideas = brilliant_scientist_focus_hidden_fragmented_portfolio }
+}
+
+brilliant_scientist_focus_clear_hidden_scientific_population = {
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_scientific_exodus } remove_ideas = brilliant_scientist_focus_hidden_scientific_exodus }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_international_center } remove_ideas = brilliant_scientist_focus_hidden_international_center }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_autonomous_network } remove_ideas = brilliant_scientist_focus_hidden_autonomous_network }
+	if = { limit = { has_idea = brilliant_scientist_focus_hidden_intellectual_isolation } remove_ideas = brilliant_scientist_focus_hidden_intellectual_isolation }
+}
+
+# Transfers only the three consolidated slots. Each original modifier is copied
+# exactly by its hidden counterpart. Command and supply remain visible and are
+# deliberately untouched.
+brilliant_scientist_focus_hide_original_lifecycle_mechanics = {
+	if = { limit = { has_idea = brilliant_scientist_improvised_laboratory_state } remove_ideas = brilliant_scientist_improvised_laboratory_state add_ideas = brilliant_scientist_focus_hidden_improvised_administration }
+	if = { limit = { has_idea = brilliant_scientist_civic_laboratory_administration } remove_ideas = brilliant_scientist_civic_laboratory_administration add_ideas = brilliant_scientist_focus_hidden_civic_administration }
+	if = { limit = { has_idea = brilliant_scientist_machine_laboratory_administration } remove_ideas = brilliant_scientist_machine_laboratory_administration add_ideas = brilliant_scientist_focus_hidden_machine_administration }
+	if = { limit = { has_idea = brilliant_scientist_replication_administration } remove_ideas = brilliant_scientist_replication_administration add_ideas = brilliant_scientist_focus_hidden_replication_administration }
+	if = { limit = { has_idea = brilliant_scientist_synthesis_administration } remove_ideas = brilliant_scientist_synthesis_administration add_ideas = brilliant_scientist_focus_hidden_synthesis_administration }
+	if = { limit = { has_idea = brilliant_scientist_laboratory_feudalism } remove_ideas = brilliant_scientist_laboratory_feudalism add_ideas = brilliant_scientist_focus_hidden_laboratory_feudalism }
+	if = { limit = { has_idea = brilliant_scientist_inherited_project_portfolio } remove_ideas = brilliant_scientist_inherited_project_portfolio add_ideas = brilliant_scientist_focus_hidden_inherited_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_documented_project_portfolio } remove_ideas = brilliant_scientist_documented_project_portfolio add_ideas = brilliant_scientist_focus_hidden_documented_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_weaponized_project_portfolio } remove_ideas = brilliant_scientist_weaponized_project_portfolio add_ideas = brilliant_scientist_focus_hidden_weaponized_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_fragmented_portfolio } remove_ideas = brilliant_scientist_fragmented_portfolio add_ideas = brilliant_scientist_focus_hidden_fragmented_portfolio }
+	if = { limit = { has_idea = brilliant_scientist_scientific_exodus } remove_ideas = brilliant_scientist_scientific_exodus add_ideas = brilliant_scientist_focus_hidden_scientific_exodus }
+	if = { limit = { has_idea = brilliant_scientist_international_scientific_center } remove_ideas = brilliant_scientist_international_scientific_center add_ideas = brilliant_scientist_focus_hidden_international_center }
+	if = { limit = { has_idea = brilliant_scientist_autonomous_research_network } remove_ideas = brilliant_scientist_autonomous_research_network add_ideas = brilliant_scientist_focus_hidden_autonomous_network }
+	if = { limit = { has_idea = brilliant_scientist_intellectual_isolation } remove_ideas = brilliant_scientist_intellectual_isolation add_ideas = brilliant_scientist_focus_hidden_intellectual_isolation }
+}
+
+brilliant_scientist_focus_begin_lifecycle_audit = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_formation_interrupted_project }
+		set_country_flag = brilliant_scientist_focus_unlock_interrupted_project_audit
+		set_variable = { brilliant_scientist_focus_interrupted_project_family = brilliant_scientist_formation_interrupted_project_family }
+		set_variable = { brilliant_scientist_focus_interrupted_project_stage = brilliant_scientist_formation_interrupted_project_stage }
+		set_variable = { brilliant_scientist_focus_interrupted_project_capacity_delta = brilliant_scientist_formation_interrupted_project_capacity_delta }
+	}
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_document_portfolio = {
+	set_country_flag = brilliant_scientist_focus_portfolio_documented
+	brilliant_scientist_focus_clear_hidden_portfolio = yes
+	brilliant_scientist_document_inherited_portfolio = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_general_staff_command = {
+	set_country_flag = brilliant_scientist_focus_command_lifecycle_settled
+	brilliant_scientist_establish_general_staff_command = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_project_council_command = {
+	set_country_flag = brilliant_scientist_focus_command_lifecycle_settled
+	brilliant_scientist_establish_project_council_command = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_clone_officer_command = {
+	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
+	if = { limit = { has_idea = brilliant_scientist_general_staff_command } remove_ideas = brilliant_scientist_general_staff_command }
+	if = { limit = { has_idea = brilliant_scientist_machine_command_network } remove_ideas = brilliant_scientist_machine_command_network }
+	if = { limit = { has_idea = brilliant_scientist_clone_officer_corps } remove_ideas = brilliant_scientist_clone_officer_corps }
+	if = { limit = { has_idea = brilliant_scientist_project_council_command } remove_ideas = brilliant_scientist_project_council_command }
+	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
+	set_country_flag = brilliant_scientist_focus_command_lifecycle_settled
+	brilliant_scientist_establish_clone_officer_corps = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_machine_command = {
+	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
+	if = { limit = { has_idea = brilliant_scientist_general_staff_command } remove_ideas = brilliant_scientist_general_staff_command }
+	if = { limit = { has_idea = brilliant_scientist_machine_command_network } remove_ideas = brilliant_scientist_machine_command_network }
+	if = { limit = { has_idea = brilliant_scientist_clone_officer_corps } remove_ideas = brilliant_scientist_clone_officer_corps }
+	if = { limit = { has_idea = brilliant_scientist_project_council_command } remove_ideas = brilliant_scientist_project_council_command }
+	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
+	set_country_flag = brilliant_scientist_focus_command_lifecycle_settled
+	brilliant_scientist_establish_machine_command = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_conventional_supply = {
+	set_country_flag = brilliant_scientist_focus_supply_lifecycle_settled
+	brilliant_scientist_establish_conventional_supply = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_automated_supply = {
+	set_country_flag = brilliant_scientist_focus_supply_lifecycle_settled
+	brilliant_scientist_establish_automated_supply = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_portal_supply = {
+	set_country_flag = brilliant_scientist_focus_supply_lifecycle_settled
+	brilliant_scientist_establish_portal_supply = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_set_biological_supply = {
+	set_country_flag = brilliant_scientist_focus_supply_lifecycle_settled
+	brilliant_scientist_establish_biological_supply = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_form_sovereign_directorate = {
+	brilliant_scientist_clear_sovereign_route_identity = yes
+	set_country_flag = brilliant_scientist_route_sovereign_directorate
+	set_cosmetic_tag = KRG
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:brilliant_scientist_country.popular_support_minor
+		fascism = constant:brilliant_scientist_country.popular_support_minor
+		communism = constant:brilliant_scientist_country.popular_support_none
+		neutrality = constant:brilliant_scientist_country.popular_support_route
+	}
+	set_country_leader_ideology = despotism
+}
+
+brilliant_scientist_unlock_synthesis = {
+	if = {
+		limit = { brilliant_scientist_can_unlock_synthesis = yes }
+		set_country_flag = brilliant_scientist_synthesis_validated
+		set_country_flag = brilliant_scientist_synthesis_separate_ledgers_preserved
+		set_country_flag = brilliant_scientist_synthesis_paleogenetic_ledger_preserved
+		set_country_flag = brilliant_scientist_synthesis_xenobiological_ledger_preserved
+	}
+}
+
+brilliant_scientist_focus_form_sovereign_directorate = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_sovereign_directorate = yes
+	add_ideas = brilliant_scientist_focus_hidden_sovereign_directorate_administration
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_human_scientific_republic = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	clr_country_flag = brilliant_scientist_route_sovereign_directorate
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_human_scientific_republic = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_replicated_state = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	clr_country_flag = brilliant_scientist_route_sovereign_directorate
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_replicated_state = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_machine_state = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	clr_country_flag = brilliant_scientist_route_sovereign_directorate
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_machine_state = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_temporal_continuum = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	clr_country_flag = brilliant_scientist_route_sovereign_directorate
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_temporal_continuum = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_xenobiological_ascendancy = {
+	set_country_flag = brilliant_scientist_sovereign_identity_locked
+	clr_country_flag = brilliant_scientist_route_sovereign_directorate
+	brilliant_scientist_focus_clear_hidden_administration = yes
+	brilliant_scientist_form_xenobiological_ascendancy = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_form_project_synthesis = {
+	if = {
+		limit = { brilliant_scientist_can_unlock_synthesis = yes }
+		set_country_flag = brilliant_scientist_sovereign_identity_locked
+		clr_country_flag = brilliant_scientist_route_sovereign_directorate
+		brilliant_scientist_focus_clear_hidden_administration = yes
+		brilliant_scientist_unlock_synthesis = yes
+		brilliant_scientist_form_project_synthesis = yes
+		brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+		brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+	}
+}
+
+brilliant_scientist_focus_open_commonwealth = {
+	set_country_flag = brilliant_scientist_focus_scientific_population_commonwealth
+	brilliant_scientist_focus_clear_hidden_scientific_population = yes
+	brilliant_scientist_open_international_scientific_center = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_focus_open_submission_network = {
+	set_country_flag = brilliant_scientist_focus_scientific_population_autonomous
+	brilliant_scientist_focus_clear_hidden_scientific_population = yes
+	brilliant_scientist_open_autonomous_research_network = yes
+	brilliant_scientist_focus_hide_original_lifecycle_mechanics = yes
+	brilliant_scientist_focus_refresh_visible_lifecycle_summary = yes
+}
+
+brilliant_scientist_refresh_kruger_focus_route_layout = {
+	if = { limit = { brilliant_scientist_is_active_kruger_state = yes } mark_focus_tree_layout_dirty = yes }
+}
+
+brilliant_scientist_focus_fortify_primary_facility = {
+	if = {
+		limit = { brilliant_scientist_primary_facility_is_valid = yes }
+		event_target:brilliant_scientist_primary_facility = {
+			add_building_construction = { type = bunker level = constant:brilliant_scientist_focus.primary_fort_levels instant_build = yes }
+			add_building_construction = { type = anti_air_building level = constant:brilliant_scientist_focus.primary_anti_air_levels instant_build = yes }
+		}
+	}
+}
+
+brilliant_scientist_focus_repair_primary_facility = {
+	if = {
+		limit = { brilliant_scientist_primary_facility_is_valid = yes }
+		event_target:brilliant_scientist_primary_facility = { add_building_construction = { type = infrastructure level = constant:brilliant_scientist_focus.primary_infrastructure_levels instant_build = yes } }
+		brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+	}
+}
+
+brilliant_scientist_focus_restore_primary_power_grid = {
+	if = {
+		limit = { brilliant_scientist_primary_facility_is_valid = yes }
+		event_target:brilliant_scientist_primary_facility = {
+			add_building_construction = { type = infrastructure level = constant:brilliant_scientist_focus.primary_infrastructure_levels instant_build = yes }
+		}
+	}
+}
+
+brilliant_scientist_focus_shield_primary_airspace = {
+	if = {
+		limit = { brilliant_scientist_primary_facility_is_valid = yes }
+		event_target:brilliant_scientist_primary_facility = {
+			add_building_construction = { type = radar_station level = constant:brilliant_scientist_focus.primary_radar_levels instant_build = yes }
+			add_building_construction = { type = anti_air_building level = constant:brilliant_scientist_focus.primary_anti_air_levels instant_build = yes }
+		}
+	}
+}
+
+brilliant_scientist_focus_fortify_temporal_anchor = {
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_temporal_anchor
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+			event_target:brilliant_scientist_temporal_anchor = { exists = yes is_owned_by = ROOT is_controlled_by = ROOT has_state_flag = brilliant_scientist_temporal_anchor }
+		}
+		event_target:brilliant_scientist_temporal_anchor = {
+			add_building_construction = { type = bunker level = constant:brilliant_scientist_focus.anchor_fort_levels instant_build = yes }
+			add_building_construction = { type = anti_air_building level = constant:brilliant_scientist_focus.anchor_anti_air_levels instant_build = yes }
+		}
+	}
+}
+
+brilliant_scientist_focus_found_counterintelligence_agency = {
+	if = {
+		limit = { has_dlc = "La Resistance" }
+		if = { limit = { has_intelligence_agency = no } create_intelligence_agency = yes }
+		if = { limit = { NOT = { has_done_agency_upgrade = upgrade_passive_defense } } upgrade_intelligence_agency = upgrade_passive_defense }
+	}
+}
+
+brilliant_scientist_focus_found_foreign_intelligence_agency = {
+	if = {
+		limit = { has_dlc = "La Resistance" }
+		if = { limit = { has_intelligence_agency = no } create_intelligence_agency = yes }
+		if = { limit = { NOT = { has_done_agency_upgrade = upgrade_diplo_training } } upgrade_intelligence_agency = upgrade_diplo_training }
+	}
+}
+
+brilliant_scientist_focus_accept_stabilization_window = {
+	if = { limit = { brilliant_scientist_can_begin_temporal_stabilization = yes } brilliant_scientist_begin_temporal_stabilization = yes }
+}
+
+brilliant_scientist_focus_commit_to_singularity_doctrine = {
+	set_country_flag = brilliant_scientist_focus_unlock_singularity_program
+	if = {
+		limit = {
+			brilliant_scientist_can_commit_to_singularity = yes
+			check_variable = { var = brilliant_scientist_project_stage_entries^@brilliant_scientist_focus_index_singularity value = constant:brilliant_scientist_project_stage.theory compare = greater_than_or_equals }
+		}
+		brilliant_scientist_commit_to_singularity = yes
+	}
+}
