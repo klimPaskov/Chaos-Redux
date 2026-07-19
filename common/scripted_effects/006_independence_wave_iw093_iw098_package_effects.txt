@@ -1,12 +1,12 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE EFFECTS
 # ============================================================================
-# Foundational, fail-closed adapters for Asante (`DOX`) and Sokoto (`SOK`).
-# This file owns only fixed package proofs, package-local setup values, the
+# Fail-closed adapters for Asante (`DOX`) and Sokoto (`SOK`). This file owns
+# fixed package proofs, package-local values, focus-framework configuration,
 # capital/succession validation hooks, central dispatch entries, and cleanup.
-# It does not publish country surfaces or identity content. A future package
-# implementation must provide the explicit runtime attestation flags before
-# either setup path can return `selected`.
+# Decision and focus content is present, but identity, force, portrait, flag,
+# formable, and final package audits must provide the external runtime
+# attestation flags before either setup path can return `selected`.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -115,6 +115,152 @@ independence_wave_iw098_select_sultan_by_date = {
 }
 
 # ---------------------------------------------------------------------------
+# Package-local visible values
+# ---------------------------------------------------------------------------
+
+independence_wave_clamp_iw093_values = {
+	clamp_variable = { var = iw093_confederated_authority min = constant:independence_wave_iw093.value_minimum max = constant:independence_wave_iw093.value_maximum }
+	clamp_variable = { var = iw093_court_cabinet_balance min = constant:independence_wave_iw093.balance_minimum max = constant:independence_wave_iw093.balance_maximum }
+	clamp_variable = { var = iw093_cocoa_rail_throughput min = constant:independence_wave_iw093.value_minimum max = constant:independence_wave_iw093.value_maximum }
+	clamp_variable = { var = iw093_host_settlement min = constant:independence_wave_iw093.value_minimum max = constant:independence_wave_iw093.value_maximum }
+}
+
+independence_wave_clamp_iw098_values = {
+	clamp_variable = { var = iw098_emirate_compact min = constant:independence_wave_iw098.value_minimum max = constant:independence_wave_iw098.value_maximum }
+	clamp_variable = { var = iw098_court_civic_balance min = constant:independence_wave_iw098.balance_minimum max = constant:independence_wave_iw098.balance_maximum }
+	clamp_variable = { var = iw098_caravan_livestock_network min = constant:independence_wave_iw098.value_minimum max = constant:independence_wave_iw098.value_maximum }
+	clamp_variable = { var = iw098_frontier_security min = constant:independence_wave_iw098.value_minimum max = constant:independence_wave_iw098.value_maximum }
+}
+
+independence_wave_initialize_iw093_values = {
+	set_variable = { iw093_confederated_authority = constant:independence_wave_iw093.start_confederated_authority }
+	set_variable = { iw093_court_cabinet_balance = constant:independence_wave_iw093.start_court_cabinet_balance }
+	set_variable = { iw093_cocoa_rail_throughput = constant:independence_wave_iw093.start_cocoa_rail_throughput }
+	set_variable = { iw093_host_settlement = constant:independence_wave_iw093.start_host_settlement }
+	independence_wave_clamp_iw093_values = yes
+}
+
+independence_wave_initialize_iw098_values = {
+	set_variable = { iw098_emirate_compact = constant:independence_wave_iw098.start_emirate_compact }
+	set_variable = { iw098_court_civic_balance = constant:independence_wave_iw098.start_court_civic_balance }
+	set_variable = { iw098_caravan_livestock_network = constant:independence_wave_iw098.start_caravan_livestock_network }
+	set_variable = { iw098_frontier_security = constant:independence_wave_iw098.start_frontier_security }
+	independence_wave_clamp_iw098_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Shared framework and signature-branch assignment
+# ---------------------------------------------------------------------------
+
+independence_wave_configure_iw093_focus_surface = {
+	clr_country_flag = independence_wave_iw093_focus_surface_configured
+	if = {
+		limit = { is_independence_wave_iw093_prepared_scope = yes }
+		clr_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.west_african_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_register_signature_module = yes
+		mark_focus_tree_layout_dirty = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_full_focus_framework
+				check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+				has_country_flag = independence_wave_route_constitutional_available
+				has_country_flag = independence_wave_route_popular_council_available
+				has_country_flag = independence_wave_route_traditional_available
+				has_country_flag = independence_wave_route_emergency_military_available
+				has_country_flag = independence_wave_route_patron_client_available
+				has_country_flag = independence_wave_radical_sovereignty_route_excluded
+				has_country_flag = independence_wave_ambition_family_registered
+				has_country_flag = independence_wave_league_route_available
+				has_country_flag = independence_wave_formable_family_selected
+				has_country_flag = independence_wave_formable_family_registered
+				has_country_flag = independence_wave_formable_profile_loaded
+				has_country_flag = independence_wave_signature_module_registered
+			}
+			set_country_flag = independence_wave_iw093_focus_surface_configured
+		}
+	}
+}
+
+independence_wave_configure_iw098_focus_surface = {
+	clr_country_flag = independence_wave_iw098_focus_surface_configured
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			can_assign_independence_wave_iw098_full_focus_framework = yes
+		}
+		clr_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_route_popular_council_available
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.sahel_confederation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_register_signature_module = yes
+		mark_focus_tree_layout_dirty = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_full_focus_framework
+				check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+				has_country_flag = independence_wave_route_constitutional_available
+				has_country_flag = independence_wave_route_traditional_available
+				has_country_flag = independence_wave_route_emergency_military_available
+				has_country_flag = independence_wave_route_patron_client_available
+				has_country_flag = independence_wave_popular_council_route_excluded
+				has_country_flag = independence_wave_radical_sovereignty_route_excluded
+				has_country_flag = independence_wave_ambition_family_registered
+				has_country_flag = independence_wave_league_route_available
+				has_country_flag = independence_wave_formable_family_selected
+				has_country_flag = independence_wave_formable_family_registered
+				has_country_flag = independence_wave_formable_profile_loaded
+				has_country_flag = independence_wave_signature_module_registered
+			}
+			set_country_flag = independence_wave_iw098_focus_surface_configured
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Package setup
 # ---------------------------------------------------------------------------
 
@@ -132,11 +278,20 @@ independence_wave_setup_iw093_asante = {
 		}
 		set_variable = { independence_wave_iw093_anchor_state = event_target:independence_wave_setup_anchor_state }
 		set_variable = { independence_wave_iw093_kumasi_victory_point = constant:independence_wave_iw093.kumasi_victory_point }
-		set_country_flag = independence_wave_iw093_kumasi_capital_secured
-		set_country_flag = independence_wave_iw093_setup_complete
-		set_country_flag = independence_wave_package_setup_complete
-		set_variable = { independence_wave_iw093_setup_result = constant:independence_wave_iw093.one }
-		set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw093.one }
+		independence_wave_initialize_iw093_values = yes
+		independence_wave_iw093_initialize_decision_content = yes
+		independence_wave_configure_iw093_focus_surface = yes
+		if = {
+			limit = {
+				has_valid_independence_wave_iw093_values = yes
+				has_country_flag = independence_wave_iw093_focus_surface_configured
+			}
+			set_country_flag = independence_wave_iw093_kumasi_capital_secured
+			set_country_flag = independence_wave_iw093_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_variable = { independence_wave_iw093_setup_result = constant:independence_wave_iw093.one }
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw093.one }
+		}
 	}
 }
 
@@ -157,14 +312,19 @@ independence_wave_setup_iw098_sokoto = {
 		if = {
 			limit = { has_country_flag = independence_wave_iw098_sultan_selection_complete }
 			set_variable = { independence_wave_iw098_anchor_state = event_target:independence_wave_setup_anchor_state }
+			independence_wave_initialize_iw098_values = yes
+			independence_wave_iw098_initialize_decision_content = yes
+			independence_wave_configure_iw098_focus_surface = yes
 			if = {
-				limit = { has_country_flag = africa_priority_member_focus_tree_loaded }
-				set_country_flag = independence_wave_iw098_event012_overlay_present
+				limit = {
+					has_valid_independence_wave_iw098_values = yes
+					has_country_flag = independence_wave_iw098_focus_surface_configured
+				}
+				set_country_flag = independence_wave_iw098_setup_complete
+				set_country_flag = independence_wave_package_setup_complete
+				set_variable = { independence_wave_iw098_setup_result = constant:independence_wave_iw098.one }
+				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw098.one }
 			}
-			set_country_flag = independence_wave_iw098_setup_complete
-			set_country_flag = independence_wave_package_setup_complete
-			set_variable = { independence_wave_iw098_setup_result = constant:independence_wave_iw098.one }
-			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw098.one }
 		}
 	}
 }
@@ -181,9 +341,18 @@ independence_wave_validate_iw093_package = {
 			is_independence_wave_iw093_active_scope = yes
 			has_country_flag = independence_wave_iw093_setup_complete
 			has_country_flag = independence_wave_iw093_kumasi_capital_secured
+			has_country_flag = independence_wave_iw093_focus_surface_configured
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_signature_module_registered
+			has_country_flag = independence_wave_formable_family_registered
 			has_independence_wave_iw093_runtime_content_attestation = yes
 			has_independence_wave_iw093_kumasi_capital_proof = yes
 			has_independence_wave_iw093_host_capital_survival_proof = yes
+			has_valid_independence_wave_iw093_values = yes
+			OR = {
+				has_idea = independence_wave_iw093_unsettled_restoration_idea
+				has_idea = independence_wave_iw093_cocoa_rail_compact_idea
+			}
 		}
 		set_variable = { independence_wave_iw093_final_validation_result = constant:independence_wave_iw093.one }
 		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw093.one }
@@ -198,11 +367,20 @@ independence_wave_validate_iw098_package = {
 			is_independence_wave_iw098_active_scope = yes
 			has_country_flag = independence_wave_iw098_setup_complete
 			has_country_flag = independence_wave_iw098_sultan_selection_complete
+			has_country_flag = independence_wave_iw098_focus_surface_configured
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_signature_module_registered
+			has_country_flag = independence_wave_formable_family_registered
 			has_independence_wave_iw098_runtime_content_attestation = yes
 			has_independence_wave_iw098_date_appropriate_role_attestation = yes
 			has_independence_wave_iw098_sokoto_anchor_proof = yes
 			has_independence_wave_iw098_host_capital_survival_proof = yes
 			is_independence_wave_iw098_event012_state_safe = yes
+			has_valid_independence_wave_iw098_values = yes
+			OR = {
+				has_idea = independence_wave_iw098_disputed_emirate_compact_idea
+				has_idea = independence_wave_iw098_caravan_network_compact_idea
+			}
 		}
 		set_variable = { independence_wave_iw098_final_validation_result = constant:independence_wave_iw098.one }
 		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_iw098.one }
@@ -223,12 +401,34 @@ independence_wave_cleanup_iw093_asante = {
 				compare = equals
 			}
 		}
+		independence_wave_iw093_cleanup_decision_content = yes
+		independence_wave_iw093_cleanup_focus_content = yes
+		independence_wave_clear_focus_runtime = yes
+		independence_wave_formable_clear_loaded_profile = yes
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		clr_country_flag = independence_wave_iw093_focus_surface_configured
 		clr_country_flag = independence_wave_iw093_kumasi_capital_secured
 		clr_country_flag = independence_wave_iw093_setup_complete
 		clear_variable = independence_wave_iw093_anchor_state
 		clear_variable = independence_wave_iw093_kumasi_victory_point
 		clear_variable = independence_wave_iw093_setup_result
 		clear_variable = independence_wave_iw093_final_validation_result
+		clear_variable = iw093_confederated_authority
+		clear_variable = iw093_court_cabinet_balance
+		clear_variable = iw093_cocoa_rail_throughput
+		clear_variable = iw093_host_settlement
+		clr_country_flag = independence_wave_iw093_route_royal_confederacy
+		clr_country_flag = independence_wave_iw093_route_constitutional_cabinet
+		clr_country_flag = independence_wave_iw093_route_veterans_emergency
+		clr_country_flag = independence_wave_iw093_terminal_sovereignty_locked
+		clr_country_flag = independence_wave_iw093_form24_preparation_complete
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
 	}
 }
 
@@ -242,14 +442,35 @@ independence_wave_cleanup_iw098_sokoto = {
 				compare = equals
 			}
 		}
+		independence_wave_iw098_cleanup_decision_content = yes
+		independence_wave_iw098_cleanup_focus_content = yes
+		independence_wave_clear_focus_runtime = yes
+		independence_wave_formable_clear_loaded_profile = yes
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
+		clr_country_flag = independence_wave_iw098_focus_surface_configured
 		clr_country_flag = independence_wave_iw098_setup_complete
 		clr_country_flag = independence_wave_iw098_sultan_selection_complete
 		clr_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
 		clr_country_flag = independence_wave_iw098_post_cutover_sultan_selected
-		clr_country_flag = independence_wave_iw098_event012_overlay_present
 		clear_variable = independence_wave_iw098_anchor_state
 		clear_variable = independence_wave_iw098_setup_result
 		clear_variable = independence_wave_iw098_final_validation_result
+		clear_variable = iw098_emirate_compact
+		clear_variable = iw098_court_civic_balance
+		clear_variable = iw098_caravan_livestock_network
+		clear_variable = iw098_frontier_security
+		clr_country_flag = independence_wave_iw098_route_sultanic_federal
+		clr_country_flag = independence_wave_iw098_route_northern_constitution
+		clr_country_flag = independence_wave_iw098_route_frontier_command
+		clr_country_flag = independence_wave_iw098_terminal_sovereignty_locked
+		clr_country_flag = independence_wave_iw098_form25_preparation_complete
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
 		# Event 012's own focus-tree and lifecycle flags are intentionally not
 		# cleared. This helper only removes the Event 006 generation receipt.
 	}

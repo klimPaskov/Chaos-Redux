@@ -163,6 +163,73 @@ is_independence_wave_iw098_active_scope = {
 	}
 }
 
+# SOK is a dormant vanilla identity with only the generic tree in the reviewed
+# baseline. Event 006 may replace that minimal surface, or idempotently keep its
+# own already-loaded tree, but must never replace Event 012's priority package.
+can_assign_independence_wave_iw098_full_focus_framework = {
+	OR = {
+		has_focus_tree = generic_focus
+		has_focus_tree = independence_wave_focus_tree
+	}
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_priority_member_focus_tree_loaded }
+}
+
+# Stable package predicates consumed by focus, decision, AI, and localisation
+# surfaces. They do not participate in pre-release planning.
+is_independence_wave_iw093_country = {
+	is_independence_wave_iw093_active_scope = yes
+	has_country_flag = independence_wave_iw093_setup_complete
+}
+
+is_independence_wave_iw098_country = {
+	is_independence_wave_iw098_active_scope = yes
+	has_country_flag = independence_wave_iw098_setup_complete
+}
+
+has_valid_independence_wave_iw093_values = {
+	check_variable = { var = iw093_confederated_authority value = constant:independence_wave_iw093.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw093_confederated_authority value = constant:independence_wave_iw093.value_maximum compare = less_than_or_equals }
+	check_variable = { var = iw093_court_cabinet_balance value = constant:independence_wave_iw093.balance_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw093_court_cabinet_balance value = constant:independence_wave_iw093.balance_maximum compare = less_than_or_equals }
+	check_variable = { var = iw093_cocoa_rail_throughput value = constant:independence_wave_iw093.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw093_cocoa_rail_throughput value = constant:independence_wave_iw093.value_maximum compare = less_than_or_equals }
+	check_variable = { var = iw093_host_settlement value = constant:independence_wave_iw093.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw093_host_settlement value = constant:independence_wave_iw093.value_maximum compare = less_than_or_equals }
+}
+
+has_valid_independence_wave_iw098_values = {
+	check_variable = { var = iw098_emirate_compact value = constant:independence_wave_iw098.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw098_emirate_compact value = constant:independence_wave_iw098.value_maximum compare = less_than_or_equals }
+	check_variable = { var = iw098_court_civic_balance value = constant:independence_wave_iw098.balance_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw098_court_civic_balance value = constant:independence_wave_iw098.balance_maximum compare = less_than_or_equals }
+	check_variable = { var = iw098_caravan_livestock_network value = constant:independence_wave_iw098.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw098_caravan_livestock_network value = constant:independence_wave_iw098.value_maximum compare = less_than_or_equals }
+	check_variable = { var = iw098_frontier_security value = constant:independence_wave_iw098.value_minimum compare = greater_than_or_equals }
+	check_variable = { var = iw098_frontier_security value = constant:independence_wave_iw098.value_maximum compare = less_than_or_equals }
+}
+
+can_prepare_independence_wave_form24_from_iw093 = {
+	is_independence_wave_iw093_country = yes
+	has_country_flag = independence_wave_iw093_route_constitutional_cabinet
+	NOT = { has_country_flag = independence_wave_iw093_terminal_sovereignty_locked }
+	check_variable = { var = iw093_confederated_authority value = constant:independence_wave_iw093.form24_authority_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw093_cocoa_rail_throughput value = constant:independence_wave_iw093.form24_throughput_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw093_host_settlement value = constant:independence_wave_iw093.form24_host_threshold compare = greater_than_or_equals }
+}
+
+can_prepare_independence_wave_form25_from_iw098 = {
+	is_independence_wave_iw098_country = yes
+	OR = {
+		has_country_flag = independence_wave_iw098_route_sultanic_federal
+		has_country_flag = independence_wave_iw098_route_northern_constitution
+	}
+	NOT = { has_country_flag = independence_wave_iw098_terminal_sovereignty_locked }
+	check_variable = { var = iw098_emirate_compact value = constant:independence_wave_iw098.form25_compact_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw098_caravan_livestock_network value = constant:independence_wave_iw098.form25_network_threshold compare = greater_than_or_equals }
+	check_variable = { var = iw098_frontier_security value = constant:independence_wave_iw098.form25_security_threshold compare = greater_than_or_equals }
+}
+
 # These flags are external admission receipts. No file in this tranche sets
 # them. A future country package may set one only after all required gameplay
 # and runtime surfaces, including its visual/content audit, are complete.
@@ -210,6 +277,7 @@ has_independence_wave_iw098_sokoto_anchor_proof = {
 	event_target:independence_wave_setup_anchor_state = {
 		state = 902
 		is_owned_and_controlled_by = ROOT
+		is_capital = yes
 	}
 }
 
@@ -237,9 +305,11 @@ has_independence_wave_iw098_date_appropriate_role_attestation = {
 	}
 }
 
-# Event 012 owns its overlay tree and lifecycle flags. IW-098 is safe only if
-# this adapter has not claimed a replacement tree; presence of the Event 012
-# flag is recorded by the effect and is never cleared here.
+# Event 012 owns its focus tree and lifecycle flags. IW-098 is safe only when
+# neither Event 012's active package receipt nor its tree receipt is present;
+# this trigger never clears or converts those receipts.
 is_independence_wave_iw098_event012_state_safe = {
 	NOT = { has_country_flag = independence_wave_iw098_event012_focus_tree_replaced }
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_priority_member_focus_tree_loaded }
 }

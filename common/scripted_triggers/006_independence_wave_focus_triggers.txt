@@ -9,6 +9,26 @@
 # scans every country or mutates state.
 # ============================================================================
 
+# The synchronized release transaction assigns focus ownership while a country
+# still carries the prepared-origin receipt. Activation happens only after
+# every selected package has passed setup, so assignment must accept both
+# phases without weakening the player-facing focus gates below.
+is_independence_wave_focus_assignment_scope = {
+	OR = {
+		is_independence_wave_active_country = yes
+		AND = {
+			exists = yes
+			has_country_flag = independence_wave_origin_prepared
+			check_variable = {
+				var = liberation_origin
+				value = constant:liberation_origin.independence_wave
+				compare = equals
+			}
+			NOT = { has_country_flag = independence_wave_origin_ended }
+		}
+	}
+}
+
 can_use_independence_wave_full_focus_framework = {
 	is_independence_wave_active_country = yes
 	has_country_flag = independence_wave_full_focus_framework
