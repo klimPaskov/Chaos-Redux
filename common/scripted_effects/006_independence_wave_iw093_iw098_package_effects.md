@@ -10,10 +10,14 @@ explicit runtime content-attestation flag after its complete audit.
 
 | Helper | Scope and inputs | Outputs and side effects |
 | --- | --- | --- |
-| `independence_wave_dispatch_iw093_iw098_package_setup` | Country scope; `independence_wave_setup_package_id` | Routes only IDs 93/98 to package setup; no mutation itself |
+| `independence_wave_dispatch_iw093_iw098_package_setup` | Prepared country scope; `independence_wave_setup_package_id` | Routes only IDs 93/98, prepares the exact date-appropriate leader, then calls package setup |
 | `independence_wave_dispatch_iw093_iw098_package_final_validation` | Country scope; same setup ID | Routes final validation and preserves the shared selected/no-candidates result contract |
 | `independence_wave_dispatch_iw093_iw098_package_cleanup` | Country scope; original tag and active package ID | Routes generation cleanup before the shared reset |
-| `independence_wave_iw098_select_sultan_by_date` | Event 006 prepared/active `SOK` scope | Chooses a pre/post 17 June 1938 role receipt only when the matching role attestation exists; it does not author a role surface |
+| `independence_wave_prepare_iw093_leadership` | Exact prepared IW-093 `DOX` scope | Recruits and promotes the male Prempeh II character only for the Event 006 origin; no living unrelated DOX scope is touched |
+| `independence_wave_prepare_iw098_date_appropriate_leadership` | Exact prepared IW-098 `SOK` scope, Event 012 absent | On or after 17 June 1938, reuses and promotes vanilla `SOK_siddiq_abubakar` and writes the post-cutover role proof; the unresolved Hasan branch remains fail-closed |
+| `independence_wave_ensure_iw093_iw098_baseline_laws` | Admitted package setup scope | Installs civilian economy, export focus, and volunteer-only laws only when absent |
+| `independence_wave_initialize_iw093_politics` / `_iw098_politics` | Admitted package setup scope | Applies centralized opening popularities and researched institutional party names; both packages begin non-electoral and neutral-aligned |
+| `independence_wave_iw098_select_sultan_by_date` | Event 006 prepared/active `SOK` scope | Chooses the dated selection receipt only when the matching role attestation exists; the separate leadership proof requires an actual ruling character and currently admits only the post-cutover vanilla Siddiq branch |
 | `independence_wave_initialize_iw093_values` / `_iw098_values` | Matching prepared package scope | Initializes the four visible package values from centralized constants and clamps them before setup can succeed |
 | `independence_wave_clamp_iw093_values` / `_iw098_values` | Matching package country | Clamps authority/compact, institutional balance, economic network, host settlement, and security values to their documented ranges |
 | `independence_wave_configure_iw093_focus_surface` | Prepared IW-093 `DOX` | Assigns the full shared framework, publishes the reviewed constitutional/popular/traditional/emergency/patron and former-host routes, excludes the radical route, and registers league, FORM-24, ambition, power-struggle, and signature hooks |
@@ -53,9 +57,11 @@ mutation is performed by this package file.
 
 IW-098 proves the event-target anchor is state 902, is owned and controlled by
 SOK, and is the capital, while the former host still owns a capital. The
-package requires a date-appropriate role receipt:
-the pre-cutover branch is before 17 June 1938 and the post-cutover branch is
-on/after that date. The date predicate is kept as a single engine date token;
+package requires both a date-appropriate role receipt and an actual ruling
+character. The pre-cutover branch before 17 June 1938 remains unavailable
+until Hasan is sourced and authored; on/after that date Event 006 reuses the
+vanilla male Siddiq character without duplicating his portrait or character.
+The date predicate is kept as a single engine date token;
 the corresponding day value is documented in
 `common/script_constants/006_independence_wave_iw093_iw098_constants.txt`.
 

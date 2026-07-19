@@ -62,10 +62,14 @@ Event-012-preserving cleanup. That layer deliberately grants neither runtime
 content attestation nor SCN-008 admission. Both packages remain fail-closed
 until their country mechanics, forces, focus/decision/idea/AI/localisation
 surfaces, FORM-24/25 links, and final visual identities pass audit. The
-Prempeh-II deterministic portrait candidate was rejected in parent visual
-review because it remained a monochrome photograph rather than the painted,
-colour HOI4 style; its runtime DDS was removed and the retained evidence is
-explicitly marked blocked. No advisor asset was created or requested.
+original deterministic Prempeh-II candidate remains rejected evidence, but the
+identity-preserving ImageGen replacement passed parent HOI4-style visual review
+and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan portrait,
+both exact period flags, route-specific political transitions, starting
+forces, diplomacy, and FORM-24/25 contracts remain blocked. Opening
+institutional politics and the exact Prempeh/post-cutover-Siddiq leader paths
+are implemented without granting runtime attestation. No advisor asset was
+created or requested.
 
 ## Design simplifications
 

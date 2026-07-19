@@ -22,6 +22,7 @@ independence_wave_dispatch_iw093_iw098_package_setup = {
 				compare = equals
 			}
 		}
+		independence_wave_prepare_iw093_leadership = yes
 		independence_wave_setup_iw093_asante = yes
 	}
 	else_if = {
@@ -32,6 +33,7 @@ independence_wave_dispatch_iw093_iw098_package_setup = {
 				compare = equals
 			}
 		}
+		independence_wave_prepare_iw098_date_appropriate_leadership = yes
 		independence_wave_setup_iw098_sokoto = yes
 	}
 }
@@ -85,8 +87,101 @@ independence_wave_dispatch_iw093_iw098_package_cleanup = {
 }
 
 # ---------------------------------------------------------------------------
-# Date-aware succession hook (no role or character surface is authored here)
+# Leadership, baseline laws, politics, and date-aware succession
 # ---------------------------------------------------------------------------
+
+independence_wave_prepare_iw093_leadership = {
+	if = {
+		limit = {
+			is_independence_wave_iw093_prepared_scope = yes
+			NOT = { has_character = DOX_prempeh_ii }
+		}
+		recruit_character = DOX_prempeh_ii
+	}
+	if = {
+		limit = {
+			is_independence_wave_iw093_prepared_scope = yes
+			has_character = DOX_prempeh_ii
+			NOT = {
+				has_country_leader = {
+					ruling_only = yes
+					character = DOX_prempeh_ii
+				}
+			}
+		}
+		promote_character = { character = DOX_prempeh_ii ideology = despotism }
+	}
+}
+
+independence_wave_prepare_iw098_date_appropriate_leadership = {
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+			is_independence_wave_iw098_post_cutover = yes
+		}
+		if = {
+			limit = { NOT = { has_character = SOK_siddiq_abubakar } }
+			recruit_character = SOK_siddiq_abubakar
+		}
+		if = {
+			limit = {
+				has_character = SOK_siddiq_abubakar
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = SOK_siddiq_abubakar
+					}
+				}
+			}
+			promote_character = { character = SOK_siddiq_abubakar ideology = despotism }
+		}
+		if = {
+			limit = {
+				has_character = SOK_siddiq_abubakar
+				has_country_leader = {
+					ruling_only = yes
+					character = SOK_siddiq_abubakar
+				}
+			}
+			set_country_flag = independence_wave_iw098_post_cutover_role_attested
+		}
+	}
+}
+
+independence_wave_ensure_iw093_iw098_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_initialize_iw093_politics = {
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_iw093_politics.start_democratic
+		communism = constant:independence_wave_iw093_politics.start_communism
+		neutrality = constant:independence_wave_iw093_politics.start_neutrality
+		fascism = constant:independence_wave_iw093_politics.start_fascism
+	}
+	set_party_name = { ideology = neutrality long_name = DOX_independence_wave_neutrality_party_long name = DOX_independence_wave_neutrality_party }
+	set_party_name = { ideology = democratic long_name = DOX_independence_wave_democratic_party_long name = DOX_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = DOX_independence_wave_communism_party_long name = DOX_independence_wave_communism_party }
+	set_party_name = { ideology = fascism long_name = DOX_independence_wave_fascism_party_long name = DOX_independence_wave_fascism_party }
+}
+
+independence_wave_initialize_iw098_politics = {
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_iw098_politics.start_democratic
+		communism = constant:independence_wave_iw098_politics.start_communism
+		neutrality = constant:independence_wave_iw098_politics.start_neutrality
+		fascism = constant:independence_wave_iw098_politics.start_fascism
+	}
+	set_party_name = { ideology = neutrality long_name = SOK_independence_wave_neutrality_party_long name = SOK_independence_wave_neutrality_party }
+	set_party_name = { ideology = democratic long_name = SOK_independence_wave_democratic_party_long name = SOK_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = SOK_independence_wave_communism_party_long name = SOK_independence_wave_communism_party }
+	set_party_name = { ideology = fascism long_name = SOK_independence_wave_fascism_party_long name = SOK_independence_wave_fascism_party }
+}
 
 independence_wave_iw098_select_sultan_by_date = {
 	set_temp_variable = { independence_wave_iw098_succession_result = constant:independence_wave_iw098.zero }
@@ -275,9 +370,12 @@ independence_wave_setup_iw093_asante = {
 			has_independence_wave_iw093_runtime_content_attestation = yes
 			has_independence_wave_iw093_kumasi_capital_proof = yes
 			has_independence_wave_iw093_host_capital_survival_proof = yes
+			has_independence_wave_iw093_prempeh_leadership = yes
 		}
 		set_variable = { independence_wave_iw093_anchor_state = event_target:independence_wave_setup_anchor_state }
 		set_variable = { independence_wave_iw093_kumasi_victory_point = constant:independence_wave_iw093.kumasi_victory_point }
+		independence_wave_ensure_iw093_iw098_baseline_laws = yes
+		independence_wave_initialize_iw093_politics = yes
 		independence_wave_initialize_iw093_values = yes
 		independence_wave_iw093_initialize_decision_content = yes
 		independence_wave_configure_iw093_focus_surface = yes
@@ -310,8 +408,13 @@ independence_wave_setup_iw098_sokoto = {
 		}
 		independence_wave_iw098_select_sultan_by_date = yes
 		if = {
-			limit = { has_country_flag = independence_wave_iw098_sultan_selection_complete }
+			limit = {
+				has_country_flag = independence_wave_iw098_sultan_selection_complete
+				has_independence_wave_iw098_date_appropriate_leadership = yes
+			}
 			set_variable = { independence_wave_iw098_anchor_state = event_target:independence_wave_setup_anchor_state }
+			independence_wave_ensure_iw093_iw098_baseline_laws = yes
+			independence_wave_initialize_iw098_politics = yes
 			independence_wave_initialize_iw098_values = yes
 			independence_wave_iw098_initialize_decision_content = yes
 			independence_wave_configure_iw098_focus_surface = yes
@@ -348,6 +451,7 @@ independence_wave_validate_iw093_package = {
 			has_independence_wave_iw093_runtime_content_attestation = yes
 			has_independence_wave_iw093_kumasi_capital_proof = yes
 			has_independence_wave_iw093_host_capital_survival_proof = yes
+			has_independence_wave_iw093_prempeh_leadership = yes
 			has_valid_independence_wave_iw093_values = yes
 			OR = {
 				has_idea = independence_wave_iw093_unsettled_restoration_idea
@@ -373,6 +477,7 @@ independence_wave_validate_iw098_package = {
 			has_country_flag = independence_wave_formable_family_registered
 			has_independence_wave_iw098_runtime_content_attestation = yes
 			has_independence_wave_iw098_date_appropriate_role_attestation = yes
+			has_independence_wave_iw098_date_appropriate_leadership = yes
 			has_independence_wave_iw098_sokoto_anchor_proof = yes
 			has_independence_wave_iw098_host_capital_survival_proof = yes
 			is_independence_wave_iw098_event012_state_safe = yes
@@ -426,6 +531,10 @@ independence_wave_cleanup_iw093_asante = {
 		clr_country_flag = independence_wave_iw093_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw093_form24_preparation_complete
 		if = {
+			limit = { has_character = DOX_prempeh_ii }
+			retire_character = DOX_prempeh_ii
+		}
+		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
 		}
@@ -455,6 +564,8 @@ independence_wave_cleanup_iw098_sokoto = {
 		clr_country_flag = independence_wave_iw098_sultan_selection_complete
 		clr_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
 		clr_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+		clr_country_flag = independence_wave_iw098_pre_cutover_role_attested
+		clr_country_flag = independence_wave_iw098_post_cutover_role_attested
 		clear_variable = independence_wave_iw098_anchor_state
 		clear_variable = independence_wave_iw098_setup_result
 		clear_variable = independence_wave_iw098_final_validation_result

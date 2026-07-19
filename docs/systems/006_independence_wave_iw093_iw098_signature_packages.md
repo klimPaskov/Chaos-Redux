@@ -119,10 +119,26 @@ values, route locks, host relations, or formable-preparation receipts.
 
 ## Leadership, forces, AI, and diplomacy
 
+Prempeh II is recruited only after the exact IW-093 origin and package row are
+prepared. His sourced male portrait and character expose despotism and
+centrism leader roles so the same Asantehene can remain head of state under
+the royal-confederate or constitutional-cabinet settlement. The opening
+political distribution and party names describe the restored Ashanti
+Confederacy Council and its civic, labour, and veterans constituencies rather
+than claiming that modern mass parties already existed in 1935.
+
 Sokoto leadership is date-aware: Hasan dan Mu'azu Ahmadu is required before
 17 June 1938 and Siddiq Abubakar III is required on and after that date. A
 missing date-appropriate role attestation is a hard readiness failure. Event
 012 role and focus receipts are preserved during Event 006 cleanup.
+
+The political setup follows the documented institutional boundary: the 1935
+Ashanti Confederacy Council combined the Asantehene, divisional chiefs,
+Kumasi-clan chiefs, additional representatives, and a small nominated group;
+the colonial Sokoto native authority retained the sultan as the foremost
+Muslim chief while redirecting emirate responsibility to the British
+government. Sources: [Manhyia Archives, Ashanti Confederacy Council](https://www.manhyiaarchives.org/research-notes/35-the-ashanti-confederacy-asanteman-council)
+and [UK Parliament, Native Administration in Nigeria (1925)](https://hansard.parliament.uk/lords/1925-04-02/debates/a914c31b-2f09-4f1b-bfce-b7eb6565c08c/NativeAdministrationInNigeria).
 
 The 206-row force registry already maps IW-093 and IW-098 to their researched
 force profiles and reinforcement pathways. Starting forces may materialize
@@ -188,12 +204,14 @@ derivative of an approved full commander portrait.
 
 ## Remaining implementation gates
 
-- approve and wire faithful HOI4-style Prempeh II and pre-cutover Hasan dan
-  Mu'azu Ahmadu portraits; the current archival candidates are not runtime art;
+- preserve the approved sourced, identity-preserving male Prempeh II portrait,
+  sprite, and dormant character from `e0e85c832`;
+- source and wire a faithful pre-cutover Hasan dan Mu'azu Ahmadu portrait;
 - reuse the verified vanilla Siddiq surface only for the post-cutover branch;
 - verify and reconstruct exact period Asante and Sokoto flag designs;
-- implement and validate exact political parties, country-leader roles,
-  command rosters, starting-force materialization, and diplomacy;
+- complete route-specific political transitions, command rosters,
+  starting-force materialization, and diplomacy; opening institutional
+  politics and the Prempeh/post-cutover-Siddiq leader paths are implemented;
 - complete FORM-24/FORM-25 family identities, territory, consent, and member
   policy;
 - pass focus, decision/mission, country-package, localisation, asset, scenario,
