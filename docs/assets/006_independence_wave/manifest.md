@@ -354,3 +354,23 @@ by this asset-only tranche. Parent implementation owns the `PFX` cosmetic/formab
 wiring, the sprite registration, and the live FORM-48 UI consumer. No portrait,
 advisor icon, BAY/RHI protected portrait, gameplay, localisation, registry,
 `.gfx`, or `.gui` file was changed by the HBX correction.
+
+## 2026-07-18 IW-093 / IW-098 static icon package
+
+The reviewed Asante and Sokoto icon authority is
+`iw093_iw098_icons_2026_07_18/`. It contains ImageGen-authored source grids,
+individual source and processed PNGs, final DDS files, contact sheets, prompts,
+metadata, a 228-row hash ledger, and technical validation for:
+
+- 35 focus icons at `94x86`;
+- 16 decision icons at `32x32`;
+- two decision-category icons at `52x40`;
+- four national-spirit icons at `64x64`.
+
+The runtime copies live under
+`gfx/interface/{goals,decisions,ideas}/006_independence_wave/iw093_iw098/` and
+are registered by the four matching
+`interface/006_independence_wave_iw093_iw098_*.gfx` files. All 57 base gameplay
+sprite references resolve exactly; the focus package also registers 35 shine
+sprites. Package DDS and runtime DDS hashes match, and the runtime folders
+contain no advisor or dossier asset.
