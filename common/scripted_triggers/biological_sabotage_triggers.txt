@@ -1,0 +1,507 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Gates exact-state covert contamination of public food, water, and medical
+#   supply chains by project, readiness, use policy, payload, support equipment,
+#   Command Power, relationship, target profile, and operation ledger.
+# - Keeps every helper private to the ordinary biological sabotage subsystem.
+# - Gives route-aware AI a fail-closed safety gate and exact selected-state
+#   evidence without introducing a periodic country or state scan.
+# - Weaponized zombies are intentionally excluded.
+# ============================================================================
+
+bio_sabotage_actor_cooldown_is_ready = {
+	OR = {
+		NOT = { has_variable = bio_sabotage_next_allowed_day }
+		check_variable = {
+			var = bio_sabotage_next_allowed_day
+			value = global.num_days
+			compare = less_than_or_equals
+		}
+	}
+}
+
+bio_sabotage_actor_can_list_targets = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	bio_kruger_last_resort_authority_is_valid = yes
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	has_variable = cbrn_biological_security
+	has_variable = cbrn_attribution_control
+}
+
+bio_sabotage_actor_can_operate = {
+	bio_sabotage_actor_can_list_targets = yes
+	NOT = { has_country_flag = bio_sabotage_operation_in_progress }
+	bio_sabotage_actor_cooldown_is_ready = yes
+}
+
+bio_sabotage_uses_base_preparation = {
+	NOT = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+}
+
+bio_sabotage_uses_theater_preparation = {
+	has_idea = cbrn_theater_contamination_doctrine_spirit
+	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+}
+
+bio_sabotage_uses_terminal_preparation = {
+	has_idea = cbrn_terminal_hazard_doctrine_spirit
+}
+
+bio_sabotage_actor_has_anthrax_cost = {
+	is_special_project_completed = sp:anthrax_bomb
+	has_equipment = { anthrax_bomb_1 > constant:bio_sabotage_cost.anthrax_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.anthrax_support_floor }
+	command_power > constant:bio_sabotage_cost.anthrax_command_power_floor
+}
+
+bio_sabotage_actor_has_plague_cost = {
+	is_special_project_completed = sp:plague_bomb
+	has_equipment = { plague_bomb_1 > constant:bio_sabotage_cost.plague_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.plague_support_floor }
+	command_power > constant:bio_sabotage_cost.plague_command_power_floor
+}
+
+bio_sabotage_actor_has_tularemia_cost = {
+	is_special_project_completed = sp:tularemia_bomb
+	has_equipment = { tularemia_bomb_1 > constant:bio_sabotage_cost.tularemia_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.tularemia_support_floor }
+	command_power > constant:bio_sabotage_cost.tularemia_command_power_floor
+}
+
+bio_sabotage_actor_has_smallpox_cost = {
+	is_special_project_completed = sp:smallpox_bomb
+	has_equipment = { smallpox_bomb_1 > constant:bio_sabotage_cost.smallpox_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.smallpox_support_floor }
+	command_power > constant:bio_sabotage_cost.smallpox_command_power_floor
+}
+
+bio_sabotage_selected_agent_cost_is_available = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			bio_sabotage_actor_has_anthrax_cost = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			bio_sabotage_actor_has_plague_cost = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			bio_sabotage_actor_has_tularemia_cost = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			bio_sabotage_actor_has_smallpox_cost = yes
+		}
+	}
+}
+
+# State scope with the acting country as ROOT. Belligerent targets require
+# strategic authority. Neutral targets require unrestricted authority.
+bio_sabotage_state_relationship_is_valid = {
+	CONTROLLER = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject_of = ROOT }
+		ROOT = {
+			NOT = { is_in_faction_with = PREV }
+			NOT = { is_subject_of = PREV }
+			OR = {
+				AND = {
+					has_war_with = PREV
+					cbrn_policy_allows_strategic_use = yes
+				}
+				AND = {
+					NOT = { has_war_with = PREV }
+					cbrn_policy_allows_extreme_use = yes
+				}
+			}
+		}
+	}
+}
+
+bio_sabotage_common_target_state = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	impassable = no
+	state_population_k > constant:bio_sabotage_cost.minimum_target_population_k
+	NOT = { has_state_flag = bio_sabotage_operation_active }
+	bio_sabotage_state_relationship_is_valid = yes
+}
+
+bio_sabotage_anthrax_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+	OR = {
+		naval_base > constant:bio_sabotage_target_profile.building_floor
+		supply_node > constant:bio_sabotage_target_profile.building_floor
+		industrial_complex > constant:bio_sabotage_target_profile.anthrax_industry_threshold
+		arms_factory > constant:bio_sabotage_target_profile.anthrax_industry_threshold
+		biowarfare_facility > constant:bio_sabotage_target_profile.building_floor
+	}
+}
+
+bio_sabotage_plague_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_plague_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_sabotage_target_profile.plague_population_threshold_k
+	}
+}
+
+bio_sabotage_tularemia_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_tularemia_episode = yes }
+	OR = {
+		any_state_division = { always = yes }
+		supply_node > constant:bio_sabotage_target_profile.building_floor
+	}
+}
+
+bio_sabotage_smallpox_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_smallpox_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_sabotage_target_profile.smallpox_population_threshold_k
+	}
+}
+
+# State scope with the committed actor as ROOT. Once preparation begins, the
+# original target profile need not remain unchanged, but the exact state,
+# relationship, victim controller, and absence of the selected agent episode do.
+bio_sabotage_active_target_state_is_valid = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	impassable = no
+	state_population_k > constant:bio_sabotage_cost.minimum_target_population_k
+	bio_sabotage_state_relationship_is_valid = yes
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			NOT = { bio_lifecycle_state_has_plague_episode = yes }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			NOT = { bio_lifecycle_state_has_tularemia_episode = yes }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			NOT = { bio_lifecycle_state_has_smallpox_episode = yes }
+		}
+	}
+}
+
+bio_sabotage_agent_record_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			check_variable = { var = bio_sabotage_payload_required value = constant:bio_sabotage_cost.anthrax_payload compare = equals }
+			check_variable = { var = bio_sabotage_support_required value = constant:bio_sabotage_cost.anthrax_support compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			check_variable = { var = bio_sabotage_payload_required value = constant:bio_sabotage_cost.plague_payload compare = equals }
+			check_variable = { var = bio_sabotage_support_required value = constant:bio_sabotage_cost.plague_support compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			check_variable = { var = bio_sabotage_payload_required value = constant:bio_sabotage_cost.tularemia_payload compare = equals }
+			check_variable = { var = bio_sabotage_support_required value = constant:bio_sabotage_cost.tularemia_support compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			check_variable = { var = bio_sabotage_payload_required value = constant:bio_sabotage_cost.smallpox_payload compare = equals }
+			check_variable = { var = bio_sabotage_support_required value = constant:bio_sabotage_cost.smallpox_support compare = equals }
+		}
+	}
+}
+
+bio_sabotage_selected_agent_target_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			bio_sabotage_anthrax_target_state = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			bio_sabotage_plague_target_state = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			bio_sabotage_tularemia_target_state = yes
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			bio_sabotage_smallpox_target_state = yes
+		}
+	}
+}
+
+bio_sabotage_command_record_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			check_variable = { var = bio_sabotage_command_power_cost value = constant:bio_sabotage_cost.anthrax_command_power compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			check_variable = { var = bio_sabotage_command_power_cost value = constant:bio_sabotage_cost.plague_command_power compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			check_variable = { var = bio_sabotage_command_power_cost value = constant:bio_sabotage_cost.tularemia_command_power compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			check_variable = { var = bio_sabotage_command_power_cost value = constant:bio_sabotage_cost.smallpox_command_power compare = equals }
+		}
+	}
+	OR = {
+		AND = {
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_lifecycle_math.zero compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.base_cooldown_days compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_sabotage_doctrine.theater_command_power_refund compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.theater_cooldown_days compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_sabotage_doctrine.terminal_command_power_refund compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.terminal_cooldown_days compare = equals }
+		}
+	}
+}
+
+bio_sabotage_requested_doctrine_record_is_valid = {
+	OR = {
+		AND = {
+			bio_sabotage_uses_base_preparation = yes
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_lifecycle_math.zero compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.base_cooldown_days compare = equals }
+		}
+		AND = {
+			bio_sabotage_uses_theater_preparation = yes
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_sabotage_doctrine.theater_command_power_refund compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.theater_cooldown_days compare = equals }
+		}
+		AND = {
+			bio_sabotage_uses_terminal_preparation = yes
+			check_variable = { var = bio_sabotage_command_power_refund value = constant:bio_sabotage_doctrine.terminal_command_power_refund compare = equals }
+			check_variable = { var = bio_sabotage_cooldown_days value = constant:bio_sabotage_doctrine.terminal_cooldown_days compare = equals }
+		}
+	}
+}
+
+# Exact selected-state scope after the resolver has saved chain-scoped actor,
+# victim, and state targets. This proves that material and Command Power were
+# actually committed even when policy, readiness, control, or target conditions
+# later invalidate the release. It deliberately does not authorize a release.
+bio_sabotage_committed_attempt_record_is_valid = {
+	has_state_flag = bio_sabotage_operation_active
+	has_variable = bio_sabotage_actor
+	has_variable = bio_sabotage_victim
+	has_variable = bio_sabotage_agent
+	has_variable = bio_sabotage_payload_required
+	has_variable = bio_sabotage_payload_consumed
+	has_variable = bio_sabotage_support_required
+	has_variable = bio_sabotage_support_consumed
+	has_variable = bio_sabotage_command_power_cost
+	has_variable = bio_sabotage_command_power_refund
+	has_variable = bio_sabotage_cooldown_days
+	has_variable = bio_sabotage_start_date
+	has_event_target = bio_sabotage_actor_target
+	has_event_target = bio_sabotage_victim_target
+	has_event_target = bio_sabotage_state_target
+	var:bio_sabotage_actor = { tag = event_target:bio_sabotage_actor_target }
+	var:bio_sabotage_victim = { tag = event_target:bio_sabotage_victim_target }
+	CONTROLLER = { tag = event_target:bio_sabotage_victim_target }
+	event_target:bio_sabotage_actor_target = {
+		exists = yes
+		has_country_flag = bio_sabotage_operation_in_progress
+		has_variable = bio_sabotage_active_state
+		var:bio_sabotage_active_state = { state = event_target:bio_sabotage_state_target }
+	}
+	event_target:bio_sabotage_victim_target = { exists = yes }
+	bio_sabotage_agent_record_is_valid = yes
+	bio_sabotage_command_record_is_valid = yes
+	check_variable = { var = bio_sabotage_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_sabotage_payload_consumed value = bio_sabotage_payload_required compare = equals }
+	check_variable = { var = bio_sabotage_support_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_sabotage_support_consumed value = bio_sabotage_support_required compare = equals }
+}
+
+# State scope with the active timed-decision actor as ROOT. This lightweight
+# record check is safe inside cancel_trigger and does not create event targets.
+bio_sabotage_decision_record_is_valid = {
+	has_state_flag = bio_sabotage_operation_active
+	has_variable = bio_sabotage_actor
+	has_variable = bio_sabotage_victim
+	has_variable = bio_sabotage_agent
+	has_variable = bio_sabotage_payload_required
+	has_variable = bio_sabotage_payload_consumed
+	has_variable = bio_sabotage_support_required
+	has_variable = bio_sabotage_support_consumed
+	has_variable = bio_sabotage_command_power_cost
+	has_variable = bio_sabotage_command_power_refund
+	has_variable = bio_sabotage_cooldown_days
+	has_variable = bio_sabotage_start_date
+	var:bio_sabotage_actor = { tag = ROOT }
+	CONTROLLER = { tag = var:PREV.bio_sabotage_victim }
+	ROOT = {
+		exists = yes
+		has_country_flag = bio_sabotage_operation_in_progress
+		bio_kruger_last_resort_authority_is_valid = yes
+		cbrn_country_has_program = yes
+		cbrn_country_has_operational_readiness = yes
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+		NOT = { is_in_faction_with = var:PREV.bio_sabotage_victim }
+		NOT = { is_subject_of = var:PREV.bio_sabotage_victim }
+		OR = {
+			AND = {
+				has_war_with = var:PREV.bio_sabotage_victim
+				cbrn_policy_allows_strategic_use = yes
+			}
+			AND = {
+				NOT = { has_war_with = var:PREV.bio_sabotage_victim }
+				cbrn_policy_allows_extreme_use = yes
+			}
+		}
+	}
+	bio_sabotage_agent_record_is_valid = yes
+	bio_sabotage_command_record_is_valid = yes
+	bio_sabotage_active_target_state_is_valid = yes
+	check_variable = { var = bio_sabotage_payload_consumed value = bio_sabotage_payload_required compare = equals }
+	check_variable = { var = bio_sabotage_support_consumed value = bio_sabotage_support_required compare = equals }
+}
+
+# State scope after the resolver has saved exact chain-scoped actor, victim,
+# and selected-state targets. All physical reservations must match exactly.
+bio_sabotage_active_record_is_valid = {
+	has_state_flag = bio_sabotage_operation_active
+	has_variable = bio_sabotage_actor
+	has_variable = bio_sabotage_victim
+	has_variable = bio_sabotage_agent
+	has_variable = bio_sabotage_payload_required
+	has_variable = bio_sabotage_payload_consumed
+	has_variable = bio_sabotage_support_required
+	has_variable = bio_sabotage_support_consumed
+	has_variable = bio_sabotage_command_power_cost
+	has_variable = bio_sabotage_command_power_refund
+	has_variable = bio_sabotage_cooldown_days
+	has_variable = bio_sabotage_start_date
+	has_event_target = bio_sabotage_actor_target
+	has_event_target = bio_sabotage_victim_target
+	has_event_target = bio_sabotage_state_target
+	var:bio_sabotage_actor = { tag = event_target:bio_sabotage_actor_target }
+	var:bio_sabotage_victim = { tag = event_target:bio_sabotage_victim_target }
+	CONTROLLER = { tag = event_target:bio_sabotage_victim_target }
+	event_target:bio_sabotage_actor_target = {
+		exists = yes
+		has_country_flag = bio_sabotage_operation_in_progress
+		has_variable = bio_sabotage_active_state
+		var:bio_sabotage_active_state = { state = event_target:bio_sabotage_state_target }
+		bio_kruger_last_resort_authority_is_valid = yes
+		cbrn_country_has_program = yes
+		cbrn_country_has_operational_readiness = yes
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+		NOT = { is_in_faction_with = event_target:bio_sabotage_victim_target }
+		NOT = { is_subject_of = event_target:bio_sabotage_victim_target }
+		OR = {
+			AND = {
+				has_war_with = event_target:bio_sabotage_victim_target
+				cbrn_policy_allows_strategic_use = yes
+			}
+			AND = {
+				NOT = { has_war_with = event_target:bio_sabotage_victim_target }
+				cbrn_policy_allows_extreme_use = yes
+			}
+		}
+	}
+	event_target:bio_sabotage_victim_target = {
+		exists = yes
+		NOT = { is_subject_of = event_target:bio_sabotage_actor_target }
+	}
+	bio_sabotage_agent_record_is_valid = yes
+	bio_sabotage_command_record_is_valid = yes
+	bio_sabotage_active_target_state_is_valid = yes
+	check_variable = { var = bio_sabotage_payload_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_sabotage_payload_consumed value = bio_sabotage_payload_required compare = equals }
+	check_variable = { var = bio_sabotage_support_required value = constant:bio_lifecycle_math.zero compare = greater_than }
+	check_variable = { var = bio_sabotage_support_consumed value = bio_sabotage_support_required compare = equals }
+}
+
+bio_sabotage_ai_has_safe_domestic_program = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+bio_sabotage_ai_is_desperate_route = {
+	cbrn_ai_route_allows_unrestricted_use = yes
+	cbrn_policy_allows_extreme_use = yes
+	surrender_progress > constant:bio_sabotage_ai.desperate_surrender_threshold
+}
+
+# State scope with the proposed actor as ROOT.
+bio_sabotage_ai_target_owner_is_friendly = {
+	OWNER = {
+		OR = {
+			tag = ROOT
+			is_in_faction_with = ROOT
+			is_subject_of = ROOT
+			ROOT = { is_subject_of = PREV }
+		}
+	}
+}
+
+bio_sabotage_ai_is_japan_china_state = {
+	ROOT = {
+		original_tag = JAP
+		is_japan_china_chemical_campaign_war = yes
+	}
+	CONTROLLER = {
+		OR = {
+			original_tag = CHI
+			original_tag = PRC
+			original_tag = SHX
+			original_tag = GXC
+			original_tag = YUN
+			original_tag = XSM
+			original_tag = SIK
+		}
+	}
+}
+
+bio_sabotage_ai_may_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_sabotage_ai_target_owner_is_friendly = yes }
+	ROOT = {
+		bio_kruger_last_resort_ai_is_valid = yes
+		OR = {
+			bio_sabotage_ai_has_safe_domestic_program = yes
+			bio_sabotage_ai_is_desperate_route = yes
+		}
+	}
+	OR = {
+		ROOT = { has_country_flag = cbrn_retaliation_authorized }
+		ROOT = { cbrn_ai_route_allows_first_use = yes }
+		ROOT = { bio_sabotage_ai_is_desperate_route = yes }
+		CONTROLLER = { has_country_flag = used_bioweapon }
+	}
+}

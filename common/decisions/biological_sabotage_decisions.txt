@@ -1,0 +1,482 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE DECISIONS
+# ============================================================================
+# Overview:
+# - Provides four exact-state covert decision families for sabotage of public
+#   food, water, and medical supply chains with ordinary biological agents.
+# - Three mutually exclusive preparation variants preserve doctrine-dependent
+#   timing while sharing one player-facing action per agent.
+# - Battlefield dissemination remains exclusively in the native raid system.
+# ============================================================================
+
+cbrn_operations_category = {
+	bio_sabotage_anthrax_base = {
+		name = bio_sabotage_anthrax
+		desc = bio_sabotage_anthrax_desc
+		icon = GFX_decision_bio_sabotage_anthrax
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.anthrax_base
+		cancel_if_not_visible = no
+		is_good = no
+		visible = {
+			is_special_project_completed = sp:anthrax_bomb
+			bio_sabotage_actor_can_list_targets = yes
+			bio_sabotage_uses_base_preparation = yes
+		}
+		target_root_trigger = {
+			is_special_project_completed = sp:anthrax_bomb
+			bio_sabotage_actor_can_list_targets = yes
+			bio_sabotage_uses_base_preparation = yes
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_anthrax_target_tt
+				hidden_trigger = { FROM = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_anthrax_requirements_tt
+				hidden_trigger = {
+					bio_sabotage_actor_can_operate = yes
+					bio_sabotage_actor_has_anthrax_cost = yes
+					FROM = { bio_sabotage_anthrax_target_state = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = bio_sabotage_anthrax_begin_tt
+			hidden_effect = {
+				bio_sabotage_prepare_anthrax_parameters = yes
+				bio_sabotage_prepare_base_doctrine_parameters = yes
+				bio_sabotage_begin_operation = yes
+			}
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = {
+			custom_effect_tooltip = bio_sabotage_cancelled_tt
+			hidden_effect = { bio_sabotage_cancel_operation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { bio_sabotage_resolve_operation = yes }
+			bio_sabotage_present_last_resolution = yes
+		}
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor FROM = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = {
+				factor = constant:bio_sabotage_ai.sanction_vulnerability_factor
+				check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals }
+				check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	bio_sabotage_anthrax_theater = {
+		name = bio_sabotage_anthrax
+		desc = bio_sabotage_anthrax_desc
+		icon = GFX_decision_bio_sabotage_anthrax
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.anthrax_theater
+		cancel_if_not_visible = no
+		is_good = no
+		visible = {
+			is_special_project_completed = sp:anthrax_bomb
+			bio_sabotage_actor_can_list_targets = yes
+			bio_sabotage_uses_theater_preparation = yes
+		}
+		target_root_trigger = {
+			is_special_project_completed = sp:anthrax_bomb
+			bio_sabotage_actor_can_list_targets = yes
+			bio_sabotage_uses_theater_preparation = yes
+		}
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_anthrax_target_tt hidden_trigger = { FROM = { bio_sabotage_anthrax_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_anthrax_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_anthrax_cost = yes FROM = { bio_sabotage_anthrax_target_state = yes } } } }
+		complete_effect = {
+			custom_effect_tooltip = bio_sabotage_anthrax_begin_tt
+			hidden_effect = {
+				bio_sabotage_prepare_anthrax_parameters = yes
+				bio_sabotage_prepare_theater_doctrine_parameters = yes
+				bio_sabotage_begin_operation = yes
+			}
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor FROM = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_anthrax_terminal = {
+		name = bio_sabotage_anthrax
+		desc = bio_sabotage_anthrax_desc
+		icon = GFX_decision_bio_sabotage_anthrax
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.anthrax_terminal
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:anthrax_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:anthrax_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_anthrax_target_tt hidden_trigger = { FROM = { bio_sabotage_anthrax_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_anthrax_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_anthrax_cost = yes FROM = { bio_sabotage_anthrax_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_anthrax_begin_tt hidden_effect = { bio_sabotage_prepare_anthrax_parameters = yes bio_sabotage_prepare_terminal_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor FROM = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_plague_base = {
+		name = bio_sabotage_plague
+		desc = bio_sabotage_plague_desc
+		icon = GFX_decision_bio_sabotage_plague
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.plague_base
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_target_tt hidden_trigger = { FROM = { bio_sabotage_plague_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_plague_cost = yes FROM = { bio_sabotage_plague_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_plague_begin_tt hidden_effect = { bio_sabotage_prepare_plague_parameters = yes bio_sabotage_prepare_base_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor FROM = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_plague_theater = {
+		name = bio_sabotage_plague
+		desc = bio_sabotage_plague_desc
+		icon = GFX_decision_bio_sabotage_plague
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.plague_theater
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_target_tt hidden_trigger = { FROM = { bio_sabotage_plague_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_plague_cost = yes FROM = { bio_sabotage_plague_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_plague_begin_tt hidden_effect = { bio_sabotage_prepare_plague_parameters = yes bio_sabotage_prepare_theater_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor FROM = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_plague_terminal = {
+		name = bio_sabotage_plague
+		desc = bio_sabotage_plague_desc
+		icon = GFX_decision_bio_sabotage_plague
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.plague_terminal
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:plague_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_target_tt hidden_trigger = { FROM = { bio_sabotage_plague_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_plague_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_plague_cost = yes FROM = { bio_sabotage_plague_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_plague_begin_tt hidden_effect = { bio_sabotage_prepare_plague_parameters = yes bio_sabotage_prepare_terminal_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor FROM = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_tularemia_base = {
+		name = bio_sabotage_tularemia
+		desc = bio_sabotage_tularemia_desc
+		icon = GFX_decision_bio_sabotage_tularemia
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.tularemia_base
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_target_tt hidden_trigger = { FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_tularemia_cost = yes FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_tularemia_begin_tt hidden_effect = { bio_sabotage_prepare_tularemia_parameters = yes bio_sabotage_prepare_base_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor FROM = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_tularemia_theater = {
+		name = bio_sabotage_tularemia
+		desc = bio_sabotage_tularemia_desc
+		icon = GFX_decision_bio_sabotage_tularemia
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.tularemia_theater
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_target_tt hidden_trigger = { FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_tularemia_cost = yes FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_tularemia_begin_tt hidden_effect = { bio_sabotage_prepare_tularemia_parameters = yes bio_sabotage_prepare_theater_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor FROM = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_tularemia_terminal = {
+		name = bio_sabotage_tularemia
+		desc = bio_sabotage_tularemia_desc
+		icon = GFX_decision_bio_sabotage_tularemia
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.tularemia_terminal
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_target_tt hidden_trigger = { FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_tularemia_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_tularemia_cost = yes FROM = { bio_sabotage_tularemia_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_tularemia_begin_tt hidden_effect = { bio_sabotage_prepare_tularemia_parameters = yes bio_sabotage_prepare_terminal_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor FROM = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_smallpox_base = {
+		name = bio_sabotage_smallpox
+		desc = bio_sabotage_smallpox_desc
+		icon = GFX_decision_bio_sabotage_smallpox
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.smallpox_base
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_base_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_target_tt hidden_trigger = { FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_smallpox_cost = yes FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_smallpox_begin_tt hidden_effect = { bio_sabotage_prepare_smallpox_parameters = yes bio_sabotage_prepare_base_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor FROM = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_smallpox_theater = {
+		name = bio_sabotage_smallpox
+		desc = bio_sabotage_smallpox_desc
+		icon = GFX_decision_bio_sabotage_smallpox
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.smallpox_theater
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_theater_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_target_tt hidden_trigger = { FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_smallpox_cost = yes FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_smallpox_begin_tt hidden_effect = { bio_sabotage_prepare_smallpox_parameters = yes bio_sabotage_prepare_theater_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor FROM = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	bio_sabotage_smallpox_terminal = {
+		name = bio_sabotage_smallpox
+		desc = bio_sabotage_smallpox_desc
+		icon = GFX_decision_bio_sabotage_smallpox
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_sabotage_cost.political_power
+		days_remove = constant:bio_sabotage_preparation.smallpox_terminal
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_root_trigger = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_actor_can_list_targets = yes bio_sabotage_uses_terminal_preparation = yes }
+		target_trigger = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_target_tt hidden_trigger = { FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		available = { custom_trigger_tooltip = { tooltip = bio_sabotage_smallpox_requirements_tt hidden_trigger = { bio_sabotage_actor_can_operate = yes bio_sabotage_actor_has_smallpox_cost = yes FROM = { bio_sabotage_smallpox_target_state = yes } } } }
+		complete_effect = { custom_effect_tooltip = bio_sabotage_smallpox_begin_tt hidden_effect = { bio_sabotage_prepare_smallpox_parameters = yes bio_sabotage_prepare_terminal_doctrine_parameters = yes bio_sabotage_begin_operation = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { bio_sabotage_decision_record_is_valid = yes } } } }
+		cancel_effect = { custom_effect_tooltip = bio_sabotage_cancelled_tt hidden_effect = { bio_sabotage_cancel_operation = yes } }
+		remove_effect = { hidden_effect = { bio_sabotage_resolve_operation = yes } bio_sabotage_present_last_resolution = yes }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled NOT = { FROM = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor OR = { has_country_flag = cbrn_retaliation_authorized FROM = { CONTROLLER = { has_country_flag = used_bioweapon } } } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor bio_sabotage_ai_is_desperate_route = yes }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor bio_sabotage_ai_has_safe_domestic_program = yes }
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor FROM = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor FROM = { bio_sabotage_ai_is_japan_china_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } }
+		}
+	}
+}

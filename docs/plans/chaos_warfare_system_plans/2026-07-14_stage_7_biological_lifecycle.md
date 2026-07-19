@@ -18,7 +18,7 @@ No broad `on_daily`, `on_weekly`, or `on_monthly` biological pass is permitted. 
 
 ## Current tranche ledger
 
-Implemented in the completed strategic-raid, operative-release, and battlefield-dissemination tranches:
+Implemented in the completed strategic-raid, operative-release, battlefield-dissemination, and covert-sabotage tranches:
 
 - `common/on_actions/chaosx_on_actions_biowarfare.txt` is absent. Legacy startup and weekly calls to `initialize_smallpox_vaccination_protection`, `progress_smallpox_vaccination`, and `check_all_states_for_contamination_cleanup` are absent.
 - `smallpox_vaccination_program_idea` has no legacy `on_add` or `on_remove` state-scan hooks. The ordinary lifecycle reads the country idea directly when applying agent-specific growth, spread, and death multipliers.
@@ -38,6 +38,13 @@ Implemented in the completed strategic-raid, operative-release, and battlefield-
 - Battlefield doctrine raises biological harm and friendly-blowback risk while refunding only bounded Command Power after valid resolution. Payload, evidence, attribution, deaths, contamination, saturation, history, and public-harm floors remain intact; only Condemnation may be reduced.
 - Battlefield raids reuse the existing Anthrax, Plague, Tularemia, Smallpox, and biological-category military-raid DDS assets byte-for-byte. Generated decision-icon drafts are not wired to this route.
 - `docs/plans/chaos_warfare_system_plans/2026-07-18_stage_7_battlefield_dissemination_validation.md` records the bounded source and scenario audit for this tranche.
+- Four exact-state covert decisions cover Anthrax, Plague, Tularemia, and Smallpox sabotage of the selected state's combined public food, water, and medical network. Twelve internal variants preserve one player-facing action per agent while applying mutually exclusive base, Theater Contamination, or Terminal Hazard preparation timing.
+- Commitment immediately consumes the exact agent model, `support_equipment_1`, and Command Power. Partial and full release enter the ordinary lifecycle through the private `food_water_medical_sabotage` route; failure and cancellation never create release or completed-use history.
+- A complete actor, victim, state, agent, equipment, Command Power, doctrine, and cooldown ledger is required before failed-attempt evidence, hidden Condemnation, or cancellation history can be written. Invalid records receive no refund and create no substituted state or fabricated attempt record.
+- Doctrine keeps preparation inside 120–300 days, raises release success and downstream harm, shortens cooldown, and refunds bounded Command Power only after a valid resolution. Physical equipment debit, evidence, attribution, deaths, contamination, saturation, historical records, and public-harm floors remain intact.
+- Route-aware sabotage AI evaluates policy route, retaliation, desperation, domestic program safety, agent-specific state evidence, Japan-China context, and sanctions vulnerability. Defensive profiles and existing outbreak risk suppress use.
+- Four final type-specific sabotage decision icons are registered in `interface/biological_warfare.gfx`. No existing raid icon or Chaos Redux runtime asset was overwritten.
+- `docs/plans/chaos_warfare_system_plans/2026-07-19_stage_7_biological_sabotage_validation.md` records the bounded source and scenario audit for this tranche.
 
 Still queued under this active plan:
 
@@ -112,7 +119,7 @@ The seed dispatcher performs this order:
 - Strategic biological raids reserve and consume the exact agent payload, select an exact state, and resolve failed, partial, hidden, detected, successful, and attacker-accident outcomes before seeding.
 - Operative planting covers all four ordinary agents and separates acquire, transport, infiltration, release/abort, and capture. Captured operatives provide confirmed attribution and coverup consequences.
 - Battlefield dissemination is four native exact-state land raids, not a decision family. It requires readiness, policy, the matching agent project and payload, a valid active Combined CBRN Overmatch command, a supply-node origin, and an assigned infantry, motorized, or mechanized formation. Native failure records the lost attempt; all releasing outcomes enter the shared lifecycle and may create bounded adjacent friendly spread.
-- Food, water, and medical-chain sabotage uses a covert low-dose seed with uncertain initial attribution and severe later discovery consequences.
+- Food, water, and medical-chain sabotage uses four exact-state covert timed decisions. Each consumes real agent payload, support equipment, and Command Power at commitment; partial and full releases use the private low-dose route with uncertain initial attribution and severe later discovery consequences. Invalid or cancelled ledgers cannot receive doctrine refunds or fabricate release history.
 - Doomsday release requires the explicit route, extreme policy, near-capitulation or world-end conditions, a real arsenal, and a domestic-risk warning. It consumes the arsenal, seeds own and nearby fronts, records maximum evidence, and harms allies and the user.
 
 Every caller of a legacy `apply_*_contamination` identifier is migrated to an exact route adapter and the legacy identifiers are then removed. No permissive compatibility wrapper remains. A route adapter is valid only when it can supply every required actor, victim, agent, route, result, target-state, and route-specific debit authority directly from the current engine scope.
