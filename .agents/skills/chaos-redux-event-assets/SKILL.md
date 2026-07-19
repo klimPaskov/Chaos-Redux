@@ -245,6 +245,8 @@ Start with:
 
 - library rules and contact sheets: `assets/vanilla_reference/README.md`
 - exact source provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
+- top-level portrait compatibility routing: `assets/leader_portraits/README.md`
+- curated portrait-copy provenance and hashes: `assets/leader_portraits/REFERENCE_MANIFEST.md`
 
 Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `assets/vanilla_reference/contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references; other tracked families have at least 5.
 
@@ -254,6 +256,18 @@ Canonical portrait paths:
 - army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisor, theorist, high-command, and officer dossier icons: `assets/vanilla_reference/portraits/advisors/`
+
+The compatibility pack at `assets/leader_portraits/` contains a small,
+male-only set of copied country-leader and army/navy commander PNGs under
+`leaders/` and `commanders/`, with role-specific contact sheets. The canonical
+`vanilla_reference/` files remain the source of truth; the copies are
+reference-only and their exact source mapping and hashes are recorded in
+`assets/leader_portraits/REFERENCE_MANIFEST.md`. Country leaders, commanders,
+and operatives are full `156x210` portrait textures; advisor, theorist,
+high-command, and officer-corps dossier icons are independently composed
+`65x67` cards. In particular, an `army_small_*` advisor example is not a
+commander portrait, and a commander remains a full `army.large` or
+`navy.large` portrait even when a UI view displays it smaller.
 
 Canonical flag and event-art paths:
 
@@ -299,9 +313,10 @@ Canonical unit-visual paths:
 
 The tree is semantic, not a bank of interchangeable pictures. Use the folder for the exact owning UI or model surface, then follow the cataloged source, native canvas, frame count, transparency, and owning definition.
 
-The canonical `vanilla_reference/` tree is the only place for reference examples. The formerly duplicated skill-local example folders were migrated into their semantic folders and are no longer valid reference paths. The only top-level support path intentionally retained is:
+The canonical `vanilla_reference/` tree is the source of truth for reference examples. The formerly duplicated skill-local example folders were migrated into their semantic folders and are no longer valid reference paths. The only top-level support paths intentionally retained are:
 
 - `assets/advisor_dossier_overlays/`, the live source/processed overlay package used by the advisor dossier workflow
+- `assets/leader_portraits/`, a curated male-only leader/commander reference pack, contact sheets, and compatibility routing index; its copies are not runtime assets
 
 The active advisor kit is pinned by `assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`. That self-contained provenance-schema-4 manifest freezes the approved ImageGen frame and paper sources, alpha-extracted overlays, prompts, generation inputs, tool/argument/input/output hashes, and the exact six skill-local advisor style references. It must not depend on an event package, a user-specific generated-image store, or an external working copy. Do not use an overlay whose retained source, prompt record, generation inputs, alpha-extraction record, dimensions, or hashes differ from the manifest.
 
@@ -310,9 +325,9 @@ The reusable achievement not-eligible compositing overlay lives at
 input rather than a reference example, so it is excluded from the achievement
 contact sheet and coverage count.
 
-Do not add new reference images beside `vanilla_reference/`. If a future workflow needs a retained support path, document its consumer and keep it separate from the canonical reference library.
+Do not add new reference images beside `vanilla_reference/` except through an explicitly documented compatibility pack. If a future workflow needs a retained support path, document its consumer and keep it separate from the canonical reference library.
 
-Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not copy, wire, recolor, trace, or ship them. If no category matches, inspect the closest skill-local category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
+Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not wire, recolor, trace, or ship them. The documented `assets/leader_portraits/` compatibility pack is the narrow exception for byte-identical review copies. If no category matches, inspect the closest skill-local category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
 
 ## 5. Generated artwork rules
 
@@ -906,6 +921,10 @@ Choose the canonical reference family by role before starting:
 - country leader: `assets/vanilla_reference/portraits/leaders/`
 - army or navy commander: `assets/vanilla_reference/portraits/commanders/`
 - operative: `assets/vanilla_reference/portraits/operatives/`
+
+If a task starts from the top-level compatibility surface, read
+`assets/leader_portraits/README.md` first; it points to these canonical
+families and the separate `65x67` advisor dossier references.
 
 Use an attributed real source image from the internet or a user-provided image. Select and record an explicit head-and-shoulders crop, then apply an identity-preserving HOI4 painted finish while retaining the person's face, expression, age, hair, clothing, pose, and other recognisable source details. Match the vanilla family's quiet painted background, controlled value range, restrained texture, period treatment, and readable silhouette. A raw photograph, simple resize, generic oil-paint filter, face replacement, reconstructed face, or weak likeness is not a finished portrait.
 

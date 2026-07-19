@@ -23,8 +23,19 @@ states) contain at least 15 references; other tracked families contain at
 least 5.
 
 Reference PNGs teach framing, scale, transparency, style, and engine pipeline.
-They are not templates or final assets and must never be copied, recolored,
-traced, wired, or shipped.
+They are not templates or final assets and must never be recolored, traced,
+wired, or shipped. The documented `leader_portraits/` compatibility pack is
+the narrow exception for byte-identical review copies.
+
+The top-level `leader_portraits/` directory is a compatibility reference pack
+for agents that expect that path. It contains a small male-only set of copied
+leader and commander PNGs, role-specific contact sheets, and routing
+documentation. The canonical portrait PNGs remain under
+`vanilla_reference/portraits/`; [`leader_portraits/README.md`](leader_portraits/README.md)
+and [`leader_portraits/REFERENCE_MANIFEST.md`](leader_portraits/REFERENCE_MANIFEST.md)
+record the exact source mapping and hashes. The pack and index distinguish
+full `156x210` leader, commander, and operative textures from independently
+composed `65x67` dossier cards and never serve as runtime assets.
 
 ### Portrait identity and dossier families
 
@@ -181,12 +192,17 @@ renders, or concept sheets.
 
 The old duplicated example folders beside `vanilla_reference/` have been
 migrated into the canonical semantic tree and are no longer valid reference
-locations. The only top-level paths retained are live workflow inputs:
+locations. The only top-level support paths intentionally retained are:
 
 - `advisor_dossier_overlays/` — source and processed advisor-card overlays
+- `leader_portraits/` — curated male-only leader/commander reference copies,
+  contact sheets, and compatibility routing index; canonical provenance stays
+  in `vanilla_reference/`
 
-Do not add new reference images beside `vanilla_reference/`. Keep any future
-workflow input separate from the canonical library and document its consumer.
+Do not add new reference images beside `vanilla_reference/` except through an
+explicitly documented compatibility pack such as `leader_portraits/`. Keep any
+future workflow input separate from the canonical library and document its
+consumer.
 
 ## Maintenance
 
