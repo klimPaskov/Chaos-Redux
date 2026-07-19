@@ -1,18 +1,16 @@
-# IW-093 Prempeh II portrait — blocked GFX notice
+# IW-093 Prempeh II portrait — GFX handoff
 
-**Disposition:** do not wire. The parent rejected the processed portrait because
-it remains a sharpened grayscale archival photograph and does not match the
-painted/colour HOI4 leader reference family.
+**Disposition:** approved for the IW-093 Asante country-leader consumer.
 
-* Runtime DDS: **none**. `gfx/leaders/006_independence_wave/portrait_DOX_prempeh_ii.dds` was deleted.
-* Sprite definition: **none authorized**.
-* Former proposed name: `GFX_portrait_DOX_prempeh_ii`, reserved only for a future independently approved replacement.
-* `.gfx` target: none until an approved replacement exists.
-* Character consumer: unresolved Prempeh II country-leader portrait for IW-093 Asante (`DOX`).
+- Runtime DDS: `gfx/leaders/006_independence_wave/portrait_DOX_prempeh_ii.dds`
+- Sprite: `GFX_portrait_DOX_prempeh_ii`
+- Character: `DOX_prempeh_ii`
+- Texture size: `156x210`
+- Consumer class: civilian country leader only
 
-Do not copy the former sprite snippet, point a sprite at the rejected PNG, or
-use the rejected DDS hash as evidence of an existing asset. The parent must
-request and approve a replacement production pass before any `.gfx` wiring.
+The sprite belongs in
+`interface/006_independence_wave_iw093_iw098_portraits.gfx`. Registration does
+not attest the full IW-093 package or permit release before its remaining
+history, force, flag, formable, localisation, and audit gates pass.
 
-No advisor, dossier, commander-small, generic Africa, or other-person fallback
-is authorized.
+No advisor, dossier, commander-small, or other-person fallback is authorized.

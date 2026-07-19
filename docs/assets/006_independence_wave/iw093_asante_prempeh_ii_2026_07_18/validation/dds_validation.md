@@ -1,21 +1,16 @@
-# Prempeh II rejected-conversion audit record
+# Prempeh II final DDS validation
 
-**Audit date:** 2026-07-18
-**Rejected PNG:** `processed_png/portrait_DOX_prempeh_ii.png`
-**Deleted DDS path:** `gfx/leaders/006_independence_wave/portrait_DOX_prempeh_ii.dds`
-**Current runtime status:** absent; rejected; unwired.
+**Validation date:** 2026-07-19
+**PNG:** `processed_png/portrait_DOX_prempeh_ii_hoi4.png`
+**DDS:** `gfx/leaders/006_independence_wave/portrait_DOX_prempeh_ii.dds`
 
-Before the parent visual rejection, the repository converter produced one DDS
-from the candidate. Mechanical validation found:
+- PNG dimensions: `156x210`
+- DDS dimensions: `156x210`
+- DDS pixel format: uncompressed BGRA with alpha, one mip level
+- PNG SHA-256: `4f3ac8ecba82b41679a499bc56551440f5dad2772abaef8db0bd9570300f38a6`
+- DDS SHA-256: `5fcab91f052810e66f3795734c55219488a592e513ab06f737dcbfb5cabbb26e`
+- Decoded PNG RGBA SHA-256: `33f8cbc6a5bbf90ebd6f543d75fa9f5acab16646218d343c1e6cb3cba77455b6`
+- Decoded DDS RGBA SHA-256: `33f8cbc6a5bbf90ebd6f543d75fa9f5acab16646218d343c1e6cb3cba77455b6`
 
-* PNG and DDS dimensions were `156x210`.
-* PNG SHA-256: `f113cefba729b8a852252d48c81965cce9a89595d3c1487a085056edc2ea9941`.
-* Deleted DDS SHA-256: `0e028b3ec9823fa356aa7c4618123215e06040d1092f37413dab5b2cc2b0ea0f`.
-* Decoded PNG/DDS RGBA pixels were equal.
-* The DDS had the expected one-level uncompressed BGRA header and exact length.
-
-These facts prove only that the converter reproduced the rejected PNG. They do
-not prove visual suitability. The parent rejected the underlying PNG as a
-sharpened grayscale archival photograph rather than a painted/colour HOI4
-leader portrait, so the DDS was deleted and must not be reconstructed or wired
-without a new approved replacement.
+The decoded pixel streams are exactly equal. This mechanical validation is
+paired with the separate visual approval in `validation/visual_review.md`.
