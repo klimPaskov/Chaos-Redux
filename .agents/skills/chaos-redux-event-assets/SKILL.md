@@ -231,7 +231,9 @@ Record the image source, source link, author or archive if available, license or
 Classify a country-leader, commander, named officeholder, or institutional-leader
 portrait before routing it:
 
-- **Grounded identity**: a real, historical, restored, separatist, regional,
+- **Grounded identity**: any country or polity that existed, partly existed,
+  claims continuity from a real institution or community, or remains otherwise
+  plausibly historical, including real, historical, restored, separatist, regional,
   indigenous, dynastic, or otherwise plausibly historical country, polity, or
   community. Use `chaosx_asset_source_researcher` and attributed source material:
   sourced real people for leaders, commanders, and named officeholders, or
@@ -243,9 +245,13 @@ portrait before routing it:
   and do not substitute a generated portrait.
 - **Fictional high-chaos identity**: a truly fictional country or an
   impossible/supernatural entity. A generated one-person leader is allowed only in
-  this class. Make that leader visually memorable rather than generic with
+  this class, and only when the package itself is high-chaos. Reject an ordinary,
+  conventionally dressed, or interchangeable generated officeholder. Make the
+  leader visually memorable with
   extraordinary invented ceremonial dress, regalia, body adornment, ritual objects,
-  altered uniforms, or another internally coherent high-chaos motif. Avoid modern
+  altered uniforms, or another internally coherent motif belonging to the fictional
+  polity's invented culture. The strangeness must come from that designed setting,
+  not borrowed sacred objects or exaggerated traits of a real people. Avoid modern
   props, generic faces, meme aesthetics, gore, mockery, stereotypes, and caricatures
   of real cultures.
 
@@ -1050,7 +1056,7 @@ Record:
 - processed PNG path
 - final DDS path
 
-For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, controlled contrast, no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
+For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, and controlled contrast. Reject normal-looking, conventionally dressed, or interchangeable fictional leaders. Require culturally coherent absurdity designed for the invented polity without borrowing or distorting sacred objects or traits of a real people. Allow no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
 
 Country-leader, commander, and operative portrait textures are `156x210`. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline, not the dossier-card size; follow their cataloged owning sprite.
 

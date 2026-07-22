@@ -154,6 +154,9 @@ Requirements:
 - memorable, internally coherent high-chaos design using extraordinary invented
   ceremonial dress, regalia, body adornment, ritual objects, altered uniforms,
   or similarly distinctive fictional cultural motifs
+- reject normal-looking, conventionally dressed, or interchangeable generated
+  officeholders; the visual absurdity must be specific to the invented polity
+- do not borrow or exaggerate sacred objects or cultural traits of a real people
 - no generic face, modern prop, meme treatment, gore, or stereotype or
   caricature of a real culture
 
