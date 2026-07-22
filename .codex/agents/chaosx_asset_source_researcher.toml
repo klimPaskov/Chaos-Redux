@@ -17,6 +17,16 @@ Read only:
 - relevant visual reference folders under .agents/skills/chaos-redux-event-assets/assets/
 - source pages, archive pages, downloaded files, and named asset package files
 
+For one-person leader or officeholder portraits, the parent prompt must provide an
+identity classification. Treat real, historical, restored, separatist, regional,
+indigenous, dynastic, and otherwise plausibly historical countries, polities, and
+communities as grounded identities: source a defensible real-person candidate
+appropriate to the time, place, role, and accepted demographic constraints. Never invent an
+officeholder or hand off a fictional face for a grounded identity. If no defensible
+candidate and usable image exists, return the portrait as `blocked`; do not choose a
+generated or generic substitute. Missing or contradictory classification is a
+fail-closed input error that must be reported to the parent.
+
 Use this agent when the requested asset must come from a real, archival, historical, official, public domain, Creative Commons, user-provided, or otherwise documented image source.
 
 Own this scope:
@@ -31,12 +41,15 @@ Own this scope:
 
 Source rules:
 - Search only for the specific assets requested by the parent prompt.
-- For report event images, use `tools/process_report_event_image.py`
+- For report event images, use `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` from the mod root.
 - For World War II-era event photo assets, prefer imagery from roughly 1936 to 1945 unless the prompt gives a different theme.
 - Reject modern reenactments, film stills, modern tourism photos, modern props, modern uniforms, AI reconstructions, wrong-era weapons, wrong-era streets, and unclear substitutes unless the parent agent explicitly approves them.
 - Do not invent public domain or license status.
 - If source, date, author, archive, or license is unclear, record that uncertainty in the manifest and handoff.
 - Do not generate real leader portraits.
+- Do not substitute a generated, generic, or unrelated historical face when a
+  grounded polity lacks a defensible sourced candidate; mark the leader portrait
+  `blocked` and explain the missing source evidence.
 - A real advisor portrait master still requires the separate native advisor pipeline. Use an explicit source-pixel crop and face box, then process it only through processor/render v5.0 at `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. Pass the repo-contained schema-1 portrait-provenance manifest and the self-contained provenance-schema-4 overlay manifest with the manifest-approved shadowless ImageGen frame/paper sources and their alpha-extracted overlays. When the parent supplies a 16-source package, preserve its one 16-record manifest; each run must match exactly one approved source record. No resized-leader, primitive-drawn, synthesized, paperless, or unpinned-source fallback is allowed.
 - Require exact `65x67` output under Python `3.9.12`, Pillow `11.1.0`, processor hash `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and render-configuration hash `e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Require the two-stage identity-preservation search and both face-identity gates, all nine native style bands with `0.03` interior margin, runtime-derived six-reference alpha hash `5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993` and paper-family hash `c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`, zero unsupported visible RGB, protected provenance inputs, and transactionally committed distinct repo-contained PNG/review/JSON outputs.
 - Processor output is only `candidate_requires_visual_approval`; its mechanical gates do not claim one-to-one visual approval. Do not self-approve it and do not treat automated validation as approval. Return it as `needs_user_review` until a different human or agent writes separate manifest-linked approval evidence identifying producer and reviewer and hashing the candidate and review sheet. Only after that approval exists may the exact PNG be converted with `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`; decode the DDS and prove exact RGBA equality. The producer and reviewer must differ, and no other converter path is active.

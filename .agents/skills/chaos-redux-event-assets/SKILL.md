@@ -105,6 +105,13 @@ The main agent owns final `.gfx` sprite definitions, gameplay references, docs a
 
 A good parent prompt to an asset subagent includes the event id, asset list, asset type, target size, source mode, final DDS folder, sprite name if already registered, reference folder, visual direction, source constraints, and anything the subagent must mark blocked instead of substituting.
 
+For one-person country-leader or officeholder portraits, the parent prompt must also
+state the polity's identity classification and the reason the selected source mode is
+allowed. Use the portrait source-mode gate in section 3: grounded identities are
+sourced, while generated one-person portraits are reserved for truly fictional
+high-chaos countries or impossible/supernatural entities. Agents must fail closed when
+that classification or source evidence is missing, contradictory, or unsupported.
+
 
 ## 2.2 Final asset placement and naming
 
@@ -206,6 +213,31 @@ For internet-sourced event photo assets that are meant to represent the World Wa
 
 Record the image source, source link, author or archive if available, license or public domain status if available, estimated date or date range, why the image fits the World War II era, and any uncertainty in the manifest.
 
+### Portrait source-mode gate
+
+Classify a one-person country-leader or officeholder portrait before routing it:
+
+- **Grounded identity**: a real, historical, restored, separatist, regional,
+  indigenous, dynastic, or otherwise plausibly historical country, polity, or
+  community. Use `chaosx_asset_source_researcher` and a sourced real-person candidate
+  appropriate to the time, place, role, and accepted demographic constraints. Never
+  generate an invented officeholder or fictional face for this identity, even when
+  the route is absurd, alternate-history, or high-chaos. If no defensible sourced
+  candidate and usable image exists, mark the leader portrait `blocked` and do not
+  substitute a generated portrait.
+- **Fictional high-chaos identity**: a truly fictional country or an
+  impossible/supernatural entity. A generated one-person leader is allowed only in
+  this class. Make that leader visually memorable rather than generic with
+  extraordinary invented ceremonial dress, regalia, body adornment, ritual objects,
+  altered uniforms, or another internally coherent high-chaos motif. Avoid modern
+  props, generic faces, meme aesthetics, gore, mockery, stereotypes, and caricatures
+  of real cultures.
+
+Record the classification, source mode, identity evidence, and any blocked decision in
+the manifest and handoff. Missing, ambiguous, or contradictory classification is a
+fail-closed source-mode error; stop and report it instead of choosing a convenient
+fallback.
+
 ### Real-person portraits
 
 Do not generate a portrait for a real person. This applies to country leaders, commanders, operatives, and real people used as advisor or high-command portrait masters.
@@ -221,13 +253,32 @@ For generated or sourced one-person portraits, the asset handoff must identify t
 
 ### Fictional portraits
 
-Fictional country leaders, commanders, operatives, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`.
+Fictional country leaders, commanders, operatives, invented councils, collective
+bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`,
+subject to the portrait source-mode gate above. A generated one-person country leader
+is permitted only for a truly fictional high-chaos country or an impossible/supernatural
+entity; a grounded polity always remains on the sourced-real-person path.
 
 Generated country-leader and commander portraits should follow the full `156x210` HOI4 portrait convention. Generated operatives must follow the matching cataloged operative portrait and owning sprite. Use head-and-shoulders or restrained bust framing, a strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, a HOI4-compatible background, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
 
-For generated one-person portraits, record the subject role and apparent gender presentation in the manifest and handoff. Where name pools or gender metadata apply, they must match the portrait. Never hand off a portrait in a way that lets implementation randomly assign names from the opposite gender pool.
+For generated one-person portraits, record the subject role, apparent gender
+presentation, `fictional_high_chaos` classification, and the extraordinary invented
+regalia or cultural motif in the manifest and handoff. Where name pools or gender
+metadata apply, they must match the portrait. Never hand off a portrait in a way that
+lets implementation randomly assign names from the opposite gender pool. Do not use
+generic faces, modern props, meme aesthetics, gore, mockery, stereotypes, or
+caricatures of real cultures as visual shorthand.
 
-Council, committee, junta, board, office, crowd, and symbolic-body leaders must use a people-free institutional image and an institutional name, not a random personal name pool. Generate one readable symbol, empty chamber, desk, machinery, seal, document arrangement, or other institution-specific composition with no human figure, face, silhouette, or crowd. Record that the portrait is fictional or collective and people-free. If the design calls for a specific person, route it through the one-person portrait rules instead of treating that person as an institution.
+For a fictional council, committee, junta, board, office, crowd, or symbolic-body
+leader, follow the accepted content brief and use an institutional name rather than a
+random personal name pool. A people-free institutional composition may use one
+readable symbol, empty chamber, desk, machinery, seal, document arrangement, or other
+institution-specific subject. A staged governing group is allowed only when the brief
+requires it and every visible subject satisfies the accepted demographic and period
+constraints. For a grounded institution, use defensible sourced archival material for
+the real institution or source a real officeholder; do not generate an invented body
+or officeholder. If the design calls for a specific person, route it through the
+one-person portrait rules instead of treating that person as an institution.
 
 ### User-provided assets
 
@@ -398,6 +449,11 @@ For every asset package:
    - `$imagegen`
    - internet source image
    - user-provided source image
+   For one-person country-leader or officeholder portraits, record the grounded or
+   `fictional_high_chaos` identity classification before selecting a mode. A grounded
+   identity must use a sourced real person; an unavailable defensible source is
+   `blocked`, never a generated substitute. Missing or contradictory source-mode
+   evidence fails closed.
 11. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
 12. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
 13. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
@@ -939,7 +995,7 @@ Record:
 - processed PNG path
 - final DDS path
 
-For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait. Give the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, period-appropriate clothing, a quiet painted background, controlled contrast, no text, and no photographic or modern concept-art finish.
+For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, controlled contrast, no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
 
 Country-leader, commander, and operative portrait textures are `156x210`. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline, not the dossier-card size; follow their cataloged owning sprite.
 
@@ -947,7 +1003,7 @@ Country-leader, commander, and operative portrait textures are `156x210`. A comm
 
 Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before work. The final target is `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, dark irregular dossier framing, and transparent outer corners.
 
-For a fictional advisor, generate a distinct full-resolution portrait master with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a local drawing script. For real people, follow the real-person portrait rules above and preserve source attribution. Institutional or collective leaders remain people-free under the fictional-portrait rules; do not place invented faces into a board, council, office, or symbolic-body portrait.
+For a fictional advisor, generate a distinct full-resolution portrait master with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a local drawing script. For real people, follow the real-person portrait rules above and preserve source attribution. Institutional or collective leader portraits follow the accepted content brief. They may use a people-free institutional composition or a clearly staged governing group; when people are requested, keep every visible subject period-appropriate, distinct, and consistent with the requested demographic constraints, and never imply that invented faces are sourced historical individuals.
 
 Every advisor run requires a repo-contained schema-1 portrait-provenance manifest through `--portrait-provenance-manifest`. The reusable 16-source workflow keeps all 16 approved portrait-source records in one manifest; each processor invocation must select exactly one `approved_for_processing` record by the invoked source path. This batch size is provenance for that package, not a hard-coded processor assumption. The selected record must pin the source kind, source hash and dimensions, exact-source-copy assertion, approved crop and face box, prompt record/section/hash, generation mode and inputs, and either an ImageGen handle for fictional, collective, or symbolic art or attribution and license for a real archival portrait. Do not split out or bypass an individual source to avoid these checks.
 
@@ -1236,7 +1292,7 @@ Do not invent a substitute asset unless the user explicitly approves it.
 Before finishing, confirm:
 
 1. The requirement-to-runtime coverage crosswalk accounts for every accepted spec, manifest-plan, and animation-plan row, with no extra asset counted as a substitute without an explicit accepted design amendment.
-2. Every asset uses the correct source mode: `$imagegen` for every flat flag design and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for every real-person portrait.
+2. Every asset uses the correct source mode: `$imagegen` for every flat flag design and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for every real-person portrait. One-person portraits for grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical identities are sourced only; truly fictional high-chaos or impossible/supernatural identities are the only one-person portrait cases that may be generated. Missing or unsupported classification fails closed.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
@@ -1246,7 +1302,7 @@ Before finishing, confirm:
 9. A `gfx_handoff.md` exists for every asset that needs a sprite definition, and the main agent has enough information to wire it.
 10. The asset manifest exists.
 11. Internet-sourced assets record source links, source date or estimated date range, license or public domain status if available, and era-fit notes for World War II-era assets.
-12. Fictional or non-human portraits generated with `$imagegen` are clearly marked as fictional or generated in the manifest.
+12. Fictional or non-human portraits generated with `$imagegen` are clearly marked as `fictional_high_chaos` or impossible/supernatural in the manifest, show a memorable internally coherent invented motif, and contain no generic, modern, meme, gore, mocking, stereotyped, or caricatured treatment. Grounded identities never use a generated officeholder; if sourcing fails, the leader portrait is `blocked`.
 13. Docs are updated where relevant.
 14. The event implementation or parent handoff knows which sprite names to use.
 15. No final asset remains only in a temporary folder.
