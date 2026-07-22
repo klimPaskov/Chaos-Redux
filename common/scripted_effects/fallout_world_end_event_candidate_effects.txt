@@ -1,0 +1,296 @@
+# CHAOS REDUX - FALLOUT REVIEWED CANDIDATE PILOT EFFECTS
+# ============================================================================
+# This file owns the first reviewed ordinary-candidate producer for the Fallout
+# scheduler. It installs only three manually authored global-survival rows.
+# Food has a country target. Water and rail carry one selected state target only
+# when their native source proof is present. The producer never sets a scheduler
+# activation flag and never fires an event by itself.
+# ============================================================================
+
+# Supported scope: COUNTRY. Candidate completion history is deliberately kept
+# while the reviewed row arrays are rebuilt for a new transition generation.
+fallout_event_clear_candidate_rows_for_rebuild = {
+	clr_country_flag = fallout_event_candidate_registry_reviewed
+	clear_variable = fallout_event_candidate_registry_generation
+	clear_variable = fallout_event_candidate_registry_day
+	clear_array = fallout_event_candidate_id_entries
+	clear_array = fallout_event_candidate_transaction_key_entries
+	clear_array = fallout_event_candidate_class_entries
+	clear_array = fallout_event_candidate_primary_family_entries
+	clear_array = fallout_event_candidate_cooldown_family_entries
+	clear_array = fallout_event_candidate_human_event_token_entries
+	clear_array = fallout_event_candidate_ai_event_token_entries
+	clear_array = fallout_event_candidate_branch_entries
+	clear_array = fallout_event_candidate_phase_mode_entries
+	clear_array = fallout_event_candidate_phase_entries
+	clear_array = fallout_event_candidate_secondary_phase_entries
+	clear_array = fallout_event_candidate_visible_budget_cost_entries
+	clear_array = fallout_event_candidate_crisis_mode_entries
+	clear_array = fallout_event_candidate_authored_adjustment_entries
+	clear_array = fallout_event_candidate_severity_entries
+	clear_array = fallout_event_candidate_mechanic_pressure_entries
+	clear_array = fallout_event_candidate_pressure_source_type_entries
+	clear_array = fallout_event_candidate_player_relevance_entries
+	clear_array = fallout_event_candidate_state_value_entries
+	clear_array = fallout_event_candidate_severity_source_entries
+	clear_array = fallout_event_candidate_mechanic_pressure_source_entries
+	clear_array = fallout_event_candidate_player_relevance_source_entries
+	clear_array = fallout_event_candidate_state_value_source_entries
+	clear_array = fallout_event_candidate_region_match_entries
+	clear_array = fallout_event_candidate_government_match_entries
+	clear_array = fallout_event_candidate_country_memory_match_entries
+	clear_array = fallout_event_candidate_cause_memory_match_entries
+	clear_array = fallout_event_candidate_winter_match_entries
+	clear_array = fallout_event_candidate_crisis_resource_match_entries
+	clear_array = fallout_event_candidate_character_match_entries
+	clear_array = fallout_event_candidate_bilateral_opportunity_entries
+	clear_array = fallout_event_candidate_route_match_entries
+	clear_array = fallout_event_candidate_route_entries
+	clear_array = fallout_event_candidate_previous_choice_match_entries
+	clear_array = fallout_event_candidate_recent_war_or_crisis_entries
+	clear_array = fallout_event_candidate_resource_index_entries
+	clear_array = fallout_event_candidate_air_winter_phase_entries
+	clear_array = fallout_event_candidate_target_type_entries
+	clear_array = fallout_event_candidate_target_entries
+	clear_array = fallout_event_candidate_partner_registry_index_entries
+	clear_array = fallout_event_candidate_parent_arc_ticket_entries
+	clear_array = fallout_event_candidate_actor_type_entries
+	clear_array = fallout_event_candidate_actor_entries
+	clear_array = fallout_event_candidate_repeatable_entries
+	clear_array = fallout_event_candidate_capital_or_siege_entries
+	clear_array = fallout_event_candidate_required_region_entries
+	clear_array = fallout_event_candidate_required_archetype_entries
+	clear_array = fallout_event_candidate_required_country_memory_entries
+	clear_array = fallout_event_candidate_required_cause_memory_entries
+	clear_array = fallout_event_candidate_required_winter_entries
+	clear_array = fallout_event_candidate_required_resource_entries
+	clear_array = fallout_event_candidate_required_character_entries
+	clear_array = fallout_event_candidate_required_route_entries
+}
+
+# Supported scope: COUNTRY. Initializes one candidate row's common typed
+# payload. The caller then overwrites only the pilot-specific fields.
+fallout_event_initialize_pilot_candidate_row = {
+	set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+	set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.global_survival_and_society }
+	set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.food_security }
+	set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_branch = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.neutral }
+	set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
+	set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.none }
+	set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.none }
+	set_temp_variable = { fallout_event_pilot_authored_adjustment = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_severity = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_mechanic_pressure = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_pressure_source_type = constant:fallout_event_pressure_source_type.survival_resource }
+	set_temp_variable = { fallout_event_pilot_player_relevance = constant:fallout_event_runtime.player_relevance_none }
+	set_temp_variable = { fallout_event_pilot_state_value = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_player_relevance_source = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_country_memory_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_cause_memory_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_character_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_bilateral_opportunity = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_previous_choice_match = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_recent_war_or_crisis = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+	set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+	set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.none }
+	set_temp_variable = { fallout_event_pilot_target = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_partner_registry_index = constant:fallout_event_runtime.no_registry_index }
+	set_temp_variable = { fallout_event_pilot_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	set_temp_variable = { fallout_event_pilot_actor_type = constant:fallout_event_subject_type.none }
+	set_temp_variable = { fallout_event_pilot_actor = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_repeatable = constant:fallout_event_repeatability.nonrepeatable }
+	set_temp_variable = { fallout_event_pilot_capital_or_siege = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_country_memory = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_cause_memory = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_winter = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_character = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_pilot_required_route = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { is_ai = no }
+		set_temp_variable = { fallout_event_pilot_player_relevance = constant:fallout_event_runtime.player_relevance_human_recipient }
+	}
+}
+
+# Supported scope: COUNTRY. Appends the current typed temporary payload to all
+# parallel candidate arrays. A row is never appended through a partial branch.
+fallout_event_append_pilot_candidate_row = {
+	add_to_array = { array = fallout_event_candidate_id_entries value = fallout_event_pilot_candidate_id }
+	add_to_array = { array = fallout_event_candidate_transaction_key_entries value = fallout_event_pilot_transaction_key }
+	add_to_array = { array = fallout_event_candidate_class_entries value = fallout_event_pilot_class }
+	add_to_array = { array = fallout_event_candidate_primary_family_entries value = fallout_event_pilot_primary_family }
+	add_to_array = { array = fallout_event_candidate_cooldown_family_entries value = fallout_event_pilot_cooldown_family }
+	add_to_array = { array = fallout_event_candidate_human_event_token_entries value = fallout_event_pilot_human_token }
+	add_to_array = { array = fallout_event_candidate_ai_event_token_entries value = fallout_event_pilot_ai_token }
+	add_to_array = { array = fallout_event_candidate_branch_entries value = fallout_event_pilot_branch }
+	add_to_array = { array = fallout_event_candidate_phase_mode_entries value = fallout_event_pilot_phase_mode }
+	add_to_array = { array = fallout_event_candidate_phase_entries value = fallout_event_pilot_phase }
+	add_to_array = { array = fallout_event_candidate_secondary_phase_entries value = fallout_event_pilot_secondary_phase }
+	add_to_array = { array = fallout_event_candidate_visible_budget_cost_entries value = fallout_event_pilot_visible_budget_cost }
+	add_to_array = { array = fallout_event_candidate_crisis_mode_entries value = fallout_event_pilot_crisis_mode }
+	add_to_array = { array = fallout_event_candidate_authored_adjustment_entries value = fallout_event_pilot_authored_adjustment }
+	add_to_array = { array = fallout_event_candidate_severity_entries value = fallout_event_pilot_severity }
+	add_to_array = { array = fallout_event_candidate_mechanic_pressure_entries value = fallout_event_pilot_mechanic_pressure }
+	add_to_array = { array = fallout_event_candidate_pressure_source_type_entries value = fallout_event_pilot_pressure_source_type }
+	add_to_array = { array = fallout_event_candidate_player_relevance_entries value = fallout_event_pilot_player_relevance }
+	add_to_array = { array = fallout_event_candidate_state_value_entries value = fallout_event_pilot_state_value }
+	add_to_array = { array = fallout_event_candidate_severity_source_entries value = fallout_event_pilot_severity_source }
+	add_to_array = { array = fallout_event_candidate_mechanic_pressure_source_entries value = fallout_event_pilot_mechanic_pressure_source }
+	add_to_array = { array = fallout_event_candidate_player_relevance_source_entries value = fallout_event_pilot_player_relevance_source }
+	add_to_array = { array = fallout_event_candidate_state_value_source_entries value = fallout_event_pilot_state_value_source }
+	add_to_array = { array = fallout_event_candidate_region_match_entries value = fallout_event_pilot_region_match }
+	add_to_array = { array = fallout_event_candidate_government_match_entries value = fallout_event_pilot_government_match }
+	add_to_array = { array = fallout_event_candidate_country_memory_match_entries value = fallout_event_pilot_country_memory_match }
+	add_to_array = { array = fallout_event_candidate_cause_memory_match_entries value = fallout_event_pilot_cause_memory_match }
+	add_to_array = { array = fallout_event_candidate_winter_match_entries value = fallout_event_pilot_winter_match }
+	add_to_array = { array = fallout_event_candidate_crisis_resource_match_entries value = fallout_event_pilot_crisis_resource_match }
+	add_to_array = { array = fallout_event_candidate_character_match_entries value = fallout_event_pilot_character_match }
+	add_to_array = { array = fallout_event_candidate_bilateral_opportunity_entries value = fallout_event_pilot_bilateral_opportunity }
+	add_to_array = { array = fallout_event_candidate_route_match_entries value = fallout_event_pilot_route_match }
+	add_to_array = { array = fallout_event_candidate_route_entries value = fallout_event_pilot_route }
+	add_to_array = { array = fallout_event_candidate_previous_choice_match_entries value = fallout_event_pilot_previous_choice_match }
+	add_to_array = { array = fallout_event_candidate_recent_war_or_crisis_entries value = fallout_event_pilot_recent_war_or_crisis }
+	add_to_array = { array = fallout_event_candidate_resource_index_entries value = fallout_event_pilot_resource_index }
+	add_to_array = { array = fallout_event_candidate_air_winter_phase_entries value = fallout_event_pilot_air_winter_phase }
+	add_to_array = { array = fallout_event_candidate_target_type_entries value = fallout_event_pilot_target_type }
+	add_to_array = { array = fallout_event_candidate_target_entries value = fallout_event_pilot_target }
+	add_to_array = { array = fallout_event_candidate_partner_registry_index_entries value = fallout_event_pilot_partner_registry_index }
+	add_to_array = { array = fallout_event_candidate_parent_arc_ticket_entries value = fallout_event_pilot_parent_arc_ticket }
+	add_to_array = { array = fallout_event_candidate_actor_type_entries value = fallout_event_pilot_actor_type }
+	add_to_array = { array = fallout_event_candidate_actor_entries value = fallout_event_pilot_actor }
+	add_to_array = { array = fallout_event_candidate_repeatable_entries value = fallout_event_pilot_repeatable }
+	add_to_array = { array = fallout_event_candidate_capital_or_siege_entries value = fallout_event_pilot_capital_or_siege }
+	add_to_array = { array = fallout_event_candidate_required_region_entries value = fallout_event_pilot_required_region }
+	add_to_array = { array = fallout_event_candidate_required_archetype_entries value = fallout_event_pilot_required_archetype }
+	add_to_array = { array = fallout_event_candidate_required_country_memory_entries value = fallout_event_pilot_required_country_memory }
+	add_to_array = { array = fallout_event_candidate_required_cause_memory_entries value = fallout_event_pilot_required_cause_memory }
+	add_to_array = { array = fallout_event_candidate_required_winter_entries value = fallout_event_pilot_required_winter }
+	add_to_array = { array = fallout_event_candidate_required_resource_entries value = fallout_event_pilot_required_resource }
+	add_to_array = { array = fallout_event_candidate_required_character_entries value = fallout_event_pilot_required_character }
+	add_to_array = { array = fallout_event_candidate_required_route_entries value = fallout_event_pilot_required_route }
+}
+
+# Supported scope: COUNTRY coordinator. Builds one generation-bound candidate
+# registry row set per Fallout country. State targets are selected by the
+# lowest valid native state id, and a missing native source omits that row.
+fallout_event_build_pilot_candidate_registries = {
+	for_each_scope_loop = {
+		array = global.fallout_event_registry_countries
+		if = {
+			limit = {
+				has_country_flag = fallout_event_registry_member
+				fallout_event_registry_country_row_is_current = yes
+				OR = {
+					NOT = { has_country_flag = fallout_event_candidate_registry_reviewed }
+					NOT = { has_variable = fallout_event_candidate_registry_generation }
+					NOT = { check_variable = { var = fallout_event_candidate_registry_generation value = fallout_event_runtime_generation compare = equals } }
+				}
+			}
+			fallout_event_clear_candidate_rows_for_rebuild = yes
+
+			# The country-level food row is always available after the numerical
+			# registry is current. Its chain carries no invented state target.
+			fallout_event_initialize_pilot_candidate_row = yes
+			set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.food_candidate_id }
+			set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.food_transaction_key }
+			set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.food_security }
+			set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.last_inventory_human }
+			set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.last_inventory_ai }
+			set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+			set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.food_route }
+			fallout_event_append_pilot_candidate_row = yes
+
+			# Water row. The state trigger proves an existing produced water source,
+			# a current Fallout state row, and the native owner relationship.
+			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_water_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_water_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_water_target = fallout_event_pilot_state_candidate_id }
+				}
+			}
+			if = {
+				limit = { check_variable = { fallout_event_pilot_water_target > constant:fallout_event_runtime.zero } }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.water_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.water_transaction_key }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.water_security }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.river_intake_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.river_intake_ai }
+				set_temp_variable = { fallout_event_pilot_branch = constant:fallout_event_107_branch.close_intake }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.clean_water }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.water_route }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_water_target }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+
+			# Rail row. A state enters only when its native railway is present. There
+			# is no infrastructure or supply-node substitute for this pilot.
+			set_temp_variable = { fallout_event_pilot_rail_target = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_rail_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_rail_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_rail_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_rail_target = fallout_event_pilot_state_candidate_id }
+				}
+			}
+			if = {
+				limit = { check_variable = { fallout_event_pilot_rail_target > constant:fallout_event_runtime.zero } }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.rail_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.rail_transaction_key }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.transport_recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.rail_crew_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.rail_crew_ai }
+				set_temp_variable = { fallout_event_pilot_branch = constant:fallout_event_114_branch.send_protected_crews }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.fuel }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.rail_route }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_rail_target }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+
+			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
+			set_variable = { fallout_event_candidate_registry_day = global.num_days }
+			set_country_flag = fallout_event_candidate_registry_reviewed
+			if = {
+				limit = { NOT = { fallout_event_candidate_registry_is_reviewed = yes } }
+				clr_country_flag = fallout_event_candidate_registry_reviewed
+				clear_variable = fallout_event_candidate_registry_generation
+				clear_variable = fallout_event_candidate_registry_day
+			}
+		}
+	}
+}

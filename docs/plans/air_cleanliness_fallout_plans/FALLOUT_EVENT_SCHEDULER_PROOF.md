@@ -2,9 +2,9 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. No reviewed candidate producer or living-world content caller exists.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Three global-survival pilot rows now have a Fallout-owned generation-bound producer for the food, produced-water, and native-rail chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `126` are typed reservations only. Defined event blocks in that range: `0`. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `126` and `1009` through `1018` are dormant typed reservations. Defined event blocks in those ranges: `37`. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
@@ -162,7 +162,7 @@ A refreshed exact read-only `hoi4.event_inspect` trace for `chaosx.fallout.62` u
 
 The reciprocal-row trigger does not promise to preserve its temporary validation index when a nested partner check fails because trigger evaluation may short-circuit. Every current false path aborts or resets the index before reuse. Future callers must follow the same rule.
 
-An independent read-only completion audit found no P0 issue. Its initial pass identified the bilateral due-clock mismatch, the under-constrained empty numerical promotion, and the unauthenticated capital-or-siege recurrence bit. The implementation was corrected. A focused re-audit then returned no P0 through P3 finding on those surfaces, the human and AI lane comments, structural balance, activation setters, reviewed-candidate setters, or reserved suffixes `100` through `126`. This audit does not replace runtime proof and does not remove the blockers below.
+An independent read-only completion audit found no P0 issue. Its initial pass identified the bilateral due-clock mismatch, the under-constrained empty numerical promotion, and the unauthenticated capital-or-siege recurrence bit. The implementation was corrected. A focused re-audit then returned no P0 through P3 finding on those surfaces, the human and AI lane comments, structural balance, activation setters, reviewed-candidate setters, or reserved suffixes `100` through `126`. The reviewed-candidate pilot was statically reconciled separately in `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`. These audits do not replace runtime proof and do not remove the blockers below.
 
 ## Fail-closed boundaries and activation blockers
 
@@ -172,7 +172,7 @@ The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are implemented. Cohesion and Reclamation remain separate mechanics. Scheduler activation and event content remain absent.
 - World transition schema 12 authenticates frozen Air Winter rows with an Air-owned producer schema and generation, the frozen live category, accepted specialty buildings, coal, population, building, and supply receipts. Valid rows use exact produced values. Invalid rows use a typed N/A payload and are excluded from country coverage.
-- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. Reviewed candidate producers, living-world event definitions, human-choice callers, hidden AI result callers, content-owned cleanup execution, and scheduler debug presentation remain absent.
+- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for three ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
 - Exact bilateral wrappers and issued-orphan retention are implemented without gameplay callers. Activation remains blocked until reviewed bilateral event content invokes those wrappers and proves its human, hidden AI, stale-subject, delayed-result, and cleanup paths.
 - Fifteen dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted.
 - Major-arc and relationship candidates fail closed until reviewed rows freeze the complete atomic class-reservation payload.
