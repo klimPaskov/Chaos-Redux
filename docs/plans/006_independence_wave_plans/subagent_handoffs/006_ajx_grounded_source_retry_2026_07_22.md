@@ -115,5 +115,4 @@ remain in the package only as research provenance and are not runtime-approved.
 ## Focused commit
 
 This corrective documentation pass is committed separately; the final commit
-hash is recorded in the parent handoff message after commit creation.
-
+is `e8601f3b7` (the follow-up handoff hash record is committed separately).
