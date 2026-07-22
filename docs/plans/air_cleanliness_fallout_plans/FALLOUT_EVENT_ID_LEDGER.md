@@ -102,6 +102,17 @@ The dedicated event file was scanned on 2026-07-15 before this reservation. Suff
 | 161 | global survival and society | Well ledger callback | Implemented, dormant, uncounted | all eligible successors | callback | human visible | 155, 156, or 157 | 163 | water security | shared family art | living-world foundation 1 | branch-aware callback effects, shared cistern or exclusion memory, event-log payload, and cleanup preparation are wired. |
 | 162 | global survival and society | Well ledger AI callback | Implemented, dormant, uncounted | all eligible successors | callback | hidden AI | 158, 159, or 160 | 163 | water security | none | living-world foundation 1 | hidden AI callback uses the same callback effects, memory, event-log payload, and cleanup path as human play. |
 | 163 | global survival and society | Well Queue cleanup | Implemented, dormant, uncounted | all eligible successors | cleanup | hidden | any terminal Well Queue transaction | none | water security | none | living-world foundation 1 | exact cleanup tokens release the result and callback rows, clear the state-owned registry flag, and preserve save recovery. |
+| 164 | global survival and society | The Animal Feed Debate | Implemented, dormant, uncounted | all eligible successors | routine incident | human visible | ordinary receipt through Fallout coordinator | 166, 167, or 168 | food security | `GFX_report_event_fallout_last_inventory` | living-world foundation 1 | three authored policies, current produced Air Winter food-reserve gate, deterministic result reservation, state feed ledger, Deaths-backed failure, event-log payload, callback, and authenticated cleanup are wired. |
+| 165 | global survival and society | The Animal Feed Debate AI resolution | Implemented, dormant, uncounted | all eligible successors | hidden AI resolution | hidden | ordinary receipt through Fallout coordinator | 169, 170, or 171 | food security | none | living-world foundation 1 | hidden AI branch selection checks affordability and uses the same result reservation, effects, memory, event-log, and cleanup path as human play. |
+| 166 | global survival and society | Kitchen feed result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 164 | 172 | food security | shared family art | living-world foundation 1 | three outcome descriptions, food and recognition effects, failure deaths, feed memory, event-log payload, and callback scheduling are wired. |
+| 167 | global survival and society | Breeding reserve result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 164 | 172 | food security | shared family art | living-world foundation 1 | three outcome descriptions, breeding and adaptation effects, failure deaths, feed memory, event-log payload, and callback scheduling are wired. |
+| 168 | global survival and society | Regional feed result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 164 | 172 | food security | shared family art | living-world foundation 1 | three outcome descriptions, depot and reclamation effects, failure deaths, feed memory, event-log payload, and callback scheduling are wired. |
+| 169 | global survival and society | Kitchen feed AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 165 | 173 | food security | none | living-world foundation 1 | hidden AI delayed result uses the kitchen branch and shared human effect path. |
+| 170 | global survival and society | Breeding reserve AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 165 | 173 | food security | none | living-world foundation 1 | hidden AI delayed result uses the breeding branch and shared human effect path. |
+| 171 | global survival and society | Regional feed AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 165 | 173 | food security | none | living-world foundation 1 | hidden AI delayed result uses the regional branch and shared human effect path. |
+| 172 | global survival and society | First harvest callback | Implemented, dormant, uncounted | all eligible successors | callback | human visible | 166, 167, or 168 | 174 | food security | shared family art | living-world foundation 1 | branch-neutral callback effects, first-harvest memory, event-log payload, and cleanup preparation are wired. |
+| 173 | global survival and society | First harvest AI callback | Implemented, dormant, uncounted | all eligible successors | callback | hidden AI | 169, 170, or 171 | 174 | food security | none | living-world foundation 1 | hidden AI callback uses the same callback effects, memory, event-log payload, and cleanup path as human play. |
+| 174 | global survival and society | Animal Feed Debate cleanup | Implemented, dormant, uncounted | all eligible successors | cleanup | hidden | any terminal Animal Feed transaction | none | food security | none | living-world foundation 1 | exact cleanup tokens release the result and callback rows, clear the state-owned feed registry and reserve, and preserve save recovery. |
 
 ## Implemented Air Winter allocation outside the release floor
 
@@ -162,3 +173,20 @@ defined living-world block count is `48`, including the Well Queue blocks.
 The Well Queue row also pays its selected branch cost only after delayed-row
 reservation and ordinary-receipt consumption succeed. Its country payment flag
 is released by event `163` cleanup.
+
+## Animal Feed count correction
+
+The Animal Feed Debate reservation adds eleven dormant suffixes, so the
+authoritative living-world pilot total is `49` identities, `59` defined blocks,
+and `0` countable blocks. This correction supersedes the earlier Well Queue
+summary values above.
+
+Animal Feed event suffixes `164` through `174` are dormant and uncounted. The
+candidate row is `164`, transaction key `710005`, and route `7105`. Its native
+state gate requires a current produced Air Winter food reserve, and its branch
+payment flag is released by event `174` cleanup only after delayed-row
+reservation and ordinary-receipt consumption succeed.
+
+The authoritative total reserved documentation identities is `72`, combining
+`23` Ash-week identities with `49` living-world identities. The countable
+living-world release-floor total remains `0 of 660`.

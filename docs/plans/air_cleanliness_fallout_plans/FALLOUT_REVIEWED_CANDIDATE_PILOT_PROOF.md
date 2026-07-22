@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for four
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for five
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -25,7 +25,10 @@ registry. The Well Queue row is added only when the lowest valid owned state has
 a current Fallout state ledger, a produced Air Winter water source below the
 security threshold, an available branch cost, and no committed Well Queue
 registry. No infrastructure, supply-node, or invented state substitutes these
-native surfaces.
+native surfaces. The Animal Feed row is added only when the lowest valid owned
+state has a produced Air Winter food reserve in the authored feed band and no
+committed feed registry. It stores that state as the native feed target and
+uses the same generation and ownership proof as the other state rows.
 
 Each row stores both human and hidden-AI event tokens, a unique local
 transaction key, a typed branch, phase and cooldown family, visible budget
@@ -54,16 +57,20 @@ and generation markers instead of selecting a fallback.
 - `fallout_event_candidate_registry_arrays_are_aligned` lists 55 arrays. The
   producer appends all 53 mutable row arrays and leaves the two completion
   history arrays intentionally durable.
-- The new candidate effect file balances at 202 braces. The edited constants,
+- The new candidate effect file balances at 229 braces. The edited constants,
   triggers, and scheduler effect files remain balanced.
-- The candidate pilot constants define four candidate ids, four transaction
-  keys, and four route ids in a dedicated Fallout namespace.
+- The Animal Feed effect file balances at 420 braces, its trigger file at 39,
+  and its four dynamic-modifier blocks at 8 braces.
+- The candidate pilot constants define five candidate ids, five transaction
+  keys, and five route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100, 101,
-  107, 108, 114, 115, and 153 through 163. No zombie event id, file, asset,
+  107, 108, 114, 115, and 153 through 174. No zombie event id, file, asset,
   audio, sprite, or path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
   relationship rows until their complete atomic reservations are reviewed.
 - The Well Queue cost is paid only after its delayed row and ordinary receipt
+  both commit, with a cleanup-owned payment flag preventing a second charge.
+- The Animal Feed cost is paid only after its delayed row and ordinary receipt
   both commit, with a cleanup-owned payment flag preventing a second charge.
 - No HOI4 runtime was launched. Event command issuance, popup display, hidden
   AI resolution, save recovery, multiplayer behavior, and performance remain
