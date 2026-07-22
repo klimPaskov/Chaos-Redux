@@ -1,10 +1,11 @@
 # CHAOS REDUX - FALLOUT REVIEWED CANDIDATE PILOT EFFECTS
 # ============================================================================
 # This file owns the first reviewed ordinary-candidate producer for the Fallout
-# scheduler. It installs only four manually authored global-survival rows.
-# Food has a country target. Water and rail carry one selected state target only
-# when their native source proof is present. The producer never sets a scheduler
-# activation flag and never fires an event by itself.
+# scheduler. It installs only five manually authored global-survival rows.
+# Food has a country target. Water, rail, Well Queue, and Animal Feed carry one
+# selected state target only when their native source proof is present. The
+# producer never sets a scheduler activation flag and never fires an event by
+# itself.
 # ============================================================================
 
 # Supported scope: COUNTRY. Candidate completion history is deliberately kept
@@ -314,6 +315,43 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
 				set_temp_variable = { fallout_event_pilot_state_value = constant:fallout_event_runtime.one }
 				set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_pilot_well_target }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+
+			# Animal Feed Debate row. The state trigger requires the real
+			# pre-transition Air Winter food reserve and a current Fallout owner.
+			set_temp_variable = { fallout_event_pilot_feed_target = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_feed_value = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_animal_feed_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_feed_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_feed_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_feed_target = fallout_event_pilot_state_candidate_id }
+					set_temp_variable = { fallout_event_pilot_feed_value = fallout_pretransition_air_winter_food_reserve }
+				}
+			}
+			if = {
+				limit = { check_variable = { fallout_event_pilot_feed_target > constant:fallout_event_runtime.zero } }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.animal_feed_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.animal_feed_transaction_key }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.food_security }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.animal_feed_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.animal_feed_ai }
+				set_temp_variable = { fallout_event_pilot_branch = constant:fallout_event_164_branch.feed_people }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.animal_feed_route }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_feed_target }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_pilot_feed_value }
+				set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_pilot_feed_target }
 				fallout_event_append_pilot_candidate_row = yes
 			}
 

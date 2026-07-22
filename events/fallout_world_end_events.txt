@@ -8911,6 +8911,243 @@ country_event = {
 	immediate = { fallout_event_153_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival chain: Animal Feed Debate
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.164
+	title = chaosx.fallout.164.t
+	desc = chaosx.fallout.164.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = { fallout_event_164_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.164.a
+		trigger = { check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_164_cost.feed_people compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_164_requested_branch = constant:fallout_event_164_branch.feed_people }
+			fallout_event_164_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.164.a.tt
+		ai_chance = { base = 8 modifier = { factor = 2 has_government = democratic } }
+	}
+
+	option = {
+		name = chaosx.fallout.164.b
+		trigger = { check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_164_cost.preserve_breeding compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_164_requested_branch = constant:fallout_event_164_branch.preserve_breeding }
+			fallout_event_164_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.164.b.tt
+		ai_chance = { base = 6 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_164_threshold.breeding_success_adaptation compare = greater_than_or_equals } } }
+	}
+
+	option = {
+		name = chaosx.fallout.164.c
+		trigger = { check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_164_cost.divide_by_region compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_164_requested_branch = constant:fallout_event_164_branch.divide_by_region }
+			fallout_event_164_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.164.c.tt
+		ai_chance = { base = 5 modifier = { factor = 2 has_government = communism } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.165
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_164_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_164_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.166
+	title = chaosx.fallout.166.t
+	desc = {
+		text = chaosx.fallout.166.success.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.166.partial.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.166.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_people_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.feed_people }
+	}
+	option = {
+		name = chaosx.fallout.166.a
+		hidden_effect = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.166.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.167
+	title = chaosx.fallout.167.t
+	desc = {
+		text = chaosx.fallout.167.success.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.167.partial.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.167.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_breeding_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.preserve_breeding }
+	}
+	option = {
+		name = chaosx.fallout.167.a
+		hidden_effect = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.167.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.168
+	title = chaosx.fallout.168.t
+	desc = {
+		text = chaosx.fallout.168.success.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.168.partial.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.168.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_division_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.divide_by_region }
+	}
+	option = {
+		name = chaosx.fallout.168.a
+		hidden_effect = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.168.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.169
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_people_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.feed_people }
+	}
+	immediate = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.170
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_breeding_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.preserve_breeding }
+	}
+	immediate = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.171
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_164_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_division_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_164_branch.divide_by_region }
+	}
+	immediate = { fallout_event_164_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.172
+	title = chaosx.fallout.172.t
+	desc = {
+		text = chaosx.fallout.172.success.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.172.partial.d
+		trigger = { check_variable = { fallout_event_164_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.172.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_callback }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_164_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_164_branch.upper_bound }
+		fallout_event_164_feed_registry_is_current = yes
+	}
+	option = {
+		name = chaosx.fallout.172.a
+		hidden_effect = { fallout_event_164_resolve_callback_and_prepare_cleanup = yes }
+		custom_effect_tooltip = chaosx.fallout.172.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.173
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_callback_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_164_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_164_branch.upper_bound }
+		fallout_event_164_feed_registry_is_current = yes
+	}
+	immediate = { fallout_event_164_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.174
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_event_164_cleanup_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.animal_feed_cleanup }
+	}
+	immediate = { fallout_event_164_cleanup = yes }
+}
+
 country_event = {
 	id = chaosx.fallout.201
 	title = chaosx.fallout.201.t

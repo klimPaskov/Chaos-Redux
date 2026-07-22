@@ -2,9 +2,9 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Four global-survival pilot rows now have a Fallout-owned generation-bound producer for the food, produced-water, native-rail, and Air Winter well chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Five global-survival pilot rows now have a Fallout-owned generation-bound producer for the food, produced-water, native-rail, Air Winter well, and Animal Feed chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `126`, `1009` through `1018`, and `153` through `163` are dormant typed reservations. Defined event blocks in those ranges: `48`. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `126`, `1009` through `1018`, and `153` through `174` are dormant typed reservations. Defined event blocks in those ranges: `59`. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
@@ -37,9 +37,13 @@ The numerical substrate does not define or call living-world event blocks. It do
 - `common/scripted_effects/fallout_world_end_well_queue_event_effects.txt`
 - `common/scripted_triggers/fallout_world_end_well_queue_event_triggers.txt`
 - `common/dynamic_modifiers/fallout_world_end_well_queue_dynamic_modifiers.txt`
-- `events/fallout_world_end_events.txt` event suffixes `153` through `163`
+- `common/scripted_effects/fallout_world_end_animal_feed_event_effects.txt`
+- `common/scripted_triggers/fallout_world_end_animal_feed_event_triggers.txt`
+- `common/dynamic_modifiers/fallout_world_end_animal_feed_dynamic_modifiers.txt`
+- `events/fallout_world_end_events.txt` event suffixes `153` through `174`
 - `interface/fallout_world_end.gfx` Well Queue report sprite registration
 - `localisation/english/fallout_world_end_well_queue_l_english.yml`
+- `localisation/english/fallout_world_end_animal_feed_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `docs/assets/fallout_well_queue/manifest.md`
 - `docs/assets/fallout_well_queue/gfx_handoff.md`
