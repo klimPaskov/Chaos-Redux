@@ -1,5 +1,15 @@
 # Event 006 asset source research handoff
 
+> **Superseded portrait routing.** This handoff remains useful for historical
+> flag/symbol research and source leads, but its generated council,
+> institutional portrait, fictional grounded-person, female-candidate, and
+> `_small` portrait directions are withdrawn. Use
+> `../006_source_of_truth_map.md` and
+> `../asset_research/006_package_asset_coverage.md` for current routing. Every
+> current Event 006 registry package is grounded and therefore requires sourced
+> real male leader and commander portraits; generated one-person portraits are
+> reserved for a later truly fictional high-chaos country and leader only.
+
 ## Scope completed
 
 Research and planning only for Event 006 Independence Wave visual assets. No gameplay, interface, localisation, spreadsheet, specification, or asset binary was edited. No image was downloaded, generated, transformed, or converted.
