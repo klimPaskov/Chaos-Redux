@@ -246,8 +246,9 @@ period role, head-and-shoulders crop, and restrained full-color HOI4 painted
 finish at native `156x210`. Reenalda candidate 01 remains fail-closed. The two
 approved PNGs were converted to the existing Event 006 AGX texture paths with
 stable sprite names; both DDS files are 131168-byte one-level BGRA textures and
-decode pixel-identically to their approved PNGs. IW-007 remains outside the
-compile-time attestation until its fresh post-wiring country-package audit.
+decode pixel-identically to their approved PNGs. The fresh post-wiring
+country-package audit passes, and IW-007 is compile-time attested beside
+IW-004; every live allocation and transaction proof remains mandatory.
 
 ## Admission boundary
 

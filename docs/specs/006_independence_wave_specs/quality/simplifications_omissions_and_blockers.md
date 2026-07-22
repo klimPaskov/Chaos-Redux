@@ -10,8 +10,9 @@ The planning output was not shortened or reduced to a quick outline. It contains
 
 The accepted specification includes the later sourced-portrait decision. This
 section is the current implementation ledger rather than a rewrite of the
-planning baseline. IW-004 Brittany is the sole runtime content-attested
-package after its full package and two sourced real-male portrait audits.
+planning baseline. IW-004 Brittany and IW-007 Frisia are the runtime
+content-attested packages after their full package and sourced real-male
+portrait audits.
 Every other formerly admitted grounded package whose live country leader,
 route leader, commander, or institutional portrait uses generated art remains
 withdrawn until sourced real male replacements pass review. FORM-48 remains implemented without an

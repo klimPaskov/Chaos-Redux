@@ -297,7 +297,8 @@ runtime DDS files. Frisia's retry-02 Douwe Kalma civic leader and Pieter
 Reenalda coastal commander likewise pass independent same-person and HOI4-style
 review; their approved `156x210` PNGs are converted and wired to the existing
 AGX sprites, while rejected Reenalda candidate 01 remains evidence only. IW-007
-still awaits a fresh post-wiring country-package audit before attestation.
+passes its fresh post-wiring country-package audit and is compile-time attested
+beside IW-004; all live allocation and transaction gates remain mandatory.
 Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
 real-person restyling is withdrawn. The deterministic Solinas/Harpe finish
@@ -361,7 +362,7 @@ Devin supplies the coastal-command token through the same tranche's main
 ledger. The obsolete commander-small dossier file, registration, and consumer
 remain removed. The fresh IW-004 country-package audit passed every bounded
 static surface, and the parent compile-time registry therefore readmits IW-004
-as the sole currently attested Event 006 release package.
+beside the separately audited IW-007 Frisia package.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
 political portraits. François Debeauvais remains absent because the available
