@@ -285,11 +285,12 @@ satisfy the synchronized frozen plan.
   icon audit is complete in
   `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`.
   All sixteen definitions and all forty-eight runtime icon states are present.
-  One accepted league action remains missing: no complete expulsion transaction
-  writes the arbitration-term expulsion disqualifier. Signature achievements
-  remain unreachable while their country portrait admission gates are closed,
-  and Radical Bloc has no currently admitted route that can complete its full
-  containment-survival proof.
+  The audited DM-60 charter-expulsion vote writes the arbitration-term
+  expulsion disqualifier through
+  `independence_wave_achievement_record_member_expulsion`. Signature
+  achievements remain unreachable while their country portrait admission
+  gates are closed, and Radical Bloc has no currently admitted route that can
+  complete its full containment-survival proof.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 is promoted, but its hidden-high-chaos route

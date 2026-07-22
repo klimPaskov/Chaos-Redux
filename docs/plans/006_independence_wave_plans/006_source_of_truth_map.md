@@ -243,11 +243,11 @@ report, and formable packages. It also records these open boundaries:
   achievements remain hidden by their route and survival visibility rules, and
   their exact proof writers and formable adapter attestations are operational
   for the matching CHU and ASY generations. The vanilla CHU/ASY shortcut guards
-  passed their parent re-audit. Radical Bloc
-  currently has no admitted route that can complete its full
-  containment-survival proof. The league expulsion transaction remains an
-  accepted implementation gap, so its arbitration-term disqualifier still has
-  no writer.
+  passed their parent re-audit. The bounded DM-60 charter-expulsion vote and
+  `independence_wave_achievement_record_member_expulsion` now provide the
+  completed-expulsion transaction and arbitration-term disqualifier writer.
+  Radical Bloc still has no admitted route that can complete its full
+  containment-survival proof.
 
 The current portrait authority is
 `../../assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/manifest.md`,
