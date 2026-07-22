@@ -1,0 +1,31 @@
+# Fallout Blackout GUI Proof
+
+## Scope
+
+This proof covers the Fallout-owned blackout surface in `interface/fallout_world_end.gui`, `common/scripted_guis/fallout_world_end_scripted_gui.txt`, `common/scripted_localisation/fallout_world_end_scripted_localisation.txt`, and the coordinator effects in `common/scripted_effects/fallout_world_end_effects.txt`.
+
+The surface is not a super-event. The ordinary super-event GUI and event picture slots are not used for the transition.
+
+## Static presentation proof
+
+- `fallout_world_end_blackout_window` is an independent `windowType` with `fullscreen = yes` and a zero origin.
+- `GFX_fallout_blackout_tile` is a Fallout-owned opaque DDS under `gfx/interface/fallout_world_end/`.
+- `fallout_world_end_click_blocker` is a non-transparent `buttonType` scaled to the same full-screen coverage as the blackout tile. It has no scripted click effect, so it cannot advance a phase or alter the rewrite.
+- The centered text box reads `fallout_world_end_blackout_display`, which delegates to `GetFalloutWorldEndBlackoutText`.
+- The localisation selector maps the authoritative transition phases to the eight authored beats. The final map-return text is shown only at `fallout_transition_phase.map_return`.
+- The scripted GUI is player-context only, rejects AI, and is visible only while `fallout_transition_active` is set.
+
+## Processing and authority proof
+
+`fallout_lock_transition` is the only entry path that sets the transition active flag and it saves `fallout_transition_coordinator` before scheduling phase event `chaosx.fallout.1001`. Every phase event requires the current coordinator country and the active generation-bound phase. The coordinator advances one phase after its current receipts are durable, marks the GUI dirty, and schedules the next phase after the documented three-hour beat interval.
+
+The host coordinator also owns request validation, snapshot reconstruction, state grading, population loss, physical collapse, diplomacy reset, successor allocation, numerical survival commit, player continuation, and map return. Save reconciliation calls `fallout_world_end_migrate_save`, reschedules an unissued current phase, and never creates a second transition generation.
+
+Dedicated Fallout blackout audio is dispatched separately from the GUI. It uses the existing super-event audio setting only as a volume and playback preference. No super-event event, quote, button, or picture slot is used.
+
+## Engine references and boundary
+
+The offline Interface Modding page documents `fullscreen`, independent windows, `buttonType`, `alwaystransparent`, sprite scaling, and centered text. The offline Scripted GUI Modding page documents independent container assignment, `player_context`, visibility, and dirty updates. The installed vanilla `interface/frontend_friends_view.gui` uses an `event_trap` element for popup exclusivity. This Fallout surface uses a full-screen non-transparent button because it is independently owned by a scripted GUI rather than an internally controlled vanilla popup.
+
+Static review can prove the declared full-screen geometry, the non-transparent input-consuming control, phase text mapping, host gate, generation checks, save-recovery calls, and dedicated audio path. It cannot prove click interception, z-order against every DLC window, pause behavior, save persistence, multiplayer presentation, or performance in a live session. HOI4 was not launched by request, so those remain explicit runtime blockers rather than passing claims.
+
