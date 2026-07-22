@@ -14,6 +14,10 @@ an exact-person identity comparison.
 
 ## Source ledger
 
+The selected commander master is the 1919 uniform source documented in the
+`Selected commander source override` section below. The 1915 row is retained as
+an exact-person comparison source, not as a second runtime consumer.
+
 | Runtime role | Exact person / source status | Original source master | Source, date, rights basis | Dimensions / bytes / SHA-256 | Head-and-shoulders feasibility and role notes |
 |---|---|---|---|---|---|
 | AGX civic leader, `AGX_friesland_coastal_council` (`GFX_portrait_AGX_friesland_coastal_council`) | **Douwe Kalma (1896–1953)**; `source_ready`, downstream portrait `needs_user_review` | `source_masters/AGX_douwe_kalma_1917.jpg` | [Commons file page](https://commons.wikimedia.org/wiki/File:Portret_fan_Douwe_Kalma,_1917_ca._archiefnr_1990.jpg); [unchanged original](https://upload.wikimedia.org/wikipedia/commons/d/d6/Portret_fan_Douwe_Kalma%2C_1917_ca._archiefnr_1990.jpg); [Tresoar collection record](https://tresoar.nl/zoeken/collectie/cf64b17f-5d0c-46f9-9209-a7f60c185068). Tresoar catalogued portrait, F.O. Strüppert (Leeuwarden), circa 1917; archive field says `geen auteursrecht (publiek domein)` and Commons records Public domain with no attribution requirement. | `691x1013`, RGB, `87,040` bytes; `38dafcbff7c3a67b6b29b9b637e69ff4c2f9d8caae076361200919a6bb36dbdf` | Clear centered frontal head, shoulders, tie and jacket; a vertical 156x210 crop is straightforward (review-only estimate around source x=70–620, y=70–850). Small dark pinhole/dust mark at upper-left forehead is source damage and must not be reconstructed into a different face. Real Frisian writer/nationalist, alive in 1936 (about 40), direct civic/municipal leadership fit. |
