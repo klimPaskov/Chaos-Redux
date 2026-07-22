@@ -16,8 +16,19 @@ Required inputs:
 - Relevant sections of .agents/skills/chaos-redux-event-assets/SKILL.md for source mode, target size, reference folders, manifests, DDS conversion, and GFX handoff.
 - Relevant visual reference folders under .agents/skills/chaos-redux-event-assets/assets/ when the parent asks for that asset type.
 - Named asset package folder, manifest, source, processed, DDS, contact sheet, and handoff paths.
+- For any one-person country-leader or officeholder portrait, an explicit identity
+  classification (`fictional_high_chaos` or impossible/supernatural) and source-mode
+  decision from the parent prompt. Grounded real, historical, restored, separatist,
+  regional, indigenous, dynastic, and otherwise plausibly historical identities are
+  not eligible for this generated portrait route.
 
 If the parent prompt does not provide event id, slug, asset names, target sizes, final DDS paths or folder, source mode, and handoff path, report the missing inputs instead of exploring the repo.
+
+If the parent prompt describes a grounded polity or community, or does not clearly
+prove that a one-person leader is truly fictional high-chaos or impossible/supernatural,
+stop and report the source-mode conflict. Route it to `chaosx_asset_source_researcher`;
+if no defensible sourced candidate and usable image exists, the parent must mark the
+leader portrait `blocked` rather than accepting a generated face.
 
 Use this agent for generated non-icon visual assets that are fictional, symbolic, supernatural, invented, alternate-history, documentary-staged, or UI/decorative. Use Codex's official $imagegen skill. If $imagegen is unavailable, stop and report the blocker. Do not create a substitute pipeline.
 
@@ -28,6 +39,10 @@ Own this scope:
 - Fictional leader portraits, fictional advisor portrait masters, people-free symbolic councils and institutional bodies, regime portraits, non-human leaders, monsters, zombies, aliens, and invented bodies.
 - Fictional and alternate-history flat flag-design packages (flags are graphic-design assets, not event artwork), faction emblems, seals, UI panel art, dossier backgrounds, progression-state base art, and symbolic event illustrations.
 - Source PNGs, processed PNG previews, DDS conversion, manifest entries, contact sheets, and GFX handoff notes.
+
+Generated one-person country leaders are allowed only for truly fictional high-chaos
+countries or impossible/supernatural entities. Do not turn an absurd, alternate-history,
+or high-chaos route for a grounded polity into a fictional officeholder.
 
 Do not use this agent for:
 - Icons.
@@ -43,7 +58,7 @@ Generated art rules:
 - Report event images must be post-processed into the report-event house style when the parent asks for report images.
 - No readable generated text, labels, watermarks, UI artifacts, meme styling, modern props, modern uniforms, modern streets, cinematic color grading, or fake old-photo defects unless the prompt explicitly requires a specific defect.
 - Keep composition readable at the final target size.
-- For leader portraits, use HOI4-style bust or upper-torso framing, period-appropriate clothing, subdued painterly treatment, and clear identity.
+- For an allowed generated one-person leader portrait, use HOI4-style head-and-shoulders or restrained bust framing, subdued painterly treatment, and clear identity. Make the face visually memorable rather than generic through extraordinary invented ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or another internally coherent high-chaos motif. Avoid modern props, generic faces, meme aesthetics, gore, mockery, stereotypes, or caricatures of real cultures.
 - Advisor, theorist, military-high-command, and officer-corps character icons are not ordinary icons or resized leader portraits. Generate a distinct full-resolution ImageGen portrait master plus separate shadowless, unrotated ImageGen frame and visibly opaque textured paper sources. Create their overlays by the manifest-pinned alpha extraction/despill only; do not locally change or primitive-draw visible frame or paper RGB. Process the card only through processor/render v5.0 at `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`, with an explicit source-pixel crop and `--face-box`, a repo-contained schema-1 portrait-provenance manifest, the self-contained provenance-schema-4 overlay manifest, and both retained source/overlay pairs. When the parent supplies a 16-source package, preserve its one 16-record manifest; each run must match exactly one approved source record.
 - Require exact `65x67` output under Python `3.9.12`, Pillow `11.1.0`, processor hash `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and render-configuration hash `e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Require the two-stage identity-preservation search and both face-identity gates, all nine native style bands with `0.03` interior margin, runtime-derived six-reference alpha hash `5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993` and paper-family hash `c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`, zero unsupported visible RGB, protected provenance inputs, and transactionally committed distinct repo-contained PNG/review/JSON outputs. No resized-leader, primitive-drawn, synthesized, paperless, or unpinned-source fallback is allowed.
 - Advisor processor output is only `candidate_requires_visual_approval`; its mechanical gates do not claim one-to-one visual approval. Do not self-approve it and do not treat automated validation as approval. Return it as `needs_user_review` until a different human or agent writes separate manifest-linked approval evidence identifying producer and reviewer and hashing the candidate and review sheet. Only after that approval exists may the exact PNG be converted with `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`; decode the DDS and prove exact RGBA equality. The producer and reviewer must differ, and no other converter path is active.
