@@ -9378,6 +9378,292 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.175
+	title = chaosx.fallout.175.t
+	desc = chaosx.fallout.175.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = { fallout_event_175_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.175.a
+		trigger = { check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_175_cost.children_medicine compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_175_requested_branch = constant:fallout_event_175_branch.prioritize_children }
+			fallout_event_175_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.175.a.tt
+		ai_chance = { base = 6 modifier = { factor = 2 has_government = democratic } }
+	}
+
+	option = {
+		name = chaosx.fallout.175.b
+		trigger = { check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_175_cost.workers_medicine compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_175_requested_branch = constant:fallout_event_175_branch.prioritize_workers }
+			fallout_event_175_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.175.b.tt
+		ai_chance = { base = 7 modifier = { factor = 2 has_government = communism } }
+	}
+
+	option = {
+		name = chaosx.fallout.175.c
+		trigger = { check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_175_cost.soldiers_medicine compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_175_requested_branch = constant:fallout_event_175_branch.prioritize_soldiers }
+			fallout_event_175_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.175.c.tt
+		ai_chance = { base = 5 modifier = { factor = 2 has_government = fascism } }
+	}
+
+	option = {
+		name = chaosx.fallout.175.e
+		trigger = { check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_175_cost.equal_medicine compare = greater_than_or_equals } }
+		hidden_effect = {
+			set_temp_variable = { fallout_event_175_requested_branch = constant:fallout_event_175_branch.equal_chance }
+			fallout_event_175_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.175.e.tt
+		ai_chance = { base = 4 modifier = { factor = 2 has_government = neutrality } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.176
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_175_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_175_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.177
+	title = chaosx.fallout.177.t
+	desc = {
+		text = chaosx.fallout.177.success.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.177.partial.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.177.failure.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_children_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_children }
+	}
+	option = {
+		name = chaosx.fallout.177.a
+		hidden_effect = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.177.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.178
+	title = chaosx.fallout.178.t
+	desc = {
+		text = chaosx.fallout.178.success.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.178.partial.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.178.failure.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_workers_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_workers }
+	}
+	option = {
+		name = chaosx.fallout.178.a
+		hidden_effect = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.178.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.179
+	title = chaosx.fallout.179.t
+	desc = {
+		text = chaosx.fallout.179.success.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.179.partial.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.179.failure.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_soldiers_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_soldiers }
+	}
+	option = {
+		name = chaosx.fallout.179.a
+		hidden_effect = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.179.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.180
+	title = chaosx.fallout.180.t
+	desc = {
+		text = chaosx.fallout.180.success.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.180.partial.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.180.failure.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_equal_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.equal_chance }
+	}
+	option = {
+		name = chaosx.fallout.180.a
+		hidden_effect = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.180.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.181
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_children_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_children }
+	}
+	immediate = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.182
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_workers_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_workers }
+	}
+	immediate = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.183
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_soldiers_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.prioritize_soldiers }
+	}
+	immediate = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.184
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_175_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_equal_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_175_branch.equal_chance }
+	}
+	immediate = { fallout_event_175_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.185
+	title = chaosx.fallout.185.t
+	desc = {
+		text = chaosx.fallout.185.success.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.185.partial.d
+		trigger = { check_variable = { fallout_event_175_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.185.failure.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_callback }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_175_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_175_branch.upper_bound }
+		fallout_event_175_triage_registry_is_current = yes
+	}
+	option = {
+		name = chaosx.fallout.185.a
+		hidden_effect = { fallout_event_175_resolve_callback_and_prepare_cleanup = yes }
+		custom_effect_tooltip = chaosx.fallout.185.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.186
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_callback_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_175_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_175_branch.upper_bound }
+		fallout_event_175_triage_registry_is_current = yes
+	}
+	immediate = { fallout_event_175_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.187
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_event_175_cleanup_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.triage_wall_cleanup }
+	}
+	immediate = { fallout_event_175_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.201
 	title = chaosx.fallout.201.t
 	desc = chaosx.fallout.201.d

@@ -212,3 +212,16 @@ The orientation result surface now has a dormant Fallout memory history at
 the writer rejects duplicate rows for the same component and transition
 generation. This improves observability but does not activate the scheduler
 or add release-floor credit.
+
+## Triage Wall event-surface correction
+
+The dormant Triage Wall candidate now owns event suffixes `175` through `187`
+and history id `9111`. Its state gate requires a produced Air Winter shelter
+snapshot, current medicine below the pressure band, affordable policy cost,
+current state ownership, and shelter capacity above the reviewed minimum.
+Children, workers, soldiers, and equal-chance lanes each have human and hidden
+AI delayed results. A human and hidden AI doctor callback follow the result,
+and cleanup releases the authenticated tickets in order. The result and
+callback writers carry fifteen concrete history payloads. No activation flag is
+set, no caller is fired, and the chain contributes `0` to the `660` release
+floor until the scheduler activation and manual review gates pass.

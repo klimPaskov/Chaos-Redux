@@ -244,3 +244,12 @@ The orientation Event Log substrate is defined in history `9110` with 45
 explicit component, branch, and outcome payloads. It remains dormant and
 uncounted until the caller, coverage, event details, activation, and runtime
 gates are complete.
+
+## Triage Wall surface correction
+
+The dormant Triage Wall chain is defined at `chaosx.fallout.175` through
+`.187`. It adds a produced Air Winter shelter and medicine gate, four policy
+lanes with human and hidden AI delayed results, Deaths-backed failure, a
+doctor's callback, history `9111`, authenticated cleanup, and a dedicated
+report asset. It remains uncounted until scheduler activation and manual
+review gates are open. Countable living-world blocks remain `0 of 660`.
