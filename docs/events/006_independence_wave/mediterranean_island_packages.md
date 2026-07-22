@@ -17,11 +17,14 @@ only when it is not living and still owns the vanilla `generic_focus` tree.
 mod-provided meaningful COR tree fails the setup gate and rolls the release
 back instead of being overwritten.
 
-Current visual admission is withdrawn for IW-017, IW-018, and IW-019. Their
-generated leader and commander portraits do not satisfy the sourced-only rule
-for grounded Corsican, Sardinian, and Sicilian polities. The gameplay below
-remains implemented, but all three packages stay outside runtime content
-attestation until sourced real male replacements pass review.
+Current visual admission remains withdrawn for IW-017, IW-018, and IW-019.
+Adolphe Landry, Jean Chiappe, Emilio Lussu, Luigi Sturzo, and Pietro Lanza di
+Scalea now have attributed source masters, explicit head-and-shoulders crops,
+identity-preserving HOI4 treatments, reviewed DDS files, and runtime wiring.
+The remaining Sardinian civic/crown route and command identities plus the
+Sicilian emergency commander are still generated and therefore invalid for
+grounded polities. All three packages stay outside runtime content attestation
+until every required real male identity passes the same source gate.
 
 ## Release and host-survival contract
 
@@ -66,10 +69,10 @@ framework can replace it.
 
 Government settlements:
 
-- constitutional communes under Petru Santucci;
-- traditional mountain communes under Petru Santucci;
-- an emergency island-guard mandate under Pasquale Venturi; or
-- a protected customs mandate under Petru Santucci.
+- constitutional communes under Adolphe Landry;
+- traditional mountain communes under Adolphe Landry;
+- an emergency island-guard mandate under Jean Chiappe; or
+- a protected customs mandate under Adolphe Landry.
 
 The popular-council and radical-sovereignty shared routes are excluded for
 this package. The Corsican decision family and the full framework use the same
@@ -85,8 +88,8 @@ island.
 
 Government settlements:
 
-- an island constitution under Antioco Melis;
-- a Sardinian labor compact under Antioco Melis;
+- an island constitution under Emilio Lussu;
+- a Sardinian labor compact under Emilio Lussu;
 - a crown consultative state under Vittorio Pala; or
 - a mountain-guard directorate under Gavino Piras.
 
@@ -104,11 +107,11 @@ state can sustain a Level 2 route.
 
 Government settlements:
 
-- a Palermo constitution under Sebastiano Restivo;
-- a chambers-of-labor compact under Sebastiano Restivo;
-- a Two Sicilies crown council under Vincenzo Lanza;
-- a straits security directorate under Salvatore Licata; or
-- a protected Mediterranean mandate under Sebastiano Restivo.
+- a Palermo constitution under Luigi Sturzo;
+- a chambers-of-labor compact under Luigi Sturzo;
+- a Two Sicilies crown council under Pietro Lanza di Scalea;
+- a straits security directorate under Luigi Rizzo; or
+- a protected Mediterranean mandate under Luigi Sturzo.
 
 The radical-sovereignty shared route is excluded. The eight-focus Sicilian
 module ends in a mutually exclusive choice between a staged Two Sicilies
@@ -200,8 +203,9 @@ prompt, and hash belongs in the Event 006 asset manifest.
 
 Every live leader and commander must use a sourced real male person connected
 to the polity and route, cropped head-and-shoulders and given an
-identity-preserving 1930s HOI4 painted treatment. The eight current generated
-156x210 textures remain consumer/provenance records awaiting replacement. The
+identity-preserving 1930s HOI4 painted treatment. Five of the eight runtime
+surfaces now meet that contract; the remaining three generated textures are
+consumer/provenance records only and cannot support package admission. The
 three corps commanders follow vanilla's supported large-only army-portrait
 pattern; no optional army-small dossier is declared. The six political advisers
 have no portrait block, custom dossier, or advisor sprite dependency.

@@ -241,7 +241,7 @@ Use institutional country leaders for the required package baseline:
 
 | Character ID | Working label | Use | Portrait rule |
 |---|---|---|---|
-| `CHU_independence_wave_middle_volga_congress` | Middle Volga Congress | opening leader | generated all-male institutional chamber, canonical HOI4 composition |
+| `CHU_independence_wave_middle_volga_congress` | Mirsaid Sultan-Galiev | opening leader | sourced archival real-male portrait; Middle Volga Congress remains the government and country identity |
 | `CHU_independence_wave_federal_presidium` | Federal Presidium | federal route | generated all-male civic presidium with regionally distinct delegates |
 | `CHU_independence_wave_bolgar_civic_presidium` | Bolgar Civic Presidium | restoration route | generated all-male constitutional presidium, no crown or invented khan |
 | `CHU_independence_wave_river_security_directorate` | River Security Directorate | emergency route | generated all-male civilian-military board, no fascist visual shorthand |
@@ -594,7 +594,7 @@ Required characters:
 
 | Character ID | Working label | Use | Portrait rule |
 |---|---|---|---|
-| `ASY_independence_wave_provisional_national_council` | Provisional National Council | opening leader | generated all-male institutional council with distinct clerical, civic, village, diaspora, and veteran delegates |
+| `ASY_independence_wave_provisional_national_council` | Gallo Shabo | opening leader | sourced archival real-male portrait; the Provisional National Council remains the government and country identity |
 | `ASY_independence_wave_concordat_council` | Concordat Council | church-civic route | generated all-male council, attributed vestments and no generic pan-Christian symbolism |
 | `ASY_independence_wave_civic_national_assembly` | Civic National Assembly | secular route | generated all-male municipal and national assembly |
 | `ASY_independence_wave_levies_guardianship` | Levies Guardianship | emergency route | generated all-male civilian-supervised security board, no imperial triumphal imagery |
