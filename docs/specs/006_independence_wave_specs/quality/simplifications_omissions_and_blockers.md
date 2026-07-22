@@ -10,9 +10,9 @@ The planning output was not shortened or reduced to a quick outline. It contains
 
 The accepted specification includes the later sourced-portrait decision. This
 section is the current implementation ledger rather than a rewrite of the
-planning baseline. IW-004 Brittany and IW-007 Frisia are the runtime
-content-attested packages after their full package and sourced real-male
-portrait audits.
+planning baseline. IW-004 Brittany, IW-007 Frisia, and IW-017 Corsica are the
+runtime content-attested packages after their full package and sourced
+real-male portrait audits.
 Every other formerly admitted grounded package whose live country leader,
 route leader, commander, or institutional portrait uses generated art remains
 withdrawn until sourced real male replacements pass review. FORM-48 remains implemented without an
@@ -21,9 +21,10 @@ currently admitted carrier/member set. IW-173 `HAW` is also withdrawn because
 its vanilla David Kalakaua Kawananakoa sprite resolves to generic
 `Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
 
-The 2026-07-18 installed scan covers 108 Event 006-owned identifiers, 122
-Workshop directories, three sibling local mods, archives, and reports zero
-collisions. The allocator passes 149 publishers, 126 automatic/high-chaos
+The 2026-07-22 installed scan covers 108 Event 006-owned identifiers, 122
+Workshop directories, eight archives, three sibling local mods, vanilla, and
+non-Event 006 Chaos Redux definitions. It reports zero collisions and 446 safe
+X tags. The allocator passes 149 publishers, 126 automatic/high-chaos
 selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
 and Event 005-first joint reservation ordering. Those structural counts do not
 override the compile-time visual-readiness gate. Pacific assets use vanilla
