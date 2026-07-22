@@ -7,22 +7,26 @@ cropping, resizing, colour treatment, portrait processing, review sheet,
 PNG/DDS conversion, GFX edit, gameplay edit, or localisation edit was made.
 
 The status in this file is a research disposition, not runtime approval. A
-`needs_user_review` row must not be wired until a separate rights/visual review
-and the parent ownership scan are complete. A `blocked` row has no acceptable
-source master in this pass and must not receive a generated or generic face.
+`needs_user_review` row must not be wired until its remaining rights/visual
+gates are complete. A `rejected_external_mod_owner` or `blocked` row must not
+be wired and must not receive a generated or generic face.
+
+Documentation-only wiring notes are in [gfx_handoff.md](gfx_handoff.md), and
+the parent-supplied owner scan plus candidate search ledger is in
+[search_notes/ownership_and_candidate_log.md](search_notes/ownership_and_candidate_log.md).
 
 ## Role ledger
 
 | Role / current fictional consumer | Candidate | Status | Role and era fit | Source-master path | Dimensions | SHA-256 | Rights / uncertainty |
 |---|---|---|---|---|---:|---|---|
-| `ARX_sardinian_crown_consultative_council` (`Vittorio Pala` replacement) | Prince Adalberto di Savoia-Genova, Duke of Bergamo (1898–1982) | `needs_user_review` | House of Savoy-Genova dynastic figure and Italian general. Treccani records brigadier-general rank in 1934, vice-command of the mobilised Gran Sasso infantry division from September 1935, and division-general rank in 1936. A dynastic/council interpretation is plausible, but parent design must confirm that this branch may use a Savoy-Genova duke rather than the direct royal household. | [source master](source_masters/sardinia/arx_adalberto_savoia_genova_1935_original.png) | 391×564 | `fb822de0d5c19d0f72e371fdbebf15a44108e07df7c9c8a21c3156d1605add3b` | Wikimedia Commons marks the Italian simple photograph public domain under the 20-year term; page does **not** add an explicit US `PD-1996` determination. Treat as rights review required. Source page names photographer Fotografia Ravagnan and gives source catalogue PDF; see URLs below. Side-profile military portrait is face-visible but visual approval remains separate. Parent must check active owner collisions before any reuse. |
-| `ARX_gavino_piras` (army/coastal commander replacement) | Prince Adalberto di Savoia-Genova, Duke of Bergamo | `needs_user_review` | The same 1935–36 record makes him an active general and division commander at the scenario date. Reusing this person for both a dynastic council seat and a command office is a design choice for the parent, not an assumption made here. | [same unchanged source master](source_masters/sardinia/arx_adalberto_savoia_genova_1935_original.png) | 391×564 | `fb822de0d5c19d0f72e371fdbebf15a44108e07df7c9c8a21c3156d1605add3b` | Same PD-Italy / US-status uncertainty and parent ownership gate as above. Do not create a second copy or new identity unless the parent accepts this dual-role use. |
-| `ARX_gavino_piras` (naval/coastal alternative only) | Giovanni Sechi (1871–1948) | `needs_user_review` | Born in Sassari; Regia Marina admiral, senator, and Kingdom of Italy Navy minister. Treccani records reserve vice-admiral status in 1923, squadron-admiral rank in 1926, and ministry service 1919–21. He was alive in 1936 but already a senior reserve/retired institutional figure; this is a coastal/council alternative, not a strong army-corps match. | [unchanged Commons original](source_masters/sardinia/arx_giovanni_sechi_original.jpg) | 250×207 | `063de6d462dda2524479b40e3ee31ad697aac3a653b67fbff28032b2161cc5ec` | Commons labels the anonymous early-20th-century image `PD-anon-70-EU`; no explicit US `PD-1996` record and no named photographer. The 250×207 source is low-resolution and landscape; no local crop or upscale was made. Parent must decide whether this framing can satisfy the role and must run owner scan. |
+| `ARX_sardinian_crown_consultative_council` (`Vittorio Pala` replacement) | Prince Adalberto di Savoia-Genova, Duke of Bergamo (1898–1982) | `needs_user_review` | House of Savoy-Genova dynastic figure and Italian general. Treccani records brigadier-general rank in 1934, vice-command of the mobilised Gran Sasso infantry division from September 1935, and division-general rank in 1936. A dynastic/council interpretation is plausible, but parent design must confirm that this branch may use a Savoy-Genova duke rather than the direct royal household. | [source master](source_masters/sardinia/arx_adalberto_savoia_genova_1935_original.png) | 391×564 | `fb822de0d5c19d0f72e371fdbebf15a44108e07df7c9c8a21c3156d1605add3b` | Parent exact/variant scan found no Adalberto owner in Chaos Redux, vanilla, Kaiserreich, or the two approved additional mods. Commons marks the Italian simple photograph public domain under the 20-year term, but the page does **not** provide the publication evidence needed to establish the US condition independently or add an explicit US `PD-1996` determination. Treat as rights review required. Side-profile military portrait is face-visible but visual approval remains separate. |
+| `ARX_gavino_piras` (army/coastal commander replacement) | Prince Adalberto di Savoia-Genova, Duke of Bergamo | `needs_user_review` | The same 1935–36 record makes him an active general and division commander at the scenario date. Reusing this person for both a dynastic council seat and a command office is a design choice for the parent, not an assumption made here. | [same unchanged source master](source_masters/sardinia/arx_adalberto_savoia_genova_1935_original.png) | 391×564 | `fb822de0d5c19d0f72e371fdbebf15a44108e07df7c9c8a21c3156d1605add3b` | Ownership scan is clear at the parent scan date, but the same unresolved Commons PD-Italy / US-publication-evidence and visual-review gates apply. Do not create a second copy or new identity unless the parent accepts this dual-role use. |
+| `ARX_gavino_piras` (naval/coastal alternative only) | Giovanni Sechi (1871–1948) | `rejected_external_mod_owner` | Born in Sassari; Regia Marina admiral, senator, and Kingdom of Italy Navy minister. Treccani records reserve vice-admiral status in 1923, squadron-admiral rank in 1926, and ministry service 1919–21. He was alive in 1936 but already a senior reserve/retired institutional figure. | [retained provenance master; do not process or wire](source_masters/sardinia/arx_giovanni_sechi_original.jpg) | 250×207 | `063de6d462dda2524479b40e3ee31ad697aac3a653b67fbff28032b2161cc5ec` | Parent ownership scan found the active Kaiserreich Sardinia character `SRD_giovanni_sechi`. This fails the subject-ownership gate, so the candidate is rejected regardless of the separate `PD-anon-70-EU`, US-status, resolution, and framing uncertainties. |
 
 The Commons extracted derivative `source_masters/sardinia/arx_giovanni_sechi_cropped_original.jpg` (167×202, SHA-256
 `329fbec43bf0c34c210653f70f0aa35da60bc15a3884ef1dfebdba1d953a0573`) is
-retained only as an untouched downloaded reference variant. It is not a
-processed game asset and is not a recommendation over the full 250×207 source.
+retained only as untouched provenance evidence for the rejected candidate. It
+is not a processed game asset and must not be wired.
 
 ## Source records
 
@@ -56,6 +60,8 @@ processed game asset and is not a recommendation over the full 250×207 source.
   January 1871 and death in Rome on 1 May 1948, plus admiral, Navy-minister,
   and senator classifications. Treccani confirms the Regia Marina career and
   1919–21 Navy ministry. See <https://www.treccani.it/enciclopedia/giovanni-sechi/>.
+- Ownership disposition: `rejected_external_mod_owner`; the parent scan found
+  the active Kaiserreich Sardinia character id `SRD_giovanni_sechi`.
 
 ## Blocked high-fit command leads (no local bitstream copied)
 
@@ -72,36 +78,40 @@ source gate. They remain evidence only; no substitute portrait was invented.
 
 ## Ownership gate
 
-This subagent did not read runtime gameplay files, vanilla files, or other-mod
-implementation roots. A non-runtime documentation scan found no existing
-`Adalberto`, `Eugenio`, or `Duca di Bergamo` references, but that is not an
-ownership clearance. The parent must scan the active vanilla character/history,
-current Chaos Redux character/GFX roots, and installed other-mod roots for
-exact and variant names before accepting either master. Known Savoy collisions
-from the preceding ARX handoff include Aimone, Amedeo, Filiberto, and
-Ferdinando variants; do not infer that Adalberto or Sechi are collision-free.
+The parent completed the required exact/variant ownership scan across current
+Chaos Redux, vanilla Hearts of Iron IV, Kaiserreich workshop mod `1521695605`,
+and approved workshop mods `2265420196` and `1458561226`. It found no active
+Adalberto owner. It found Giovanni Sechi as the active Kaiserreich Sardinia
+character `SRD_giovanni_sechi`; Sechi is therefore
+`rejected_external_mod_owner` and may not be cloned into ARX. The exact terms,
+roots, known Savoy collisions, and candidate dispositions are preserved in the
+[ownership and candidate log](search_notes/ownership_and_candidate_log.md).
 
 ## Parent handoff
 
-1. Keep the ARX crown route fail-closed until the owner scan and separate
-   rights/visual review approve Adalberto (or another defensible dynastic
-   person). Do not wire the source merely because Commons says `PD-Italy`.
+1. Keep the ARX crown route fail-closed until a separate rights/visual review
+   approves Adalberto (or another defensible dynastic person). The owner scan
+   is clear, but Commons `PD-Italy` does not itself establish the missing US
+   publication condition.
 2. For `ARX_gavino_piras`, Adalberto is the only local source master in this
    retry with both a 1935-era bitstream and a documented active general role;
    Sechi is an explicitly weaker naval/council alternative. The parent may
    instead keep the command role blocked and pursue a rights-clear Solinas or
    other Sardinian commander review.
-3. Emilio Lussu remains the existing civic candidate and is not changed by
-   this package. No portrait was copied for Lussu, Marras, or Solinas.
-4. If a separate review accepts a master, process it only through the approved
+3. Do not process or wire Giovanni Sechi: active Kaiserreich ownership rejects
+   the candidate. Emilio Lussu remains the existing civic candidate and is not
+   changed by this package. No portrait was copied for Lussu, Marras, or Solinas.
+4. If a separate review accepts Adalberto, process it only through the approved
    native leader-portrait pipeline. This package intentionally has no processed
-   PNG, DDS, review sheet, or GFX handoff.
+   PNG, DDS, review sheet, final sprite, or runtime texture path. The required
+   [documentation-only GFX handoff](gfx_handoff.md) records every such path as
+   deferred.
 
 ## Simplifications / blockers
 
 - No fully source-ready ARX command or crown replacement is claimed. Adalberto
-  and Sechi remain `needs_user_review` because of US-rights, visual-framing,
-  and ownership gates.
+  remains `needs_user_review` because its US-publication evidence and visual
+  approval are unresolved. Sechi is `rejected_external_mod_owner`.
 - Villa Santa and Pizzolato are historically excellent Sardinian command leads
   but are blocked by copyright/unclear reuse and were not copied.
 - No generated, generic, modern, female, invented, or fictional replacement was
