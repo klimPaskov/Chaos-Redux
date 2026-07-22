@@ -299,6 +299,10 @@ review; their approved `156x210` PNGs are converted and wired to the existing
 AGX sprites, while rejected Reenalda candidate 01 remains evidence only. IW-007
 passes its fresh post-wiring country-package audit and is compile-time attested
 beside IW-004; all live allocation and transaction gates remain mandatory.
+The IW-010 Willy Schmelcher trial is retained as rejected provenance only: its
+independent review found facial-identity drift and rejected the unsourced
+civilian-suit substitution, so no DDS, runtime identity, sprite, or localisation
+change is authorized from that trial.
 Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
 real-person restyling is withdrawn. The deterministic Solinas/Harpe finish

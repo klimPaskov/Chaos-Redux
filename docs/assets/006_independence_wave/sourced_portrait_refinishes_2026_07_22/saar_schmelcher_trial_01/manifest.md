@@ -2,8 +2,9 @@
 
 Date: 2026-07-22
 
-Status: `needs_independent_visual_audit`; no DDS or runtime overwrite is
-authorized by this package.
+Status: `rejected_independent_visual_audit`; no DDS or runtime overwrite is
+authorized by this package. The source and trial remain provenance evidence
+only.
 
 This package applies the built-in ImageGen identity-preserving edit workflow to
 an unchanged, sourced 1938 portrait of the real male Willy Schmelcher. Saar is a
@@ -57,16 +58,17 @@ authorize a fictional or substitute identity.
   `contact_sheets/source_result_style_comparison.png`; SHA-256
   `0899be676a31d8e22c3fc6afb28e184fbde6463389a6384e5b2805574e4e6c3e`.
 
-## Audit boundary
+## Independent audit disposition
 
-An independent reviewer must compare the source, raw result, and native PNG for
-the exact same-person likeness, apparent age, hairline, eyebrows, eyes, nose,
-moustache, jaw, ears, expression, crop, and authentic HOI4 painted finish. The
-review must also decide whether the disclosed civilian-suit adjustment remains
-acceptable for the industrial-security role. Fail closed if the face reads as
-a generic substitute or if the clothing adjustment is not acceptable. Do not
-create a DDS, rename the runtime character, or change the sprite until that
-review passes.
+The independent review in
+`docs/plans/006_independence_wave_plans/subagent_handoffs/006_saar_schmelcher_trial01_visual_audit_2026-07-22.md`
+rejected this trial. Direct comparison found identity drift in the brows, eyes
+and gaze, nose tip, moustache, jaw, and apparent age. Replacing the sourced
+uniform with a civilian suit was also not accepted as source-preserving role
+evidence. The processed PNG is therefore fail-closed provenance only: do not
+convert it to DDS, overwrite the runtime texture, rename the runtime character,
+or change the sprite. A later attempt requires another attributed photograph
+or a source-preserving treatment that passes a fresh independent review.
 
 No advisor, dossier, `_small`, female, flag, focus, decision, or gameplay asset
 is created here.
