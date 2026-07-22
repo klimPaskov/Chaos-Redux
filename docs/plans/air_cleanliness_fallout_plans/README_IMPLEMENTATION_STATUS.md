@@ -231,3 +231,11 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 ## Simplifications and fallbacks
 
 No fallback is approved. The exact province sweep, seven-day delay, full successor rewrite, player continuation, and postcondition-gated map return remain required. Missing work is reported as blocked rather than presented as complete.
+
+## Ash-week orientation surface correction
+
+The accepted capital-condition and character-or-institution blocks now exist at
+`chaosx.fallout.66` through `.69` and `.78` through `.81`. All 23 Ash-week
+identities are defined, but none are release-floor credit. The caller, complete
+regional and archetype coverage, candidate installation surfaces, event logs,
+event details, audits, and runtime proof remain open.

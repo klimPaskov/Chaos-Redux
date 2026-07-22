@@ -190,3 +190,13 @@ reservation and ordinary-receipt consumption succeed.
 The authoritative total reserved documentation identities is `72`, combining
 `23` Ash-week identities with `49` living-world identities. The countable
 living-world release-floor total remains `0 of 660`.
+
+## Ash-week capital and character completion correction
+
+The capital condition blocks `66` through `69` and the character or institution
+blocks `78` through `81` are now defined in the dedicated Fallout event file.
+The authoritative Ash-week defined-block count is therefore `23` of `23`, but
+all 23 remain dormant and uncounted until callers, event logs, event details,
+complete regional and archetype coverage, candidate installation surfaces,
+manual audits, and the host-authority gate are complete. The countable
+Fallout living-world release-floor total remains `0 of 660`.
