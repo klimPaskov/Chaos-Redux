@@ -75,8 +75,12 @@ Route-specific political transitions and bilateral former-host diplomacy are
 implemented: the exact host chooses recognition, association, or reclamation
 conflict, and the receipt is written only after host acceptance or a paid
 post-crisis ratification. Opening institutional politics and the exact
-Prempeh/post-cutover-Siddiq leader paths are implemented without granting
-runtime attestation. No advisor asset was created or requested.
+Prempeh and date-aware Siddiq leader paths are implemented without granting
+runtime attestation. Only Prempeh currently has compliant sourced portrait
+evidence: vanilla maps Siddiq to generic
+`gfx/leaders/Africa/Portrait_Africa_Generic_3.dds`, so sourced real-person
+portraits for Hasan, Siddiq, and all four Asante/Sokoto commanders remain
+blocking requirements. No advisor asset was created or requested.
 
 ## Design simplifications
 

@@ -13,6 +13,14 @@
 > parent implemented an empty compile-time content-attestation set. This note
 > supersedes every later statement in this handoff that says IW-173 may remain.
 
+> **Second parent correction after vanilla precedent inspection:** vanilla
+> `_leader_portraits.gfx` maps `GFX_portrait_SOK_siddiq_abubakar` to
+> `gfx/leaders/Africa/Portrait_Africa_Generic_3.dds`. Post-cutover Siddiq is
+> therefore not a sourced real-person portrait. This external vanilla sprite is
+> outside the 45 custom DDS inventory, but it is inside Event 6's live
+> leadership surface and must be replaced before IW-098 admission. This note
+> supersedes any later wording that treats vanilla Siddiq as compliant.
+
 ## Gate applied
 
 Event 006 now applies the portrait source-mode gate from

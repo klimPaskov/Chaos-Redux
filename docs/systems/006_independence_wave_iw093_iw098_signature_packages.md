@@ -223,8 +223,10 @@ and painterly flag artwork are not accepted.
 Four military-only commander portraits and their true 65x67 army miniatures
 are registered in `interface/006_independence_wave_iw093_iw098_portraits.gfx`:
 Kwame Frimpong and Kwaku Ntim for Asante, and Umaru Gwadabawa and Bello Rabah
-for Sokoto. All four are explicitly male, visually distinct, and use the
-project's HOI4 portrait treatment. They do not expose political staff roles.
+for Sokoto. Their gameplay roles remain implemented, but the current images
+were generated for grounded polities and therefore cannot satisfy visual
+readiness. Each requires a sourced real-person replacement and matching
+source-derived miniature. They do not expose political staff roles.
 
 Independence Wave has no advisor icons, advisor portraits, advisor sprites,
 advisor dossiers, or advisor asset manifests. Country-leader portraits and
@@ -237,12 +239,15 @@ derivative of an approved full commander portrait.
 
 - preserve the approved sourced, identity-preserving male Prempeh II portrait,
   sprite, and dormant character from `e0e85c832`;
-- source and wire a faithful pre-cutover Hasan dan Mu'azu Ahmadu portrait;
-- reuse the verified vanilla Siddiq surface only for the post-cutover branch;
+- source and wire faithful portraits of Hasan dan Mu'azu Ahmadu and Siddiq
+  Abubakar III; vanilla Siddiq is only a generic African portrait and is not
+  acceptable likeness evidence;
+- replace all four generated Asante/Sokoto commander portraits and miniatures
+  with sourced real-person treatments;
 - verify and reconstruct exact period Asante and Sokoto flag designs;
 - preserve the implemented route-specific political transitions, exact-host
   bilateral settlement events, post-crisis ratification, opening institutional
-  politics, Prempeh/post-cutover-Siddiq leader paths, command rosters, and
+  politics, Prempeh/date-aware-Siddiq leader paths, command rosters, and
   generation-bound starting forces;
 - complete FORM-24/FORM-25 family identities, territory, consent, and member
   policy;
