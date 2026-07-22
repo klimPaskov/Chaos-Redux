@@ -81,11 +81,13 @@ they are not current routing documents.
   surface are implemented.
 - FORM-01 through FORM-05 are implemented, source-audited, and readiness-
   promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
-  fail-closed, while FORM-48 is now readiness-attested and promoted.
+  fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM/
+  HBX carrier set has no currently admitted country and cannot form.
 - IW-001/002/004/006/007/008/009/010, IW-017/018/019, IW-043/058,
-  IW-179, and IW-184 retain implemented gameplay adapters, but their current
-  generated grounded-polity portraits withdraw visual readiness and runtime
-  content attestation.
+  IW-173/179/184, IW-093, and IW-098 retain implemented gameplay adapters, but
+  their generated or generic grounded-polity portraits withdraw visual
+  readiness and runtime content attestation. The compile-time package content-
+  attestation set is empty.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched. Their
   packages still require sourced replacements for every other live leader and
   commander role.
@@ -187,35 +189,39 @@ satisfy the synchronized frozen plan.
 - Installed-map binding and installed-mod tag audits.
 - FORM-01 through FORM-05 implementation, tags, flags, identity aliases, and
   readiness promotion.
-- Male-HOI4 portrait regeneration and reviewed acceptance under the
-  2026-07-18 package, plus explicit custom-advisor-icon withdrawal. The
-  2026-07-15 and 2026-07-16 fictional portrait and army-small packages are
-  superseded.
+- The 2026-07-18 male portrait regeneration remains historical production
+  evidence, not current readiness authority. The 2026-07-22 sourced-only gate
+  supersedes every generated portrait for a grounded country. Custom Event 6
+  advisor-icon withdrawal remains final.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
-- AGX's coordinated static promotion remains admitted. AFX received its missing
-  Level 2 Sambre-Meuse lane, three incidents, unique art, and a fresh exact-ID
-  audit before admission was restored.
+- AGX gameplay and AFX's Level 2 Sambre-Meuse lane, three incidents, and exact-ID
+  audit remain implemented. Their generated portrait rosters withdrew both
+  visual admissions until sourced replacement and re-audit.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
-  implementation evidence; the 2026-07-18 runtime ledger is current.
-- Bounded IW-004 BRI and IW-010 AJX package implementation and commit-readiness
-  closeout in `7368cc0bf`, followed by their exact promotions in `5d17e55b3`
-  and `f64d9640e`.
-- RHI and BAY Level 2 lanes, incidents, unique art, and exact admission, with
-  RHI's FORM-04 delegation gate and BAY's package-owned South German settlement.
-- SCO/WLS congress preparation repair in `4884c0ef1`, followed by exact IW-001
-  and IW-002 content-attestation and SCN-008 promotion.
-- Mediterranean IW-017 through IW-019 packages, eight male HOI4-style large
-  portraits, historical flat flag families for real countries, and sovereign
-  charter-driven FORM-05 implementation, followed by country, focus,
-  decision/mission, localisation, collision, host-survival, and admission
-  audits. No advisor icons were created.
-- Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 package, focus/icon,
-  architecture, decision/mission, localisation, country-package, flag/portrait,
-  and postformation PASS audits, followed by the 2026-07-18 parent promotion.
-  HAW/FSM remain sovereign autonomous members; HBX carries PFX. No custom Event
-  006 advisor icons/assets/sprites/portrait blocks were created.
+  implementation evidence only; generated commander miniatures must be replaced
+  from approved sourced full portraits.
+- Bounded IW-004 BRI and IW-010 AJX gameplay and commit-readiness closeout remain
+  implemented. Their former exact promotions are withdrawn pending sourced
+  portrait replacement.
+- RHI and BAY Level 2 lanes, incidents, FORM-04 delegation, and the South German
+  settlement remain implemented. Protected Matthes and Rupprecht remain valid;
+  the other generated roster members keep both packages closed.
+- SCO/WLS congress preparation repair remains implemented. Their former exact
+  content attestations and SCN-008 admissions are withdrawn pending sourced
+  portrait replacement.
+- Mediterranean IW-017 through IW-019 gameplay, historical flat flag families,
+  and sovereign charter-driven FORM-05 remain implemented and audited. Their
+  generated grounded-polity portraits are no longer readiness evidence, so all
+  three country admissions are withdrawn. No advisor icons were created.
+- Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,
+  architecture, decision/mission, localisation, flags, and postformation logic
+  remain implemented. HAW's generic vanilla portrait and the generated FSM/HBX
+  officeholders withdraw the country admissions, making FORM-48 unreachable
+  until sourced replacements pass. HAW/FSM remain sovereign autonomous members
+  and HBX remains the PFX carrier contract. No custom Event 006 advisor
+  icons/assets/sprites/portrait blocks were created.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
   `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
   and distinct standard versus major focus rewards.
