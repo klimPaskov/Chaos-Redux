@@ -107,8 +107,8 @@ No active allocator calls the begin or finalize effect. No active producer creat
 
 The future allocator must use a persistent generation-bound plan, cursor, and per-row committed stage because Clausewitz exposes no atomic rollback. The current initializer is only the transaction boundary and does not yet supply that resumable allocator. The allocator must reserve humans and event packages first, prove every target, state, and capital unique before mutation, capture or materialize the target, transfer exact planned states, validate ownership and control, set the capital, apply identity and gameplay packages, write the resolution-specific provenance and reciprocal conflict receipts, then call the guarded finalizer. Static existing tags and approved releasables may be used only after the live conflict proof. Dynamic creation remains disabled until capacity, reservation, recycling, save, and multiplayer behavior are proven.
 
-- The inventory does not select a Fallout country package, regional package, final successor archetype, conflict result, or cleanup owner.
-- No Fallout successor focus, character, idea, decision, AI, country localisation, or flag package is present.
+- The inventory does not select a regional package, final successor archetype, conflict result, or cleanup owner.
+- The inventory does not select or commit a Fallout country package. A dormant `NZL` pilot now defines successor focus, character, idea, decision, AI, country localisation, and flag surfaces, but those surfaces remain package-gated and outside allocation. They are not an activated successor or an ordinary event-owned package.
 - The accepted 99-successor matrix remains a design catalogue. It does not provide approved exact state packages, ordered capital choices, source-tag conflict dispositions, or complete package assignments for allocation.
 
 The accepted matrix rows now have stable script ids 1 through 99 in `constant:fallout_country_memory.*`. Those ids preserve matrix identity only. They do not approve a pilot roster, activate a tag, or fill the missing state, capital, package, and asset decisions.
@@ -152,7 +152,7 @@ No free tag, dynamic slot, clone identity, or replacement candidate is reserved 
 
 `NZL` is the smallest reviewed dormant-package candidate. This finding does not establish activation readiness.
 
-The candidate is narrow because it uses an existing tag, five exact NZL-owned core states, current capital 284, reviewed second capital 1079, existing vanilla country content, an already implemented maritime archetype classifier, and accepted country-memory direction. No bespoke Chaos Redux event package currently owns NZL. A dormant implementation would not require a new `common/country_tags` entry or a replacement `history/countries` file.
+The candidate is narrow because it uses an existing tag, five exact NZL-owned core states, current capital 284, reviewed second capital 1079, existing vanilla country content, an already implemented maritime archetype classifier, and accepted country-memory direction. No bespoke Chaos Redux event package currently owns NZL. That remains true for ordinary event ownership. The dormant Fallout pilot is source content only. It does not create an event-owned country, state claim, assignment receipt, or activation caller. A dormant implementation would not require a new `common/country_tags` entry or a replacement `history/countries` file.
 
 The dormancy contract is:
 

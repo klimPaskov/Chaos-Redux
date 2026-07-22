@@ -8860,6 +8860,686 @@ country_event = {
 	}
 }
 
+# ---------------------------------------------------------------------------
+# New Zealand Lifeboat State country-memory pilot
+# ---------------------------------------------------------------------------
+# Suffixes 127 through 152 are manually written dormant content. Focuses in the
+# generation-bound NZL package are their only callers. Suffixes 100 through 126
+# remain reserved for the Fallout living-world scheduler.
+
+# Harbor Law opening chain
+country_event = {
+	id = chaosx.fallout.127
+	title = chaosx.fallout.127.t
+	desc = chaosx.fallout.127.d
+	picture = GFX_report_event_fallout_nzl_opening
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		NOT = { fallout_nzl_opening_chain_is_current = yes }
+	}
+	immediate = {
+		set_country_flag = fallout_nzl_opening_chain_active
+		set_variable = { fallout_nzl_opening_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+	}
+
+	option = {
+		name = chaosx.fallout.127.a
+		trigger = { NOT = { has_political_power < constant:fallout_nzl_cost.political_power_low } }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		fallout_nzl_pay_opening_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.short_delay_days }
+		country_event = { id = chaosx.fallout.130 days = fallout_nzl_event_delay_days }
+		ai_chance = { base = constant:fallout_nzl_ai.normal }
+	}
+	option = {
+		name = chaosx.fallout.127.b
+		trigger = { NOT = { command_power < constant:fallout_nzl_cost.command_power_low } }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		fallout_nzl_pay_opening_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.short_delay_days }
+		country_event = { id = chaosx.fallout.130 days = fallout_nzl_event_delay_days }
+		ai_chance = { base = constant:fallout_nzl_ai.normal }
+	}
+	option = {
+		name = chaosx.fallout.127.c
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		fallout_nzl_pay_opening_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.short_delay_days }
+		country_event = { id = chaosx.fallout.130 days = fallout_nzl_event_delay_days }
+		ai_chance = { base = constant:fallout_nzl_ai.normal }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.128
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_nzl_lifeboat_package_is_current = yes
+		NOT = { fallout_nzl_opening_chain_is_current = yes }
+	}
+	immediate = {
+		set_country_flag = fallout_nzl_opening_chain_active
+		set_variable = { fallout_nzl_opening_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+		if = {
+			limit = {
+				has_war = yes
+				NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			}
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_nzl_parliament_trust < constant:fallout_nzl_value.strained }
+				NOT = { has_political_power < constant:fallout_nzl_cost.political_power_low }
+			}
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		}
+		else = { set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts } }
+		fallout_nzl_pay_opening_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.short_delay_days }
+		country_event = { id = chaosx.fallout.130 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.129
+	title = chaosx.fallout.129.t
+	desc = chaosx.fallout.129.d
+	picture = GFX_report_event_fallout_nzl_opening
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_opening_chain_is_current = yes
+		fallout_nzl_opening_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.129.a country_event = { id = chaosx.fallout.131 } }
+}
+
+country_event = {
+	id = chaosx.fallout.130
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { always = yes }
+	immediate = {
+		if = {
+			limit = {
+				fallout_nzl_lifeboat_package_is_current = yes
+				fallout_nzl_opening_chain_is_current = yes
+			}
+			fallout_nzl_calculate_opening_result = yes
+			fallout_nzl_apply_opening_result = yes
+			fallout_nzl_record_opening_event_log = yes
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.129 } }
+			else = { country_event = { id = chaosx.fallout.132 } }
+		}
+		else = { fallout_nzl_close_opening_chain = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.131
+	title = chaosx.fallout.131.t
+	desc = chaosx.fallout.131.d
+	picture = GFX_report_event_fallout_nzl_opening
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_opening_chain_is_current = yes
+		fallout_nzl_opening_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.131.a country_event = { id = chaosx.fallout.132 } }
+}
+
+country_event = {
+	id = chaosx.fallout.132
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { tag = NZL }
+	immediate = { fallout_nzl_close_opening_chain = yes }
+}
+
+# Lifeboat Morality and Dairy Rations
+country_event = {
+	id = chaosx.fallout.133
+	title = chaosx.fallout.133.t
+	desc = chaosx.fallout.133.d
+	picture = GFX_report_event_fallout_nzl_domestic
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		NOT = { fallout_nzl_domestic_chain_is_current = yes }
+	}
+	immediate = {
+		set_country_flag = fallout_nzl_domestic_chain_active
+		set_variable = { fallout_nzl_domestic_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+	}
+	option = {
+		name = chaosx.fallout.133.a
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		fallout_nzl_pay_domestic_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+		country_event = { id = chaosx.fallout.136 days = fallout_nzl_event_delay_days }
+	}
+	option = {
+		name = chaosx.fallout.133.b
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		fallout_nzl_pay_domestic_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+		country_event = { id = chaosx.fallout.136 days = fallout_nzl_event_delay_days }
+	}
+	option = {
+		name = chaosx.fallout.133.c
+		trigger = { NOT = { has_political_power < constant:fallout_nzl_cost.political_power_medium } }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		fallout_nzl_pay_domestic_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+		country_event = { id = chaosx.fallout.136 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.134
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_nzl_lifeboat_package_is_current = yes NOT = { fallout_nzl_domestic_chain_is_current = yes } }
+	immediate = {
+		set_country_flag = fallout_nzl_domestic_chain_active
+		set_variable = { fallout_nzl_domestic_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+		if = {
+			limit = { fallout_nzl_food_is_critical = yes }
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_nzl_parliament_trust < constant:fallout_nzl_value.stable } }
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		}
+		else_if = {
+			limit = { NOT = { has_political_power < constant:fallout_nzl_cost.political_power_medium } }
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		}
+		else = { set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger } }
+		fallout_nzl_pay_domestic_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+		country_event = { id = chaosx.fallout.136 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.135
+	title = chaosx.fallout.135.t
+	desc = chaosx.fallout.135.d
+	picture = GFX_report_event_fallout_nzl_domestic
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_domestic_chain_is_current = yes
+		fallout_nzl_domestic_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.135.a country_event = { id = chaosx.fallout.137 } }
+}
+
+country_event = {
+	id = chaosx.fallout.136
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { always = yes }
+	immediate = {
+		if = {
+			limit = {
+				fallout_nzl_lifeboat_package_is_current = yes
+				fallout_nzl_domestic_chain_is_current = yes
+			}
+			fallout_nzl_calculate_domestic_result = yes
+			fallout_nzl_apply_domestic_result = yes
+			fallout_nzl_record_domestic_event_log = yes
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.135 } }
+			else = { country_event = { id = chaosx.fallout.138 } }
+		}
+		else = { fallout_nzl_close_domestic_chain = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.137
+	title = chaosx.fallout.137.t
+	desc = chaosx.fallout.137.d
+	picture = GFX_report_event_fallout_nzl_domestic
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_domestic_chain_is_current = yes
+		fallout_nzl_domestic_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.137.a country_event = { id = chaosx.fallout.138 } }
+}
+
+country_event = {
+	id = chaosx.fallout.138
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { tag = NZL }
+	immediate = { fallout_nzl_close_domestic_chain = yes }
+}
+
+# Pacific bilateral contact
+country_event = {
+	id = chaosx.fallout.139
+	title = chaosx.fallout.139.t
+	desc = chaosx.fallout.139.d
+	picture = GFX_report_event_fallout_nzl_external
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_external_chain_is_current = yes
+	}
+	immediate = {
+		save_global_event_target_as = fallout_nzl_external_owner_target
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+		clear_variable = fallout_nzl_partner_response
+	}
+	option = {
+		name = chaosx.fallout.139.a
+		trigger = {
+			fallout_nzl_external_transaction_is_current = yes
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+		}
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		fallout_nzl_pay_external_choice_cost = yes
+		event_target:fallout_nzl_external_partner_target = {
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.141 } }
+			else = { country_event = { id = chaosx.fallout.142 } }
+		}
+	}
+	option = {
+		name = chaosx.fallout.139.b
+		trigger = {
+			fallout_nzl_external_transaction_is_current = yes
+			NOT = { has_political_power < constant:fallout_nzl_cost.political_power_medium }
+		}
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		fallout_nzl_pay_external_choice_cost = yes
+		event_target:fallout_nzl_external_partner_target = {
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.141 } }
+			else = { country_event = { id = chaosx.fallout.142 } }
+		}
+	}
+	option = {
+		name = chaosx.fallout.139.c
+		trigger = { fallout_nzl_external_transaction_is_current = yes }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		fallout_nzl_pay_external_choice_cost = yes
+		event_target:fallout_nzl_external_partner_target = {
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.141 } }
+			else = { country_event = { id = chaosx.fallout.142 } }
+		}
+	}
+	option = {
+		name = chaosx.fallout.139.e
+		trigger = { fallout_nzl_external_no_partner_is_current = yes }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.failure }
+		fallout_nzl_pay_external_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+		country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.140
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_nzl_lifeboat_package_is_current = yes fallout_nzl_external_chain_is_current = yes }
+	immediate = {
+		save_global_event_target_as = fallout_nzl_external_owner_target
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+		clear_variable = fallout_nzl_partner_response
+		if = {
+			limit = { fallout_nzl_external_no_partner_is_current = yes }
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+			set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.failure }
+			fallout_nzl_pay_external_choice_cost = yes
+			set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+			country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+		}
+		else = {
+			if = {
+				limit = {
+					has_country_flag = fallout_nzl_humanitarian_route
+					NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+				}
+				set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+			}
+			else_if = {
+				limit = {
+					has_country_flag = fallout_nzl_isolation_route
+					NOT = { has_political_power < constant:fallout_nzl_cost.political_power_medium }
+				}
+				set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+			}
+			else = { set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts } }
+			fallout_nzl_pay_external_choice_cost = yes
+			event_target:fallout_nzl_external_partner_target = {
+				if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.141 } }
+				else = { country_event = { id = chaosx.fallout.142 } }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.141
+	title = chaosx.fallout.141.t
+	desc = chaosx.fallout.141.d
+	picture = GFX_report_event_fallout_nzl_external
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		has_event_target = fallout_nzl_external_owner_target
+		event_target:fallout_nzl_external_owner_target = { fallout_nzl_external_transaction_is_current = yes }
+	}
+	option = {
+		name = chaosx.fallout.141.a
+		set_country_flag = fallout_nzl_partner_accepted_passage
+		set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+		event_target:fallout_nzl_external_owner_target = {
+			set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.success }
+			set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+			country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+		}
+	}
+	option = {
+		name = chaosx.fallout.141.b
+		set_country_flag = fallout_nzl_partner_restricted_passage
+		set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+		event_target:fallout_nzl_external_owner_target = {
+			set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.partial }
+			set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+			country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+		}
+	}
+	option = {
+		name = chaosx.fallout.141.c
+		set_country_flag = fallout_nzl_partner_rejected_passage
+		set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+		event_target:fallout_nzl_external_owner_target = {
+			set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.failure }
+			fallout_nzl_record_hostile_external_rejection = yes
+			set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+			country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.142
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		has_event_target = fallout_nzl_external_owner_target
+		event_target:fallout_nzl_external_owner_target = { fallout_nzl_external_transaction_is_current = yes }
+	}
+	immediate = {
+		if = {
+			limit = { has_war_with = event_target:fallout_nzl_external_owner_target }
+			set_country_flag = fallout_nzl_partner_rejected_passage
+			set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+			event_target:fallout_nzl_external_owner_target = {
+				set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.failure }
+				fallout_nzl_record_hostile_external_rejection = yes
+			}
+		}
+		else_if = {
+			limit = { has_government = democratic }
+			set_country_flag = fallout_nzl_partner_accepted_passage
+			set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+			event_target:fallout_nzl_external_owner_target = { set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.success } }
+		}
+		else = {
+			set_country_flag = fallout_nzl_partner_restricted_passage
+			set_variable = { fallout_nzl_partner_response_generation = global.fallout_transition_generation }
+			event_target:fallout_nzl_external_owner_target = { set_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.partial } }
+		}
+		event_target:fallout_nzl_external_owner_target = {
+			set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.standard_delay_days }
+			country_event = { id = chaosx.fallout.144 days = fallout_nzl_event_delay_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.143
+	title = chaosx.fallout.143.t
+	desc = chaosx.fallout.143.d
+	picture = GFX_report_event_fallout_nzl_external
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_external_chain_is_current = yes
+		fallout_nzl_external_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.143.a country_event = { id = chaosx.fallout.145 } }
+	option = {
+		name = chaosx.fallout.143.b
+		trigger = {
+			fallout_nzl_external_transaction_is_current = yes
+			NOT = { has_country_flag = fallout_nzl_foreign_basing_ever_granted }
+		}
+		fallout_nzl_grant_foreign_basing_concession = yes
+		custom_effect_tooltip = chaosx.fallout.143.b.tt
+		country_event = { id = chaosx.fallout.145 }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.144
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { always = yes }
+	immediate = {
+		if = {
+			limit = {
+				fallout_nzl_lifeboat_package_is_current = yes
+				fallout_nzl_external_chain_is_current = yes
+			}
+			fallout_nzl_calculate_external_result = yes
+			fallout_nzl_apply_external_result = yes
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.fallout.143 }
+			}
+			else = {
+				if = {
+					limit = {
+						has_country_flag = fallout_nzl_isolation_route
+						fallout_nzl_external_transaction_is_current = yes
+						NOT = { has_country_flag = fallout_nzl_foreign_basing_ever_granted }
+						check_variable = { fallout_nzl_sea_lane_security < constant:fallout_nzl_value.stable }
+						OR = {
+							check_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.partial }
+							check_variable = { fallout_nzl_partner_response = constant:fallout_nzl_chain_result.success }
+						}
+					}
+					fallout_nzl_grant_foreign_basing_concession = yes
+				}
+				country_event = { id = chaosx.fallout.146 }
+			}
+		}
+		else = { fallout_nzl_close_external_chain = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.145
+	title = chaosx.fallout.145.t
+	desc = chaosx.fallout.145.d
+	picture = GFX_report_event_fallout_nzl_external
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_external_result_is_current = yes
+	}
+	option = { name = chaosx.fallout.145.a country_event = { id = chaosx.fallout.146 } }
+}
+
+country_event = {
+	id = chaosx.fallout.146
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { tag = NZL }
+	immediate = { fallout_nzl_close_external_chain = yes }
+}
+
+# Year 10 identity
+country_event = {
+	id = chaosx.fallout.147
+	title = chaosx.fallout.147.t
+	desc = chaosx.fallout.147.d
+	picture = GFX_report_event_fallout_nzl_late
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_nzl_lifeboat_package_is_current = yes NOT = { fallout_nzl_late_chain_is_current = yes } }
+	immediate = {
+		set_country_flag = fallout_nzl_late_chain_active
+		set_variable = { fallout_nzl_late_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+	}
+	option = {
+		name = chaosx.fallout.147.a
+		trigger = { NOT = { has_political_power < constant:fallout_nzl_cost.political_power_high } }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		fallout_nzl_pay_late_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.long_delay_days }
+		country_event = { id = chaosx.fallout.150 days = fallout_nzl_event_delay_days }
+	}
+	option = {
+		name = chaosx.fallout.147.b
+		trigger = { NOT = { command_power < constant:fallout_nzl_cost.command_power_medium } }
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		fallout_nzl_pay_late_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.long_delay_days }
+		country_event = { id = chaosx.fallout.150 days = fallout_nzl_event_delay_days }
+	}
+	option = {
+		name = chaosx.fallout.147.c
+		set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts }
+		fallout_nzl_pay_late_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.long_delay_days }
+		country_event = { id = chaosx.fallout.150 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.148
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_nzl_lifeboat_package_is_current = yes NOT = { fallout_nzl_late_chain_is_current = yes } }
+	immediate = {
+		set_country_flag = fallout_nzl_late_chain_active
+		set_variable = { fallout_nzl_late_chain_generation = global.fallout_transition_generation }
+		clear_variable = fallout_nzl_chain_choice
+		clear_variable = fallout_nzl_chain_result
+		if = {
+			limit = {
+				has_country_flag = fallout_nzl_humanitarian_route
+				NOT = { has_political_power < constant:fallout_nzl_cost.political_power_high }
+			}
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.open_ledger }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = fallout_nzl_isolation_route
+				NOT = { command_power < constant:fallout_nzl_cost.command_power_medium }
+			}
+			set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.guarded_berths }
+		}
+		else = { set_variable = { fallout_nzl_chain_choice = constant:fallout_nzl_chain_choice.local_compacts } }
+		fallout_nzl_pay_late_choice_cost = yes
+		set_temp_variable = { fallout_nzl_event_delay_days = constant:fallout_nzl_event.long_delay_days }
+		country_event = { id = chaosx.fallout.150 days = fallout_nzl_event_delay_days }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.149
+	title = chaosx.fallout.149.t
+	desc = chaosx.fallout.149.d
+	picture = GFX_report_event_fallout_nzl_late
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_late_chain_is_current = yes
+		fallout_nzl_year_ten_order_is_current = yes
+	}
+	option = { name = chaosx.fallout.149.a country_event = { id = chaosx.fallout.151 } }
+}
+
+country_event = {
+	id = chaosx.fallout.150
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { always = yes }
+	immediate = {
+		if = {
+			limit = {
+				fallout_nzl_lifeboat_package_is_current = yes
+				fallout_nzl_late_chain_is_current = yes
+			}
+			fallout_nzl_calculate_late_result = yes
+			fallout_nzl_apply_late_result = yes
+			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.149 } }
+			else = { country_event = { id = chaosx.fallout.152 } }
+		}
+		else = { fallout_nzl_close_late_chain = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.151
+	title = chaosx.fallout.151.t
+	desc = chaosx.fallout.151.d
+	picture = GFX_report_event_fallout_nzl_late
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_nzl_lifeboat_package_is_current = yes
+		fallout_nzl_late_chain_is_current = yes
+		fallout_nzl_year_ten_order_is_current = yes
+	}
+	option = { name = chaosx.fallout.151.a country_event = { id = chaosx.fallout.152 } }
+}
+
+country_event = {
+	id = chaosx.fallout.152
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { tag = NZL }
+	immediate = { fallout_nzl_close_late_chain = yes }
+}
+
 # Event 904 is reserved for the dedicated visible countdown direction after
 # its Fallout-owned report art and public scenario row pass review.
 

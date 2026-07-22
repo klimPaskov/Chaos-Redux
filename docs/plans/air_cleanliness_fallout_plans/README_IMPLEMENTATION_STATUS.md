@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout Implementation Status
 
-Overall system status reviewed against the live working tree on 2026-07-16. The numerical approval gate was reconciled on 2026-07-18.
+Overall system status reviewed against the live working tree on 2026-07-22. The numerical approval gate was reconciled on 2026-07-18.
 
 Overall status: partial implementation with hard release blockers. This document does not claim that Fallout, the manual scenario, the world rewrite, or the player handoff is complete.
 
@@ -23,6 +23,12 @@ Fallout remains an unnumbered system package with dedicated ownership of:
 - Fallout scripted effects, triggers, constants, GUI, GFX, assets, and documentation
 - the blackout transition and post-Fallout rewrite
 - the dormant exact-province manual scenario substrate
+
+### New Zealand Lifeboat State dormant pilot
+
+The NZL pilot has dormant implementation status `PARTIAL` and completion status `FAIL`. Its source package contains 26 reserved Fallout event blocks `.127` through `.152`, 42 focuses, 18 decisions or missions, 14 ideas, six generated characters, two AI plans, and three achievements. These blocks remain outside the countable release floor, so the authoritative Fallout ledger remains `0 of 660`. Event 2 owns only Zombie Apocalypse. There is no ordinary Fallout owner, no Fallout workbook row, and no `SCN-014` row.
+
+Most NZL source and parent GFX registration is present. The Radio Service Coordinator remains blocked because v10 failed the unchanged frozen gates after 96 candidates. No DDS or sprite exists and no fallback is approved. The pilot has no activation caller. The accepted numbered sea-road correction is implemented through current-generation licensing, five-convoy fishery cycles, ten-convoy wartime patrols, one 90-day window, AI reserve behavior, and external and Year 10 score pressure. Its focused decision and mission audit found no defect. Dedicated Fallout country-memory History rows, exact stored Event Details, and the generation-isolated NZL package card are implemented without creating an ordinary Fallout event row. The offline GUI inspection service closed its transport before returning an artifact, so presentation and scope persistence remain unobserved. Vanilla NZL AI plan retirement, the allocator, Samoa state 726 and Aotearoa overlap dispositions, host authority, exact province sweep, map return, and runtime proof remain unresolved. HOI4 has not been launched. The pilot is not release ready and must remain dormant.
 
 ## Environment and proof basis
 
