@@ -10,7 +10,7 @@ The opening uses one exact ordinary Fallout receipt. Its target must be a state 
 
 The opening copies the state target into the country registry and records `fallout_event_114_corridor_state_id`, `fallout_event_114_rail_registry_generation`, and `fallout_event_114_rail_registry_owner`. The state stores `fallout_event_114_registry_generation`, `fallout_event_114_registry_owner`, and `fallout_event_114_rail_registry_committed`.
 
-Every delayed result and cleanup trigger rechecks the generation, owner, state flag, state identity row, durable resource row, state owner, water-independent Air Winter snapshot, and produced source kind. The result and callback effects run only after their exact delayed receipt has been terminalized. The result cleanup receipt releases its own row and keeps the corridor registry alive until the callback is resolved. Final cleanup clears the registry after both rows are released, or after callback scheduling fails. Durable rail memories remain after cleanup.
+Every delayed result and cleanup trigger rechecks the generation, owner, state flag, state identity row, durable resource row, state owner, water-independent Air Winter snapshot, and produced source kind. The result and callback effects run only after their exact delayed receipt has been terminalized. A resolved result row remains callback-held until the callback cleanup receipt has removed its own row and prepared the exact result cleanup ticket. Final cleanup clears the registry after both rows are released, or after callback scheduling fails. Durable rail memories remain after cleanup.
 
 The rail value is read from the native state `rail_way` field. A state without a live railway level is rejected by the opening contract, so the pilot never substitutes a supply node, infrastructure value, or variable-only corridor.
 
@@ -66,6 +66,7 @@ The dedicated event image `GFX_report_event_fallout_rail_crew_twenty_seven` is b
 - All new event, modifier, history, payload, and scripted-localisation keys are present in the touched localisation surfaces.
 - The rail chain contains no scheduler activation flag, active scheduler flag, or caller.
 - The rail chain contains no zombie reference.
+- Callback cleanup order is statically reconciled in `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md`.
 - Human and hidden AI result rows share one result and callback effect path.
 - The neighbor-access branch is explicitly documented as a country and state pilot rather than a complete bilateral diplomacy chain.
 

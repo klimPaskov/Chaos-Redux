@@ -478,7 +478,6 @@ fallout_event_107_resolve_result_and_schedule_callback = {
 		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
 		fallout_event_107_apply_result_effects = yes
 		set_temp_variable = { fallout_event_requested_ticket = fallout_event_107_result_ticket }
-		fallout_event_prepare_delayed_cleanup = yes
 		set_temp_variable = { fallout_event_107_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_107_record_history = yes
 		fallout_event_107_schedule_callback = yes
@@ -487,7 +486,11 @@ fallout_event_107_resolve_result_and_schedule_callback = {
 			set_country_flag = fallout_event_107_callback_scheduled
 			set_variable = { fallout_event_107_callback_cleanup_ticket = fallout_event_transaction_ticket }
 		}
-		else = { set_country_flag = fallout_event_107_callback_schedule_error }
+		else = {
+			set_country_flag = fallout_event_107_callback_schedule_error
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_107_result_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+		}
 	}
 	clear_temp_variable = fallout_event_107_result_ticket
 	clear_temp_variable = fallout_event_107_result_mode
@@ -561,6 +564,18 @@ fallout_event_107_cleanup = {
 		else_if = {
 			limit = { check_variable = { fallout_event_107_cleanup_ticket value = fallout_event_107_callback_cleanup_ticket compare = equals } }
 			set_country_flag = fallout_event_107_callback_cleanup_released
+		}
+		if = {
+			limit = {
+				check_variable = { fallout_event_107_cleanup_ticket value = fallout_event_107_callback_cleanup_ticket compare = equals }
+				has_country_flag = fallout_event_107_callback_cleanup_released
+			}
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_107_result_cleanup_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				clr_country_flag = fallout_event_107_callback_scheduled
+			}
 		}
 		if = {
 			limit = {

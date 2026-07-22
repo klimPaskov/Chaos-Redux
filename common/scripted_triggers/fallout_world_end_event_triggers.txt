@@ -873,6 +873,24 @@ fallout_event_delayed_queue_arrays_are_aligned = {
 	check_variable = { var = fallout_event_delayed_ticket_entries^num value = fallout_event_delayed_cancellation_reason_entries^num compare = equals }
 }
 
+# Content-owned callback chains keep their resolved result row until the
+# callback cleanup has been authenticated. The generic reconciler calls this
+# only while a resolved row is selected, so the token check cannot hold an
+# unrelated delayed result.
+fallout_event_delayed_cleanup_is_deferred = {
+	check_variable = { fallout_event_reconciled_delayed_status = constant:fallout_event_queue_status.resolved }
+	OR = {
+		AND = {
+			has_country_flag = fallout_event_107_callback_scheduled
+			check_variable = { fallout_event_delayed_cleanup_token_entries^fallout_event_delayed_validation_index = constant:fallout_event_id.river_intake_cleanup }
+		}
+		AND = {
+			has_country_flag = fallout_event_114_callback_scheduled
+			check_variable = { fallout_event_delayed_cleanup_token_entries^fallout_event_delayed_validation_index = constant:fallout_event_id.rail_crew_cleanup }
+		}
+	}
+}
+
 fallout_event_bilateral_arrays_are_aligned = {
 	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_ticket_entries^num compare = equals }
 	check_variable = { var = fallout_event_bilateral_partner_entries^num value = fallout_event_bilateral_key_entries^num compare = equals }
