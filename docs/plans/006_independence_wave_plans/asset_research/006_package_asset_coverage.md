@@ -29,9 +29,11 @@ generated-institution portrait instruction formerly recorded in this ledger.
 All 206 current Event 006 registry identities are grounded in real countries,
 communities, institutions, movements, restorations, or historical claims. None
 qualifies for a generated leader portrait. A grounded package remains disabled
-until every visible leader and commander role has a rights-cleared sourced real
-male subject, a source-pixel head-and-shoulders crop, an identity-preserving
-HOI4-painted treatment, role-correct wiring, and independent review. Generated
+until every visible personal leader and commander role has a rights-cleared
+sourced real male subject, a source-pixel head-and-shoulders crop, an identity-
+preserving HOI4-painted treatment, role-correct wiring, and independent review.
+A genuinely collective leader token may instead use sourced all-male archival
+material depicting the exact body or a defensible predecessor. Generated
 one-person portraits are reserved for a later package only if both its country
 and leader are truly fictional and high-chaos. Event 006 also has no advisor,
 dossier, or `_small` portrait assets.
@@ -86,9 +88,10 @@ These packages do not have an accepted, safely attributable 1936 state flag. The
 
 The flag-production mode does not authorize portrait generation. Every package
 in this group remains sourced-only for its leader and commander roster. If no
-rights-cleared real male subject is available for an opening office, the package
-stays disabled; a generated assembly, cabinet, council, congress, or fictional
-person is not a substitute.
+rights-cleared real male subject is available for a personal office, or no
+sourced all-male archival image exists for a genuinely collective leader token,
+the package stays disabled; a generated assembly, cabinet, council, congress,
+or fictional person is not a substitute.
 
 IW-003 Cornwall; IW-005 Flanders; IW-006 Wallonia; IW-007 Frisia; IW-010 Saar; IW-011 Faroe Islands; IW-018 Sardinia; IW-019 Sicily; IW-021 Trieste Free State; IW-022 Dalmatia; IW-024 Banat; IW-025 Vojvodina; IW-027 Thrace; IW-028 Epirus; IW-032 Slavonia; IW-037 Polesia; IW-038 Ruthenia; IW-049 Mordovia; IW-061 Luristan; IW-062 Khuzestan or Arabistan; IW-063 Bakhtiari; IW-064 Circassia; IW-067 Lazistan; IW-073 Hejaz; IW-084 Kabylia; IW-086 Tripolitania; IW-087 Fezzan; IW-094 Fante; IW-123 Xhosa; IW-132 Mauritius; IW-142 Travancore; IW-145 Assam; IW-151 Minangkabau; IW-154 Bugis state; IW-156 Moluccan federation; IW-159 Shan federation; IW-162 Kachin state; IW-165 Wa state; IW-169 East Turkestan; IW-181 Acadia; IW-182 Newfoundland; IW-184 California; IW-185 Texas; IW-203 Patagonian state.
 
@@ -106,12 +109,12 @@ The following decisions prevent a weak or falsely precise claimant from being in
 
 | Package | Opening leader direction | Portrait source status |
 |---|---|---|
-| IW-075 Jabal Shammar | Rashidi restoration council; the emirate ended in 1921, so do not invent a reigning 1936 emir | Source gap; disabled pending a sourced real male officeholder |
-| IW-076 Hadhramaut | Federation council representing the relevant Hadhrami states; no single dynasty is universal | Source gap; disabled pending a sourced real male officeholder |
+| IW-075 Jabal Shammar | Rashidi restoration council; the emirate ended in 1921, so do not invent a reigning 1936 emir | Source gap; disabled pending a sourced real male officeholder or sourced all-male archival material for the exact restoration body |
+| IW-076 Hadhramaut | Federation council representing the relevant Hadhrami states; no single dynasty is universal | Source gap; disabled pending a sourced real male officeholder or sourced all-male archival material for the exact federal body |
 | IW-077 Mahra | Confirm the 1936 Al Afrar incumbent and territorial fit before using a person | Source gap; disabled pending a rights-cleared exact-role subject |
 | IW-085 Cyrenaica | Idris al-Senussi is a defensible period claimant | Cleared public-domain candidate in the source ledger |
-| IW-089 Darfur | Post-sultanate restoration council; Ali Dinar died in 1916 | Source gap; disabled pending a sourced real male officeholder |
-| IW-090 Wadai | Restoration council; do not revive a dead claimant or merge neighboring dynasties | Source gap; disabled pending a sourced real male officeholder |
+| IW-089 Darfur | Post-sultanate restoration council; Ali Dinar died in 1916 | Source gap; disabled pending a sourced real male officeholder or sourced all-male archival material for the exact restoration body |
+| IW-090 Wadai | Restoration council; do not revive a dead claimant or merge neighboring dynasties | Source gap; disabled pending a sourced real male officeholder or sourced all-male archival material for the exact restoration body |
 | IW-101 Kongo | Pedro VII is a documented 1936 Manikongo | Historically exact 1934 candidate; conditional because the Commons record explicitly lacks a United States public-domain tag |
 | IW-102 Kuba | Verify the Nyim and reign dates against a kingdom or museum source before personal assignment | Source gap; disabled until resolved |
 | IW-103 Luba | Multiple royal lineages require route ownership | Source gap; disabled pending an exact-route sourced subject |
@@ -132,14 +135,14 @@ The following decisions prevent a weak or falsely precise claimant from being in
 | IW-176 Tonga | Salote Tupou III is the period monarch, but the Event 006 male-only direction excludes her as a character or portrait | Disabled pending a sourced real male Tongan constitutional, chiefly, or civic subject whose office is not misrepresented as the monarchy |
 
 The other eleven packages in Group C remain disabled until implementation
-research identifies a dated, rights-cleared real male subject for the exact
-route. No generated provisional assembly
+research identifies a dated, rights-cleared real male subject or sourced
+all-male archival image of the exact collective body for the route. No generated provisional assembly
 or restoration council portrait is authorized.
 
 ## Group D: exact-community or institution review — 15
 
-These packages require a sourced real male leader from the exact named
-community. A fictional person or
+These packages require a sourced real male leader or sourced all-male archival
+image of the exact collective body from the named community. A fictional person or
 generated council cannot stand in for a broad real identity. The flag must
 belong to the exact named community or institution; sacred and ceremonial
 symbols are not generic state decoration.
@@ -164,8 +167,8 @@ Binding distinctions:
 
 | Package | Baseline symbol direction | Opening portrait direction |
 |---|---|---|
-| IW-043 Volga Bulgaria | Generated civic flag using documented Bolgar architectural and archaeological geometry; do not copy modern Bulgaria or invent an ancient flag | Source gap; disabled pending a sourced real male roster |
-| IW-058 Assyria | Generated 1930s council standard with explicitly attributed community motifs; distinguish Assyrian, Chaldean, Syriac, Aramean, church, and political-faction ownership | Source gap; disabled pending sourced real male subjects that preserve community distinctions |
+| IW-043 Volga Bulgaria | Generated civic flag using documented Bolgar architectural and archaeological geometry; do not copy modern Bulgaria or invent an ancient flag | Source gap; disabled pending sourced real male subjects or exact all-male institutional archival material |
+| IW-058 Assyria | Generated 1930s council standard with explicitly attributed community motifs; distinguish Assyrian, Chaldean, Syriac, Aramean, church, and political-faction ownership | Source gap; disabled pending sourced real male subjects or exact all-male institutional archival material that preserves community distinctions |
 | IW-059 Mesopotamia | Generated Baghdad civic cabinet flag grounded in interwar Iraqi civic and administrative motifs; do not disguise an Iraq flag as a new historical Mesopotamian flag | Source gap; disabled pending a sourced real male Baghdad civic subject |
 | IW-093 Asante | Treat the 1935 restoration and Asantehene institution as the evidence base; do not use the Golden Stool as free decorative clip art | Prempeh II, cleared 1935 OGL portrait |
 | IW-096 Benin | Generated Edo Benin civic/royal design grounded in court institutions; the famous captured flag has disputed ownership and must not be asserted as the national flag | Akenzua II, exact-year museum portrait, conditional pending correction or confirmation of the inconsistent United States public-domain metadata |
@@ -185,11 +188,13 @@ No package may receive final art until its row has:
 4. Creator or institution, date, license, and attribution text.
 5. A statement explaining whether the source is a flag, standard, seal, emblem, portrait, reconstruction, or contextual motif.
 6. An identity review for Groups D and E.
-7. A complete sourced real-male leader and commander plan. A grounded package
-   remains disabled wherever a source, role, rights, crop, or review gap remains.
+7. A complete sourced real-male leader and commander plan. A genuinely
+   collective leader token may use sourced all-male archival material for that
+   exact body. A grounded package remains disabled wherever a source, role,
+   rights, crop, or review gap remains.
 
 An unresolved real-person portrait is not permission to use a generic person,
 generated person, generated council, or emblem-only substitute. The package
-remains disabled until the real-male source gap is resolved and the selected
-subject passes provenance, rights, crop, HOI4 treatment, role, and independent
-review.
+remains disabled until the real-male or exact all-male institutional source gap
+is resolved and the selected source passes provenance, rights, crop, HOI4
+treatment, role, and independent review.
