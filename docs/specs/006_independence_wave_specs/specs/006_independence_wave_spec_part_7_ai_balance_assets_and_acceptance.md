@@ -494,9 +494,16 @@ Source rules:
   real institution or a sourced real period representative
 - fictional one-person leaders use generated portraits only when the country
   is truly fictional and high-chaos
+- a country that existed in whole or in part, claims continuity from a real
+  polity or institution, represents a real community, or remains plausibly
+  historical is grounded and cannot receive a generated person
 - generated high-chaos leaders use distinctive invented ceremonial dress,
   regalia, body adornment, ritual objects, altered uniforms, or other coherent
   fictional cultural motifs instead of generic portrait design
+- generated high-chaos leaders must look intentionally extraordinary; reject
+  ordinary, conventionally dressed, or interchangeable fictional officeholders
+- strange details must belong to the fictional polity's designed culture and
+  must not borrow or exaggerate sacred objects or traits of a real people
 - generated portraits do not use modern props, meme treatment, gore, or
   stereotypes or caricatures of real cultures
 - signature country routes receive priority portrait depth
