@@ -1,0 +1,759 @@
+# ============================================================================
+# CHAOS REDUX - CAPTURED BIOLOGICAL FACILITY SCRIPTED EFFECTS
+# ============================================================================
+# Inputs: exact state-control event targets or native raid variables.
+# Outputs: one state-bound four-agent payload ledger, targeted hazard schedule,
+#   exact transfers/destruction/releases, program evidence, and history records.
+# Side effects: removes/restores national payload equipment exactly once, sends
+#   captured-facility accidents through the shared ordinary lifecycle, applies
+#   source-aware Condemnation for preserved program evidence, and clears the
+#   original arsenal designation only when the captured facility is resolved.
+# It never creates a deployment decision, alternate target, inferred state,
+# global periodic pulse, deliberate-use history, or weaponized-zombie record.
+# ============================================================================
+
+# State scope.
+bio_facility_capture_recompute_total = {
+	set_variable = { bio_captured_facility_total = bio_captured_facility_anthrax }
+	add_to_variable = { bio_captured_facility_total = bio_captured_facility_plague }
+	add_to_variable = { bio_captured_facility_total = bio_captured_facility_tularemia }
+	add_to_variable = { bio_captured_facility_total = bio_captured_facility_smallpox }
+}
+
+# State scope. Caller supplies the positive temporary delay value.
+bio_facility_capture_schedule_hazard_check = {
+	if = {
+		limit = {
+			bio_facility_capture_controller_record_is_current = yes
+			bio_facility_capture_state_has_payload = yes
+			check_variable = { bio_facility_capture_delay_days > constant:bio_facility_capture_math.zero }
+			NOT = { has_state_flag = bio_captured_facility_hazard_event_scheduled }
+		}
+		set_state_flag = bio_captured_facility_hazard_event_scheduled
+		set_variable = { bio_captured_facility_hazard_due_day = global.num_days }
+		add_to_variable = { bio_captured_facility_hazard_due_day = bio_facility_capture_delay_days }
+		state_event = {
+			id = cbrn_bio_facility.1
+			days = bio_facility_capture_delay_days
+		}
+	}
+}
+
+bio_facility_capture_schedule_initial_hazard_check = {
+	set_temp_variable = { bio_facility_capture_delay_days = constant:bio_facility_capture_timing.initial_hazard_delay_days }
+	bio_facility_capture_schedule_hazard_check = yes
+}
+
+bio_facility_capture_schedule_recurrent_hazard_check = {
+	set_temp_variable = { bio_facility_capture_delay_days = constant:bio_facility_capture_timing.recurrent_hazard_delay_days }
+	bio_facility_capture_schedule_hazard_check = yes
+}
+
+# State scope. Leaves the original arsenal marker intact for a true recapture.
+bio_facility_capture_clear_captured_ledger_only = {
+	clr_state_flag = bio_captured_facility_unsecured
+	clr_state_flag = bio_captured_facility_hazard_event_scheduled
+	clear_variable = bio_captured_facility_controller
+	clear_variable = bio_captured_facility_anthrax
+	clear_variable = bio_captured_facility_plague
+	clear_variable = bio_captured_facility_tularemia
+	clear_variable = bio_captured_facility_smallpox
+	clear_variable = bio_captured_facility_total
+	clear_variable = bio_captured_facility_original_pointer_source
+	clear_variable = bio_captured_facility_capture_date
+	clear_variable = bio_captured_facility_last_control_change_date
+	clear_variable = bio_captured_facility_hazard_due_day
+}
+
+# State scope. Permanently resolves the captured arsenal and invalidates the
+# original country's exact designation; it never selects a replacement state.
+bio_facility_capture_clear_resolved_facility_records = {
+	save_event_target_as = bio_facility_resolved_state
+	if = {
+		limit = {
+			has_variable = bio_stockpile_safety_arsenal_actor
+			var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+		}
+		var:bio_stockpile_safety_arsenal_actor = {
+			if = {
+				limit = {
+					has_variable = bio_stockpile_safety_arsenal_state
+					var:bio_stockpile_safety_arsenal_state = { state = event_target:bio_facility_resolved_state }
+				}
+				clear_variable = bio_stockpile_safety_arsenal_state
+				clear_variable = bio_stockpile_safety_arsenal_pointer_source
+				clear_variable = bio_stockpile_safety_monitor_due_day
+				clr_country_flag = bio_stockpile_safety_arsenal_designated
+				clr_country_flag = bio_stockpile_safety_monitor_scheduled
+				clr_country_flag = bio_stockpile_safety_monitor_suspended
+				bio_stockpile_safety_remove_risk_ideas = yes
+			}
+		}
+	}
+	clr_state_flag = bio_stockpile_safety_arsenal_complex
+	clear_variable = bio_stockpile_safety_arsenal_actor
+	clear_variable = bio_stockpile_safety_arsenal_designated_date
+	bio_facility_capture_clear_captured_ledger_only = yes
+}
+
+# State scope. Captures all currently unallocated payload equipment from the
+# exact recorded original custodian. Native raid reservations have already
+# left the live national stockpile and cannot be counted by this snapshot.
+bio_facility_capture_initialize_exact_state_ledger = {
+	set_temp_variable = { bio_facility_capture_anthrax_snapshot = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_plague_snapshot = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_tularemia_snapshot = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_smallpox_snapshot = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_pointer_source_snapshot = constant:bio_facility_capture_math.zero }
+
+	if = {
+		limit = {
+			has_variable = bio_stockpile_safety_arsenal_actor
+			var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+		}
+		var:bio_stockpile_safety_arsenal_actor = {
+			set_temp_variable = { bio_facility_capture_anthrax_snapshot = num_equipment@anthrax_bomb_1 }
+			set_temp_variable = { bio_facility_capture_plague_snapshot = num_equipment@plague_bomb_1 }
+			set_temp_variable = { bio_facility_capture_tularemia_snapshot = num_equipment@tularemia_bomb_1 }
+			set_temp_variable = { bio_facility_capture_smallpox_snapshot = num_equipment@smallpox_bomb_1 }
+
+			if = { limit = { check_variable = { bio_facility_capture_anthrax_snapshot < constant:bio_facility_capture_math.zero } } set_temp_variable = { bio_facility_capture_anthrax_snapshot = constant:bio_facility_capture_math.zero } }
+			if = { limit = { check_variable = { bio_facility_capture_plague_snapshot < constant:bio_facility_capture_math.zero } } set_temp_variable = { bio_facility_capture_plague_snapshot = constant:bio_facility_capture_math.zero } }
+			if = { limit = { check_variable = { bio_facility_capture_tularemia_snapshot < constant:bio_facility_capture_math.zero } } set_temp_variable = { bio_facility_capture_tularemia_snapshot = constant:bio_facility_capture_math.zero } }
+			if = { limit = { check_variable = { bio_facility_capture_smallpox_snapshot < constant:bio_facility_capture_math.zero } } set_temp_variable = { bio_facility_capture_smallpox_snapshot = constant:bio_facility_capture_math.zero } }
+
+			round_temp_variable = bio_facility_capture_anthrax_snapshot
+			round_temp_variable = bio_facility_capture_plague_snapshot
+			round_temp_variable = bio_facility_capture_tularemia_snapshot
+			round_temp_variable = bio_facility_capture_smallpox_snapshot
+
+			set_temp_variable = { bio_facility_capture_anthrax_debit = bio_facility_capture_anthrax_snapshot }
+			set_temp_variable = { bio_facility_capture_plague_debit = bio_facility_capture_plague_snapshot }
+			set_temp_variable = { bio_facility_capture_tularemia_debit = bio_facility_capture_tularemia_snapshot }
+			set_temp_variable = { bio_facility_capture_smallpox_debit = bio_facility_capture_smallpox_snapshot }
+			multiply_temp_variable = { bio_facility_capture_anthrax_debit = constant:bio_facility_capture_math.negation }
+			multiply_temp_variable = { bio_facility_capture_plague_debit = constant:bio_facility_capture_math.negation }
+			multiply_temp_variable = { bio_facility_capture_tularemia_debit = constant:bio_facility_capture_math.negation }
+			multiply_temp_variable = { bio_facility_capture_smallpox_debit = constant:bio_facility_capture_math.negation }
+
+			# Omitting producer is deliberate for negative amounts: the ledger
+			# snapshots the aggregate national count, so removal must include
+			# captured and licensed payloads as well as domestic production.
+			add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_facility_capture_anthrax_debit }
+			add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_facility_capture_plague_debit }
+			add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_facility_capture_tularemia_debit }
+			add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_facility_capture_smallpox_debit }
+
+			set_country_flag = bio_facility_capture_arsenal_lost_history
+			set_country_flag = bio_stockpile_safety_monitor_suspended
+			bio_stockpile_safety_remove_risk_ideas = yes
+		}
+	}
+	if = {
+		limit = {
+			has_variable = bio_stockpile_safety_arsenal_actor
+			var:bio_stockpile_safety_arsenal_actor = {
+				has_variable = bio_stockpile_safety_arsenal_pointer_source
+			}
+		}
+		var:bio_stockpile_safety_arsenal_actor = {
+			set_temp_variable = { bio_facility_capture_pointer_source_snapshot = bio_stockpile_safety_arsenal_pointer_source }
+		}
+	}
+
+	set_variable = { bio_captured_facility_anthrax = bio_facility_capture_anthrax_snapshot }
+	set_variable = { bio_captured_facility_plague = bio_facility_capture_plague_snapshot }
+	set_variable = { bio_captured_facility_tularemia = bio_facility_capture_tularemia_snapshot }
+	set_variable = { bio_captured_facility_smallpox = bio_facility_capture_smallpox_snapshot }
+	set_variable = { bio_captured_facility_original_pointer_source = bio_facility_capture_pointer_source_snapshot }
+	set_variable = { bio_captured_facility_controller = CONTROLLER }
+	set_variable = { bio_captured_facility_capture_date = global.num_days }
+	set_variable = { bio_captured_facility_last_control_change_date = global.num_days }
+	set_state_flag = bio_captured_facility_unsecured
+	set_state_flag = bio_captured_facility_capture_history
+	bio_facility_capture_recompute_total = yes
+	bio_facility_capture_schedule_initial_hazard_check = yes
+
+	save_event_target_as = bio_facility_notice_state
+	CONTROLLER = {
+		set_country_flag = bio_facility_capture_controller_history
+		country_event = { id = cbrn_bio_facility.2 }
+	}
+	if = {
+		limit = {
+			has_variable = bio_stockpile_safety_arsenal_actor
+			var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+		}
+		var:bio_stockpile_safety_arsenal_actor = {
+			country_event = { id = cbrn_bio_facility.3 }
+		}
+	}
+}
+
+# State scope. Used for third-party capture; payload and due date remain exact.
+bio_facility_capture_update_exact_controller = {
+	set_variable = { bio_captured_facility_controller = CONTROLLER }
+	set_variable = { bio_captured_facility_last_control_change_date = global.num_days }
+	save_event_target_as = bio_facility_notice_state
+	CONTROLLER = {
+		set_country_flag = bio_facility_capture_controller_history
+		country_event = { id = cbrn_bio_facility.2 }
+	}
+}
+
+# State scope. Restores every remaining payload to the original custodian. The
+# original site resumes as the designated arsenal only when no replacement was
+# selected during occupation; no payload is created beyond the exact ledger.
+bio_facility_capture_restore_on_original_recapture = {
+	if = {
+		limit = { bio_facility_capture_state_is_original_custodian_recapture = yes }
+		save_event_target_as = bio_facility_recaptured_state
+		set_temp_variable = { bio_facility_capture_restore_anthrax = bio_captured_facility_anthrax }
+		set_temp_variable = { bio_facility_capture_restore_plague = bio_captured_facility_plague }
+		set_temp_variable = { bio_facility_capture_restore_tularemia = bio_captured_facility_tularemia }
+		set_temp_variable = { bio_facility_capture_restore_smallpox = bio_captured_facility_smallpox }
+		set_temp_variable = { bio_facility_capture_restore_pointer_source = bio_captured_facility_original_pointer_source }
+		set_temp_variable = { bio_facility_capture_keep_original_marker = constant:bio_facility_capture_math.zero }
+		CONTROLLER = {
+			add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_facility_capture_restore_anthrax producer = THIS }
+			add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_facility_capture_restore_plague producer = THIS }
+			add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_facility_capture_restore_tularemia producer = THIS }
+			add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_facility_capture_restore_smallpox producer = THIS }
+			clr_country_flag = bio_stockpile_safety_monitor_suspended
+			set_country_flag = bio_facility_capture_arsenal_recaptured_history
+			if = {
+				limit = {
+					has_variable = bio_stockpile_safety_arsenal_state
+					var:bio_stockpile_safety_arsenal_state = { state = event_target:bio_facility_recaptured_state }
+				}
+				set_temp_variable = { bio_facility_capture_keep_original_marker = constant:bio_facility_capture_math.one }
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = bio_stockpile_safety_arsenal_state }
+					OR = {
+						check_variable = { var = bio_facility_capture_restore_pointer_source value = constant:bio_stockpile_safety_pointer_source.selected_state compare = equals }
+						check_variable = { var = bio_facility_capture_restore_pointer_source value = constant:bio_stockpile_safety_pointer_source.verified_special_project_facility compare = equals }
+					}
+				}
+				set_variable = { bio_stockpile_safety_arsenal_state = event_target:bio_facility_recaptured_state }
+				set_variable = { bio_stockpile_safety_arsenal_pointer_source = bio_facility_capture_restore_pointer_source }
+				set_country_flag = bio_stockpile_safety_arsenal_designated
+				set_temp_variable = { bio_facility_capture_keep_original_marker = constant:bio_facility_capture_math.one }
+			}
+			bio_stockpile_safety_refresh_risk_band = yes
+			bio_stockpile_safety_refresh_risk_idea = yes
+			bio_stockpile_safety_start_monitor = yes
+		}
+		if = {
+			limit = { check_variable = { bio_facility_capture_keep_original_marker < constant:bio_facility_capture_math.one } }
+			clr_state_flag = bio_stockpile_safety_arsenal_complex
+			clear_variable = bio_stockpile_safety_arsenal_actor
+			clear_variable = bio_stockpile_safety_arsenal_designated_date
+		}
+		set_state_flag = bio_captured_facility_recaptured_history
+		save_event_target_as = bio_facility_notice_state
+		CONTROLLER = { country_event = { id = cbrn_bio_facility.6 } }
+		bio_facility_capture_clear_captured_ledger_only = yes
+	}
+}
+
+# State scope. Event targets are supplied by on_state_control_changed.
+bio_facility_capture_handle_state_control_changed = {
+	if = {
+		limit = { bio_facility_capture_state_is_initial_hostile_capture = yes }
+		bio_facility_capture_initialize_exact_state_ledger = yes
+	}
+	else_if = {
+		limit = { bio_facility_capture_state_is_original_custodian_recapture = yes }
+		bio_facility_capture_restore_on_original_recapture = yes
+	}
+	else_if = {
+		limit = { has_state_flag = bio_captured_facility_unsecured }
+		bio_facility_capture_update_exact_controller = yes
+	}
+}
+
+# Any scope. Inputs: bio_facility_capture_fraction_source and
+# bio_facility_capture_fraction. Outputs positive rounded amount and its
+# negated temporary counterpart, bounded by the exact source value. Fractional
+# transfers and destruction may round to zero; only releases use a minimum.
+bio_facility_capture_prepare_fraction_amount = {
+	set_temp_variable = { bio_facility_capture_fraction_amount = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_fraction_amount_negative = constant:bio_facility_capture_math.zero }
+	if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_source > constant:bio_facility_capture_math.zero }
+			check_variable = { bio_facility_capture_fraction > constant:bio_facility_capture_math.zero }
+		}
+		set_temp_variable = { bio_facility_capture_fraction_amount = bio_facility_capture_fraction_source }
+		multiply_temp_variable = { bio_facility_capture_fraction_amount = bio_facility_capture_fraction }
+		round_temp_variable = bio_facility_capture_fraction_amount
+		# A limited fraction must leave at least one unit of that agent in the
+		# unresolved ledger. This keeps an integer stock of one from becoming a
+		# full transfer/destruction through ordinary rounding.
+		if = {
+			limit = {
+				check_variable = { bio_facility_capture_fraction < constant:bio_facility_capture_payload.full_fraction }
+				check_variable = { var = bio_facility_capture_fraction_amount value = bio_facility_capture_fraction_source compare = greater_than_or_equals }
+			}
+			set_temp_variable = { bio_facility_capture_fraction_amount = bio_facility_capture_fraction_source }
+			add_to_temp_variable = { bio_facility_capture_fraction_amount = constant:bio_facility_capture_math.negation }
+		}
+		if = {
+			limit = { check_variable = { bio_facility_capture_fraction_amount > bio_facility_capture_fraction_source } }
+			set_temp_variable = { bio_facility_capture_fraction_amount = bio_facility_capture_fraction_source }
+		}
+		set_temp_variable = { bio_facility_capture_fraction_amount_negative = bio_facility_capture_fraction_amount }
+		multiply_temp_variable = { bio_facility_capture_fraction_amount_negative = constant:bio_facility_capture_math.negation }
+	}
+}
+
+# Any scope. Applies the minimum-one rule only to an accidental release after
+# the generic fraction helper has rounded the exact selected-agent amount.
+bio_facility_capture_enforce_release_minimum = {
+	if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_source > constant:bio_facility_capture_math.zero }
+			check_variable = { bio_facility_capture_fraction_amount < constant:bio_facility_capture_payload.minimum_release }
+		}
+		set_temp_variable = { bio_facility_capture_fraction_amount = constant:bio_facility_capture_payload.minimum_release }
+		if = {
+			limit = { check_variable = { bio_facility_capture_fraction_amount > bio_facility_capture_fraction_source } }
+			set_temp_variable = { bio_facility_capture_fraction_amount = bio_facility_capture_fraction_source }
+		}
+		set_temp_variable = { bio_facility_capture_fraction_amount_negative = bio_facility_capture_fraction_amount }
+		multiply_temp_variable = { bio_facility_capture_fraction_amount_negative = constant:bio_facility_capture_math.negation }
+	}
+}
+
+# State scope. Caller supplies bio_facility_capture_fraction. Every agent is
+# transferred independently so no payload type can be substituted for another.
+bio_facility_capture_transfer_fraction_to_controller = {
+	set_temp_variable = { bio_facility_capture_transaction_total = constant:bio_facility_capture_math.zero }
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_anthrax }
+	bio_facility_capture_prepare_fraction_amount = yes
+	if = {
+		limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
+		CONTROLLER = { add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_facility_capture_fraction_amount producer = THIS } }
+		add_to_variable = { bio_captured_facility_anthrax = bio_facility_capture_fraction_amount_negative }
+		add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+	}
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_plague }
+	bio_facility_capture_prepare_fraction_amount = yes
+	if = {
+		limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
+		CONTROLLER = { add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_facility_capture_fraction_amount producer = THIS } }
+		add_to_variable = { bio_captured_facility_plague = bio_facility_capture_fraction_amount_negative }
+		add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+	}
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_tularemia }
+	bio_facility_capture_prepare_fraction_amount = yes
+	if = {
+		limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
+		CONTROLLER = { add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_facility_capture_fraction_amount producer = THIS } }
+		add_to_variable = { bio_captured_facility_tularemia = bio_facility_capture_fraction_amount_negative }
+		add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+	}
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_smallpox }
+	bio_facility_capture_prepare_fraction_amount = yes
+	if = {
+		limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
+		CONTROLLER = { add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_facility_capture_fraction_amount producer = THIS } }
+		add_to_variable = { bio_captured_facility_smallpox = bio_facility_capture_fraction_amount_negative }
+		add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+	}
+
+	bio_facility_capture_recompute_total = yes
+	set_variable = { bio_captured_facility_last_transfer_amount = bio_facility_capture_transaction_total }
+	set_variable = { bio_captured_facility_last_transfer_date = global.num_days }
+	CONTROLLER = {
+		if = { limit = { NOT = { has_variable = bio_facility_capture_recovered_payload_total } } set_variable = { bio_facility_capture_recovered_payload_total = constant:bio_facility_capture_math.zero } }
+		add_to_variable = { bio_facility_capture_recovered_payload_total = bio_facility_capture_transaction_total }
+		set_country_flag = bio_facility_capture_recovered_payload_history
+	}
+}
+
+# State scope. Caller supplies bio_facility_capture_fraction. Destruction is an
+# exact state-ledger debit and never creates national equipment.
+bio_facility_capture_destroy_fraction = {
+	set_temp_variable = { bio_facility_capture_transaction_total = constant:bio_facility_capture_math.zero }
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_anthrax }
+	bio_facility_capture_prepare_fraction_amount = yes
+	add_to_variable = { bio_captured_facility_anthrax = bio_facility_capture_fraction_amount_negative }
+	add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_plague }
+	bio_facility_capture_prepare_fraction_amount = yes
+	add_to_variable = { bio_captured_facility_plague = bio_facility_capture_fraction_amount_negative }
+	add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_tularemia }
+	bio_facility_capture_prepare_fraction_amount = yes
+	add_to_variable = { bio_captured_facility_tularemia = bio_facility_capture_fraction_amount_negative }
+	add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_captured_facility_smallpox }
+	bio_facility_capture_prepare_fraction_amount = yes
+	add_to_variable = { bio_captured_facility_smallpox = bio_facility_capture_fraction_amount_negative }
+	add_to_temp_variable = { bio_facility_capture_transaction_total = bio_facility_capture_fraction_amount }
+
+	bio_facility_capture_recompute_total = yes
+	set_variable = { bio_captured_facility_last_destroyed_amount = bio_facility_capture_transaction_total }
+	set_variable = { bio_captured_facility_last_destruction_date = global.num_days }
+	CONTROLLER = {
+		if = { limit = { NOT = { has_variable = bio_facility_capture_destroyed_payload_total } } set_variable = { bio_facility_capture_destroyed_payload_total = constant:bio_facility_capture_math.zero } }
+		add_to_variable = { bio_facility_capture_destroyed_payload_total = bio_facility_capture_transaction_total }
+		set_country_flag = bio_facility_capture_destroyed_payload_history
+	}
+}
+
+# State scope. Inputs: raw evidence and Condemnation base. Raw evidence is
+# always recorded in full; terminal doctrine can reduce only Condemnation.
+bio_facility_capture_record_program_evidence = {
+	if = {
+		limit = { check_variable = { bio_facility_capture_evidence_amount > constant:bio_facility_capture_math.zero } }
+		if = { limit = { NOT = { has_variable = bio_captured_facility_program_evidence_total } } set_variable = { bio_captured_facility_program_evidence_total = constant:bio_facility_capture_math.zero } }
+		add_to_variable = { bio_captured_facility_program_evidence_total = bio_facility_capture_evidence_amount }
+		set_variable = { bio_captured_facility_last_program_evidence = bio_facility_capture_evidence_amount }
+		set_variable = { bio_captured_facility_last_evidence_date = global.num_days }
+		set_state_flag = bio_captured_facility_program_evidence_history
+
+		CONTROLLER = { save_event_target_as = bio_facility_evidence_discoverer }
+		if = {
+			limit = {
+				has_variable = bio_stockpile_safety_arsenal_actor
+				var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+			}
+			var:bio_stockpile_safety_arsenal_actor = {
+				if = { limit = { NOT = { has_variable = bio_facility_capture_program_evidence_total } } set_variable = { bio_facility_capture_program_evidence_total = constant:bio_facility_capture_math.zero } }
+				add_to_variable = { bio_facility_capture_program_evidence_total = bio_facility_capture_evidence_amount }
+				set_country_flag = bio_facility_capture_program_exposed_history
+
+				set_temp_variable = { bio_facility_capture_condemnation_final = bio_facility_capture_condemnation_amount }
+				if = {
+					limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+					multiply_temp_variable = { bio_facility_capture_condemnation_final = constant:bio_lifecycle_doctrine.terminal_hazard.condemnation_mult }
+				}
+				else_if = {
+					limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+					multiply_temp_variable = { bio_facility_capture_condemnation_final = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+				}
+
+				set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+				set_temp_variable = { condemnation_base_gain = bio_facility_capture_condemnation_final }
+				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+				set_temp_variable = { condemnation_civilian_deaths = constant:bio_facility_capture_math.zero }
+				set_temp_variable = { condemnation_contamination_value = constant:bio_facility_capture_math.zero }
+				set_temp_variable = { condemnation_victim_country = event_target:bio_facility_evidence_discoverer }
+				set_temp_variable = { condemnation_context_type = constant:condemnation_context.experiment_site }
+				condemnation_add_source = yes
+			}
+		}
+	}
+}
+
+# State scope. Selects one agent using the four exact remaining payload counts.
+bio_facility_capture_select_release_agent = {
+	set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.none }
+	if = {
+		limit = { bio_facility_capture_state_has_payload = yes }
+		random_list = {
+			var:bio_captured_facility_anthrax = { set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.anthrax } }
+			var:bio_captured_facility_plague = { set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.plague } }
+			var:bio_captured_facility_tularemia = { set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.tularemia } }
+			var:bio_captured_facility_smallpox = { set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.smallpox } }
+		}
+	}
+}
+
+# State scope. Caller supplies bio_facility_capture_release_fraction. Debits one
+# selected state-ledger agent exactly once and returns the positive amount.
+bio_facility_capture_debit_selected_release = {
+	bio_facility_capture_select_release_agent = yes
+	set_temp_variable = { bio_facility_capture_selected_stock = constant:bio_facility_capture_math.zero }
+	if = {
+		limit = { check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		set_temp_variable = { bio_facility_capture_selected_stock = bio_captured_facility_anthrax }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		set_temp_variable = { bio_facility_capture_selected_stock = bio_captured_facility_plague }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_temp_variable = { bio_facility_capture_selected_stock = bio_captured_facility_tularemia }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		set_temp_variable = { bio_facility_capture_selected_stock = bio_captured_facility_smallpox }
+	}
+
+	set_temp_variable = { bio_facility_capture_fraction_source = bio_facility_capture_selected_stock }
+	set_temp_variable = { bio_facility_capture_fraction = bio_facility_capture_release_fraction }
+	bio_facility_capture_prepare_fraction_amount = yes
+	bio_facility_capture_enforce_release_minimum = yes
+
+	if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero }
+			check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		}
+		add_to_variable = { bio_captured_facility_anthrax = bio_facility_capture_fraction_amount_negative }
+	}
+	else_if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero }
+			check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		}
+		add_to_variable = { bio_captured_facility_plague = bio_facility_capture_fraction_amount_negative }
+	}
+	else_if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero }
+			check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		}
+		add_to_variable = { bio_captured_facility_tularemia = bio_facility_capture_fraction_amount_negative }
+	}
+	else_if = {
+		limit = {
+			check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero }
+			check_variable = { var = bio_facility_capture_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+		}
+		add_to_variable = { bio_captured_facility_smallpox = bio_facility_capture_fraction_amount_negative }
+	}
+
+	bio_facility_capture_recompute_total = yes
+}
+
+# State scope. Uses the captured-facility accident route in the one shared
+# ordinary lifecycle. Original-custodian proof is omitted only if that exact
+# recorded country no longer exists; no proxy country is substituted.
+bio_facility_capture_dispatch_accidental_release = {
+	if = {
+		limit = { bio_facility_capture_release_context_is_valid = yes }
+		bio_facility_capture_debit_selected_release = yes
+		if = {
+			limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
+			set_variable = { bio_captured_facility_last_release_agent = bio_facility_capture_selected_agent }
+			set_variable = { bio_captured_facility_last_release_amount = bio_facility_capture_fraction_amount }
+			set_variable = { bio_captured_facility_last_release_date = global.num_days }
+			set_state_flag = bio_captured_facility_release_history
+			save_event_target_as = bio_facility_notice_state
+
+			bio_lifecycle_reset_seed_record = yes
+			set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.missing }
+			if = {
+				limit = {
+					has_variable = bio_stockpile_safety_arsenal_actor
+					var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+				}
+				var:bio_stockpile_safety_arsenal_actor = {
+					save_event_target_as = bio_seed_actor
+					set_country_flag = bio_facility_capture_accident_history
+					if = { limit = { NOT = { has_variable = bio_facility_capture_accident_count } } set_variable = { bio_facility_capture_accident_count = constant:bio_facility_capture_math.zero } }
+					add_to_variable = { bio_facility_capture_accident_count = constant:bio_facility_capture_history.one_incident }
+				}
+				set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+			}
+
+			CONTROLLER = {
+				save_event_target_as = bio_seed_victim
+				set_country_flag = bio_facility_capture_exposed_controller_history
+			}
+			set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_agent = bio_facility_capture_selected_agent }
+			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.captured_facility_release }
+			set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.captured_facility }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.accident }
+			set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_payload_required = bio_facility_capture_fraction_amount }
+			set_temp_variable = { bio_seed_payload_consumed = bio_facility_capture_fraction_amount }
+			set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.supplied }
+			bio_lifecycle_dispatch_seed = yes
+
+			CONTROLLER = { country_event = { id = cbrn_bio_facility.4 } }
+			if = {
+				limit = {
+					has_variable = bio_stockpile_safety_arsenal_actor
+					var:bio_stockpile_safety_arsenal_actor = { exists = yes }
+				}
+				var:bio_stockpile_safety_arsenal_actor = { country_event = { id = cbrn_bio_facility.5 } }
+			}
+			if = {
+				limit = { NOT = { bio_facility_capture_state_has_payload = yes } }
+				clr_state_flag = bio_captured_facility_hazard_event_scheduled
+				clear_variable = bio_captured_facility_hazard_due_day
+			}
+		}
+	}
+}
+
+# State scope. Used only by the targeted due event.
+bio_facility_capture_resolve_due_hazard = {
+	if = {
+		limit = { bio_facility_capture_hazard_event_is_due = yes }
+		clr_state_flag = bio_captured_facility_hazard_event_scheduled
+		clear_variable = bio_captured_facility_hazard_due_day
+		set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.deadline_release_fraction }
+		bio_facility_capture_dispatch_accidental_release = yes
+		if = {
+			limit = { bio_facility_capture_state_has_payload = yes }
+			bio_facility_capture_schedule_recurrent_hazard_check = yes
+		}
+	}
+}
+
+# State scope. Records a completed raid route for the exact controller.
+bio_facility_capture_record_recovery_operation = {
+	CONTROLLER = {
+		if = { limit = { NOT = { has_variable = bio_facility_capture_recovery_operation_count } } set_variable = { bio_facility_capture_recovery_operation_count = constant:bio_facility_capture_math.zero } }
+		add_to_variable = { bio_facility_capture_recovery_operation_count = constant:bio_facility_capture_history.one_recovery }
+		set_country_flag = bio_facility_capture_recovery_operation_history
+	}
+	set_state_flag = bio_captured_facility_recovery_operation_history
+}
+
+bio_facility_capture_resolve_preserved_facility = {
+	set_state_flag = bio_captured_facility_secured_history
+	bio_facility_capture_clear_resolved_facility_records = yes
+}
+
+bio_facility_capture_resolve_destroyed_facility = {
+	if = {
+		limit = { biowarfare_facility > constant:bio_facility_capture_math.zero }
+		set_temp_variable = { bio_facility_capture_building_removal = constant:bio_facility_capture_math.one }
+		remove_building = { type = biowarfare_facility level = bio_facility_capture_building_removal }
+	}
+	set_state_flag = bio_captured_facility_destroyed_history
+	bio_facility_capture_clear_resolved_facility_records = yes
+}
+
+# Raid-instance scope wrappers. All state changes are gated by the exact native
+# actor/target context; rejected context produces no alternate outcome.
+bio_facility_capture_secure_failure = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.raid_failure_release_fraction }
+			bio_facility_capture_dispatch_accidental_release = yes
+			bio_facility_capture_record_recovery_operation = yes
+		}
+	}
+}
+
+bio_facility_capture_secure_limited = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.secure_limited_fraction }
+			bio_facility_capture_transfer_fraction_to_controller = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_limited }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.secure_limited }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			if = {
+				limit = { NOT = { bio_facility_capture_state_has_payload = yes } }
+				bio_facility_capture_resolve_preserved_facility = yes
+			}
+			else = { bio_facility_capture_schedule_recurrent_hazard_check = yes }
+		}
+	}
+}
+
+bio_facility_capture_secure_success = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
+			bio_facility_capture_transfer_fraction_to_controller = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_success }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.secure_success }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			bio_facility_capture_resolve_preserved_facility = yes
+		}
+	}
+}
+
+bio_facility_capture_secure_critical = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
+			bio_facility_capture_transfer_fraction_to_controller = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_critical }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.secure_critical }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			bio_facility_capture_resolve_preserved_facility = yes
+		}
+	}
+}
+
+bio_facility_capture_destroy_failure = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.raid_failure_release_fraction }
+			bio_facility_capture_dispatch_accidental_release = yes
+			bio_facility_capture_record_recovery_operation = yes
+		}
+	}
+}
+
+bio_facility_capture_destroy_limited = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.destroy_limited_fraction }
+			bio_facility_capture_destroy_fraction = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_limited }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.destroy_limited }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			if = {
+				limit = { NOT = { bio_facility_capture_state_has_payload = yes } }
+				set_state_flag = bio_captured_facility_neutralized_history
+				bio_facility_capture_clear_resolved_facility_records = yes
+			}
+			else = { bio_facility_capture_schedule_recurrent_hazard_check = yes }
+		}
+	}
+}
+
+bio_facility_capture_destroy_success = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
+			bio_facility_capture_destroy_fraction = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_success }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.destroy_success }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			bio_facility_capture_resolve_destroyed_facility = yes
+		}
+	}
+}
+
+bio_facility_capture_destroy_critical = {
+	if = {
+		limit = { bio_facility_capture_native_context_is_valid = yes }
+		var:target_state = {
+			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
+			bio_facility_capture_destroy_fraction = yes
+			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_critical }
+			set_temp_variable = { bio_facility_capture_condemnation_amount = constant:bio_facility_capture_condemnation.destroy_critical }
+			bio_facility_capture_record_program_evidence = yes
+			bio_facility_capture_record_recovery_operation = yes
+			bio_facility_capture_resolve_destroyed_facility = yes
+		}
+	}
+}

@@ -3,7 +3,7 @@
 Package date: 2026-07-22  
 Asset family: native HOI4 military raid `custom_map_icon` / raid-type map icon  
 Related system: `chaos_warfare_system`, `stage_7_biological_warfare`  
-Package status: complete static assets; parent `.gfx`/raid wiring handed off  
+Package status: complete and wired to native raid consumers  
 Source mode: `$imagegen` built-in image generation, with official chroma-key alpha extraction  
 Animation: none; these are two independent static icons.
 
@@ -29,7 +29,7 @@ Animation: none; these are two independent static icons.
 - Sprite id: `GFX_raid_type_icon_bio_facility_secure_preserve`
 - Localisation: none; sprite-only asset
 - Related runtime id: `bio_facility_secure_preserve_raid`
-- Status: `handed_off`
+- Status: `wired`
 - Notes: sealed steel/brass doorway with a containment seal, lock, compact shield cues, and a secured ledger/evidence case. No laboratory procedure is shown.
 
 ## Asset 2 — destroy safely
@@ -45,7 +45,7 @@ Animation: none; these are two independent static icons.
 - Sprite id: `GFX_raid_type_icon_bio_facility_destroy_safely`
 - Localisation: none; sprite-only asset
 - Related runtime id: `bio_facility_destroy_safely_raid`
-- Status: `handed_off`
+- Status: `wired`
 - Notes: circular sealed chamber with crossed inert canister silhouettes and a controlled timer/demolition marker. No release, gore, smoke, flame, or active agent cloud is shown.
 
 ## Review and handoff files

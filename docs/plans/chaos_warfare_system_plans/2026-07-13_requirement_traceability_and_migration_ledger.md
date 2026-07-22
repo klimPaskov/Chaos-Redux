@@ -93,7 +93,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | S06-05 | Incubation can remain hidden; detection reveals stage without leaking exact hidden values in final text. | Scheduler, flags, scripted localisation. | queued |
 | S06-06 | Spread uses targeted self-scheduling/neighbor jobs, not a broad all-country pulse. | On-action and event audit. | queued |
 | S06-07 | Surveillance, quarantine, hospitals, antibiotics, vaccination, border closure, and international medical missions have distinct costs/effects. | Decisions/missions/countermeasure matrix/AI. | queued |
-| S06-08 | Captured facilities and samples create evidence, attribution, and accident risk. | State/facility effects and events. | queued |
+| S06-08 | Captured facilities and samples create evidence, attribution, and accident risk. | State/facility effects and events. | implemented and source-audited; exact mixed-producer payload debit, state/controller ledgers, targeted accidents, native recovery raids, assigned-HQ/BSA requirements, evidence, attribution, AI, final icons, localisation, and documentation are wired, while the actor-controlled enemy-owned native target scenario remains Stage 14 |
 | S06-09 | Doomsday release consumes stockpile and records deaths, outbreaks, evidence, Air Cleanliness, and Condemnation once. | Shared record and double-count audit. | queued |
 
 ### Spec 07: gas masks and civil defence

@@ -1,0 +1,453 @@
+# ============================================================================
+# CHAOS REDUX - CAPTURED BIOLOGICAL FACILITY RECOVERY RAIDS
+# ============================================================================
+# Overview:
+# - Two native land raids resolve an exact captured biological arsenal state.
+# - A selected division must contain a Biosecurity Assault Detachment.
+# - The selected division's own unit leader must command an Army Headquarters
+#   with a Biological Security Section. The current raid API cannot put a
+#   character trigger in unit_requirements, so a visible fail-closed success
+#   factor makes a formation without that exact assigned section unable to
+#   succeed; no national or unrelated-headquarters proxy is used.
+# - Equipment reservations represent the additional protective, containment,
+#   evidence-custody, and demolition stores committed to the recovery force.
+# - Outcome helpers consume, transfer, destroy, or accidentally release only
+#   the payload ledger already attached to var:target_state.
+# ============================================================================
+
+@BIO_FACILITY_SECURE_PREPARATION_DAYS = 21
+@BIO_FACILITY_DESTROY_PREPARATION_DAYS = 14
+@BIO_FACILITY_TARGET_COOLDOWN_DAYS = 30
+@BIO_FACILITY_SPEED_MULTIPLIER = 10
+@BIO_FACILITY_AI_MIN_SUCCESS_CHANCE = 0.35
+@BIO_FACILITY_AI_DISABLED = 0
+@BIO_FACILITY_BOOLEAN_ABSENT = 0
+@BIO_FACILITY_BOOLEAN_PRESENT = 1
+
+@BIO_FACILITY_SECURE_COMMAND_POWER = 25
+@BIO_FACILITY_DESTROY_COMMAND_POWER = 20
+
+@BIO_FACILITY_SECURE_MASKS = 80
+@BIO_FACILITY_SECURE_DECON = 50
+@BIO_FACILITY_SECURE_INSTRUMENTS = 40
+@BIO_FACILITY_SECURE_SUPPORT = 60
+@BIO_FACILITY_SECURE_MOTORIZED = 30
+
+@BIO_FACILITY_DESTROY_MASKS = 80
+@BIO_FACILITY_DESTROY_DECON = 70
+@BIO_FACILITY_DESTROY_INSTRUMENTS = 30
+@BIO_FACILITY_DESTROY_SUPPORT = 70
+@BIO_FACILITY_DESTROY_MOTORIZED = 30
+
+@BIO_FACILITY_SECURE_AI_BASE = 1.25
+@BIO_FACILITY_DESTROY_AI_BASE = 0.75
+@BIO_FACILITY_AI_DEFENSIVE_FACTOR = 1.60
+@BIO_FACILITY_AI_DEMOCRATIC_FACTOR = 1.35
+@BIO_FACILITY_AI_UNRESTRICTED_SECURE_FACTOR = 0.65
+@BIO_FACILITY_AI_UNRESTRICTED_DESTROY_FACTOR = 1.60
+@BIO_FACILITY_AI_HIGH_HAZARD_SECURE_FACTOR = 0.70
+@BIO_FACILITY_AI_HIGH_HAZARD_DESTROY_FACTOR = 1.75
+@BIO_FACILITY_AI_ADVANCED_CONTAINMENT_FACTOR = 1.35
+@BIO_FACILITY_AI_WEAK_CONTAINMENT_DESTROY_FACTOR = 1.30
+@BIO_FACILITY_AI_DEFENSIVE_DESTROY_FACTOR = 0.65
+@BIO_FACILITY_AI_DEMOCRATIC_DESTROY_FACTOR = 0.55
+
+@BIO_FACILITY_SECURE_SUCCESS_BASE = 0.40
+@BIO_FACILITY_DESTROY_SUCCESS_BASE = 0.45
+@BIO_FACILITY_EXPERIENCE_WEIGHT = 0.20
+@BIO_FACILITY_EXPERIENCE_START = -0.15
+@BIO_FACILITY_EXPERIENCE_REFERENCE = 1
+@BIO_FACILITY_ORGANISATION_WEIGHT = 0.15
+@BIO_FACILITY_ORGANISATION_START = -0.15
+@BIO_FACILITY_ORGANISATION_REFERENCE = 100
+@BIO_FACILITY_STRENGTH_WEIGHT = 0.15
+@BIO_FACILITY_STRENGTH_START = -0.15
+@BIO_FACILITY_STRENGTH_REFERENCE = 1
+@BIO_FACILITY_RECON_WEIGHT = 0.10
+@BIO_FACILITY_RECON_REFERENCE = 10
+@BIO_FACILITY_HQ_SECURITY_WEIGHT = 0.25
+@BIO_FACILITY_HQ_SECURITY_REFERENCE = 1
+@BIO_FACILITY_HQ_REQUIRED_WEIGHT = -10
+@BIO_FACILITY_HIGH_HAZARD_WEIGHT = -0.15
+@BIO_FACILITY_HIGH_HAZARD_REFERENCE = 1
+
+@BIO_FACILITY_FAILURE_ORG_DAMAGE = 0.60
+@BIO_FACILITY_FAILURE_STRENGTH_DAMAGE = 0.25
+@BIO_FACILITY_LIMITED_ORG_DAMAGE = 0.25
+@BIO_FACILITY_LIMITED_STRENGTH_DAMAGE = 0.08
+@BIO_FACILITY_SUCCESS_ORG_DAMAGE = 0.10
+@BIO_FACILITY_SUCCESS_STRENGTH_DAMAGE = 0.02
+@BIO_FACILITY_CRITICAL_ORG_DAMAGE = 0.05
+@BIO_FACILITY_CRITICAL_STRENGTH_DAMAGE = 0.01
+@BIO_FACILITY_FAILURE_EXPERIENCE = 0.05
+@BIO_FACILITY_LIMITED_EXPERIENCE = 0.15
+@BIO_FACILITY_SUCCESS_EXPERIENCE = 0.25
+@BIO_FACILITY_CRITICAL_EXPERIENCE = 0.35
+
+types = {
+	bio_facility_secure_preserve_raid = {
+		days_to_prepare = @BIO_FACILITY_SECURE_PREPARATION_DAYS
+		days_re_enable = @BIO_FACILITY_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_FACILITY_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_FACILITY_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_facility_recovery_raids
+		custom_map_icon = GFX_raid_type_icon_bio_facility_secure_preserve
+		equipment_icon = GFX_archetype_cbrn_instrument_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_captured_facility_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_FACILITY_SECURE_COMMAND_POWER
+
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+
+		ai_will_do = {
+			base = @BIO_FACILITY_SECURE_AI_BASE
+			modifier = { factor = @BIO_FACILITY_AI_DISABLED ROOT = { NOT = { bio_facility_capture_country_has_recoverable_site = yes } } }
+			modifier = { factor = @BIO_FACILITY_AI_DEFENSIVE_FACTOR ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = @BIO_FACILITY_AI_DEMOCRATIC_FACTOR ROOT = { has_government = democratic } }
+			modifier = { factor = @BIO_FACILITY_AI_UNRESTRICTED_SECURE_FACTOR ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = @BIO_FACILITY_AI_HIGH_HAZARD_SECURE_FACTOR var:target_state = { bio_facility_capture_target_has_high_hazard = yes } }
+			modifier = {
+				factor = @BIO_FACILITY_AI_ADVANCED_CONTAINMENT_FACTOR
+				ROOT = {
+					has_tech = pathogen_handling_protocols
+					has_tech = rapid_outbreak_response
+				}
+			}
+		}
+
+		visible = {
+			has_tech = biological_security_assault_formation
+			bio_facility_capture_country_has_recoverable_site = yes
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_target_available_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			has_tech = biological_security_assault_formation
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_secure_available_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		launchable = {
+			has_tech = biological_security_assault_formation
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_secure_launchable_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			NOT = { bio_facility_capture_target_from_is_valid = yes }
+		}
+
+		target_type = {
+			state = {
+				has_state_flag = bio_captured_facility_unsecured
+				CONTROLLER = { tag = ROOT }
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
+		}
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = {
+			battalion_types = {
+				cbrn_biosecurity_assault_detachment = { min = 1 }
+			}
+		}
+		essential_equipment = {
+			gas_mask_equipment = @BIO_FACILITY_SECURE_MASKS
+			decontamination_equipment = @BIO_FACILITY_SECURE_DECON
+			cbrn_instrument_equipment = @BIO_FACILITY_SECURE_INSTRUMENTS
+			support_equipment = @BIO_FACILITY_SECURE_SUPPORT
+			motorized_equipment = @BIO_FACILITY_SECURE_MOTORIZED
+		}
+
+		success_factors = {
+			success = {
+				base = @BIO_FACILITY_SECURE_SUCCESS_BASE
+				experience = { weight = @BIO_FACILITY_EXPERIENCE_WEIGHT start_weight = @BIO_FACILITY_EXPERIENCE_START reference = @BIO_FACILITY_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_FACILITY_ORGANISATION_WEIGHT start_weight = @BIO_FACILITY_ORGANISATION_START reference = @BIO_FACILITY_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_FACILITY_STRENGTH_WEIGHT start_weight = @BIO_FACILITY_STRENGTH_START reference = @BIO_FACILITY_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_FACILITY_RECON_WEIGHT reference = @BIO_FACILITY_RECON_REFERENCE }
+
+				bio_facility_secure_hq_requirement = {
+					scope = character
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							NOT = { cbrn_hq_has_biological_security_section = yes }
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HQ_REQUIRED_WEIGHT
+					reference = @BIO_FACILITY_HQ_SECURITY_REFERENCE
+					can_actor_affect = yes
+					can_target_affect = no
+				}
+
+				bio_facility_secure_hq_security = {
+					scope = character
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							cbrn_hq_has_biological_security_section = yes
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HQ_SECURITY_WEIGHT
+					reference = @BIO_FACILITY_HQ_SECURITY_REFERENCE
+					can_actor_affect = yes
+					can_target_affect = no
+				}
+
+				bio_facility_secure_high_hazard = {
+					scope = state
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							bio_facility_capture_target_has_high_hazard = yes
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HIGH_HAZARD_WEIGHT
+					reference = @BIO_FACILITY_HIGH_HAZARD_REFERENCE
+					can_actor_affect = no
+					can_target_affect = no
+				}
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_failure_tt }
+					hidden_effect = { bio_facility_capture_secure_failure = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_FAILURE_ORG_DAMAGE str_damage = @BIO_FACILITY_FAILURE_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_FAILURE_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_limited_tt }
+					hidden_effect = { bio_facility_capture_secure_limited = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_LIMITED_ORG_DAMAGE str_damage = @BIO_FACILITY_LIMITED_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_LIMITED_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_success_tt }
+					hidden_effect = { bio_facility_capture_secure_success = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_SUCCESS_ORG_DAMAGE str_damage = @BIO_FACILITY_SUCCESS_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_SUCCESS_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_critical_tt }
+					hidden_effect = { bio_facility_capture_secure_critical = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_CRITICAL_ORG_DAMAGE str_damage = @BIO_FACILITY_CRITICAL_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_CRITICAL_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_facility_destroy_safely_raid = {
+		days_to_prepare = @BIO_FACILITY_DESTROY_PREPARATION_DAYS
+		days_re_enable = @BIO_FACILITY_TARGET_COOLDOWN_DAYS
+		speed_multiplier = @BIO_FACILITY_SPEED_MULTIPLIER
+		fire_only_once = no
+		ai_min_success_chance = @BIO_FACILITY_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_facility_recovery_raids
+		custom_map_icon = GFX_raid_type_icon_bio_facility_destroy_safely
+		equipment_icon = GFX_archetype_decontamination_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_captured_facility_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_FACILITY_DESTROY_COMMAND_POWER
+
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+
+		ai_will_do = {
+			base = @BIO_FACILITY_DESTROY_AI_BASE
+			modifier = { factor = @BIO_FACILITY_AI_DISABLED ROOT = { NOT = { bio_facility_capture_country_has_recoverable_site = yes } } }
+			modifier = { factor = @BIO_FACILITY_AI_UNRESTRICTED_DESTROY_FACTOR ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = @BIO_FACILITY_AI_HIGH_HAZARD_DESTROY_FACTOR var:target_state = { bio_facility_capture_target_has_high_hazard = yes } }
+			modifier = { factor = @BIO_FACILITY_AI_DEFENSIVE_DESTROY_FACTOR ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = @BIO_FACILITY_AI_DEMOCRATIC_DESTROY_FACTOR ROOT = { has_government = democratic } }
+			modifier = {
+				factor = @BIO_FACILITY_AI_WEAK_CONTAINMENT_DESTROY_FACTOR
+				ROOT = {
+					OR = {
+						NOT = { has_tech = pathogen_handling_protocols }
+						NOT = { has_tech = rapid_outbreak_response }
+					}
+				}
+			}
+		}
+
+		visible = {
+			has_tech = biological_security_assault_formation
+			bio_facility_capture_country_has_recoverable_site = yes
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_target_available_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		available = {
+			has_tech = biological_security_assault_formation
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_destroy_available_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		launchable = {
+			has_tech = biological_security_assault_formation
+			custom_trigger_tooltip = {
+				tooltip = bio_facility_capture_destroy_launchable_tt
+				hidden_trigger = { bio_facility_capture_target_from_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			NOT = { bio_facility_capture_target_from_is_valid = yes }
+		}
+
+		target_type = {
+			state = {
+				has_state_flag = bio_captured_facility_unsecured
+				CONTROLLER = { tag = ROOT }
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+			}
+		}
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = {
+			battalion_types = {
+				cbrn_biosecurity_assault_detachment = { min = 1 }
+			}
+		}
+		essential_equipment = {
+			gas_mask_equipment = @BIO_FACILITY_DESTROY_MASKS
+			decontamination_equipment = @BIO_FACILITY_DESTROY_DECON
+			cbrn_instrument_equipment = @BIO_FACILITY_DESTROY_INSTRUMENTS
+			support_equipment = @BIO_FACILITY_DESTROY_SUPPORT
+			motorized_equipment = @BIO_FACILITY_DESTROY_MOTORIZED
+		}
+
+		success_factors = {
+			success = {
+				base = @BIO_FACILITY_DESTROY_SUCCESS_BASE
+				experience = { weight = @BIO_FACILITY_EXPERIENCE_WEIGHT start_weight = @BIO_FACILITY_EXPERIENCE_START reference = @BIO_FACILITY_EXPERIENCE_REFERENCE }
+				organisation = { weight = @BIO_FACILITY_ORGANISATION_WEIGHT start_weight = @BIO_FACILITY_ORGANISATION_START reference = @BIO_FACILITY_ORGANISATION_REFERENCE }
+				strength = { weight = @BIO_FACILITY_STRENGTH_WEIGHT start_weight = @BIO_FACILITY_STRENGTH_START reference = @BIO_FACILITY_STRENGTH_REFERENCE }
+				recon = { weight = @BIO_FACILITY_RECON_WEIGHT reference = @BIO_FACILITY_RECON_REFERENCE }
+
+				bio_facility_destroy_hq_requirement = {
+					scope = character
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							NOT = { cbrn_hq_has_biological_security_section = yes }
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HQ_REQUIRED_WEIGHT
+					reference = @BIO_FACILITY_HQ_SECURITY_REFERENCE
+					can_actor_affect = yes
+					can_target_affect = no
+				}
+
+				bio_facility_destroy_hq_security = {
+					scope = character
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							cbrn_hq_has_biological_security_section = yes
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HQ_SECURITY_WEIGHT
+					reference = @BIO_FACILITY_HQ_SECURITY_REFERENCE
+					can_actor_affect = yes
+					can_target_affect = no
+				}
+
+				bio_facility_destroy_high_hazard = {
+					scope = state
+					formula = {
+						base = @BIO_FACILITY_BOOLEAN_ABSENT
+						modifier = {
+							bio_facility_capture_target_has_high_hazard = yes
+							add = @BIO_FACILITY_BOOLEAN_PRESENT
+						}
+					}
+					weight = @BIO_FACILITY_HIGH_HAZARD_WEIGHT
+					reference = @BIO_FACILITY_HIGH_HAZARD_REFERENCE
+					can_actor_affect = no
+					can_target_affect = no
+				}
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_failure_tt }
+					hidden_effect = { bio_facility_capture_destroy_failure = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_FAILURE_ORG_DAMAGE str_damage = @BIO_FACILITY_FAILURE_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_FAILURE_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_limited_tt }
+					hidden_effect = { bio_facility_capture_destroy_limited = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_LIMITED_ORG_DAMAGE str_damage = @BIO_FACILITY_LIMITED_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_LIMITED_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_success_tt }
+					hidden_effect = { bio_facility_capture_destroy_success = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_SUCCESS_ORG_DAMAGE str_damage = @BIO_FACILITY_SUCCESS_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_SUCCESS_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_critical_tt }
+					hidden_effect = { bio_facility_capture_destroy_critical = yes }
+					raid_damage_units = { org_damage = @BIO_FACILITY_CRITICAL_ORG_DAMAGE str_damage = @BIO_FACILITY_CRITICAL_STRENGTH_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_FACILITY_CRITICAL_EXPERIENCE
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+}
