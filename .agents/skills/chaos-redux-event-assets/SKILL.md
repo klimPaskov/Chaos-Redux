@@ -254,6 +254,31 @@ the manifest and handoff. Missing, ambiguous, or contradictory classification is
 fail-closed source-mode error; stop and report it instead of choosing a convenient
 fallback.
 
+### Portrait subject ownership gate
+
+Before sourcing or wiring any real-person leader, commander, operative, or named
+officeholder token, search both installed vanilla and the current project for exact
+and variant identity forms (including transliterations, titles, and name-order
+variants). Check character definitions, country histories and recruitment, portrait
+files, `.gfx`/interface consumers, leader/commander/operative/officeholder consumers,
+and relevant localisation (normally `common/characters/`, `history/countries/`,
+`gfx/leaders/`, `interface/`, and `localisation/`). A person already defined,
+recruited, or meaningfully portrait-owned by a live character roster may not be
+cloned into another country.
+
+Reuse is allowed only through an explicit guarded existing-character transfer or
+availability contract that removes or invalidates origin ownership before target
+ownership and prevents simultaneous ownership. Without that contract, fail closed
+and block the portrait/token. Literal ship names, production-line names, streets,
+equipment, or incidental prose are not character ownership unless an actual
+character, portrait, leader, commander, operative, or officeholder consumer resolves
+to the person. Record search terms, roots/files and ids checked, matches or no-match
+evidence, disposition, and any transfer guard in the manifest and handoff. This gate
+does not authorize advisor or high-command dossier icons; section 21.1 remains the
+separate workflow for those assets. Run it in addition to the unchanged
+grounded-source-only (`grounded_source_only`) versus `fictional_high_chaos` source-mode
+gate; it never authorizes a generated grounded person.
+
 ### Real-person portraits
 
 Do not generate a portrait for a real person. This applies to country leaders, commanders, operatives, and real people used as advisor or high-command portrait masters.
@@ -475,8 +500,10 @@ For every asset package:
    For one-person country-leader or officeholder portraits, record the grounded or
    `fictional_high_chaos` identity classification before selecting a mode. A grounded
    identity must use a sourced real person; an unavailable defensible source is
-   `blocked`, never a generated substitute. Missing or contradictory source-mode
-   evidence fails closed.
+   `blocked`, never a generated substitute. Before sourcing or wiring a real-person
+   leader, commander, operative, or named officeholder, apply the portrait subject
+   ownership gate above and record its evidence. Missing or contradictory source-mode
+   or ownership evidence fails closed.
 11. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
 12. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
 13. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
@@ -560,6 +587,9 @@ Each asset entry should include:
 - frame count, frame timing, loop behavior, and anchor point for animated assets
 - static fallback path and animated sheet or frame-sequence path for animated assets
 - source mode and source note for every animation frame when animated
+- portrait subject-ownership search terms, roots/files and ids checked, matched owner or
+  consumer (or explicit no-match evidence), disposition, and any guarded transfer/
+  availability contract
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
 
@@ -1336,7 +1366,7 @@ Before finishing, confirm:
 16. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-19. Every real country-leader, commander, and operative portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, and visual comparison against its matching canonical portrait family. Commander textures are full `156x210` portraits, never fabricated 50x67 sources.
+19. Every real country-leader, commander, and operative portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, visual comparison against its matching canonical portrait family, and recorded subject-ownership search evidence. A reused person also has a guarded transfer/availability contract preventing simultaneous ownership. Commander textures are full `156x210` portraits, never fabricated 50x67 sources.
 20. Every advisor or high-command portrait icon is an independently composed `65x67` dossier card produced by processor/render v5.0 with its exact portrait-provenance record, manifest-pinned ImageGen frame/paper provenance, frozen runtime/configuration/processor/seed evidence, the two-stage identity-preservation search and both face-identity gates, nine native style bands with the required interior margin, runtime-derived six-reference alpha and paper families, zero unsupported visible RGB, transactional PNG/review/JSON evidence, and separate approval from a reviewer who is not the producer before pixel-equal DDS conversion; it is not a resized country-leader, commander, or operative portrait, and processor success is not visual approval.
 21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 22. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
