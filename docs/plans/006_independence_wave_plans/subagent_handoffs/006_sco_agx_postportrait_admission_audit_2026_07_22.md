@@ -12,6 +12,13 @@ the consolidated Event 006 documentation, and the runtime content-attestation
 gate were read-only surfaces for this audit. No portrait or manifest change was
 made. No package was re-admitted.
 
+Later visual correction: the user rejected the entire non-protected sourced
+treatment family because it still reads as archival photography rather than
+HOI4-painted portrait art. The source/ownership findings below remain valid, but
+AGX is not visually ready: Kalma and Reenalda require identity-preserving
+refinishing. Cunninghame Graham also requires refinishing, while Ironside still
+requires a different sourced identity.
+
 ## Disposition
 
 The mechanics and setup surfaces are present for both packages. AGX passes the

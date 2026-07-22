@@ -125,8 +125,10 @@ they are not current routing documents.
   and 977.
 - The current portrait authority is
   `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`:
-  twenty-four attributed real-male treatments pass source, crop, visual, DDS, and
-  pixel-equality review, but three fail the separate active-character ownership
+  twenty-four attributed real-male treatments preserve their source identities,
+  crops, DDS conversions, and pixel equality, but the user rejected the whole
+  family because it remains photographic rather than HOI4-painted. Three also
+  fail the separate active-character ownership
   gate: vanilla recruits Konrad Adenauer and Franz Ritter von Epp for GER and
   Edmund Ironside for ENG. Those treatments remain rejected evidence pending
   different sourced replacements. Rupprecht and Matthes remain protected. ACX and
@@ -154,7 +156,7 @@ they are not current routing documents.
 | Package | Current state | Resume rule |
 | --- | --- | --- |
 | IW-006 AFX | Gameplay retained; visual admission withdrawn | Jules Destrée is sourced, processed, and wired. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, but keep execution closed until the commander is replaced by a sourced real military identity and the package is re-audited |
-| IW-007 AGX | Static package and sourced roster audit passed; runtime closed | Douwe Kalma and Pieter Reenalda are sourced, processed, wired, and free of active vanilla person collisions. Preserve the accepted Level-1 shared framework/overlay contract; the global runtime attestation remains deliberately empty |
+| IW-007 AGX | Static gameplay audit passed; portrait style blocked | Douwe Kalma and Pieter Reenalda are source/ownership-valid, but their current treatments fail the HOI4 painted-style gate. Refinish both from the retained masters and re-audit; preserve the accepted Level-1 shared framework/overlay contract |
 | IW-001 SCO | Gameplay retained; portrait ownership blocked | R. B. Cunninghame Graham remains sourced and valid. Edmund Ironside is rejected because vanilla recruits `ENG_edmund_ironside`; replace him with a different sourced real male Scottish commander, then re-audit before any admission |
 | IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis is sourced, processed, and wired as the civic leader. Preserve the package logic, but keep execution closed until the mountain commander is replaced by a sourced real military identity and the full roster is re-audited |
 | IW-008 RHI | Gameplay retained; portrait ownership blocked | Preserve protected Matthes, sourced Josef Harpe, the Level 2 lane, incidents, and FORM-04 delegation logic. Adenauer is rejected because vanilla recruits `GER_konrad_adenauer`; replace him with a different sourced real male Rhenish civic leader, then re-audit before any admission |
@@ -163,9 +165,9 @@ they are not current routing documents.
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-017 COR | Static package and sourced roster audit passed; runtime closed | Adolphe Landry and Jean Chiappe are sourced, processed, wired, and free of active vanilla person collisions. Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access; the global runtime attestation remains deliberately empty |
+| IW-017 COR | Static gameplay audit passed; portrait style blocked | Adolphe Landry and Jean Chiappe are source/ownership-valid, but their current treatments fail the HOI4 painted-style gate. Refinish both from the retained masters and re-audit; preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
-| IW-019 ASX | Static package and sourced roster audit passed; runtime closed | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo are sourced, processed, and wired. Vanilla uses Rizzo's name only for ship-production lines and has no Rizzo character/portrait owner. Preserve the Sicilian identity, anchor 115, Italian host survival, Level 2 package, and FORM-05 access; the global runtime attestation remains deliberately empty |
+| IW-019 ASX | Static gameplay audit passed; portrait style blocked | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo are source/ownership-valid, and vanilla has no Rizzo character/portrait owner, but all three current treatments fail the HOI4 painted-style gate. Refinish them from the retained masters and re-audit; preserve the Sicilian package and FORM-05 access |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
 | IW-179 FSM | Gameplay retained; visual admission withdrawn | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 decisions, and FORM-48 membership logic. Replace the generated congress chair with a sourced real male Micronesian person before re-admission |
 | IW-184 HBX | Gameplay retained; visual admission withdrawn | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. Replace the generated civic chair with a sourced real male Californian person before re-admission |
@@ -222,8 +224,9 @@ satisfy the synchronized frozen plan.
   former exact content attestations and SCN-008 admissions remain withdrawn.
 - Mediterranean IW-017 through IW-019 gameplay, historical flat flag families,
   and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
-  Chiappe roster and Sicily's Sturzo/Lanza/Rizzo roster pass their bounded static
-  package audits; Sardinia has sourced Lussu but two unresolved roles. All three
+  Chiappe roster and Sicily's Sturzo/Lanza/Rizzo roster pass subject-source and
+  active-person ownership review, but their current portrait finishes are rejected
+  as photographic. Sardinia has sourced Lussu but two unresolved roles. All three
   country admissions remain withdrawn under the deliberately empty global runtime
   attestation. No advisor icons were created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,

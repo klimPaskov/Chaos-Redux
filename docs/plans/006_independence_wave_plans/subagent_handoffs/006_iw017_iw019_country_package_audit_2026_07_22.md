@@ -8,6 +8,13 @@ AI, formable, localisation, and sourced-portrait checks. This handoff does not
 admit a package, change runtime content attestation, edit the tag-audit tool or
 reports, edit portrait sources/manifests/DDS files, or write map data.
 
+Later visual correction: the user rejected the current sourced-treatment family
+because it remains photographic rather than HOI4-painted. The five COR/ASX
+subjects and ownership checks below remain valid, including the Luigi Rizzo
+false-positive disposition, but their current DDS files do not grant visual
+readiness. All five must be identity-preservingly refinished and independently
+reviewed before either package can pass portrait admission.
+
 ## Canonical IDs and verdict
 
 The task wording named “IW-016 COR” and “IW-017 ASX”. The accepted registry,
