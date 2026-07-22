@@ -497,9 +497,8 @@ For every super-event audio package:
 1. Select the track after repository and internet-source checks.
 2. Verify the track title, creator or composer, source, license, duration, and usage terms.
 3. Download the selected audio from its legitimate source.
-4. Preserve the downloaded source file under an appropriate docs asset/source-audio path when practical. Do not keep source downloads under `music/source/` or `music/super_events/`; those folders are not persistent source archives.
-5. Convert the final in-game file to game-ready `.ogg`.
-   Game-ready super-event `.ogg` files must be 44.1 kHz / 44100 Hz.
+4. Preserve the downloaded source file under the temporary event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio path when practical. Do not keep source downloads under `music/source/` or `music/super_events/`; those folders are not persistent source archives. Before the event goal is fully complete, promote durable source, license, attribution, and conversion facts into the permanent audio documentation, verify that no runtime reference points into `docs/assets/`, and delete the event-scoped workspace. Keep it for blocked or incomplete work.
+5. Convert the final in-game file to game-ready `.ogg`. Game-ready super-event `.ogg` files must be 44.1 kHz / 44100 Hz.
 6. Place the final `.ogg` in the correct event-scoped music folder: `music/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.ogg`. Shared defaults or non-event music may remain in `music/` only when they are intentionally shared and documented.
 7. Add or update `music/chaosx_super_event_music.asset` definitions for every dynamic volume variant that the current audio helper can call.
 8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
@@ -632,6 +631,8 @@ The asset skill handles:
 - main-agent `.gfx` wiring
 - manifest
 
+Treat project-root `docs/assets/<event_id>_<event_slug>/` as temporary evidence for super-event image and audio work. Retain source files, previews, contact sheets, manifests, provenance, research notes, and handoffs while work is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, move or copy durable evidence into `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another permanent documentation surface, then delete only that event-scoped workspace. Never delete skill-local reusable assets under `.agents/skills/.../assets/` or unrelated workspaces. Do not require the deleted workspace to exist for a completion claim.
+
 ## 20. Super-event slot wiring
 
 When wiring a super-event, choose the slot intentionally.
@@ -724,7 +725,7 @@ The note should include:
 - selected quote
 - quote source and confidence
 - image direction
-- image asset manifest path
+- image asset manifest path or permanent asset-provenance/crosswalk note. If the temporary `docs/assets/` manifest was deleted after completion, record the permanent note that replaced its durable facts instead of leaving a broken path.
 - audio candidates
 - selected audio
 - track title

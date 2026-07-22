@@ -138,6 +138,19 @@ When moving or adding an asset, update every `.gfx`, `.gui`, event, idea, decisi
 
 Super-event audio follows the `chaos-redux-super-events` convention. Final music belongs under `music/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.ogg`, and matching sound-channel files belong under `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`. Do not create persistent `music/source/` or `music/super_events/` folders; preserve source downloads under docs/assets source-audio paths instead.
 
+## 2.3 Temporary event asset workspaces
+
+Treat `docs/assets/<event_id>_<event_slug>/` as a temporary, event-scoped working and evidence folder, not as a shipped asset library. Use it during active implementation for source files, processed previews, contact sheets, prompts, provenance, manifests, animation plans and previews, source-audio downloads, and handoff notes. Keep it while the event is active, blocked, awaiting review, or undergoing acceptance scenarios.
+
+Before declaring the event goal fully complete:
+
+1. Confirm that every accepted asset row has a final runtime consumer and that no runtime reference points into `docs/assets/`.
+2. Promote durable provenance, licensing, attribution, requirement-to-runtime crosswalks, review results, accepted handoff facts, and blocker or exception notes into permanent `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another appropriate documentation surface.
+3. Move final runtime assets into engine-facing folders and verify their `.gfx`, `.gui`, audio, or gameplay references.
+4. Delete the complete event-scoped temporary workspace, including empty subfolders, and verify that it is absent.
+
+An absent event-scoped `docs/assets/` folder is expected after a fully complete goal and is not an asset blocker. If the event is incomplete or blocked, retain the workspace and report the blocker. Never delete skill-local `assets/` reference libraries or an unrelated event workspace.
+
 ## 3. Asset source rules
 
 Choose the source mode based on asset type.
@@ -478,7 +491,7 @@ For scripted GUI, plan asset families. A panel usually needs a background, heade
 
 ## 7. Asset package structure
 
-When creating a new asset package, use a stable working folder.
+When creating a new event asset package, use a stable temporary working folder.
 
 Recommended working structure:
 
@@ -496,17 +509,19 @@ Final DDS files must be moved into the correct gameplay asset folders.
 
 Do not keep final assets under `docs/assets/`.
 
+Keep this workspace through active implementation, review, and validation only. Before the event goal is fully complete, preserve any durable provenance or coverage facts in permanent docs, then delete the entire event-scoped workspace. Do not require the deleted workspace to exist for a completion claim.
+
 ## 8. Manifest requirements
 
-Every asset package must include a markdown manifest.
+Every active event asset workspace must include a markdown manifest.
 
-Recommended path:
+Recommended path while work is active:
 
 ```text
 docs/assets/<event_id>_<event_slug>/manifest.md
 ```
 
-The manifest must list every asset.
+The manifest must list every asset. Before deleting the temporary workspace, copy any durable provenance, licensing, attribution, coverage, review, and exception facts needed by the event documentation or audit handoff into a permanent documentation surface.
 
 Each asset entry should include:
 
@@ -1211,7 +1226,7 @@ Asset subagents do not edit `.gfx` files by default.
 
 When an asset needs a sprite definition, the asset package must include a handoff note for the main agent.
 
-Recommended path:
+Recommended path while the event asset workspace is active:
 
 ```text
 docs/assets/<event_id>_<event_slug>/gfx_handoff.md
@@ -1242,6 +1257,8 @@ The main agent then:
 When wiring event-owned sprite-backed art, the texture path should point to the event-scoped folder for that asset category. If an asset must stay root-only, document the engine reason in the handoff or manifest.
 
 Do not create a new `.gfx` file if an existing one is clearly the right place. If a new `.gfx` file is needed, the main agent must name it consistently and document why.
+
+`gfx_handoff.md` is temporary evidence while the event asset workspace is active. Before the event goal is fully complete, copy any durable sprite, path, ownership, and uncertainty facts into the event or plan documentation that remains after cleanup, then delete the event-scoped workspace with the rest of `docs/assets/<event_id>_<event_slug>/`.
 
 ## 26. Documentation updates
 
@@ -1294,13 +1311,13 @@ Before finishing, confirm:
 1. The requirement-to-runtime coverage crosswalk accounts for every accepted spec, manifest-plan, and animation-plan row, with no extra asset counted as a substitute without an explicit accepted design amendment.
 2. Every asset uses the correct source mode: `$imagegen` for every flat flag design and for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; cited internet or user-provided sources for real historical materials; and attributed real source images for every real-person portrait. One-person portraits for grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical identities are sourced only; truly fictional high-chaos or impossible/supernatural identities are the only one-person portrait cases that may be generated. Missing or unsupported classification fails closed.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
-4. Every generated, sourced, or provided asset has a source PNG.
-5. Every final asset has a processed PNG preview.
+4. During active work, every generated, sourced, or provided asset has a retained source PNG in the temporary workspace, with durable provenance recorded before cleanup.
+5. During active work, every final asset has a processed PNG preview in the temporary workspace, with the final runtime path and relevant QA facts recorded before cleanup.
 6. Every final asset has a DDS output.
 7. DDS files use 32 bit unsigned BGRB 8.8.8.8.
 8. DDS files are moved into the correct mod folders.
-9. A `gfx_handoff.md` exists for every asset that needs a sprite definition, and the main agent has enough information to wire it.
-10. The asset manifest exists.
+9. During active work, a `gfx_handoff.md` exists for every asset that needs a sprite definition, and the main agent has enough information to wire it. Before cleanup, durable wiring facts are copied into permanent docs.
+10. During active work, the asset manifest and requirement-to-runtime crosswalk exist and are current. At fully complete state, their durable facts have been promoted and the temporary workspace has been deleted.
 11. Internet-sourced assets record source links, source date or estimated date range, license or public domain status if available, and era-fit notes for World War II-era assets.
 12. Fictional or non-human portraits generated with `$imagegen` are clearly marked as `fictional_high_chaos` or impossible/supernatural in the manifest, show a memorable internally coherent invented motif, and contain no generic, modern, meme, gore, mocking, stereotyped, or caricatured treatment. Grounded identities never use a generated officeholder; if sourcing fails, the leader portrait is `blocked`.
 13. Docs are updated where relevant.
@@ -1314,3 +1331,4 @@ Before finishing, confirm:
 21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 22. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
 23. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
+24. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead.

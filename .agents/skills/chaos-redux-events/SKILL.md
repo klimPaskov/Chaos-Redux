@@ -697,13 +697,13 @@ Use the `chaos-redux-event-assets` skill whenever an event task requires generat
 For every generated asset:
 
 1. Create the base artwork by following the official `$imagegen` skill workflow through `chaos-redux-event-assets`.
-2. Save the original generated image as a source PNG.
-3. Create a processed PNG preview at the correct HOI4 target size.
+2. Save the original generated image as a source PNG in the active event-scoped temporary `docs/assets/<event_id>_<event_slug>/` workspace.
+3. Create a processed PNG preview at the correct HOI4 target size in that temporary workspace.
 4. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
 5. Move the DDS into the correct mod asset folder.
 6. Add or update the matching sprite definition in the correct `.gfx` file.
 7. Update localisation, docs, and event spreadsheet entries that reference the asset.
-8. Record the asset in a markdown manifest.
+8. Record the asset in the active workspace manifest and requirement-to-runtime crosswalk.
 
 The asset manifest must include:
 
@@ -718,7 +718,7 @@ The asset manifest must include:
 - related event id
 - notes
 
-Do not leave generated assets only in a temporary folder. If the event uses them, wire them into the mod.
+Do not leave a runtime asset only in a temporary folder. While the event is active, retain the source, processed preview, manifest, crosswalk, and handoff in `docs/assets/<event_id>_<event_slug>/` for evidence and review. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and wiring facts into permanent `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another appropriate documentation surface, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. If the event is blocked or incomplete, keep the workspace and report the blocker. The absence of the deleted workspace is expected for a fully complete event and is not an asset blocker.
 
 ## Final event checklist
 
@@ -739,7 +739,7 @@ Before closing an event task, verify:
 13. `docs/events/` is updated.
 14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
 15. If assets are required, `chaos-redux-event-assets` has been used.
-16. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
+16. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
 17. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
 18. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
 19. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.

@@ -239,6 +239,8 @@ An asset addendum can define route-specific report images, decision icons, idea 
 
 For animated assets, define the state. The asset worker needs to know what frame set means inactive, active, dangerous, locked, completed, corrupted, hidden, or formed. The main agent needs static fallbacks and sprite names. The docs need manifest data to prove the asset was sourced or generated correctly.
 
+Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. Before the event goal is fully complete, promote durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, and delete the complete workspace. A closure handoff should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
+
 Use source-based assets for real people, real flags, real symbols, and real historical images. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
 
 ## Super-event improvement
