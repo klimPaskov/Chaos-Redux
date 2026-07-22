@@ -411,7 +411,7 @@ Validate TGA dimensions and origin. `file` output must not end with `- top`.
 Proposed static and animated sprites:
 
 ```text
-GFX_018_resource_field_seal
+GFX_018_resource_field_seal_static
 GFX_018_resource_field_seal_animated
 ```
 
@@ -426,7 +426,7 @@ Animation target: 8 frames at 4 FPS. Real source-frame changes show slow machine
 ### Unsafe warning overlay
 
 ```text
-GFX_018_resource_field_unsafe
+GFX_018_resource_field_unsafe_static
 GFX_018_resource_field_unsafe_animated
 ```
 
@@ -435,7 +435,7 @@ Transparent warning overlay with damaged supports, corroded metal, or a subtle s
 ### Disturbance state
 
 ```text
-GFX_018_resource_field_disturbance
+GFX_018_resource_field_disturbance_static
 GFX_018_resource_field_disturbance_animated
 ```
 
@@ -444,7 +444,7 @@ The seal gains unnatural fractures, displaced tools, or a vibration pattern. Avo
 ### Breach critical state
 
 ```text
-GFX_018_resource_field_breach
+GFX_018_resource_field_breach_static
 GFX_018_resource_field_breach_animated
 ```
 
@@ -461,7 +461,7 @@ Static sealed gate, idle machinery, and guarded works.
 ### Sealing state
 
 ```text
-GFX_018_resource_field_sealing
+GFX_018_resource_field_sealing_static
 GFX_018_resource_field_sealing_animated
 ```
 

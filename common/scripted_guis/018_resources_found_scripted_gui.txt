@@ -34,6 +34,29 @@ scripted_gui = {
 		}
 
 		triggers = {
+			resources_found_gui_previous_click_enabled = {
+				NOT = { has_country_flag = resources_found_gui_closed_history_view }
+				check_variable = { resources_found_owned_fields^num > constant:resources_found_value.one }
+			}
+			resources_found_gui_next_click_enabled = {
+				NOT = { has_country_flag = resources_found_gui_closed_history_view }
+				check_variable = { resources_found_owned_fields^num > constant:resources_found_value.one }
+			}
+			resources_found_gui_goto_click_enabled = {
+				OR = {
+					resources_found_country_has_valid_selected_field = yes
+					AND = {
+						has_country_flag = resources_found_gui_closed_history_view
+						resources_found_gui_has_closed_field_history = yes
+					}
+				}
+			}
+			resources_found_gui_animation_click_enabled = {
+				resources_found_country_has_valid_selected_field = yes
+			}
+			resources_found_gui_history_click_enabled = {
+				resources_found_gui_has_closed_field_history = yes
+			}
 			resources_found_gui_state_visible = {
 				resources_found_country_has_valid_selected_field = yes
 				OR = {
@@ -59,10 +82,12 @@ scripted_gui = {
 			resources_found_gui_disturbance_visible = {
 				resources_found_country_has_valid_selected_field = yes
 				var:resources_found_selected_field = { has_state_flag = resources_found_disturbance_revealed }
+				var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_field_suspended } }
 			}
 			resources_found_gui_breach_visible = {
 				resources_found_country_has_valid_selected_field = yes
 				var:resources_found_selected_field = { has_state_flag = resources_found_breach_revealed }
+				var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_field_suspended } }
 			}
 			resources_found_gui_seal_animated_visible = {
 				resources_found_country_has_valid_selected_field = yes
@@ -163,11 +188,13 @@ scripted_gui = {
 				has_country_flag = resources_found_gui_closed_history_view
 				resources_found_gui_has_closed_field_history = yes
 				var:resources_found_last_closed_field = { has_state_flag = resources_found_disturbance_revealed }
+				var:resources_found_last_closed_field = { NOT = { has_state_flag = resources_found_field_suspended } }
 			}
 			resources_found_gui_closed_breach_visible = {
 				has_country_flag = resources_found_gui_closed_history_view
 				resources_found_gui_has_closed_field_history = yes
 				var:resources_found_last_closed_field = { has_state_flag = resources_found_breach_revealed }
+				var:resources_found_last_closed_field = { NOT = { has_state_flag = resources_found_field_suspended } }
 			}
 		}
 
