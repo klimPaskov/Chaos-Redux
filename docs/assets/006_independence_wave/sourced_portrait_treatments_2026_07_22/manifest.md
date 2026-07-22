@@ -17,8 +17,12 @@ removed rather than regenerated. Commanders use their full 156x210 portrait.
 The review-only contact sheet is
 `contact_sheets/processed_sourced_portraits_contact_sheet.png` (SHA-256
 `9a778c245221acac7b2859d98555ce13fb046a7cf65aa2244ba0b9a583040bb2`).
-It displays all twenty-four source-approved treatments at native portrait aspect and is
-never referenced by runtime GFX.
+It displays all twenty-four source- and visually reviewed treatments at native
+portrait aspect and is never referenced by runtime GFX. Twenty-one treatments
+currently pass the separate vanilla-character ownership gate. Three retained
+treatments (Konrad Adenauer, Franz Ritter von Epp, and Edmund Ironside) fail that
+gate because vanilla recruits the same people as active characters; they remain
+rejected evidence pending different sourced replacements.
 
 ## Treatment ledger
 
@@ -29,10 +33,10 @@ never referenced by runtime GFX.
 | Saunders Lewis | Welsh civic-national leader; [western retry ledger](../sourced_portrait_replacements_2026_07_22/western_gap_retry/manifest.md) | `140,140,880,1135` | `processed_png/WLS_saunders_lewis.png` | `portrait_WLS_independence_wave_national_council.dds` | `processed_wired`; authentic 1916 image of Lewis; IW-002 remains fail-closed because its commander is unresolved |
 | Douwe Kalma | Frisian civic leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `70,40,470,580` | `processed_png/AGX_douwe_kalma.png` | `portrait_AGX_friesland_coastal_council.dds` | `processed_wired`; IW-007 remains fail-closed pending its complete package audit |
 | Pieter Reenalda | Frisian coastal commander; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `350,100,930,880` | `processed_png/AGX_pieter_reenalda.png` | `portrait_AGX_friesland_coastal_commander.dds` | `processed_wired`; command role is maritime/coastal, not an invented army identity |
-| Konrad Adenauer | Rhenish civic leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `0,0,484,650` | `processed_png/RHI_konrad_adenauer.png` | `portrait_RHI_independence_wave_provisional_directorate.dds` | `processed_wired`; IW-008 requires a full package audit before any re-admission |
+| Konrad Adenauer | Rhenish civic leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `0,0,484,650` | `processed_png/RHI_konrad_adenauer.png` | `portrait_RHI_independence_wave_provisional_directorate.dds` | `rejected_active_vanilla_character`; vanilla defines `GER_konrad_adenauer` and recruits him for GER at game start; IW-008 requires a different sourced male civic identity |
 | Josef Harpe | Rhenish-Westphalian army commander; [western retry ledger](../sourced_portrait_replacements_2026_07_22/western_gap_retry/manifest.md) | `0,0,4637,6242` | `processed_png/RHI_josef_harpe.png` | `portrait_RHI_independence_wave_river_commandant.dds` | `processed_wired`; Bundesarchiv source, Buer regional connection, and 1943 source date remain explicit; IW-008 requires a full package audit before any re-admission |
 | Heinrich Held | Bavarian civic leader; [western retry ledger](../sourced_portrait_replacements_2026_07_22/western_gap_retry/manifest.md) | `400,160,2070,2409` | `processed_png/BAY_heinrich_held.png` | `portrait_BAY_independence_wave_state_council.dds` | `processed_wired`; former Bavarian minister-president; archive watermark excluded by the approved crop; IW-009 requires a full package audit before any re-admission |
-| Franz Ritter von Epp | Bavarian military and emergency-route leader; [western retry ledger](../sourced_portrait_replacements_2026_07_22/western_gap_retry/manifest.md) | `600,350,2900,3447` | `processed_png/BAY_franz_von_epp.png` | `portrait_BAY_independence_wave_mountain_commandant.dds` | `processed_wired`; Freikorps and Nazi political record is retained in localisation and package documentation; IW-009 requires a full package audit before any re-admission |
+| Franz Ritter von Epp | Bavarian military and emergency-route leader; [western retry ledger](../sourced_portrait_replacements_2026_07_22/western_gap_retry/manifest.md) | `600,350,2900,3447` | `processed_png/BAY_franz_von_epp.png` | `portrait_BAY_independence_wave_mountain_commandant.dds` | `rejected_active_vanilla_character`; vanilla defines `GER_franz_ritter_von_epp` and recruits him for GER at game start; IW-009 requires a different sourced male military identity |
 | Adolphe Landry | Corsican civic leader; [Mediterranean source ledger](../sourced_portrait_replacements_2026_07_22/mediterranean_volga_assyria/manifest.md) | `36,0,476,592` | `processed_png/COR_adolphe_landry.png` | `portrait_COR_independence_wave_adolphe_landry.dds` | `processed_wired`; replaces the fictional Petru Santucci identity; IW-017 still requires a fresh full-package audit before any re-admission |
 | Jean Chiappe | Corsican security commander; [Mediterranean source ledger](../sourced_portrait_replacements_2026_07_22/mediterranean_volga_assyria/manifest.md) | `560,120,860,524` | `processed_png/COR_jean_chiappe.png` | `portrait_COR_independence_wave_jean_chiappe.dds` | `processed_wired`; replaces the fictional Pasquale Venturi identity; crop tightened to head and shoulders |
 | Emilio Lussu | Sardinian civic leader and veteran; [Mediterranean source ledger](../sourced_portrait_replacements_2026_07_22/mediterranean_volga_assyria/manifest.md) | `175,20,710,740` | `processed_png/ARX_emilio_lussu.png` | `portrait_ARX_independence_wave_emilio_lussu.dds` | `processed_wired`; replaces the fictional Antioco Melis identity; crop tightened to head and shoulders |
@@ -46,7 +50,7 @@ never referenced by runtime GFX.
 | Joris Van Severen | Flemish movement and paramilitary leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `0,70,590,864` | `processed_png/AEX_joris_van_severen.png` | `portrait_AEX_flemish_industrial_security_commander.dds` | `processed_readiness_only`; IW-005 has no admitted standalone adapter and the historical route caveat remains documented |
 | Jules Destrée | Walloon civic leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `0,8,891,1208` | `processed_png/AFX_jules_destree.png` | `portrait_AFX_walloon_provisional_assembly.dds` | `processed_wired`; IW-006 remains fail-closed because its commander is unresolved |
 | R. B. Cunninghame Graham | Scottish civic leader; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `1250,720,2750,2740` | `processed_png/SCO_cunninghame_graham.png` | `portrait_SCO_independence_wave_civic_convention.dds` | `processed_wired`; archived portrait predates 1936 and the source date is retained in the ledger |
-| Edmund Ironside | Scottish territorial commander; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `430,140,800,638` | `processed_png/SCO_edmund_ironside.png` | `portrait_SCO_independence_wave_territorial_commandant.dds` | `processed_wired`; source is a real uniformed commander photograph |
+| Edmund Ironside | Scottish territorial commander; [NWE source ledger](../sourced_portrait_replacements_2026_07_22/northwestern_europe/manifest.md) | `430,140,800,638` | `processed_png/SCO_edmund_ironside.png` | `portrait_SCO_independence_wave_territorial_commandant.dds` | `rejected_active_vanilla_character`; vanilla defines `ENG_edmund_ironside` and recruits him for ENG at game start; IW-001 requires a different sourced male commander |
 | Muhammadu Dikko | Sokoto/Katsina mounted commander; [Pacific/Sokoto source handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_pacific_asante_sokoto_sourced_portrait_research_2026_07_22.md) | `705,380,870,602` | `processed_png/SOK_muhammad_dikko.png` | `portrait_SOK_muhammad_dikko.dds` | `processed_wired`; replaces fictional Umaru Gwadabawa; crop tightened to head and shoulders; IW-098 remains fail-closed because Bello, Hasan, and Siddiq are unresolved |
 | Naum Faiq | Assyrian civic-national legacy candidate; [Mediterranean/Eurasia retry ledger](../sourced_portrait_replacements_2026_07_22/med_eurasia_gap_retry/manifest.md) | `10,0,456,600` | `processed_png/ASY_naum_faiq.png` | none | `rejected_subject_timing`; source and treatment are defensible, but Faiq died in 1930 and cannot be presented as a living 1936 officeholder |
 | Agha Petros | Assyrian levies legacy candidate; [Mediterranean/Eurasia retry ledger](../sourced_portrait_replacements_2026_07_22/med_eurasia_gap_retry/manifest.md) | `120,30,710,824` | `processed_png/ASY_agha_petros.png` | none | `rejected_subject_timing`; source and treatment are defensible, but Petros died in 1932 and cannot be presented as a living 1936 commander |
@@ -82,12 +86,15 @@ never referenced by runtime GFX.
 | `portrait_SOK_muhammad_dikko.dds` | `facfe7ca0547cc4898061fa387faab61fc138e92f228f43469a8a7473402f7c3` |
 
 Every listed DDS decodes as RGBA `156x210` and is pixel-identical to its
-processed PNG. Protected BAY Rupprecht and RHI Matthes retained their approved
-hashes unchanged.
+processed PNG. Pixel equality proves conversion fidelity only; it does not
+override the active-character ownership rejection for Adenauer, Epp, or
+Ironside. Protected BAY Rupprecht and RHI Matthes retained their approved hashes
+unchanged.
 
 ## Admission boundary
 
 This is a portrait replacement tranche, not package admission. The compile-time
 Event 006 content-attestation set remains empty. A package may be restored only
 after every leader, route leader, commander, and named officeholder in that
-package satisfies the sourced-real-person gate and the package is re-audited.
+package satisfies the sourced-real-person gate, the subject is not already owned
+as an active vanilla or Chaos Redux character, and the package is re-audited.

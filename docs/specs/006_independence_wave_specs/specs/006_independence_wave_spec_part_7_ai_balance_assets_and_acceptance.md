@@ -512,6 +512,14 @@ Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
   painterly-realistic style;
 - sourced real portraits are cropped to head and shoulders and receive an
   identity-preserving HOI4 treatment;
+- a newly defined Event 6 character may not duplicate a person already defined
+  and recruited, or otherwise owned by a live vanilla or Chaos Redux character
+  roster. Reuse of an existing registered character requires an explicit guarded
+  transfer/availability contract that prevents simultaneous ownership; creating a
+  second token with the same person and a new portrait is not reuse;
+- incidental text such as a ship, production line, street, or equipment name is
+  not character ownership by itself; ownership requires an actual character,
+  portrait, leader, commander, operative, or named officeholder consumer;
 - a historical or plausibly historical package with no defensible sourced
   candidate and usable portrait remains blocked instead of receiving a
   generated officeholder;

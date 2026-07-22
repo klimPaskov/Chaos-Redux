@@ -5,7 +5,7 @@ Reviewer: parent integration agent
 Review surface: source crop, processed candidate, and the canonical vanilla
 leader references embedded in each `review_sheets/*_review.png` file.
 
-## Approved
+## Visual treatment approved
 
 - Arthur Quiller-Couch: identity, moustache, hair, formal coat, and three-quarter
   pose remain recognizable; framing and contrast match the leader canvas.
@@ -61,6 +61,27 @@ leader references embedded in each `review_sheets/*_review.png` file.
 - Muhammadu Dikko: the crop isolates the labelled TNA album portrait and keeps
   staff, dress, and face visible. The result is lower-resolution than the
   European masters but remains attributable and readable at native size.
+
+Visual treatment approval is not runtime identity approval. The following
+identity-preserving treatments are retained as review evidence but rejected for
+Event 006 runtime use because the same men are active vanilla characters:
+
+- Konrad Adenauer: vanilla `common/characters/GER.txt:155` defines
+  `GER_konrad_adenauer`, and `history/countries/GER - Germany.txt:887` recruits
+  him for Germany at game start. IW-008 requires a different sourced male civic
+  leader.
+- Franz Ritter von Epp: vanilla `common/characters/GER.txt:1067` defines
+  `GER_franz_ritter_von_epp`, and `history/countries/GER - Germany.txt:1017`
+  recruits him for Germany at game start. IW-009 requires a different sourced
+  male military leader.
+- Edmund Ironside: vanilla `common/characters/ENG.txt:1297` defines
+  `ENG_edmund_ironside`, and `history/countries/ENG - Britain.txt:667` recruits
+  him for Britain at game start. IW-001 requires a different sourced male
+  commander.
+
+Luigi Rizzo is not rejected by this gate. Vanilla Italy uses his name only for
+two ship-production lines in `common/national_focus/italy.txt:7862` and `:7938`;
+there is no vanilla Rizzo character, portrait, or leader consumer.
 
 ## Rejected
 
