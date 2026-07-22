@@ -224,3 +224,17 @@ have human and hidden AI result events, followed by a human and hidden AI
 doctor callback and authenticated cleanup. The chain remains dormant and
 uncounted. The countable Fallout living-world release-floor total remains
 `0 of 660`.
+
+## Seed Vault Custody count correction
+
+The Seed Vault Custody reservation adds thirteen dormant suffixes, so the
+authoritative living-world pilot total is `75` identities and `85` defined
+blocks. The chain uses event suffixes `188` through `200`, candidate id `188`,
+transaction key `710007`, route `7107`, and history id `9112`.
+
+Its candidate gate requires an Air Winter seed-memory receipt, a produced
+snapshot, current reclamation and adaptation, and an owned state with an exact
+current-generation resource row. Four policy lanes have human and hidden AI
+result events, followed by a human and hidden AI agronomist callback and
+authenticated cleanup. The chain remains dormant and uncounted. The countable
+Fallout living-world release-floor total remains `0 of 660`.
