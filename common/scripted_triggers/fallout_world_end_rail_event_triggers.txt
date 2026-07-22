@@ -1,0 +1,81 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT RAIL CREW TRIGGERS
+# ============================================================================
+# Rail candidates require a current state-owned Fallout row and an Air Winter
+# corridor that still has a native railway surface. The hidden AI and visible
+# routes share the same registry identity.
+# ============================================================================
+
+fallout_event_114_opening_rail_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_114_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_114_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_114_target_to_check = {
+		set_temp_variable = { fallout_event_114_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_survival_state_identity_row_is_current = yes
+		fallout_survival_state_resource_row_is_durable = yes
+		has_variable = air_winter_phase
+		check_variable = { air_winter_phase value = constant:fallout_event_114_threshold.phase_minimum compare = greater_than_or_equals }
+		check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+		check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+		rail_way > constant:fallout_event_runtime.zero
+		NOT = { has_state_flag = fallout_event_114_rail_registry_committed }
+	}
+	check_variable = { fallout_event_114_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_114_rail_registry_is_current = {
+	has_variable = fallout_event_114_corridor_state_id
+	has_variable = fallout_event_114_rail_registry_generation
+	has_variable = fallout_event_114_rail_registry_owner
+	check_variable = { fallout_event_114_corridor_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_114_rail_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_114_rail_registry_owner value = ROOT compare = equals }
+	set_temp_variable = { fallout_event_114_registry_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_114_corridor_state_id = {
+		set_temp_variable = { fallout_event_114_registry_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		has_state_flag = fallout_event_114_rail_registry_committed
+		fallout_survival_state_identity_row_is_current = yes
+		fallout_survival_state_resource_row_is_durable = yes
+		check_variable = { fallout_survival_state_owner value = ROOT compare = equals }
+		has_variable = air_winter_phase
+		check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+		check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	}
+	check_variable = { fallout_event_114_registry_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_114_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_crew_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_114_opening_rail_target_is_current = yes
+}
+
+fallout_event_114_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_crew_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_114_opening_rail_target_is_current = yes
+}
+
+fallout_event_114_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_114_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_114_branch.upper_bound }
+	fallout_event_114_rail_registry_is_current = yes
+}
+
+fallout_event_114_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_crew_cleanup }
+	fallout_event_114_rail_registry_is_current = yes
+}
