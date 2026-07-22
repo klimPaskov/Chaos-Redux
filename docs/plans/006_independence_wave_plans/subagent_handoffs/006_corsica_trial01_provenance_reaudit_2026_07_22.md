@@ -24,6 +24,8 @@ This audit authorizes conversion only. It does not run the converter, modify a
 DDS, edit `.gfx`, or make the post-wiring country-package attestation. The
 existing runtime DDS files are stale relative to these trial PNGs and must be
 replaced by the parent using the exact approved PNG hashes below.
+The authorization is hash-scoped: no alternate, renamed, or stale DDS source is
+implicitly approved.
 
 ## Current runtime and wiring state
 
@@ -199,4 +201,3 @@ No advisor, dossier, `_small`, female, flag, focus, decision, or gameplay asset
 was created by this re-audit. Runtime/GFX files were not edited. IW-017 still
 requires the fresh post-wiring country-package audit named in the GFX handoff;
 that remaining requirement does not block conversion of these two exact PNGs.
-
