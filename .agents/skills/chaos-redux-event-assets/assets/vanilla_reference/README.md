@@ -24,7 +24,7 @@ precedent, then create an original or properly sourced Chaos Redux asset.
 - Review format: lossless RGBA PNG decoded from source DDS, TGA, or PNG
 - Pixel policy: preserve the source texture canvas exactly; do not crop,
   stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 283 allowlisted reference PNGs across 37 semantic folders
+- Inventory: 287 allowlisted reference PNGs across 37 semantic folders
 - Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
 The generated [CATALOG.md](CATALOG.md) records the exact source, source kind,
