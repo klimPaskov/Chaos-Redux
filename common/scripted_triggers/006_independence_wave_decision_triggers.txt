@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
 # ============================================================================
 # Reusable phase, target, mission-cap, resource-safety, and material-cost
-# predicates for DM-01 through DM-61. All country scans are initiated by a
+# predicates for DM-01 through DM-62. All country scans are initiated by a
 # player or AI targeted action. No periodic world iteration is performed here.
 # ============================================================================
 
@@ -81,12 +81,36 @@ has_independence_wave_active_league_crisis = {
 		has_decision = independence_wave_rescue_threatened_member
 		has_decision = independence_wave_call_charter_expulsion_vote
 		has_decision = independence_wave_sponsor_member_coup
+		has_decision = independence_wave_request_charter_war_mandate
 		has_decision = independence_wave_refuse_binding_arbitration
 		has_active_mission = independence_wave_convene_founding_congress
 		has_active_mission = independence_wave_challenge_league_leadership
 		has_active_mission = independence_wave_coordinate_reclamation_fronts
 		has_active_mission = independence_wave_transform_league_charter
 	}
+}
+
+# Country scope, called from the owner of a selected capital state. A defensive
+# charter may authorize war only against a living external country that is not
+# already a League member and is not already at war with the applicant.
+is_valid_independence_wave_charter_war_authorization_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_country_flag = independence_wave_league_member }
+	ROOT = {
+		NOT = { has_war_with = PREV }
+		can_declare_war_on = PREV
+	}
+}
+
+# Country scope, with FROM as the state selected by DM-42/43/44/60/62. The
+# regular variable stores the country chosen when the timer began. Resolution
+# is valid only while that exact country still exists and still owns the
+# selected state; a capital transfer cannot silently redirect an outcome.
+has_valid_independence_wave_active_league_decision_target = {
+	has_variable = independence_wave_active_league_target_country
+	var:independence_wave_active_league_target_country = { exists = yes }
+	FROM = { is_owned_by = var:ROOT.independence_wave_active_league_target_country }
 }
 
 # A client can remain in the member ledger only while a leader's charter
@@ -103,6 +127,8 @@ is_independence_wave_charter_compliant_member = {
 # cancellation effect.
 is_independence_wave_binding_arbitration_refusal_target = {
 	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	has_global_flag = independence_wave_charter_arbitration
 	has_country_flag = independence_wave_arbitration_pending
 	has_variable = independence_wave_arbitration_requester
 	var:independence_wave_arbitration_requester = {

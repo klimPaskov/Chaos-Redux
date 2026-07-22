@@ -25,10 +25,20 @@ on_actions = {
 					check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress }
 					has_civil_war = no
 				}
-				set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.unauthorized_war }
-				set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
-				set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_achievement_war_defender }
-				independence_wave_record_league_expulsion_ground = yes
+				if = {
+					limit = { has_country_flag = independence_wave_charter_war_authorized_@FROM }
+					clr_country_flag = independence_wave_charter_war_authorized_@FROM
+					set_variable = { independence_wave_last_charter_authorized_war_target = FROM }
+					set_variable = { independence_wave_last_charter_authorized_war_date = global.date }
+					clear_variable = independence_wave_last_charter_war_mandate_target
+					clear_variable = independence_wave_last_charter_war_mandate_date
+				}
+				else = {
+					set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.unauthorized_war }
+					set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
+					set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_achievement_war_defender }
+					independence_wave_record_league_expulsion_ground = yes
+				}
 			}
 		}
 	}

@@ -1,11 +1,15 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISIONS AND MISSIONS
 # ============================================================================
-# Complete DM-01 through DM-61 action map. Costs are material commitments,
+# Complete DM-01 through DM-62 action map. Costs are material commitments,
 # missions are bounded, and repeatable actions use target or country cooldowns.
 # All value, relationship, patron, network, and league changes pass through the
 # Event 006 scripted ledgers. No periodic world iteration is used.
 # ============================================================================
+
+# `set_country_flag.days` does not accept variable tokens. Keep this literal
+# mirror synchronized with `independence_wave_decision_cooldown.major`.
+@INDEPENDENCE_WAVE_CHARTER_WAR_MANDATE_DAYS = 365
 
 independence_wave_founding_category = {
 	# DM-01
@@ -2109,15 +2113,16 @@ independence_wave_network_category = {
 		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
 		days_remove = constant:independence_wave_decision_duration.long
 		days_re_enable = constant:independence_wave_decision_cooldown.major
-		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_standard = yes
+			independence_wave_decision_store_active_league_target = yes
+		}
 		remove_effect = {
-			FROM = {
-				owner = {
-					set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }
-					independence_wave_change_recognition = yes
-					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major }
-					independence_wave_change_network_standing = yes
-				}
+			var:independence_wave_active_league_target_country = {
+				set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }
+				independence_wave_change_recognition = yes
+				set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major }
+				independence_wave_change_network_standing = yes
 			}
 			set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_standard }
 			set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard }
@@ -2125,14 +2130,22 @@ independence_wave_network_category = {
 			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
 			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard }
 			independence_wave_decision_apply_league_deltas = yes
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
 				NOT = { has_country_flag = independence_wave_league_member }
 				has_country_flag = independence_wave_client_route_locked
-				FROM = { owner = { NOT = { is_independence_wave_active_country = yes } } }
-				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
+				NOT = { has_valid_independence_wave_active_league_decision_target = yes }
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { is_independence_wave_active_country = yes } }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { has_country_flag = independence_wave_client_route_locked }
+				}
 			}
 		}
 		cancel_effect = {
@@ -2145,6 +2158,7 @@ independence_wave_network_category = {
 				set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard_loss }
 				independence_wave_decision_apply_league_deltas = yes
 			}
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -2183,24 +2197,21 @@ independence_wave_network_category = {
 		days_re_enable = constant:independence_wave_decision_cooldown.major
 		complete_effect = {
 			independence_wave_decision_pay_diplomatic_standard = yes
-			FROM = {
-				owner = {
-					set_country_flag = independence_wave_arbitration_pending
-					set_variable = { independence_wave_arbitration_requester = ROOT }
-					set_variable = { independence_wave_arbitration_request_date = global.date }
-				}
+			independence_wave_decision_store_active_league_target = yes
+			var:independence_wave_active_league_target_country = {
+				set_country_flag = independence_wave_arbitration_pending
+				set_variable = { independence_wave_arbitration_requester = ROOT }
+				set_variable = { independence_wave_arbitration_request_date = global.date }
 			}
 		}
 		remove_effect = {
-			FROM = {
-				owner = {
-					independence_wave_clear_binding_arbitration_request = yes
-					every_owned_state = {
-						limit = { is_claimed_by = ROOT }
-						remove_claim_by = ROOT
-					}
-					save_event_target_as = independence_wave_arbitration_partner
+			var:independence_wave_active_league_target_country = {
+				independence_wave_clear_binding_arbitration_request = yes
+				every_owned_state = {
+					limit = { is_claimed_by = ROOT }
+					remove_claim_by = ROOT
 				}
+				save_event_target_as = independence_wave_arbitration_partner
 			}
 			every_owned_state = {
 				limit = { is_claimed_by = event_target:independence_wave_arbitration_partner }
@@ -2215,21 +2226,35 @@ independence_wave_network_category = {
 			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard }
 			independence_wave_decision_apply_league_deltas = yes
 			independence_wave_achievement_record_arbitration = yes
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
 				has_country_flag = independence_wave_client_route_locked
-				FROM = { owner = { NOT = { has_country_flag = independence_wave_league_member } } }
-				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
-				FROM = { owner = { has_country_flag = independence_wave_arbitration_refusal_recorded } }
+				NOT = { has_valid_independence_wave_active_league_decision_target = yes }
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { has_country_flag = independence_wave_league_member } }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { has_country_flag = independence_wave_client_route_locked }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { has_country_flag = independence_wave_arbitration_refusal_recorded }
+				}
 			}
 		}
 		cancel_effect = {
 			if = {
 				limit = { is_independence_wave_active_country = yes }
 				if = {
-					limit = { FROM = { owner = { has_country_flag = independence_wave_arbitration_refusal_recorded } } }
+					limit = {
+						has_variable = independence_wave_active_league_target_country
+						var:independence_wave_active_league_target_country = { has_country_flag = independence_wave_arbitration_refusal_recorded }
+					}
 					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major_loss }
 					independence_wave_change_network_standing = yes
 					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major_loss }
@@ -2248,7 +2273,11 @@ independence_wave_network_category = {
 					independence_wave_decision_apply_league_deltas = yes
 				}
 			}
-			FROM = { owner = { independence_wave_clear_binding_arbitration_request = yes } }
+			if = {
+				limit = { has_variable = independence_wave_active_league_target_country }
+				var:independence_wave_active_league_target_country = { independence_wave_clear_binding_arbitration_request = yes }
+			}
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		ai_will_do = {
 			base = constant:independence_wave_decision_ai.high
@@ -2266,6 +2295,7 @@ independence_wave_network_category = {
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
 			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_mutual_defense
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2293,23 +2323,22 @@ independence_wave_network_category = {
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = {
 			independence_wave_decision_pay_diplomatic_light = yes
-			FROM = {
-				owner = { save_event_target_as = independence_wave_rescue_member }
-			}
-			send_equipment = {
-				equipment = infantry_equipment
-				amount = constant:independence_wave_decision_cost.infantry_standard
-				target = event_target:independence_wave_rescue_member
-			}
-			send_equipment = {
-				equipment = support_equipment
-				amount = constant:independence_wave_decision_cost.support_standard
-				target = event_target:independence_wave_rescue_member
-			}
-			give_guarantee = event_target:independence_wave_rescue_member
+			independence_wave_decision_reserve_rescue_equipment = yes
+			independence_wave_decision_store_active_league_target = yes
 		}
 		remove_effect = {
-			FROM = { owner = { save_event_target_as = independence_wave_rescue_member } }
+			var:independence_wave_active_league_target_country = {
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:independence_wave_decision_cost.infantry_standard
+				}
+				add_equipment_to_stockpile = {
+					type = support_equipment
+					amount = constant:independence_wave_decision_cost.support_standard
+				}
+				save_event_target_as = independence_wave_rescue_member
+			}
+			give_guarantee = event_target:independence_wave_rescue_member
 			independence_wave_achievement_record_rescue = yes
 			set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major }
 			independence_wave_change_network_standing = yes
@@ -2319,14 +2348,30 @@ independence_wave_network_category = {
 			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_standard_loss }
 			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_major }
 			independence_wave_decision_apply_league_deltas = yes
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
 				has_country_flag = independence_wave_client_route_locked
-				FROM = { owner = { NOT = { is_independence_wave_active_country = yes } } }
-				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
-				FROM = { owner = { has_war = no } }
+				NOT = { has_global_flag = independence_wave_charter_mutual_defense }
+				NOT = { has_valid_independence_wave_active_league_decision_target = yes }
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { is_independence_wave_active_country = yes } }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { has_country_flag = independence_wave_league_member } }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { has_country_flag = independence_wave_client_route_locked }
+				}
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { has_war = no }
+				}
 			}
 		}
 		cancel_effect = {
@@ -2334,13 +2379,13 @@ independence_wave_network_category = {
 				limit = { is_independence_wave_active_country = yes }
 				if = {
 					limit = {
-						FROM = {
-							owner = {
-								is_independence_wave_active_country = yes
-								has_war = no
-							}
+						has_variable = independence_wave_active_league_target_country
+						var:independence_wave_active_league_target_country = {
+							is_independence_wave_active_country = yes
+							has_war = no
 						}
 					}
+					independence_wave_decision_refund_rescue_equipment = yes
 					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 					independence_wave_change_network_standing = yes
 					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_standard }
@@ -2353,20 +2398,22 @@ independence_wave_network_category = {
 				else = {
 					if = {
 						limit = {
-							FROM = {
-								owner = {
-									is_independence_wave_active_country = yes
-									has_country_flag = independence_wave_league_member
-									has_war = yes
-								}
+							has_country_flag = independence_wave_client_route_locked
+							has_variable = independence_wave_active_league_target_country
+							var:independence_wave_active_league_target_country = {
+								is_independence_wave_active_country = yes
+								has_country_flag = independence_wave_league_member
+								has_war = yes
 							}
+							has_global_flag = independence_wave_charter_mutual_defense
 						}
-						FROM = { owner = { save_event_target_as = independence_wave_rescue_abandonment_target } }
+						var:independence_wave_active_league_target_country = { save_event_target_as = independence_wave_rescue_abandonment_target }
 						set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.rescue_abandonment }
 						set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
 						set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_rescue_abandonment_target }
 						independence_wave_record_league_expulsion_ground = yes
 					}
+					else = { independence_wave_decision_refund_rescue_equipment = yes }
 					set_global_flag = independence_wave_league_failed_rescue
 					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major_loss }
 					independence_wave_change_network_standing = yes
@@ -2378,6 +2425,7 @@ independence_wave_network_category = {
 					independence_wave_decision_apply_league_deltas = yes
 				}
 			}
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		days_re_enable = constant:independence_wave_decision_cooldown.major
 		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
@@ -2656,20 +2704,27 @@ independence_wave_league_category = {
 		complete_effect = {
 			custom_effect_tooltip = independence_wave_charter_expulsion_vote_started_tt
 			independence_wave_decision_pay_strategic = yes
+			independence_wave_decision_store_active_league_target = yes
 		}
 		remove_effect = {
 			custom_effect_tooltip = independence_wave_charter_expulsion_vote_effect_tt
 			independence_wave_decision_resolve_charter_expulsion_vote = yes
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_charter_expulsion_authority = yes }
-				FROM = { owner = { NOT = { is_valid_independence_wave_charter_expulsion_target = yes } } }
+				NOT = { has_valid_independence_wave_active_league_decision_target = yes }
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { is_valid_independence_wave_charter_expulsion_target = yes } }
+				}
 			}
 		}
 		cancel_effect = {
 			custom_effect_tooltip = independence_wave_charter_expulsion_vote_failure_tt
 			independence_wave_decision_fail_charter_expulsion_vote = yes
+			independence_wave_decision_clear_active_league_target = yes
 		}
 		ai_will_do = {
 			base = constant:independence_wave_decision_ai.very_low
@@ -2747,6 +2802,91 @@ independence_wave_league_category = {
 		ai_will_do = {
 			base = constant:independence_wave_decision_ai.very_low
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_route_radical_sovereignty }
+		}
+	}
+
+	# DM-62 supporting action for the defensive charter's authorization rule.
+	# A completed mandate is targeted to one external country and expires after
+	# the major cooldown. The war on-action consumes it on the first matching
+	# declaration; every other offensive declaration remains a factual breach.
+	independence_wave_request_charter_war_mandate = {
+		name = independence_wave_request_charter_war_mandate
+		desc = independence_wave_request_charter_war_mandate_desc
+		icon = GFX_decision_independence_wave_league_votes
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			is_independence_wave_recognized_or_later = yes
+			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_mutual_defense
+			check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress }
+			NOT = { has_independence_wave_active_league_crisis = yes }
+		}
+		target_trigger = {
+			FROM = {
+				is_capital = yes
+				owner = { is_valid_independence_wave_charter_war_authorization_target = yes }
+			}
+		}
+		visible = {
+			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_mutual_defense
+			check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress }
+		}
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		days_remove = constant:independence_wave_decision_duration.rapid
+		days_re_enable = constant:independence_wave_decision_cooldown.standard
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_standard = yes
+			independence_wave_decision_store_active_league_target = yes
+		}
+		remove_effect = {
+			independence_wave_decision_clear_charter_war_mandate = yes
+			var:independence_wave_active_league_target_country = {
+				ROOT = {
+					set_country_flag = {
+						flag = independence_wave_charter_war_authorized_@PREV
+						days = @INDEPENDENCE_WAVE_CHARTER_WAR_MANDATE_DAYS
+					}
+					set_variable = { independence_wave_last_charter_war_mandate_target = PREV }
+					set_variable = { independence_wave_last_charter_war_mandate_date = global.date }
+				}
+			}
+			set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_minor_loss }
+			set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard }
+			set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_minor }
+			independence_wave_decision_apply_league_deltas = yes
+			independence_wave_decision_clear_active_league_target = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_charter_compliant_member = yes }
+				NOT = { has_global_flag = independence_wave_charter_mutual_defense }
+				NOT = { check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress } }
+				NOT = { has_valid_independence_wave_active_league_decision_target = yes }
+				AND = {
+					has_variable = independence_wave_active_league_target_country
+					var:independence_wave_active_league_target_country = { NOT = { is_valid_independence_wave_charter_war_authorization_target = yes } }
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_minor_loss }
+			set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_minor_loss }
+			independence_wave_decision_apply_league_deltas = yes
+			independence_wave_decision_clear_active_league_target = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_country_flag = independence_wave_route_neutral_commission }
 		}
 	}
 }
