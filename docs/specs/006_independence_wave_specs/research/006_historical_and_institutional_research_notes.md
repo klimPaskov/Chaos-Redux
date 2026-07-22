@@ -88,7 +88,11 @@ Design use:
 
 Resolution:
 
-The signature dossier adds the Federación Araucana, Manuel Aburto Panguilef, Herminia Aburto Colihueque, 1931 Indigenous Republic proposal, 1935 congress, 1936 repression, territorial representation, and a compact south-central anchor.
+The signature dossier adds the Federación Araucana, Manuel Aburto Panguilef,
+the 1931 Indigenous Republic proposal, 1935 congress, 1936 repression,
+territorial representation, and a compact south-central anchor. Herminia Aburto
+Colihueque remains research context for the organization's civic history only;
+the accepted Event 6 male-only rule excludes her as a character or portrait.
 
 ## Asante package
 

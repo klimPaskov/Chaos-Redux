@@ -108,7 +108,12 @@ These dossiers resolve the design-level historical, institutional, territorial, 
 
 **Resolved tag and release role:** Use the non-selectable `CHL_mapuche_state` cosmetic overlay on `CHL`. This package has no standalone Event 6 tag and does not enter the release pool. The opening route identity is a Mapuche federation. Wallmapu remains reserved for a negotiated formable or route after internal and cross-border settlement. The additive overlay adapter remains implementation work.
 
-**Period leadership:** Manuel Aburto Panguilef and the Federación Araucana are direct period anchors. The organization proposed an Indigenous Republic in 1931, held a congress in 1935, and Aburto was repressed in 1936. Herminia Aburto Colihueque supports civic, electoral, archival, and women's organization content. Later groups are date-gated.
+**Period leadership:** Manuel Aburto Panguilef and the Federación Araucana are
+direct period anchors. The organization proposed an Indigenous Republic in
+1931, held a congress in 1935, and Aburto was repressed in 1936. Herminia
+Aburto Colihueque remains historical research context for the organization's
+civic and electoral activity, but the accepted Event 6 male-only rule excludes
+her as a character or portrait. Later groups are date-gated.
 
 **Internal structure:** Mapuche, Lafkenche, Williche, Pehuenche, and other represented territorial identities receive seats, autonomy rules, land and language policy, and distinct economic and military concerns. The state cannot use one undifferentiated council.
 

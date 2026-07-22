@@ -137,15 +137,34 @@ The candidate registry contains 206 initial packages. Do not bulk-generate all f
 For every package selected for implementation:
 
 - preserve an existing registered base flag when appropriate
-- source historical flags and historically attested symbols
-- generate only fictional, alternate-history, ideology, route, or high-chaos variants
+- research historical flags and historically attested symbols, then use
+  ImageGen to reconstruct the accepted design as clean flat flag geometry
+- use ImageGen for every newly produced Event 6 flag, including sourced
+  historical designs, but never turn a flag into an artwork, scene, waving
+  fabric, painterly illustration, gradient composition, or invented historical
+  design
+- generate invented flag geometry only for explicitly fictional,
+  alternate-history, ideology, route, or high-chaos variants
 - produce normal, medium, and small HOI4 flag files
 - validate orientation and TGA headers
-- use sourced portraits for real leaders
-- use generated portraits for fictional leaders and councils
+- use sourced real-person portraits or authentic archival images of the actual
+  institution for every real, restored, regional, indigenous, dynastic,
+  separatist, or otherwise plausibly historical country
+- do not invent or generate an officeholder, commander, route leader, council,
+  or committee portrait for a grounded country; if suitable source material
+  cannot be established, block that country package
+- generate a fictional personal or institutional portrait only when the
+  country itself is truly fictional and high-chaos
 - use only male subjects and male character metadata for Event 6 portraits
-- require matching male regional name pools and metadata
-- use institutional names and all-male collective portraits for councils and committees
+- require matching male name pools and metadata only for permitted truly
+  fictional high-chaos leaders
+- make permitted fictional high-chaos leaders memorable through coherent
+  invented ceremonial dress, extraordinary regalia, body adornment, ritual
+  objects, altered uniforms, or other absurd cultural features; avoid generic
+  faces, contemporary props, meme aesthetics, gore, caricature, mockery, and
+  real-world stereotypes
+- use institutional names and sourced all-male collective or actual
+  institutional images for grounded councils and committees
 - match the canonical vanilla HOI4 painterly portrait treatment, framing, tonal
   range, period clothing, and background language rather than a generic modern
   portrait finish
