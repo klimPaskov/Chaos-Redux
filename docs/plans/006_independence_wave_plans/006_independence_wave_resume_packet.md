@@ -102,11 +102,12 @@ they are not current routing documents.
   `independence_wave_form48_registry_surface_registered` and
   `independence_wave_form48_readiness_attested` after coordinated PASS audits.
   No annexation or integration fallback is used.
-- The IW-043/IW-058 package manifests record final reviewed assets: 27 static
-  icons including the three-state Assyria survival triplet, eight all-male
-  institutional portraits, ten flat flags, and two report images. No custom
-  Event 006 advisor asset exists. The post-1968/1973 modern Assyrian flag is
-  explicitly excluded.
+- The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
+  27 static icons including the three-state Assyria survival triplet, ten flat
+  flags, and two report images. Mirsaid Sultan-Galiev and Gallo Shabo are the
+  two source-cleared opening portraits; the other six institutional route
+  portraits remain generated and invalid. No custom Event 006 advisor asset
+  exists. The post-1968/1973 modern Assyrian flag is explicitly excluded.
 - The allocator audit passes 149 publishers, 126 automatic/high-chaos
   selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10
   ladder, and Event 005-first joint reservation ordering. Runtime host,
@@ -122,17 +123,18 @@ they are not current routing documents.
   documented static ordering caveat because engine order is unspecified, and AI
   completion still depends on opportunistic placement of garrisons in states 6
   and 977.
-- The 2026-07-18 male-HOI4 portrait refresh and Mediterranean portrait ledger
-  are the current portrait authorities: twenty-eight male fictional large
-  portraits and ten commander-only 65x67 miniatures pass, while Rupprecht and Matthes
-  remain protected. ACX and AEX are unregistered readiness-pool art only.
-  Earlier portrait and army-small checksum ledgers are historical and
-  superseded.
+- The current portrait authority is
+  `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`:
+  twenty-four attributed real-male treatments pass source, crop, visual, DDS, and
+  pixel-equality review, while Rupprecht and Matthes remain protected. ACX and
+  AEX are unregistered readiness-pool art only. Earlier fictional portrait and
+  army-small checksum ledgers are historical and superseded; Event 6 has no
+  commander miniatures.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
   the repaired FORM transaction integration. Exact promotions are committed in
   `5d17e55b3` and `f64d9640e`.
-- Static icon families, current male-HOI4 portraits and commander-only
-  miniatures, country flags, FORM-01 through FORM-04 flags, report scenes,
+- Static icon families, current sourced portraits, country flags, FORM-01
+  through FORM-04 flags, report scenes,
   super-event art, and final `6002` audio files materially exist. Gameplay
   advisor offices are asset-neutral after the user-directed withdrawal of all
   custom Event 006 advisor icons.
@@ -148,26 +150,26 @@ they are not current routing documents.
 
 | Package | Current state | Resume rule |
 | --- | --- | --- |
-| IW-006 AFX | Gameplay retained; visual admission withdrawn | Preserve its audited Level 2 Sambre-Meuse lane and three incidents, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-007 AGX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-001 SCO | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-002 WLS | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-008 RHI | Gameplay retained; visual admission withdrawn | Preserve protected Matthes, the Level 2 lane, incidents, and FORM-04 delegation logic. Keep execution closed until the other generated RHI leader and commander are replaced and the full roster is re-audited |
-| IW-009 BAY | Gameplay retained; visual admission withdrawn | Preserve protected Rupprecht, the Level 2 lane, incidents, and South German settlement. Keep execution closed until the other generated BAY leader and commander are replaced and the full roster is re-audited |
+| IW-006 AFX | Gameplay retained; visual admission withdrawn | Jules Destrée is sourced, processed, and wired. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, but keep execution closed until the commander is replaced by a sourced real military identity and the package is re-audited |
+| IW-007 AGX | Gameplay retained; portrait roster source-cleared | Douwe Kalma and Pieter Reenalda are sourced, processed, and wired. Keep execution closed until a fresh country-package and portrait-consumer audit authorizes exact re-admission |
+| IW-001 SCO | Gameplay retained; portrait roster source-cleared | R. B. Cunninghame Graham and Edmund Ironside are sourced, processed, and wired. Keep execution closed until a fresh country-package and portrait-consumer audit authorizes exact re-admission |
+| IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis is sourced, processed, and wired as the civic leader. Preserve the package logic, but keep execution closed until the mountain commander is replaced by a sourced real military identity and the full roster is re-audited |
+| IW-008 RHI | Gameplay retained; portrait roster source-cleared | Preserve protected Matthes, sourced Konrad Adenauer and Josef Harpe, the Level 2 lane, incidents, and FORM-04 delegation logic. Keep execution closed until a fresh country-package and portrait-consumer audit authorizes exact re-admission |
+| IW-009 BAY | Gameplay retained; portrait roster source-cleared | Preserve protected Rupprecht, sourced Heinrich Held and Franz Ritter von Epp, the Level 2 lane, incidents, and South German settlement. Keep execution closed until a fresh country-package and portrait-consumer audit authorizes exact re-admission; keep Epp's Freikorps and Nazi record explicit |
 | IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-017 COR | Gameplay retained; visual admission withdrawn | Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access. Keep execution closed until all three generated leaders are replaced by sourced real-person portraits and re-audited |
-| IW-018 ARX | Gameplay retained; visual admission withdrawn | Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until all three generated leaders are replaced by sourced real-person portraits and re-audited |
-| IW-019 ASX | Gameplay retained; visual admission withdrawn | Preserve the Sicilian identity, anchor 115, Italian host survival, Level 2 package, and FORM-05 access. Keep execution closed until all three generated leaders are replaced by sourced real-person portraits and re-audited |
+| IW-017 COR | Gameplay retained; portrait roster source-cleared | Adolphe Landry and Jean Chiappe are sourced, processed, and wired. Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access. Keep execution closed until a fresh country-package audit authorizes exact re-admission |
+| IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
+| IW-019 ASX | Gameplay retained; visual admission withdrawn | Luigi Sturzo and Pietro Lanza di Scalea are sourced, processed, and wired. Preserve the Sicilian identity, anchor 115, Italian host survival, Level 2 package, and FORM-05 access. Keep execution closed until the emergency commander is replaced and the full roster is re-audited |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
 | IW-179 FSM | Gameplay retained; visual admission withdrawn | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 decisions, and FORM-48 membership logic. Replace the generated congress chair with a sourced real male Micronesian person before re-admission |
 | IW-184 HBX | Gameplay retained; visual admission withdrawn | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. Replace the generated civic chair with a sourced real male Californian person before re-admission |
-| IW-043 CHU | Signature gameplay retained; visual admission withdrawn | Preserve CHU identity, route, forces, focus, decisions, centralized politics, exact vanilla guard, and FORM-12/13 contracts. Keep execution closed until all four generated institutional leaders are replaced with sourced real-person or actual-institution archival portraits and re-audited |
-| IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until all four generated institutional leaders are replaced with sourced real-person or actual-institution archival portraits and re-audited |
-| IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. `e0e85c832` supplies the approved male HOI4-style Prempeh II portrait. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images must be replaced by sourced real-person portraits and source-derived miniatures, with identities renamed if the archival subjects differ. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until those replacements, the exact flag, FORM-24 contract, and final country audits pass |
-| IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, Umaru Gwadabawa, and Bello Rabah all require sourced real-person portraits before admission. Preserve their gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until those portraits, the exact flag, FORM-25 contract, and final country audits pass |
+| IW-043 CHU | Signature gameplay retained; visual admission withdrawn | Mirsaid Sultan-Galiev and Galimzhan Ibrahimov are sourced, processed, and wired. Preserve CHU identity, route, forces, focus, decisions, centralized politics, exact vanilla guard, and FORM-12/13 contracts. Keep execution closed until the Bolgar and river-security route leaders are replaced and the full package is re-audited |
+| IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Gallo Shabo is sourced, processed, and wired. Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until the other three route leaders are replaced and the full package is re-audited |
+| IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. `e0e85c832` supplies the approved male HOI4-style Prempeh II portrait. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images must be replaced by sourced real-person full portraits, with identities renamed if the archival subjects differ. Event 6 defines no commander miniatures. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until those replacements, the exact flag, FORM-24 contract, and final country audits pass |
+| IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Muhammadu Dikko now has a sourced TNA portrait and replaces fictional Umaru Gwadabawa. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, and Bello Rabah still require sourced real-person portraits before admission. Preserve the gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until those portraits, the exact flag, FORM-25 contract, and final country audits pass |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set is empty |
 
 Sixteen compile-time attestations do not guarantee a valid wave. The allocator
@@ -195,26 +197,30 @@ satisfy the synchronized frozen plan.
   advisor-icon withdrawal remains final.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - AGX gameplay and AFX's Level 2 Sambre-Meuse lane, three incidents, and exact-ID
-  audit remain implemented. Their generated portrait rosters withdrew both
-  visual admissions until sourced replacement and re-audit.
+  audit remain implemented. AGX's two-person roster is source-cleared; AFX has
+  sourced Jules Destrée but still needs a real commander. Both await fresh
+  package audits before any exact admission is restored.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
-  implementation evidence only; generated commander miniatures must be replaced
-  from approved sourced full portraits.
+  implementation evidence only. Event 6 has no runtime commander miniatures,
+  `_small` files, sprite registrations, or consumers.
 - Bounded IW-004 BRI and IW-010 AJX gameplay and commit-readiness closeout remain
   implemented. Their former exact promotions are withdrawn pending sourced
   portrait replacement.
 - RHI and BAY Level 2 lanes, incidents, FORM-04 delegation, and the South German
   settlement remain implemented. Protected Matthes and Rupprecht remain valid;
   the other generated roster members keep both packages closed.
-- SCO/WLS congress preparation repair remains implemented. Their former exact
-  content attestations and SCN-008 admissions are withdrawn pending sourced
-  portrait replacement.
+- SCO/WLS congress preparation repair remains implemented. Scotland's two-person
+  roster is source-cleared and awaits a fresh package audit; Wales remains
+  source-blocked. Their former exact content attestations and SCN-008 admissions
+  remain withdrawn.
 - Mediterranean IW-017 through IW-019 gameplay, historical flat flag families,
-  and sovereign charter-driven FORM-05 remain implemented and audited. Their
-  generated grounded-polity portraits are no longer readiness evidence, so all
-  three country admissions are withdrawn. No advisor icons were created.
+  and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
+  Chiappe roster is source-cleared; Sardinia has sourced Lussu but two unresolved
+  roles; Sicily has sourced Sturzo and Lanza di Scalea but one unresolved role.
+  All three country admissions remain withdrawn pending exact audits and remaining
+  sources. No advisor icons were created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,
   architecture, decision/mission, localisation, flags, and postformation logic
   remain implemented. HAW's generic vanilla portrait and the generated FSM/HBX

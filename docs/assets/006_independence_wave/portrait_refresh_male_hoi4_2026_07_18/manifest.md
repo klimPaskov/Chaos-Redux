@@ -5,13 +5,13 @@
 > provenance and consumer evidence pending sourced real male replacements.
 > Protected BAY Rupprecht and RHI Matthes remain approved outside this package.
 
-Source mode: `$imagegen` built-in generation for fictional one-person portraits. All twenty masters are distinct adult male subjects with plausible regional identity, period clothing, head-and-shoulders framing, restrained painted backgrounds, and no text or watermarks. Ten commander masters also have matching `65x67` small commander derivatives. Protected historical `portrait_BAY_rupprecht_of_bavaria.dds` and `portrait_RHI_josef_friedrich_matthes.dds` are outside this package and were not edited.
+Source mode: historical evidence of an earlier `$imagegen` fictional-portrait pass. These masters are not admissible for grounded Event 006 polities. Protected historical `portrait_BAY_rupprecht_of_bavaria.dds` and `portrait_RHI_josef_friedrich_matthes.dds` are outside this package and were not edited.
 
 The ten institution/council/board/assembly/commission/directorate labels identify the gameplay role; the portraits depict one fictional male person, not a collective body. Gameplay should assign an actual-ish male personal name from a matching regional name pool rather than a generic office title and must not use female metadata.
 
-## Commander large + small pairs
+## Superseded full commander portraits
 
-| Stem | Source PNG | Processed PNG | Final DDS | Runtime DDS | Size | Status |
+| Stem | Source PNG | Processed PNG | Final DDS | Runtime DDS | Size | Historical 2026-07-18 status |
 |---|---|---|---|---|---:|---|
 | `ACX_cornish_coastal_commander` | `raw_outputs/ACX_cornish_coastal_commander.png` | `processed_png/ACX_cornish_coastal_commander.png` | `final_dds/large/ACX_cornish_coastal_commander.dds` | `gfx/leaders/006_independence_wave/portrait_ACX_cornish_coastal_commander.dds` | 156x210 | approved_for_runtime |
 | `AEX_flemish_industrial_security_commander` | `raw_outputs/AEX_flemish_industrial_security_commander.png` | `processed_png/AEX_flemish_industrial_security_commander.png` | `final_dds/large/AEX_flemish_industrial_security_commander.dds` | `gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander.dds` | 156x210 | approved_for_runtime |
@@ -24,13 +24,9 @@ The ten institution/council/board/assembly/commission/directorate labels identif
 | `SCO_independence_wave_territorial_commandant` | `raw_outputs/SCO_independence_wave_territorial_commandant.png` | `processed_png/SCO_independence_wave_territorial_commandant.png` | `final_dds/large/SCO_independence_wave_territorial_commandant.dds` | `gfx/leaders/006_independence_wave/portrait_SCO_independence_wave_territorial_commandant.dds` | 156x210 | approved_for_runtime |
 | `WLS_independence_wave_mountain_commandant` | `raw_outputs/WLS_independence_wave_mountain_commandant.png` | `processed_png/WLS_independence_wave_mountain_commandant.png` | `final_dds/large/WLS_independence_wave_mountain_commandant.dds` | `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds` | 156x210 | approved_for_runtime |
 
-Small derivatives use the matching full commander master and retain the identity at native size:
-
-`small_processed_png/<stem>_small.png` → `final_dds/small/<stem>_small.dds` → `gfx/leaders/006_independence_wave/portrait_<stem>_small.dds`, exact `65x67`.
-
 ## Institutional/country-leader large portraits
 
-| Stem | Source PNG | Processed PNG | Final DDS | Runtime DDS | Size | Status |
+| Stem | Source PNG | Processed PNG | Final DDS | Runtime DDS | Size | Historical 2026-07-18 status |
 |---|---|---|---|---|---:|---|
 | `ACX_cornish_port_and_mines_committee` | `institutional_raw_outputs/ACX_cornish_port_and_mines_committee.png` | `institutional_processed_png/ACX_cornish_port_and_mines_committee.png` | `final_dds/large/ACX_cornish_port_and_mines_committee.dds` | `gfx/leaders/006_independence_wave/portrait_ACX_cornish_port_and_mines_committee.dds` | 156x210 | approved_for_runtime |
 | `AEX_flemish_civil_industrial_board` | `institutional_raw_outputs/AEX_flemish_civil_industrial_board.png` | `institutional_processed_png/AEX_flemish_civil_industrial_board.png` | `final_dds/large/AEX_flemish_civil_industrial_board.dds` | `gfx/leaders/006_independence_wave/portrait_AEX_flemish_civil_industrial_board.dds` | 156x210 | approved_for_runtime |
@@ -47,7 +43,7 @@ Small derivatives use the matching full commander master and retain the identity
 
 - `prompts/imagegen_prompts.md` and `portrait_provenance_manifest.json` retain commander prompt/source provenance.
 - `prompts/institutional_imagegen_prompts.md` and `institutional_provenance_manifest.json` retain institutional prompt/source provenance.
-- `contact_sheets/raw_masters_contact_sheet.png`, `processed_156x210_contact_sheet.png`, `institutional_raw_masters_contact_sheet.png`, `institutional_processed_contact_sheet.png`, `runtime_large_decoded_contact_sheet.png`, and `runtime_small_decoded_contact_sheet.png` support visual review.
-- `hashes/runtime_sha256_inventory.sha256` records all thirty runtime DDS hashes; `hashes/protected_runtime_sha256.sha256` records protected-file guards.
-- All thirty runtime DDS files use the repository converter, have exact legacy BGRA headers and lengths, and decode pixel-identically to their processed PNGs. Large outputs are `156x210`; commander small outputs are `65x67`.
-- The package contains only the requested commander and leader portrait families; no unrelated asset family is included. No `.gfx`, gameplay, localisation, GUI, focus, decision, idea, country, history, or tag file was edited.
+- `contact_sheets/raw_masters_contact_sheet.png`, `processed_156x210_contact_sheet.png`, `institutional_raw_masters_contact_sheet.png`, `institutional_processed_contact_sheet.png`, and `runtime_large_decoded_contact_sheet.png` retain historical visual-review evidence.
+- `hashes/runtime_sha256_inventory.sha256` records the twenty superseded full DDS hashes; `hashes/protected_runtime_sha256.sha256` records protected-file guards.
+- All Event 006 commander miniatures, dossier derivatives, `_small` metadata, `_small` review sheets, and their hash records were deleted on 2026-07-22. No Independence Wave advisor or dossier assets are authorized.
+- Current sourced replacements, hashes, and acceptance evidence live under `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`.

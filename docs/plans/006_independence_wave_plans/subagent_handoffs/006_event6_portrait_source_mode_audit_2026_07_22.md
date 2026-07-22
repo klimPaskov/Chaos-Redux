@@ -21,6 +21,25 @@
 > leadership surface and must be replaced before IW-098 admission. This note
 > supersedes any later wording that treats vanilla Siddiq as compliant.
 
+> **Third parent correction after asset-surface review:** every Event 6
+> `_small` file inventoried below was an unnecessary dossier-card surface, not
+> a full commander portrait. Explicit user direction excludes Event 6 advisor
+> and dossier icons. All fourteen `_small` DDS files, their sprite
+> registrations, and every `army.small` consumer were removed on 2026-07-22.
+> Commanders retain only full `156x210` portraits. Historical `_small` counts
+> below describe the pre-removal audit state and are not current runtime facts.
+
+> **Current sourced replacement tranche:** the runtime and visual-review ledger
+> now lives at
+> `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`.
+> Twenty-four attributed real-male portraits passed identity-preserving processing,
+> visual review, DDS conversion, and pixel-equality verification. The tranche
+> replaces or prepares source-backed identities for Cornwall, Flanders,
+> Wallonia, Frisia, Wales, Scotland, the Rhineland, Bavaria, Corsica, Sardinia, Sicily, the
+> Middle Volga, Assyria, and Sokoto. No package was re-admitted because affected
+> packages still have unresolved grounded identities; the table below remains
+> the pre-remediation inventory and is superseded per row by the treatment ledger.
+
 ## Gate applied
 
 Event 006 now applies the portrait source-mode gate from

@@ -228,16 +228,19 @@ Record the image source, source link, author or archive if available, license or
 
 ### Portrait source-mode gate
 
-Classify a one-person country-leader or officeholder portrait before routing it:
+Classify a country-leader, commander, named officeholder, or institutional-leader
+portrait before routing it:
 
 - **Grounded identity**: a real, historical, restored, separatist, regional,
   indigenous, dynastic, or otherwise plausibly historical country, polity, or
-  community. Use `chaosx_asset_source_researcher` and a sourced real-person candidate
-  appropriate to the time, place, role, and accepted demographic constraints. Never
-  generate an invented officeholder or fictional face for this identity, even when
-  the route is absurd, alternate-history, or high-chaos. If no defensible sourced
-  candidate and usable image exists, mark the leader portrait `blocked` and do not
-  substitute a generated portrait.
+  community. Use `chaosx_asset_source_researcher` and attributed source material:
+  sourced real people for leaders, commanders, and named officeholders, or
+  authentic archival institutional material for a governing body or symbolic
+  institution. Match the time, place, role, and accepted demographic constraints.
+  Never generate an invented officeholder, fictional face, or invented grounded
+  institution, even when the route is absurd, alternate-history, or high-chaos. If
+  no defensible source and usable image exists, mark the portrait/package `blocked`
+  and do not substitute a generated portrait.
 - **Fictional high-chaos identity**: a truly fictional country or an
   impossible/supernatural entity. A generated one-person leader is allowed only in
   this class. Make that leader visually memorable rather than generic with
@@ -255,9 +258,16 @@ fallback.
 
 Do not generate a portrait for a real person. This applies to country leaders, commanders, operatives, and real people used as advisor or high-command portrait masters.
 
-For real people, use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
+For real people, preserve an unchanged, attributed original master from the internet or a user-provided image; never overwrite or silently replace that provenance input. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
-Use an explicit head-and-shoulders crop and an identity-preserving HOI4 painted finish rather than leaving a raw photograph. Preserve the person's face, expression, age, hair, clothing, and pose; use a quiet painted background, controlled contrast, restrained period texture, and readable silhouette. Do not replace, reconstruct, beautify, or generate missing facial features, and do not accept a generic oil-paint filter as an HOI4 finish.
+Follow this fixed real-portrait sequence: unchanged attributed original master ->
+explicit head-and-shoulders crop -> deterministic, identity-preserving HOI4 leader
+finish -> visual comparison with the matching canonical skill-local leader or
+commander reference family -> DDS conversion. Preserve the person's face,
+expression, age, hair, clothing, and pose; use a quiet painted background, controlled
+contrast, restrained period texture, and readable silhouette. Never use ImageGen to
+reconstruct, stylize, beautify, or fill a real face, and do not accept a generic
+oil-paint filter as an HOI4 finish.
 
 Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
 
@@ -303,7 +313,7 @@ Still crop, resize, convert, place, wire, and document it like any other source 
 
 ## 4. Reference asset examples
 
-This skill owns its canonical visual-reference library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. All paths in this section are relative to the `chaos-redux-event-assets/` skill directory; do not route reference work through project-root asset folders.
+This skill owns its canonical visual-reference library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. The organized reference root is `.agents/skills/chaos-redux-event-assets/assets/`; paths below are written relative to the skill directory and therefore begin with `assets/`. Do not route reference work through project-root asset folders.
 
 Start with:
 

@@ -273,8 +273,16 @@ actual institution. Generated portraits are reserved for truly fictional
 high-chaos or impossible/supernatural countries. Existing generated DDS files
 remain consumer/provenance evidence awaiting replacement and do not grant
 package visual readiness. The protected BAY Rupprecht and RHI Matthes files
-remain approved and byte-locked. Event 6 continues to use no custom advisor
-icons or advisor portrait sprites.
+remain approved and byte-locked. The sourced treatment tranche is documented
+in `sourced_portrait_treatments_2026_07_22/manifest.md`: twenty-four attributed
+and source-approved real-male portraits are processed, visually reviewed,
+converted, and selectively wired across Cornwall, Wales, Scotland, Flanders,
+Wallonia, Frisia, the Rhineland, Bavaria, Corsica, Sardinia, Sicily, the Middle
+Volga, Assyria, and Sokoto. The rejected
+Hawaiian scan and every incomplete
+package remain fail-closed. Event 6 uses no custom advisor, high-command,
+officer-corps, or dossier portrait sprites. All fourteen obsolete `_small`
+dossier DDS files, registrations, and consumers have been removed.
 
 ## Historical 2026-07-18 male HOI4 portrait package
 
@@ -282,12 +290,13 @@ The historical generated portrait inventory is
 `portrait_refresh_male_hoi4_2026_07_18/manifest.md`, together with the
 production and root visual-review handoff
 `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-The package contains twenty distinct male `156x210` fictional portraits
-and ten matching `65x67` commander-only miniatures under the existing runtime
-filenames. The twenty-four textures for AFX, AGX, AJX, BAY, BRI, RHI, SCO, and
-WLS retain their existing registrations and consumers. The six ACX and AEX
-textures are installed readiness-pool art only and deliberately have no live
-sprite or character consumer.
+The historical package contains twenty distinct male `156x210` fictional
+portraits. All former `65x67` dossier derivatives, their processed/decoded
+images, metadata, review sheets, hashes, registrations, and consumers were
+removed on 2026-07-22 by explicit user direction. The sourced treatment
+tranche replaced the exact runtime files listed in its ledger; unreplaced
+grounded portraits do not satisfy current readiness. ACX and AEX remain
+readiness-pool identities without a live standalone adapter.
 
 The two user-approved historical portraits remain unchanged and hash-locked:
 
@@ -320,12 +329,12 @@ the gameplay offices remain asset-neutral.
 
 ## Historical 2026-07-18 BRI portrait disposition
 
-IW-004 Brittany's generated civic, commander-large, and
-commander-small evidence is part of
+IW-004 Brittany's generated civic and commander evidence is part of
 `portrait_refresh_male_hoi4_2026_07_18/manifest.md` and the reviewed handoff
-named above. Existing BRI filenames, sprite registrations, and gameplay
-consumers remain stable while sourced replacements are researched; neither this
-package nor the 2026-07-15 portrait package satisfies current readiness.
+named above. The full-size BRI filenames and consumers remain pending sourced
+replacement; the obsolete commander-small dossier file, registration, and
+consumer have been removed. Neither this package nor the 2026-07-15 portrait
+package satisfies current readiness.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
 political portraits. François Debeauvais remains explicitly blocked because

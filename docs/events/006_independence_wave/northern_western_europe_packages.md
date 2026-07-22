@@ -13,10 +13,12 @@ Package sections:
 Current portrait authority is the sourced-only gate in the accepted
 specification and event-asset skill. The earlier twenty generated large
 portraits remain consumer/provenance evidence but no longer satisfy grounded
-country readiness. IW-001/002/004/006/007/008/009/010 are withdrawn from
-runtime content attestation until their live leader and commander rosters use
-sourced real male people. Route-owned Rupprecht and Matthes remain protected and
-byte-identical; their other package roles still require replacement. Gameplay
+country readiness. These packages remain withdrawn from runtime content
+attestation until their source status and full package audits pass. IW-001,
+IW-007, IW-008, and IW-009 have source-cleared portrait rosters; IW-002 has a
+source-cleared civic leader but a blocked commander; IW-004, IW-006, and IW-010
+still have unresolved grounded roles. Route-owned Rupprecht and Matthes remain
+protected and byte-identical. Gameplay
 advisor offices remain active without custom Event 006 advisor cards, sprites,
 or runtime DDS files. Any later section describing these packages as promoted
 records the earlier gameplay audit and is superseded for current visual
@@ -57,9 +59,9 @@ IW-001 verifies the existing p1 territorial-defense package with military tradit
 
 ### Institutional authority and command
 
-Scotland uses `SCO_independence_wave_civic_convention` as its multi-route civic institution and `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses `WLS_independence_wave_national_council` and `WLS_independence_wave_mountain_commandant` in the equivalent roles.
+Scotland uses the source-backed R. B. Cunninghame Graham character token `SCO_independence_wave_civic_convention` for its civic routes and the source-backed Edmund Ironside token `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses the source-backed Saunders Lewis token `WLS_independence_wave_national_council` as its civic leader. Its `WLS_independence_wave_mountain_commandant` remains source-blocked.
 
-These are guarded runtime institutions, not replacements for vanilla characters. Setup applies exact sprites with `set_portraits`, including separate `156x210` large commander portraits and `65x67` commander miniatures. Each large portrait master was generated independently in a restrained HOI4-painted style, processed through the canonical leader workflow, decoded from its installed DDS file, and reviewed against the canonical vanilla portrait references.
+These are guarded runtime Event 6 characters, not replacements for vanilla characters. Setup applies exact `156x210` sprites with `set_portraits`; Event 6 defines no commander miniature, advisor-card, dossier, or `_small` portrait. The Scottish and accepted Welsh portraits begin with attributed archival masters, use explicit head-and-shoulders crops and the deterministic identity-preserving HOI4 finish, and are reviewed against the canonical vanilla portrait references. A package cannot pass content attestation while one of its required identities remains source-blocked.
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
@@ -134,11 +136,18 @@ The package reuses these already registered Event 006 interface sprites:
 
 The unique package portraits are registered in `interface/006_independence_wave_region_01_portraits.gfx` and installed under `gfx/leaders/006_independence_wave/`. The gameplay advisor offices deliberately carry no custom Event 006 portrait sprites. The authoritative user-directed HOI4 leader production package records source portraits, processed PNGs, DDS decodes, reference review sheets, hashes, and manifests under `docs/assets/006_independence_wave/`.
 
+| Country | Real male identity | Runtime portrait | Source status |
+| --- | --- | --- | --- |
+| Scotland | R. B. Cunninghame Graham | `portrait_SCO_independence_wave_civic_convention.dds` | Rijksmuseum archival source, processed and wired |
+| Scotland | Edmund Ironside | `portrait_SCO_independence_wave_territorial_commandant.dds` | Library of Congress archival source, processed and wired |
+| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | Y Drych/National Library of Wales archival source, processed and wired |
+| Wales | Mountain/territorial commander | `portrait_WLS_independence_wave_mountain_commandant.dds` | blocked; generated file is not accepted evidence |
+
 Scotland and Wales retain their installed vanilla flag triplets because these are reused vanilla countries, not newly created Event 006 tags. Any future royal Scottish cosmetic route must remain traditional-route-only. Wales receives no invented pre-1959 fallback.
 
 ### Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, unique leaders, commander miniatures, asset-neutral advisor boards, and FORM-01/02 integration are implemented. IW-001 and IW-002 are compile-time content-attested and admitted to SCN-008 only through their exact dormant-tag availability predicates; the runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Package-specific readiness remains independent: the later sections record the completed Wallonia, Rhineland, and Bavaria promotions. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, source-backed Scottish leaders, asset-neutral advisor boards, and FORM-01/02 integration are implemented. The compile-time runtime-content attestation remains fail-closed until the unresolved Welsh identities and the other package-specific source blockers are cleared; no portrait tranche alone admits a package. The runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
 
@@ -266,9 +275,8 @@ New portrait sprites are registered in `interface/006_independence_wave_brittany
 
 - `GFX_portrait_BRI_independence_wave_civic_commission` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`.
 - `GFX_portrait_BRI_independence_wave_coastal_commandant` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`.
-- `GFX_portrait_BRI_independence_wave_coastal_commandant_small` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant_small.dds`.
 
-The commander's army-small asset is a `65x67` derivative of its approved full commander portrait, not a leader or advisor card. Its current source, processing, review, runtime hash, and decoded-DDS evidence are in `docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md` and `hashes/runtime_sha256_inventory.sha256`; the reviewed handoff named at the top of this document supplies the current visual verdict. The 2026-07-15 and 2026-07-16 BRI and army-small evidence is historical and superseded for portrait acceptance. The separate Debeauvais rights blocker remains current and no generated likeness substitutes for him.
+Event 006 defines no Brittany commander miniature, advisor card, dossier, or `_small` portrait. The two registered full portraits are legacy generated assets and are not source-cleared under the grounded-country portrait rule. Brittany remains fail-closed until attributed, reusable, role-accurate archival masters replace them. The Debeauvais rights blocker remains current and no generated likeness substitutes for him.
 
 The package reuses these registered Event 006 icons:
 
@@ -339,14 +347,14 @@ The prepared proof includes baseline laws, roster, focus mode, accepted and reje
 
 #### Political authority and command
 
-The Walloon Provisional Assembly is a fictional collective institution representing mineworkers, steel engineers, municipal magistrates, and reserve security officials. It can lead the constitutional, labor, or patron settlement. Marcel Delcourt is a fictional former industrial engineer and reserve commander. He is recruited as a real corps commander before any opening formations are created and leads the emergency-military settlement.
+Jules Destrée is the source-backed Walloon civic leader for the constitutional, labor, and patron settlements. The internal token retains its package-stable assembly name, but the player-facing identity and installed portrait are Destrée. The old fictional Marcel Delcourt commander remains blocked and cannot admit IW-006; a source-backed Walloon military identity is required before the emergency-military settlement or opening formations may execute.
 
 Accepted political routes:
 
-- Constitutional Compact, led by the Walloon Provisional Assembly under centrism.
-- Workers' Industrial Charter, led by the Assembly under socialism.
-- Emergency Works Command, led by Marcel Delcourt under despotism.
-- Patron Industrial Mandate, led by the Assembly under oligarchism.
+- Constitutional Compact, led by Jules Destrée under centrism.
+- Workers' Industrial Charter, led by Destrée under socialism.
+- Emergency Works Command, reserved for a source-cleared Walloon commander under despotism.
+- Patron Industrial Mandate, led by Destrée under oligarchism.
 
 Traditional-restoration and radical-sovereignty routes remain unavailable. The internal power struggle is civilians against the army.
 
@@ -385,7 +393,7 @@ Every option changes Industrial Continuity plus legitimacy, recognition, capacit
 
 #### Political authority and command
 
-The Friesland Coastal Council is a fictional collective institution representing municipalities, harbor administration, dike engineering, and the coastal constabulary. It can lead every accepted political settlement. Sjoerd Hoekstra is a fictional coastal constabulary commander recruited as a real corps commander before the coastal-maritime force package is applied.
+Douwe Kalma provides the sourced opening civic leadership for the Frisian municipalities, harbor administration, dike authorities, and coastal constabulary. Pieter Reenalda, a documented maritime officer represented by a sourced archival portrait, commands the coastal force before its mobilization package is applied.
 
 Accepted political routes:
 
@@ -465,10 +473,10 @@ Character recruitment remains in the dormant custom-tag history files, following
 
 | Character | Sprite | Final DDS | Registration |
 | --- | --- | --- | --- |
-| Walloon Provisional Assembly | `GFX_portrait_AFX_walloon_provisional_assembly` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
-| Marcel Delcourt | `GFX_portrait_AFX_walloon_reserve_commander` and `GFX_portrait_AFX_walloon_reserve_commander_small` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` and `portrait_AFX_walloon_reserve_commander_small.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
-| Friesland Coastal Council | `GFX_portrait_AGX_friesland_coastal_council` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
-| Sjoerd Hoekstra | `GFX_portrait_AGX_friesland_coastal_commander` and `GFX_portrait_AGX_friesland_coastal_commander_small` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds` and `portrait_AGX_friesland_coastal_commander_small.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
+| Jules Destrée | `GFX_portrait_AFX_walloon_provisional_assembly` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds` | sourced, processed, and wired; recorded in the 2026-07-22 treatment ledger |
+| Walloon reserve commander | `GFX_portrait_AFX_walloon_reserve_commander` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` | source-blocked; the package remains unattested and the old generated identity is not accepted |
+| Douwe Kalma | `GFX_portrait_AGX_friesland_coastal_council` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
+| Pieter Reenalda | `GFX_portrait_AGX_friesland_coastal_commander` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
 
 #### Required flags
 
@@ -554,18 +562,18 @@ Each prepared proof checks the exact tag, package ID, region, depth, archetype, 
 
 ### Characters and portraits
 
-The package creates stable institutional characters with guarded `generate_character` calls and reapplies their exact portraits on every setup:
+The package creates stable Event 6 character tokens with guarded `generate_character` calls and reapplies their exact portraits on every setup:
 
-- `RHI_independence_wave_provisional_directorate`
-- `RHI_independence_wave_river_commandant`
-- `BAY_independence_wave_state_council`
-- `BAY_independence_wave_mountain_commandant`
+- `RHI_independence_wave_provisional_directorate` — Konrad Adenauer
+- `RHI_independence_wave_river_commandant` — Josef Harpe
+- `BAY_independence_wave_state_council` — Heinrich Held
+- `BAY_independence_wave_mountain_commandant` — Franz Ritter von Epp
 
-The two commandants have distinct corps-commander roles and do not reuse vanilla political figures as generic military officers. Institutional leaders and commanders use independently generated HOI4-painted masters, with separate `156x210` large DDS files and `65x67` army thumbnails for the commandants.
+The two commandants have distinct corps-commander roles. Every grounded identity in these packages must use an attributed, role-accurate real male source and a reviewed identity-preserving `156x210` HOI4 treatment; generated officeholders and generic reuse of unrelated vanilla figures are prohibited. Event 006 defines no commander thumbnails.
 
-`RHI_josef_friedrich_matthes` is used only when he remains recruited by Rhineland. Package setup applies `GFX_portrait_RHI_josef_friedrich_matthes` with `set_portraits`, while the provisional directorate remains the opening government. Matthes becomes leader only for the labor settlement; when he is unavailable, the established directorate retains office as the designed institutional outcome.
+`RHI_josef_friedrich_matthes` is used only when he remains recruited by Rhineland. Package setup applies `GFX_portrait_RHI_josef_friedrich_matthes` with `set_portraits`, while Konrad Adenauer remains the opening civic leader. Matthes becomes leader only for the labor settlement; when he is unavailable, the established directorate retains office as the designed institutional outcome. Josef Harpe commands the armed river authority and leads the emergency settlement.
 
-`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while the State Council remains the opening government. Rupprecht becomes leader only for the traditional restoration settlement; the State Council acts as the institutional regency if he is unavailable.
+`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while Heinrich Held provides the opening civic authority. Rupprecht becomes leader only for the traditional restoration settlement; Held's state administration retains the institutional regency if he is unavailable. Franz Ritter von Epp commands the mountain forces and leads the emergency settlement; his Freikorps violence and Nazi office are stated explicitly rather than sanitized.
 
 Cleanup restores both vanilla character portraits. No `.gfx` character sprite is globally replaced.
 
@@ -743,7 +751,7 @@ The Level 2 branches use a distinct installed visual package:
 - normal and shine focus sprites, idea sprites, and report sprites in `interface/006_independence_wave_rhineland_bavaria_assets.gfx`; and
 - source masters, processed PNGs, contact sheets, exact prompts, validation, and hashes under `docs/assets/006_independence_wave/rhi_bay_unique_assets_2026_07_16/`.
 
-All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The fresh independent gameplay and package audit passed, so the exact compile-time attestations and SCN-008 preflights are live while every runtime gate remains authoritative.
+All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The earlier gameplay and package audit remains implementation evidence, but the compile-time content attestation and SCN-008 admission stay closed until a fresh post-replacement audit authorizes them.
 
 The historical-character portraits are registered in `interface/006_independence_wave.gfx`:
 
@@ -752,18 +760,18 @@ The historical-character portraits are registered in `interface/006_independence
 
 The package effects reference those stable sprite names directly through `set_portraits`.
 
-The fictional package roster is registered in `interface/006_independence_wave_region_01_portraits.gfx`:
+The additional package portrait sprites are registered in `interface/006_independence_wave_region_01_portraits.gfx`:
 
 - `GFX_portrait_RHI_independence_wave_provisional_directorate`
-- `GFX_portrait_RHI_independence_wave_river_commandant` and its `_small` army sprite
+- `GFX_portrait_RHI_independence_wave_river_commandant`
 - `GFX_portrait_BAY_independence_wave_state_council`
-- `GFX_portrait_BAY_independence_wave_mountain_commandant` and its `_small` army sprite
+- `GFX_portrait_BAY_independence_wave_mountain_commandant`
 
-The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations. The authoritative user-directed HOI4 leader production and review package is `docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/`, with acceptance in the reviewed handoff cited above.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations, and Event 006 defines no commander miniatures or dossier portraits. Konrad Adenauer, Josef Harpe, Josef Friedrich Matthes, Heinrich Held, Franz Ritter von Epp, and Rupprecht of Bavaria are the source-cleared identities in this pair. The authoritative source treatment and review package is `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`.
 
 ### Readiness boundary
 
-Gameplay, AI, localisation, large and small leader portraits, asset-neutral advisor offices, package-specific focus art, route-idea art, and incident scenes are wired. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. A fresh independent static package audit passed both Level 2 branches and closed the RHI package-congress dependency without weakening the shared FORM-04 transaction. `IW-008` and `IW-009` therefore carry exact compile-time content attestations and SCN-008 preflight branches. Their automatic wrappers still fail closed unless the exact dormant tag, unique anchor, host-survival proof, reservation group, Event 5 exclusions, chaos band, and transaction preflight all pass at runtime. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
+Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focus art, route-idea art, incident scenes, and the complete grounded portrait rosters are wired. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. `IW-008` and `IW-009` remain fail-closed for automatic waves and SCN-008 until a fresh package audit confirms the post-replacement portrait consumers together with the existing tag, anchor, host-survival, reservation, and Event 5 collision contracts. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
 
 ### Future plans and suggestions
 
@@ -946,15 +954,15 @@ and bunker priority without assuming a fixed host tag.
 | Medium flag | `gfx/flags/medium/AJX.tga` | HOI4 flag path discovery |
 | Small flag | `gfx/flags/small/AJX.tga` | HOI4 flag path discovery |
 | Friedrich Hoffmann | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_region_01_portraits.gfx` |
-| Karl Becker large | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
-| Karl Becker small | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner_small.dds` | `GFX_portrait_AJX_karl_becker_small`; army portrait only |
+| Karl Becker | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
 | Municipal Neutral Commission focus | `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds` | base and shine in `interface/006_independence_wave.gfx`; base consumed by `independence_wave_ajx_appoint_neutral_commission_focus` |
 
 The character sprites are consumed by
-`common/characters/006_independence_wave_saar_characters.txt`. The installed
-portrait hashes are checked against
-`docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`;
-the flag hashes remain checked against `generated_nwe_hashes.sha256`.
+`common/characters/006_independence_wave_saar_characters.txt`. Event 006 defines
+no Saar commander miniature, advisor card, dossier, or `_small` portrait. The
+two current full portraits are legacy generated assets and are not source-cleared;
+Saar remains fail-closed until attributed, reusable archival masters replace both.
+The flag hashes remain checked against `generated_nwe_hashes.sha256`.
 
 #### Reused Event 006 icons
 
@@ -985,11 +993,10 @@ The three gameplay advisor records have role-title localisation and are
 recruited by the Event 006 setup event, but they deliberately carry no custom
 portrait handles. The focus base and shine handles are registered; the base
 handle identifies the neutral-commission entry focus while its three follow-up
-nodes retain their specific shared icons. The commander's `65x67` miniature is
-derived from the approved full commander portrait and remains army-only. Its
-current runtime hash and visual evidence are governed by the accepted
-2026-07-18 portrait package and reviewed handoff, not the superseded
-2026-07-15 portrait ledgers.
+nodes retain their specific shared icons. Event 006 defines no Saar commander
+miniature or dossier portrait. The full grounded character roster remains
+fail-closed until its archival sources and treatments pass the current portrait
+gate.
 
 ### Implementation files
 
