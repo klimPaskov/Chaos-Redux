@@ -249,7 +249,6 @@ independence_wave_rival_bloc_unregister_member = {
 		clr_country_flag = independence_wave_rival_bloc_member
 		clr_country_flag = independence_wave_rival_bloc_leader
 		clr_country_flag = independence_wave_rival_bloc_host_front
-		clr_country_flag = independence_wave_rival_bloc_patron_pressure
 		clr_country_flag = independence_wave_rival_bloc_invitation_pending
 		clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
 		clear_variable = independence_wave_rival_bloc_inviter
@@ -527,6 +526,16 @@ independence_wave_rival_bloc_balance_patron = {
 		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.leadership_confidence_gain }
 		independence_wave_rival_bloc_change_member_record = yes
 		independence_wave_refresh_strongest_patron = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = global.independence_wave_rival_bloc_patron_capture value = constant:independence_wave_rival_bloc.patron_balance_gate compare = greater_than_or_equals }
+					check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals }
+				}
+			}
+			set_country_flag = independence_wave_rival_bloc_patron_pressure
+		}
+		else = { clr_country_flag = independence_wave_rival_bloc_patron_pressure }
 	}
 }
 
