@@ -136,6 +136,14 @@ Permitted only when both the country and leader are truly fictional and belong
 to a high-chaos package. A generated leader is never a substitute for missing
 research on a real or plausibly historical country.
 
+`high_chaos_only` or a Layer D/E pool position does not by itself make a
+country fictional. Every one of the current 206 registry rows describes a real
+community, historical polity, restoration, regional movement, or otherwise
+grounded political identity and therefore remains in sourced mode. Generated
+fictional portraits require a later explicit source-design classification of a
+new truly fictional high-chaos country or route; agents must not infer that
+classification from chaos intensity, tag novelty, or alternate borders.
+
 Requirements:
 
 - generated portrait in the canonical HOI4 style

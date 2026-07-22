@@ -155,6 +155,11 @@ For every package selected for implementation:
   cannot be established, block that country package
 - generate a fictional personal or institutional portrait only when the
   country itself is truly fictional and high-chaos
+- treat all current 206 candidate-registry rows as grounded and sourced; no
+  current row becomes fictional merely because it is Layer D/E,
+  `high_chaos_only`, uses a new `X` tag, or has alternate-history borders
+- require an explicit accepted source-design classification before generating
+  any later truly fictional high-chaos leader or institution
 - use only male subjects and male character metadata for Event 6 portraits
 - require matching male name pools and metadata only for permitted truly
   fictional high-chaos leaders
