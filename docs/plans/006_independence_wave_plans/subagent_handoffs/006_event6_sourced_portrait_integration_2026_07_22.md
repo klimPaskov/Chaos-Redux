@@ -22,13 +22,20 @@ real face.
 
 The authoritative ledger is
 `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/manifest.md`.
-It records twenty-four source-approved treatments and exact runtime hashes.
+It records twenty-four sourced and visually reviewed treatments and exact
+runtime hashes. A later active-vanilla-character ownership sweep rejects three
+of those treatments for Event 006 runtime use: Konrad Adenauer, Franz Ritter
+von Epp, and Edmund Ironside are already recruited by GER or ENG. Their files
+remain evidence pending different sourced replacements and do not clear their
+packages. Luigi Rizzo remains ownership-safe because vanilla uses his name only
+for ship-production lines, not a character or portrait.
 This pass added and wired:
 
 - Saunders Lewis for the Welsh civic-leader token;
 - Josef Harpe for the Rhenish river-command token;
 - Heinrich Held for the Bavarian civic-leader token; and
-- Franz Ritter von Epp for the Bavarian emergency-command token.
+- Franz Ritter von Epp for the Bavarian emergency-command token; this treatment
+  is retained but rejected after the later active-vanilla-character sweep.
 
 Earlier work in the same ledger covers Cornwall, Flanders, Wallonia, Frisia,
 Scotland, Corsica, Sardinia, Sicily, the Middle Volga, Assyria, and Sokoto.
@@ -37,8 +44,8 @@ both died before 1936. David Kalakaua Kawananakoa remains rejected because the
 available scan cannot survive an identity-preserving finish.
 
 The Rupprecht of Bavaria and Josef Friedrich Matthes DDS files remain
-byte-locked at their user-approved hashes. Franz von Epp's Freikorps violence
-and Nazi office remain explicit in localisation and documentation.
+byte-locked at their user-approved hashes. Epp is not an admissible Event 006
+identity because vanilla owns him as an active GER character.
 
 ## Advisor and commander asset boundary
 
@@ -50,7 +57,8 @@ removed. Commanders use only full `156x210` leader portraits.
 ## Validation evidence
 
 - 24 treatment-ledger runtime rows decode as RGBA `156x210`, match their
-  processed PNG pixel-for-pixel, and match the ledger SHA-256 values.
+  processed PNG pixel-for-pixel, and match the ledger SHA-256 values. Conversion
+  fidelity does not override the three active-character ownership rejections.
 - All 413 sprites across the 22 Event 006 GFX files have unique names and
   existing textures.
 - Event 006 has zero `_small` DDS files and zero portrait-small consumers.
@@ -67,8 +75,12 @@ No package is re-admitted by this asset tranche. The compile-time Event 006
 content-attestation set remains empty.
 
 - IW-002 Wales still lacks a sourced military commander.
-- IW-008 Rhineland and IW-009 Bavaria have source-cleared portrait rosters but
-  require a fresh full country-package and portrait-consumer audit.
+- IW-001 Scotland requires a different sourced male commander because vanilla
+  recruits Edmund Ironside for ENG.
+- IW-008 Rhineland and IW-009 Bavaria require different sourced male route
+  identities because vanilla recruits Konrad Adenauer and Franz Ritter von Epp
+  for GER. Protected Matthes and Rupprecht, Josef Harpe, and Heinrich Held remain
+  valid within their respective rosters.
 - IW-004 Brittany, IW-006 Wallonia, IW-010 Saar, IW-018 Sardinia, IW-043
   Middle Volga, IW-058 Assyria, IW-093 Asante, IW-098 Sokoto, IW-179
   Micronesia, and IW-184 California retain one or more unresolved grounded
