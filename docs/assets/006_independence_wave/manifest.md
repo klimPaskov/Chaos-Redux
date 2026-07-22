@@ -286,7 +286,9 @@ GER or ENG characters. Source-ready replacement primaries are Karl Jarres for
 RHI, Eugen Ritter von Schobert for BAY, and Victor Morven Fortune for SCO;
 their unchanged sources and ownership evidence are in
 `sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
-None is processed or wired. Luigi Rizzo remains valid because vanilla uses his name only for
+The stable Event 6 character tokens now display those three replacement
+identities, but none of their sources is processed into or approved as a
+runtime portrait. Luigi Rizzo remains valid because vanilla uses his name only for
 ship-production lines, not a character or portrait. Protected Rupprecht and
 Matthes remain the only approved Event 006 leader portraits. Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
