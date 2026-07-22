@@ -9,7 +9,8 @@
 
 independence_wave_rival_bloc_category = {
 	# A leader commits a real convoy and arms package before an invitation can
-	# sit with the target. The target must still accept within the timer window.
+	# reach the target. The target must still meet the membership rules when it
+	# selects acceptance.
 	independence_wave_rival_bloc_invite_member = {
 		name = independence_wave_rival_bloc_invite_member
 		desc = independence_wave_rival_bloc_invite_member_desc
@@ -57,7 +58,13 @@ independence_wave_rival_bloc_category = {
 		desc = independence_wave_rival_bloc_accept_membership_desc
 		icon = GFX_decision_independence_wave_league_votes
 		visible = { is_independence_wave_rival_bloc_pending_invitation = yes }
-		available = { can_pay_independence_wave_rival_bloc_accept_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_rival_bloc_accept_membership_requirements_tt
+				is_independence_wave_rival_bloc_valid_pending_acceptance = yes
+			}
+			can_pay_independence_wave_rival_bloc_accept_cost = yes
+		}
 		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_accept_cost = yes }
 		custom_cost_text = independence_wave_rival_bloc_cost_accept
 		days_remove = constant:independence_wave_rival_bloc_duration.acceptance
@@ -66,7 +73,8 @@ independence_wave_rival_bloc_category = {
 			add_equipment_to_stockpile = { type = convoy amount = constant:independence_wave_rival_bloc_cost.accept_convoys_spend }
 		}
 		remove_effect = { independence_wave_rival_bloc_accept_invitation = yes }
-		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_pending_invitation = yes } }
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_valid_pending_acceptance = yes } }
+		cancel_effect = { independence_wave_rival_bloc_decline_invitation = yes }
 		ai_will_do = {
 			base = constant:independence_wave_rival_bloc_ai.high
 			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_independence_wave_severe_host_threat = yes }

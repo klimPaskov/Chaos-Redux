@@ -49,16 +49,38 @@ is_independence_wave_rival_bloc_authority = {
 is_independence_wave_rival_bloc_pending_invitation = {
 	is_independence_wave_active_country = yes
 	has_country_flag = independence_wave_rival_bloc_invitation_pending
+	has_event_target = independence_wave_rival_bloc_pending_invitation_target
+	event_target:independence_wave_rival_bloc_pending_invitation_target = { tag = ROOT }
 	has_variable = independence_wave_rival_bloc_inviter
 	var:independence_wave_rival_bloc_inviter = {
 		exists = yes
-		is_independence_wave_rival_bloc_leader = yes
+		is_independence_wave_rival_bloc_member = yes
+		has_country_flag = independence_wave_rival_bloc_leader
+		has_event_target = independence_wave_rival_bloc_leader_target
+		event_target:independence_wave_rival_bloc_leader_target = { tag = PREV }
 	}
 	has_variable = independence_wave_rival_bloc_invitation_contract_generation
 	check_variable = {
 		var = independence_wave_rival_bloc_invitation_contract_generation
 		value = global.independence_wave_rival_bloc_contract_generation
 		compare = equals
+	}
+}
+
+is_independence_wave_rival_bloc_valid_pending_acceptance = {
+	is_independence_wave_rival_bloc_pending_invitation = yes
+	has_country_flag = independence_wave_network_member
+	NOT = { has_country_flag = independence_wave_league_member }
+	NOT = { has_country_flag = independence_wave_league_founder }
+	NOT = { has_country_flag = independence_wave_rival_bloc_member }
+	OR = {
+		NOT = { has_country_flag = independence_wave_client_route_locked }
+		check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced }
+	}
+	check_variable = { var = independence_wave_network_standing value = constant:independence_wave_rival_bloc.invitation_standing compare = greater_than_or_equals }
+	NOT = { has_war = yes }
+	var:independence_wave_rival_bloc_inviter = {
+		NOT = { has_war_with = PREV }
 	}
 }
 

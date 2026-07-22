@@ -46,6 +46,30 @@ independence_wave_rival_bloc_change_values = {
 	independence_wave_rival_bloc_clamp_values = yes
 }
 
+independence_wave_rival_bloc_clear_pending_invitation = {
+	if = {
+		limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
+		event_target:independence_wave_rival_bloc_pending_invitation_target = {
+			clr_country_flag = independence_wave_rival_bloc_invitation_pending
+			clear_variable = independence_wave_rival_bloc_inviter
+			clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		}
+	}
+	clr_global_flag = independence_wave_rival_bloc_invitation_open
+	clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+}
+
+independence_wave_rival_bloc_clear_member_state = {
+	clr_country_flag = independence_wave_rival_bloc_member
+	clr_country_flag = independence_wave_rival_bloc_leader
+	clr_country_flag = independence_wave_rival_bloc_host_front
+	clr_country_flag = independence_wave_rival_bloc_patron_pressure
+	clr_country_flag = independence_wave_rival_bloc_invitation_pending
+	clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
+	clear_variable = independence_wave_rival_bloc_inviter
+	clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+}
+
 independence_wave_rival_bloc_clear_member_arrays = {
 	clear_array = global.independence_wave_rival_bloc_member_country_entries
 	clear_array = global.independence_wave_rival_bloc_member_generation_entries
@@ -128,14 +152,44 @@ independence_wave_rival_bloc_reconcile_registry = {
 				if = { limit = { exists = yes NOT = { has_country_flag = independence_wave_network_member } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
 			if = { limit = { exists = yes has_country_flag = independence_wave_client_route_locked NOT = { check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced } } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
 				if = { limit = { exists = yes NOT = { has_country_flag = independence_wave_rival_bloc_member } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
-				if = { limit = { exists = yes NOT = { check_variable = { var = independence_wave_generation_id value = ROOT.independence_wave_rival_bloc_row_generation compare = equals } } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+				if = { limit = { exists = yes NOT = { check_variable = { var = independence_wave_generation_id value = independence_wave_rival_bloc_row_generation compare = equals } } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
 			}
-			if = { limit = { check_variable = { var = independence_wave_rival_bloc_row_valid value = constant:independence_wave_value.minimum compare = equals } } independence_wave_rival_bloc_remove_member_row = yes }
+			if = {
+				limit = { check_variable = { var = independence_wave_rival_bloc_row_valid value = constant:independence_wave_value.minimum compare = equals } }
+				var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_row = {
+					if = { limit = { exists = yes } independence_wave_rival_bloc_clear_member_state = yes }
+				}
+				independence_wave_rival_bloc_remove_member_row = yes
+			}
 		}
 	}
-	else = { independence_wave_rival_bloc_clear_member_arrays = yes }
+	else = {
+		for_each_scope_loop = {
+			array = global.independence_wave_rival_bloc_member_country_entries
+			independence_wave_rival_bloc_clear_member_state = yes
+		}
+		independence_wave_rival_bloc_clear_member_arrays = yes
+	}
 	independence_wave_rival_bloc_recalculate_confidence = yes
 	independence_wave_rival_bloc_rebuild_regions = yes
+	if = {
+		limit = {
+			has_global_flag = independence_wave_rival_bloc_active
+			check_variable = { global.independence_wave_rival_bloc_member_count = constant:independence_wave_rival_bloc.minimum }
+		}
+		independence_wave_rival_bloc_dissolve_contract = yes
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_rival_bloc_active
+			OR = {
+				NOT = { has_event_target = independence_wave_rival_bloc_leader_target }
+				event_target:independence_wave_rival_bloc_leader_target = { NOT = { is_independence_wave_rival_bloc_member = yes } }
+			}
+		}
+		independence_wave_rival_bloc_clear_pending_invitation = yes
+		independence_wave_rival_bloc_select_leader = yes
+	}
 }
 
 independence_wave_rival_bloc_register_member = {
@@ -246,26 +300,10 @@ independence_wave_rival_bloc_unregister_member = {
 		}
 		set_temp_variable = { independence_wave_rival_bloc_was_leader = constant:independence_wave_value.minimum }
 		if = { limit = { has_country_flag = independence_wave_rival_bloc_leader } set_temp_variable = { independence_wave_rival_bloc_was_leader = constant:independence_wave_plan.loop_increment } }
-		clr_country_flag = independence_wave_rival_bloc_member
-		clr_country_flag = independence_wave_rival_bloc_leader
-		clr_country_flag = independence_wave_rival_bloc_host_front
-		clr_country_flag = independence_wave_rival_bloc_patron_pressure
-		clr_country_flag = independence_wave_rival_bloc_invitation_pending
-		clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
-		clear_variable = independence_wave_rival_bloc_inviter
-		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		independence_wave_rival_bloc_clear_member_state = yes
 		if = {
 			limit = { check_variable = { var = independence_wave_rival_bloc_was_leader value = constant:independence_wave_plan.loop_increment compare = equals } }
-			if = {
-				limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
-				event_target:independence_wave_rival_bloc_pending_invitation_target = {
-					clr_country_flag = independence_wave_rival_bloc_invitation_pending
-					clear_variable = independence_wave_rival_bloc_inviter
-					clear_variable = independence_wave_rival_bloc_invitation_contract_generation
-				}
-				clr_global_flag = independence_wave_rival_bloc_invitation_open
-				clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
-			}
+			independence_wave_rival_bloc_clear_pending_invitation = yes
 			clear_global_event_target = independence_wave_rival_bloc_leader_target
 			clear_variable = global.independence_wave_rival_bloc_leader
 			independence_wave_rival_bloc_select_leader = yes
@@ -400,7 +438,7 @@ independence_wave_rival_bloc_issue_invitation = {
 		var:independence_wave_rival_bloc_active_target_country = {
 			set_country_flag = independence_wave_rival_bloc_invitation_pending
 			set_variable = { independence_wave_rival_bloc_inviter = ROOT }
-			set_variable = { independence_wave_rival_bloc_invitation_contract_generation = ROOT.global.independence_wave_rival_bloc_contract_generation }
+			set_variable = { independence_wave_rival_bloc_invitation_contract_generation = global.independence_wave_rival_bloc_contract_generation }
 			save_global_event_target_as = independence_wave_rival_bloc_pending_invitation_target
 		}
 		set_global_flag = independence_wave_rival_bloc_invitation_open
@@ -411,12 +449,8 @@ independence_wave_rival_bloc_issue_invitation = {
 
 independence_wave_rival_bloc_accept_invitation = {
 	if = {
-		limit = { is_independence_wave_rival_bloc_pending_invitation = yes }
-		clear_variable = independence_wave_rival_bloc_inviter
-		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
-		clr_country_flag = independence_wave_rival_bloc_invitation_pending
-		clr_global_flag = independence_wave_rival_bloc_invitation_open
-		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		limit = { is_independence_wave_rival_bloc_valid_pending_acceptance = yes }
+		independence_wave_rival_bloc_clear_pending_invitation = yes
 		independence_wave_rival_bloc_register_member = yes
 		if = { limit = { has_independence_wave_living_former_host = yes } set_country_flag = independence_wave_rival_bloc_host_front }
 		if = { limit = { has_independence_wave_patron_control = yes } set_country_flag = independence_wave_rival_bloc_patron_pressure }
@@ -437,16 +471,13 @@ independence_wave_rival_bloc_accept_invitation = {
 		set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_rival_bloc.main_league_member_join_confidence_loss }
 		independence_wave_change_league_values = yes
 	}
+	else = { independence_wave_rival_bloc_decline_invitation = yes }
 }
 
 independence_wave_rival_bloc_decline_invitation = {
 	if = {
 		limit = { is_independence_wave_rival_bloc_pending_invitation = yes }
-		clear_variable = independence_wave_rival_bloc_inviter
-		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
-		clr_country_flag = independence_wave_rival_bloc_invitation_pending
-		clr_global_flag = independence_wave_rival_bloc_invitation_open
-		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		independence_wave_rival_bloc_clear_pending_invitation = yes
 		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_value.minimum }
 		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_value.minimum }
 		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
@@ -605,25 +636,10 @@ independence_wave_rival_bloc_leave = {
 independence_wave_rival_bloc_dissolve_contract = {
 	if = {
 		limit = { has_global_flag = independence_wave_rival_bloc_active }
-		if = {
-			limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
-			event_target:independence_wave_rival_bloc_pending_invitation_target = {
-				clr_country_flag = independence_wave_rival_bloc_invitation_pending
-				clear_variable = independence_wave_rival_bloc_inviter
-				clear_variable = independence_wave_rival_bloc_invitation_contract_generation
-			}
-		}
-		clr_global_flag = independence_wave_rival_bloc_invitation_open
-		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		independence_wave_rival_bloc_clear_pending_invitation = yes
 		for_each_scope_loop = {
 			array = global.independence_wave_rival_bloc_member_country_entries
-			clr_country_flag = independence_wave_rival_bloc_member
-			clr_country_flag = independence_wave_rival_bloc_leader
-			clr_country_flag = independence_wave_rival_bloc_host_front
-			clr_country_flag = independence_wave_rival_bloc_patron_pressure
-			clr_country_flag = independence_wave_rival_bloc_invitation_pending
-			clear_variable = independence_wave_rival_bloc_inviter
-			clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+			independence_wave_rival_bloc_clear_member_state = yes
 		}
 		independence_wave_rival_bloc_clear_member_arrays = yes
 		clr_global_flag = independence_wave_rival_bloc_active
@@ -666,13 +682,7 @@ independence_wave_rival_bloc_cleanup_for_origin = {
 				has_event_target = independence_wave_rival_bloc_pending_invitation_target
 				event_target:independence_wave_rival_bloc_pending_invitation_target = { tag = ROOT }
 			}
-			event_target:independence_wave_rival_bloc_pending_invitation_target = {
-				clr_country_flag = independence_wave_rival_bloc_invitation_pending
-				clear_variable = independence_wave_rival_bloc_inviter
-				clear_variable = independence_wave_rival_bloc_invitation_contract_generation
-			}
-			clr_global_flag = independence_wave_rival_bloc_invitation_open
-			clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+			independence_wave_rival_bloc_clear_pending_invitation = yes
 		}
 		clr_country_flag = independence_wave_rival_bloc_invitation_pending
 		clear_variable = independence_wave_rival_bloc_inviter
