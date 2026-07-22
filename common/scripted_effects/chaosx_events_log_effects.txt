@@ -424,6 +424,145 @@ events_log_set_default_actor_for_current_event = {
     }
 }
 
+events_log_get_event_type_for_open_detail = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+			}
+		}
+		set_temp_variable = { event_type = constant:event_system_event_type.fallout_country_memory }
+	}
+	else = { get_event_type = yes }
+}
+
+# Appends a system-owned history row without borrowing global.last_fired_event_id.
+# Inputs are temporary variables set by the calling system:
+# events_log_system_event_id, events_log_system_event_type,
+# events_log_system_payload, events_log_system_actor, and
+# events_log_system_has_actor. The caller must finish its private payload row
+# and then call refresh_events_log_system_history_views.
+record_events_log_system_history_entry = {
+	if = {
+		limit = { NOT = { has_variable = global.events_log_history_sequence } }
+		set_variable = { global.events_log_history_sequence = 0 }
+	}
+
+	sanitize_events_log_history_actor_entries = yes
+
+	set_temp_variable = { event_id = events_log_system_event_id }
+	set_temp_variable = { event_type = events_log_system_event_type }
+	set_temp_variable = { events_log_entry_payload = events_log_system_payload }
+	set_temp_variable = { events_log_default_actor = events_log_system_actor }
+	set_temp_variable = { events_log_default_has_actor = events_log_system_has_actor }
+	set_temp_variable = { events_log_entry_secondary_actor = events_log_system_secondary_actor }
+	set_temp_variable = { events_log_entry_has_secondary_actor = events_log_system_has_secondary_actor }
+
+	set_temp_variable = { total_unfired_events = global.unfired_major_events_count }
+	add_to_temp_variable = { total_unfired_events = global.unfired_fire_once_events_count }
+	add_to_temp_variable = { total_unfired_events = global.unfired_repeatable_events_count }
+
+	add_to_variable = { global.events_log_history_sequence = 1 }
+
+	add_to_array = {
+		array = global.events_log_history_sequence_entries
+		value = global.events_log_history_sequence
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_date_entries
+		value = global.date
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_event_id_entries
+		value = event_id
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_event_type_entries
+		value = event_type
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_payload_entries
+		value = events_log_entry_payload
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_actor_entries
+		value = events_log_default_actor
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_has_actor_entries
+		value = events_log_default_has_actor
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_secondary_actor_entries
+		value = events_log_entry_secondary_actor
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_has_secondary_actor_entries
+		value = events_log_entry_has_secondary_actor
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_minor_since_major_entries
+		value = global.minor_events_since_major
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_unique_left_entries
+		value = total_unfired_events
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_total_fired_entries
+		value = global.total_events_fired
+		index = 0
+	}
+
+	set_temp_variable = { events_log_history_payload_override_active = 0 }
+	set_temp_variable = { events_log_history_actor_override_active = 0 }
+	set_temp_variable = { events_log_history_secondary_actor_override_active = 0 }
+}
+
+# Refreshes visible player Event Log surfaces after a system-owned caller has
+# committed its shared row and any system-specific payload ledger.
+refresh_events_log_system_history_views = {
+	every_country = {
+		limit = {
+			is_ai = no
+			has_country_flag = events_log_window_open
+		}
+		if = {
+			limit = { has_country_flag = events_log_history_tab }
+			rebuild_events_log_history_view = yes
+		}
+		if = {
+			limit = { has_country_flag = events_log_events_tab }
+			rebuild_events_log_events_view = yes
+		}
+		if = {
+			limit = { has_country_flag = events_log_event_details_open }
+			events_log_rebuild_open_event_details_view = yes
+		}
+		if = {
+			limit = {
+				has_country_flag = events_log_world_end_scenario_details_open
+				check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout }
+			}
+			fallout_nzl_prepare_event_log_card = yes
+		}
+	}
+}
+
 record_events_log_history_entry = {
     if = {
         limit = { NOT = { has_variable = global.events_log_history_sequence } }
@@ -1201,6 +1340,10 @@ events_log_select_world_end_scenario_from_row = {
 
 events_log_open_selected_world_end_scenario_detail = {
 	events_log_select_world_end_scenario_from_row = yes
+	if = {
+		limit = { check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout } }
+		fallout_nzl_prepare_event_log_card = yes
+	}
 	set_country_flag = events_log_world_end_scenario_details_open
 }
 
@@ -1380,6 +1523,18 @@ events_log_open_history_event_details_entry = {
             array = global.events_log_open_event_detail_entries
             value = events_log_selected_event_id
         }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = events_log_selected_event_id value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+					check_variable = { var = events_log_selected_event_id value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+					check_variable = { var = events_log_selected_event_id value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+					check_variable = { var = events_log_selected_event_id value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+				}
+			}
+			set_country_flag = events_log_fallout_nzl_detail_context
+		}
+		else = { clr_country_flag = events_log_fallout_nzl_detail_context }
         set_country_flag = events_log_event_details_open
         events_log_rebuild_open_event_details_view = yes
         events_log_rebuild_history_details_view = yes
@@ -1613,7 +1768,7 @@ events_log_rebuild_open_event_details_view = {
         value = events_log_open_detail_index
 
         set_temp_variable = { event_id = global.events_log_open_event_detail_entries^events_log_open_detail_index }
-        get_event_type = yes
+        events_log_get_event_type_for_open_detail = yes
 
         add_to_array = {
             array = global.events_log_open_event_detail_type_entries
@@ -2258,6 +2413,7 @@ events_log_rebuild_open_event_details_view = {
 
 		events_log_rebuild_event_detail_world_end_scenarios = yes
 		resources_found_load_open_history_payload = yes
+		fallout_nzl_load_open_history_payload = yes
 	}
 }
 
@@ -2266,6 +2422,7 @@ events_log_add_event_details_entry = {
         limit = { check_variable = { events_log_selected_event_id > 0 } }
 		events_log_close_world_end_scenario_details_view = yes
         clr_country_flag = events_log_detail_use_history_context
+		clr_country_flag = events_log_fallout_nzl_detail_context
         clear_array = global.events_log_open_event_detail_entries
         add_to_array = {
             array = global.events_log_open_event_detail_entries
@@ -2583,8 +2740,9 @@ events_log_remove_event_details_entry = {
     if = {
         limit = { check_variable = { global.events_log_open_event_detail_entries^num < 1 } }
 		events_log_close_world_end_scenario_details_view = yes
-        clr_country_flag = events_log_event_details_open
+		clr_country_flag = events_log_event_details_open
         clr_country_flag = events_log_detail_use_history_context
+		clr_country_flag = events_log_fallout_nzl_detail_context
         set_variable = { events_log_selected_event_id = 0 }
     }
 }
@@ -2620,6 +2778,7 @@ events_log_close_all_event_details_entries = {
 	clear_array = global.events_log_event_detail_world_end_availability_helper_entries
     clr_country_flag = events_log_event_details_open
     clr_country_flag = events_log_detail_use_history_context
+	clr_country_flag = events_log_fallout_nzl_detail_context
     set_variable = { events_log_selected_event_id = 0 }
 }
 
@@ -2664,15 +2823,15 @@ cycle_events_log_filter_prev = {
         limit = { check_variable = { settings_events_log_filter_type > 0 } }
         subtract_from_variable = { settings_events_log_filter_type = 1 }
     }
-    else = {
-        set_variable = { settings_events_log_filter_type = 3 }
+	else = {
+		set_variable = { settings_events_log_filter_type = 4 }
     }
     rebuild_events_log_history_view = yes
 }
 
 cycle_events_log_filter_next = {
-    if = {
-        limit = { check_variable = { settings_events_log_filter_type < 3 } }
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type < 4 } }
         add_to_variable = { settings_events_log_filter_type = 1 }
     }
     else = {
@@ -2709,17 +2868,28 @@ events_log_row_matches_active_filter = {
         }
         set_temp_variable = { events_log_row_matches_filter = 1 }
     }
-    else_if = {
-        limit = {
-            check_variable = { settings_events_log_filter_type = 3 }
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_filter_type = 3 }
             check_variable = {
                 var = global.events_log_history_event_type_entries^events_log_source_index
                 value = constant:event_system_event_type.fire_once
                 compare = equals
             }
-        }
-        set_temp_variable = { events_log_row_matches_filter = 1 }
-    }
+		}
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_filter_type = 4 }
+			check_variable = {
+				var = global.events_log_history_event_type_entries^events_log_source_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
 }
 
 events_log_append_view_row_from_source = {
@@ -3016,7 +3186,7 @@ rebuild_events_log_history_view = {
         set_variable = { settings_events_log_filter_type = 0 }
     }
     if = {
-        limit = { check_variable = { settings_events_log_filter_type > 3 } }
+        limit = { check_variable = { settings_events_log_filter_type > 4 } }
         set_variable = { settings_events_log_filter_type = 0 }
     }
     if = {
@@ -4157,7 +4327,7 @@ rebuild_events_log_events_view = {
 
 initialize_events_log_settings = {
     set_variable = { settings_events_log_sort_mode = 0 } # 0 = index, 1 = event id, 2 = actor
-    set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once
+    set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once, 4 = Fallout country memory
     set_variable = { settings_events_log_evolution_sort_mode = 0 } # 0 = index, 1 = tier, 2 = stage, 3 = actor
     set_variable = { settings_events_log_evolution_filter_type = 0 } # 0 = all, 1 = major, 2 = minor
     set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight

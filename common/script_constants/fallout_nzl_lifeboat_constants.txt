@@ -1,0 +1,333 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT STATE CONSTANTS
+# ============================================================================
+# Central tuning for the dormant New Zealand successor pilot. Nothing in this
+# file activates the package. The live Fallout allocator must provide current
+# assignment, conflict, capital, and package receipts before activation.
+# ============================================================================
+
+fallout_nzl_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 2
+	zero = 0
+	one = 1
+	package_state_count = 5
+}
+
+fallout_nzl_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wellington = 284
+	auckland = 1079
+	canterbury = 723
+	marlborough = 1080
+	otago = 1081
+	samoa = 726
+}
+
+fallout_nzl_province = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wellington = 1814
+	auckland = 4543
+	canterbury = 2197
+}
+
+fallout_nzl_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	critical = 20
+	strained = 35
+	stable = 55
+	strong = 70
+	secure = 85
+	initial_harbor_capacity = 22
+	initial_food_security = 38
+	initial_parliament_trust = 31
+	initial_sea_lane_security = 18
+	minor_gain = 4
+	moderate_gain = 7
+	major_gain = 12
+	minor_loss = 4
+	moderate_loss = 7
+	major_loss = 12
+}
+
+fallout_nzl_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	humanitarian = 1
+	isolation = 2
+	upper_bound = 3
+}
+
+fallout_nzl_chain_choice = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	open_ledger = 1
+	guarded_berths = 2
+	local_compacts = 3
+	upper_bound = 4
+}
+
+fallout_nzl_chain_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	failure = 1
+	partial = 2
+	success = 3
+	upper_bound = 4
+}
+
+fallout_nzl_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	short_delay_days = 12
+	standard_delay_days = 28
+	long_delay_days = 45
+	opening_score_failure = 24
+	opening_score_success = 32
+	domestic_score_failure = 36
+	domestic_score_success = 47
+	external_score_failure = 44
+	external_score_success = 70
+	late_score_failure = 58
+	late_score_success = 82
+	pair_divisor = 2
+	triple_divisor = 3
+	quad_divisor = 4
+}
+
+# Deterministic context additions shared by all four delayed chain scores.
+# State weights reflect the package's two ports and three supporting regions.
+# Choice, route, war-pressure, and prior-result terms are deliberately small
+# so the authored result bands remain useful while current conditions matter.
+fallout_nzl_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	state_control_wellington = 4
+	state_control_auckland = 4
+	state_control_canterbury = 3
+	state_control_marlborough = 2
+	state_control_otago = 2
+	state_control_divisor = 5
+	choice_open_ledger = 2
+	choice_guarded_berths = 1
+	choice_local_compacts = -3
+	humanitarian_route = 2
+	isolation_route = 2
+	war_pressure_open = -3
+	war_pressure_guarded = 3
+	war_pressure_local = -1
+	war_pressure_humanitarian = -4
+	war_pressure_isolation = 4
+	prior_success = 3
+	prior_partial = 1
+	prior_failure = -3
+}
+
+fallout_nzl_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power_low = 25
+	political_power_medium = 45
+	political_power_high = 70
+	command_power_low = 12
+	command_power_medium = 25
+	army_experience = 10
+	navy_experience = 12
+	manpower_low = 350
+	manpower_medium = 700
+	infantry_equipment_low = 120
+	infantry_equipment_medium = 240
+	support_equipment_low = 35
+	support_equipment_medium = 70
+	motorized_low = 30
+	train_low = 3
+	convoy_low = 5
+	convoy_medium = 10
+	convoy_high = 16
+}
+
+fallout_nzl_focus_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	short = 5
+	standard = 7
+	long = 10
+}
+
+fallout_nzl_politics = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial_democratic = 72
+	initial_neutrality = 18
+	initial_communism = 6
+	initial_fascism = 4
+}
+
+fallout_nzl_unit_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	opening_experience = 0.10
+	wellington_equipment = 0.35
+	wellington_manpower = 0.40
+	regional_equipment = 0.30
+	regional_manpower = 0.35
+	escort_experience = 0.20
+	escort_equipment = 0.65
+	escort_manpower = 0.65
+}
+
+fallout_nzl_trait = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	parliament_stability = 0.05
+	parliament_political_power = -0.05
+	parliament_infrastructure = 0.05
+	relief_speaker_stability = 0.08
+	relief_speaker_trade = 0.10
+	relief_speaker_consumer_goods = 0.02
+	harbor_constable_war_support = 0.08
+	harbor_constable_coastal_bunker = 0.10
+	harbor_constable_trade = -0.10
+	dairy_relief_supply = -0.05
+	dairy_relief_consumer_goods = -0.02
+	dairy_relief_infrastructure = 0.05
+	storm_port_naval_base = 0.10
+	storm_port_repair = 0.08
+	storm_port_dockyard = 0.05
+	radio_service_navy_intel = 0.08
+	radio_service_detection = 0.05
+	radio_service_decryption = 0.05
+}
+
+fallout_nzl_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	quick = 35
+	standard = 70
+	long = 105
+	cooldown = 90
+	year_ten = 3650
+}
+
+fallout_nzl_war = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	forced_settlement_surrender_progress = 0.65
+}
+
+fallout_nzl_sea_road = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	patrol_window_detection = 0.10
+	patrol_window_escort = 0.10
+	patrol_window_maintained_score = 4
+	patrol_window_lapsed_score = 4
+}
+
+fallout_nzl_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	blocked = 0
+	low = 4
+	normal = 10
+	high = 20
+	urgent = 40
+	preferred = 2
+	deferred = 0.5
+	tree_weight = 100
+}
+
+fallout_nzl_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stability_minor = 0.02
+	stability_moderate = 0.05
+	stability_major = 0.08
+	stability_moderate_loss = -0.05
+	war_support_minor = 0.02
+	war_support_moderate = 0.05
+	political_power_small = 25
+	political_power_medium = 50
+	convoys_small = 4
+	convoys_medium = 8
+	navy_experience_small = 5
+	army_experience_small = 5
+}
+
+fallout_nzl_achievement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	open_harbors_value = 70
+	closed_seas_security = 85
+	closed_seas_food = 65
+	maximum_extra_escort_formations = 1
+}

@@ -38,6 +38,16 @@ defined_text = {
 		localization_key = settings.minor_fire_once.colored
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+		localization_key = fallout.event_log.type
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = "Unknown"
 	}
@@ -76,6 +86,16 @@ defined_text = {
 		localization_key = settings.minor_fire_once.colored
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+			localization_key = fallout.event_log.type
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = "Unknown"
 	}
@@ -98,6 +118,10 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { settings_events_log_filter_type = 3 } }
 		localization_key = chaosx.events_log.filter.fire_once
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_filter_type = 4 } }
+		localization_key = fallout.event_log.filter
 	}
 	text = {
 		trigger = { always = yes }
@@ -403,6 +427,16 @@ defined_text = {
 		localization_key = settings.minor_fire_once.colored
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+		localization_key = fallout.event_log.type
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = "Unknown"
 	}
@@ -518,6 +552,16 @@ defined_text = {
 			}
 		}
 		localization_key = settings.minor_fire_once.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_history_selected_event_type
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+		localization_key = fallout.event_log.type
 	}
 	text = {
 		trigger = { always = yes }
@@ -4512,7 +4556,238 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetFalloutNZLEventLogChoiceLabel
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_choice value = constant:fallout_nzl_chain_choice.open_ledger compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.choice.open
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_choice value = constant:fallout_nzl_chain_choice.guarded_berths compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.choice.guarded
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_choice value = constant:fallout_nzl_chain_choice.local_compacts compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.choice.local
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_choice value = constant:fallout_nzl_event_log.rescue_passage_choice compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.choice.rescue_passage
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = fallout_nzl.event_log.choice.unknown
+	}
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogResultLabel
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_result value = constant:fallout_nzl_chain_result.failure compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.failure
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_result value = constant:fallout_nzl_chain_result.partial compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.partial
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_result value = constant:fallout_nzl_chain_result.success compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.success
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = fallout_nzl.event_log.result.unknown
+	}
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogPriorOpeningResultLabel
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_prior_result value = constant:fallout_nzl_chain_result.failure compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.failure
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_prior_result value = constant:fallout_nzl_chain_result.partial compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.partial
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_prior_result value = constant:fallout_nzl_chain_result.success compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.success
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = fallout_nzl.event_log.result.unknown
+	}
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogRouteLabel
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_route value = constant:fallout_nzl_route.humanitarian compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.route.humanitarian
+	}
+	text = {
+		trigger = {
+			check_variable = { var = fallout_nzl_event_log_detail_route value = constant:fallout_nzl_route.isolation compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.route.isolation
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = fallout_nzl.event_log.route.uncommitted
+	}
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardRouteLabel
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_route = constant:fallout_nzl_route.humanitarian } } localization_key = fallout_nzl.event_log.route.humanitarian }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_route = constant:fallout_nzl_route.isolation } } localization_key = fallout_nzl.event_log.route.isolation }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.route.uncommitted }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardOpeningResult
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_opening_result = constant:fallout_nzl_chain_result.failure } } localization_key = fallout_nzl.event_log.result.failure }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_opening_result = constant:fallout_nzl_chain_result.partial } } localization_key = fallout_nzl.event_log.result.partial }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_opening_result = constant:fallout_nzl_chain_result.success } } localization_key = fallout_nzl.event_log.result.success }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.not_available }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardDomesticResult
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_domestic_result = constant:fallout_nzl_chain_result.failure } } localization_key = fallout_nzl.event_log.result.failure }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_domestic_result = constant:fallout_nzl_chain_result.partial } } localization_key = fallout_nzl.event_log.result.partial }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_domestic_result = constant:fallout_nzl_chain_result.success } } localization_key = fallout_nzl.event_log.result.success }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.not_available }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardExternalResult
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_external_result = constant:fallout_nzl_chain_result.failure } } localization_key = fallout_nzl.event_log.result.failure }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_external_result = constant:fallout_nzl_chain_result.partial } } localization_key = fallout_nzl.event_log.result.partial }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_external_result = constant:fallout_nzl_chain_result.success } } localization_key = fallout_nzl.event_log.result.success }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.not_available }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardLateResult
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_late_result = constant:fallout_nzl_chain_result.failure } } localization_key = fallout_nzl.event_log.result.failure }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_late_result = constant:fallout_nzl_chain_result.partial } } localization_key = fallout_nzl.event_log.result.partial }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_late_result = constant:fallout_nzl_chain_result.success } } localization_key = fallout_nzl.event_log.result.success }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.not_available }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardOpeningDate
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_opening_date > 0 } } localization_key = fallout_nzl.event_log.card.opening_date }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.date_unknown }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardDomesticDate
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_domestic_date > 0 } } localization_key = fallout_nzl.event_log.card.domestic_date }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.date_unknown }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardExternalDate
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_external_date > 0 } } localization_key = fallout_nzl.event_log.card.external_date }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.date_unknown }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardLateDate
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_late_date > 0 } } localization_key = fallout_nzl.event_log.card.late_date }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.date_unknown }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardPartnerClause
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_has_second_partner > 0 } } localization_key = fallout_nzl.event_log.card.partner_pair }
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_has_partner > 0 } } localization_key = fallout_nzl.event_log.card.partner_present }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.partner_absent }
+}
+
+defined_text = {
+	name = GetFalloutNZLEventLogCardAggressorClause
+	text = { trigger = { check_variable = { fallout_nzl_event_log_card_has_aggressor > 0 } } localization_key = fallout_nzl.event_log.card.aggressor_present }
+	text = { trigger = { always = yes } localization_key = fallout_nzl.event_log.card.aggressor_absent }
+}
+
+defined_text = {
 	name = GetEventsLogEventDetailDescription
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+			has_variable = fallout_nzl_event_log_detail_choice
+		}
+		localization_key = fallout_nzl.event_log.detail.opening
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+			has_variable = fallout_nzl_event_log_detail_choice
+		}
+		localization_key = fallout_nzl.event_log.detail.domestic
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+			has_variable = fallout_nzl_event_log_detail_choice
+			check_variable = { var = fallout_nzl_event_log_detail_has_partner value = constant:fallout_nzl_schema.zero compare = greater_than }
+		}
+		localization_key = fallout_nzl.event_log.detail.external_partner
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+			has_variable = fallout_nzl_event_log_detail_choice
+		}
+		localization_key = fallout_nzl.event_log.detail.external_no_partner
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+			has_variable = fallout_nzl_event_log_detail_choice
+		}
+		localization_key = fallout_nzl.event_log.detail.late
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+				check_variable = { var = event_id value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+			}
+		}
+		localization_key = fallout_nzl.event_log.detail.unresolved
+	}
+	text = {
+		trigger = { check_variable = { var = event_id value = constant:doctor_wu_event.id compare = equals } }
+		localization_key = chaosx.events_log.window.event_details.doctor_wu
+	}
 	text = {
 		trigger = {
 			check_variable = { var = event_id value = constant:infantry_spawn_event.id compare = equals }
@@ -7230,6 +7505,36 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogHistoryRowText
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = constant:fallout_nzl_event_log.external_history_id
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+				value = constant:fallout_nzl_schema.zero
+				compare = greater_than
+			}
+		}
+		localization_key = fallout_nzl.event_log.row.external_partner
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fallout_country_memory
+				compare = equals
+			}
+		}
+		localization_key = fallout_nzl.event_log.row
+	}
+	text = {
 		trigger = { random_faction_history_row_has_bound_alignment_result = yes }
 		localization_key = chaosx.events_log.window.history.dynamic_entry.random_faction
 	}
@@ -7270,6 +7575,34 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogHistoryEventName
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.name.opening
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.name.domestic
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.name.external
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.name.late
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:doctor_wu_event.id compare = equals } }
+		localization_key = chaosx.event_name.163
+	}
 	text = {
 		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:natural_disaster_event.id compare = equals } }
 		localization_key = chaosx.event_name.13
@@ -10153,6 +10486,32 @@ defined_text = {
 	}
 }
 
+defined_text = {
+	name = GetFalloutNZLEventLogHistoryRowResultLabel
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:fallout_nzl_chain_result.failure compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.failure
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:fallout_nzl_chain_result.partial compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.partial
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:fallout_nzl_chain_result.success compare = equals }
+		}
+		localization_key = fallout_nzl.event_log.result.success
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = fallout_nzl.event_log.result.unknown
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Event Details: public world-end scenario catalog
 # ---------------------------------------------------------------------------
@@ -10222,6 +10581,13 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogSelectedWorldEndScenarioDetails
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.zombie_apocalypse } } localization_key = chaosx.events_log.world_end.zombie_apocalypse.details }
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.fallout }
+			check_variable = { fallout_nzl_event_log_card_has_memory > 0 }
+		}
+		localization_key = fallout_nzl.event_log.card.composite
+	}
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.fallout } } localization_key = chaosx.events_log.world_end.fallout.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.final_silence } } localization_key = chaosx.events_log.world_end.final_silence.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.world_in_fury } } localization_key = chaosx.events_log.world_end.world_in_fury.details }

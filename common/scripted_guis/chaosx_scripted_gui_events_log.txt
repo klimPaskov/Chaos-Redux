@@ -345,6 +345,23 @@ scripted_gui = {
 					}
 				}
 			}
+
+			open_secondary_diplomacy_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+							value = constant:fallout_nzl_schema.zero
+							compare = greater_than
+						}
+					}
+					var:global.events_log_view_secondary_actor_entries^events_log_history_index = {
+						capital_scope = {
+							ROOT = { goto_state = PREV }
+						}
+					}
+				}
+			}
 		}
 
 		triggers = {
@@ -379,6 +396,13 @@ scripted_gui = {
 					compare = greater_than
 				}
 			}
+			open_secondary_diplomacy_button_visible = {
+				check_variable = {
+					var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+					value = constant:fallout_nzl_schema.zero
+					compare = greater_than
+				}
+			}
 			country_flag_visible = {
 				check_variable = {
 					var = global.events_log_view_has_actor_entries^events_log_history_index
@@ -393,11 +417,46 @@ scripted_gui = {
 					compare = greater_than
 				}
 			}
-			history_entry_text_actor_visible = {
+			secondary_country_flag_visible = {
 				check_variable = {
-					var = global.events_log_view_has_actor_entries^events_log_history_index
-					value = 0
+					var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+					value = constant:fallout_nzl_schema.zero
 					compare = greater_than
+				}
+			}
+			secondary_country_flag_frame_visible = {
+				check_variable = {
+					var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+					value = constant:fallout_nzl_schema.zero
+					compare = greater_than
+				}
+			}
+			history_entry_text_actor_visible = {
+				AND = {
+					check_variable = {
+						var = global.events_log_view_has_actor_entries^events_log_history_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+						value = constant:fallout_nzl_schema.zero
+						compare = less_than_or_equals
+					}
+				}
+			}
+			history_entry_text_actor_pair_visible = {
+				AND = {
+					check_variable = {
+						var = global.events_log_view_has_actor_entries^events_log_history_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_view_has_secondary_actor_entries^events_log_history_index
+						value = constant:fallout_nzl_schema.zero
+						compare = greater_than
+					}
 				}
 			}
 			history_entry_text_generic_fallback_visible = {
@@ -423,6 +482,9 @@ scripted_gui = {
 		properties = {
 			country_flag = {
 				image = "[?global.events_log_view_actor_entries^events_log_history_index.GetFlag]"
+			}
+			secondary_country_flag = {
+				image = "[?global.events_log_view_secondary_actor_entries^events_log_history_index.GetFlag]"
 			}
 		}
 
@@ -1231,24 +1293,58 @@ scripted_gui = {
 				}
 			}
 			events_log_event_detail_toggle_enabled_button_visible = {
-				check_variable = {
-					var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
-					value = 0
-					compare = less_than_or_equals
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
+						value = 0
+						compare = less_than_or_equals
+					}
+					NOT = {
+						OR = {
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+						}
+					}
 				}
 			}
 			events_log_event_detail_toggle_disabled_button_visible = {
-				check_variable = {
-					var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
-					value = 0
-					compare = greater_than
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					NOT = {
+						OR = {
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+							check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+						}
+					}
 				}
 			}
 			events_log_event_detail_toggle_enabled_button_click_enabled = {
-				always = yes
+				NOT = {
+					OR = {
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+					}
+				}
 			}
 			events_log_event_detail_toggle_disabled_button_click_enabled = {
-				always = yes
+				NOT = {
+					OR = {
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.opening_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.domestic_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.external_history_id compare = equals }
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:fallout_nzl_event_log.late_history_id compare = equals }
+					}
+				}
 			}
 			events_log_event_detail_open_diplomacy_button_visible = {
 				AND = {
