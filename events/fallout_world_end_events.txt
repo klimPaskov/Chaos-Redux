@@ -8120,6 +8120,283 @@ country_event = {
 	immediate = { fallout_event_100_resolve_callback_and_prepare_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival pilot: River Intake at Dawn
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.107
+	title = chaosx.fallout.107.t
+	desc = chaosx.fallout.107.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = { fallout_event_107_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.107.a
+		hidden_effect = {
+			set_temp_variable = { fallout_event_107_requested_branch = constant:fallout_event_107_branch.close_intake }
+			fallout_event_107_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.107.a.tt
+		ai_chance = { base = 8 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_107_threshold.water_success compare = less_than } } }
+	}
+
+	option = {
+		name = chaosx.fallout.107.b
+		hidden_effect = {
+			set_temp_variable = { fallout_event_107_requested_branch = constant:fallout_event_107_branch.ration_filters }
+			fallout_event_107_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.107.b.tt
+		ai_chance = { base = 7 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_107_threshold.filters_success compare = greater_than_or_equals } } }
+	}
+
+	option = {
+		name = chaosx.fallout.107.c
+		hidden_effect = {
+			set_temp_variable = { fallout_event_107_requested_branch = constant:fallout_event_107_branch.seize_upstream_pumps }
+			fallout_event_107_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.107.c.tt
+		ai_chance = { base = 5 modifier = { factor = 2 has_government = fascism } modifier = { factor = 2 has_government = neutrality } }
+	}
+
+	option = {
+		name = chaosx.fallout.107.d_option
+		hidden_effect = {
+			set_temp_variable = { fallout_event_107_requested_branch = constant:fallout_event_107_branch.accept_foreign_testing }
+			fallout_event_107_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.107.d_option.tt
+		ai_chance = { base = 4 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_107_threshold.medicine_success compare = greater_than_or_equals } } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.108
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_107_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_107_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.109
+	title = chaosx.fallout.109.t
+	desc = {
+		text = chaosx.fallout.109.success.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.109.partial.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.109.failure.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_close_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.close_intake }
+	}
+	option = {
+		name = chaosx.fallout.109.a
+		hidden_effect = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.109.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.110
+	title = chaosx.fallout.110.t
+	desc = {
+		text = chaosx.fallout.110.success.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.110.partial.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.110.failure.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_ration_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.ration_filters }
+	}
+	option = {
+		name = chaosx.fallout.110.a
+		hidden_effect = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.110.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.111
+	title = chaosx.fallout.111.t
+	desc = {
+		text = chaosx.fallout.111.success.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.111.partial.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.111.failure.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_seizure_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.seize_upstream_pumps }
+	}
+	option = {
+		name = chaosx.fallout.111.a
+		hidden_effect = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.111.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.121
+	title = chaosx.fallout.121.t
+	desc = {
+		text = chaosx.fallout.121.success.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.121.partial.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.121.failure.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_foreign_testing_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.accept_foreign_testing }
+	}
+	option = {
+		name = chaosx.fallout.121.a
+		hidden_effect = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.121.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.112
+	title = chaosx.fallout.112.t
+	desc = {
+		text = chaosx.fallout.112.success.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.112.partial.d
+		trigger = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.112.failure.d
+	picture = GFX_report_event_fallout_river_intake_at_dawn
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_callback }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	}
+	option = {
+		name = chaosx.fallout.112.a
+		hidden_effect = { fallout_event_107_resolve_callback_and_prepare_cleanup = yes }
+		custom_effect_tooltip = chaosx.fallout.112.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.113
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_107_cleanup_can_enter = yes }
+	immediate = { fallout_event_107_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1009
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_close_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.close_intake }
+	}
+	immediate = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1010
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_ration_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.ration_filters }
+	}
+	immediate = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1011
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_seizure_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.seize_upstream_pumps }
+	}
+	immediate = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1012
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_foreign_testing_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_107_branch.accept_foreign_testing }
+	}
+	immediate = { fallout_event_107_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1013
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_107_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_intake_callback_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+	immediate = { fallout_event_107_resolve_callback_and_prepare_cleanup = yes }
+}
+
 country_event = {
 	id = chaosx.fallout.201
 	title = chaosx.fallout.201.t

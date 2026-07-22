@@ -20,7 +20,7 @@ Accepted source direction was taken from:
 - `docs/specs/air_cleanliness_fallout_specs/prompts/fallout_living_world_implementation_prompt.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_ID_LEDGER.md`
 
-The report-event references under `.agents/skills/chaos-redux-event-assets/assets/report_event_images/`, the existing Air Winter final report-event contact sheet, vanilla `interface/eventpictures.gfx`, and the offline Event modding wiki page were inspected before production.
+The report-event references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`, the existing Air Winter final report-event contact sheet, vanilla `interface/eventpictures.gfx`, and the offline Event modding wiki page were inspected before production.
 
 ## Shared technical profile
 
@@ -45,7 +45,7 @@ The report-event references under `.agents/skills/chaos-redux-event-assets/asset
 - Final identity: `report_event_fallout_last_inventory`.
 - Registered sprite: `GFX_report_event_fallout_last_inventory`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
-- Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
+- Localisation keys: `chaosx.fallout.107.t`, `chaosx.fallout.109.t`, `chaosx.fallout.110.t`, `chaosx.fallout.111.t`, `chaosx.fallout.121.t`, and `chaosx.fallout.112.t`.
 - Source mode: OpenAI built-in ImageGen.
 - Generation output record: Codex generation `exec-038ea798-8a9b-47c2-a28b-41737587f245.png` in generation session `019f6478-fc67-7742-9c1f-2fb19eec963b`; the workspace source PNG is an exact preserved copy.
 - Source PNG: `docs/assets/fallout_world_end/living_world_pilot/source_png/report_event_fallout_last_inventory_source.png`, RGB PNG, `1448x1086`.
@@ -58,7 +58,7 @@ The report-event references under `.agents/skills/chaos-redux-event-assets/asset
 - SHA-256 source: `10c1f19be3c14322dd261bc8b80e923c5897207a646296def16abf73d7b82f8a`.
 - SHA-256 processed: `27906ce566c4484b17b8c39171cc529085fb371b2defdbed5a7872a6ec4f7f90`.
 - SHA-256 DDS: `6c4089ca59e27be9dfae102fcfb0de99f1b521cc5ee7f74a61c4fbf8449eb8c2`.
-- Status: `registered_event_attachment_pending`.
+- Status: `registered_event_attachment_verified_dormant`.
 - Risk: the image is fictional generated documentary art, not historical evidence. The anonymous clerks use generic mid-century civilian clothing rather than a country-specific uniform, which keeps the global anchor reusable but should not be described as a named historical institution.
 
 ### Generation prompt
