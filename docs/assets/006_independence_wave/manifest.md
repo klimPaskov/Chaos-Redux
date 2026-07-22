@@ -293,7 +293,12 @@ ship-production lines, not a character or portrait. Protected Rupprecht and
 Matthes remain approved and byte-locked. Brittany's Régis de l'Estourbeillon
 civic leader and Henri-Léon Devin coastal commander also have independently
 approved, source-preserving full-color HOI4 repaint packages and byte-matched
-runtime DDS files. Prempeh II's
+runtime DDS files. Frisia's retry-02 Douwe Kalma civic leader and Pieter
+Reenalda coastal commander likewise pass independent same-person and HOI4-style
+review; their approved `156x210` PNGs are converted and wired to the existing
+AGX sprites, while rejected Reenalda candidate 01 remains evidence only. IW-007
+still awaits a fresh post-wiring country-package audit before attestation.
+Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
 real-person restyling is withdrawn. The deterministic Solinas/Harpe finish
 trial also remains visibly photographic and is rejected; its dated blocker
@@ -354,16 +359,18 @@ l'Estourbeillon supplies the civic/regionalist token through the reviewed
 `sourced_portrait_refinishes_2026_07_22/bri_regionalist/` package; Henri-Léon
 Devin supplies the coastal-command token through the same tranche's main
 ledger. The obsolete commander-small dossier file, registration, and consumer
-remain removed. Portrait completion does not itself grant package readiness;
-the fresh IW-004 country-package audit owns the re-admission recommendation.
+remain removed. The fresh IW-004 country-package audit passed every bounded
+static surface, and the parent compile-time registry therefore readmits IW-004
+as the sole currently attested Event 006 release package.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
 political portraits. François Debeauvais remains absent because the available
 portrait candidates lack both adequate identity detail and a defensible United
 States public-domain basis. No Debeauvais asset or generated likeness is wired;
 the separately sourced, role-compatible de l'Estourbeillon fills the civic
-surface instead. Portrait presence still does not grant runtime content
-attestation or SCN008 scenario-preflight readiness.
+surface instead. IW-004 still has to pass the live host, anchor, reservation,
+Event 005 collision, chaos-band, and transaction proofs on every allocation;
+its compile-time attestation is not a bypass for those gates.
 
 ## 2026-07-18 FORM-48 Pacific visual-asset handoff
 

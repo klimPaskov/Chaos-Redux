@@ -2,7 +2,7 @@
 
 Date: 2026-07-22
 
-Package status: `needs_independent_visual_audit` (no candidate is approved).
+Package status: `approved_wired_pending_country_package_reaudit`.
 This package is an identity-preserving edit pass for two grounded real-person
 portraits. AGX/Frisia is a plausibly historical regional polity, so the source
 mode remains `grounded_source_only`; ImageGen was used only to apply the HOI4
@@ -46,7 +46,7 @@ The selected masters and attribution are:
 - Processed PNG preview: `processed_png/AGX_friesland_coastal_council.png`; `156x210`, RGBA opaque; SHA-256 `644e37c3ffbcfa871af22bcb6cf9e575cbfa16bdd2cc30b253e2f65c440277a8`.
 - Native comparison sheet: `contact_sheets/native_source_result_style_comparison.png` (source, raw result, and style reference shown at native scale).
 - Visual self-review: the face, direct gaze, center pose, swept hair, forehead source mark, collar, patterned tie, jacket, and shoulder silhouette remain recognizable in a direct source/result comparison. The edit is full-color and restrained rather than sepia or monochrome. Possible subtle eye/jaw symmetry drift remains; **status `needs_independent_visual_audit`**, not approved.
-- Runtime/DDS: explicitly deferred by parent. Intended existing runtime texture path is `gfx/leaders/AGX_friesland_coastal_council.dds`; no DDS exists in this package and no `.gfx` or gameplay file was edited.
+- Runtime/DDS: converted after independent PASS to `final_dds/AGX/portrait_AGX_friesland_coastal_council.dds` and copied byte-for-byte to the authoritative existing texture path `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds`; SHA-256 `2A98ECB576B331915E2B626C9CCC6DC03AF4012A411717B73D2F5253358E15A2`. The stable sprite definition was not renamed.
 
 ### IW-007 coastal commander — Pieter Reenalda
 
@@ -67,7 +67,7 @@ The selected masters and attribution are:
 - Candidate 02 processed PNG preview: `processed_png/AGX_friesland_coastal_commander.png`; `156x210`, RGBA opaque; SHA-256 `25a3c29b6b9deeda87d0e96699beb44d2d2d7051a5335af61f630cb5d918c968`.
 - Native comparison sheet: `contact_sheets/native_source_result_style_comparison.png` (source, both raw candidates, and the style reference shown at native scale).
 - Visual self-review of candidate 02: the broad face, direct gaze, side-parted hair, large horizontal moustache, centered head, high-collared maritime uniform, buttons, pocket chain, and shoulder-board silhouette remain recognizable. Color stays muted and uncertain insignia are neutral rather than assigned national colors. Eye/cheek proportions and fine moustache geometry may still be subtly altered; **status `needs_independent_visual_audit`**, not approved.
-- Runtime/DDS: explicitly deferred by parent. Intended existing runtime texture path is `gfx/leaders/AGX_friesland_coastal_commander.dds`; no DDS exists in this package and no `.gfx` or gameplay file was edited.
+- Runtime/DDS: converted after independent PASS to `final_dds/AGX/portrait_AGX_friesland_coastal_commander.dds` and copied byte-for-byte to the authoritative existing texture path `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds`; SHA-256 `07689A7045C145401E5AA7A2CFC1AE0949D59C62D4B64F144714E20197558BBA`. The stable sprite definition was not renamed.
 
 ## Review evidence and conversion boundary
 
@@ -75,4 +75,4 @@ The selected masters and attribution are:
 - Dimensions, crop boxes, and SHA-256 values for every retained source/raw/processed file are in `hashes.sha256`.
 - Both unchanged selected source copies are retained under `source_masters/`; the source package's 1915/1911 Reenalda files were deliberately not reused as edit inputs.
 - The official built-in ImageGen edit workflow was used. No rejected prior ImageGen portrait was refined or reused.
-- DDS conversion and runtime promotion are deliberately deferred by the parent. The main agent must independently audit likeness first, then use the repository converter and existing stable `.gfx` wiring if and only if a candidate is approved. This package is not a completion claim.
+- The independent audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_frisia_retry_02_independent_visual_audit_2026_07_22.md` passes Kalma and Reenalda candidate 02 and keeps candidate 01 fail-closed. The two approved processed PNGs were converted with the repository-standard converter to one-level uncompressed BGRA DDS files. Both runtime DDS files are `156x210`, 131168 bytes, opaque, and decode pixel-identically to their processed PNGs. IW-007 still requires a fresh country-package re-audit before compile-time content attestation.

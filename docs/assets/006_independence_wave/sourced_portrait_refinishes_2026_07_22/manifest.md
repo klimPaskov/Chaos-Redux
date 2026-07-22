@@ -237,6 +237,18 @@ painted faces materially diverge from their attributed masters. No DDS or
 runtime overwrite is authorized. The independent evidence is recorded in
 `../../../plans/006_independence_wave_plans/subagent_handoffs/006_frisia_refinishes_visual_audit_2026_07_22.md`.
 
+## Frisia retry 02 — sourced portraits approved and wired
+
+The separate `frisia_retry_02/` package uses stronger exact archival masters
+for Douwe Kalma and Pieter Reenalda. Its independent visual audit passes Kalma
+and Reenalda candidate 02 for same-person likeness, sourced real-male policy,
+period role, head-and-shoulders crop, and restrained full-color HOI4 painted
+finish at native `156x210`. Reenalda candidate 01 remains fail-closed. The two
+approved PNGs were converted to the existing Event 006 AGX texture paths with
+stable sprite names; both DDS files are 131168-byte one-level BGRA textures and
+decode pixel-identically to their approved PNGs. IW-007 remains outside the
+compile-time attestation until its fresh post-wiring country-package audit.
+
 ## Admission boundary
 
 No generated face may be used for a grounded Event 006 country. A generated

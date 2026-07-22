@@ -14,9 +14,11 @@ bounded package audits rather than the older `7368cc0bf` status snapshot.
 
 The later 2026-07-22 user review also rejects the current sourced-treatment
 family: it preserves identities but still reads as archival photography rather
-than HOI4 painted portraits. Rupprecht and Matthes are the only approved Event 006
-leader portraits. Source/ownership-valid subjects may be refinished from their
-retained masters, but no current non-protected treatment grants visual readiness.
+than HOI4 painted portraits. Rupprecht and Matthes remain protected approved
+portraits. The independently reviewed source-preserving HOI4 repaints of Régis
+de l'Estourbeillon and Henri-Léon Devin also pass and support IW-004 Brittany's
+current admission. Source/ownership-valid subjects may be refinished from their
+retained masters, but no rejected photographic treatment grants visual readiness.
 
 The 2026-07-22 source-mode decision supersedes every earlier portrait approval
 for a grounded polity. Packages whose live country leader, route leader,
@@ -98,7 +100,8 @@ achievements remain hidden by their intended route and survival conditions.
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
-| IW-001/002/004/006/007/008/009/010 | Gameplay retained; runtime admission closed | AGX passes its bounded static gameplay audit and its two subjects pass ownership review, but both portrait treatments fail the painted-style gate. The stable Event 6 tokens now identify Victor Morven Fortune for SCO, Karl Jarres for RHI, and Eugen Ritter von Schobert for BAY; their source-ready masters have no vanilla/current ownership hits. Ironside, Adenauer, and Epp remain rejected historical evidence because vanilla recruits them as active ENG/GER characters. WLS, BRI, AFX, and AJX retain rights- or source-review gaps. The deterministic Solinas/Harpe finish trial preserved identity but remained visibly photographic and is rejected. All eight IDs remain outside runtime content attestation pending an approved HOI4-painted production path, complete sourced rosters, and package re-audits |
+| IW-004 BRI | Admitted after current package and portrait audits | The complete Brittany package passes the bounded identity, state-14/RG-14, FRA-survival, Event-5 collision, setup, force, focus, decision, AI, cleanup, localisation, flag, and portrait audits. Régis de l'Estourbeillon and Henri-Léon Devin are sourced real male figures with independently approved source-preserving HOI4 repaints. IW-004 is the sole exact compile-time content attestation; every allocation still has to pass live host, anchor, reservation, collision, chaos-band, force, and transaction gates |
+| IW-001/002/006/007/008/009/010 | Gameplay retained; runtime admission closed | AGX's new Kalma/Reenalda retry portraits passed independent visual review and are wired to the existing sprites, but its fresh post-wiring package audit remains pending. The stable Event 6 tokens identify Victor Morven Fortune for SCO, Karl Jarres for RHI, and Eugen Ritter von Schobert for BAY; their source-ready masters have no vanilla/current ownership hits. Ironside, Adenauer, and Epp remain rejected historical evidence because vanilla recruits them as active ENG/GER characters. WLS, AFX, and AJX retain rights- or source-review gaps. The deterministic Solinas/Harpe finish trial preserved identity but remained visibly photographic and is rejected. These seven IDs remain outside runtime content attestation pending complete sourced rosters, compliant HOI4-painted results, and package re-audits |
 | IW-017 COR, IW-018 ARX, and IW-019 ASX | Gameplay retained; runtime admission closed | COR and ASX pass bounded static gameplay audits and their subjects pass ownership review; Luigi Rizzo has no vanilla character or portrait owner. Their current treatments still fail the painted-style gate. ARX retains sourced Emilio Lussu but its crown-route and command roles remain unresolved, and Lussu also needs a compliant refinish. FORM-05 gameplay remains implemented, while all three IDs stay outside the deliberately empty runtime attestation |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Vanilla defines the real David Kalakaua Kawananakoa but maps his sprite to generic `Portrait_Asia_Generic_land_5.dds`. A sourced portrait of the actual man is required before re-admission |
 | IW-179 FSM and IW-184 HBX | Gameplay retained; visual admission withdrawn | FORM-48 country and formable surfaces remain implemented, but their generated fictional officeholders are not valid for grounded Micronesia or California. Both IDs remain outside runtime content attestation until sourced replacements pass review |
@@ -168,16 +171,17 @@ The committed compile-time content-attestation set is currently:
 
 | Package | Identity | Admission state | Remaining runtime boundary |
 | --- | --- | --- | --- |
-The exact compile-time set is empty. IW-001, IW-002, IW-004, IW-006,
-IW-007, IW-008, IW-009, IW-010, IW-017, IW-018, IW-019, IW-043, IW-058,
-IW-173, IW-179, and IW-184 retain adapters and implemented content but have
-withdrawn visual attestations pending sourced portrait replacement. IW-005 is a
-living-BEL route overlay and remains outside the selectable-release registry.
-FORM-48's system readiness receipts remain implemented, but it lacks a complete
-currently admitted carrier/member set. No unlisted package or formable family
-should be described as automatically selectable.
+The exact compile-time set contains only IW-004 Brittany. IW-001, IW-002,
+IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-018, IW-019, IW-043,
+IW-058, IW-173, IW-179, and IW-184 retain adapters and implemented content but
+have withdrawn visual attestations pending sourced portrait replacement and
+fresh package audits. IW-005 is a living-BEL route overlay and remains outside
+the selectable-release registry. FORM-48's system readiness receipts remain
+implemented, but it lacks a complete currently admitted carrier/member set. No
+unlisted package or formable family should be described as automatically
+selectable.
 
-No attested ID can supply the required minimum three-country automatic wave.
+One attested ID cannot supply the required minimum three-country automatic wave.
 The allocator therefore fails closed before release while sourced
 replacement work and package re-audits are incomplete. The exact 3/4/5/7/10
 targets and World Collapse count of ten are unchanged.
@@ -304,7 +308,7 @@ recording without explicit user approval.
 | `006_afx_agx_release_readiness_audit_2026_07_16.md` | Partly superseded | Its AGX authorization remains current. Its original AFX verdict was superseded by the Level 2 repair and `006_afx_final_admission_audit_2026_07_16.md` |
 | AFX Level 2 implementation and final admission audits | Implemented evidence | Current exact IW-006 gameplay, unique-art, cleanup, host-survival, collision, and admission authority |
 | RHI/BAY Level 2 implementation and final admission audits | Gameplay evidence; portrait admission superseded | Current exact IW-008/IW-009 gameplay, FORM-04 delegation, cleanup, host-survival, and collision remain implemented. Karl Jarres and Eugen Ritter von Schobert replace the active-vanilla-owned Adenauer/Epp identities at the stable Event 6 tokens, but both rosters remain closed pending compliant painted portraits and fresh package audits |
-| Mediterranean IW-017/IW-018/IW-019 and FORM-05 audit chain | Implemented gameplay evidence; current portrait status split | `006_iw017_iw019_country_package_audit_2026_07_22.md` is current for sourced COR/ASX rosters and static package coverage. ARX still requires sourced crown-route and command roles. FORM-05 charter and congress gameplay remains implemented; runtime attestation is still empty |
+| Mediterranean IW-017/IW-018/IW-019 and FORM-05 audit chain | Implemented gameplay evidence; current portrait status split | `006_iw017_iw019_country_package_audit_2026_07_22.md` is current for sourced COR/ASX rosters and static package coverage. ARX still requires sourced crown-route and command roles. FORM-05 charter and congress gameplay remains implemented; none of these three packages is currently attested |
 | Pacific IW-173/IW-179/IW-184 and FORM-48 audit chain | Implemented gameplay/system evidence; portrait admission superseded | Country-package, focus/icon, architecture, decision/mission, localisation, flag, and postformation PASS handoffs remain bounded implementation evidence. The later sourced-only rule withdraws HAW/FSM/HBX runtime admission until grounded sourced portraits pass; FORM-48 is therefore currently unreachable through a compliant admitted carrier set |
 | `006_form48_pacific_federation_implementation_plan_2026_07_16.md` | Implemented and superseded as a next-tranche plan | Retain the locked HBX/HAW/FSM/PFX design and FORM-42 blocker for traceability; current admission is recorded above and in the parent promotion note |
 | `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md` | Implemented for the exact CHU/ASY signature tranche; parent runtime closeout pending | FORM-12/13/18 transactions, attestations, staged integration, sole proof writers, centralized politics, permanent terminal settlement exclusivity, the former-host-or-regional-partner sovereign-autonomy transaction, final assets, and bounded catalog alignment are implemented. Parent-wide completion and runtime scenarios remain queued |

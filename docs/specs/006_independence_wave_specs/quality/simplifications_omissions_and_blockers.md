@@ -10,10 +10,11 @@ The planning output was not shortened or reduced to a quick outline. It contains
 
 The accepted specification includes the later sourced-portrait decision. This
 section is the current implementation ledger rather than a rewrite of the
-planning baseline. The runtime content-attestation set is empty. Every formerly admitted
-grounded package whose live country leader, route leader, commander, or
-institutional portrait uses generated art has been withdrawn until sourced
-real male replacements pass review. FORM-48 remains implemented without an
+planning baseline. IW-004 Brittany is the sole runtime content-attested
+package after its full package and two sourced real-male portrait audits.
+Every other formerly admitted grounded package whose live country leader,
+route leader, commander, or institutional portrait uses generated art remains
+withdrawn until sourced real male replacements pass review. FORM-48 remains implemented without an
 annexation fallback, but HBX/FSM package withdrawal prevents a complete
 currently admitted carrier/member set. IW-173 `HAW` is also withdrawn because
 its vanilla David Kalakaua Kawananakoa sprite resolves to generic

@@ -9,9 +9,11 @@ and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`. Earlier
 generated grounded-polity portrait packages are provenance evidence only.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains
-outside the selectable pool. The runtime content-attestation set is empty.
-Every formerly admitted grounded package is withdrawn until all live personal,
-command, and institutional portraits use compliant sourced material.
+outside the selectable pool. IW-004 Brittany is the sole runtime
+content-attested release package after its current package and two sourced
+real-male portrait audits. Every other formerly admitted grounded package is
+withdrawn until all live personal, command, and institutional portraits use
+compliant sourced material and its package is re-audited.
 
 The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
@@ -83,11 +85,11 @@ they are not current routing documents.
   promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
   fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM/
   HBX carrier set has no currently admitted country and cannot form.
-- IW-001/002/004/006/007/008/009/010, IW-017/018/019, IW-043/058,
+- IW-001/002/006/007/008/009/010, IW-017/018/019, IW-043/058,
   IW-173/179/184, IW-093, and IW-098 retain implemented gameplay adapters, but
   their generated or generic grounded-polity portraits withdraw visual
   readiness and runtime content attestation. The compile-time package content-
-  attestation set is empty.
+  attestation set contains only IW-004.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched. Their
   packages still require sourced replacements for every other live leader and
   commander role.
@@ -96,7 +98,7 @@ they are not current routing documents.
   sourced portrait of the person.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
   carriers cannot execute while their owning package admission is withdrawn.
-- With no attested package, the allocator cannot satisfy the minimum
+- With only one attested package, the allocator cannot satisfy the minimum
   three-country automatic wave and fails closed before mutation. The exact
   3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
   `independence_wave_form48_registry_surface_registered` and
@@ -156,14 +158,14 @@ they are not current routing documents.
 | Package | Current state | Resume rule |
 | --- | --- | --- |
 | IW-006 AFX | Gameplay retained; visual admission withdrawn | Jules Destrée is sourced, processed, and wired. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, but keep execution closed until the commander is replaced by a sourced real military identity and the package is re-audited |
-| IW-007 AGX | Static gameplay audit passed; portrait style blocked | Douwe Kalma and Pieter Reenalda are source/ownership-valid, but their current treatments fail the HOI4 painted-style gate. Refinish both from the retained masters and re-audit; preserve the accepted Level-1 shared framework/overlay contract |
+| IW-007 AGX | Sourced portraits approved and wired; package re-audit pending | The retry-02 Douwe Kalma and Pieter Reenalda candidate-02 portraits pass independent source-likeness and HOI4-style review and are wired to the existing sprites. Candidate 01 remains rejected. Preserve the accepted Level-1 shared framework/overlay contract and keep execution closed until the fresh post-wiring country-package audit passes |
 | IW-001 SCO | Gameplay retained; portrait production blocked | R. B. Cunninghame Graham remains sourced and valid. Edmund Ironside stays rejected because vanilla recruits `ENG_edmund_ironside`. Victor Morven Fortune is the source-ready replacement primary with no vanilla/current ownership hit; his low-resolution IWM master still requires an approved HOI4-painted production path and visual review before re-audit or admission |
 | IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis is sourced, processed, and wired as the civic leader. Preserve the package logic, but keep execution closed until the mountain commander is replaced by a sourced real military identity and the full roster is re-audited |
 | IW-008 RHI | Gameplay retained; portrait production blocked | Preserve protected Matthes, sourced Josef Harpe, the Level 2 lane, incidents, and FORM-04 delegation logic. Adenauer stays rejected because vanilla recruits `GER_konrad_adenauer`. Karl Jarres is the source-ready Rhenish civic replacement primary with no vanilla/current ownership hit; he and Harpe still require a compliant HOI4-painted finish and visual re-audit before admission |
 | IW-009 BAY | Gameplay retained; portrait production blocked | Preserve protected Rupprecht, sourced Heinrich Held, the Level 2 lane, incidents, and South German settlement. Epp stays rejected because vanilla recruits `GER_franz_ritter_von_epp`. Eugen Ritter von Schobert is the source-ready Bavarian military replacement primary with no vanilla/current ownership hit; Schobert and Held still require a compliant HOI4-painted finish and visual re-audit before admission |
 | IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
-| IW-004 BRI | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
+| IW-004 BRI | Sole currently admitted release package | Régis de l'Estourbeillon and Henri-Léon Devin use independently approved sourced real-male HOI4 repaints, and the fresh package audit passes identity, setup, force, focus, decisions, AI, localisation, flags, collision guards, and cleanup. Preserve exact-ID compile-time attestation; live host, anchor, reservation, Event-5 collision, chaos-band, and transaction gates still decide each allocation |
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
 | IW-017 COR | Static gameplay audit passed; portrait style blocked | Adolphe Landry and Jean Chiappe are source/ownership-valid, but their current treatments fail the HOI4 painted-style gate. Refinish both from the retained masters and re-audit; preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
@@ -175,7 +177,7 @@ they are not current routing documents.
 | IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Gallo Shabo is sourced, processed, and wired. Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until the other three route leaders are replaced and the full package is re-audited |
 | IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. The TNA/OGL Prempeh II photograph remains the approved source and identity, but the installed DDS is an ImageGen restyling of that real person and is withdrawn under the current deterministic real-person pipeline. Rebuild it from the unchanged archive master. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images and invented identities must be replaced by sourced real-person full portraits and matching names. Event 6 defines no commander miniatures. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until the complete sourced roster, exact flag, FORM-24 contract, and final country audits pass |
 | IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Muhammadu Dikko has a valid sourced TNA master and replaces fictional Umaru Gwadabawa, but the current photographic treatment fails the HOI4 painted-style gate. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, and Bello Rabah still require sourced real-person portraits before admission. Preserve the gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until the complete sourced roster, exact flag, FORM-25 contract, and final country audits pass |
-| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set is empty |
+| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains only IW-004 |
 
 An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
