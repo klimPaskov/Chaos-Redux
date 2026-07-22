@@ -123,7 +123,9 @@ It must not edit gameplay files, localisation, scripted localisation, GUI, GFX, 
 
 ### Asset-production agents
 
-Asset subagents create source files, processed previews, final DDS outputs, contact sheets, manifests, and asset handoffs. They do not wire gameplay, localisation, GFX, GUI, events, focuses, decisions, or spreadsheets unless the parent gives a narrow exception.
+Asset subagents create source files, processed previews, final DDS outputs, contact sheets, manifests, and asset handoffs. During active work, event-scoped evidence belongs under the temporary `docs/assets/<event_id>_<event_slug>/` workspace. They do not wire gameplay, localisation, GFX, GUI, events, focuses, decisions, or spreadsheets unless the parent gives a narrow exception.
+
+The parent owns temporary-workspace cleanup. Keep the event-scoped `docs/assets/` workspace while the event is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and sprite-handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, then delete the complete event-scoped workspace. An absent workspace is expected for a fully complete event. Never delete a skill-local reference library or an unrelated event workspace.
 
 ### Active small-patch agents
 
@@ -316,6 +318,7 @@ Before final completion, the parent should check:
 - plan handoffs are either implemented, queued, or rejected with a reason
 - documentation curator handoffs identify promoted, queued, rejected, superseded, and unresolved documents when one was used
 - assets are wired or reported as pending
+- temporary event asset workspaces are retained for active or blocked work and deleted only after durable evidence and runtime wiring have been reconciled
 - advisor candidates have separate manifest-linked native-plus-`4x` visual approval from a reviewer who is not the producer; automated validation alone is not approval
 - validation reflects the final repo state
 - docs, specs, plans, and spreadsheet surfaces agree
