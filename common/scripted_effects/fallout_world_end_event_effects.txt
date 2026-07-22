@@ -6286,6 +6286,19 @@ fallout_orientation_finish_component = {
 
 fallout_orientation_resolve_component = {
 	set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_history_should_record = constant:fallout_orientation_runtime.zero }
+	if = {
+		limit = { NOT = { has_variable = fallout_orientation_history_generation } }
+		set_temp_variable = { fallout_orientation_history_should_record = constant:fallout_orientation_runtime.one }
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { fallout_orientation_history_generation = global.fallout_transition_generation } } }
+		set_temp_variable = { fallout_orientation_history_should_record = constant:fallout_orientation_runtime.one }
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { fallout_orientation_history_component = fallout_orientation_transaction_component } } }
+		set_temp_variable = { fallout_orientation_history_should_record = constant:fallout_orientation_runtime.one }
+	}
 	if = {
 		limit = { fallout_orientation_result_event_is_authenticated = yes }
 		if = {
@@ -6307,6 +6320,7 @@ fallout_orientation_resolve_component = {
 		fallout_event_record_orientation_component = yes
 		if = {
 			limit = { fallout_event_orientation_receipts_are_consistent = yes }
+			fallout_orientation_record_history = yes
 			fallout_orientation_finish_component = yes
 			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.one }
 		}
