@@ -4,9 +4,9 @@ Date: 2026-07-22
 Event/package: IW-019 ASX Sicily  
 Asset type: full male leader/army-command portrait  
 Source mode: `grounded_source_only`  
-Overall status: `needs_user_review` — source and crop are complete; the painted
-real-person edit is intentionally pending an allowed generated-art producer and
-independent identity/style audit.
+Overall status: `candidate_requires_independent_review` — source, crop, and
+source-locked painted candidate are complete; runtime wiring remains forbidden
+until an independent identity/style/provenance audit passes.
 
 ## Role decision
 
@@ -55,21 +55,32 @@ This preview is a source resize, not the final HOI4-painted treatment. It is
 kept to prove the crop and to prevent an editor from silently substituting a
 different face or pose.
 
-## Finish request (not executed by this sourced subagent)
+## Source-locked finish
 
-An allowed generated-art producer may use the exact source crop as the sole
-identity reference and apply the prompt in `imagegen_prompt.md`. The result
-must remain a separate raw master, then a processed opaque `156x210` PNG. The
-producer must preserve facial geometry, expression, apparent age, hair, suit,
-tie, pose, and recognizable source details; only the background, contrast, and
-restrained painted texture may change. Reject any result that genericises,
-beautifies, re-ages, invents a uniform/insignia, changes pose, or cannot be
-identified confidently against the source.
+The parent generated a source-locked repaint after the sourced researcher
+completed the archival package. The exact source crop is the only identity
+input; `den_thorvald_stauning.png` is style-only. The exact executed prompt is
+retained at
+`prompts/ASX_vincenzo_di_benedetto_identity_preserve_trial_01.txt`.
 
-This sourced role is forbidden from generating or reconstructing a real
-portrait, so no ImageGen call or generated result is included here. The parent
-must route the edit to an allowed generated-art workflow or keep this package
-at `needs_user_review`.
+- Raw ImageGen result:
+  `imagegen_results/ASX_vincenzo_di_benedetto_identity_preserve_trial_01.png`,
+  `1080x1457`, SHA-256
+  `01404A3C74F670DCC238F6B2D68A69AE50F538CF4F48C82B19D548964AED5671`.
+- Deterministic finish: skill-local `advisor_icon_processing.py leader`, source
+  kind `real`, crop `(0, 1, 1080, 1455)`, canonical vanilla leader review
+  directory.
+- Processed candidate:
+  `processed_png/portrait_ASX_independence_wave_vincenzo_di_benedetto.png`,
+  opaque `156x210`, SHA-256
+  `37D7256285ABEF55CB9B81EE6A3AC04AAE8E337297120A85DE6C99C489E77108`.
+- Processor metadata:
+  `metadata/ASX_vincenzo_di_benedetto_processing.json`.
+
+The candidate preserves the civilian suit and tie and contains no military
+uniform, medals, insignia, weapon, epaulette, or rank badge. It must still be
+rejected if independent review finds that the archival identity, hat shape,
+face geometry, source rights, or HOI4 finish do not survive comparison.
 
 ## Style comparison
 
@@ -82,15 +93,19 @@ side by side. The canonical references are not copied into the package:
 - `generic_africa_navy_2.png` (commander family), SHA-256
   `A608D7554187CD944130862E09ED4279FD5311F16A6735D07CF357148D11250F`.
 
-No generated result exists to compare yet; the contact sheet deliberately labels
-the source-only preview as non-final.
+`comparisons/ASX_vincenzo_di_benedetto_result_reference.png` compares the raw
+painted candidate, processed candidate, and canonical leader references.
+`comparisons/ASX_vincenzo_di_benedetto_archival_result_comparison.png` compares
+the archival crop directly with the processed candidate and style-only
+reference. Their SHA-256 values are respectively
+`6603E51F0FF2EC3CEC76FE2E570917EBCDA8688B147F803C91748BFAA3A59A76`
+and `7C52D1BD089271AE57F9FBB0291579CE1F03E945FAEC36D072BE509718587665`.
 
 ## DDS and runtime status
 
-No final DDS exists. Converting the source-only resize would falsely present a
-non-painted source as an approved final, so the repository converter is deferred
-until an allowed finish is produced and independently audited. No runtime DDS,
-`.gfx`, character, history, localisation, GUI, or gameplay file was edited.
+No final DDS exists. The painted candidate is still awaiting independent audit,
+so runtime conversion and wiring remain deferred. No runtime DDS, `.gfx`,
+character, history, localisation, GUI, or gameplay file was edited.
 
 ## Ownership gate
 
@@ -102,12 +117,12 @@ not make an exclusivity claim about unrelated reference mods.
 
 ## Simplifications and blockers
 
-- The source and crop are complete, but the requested painted identity edit is
-  not produced in this sourced-agent package because real-person portrait
-  generation/editing is outside this role's authority.
+- The source, crop, and painted candidate are complete, but independent review
+  and the complete Sicily package audit remain outstanding.
 - Di Benedetto's emergency army slot is an explicit role adaptation; it must not
   be described as an active 1936 historical command.
 - The civilian suit and tie are intentional source evidence; no invented
   military clothing or insignia is authorized.
 - No generated identity, generic substitute, female portrait, advisor/dossier,
-  `_small` file, DDS, GFX edit, or gameplay change was made.
+  `_small` file, DDS, GFX edit, or gameplay change was made. ImageGen was used
+  only to repaint the attributed archival identity under a source lock.
