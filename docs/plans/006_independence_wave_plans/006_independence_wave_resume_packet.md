@@ -1,27 +1,27 @@
 # Event 006 resume packet
 
-Updated: 2026-07-18 after the promoted Pacific IW-173/IW-179/IW-184 and FORM-48 tranche, with the bounded IW-043/IW-058 signature tranche recorded
+Updated: 2026-07-22 after the sourced-portrait policy withdrawal and country-history normalization
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-Current portrait authority: the reviewed
-`portrait_refresh_male_hoi4_2026_07_18` package and matching handoff.
+Current portrait authority: the sourced-only gate in the accepted specification
+and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`. Earlier
+generated grounded-polity portrait packages are provenance evidence only.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains
-outside the selectable pool. IW-017 COR, IW-018 ARX, and IW-019 ASX have joined
-the eight earlier packages in the exact audited selectable set.
+outside the selectable pool. The runtime content-attestation set is empty.
+Every formerly admitted grounded package is withdrawn until all live personal,
+command, and institutional portraits use compliant sourced material.
 
-The 2026-07-18 parent promotion supersedes the admission disposition (but not
-the findings) in the earlier Pacific country-package and FORM-48 handoffs. Those
-historical handoffs intentionally retain their HOLD/FAIL-CLOSED verdicts from
-the time they were written. This packet and `006_source_of_truth_map.md` carry
-the current runtime state.
+The 2026-07-22 source-mode decision supersedes the admission disposition, but
+not the gameplay findings, in earlier country-package and portrait handoffs.
+This packet and `006_source_of_truth_map.md` carry the current runtime state.
 
 ## Read first
 
 1. `006_source_of_truth_map.md`
-2. `../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
-3. `subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`
+2. `../../specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`
+3. `subagent_handoffs/006_portrait_source_mode_skill_update_2026_07_22.md`
 4. `../../specs/006_independence_wave_specs/README.md`
 5. `subagent_handoffs/006_transaction_architecture_resolution_2026_07_15.md`
 6. `subagent_handoffs/006_form01_04_readiness_promotion_2026_07_16.md`
@@ -82,38 +82,21 @@ they are not current routing documents.
 - FORM-01 through FORM-05 are implemented, source-audited, and readiness-
   promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
   fail-closed, while FORM-48 is now readiness-attested and promoted.
-- IW-007 AGX remains promoted from `2912e0a46` for ordinary automatic and
-  SCN-008 admission. The audit is static and is not an in-engine execution
-  result.
-- IW-006 AFX has an audited eight-focus Sambre-Meuse Level 2 lane, three
-  incidents, unique art, and exact automatic/SCN-008 admission.
-- IW-001 SCO and IW-002 WLS passed their repaired transaction audit and are
-  admitted for ordinary automatic and SCN-008 execution.
-- IW-008 RHI and IW-009 BAY have audited Level 2 lanes, incidents, unique art,
-  and exact automatic/SCN-008 admission. RHI retains its binding FORM-04
-  delegation gate; BAY retains its package-owned South German settlement.
-- The current attested set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008,
-  IW-009, IW-010, IW-017, IW-018, IW-019, IW-043, IW-058, IW-173, IW-179, and
-  IW-184. These sixteen IDs are the only compile-time admitted packages;
-  every other selectable package remains outside the admission set. IW-043
-  `CHU` and IW-058 `ASY` are admitted for their exact package content and
-  signature tranche. FORM-12/13/18 are operational only for those exact
-  carriers: FORM-12/13 require three external sovereign members, three
-  distinct controlled anchors, and three recorded consents; FORM-18 requires
-  two members, two anchors, and two consents. Each uses a paid 180-day,
-  frozen-ledger congress with explicit human or scored-AI replies, terminal
-  recount, cooldown on failure, carrier-only cosmetics, and staged
-  sovereignty-preserving integration. The two IW-043 route writers and three
-  IW-058 settlement writers are sole proof writers; signature achievements
-  remain hidden only when their route, survival, or proof predicates are not
-  met. FORM-18 and the five-chapter sovereign-autonomy compact share a
-  permanent terminal-choice lock, reject crossover at start and finalization,
-  and require that lock before final settlement proof. The autonomy compact
-  binds either the completed former-host settlement or an exact legitimate
-  regional guarantor without subject or client conversion.
-- The Pacific promotion binds IW-184 `HBX` as the FORM-48 carrier and IW-173
-  `HAW` / IW-179 `FSM` as sovereign autonomous members. Family 48 registration
-  sets the six shared readiness flags plus
+- IW-001/002/004/006/007/008/009/010, IW-017/018/019, IW-043/058,
+  IW-179, and IW-184 retain implemented gameplay adapters, but their current
+  generated grounded-polity portraits withdraw visual readiness and runtime
+  content attestation.
+- Protected BAY Rupprecht and RHI Matthes remain approved and untouched. Their
+  packages still require sourced replacements for every other live leader and
+  commander role.
+- IW-173 HAW is also withdrawn: vanilla defines the real David Kalakaua
+  Kawananakoa but maps him to generic `Portrait_Asia_Generic_land_5.dds`, not a
+  sourced portrait of the person.
+- FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
+  carriers cannot execute while their owning package admission is withdrawn.
+- With no attested package, the allocator cannot satisfy the minimum
+  three-country automatic wave and fails closed before mutation. The exact
+  3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
   `independence_wave_form48_registry_surface_registered` and
   `independence_wave_form48_readiness_attested` after coordinated PASS audits.
   No annexation or integration fallback is used.
@@ -239,11 +222,11 @@ satisfy the synchronized frozen plan.
 
 ## Immediate continuation order
 
-1. Preserve the sixteen admitted package gates and the allocator's reservation
-   groups
-   so World Collapse can continue to attempt exactly ten releases.
-2. Rerun exact-ID audits
-   whenever shared planner or dispatch logic changes.
+1. Complete sourced real male portrait replacements for every grounded live
+   leader, route leader, commander, and institutional role, preserving the
+   approved BAY/RHI files.
+2. Re-audit and restore exact package content attestations only after each
+   complete portrait roster passes source, style, consumer, and package checks.
 3. Preserve and re-audit the implemented Event 006 slot-24/`6002` package as
    later league, scenario, formable, sponsorship, and achievement work lands.
    Keep `6001` absent.

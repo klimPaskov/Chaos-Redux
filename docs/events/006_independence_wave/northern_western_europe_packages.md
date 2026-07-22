@@ -10,16 +10,17 @@ Package sections:
 - Rhineland and Bavaria (IW-008–IW-009)
 - Saar (IW-010)
 
-Current portrait authority is
-`docs/assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`,
-accepted by
-`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-It covers twenty male fictional `156x210` portraits and ten matching `65x67`
-commander-only miniatures. AFX, AGX, AJX, BAY, BRI, RHI, SCO, and WLS retain
-their stable registrations; ACX and AEX are unregistered readiness-pool art
-only. The route-owned Rupprecht and Matthes portraits remain protected and
-byte-identical. Gameplay advisor offices remain active without custom Event 006
-advisor cards, sprites, or runtime DDS files.
+Current portrait authority is the sourced-only gate in the accepted
+specification and event-asset skill. The earlier twenty generated large
+portraits remain consumer/provenance evidence but no longer satisfy grounded
+country readiness. IW-001/002/004/006/007/008/009/010 are withdrawn from
+runtime content attestation until their live leader and commander rosters use
+sourced real male people. Route-owned Rupprecht and Matthes remain protected and
+byte-identical; their other package roles still require replacement. Gameplay
+advisor offices remain active without custom Event 006 advisor cards, sprites,
+or runtime DDS files. Any later section describing these packages as promoted
+records the earlier gameplay audit and is superseded for current visual
+admission by this paragraph.
 
 ---
 

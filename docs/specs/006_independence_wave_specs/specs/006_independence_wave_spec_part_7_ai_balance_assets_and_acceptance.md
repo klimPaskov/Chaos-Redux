@@ -487,11 +487,21 @@ Source rules:
 
 ### Portraits
 
-- real leaders use sourced portraits
-- fictional one-person leaders use generated portraits and matching name pools
-- institutional leaders use collective or symbolic portraits
+- every country leader, route leader, commander, and named officeholder for a
+  real, historical, restored, regional, indigenous, dynastic, separatist, or
+  otherwise plausibly historical country uses a sourced real portrait
+- a historical collective authority uses sourced archival material for its
+  real institution or a sourced real period representative
+- fictional one-person leaders use generated portraits only when the country
+  is truly fictional and high-chaos
+- generated high-chaos leaders use distinctive invented ceremonial dress,
+  regalia, body adornment, ritual objects, altered uniforms, or other coherent
+  fictional cultural motifs instead of generic portrait design
+- generated portraits do not use modern props, meme treatment, gore, or
+  stereotypes or caricatures of real cultures
 - signature country routes receive priority portrait depth
-- ordinary framework countries can begin with a council and later select a leader
+- ordinary framework countries can begin with a sourced historical council or
+  sourced period representative and later select a sourced leader
 
 Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
 
@@ -502,9 +512,14 @@ Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
   painterly-realistic style;
 - sourced real portraits are cropped to head and shoulders and receive an
   identity-preserving HOI4 treatment;
+- a historical or plausibly historical package with no defensible sourced
+  candidate and usable portrait remains blocked instead of receiving a
+  generated officeholder;
 - `portrait_BAY_rupprecht_of_bavaria.dds` and
   `portrait_RHI_josef_friedrich_matthes.dds` are approved and remain untouched;
-  every other current Event 6 leader or commander portrait must be regenerated;
+  every other current Event 6 leader or commander portrait must be replaced
+  through its compliant source mode; grounded packages use sourced real people
+  or real archival institutional material, never generated substitutes;
 - Event 6 gameplay advisor offices use no custom advisor portrait icons or
   `GFX_portrait_advisor_*` registrations.
 
@@ -523,6 +538,10 @@ The bounded package asset authorities are:
   three-state Assyria survival achievement triplet.
 
 The final files are reviewed and runtime-installed for the bounded base package.
+The later sourced-leader rule supersedes the source-mode acceptance of the eight
+generated IW-043/IW-058 institutional portraits. Those portraits cannot satisfy
+package visual readiness and require sourced real replacements before the
+packages can retain final portrait attestation.
 The Assyria triplet's provenance record explicitly excludes the post-1968/1973
 modern Assyrian flag from the 1936 baseline. The exact CHU/ASY setup now writes
 the FORM-12/13/18 adapter and signature-achievement-writer attestations only

@@ -108,11 +108,17 @@ the vanilla carrier history.
 
 ## Leadership model
 
-The event cannot create hundreds of convincing historical leaders without research. It therefore uses three leadership modes.
+The event cannot create hundreds of convincing historical leaders without
+research. The same source gate applies to country leaders, route leaders,
+commanders, and named officeholders. It therefore uses three leadership modes.
 
-### Sourced real leader
+### Sourced real leader or institution
 
-Used when a period-appropriate real person is clearly connected to the country, movement, dynasty, institution, or autonomy claim.
+Required whenever the country, movement, dynasty, institution, autonomy claim,
+regional identity, indigenous polity, separatist project, or restoration has a
+real historical basis. The package must use a real male person appropriate to
+the place and period, or sourced archival material for the actual institution
+when the leader identity is collective.
 
 Requirements:
 
@@ -121,18 +127,27 @@ Requirements:
 - source and license notes
 - correct party and political context
 - no fabricated quotes or biography
+- no invented officeholder or generated face
+- a blocked status when no defensible person and usable source image can be found
 
-### Generated fictional leader with regional name pool
+### Generated fictional high-chaos leader
 
-Used for invented provisional politicians, officers, organizers, clerics, traditional claimants, or activists.
+Permitted only when both the country and leader are truly fictional and belong
+to a high-chaos package. A generated leader is never a substitute for missing
+research on a real or plausibly historical country.
 
 Requirements:
 
-- generated portrait appropriate to region and era
-- small male regional name pool
+- generated portrait in the canonical HOI4 style
+- small male name pool belonging to the invented setting
 - male portrait presentation matched to name and metadata
 - plausible personal name rather than generic office title
 - route-specific traits and background
+- memorable, internally coherent high-chaos design using extraordinary invented
+  ceremonial dress, regalia, body adornment, ritual objects, altered uniforms,
+  or similarly distinctive fictional cultural motifs
+- no generic face, modern prop, meme treatment, gore, or stereotype or
+  caricature of a real culture
 
 For Event 6, the 2026-07-16 user direction supersedes the earlier mixed-gender
 pool: no female leader, commander, collective portrait subject, or character
@@ -140,16 +155,24 @@ metadata is used.
 
 ### Institutional leadership
 
-Used for councils, assemblies, juntas, congresses, traditional bodies, committees, regencies, or collective authorities.
+Used for councils, assemblies, juntas, congresses, traditional bodies,
+committees, regencies, or collective authorities. A collective authority in a
+real or plausibly historical country must use sourced real archival material.
+Generated institutional art is limited to truly fictional high-chaos countries.
 
 Requirements:
 
 - institutional name
-- all-male collective portrait or symbolic office art
+- sourced all-male collective portrait or real institutional image for a
+  historically grounded package
+- distinctive generated institutional art only for a truly fictional
+  high-chaos package
 - no personal random name
 - route that can later preserve the institution or replace it with a personal leader
 
-Institutional leadership is especially useful for framework countries that lack a suitable researched period figure.
+Institutional leadership does not bypass source research. If neither a suitable
+real leader nor authentic institutional source can be established for a
+historically grounded package, that package remains blocked.
 
 ## Party and ideology adaptation
 

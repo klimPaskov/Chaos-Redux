@@ -1,8 +1,8 @@
 # Event 006 IW-043 and IW-058 signature country core
 
-This document records the bounded country-core implementation for the `IW-043` Middle Volga and `IW-058` Assyria packages. It covers institutional characters, leader traits, staged ideas, AI strategy, party identity, and country identity, plus the focus-framework integration contract added by the package setup adapter. Decisions, incidents, formable transactions, and achievements remain owned by their dedicated Event 006 surfaces; the base package assets/GFX are resolved and IW-043/IW-058 are admitted by the shared origin-safe runtime registry.
+This document records the bounded country-core implementation for the `IW-043` Middle Volga and `IW-058` Assyria packages. It covers institutional characters, leader traits, staged ideas, AI strategy, party identity, and country identity, plus the focus-framework integration contract added by the package setup adapter. Decisions, incidents, formable transactions, and achievements remain owned by their dedicated Event 006 surfaces. The gameplay and non-portrait assets remain implemented, but the generated institutional portraits no longer satisfy the sourced-only rule for grounded polities. IW-043 and IW-058 are therefore withdrawn from the shared runtime content-attestation set pending sourced replacement and re-audit.
 
-The controlling design is `docs/plans/006_independence_wave_plans/006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`. Portrait and identity safeguards come from `docs/assets/006_independence_wave/iw043_iw058_source_research_2026_07_18/`. None of the optional or excluded real-person candidates is used.
+The controlling design is `docs/plans/006_independence_wave_plans/006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`. Portrait and identity safeguards come from the accepted specification and the current event-asset skill. Earlier generated portrait manifests remain provenance evidence only; sourced real male candidates or real archival institutional material are required.
 
 ## Scripted architecture contract
 
@@ -126,7 +126,7 @@ The cosmetic localisation consumers are:
 
 ## Asset consumers and wiring handoff
 
-The stable portrait, focus, and national-spirit sprite registrations resolve to reviewed final textures in the IW-043/IW-058 asset package, and the base runtime content attestation is registered for both package IDs. The exact setup transaction writes the matching FORM-12/13/18 adapter and achievement-writer attestations only after package validation. No advisor sprite or advisor texture is registered.
+The stable portrait sprite registrations still resolve to the earlier generated textures, but those files are awaiting sourced replacement and do not grant base runtime content attestation. Focus and national-spirit textures remain valid. The exact setup transaction can write its package-local FORM-12/13/18 adapter and achievement-writer receipts only after package execution is re-admitted. No advisor sprite or advisor texture is registered.
 
 The eight large institutional portraits are registered in `interface/006_independence_wave_iw043_iw058_portraits.gfx` and resolve under `gfx/leaders/006_independence_wave/` with these sprite IDs:
 
@@ -139,7 +139,9 @@ The eight large institutional portraits are registered in `interface/006_indepen
 - `GFX_portrait_ASY_independence_wave_civic_national_assembly`
 - `GFX_portrait_ASY_independence_wave_levies_guardianship`
 
-Each must be a separately authored all-male institutional group portrait. No advisor, officer, small portrait, real-person substitute, or BAY/RHI asset is accepted.
+Each must be replaced by sourced real male people connected to the package and
+route, or by sourced archival material for the actual historical institution.
+No advisor, officer-card, or BAY/RHI asset is accepted as a substitute.
 
 The six shared stage-icon families are registered in `interface/006_independence_wave_iw043_iw058_idea_icons.gfx` under `gfx/interface/ideas/006_independence_wave/volga_assyria/`:
 
