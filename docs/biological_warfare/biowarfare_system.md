@@ -6,13 +6,15 @@ It explains what the system does in gameplay terms: what you unlock, how you dep
 
 ## Big Picture
 
-Biowarfare has five pillars:
+Biowarfare has seven connected pillars:
 
 1. Development and unlocks.
-2. Delivery by raids.
-3. State contamination effects.
-4. Spread between states.
-5. Containment and recovery.
+2. Payload production and exact stockpile safety.
+3. Delivery by native raids and operative operations.
+4. Incubation, detection, and state contamination.
+5. Spread between states and countries.
+6. Medical containment and recovery.
+7. Evidence, attribution, deaths, and Condemnation.
 
 It is a long-horizon system: strong strategic impact, high political risk, and heavy management demands.
 
@@ -32,13 +34,18 @@ That means:
 
 ## Delivery
 
-Bioweapons are delivered through dedicated strike options.
+Deliberate battlefield and strategic deployment uses dedicated native raids.
+Operative release uses the intelligence-operation route, while food, water, and
+medical sabotage uses its separate covert route. No biological delivery is a
+generic decision click.
 
 In practice:
 
-- you spend stockpiled biological payloads,
-- strike enemy areas,
-- create contamination pressure that can continue after the initial attack.
+- native routes reserve or consume the exact matching payload,
+- the raid or operation supplies the exact target state and responsible actor,
+- the ordinary lifecycle creates incubation before an outbreak becomes active,
+- detection, deaths, medical pressure, evidence, attribution, contamination,
+  spread, and Condemnation continue after the initial release.
 
 Strike success and resulting damage vary by conditions and preparedness.
 
@@ -79,15 +86,33 @@ Available responses include:
 
 A strong response can slow spread, reduce damage, and eventually clear contamination.
 
-## Risk and Accidents
+## Stockpile Safety and Accidents
 
-Biowarfare also includes internal risk:
+One exact owned biowarfare facility is designated as the national arsenal.
+Anthrax, Plague, Tularemia, and Smallpox inventories are read from their live
+equipment stockpiles and combined with Biosecurity, safety technology, facility
+condition, bombing, sabotage, and recent handling.
+
+The player sees one of four bands: Controlled, Strained, Dangerous, or Critical.
+Ordinary incidents range from a contained loss to an internationally exposed
+major outbreak. The exact matching equipment is debited once, and every
+non-contained result enters the shared incubation and outbreak lifecycle in the
+exact arsenal state.
+
+Biowarfare therefore includes internal risk:
 
 - high-risk research choices can backfire,
 - stockpile mismanagement can cause catastrophic domestic consequences,
 - emergency release paths are possible but extremely dangerous politically and strategically.
 
-Stockpile accidents are cooldown-gated per payload type. After an anthrax, plague, tularemia, or smallpox stockpile accident fires, that same accident type cannot fire again for the same country for 730 days. Other payload types keep their own independent cooldowns.
+Stockpile accidents are cooldown-gated per payload type. After an Anthrax,
+Plague, Tularemia, or Smallpox stockpile accident, that same payload type cannot
+produce another ordinary accident for 730 days. Other payload types keep their
+independent cooldowns. Fail-Safe Containment Facilities stop ordinary accidents
+but do not stop sabotage, bombing, capture release, or doomsday release.
+
+See [Biological Stockpile Safety](biological_stockpile_safety.md) for exact
+designation, risk-band, scheduler, lifecycle, AI, and asset contracts.
 
 ## Diplomacy and International Consequences
 
@@ -113,6 +138,6 @@ Expect:
 
 ## Future Plans
 
-1. Expand differentiation between agent families.
-2. Add clearer in-game projections for spread risk and recovery pace.
-3. Improve strategic counterplay visibility for both attacker and defender.
+1. Complete exact captured-facility recovery and release handling.
+2. Complete the doomsday native raid and the remaining treatment package.
+3. Wire biological designer risk traits and finish package scenario validation.

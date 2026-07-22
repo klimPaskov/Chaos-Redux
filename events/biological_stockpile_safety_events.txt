@@ -1,0 +1,94 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL STOCKPILE SAFETY EVENTS
+# ============================================================================
+# Overview:
+# - Runs one delayed monitor only for a country with an exact verified arsenal.
+# - Reads live equipment counts and exact facility condition at each check.
+# - Resolves ordinary accidents through the shared biological lifecycle.
+# - Contains no biological delivery action and no all-country periodic pulse.
+# ============================================================================
+
+add_namespace = cbrn_bio_safety
+
+# Private targeted monitor. This event is scheduled only by an exact project
+# facility designation or the explicit arsenal-management decision.
+country_event = {
+	id = cbrn_bio_safety.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = bio_stockpile_safety_monitor_due_day
+				check_variable = {
+					var = global.num_days
+					value = bio_stockpile_safety_monitor_due_day
+					compare = greater_than_or_equals
+				}
+			}
+			clr_country_flag = bio_stockpile_safety_monitor_scheduled
+			if = {
+				limit = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+				clr_country_flag = bio_stockpile_safety_monitor_suspended
+				set_variable = { bio_stockpile_safety_incident_kind = constant:bio_stockpile_safety_incident_kind.ordinary_accident }
+				bio_stockpile_safety_refresh_risk_band = yes
+				bio_stockpile_safety_refresh_risk_idea = yes
+
+				# Keep exactly one future monitor in flight for this verified program.
+				set_country_flag = bio_stockpile_safety_monitor_scheduled
+				set_variable = { bio_stockpile_safety_monitor_due_day = global.num_days }
+				add_to_variable = { bio_stockpile_safety_monitor_due_day = constant:bio_stockpile_safety_monitor.interval_days }
+				country_event = {
+					id = cbrn_bio_safety.1
+					days = constant:bio_stockpile_safety_monitor.interval_days
+				}
+
+				if = {
+					limit = {
+						bio_stockpile_safety_has_positive_stockpile = yes
+						NOT = { bio_stockpile_safety_highest_safety_ordinary_accident_immunity = yes }
+						NOT = { has_country_flag = bio_stockpile_safety_accident_notification_pending }
+					}
+					bio_stockpile_safety_prepare_monitor_weights = yes
+					random_list = {
+						var:bio_stockpile_safety_monitor_no_incident_weight = { }
+						var:bio_stockpile_safety_monitor_incident_weight = {
+							bio_stockpile_safety_select_available_accident_agent = yes
+							if = {
+								limit = { bio_stockpile_safety_selected_agent_is_valid = yes }
+								bio_stockpile_safety_select_incident_severity = yes
+								if = {
+									limit = { bio_stockpile_safety_selected_severity_is_valid = yes }
+									bio_stockpile_safety_resolve_selected_ordinary_accident = yes
+								}
+							}
+						}
+					}
+				}
+			}
+			else = {
+				bio_stockpile_safety_remove_risk_ideas = yes
+				if = {
+					limit = {
+						has_country_flag = bio_stockpile_safety_arsenal_designated
+						has_variable = bio_stockpile_safety_arsenal_state
+						bio_stockpile_safety_arsenal_pointer_source_is_valid = yes
+					}
+					set_country_flag = bio_stockpile_safety_monitor_suspended
+					set_country_flag = bio_stockpile_safety_monitor_scheduled
+					set_variable = { bio_stockpile_safety_monitor_due_day = global.num_days }
+					add_to_variable = { bio_stockpile_safety_monitor_due_day = constant:bio_stockpile_safety_monitor.interval_days }
+					country_event = {
+						id = cbrn_bio_safety.1
+						days = constant:bio_stockpile_safety_monitor.interval_days
+					}
+				}
+				else = {
+					clear_variable = bio_stockpile_safety_monitor_due_day
+					clr_country_flag = bio_stockpile_safety_monitor_suspended
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,117 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL ARSENAL MANAGEMENT DECISION
+# ============================================================================
+# Overview:
+# - Designates or relocates one exact owned and controlled biowarfare facility
+#   as the national storage complex used by stockpile safety and accidents.
+# - This decision does not deploy, release, target, or deliver a biological
+#   weapon. Deliberate biological use remains in the native raid system.
+# - No alternate facility is inferred when the selected state becomes invalid.
+# ============================================================================
+
+cbrn_operations_category = {
+	bio_designate_national_biological_arsenal = {
+		icon = GFX_decision_bio_designate_national_biological_arsenal
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:bio_stockpile_safety_designation.political_power_cost
+
+		visible = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+		}
+
+		target_root_trigger = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+			OR = {
+				NOT = { has_country_flag = bio_stockpile_safety_arsenal_relocation_cooldown }
+				NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			}
+		}
+
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = bio_designate_national_biological_arsenal_target_tt
+				hidden_trigger = {
+					FROM = {
+						bio_stockpile_safety_state_is_valid_designation_candidate = yes
+						NOT = {
+							AND = {
+								has_variable = bio_stockpile_safety_arsenal_actor
+								var:bio_stockpile_safety_arsenal_actor = { tag = ROOT }
+							}
+						}
+					}
+				}
+			}
+		}
+
+		available = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+			OR = {
+				NOT = { has_country_flag = bio_stockpile_safety_arsenal_relocation_cooldown }
+				NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			}
+			FROM = { bio_stockpile_safety_state_is_valid_designation_candidate = yes }
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = bio_designate_national_biological_arsenal_effect_tt
+			hidden_effect = {
+				cbrn_initialize_country_data = yes
+				bio_stockpile_safety_clear_arsenal_designation = yes
+				FROM = {
+					set_state_flag = bio_stockpile_safety_arsenal_complex
+					set_variable = { bio_stockpile_safety_arsenal_actor = ROOT }
+					set_variable = { bio_stockpile_safety_arsenal_designated_date = global.num_days }
+				}
+				set_variable = { bio_stockpile_safety_arsenal_state = FROM }
+				set_variable = { bio_stockpile_safety_arsenal_pointer_source = constant:bio_stockpile_safety_pointer_source.selected_state }
+				set_variable = { bio_stockpile_safety_last_designation_date = global.num_days }
+				set_country_flag = bio_stockpile_safety_arsenal_designated
+				set_country_flag = bio_stockpile_safety_arsenal_designation_history
+				set_temp_variable = { bio_stockpile_safety_relocation_days = constant:bio_stockpile_safety_designation.relocation_cooldown_days }
+				set_country_flag = {
+					flag = bio_stockpile_safety_arsenal_relocation_cooldown
+					days = bio_stockpile_safety_relocation_days
+				}
+				bio_stockpile_safety_refresh_risk_band = yes
+				bio_stockpile_safety_refresh_risk_idea = yes
+				bio_stockpile_safety_start_monitor = yes
+			}
+		}
+
+		ai_will_do = {
+			base = constant:bio_stockpile_safety_ai.designation_base
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.already_valid_factor
+				bio_stockpile_safety_arsenal_pointer_is_valid = yes
+			}
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.invalid_pointer_factor
+				NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			}
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.core_state_factor
+				FROM = { is_core_of = ROOT }
+			}
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.operational_facility_factor
+				FROM = {
+					check_variable = {
+						var = non_damaged_building_level@biowarfare_facility
+						value = constant:bio_stockpile_safety_risk.facility_operational_minimum_level
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.good_infrastructure_factor
+				FROM = { infrastructure > constant:bio_stockpile_safety_ai.good_infrastructure_threshold }
+			}
+			modifier = {
+				factor = constant:bio_stockpile_safety_ai.active_outbreak_factor
+				FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			}
+		}
+	}
+}

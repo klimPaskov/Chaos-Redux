@@ -1,0 +1,384 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL STOCKPILE SAFETY SCRIPTED TRIGGERS
+# ============================================================================
+# Inputs: country-scoped pointer, actual stockpile snapshot, exact-state
+#   condition snapshot, incident-kind input, and caller-owned runtime flags.
+# Outputs: fail-closed validity, risk-band, agent, loss, incident-kind, and
+#   highest-safety ordinary-accident immunity triggers.
+# Side effects: none. These triggers never select an alternate state, debit
+#   equipment, dispatch a raid, or enter the biological lifecycle.
+# ============================================================================
+
+bio_stockpile_safety_selected_agent_is_valid = {
+	has_variable = bio_stockpile_safety_selected_agent
+	OR = {
+		check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+}
+
+bio_stockpile_safety_selected_severity_is_valid = {
+	has_variable = bio_stockpile_safety_selected_incident_severity
+	OR = {
+		check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.contained compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.lab_contamination compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.local_outbreak compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.major_domestic_outbreak compare = equals }
+		check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.international_exposure compare = equals }
+	}
+}
+
+bio_stockpile_safety_incident_kind_is_valid = {
+	has_variable = bio_stockpile_safety_incident_kind
+	OR = {
+		check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.ordinary_accident compare = equals }
+		check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.sabotage compare = equals }
+		check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.bombing compare = equals }
+		check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.capture_release compare = equals }
+		check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.doomsday_release compare = equals }
+	}
+}
+
+bio_stockpile_safety_incident_is_ordinary_accident = {
+	has_variable = bio_stockpile_safety_incident_kind
+	check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.ordinary_accident compare = equals }
+}
+
+bio_stockpile_safety_incident_is_sabotage = {
+	has_variable = bio_stockpile_safety_incident_kind
+	check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.sabotage compare = equals }
+}
+
+bio_stockpile_safety_incident_is_bombing = {
+	has_variable = bio_stockpile_safety_incident_kind
+	check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.bombing compare = equals }
+}
+
+bio_stockpile_safety_incident_is_capture_release = {
+	has_variable = bio_stockpile_safety_incident_kind
+	check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.capture_release compare = equals }
+}
+
+bio_stockpile_safety_incident_is_doomsday_release = {
+	has_variable = bio_stockpile_safety_incident_kind
+	check_variable = { var = bio_stockpile_safety_incident_kind value = constant:bio_stockpile_safety_incident_kind.doomsday_release compare = equals }
+}
+
+# Country scope. The pointer is the only accepted arsenal state. The caller
+# must set the designation flag and source after an exact UI selection or an
+# exact special-project facility_state proof. No completed-project lookup is
+# attempted here.
+bio_stockpile_safety_arsenal_pointer_source_is_valid = {
+	has_variable = bio_stockpile_safety_arsenal_pointer_source
+	OR = {
+		check_variable = {
+			var = bio_stockpile_safety_arsenal_pointer_source
+			value = constant:bio_stockpile_safety_pointer_source.selected_state
+			compare = equals
+		}
+		check_variable = {
+			var = bio_stockpile_safety_arsenal_pointer_source
+			value = constant:bio_stockpile_safety_pointer_source.verified_special_project_facility
+			compare = equals
+		}
+	}
+}
+
+# State scope, called from a state-target decision or exact special-project
+# facility_state_effects. ROOT remains the selecting country.
+bio_stockpile_safety_state_is_valid_designation_candidate = {
+	exists = yes
+	impassable = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+	check_variable = {
+		var = non_damaged_building_level@biowarfare_facility
+		value = constant:bio_stockpile_safety_risk.facility_operational_minimum_level
+		compare = greater_than_or_equals
+	}
+}
+
+bio_stockpile_safety_arsenal_pointer_is_valid = {
+	exists = yes
+	has_country_flag = bio_stockpile_safety_arsenal_designated
+	has_variable = bio_stockpile_safety_arsenal_state
+	bio_stockpile_safety_arsenal_pointer_source_is_valid = yes
+	var:bio_stockpile_safety_arsenal_state = {
+		exists = yes
+		impassable = no
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+	}
+}
+
+bio_stockpile_safety_stockpile_snapshot_is_valid = {
+	has_variable = bio_stockpile_safety_anthrax_stockpile
+	has_variable = bio_stockpile_safety_plague_stockpile
+	has_variable = bio_stockpile_safety_tularemia_stockpile
+	has_variable = bio_stockpile_safety_smallpox_stockpile
+	has_variable = bio_stockpile_safety_total_stockpile
+	has_variable = bio_stockpile_safety_weighted_stockpile
+	has_variable = bio_stockpile_safety_stockpile_snapshot_status
+	check_variable = {
+		var = bio_stockpile_safety_stockpile_snapshot_status
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	check_variable = {
+		var = bio_stockpile_safety_total_stockpile
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = bio_stockpile_safety_weighted_stockpile
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than_or_equals
+	}
+}
+
+bio_stockpile_safety_agent_weights_are_selectable = {
+	bio_stockpile_safety_stockpile_snapshot_is_valid = yes
+	has_variable = bio_stockpile_safety_anthrax_weight
+	has_variable = bio_stockpile_safety_plague_weight
+	has_variable = bio_stockpile_safety_tularemia_weight
+	has_variable = bio_stockpile_safety_smallpox_weight
+	check_variable = {
+		var = bio_stockpile_safety_total_stockpile
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+}
+
+bio_stockpile_safety_exact_condition_snapshot_is_valid = {
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	has_variable = bio_stockpile_safety_condition_snapshot_status
+	check_variable = {
+		var = bio_stockpile_safety_condition_snapshot_status
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	has_variable = bio_stockpile_safety_facility_level
+	has_variable = bio_stockpile_safety_facility_damaged_level
+	has_variable = bio_stockpile_safety_facility_operational_level
+	has_variable = bio_stockpile_safety_war_damage_active
+	has_variable = bio_stockpile_safety_recent_bombing_active
+}
+
+bio_stockpile_safety_handling_context_is_valid = {
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	has_variable = bio_stockpile_safety_handling_context_status
+	check_variable = {
+		var = bio_stockpile_safety_handling_context_status
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	has_variable = bio_stockpile_safety_sabotage_active
+	has_variable = bio_stockpile_safety_recent_handling_active_value
+}
+
+bio_stockpile_safety_risk_context_is_valid = {
+	has_variable = cbrn_biological_security
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	bio_stockpile_safety_stockpile_snapshot_is_valid = yes
+	bio_stockpile_safety_exact_condition_snapshot_is_valid = yes
+	bio_stockpile_safety_handling_context_is_valid = yes
+}
+
+bio_stockpile_safety_risk_band_is_valid = {
+	has_variable = bio_stockpile_safety_risk_band
+	OR = {
+		check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.controlled compare = equals }
+		check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.strained compare = equals }
+		check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.dangerous compare = equals }
+		check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.critical compare = equals }
+	}
+}
+
+bio_stockpile_safety_is_controlled = {
+	bio_stockpile_safety_risk_band_is_valid = yes
+	check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.controlled compare = equals }
+}
+
+bio_stockpile_safety_is_strained = {
+	bio_stockpile_safety_risk_band_is_valid = yes
+	check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.strained compare = equals }
+}
+
+bio_stockpile_safety_is_dangerous = {
+	bio_stockpile_safety_risk_band_is_valid = yes
+	check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.dangerous compare = equals }
+}
+
+bio_stockpile_safety_is_critical = {
+	bio_stockpile_safety_risk_band_is_valid = yes
+	check_variable = { var = bio_stockpile_safety_risk_band value = constant:bio_stockpile_safety_band.critical compare = equals }
+}
+
+bio_stockpile_safety_has_positive_stockpile = {
+	bio_stockpile_safety_stockpile_snapshot_is_valid = yes
+	check_variable = {
+		var = bio_stockpile_safety_total_stockpile
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+}
+
+bio_stockpile_safety_meets_controlled_conditions = {
+	bio_stockpile_safety_risk_context_is_valid = yes
+	check_variable = {
+		var = bio_stockpile_safety_effective_safety
+		value = constant:bio_stockpile_safety_risk.safety_controlled_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = bio_stockpile_safety_weighted_stockpile
+		value = constant:bio_stockpile_safety_risk.stockpile_high_threshold
+		compare = less_than
+	}
+	check_variable = { var = bio_stockpile_safety_war_damage_active value = constant:bio_lifecycle_math.zero compare = equals }
+	check_variable = { var = bio_stockpile_safety_recent_bombing_active value = constant:bio_lifecycle_math.zero compare = equals }
+	check_variable = { var = bio_stockpile_safety_sabotage_active value = constant:bio_lifecycle_math.zero compare = equals }
+}
+
+bio_stockpile_safety_meets_critical_conditions = {
+	bio_stockpile_safety_risk_context_is_valid = yes
+	OR = {
+		check_variable = {
+			var = bio_stockpile_safety_effective_safety
+			value = constant:bio_stockpile_safety_risk.safety_dangerous_minimum
+			compare = less_than
+		}
+		check_variable = {
+			var = bio_stockpile_safety_weighted_stockpile
+			value = constant:bio_stockpile_safety_risk.stockpile_extreme_threshold
+			compare = greater_than_or_equals
+		}
+		check_variable = { var = bio_stockpile_safety_war_damage_active value = constant:bio_lifecycle_math.one compare = equals }
+		check_variable = { var = bio_stockpile_safety_sabotage_active value = constant:bio_lifecycle_math.one compare = equals }
+	}
+}
+
+bio_stockpile_safety_meets_dangerous_conditions = {
+	bio_stockpile_safety_risk_context_is_valid = yes
+	OR = {
+		AND = {
+			check_variable = {
+				var = bio_stockpile_safety_effective_safety
+				value = constant:bio_stockpile_safety_risk.safety_dangerous_minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = bio_stockpile_safety_effective_safety
+				value = constant:bio_stockpile_safety_risk.safety_strained_minimum
+				compare = less_than
+			}
+			check_variable = {
+				var = bio_stockpile_safety_weighted_stockpile
+				value = constant:bio_stockpile_safety_risk.stockpile_large_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		check_variable = { var = bio_stockpile_safety_recent_bombing_active value = constant:bio_lifecycle_math.one compare = equals }
+		check_variable = {
+			var = bio_stockpile_safety_facility_operational_level
+			value = constant:bio_stockpile_safety_risk.facility_operational_minimum_level
+			compare = less_than
+		}
+	}
+}
+
+# Explicit sabotage is accepted only when the caller's private exact-state flag
+# is set or the existing exact-state sabotage operation is active on this same
+# arsenal.
+bio_stockpile_safety_explicit_sabotage_is_active = {
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	OR = {
+		var:bio_stockpile_safety_arsenal_state = {
+			has_state_flag = bio_stockpile_safety_explicit_sabotage_active
+		}
+		AND = {
+			has_country_flag = bio_sabotage_operation_in_progress
+			has_variable = bio_sabotage_active_state
+			var:bio_sabotage_active_state = {
+				state = var:bio_stockpile_safety_arsenal_state
+			}
+		}
+	}
+}
+
+bio_stockpile_safety_stock_loss_request_is_valid = {
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	bio_stockpile_safety_stockpile_snapshot_is_valid = yes
+	bio_stockpile_safety_selected_agent_is_valid = yes
+	has_variable = bio_stockpile_safety_requested_loss
+	check_variable = {
+		var = bio_stockpile_safety_requested_loss
+		value = constant:bio_stockpile_safety_loss.minimum
+		compare = greater_than_or_equals
+	}
+	OR = {
+		AND = {
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			check_variable = { var = bio_stockpile_safety_anthrax_stockpile value = constant:bio_lifecycle_math.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			check_variable = { var = bio_stockpile_safety_plague_stockpile value = constant:bio_lifecycle_math.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			check_variable = { var = bio_stockpile_safety_tularemia_stockpile value = constant:bio_lifecycle_math.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			check_variable = { var = bio_stockpile_safety_smallpox_stockpile value = constant:bio_lifecycle_math.zero compare = greater_than }
+		}
+	}
+}
+
+bio_stockpile_safety_incident_selection_inputs_are_valid = {
+	bio_stockpile_safety_risk_context_is_valid = yes
+	bio_stockpile_safety_risk_band_is_valid = yes
+	bio_stockpile_safety_incident_is_ordinary_accident = yes
+	has_variable = bio_stockpile_safety_incident_selection_status
+	check_variable = {
+		var = bio_stockpile_safety_incident_selection_status
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	has_variable = bio_stockpile_safety_contained_weight
+	has_variable = bio_stockpile_safety_lab_contamination_weight
+	has_variable = bio_stockpile_safety_local_outbreak_weight
+	has_variable = bio_stockpile_safety_major_domestic_outbreak_weight
+	has_variable = bio_stockpile_safety_international_exposure_weight
+	has_variable = bio_stockpile_safety_incident_selection_total_weight
+	check_variable = { var = bio_stockpile_safety_contained_weight value = constant:bio_lifecycle_math.zero compare = greater_than_or_equals }
+	check_variable = { var = bio_stockpile_safety_lab_contamination_weight value = constant:bio_lifecycle_math.zero compare = greater_than_or_equals }
+	check_variable = { var = bio_stockpile_safety_local_outbreak_weight value = constant:bio_lifecycle_math.zero compare = greater_than_or_equals }
+	check_variable = { var = bio_stockpile_safety_major_domestic_outbreak_weight value = constant:bio_lifecycle_math.zero compare = greater_than_or_equals }
+	check_variable = { var = bio_stockpile_safety_international_exposure_weight value = constant:bio_lifecycle_math.zero compare = greater_than_or_equals }
+	check_variable = { var = bio_stockpile_safety_incident_selection_total_weight value = constant:bio_lifecycle_math.zero compare = greater_than }
+}
+
+# A caller sets bio_stockpile_safety_incident_kind before invoking this trigger.
+# Only an ordinary accident can be blocked. Sabotage, bombing, captured
+# facility release, and doomsday release explicitly return false here.
+bio_stockpile_safety_highest_safety_ordinary_accident_immunity = {
+	bio_stockpile_safety_incident_is_ordinary_accident = yes
+	bio_stockpile_safety_arsenal_pointer_is_valid = yes
+	bio_stockpile_safety_exact_condition_snapshot_is_valid = yes
+	bio_stockpile_safety_handling_context_is_valid = yes
+	has_tech = fail_safe_containment_facilities
+	NOT = { bio_stockpile_safety_explicit_sabotage_is_active = yes }
+	check_variable = {
+		var = bio_stockpile_safety_recent_bombing_active
+		value = constant:bio_lifecycle_math.zero
+		compare = equals
+	}
+}
