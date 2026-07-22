@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE TRIGGERS
 # ============================================================================
 # Fixed tag/origin/anchor proofs and package-local admission gates for the
-# Asante and Sokoto adapters. These predicates do not grant content readiness;
+# Asante and Sokoto adapters. These predicates do not grant content readiness.
 # the explicit runtime attestation flags remain unset until their owning
 # country packages pass the complete audit.
 # ============================================================================
@@ -20,7 +20,7 @@ is_independence_wave_iw098_candidate_preflight = {
 }
 
 # Execution-side fixed-origin proofs. The shared executor supplies the
-# reservation and package-id checks; these predicates only bind the immutable
+# reservation and package-id checks. These predicates only bind the immutable
 # country identity and origin-system exclusions.
 is_independence_wave_iw093_fixed_origin_preflight = {
 	exists = no
@@ -209,6 +209,164 @@ has_valid_independence_wave_iw098_values = {
 	check_variable = { var = iw098_frontier_security value = constant:independence_wave_iw098.value_maximum compare = less_than_or_equals }
 }
 
+# ---------------------------------------------------------------------------
+# Government-route and former-host transaction guards
+# ---------------------------------------------------------------------------
+
+can_lock_independence_wave_iw093_royal_confederacy_route = {
+	is_independence_wave_iw093_country = yes
+	NOT = { has_country_flag = independence_wave_iw093_route_constitutional_cabinet }
+	NOT = { has_country_flag = independence_wave_iw093_route_veterans_emergency }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration }
+	}
+}
+
+can_lock_independence_wave_iw093_constitutional_cabinet_route = {
+	is_independence_wave_iw093_country = yes
+	NOT = { has_country_flag = independence_wave_iw093_route_royal_confederacy }
+	NOT = { has_country_flag = independence_wave_iw093_route_veterans_emergency }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic }
+	}
+}
+
+can_lock_independence_wave_iw093_veterans_emergency_route = {
+	is_independence_wave_iw093_country = yes
+	NOT = { has_country_flag = independence_wave_iw093_route_royal_confederacy }
+	NOT = { has_country_flag = independence_wave_iw093_route_constitutional_cabinet }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military }
+	}
+}
+
+can_lock_independence_wave_iw098_sultanic_federal_route = {
+	is_independence_wave_iw098_country = yes
+	NOT = { has_country_flag = independence_wave_iw098_route_northern_constitution }
+	NOT = { has_country_flag = independence_wave_iw098_route_frontier_command }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration }
+	}
+}
+
+can_lock_independence_wave_iw098_northern_constitution_route = {
+	is_independence_wave_iw098_country = yes
+	NOT = { has_country_flag = independence_wave_iw098_route_sultanic_federal }
+	NOT = { has_country_flag = independence_wave_iw098_route_frontier_command }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic }
+	}
+}
+
+can_lock_independence_wave_iw098_frontier_command_route = {
+	is_independence_wave_iw098_country = yes
+	NOT = { has_country_flag = independence_wave_iw098_route_sultanic_federal }
+	NOT = { has_country_flag = independence_wave_iw098_route_northern_constitution }
+	OR = {
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+		check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military }
+	}
+}
+
+is_independence_wave_iw093_negotiation_host = {
+	exists = yes
+	is_subject = no
+	has_capitulated = no
+	any_owned_state = { is_capital = yes }
+	has_event_target = independence_wave_iw093_negotiating_country
+	event_target:independence_wave_iw093_negotiating_country = {
+		is_independence_wave_iw093_country = yes
+		has_country_flag = independence_wave_iw093_host_negotiation_pending
+		has_independence_wave_living_former_host = yes
+		NOT = { has_war_with = ROOT }
+		var:independence_wave_former_host = { tag = ROOT }
+	}
+}
+
+is_independence_wave_iw098_negotiation_host = {
+	exists = yes
+	is_subject = no
+	has_capitulated = no
+	any_owned_state = { is_capital = yes }
+	has_event_target = independence_wave_iw098_negotiating_country
+	event_target:independence_wave_iw098_negotiating_country = {
+		is_independence_wave_iw098_country = yes
+		has_country_flag = independence_wave_iw098_host_negotiation_pending
+		has_independence_wave_living_former_host = yes
+		NOT = { has_war_with = ROOT }
+		var:independence_wave_former_host = { tag = ROOT }
+	}
+}
+
+has_valid_independence_wave_iw093_former_host_counterparty = {
+	is_independence_wave_iw093_country = yes
+	has_independence_wave_living_former_host = yes
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		is_subject = no
+		has_capitulated = no
+		NOT = { has_war_with = ROOT }
+		any_owned_state = { is_capital = yes }
+	}
+}
+
+has_valid_independence_wave_iw098_former_host_counterparty = {
+	is_independence_wave_iw098_country = yes
+	has_independence_wave_living_former_host = yes
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		is_subject = no
+		has_capitulated = no
+		NOT = { has_war_with = ROOT }
+		any_owned_state = { is_capital = yes }
+	}
+}
+
+can_ratify_independence_wave_iw093_post_crisis_settlement = {
+	is_independence_wave_iw093_country = yes
+	has_country_flag = independence_wave_iw093_host_crisis_unresolved
+	NOT = { has_country_flag = independence_wave_iw093_host_settlement_receipt }
+	OR = {
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.guarded_coexistence }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.client_settlement }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse }
+	}
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+	}
+}
+
+can_ratify_independence_wave_iw098_post_crisis_settlement = {
+	is_independence_wave_iw098_country = yes
+	has_country_flag = independence_wave_iw098_host_crisis_unresolved
+	NOT = { has_country_flag = independence_wave_iw098_host_settlement_receipt }
+	OR = {
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.guarded_coexistence }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.client_settlement }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse }
+	}
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+	}
+}
+
 can_prepare_independence_wave_form24_from_iw093 = {
 	is_independence_wave_iw093_country = yes
 	has_country_flag = independence_wave_iw093_route_constitutional_cabinet
@@ -342,7 +500,7 @@ has_independence_wave_iw098_date_appropriate_leadership = {
 }
 
 # Event 012 owns its focus tree and lifecycle flags. IW-098 is safe only when
-# neither Event 012's active package receipt nor its tree receipt is present;
+# neither Event 012's active package receipt nor its tree receipt is present.
 # this trigger never clears or converts those receipts.
 is_independence_wave_iw098_event012_state_safe = {
 	NOT = { has_country_flag = independence_wave_iw098_event012_focus_tree_replaced }

@@ -83,7 +83,7 @@ trade access, and the risk of a reclamation war.
   border policing. Rejection can produce sanctions, a timed frontier crisis,
   or a defensive host war; agreement produces mutual obligations rather than
   a free relation bonus.
-- **Ambition:** the federal route opens FORM-24 only after authority,
+- **Ambition:** the constitutional-cabinet route opens FORM-24 only after authority,
   throughput, host settlement, and member-consent proofs. The sovereign route
   permanently locks the founding congress for that generation.
 
@@ -144,10 +144,26 @@ generic sacred-text icon or invented historical banner.
   route for that generation.
 
 AI weighs the sultanic route when emirate compact is high and court balance is
-negative, the constitutional route when civic balance and host settlement are
+negative, the constitutional route when civic balance and frontier security are
 high, and the defensive route under severe threat. FORM-25 is attempted only
 when its frozen consent proof can pass; route labels alone never count as
 members.
+
+## Implemented route and former-host settlement tranche
+
+The route conferences lock their compatible shared Event 006 route and apply
+centralized party distributions, election policy, package-value shifts, and
+all five country-mechanic deltas. They fail without overwriting an incompatible
+route selected elsewhere in the shared framework.
+
+Both former-host actions dispatch to the exact frozen surviving host after 90
+paid days. Recognition creates a non-aggression settlement; association adds a
+host guarantee and military access; rejection imposes an embargo, creates a
+reclamation wargoal, and writes the unresolved crisis. All outcomes write the
+shared host ledger, country values, network standing, and package values. The
+settlement receipt is written only after an accepted host answer, or after a
+paid 75-day post-crisis ratification once the shared outcome proves
+recognition, guarded coexistence, client settlement, or host collapse.
 
 ## FORM-24 and FORM-25 disposition
 

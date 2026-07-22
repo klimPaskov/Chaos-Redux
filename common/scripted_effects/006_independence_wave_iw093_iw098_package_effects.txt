@@ -222,6 +222,223 @@ independence_wave_initialize_iw098_politics = {
 	set_party_name = { ideology = fascism long_name = SOK_independence_wave_fascism_party_long name = SOK_independence_wave_fascism_party }
 }
 
+# Each package conference locks the matching shared government route and then
+# installs the exact package politics. The result temporary lets a timed
+# decision fail cleanly if another route locked while the conference ran.
+independence_wave_lock_iw093_royal_confederacy_route = {
+	set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw093_royal_confederacy_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.traditional_restoration }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration } }
+			set_country_flag = independence_wave_iw093_route_royal_confederacy
+			set_country_flag = independence_wave_iw093_route_politics_receipt
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_iw093_route_politics.royal_democratic
+				communism = constant:independence_wave_iw093_route_politics.royal_communism
+				neutrality = constant:independence_wave_iw093_route_politics.royal_neutrality
+				fascism = constant:independence_wave_iw093_route_politics.royal_fascism
+			}
+			subtract_from_variable = { iw093_court_cabinet_balance = constant:independence_wave_iw093.route_balance_shift }
+			add_to_variable = { iw093_confederated_authority = constant:independence_wave_iw093.focus_standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw093_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.one }
+		}
+	}
+}
+
+independence_wave_lock_iw093_constitutional_cabinet_route = {
+	set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw093_constitutional_cabinet_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.constitutional_republic }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic } }
+			set_country_flag = independence_wave_iw093_route_constitutional_cabinet
+			set_country_flag = independence_wave_iw093_route_politics_receipt
+			set_politics = { ruling_party = democratic elections_allowed = yes }
+			set_popularities = {
+				democratic = constant:independence_wave_iw093_route_politics.constitutional_democratic
+				communism = constant:independence_wave_iw093_route_politics.constitutional_communism
+				neutrality = constant:independence_wave_iw093_route_politics.constitutional_neutrality
+				fascism = constant:independence_wave_iw093_route_politics.constitutional_fascism
+			}
+			add_to_variable = { iw093_court_cabinet_balance = constant:independence_wave_iw093.route_balance_shift }
+			add_to_variable = { iw093_confederated_authority = constant:independence_wave_iw093.focus_standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw093_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.one }
+		}
+	}
+}
+
+independence_wave_lock_iw093_veterans_emergency_route = {
+	set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw093_veterans_emergency_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military } }
+			set_country_flag = independence_wave_iw093_route_veterans_emergency
+			set_country_flag = independence_wave_iw093_route_politics_receipt
+			set_country_flag = independence_wave_iw093_terminal_sovereignty_locked
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_iw093_route_politics.veterans_democratic
+				communism = constant:independence_wave_iw093_route_politics.veterans_communism
+				neutrality = constant:independence_wave_iw093_route_politics.veterans_neutrality
+				fascism = constant:independence_wave_iw093_route_politics.veterans_fascism
+			}
+			subtract_from_variable = { iw093_court_cabinet_balance = constant:independence_wave_iw093.route_balance_shift }
+			add_to_variable = { iw093_confederated_authority = constant:independence_wave_iw093.focus_major_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw093_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw093_route_transaction_result = constant:independence_wave_iw093.one }
+		}
+	}
+}
+
+independence_wave_lock_iw098_sultanic_federal_route = {
+	set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw098_sultanic_federal_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.traditional_restoration }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration } }
+			set_country_flag = independence_wave_iw098_route_sultanic_federal
+			set_country_flag = independence_wave_iw098_route_politics_receipt
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_iw098_route_politics.sultanic_democratic
+				communism = constant:independence_wave_iw098_route_politics.sultanic_communism
+				neutrality = constant:independence_wave_iw098_route_politics.sultanic_neutrality
+				fascism = constant:independence_wave_iw098_route_politics.sultanic_fascism
+			}
+			subtract_from_variable = { iw098_court_civic_balance = constant:independence_wave_iw098.route_balance_shift }
+			add_to_variable = { iw098_emirate_compact = constant:independence_wave_iw098.focus_standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw098_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.one }
+		}
+	}
+}
+
+independence_wave_lock_iw098_northern_constitution_route = {
+	set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw098_northern_constitution_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.constitutional_republic }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic } }
+			set_country_flag = independence_wave_iw098_route_northern_constitution
+			set_country_flag = independence_wave_iw098_route_politics_receipt
+			# The sultan remains head of state while the elected council gains the
+			# constitutional majority represented by the party distribution.
+			set_politics = { ruling_party = neutrality elections_allowed = yes }
+			set_popularities = {
+				democratic = constant:independence_wave_iw098_route_politics.constitutional_democratic
+				communism = constant:independence_wave_iw098_route_politics.constitutional_communism
+				neutrality = constant:independence_wave_iw098_route_politics.constitutional_neutrality
+				fascism = constant:independence_wave_iw098_route_politics.constitutional_fascism
+			}
+			add_to_variable = { iw098_court_civic_balance = constant:independence_wave_iw098.route_balance_shift }
+			add_to_variable = { iw098_emirate_compact = constant:independence_wave_iw098.focus_standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw098_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.one }
+		}
+	}
+}
+
+independence_wave_lock_iw098_frontier_command_route = {
+	set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.zero }
+	if = {
+		limit = { can_lock_independence_wave_iw098_frontier_command_route = yes }
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
+			independence_wave_select_government_route = yes
+		}
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military } }
+			set_country_flag = independence_wave_iw098_route_frontier_command
+			set_country_flag = independence_wave_iw098_route_politics_receipt
+			set_country_flag = independence_wave_iw098_terminal_sovereignty_locked
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_iw098_route_politics.frontier_democratic
+				communism = constant:independence_wave_iw098_route_politics.frontier_communism
+				neutrality = constant:independence_wave_iw098_route_politics.frontier_neutrality
+				fascism = constant:independence_wave_iw098_route_politics.frontier_fascism
+			}
+			subtract_from_variable = { iw098_court_civic_balance = constant:independence_wave_iw098.route_balance_shift }
+			add_to_variable = { iw098_frontier_security = constant:independence_wave_iw098.focus_major_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_clamp_iw098_values = yes
+			independence_wave_refresh_country_state = yes
+			set_temp_variable = { independence_wave_iw098_route_transaction_result = constant:independence_wave_iw098.one }
+		}
+	}
+}
+
 independence_wave_iw098_select_sultan_by_date = {
 	set_temp_variable = { independence_wave_iw098_succession_result = constant:independence_wave_iw098.zero }
 	clr_country_flag = independence_wave_iw098_sultan_selection_complete
@@ -622,9 +839,10 @@ independence_wave_cleanup_iw093_asante = {
 		clear_variable = iw093_court_cabinet_balance
 		clear_variable = iw093_cocoa_rail_throughput
 		clear_variable = iw093_host_settlement
-		clr_country_flag = independence_wave_iw093_route_royal_confederacy
-		clr_country_flag = independence_wave_iw093_route_constitutional_cabinet
-		clr_country_flag = independence_wave_iw093_route_veterans_emergency
+	clr_country_flag = independence_wave_iw093_route_royal_confederacy
+	clr_country_flag = independence_wave_iw093_route_constitutional_cabinet
+	clr_country_flag = independence_wave_iw093_route_veterans_emergency
+	clr_country_flag = independence_wave_iw093_route_politics_receipt
 		clr_country_flag = independence_wave_iw093_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw093_form24_preparation_complete
 		if = {
@@ -678,9 +896,10 @@ independence_wave_cleanup_iw098_sokoto = {
 		clear_variable = iw098_court_civic_balance
 		clear_variable = iw098_caravan_livestock_network
 		clear_variable = iw098_frontier_security
-		clr_country_flag = independence_wave_iw098_route_sultanic_federal
-		clr_country_flag = independence_wave_iw098_route_northern_constitution
-		clr_country_flag = independence_wave_iw098_route_frontier_command
+	clr_country_flag = independence_wave_iw098_route_sultanic_federal
+	clr_country_flag = independence_wave_iw098_route_northern_constitution
+	clr_country_flag = independence_wave_iw098_route_frontier_command
+	clr_country_flag = independence_wave_iw098_route_politics_receipt
 		clr_country_flag = independence_wave_iw098_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw098_form25_preparation_complete
 		if = {

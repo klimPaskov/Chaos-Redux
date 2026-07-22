@@ -18,6 +18,8 @@ explicit runtime content-attestation flag after its complete audit.
 | `independence_wave_prepare_iw093_command_roster` / `_iw098_command_roster` | Exact prepared Event 006 package scope | Recruits two package-specific male corps commanders only after the immutable tag, package, region, depth, archetype, and Event 012 safety proofs agree |
 | `independence_wave_ensure_iw093_iw098_baseline_laws` | Admitted package setup scope | Installs civilian economy, export focus, and volunteer-only laws only when absent |
 | `independence_wave_initialize_iw093_politics` / `_iw098_politics` | Admitted package setup scope | Applies centralized opening popularities and researched institutional party names; both packages begin non-electoral and neutral-aligned |
+| `independence_wave_lock_iw093_royal_confederacy_route` / `_constitutional_cabinet_route` / `_veterans_emergency_route` | Exact IW-093 scope after a paid conference; matching shared route is undecided or already compatible | Locks the shared government route, installs the package route flag, applies centralized party politics, moves institutional values, and changes all five shared country mechanics |
+| `independence_wave_lock_iw098_sultanic_federal_route` / `_northern_constitution_route` / `_frontier_command_route` | Exact IW-098 scope after a paid compact; matching shared route is undecided or already compatible | Locks the shared government route, installs the package route flag, applies centralized sultanic/civic/emergency politics, moves package values, and changes all five shared country mechanics |
 | `independence_wave_iw098_select_sultan_by_date` | Event 006 prepared/active `SOK` scope | Chooses the dated selection receipt only when the matching role attestation exists; the separate leadership proof requires an actual ruling character and currently admits only the post-cutover vanilla Siddiq branch |
 | `independence_wave_initialize_iw093_values` / `_iw098_values` | Matching prepared package scope | Initializes the four visible package values from centralized constants and clamps them before setup can succeed |
 | `independence_wave_clamp_iw093_values` / `_iw098_values` | Matching package country | Clamps authority/compact, institutional balance, economic network, host settlement, and security values to their documented ranges |
@@ -90,6 +92,17 @@ IW-093 owns `iw093_confederated_authority`,
 `iw098_frontier_security`. The package setup initializes and validates all
 eight; cleanup clears them. Focuses and paid decisions may change them only
 through their owning effects and must call the matching clamp helper.
+
+Each route conference is a single political transaction. Its package helper
+first verifies that no incompatible shared route was locked while the timed
+conference ran. It then writes the shared route and package route together,
+sets party popularities from a centralized 100-point distribution, and
+changes legitimacy, recognition, administrative capacity, security, and
+instability. The emergency routes trade recognition and legitimacy for
+security while increasing instability; the constitutional routes improve
+recognition and reduce instability; the royal and sultanic routes emphasize
+legitimacy and ordered security. Cleanup clears the package politics receipts
+alongside the generation's route flags.
 
 The setup path also installs the opening staged idea through
 `independence_wave_iw093_initialize_decision_content` or
