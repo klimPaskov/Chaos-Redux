@@ -204,6 +204,13 @@ This rule applies to:
 
 Existing vanilla tags and already registered Chaos Redux tags may be reused without renaming. Reuse must preserve the registered country's vanilla files and behavior whenever the Event 6 package flag is absent.
 
+New Chaos Redux country tags may use ordinary country-history files named
+`TAG - Country Name.txt`. Their native country setup may live in those history
+files when that setup belongs to the new tag in every origin. The prohibition
+on replacement history applies only to existing vanilla or previously
+registered carriers. Those carriers keep their registered history unchanged
+and receive origin-gated Event content through additive setup effects.
+
 The 102 accepted custom `X` tags are locked by the 2026-07-15 installed-registry audit. A later migration still requires a new complete scan of country tags, aliases, cosmetic identities, and other event plans before assignment. Retired values are not recycled.
 
 The event should prefer cosmetic identity changes and shared package data over consuming a new tag for every route. A new tag is justified when the country must exist independently, preserve a distinct history package, coexist with the source tag, or carry a formable identity that cannot be expressed safely through a cosmetic change.
