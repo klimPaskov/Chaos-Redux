@@ -19,12 +19,17 @@ Source package root:
   face is centered, frontal, and much clearer than the previous 1922 passport
   master. The archive credits F.O. Strüppert, circa 1917, and declares the item
   public domain.
+- `source_masters/AGX_pieter_reenalda_1919_uniform.jpg` — unchanged
+  Tresoar/Commons original, 1206x1765 grayscale, 145,425 bytes, SHA-256
+  `8f93840b12ecdcb313279c6f0fd4027863f8c1c4c9232e699aa7a0a9d46668ce`.
+  Recommended identity-and-role base for `AGX_friesland_coastal_commander`;
+  the 1919 archive portrait is explicitly Pieter Reenalda in maritime uniform
+  and declares the item public domain.
 - `source_masters/AGX_pieter_reenalda_1915_garden.jpg` — unchanged
-  Tresoar/Commons original, 1023x1619 grayscale, 91,591 bytes, SHA-256
-  `d97dc109f6d9e172b63004a0655fb8995c9bd7d7e3935dd6a85858083414aee2`.
-  Recommended identity-clarity base for `AGX_friesland_coastal_commander`;
-  the archive identifies Pieter Reenalda, 1915, by F.O. Strüppert and declares
-  the item public domain.
+  Tresoar/Commons comparison original, 1023x1619 grayscale, 91,591 bytes,
+  SHA-256 `d97dc109f6d9e172b63004a0655fb8995c9bd7d7e3935dd6a85858083414aee2`.
+  Retain only as an exact-person identity comparison; its civilian garden dress
+  is weaker role context than the selected 1919 uniform source.
 - `source_masters/AGX_pieter_reenalda_1911_uniform_prior.jpg` — unchanged
   copy of the prior package's 1911 KPM-uniform master, 1243x1787 grayscale,
   183,898 bytes, SHA-256
@@ -34,7 +39,7 @@ Source package root:
   garden source.
 - `candidate_contact_sheet.png` — review-only comparison of the selected
   masters and exact-person alternates; never wire this sheet into the game.
-- `source_hashes.sha256` — hash inventory for the three source masters.
+- `source_hashes.sha256` — hash inventory for the four source masters.
 
 Exact source URLs, archive GUIDs, estimated dates, license/public-domain basis,
 crop estimates, candidate dispositions, and all ownership-search evidence are
@@ -64,9 +69,9 @@ the installed vanilla and project `common/characters/`, `history/countries/`,
 ## Parent handoff / next action
 
 1. Treat Kalma 1917 as the first downstream identity-preserving processing input.
-2. Review Reenalda 1915 garden versus the retained 1911 KPM-uniform master. The
-   1915 source has stronger face geometry; the 1911 source has stronger explicit
-   maritime-command context. Do not merge faces or invent a uniform.
+2. Treat Reenalda 1919 uniform as the first downstream identity-preserving
+   processing input. Keep the 1915 garden and prior 1911 uniform masters only
+   as exact-person/role comparisons. Do not merge faces or invent a uniform.
 3. If processing is attempted, use only the unchanged source master as the
    identity image reference and require a direct before/after likeness review
    against the source. No generated or generic face may replace either person.
@@ -83,8 +88,8 @@ No portrait treatment, crop, resize, processed PNG, DDS, `.gfx`, character,
 history, event, focus, decision, GUI, localisation, spreadsheet, flag, or
 runtime edit was made. The source gates clear for both exact identities; the
 downstream HOI4 painted-finish gate remains open and requires parent review.
-The Reenalda 1915 source is civilian dress, so role-context approval is still
-required even though the companion 1911 record documents his KPM first-officer
-role. If that caveat is not accepted, the exact role should be blocked rather
-than replaced with another person's face.
-
+The 1915 Reenalda source is civilian dress, but it is now only a comparison. The
+selected 1919 source is an explicit maritime uniform portrait; the prior 1911
+record remains a corroborating KPM first-officer source. If downstream likeness
+or source rights are rejected, block the exact role rather than replacing it
+with another person's face.
