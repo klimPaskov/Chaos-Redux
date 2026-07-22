@@ -19,7 +19,7 @@ The writable checkout, offline wiki snapshot, official documentation, and instal
 
 ## B2: exact province-wide thermonuclear strike
 
-Status: dormant substrate implemented, runtime release proof blocked
+Status: dormant map-pinned substrate implemented, strict engine-native and runtime release proof blocked
 
 Accepted requirement:
 
@@ -31,14 +31,15 @@ Observed evidence:
 - vanilla nuclear raids pass a variable-backed province id
 - the installed map contains 10,154 valid assigned land provinces across all 1,081 states
 - generated batches expand to the exact canonical ledger with no duplicates or omissions
+- official collections expose all states but no global all-valid-province enumerator, so the province set is derived offline rather than enumerated by the engine
 - runtime counters require issued, observed, state-count, and state-sum agreement
-- manual runtime schema 2 binds each scheduled callback to the active transaction generation
+- manual runtime schema 4 binds each scheduled callback and the counted prestrike population baseline ledger to the active transaction generation
 - the daily validator binds issued calls to the exact completed-batch cursor before later native work
 - each hourly callback repeats the cursor, last-completed-batch, observation, and struck-state preflight before opening the native launch window
 
 Resolution gate:
 
-Review native acceptance for all target classes, one callback per call, guarded callback timing, batch cost, save integrity, and multiplayer synchronization. Hearts of Iron IV was not run in this task.
+The strict engine-native enumeration requirement cannot be proven from the documented script surface. Separately review native acceptance for all target classes, one callback per call, guarded callback timing, batch cost, save integrity, and multiplayer synchronization. Hearts of Iron IV was not run in this task.
 
 Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events for every callback. If all 10,154 scripted calls emit callbacks, it may schedule about 121,848 news event attempts. A mod callback cannot suppress that separate vanilla branch. This amplification is part of the release gate.
 

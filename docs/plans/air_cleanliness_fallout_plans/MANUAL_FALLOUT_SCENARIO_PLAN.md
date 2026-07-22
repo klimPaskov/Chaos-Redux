@@ -100,7 +100,7 @@ The dormant substrate currently sequences launch work as follows:
 4. Complete issued, observed, unique-state, state-sum, and array-size agreement applies aggregate consequences once.
 5. The verified transaction stores a seven-day countdown and schedules `.903`.
 
-Manual runtime schema 2 binds each scheduled callback to the active transaction generation. The host validator and the hourly callback preflight require the issued launch count to equal the exact completed-batch cursor before more native work. The callback also validates the last completed batch and observed-count bounds before opening the launch window. The countdown event and request wrapper both validate the active token before handoff. Schema 1 active transactions fail closed. Successful request handoff clears the due flag and countdown schedule provenance.
+Manual runtime schema 4 binds each scheduled callback and the completed prestrike population baseline ledger to the active transaction generation. Capture records the exact installed state count once, then the host validator and scheduled callbacks use the generation-bound O(1) receipt before more native work. The callback also validates the last completed batch and observed-count bounds before opening the launch window. The countdown event and request wrapper both validate the active token before handoff. Schema 1 through schema 3 active transactions fail closed. Successful request handoff clears the due flag and countdown schedule provenance.
 
 During the synthetic batch, normal nuclear hooks should still apply required physical state effects. Mod-owned callback consequences should suppress or aggregate:
 

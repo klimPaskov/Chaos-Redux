@@ -60,6 +60,10 @@ fallout_manual_reset_runtime_ledger = {
 	clear_variable = global.fallout_manual_scheduled_verifier_attempt
 	clear_variable = global.fallout_manual_scheduled_verifier_generation
 	clear_variable = global.fallout_manual_scheduled_countdown_generation
+	clear_variable = global.fallout_manual_prestrike_population_baseline_count
+	clear_variable = global.fallout_manual_prestrike_population_baseline_ledger_generation
+	clear_variable = global.fallout_manual_population_contract_preflight_count
+	clear_variable = global.fallout_manual_population_contract_preflight_generation
 	clr_global_flag = fallout_manual_sweep_error
 	clr_global_flag = fallout_manual_native_sweep_complete
 	clr_global_flag = fallout_manual_countdown_active
@@ -69,10 +73,32 @@ fallout_manual_reset_runtime_ledger = {
 	clr_global_flag = fallout_manual_verifier_event_scheduled
 	clr_global_flag = fallout_manual_countdown_event_scheduled
 	clr_global_flag = fallout_manual_batch_launch_window
+	clr_global_flag = fallout_manual_prestrike_population_baseline_ledger_complete
+	clr_global_flag = fallout_manual_population_contract_preflight_complete
 	every_country = { clr_country_flag = fallout_manual_synthetic_launcher }
 	every_state = {
 		clr_state_flag = fallout_manual_native_struck
+		clr_state_flag = fallout_manual_prestrike_population_recorded
+		clr_state_flag = fallout_manual_first_week_population_loss_recorded
+		clr_state_flag = fallout_manual_population_contract_preflight_current
+		clr_state_flag = fallout_manual_population_contract_receipt_invalid
+		clr_state_flag = fallout_manual_population_contract_overshoot
 		clear_variable = fallout_manual_native_strike_count
+		clear_variable = fallout_manual_prestrike_population_k
+		clear_variable = fallout_manual_prestrike_population_people
+		clear_variable = fallout_manual_prestrike_generation
+		clear_variable = fallout_manual_first_week_population_loss_people
+		clear_variable = fallout_manual_first_week_after_population_people
+		clear_variable = fallout_manual_first_week_population_reconciled_total_people
+		clear_variable = fallout_manual_first_week_loss_generation
+		clear_variable = fallout_manual_population_contract_preflight_generation
+		clear_variable = fallout_manual_population_contract_preflight_prestrike_k
+		clear_variable = fallout_manual_population_contract_preflight_prestrike_people
+		clear_variable = fallout_manual_population_contract_preflight_first_week_loss_people
+		clear_variable = fallout_manual_population_contract_preflight_first_week_after_people
+		clear_variable = fallout_manual_population_contract_preflight_frozen_current_people
+		clear_variable = fallout_manual_population_contract_preflight_target_survivors
+		clear_variable = fallout_manual_population_contract_preflight_requested_loss
 	}
 }
 
@@ -80,6 +106,7 @@ fallout_manual_reset_runtime_ledger = {
 # Input: fallout_manual_selected_intensity_input
 fallout_manual_initialize_sweep = {
 	fallout_manual_reset_runtime_ledger = yes
+	fallout_manual_capture_population_baselines = yes
 	clear_global_event_target = fallout_manual_sweep_coordinator
 	set_temp_variable = { fallout_manual_intensity_candidate = fallout_manual_selected_intensity_input }
 	if = {
@@ -107,6 +134,35 @@ fallout_manual_initialize_sweep = {
 	else = {
 		set_temp_variable = { fallout_manual_failure_code = constant:fallout_manual_error_code.invalid_intensity }
 		fallout_manual_fail_sweep = yes
+	}
+}
+
+# Supported scope: COUNTRY
+# Captures the state population before any native strike callback can mutate the
+# map. The generation binds the per-state baseline to this sweep instance.
+fallout_manual_capture_population_baselines = {
+	set_variable = { global.fallout_manual_prestrike_population_baseline_count = constant:fallout_runtime.zero }
+	clr_global_flag = fallout_manual_prestrike_population_baseline_ledger_complete
+	clear_variable = global.fallout_manual_prestrike_population_baseline_ledger_generation
+	every_state = {
+		set_variable = { fallout_manual_prestrike_population_k = state_population_k }
+		set_variable = { fallout_manual_prestrike_population_people = state_population_k }
+		multiply_variable = { fallout_manual_prestrike_population_people = constant:fallout_runtime.population_scale }
+		round_variable = fallout_manual_prestrike_population_people
+		set_variable = { fallout_manual_prestrike_generation = global.fallout_manual_generation }
+		set_state_flag = fallout_manual_prestrike_population_recorded
+		add_to_variable = { global.fallout_manual_prestrike_population_baseline_count = constant:fallout_runtime.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.fallout_manual_prestrike_population_baseline_count
+				value = constant:fallout_manual_sweep.expected_struck_states
+				compare = equals
+			}
+		}
+		set_variable = { global.fallout_manual_prestrike_population_baseline_ledger_generation = global.fallout_manual_generation }
+		set_global_flag = fallout_manual_prestrike_population_baseline_ledger_complete
 	}
 }
 
@@ -406,6 +462,7 @@ fallout_manual_apply_state_aggregate_consequence = {
 	set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_runtime.one }
 	set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_runtime.one }
 	apply_exact_state_civilian_population_loss = yes
+	fallout_manual_record_state_population_loss_provenance = yes
 	add_to_variable = { global.fallout_manual_total_civilian_deaths = state_civilian_population_loss_applied }
 	add_to_variable = { chaos_state_civilian_deaths_total = state_civilian_population_loss_applied }
 	if = {
@@ -429,6 +486,152 @@ fallout_manual_apply_state_aggregate_consequence = {
 	}
 	set_temp_variable = { chaos_fallout_duration_days = constant:fallout_manual_aggregate.fallout_duration_days }
 	chaos_meter_apply_nuclear_fallout_to_state = yes
+}
+
+# Supported scope: STATE
+# Records the observed first-week loss against the generation-authenticated
+# prestrike baseline. The aggregate Deaths row remains the accounting entry for
+# this phase; this receipt is provenance for the later manual rewrite.
+fallout_manual_record_state_population_loss_provenance = {
+	if = {
+		limit = { fallout_manual_prestrike_population_baseline_is_current = yes }
+		set_variable = { fallout_manual_first_week_population_loss_people = fallout_manual_prestrike_population_people }
+		set_variable = { fallout_manual_first_week_after_population_people = state_population_k }
+		multiply_variable = { fallout_manual_first_week_after_population_people = constant:fallout_runtime.population_scale }
+		round_variable = fallout_manual_first_week_after_population_people
+		subtract_from_variable = { fallout_manual_first_week_population_loss_people = fallout_manual_first_week_after_population_people }
+		clamp_variable = {
+			var = fallout_manual_first_week_population_loss_people
+			min = constant:fallout_runtime.zero
+		}
+		round_variable = fallout_manual_first_week_population_loss_people
+		set_variable = { fallout_manual_first_week_population_reconciled_total_people = fallout_manual_first_week_after_population_people }
+		add_to_variable = { fallout_manual_first_week_population_reconciled_total_people = fallout_manual_first_week_population_loss_people }
+		set_variable = { fallout_manual_first_week_loss_generation = global.fallout_manual_generation }
+		set_state_flag = fallout_manual_first_week_population_loss_recorded
+	}
+}
+
+# Supported scope: STATE. Outputs the same temporary percent and request names
+# as fallout_calculate_population_loss_intent, but computes the rewrite as the
+# additional loss needed to reach the standard 90-95% target from the original
+# manual prestrike baseline.
+fallout_manual_calculate_population_loss_intent = {
+	fallout_calculate_population_loss_intent = yes
+	set_temp_variable = { fallout_expected_population_before_loss = fallout_manual_prestrike_population_people }
+	set_temp_variable = { fallout_manual_target_population_loss = fallout_expected_population_before_loss }
+	multiply_temp_variable = { fallout_manual_target_population_loss = constant:fallout_runtime.percentage_scale }
+	multiply_temp_variable = { fallout_manual_target_population_loss = fallout_state_loss_percent }
+	round_temp_variable = fallout_manual_target_population_loss
+	set_temp_variable = { fallout_manual_target_survivor_population = fallout_expected_population_before_loss }
+	subtract_from_temp_variable = { fallout_manual_target_survivor_population = fallout_manual_target_population_loss }
+	if = {
+		limit = { check_variable = { fallout_expected_population_before_loss > constant:fallout_runtime.zero } }
+		clamp_temp_variable = {
+			var = fallout_manual_target_survivor_population
+			min = constant:fallout_runtime.minimum_remaining_population
+			max = fallout_expected_population_before_loss
+		}
+	}
+	else = { set_temp_variable = { fallout_manual_target_survivor_population = constant:fallout_runtime.zero } }
+	set_temp_variable = { fallout_manual_current_population_people = fallout_pretransition_population_k }
+	multiply_temp_variable = { fallout_manual_current_population_people = constant:fallout_runtime.population_scale }
+	round_temp_variable = fallout_manual_current_population_people
+	set_temp_variable = { fallout_expected_population_requested_loss = fallout_manual_current_population_people }
+	subtract_from_temp_variable = { fallout_expected_population_requested_loss = fallout_manual_target_survivor_population }
+	clamp_temp_variable = {
+		var = fallout_expected_population_requested_loss
+		min = constant:fallout_runtime.zero
+	}
+	round_temp_variable = fallout_expected_population_requested_loss
+}
+
+# Supported scope: COUNTRY. This is the sole all-state replay before manual
+# population mutation. It validates both population units, first-week receipt
+# arithmetic, and the 90-95 percent survivor floor from frozen inputs.
+fallout_manual_preflight_population_contract = {
+	clr_global_flag = fallout_manual_population_contract_preflight_complete
+	clear_variable = global.fallout_manual_population_contract_preflight_generation
+	set_variable = { global.fallout_manual_population_contract_preflight_count = constant:fallout_runtime.zero }
+	every_state = {
+		clr_state_flag = fallout_manual_population_contract_preflight_current
+		clr_state_flag = fallout_manual_population_contract_receipt_invalid
+		clr_state_flag = fallout_manual_population_contract_overshoot
+		clear_variable = fallout_manual_population_contract_preflight_generation
+		clear_variable = fallout_manual_population_contract_preflight_prestrike_k
+		clear_variable = fallout_manual_population_contract_preflight_prestrike_people
+		clear_variable = fallout_manual_population_contract_preflight_first_week_loss_people
+		clear_variable = fallout_manual_population_contract_preflight_first_week_after_people
+		clear_variable = fallout_manual_population_contract_preflight_frozen_current_people
+		clear_variable = fallout_manual_population_contract_preflight_target_survivors
+		clear_variable = fallout_manual_population_contract_preflight_requested_loss
+		if = {
+			limit = { fallout_manual_population_baseline_is_current = yes }
+			set_temp_variable = { fallout_manual_expected_prestrike_people = fallout_manual_prestrike_population_k }
+			multiply_temp_variable = { fallout_manual_expected_prestrike_people = constant:fallout_runtime.population_scale }
+			round_temp_variable = fallout_manual_expected_prestrike_people
+			set_temp_variable = { fallout_manual_expected_first_week_loss_people = fallout_manual_prestrike_population_people }
+			subtract_from_temp_variable = { fallout_manual_expected_first_week_loss_people = fallout_manual_first_week_after_population_people }
+			clamp_temp_variable = {
+				var = fallout_manual_expected_first_week_loss_people
+				min = constant:fallout_runtime.zero
+			}
+			round_temp_variable = fallout_manual_expected_first_week_loss_people
+			fallout_manual_calculate_population_loss_intent = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = fallout_manual_prestrike_population_people
+						value = fallout_manual_expected_prestrike_people
+						compare = equals
+					}
+					check_variable = {
+						var = fallout_manual_first_week_population_loss_people
+						value = fallout_manual_expected_first_week_loss_people
+						compare = equals
+					}
+					check_variable = {
+						var = fallout_manual_current_population_people
+						value = fallout_manual_target_survivor_population
+						compare = greater_than_or_equals
+					}
+				}
+				set_variable = { fallout_manual_population_contract_preflight_generation = global.fallout_transition_generation }
+				set_variable = { fallout_manual_population_contract_preflight_prestrike_k = fallout_manual_prestrike_population_k }
+				set_variable = { fallout_manual_population_contract_preflight_prestrike_people = fallout_manual_prestrike_population_people }
+				set_variable = { fallout_manual_population_contract_preflight_first_week_loss_people = fallout_manual_first_week_population_loss_people }
+				set_variable = { fallout_manual_population_contract_preflight_first_week_after_people = fallout_manual_first_week_after_population_people }
+				set_variable = { fallout_manual_population_contract_preflight_frozen_current_people = fallout_manual_current_population_people }
+				set_variable = { fallout_manual_population_contract_preflight_target_survivors = fallout_manual_target_survivor_population }
+				set_variable = { fallout_manual_population_contract_preflight_requested_loss = fallout_expected_population_requested_loss }
+				set_state_flag = fallout_manual_population_contract_preflight_current
+				add_to_variable = { global.fallout_manual_population_contract_preflight_count = constant:fallout_runtime.one }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = fallout_manual_current_population_people
+						value = fallout_manual_target_survivor_population
+						compare = less_than
+					}
+				}
+				set_state_flag = fallout_manual_population_contract_overshoot
+			}
+			else = { set_state_flag = fallout_manual_population_contract_receipt_invalid }
+		}
+		else = { set_state_flag = fallout_manual_population_contract_receipt_invalid }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.fallout_manual_population_contract_preflight_count
+				value = constant:fallout_manual_sweep.expected_struck_states
+				compare = equals
+			}
+		}
+		set_variable = { global.fallout_manual_population_contract_preflight_generation = global.fallout_transition_generation }
+		set_global_flag = fallout_manual_population_contract_preflight_complete
+	}
 }
 
 # Supported scope: COUNTRY
@@ -734,6 +937,11 @@ fallout_manual_validate_active_runtime = {
 		else_if = {
 			limit = { NOT = { fallout_manual_selected_intensity_is_valid = yes } }
 			set_temp_variable = { fallout_manual_failure_code = constant:fallout_manual_error_code.invalid_intensity }
+			fallout_manual_fail_sweep = yes
+		}
+		else_if = {
+			limit = { NOT = { fallout_manual_prestrike_population_baselines_are_current = yes } }
+			set_temp_variable = { fallout_manual_failure_code = constant:fallout_manual_error_code.runtime_ledger_inconsistent }
 			fallout_manual_fail_sweep = yes
 		}
 		else = {

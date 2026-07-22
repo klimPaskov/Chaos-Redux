@@ -1475,7 +1475,11 @@ fallout_apply_state_population_loss = {
 			NOT = { has_state_flag = fallout_population_loss_mutation_issued }
 			NOT = { has_state_flag = fallout_population_loss_evaluated }
 		}
-		fallout_calculate_population_loss_intent = yes
+		if = {
+			limit = { fallout_manual_population_baseline_is_current = yes }
+			fallout_manual_calculate_population_loss_intent = yes
+		}
+		else = { fallout_calculate_population_loss_intent = yes }
 		clr_state_flag = fallout_population_loss_reconciled
 		clr_state_flag = fallout_population_loss_deaths_evaluated
 		clr_state_flag = fallout_population_loss_applied
@@ -1544,7 +1548,11 @@ fallout_apply_state_population_loss = {
 # observed delta through Deaths with state population application disabled.
 fallout_reconcile_population_loss_receipt = {
 	clr_state_flag = fallout_population_loss_reconciled
-	fallout_calculate_population_loss_intent = yes
+	if = {
+		limit = { fallout_manual_population_baseline_is_current = yes }
+		fallout_manual_calculate_population_loss_intent = yes
+	}
+	else = { fallout_calculate_population_loss_intent = yes }
 	set_temp_variable = { fallout_expected_population_available_from_live_baseline = fallout_population_before_loss_people }
 	subtract_from_temp_variable = { fallout_expected_population_available_from_live_baseline = constant:fallout_runtime.minimum_remaining_population }
 	clamp_temp_variable = { var = fallout_expected_population_available_from_live_baseline min = constant:fallout_runtime.zero }
@@ -4051,6 +4059,22 @@ fallout_apply_transition_phase_population_loss = {
 		}
 		if = {
 			limit = { NOT = { fallout_population_loss_rows_are_current = yes } }
+			if = {
+				limit = { fallout_manual_population_reconciliation_is_required = yes }
+				fallout_manual_preflight_population_contract = yes
+				if = {
+					limit = { NOT = { fallout_manual_population_contract_preflight_is_current = yes } }
+					set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.manual_population_contract_unproven }
+					fallout_register_transition_error_if_unowned = yes
+					set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = fallout_transition_error }
+				NOT = { fallout_population_loss_rows_are_current = yes }
+			}
 			every_state = {
 				limit = { NOT = { fallout_population_loss_row_is_current = yes } }
 				if = {

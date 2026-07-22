@@ -122,7 +122,7 @@ The event token layout is identity-bearing:
 - `.903` is the exact countdown callback.
 - The former generic `.901` and `.902` callbacks are absent.
 
-The dormant manual runtime ledger is schema 2. Each scheduled batch, verifier, and countdown callback records the active transaction generation. Both the host validator and the hourly callback preflight reject stale or inconsistent ledgers before another native batch can run. The callback recomputes the exact issued-count-to-cursor and last-completed-batch invariants before opening the launch window. The countdown event and request wrapper independently validate the active token. Successful standard-request handoff clears both the due flag and countdown schedule provenance. Schema 1 active manual transactions fail closed.
+The dormant manual runtime ledger is schema 4. Each scheduled batch, verifier, and countdown callback records the active transaction generation, and baseline capture writes a generation-bound completion receipt after recording all 1,081 states. Both the host validator and the hourly callback preflight reject stale or inconsistent O(1) receipts before another native batch can run. The callback recomputes the exact issued-count-to-cursor and last-completed-batch invariants before opening the launch window. The countdown event and request wrapper independently validate the active token. Successful standard-request handoff clears both the due flag and countdown schedule provenance. Schema 1 through schema 3 active manual transactions fail closed.
 
 Static control flow requires issued calls, observed callbacks, unique struck states, state strike totals, and array size to agree before aggregate consequences run. Aggregate Deaths, fallout, Air Contamination, Chaos history, condemnation, and treaty consequences then run once. The countdown end is stored as the verified start day plus seven. Only the engine-scheduled seven-day callback may submit the request. Daily reconciliation cannot submit or reconstruct it, and lost ownership or an overdue callback fails closed.
 
@@ -172,7 +172,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 
 ## Hard release blockers
 
-1. Register the reserved SCN-014 public Fallout row and dispatch only after the exact native sweep release gate passes.
+1. Keep the reserved SCN-014 public Fallout row and dispatch absent because HOI4 exposes no documented engine-native all-valid-province enumerator. The current 10,154-target route proves exact coverage only for the pinned installed map.
 2. Prove native strike acceptance, one callback per call, callback timing, performance, save behavior, and multiplayer behavior in a separately authorized runtime pass.
 3. Resolve the possible 121,848 vanilla news-event attempts without reducing the exact 10,154-target requirement.
 4. Prove that the all-provinces `set_building_level` route removes every supply node and railway edge and exposes the result to the receipt without issuing a family twice.

@@ -83,6 +83,7 @@ fallout_manual_batch_event_is_valid = {
 	has_variable = global.fallout_manual_scheduled_batch_generation
 	NOT = { has_global_flag = fallout_manual_sweep_error }
 	fallout_manual_runtime_schema_is_current = yes
+	fallout_manual_prestrike_population_baselines_are_current = yes
 	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
 	check_variable = {
 		var = global.fallout_manual_scheduled_batch_generation
@@ -104,6 +105,7 @@ fallout_manual_verifier_event_is_valid = {
 	has_variable = global.fallout_manual_scheduled_verifier_generation
 	NOT = { has_global_flag = fallout_manual_sweep_error }
 	fallout_manual_runtime_schema_is_current = yes
+	fallout_manual_prestrike_population_baselines_are_current = yes
 	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.verifying }
 	check_variable = {
 		var = global.fallout_manual_scheduled_verifier_generation
@@ -160,6 +162,7 @@ fallout_manual_countdown_callback_is_valid = {
 	NOT = { has_global_flag = fallout_manual_request_sent }
 	NOT = { has_global_flag = fallout_manual_sweep_error }
 	fallout_manual_runtime_schema_is_current = yes
+	fallout_manual_prestrike_population_baselines_are_current = yes
 	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.countdown }
 	check_variable = {
 		var = global.fallout_manual_scheduled_countdown_generation
@@ -172,4 +175,135 @@ fallout_manual_countdown_callback_is_valid = {
 		value = global.fallout_manual_countdown_end_day
 		compare = equals
 	}
+}
+
+# Supported scope: any
+fallout_manual_population_reconciliation_is_required = {
+	has_variable = global.fallout_pretransition_request_source
+	check_variable = {
+		var = global.fallout_pretransition_request_source
+		value = constant:fallout_request_source.manual_thermonuclear
+		compare = equals
+	}
+}
+
+# Supported scope: STATE. This is intentionally independent of the request
+# source because the receipt is captured before the manual request is queued.
+fallout_manual_prestrike_population_baseline_is_current = {
+	fallout_manual_runtime_schema_is_current = yes
+	has_variable = global.fallout_manual_generation
+	has_state_flag = fallout_manual_prestrike_population_recorded
+	has_variable = fallout_manual_prestrike_population_k
+	has_variable = fallout_manual_prestrike_population_people
+	has_variable = fallout_manual_prestrike_generation
+	check_variable = {
+		var = fallout_manual_prestrike_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_manual_prestrike_population_k
+		value = constant:fallout_runtime.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_manual_prestrike_population_people
+		value = constant:fallout_runtime.zero
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: COUNTRY. Capture writes this O(1), generation-bound receipt
+# once, so batch, verifier, countdown, and active-runtime checks never rescan all
+# states.
+fallout_manual_prestrike_population_baselines_are_current = {
+	fallout_manual_runtime_schema_is_current = yes
+	has_variable = global.fallout_manual_generation
+	has_global_flag = fallout_manual_prestrike_population_baseline_ledger_complete
+	has_variable = global.fallout_manual_prestrike_population_baseline_count
+	has_variable = global.fallout_manual_prestrike_population_baseline_ledger_generation
+	check_variable = {
+		var = global.fallout_manual_prestrike_population_baseline_count
+		value = constant:fallout_manual_sweep.expected_struck_states
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_manual_prestrike_population_baseline_ledger_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+}
+
+# Supported scope: STATE. Full provenance is required before applying the
+# additional manual loss during the standard Fallout rewrite.
+fallout_manual_population_baseline_is_current = {
+	fallout_manual_population_reconciliation_is_required = yes
+	fallout_manual_prestrike_population_baseline_is_current = yes
+	has_state_flag = fallout_manual_first_week_population_loss_recorded
+	has_variable = fallout_manual_first_week_population_loss_people
+	has_variable = fallout_manual_first_week_after_population_people
+	has_variable = fallout_manual_first_week_population_reconciled_total_people
+	has_variable = fallout_manual_first_week_loss_generation
+	check_variable = {
+		var = fallout_manual_first_week_loss_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_manual_first_week_population_loss_people
+		value = constant:fallout_runtime.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_manual_first_week_after_population_people
+		value = constant:fallout_runtime.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = fallout_manual_first_week_population_reconciled_total_people
+		value = fallout_manual_prestrike_population_people
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY. Compatibility alias for the replayed, O(1)
+# population-contract receipt.
+fallout_manual_population_baselines_are_current = {
+	fallout_manual_population_contract_preflight_is_current = yes
+}
+
+# Supported scope: STATE. This durable row binds the replayed preflight to the
+# current manual provenance and to the frozen values used by the generic
+# population transaction.
+fallout_manual_population_contract_preflight_row_is_current = {
+	fallout_manual_population_baseline_is_current = yes
+	fallout_manual_population_contract_preflight_is_current = yes
+	has_state_flag = fallout_manual_population_contract_preflight_current
+	has_variable = fallout_manual_population_contract_preflight_generation
+	has_variable = fallout_manual_population_contract_preflight_prestrike_k
+	has_variable = fallout_manual_population_contract_preflight_prestrike_people
+	has_variable = fallout_manual_population_contract_preflight_first_week_loss_people
+	has_variable = fallout_manual_population_contract_preflight_first_week_after_people
+	has_variable = fallout_manual_population_contract_preflight_frozen_current_people
+	has_variable = fallout_manual_population_contract_preflight_target_survivors
+	has_variable = fallout_manual_population_contract_preflight_requested_loss
+	check_variable = { var = fallout_manual_population_contract_preflight_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_prestrike_k value = fallout_manual_prestrike_population_k compare = equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_prestrike_people value = fallout_manual_prestrike_population_people compare = equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_first_week_loss_people value = fallout_manual_first_week_population_loss_people compare = equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_first_week_after_people value = fallout_manual_first_week_after_population_people compare = equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_requested_loss value = constant:fallout_runtime.zero compare = greater_than_or_equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_target_survivors value = constant:fallout_runtime.zero compare = greater_than_or_equals }
+	check_variable = { var = fallout_manual_population_contract_preflight_frozen_current_people value = fallout_manual_population_contract_preflight_target_survivors compare = greater_than_or_equals }
+}
+
+# Supported scope: COUNTRY. O(1) completion receipt written only after the sole
+# all-state preflight validates every installed-map state.
+fallout_manual_population_contract_preflight_is_current = {
+	fallout_manual_population_reconciliation_is_required = yes
+	has_global_flag = fallout_manual_population_contract_preflight_complete
+	has_variable = global.fallout_manual_population_contract_preflight_count
+	has_variable = global.fallout_manual_population_contract_preflight_generation
+	check_variable = { var = global.fallout_manual_population_contract_preflight_count value = constant:fallout_manual_sweep.expected_struck_states compare = equals }
+	check_variable = { var = global.fallout_manual_population_contract_preflight_generation value = global.fallout_transition_generation compare = equals }
 }
