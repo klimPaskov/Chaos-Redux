@@ -16,8 +16,9 @@ Exact source mapping and SHA-256 values are in
 | Army or navy commander | `../vanilla_reference/portraits/commanders/` | `156x210` | `commanders/contact_sheet.png` |
 | Operative | `../vanilla_reference/portraits/operatives/` | `156x210` | canonical family sheet only |
 
-The curated pack contains four country leaders and four land/naval commanders,
-all male-presenting and all `156x210`. It deliberately contains no Event 6
+The curated pack contains four country leaders and eight land/naval commanders,
+including four European named-command examples. All are male-presenting and
+all are `156x210`. It deliberately contains no Event 6
 runtime art, generated people, female portraits, advisor icons, dossier cards,
 or `_small` derivatives.
 

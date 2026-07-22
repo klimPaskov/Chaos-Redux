@@ -35,7 +35,7 @@ families target at least 5. Contact sheets are not counted as reference examples
 | `icons/state_modifiers` | 5 | 5 | `icons/state_modifiers/contact_sheet.png` |
 | `icons/technologies` | 15 | 15 | `icons/technologies/contact_sheet.png` |
 | `portraits/advisors` | 9 | 5 | `portraits/advisors/contact_sheet.png` |
-| `portraits/commanders` | 5 | 5 | `portraits/commanders/contact_sheet.png` |
+| `portraits/commanders` | 9 | 9 | `portraits/commanders/contact_sheet.png` |
 | `portraits/leaders` | 8 | 5 | `portraits/leaders/contact_sheet.png` |
 | `portraits/operatives` | 5 | 5 | `portraits/operatives/contact_sheet.png` |
 | `units/air/map_counters` | 5 | 5 | `units/air/map_counters/contact_sheet.png` |
@@ -82,11 +82,15 @@ families target at least 5. Contact sheets are not counted as reference examples
 | Advisor dossier | `portraits/advisors/generic_europe_6.png` | 65x67 | Vanilla HOI4 | `gfx/interface/ideas/idea_generic_political_advisor_europe_6.dds` | `portraits/advisors/contact_sheet.png` | — |
 | Advisor dossier | `portraits/advisors/generic_female_europe.png` | 65x67 | Vanilla HOI4 | `gfx/interface/ideas/idea_generic_political_advisor_female_europe.dds` | `portraits/advisors/contact_sheet.png` | — |
 | Advisor dossier | `portraits/advisors/high_command_fevzi_cakmak.png` | 65x67 | Vanilla HOI4 | `gfx/interface/ideas/idea_tur_fevzi_cakmak_high_command.dds` | `portraits/advisors/contact_sheet.png` | — |
+| Land commander portrait | `portraits/commanders/eng_bernard_montgomery.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/ENG/Portrait_Britain_Bernard_Montgomery.dds` | `portraits/commanders/contact_sheet.png` | `common/characters/ENG.txt` |
 | Land commander portrait | `portraits/commanders/generic_africa_land_1.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_land_1.dds` | `portraits/commanders/contact_sheet.png` | `interface/_random_portraits.gfx` |
 | Land commander portrait | `portraits/commanders/generic_africa_land_2.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_land_2.dds` | `portraits/commanders/contact_sheet.png` | `interface/_random_portraits.gfx` |
 | Land commander portrait | `portraits/commanders/generic_africa_land_3.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_land_3.dds` | `portraits/commanders/contact_sheet.png` | `interface/_random_portraits.gfx` |
 | Naval commander portrait | `portraits/commanders/generic_africa_navy_1.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_navy_1.dds` | `portraits/commanders/contact_sheet.png` | `interface/_random_portraits.gfx` |
 | Naval commander portrait | `portraits/commanders/generic_africa_navy_2.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_navy_2.dds` | `portraits/commanders/contact_sheet.png` | `interface/_random_portraits.gfx` |
+| Land commander portrait | `portraits/commanders/ger_erich_von_manstein.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/GER/Portrait_Germany_Erich_von_Manstein.dds` | `portraits/commanders/contact_sheet.png` | `common/characters/GER.txt` |
+| Land commander portrait | `portraits/commanders/ger_erwin_von_witzleben.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/GER/Portrait_Germany_Erwin_von_Witzleben.dds` | `portraits/commanders/contact_sheet.png` | `common/characters/GER.txt` |
+| Land commander portrait | `portraits/commanders/ita_pietro_badoglio.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/ITA/Portrait_Italy_Pietro_Badoglio.dds` | `portraits/commanders/contact_sheet.png` | `common/characters/ITA.txt` |
 | Leader portrait | `portraits/leaders/afg_mohammed_zahir_shah.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/AFG/Portrait_Afghanistan_Mohammed_Zahir_Shah.dds` | `portraits/leaders/contact_sheet.png` | — |
 | Leader portrait | `portraits/leaders/africa_generic_1.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/Africa/Portrait_Africa_Generic_1.dds` | `portraits/leaders/contact_sheet.png` | — |
 | Leader portrait | `portraits/leaders/den_thorvald_stauning.png` | 156x210 | Vanilla HOI4 | `gfx/leaders/DEN/Portrait_Denmark_Thorvald_Stauning.dds` | `portraits/leaders/contact_sheet.png` | — |
