@@ -2,8 +2,10 @@
 
 Date: 2026-07-22
 
-Status: `needs_independent_visual_audit`; no DDS or runtime overwrite is
-authorized by this package.
+Status: `needs_fresh_independent_provenance_reaudit`; no DDS or runtime
+overwrite is authorized by this package. The first independent review passed
+both portraits visually and identified documentation/provenance gates, which
+this revision addresses for a fresh decision.
 
 Corsica is a grounded polity. Both candidates are identity-preserving ImageGen
 edits of unchanged, attributed real male source portraits. ImageGen supplies
@@ -21,11 +23,23 @@ allowed.
   representative, alive and politically active in 1936.
 - Unchanged source: `source_masters/COR_adolphe_landry.jpg`; `512x724` JPEG;
   SHA-256 `f1afc654cfeb655313cb943aaab54e438df8c483abe54a96dbf229ad6fa7c9a8`.
+- Explicit source-derived head-and-shoulders crop:
+  `source_masters/COR_adolphe_landry_source_crop_preview.png`; `156x210`
+  grayscale PNG; SHA-256
+  `cc96ee5e74165c6713e4df052816064f546197530a5cbc700858f13e11ee54c3`.
+  It is the retained mechanical crop `(36,0,476,592)` already recorded by the
+  source-treatment ledger; it adds no generated detail. The unchanged source
+  itself is also a head-and-shoulders/bust portrait and was the identity input.
 - Source authority: the Mediterranean source ledger records the 1917
   BnF/Gallica Agence Meurisse portrait and its French/US public-domain basis.
 - Prompt: `prompts/COR_adolphe_landry_identity_preserve_trial_01.txt`.
 - Style-only reference:
   `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/contact_sheet.png`.
+  This is the user-requested skill-local quick-reference sheet explicitly
+  permitted by skill section 4. Its constituent PNGs are byte-identical copies
+  of the canonical
+  `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
+  examples and are mapped by `assets/leader_portraits/REFERENCE_MANIFEST.md`.
 - Raw ImageGen master: `raw_masters/COR_adolphe_landry_hoi4_trial_01.png`;
   `1081x1455` RGB; SHA-256
   `07e28ddd0a4fb0e0db40b87407322320fa15b95fa0576a29db16c9cba1a7ff99`.
@@ -58,6 +72,11 @@ allowed.
 - Prompt: `prompts/COR_jean_chiappe_identity_preserve_trial_01.txt`.
 - Style-only reference:
   `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png`.
+  This is the user-requested skill-local quick-reference sheet explicitly
+  permitted by skill section 4. Its constituent PNGs are byte-identical copies
+  of the canonical
+  `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/`
+  examples and are mapped by `assets/leader_portraits/REFERENCE_MANIFEST.md`.
 - Raw ImageGen master: `raw_masters/COR_jean_chiappe_hoi4_trial_01.png`;
   `1081x1455` RGB; SHA-256
   `703250cc5fff915991110aadf69549860a7f97ce3a1c220a185df7b4e4205614`.
@@ -66,6 +85,25 @@ allowed.
   `ef2a179bca8ad9148ff8d47f0c3b665bfbce40f98c4e2441833376be657fef45`.
 - Processing: full `1081x1455` canvas resized with Lanczos to `156x210`; no
   post-generation face edit, crop, or filter was applied.
+
+## Consumer mapping and subject-ownership evidence
+
+- `COR_corsican_municipal_congress` is the stable institutional script token;
+  its visible name, biography, portrait, and civic-route effects resolve to
+  Adolphe Landry. The corrected authority ledger records that exact mapping.
+- `COR_jean_chiappe` is the dedicated commander/emergency-route token for Jean
+  Chiappe. It supersedes the archived fictional `COR_pasquale_venturi` consumer,
+  which has no active gameplay, history, localisation, interface, or GFX use.
+- Exact and separator-variant searches covered `Adolphe Landry`,
+  `Adolphe_Landry`, `Jean Chiappe`, `Jean_Chiappe`, and both `COR_` keys across
+  Chaos Redux gameplay/history/interface/localisation, vanilla `common/`,
+  `history/`, `interface/`, and `localisation/`, and the same character-facing
+  roots in approved workshop mods `1521695605`, `2265420196`, and `1458561226`.
+  Only the intended Chaos Redux COR definitions, consumers, sprites,
+  localisation, and package documentation matched. No vanilla or approved-mod
+  character, recruitment, portrait, or officeholder ownership matched either
+  person. The two COR characters are recruited and retired only through the
+  guarded IW-017 origin adapter, so no transfer contract is required.
 
 ## Review boundary
 
