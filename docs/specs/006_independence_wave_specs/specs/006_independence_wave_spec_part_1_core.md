@@ -66,7 +66,18 @@ They are not automatically radical, mystical, primitive, anti-modern, or militar
 
 ### Layer E: High-chaos political inventions
 
-This layer contains plausible alternate-history unions, emergency republics, cross-border leagues, strange restorations, and highly ambitious local regimes. These countries still need regional grounding. They may use fictional leaders, councils, flags, or political structures, but they cannot be random names attached to arbitrary states.
+This layer contains plausible alternate-history unions, emergency republics,
+cross-border leagues, strange restorations, and highly ambitious local regimes.
+These countries still need regional grounding. Layer E does not authorize a
+fictional or generated leader for a real community, regional movement,
+restoration, or otherwise plausibly historical polity; those packages require
+sourced real male people or archival material for the actual institution. A
+generated personal or institutional portrait is reserved for a later country
+that the accepted source design explicitly classifies as both truly fictional
+and high-chaos. None of the current 206 registry rows has that classification.
+Fictional route structures and ImageGen-authored flat flag variants remain
+permitted when clearly documented as alternate history rather than authentic
+historical designs.
 
 Layer E should never replace the researched country pool. It is a late-game supplement that makes high-chaos waves surprising.
 
