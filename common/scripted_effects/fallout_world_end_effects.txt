@@ -999,6 +999,7 @@ fallout_take_world_snapshot = {
 			clr_state_flag = fallout_pretransition_direct_manual_target
 			clr_state_flag = fallout_pretransition_coastal
 			clr_state_flag = fallout_pretransition_air_winter_provenance_recorded
+			clr_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded
 			clr_state_flag = fallout_pretransition_state_category_recorded
 			clr_state_flag = fallout_supply_network_collapse_intent_committed
 			clr_state_flag = fallout_supply_node_collapse_settled
@@ -1033,6 +1034,7 @@ fallout_take_world_snapshot = {
 			clear_variable = fallout_pretransition_air_winter_reclamation
 			clear_variable = fallout_pretransition_air_winter_water_security
 			clear_variable = fallout_pretransition_air_winter_original_category
+			clear_variable = fallout_pretransition_air_winter_greenhouse_generation
 			clear_variable = fallout_pretransition_state_category
 			air_winter_record_original_category = yes
 			air_winter_prepare_fallout_snapshot_source = yes
@@ -1097,6 +1099,11 @@ fallout_take_world_snapshot = {
 					set_variable = { fallout_pretransition_air_winter_reclamation = air_winter_reclamation }
 					set_variable = { fallout_pretransition_air_winter_water_security = air_winter_water_security }
 					set_variable = { fallout_pretransition_air_winter_original_category = air_winter_original_category }
+					if = {
+						limit = { has_state_flag = air_winter_greenhouse_refuge }
+						set_variable = { fallout_pretransition_air_winter_greenhouse_generation = global.fallout_snapshot_epoch_generation }
+						set_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded
+					}
 					set_state_flag = fallout_pretransition_air_winter_provenance_recorded
 				}
 			}

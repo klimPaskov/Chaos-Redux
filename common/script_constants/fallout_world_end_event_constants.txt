@@ -1012,6 +1012,19 @@ fallout_event_id = {
 	seed_vault_callback = 198
 	seed_vault_callback_ai = 199
 	seed_vault_cleanup = 200
+	bad_batch_human = 204
+	bad_batch_ai = 205
+	bad_batch_destroy_result = 206
+	bad_batch_plant_result = 207
+	bad_batch_isolate_result = 208
+	bad_batch_share_result = 209
+	bad_batch_destroy_result_ai = 210
+	bad_batch_plant_result_ai = 211
+	bad_batch_isolate_result_ai = 212
+	bad_batch_share_result_ai = 213
+	bad_batch_callback = 214
+	bad_batch_callback_ai = 215
+	bad_batch_cleanup = 216
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1044,7 +1057,10 @@ fallout_event_candidate_pilot = {
 	seed_vault_candidate_id = 188
 	seed_vault_transaction_key = 710007
 	seed_vault_route = 7107
-	upper_bound = 7108
+	bad_batch_candidate_id = 204
+	bad_batch_transaction_key = 710008
+	bad_batch_route = 7108
+	upper_bound = 7109
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -1141,6 +1157,20 @@ fallout_event_188_branch = {
 	entrust_farmers = 2
 	share_with_allies = 3
 	auction_access = 4
+	upper_bound = 5
+}
+
+fallout_event_204_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	destroy_batch = 1
+	plant_batch = 2
+	isolate_plots = 3
+	share_samples = 4
 	upper_bound = 5
 }
 
@@ -3244,4 +3274,324 @@ fallout_event_188_modifier = {
 	grievance_stability = -0.08
 	grievance_consumer_goods = 0.08
 	upper_bound = 1
+}
+
+fallout_event_204_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 10
+	callback_delay_days = 90
+	destroy_modifier_days = 180
+	plant_modifier_days = 300
+	isolate_modifier_days = 240
+	share_modifier_days = 210
+	blight_modifier_days = 270
+	upper_bound = 301
+}
+
+fallout_event_204_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100000
+	callback_transaction_key_offset = 200000
+	visible_budget_cost = 1
+	upper_bound = 200001
+}
+
+fallout_event_204_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_food = 24
+	minimum_medicine = 12
+	minimum_filters = 16
+	minimum_adaptation = 24
+	minimum_reclamation = 20
+	minimum_recognition = 18
+	destroy_success_medicine = 22
+	destroy_success_adaptation = 30
+	destroy_partial_adaptation = 24
+	plant_success_food = 30
+	plant_success_adaptation = 36
+	plant_partial_food = 24
+	plant_partial_adaptation = 24
+	isolate_success_filters = 28
+	isolate_success_shelter = 35
+	isolate_partial_shelter = 20
+	share_success_food = 26
+	share_success_recognition = 30
+	share_partial_food = 24
+	share_partial_recognition = 18
+	success_viability = 25
+	partial_viability = 16
+	minimum_remaining_people = 100
+	failure_death_percent = 0.0035
+	upper_bound = 100
+}
+
+fallout_event_204_viability = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	adaptation_weight = 35
+	reclamation_weight = 30
+	food_weight = 20
+	shelter_weight = 15
+	exposure_penalty = 20
+	weight_divisor = 100
+	minimum = 0
+	maximum = 100
+	upper_bound = 101
+}
+
+fallout_event_204_provenance = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	seed_program = 1
+	greenhouse_program = 2
+	upper_bound = 3
+}
+
+fallout_event_204_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	destroy_medicine = 5
+	destroy_scrap = 4
+	plant_food = 6
+	isolate_filters = 5
+	share_recognition = 3
+	minimum_food = 8
+	minimum_medicine = 5
+	minimum_filters = 5
+	minimum_recognition = 3
+	upper_bound = 8
+}
+
+fallout_event_204_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	destroy_success_food = -2
+	destroy_success_medicine = -2
+	destroy_success_reclamation = 3
+	destroy_success_adaptation = 4
+	destroy_success_cohesion = 2
+	destroy_success_stability = 0.02
+	destroy_partial_food = -3
+	destroy_partial_medicine = -1
+	destroy_partial_reclamation = 1
+	destroy_partial_adaptation = 1
+	destroy_partial_cohesion = -1
+	destroy_partial_stability = -0.01
+	destroy_failure_food = -4
+	destroy_failure_medicine = -3
+	destroy_failure_reclamation = -4
+	destroy_failure_adaptation = -3
+	destroy_failure_cohesion = -5
+	destroy_failure_stability = -0.06
+
+	plant_success_food = 10
+	plant_success_adaptation = 8
+	plant_success_reclamation = 6
+	plant_success_cohesion = 3
+	plant_success_stability = 0.03
+	plant_partial_food = 3
+	plant_partial_adaptation = 2
+	plant_partial_reclamation = 1
+	plant_partial_cohesion = 0
+	plant_partial_stability = -0.01
+	plant_failure_food = -6
+	plant_failure_adaptation = -6
+	plant_failure_reclamation = -8
+	plant_failure_cohesion = -4
+	plant_failure_stability = -0.07
+
+	isolate_success_food = -1
+	isolate_success_filters = -3
+	isolate_success_adaptation = 7
+	isolate_success_reclamation = 4
+	isolate_success_cohesion = 2
+	isolate_success_stability = 0.02
+	isolate_partial_food = -2
+	isolate_partial_filters = -2
+	isolate_partial_adaptation = 3
+	isolate_partial_reclamation = 1
+	isolate_partial_cohesion = -1
+	isolate_partial_stability = -0.01
+	isolate_failure_food = -4
+	isolate_failure_filters = -4
+	isolate_failure_adaptation = -5
+	isolate_failure_reclamation = -5
+	isolate_failure_cohesion = -4
+	isolate_failure_stability = -0.06
+
+	share_success_food = 7
+	share_success_reclamation = 3
+	share_success_recognition = 7
+	share_success_cohesion = 3
+	share_success_stability = 0.02
+	share_partial_food = 2
+	share_partial_reclamation = 1
+	share_partial_recognition = 2
+	share_partial_cohesion = 0
+	share_partial_stability = -0.01
+	share_failure_food = -3
+	share_failure_reclamation = -4
+	share_failure_recognition = -7
+	share_failure_cohesion = -4
+	share_failure_stability = -0.06
+
+	callback_success_food = 6
+	callback_success_adaptation = 4
+	callback_success_reclamation = 4
+	callback_success_cohesion = 3
+	callback_success_stability = 0.02
+	callback_partial_food = 2
+	callback_partial_adaptation = 1
+	callback_partial_reclamation = 1
+	callback_partial_cohesion = 1
+	callback_partial_stability = -0.01
+	callback_failure_food = -2
+	callback_failure_adaptation = -3
+	callback_failure_reclamation = -3
+	callback_failure_cohesion = -3
+	callback_failure_stability = -0.05
+	upper_bound = 101
+}
+
+fallout_event_204_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9113
+	destroy_success = 11
+	destroy_partial = 12
+	destroy_failure = 13
+	plant_success = 21
+	plant_partial = 22
+	plant_failure = 23
+	isolate_success = 31
+	isolate_partial = 32
+	isolate_failure = 33
+	share_success = 41
+	share_partial = 42
+	share_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_204_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	destroy_stability = 0.02
+	destroy_supply = 0.01
+	destroy_production = 0.02
+	plant_stability = 0.03
+	plant_supply = 0.02
+	plant_production = 0.04
+	isolate_stability = 0.02
+	isolate_supply = 0.03
+	isolate_consumer_goods = 0.01
+	share_stability = 0.02
+	share_supply = -0.01
+	share_consumer_goods = -0.02
+	blight_stability = -0.05
+	blight_supply = 0.03
+	blight_consumer_goods = 0.04
+	upper_bound = 1
+}
+
+fallout_event_204_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	success_bonus = 8
+	partial_bonus = 3
+	invalid_score = -1000
+	continuity_destroy = 5
+	continuity_share = 5
+	bunker_destroy = 5
+	bunker_plant = -3
+	bunker_isolate = 6
+	bunker_share = -3
+	warlord_plant = 6
+	warlord_isolate = -3
+	warlord_share = -2
+	food_compact_destroy = -2
+	food_compact_plant = 7
+	food_compact_isolate = 2
+	food_compact_share = 7
+	maritime_destroy = 2
+	maritime_isolate = 4
+	maritime_share = 6
+	quarantine_destroy = 7
+	quarantine_plant = -6
+	quarantine_isolate = 8
+	quarantine_share = -4
+	scavenger_destroy = -2
+	scavenger_plant = 3
+	scavenger_share = 5
+	nomad_plant = 6
+	nomad_isolate = -5
+	nomad_share = 4
+	machine_destroy = 2
+	machine_plant = -2
+	machine_isolate = 8
+	technate_plant = -2
+	technate_isolate = 9
+	technate_share = 4
+	mutant_destroy = -4
+	mutant_plant = 4
+	mutant_isolate = 5
+	mutant_share = 2
+	religious_destroy = 2
+	religious_plant = 1
+	religious_share = 5
+	cause_hazard_destroy = 5
+	cause_hazard_plant = -5
+	cause_hazard_isolate = 7
+	cause_hazard_share = -3
+	terminal_destroy = 1
+	terminal_isolate = 6
+	war_destroy = 3
+	war_plant = 2
+	war_isolate = -3
+	war_share = -6
+	low_food_destroy = -3
+	low_food_plant = 5
+	low_food_isolate = -3
+	low_food_share = -2
+	healthy_recognition_isolate = 2
+	healthy_recognition_share = 5
+	low_food_threshold = 28
+	upper_bound = 1001
 }

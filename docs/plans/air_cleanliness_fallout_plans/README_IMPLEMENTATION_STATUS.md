@@ -262,3 +262,13 @@ lanes with human and hidden AI delayed results, Deaths-backed failure, state
 memory, an agronomist callback, history `9112`, authenticated cleanup, and a
 dedicated wired report asset. It remains uncounted until scheduler activation
 and manual review gates are open. Countable living-world blocks remain `0 of 660`.
+
+## Bad Batch surface correction
+
+The dormant Bad Batch chain is defined at `chaosx.fallout.204` through
+`.216`. It adds generation-bound seed or greenhouse provenance, four costed
+branches, deterministic delayed outcomes, Deaths-backed failure, durable state
+memory, a ninety-day callback, history `9113`, authenticated cleanup, and a
+dedicated wired report asset. It remains uncounted until scheduler activation,
+manual review, and the deeper regional and government-aware localisation pass
+are complete. Countable living-world blocks remain `0 of 660`.
