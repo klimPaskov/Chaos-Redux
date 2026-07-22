@@ -203,7 +203,7 @@ The shared full Event 006 focus framework exposes five package-approved routes. 
 | Constitutional | Federalist Civic Charter | Maurice Duhamel's democratic political family and an elected federal assembly |
 | Popular council | Dock, Rail and Fisheries Councils | A labor administration rooted in maritime and transport councils |
 | Traditional | Regionalist Cultural Compact | Cultural communities and municipalities led by fictional civic federalist Tangi Kerbrat |
-| Emergency military | Joint Coastal Command | Fictional commandant Jodoc Tanet coordinates ports and inland approaches |
+| Emergency military | Joint Coastal Command | Henri-Léon Devin coordinates ports and inland approaches from the professional naval command at Brest |
 | Patron client | Protected Ports Mandate | External guarantees traded for contractual limits on policy |
 
 The traditional route is a civic regionalist settlement, not an extremist one. The package sets `independence_wave_radical_sovereignty_route_excluded` and never makes a fascist or Mordrel route available.
@@ -212,10 +212,10 @@ The traditional route is a civic regionalist settlement, not an extremist one. T
 
 Vanilla provides the accepted historical Breton political figures and official HOI4 portraits. The package relies on those assets for Maurice Duhamel and the labor political family rather than creating duplicate historical characters.
 
-The two package-generated characters are guarded against duplicate generation:
+The two package runtime characters are guarded against duplicate generation:
 
 - `BRI_independence_wave_civic_delegate`, Tangi Kerbrat, is an invented individual human civic federalist with a distinctive single-person HOI4 leader portrait.
-- `BRI_independence_wave_coastal_commandant`, Jodoc Tanet, is an invented human coastal officer with leader, large commander, and small commander portraits.
+- `BRI_independence_wave_coastal_commandant`, Henri-Léon Devin, is the sourced real male naval officer who commanded the École navale at Brest from September 1930. He serves as the Joint Coastal Command leader and corps commander; the package does not call him maritime prefect before his September 1936 appointment.
 
 The readiness proof also requires the existing vanilla `BRI_coi`, `BRI_stc`, `BRI_acd2`, `BRI_nccr`, and `BRI_mt` advisors. Their official vanilla dossier sprites remain unchanged.
 
@@ -265,7 +265,7 @@ The custom congress replaces the shared preparation mission, not the final procl
 
 ### Cleanup and release admission
 
-The cleanup adapter removes the founding mission, all package decisions, both lifecycle ideas, all route ideas, package values, package flags, focus handoff flags, AI profile, and FORM-01 candidate flags. Generated characters are guarded for repeat initialization and remain harmless outside the exact active package gates.
+The cleanup adapter removes the founding mission, all package decisions, both lifecycle ideas, all route ideas, package values, package flags, focus handoff flags, AI profile, and FORM-01 candidate flags. Runtime characters are guarded for repeat initialization and remain harmless outside the exact active package gates.
 
 The narrow runtime dispatch adapter recognizes package ID 4 for setup, final validation, and cleanup. Its immutable package/tag helper and runtime preflight branch prove the exact `IW-004`/`BRI` identity. A fresh independent admission audit authorized the exact content attestation, SCN-008 preflight, BRI/state-14 automatic wrapper, p4 capacity witness, and planner gate. The package enters automatic and scenario selection only while BRI is absent, state 14 is a valid unique anchor, `RG-14` is free, the former host can retain a state, and the candidate is clear of Event 5 reservations. No dormant-history or legacy content-ready flag is granted.
 
@@ -276,7 +276,7 @@ New portrait sprites are registered in `interface/006_independence_wave_brittany
 - `GFX_portrait_BRI_independence_wave_civic_commission` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`.
 - `GFX_portrait_BRI_independence_wave_coastal_commandant` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`.
 
-Event 006 defines no Brittany commander miniature, advisor card, dossier, or `_small` portrait. The two registered full portraits are legacy generated assets and are not source-cleared under the grounded-country portrait rule. Brittany remains fail-closed until attributed, reusable, role-accurate archival masters replace them. The Debeauvais rights blocker remains current and no generated likeness substitutes for him.
+Event 006 defines no Brittany commander miniature, advisor card, dossier, or `_small` portrait. The coastal-commandant sprite is the admitted identity-preserving HOI4 repaint of the 1930 Gallica/Agence Rol portrait of Henri-Léon Devin, independently reviewed at `156x210` before BGRA DDS conversion. The civic-commission sprite remains a legacy generated asset and does not satisfy the grounded-country portrait rule; Brittany therefore remains fail-closed until a role-accurate, reusable Breton regionalist source replaces it. The Debeauvais rights blocker remains current and no generated likeness substitutes for him.
 
 The package reuses these registered Event 006 icons:
 
