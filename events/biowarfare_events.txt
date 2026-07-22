@@ -1,5 +1,3 @@
-@bio_stockpile_accident_type_cooldown_days = 730
-
 add_namespace = chaosx_bioweapon
 
 # Laboratory anthrax outbreak during development (MTTH event)
@@ -135,143 +133,27 @@ country_event = {
     }
 }
 
-# Anthrax lab accident from stockpile (MTTH event)
+# Anthrax stockpile accident notification. Accounting and exact-state lifecycle
+# dispatch are completed once by biological_stockpile_safety_effects.txt.
 country_event = {
-    id = chaosx_bioweapon.4
-    title = chaosx_bioweapon.4.t
-    desc = chaosx_bioweapon.4.d
-    picture = GFX_report_event_generic_bioweapon
+	id = chaosx_bioweapon.4
+	title = chaosx_bioweapon.4.t
+	desc = chaosx_bioweapon.4.d
+	picture = GFX_report_event_generic_bioweapon
+	is_triggered_only = yes
 
-    mean_time_to_happen = {
-        years = constant:bio_stockpile_accident.anthrax_base_years
+	immediate = {
+		if = {
+			limit = { has_variable = bio_stockpile_safety_arsenal_state }
+			var:bio_stockpile_safety_arsenal_state = { save_event_target_as = lab_accident_state }
+		}
+	}
 
-        # Strong containment and prevention drastically reduce stockpile accident chance
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
-            has_tech = sealed_containment_laboratories
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
-            has_tech = pathogen_handling_protocols
-            NOT = { has_tech = sealed_containment_laboratories }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t1_factor
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t2_factor
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t3_factor
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Stockpile-driven risk uses exclusive ranges (single active tier).
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
-            has_equipment = { anthrax_bomb_1 > 999 }
-            NOT = { has_equipment = { anthrax_bomb_1 > 1999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
-            has_equipment = { anthrax_bomb_1 > 1999 }
-            NOT = { has_equipment = { anthrax_bomb_1 > 4999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
-            has_equipment = { anthrax_bomb_1 > 4999 }
-            NOT = { has_equipment = { anthrax_bomb_1 > 9999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
-            has_equipment = { anthrax_bomb_1 > 9999 }
-            NOT = { has_equipment = { anthrax_bomb_1 > 19999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
-            has_equipment = { anthrax_bomb_1 > 19999 }
-        }
-    }
-
-    trigger = {
-        # Stockpile accidents only start at very large bomb counts.
-        has_equipment = { anthrax_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
-        # This stockpile accident type cannot repeat for this country for two years.
-        NOT = { has_country_flag = anthrax_stockpile_accident_cooldown }
-        # Must have completed the anthrax bomb project
-        is_special_project_completed = sp:anthrax_bomb
-        # Fail-safe containment prevents stockpile accidents entirely
-        NOT = { has_tech = fail_safe_containment_facilities }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_country_flag = {
-                flag = anthrax_stockpile_accident_cooldown
-                days = @bio_stockpile_accident_type_cooldown_days
-            }
-
-            # Calculate bombs lost (5% of stockpile)
-            set_temp_variable = { bombs_in_stockpile = 0 }
-            if = {
-                limit = { has_equipment = { anthrax_bomb_1 > 0 } }
-                set_temp_variable = { bombs_in_stockpile = num_equipment@anthrax_bomb_1 }
-            }
-            multiply_temp_variable = { bombs_in_stockpile = 0.05 }
-            round_temp_variable = bombs_in_stockpile
-
-            # Ensure at least 1 bomb is lost
-            if = {
-                limit = { check_variable = { bombs_in_stockpile < 1 } }
-                set_temp_variable = { bombs_in_stockpile = 1 }
-            }
-
-            # Find a random home state for the outbreak
-            random_controlled_state = {
-                limit = { is_core_of = ROOT arms_factory > 0 }
-                save_event_target_as = lab_accident_state
-            }
-
-            # If no core state, use any controlled state
-            if = {
-                limit = { NOT = { has_event_target = lab_accident_state } }
-                random_controlled_state = {
-                    save_event_target_as = lab_accident_state
-                }
-            }
-            # Lose 5% of bombs (negative amount to remove)
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = anthrax_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-    }
-
-    option = {
-        name = chaosx_bioweapon.4.a
-
-        # Lose 5% of bombs (negative amount to remove)
-        effect_tooltip = {
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = anthrax_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-
-        # Apply contamination to the accident state
-        event_target:lab_accident_state = {
-            set_temp_variable = { contamination_days = 150 }
-            apply_anthrax_contamination = yes
-        }
-
-        custom_effect_tooltip = anthrax_lab_accident_consequences_tt
-    }
+	option = {
+		name = chaosx_bioweapon.4.a
+		custom_effect_tooltip = bio_stockpile_safety_accident_resolved_tt
+		hidden_effect = { bio_stockpile_safety_cleanup_runtime_context = yes }
+	}
 }
 
 # Anthrax infection spreads to neighboring states (MTTH event)
@@ -737,143 +619,26 @@ country_event = {
     }
 }
 
-# Plague lab accident from stockpile (MTTH event)
+# Plague stockpile accident notification.
 country_event = {
-    id = chaosx_bioweapon.9
-    title = chaosx_bioweapon.9.t
-    desc = chaosx_bioweapon.9.d
-    picture = GFX_report_event_generic_bioweapon
+	id = chaosx_bioweapon.9
+	title = chaosx_bioweapon.9.t
+	desc = chaosx_bioweapon.9.d
+	picture = GFX_report_event_generic_bioweapon
+	is_triggered_only = yes
 
-    mean_time_to_happen = {
-        years = constant:bio_stockpile_accident.plague_base_years
+	immediate = {
+		if = {
+			limit = { has_variable = bio_stockpile_safety_arsenal_state }
+			var:bio_stockpile_safety_arsenal_state = { save_event_target_as = lab_accident_state }
+		}
+	}
 
-        # Strong containment and prevention drastically reduce stockpile accident chance
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
-            has_tech = sealed_containment_laboratories
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
-            has_tech = pathogen_handling_protocols
-            NOT = { has_tech = sealed_containment_laboratories }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t1_factor
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t2_factor
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t3_factor
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Stockpile-driven risk uses exclusive ranges (single active tier).
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
-            has_equipment = { plague_bomb_1 > 999 }
-            NOT = { has_equipment = { plague_bomb_1 > 1999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
-            has_equipment = { plague_bomb_1 > 1999 }
-            NOT = { has_equipment = { plague_bomb_1 > 4999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
-            has_equipment = { plague_bomb_1 > 4999 }
-            NOT = { has_equipment = { plague_bomb_1 > 9999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
-            has_equipment = { plague_bomb_1 > 9999 }
-            NOT = { has_equipment = { plague_bomb_1 > 19999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
-            has_equipment = { plague_bomb_1 > 19999 }
-        }
-    }
-
-    trigger = {
-        # Stockpile accidents only start at very large bomb counts.
-        has_equipment = { plague_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
-        # This stockpile accident type cannot repeat for this country for two years.
-        NOT = { has_country_flag = plague_stockpile_accident_cooldown }
-        # Must have completed the plague bomb project
-        is_special_project_completed = sp:plague_bomb
-        # Fail-safe containment prevents stockpile accidents entirely
-        NOT = { has_tech = fail_safe_containment_facilities }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_country_flag = {
-                flag = plague_stockpile_accident_cooldown
-                days = @bio_stockpile_accident_type_cooldown_days
-            }
-
-            # Calculate bombs lost (10% of stockpile - higher than anthrax due to danger)
-            set_temp_variable = { bombs_in_stockpile = 0 }
-            if = {
-                limit = { has_equipment = { plague_bomb_1 > 0 } }
-                set_temp_variable = { bombs_in_stockpile = num_equipment@plague_bomb_1 }
-            }
-            multiply_temp_variable = { bombs_in_stockpile = 0.1 }
-            round_temp_variable = bombs_in_stockpile
-
-            # Ensure at least 1 bomb is lost
-            if = {
-                limit = { check_variable = { bombs_in_stockpile < 1 } }
-                set_temp_variable = { bombs_in_stockpile = 1 }
-            }
-
-            # Find a random home state for the outbreak
-            random_controlled_state = {
-                limit = { is_core_of = ROOT arms_factory > 0 }
-                save_event_target_as = lab_accident_state
-            }
-
-            # If no core state, use any controlled state
-            if = {
-                limit = { NOT = { has_event_target = lab_accident_state } }
-                random_controlled_state = {
-                    save_event_target_as = lab_accident_state
-                }
-            }
-            # Lose 10% of bombs (negative amount to remove)
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = plague_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-    }
-
-    option = {
-        name = chaosx_bioweapon.9.a
-
-        # Lose 10% of bombs (negative amount to remove)
-        effect_tooltip = {
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = plague_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-
-        # Apply contamination to the accident state (very long lasting)
-        event_target:lab_accident_state = {
-            set_temp_variable = { contamination_days = 180 }
-            apply_plague_contamination = yes
-        }
-
-        custom_effect_tooltip = plague_lab_accident_consequences_tt
-    }
+	option = {
+		name = chaosx_bioweapon.9.a
+		custom_effect_tooltip = bio_stockpile_safety_accident_resolved_tt
+		hidden_effect = { bio_stockpile_safety_cleanup_runtime_context = yes }
+	}
 }
 
 # Plague infection spreads to neighboring states (MTTH event)
@@ -1244,143 +1009,26 @@ country_event = {
     }
 }
 
-# Tularemia lab accident from stockpile (MTTH event)
+# Tularemia stockpile accident notification.
 country_event = {
-    id = chaosx_bioweapon.102
-    title = chaosx_bioweapon.102.t
-    desc = chaosx_bioweapon.102.d
-    picture = GFX_report_event_generic_bioweapon
+	id = chaosx_bioweapon.102
+	title = chaosx_bioweapon.102.t
+	desc = chaosx_bioweapon.102.d
+	picture = GFX_report_event_generic_bioweapon
+	is_triggered_only = yes
 
-    mean_time_to_happen = {
-        years = constant:bio_stockpile_accident.tularemia_base_years
+	immediate = {
+		if = {
+			limit = { has_variable = bio_stockpile_safety_arsenal_state }
+			var:bio_stockpile_safety_arsenal_state = { save_event_target_as = lab_accident_state }
+		}
+	}
 
-        # Strong containment and prevention drastically reduce stockpile accident chance
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
-            has_tech = sealed_containment_laboratories
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
-            has_tech = pathogen_handling_protocols
-            NOT = { has_tech = sealed_containment_laboratories }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t1_factor
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t2_factor
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t3_factor
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Stockpile-driven risk uses exclusive ranges (single active tier).
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
-            has_equipment = { tularemia_bomb_1 > 999 }
-            NOT = { has_equipment = { tularemia_bomb_1 > 1999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
-            has_equipment = { tularemia_bomb_1 > 1999 }
-            NOT = { has_equipment = { tularemia_bomb_1 > 4999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
-            has_equipment = { tularemia_bomb_1 > 4999 }
-            NOT = { has_equipment = { tularemia_bomb_1 > 9999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
-            has_equipment = { tularemia_bomb_1 > 9999 }
-            NOT = { has_equipment = { tularemia_bomb_1 > 19999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
-            has_equipment = { tularemia_bomb_1 > 19999 }
-        }
-    }
-
-    trigger = {
-        # Stockpile accidents only start at very large bomb counts.
-        has_equipment = { tularemia_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
-        # This stockpile accident type cannot repeat for this country for two years.
-        NOT = { has_country_flag = tularemia_stockpile_accident_cooldown }
-        # Must have completed the tularemia bomb project
-        is_special_project_completed = sp:tularemia_bomb
-        # Fail-safe containment prevents stockpile accidents entirely
-        NOT = { has_tech = fail_safe_containment_facilities }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_country_flag = {
-                flag = tularemia_stockpile_accident_cooldown
-                days = @bio_stockpile_accident_type_cooldown_days
-            }
-
-            # Calculate bombs lost (5% of stockpile - lower than anthrax/plague due to lower danger)
-            set_temp_variable = { bombs_in_stockpile = 0 }
-            if = {
-                limit = { has_equipment = { tularemia_bomb_1 > 0 } }
-                set_temp_variable = { bombs_in_stockpile = num_equipment@tularemia_bomb_1 }
-            }
-            multiply_temp_variable = { bombs_in_stockpile = 0.05 }
-            round_temp_variable = bombs_in_stockpile
-
-            # Ensure at least 1 bomb is lost
-            if = {
-                limit = { check_variable = { bombs_in_stockpile < 1 } }
-                set_temp_variable = { bombs_in_stockpile = 1 }
-            }
-
-            # Find a random home state for the outbreak
-            random_controlled_state = {
-                limit = { is_core_of = ROOT arms_factory > 0 }
-                save_event_target_as = lab_accident_state
-            }
-
-            # If no core state, use any controlled state
-            if = {
-                limit = { NOT = { has_event_target = lab_accident_state } }
-                random_controlled_state = {
-                    save_event_target_as = lab_accident_state
-                }
-            }
-            # Lose 5% of bombs (negative amount to remove)
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = tularemia_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-    }
-
-    option = {
-        name = chaosx_bioweapon.102.a
-
-        # Lose 5% of bombs (negative amount to remove)
-        effect_tooltip = {
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = tularemia_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-
-        # Apply contamination to the accident state (short duration)
-        event_target:lab_accident_state = {
-            set_temp_variable = { contamination_days = 30 }
-            apply_tularemia_contamination = yes
-        }
-
-        custom_effect_tooltip = tularemia_lab_accident_consequences_tt
-    }
+	option = {
+		name = chaosx_bioweapon.102.a
+		custom_effect_tooltip = bio_stockpile_safety_accident_resolved_tt
+		hidden_effect = { bio_stockpile_safety_cleanup_runtime_context = yes }
+	}
 }
 
 # Smallpox Laboratory Outbreak Event (triggered events)
@@ -1576,159 +1224,26 @@ country_event = {
     }
 }
 
-# Smallpox lab accident from stockpile (MTTH event)
+# Smallpox stockpile accident notification.
 country_event = {
-    id = chaosx_bioweapon.203
-    title = chaosx_bioweapon.203.t
-    desc = chaosx_bioweapon.203.d
-    picture = GFX_report_event_generic_bioweapon
+	id = chaosx_bioweapon.203
+	title = chaosx_bioweapon.203.t
+	desc = chaosx_bioweapon.203.d
+	picture = GFX_report_event_generic_bioweapon
+	is_triggered_only = yes
 
-    mean_time_to_happen = {
-        years = constant:bio_stockpile_accident.smallpox_base_years
+	immediate = {
+		if = {
+			limit = { has_variable = bio_stockpile_safety_arsenal_state }
+			var:bio_stockpile_safety_arsenal_state = { save_event_target_as = lab_accident_state }
+		}
+	}
 
-        # Strong containment and prevention drastically reduce stockpile accident chance
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
-            has_tech = sealed_containment_laboratories
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
-            has_tech = pathogen_handling_protocols
-            NOT = { has_tech = sealed_containment_laboratories }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t1_factor
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t2_factor
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.prevention_t3_factor
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Stockpile-driven risk uses exclusive ranges (single active tier).
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
-            has_equipment = { smallpox_bomb_1 > 999 }
-            NOT = { has_equipment = { smallpox_bomb_1 > 1999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
-            has_equipment = { smallpox_bomb_1 > 1999 }
-            NOT = { has_equipment = { smallpox_bomb_1 > 4999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
-            has_equipment = { smallpox_bomb_1 > 4999 }
-            NOT = { has_equipment = { smallpox_bomb_1 > 9999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
-            has_equipment = { smallpox_bomb_1 > 9999 }
-            NOT = { has_equipment = { smallpox_bomb_1 > 19999 } }
-        }
-        modifier = {
-            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
-            has_equipment = { smallpox_bomb_1 > 19999 }
-        }
-    }
-
-    trigger = {
-        # Stockpile accidents only start at very large bomb counts.
-        has_equipment = { smallpox_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
-        # This stockpile accident type cannot repeat for this country for two years.
-        NOT = { has_country_flag = smallpox_stockpile_accident_cooldown }
-        # Must have completed the smallpox bomb project
-        is_special_project_completed = sp:smallpox_bomb
-        # Fail-safe containment prevents stockpile accidents entirely
-        NOT = { has_tech = fail_safe_containment_facilities }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_country_flag = {
-                flag = smallpox_stockpile_accident_cooldown
-                days = @bio_stockpile_accident_type_cooldown_days
-            }
-
-            # Calculate bombs lost (20% of stockpile - highest loss due to extreme danger)
-            set_temp_variable = { bombs_in_stockpile = 0 }
-            if = {
-                limit = { has_equipment = { smallpox_bomb_1 > 0 } }
-                set_temp_variable = { bombs_in_stockpile = num_equipment@smallpox_bomb_1 }
-            }
-            multiply_temp_variable = { bombs_in_stockpile = 0.2 }
-            round_temp_variable = bombs_in_stockpile
-
-            # Ensure at least 1 bomb is lost
-            if = {
-                limit = { check_variable = { bombs_in_stockpile < 1 } }
-                set_temp_variable = { bombs_in_stockpile = 1 }
-            }
-
-            # Find a random home state for the outbreak
-            random_controlled_state = {
-                limit = { is_core_of = ROOT arms_factory > 0 }
-                save_event_target_as = lab_accident_state
-            }
-
-            # If no core state, use any controlled state
-            if = {
-                limit = { NOT = { has_event_target = lab_accident_state } }
-                random_controlled_state = {
-                    save_event_target_as = lab_accident_state
-                }
-            }
-
-            # Lose 20% of bombs (negative amount to remove)
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = smallpox_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-    }
-
-    option = {
-        name = chaosx_bioweapon.203.a
-
-        # Lose 20% of bombs (negative amount to remove)
-        effect_tooltip = {
-            multiply_temp_variable = { bombs_in_stockpile = -1 }
-            add_equipment_to_stockpile = {
-                type = smallpox_bomb_1
-                amount = bombs_in_stockpile
-                producer = ROOT
-            }
-        }
-
-        # Apply catastrophic contamination to accident state (permanent)
-        event_target:lab_accident_state = {
-            set_temp_variable = { contamination_days = 3652 } # Permanent
-            apply_smallpox_contamination = yes
-
-            # Epidemic spreads rapidly to all neighbors
-            every_neighbor_state = {
-                limit = {
-                    is_fully_controlled_by = ROOT
-                    NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
-                }
-                set_temp_variable = { contamination_days = 3652 } # Permanent
-                apply_smallpox_contamination = yes
-            }
-        }
-
-        # National emergency consequences
-        add_stability = -0.03
-        add_war_support = -0.03
-
-        custom_effect_tooltip = smallpox_lab_accident_consequences_tt
-        set_country_flag = smallpox_national_emergency
-    }
+	option = {
+		name = chaosx_bioweapon.203.a
+		custom_effect_tooltip = bio_stockpile_safety_accident_resolved_tt
+		hidden_effect = { bio_stockpile_safety_cleanup_runtime_context = yes }
+	}
 }
 
 # Smallpox Epidemic Spreads Event

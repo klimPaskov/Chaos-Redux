@@ -1,0 +1,853 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL STOCKPILE SAFETY SCRIPTED EFFECTS
+# ============================================================================
+# Inputs: country scope for all public helpers; the caller supplies the exact
+#   arsenal state pointer/source, selected lifecycle agent, requested loss,
+#   incident kind, and any private runtime sabotage/handling flags.
+# Outputs: actual four-agent stockpile values and weights, exact-state
+#   condition values, visible risk score/band, bounded loss amounts, incident
+#   severity weights/selection, and a cleanup effect.
+# Side effects: writes private country/state records, synchronizes the four risk
+#   ideas, schedules only the designated country's monitor, applies exact
+#   accident payload loss, and sends non-contained accidents into the shared
+#   ordinary lifecycle. It never creates a delivery decision, raid, operation,
+#   alternative target, deliberate-use record, or zombie state.
+# ============================================================================
+
+# Country scope. Captures the live national equipment values exactly. The
+# equipment identifiers are the four existing biological payload models.
+bio_stockpile_safety_capture_agent_stockpiles = {
+	set_variable = { bio_stockpile_safety_anthrax_stockpile = num_equipment@anthrax_bomb_1 }
+	set_variable = { bio_stockpile_safety_plague_stockpile = num_equipment@plague_bomb_1 }
+	set_variable = { bio_stockpile_safety_tularemia_stockpile = num_equipment@tularemia_bomb_1 }
+	set_variable = { bio_stockpile_safety_smallpox_stockpile = num_equipment@smallpox_bomb_1 }
+
+	set_variable = { bio_stockpile_safety_total_stockpile = bio_stockpile_safety_anthrax_stockpile }
+	add_to_variable = { bio_stockpile_safety_total_stockpile = bio_stockpile_safety_plague_stockpile }
+	add_to_variable = { bio_stockpile_safety_total_stockpile = bio_stockpile_safety_tularemia_stockpile }
+	add_to_variable = { bio_stockpile_safety_total_stockpile = bio_stockpile_safety_smallpox_stockpile }
+
+	set_variable = { bio_stockpile_safety_weighted_stockpile = bio_stockpile_safety_anthrax_stockpile }
+	multiply_variable = { bio_stockpile_safety_weighted_stockpile = constant:bio_stockpile_safety_agent_risk.anthrax }
+	set_temp_variable = { bio_stockpile_safety_weighted_agent = bio_stockpile_safety_plague_stockpile }
+	multiply_temp_variable = { bio_stockpile_safety_weighted_agent = constant:bio_stockpile_safety_agent_risk.plague }
+	add_to_variable = { bio_stockpile_safety_weighted_stockpile = bio_stockpile_safety_weighted_agent }
+	set_temp_variable = { bio_stockpile_safety_weighted_agent = bio_stockpile_safety_tularemia_stockpile }
+	multiply_temp_variable = { bio_stockpile_safety_weighted_agent = constant:bio_stockpile_safety_agent_risk.tularemia }
+	add_to_variable = { bio_stockpile_safety_weighted_stockpile = bio_stockpile_safety_weighted_agent }
+	set_temp_variable = { bio_stockpile_safety_weighted_agent = bio_stockpile_safety_smallpox_stockpile }
+	multiply_temp_variable = { bio_stockpile_safety_weighted_agent = constant:bio_stockpile_safety_agent_risk.smallpox }
+	add_to_variable = { bio_stockpile_safety_weighted_stockpile = bio_stockpile_safety_weighted_agent }
+
+	set_variable = { bio_stockpile_safety_stockpile_snapshot_status = constant:bio_lifecycle_proof.supplied }
+}
+
+# Country scope. Selection weights are the unmodified actual stockpile counts;
+# the weighted stockpile above is only for visible risk scoring.
+bio_stockpile_safety_prepare_agent_weights = {
+	bio_stockpile_safety_capture_agent_stockpiles = yes
+	set_variable = { bio_stockpile_safety_anthrax_weight = bio_stockpile_safety_anthrax_stockpile }
+	set_variable = { bio_stockpile_safety_plague_weight = bio_stockpile_safety_plague_stockpile }
+	set_variable = { bio_stockpile_safety_tularemia_weight = bio_stockpile_safety_tularemia_stockpile }
+	set_variable = { bio_stockpile_safety_smallpox_weight = bio_stockpile_safety_smallpox_stockpile }
+	set_variable = { bio_stockpile_safety_agent_weights_status = constant:bio_lifecycle_proof.supplied }
+}
+
+# Country scope. Reads only the one designated arsenal state and records exact
+# building/infrastructure values on the country for the current calculation.
+# The state flag is runtime-only and is cleared by the cleanup helper.
+bio_stockpile_safety_capture_exact_arsenal_condition = {
+	set_variable = { bio_stockpile_safety_condition_snapshot_status = constant:bio_lifecycle_proof.missing }
+	set_variable = { bio_stockpile_safety_facility_level = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_facility_damaged_level = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_facility_operational_level = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_war_damage_active = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_recent_bombing_active = constant:bio_lifecycle_math.zero }
+
+	if = {
+		limit = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+		var:bio_stockpile_safety_arsenal_state = {
+			set_temp_variable = { bio_stockpile_safety_facility_level_captured = building_level@biowarfare_facility }
+			set_temp_variable = { bio_stockpile_safety_facility_damaged_level_captured = damaged_building_level@biowarfare_facility }
+			set_temp_variable = { bio_stockpile_safety_facility_operational_level_captured = non_damaged_building_level@biowarfare_facility }
+
+			if = {
+				limit = { days_since_last_strategic_bombing < constant:bio_stockpile_safety_risk.recent_bombing_days }
+				PREV = { set_variable = { bio_stockpile_safety_recent_bombing_active = constant:bio_lifecycle_math.one } }
+			}
+
+			set_state_flag = bio_stockpile_safety_condition_snapshot_active
+			PREV = {
+				set_variable = { bio_stockpile_safety_facility_level = bio_stockpile_safety_facility_level_captured }
+				set_variable = { bio_stockpile_safety_facility_damaged_level = bio_stockpile_safety_facility_damaged_level_captured }
+				set_variable = { bio_stockpile_safety_facility_operational_level = bio_stockpile_safety_facility_operational_level_captured }
+				set_variable = { bio_stockpile_safety_condition_snapshot_status = constant:bio_lifecycle_proof.supplied }
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_stockpile_safety_facility_damaged_level
+				value = constant:bio_lifecycle_math.zero
+				compare = greater_than
+			}
+		}
+		set_variable = { bio_stockpile_safety_war_damage_active = constant:bio_lifecycle_math.one }
+	}
+}
+
+# Country scope. Reads explicit sabotage/handling evidence only when it is
+# tied to the exact arsenal pointer. The private flags are caller-owned input
+# flags on that exact state and are cleared only by
+# bio_stockpile_safety_cleanup_runtime_context.
+bio_stockpile_safety_capture_handling_state = {
+	set_variable = { bio_stockpile_safety_handling_context_status = constant:bio_lifecycle_proof.missing }
+	set_variable = { bio_stockpile_safety_sabotage_active = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_recent_handling_active_value = constant:bio_lifecycle_math.zero }
+
+	if = {
+		limit = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+		if = {
+			limit = { bio_stockpile_safety_explicit_sabotage_is_active = yes }
+			set_variable = { bio_stockpile_safety_sabotage_active = constant:bio_lifecycle_math.one }
+			set_variable = { bio_stockpile_safety_recent_handling_active_value = constant:bio_lifecycle_math.one }
+		}
+		if = {
+			limit = {
+				var:bio_stockpile_safety_arsenal_state = {
+					has_state_flag = bio_stockpile_safety_recent_handling_active
+				}
+			}
+			set_variable = { bio_stockpile_safety_recent_handling_active_value = constant:bio_lifecycle_math.one }
+		}
+
+		if = {
+			limit = {
+				has_variable = bio_last_sabotage_start_date
+				has_variable = bio_last_sabotage_state
+			}
+			set_temp_variable = { bio_stockpile_safety_handling_elapsed_days = global.num_days }
+			subtract_from_temp_variable = { bio_stockpile_safety_handling_elapsed_days = bio_last_sabotage_start_date }
+			if = {
+				limit = {
+					check_variable = {
+						var = bio_stockpile_safety_handling_elapsed_days
+						value = constant:bio_stockpile_safety_risk.recent_handling_days
+						compare = less_than
+					}
+				}
+				if = {
+					limit = { var:bio_last_sabotage_state = { state = var:bio_stockpile_safety_arsenal_state } }
+					set_variable = { bio_stockpile_safety_recent_handling_active_value = constant:bio_lifecycle_math.one }
+				}
+			}
+		}
+		set_variable = { bio_stockpile_safety_handling_context_status = constant:bio_lifecycle_proof.supplied }
+	}
+}
+
+# Country scope. Refreshes the visible risk score and one of the four bands.
+# It does not decide whether an incident is an ordinary accident; callers must
+# set bio_stockpile_safety_incident_kind and use the dedicated immunity trigger.
+bio_stockpile_safety_refresh_risk_band = {
+	set_variable = { bio_stockpile_safety_risk_band = constant:bio_stockpile_safety_band.none }
+	set_variable = { bio_stockpile_safety_risk_score = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_risk_context_status = constant:bio_lifecycle_proof.missing }
+	set_variable = { bio_stockpile_safety_effective_safety = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_safety_tech_level = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_stockpile_risk_component = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_facility_risk_component = constant:bio_lifecycle_math.zero }
+
+	bio_stockpile_safety_capture_agent_stockpiles = yes
+	bio_stockpile_safety_capture_exact_arsenal_condition = yes
+	bio_stockpile_safety_capture_handling_state = yes
+
+	if = {
+		limit = { bio_stockpile_safety_risk_context_is_valid = yes }
+		set_variable = { bio_stockpile_safety_effective_safety = cbrn_biological_security }
+		if = {
+			limit = { has_tech = pathogen_handling_protocols }
+			add_to_variable = { bio_stockpile_safety_effective_safety = constant:bio_lifecycle_response.pathogen_handling_biosecurity_add }
+			add_to_variable = { bio_stockpile_safety_safety_tech_level = constant:bio_lifecycle_math.one }
+		}
+		if = {
+			limit = { has_tech = sealed_containment_laboratories }
+			add_to_variable = { bio_stockpile_safety_effective_safety = constant:bio_lifecycle_response.sealed_labs_biosecurity_add }
+			add_to_variable = { bio_stockpile_safety_safety_tech_level = constant:bio_lifecycle_math.one }
+		}
+		if = {
+			limit = { has_tech = fail_safe_containment_facilities }
+			add_to_variable = { bio_stockpile_safety_effective_safety = constant:bio_lifecycle_response.fail_safe_biosecurity_add }
+			add_to_variable = { bio_stockpile_safety_safety_tech_level = constant:bio_lifecycle_math.one }
+		}
+		clamp_variable = {
+			var = bio_stockpile_safety_effective_safety
+			min = constant:bio_lifecycle_math.zero
+			max = constant:bio_lifecycle_math.hundred
+		}
+
+		set_variable = { bio_stockpile_safety_stockpile_risk_component = bio_stockpile_safety_weighted_stockpile }
+		divide_variable = { bio_stockpile_safety_stockpile_risk_component = constant:bio_stockpile_safety_risk.stockpile_score_scale }
+		multiply_variable = { bio_stockpile_safety_stockpile_risk_component = constant:bio_lifecycle_math.hundred }
+		set_variable = { bio_stockpile_safety_risk_score = constant:bio_lifecycle_math.hundred }
+		subtract_from_variable = { bio_stockpile_safety_risk_score = bio_stockpile_safety_effective_safety }
+		add_to_variable = { bio_stockpile_safety_risk_score = bio_stockpile_safety_stockpile_risk_component }
+
+		set_variable = { bio_stockpile_safety_facility_risk_component = bio_stockpile_safety_facility_damaged_level }
+		multiply_variable = { bio_stockpile_safety_facility_risk_component = constant:bio_stockpile_safety_risk.facility_damage_penalty_per_level }
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_facility_operational_level
+					value = constant:bio_stockpile_safety_risk.facility_operational_minimum_level
+					compare = less_than
+				}
+			}
+			add_to_variable = { bio_stockpile_safety_facility_risk_component = constant:bio_stockpile_safety_risk.facility_inoperable_penalty }
+		}
+		add_to_variable = { bio_stockpile_safety_risk_score = bio_stockpile_safety_facility_risk_component }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_war_damage_active
+					value = constant:bio_lifecycle_math.one
+					compare = equals
+				}
+			}
+			add_to_variable = { bio_stockpile_safety_risk_score = constant:bio_stockpile_safety_risk.war_damage_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_recent_bombing_active
+					value = constant:bio_lifecycle_math.one
+					compare = equals
+				}
+			}
+			add_to_variable = { bio_stockpile_safety_risk_score = constant:bio_stockpile_safety_risk.recent_bombing_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_sabotage_active
+					value = constant:bio_lifecycle_math.one
+					compare = equals
+				}
+			}
+			add_to_variable = { bio_stockpile_safety_risk_score = constant:bio_stockpile_safety_risk.sabotage_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_recent_handling_active_value
+					value = constant:bio_lifecycle_math.one
+					compare = equals
+				}
+			}
+			add_to_variable = { bio_stockpile_safety_risk_score = constant:bio_stockpile_safety_risk.recent_handling_penalty }
+		}
+		clamp_variable = {
+			var = bio_stockpile_safety_risk_score
+			min = constant:bio_stockpile_safety_risk.score_minimum
+			max = constant:bio_stockpile_safety_risk.score_maximum
+		}
+
+		# The player-facing band follows the accepted matrix directly. The score
+		# remains a readable 0-100 summary, but it is not a substitute for the
+		# explicit safety, stockpile, damage, bombing, and sabotage gates.
+		if = {
+			limit = { bio_stockpile_safety_meets_critical_conditions = yes }
+			set_variable = { bio_stockpile_safety_risk_band = constant:bio_stockpile_safety_band.critical }
+		}
+		else_if = {
+			limit = { bio_stockpile_safety_meets_dangerous_conditions = yes }
+			set_variable = { bio_stockpile_safety_risk_band = constant:bio_stockpile_safety_band.dangerous }
+		}
+		else_if = {
+			limit = { bio_stockpile_safety_meets_controlled_conditions = yes }
+			set_variable = { bio_stockpile_safety_risk_band = constant:bio_stockpile_safety_band.controlled }
+		}
+		else = {
+			set_variable = { bio_stockpile_safety_risk_band = constant:bio_stockpile_safety_band.strained }
+		}
+		set_variable = { bio_stockpile_safety_risk_context_status = constant:bio_lifecycle_proof.supplied }
+	}
+}
+
+# Country scope. Produces caller-facing random_list weights for the five
+# ordinary-accident severities. The effect deliberately does not enter the
+# lifecycle; a caller maps the selected severity to its existing route record.
+bio_stockpile_safety_prepare_incident_severity_inputs = {
+	set_variable = { bio_stockpile_safety_contained_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_lab_contamination_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_local_outbreak_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_major_domestic_outbreak_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_international_exposure_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_incident_selection_status = constant:bio_lifecycle_proof.missing }
+
+	bio_stockpile_safety_refresh_risk_band = yes
+	if = {
+		limit = {
+			bio_stockpile_safety_risk_band_is_valid = yes
+			bio_stockpile_safety_incident_is_ordinary_accident = yes
+		}
+		if = {
+			limit = { bio_stockpile_safety_is_controlled = yes }
+			set_variable = { bio_stockpile_safety_contained_weight = constant:bio_stockpile_safety_incident_weight.controlled.contained }
+			set_variable = { bio_stockpile_safety_lab_contamination_weight = constant:bio_stockpile_safety_incident_weight.controlled.lab_contamination }
+			set_variable = { bio_stockpile_safety_local_outbreak_weight = constant:bio_stockpile_safety_incident_weight.controlled.local_outbreak }
+			set_variable = { bio_stockpile_safety_major_domestic_outbreak_weight = constant:bio_stockpile_safety_incident_weight.controlled.major_domestic_outbreak }
+			set_variable = { bio_stockpile_safety_international_exposure_weight = constant:bio_stockpile_safety_incident_weight.controlled.international_exposure }
+		}
+		else_if = {
+			limit = { bio_stockpile_safety_is_strained = yes }
+			set_variable = { bio_stockpile_safety_contained_weight = constant:bio_stockpile_safety_incident_weight.strained.contained }
+			set_variable = { bio_stockpile_safety_lab_contamination_weight = constant:bio_stockpile_safety_incident_weight.strained.lab_contamination }
+			set_variable = { bio_stockpile_safety_local_outbreak_weight = constant:bio_stockpile_safety_incident_weight.strained.local_outbreak }
+			set_variable = { bio_stockpile_safety_major_domestic_outbreak_weight = constant:bio_stockpile_safety_incident_weight.strained.major_domestic_outbreak }
+			set_variable = { bio_stockpile_safety_international_exposure_weight = constant:bio_stockpile_safety_incident_weight.strained.international_exposure }
+		}
+		else_if = {
+			limit = { bio_stockpile_safety_is_dangerous = yes }
+			set_variable = { bio_stockpile_safety_contained_weight = constant:bio_stockpile_safety_incident_weight.dangerous.contained }
+			set_variable = { bio_stockpile_safety_lab_contamination_weight = constant:bio_stockpile_safety_incident_weight.dangerous.lab_contamination }
+			set_variable = { bio_stockpile_safety_local_outbreak_weight = constant:bio_stockpile_safety_incident_weight.dangerous.local_outbreak }
+			set_variable = { bio_stockpile_safety_major_domestic_outbreak_weight = constant:bio_stockpile_safety_incident_weight.dangerous.major_domestic_outbreak }
+			set_variable = { bio_stockpile_safety_international_exposure_weight = constant:bio_stockpile_safety_incident_weight.dangerous.international_exposure }
+		}
+		else_if = {
+			limit = { bio_stockpile_safety_is_critical = yes }
+			set_variable = { bio_stockpile_safety_contained_weight = constant:bio_stockpile_safety_incident_weight.critical.contained }
+			set_variable = { bio_stockpile_safety_lab_contamination_weight = constant:bio_stockpile_safety_incident_weight.critical.lab_contamination }
+			set_variable = { bio_stockpile_safety_local_outbreak_weight = constant:bio_stockpile_safety_incident_weight.critical.local_outbreak }
+			set_variable = { bio_stockpile_safety_major_domestic_outbreak_weight = constant:bio_stockpile_safety_incident_weight.critical.major_domestic_outbreak }
+			set_variable = { bio_stockpile_safety_international_exposure_weight = constant:bio_stockpile_safety_incident_weight.critical.international_exposure }
+		}
+		set_variable = { bio_stockpile_safety_incident_selection_total_weight = bio_stockpile_safety_contained_weight }
+		add_to_variable = { bio_stockpile_safety_incident_selection_total_weight = bio_stockpile_safety_lab_contamination_weight }
+		add_to_variable = { bio_stockpile_safety_incident_selection_total_weight = bio_stockpile_safety_local_outbreak_weight }
+		add_to_variable = { bio_stockpile_safety_incident_selection_total_weight = bio_stockpile_safety_major_domestic_outbreak_weight }
+		add_to_variable = { bio_stockpile_safety_incident_selection_total_weight = bio_stockpile_safety_international_exposure_weight }
+		set_variable = { bio_stockpile_safety_incident_selection_status = constant:bio_lifecycle_proof.supplied }
+	}
+}
+
+# Country scope. Selects only the already-prepared ordinary-accident severity
+# and stores the private severity enum; it does not dispatch any consequences.
+bio_stockpile_safety_select_incident_severity = {
+	bio_stockpile_safety_prepare_incident_severity_inputs = yes
+	set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.none }
+	if = {
+		limit = { bio_stockpile_safety_incident_selection_inputs_are_valid = yes }
+		random_list = {
+			var:bio_stockpile_safety_contained_weight = {
+				set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.contained }
+			}
+			var:bio_stockpile_safety_lab_contamination_weight = {
+				set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.lab_contamination }
+			}
+			var:bio_stockpile_safety_local_outbreak_weight = {
+				set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.local_outbreak }
+			}
+			var:bio_stockpile_safety_major_domestic_outbreak_weight = {
+				set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.major_domestic_outbreak }
+			}
+			var:bio_stockpile_safety_international_exposure_weight = {
+				set_variable = { bio_stockpile_safety_selected_incident_severity = constant:bio_stockpile_safety_incident_severity.international_exposure }
+			}
+		}
+	}
+}
+
+# Country scope. Prepares a positive and negative exact loss amount for the
+# selected lifecycle agent. The caller must provide a positive requested loss;
+# this helper rounds it, enforces a minimum of one, and caps it at live stock.
+bio_stockpile_safety_prepare_stock_loss_amount = {
+	set_variable = { bio_stockpile_safety_selected_agent_stockpile = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_stock_loss_amount = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_stock_loss_amount_negative = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_stock_loss_preparation_status = constant:bio_lifecycle_proof.missing }
+
+	bio_stockpile_safety_capture_agent_stockpiles = yes
+	if = {
+		limit = { bio_stockpile_safety_stock_loss_request_is_valid = yes }
+		if = {
+			limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+			set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_anthrax_stockpile }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+			set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_plague_stockpile }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+			set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_tularemia_stockpile }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+			set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_smallpox_stockpile }
+		}
+
+		set_variable = { bio_stockpile_safety_stock_loss_amount = bio_stockpile_safety_requested_loss }
+		round_variable = bio_stockpile_safety_stock_loss_amount
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_stock_loss_amount
+					value = constant:bio_stockpile_safety_loss.minimum
+					compare = less_than
+				}
+			}
+			set_variable = { bio_stockpile_safety_stock_loss_amount = constant:bio_stockpile_safety_loss.minimum }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = bio_stockpile_safety_stock_loss_amount
+					value = bio_stockpile_safety_selected_agent_stockpile
+					compare = greater_than
+				}
+			}
+			set_variable = { bio_stockpile_safety_stock_loss_amount = bio_stockpile_safety_selected_agent_stockpile }
+		}
+		set_variable = { bio_stockpile_safety_stock_loss_amount_negative = bio_stockpile_safety_stock_loss_amount }
+		multiply_variable = { bio_stockpile_safety_stock_loss_amount_negative = constant:bio_lifecycle_math.negation }
+		set_variable = { bio_stockpile_safety_stock_loss_preparation_status = constant:bio_lifecycle_proof.supplied }
+	}
+}
+
+# Country scope. Removes only the four mutually exclusive visible risk ideas.
+bio_stockpile_safety_remove_risk_ideas = {
+	remove_ideas = {
+		bio_stockpile_risk_controlled
+		bio_stockpile_risk_strained
+		bio_stockpile_risk_dangerous
+		bio_stockpile_risk_critical
+	}
+}
+
+# Country scope. Keeps the visible national spirit synchronized with the exact
+# current band. Invalid pointers expose no risk idea and are never substituted.
+bio_stockpile_safety_refresh_risk_idea = {
+	bio_stockpile_safety_remove_risk_ideas = yes
+	if = {
+		limit = { bio_stockpile_safety_is_controlled = yes }
+		add_ideas = bio_stockpile_risk_controlled
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_strained = yes }
+		add_ideas = bio_stockpile_risk_strained
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_dangerous = yes }
+		add_ideas = bio_stockpile_risk_dangerous
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_critical = yes }
+		add_ideas = bio_stockpile_risk_critical
+	}
+}
+
+# Country scope. Prepares one targeted monthly check from the current visible
+# band. These weights are evaluated only by the private scheduled country event.
+bio_stockpile_safety_prepare_monitor_weights = {
+	set_variable = { bio_stockpile_safety_monitor_incident_weight = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_monitor_no_incident_weight = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { bio_stockpile_safety_is_controlled = yes }
+		set_variable = { bio_stockpile_safety_monitor_incident_weight = constant:bio_stockpile_safety_monitor.controlled_incident_weight }
+		set_variable = { bio_stockpile_safety_monitor_no_incident_weight = constant:bio_stockpile_safety_monitor.controlled_no_incident_weight }
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_strained = yes }
+		set_variable = { bio_stockpile_safety_monitor_incident_weight = constant:bio_stockpile_safety_monitor.strained_incident_weight }
+		set_variable = { bio_stockpile_safety_monitor_no_incident_weight = constant:bio_stockpile_safety_monitor.strained_no_incident_weight }
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_dangerous = yes }
+		set_variable = { bio_stockpile_safety_monitor_incident_weight = constant:bio_stockpile_safety_monitor.dangerous_incident_weight }
+		set_variable = { bio_stockpile_safety_monitor_no_incident_weight = constant:bio_stockpile_safety_monitor.dangerous_no_incident_weight }
+	}
+	else_if = {
+		limit = { bio_stockpile_safety_is_critical = yes }
+		set_variable = { bio_stockpile_safety_monitor_incident_weight = constant:bio_stockpile_safety_monitor.critical_incident_weight }
+		set_variable = { bio_stockpile_safety_monitor_no_incident_weight = constant:bio_stockpile_safety_monitor.critical_no_incident_weight }
+	}
+}
+
+# Country scope. Uses exact stockpile counts and excludes only an agent whose
+# own two-year accident cooldown is active. It does not alter the stockpile.
+bio_stockpile_safety_select_available_accident_agent = {
+	bio_stockpile_safety_prepare_agent_weights = yes
+	set_variable = { bio_stockpile_safety_available_anthrax_weight = bio_stockpile_safety_anthrax_weight }
+	set_variable = { bio_stockpile_safety_available_plague_weight = bio_stockpile_safety_plague_weight }
+	set_variable = { bio_stockpile_safety_available_tularemia_weight = bio_stockpile_safety_tularemia_weight }
+	set_variable = { bio_stockpile_safety_available_smallpox_weight = bio_stockpile_safety_smallpox_weight }
+	if = {
+		limit = { has_country_flag = anthrax_stockpile_accident_cooldown }
+		set_variable = { bio_stockpile_safety_available_anthrax_weight = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { has_country_flag = plague_stockpile_accident_cooldown }
+		set_variable = { bio_stockpile_safety_available_plague_weight = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { has_country_flag = tularemia_stockpile_accident_cooldown }
+		set_variable = { bio_stockpile_safety_available_tularemia_weight = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { has_country_flag = smallpox_stockpile_accident_cooldown }
+		set_variable = { bio_stockpile_safety_available_smallpox_weight = constant:bio_lifecycle_math.zero }
+	}
+	set_variable = { bio_stockpile_safety_available_agent_weight_total = bio_stockpile_safety_available_anthrax_weight }
+	add_to_variable = { bio_stockpile_safety_available_agent_weight_total = bio_stockpile_safety_available_plague_weight }
+	add_to_variable = { bio_stockpile_safety_available_agent_weight_total = bio_stockpile_safety_available_tularemia_weight }
+	add_to_variable = { bio_stockpile_safety_available_agent_weight_total = bio_stockpile_safety_available_smallpox_weight }
+	set_variable = { bio_stockpile_safety_selected_agent = constant:bio_lifecycle_agent.none }
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_stockpile_safety_available_agent_weight_total
+				value = constant:bio_lifecycle_math.zero
+				compare = greater_than
+			}
+		}
+		random_list = {
+			var:bio_stockpile_safety_available_anthrax_weight = {
+				set_variable = { bio_stockpile_safety_selected_agent = constant:bio_lifecycle_agent.anthrax }
+			}
+			var:bio_stockpile_safety_available_plague_weight = {
+				set_variable = { bio_stockpile_safety_selected_agent = constant:bio_lifecycle_agent.plague }
+			}
+			var:bio_stockpile_safety_available_tularemia_weight = {
+				set_variable = { bio_stockpile_safety_selected_agent = constant:bio_lifecycle_agent.tularemia }
+			}
+			var:bio_stockpile_safety_available_smallpox_weight = {
+				set_variable = { bio_stockpile_safety_selected_agent = constant:bio_lifecycle_agent.smallpox }
+			}
+		}
+	}
+}
+
+# Country scope. Maps the selected severity to one stock-loss fraction and the
+# canonical lifecycle overrides. A contained incident intentionally has no seed.
+bio_stockpile_safety_prepare_selected_incident_profile = {
+	set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_selected_intensity = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_selected_exposed_share = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_lifecycle_math.zero }
+	set_variable = { bio_stockpile_safety_selected_condemnation = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.contained compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_stockpile_safety_loss.contained_fraction }
+		set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_stockpile_safety_incident_profile.contained.evidence }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.lab_contamination compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_stockpile_safety_loss.lab_contamination_fraction }
+		set_variable = { bio_stockpile_safety_selected_intensity = constant:bio_stockpile_safety_incident_profile.lab_contamination.intensity }
+		set_variable = { bio_stockpile_safety_selected_exposed_share = constant:bio_stockpile_safety_incident_profile.lab_contamination.exposed_share }
+		set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_stockpile_safety_incident_profile.lab_contamination.evidence }
+		set_variable = { bio_stockpile_safety_selected_condemnation = constant:bio_stockpile_safety_incident_profile.lab_contamination.condemnation }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.local_outbreak compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_stockpile_safety_loss.local_outbreak_fraction }
+		set_variable = { bio_stockpile_safety_selected_intensity = constant:bio_stockpile_safety_incident_profile.local_outbreak.intensity }
+		set_variable = { bio_stockpile_safety_selected_exposed_share = constant:bio_stockpile_safety_incident_profile.local_outbreak.exposed_share }
+		set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_stockpile_safety_incident_profile.local_outbreak.evidence }
+		set_variable = { bio_stockpile_safety_selected_condemnation = constant:bio_stockpile_safety_incident_profile.local_outbreak.condemnation }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.major_domestic_outbreak compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_stockpile_safety_loss.major_domestic_outbreak_fraction }
+		set_variable = { bio_stockpile_safety_selected_intensity = constant:bio_stockpile_safety_incident_profile.major_domestic_outbreak.intensity }
+		set_variable = { bio_stockpile_safety_selected_exposed_share = constant:bio_stockpile_safety_incident_profile.major_domestic_outbreak.exposed_share }
+		set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_stockpile_safety_incident_profile.major_domestic_outbreak.evidence }
+		set_variable = { bio_stockpile_safety_selected_condemnation = constant:bio_stockpile_safety_incident_profile.major_domestic_outbreak.condemnation }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_incident_severity value = constant:bio_stockpile_safety_incident_severity.international_exposure compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_loss_fraction = constant:bio_stockpile_safety_loss.international_exposure_fraction }
+		set_variable = { bio_stockpile_safety_selected_intensity = constant:bio_stockpile_safety_incident_profile.international_exposure.intensity }
+		set_variable = { bio_stockpile_safety_selected_exposed_share = constant:bio_stockpile_safety_incident_profile.international_exposure.exposed_share }
+		set_variable = { bio_stockpile_safety_selected_evidence = constant:bio_stockpile_safety_incident_profile.international_exposure.evidence }
+		set_variable = { bio_stockpile_safety_selected_condemnation = constant:bio_stockpile_safety_incident_profile.international_exposure.condemnation }
+	}
+}
+
+# Country scope. Computes and applies exactly one debit for the selected live
+# equipment type. There is no refund, proxy equipment, or duplicate tooltip debit.
+bio_stockpile_safety_debit_selected_accident_stock = {
+	bio_stockpile_safety_capture_agent_stockpiles = yes
+	set_variable = { bio_stockpile_safety_selected_agent_stockpile = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_anthrax_stockpile }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_plague_stockpile }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_tularemia_stockpile }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		set_variable = { bio_stockpile_safety_selected_agent_stockpile = bio_stockpile_safety_smallpox_stockpile }
+	}
+	set_variable = { bio_stockpile_safety_requested_loss = bio_stockpile_safety_selected_agent_stockpile }
+	multiply_variable = { bio_stockpile_safety_requested_loss = bio_stockpile_safety_selected_loss_fraction }
+	bio_stockpile_safety_prepare_stock_loss_amount = yes
+	if = {
+		limit = {
+			check_variable = { var = bio_stockpile_safety_stock_loss_preparation_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		}
+		add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_stockpile_safety_stock_loss_amount_negative producer = ROOT }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_stockpile_safety_stock_loss_preparation_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		}
+		add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_stockpile_safety_stock_loss_amount_negative producer = ROOT }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_stockpile_safety_stock_loss_preparation_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		}
+		add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_stockpile_safety_stock_loss_amount_negative producer = ROOT }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_stockpile_safety_stock_loss_preparation_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+		}
+		add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_stockpile_safety_stock_loss_amount_negative producer = ROOT }
+	}
+}
+
+# Country scope. Records the exact arsenal state and dispatches any non-contained
+# incident through the one ordinary biological lifecycle pipeline.
+bio_stockpile_safety_dispatch_selected_accident = {
+	set_temp_variable = { bio_stockpile_safety_accident_agent = bio_stockpile_safety_selected_agent }
+	set_temp_variable = { bio_stockpile_safety_accident_intensity = bio_stockpile_safety_selected_intensity }
+	set_temp_variable = { bio_stockpile_safety_accident_exposed_share = bio_stockpile_safety_selected_exposed_share }
+	set_temp_variable = { bio_stockpile_safety_accident_evidence = bio_stockpile_safety_selected_evidence }
+	set_temp_variable = { bio_stockpile_safety_accident_condemnation = bio_stockpile_safety_selected_condemnation }
+	set_temp_variable = { bio_stockpile_safety_accident_payload_loss = bio_stockpile_safety_stock_loss_amount }
+	var:bio_stockpile_safety_arsenal_state = {
+		save_event_target_as = lab_accident_state
+		set_state_flag = bio_stockpile_safety_accident_history
+		set_variable = { bio_stockpile_safety_last_accident_agent = bio_stockpile_safety_accident_agent }
+		set_variable = { bio_stockpile_safety_last_accident_severity = ROOT.bio_stockpile_safety_selected_incident_severity }
+		set_variable = { bio_stockpile_safety_last_accident_date = global.num_days }
+		set_variable = { bio_stockpile_safety_last_accident_stock_loss = bio_stockpile_safety_accident_payload_loss }
+		set_variable = { bio_stockpile_safety_last_accident_evidence = bio_stockpile_safety_accident_evidence }
+		if = {
+			limit = {
+				NOT = {
+					check_variable = {
+						var = ROOT.bio_stockpile_safety_selected_incident_severity
+						value = constant:bio_stockpile_safety_incident_severity.contained
+						compare = equals
+					}
+				}
+			}
+			bio_lifecycle_reset_seed_record = yes
+			ROOT = {
+				save_event_target_as = bio_seed_actor
+				save_event_target_as = bio_seed_victim
+			}
+			set_temp_variable = { bio_seed_agent = bio_stockpile_safety_accident_agent }
+			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.laboratory_accident }
+			set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.accident }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.accident }
+			set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_payload_required = bio_stockpile_safety_accident_payload_loss }
+			set_temp_variable = { bio_seed_payload_consumed = bio_stockpile_safety_accident_payload_loss }
+			set_temp_variable = { bio_seed_intensity_override = bio_stockpile_safety_accident_intensity }
+			set_temp_variable = { bio_seed_exposed_share_override = bio_stockpile_safety_accident_exposed_share }
+			set_temp_variable = { bio_seed_evidence_override = bio_stockpile_safety_accident_evidence }
+			set_temp_variable = { bio_seed_condemnation_override = bio_stockpile_safety_accident_condemnation }
+			set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.supplied }
+			bio_lifecycle_dispatch_seed = yes
+		}
+	}
+}
+
+# Country scope. Resolves one already-selected ordinary accident and fires the
+# stable legacy notification id for the exact agent. The event option is only
+# acknowledgement; all accounting occurs once here.
+bio_stockpile_safety_resolve_selected_ordinary_accident = {
+	if = {
+		limit = {
+			bio_stockpile_safety_arsenal_pointer_is_valid = yes
+			bio_stockpile_safety_selected_agent_is_valid = yes
+			bio_stockpile_safety_selected_severity_is_valid = yes
+		}
+		bio_stockpile_safety_prepare_selected_incident_profile = yes
+		bio_stockpile_safety_debit_selected_accident_stock = yes
+		if = {
+			limit = {
+				check_variable = { var = bio_stockpile_safety_stock_loss_preparation_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			}
+			set_temp_variable = { bio_stockpile_safety_cooldown_days = constant:bio_stockpile_safety_monitor.accident_cooldown_days }
+			if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+				set_country_flag = { flag = anthrax_stockpile_accident_cooldown days = bio_stockpile_safety_cooldown_days }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+				set_country_flag = { flag = plague_stockpile_accident_cooldown days = bio_stockpile_safety_cooldown_days }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+				set_country_flag = { flag = tularemia_stockpile_accident_cooldown days = bio_stockpile_safety_cooldown_days }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+				set_country_flag = { flag = smallpox_stockpile_accident_cooldown days = bio_stockpile_safety_cooldown_days }
+			}
+			if = {
+				limit = { NOT = { has_variable = bio_stockpile_safety_accident_count } }
+				set_variable = { bio_stockpile_safety_accident_count = constant:bio_lifecycle_math.zero }
+			}
+			add_to_variable = { bio_stockpile_safety_accident_count = constant:bio_lifecycle_history.one_episode }
+			set_variable = { bio_stockpile_safety_last_accident_agent = bio_stockpile_safety_selected_agent }
+			set_variable = { bio_stockpile_safety_last_accident_severity = bio_stockpile_safety_selected_incident_severity }
+			set_variable = { bio_stockpile_safety_last_accident_date = global.num_days }
+			set_variable = { bio_stockpile_safety_last_accident_stock_loss = bio_stockpile_safety_stock_loss_amount }
+			set_variable = { bio_stockpile_safety_last_accident_evidence = bio_stockpile_safety_selected_evidence }
+			if = {
+				limit = { NOT = { has_variable = bio_stockpile_safety_accident_evidence_total } }
+				set_variable = { bio_stockpile_safety_accident_evidence_total = constant:bio_lifecycle_math.zero }
+			}
+			add_to_variable = { bio_stockpile_safety_accident_evidence_total = bio_stockpile_safety_selected_evidence }
+			set_country_flag = bio_stockpile_safety_accident_history
+			set_country_flag = bio_stockpile_safety_accident_notification_pending
+			bio_stockpile_safety_dispatch_selected_accident = yes
+			bio_stockpile_safety_refresh_risk_band = yes
+			bio_stockpile_safety_refresh_risk_idea = yes
+			if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+				country_event = { id = chaosx_bioweapon.4 }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+				country_event = { id = chaosx_bioweapon.9 }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+				country_event = { id = chaosx_bioweapon.102 }
+			}
+			else_if = {
+				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+				country_event = { id = chaosx_bioweapon.203 }
+			}
+		}
+	}
+}
+
+# Country scope. Schedules the private monitor only for a verified designated
+# program. The flag prevents duplicate delayed events from multiple projects.
+bio_stockpile_safety_start_monitor = {
+	cbrn_initialize_country_data = yes
+	if = {
+		limit = {
+			bio_stockpile_safety_arsenal_pointer_is_valid = yes
+			NOT = { has_country_flag = bio_stockpile_safety_monitor_scheduled }
+		}
+		set_country_flag = bio_stockpile_safety_monitor_scheduled
+		set_variable = { bio_stockpile_safety_monitor_due_day = global.num_days }
+		add_to_variable = { bio_stockpile_safety_monitor_due_day = constant:bio_stockpile_safety_monitor.initial_delay_days }
+		country_event = {
+			id = cbrn_bio_safety.1
+			days = constant:bio_stockpile_safety_monitor.initial_delay_days
+		}
+	}
+}
+
+# Country scope. Clears only a previously recorded exact designation. It never
+# scans for a replacement state and never changes national payload stock.
+bio_stockpile_safety_clear_arsenal_designation = {
+	if = {
+		limit = { has_variable = bio_stockpile_safety_arsenal_state }
+		var:bio_stockpile_safety_arsenal_state = {
+			if = {
+				limit = {
+					has_variable = bio_stockpile_safety_arsenal_actor
+					var:bio_stockpile_safety_arsenal_actor = { tag = ROOT }
+				}
+				clr_state_flag = bio_stockpile_safety_arsenal_complex
+				clear_variable = bio_stockpile_safety_arsenal_actor
+				clear_variable = bio_stockpile_safety_arsenal_designated_date
+			}
+		}
+	}
+	clear_variable = bio_stockpile_safety_arsenal_state
+	clear_variable = bio_stockpile_safety_arsenal_pointer_source
+	clear_variable = bio_stockpile_safety_monitor_due_day
+	clr_country_flag = bio_stockpile_safety_arsenal_designated
+	clr_country_flag = bio_stockpile_safety_monitor_scheduled
+	clr_country_flag = bio_stockpile_safety_monitor_suspended
+	bio_stockpile_safety_remove_risk_ideas = yes
+}
+
+# Country scope. Clears incident-selection variables and private input flags.
+# The current live risk snapshot remains for the visible national spirit. The
+# persistent exact arsenal designation (state pointer, source, and designation
+# flag) is intentionally retained; callers must clear/rebind that designation
+# through their own exact selection workflow.
+bio_stockpile_safety_cleanup_runtime_context = {
+	clr_country_flag = bio_stockpile_safety_accident_notification_pending
+	clear_variable = bio_stockpile_safety_anthrax_weight
+	clear_variable = bio_stockpile_safety_plague_weight
+	clear_variable = bio_stockpile_safety_tularemia_weight
+	clear_variable = bio_stockpile_safety_smallpox_weight
+	clear_variable = bio_stockpile_safety_agent_weights_status
+	clear_variable = bio_stockpile_safety_incident_kind
+	clear_variable = bio_stockpile_safety_contained_weight
+	clear_variable = bio_stockpile_safety_lab_contamination_weight
+	clear_variable = bio_stockpile_safety_local_outbreak_weight
+	clear_variable = bio_stockpile_safety_major_domestic_outbreak_weight
+	clear_variable = bio_stockpile_safety_international_exposure_weight
+	clear_variable = bio_stockpile_safety_incident_selection_total_weight
+	clear_variable = bio_stockpile_safety_incident_selection_status
+	clear_variable = bio_stockpile_safety_selected_incident_severity
+	clear_variable = bio_stockpile_safety_selected_agent
+	clear_variable = bio_stockpile_safety_available_anthrax_weight
+	clear_variable = bio_stockpile_safety_available_plague_weight
+	clear_variable = bio_stockpile_safety_available_tularemia_weight
+	clear_variable = bio_stockpile_safety_available_smallpox_weight
+	clear_variable = bio_stockpile_safety_available_agent_weight_total
+	clear_variable = bio_stockpile_safety_monitor_incident_weight
+	clear_variable = bio_stockpile_safety_monitor_no_incident_weight
+	clear_variable = bio_stockpile_safety_selected_loss_fraction
+	clear_variable = bio_stockpile_safety_selected_intensity
+	clear_variable = bio_stockpile_safety_selected_exposed_share
+	clear_variable = bio_stockpile_safety_selected_evidence
+	clear_variable = bio_stockpile_safety_selected_condemnation
+	clear_variable = bio_stockpile_safety_requested_loss
+	clear_variable = bio_stockpile_safety_selected_agent_stockpile
+	clear_variable = bio_stockpile_safety_stock_loss_amount
+	clear_variable = bio_stockpile_safety_stock_loss_amount_negative
+	clear_variable = bio_stockpile_safety_stock_loss_preparation_status
+
+	if = {
+		limit = { has_variable = bio_stockpile_safety_arsenal_state }
+		var:bio_stockpile_safety_arsenal_state = {
+			clr_state_flag = bio_stockpile_safety_condition_snapshot_active
+			clr_state_flag = bio_stockpile_safety_explicit_sabotage_active
+			clr_state_flag = bio_stockpile_safety_recent_handling_active
+		}
+	}
+}

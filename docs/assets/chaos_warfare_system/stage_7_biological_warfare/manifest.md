@@ -4,6 +4,13 @@
 
 One bespoke Chaos Redux decision icon for the stable decision id `bio_designate_strategic_raid_staging_state`.
 
+The Stage 7 package also contains a separate stockpile-safety family under
+`stockpile_risk_ideas/`: four independently generated 60x68 national-spirit
+icons for Controlled, Strained, Dangerous, and Critical risk, plus one
+independently generated 32x32 arsenal-designation decision icon. Its source,
+processed PNGs, DDS validation, contact sheet, hashes, and prompt record are
+owned by `stockpile_risk_ideas/manifest.md`.
+
 The icon depicts a sealed biological payload containment canister being transferred beneath an air-base hangar and aircraft silhouette, with a visible locked staging marker. The palette is restrained charcoal/gunmetal with desaturated teal and amber hazard accents. It contains no gore, exposed biological material, or generated text, and it is not a generic biohazard-only symbol.
 
 ## Asset manifest
@@ -28,11 +35,26 @@ The icon depicts a sealed biological payload containment canister being transfer
 | GFX handoff | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/gfx_handoff.md` |
 | Status | `complete` |
 
+## Stockpile-safety runtime handoff
+
+| Asset | Sprite | Runtime file |
+|---|---|---|
+| Controlled risk | `GFX_idea_bio_stockpile_risk_controlled` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_controlled.dds` |
+| Strained risk | `GFX_idea_bio_stockpile_risk_strained` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_strained.dds` |
+| Dangerous risk | `GFX_idea_bio_stockpile_risk_dangerous` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_dangerous.dds` |
+| Critical risk | `GFX_idea_bio_stockpile_risk_critical` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_critical.dds` |
+| National arsenal designation | `GFX_decision_bio_designate_national_biological_arsenal` | `gfx/interface/decisions/biowarfare/bio_designate_national_biological_arsenal.dds` |
+
+All five sprites are registered in `interface/biological_warfare.gfx`. The
+arsenal decision is storage management only. Deliberate agent deployment remains
+in the native raid system. Existing files under `gfx/interface/military_raids/`
+were neither replaced nor modified.
+
 ## Reference analysis
 
 The matching Chaos Redux decision reference folder was inspected before generation:
 
-`.agents/skills/chaos-redux-event-assets/assets/decisions/`
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/`
 
 The generated composition follows the references' small-icon treatment: one dominant symbolic subject, compact framing, dark edge contrast, limited fine detail, and a transparent unused background at runtime. The decision icon was created independently for 32x32 and was not derived from a focus or idea icon.
 

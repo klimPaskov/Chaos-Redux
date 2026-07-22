@@ -1,0 +1,250 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL STOCKPILE SAFETY SCRIPT CONSTANTS
+# ============================================================================
+# Inputs: none. This file only defines shared numeric enums and tuning values.
+# Outputs: private stockpile-safety bands, pointer sources, incident kinds,
+#   severity kinds, agent-risk multipliers, risk scoring, loss bounds, and
+#   incident-selection weights.
+# Side effects: none. Lifecycle agent/route/source/result enums remain owned by
+#   biological_lifecycle_constants.txt and are referenced instead of copied.
+# ============================================================================
+
+bio_stockpile_safety_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	controlled = 1
+	strained = 2
+	dangerous = 3
+	critical = 4
+}
+
+bio_stockpile_safety_pointer_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	selected_state = 1
+	verified_special_project_facility = 2
+}
+
+bio_stockpile_safety_incident_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ordinary_accident = 1
+	sabotage = 2
+	bombing = 3
+	capture_release = 4
+	doomsday_release = 5
+}
+
+bio_stockpile_safety_incident_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	contained = 1
+	lab_contamination = 2
+	local_outbreak = 3
+	major_domestic_outbreak = 4
+	international_exposure = 5
+}
+
+# Agent weights are intentionally separate from lifecycle agent profiles. They
+# weight actual stockpile counts for risk only; selection weights remain the
+# unmodified actual four-agent counts.
+bio_stockpile_safety_agent_risk = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# A normal strategic-raid payload contributes roughly one risk load. The
+	# lower Tularemia value reflects its lower persistence; Smallpox is the
+	# storage outlier despite its smaller raid reservation.
+	anthrax = 0.50
+	plague = 1.00
+	tularemia = 0.75
+	smallpox = 2.00
+}
+
+bio_stockpile_safety_risk = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	score_minimum = 0
+	score_maximum = 100
+	stockpile_score_scale = 1000
+	stockpile_controlled_maximum = 99
+	stockpile_high_threshold = 100
+	stockpile_large_threshold = 300
+	stockpile_extreme_threshold = 600
+	safety_controlled_minimum = 70
+	safety_strained_minimum = 40
+	safety_dangerous_minimum = 20
+	facility_level_trigger_floor = 0
+	facility_operational_minimum_level = 1
+	facility_damage_penalty_per_level = 12
+	facility_inoperable_penalty = 30
+	war_damage_penalty = 20
+	recent_bombing_penalty = 25
+	sabotage_penalty = 35
+	recent_handling_penalty = 15
+	recent_handling_days = 30
+	recent_bombing_days = 30
+}
+
+bio_stockpile_safety_monitor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial_delay_days = 1
+	interval_days = 30
+	controlled_incident_weight = 1
+	controlled_no_incident_weight = 9999
+	strained_incident_weight = 1
+	strained_no_incident_weight = 199
+	dangerous_incident_weight = 4
+	dangerous_no_incident_weight = 96
+	critical_incident_weight = 15
+	critical_no_incident_weight = 85
+	accident_cooldown_days = 730
+}
+
+bio_stockpile_safety_loss = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 1
+	contained_fraction = 0.01
+	lab_contamination_fraction = 0.03
+	local_outbreak_fraction = 0.05
+	major_domestic_outbreak_fraction = 0.10
+	international_exposure_fraction = 0.15
+}
+
+bio_stockpile_safety_incident_weight = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	controlled = {
+		contained = 100
+		lab_contamination = 2
+		local_outbreak = 0
+		major_domestic_outbreak = 0
+		international_exposure = 0
+	}
+	strained = {
+		contained = 70
+		lab_contamination = 25
+		local_outbreak = 5
+		major_domestic_outbreak = 0
+		international_exposure = 0
+	}
+	dangerous = {
+		contained = 15
+		lab_contamination = 30
+		local_outbreak = 35
+		major_domestic_outbreak = 18
+		international_exposure = 2
+	}
+	critical = {
+		contained = 2
+		lab_contamination = 8
+		local_outbreak = 25
+		major_domestic_outbreak = 40
+		international_exposure = 25
+	}
+}
+
+bio_stockpile_safety_incident_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	contained = {
+		intensity = 0
+		exposed_share = 0
+		evidence = 5
+		condemnation = 0
+	}
+	lab_contamination = {
+		intensity = 8
+		exposed_share = 0.0005
+		evidence = 20
+		condemnation = 2
+	}
+	local_outbreak = {
+		intensity = 20
+		exposed_share = 0.002
+		evidence = 40
+		condemnation = 6
+	}
+	major_domestic_outbreak = {
+		intensity = 45
+		exposed_share = 0.010
+		evidence = 70
+		condemnation = 15
+	}
+	international_exposure = {
+		intensity = 65
+		exposed_share = 0.020
+		evidence = 95
+		condemnation = 25
+	}
+}
+
+bio_stockpile_safety_designation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power_cost = 35
+	relocation_cooldown_days = 90
+}
+
+bio_stockpile_safety_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	designation_base = 12
+	already_valid_factor = 0.05
+	invalid_pointer_factor = 5
+	core_state_factor = 3
+	operational_facility_factor = 2
+	good_infrastructure_factor = 1.5
+	good_infrastructure_threshold = 4
+	active_outbreak_factor = 0.05
+}
