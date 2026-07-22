@@ -86,5 +86,4 @@ Asset package:
 
 ## Focused commit
 
-Focused commit: `06b5008f6` (will be amended once to record this hash in the
-handoff itself).
+Focused commit: `a55cacebc46dea546bfa8772819bf577653c5301`.
