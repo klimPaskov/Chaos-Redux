@@ -39,7 +39,7 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_BLACKOUT_GUI_PROOF.md` records full-screen input blocking and blackout surface ownership.
 - `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md` records the accepted numerical survival transaction.
 - `FALLOUT_EVENT_SCHEDULER_PROOF.md` records the dormant scheduler substrate and activation gates.
-- `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the three reviewed ordinary candidate rows.
+- `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the reviewed ordinary candidate rows. `FALLOUT_WELL_QUEUE_TUNING_AND_REGISTRY.md` records the fourth Well Queue candidate, state gate, branch tuning, callback deferral, and dedicated asset.
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 
 ## Current blockers

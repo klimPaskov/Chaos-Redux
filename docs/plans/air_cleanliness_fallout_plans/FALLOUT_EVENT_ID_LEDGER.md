@@ -91,6 +91,17 @@ The dedicated event file was scanned on 2026-07-15 before this reservation. Suff
 | 124 | global survival and society | Protect household caches AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 100 or 101 | 105 or 126 | food security | none | living-world foundation 1 | hidden AI delayed result uses the household branch row and shared effect path. |
 | 125 | global survival and society | Requisition disputed reserves AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 100 or 101 | 105 or 126 | food security | none | living-world foundation 1 | hidden AI delayed result uses the requisition branch row and shared Deaths-backed effect path. |
 | 126 | global survival and society | First winter ration review AI callback | Implemented, dormant, uncounted | all eligible successors | callback | hidden AI | 102, 103, 104, 123, 124, or 125 | 106 | food security | none | living-world foundation 1 | hidden AI callback uses the same review effects, memory flags, event-log payload, and cleanup path as human play. |
+| 153 | global survival and society | The Well Queue | Implemented, dormant, uncounted | all eligible successors | crisis incident | human visible | ordinary receipt through Fallout coordinator | 155, 156, or 157 | water security | `GFX_report_event_fallout_well_queue` | living-world foundation 1 | three authored choices, current state and Air Winter water-source gate, deterministic result reservation, Deaths-backed failure, event-log payload, callback, and authenticated cleanup are wired. Scheduler activation remains blocked. |
+| 154 | global survival and society | The Well Queue AI resolution | Implemented, dormant, uncounted | all eligible successors | hidden AI resolution | hidden | ordinary receipt through Fallout coordinator | 158, 159, or 160 | water security | none | living-world foundation 1 | hidden AI branch selection uses the same result reservation, effects, memory, and cleanup path as human play. Scheduler activation remains blocked. |
+| 155 | global survival and society | Public queue result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 153 | 161 | water security | shared family art | living-world foundation 1 | three outcome descriptions, water and recognition effects, failure deaths, event-log payload, and callback scheduling are wired. |
+| 156 | global survival and society | Filter room result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 153 | 161 | water security | shared family art | living-world foundation 1 | three outcome descriptions, filter and water effects, failure deaths, event-log payload, and callback scheduling are wired. |
+| 157 | global survival and society | Guarded intake result | Implemented, dormant, uncounted | all eligible successors | delayed result | human visible | 153 | 161 | water security | shared family art | living-world foundation 1 | three outcome descriptions, guard and water effects, failure deaths, event-log payload, and callback scheduling are wired. |
+| 158 | global survival and society | Public queue AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 154 | 162 | water security | none | living-world foundation 1 | hidden AI delayed result uses the public branch and shared human effect path. |
+| 159 | global survival and society | Filter room AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 154 | 162 | water security | none | living-world foundation 1 | hidden AI delayed result uses the filter branch and shared human effect path. |
+| 160 | global survival and society | Guarded intake AI result | Implemented, dormant, uncounted | all eligible successors | delayed result | hidden AI | 154 | 162 | water security | none | living-world foundation 1 | hidden AI delayed result uses the guard branch and shared human effect path. |
+| 161 | global survival and society | Well ledger callback | Implemented, dormant, uncounted | all eligible successors | callback | human visible | 155, 156, or 157 | 163 | water security | shared family art | living-world foundation 1 | branch-aware callback effects, shared cistern or exclusion memory, event-log payload, and cleanup preparation are wired. |
+| 162 | global survival and society | Well ledger AI callback | Implemented, dormant, uncounted | all eligible successors | callback | hidden AI | 158, 159, or 160 | 163 | water security | none | living-world foundation 1 | hidden AI callback uses the same callback effects, memory, event-log payload, and cleanup path as human play. |
+| 163 | global survival and society | Well Queue cleanup | Implemented, dormant, uncounted | all eligible successors | cleanup | hidden | any terminal Well Queue transaction | none | water security | none | living-world foundation 1 | exact cleanup tokens release the result and callback rows, clear the state-owned registry flag, and preserve save recovery. |
 
 ## Implemented Air Winter allocation outside the release floor
 
@@ -112,7 +123,7 @@ Suffixes `6` and `49` are allocated to implemented Air Winter results and are no
 
 ## Collision boundary
 
-The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126` remain reserved for the living-world pilot even if implementation order changes.
+The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126`, `1009` through `1018`, and `153` through `163` remain reserved for the living-world pilot even if implementation order changes.
 
 ## Pilot gates
 
@@ -126,7 +137,7 @@ The typed constants for suffixes `100` through `126` are identity reservations o
 
 Reserved Ash-week orientation identities: `23`.
 
-Reserved living-world pilot identities: `27`.
+Reserved living-world pilot identities: `38`.
 
 Total reserved documentation identities across both tranches: `50`.
 
@@ -137,3 +148,17 @@ Defined living-world pilot blocks: `37`, covering the dormant food-security bloc
 Countable manually reviewed Fallout living-world blocks: `0 of 660`.
 
 The release-floor counter must remain unchanged until individual rows pass implementation and audit.
+
+## Well Queue count correction
+
+The Well Queue reservation adds eleven dormant suffixes, so the authoritative living-world pilot total is 38 identities, 48 defined blocks, and 0 countable blocks. This correction supersedes the earlier pre-153 summary values above.
+
+Well Queue event suffixes `153` through `163` are dormant and uncounted. Their candidate row is `153`, transaction key `710004`, and route `7104`.
+
+The authoritative total reserved documentation identities is `61`, combining
+`23` Ash-week identities with `38` living-world identities. The authoritative
+defined living-world block count is `48`, including the Well Queue blocks.
+
+The Well Queue row also pays its selected branch cost only after delayed-row
+reservation and ordinary-receipt consumption succeed. Its country payment flag
+is released by event `163` cleanup.
