@@ -54,7 +54,7 @@ These three inner `spriteType` blocks are present in the existing `spriteTypes =
 | River Intake at Dawn | `report_event_fallout_river_intake_at_dawn` | `GFX_report_event_fallout_river_intake_at_dawn` | `gfx/event_pictures/fallout_world_end/report_event_fallout_river_intake_at_dawn.dds` | `210x176` | legacy one-level uncompressed 32-bit BGRA DDS | `chaosx.fallout.107`, water intake closure, filter rationing, upstream control, or testing chain |
 | Rail Crew Twenty-Seven | `report_event_fallout_rail_crew_twenty_seven` | `GFX_report_event_fallout_rail_crew_twenty_seven` | `gfx/event_pictures/fallout_world_end/report_event_fallout_rail_crew_twenty_seven.dds` | `210x176` | legacy one-level uncompressed 32-bit BGRA DDS | `chaosx.fallout.114`, protected rail-repair and corridor-control chain |
 
-The Fallout event ID ledger reserves visible roots `chaosx.fallout.100`, `chaosx.fallout.107`, and `chaosx.fallout.114` for these three sprites. The Last Inventory and River Intake roots have concrete localisation and dormant event bindings. Rail Crew Twenty-Seven remains pending its event tranche. The River Intake sprite is bound inside the Fallout-owned block in `events/fallout_world_end_events.txt`.
+The Fallout event ID ledger reserves visible roots `chaosx.fallout.100`, `chaosx.fallout.107`, and `chaosx.fallout.114` for these three sprites. The Last Inventory, River Intake, and Rail Crew Twenty-Seven roots have concrete localisation and dormant event bindings. The River Intake and Rail Crew sprites are bound inside the Fallout-owned block in `events/fallout_world_end_events.txt`.
 
 ## Review evidence
 

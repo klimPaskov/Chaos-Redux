@@ -1,6 +1,6 @@
-# Fallout Living World Pilot Report Event Asset Manifest
+ # Fallout Living World Pilot Report Event Asset Manifest
 
-Status: `registered_event_attachment_pending`
+Status: `registered_event_attachment_verified_dormant`
 
 Production date: 2026-07-15
 
@@ -8,7 +8,7 @@ Production date: 2026-07-15
 
 This package contains three dedicated fictional Fallout living-world report-event images for the accepted global anchors `The Last Inventory`, `River Intake at Dawn`, and `Rail Crew Twenty-Seven`.
 
-The package is Fallout-owned. It does not reuse a zombie or other feature id, file, asset, audio file, sprite, or path. It does not create a super-event image. No `.gfx`, `.gui`, gameplay, localisation, event, focus, decision, idea, country, history, or spreadsheet file was edited.
+The package is Fallout-owned. It does not reuse a zombie or other feature id, file, asset, audio file, sprite, or path. It does not create a super-event image. The asset-production pass did not edit `.gfx`, `.gui`, gameplay, localisation, event, focus, decision, idea, country, history, or spreadsheet files. The implementation pass now binds the registered sprites to the dormant event roots documented below.
 
 Accepted source direction was taken from:
 
@@ -88,7 +88,8 @@ Avoid: Fallout franchise imagery, retrofuturism, modern tactical gear, modern re
 - Final identity: `report_event_fallout_river_intake_at_dawn`.
 - Registered sprite: `GFX_report_event_fallout_river_intake_at_dawn`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
-- Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
+- Localisation key: `chaosx.fallout.107.t`, with concrete branch and delayed-result text in the Fallout localisation file.
+- Status: registered_event_attachment_verified_dormant. The event root and result surface use the dedicated sprite, while scheduler activation remains intentionally absent from this pilot.
 - Source mode: OpenAI built-in ImageGen.
 - Generation output record: Codex generation `exec-a8e714dd-c8b0-4d2c-a7ed-e7aeb6234a5c.png` in generation session `019f6478-fc67-7742-9c1f-2fb19eec963b`; the workspace source PNG is an exact preserved copy.
 - Source PNG: `docs/assets/fallout_world_end/living_world_pilot/source_png/report_event_fallout_river_intake_at_dawn_source.png`, RGB PNG, `1448x1086`.
@@ -101,7 +102,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern tactical gear, modern re
 - SHA-256 source: `fbc446066aa0e554c23221882b01938fc623a24ea2d3f551cf05b9e973e303df`.
 - SHA-256 processed: `9bdcda16d09063a0e654cb3a15c74632880c978168dc457a5a237f3b5f10ad7a`.
 - SHA-256 DDS: `9052a344237e64903d9cab3ec0d9db86a364a4935912b35104a46584fd2cea94`.
-- Status: `registered_event_attachment_pending`.
+- Status: `registered_event_attachment_verified_dormant`.
 - Risk: the generated pump and respirators are period-plausible generic industrial equipment, not verified models from a particular country. The image should remain attached to a global fictional anchor rather than a claim about a named real waterworks.
 
 ### Generation prompt
@@ -131,7 +132,8 @@ Avoid: Fallout franchise imagery, retrofuturism, modern hazmat suits, modern tac
 - Final identity: `report_event_fallout_rail_crew_twenty_seven`.
 - Registered sprite: `GFX_report_event_fallout_rail_crew_twenty_seven`.
 - Suggested `.gfx` file: `interface/fallout_world_end.gfx`.
-- Localisation key: pending implementation in the event ID ledger; the accepted working label is not final localisation.
+- Localisation key: `chaosx.fallout.114.t`, with concrete branch and delayed-result text in the Fallout localisation file.
+- Status: registered_event_attachment_verified_dormant. The event root and result surface use the dedicated sprite, while scheduler activation remains intentionally absent from this pilot.
 - Source mode: OpenAI built-in ImageGen.
 - Generation output record: Codex generation `exec-6a302639-fa52-46d3-81a5-d7e23b70ec9c.png` in generation session `019f6478-fc67-7742-9c1f-2fb19eec963b`; the workspace source PNG is an exact preserved copy.
 - Source PNG: `docs/assets/fallout_world_end/living_world_pilot/source_png/report_event_fallout_rail_crew_twenty_seven_source.png`, RGB PNG, `1448x1086`.
@@ -144,7 +146,7 @@ Avoid: Fallout franchise imagery, retrofuturism, modern hazmat suits, modern tac
 - SHA-256 source: `99f4cadd9b958b84f2db72f6bcaabd611474e2ee0ae216a37ecbdb56e8b0e370`.
 - SHA-256 processed: `874511450181e12f082101faa840c972dccb513e71972a5584248a32eaf123bb`.
 - SHA-256 DDS: `29f9e6ff523d9883df34cc617692c711ff84de5cca082ae0cad7302a10120b5f`.
-- Status: `registered_event_attachment_pending`.
+- Status: `registered_event_attachment_verified_dormant`.
 - Risk: the distant rail vehicle is intentionally secondary and is not model-identifiable at the final crop. The workers' generic industrial protection should not be described as one named railway's exact issued equipment.
 
 ### Generation prompt
