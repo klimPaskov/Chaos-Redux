@@ -44,7 +44,6 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
 - `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.
 - `FALLOUT_TRIAGE_WALL_CHAIN_PROOF.md` records the dormant medicine candidate at suffixes `175` through `187`, history `9111`, state gate, four human and hidden-AI policies, doctor's callback, cleanup, and dedicated report asset.
-- `FALLOUT_SEED_VAULT_CHAIN_PROOF.md` records the dormant seed candidate at suffixes `188` through `200`, history `9112`, Air Winter seed provenance, four policy lanes, agronomist callback, cleanup, and dedicated report asset.
 
 ## Current blockers
 

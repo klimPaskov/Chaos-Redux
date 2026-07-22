@@ -225,12 +225,3 @@ and cleanup releases the authenticated tickets in order. The result and
 callback writers carry fifteen concrete history payloads. No activation flag is
 set, no caller is fired, and the chain contributes `0` to the `660` release
 floor until the scheduler activation and manual review gates pass.
-
-## Seed Vault candidate correction
-
-The reviewed ordinary candidate producer now carries a seventh dormant row for
-Seed Vault Custody. It uses candidate id `188`, transaction key `710007`, route
-`7107`, a state target, food-security cooldown, and the current Air Winter
-reclamation value as its state input. The row is appended only after exact seed
-memory, owner, generation, source, and affordability checks. No activation flag
-setter or event caller was added, so the release-floor count remains `0 of 660`.
