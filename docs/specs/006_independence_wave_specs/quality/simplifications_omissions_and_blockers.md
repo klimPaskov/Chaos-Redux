@@ -60,16 +60,18 @@ setup/final-validation/cleanup dispatch, Kumasi/Sokoto capital proofs,
 date-aware Sokoto succession hooks, host-capital survival checks, and
 Event-012-preserving cleanup. That layer deliberately grants neither runtime
 content attestation nor SCN-008 admission. Both packages remain fail-closed
-until their remaining country mechanics, focus/decision/idea/AI/localisation
-surfaces, FORM-24/25 links, and final visual identities pass audit. The
+until the pre-cutover Sokoto leader, exact period flags, FORM-24/25 links, and
+final country, scenario, presentation, and completion audits pass. The
 original deterministic Prempeh-II candidate remains rejected evidence, but the
 identity-preserving ImageGen replacement passed parent HOI4-style visual review
 and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan portrait,
-both exact period flags, route-specific political transitions, bilateral
-diplomacy, and FORM-24/25 contracts remain blocked. Opening
-institutional politics and the exact Prempeh/post-cutover-Siddiq leader paths
-are implemented without granting runtime attestation. No advisor asset was
-created or requested.
+both exact period flags, and FORM-24/25 contracts remain blocked.
+Route-specific political transitions and bilateral former-host diplomacy are
+implemented: the exact host chooses recognition, association, or reclamation
+conflict, and the receipt is written only after host acceptance or a paid
+post-crisis ratification. Opening institutional politics and the exact
+Prempeh/post-cutover-Siddiq leader paths are implemented without granting
+runtime attestation. No advisor asset was created or requested.
 
 ## Design simplifications
 

@@ -91,6 +91,15 @@ Sovereign terminal choices set the matching
 `independence_wave_iw098_terminal_sovereignty_locked` receipt. Those receipts
 permanently exclude the package's formable congress for that generation.
 
+Each 70-day conference also locks the matching shared Event 006 government
+route. Its centralized political settlement changes ruling-party status,
+election policy, party popularities, package institutional values, and all five
+shared country mechanics. Constitutional settlements improve recognition and
+reduce instability; royal and sultanic settlements emphasize legitimacy and
+ordered security; emergency settlements gain security at a real recognition,
+legitimacy, and instability cost. An incompatible shared route causes the
+conference to fail without overwriting the existing origin content.
+
 ## Paid decisions and idea lifecycle
 
 Each package owns a bounded signature category. The actions use political
@@ -116,6 +125,18 @@ replaces it with `independence_wave_iw098_caravan_network_compact_idea`.
 The decision categories are not checklist missions and do not maintain a
 political-power store. Completion changes map buildings, the visible package
 values, route locks, host relations, or formable-preparation receipts.
+
+The former-host transactions are bilateral. After the released country pays
+for 90 days of preparation, the exact frozen former host receives a choice:
+recognize separation and sign a non-aggression pact; accept a guarded
+association with a guarantee and military access; or reject the protocol,
+impose an embargo, and prepare a reclamation wargoal. Only an accepted host
+answer writes the package settlement receipt. Rejection writes the shared
+reclamation-conflict outcome and an unresolved crisis. After war, host
+collapse, or another shared settlement changes that outcome, a paid 75-day
+post-crisis ratification can close the ledger. Every branch changes all eight
+host values, all five country values, network standing, and the package's
+visible host/security value.
 
 ## Leadership, forces, AI, and diplomacy
 
@@ -163,7 +184,7 @@ value thresholds.
 
 The focus and decision surfaces can record package-local preparation only:
 
-- IW-093 requires the federal route plus confederated authority 70,
+- IW-093 requires the constitutional-cabinet route plus confederated authority 70,
   cocoa/rail throughput 65, and host settlement 50;
 - IW-098 requires an eligible route plus emirate compact 70,
   caravan/livestock network 65, and frontier security 60.
@@ -219,9 +240,10 @@ derivative of an approved full commander portrait.
 - source and wire a faithful pre-cutover Hasan dan Mu'azu Ahmadu portrait;
 - reuse the verified vanilla Siddiq surface only for the post-cutover branch;
 - verify and reconstruct exact period Asante and Sokoto flag designs;
-- complete route-specific political transitions and bilateral diplomacy;
-  opening institutional politics, the Prempeh/post-cutover-Siddiq leader
-  paths, command rosters, and generation-bound starting forces are implemented;
+- preserve the implemented route-specific political transitions, exact-host
+  bilateral settlement events, post-crisis ratification, opening institutional
+  politics, Prempeh/post-cutover-Siddiq leader paths, command rosters, and
+  generation-bound starting forces;
 - complete FORM-24/FORM-25 family identities, territory, consent, and member
   policy;
 - pass focus, decision/mission, country-package, localisation, asset, scenario,
