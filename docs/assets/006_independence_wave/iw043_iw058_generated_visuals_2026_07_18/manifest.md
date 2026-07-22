@@ -1,5 +1,10 @@
 # IW-043 / IW-058 generated visual package (2026-07-18)
 
+> **Portrait source mode superseded (2026-07-22):** the eight generated
+> institutional portraits are not valid for grounded Volga Bulgaria or
+> Assyria and require sourced real male or authentic archival institutional
+> replacements. The flag and report-image records remain unaffected.
+
 This package contains exactly eight large fictional institutional leader portraits, ten ImageGen-authored flat cosmetic/formable flag ladders, and two fictional period-documentary report images. It contains no advisors, advisor portraits, advisor sprites, dossier cards, commander smalls, focus/idea/decision/achievement icons, or protected BAY/RHI replacements.
 
 Machine-readable source/processed/runtime records and hashes are in [`manifests/asset_manifest.json`](manifests/asset_manifest.json) and [`manifests/hashes.sha256`](manifests/hashes.sha256). Review contact sheets are [`contacts/portraits_contact_sheet.png`](contacts/portraits_contact_sheet.png), [`contacts/flags/flags_ladders_contact_sheet.png`](contacts/flags/flags_ladders_contact_sheet.png), and [`contacts/reports/report_contact_sheet.png`](contacts/reports/report_contact_sheet.png).

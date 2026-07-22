@@ -6,34 +6,37 @@ This package is the accepted source specification; implementation status is reco
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
-## Current implementation reconciliation (2026-07-18)
+## Current implementation reconciliation (2026-07-22)
 
-The accepted specification remains unchanged; this section is the current
-implementation ledger rather than a rewrite of the planning baseline. The parent
-promotion admits IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` to the exact runtime
-content-attestation set and promotes FORM-48 family readiness. FORM-48 uses HBX
-as carrier, HAW/FSM as sovereign autonomous members, and cosmetic identity PFX;
-no annexation or integration fallback is used. Its registration binds family 48,
-sets all six shared adapter readiness flags, and sets
-`independence_wave_form48_registry_surface_registered` and
-`independence_wave_form48_readiness_attested` after coordinated PASS audits.
+The accepted specification includes the later sourced-portrait decision. This
+section is the current implementation ledger rather than a rewrite of the
+planning baseline. The runtime content-attestation set is empty. Every formerly admitted
+grounded package whose live country leader, route leader, commander, or
+institutional portrait uses generated art has been withdrawn until sourced
+real male replacements pass review. FORM-48 remains implemented without an
+annexation fallback, but HBX/FSM package withdrawal prevents a complete
+currently admitted carrier/member set. IW-173 `HAW` is also withdrawn because
+its vanilla David Kalakaua Kawananakoa sprite resolves to generic
+`Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
 
 The 2026-07-18 installed scan covers 108 Event 006-owned identifiers, 122
 Workshop directories, three sibling local mods, archives, and reports zero
 collisions. The allocator passes 149 publishers, 126 automatic/high-chaos
 selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
-and Event 005-first joint reservation ordering. Pacific assets use vanilla
+and Event 005-first joint reservation ordering. Those structural counts do not
+override the compile-time visual-readiness gate. Pacific assets use vanilla
 HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and the audited flat
 ImageGen PFX flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
-portrait blocks are present; accepted male large portraits are separate leader
-assets, and protected BAY/RHI hashes are unchanged.
+portrait blocks are present; leader assets are separate, and protected BAY/RHI
+hashes are unchanged.
 
-The bounded IW-043/IW-058 tranche is also recorded: exact base content for
-vanilla carriers `CHU` and `ASY` is admitted by the shared runtime registry.
-The package audits and manifests record eight all-male institutional portraits,
+The bounded IW-043/IW-058 gameplay tranche is also recorded. The package audits
+and manifests record eight generated all-male institutional portraits,
 ten flat flags, two report images, and the final 27-icon static package,
   including the three-state Assyria survival triplet. No custom advisor assets
-  were created. The exact vanilla CHU/ASY shortcut guards passed the parent
+  were created. Those portraits are no longer accepted for grounded Volga
+  Bulgaria or Assyria, so both packages are removed from runtime content
+  attestation pending sourced replacements. The exact vanilla CHU/ASY shortcut guards passed the parent
   compatibility re-audit and preserve ordinary and Event 005 carrier behavior.
   FORM-12, FORM-13, and FORM-18 are operational for their exact carriers with
   setup attestations, paid 180-day congresses, consent and unique-anchor
@@ -60,12 +63,14 @@ setup/final-validation/cleanup dispatch, Kumasi/Sokoto capital proofs,
 date-aware Sokoto succession hooks, host-capital survival checks, and
 Event-012-preserving cleanup. That layer deliberately grants neither runtime
 content attestation nor SCN-008 admission. Both packages remain fail-closed
-until the pre-cutover Sokoto leader, exact period flags, FORM-24/25 links, and
+until the pre-cutover Sokoto leader, sourced commander replacements, exact
+period flags, FORM-24/25 links, and
 final country, scenario, presentation, and completion audits pass. The
 original deterministic Prempeh-II candidate remains rejected evidence, but the
-identity-preserving ImageGen replacement passed parent HOI4-style visual review
-and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan portrait,
-both exact period flags, and FORM-24/25 contracts remain blocked.
+identity-preserving sourced-image treatment passed parent HOI4-style visual
+review and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan
+portrait, sourced commanders, both exact period flags, and FORM-24/25 contracts
+remain blocked.
 Route-specific political transitions and bilateral former-host diplomacy are
 implemented: the exact host chooses recognition, association, or reclamation
 conflict, and the receipt is written only after host acceptance or a paid

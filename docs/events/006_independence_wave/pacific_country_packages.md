@@ -17,15 +17,17 @@ force map align on these IDs. California is the exact carrier candidate.
 Hawai'i and Micronesia remain autonomous countries and never become replacement
 tags for a Pacific federation.
 
-## Current promotion state (2026-07-18)
+## Current promotion state (2026-07-22)
 
-The parent promotion admits IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` to
+No Pacific package is currently in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
-The coordinated Pacific country-package, focus/icon, FORM-48 architecture,
-decision/mission, localisation, flag/portrait, and postformation audits are
-PASS evidence for this promotion. Earlier handoffs that recorded HOLD or
-FAIL-CLOSED admission remain preserved historical records; they are superseded
-only for current admission state.
+IW-173 `HAW` is withdrawn because vanilla maps the real David Kalakaua
+Kawananakoa to generic `Portrait_Asia_Generic_land_5.dds`. IW-179 `FSM` and
+IW-184 `HBX` retain their implemented gameplay, but their generated
+fictional officeholders are invalid for grounded Micronesia and California.
+Both packages are fail-closed until sourced real male replacements pass review.
+Earlier promotion audits remain gameplay evidence, not current portrait or
+admission authority.
 
 FORM-48 is family 48 with HBX as carrier and HAW/FSM as sovereign autonomous
 members. `independence_wave_form48_register_readiness` binds the family and,
@@ -53,9 +55,9 @@ Each wrapper still requires the shared dormant-origin proof. The regional
 planner also requires its exact anchor and reservation group, so a living,
 reserved, Event 5-owned, or already released tag cannot be overwritten.
 
-These adapters are implemented and are now present in
+These adapters remain implemented. None is currently present in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
-The allocator may execute them only when the exact country, focus,
+The allocator may execute an attested adapter only when the exact country, focus,
 decision/mission, localisation, portrait-DDS, host, anchor, reservation, Event
 005, force, and transaction gates pass at runtime.
 
@@ -315,9 +317,10 @@ existing super-event FIFO.
 The registry publishes the
 `independence_wave_form48_registry_surface_registered` marker and retains the
 FORM-48 readiness attestation after coordinated PASS audits. The six shared
-readiness flags are bound to family 48. IW-173, IW-179, and IW-184 are present
-in the runtime content-attestation set; exact live runtime gates still control
-whether a candidate is selected or a formation can open.
+readiness flags are bound to family 48, but no Pacific package is currently in
+the runtime content-attestation set. IW-173, IW-179, and IW-184 must gain
+sourced portrait readiness before the family can have its complete admitted
+member/carrier set.
 
 Package cleanup calls the dedicated FORM-48 origin cleanup before removing its
 family state. It then removes the package mission, decisions, ideas, pressure
@@ -346,9 +349,9 @@ portrait-asset lane:
 - `GFX_portrait_FSM_independence_wave_inter_island_congress_chair` ->
   `gfx/leaders/006_independence_wave/portrait_FSM_independence_wave_inter_island_congress_chair.dds`.
 
-Neither character defines a small portrait or an adviser role. Their DDS files
-are an explicit external asset-lane dependency, not a generic portrait
-fallback. HAW and FSM use vanilla flags; HBX uses the researched flat 1911 Bear
+Neither character defines a small portrait or an adviser role. Their current
+DDS files are generated grounded-polity portraits awaiting sourced replacement
+and do not satisfy visual readiness. HAW and FSM use vanilla flags; HBX uses the researched flat 1911 Bear
 Flag; PFX uses the audited flat ImageGen flag. Protected BAY/RHI hashes remain
 unchanged. The package otherwise reuses these registered Event 006 families
 from `interface/006_independence_wave.gfx`:
@@ -450,9 +453,9 @@ The package audit should cover at least:
 ## Future plans
 
 - The dedicated decision/mission, localisation, country-package, focus/icon,
-  architecture, flag/portrait, and postformation audits are PASS evidence for
-  the current FORM-48 promotion. The parent Event 006 completion audit remains
-  pending.
+  architecture, flag, and postformation audits remain gameplay evidence. The
+  portrait-source decision withdraws IW-179/IW-184 admission until their
+  sourced replacements pass, and the parent completion audit remains pending.
 - Keep FORM-06 through FORM-47 (including FORM-42) fail-closed until each owning
   family completes its own admission work; do not weaken the exact FORM-48
   runtime gates.

@@ -1,5 +1,10 @@
 # Event 006 FORM-48 Pacific individual-leader portrait manifest
 
+> **Superseded source mode (2026-07-22):** California and Micronesia are
+> grounded polities. Their generated officeholders remain provenance and
+> consumer evidence only; sourced real male replacements are required before
+> IW-184 or IW-179 can regain visual readiness.
+
 ## Production contract
 
 - Asset family: `ASSET-045`, country-leader portraits.

@@ -8,18 +8,19 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](006_independence_wave/pacific_country_packages.md).
 
-## Current Pacific promotion (2026-07-18)
+## Current portrait-gated admission (2026-07-22)
 
-The parent promotion admits exactly IW-173 `HAW`, IW-179 `FSM`, and IW-184
-`HBX` to `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
-The Pacific family is FORM-48, with HBX as the carrier and HAW/FSM as sovereign
-autonomous members. FORM-48 uses no annexation or integration fallback. Its
-`independence_wave_form48_register_readiness` binds family 48 and, after the
-coordinated PASS audits, sets the six shared adapter readiness flags plus
-`independence_wave_form48_registry_surface_registered` and
-`independence_wave_form48_readiness_attested`.
+No package is currently present in
+`has_independence_wave_runtime_package_content_attestation_for_execution_id`.
+Every formerly admitted grounded package with a generated or generic leader,
+commander, or institutional portrait has been withdrawn until sourced real male
+replacements pass review. IW-173 is included because vanilla maps David
+Kalakaua Kawananakoa to generic `Portrait_Asia_Generic_land_5.dds`. FORM-48
+remains implemented with HBX as carrier and HAW/FSM as
+sovereign autonomous members, but HBX/FSM withdrawal prevents a complete
+currently admitted carrier/member set.
 
-The Pacific admission remains subject to the normal live host, anchor,
+Later package admission remains subject to the normal live host, anchor,
 reservation, Event 005 collision, force, chaos-band, and transaction proofs.
 FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
 006 completion audit is still pending, so this promotion does not close the
@@ -34,11 +35,11 @@ local mods, archives, and reports zero collisions.
 Pacific identity and asset boundaries are explicit: HAW and FSM use vanilla
 flags; HBX uses the researched flat 1911 Bear Flag; PFX uses the audited flat
 ImageGen flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
-portrait blocks are present; accepted male large portraits are separate
-country-leader assets, and protected BAY/RHI hashes remain unchanged. The
-earlier Pacific handoffs that recorded HOLD/FAIL-CLOSED admission are preserved
-as historical evidence; this current section records their superseding parent
-promotion.
+portrait blocks are present. The HBX and FSM generated country-leader assets
+remain runtime artifacts awaiting sourced replacement and are not readiness
+evidence. Protected BAY/RHI hashes remain unchanged. Earlier promotion handoffs
+are preserved as historical gameplay evidence, but their portrait acceptance
+and current admission status are superseded.
 
 ## Release transaction
 

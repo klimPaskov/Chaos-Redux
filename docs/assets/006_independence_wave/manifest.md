@@ -262,13 +262,27 @@ and their flag comparisons. Its former portrait, commander-small, and portrait
 completion claims are superseded and are not portrait evidence. AEX remains a
 vanilla `BEL_flanders` overlay and has no standalone Event 006 flag family.
 
-## 2026-07-18 male HOI4 portrait authority
+## 2026-07-22 sourced-portrait authority
 
-The current portrait source of truth is
+The accepted specification and
+`../../../.agents/skills/chaos-redux-event-assets/SKILL.md` supersede every
+generated grounded-polity portrait approval below. Country leaders, route
+leaders, commanders, and named officeholders for real or plausibly historical
+polities require sourced real male people or sourced archival material for the
+actual institution. Generated portraits are reserved for truly fictional
+high-chaos or impossible/supernatural countries. Existing generated DDS files
+remain consumer/provenance evidence awaiting replacement and do not grant
+package visual readiness. The protected BAY Rupprecht and RHI Matthes files
+remain approved and byte-locked. Event 6 continues to use no custom advisor
+icons or advisor portrait sprites.
+
+## Historical 2026-07-18 male HOI4 portrait package
+
+The historical generated portrait inventory is
 `portrait_refresh_male_hoi4_2026_07_18/manifest.md`, together with the
 production and root visual-review handoff
 `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-The audited package contains twenty distinct male `156x210` fictional portraits
+The package contains twenty distinct male `156x210` fictional portraits
 and ten matching `65x67` commander-only miniatures under the existing runtime
 filenames. The twenty-four textures for AFX, AGX, AJX, BAY, BRI, RHI, SCO, and
 WLS retain their existing registrations and consumers. The six ACX and AEX
@@ -282,8 +296,8 @@ The two user-approved historical portraits remain unchanged and hash-locked:
 
 The authoritative runtime checksum ledger is
 `portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`;
-the package's merged visual review and final independent audit govern visual
-acceptance. Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
+the package's merged visual review and final independent audit record its former
+acceptance under the superseded source mode. Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
 portrait, and army-small package is historical and superseded for portrait
 files, hashes, and approval. `generated_nwe_hashes.sha256` is not portrait
 authority. Custom Event 006 advisor icons remain withdrawn: gameplay advisor
@@ -304,20 +318,20 @@ SHA-256 contracts remain in the focus-only package. Custom Event 006 advisor
 icons and their sprite registrations were removed by explicit user direction;
 the gameplay offices remain asset-neutral.
 
-## 2026-07-18 BRI portrait disposition
+## Historical 2026-07-18 BRI portrait disposition
 
-IW-004 Brittany's current fictional civic, commander-large, and
+IW-004 Brittany's generated civic, commander-large, and
 commander-small evidence is part of
 `portrait_refresh_male_hoi4_2026_07_18/manifest.md` and the reviewed handoff
-named above. Existing BRI filenames, sprite registrations, and
-gameplay consumers remain stable; the 2026-07-15 BRI portrait package and its
-small-card evidence are superseded.
+named above. Existing BRI filenames, sprite registrations, and gameplay
+consumers remain stable while sourced replacements are researched; neither this
+package nor the 2026-07-15 portrait package satisfies current readiness.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
 political portraits. François Debeauvais remains explicitly blocked because
 the available portrait candidates lack both adequate identity detail and a
 defensible United States public-domain basis. No Debeauvais asset or generated
-likeness is wired. The accepted fictional BRI civic portrait does not clear or
+likeness is wired. The generated BRI civic portrait does not clear or
 replace that historical-person rights blocker, and portrait presence does not
 grant runtime content attestation or SCN008 scenario-preflight readiness.
 

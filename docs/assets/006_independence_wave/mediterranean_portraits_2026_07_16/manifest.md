@@ -1,5 +1,10 @@
 # Event 006 Mediterranean large portrait manifest
 
+> **Superseded source mode (2026-07-22):** Corsica, Sardinia, and Sicily are
+> grounded polities. These generated portraits remain provenance and consumer
+> evidence but do not satisfy visual readiness; sourced real male replacements
+> are required for every live leader and commander role.
+
 This package contains exactly eight fictional adult-male, 156x210 Event 006
 character portraits for Corsica (`COR`), Sardinia (`ARX`), and Sicily (`ASX`).
 The protected BAY Rupprecht and RHI Matthes portraits are the binding visual

@@ -17,6 +17,12 @@ only when it is not living and still owns the vanilla `generic_focus` tree.
 mod-provided meaningful COR tree fails the setup gate and rolls the release
 back instead of being overwritten.
 
+Current visual admission is withdrawn for IW-017, IW-018, and IW-019. Their
+generated leader and commander portraits do not satisfy the sourced-only rule
+for grounded Corsican, Sardinian, and Sicilian polities. The gameplay below
+remains implemented, but all three packages stay outside runtime content
+attestation until sourced real male replacements pass review.
+
 ## Release and host-survival contract
 
 The shared allocator owns reservation, collision handling, and synchronized
@@ -192,12 +198,13 @@ government or which researched historical design belongs to each engine
 ideology filename. Every generated master, processed ladder, source citation,
 prompt, and hash belongs in the Event 006 asset manifest.
 
-Every live leader and commander portrait depicts one adult man in a distinctive
-1930s HOI4 painted head-and-shoulders composition. The package uses eight full
-156x210 leader/commander textures. Its three corps commanders follow vanilla's
-supported large-only army-portrait pattern; no optional army-small dossier is
-declared. The six political advisers have no portrait block, custom dossier,
-or advisor sprite dependency.
+Every live leader and commander must use a sourced real male person connected
+to the polity and route, cropped head-and-shoulders and given an
+identity-preserving 1930s HOI4 painted treatment. The eight current generated
+156x210 textures remain consumer/provenance records awaiting replacement. The
+three corps commanders follow vanilla's supported large-only army-portrait
+pattern; no optional army-small dossier is declared. The six political advisers
+have no portrait block, custom dossier, or advisor sprite dependency.
 
 ## Asset wiring
 

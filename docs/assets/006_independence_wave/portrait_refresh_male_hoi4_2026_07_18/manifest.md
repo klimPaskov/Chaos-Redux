@@ -1,5 +1,10 @@
 # Event 006 refreshed male portrait package (2026-07-18)
 
+> **Superseded source mode (2026-07-22):** these generated portraits depict
+> grounded polities and no longer satisfy Event 6 visual readiness. They remain
+> provenance and consumer evidence pending sourced real male replacements.
+> Protected BAY Rupprecht and RHI Matthes remain approved outside this package.
+
 Source mode: `$imagegen` built-in generation for fictional one-person portraits. All twenty masters are distinct adult male subjects with plausible regional identity, period clothing, head-and-shoulders framing, restrained painted backgrounds, and no text or watermarks. Ten commander masters also have matching `65x67` small commander derivatives. Protected historical `portrait_BAY_rupprecht_of_bavaria.dds` and `portrait_RHI_josef_friedrich_matthes.dds` are outside this package and were not edited.
 
 The ten institution/council/board/assembly/commission/directorate labels identify the gameplay role; the portraits depict one fictional male person, not a collective body. Gameplay should assign an actual-ish male personal name from a matching regional name pool rather than a generic office title and must not use female metadata.
