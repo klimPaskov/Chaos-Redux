@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
 # ============================================================================
 # Reusable phase, target, mission-cap, resource-safety, and material-cost
-# predicates for DM-01 through DM-59. All country scans are initiated by a
+# predicates for DM-01 through DM-60. All country scans are initiated by a
 # player or AI targeted action. No periodic world iteration is performed here.
 # ============================================================================
 
@@ -79,11 +79,59 @@ has_independence_wave_active_league_crisis = {
 		has_decision = independence_wave_request_collective_recognition
 		has_decision = independence_wave_request_border_arbitration
 		has_decision = independence_wave_rescue_threatened_member
+		has_decision = independence_wave_call_charter_expulsion_vote
 		has_active_mission = independence_wave_convene_founding_congress
 		has_active_mission = independence_wave_challenge_league_leadership
 		has_active_mission = independence_wave_coordinate_reclamation_fronts
 		has_active_mission = independence_wave_transform_league_charter
 	}
+}
+
+# A client can remain in the member ledger only while a leader's charter
+# expulsion vote is pending. It cannot use ordinary league actions in that
+# enforcement window.
+is_independence_wave_charter_compliant_member = {
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+}
+
+# The leader authority used by DM-60. The active-vote guard stays in the
+# decision's target-root trigger so the same authority can safely revalidate
+# a vote when it resolves or cancels.
+is_independence_wave_charter_expulsion_authority = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_current_leader
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	has_global_flag = independence_wave_charter_anti_puppetry
+	independence_wave_league_member_arrays_are_aligned = yes
+	check_variable = {
+		var = global.independence_wave_league_member_count
+		value = constant:independence_wave_decision_gate.charter_expulsion_member_minimum
+		compare = greater_than_or_equals
+	}
+	has_event_target = independence_wave_league_leader_target
+	event_target:independence_wave_league_leader_target = {
+		exists = yes
+		tag = ROOT
+	}
+	OR = {
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	}
+}
+
+# DM-60 intentionally recognizes only the already-written patron-client
+# breach. Other accepted expulsion grounds need their own factual writers and
+# are never inferred from a generic war, claim, or diplomatic disagreement.
+is_valid_independence_wave_charter_expulsion_target = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_member
+	has_country_flag = independence_wave_client_route_locked
+	NOT = { tag = ROOT }
+	ROOT = { is_independence_wave_charter_expulsion_authority = yes }
 }
 
 has_independence_wave_active_border_operation = {

@@ -3,7 +3,7 @@
 # ============================================================================
 # Overview:
 # - Applies auditable five-value, former-host, patron, network, and league
-#   transactions for DM-01 through DM-59.
+#   transactions for DM-01 through DM-60.
 # - Consumes real material resources through reusable cost palettes.
 # - Publishes bounded state targets for integration and future-wave support.
 # - Removes decision-layer missions and state when Event 006 origin ends.
@@ -45,6 +45,51 @@ independence_wave_decision_apply_league_deltas = {
 	set_temp_variable = { independence_wave_league_shared_reserve_delta = independence_wave_decision_league_reserve_delta }
 	set_temp_variable = { independence_wave_league_member_confidence_delta = independence_wave_decision_league_confidence_delta }
 	independence_wave_change_league_values = yes
+}
+
+# Country scope. DM-60 saves the capital's owner as the regular event target
+# below, then rechecks both the leader's authority and the target's recorded
+# patron-client breach before removing membership. No global target persists
+# after the decision effect chain ends.
+independence_wave_decision_resolve_charter_expulsion_vote = {
+	FROM = { owner = { save_event_target_as = independence_wave_charter_expulsion_target } }
+	if = {
+		limit = {
+			is_independence_wave_charter_expulsion_authority = yes
+			event_target:independence_wave_charter_expulsion_target = {
+				is_valid_independence_wave_charter_expulsion_target = yes
+			}
+		}
+		event_target:independence_wave_charter_expulsion_target = {
+			independence_wave_expel_league_member = yes
+		}
+		independence_wave_achievement_record_member_expulsion = yes
+		set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_expulsion_cohesion_loss }
+		set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_expulsion_common_cause_loss }
+		set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_decision_effect.league_expulsion_patron_capture_loss }
+		set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_expulsion_reserve_loss }
+		set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_expulsion_confidence_loss }
+		independence_wave_decision_apply_league_deltas = yes
+		set_variable = { independence_wave_last_charter_expulsion_vote_date = global.date }
+		independence_wave_enter_league_crisis = yes
+	}
+	else = { independence_wave_decision_fail_charter_expulsion_vote = yes }
+}
+
+# Country scope. A vote that loses its leader authority or valid target after
+# the commitment begins leaves the material cost spent and damages confidence,
+# but cannot remove a member from a stale or changed target row.
+independence_wave_decision_fail_charter_expulsion_vote = {
+	if = {
+		limit = { is_independence_wave_active_country = yes }
+		set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_expulsion_vote_failure_cohesion_loss }
+		set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_expulsion_vote_failure_confidence_loss }
+		independence_wave_decision_apply_league_deltas = yes
+		independence_wave_enter_league_crisis = yes
+	}
 }
 
 independence_wave_decision_pay_administration_light = {
@@ -661,5 +706,6 @@ independence_wave_cleanup_decision_layer = {
 	clear_variable = independence_wave_last_recognition_campaign_date
 	clear_variable = independence_wave_last_reserve_contribution_date
 	clear_variable = independence_wave_last_leadership_challenge_date
+	clear_variable = independence_wave_last_charter_expulsion_vote_date
 	clear_variable = independence_wave_last_border_operation_date
 }
