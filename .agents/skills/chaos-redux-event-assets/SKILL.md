@@ -43,7 +43,7 @@ Use this skill for:
 - achievement icons
 - flags
 - country leader, commander, and operative portraits
-- advisor and high-command dossier portraits
+- explicitly authorized advisor, theorist, and high-command dossier portraits
 - intelligence-agency and intelligence-operation icons
 - commander-trait, medal, military-raid, state-modifier, MIO, faction, building, and modifier icons
 - land, naval, and air equipment art, counters, emblems, and 3D unit visual references
@@ -57,15 +57,16 @@ Use this skill for:
 - any other static or animated visual asset required by a Chaos Redux event or mechanic
 
 Asset-type coverage is authorization-bounded. Do not infer a custom asset only
-because the corresponding gameplay object exists. In particular, an advisor,
-theorist, high-command, or officer-corps character definition does not by
-itself authorize a dossier portrait. Create that asset family only when an
-accepted spec row, asset manifest row, or explicit user instruction requests
-it. Otherwise leave the character portraitless, record the dossier asset as
-`not_needed` when a coverage ledger includes it, and do not generate, process,
-register, or retain event-scoped advisor art. Apply the same rule to optional
-portraits, route emblems, animation, and other asset families not present in
-the accepted requirement set.
+because the corresponding gameplay object exists. Create an asset family only
+when an accepted spec row, asset manifest row, or explicit user instruction
+requests it. Apply the same rule to optional portraits, route emblems,
+animation, and other asset families not present in the accepted requirement
+set.
+
+Never infer an advisor, high-command, officer-corps, dossier-card, or other
+small-portrait family from a character, idea, trait, or `portraits = { ... }`
+consumer. Create that family only when the accepted requirement explicitly asks
+for it; otherwise leave the family absent and report the authorization boundary.
 
 Use this skill when the user asks the agent to create, source, process, or wire final visual assets.
 
@@ -82,8 +83,8 @@ The main agent decides which subagent to spawn, gives it a bounded asset prompt,
 
 Use:
 
-- `chaosx_asset_source_researcher` for real or archival image sourcing, real country-leader, commander, and operative portraits, historical flag-design research, historically attested symbols, user-provided source photos, and report/news/super-event images that must depict real photographed material
-- `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, ImageGen-created flat flag designs, faction emblems, UI panels, dossier art, and progression-state base art
+- `chaosx_asset_source_researcher` for real or archival image sourcing, real country-leader, commander, operative, and explicitly authorized named-officeholder portraits, historical flag-design research, historically attested symbols, user-provided source photos, and report/news/super-event images that must depict real photographed material
+- `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, fictional portraits and explicitly authorized fictional advisor masters, ImageGen-created flat flag designs, faction emblems, UI panels, and progression-state base art
 - `chaosx_icon_artist` for focus, idea, national-spirit, officer-corps, decision, decision-category, mission, achievement, technology, intelligence-agency, intelligence-operation, commander-trait, medal, military-raid, state-modifier, MIO, faction, building, and modifier icons
 
 Flags are a flat graphic-design pipeline, not event artwork. Historical flag research establishes the documented geometry, colours, and symbols; ImageGen still produces the final clean flat design under section 20.
@@ -191,7 +192,6 @@ Use Codex's official `$imagegen` skill by default for:
 - fictional flag designs
 - faction emblems
 - fictional leader portraits
-- advisor dossier frames, papers, seals, and patina overlays
 - UI panels
 - progression-state base art
 - other symbolic or fictional static assets
@@ -218,7 +218,7 @@ For generated World War II-era report/news/super-event images:
 - avoid modern streets, uniforms, props, weapons, vehicles, signage, UI overlays, cinematic color grading, and readable generated text
 - keep the source PNG, processed preview, final DDS, prompt, and manifest entry
 - record the source mode as generated and explain why generation fit better than sourcing
-- never use generated images for any real-person portrait or to fabricate a real person's likeness
+- never use text-only generation, a name, a description, or a substitute face to fabricate a real person's likeness; an identity-preserving ImageGen edit of the unchanged sourced portrait is allowed only under the real-person workflow below
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
@@ -279,26 +279,35 @@ and block the portrait/token. Literal ship names, production-line names, streets
 equipment, or incidental prose are not character ownership unless an actual
 character, portrait, leader, commander, operative, or officeholder consumer resolves
 to the person. Record search terms, roots/files and ids checked, matches or no-match
-evidence, disposition, and any transfer guard in the manifest and handoff. This gate
-does not authorize advisor or high-command dossier icons; section 21.1 remains the
-separate workflow for those assets. Run it in addition to the unchanged
-grounded-source-only (`grounded_source_only`) versus `fictional_high_chaos` source-mode
-gate; it never authorizes a generated grounded person.
+evidence, disposition, and any transfer guard in the manifest and handoff. Run it in
+addition to the unchanged grounded-source-only (`grounded_source_only`) versus
+`fictional_high_chaos` source-mode gate; it never authorizes a generated grounded
+person.
 
 ### Real-person portraits
 
-Do not generate a portrait for a real person. This applies to country leaders, commanders, operatives, and real people used as advisor or high-command portrait masters.
+Do not generate, reconstruct, or substitute the identity of a real person. This
+applies to country leaders, commanders, operatives, and named officeholders. The only
+allowed ImageGen use for a real-person portrait is an image edit of that person's
+unchanged attributed source master, performed to apply the HOI4 painted portrait
+finish while preserving the source likeness.
 
 For real people, preserve an unchanged, attributed original master from the internet or a user-provided image; never overwrite or silently replace that provenance input. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
 Follow this fixed real-portrait sequence: unchanged attributed original master ->
-explicit head-and-shoulders crop -> deterministic, identity-preserving HOI4 leader
-finish -> visual comparison with the matching canonical skill-local leader or
-commander reference family -> DDS conversion. Preserve the person's face,
-expression, age, hair, clothing, and pose; use a quiet painted background, controlled
-contrast, restrained period texture, and readable silhouette. Never use ImageGen to
-reconstruct, stylize, beautify, or fill a real face, and do not accept a generic
-oil-paint filter as an HOI4 finish.
+explicit head-and-shoulders crop -> identity-preserving ImageGen edit using the exact
+crop as the required input reference -> visual comparison against both the unchanged
+source and the matching canonical leader or commander reference family -> DDS
+conversion. Preserve the person's facial geometry, expression, age, hair, clothing,
+pose, and other recognisable source details while applying a quiet painted background,
+controlled contrast, restrained period brush texture, and readable HOI4 silhouette.
+Keep the ImageGen result in a separate path and never overwrite the source master.
+Reject the edit when it invents hidden facial detail, changes proportions or apparent
+age, beautifies or genericises the subject, replaces clothing or pose without an
+explicit source-backed reason, or can no longer be identified confidently in a direct
+before/after comparison. Never create the person from text, a name, a written
+description, or another person's face, and do not accept a generic oil-paint filter as
+an HOI4 finish.
 
 Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
 
@@ -344,95 +353,110 @@ Still crop, resize, convert, place, wire, and document it like any other source 
 
 ## 4. Reference asset examples
 
-This skill owns its canonical visual-reference library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. The organized reference root is `.agents/skills/chaos-redux-event-assets/assets/`; paths below are written relative to the skill directory and therefore begin with `assets/`. Do not route reference work through project-root asset folders.
+This skill owns its visual-reference library under:
+
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
+
+`assets/vanilla_reference/` is the canonical semantic library, with Vanilla HOI4
+as the primary source and explicitly marked Chaos Redux examples where needed.
+`assets/leader_portraits/` is the user-requested, curated male-only quick-reference
+pack for HOI4 country-leader and army/navy-commander styling. Do not route reference
+work through project-root asset folders or another skill-local copy.
 
 Start with:
 
 - library rules and contact sheets: `assets/vanilla_reference/README.md`
 - exact source provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
-- top-level portrait compatibility routing: `assets/leader_portraits/README.md`
-- curated portrait-copy provenance and hashes: `assets/leader_portraits/REFERENCE_MANIFEST.md`
+- leader-portrait routing: `assets/leader_portraits/README.md`
+- copied portrait provenance and hashes: `assets/leader_portraits/REFERENCE_MANIFEST.md`
 
-Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `assets/vanilla_reference/contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references; other tracked families have at least 5.
+Unless a path below begins with `assets/`, interpret it relative to
+`assets/vanilla_reference/`.
+
+Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references; other tracked families have at least 5.
 
 Canonical portrait paths:
 
 - country leaders: `assets/vanilla_reference/portraits/leaders/`
 - army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
 - operatives: `assets/vanilla_reference/portraits/operatives/`
-- advisor, theorist, high-command, and officer dossier icons: `assets/vanilla_reference/portraits/advisors/`
-
-The compatibility pack at `assets/leader_portraits/` contains a small,
-male-only set of copied country-leader and army/navy commander PNGs under
-`leaders/` and `commanders/`, with role-specific contact sheets. The canonical
-`vanilla_reference/` files remain the source of truth; the copies are
-reference-only and their exact source mapping and hashes are recorded in
-`assets/leader_portraits/REFERENCE_MANIFEST.md`. Country leaders, commanders,
-and operatives are full `156x210` portrait textures; advisor, theorist,
-high-command, and officer-corps dossier icons are independently composed
-`65x67` cards. In particular, an `army_small_*` advisor example is not a
-commander portrait, and a commander remains a full `army.large` or
-`navy.large` portrait even when a UI view displays it smaller.
+- advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
+Country leaders, commanders, and operatives are full `156x210` portrait
+textures. For portrait work, inspect both the canonical role-specific contact sheet
+and the matching `assets/leader_portraits/leaders/` or
+`assets/leader_portraits/commanders/` quick-reference contact sheet. The copied pack
+is reference-only; its source mapping and hashes are recorded in
+`assets/leader_portraits/REFERENCE_MANIFEST.md`.
+Advisor and high-command dossier references are native `65x67` cards and use
+their own canonical contact sheet; do not substitute the full portrait or
+quick-reference packs for this family.
 
 Canonical flag and event-art paths:
 
-- flat flags: `assets/vanilla_reference/flags/normal/`, `assets/vanilla_reference/flags/medium/`, and `assets/vanilla_reference/flags/small/`
-- report-event art: `assets/vanilla_reference/event_art/report/`
-- news-event art: `assets/vanilla_reference/event_art/news/`
-- super-event art: `assets/vanilla_reference/event_art/super_event/`
+- flat flags: `flags/normal/`, `flags/medium/`, and `flags/small/`
+- report-event art: `event_art/report/`
+- news-event art: `event_art/news/`
+- super-event art: `event_art/super_event/`
 
 Canonical gameplay-icon paths:
 
-- national focus: `assets/vanilla_reference/icons/national_focus/`
-- ideas and national spirits: `assets/vanilla_reference/icons/ideas/`
-- decisions: `assets/vanilla_reference/icons/decisions/`
-- missions: `assets/vanilla_reference/icons/missions/`
-- decision categories: `assets/vanilla_reference/icons/decision_categories/`
-- achievement state triplets: `assets/vanilla_reference/icons/achievements/`
-- officer corps spirits: `assets/vanilla_reference/icons/officer_corps_spirits/`
-- technologies: `assets/vanilla_reference/icons/technologies/`
-- special projects: `assets/vanilla_reference/icons/special_projects/`
-- balance of power: `assets/vanilla_reference/icons/balance_of_power/`
-- intelligence agencies: `assets/vanilla_reference/icons/intelligence_agency/`
-- intelligence operations: `assets/vanilla_reference/icons/intelligence_operations/`
-- commander traits: `assets/vanilla_reference/icons/commander_traits/`
-- medals: `assets/vanilla_reference/icons/medals/`
-- military raids: `assets/vanilla_reference/icons/military_raids/`
-- state modifiers: `assets/vanilla_reference/icons/state_modifiers/`
-- military industrial organizations: `assets/vanilla_reference/icons/military_industrial_organizations/`
-- factions: `assets/vanilla_reference/icons/factions/`
-- buildings: `assets/vanilla_reference/icons/buildings/`
-- modifiers: `assets/vanilla_reference/icons/modifiers/`
+- national focus: `icons/national_focus/`
+- ideas and national spirits: `icons/ideas/`
+- decisions: `icons/decisions/`
+- missions: `icons/missions/`
+- decision categories: `icons/decision_categories/`
+- achievement state triplets: `icons/achievements/`
+- officer corps spirits: `icons/officer_corps_spirits/`
+- technologies: `icons/technologies/`
+- special projects: `icons/special_projects/`
+- balance of power: `icons/balance_of_power/`
+- intelligence agencies: `icons/intelligence_agency/`
+- intelligence operations: `icons/intelligence_operations/`
+- commander traits: `icons/commander_traits/`
+- medals: `icons/medals/`
+- military raids: `icons/military_raids/`
+- state modifiers: `icons/state_modifiers/`
+- military industrial organizations: `icons/military_industrial_organizations/`
+- factions: `icons/factions/`
+- buildings: `icons/buildings/`
+- modifiers: `icons/modifiers/`
 
 Canonical unit-visual paths:
 
-- equipment and technology art: `assets/vanilla_reference/units/equipment/technology_art/`
-- large land-unit counters: `assets/vanilla_reference/units/land/counters_large/`
-- land map counters: `assets/vanilla_reference/units/land/map_counters/`
-- division-template emblems: `assets/vanilla_reference/units/land/division_template_emblems/`
-- air map counters: `assets/vanilla_reference/units/air/map_counters/`
-- naval map counters: `assets/vanilla_reference/units/naval/map_counters/`
-- land model materials: `assets/vanilla_reference/units/models_3d/land_materials/`
-- air model materials: `assets/vanilla_reference/units/models_3d/air_materials/`
-- naval model materials: `assets/vanilla_reference/units/models_3d/naval_materials/`
+- equipment and technology art: `units/equipment/technology_art/`
+- large land-unit counters: `units/land/counters_large/`
+- land map counters: `units/land/map_counters/`
+- division-template emblems: `units/land/division_template_emblems/`
+- air map counters: `units/air/map_counters/`
+- naval map counters: `units/naval/map_counters/`
+- land model materials: `units/models_3d/land_materials/`
+- air model materials: `units/models_3d/air_materials/`
+- naval model materials: `units/models_3d/naval_materials/`
 
 The tree is semantic, not a bank of interchangeable pictures. Use the folder for the exact owning UI or model surface, then follow the cataloged source, native canvas, frame count, transparency, and owning definition.
 
-The canonical `vanilla_reference/` tree is the source of truth for reference examples. The formerly duplicated skill-local example folders were migrated into their semantic folders and are no longer valid reference paths. The only top-level support paths intentionally retained are:
-
-- `assets/advisor_dossier_overlays/`, the live source/processed overlay package used by the advisor dossier workflow
-- `assets/leader_portraits/`, a curated male-only leader/commander reference pack, contact sheets, and compatibility routing index; its copies are not runtime assets
-
-The active advisor kit is pinned by `assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`. That self-contained provenance-schema-4 manifest freezes the approved ImageGen frame and paper sources, alpha-extracted overlays, prompts, generation inputs, tool/argument/input/output hashes, and the exact six skill-local advisor style references. It must not depend on an event package, a user-specific generated-image store, or an external working copy. Do not use an overlay whose retained source, prompt record, generation inputs, alpha-extraction record, dimensions, or hashes differ from the manifest.
+The canonical `assets/vanilla_reference/` tree remains the source of truth for exact
+engine surfaces and semantic ownership. The curated `assets/leader_portraits/` pack
+is the deliberate portrait-review aid requested for agents and must stay aligned with
+its manifest; it is never a runtime asset source.
 
 The reusable achievement not-eligible compositing overlay lives at
-`assets/vanilla_reference/icons/achievements/overlay.png`. It is a workflow
+`icons/achievements/overlay.png`. It is a workflow
 input rather than a reference example, so it is excluded from the achievement
 contact sheet and coverage count.
 
-Do not add new reference images beside `vanilla_reference/` except through an explicitly documented compatibility pack. If a future workflow needs a retained support path, document its consumer and keep it separate from the canonical reference library.
+Do not add new reference images outside the skill-local `assets/` root. Add semantic
+references under `assets/vanilla_reference/`; add male leader or commander review
+copies under `assets/leader_portraits/` only with exact provenance, dimensions,
+hashes, and contact-sheet coverage recorded in its manifest.
 
-Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not wire, recolor, trace, or ship them. The documented `assets/leader_portraits/` compatibility pack is the narrow exception for byte-identical review copies. If no category matches, inspect the closest skill-local category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
+Before generating, sourcing, processing, or wiring an asset, read the library
+rules, inspect the matching category and contact sheet, and follow the vanilla
+source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh`
+definition when engine behavior matters. Reference PNGs are never final assets:
+do not wire, recolor, trace, or ship them. If no category matches, inspect the
+closest canonical category plus a direct vanilla or established Chaos Redux
+precedent before choosing a style.
 
 ## 5. Generated artwork rules
 
@@ -599,8 +623,6 @@ Each asset entry should include:
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
 
-For advisor dossier cards, the manifest must also link the processor/render v5.0 metadata and the separate human or independent visual-approval record from section 21.1. Keep the asset at `needs_user_review` until the reviewer record exists, identifies a reviewer different from the producer, and approves the exact candidate hash. Automated processor or validator output cannot promote an advisor candidate to `complete`.
-
 ## 8.1 Requirement-to-runtime coverage audit
 
 Before any asset completion claim, create or refresh a row-level coverage crosswalk from every accepted asset requirement in the current specs, manifest plans, and animation plans. Do not start from the assets that happen to be live. Each accepted row must identify:
@@ -628,7 +650,6 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 - country-leader portraits: 156x210
 - commander portraits: 156x210 full portrait textures, never a fabricated 50x67 source texture
 - operative portraits: 156x210 full portrait textures; still follow the cataloged owning sprite
-- advisor, theorist, and high-command dossier icons: 65x67 independently composed cards
 - flags small: 10x7
 - flags medium: 41x26
 - flags normal: 82x52
@@ -650,12 +671,12 @@ When unsure, inspect the existing Chaos Redux pattern and vanilla HOI4 assets be
 
 Treat every unit visual as a domain-and-surface-specific pipeline. Inspect the matching catalog entries, contact sheet, and owning vanilla definition before deciding what the task needs.
 
-- `assets/vanilla_reference/units/equipment/technology_art/` contains flat 2D equipment illustrations used by equipment and technology sprites. Native canvases vary; follow the owning `interface/*.gfx` sprite.
-- `assets/vanilla_reference/units/land/counters_large/` contains large frame-aware land-unit strips. Preserve the cataloged `noOfFrames`, frame order, per-frame footprint, and transparent bounds.
-- `assets/vanilla_reference/units/land/map_counters/` contains land map-counter art. It is not a large division-designer strip.
-- `assets/vanilla_reference/units/land/division_template_emblems/` contains division-template identity emblems. It is not equipment art or map-counter art.
-- `assets/vanilla_reference/units/air/map_counters/` and `assets/vanilla_reference/units/naval/map_counters/` contain domain-specific map-counter art. Do not substitute land counters or resized equipment art.
-- `assets/vanilla_reference/units/models_3d/land_materials/`, `assets/vanilla_reference/units/models_3d/air_materials/`, and `assets/vanilla_reference/units/models_3d/naval_materials/` contain UV model materials paired with cataloged `.mesh`, `.asset`, and entity definitions. They are not 2D icons, finished renders, or concept sheets.
+- `units/equipment/technology_art/` contains flat 2D equipment illustrations used by equipment and technology sprites. Native canvases vary; follow the owning `interface/*.gfx` sprite.
+- `units/land/counters_large/` contains large frame-aware land-unit strips. Preserve the cataloged `noOfFrames`, frame order, per-frame footprint, and transparent bounds.
+- `units/land/map_counters/` contains land map-counter art. It is not a large division-designer strip.
+- `units/land/division_template_emblems/` contains division-template identity emblems. It is not equipment art or map-counter art.
+- `units/air/map_counters/` and `units/naval/map_counters/` contain domain-specific map-counter art. Do not substitute land counters or resized equipment art.
+- `units/models_3d/land_materials/`, `units/models_3d/air_materials/`, and `units/models_3d/naval_materials/` contain UV model materials paired with cataloged `.mesh`, `.asset`, and entity definitions. They are not 2D icons, finished renders, or concept sheets.
 
 Classify the requested deliverable before creating art: equipment/technology illustration, large land counter, land/air/naval map counter, division-template emblem, or land/air/naval 3D model package. Give each class its own brief, source art, native canvas or UV layout, frame metadata, final path, and handoff. A 3D task must keep model geometry, materials, entity wiring, and any separately produced concept reference distinct. Do not derive one unit pipeline by resizing, relabeling, or recoloring another.
 
@@ -678,7 +699,6 @@ Recommended filename prefixes:
 - country-leader portraits: `leader_`
 - commander portraits: `commander_`
 - operative portraits: `operative_`
-- advisor dossier icons: `advisor_`
 
 For event-specific assets, include the event id or slug where useful. For example, all idea assets related to an event should go into one folder of that event.
 
@@ -869,7 +889,7 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `assets/vanilla_reference/icons/ideas/` and the matching row in `assets/vanilla_reference/CATALOG.md` before generating or processing idea icons.
+Inspect `icons/ideas/` and the matching row in `CATALOG.md` before generating or processing idea icons.
 
 ## 17. Focus icons
 
@@ -903,7 +923,7 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `assets/vanilla_reference/icons/national_focus/` and the matching row in `assets/vanilla_reference/CATALOG.md` before generating or processing focus icons. Do not force every focus source onto an older nominal canvas when the owning sprite and current vanilla precedent use a different native canvas.
+Inspect `icons/national_focus/` and the matching row in `CATALOG.md` before generating or processing focus icons. Do not force every focus source onto an older nominal canvas when the owning sprite and current vanilla precedent use a different native canvas.
 
 ## 18. Decision icons
 
@@ -937,7 +957,7 @@ Use `$imagegen` for the base artwork unless the user provides or requests a spec
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
-Inspect `assets/vanilla_reference/icons/decisions/`, `assets/vanilla_reference/icons/missions/`, or `assets/vanilla_reference/icons/decision_categories/` as appropriate before generating or processing decision-system icons. Missions use the decision icon pipeline but still need mission-specific semantic readability.
+Inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` as appropriate before generating or processing decision-system icons. Missions use the decision icon pipeline but still need mission-specific semantic readability.
 
 ## Additional gameplay icon families
 
@@ -960,7 +980,7 @@ Generate the completed achievement icon first with `$imagegen`.
 Then create:
 
 - grey variant (simply black and white)
-- not-eligible variant by copying the grey variant and compositing `assets/vanilla_reference/icons/achievements/overlay.png` on top
+- not-eligible variant by copying the grey variant and compositing `icons/achievements/overlay.png` on top
 
 The variants may be created after the completed icon exists.
 
@@ -984,13 +1004,13 @@ gfx/achievements/<achievement_id>_not_eligible.dds
 
 When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, the three DDS variants in `gfx/achievements/`, and any docs or manifests that list the final DDS paths. If the achievement registry owns a single `unique_id`, keep it as one root-level registry file and group event-owned achievements by event section inside the file instead of splitting it into per-event achievement files.
 
-Inspect `assets/vanilla_reference/icons/achievements/` before generating or processing achievement icons. The reference set includes a completed, grey, and not-eligible triplet; keep all three states aligned to the exact achievement id.
+Inspect `icons/achievements/` before generating or processing achievement icons. The reference set includes a completed, grey, and not-eligible triplet; keep all three states aligned to the exact achievement id.
 
 ## 20. Flags
 
 Flags should use clean symbolic designs that look like intentional flag designs, not simple-shape placeholders, palette swaps, ugly filters, or flipped/recolored variants. Treat flags as flat identity assets, not artwork or illustrated scenes.
 
-Inspect the complete flat flag ladders in `assets/vanilla_reference/flags/normal/`, `assets/vanilla_reference/flags/medium/`, and `assets/vanilla_reference/flags/small/` before creating or processing flags. Compare all three sizes together in `assets/vanilla_reference/flags/contact_sheet.png`.
+Inspect the complete flat flag ladders in `flags/normal/`, `flags/medium/`, and `flags/small/` before creating or processing flags. Compare all three sizes together in `flags/contact_sheet.png`.
 
 They must remain readable at HOI4 sizes.
 
@@ -1031,21 +1051,18 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 
 ## 21. Country-leader, commander, and operative portraits
 
-For real people, do not generate portraits with `$imagegen`.
+For real people, do not generate or reconstruct an identity with `$imagegen`. Use
+`$imagegen` only to edit an unchanged, attributed source portrait into the HOI4 painted
+finish defined in section 3, with the exact source crop supplied as the required image
+reference and with direct before/after identity review.
 
 Choose the canonical reference family by role before starting:
 
-- country leader: `assets/vanilla_reference/portraits/leaders/`
-- army or navy commander: `assets/vanilla_reference/portraits/commanders/`
-- operative: `assets/vanilla_reference/portraits/operatives/`
-
-If a task starts from the top-level compatibility surface, read
-`assets/leader_portraits/README.md` first; it points to these canonical
-families and the separate `65x67` advisor dossier references.
+- country leader: `portraits/leaders/`
+- army or navy commander: `portraits/commanders/`
+- operative: `portraits/operatives/`
 
 Use an attributed real source image from the internet or a user-provided image. Select and record an explicit head-and-shoulders crop, then apply an identity-preserving HOI4 painted finish while retaining the person's face, expression, age, hair, clothing, pose, and other recognisable source details. Match the vanilla family's quiet painted background, controlled value range, restrained texture, period treatment, and readable silhouette. A raw photograph, simple resize, generic oil-paint filter, face replacement, reconstructed face, or weak likeness is not a finished portrait.
-
-Use `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader` for the deterministic crop, restrained finish, dimensions, metadata, and reference comparison sheet for full portrait textures. The script is only a finishing tool. Its output remains a candidate until it is compared with the matching canonical contact sheet and the real person's source image. If the source cannot support a faithful head-and-shoulders likeness, find a better source; do not invent missing identity details.
 
 Record:
 
@@ -1058,29 +1075,106 @@ Record:
 
 For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, and controlled contrast. Reject normal-looking, conventionally dressed, or interchangeable fictional leaders. Require culturally coherent absurdity designed for the invented polity without borrowing or distorting sacred objects or traits of a real people. Allow no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
 
-Country-leader, commander, and operative portrait textures are `156x210`. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline, not the dossier-card size; follow their cataloged owning sprite.
+Country-leader, commander, and operative portrait textures are `156x210`. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline; follow their cataloged owning sprite.
 
 ## 21.1 Advisor and high-command portrait icons
 
-Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before work. The final target is `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, dark irregular dossier framing, and transparent outer corners.
+Advisor, theorist, military-high-command, and officer-corps portrait icons are a
+separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before
+work. The final target is native `65x67`, with a recognisable HOI4-styled
+head-and-shoulders portrait, dark irregular dossier framing, and transparent outer
+corners. Do not infer this family from a character or small-portrait consumer; it
+must be present in the accepted requirement set.
 
-For a fictional advisor, generate a distinct full-resolution portrait master with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a local drawing script. For real people, follow the real-person portrait rules above and preserve source attribution. Institutional or collective leader portraits follow the accepted content brief. They may use a people-free institutional composition or a clearly staged governing group; when people are requested, keep every visible subject period-appropriate, distinct, and consistent with the requested demographic constraints, and never imply that invented faces are sourced historical individuals.
+Apply the section 3 source-mode gate to the advisor subject: grounded, historical,
+restored, separatist, regional, indigenous, dynastic, or otherwise plausibly
+historical advisor identities use sourced real people, while generated one-person
+advisors are limited to truly fictional high-chaos or impossible/supernatural
+entities. Missing or contradictory classification fails closed. For a fictional
+advisor in the allowed class, generate a distinct full-resolution portrait master
+with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a
+local drawing script. For real people, follow the real-person portrait rules above
+and preserve source attribution. Institutional or collective briefs must state
+whether the result is people-free or includes a governing group; never imply that
+invented faces are sourced historical individuals.
 
-Every advisor run requires a repo-contained schema-1 portrait-provenance manifest through `--portrait-provenance-manifest`. The reusable 16-source workflow keeps all 16 approved portrait-source records in one manifest; each processor invocation must select exactly one `approved_for_processing` record by the invoked source path. This batch size is provenance for that package, not a hard-coded processor assumption. The selected record must pin the source kind, source hash and dimensions, exact-source-copy assertion, approved crop and face box, prompt record/section/hash, generation mode and inputs, and either an ImageGen handle for fictional, collective, or symbolic art or attribution and license for a real archival portrait. Do not split out or bypass an individual source to avoid these checks.
+Every advisor run requires a repo-contained schema-1 portrait-provenance manifest
+through `--portrait-provenance-manifest`. A manifest may contain several approved
+portrait-source records, but each processor invocation must select exactly one
+`approved_for_processing` record by the invoked source path. The selected record
+must pin the source kind, source hash and dimensions, exact-source-copy assertion,
+approved crop and face box, prompt record/section/hash, generation mode and inputs,
+and either an ImageGen handle for fictional, collective, or symbolic art or
+attribution and license for a real archival portrait. Do not split out or bypass an
+individual source to avoid these checks.
 
-The visible dossier kit must also be authored with `$imagegen`. Use a shadowless, unrotated frame source and a separate shadowless, unrotated, visibly opaque textured paper source. The paper must have continuous material and clean edges with no transparent holes, cut-out fringe, chroma fringe, white matte, or fake translucency. Derive each overlay from its retained ImageGen source through the manifest-pinned alpha extraction and despill only; do not redraw, repair, recolour, relight, texture, seal, write on, or otherwise change its visible RGB artwork locally. The processor may apply its pinned restrained grading during composition, but overlay preparation must remain alpha-only. Both retained sources, both alpha-extracted overlays, their prompt and generation-input records, the frozen keyer and arguments, and the six canonical style-reference hashes must remain in the self-contained provenance-schema-4 overlay manifest. If a genuinely different dossier treatment is required, retain and manifest a complete new frame-and-paper source/overlay pair.
+The visible dossier kit must also be authored with `$imagegen`. Use a shadowless,
+unrotated frame source and a separate shadowless, unrotated, visibly opaque
+textured-paper source. The paper must have continuous material and clean edges with
+no transparent holes, cut-out fringe, chroma fringe, white matte, or fake
+translucency. Derive each overlay from its retained ImageGen source through the
+manifest-pinned alpha extraction and despill only; do not redraw, repair, recolour,
+relight, texture, seal, write on, or otherwise change its visible RGB artwork
+locally. Both retained sources, both alpha-extracted overlays, their prompt and
+generation-input records, the frozen keyer and arguments, and the six canonical
+style-reference hashes must remain in the self-contained provenance-schema-4
+overlay manifest. If a genuinely different dossier treatment is required, retain
+and manifest a complete new frame-and-paper source/overlay pair.
 
-Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative portrait. Choose an explicit source-pixel crop and compose the subject independently inside the native card with processor/render v5.0 at `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. Pass `--face-box`, both provenance manifests, and both retained ImageGen source/overlay pairs. There is no paperless, procedural, primitive-drawn, synthesized, or unpinned-source fallback. The processor may crop, grade, resize, angle, derive soft RGB shadows from authored alpha, composite, validate, and export. It must never draw or reconstruct visible frame, paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive geometry.
+Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
+portrait. Choose an explicit source-pixel crop and compose the subject independently
+inside the native card with processor/render v5.0 at
+`.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`.
+Pass `--face-box`, both provenance manifests, and both retained ImageGen
+source/overlay pairs. There is no paperless, procedural, primitive-drawn,
+synthesized, or unpinned-source fallback. The processor may crop, grade, resize,
+angle, derive soft RGB shadows from authored alpha, composite, validate, and export;
+it must never draw or reconstruct visible frame, paper, seal, bevel, patina, emblem,
+writing, or shadow artwork from primitive geometry.
 
-Processor/render v5.0 always exports an exact `65x67` native PNG. Its pinned native composition uses a `40x58` frame at `(1,1)` rotated `5` degrees and a `25x30` paper at `(29,26)` rotated `-4.25` degrees. It validates frame and paper geometry, palette, alpha coverage, portrait window, overlap, face placement, paper opacity, and RGB support rather than trusting a resized source. The frame must remain narrow, irregular, and neutral charcoal/black. The paper must remain pale, low-chroma, textured, visually opaque across its support, and free of holes or fringe.
+Processor/render v5.0 always exports an exact `65x67` native PNG. Its pinned native
+composition uses a `40x58` frame at `(1,1)` rotated `5` degrees and a `25x30` paper
+at `(29,26)` rotated `-4.25` degrees. It validates frame and paper geometry,
+palette, alpha coverage, portrait window, overlap, face placement, paper opacity,
+and RGB support rather than trusting a resized source. The frame must remain
+narrow, irregular, and neutral charcoal/black. The paper must remain pale,
+low-chroma, textured, visually opaque across its support, and free of holes or
+fringe.
 
-Freeze the v5 execution contract before processing: Python `3.9.12`, Pillow `11.1.0`, processor SHA-256 `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and advisor render-configuration SHA-256 `e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Stop and re-review the pipeline if any frozen value differs. The content-based seed payload pins decoded source RGBA, crop, face box, source kind, mode/render version, frame/paper overlay hashes, portrait-provenance and overlay-manifest hashes, render-configuration hash, runtime, and processor hash; paths and filenames do not control the seed. Preserve the full seed payload, normalized command and argument hash, runtime, configuration, processor/source/input hashes, and artifact hashes in metadata.
+Freeze the v5 execution contract before processing: Python `3.9.12`, Pillow
+`11.1.0`, processor SHA-256
+`e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and advisor
+render-configuration SHA-256
+`e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Stop and
+re-review the pipeline if any frozen value differs. Preserve the full seed payload,
+normalised command and argument hash, runtime, configuration, processor/source/
+input hashes, and artifact hashes in metadata.
 
-The v5 two-stage identity-preservation search has an authored-edge-preserving unsmoothed stage and a face-protected background-smoothing last-resort stage. Every retained portrait candidate must pass background structure gates plus two face-identity comparisons: the strict face gate against the post-grade baseline and the source-face gate against the mapped original source. Both measure new clipping, tonal spread, gradient energy, and gradient correlation. Frame and paper identity, palette, opacity, and geometry remain separate fail-closed gates; passing one gate cannot compensate for another.
+The final native composite must sit inside all nine frozen six-reference style bands
+with a minimum normalized interior margin of `0.03`:
+`top_frame_variation`, `left_rail_variation`, `left_rail_mean`, `left_rail_std`,
+`paper_mean`, `paper_std`, `paper_samples`, `portrait_mean`, and
+`bottom_area_variation`. These mechanical family gates prove measured placement,
+value, texture, and variation compatibility at native size; they do not claim
+one-to-one visual equivalence and do not grant visual approval.
 
-The final native composite must sit inside all nine frozen six-reference style bands with a minimum normalized interior margin of `0.03`: `top_frame_variation`, `left_rail_variation`, `left_rail_mean`, `left_rail_std`, `paper_mean`, `paper_std`, `paper_samples`, `portrait_mean`, and `bottom_area_variation`. These exact mechanical family gates prove measured placement, value, texture, and variation compatibility at native size; they do not claim one-to-one visual equivalence and do not grant visual approval.
+At runtime, v5 derives and verifies both canonical six-reference families from the
+actual skill-local reference PNGs. The rounded per-pixel mean alpha envelope must
+hash to
+`5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993`, and the
+derived aggregate paper-family record must hash to
+`c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`. The vanilla
+alpha envelope is opacity data only. Visible RGB may originate only from the
+approved portrait, ImageGen-authored frame and paper, their authored-alpha-derived
+shadows, and the permitted faint black backing at the low-alpha fringe. Never copy,
+blend, trace, expose, or ship visible vanilla RGB.
 
-At runtime, v5 derives and verifies both canonical six-reference families from the actual skill-local reference PNGs. The rounded per-pixel mean alpha envelope must hash to `5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993`, and the derived aggregate paper-family record must hash to `c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`. The vanilla alpha envelope is opacity data only. Visible RGB may originate only from the approved portrait, ImageGen-authored frame and paper, their authored-alpha-derived shadows, and the permitted faint black backing at the low-alpha fringe. The output must record zero unsupported visible, substantive, and high-alpha pixels. Never copy, blend, trace, expose, or ship visible vanilla RGB.
+The v5 identity-preservation search has an authored-edge-preserving unsmoothed
+stage and a face-protected background-smoothing last-resort stage. Every retained
+candidate must pass background structure gates plus both the strict face gate
+against the post-grade baseline and the source-face gate against the mapped
+original source. Frame and paper identity, palette, opacity, and geometry remain
+separate fail-closed gates; passing one gate cannot compensate for another.
 
 Use this invocation shape for the dossier-card processor:
 
@@ -1099,21 +1193,45 @@ python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.
 	--metadata <advisor_icon.json>
 ```
 
-Never omit the portrait-provenance manifest, self-contained overlay manifest, or either source/overlay pair, and never provide an overlay without its retained generated source. A candidate that cannot satisfy the complete provenance, runtime, identity, style-band, frame, paper, face-placement, palette, opacity, alpha/paper-family, and RGB-support gates must be regenerated or recropped; it must not be accepted through a weaker mode.
+Never omit the portrait-provenance manifest, self-contained overlay manifest, or
+either source/overlay pair, and never provide an overlay without its retained
+generated source. A candidate that cannot satisfy the complete provenance,
+runtime, identity, style-band, frame, paper, face-placement, palette, opacity,
+alpha/paper-family, and RGB-support gates must be regenerated or recropped; it must
+not be accepted through a weaker mode.
 
-Apply this same dossier-card pipeline when a character explicitly defines a `portraits = { army = { small = ... } }` sprite. Vanilla army-character precedents point that small slot to a `65x67` idea/dossier portrait while the character's `army.large` sprite remains the full `156x210` commander portrait. Do not create a plain `50x67` resize or crop for the army-small slot, and do not replace or downsize the approved full commander texture. Independently compose the approved portrait master inside the dossier overlays, keep the large and small sprite names stable, and validate both runtime textures separately.
+Apply this same dossier-card pipeline when a character explicitly defines a
+`portraits = { army = { small = ... } }` sprite. Vanilla army-character precedents
+point that small slot to a `65x67` dossier portrait while the character's
+`army.large` sprite remains the full `156x210` commander portrait. Do not create a
+plain `50x67` resize or crop for the army-small slot, and do not replace or downsize
+the approved full commander texture. Independently compose the approved portrait
+master inside the dossier overlays, keep the large and small sprite names stable,
+and validate both runtime textures separately.
 
-Protect all provenance inputs as immutable. The candidate PNG, review PNG, and metadata JSON must use three distinct repo-contained output paths that do not alias the portrait source, manifests, frame/paper sources or overlays, prompt records, generation inputs, keyer, processor, or six vanilla references. V5 prepares and verifies the exact PNG decodes and JSON payload first, then commits the three artifacts transactionally with rollback. It refuses an existing target unless `--force` is explicit. Retain the portrait master, provenance manifests, generated overlay sources, alpha-extracted overlays, prompts, processor arguments, hashes, metadata, and reference comparison sheet.
+Protect all provenance inputs as immutable. The candidate PNG, review PNG, and
+metadata JSON must use three distinct repo-contained output paths that do not alias
+the portrait source, manifests, frame/paper sources or overlays, prompt records,
+generation inputs, keyer, processor, or six vanilla references. The processor
+prepares and verifies the exact PNG decodes and JSON payload first, then commits the
+three artifacts transactionally with rollback. Retain the portrait master,
+provenance manifests, generated overlay sources, alpha-extracted overlays, prompts,
+processor arguments, hashes, metadata, and reference comparison sheet.
 
-The review sheet must show the candidate and every one of the six frozen references both at native `65x67` and at `4x` nearest-neighbour size. The reviewer must inspect face readability and identity, frame silhouette and palette, paper geometry and opacity, texture continuity, holes/fringe, alpha-derived shadows, transparent corners, and overall vanilla-family fit at both scales. Reject cards whose frame or paper obscures the face, whose paper resembles a large generic UI panel, or whose silhouette, value range, paper placement, and transparent corners do not read like the canonical family.
+The review sheet must show the candidate and every one of the six frozen references
+both at native `65x67` and at `4x` nearest-neighbour size. The reviewer must inspect
+face readability and identity, frame silhouette and palette, paper geometry and
+opacity, texture continuity, holes/fringe, alpha-derived shadows, transparent
+corners, and overall vanilla-family fit at both scales. Automated validation
+produces a candidate, never visual approval; keep metadata at
+`candidate_requires_visual_approval`. The producing agent may not approve its own
+candidate. Convert only an independently approved PNG with
+`python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`.
 
-Automated validation produces a candidate, never visual approval. Processor metadata must remain `candidate_requires_visual_approval`; the processor, validator, or producing subagent must never self-stamp `approved`. Before DDS conversion, store separate human or independent-review evidence linked from the asset manifest. The evidence must record the candidate PNG and SHA-256, review sheet and SHA-256, producer identity, reviewer identity, review date, native-size verdict, `4x` all-six-reference verdict, approval or rejection, and review notes. The producer and reviewer must be different people or agents. A parent agent may review a subagent's candidate, or the user or a separately spawned reviewer may approve it; the producing agent may not approve its own output.
-
-Convert only an independently approved PNG with `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67` from the mod root. The old `.tools/convert_to_dds.py` path is obsolete and must not be restored or referenced by active workflows. Decode the DDS and prove exact RGBA pixel equality with the approved PNG. A valid processor run, metadata record, style-band result, or DDS decode is not a substitute for the separate visual-approval record.
 
 ## Animated leader portraits
 
-Leader portraits can be animated for special routes, high-chaos leaders, supernatural leaders, rare formables, major transformations, or dramatic council reveals. They should not be required for ordinary advisors or every normal country leader.
+Leader portraits can be animated for special routes, high-chaos leaders, supernatural leaders, rare formables, major transformations, or dramatic council reveals. They should not be required for every normal country leader.
 
 Animated leader portrait packages must include:
 
@@ -1128,7 +1246,7 @@ Animated leader portrait packages must include:
 
 ## 22. UI panels and custom windows
 
-For UI panels, dossier windows, ledgers, investigation boards, and similar assets, separate artwork from functional UI.
+For UI panels, investigation windows, ledgers, and similar assets, separate artwork from functional UI.
 
 Use `$imagegen` for:
 
@@ -1262,8 +1380,6 @@ After conversion, confirm that:
 - the `.gfx` path points to the DDS
 - the manifest records the final path
 
-For an advisor dossier, convert only the separately approved exact `65x67` PNG, then decode the DDS and prove exact RGBA pixel equality with that approved PNG. Record both hashes and the equality result without treating DDS equality as visual approval.
-
 Do not leave only PNG files when the game expects DDS.
 
 ## 25. `.gfx` handoff and main-agent wiring
@@ -1373,8 +1489,7 @@ Before finishing, confirm:
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
 19. Every real country-leader, commander, and operative portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, visual comparison against its matching canonical portrait family, and recorded subject-ownership search evidence. A reused person also has a guarded transfer/availability contract preventing simultaneous ownership. Commander textures are full `156x210` portraits, never fabricated 50x67 sources.
-20. Every advisor or high-command portrait icon is an independently composed `65x67` dossier card produced by processor/render v5.0 with its exact portrait-provenance record, manifest-pinned ImageGen frame/paper provenance, frozen runtime/configuration/processor/seed evidence, the two-stage identity-preservation search and both face-identity gates, nine native style bands with the required interior margin, runtime-derived six-reference alpha and paper families, zero unsupported visible RGB, transactional PNG/review/JSON evidence, and separate approval from a reviewer who is not the producer before pixel-equal DDS conversion; it is not a resized country-leader, commander, or operative portrait, and processor success is not visual approval.
-21. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
-22. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
-23. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
-24. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead.
+20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
+21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
+22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
+23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead.
