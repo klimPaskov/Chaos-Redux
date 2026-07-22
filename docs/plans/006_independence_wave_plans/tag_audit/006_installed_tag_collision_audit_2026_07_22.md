@@ -22,9 +22,9 @@ Audit date: 2026-07-22
 - Sibling local mod directories scanned: **3** (agentic_hoi4_modding, chaos_redux_music, slop_redux).
 - Sibling local mods containing country-tag or extended tag surfaces: **1**.
 - Literal country-tag definitions parsed from sibling local mods: **0**.
-- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **1**.
+- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **4**.
 - External and vanilla country-tag definitions parsed: **7981**.
-- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69485**.
+- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69488**.
 - Other Chaos Redux country-tag definitions parsed: **49**.
 - Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **969**.
 - Reserved-tag collisions: **0**.
@@ -190,7 +190,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Audit script SHA-256: `074c457b2d1d6b3ad25e82ee88af351c6bac5c93ceb0084ee08da6c6bd86aeb6`
 - Event 006 tag registry SHA-256: `81a5eb91c2f84cef458fa63750275dc8123574d858961a4b415c30d024d64461`
 - Event 006 formable/cosmetic registry SHA-256: `e0309a19dbc937384fdff9d73ccda690d10bdf545e3d03cf60525596a59dd595`
-- Candidate matrix SHA-256: `ce3e6c735376ff758d5cd568adbab945689f9c62de454fee69b767002a26f397`
+- Candidate matrix SHA-256: `7d2eba7da88c9703f438ef31b24ad44c9018079bd4a61bc14c36362b986fb4af`
 - Formable-family matrix SHA-256: `816162e3ffd6ce702bfcab591fc85bc49c875343a6d857fa80475e6c2af23169`
 - Formable base-localisation inventory SHA-256: `b990e9d5006cdc3bc30bebfef9dface0ae4b7833d23e5622a5b09b8bc6d7c230`
 - Manual identity dispositions SHA-256: `08fd0882fb52175b18229d0d85cfbf093e5dc50610f1ec3cb31363237457791c`
@@ -199,9 +199,9 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Vanilla checksum manifest SHA-256: `771814d81faf7bae0f32819380c1114c61bbec1c897b060cecd1592f104f2b76`
 - Parsed vanilla tag-surface inventory SHA-256: `57dfbe267a32983680c3fa385cce69e7e7a9cd52af06d8ec8bf8bb6508004d09`
 - Parsed Workshop tag-surface inventory SHA-256: `c4e0f8f99a79be4459ad4a8c0068c9c4bf6319c594c2d8a0cc6c756a65035fb3`
-- Parsed sibling-mod tag-surface inventory SHA-256: `eaf2cadf169eb541a7d89b33ccac8d8d19d0953532c4a01e5815ff09ed28dc19`
+- Parsed sibling-mod tag-surface inventory SHA-256: `d82e4100adcae69dd712a5b57394e63daa364b0f79f16170ab6e07c8b73ab7b4`
 - Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `bb2b8a29136b8cfac7a63cf3f682b94cf042b2e120860bae6e5ede9e85e82bd9`
 - ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `9f37539b1d25284f9a6913a3c498a3576d39d27e19ebe328c67219b880f86a47`
-- Package-origin wrapper source inventory SHA-256: `bc4d9bde29cabcb4eede094a9940e1af15b547f7dfc7a646e5a853727365811b`
+- Runtime attestation source SHA-256: `90da2f0f238e8260b2d951b9087ab21d932d6328fb2d93bab1546007d4b25b98`
+- Package-origin wrapper source inventory SHA-256: `a0632f17f5578dbf5a8775d86999f32d4ed8b727360871ed4ca612065ac3e955`
 - Scenario block source SHA-256: `c2e52e993305e4bd9220cef7f58edb418ff6479d707afbae988579ab2db8229f`
