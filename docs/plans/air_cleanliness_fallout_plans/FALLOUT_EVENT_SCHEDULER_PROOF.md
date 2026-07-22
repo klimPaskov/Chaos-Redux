@@ -197,3 +197,12 @@ The following work remains blocked or absent:
 - No runtime observation was performed. HOI4 was not launched.
 
 These omissions keep both scheduler activation flags unset and keep every reserved living-world event outside the release-floor count.
+
+## Orientation event-surface correction
+
+The capital condition and first character or institution event surfaces are now
+defined at `chaosx.fallout.66` through `.69` and `chaosx.fallout.78` through
+`.81`. The Ash-week orientation package has 23 defined blocks of 23 reserved
+identities. They remain dormant and uncounted because the host-authoritative
+caller, complete manual coverage, candidate installation audits, event logs,
+event details, and runtime proof are still absent.
