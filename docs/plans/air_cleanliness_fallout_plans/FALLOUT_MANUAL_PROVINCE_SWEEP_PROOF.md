@@ -6,9 +6,11 @@ Status: dormant exact-sweep substrate implemented. Public release and runtime ac
 
 The installed map can be expanded into 10,154 explicit native thermonuclear launch calls. Each call uses a verified province id with `launch_nuke`, `use_nuke = no`, and `nuke_type = thermonuclear_bomb`.
 
+The province set is a version-pinned offline expansion of installed map data. HOI4 exposes no documented global all-valid-land-province enumerator, so this proves native calls and exact pinned-map coverage but does not prove an engine-native enumeration. The user's strict proof requirement therefore remains blocked.
+
 The implementation does not use one strike per state. It does not use province modifiers as a substitute. It does not use variable-only fallout.
 
-The public Triggerable Scenario row and launch dispatch are absent. Runtime acceptance, throughput, and presentation remain unobserved because Hearts of Iron IV was not run and must not be run as part of this documentation reconciliation.
+The public Triggerable Scenario row and launch dispatch are absent. The missing engine-native enumerator is a static blocker. Runtime acceptance, throughput, and presentation also remain unobserved because Hearts of Iron IV was not run and must not be run as part of this documentation reconciliation.
 
 ## Engine references
 
@@ -96,7 +98,7 @@ Proof artifacts:
 
 The generic batch and verifier callbacks `.901` and `.902` were replaced by identity-bearing event tokens. `chaosx.fallout.900` remains the bootstrap, `.910` through `.950` map one-to-one to batch indices 0 through 40, `.960` through `.966` map one-to-one to verifier attempts 0 through 6, and `.903` remains the exact countdown callback.
 
-The dormant manual runtime ledger uses schema 2. Every scheduled batch, verifier, and countdown callback stores the active transaction generation. Callback triggers and the host validator reject a missing or mismatched scheduled generation. Schema 1 active transactions fail closed because they do not contain this provenance.
+The dormant manual runtime ledger uses schema 4. Every scheduled batch, verifier, and countdown callback stores the active transaction generation. Baseline capture stores all 1,081 state rows, counts them once, and writes one generation-bound completion receipt. Callback triggers and the host validator use that O(1) receipt and reject a missing or mismatched generation without rescanning the state collection. Schema 1 through schema 3 active transactions fail closed because they do not contain this provenance.
 
 Before any later batch can issue native effects, the validator binds the issued count to the cursor. Cursors 0 through 40 require `next_batch * 250` issued calls. Cursor 41 requires exactly 10,154 issued calls because the last batch contains 154 targets. A mismatch enters the terminal manual error state without issuing another batch.
 

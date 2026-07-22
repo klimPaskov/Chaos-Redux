@@ -915,6 +915,17 @@ fallout_population_loss_row_is_durable = {
 		value = global.fallout_transition_generation
 		compare = equals
 	}
+	OR = {
+		NOT = { fallout_manual_population_reconciliation_is_required = yes }
+		AND = {
+			fallout_manual_population_contract_preflight_row_is_current = yes
+			check_variable = {
+				var = fallout_population_loss_requested_memory
+				value = fallout_manual_population_contract_preflight_requested_loss
+				compare = equals
+			}
+		}
+	}
 }
 
 # Supported scope: STATE. This phase-local proof also requires the engine's

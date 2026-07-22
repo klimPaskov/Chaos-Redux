@@ -21,9 +21,9 @@ The following official game documentation was used as the higher authority:
 
 ## Exact thermonuclear province sweep
 
-Verdict: exact native per-province call construction and installed-map coverage are proven. Runtime acceptance and bounded execution cost are not proven.
+Verdict: native per-province call construction and exact coverage of the pinned installed map are proven statically. An engine-native all-valid-province enumeration, runtime acceptance, and bounded execution cost are not proven. The strict manual-scenario requirement therefore remains blocked.
 
-The engine does not expose `every_province`. That absence does not require a state-level substitute. The accepted manual-scenario plan explicitly permits a supported expansion of a verified province list into nuclear effects.
+The engine does not expose a documented global `every_province` collection or another all-valid-land-province enumerator. The accepted manual-scenario plan permits a supported expansion of a verified province list into nuclear effects, but that expansion is not an engine-native enumeration. It proves the pinned map only and cannot close the user's strict engine-native proof gate.
 
 The exact route is:
 
@@ -41,7 +41,7 @@ Current map audit:
 - 118 state-assigned ids are non-land and are excluded.
 - One land province in `map/definition.csv` is not assigned to a state and is excluded.
 
-This route produces 10,154 actual thermonuclear launch calls. It does not use one strike per state, province modifiers, or variable-only fallout. The engine does not enumerate the provinces itself. The ledger is a version-pinned expansion of installed map data, while every result is still produced by the native `launch_nuke` effect.
+This route produces 10,154 actual thermonuclear launch calls. It does not use one strike per state, province modifiers, or variable-only fallout. The engine does not enumerate the provinces itself. The ledger is a version-pinned expansion of installed map data, while every attempted result is still produced by the native `launch_nuke` effect. This distinction is why the substrate may remain implemented but SCN-014 may not be exposed.
 
 The dormant implementation is split into 41 bounded effects. Batches 0 through 39 contain 250 exact ids. Batch 40 contains 154. Re-expanding all 533 emitted ranges produced 10,154 unique ids with zero order mismatches against the canonical ledger.
 
@@ -53,7 +53,7 @@ Engine evidence:
 - `effects_documentation.md`, `add_to_array`, `for_each_loop`, and `for_loop_effect`, support scalar province-id storage and deterministic iteration.
 - Vanilla `common/raids/nuclear_raids.txt` passes a variable-backed province id to `launch_nuke` and sets `nuke_type = thermonuclear_bomb`.
 
-The ledger must be regenerated and reviewed if Chaos Redux adds a map override or the installed game map changes. The public scenario remains blocked until runtime review proves that every scripted launch is accepted, that the native callback occurs once inside the guarded window, and that 250 calls per batch are bounded.
+The ledger must be regenerated and reviewed if Chaos Redux adds a map override or the installed game map changes. The public scenario remains blocked because no documented engine-native all-valid-province enumerator exists. Runtime review would also still need to prove that every scripted launch is accepted, that the native callback occurs once inside the guarded window, and that 250 calls per batch are bounded.
 
 ## Exact seven-day delay
 
