@@ -2,10 +2,12 @@
 
 Date: 2026-07-22
 
-Status: `approved_converted_pending_postwire_country_audit`. The fresh
-independent provenance review authorizes both exact PNGs, and the repository
-converter has replaced the two stale runtime treatments. IW-017 remains
-fail-closed until its fresh post-wiring country-package audit passes.
+Status: `approved_converted_postwire_audited_and_admitted`. The fresh
+independent provenance review authorizes both exact PNGs, the repository
+converter replaced the two stale runtime treatments, and the dated full
+post-wiring country-package audit passes. IW-017 has exact compile-time content
+attestation; live host, anchor, reservation, collision, chaos-band, force, and
+transaction proofs remain mandatory for every allocation.
 
 Corsica is a grounded polity. Both candidates are identity-preserving ImageGen
 edits of unchanged, attributed real male source portraits. ImageGen supplies
@@ -124,8 +126,9 @@ approved PNGs:
   `561bc156566135f6ae27c010f63ec8952664ab637ec07d95cdcc44cb4c362c14`.
 
 No sprite rename or new GFX definition is required because the stable sprites
-already own those exact runtime paths. This conversion does not itself grant
-IW-017 content attestation.
+already own those exact runtime paths. The later post-wiring package audit and
+parent admission grant exact IW-017 content attestation; this portrait
+conversion alone remains non-authoritative.
 
 ## Review boundary
 
