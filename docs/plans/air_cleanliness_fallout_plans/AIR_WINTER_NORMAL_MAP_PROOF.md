@@ -30,6 +30,8 @@ The dedicated route now supplies:
 
 The detailed engine, collision, post-wire resolver, hash, DDS, and contact-sheet evidence is in `AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. Asset ownership, matrices, counts, source frames, and final paths are in `docs/assets/air_cleanliness_fallout/regional_map_visuals/`.
 
+The post-asset static re-audit is recorded in `subagent_handoffs/air_winter_normal_map_static_reaudit_2026-07-22.md`. It independently rechecks the ordinary-map call chain, exact 1,081-state class cover, regional weather matrix, five-slot cleanup, entity and particle registries, runtime file resolution, and Zombie separation. Its verdict is source-level pass with runtime presentation unobserved.
+
 ## Remaining runtime observation gate
 
 Before ordinary-map runtime presentation can be called complete, observe:
