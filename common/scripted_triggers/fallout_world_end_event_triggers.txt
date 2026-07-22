@@ -881,6 +881,10 @@ fallout_event_delayed_cleanup_is_deferred = {
 	check_variable = { fallout_event_reconciled_delayed_status = constant:fallout_event_queue_status.resolved }
 	OR = {
 		AND = {
+			has_country_flag = fallout_event_100_callback_scheduled
+			check_variable = { fallout_event_delayed_cleanup_token_entries^fallout_event_delayed_validation_index = constant:fallout_event_id.last_inventory_cleanup }
+		}
+		AND = {
 			has_country_flag = fallout_event_107_callback_scheduled
 			check_variable = { fallout_event_delayed_cleanup_token_entries^fallout_event_delayed_validation_index = constant:fallout_event_id.river_intake_cleanup }
 		}
