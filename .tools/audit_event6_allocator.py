@@ -107,6 +107,41 @@ def extract_named_blocks(text: str, prefix: str) -> dict[int, str]:
 	return blocks
 
 
+def extract_script_block(text: str, name: str) -> str:
+	match = re.search(rf"(?m)^{re.escape(name)}\s*=\s*\{{", text)
+	if match is None:
+		raise ValueError(f"missing scripted block {name}")
+	depth = 0
+	quoted = False
+	escaped = False
+	comment = False
+	for index in range(match.end() - 1, len(text)):
+		char = text[index]
+		if comment:
+			if char in "\r\n":
+				comment = False
+			continue
+		if quoted:
+			if escaped:
+				escaped = False
+			elif char == "\\":
+				escaped = True
+			elif char == '"':
+				quoted = False
+			continue
+		if char == "#":
+			comment = True
+		elif char == '"':
+			quoted = True
+		elif char == "{":
+			depth += 1
+		elif char == "}":
+			depth -= 1
+			if depth == 0:
+				return text[match.start() : index + 1]
+	raise ValueError(f"unterminated scripted block {name}")
+
+
 def require(condition: bool, message: str, errors: list[str]) -> None:
 	if not condition:
 		errors.append(message)
@@ -290,6 +325,61 @@ def main() -> int:
 		"SCN-008 does not keep a bounded belligerence-target cleanup ledger",
 		errors,
 	)
+	try:
+		intensity_tuning = extract_script_block(scenario, "independence_wave_scenario_set_intensity_tuning")
+		type_application = extract_script_block(scenario, "independence_wave_scenario_apply_type")
+		ranked_attempts = extract_script_block(scenario, "independence_wave_scenario_attempt_ranked_packages")
+	except ValueError as exc:
+		errors.append(str(exc))
+		intensity_tuning = ""
+		type_application = ""
+		ranked_attempts = ""
+
+	for label, territory, force in (
+		("low", "anchor", "fragile"),
+		("medium", "compact", "viable"),
+		("high", "extended", "armed"),
+		("maximum", "extended", "high_chaos"),
+	):
+		require(
+			f"constant:liberation_territory_level.{territory}" in intensity_tuning
+			and f"constant:liberation_force_level.{force}" in intensity_tuning,
+			f"SCN-008 {label} intensity is missing territory={territory} force={force}",
+			errors,
+		)
+	require(
+		"constant:independence_wave_scenario_registry.bound_package_count" in intensity_tuning,
+		"SCN-008 intensity tuning does not keep the all-bound-package target count",
+		errors,
+	)
+	require(
+		"independence_wave_scenario_last_intensity" not in ranked_attempts,
+		"SCN-008 ranked candidate attempts vary by intensity",
+		errors,
+	)
+	for scenario_type, required_effect in {
+		"common_congress": "independence_wave_scenario_form_common_congress = yes",
+		"wars_of_separation": "independence_wave_scenario_start_all_host_wars = yes",
+		"universal_belligerence": "independence_wave_scenario_start_universal_belligerence = yes",
+		"patron_worlds": "independence_wave_scenario_assign_patrons = yes",
+	}.items():
+		require(
+			f"constant:independence_wave_scenario_type.{scenario_type}" in type_application
+			and required_effect in type_application,
+			f"SCN-008 type {scenario_type} is missing {required_effect}",
+			errors,
+		)
+	for scenario_type in ("sovereign_scatter", "great_partition"):
+		require(
+			f"constant:independence_wave_scenario_type.{scenario_type}" in scenario,
+			f"SCN-008 type {scenario_type} is not registered in scenario behavior",
+			errors,
+		)
+	require(
+		"constant:independence_wave_scenario_type.great_partition" in intensity_tuning,
+		"SCN-008 Great Partition does not alter pre-reservation partition setup",
+		errors,
+	)
 
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
 	require_order(
@@ -333,6 +423,8 @@ def main() -> int:
 	print(f"- automatic/high-chaos selectable packages: {len(automatic_ids)}")
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
 	print("- automatic counts: 3 / 4 / 5 / 7 / 10 (World Collapse 10)")
+	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
+	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
 	print("- order: all anchors -> compact -> extended -> lock")
 	print("- joint order: Event 005 anchors -> Event 006 anchors -> optional territory -> lock")
 	return 0
