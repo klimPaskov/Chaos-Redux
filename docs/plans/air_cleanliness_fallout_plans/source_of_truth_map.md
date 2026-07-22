@@ -42,6 +42,7 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the reviewed ordinary candidate rows. `FALLOUT_WELL_QUEUE_TUNING_AND_REGISTRY.md` records the fourth Well Queue candidate, state gate, branch tuning, callback deferral, and dedicated asset. `FALLOUT_ANIMAL_FEED_TUNING_AND_REGISTRY.md` records the fifth Animal Feed candidate, native food snapshot gate, branch tuning, callback deferral, and reused food art.
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
+- `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.
 
 ## Current blockers
 

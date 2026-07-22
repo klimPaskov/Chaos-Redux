@@ -239,3 +239,8 @@ The accepted capital-condition and character-or-institution blocks now exist at
 identities are defined, but none are release-floor credit. The caller, complete
 regional and archetype coverage, candidate installation surfaces, event logs,
 event details, audits, and runtime proof remain open.
+
+The orientation Event Log substrate is defined in history `9110` with 45
+explicit component, branch, and outcome payloads. It remains dormant and
+uncounted until the caller, coverage, event details, activation, and runtime
+gates are complete.

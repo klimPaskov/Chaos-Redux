@@ -200,3 +200,12 @@ all 23 remain dormant and uncounted until callers, event logs, event details,
 complete regional and archetype coverage, candidate installation surfaces,
 manual audits, and the host-authority gate are complete. The countable
 Fallout living-world release-floor total remains `0 of 660`.
+
+## Ash-week orientation event-log correction
+
+The five orientation components now share Fallout memory history `9110` with
+45 explicit component, branch, and outcome payloads. The writer is idempotent
+per component and transition generation, and it refreshes the shared Event Log
+views after a committed row. The history surface remains dormant and earns no
+release-floor credit until the orientation caller, coverage, event details,
+activation, and runtime gates are approved.

@@ -206,3 +206,9 @@ defined at `chaosx.fallout.66` through `.69` and `chaosx.fallout.78` through
 identities. They remain dormant and uncounted because the host-authoritative
 caller, complete manual coverage, candidate installation audits, event logs,
 event details, and runtime proof are still absent.
+
+The orientation result surface now has a dormant Fallout memory history at
+`9110`. Its 45 payloads distinguish every component, branch, and outcome, and
+the writer rejects duplicate rows for the same component and transition
+generation. This improves observability but does not activate the scheduler
+or add release-floor credit.
