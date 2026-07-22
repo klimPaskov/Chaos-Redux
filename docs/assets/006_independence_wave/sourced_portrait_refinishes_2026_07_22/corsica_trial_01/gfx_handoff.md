@@ -1,14 +1,15 @@
 # IW-017 Corsica portrait GFX handoff
 
-This handoff is review-only. Preserve the existing sprites and paths; do not
-convert or overwrite a runtime DDS until the fresh independent provenance
-re-audit passes the corresponding exact PNG hash.
+The fresh independent provenance re-audit passed both exact PNGs. The standard
+converter has replaced the stale runtime DDS files while preserving the
+existing sprites and paths. IW-017 remains pending its fresh post-wiring
+country-package audit.
 
 | Role | Review PNG | Stable sprite | Authoritative runtime texture path | Target | Status |
 |---|---|---|---|---|---|
-| Civic leader / Adolphe Landry | `processed_png/COR_adolphe_landry.png` | `GFX_portrait_COR_independence_wave_adolphe_landry` | `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_adolphe_landry.dds` | 156x210 | `needs_fresh_independent_provenance_reaudit` |
-| Security commander / Jean Chiappe | `processed_png/COR_jean_chiappe.png` | `GFX_portrait_COR_independence_wave_jean_chiappe` | `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_jean_chiappe.dds` | 156x210 | `needs_fresh_independent_provenance_reaudit` |
+| Civic leader / Adolphe Landry | `processed_png/COR_adolphe_landry.png` | `GFX_portrait_COR_independence_wave_adolphe_landry` | `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_adolphe_landry.dds` | 156x210 | `converted_pixel_exact`; DDS SHA-256 `42efd44de267e2802b697a2b98398fff0087985db5d0f5764efa58ddd305ea97` |
+| Security commander / Jean Chiappe | `processed_png/COR_jean_chiappe.png` | `GFX_portrait_COR_independence_wave_jean_chiappe` | `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_jean_chiappe.dds` | 156x210 | `converted_pixel_exact`; DDS SHA-256 `561bc156566135f6ae27c010f63ec8952664ab637ec07d95cdcc44cb4c362c14` |
 
-Even if both portraits pass, IW-017 requires a fresh post-wiring country-package
-audit before compile-time content attestation. Candidate approval must not
-create advisor/dossier or `_small` derivatives.
+IW-017 requires a fresh post-wiring country-package audit before compile-time
+content attestation. Candidate approval creates no advisor/dossier or `_small`
+derivatives.

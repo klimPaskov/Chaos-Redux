@@ -303,6 +303,12 @@ The IW-010 Willy Schmelcher trial is retained as rejected provenance only: its
 independent review found facial-identity drift and rejected the unsourced
 civilian-suit substitution, so no DDS, runtime identity, sprite, or localisation
 change is authorized from that trial.
+Corsica's sourced Adolphe Landry civic leader and Jean Chiappe security
+commander pass the fresh identity, crop, role, ownership, and HOI4-style audits.
+Their approved trial-01 PNGs are converted to pixel-identical `156x210` runtime
+DDS files under the existing sprites. IW-017 remains fail-closed until the
+fresh post-wiring country-package audit passes; portrait conversion alone is
+not content attestation.
 Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
 real-person restyling is withdrawn. The deterministic Solinas/Harpe finish

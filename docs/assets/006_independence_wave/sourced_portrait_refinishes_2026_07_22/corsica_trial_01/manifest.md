@@ -2,10 +2,10 @@
 
 Date: 2026-07-22
 
-Status: `needs_fresh_independent_provenance_reaudit`; no DDS or runtime
-overwrite is authorized by this package. The first independent review passed
-both portraits visually and identified documentation/provenance gates, which
-this revision addresses for a fresh decision.
+Status: `approved_converted_pending_postwire_country_audit`. The fresh
+independent provenance review authorizes both exact PNGs, and the repository
+converter has replaced the two stale runtime treatments. IW-017 remains
+fail-closed until its fresh post-wiring country-package audit passes.
 
 Corsica is a grounded polity. Both candidates are identity-preserving ImageGen
 edits of unchanged, attributed real male source portraits. ImageGen supplies
@@ -105,6 +105,28 @@ allowed.
   person. The two COR characters are recruited and retired only through the
   guarded IW-017 origin adapter, so no transfer contract is required.
 
+## Independent review and runtime conversion
+
+The fresh independent re-audit at
+`docs/plans/006_independence_wave_plans/subagent_handoffs/006_corsica_trial01_provenance_reaudit_2026_07_22.md`
+passes both exact PNGs for identity, source, role, crop, ownership, male-only
+metadata, and restrained full-colour HOI4 style.
+
+The repository-standard converter wrote one-level uncompressed BGRA DDS files
+at the two authoritative runtime paths. Both declare `156x210`, use a 624-byte
+pitch, have the complete legacy pixel-format/caps header, are exactly `131168`
+bytes, keep opaque alpha `(255,255)`, and decode pixel-identically to their
+approved PNGs:
+
+- Landry runtime SHA-256:
+  `42efd44de267e2802b697a2b98398fff0087985db5d0f5764efa58ddd305ea97`;
+- Chiappe runtime SHA-256:
+  `561bc156566135f6ae27c010f63ec8952664ab637ec07d95cdcc44cb4c362c14`.
+
+No sprite rename or new GFX definition is required because the stable sprites
+already own those exact runtime paths. This conversion does not itself grant
+IW-017 content attestation.
+
 ## Review boundary
 
 The independent reviewer must compare every candidate against the unchanged
@@ -117,6 +139,5 @@ on beautification, invented details, generic face drift, or role/costume drift.
 native/style comparisons; SHA-256
 `a02b122b1bf2d07a89be49d5a434ffd6726e7b76f03d1db19505d65365508ef1`.
 
-No advisor, dossier, `_small`, female, flag, focus, decision, or gameplay asset
-is created here. DDS conversion and runtime wiring are deferred until an
-independent audit passes the exact candidate hash.
+No advisor, dossier, `_small`, female, flag, focus, decision, or unrelated
+gameplay asset is created here.
