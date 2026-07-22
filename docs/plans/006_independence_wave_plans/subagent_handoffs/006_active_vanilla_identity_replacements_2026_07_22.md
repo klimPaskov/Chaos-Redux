@@ -26,12 +26,14 @@ The source-ready primaries are retained in the parent-provided package:
   - `BAY_independence_wave_mountain_commandant`: `Franz Ritter von Epp` ->
     `Eugen Ritter von Schobert`.
   - Replaced the stale `BAY_independence_wave_mountain_commandant_desc` with
-    Schobert's documented Würzburg/Royal Bavarian Army and army-corps context.
+    Schobert's documented Würzburg, Royal Bavarian Army, and pre-crisis
+    infantry-command context.
 - `localisation/english/006_independence_wave_scotland_wales_l_english.yml`
   - `SCO_independence_wave_territorial_commandant`: `Edmund Ironside` ->
     `Victor Morven Fortune`.
   - Added `SCO_independence_wave_territorial_commandant_desc` with Fortune's
-    Scottish-born Black Watch and 52nd/51st Division command context.
+    Scottish-born Black Watch and 52nd (Lowland) Division command context at
+    the scenario start.
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_active_vanilla_identity_replacements_2026_07_22.md`
   - This handoff.
 
