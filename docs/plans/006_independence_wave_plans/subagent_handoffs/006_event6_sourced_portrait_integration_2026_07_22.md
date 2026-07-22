@@ -22,8 +22,10 @@ real face.
 
 The authoritative ledger is
 `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/manifest.md`.
-It records twenty-four sourced and visually reviewed treatments and exact
-runtime hashes. A later active-vanilla-character ownership sweep rejects three
+It records twenty-four sourced treatments and exact runtime hashes. A later user
+review rejects the whole treatment family because it remains photographic rather
+than HOI4-painted; identity preservation, processing, wiring, and pixel equality
+do not grant visual approval. A separate active-vanilla-character ownership sweep rejects three
 of those treatments for Event 006 runtime use: Konrad Adenauer, Franz Ritter
 von Epp, and Edmund Ironside are already recruited by GER or ENG. Their files
 remain evidence pending different sourced replacements and do not clear their
@@ -58,7 +60,8 @@ removed. Commanders use only full `156x210` leader portraits.
 
 - 24 treatment-ledger runtime rows decode as RGBA `156x210`, match their
   processed PNG pixel-for-pixel, and match the ledger SHA-256 values. Conversion
-  fidelity does not override the three active-character ownership rejections.
+  fidelity does not override the user-rejected photographic finish or the three
+  active-character ownership rejections.
 - All 413 sprites across the 22 Event 006 GFX files have unique names and
   existing textures.
 - Event 006 has zero `_small` DDS files and zero portrait-small consumers.
@@ -72,7 +75,9 @@ removed. Commanders use only full `156x210` leader portraits.
 ## Admission and remaining blockers
 
 No package is re-admitted by this asset tranche. The compile-time Event 006
-content-attestation set remains empty.
+content-attestation set remains empty. Protected Rupprecht and Matthes are the
+only visually approved Event 006 leader portraits; every other treatment must be
+refinished or replaced and independently reviewed.
 
 - IW-002 Wales still lacks a sourced military commander.
 - IW-001 Scotland requires a different sourced male commander because vanilla

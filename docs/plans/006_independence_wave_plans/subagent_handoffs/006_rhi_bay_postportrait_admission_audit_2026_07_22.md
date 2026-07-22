@@ -6,6 +6,13 @@ Status: `static_gameplay_audit_passed_portrait_ownership_failed_runtime_admissio
 
 Scope: post-replacement audit of the Rhineland (`RHI`, IW-008) and Bavaria (`BAY`, IW-009) packages after the sourced male leader portraits were wired. The protected `portrait_RHI_josef_friedrich_matthes.dds` and `portrait_BAY_rupprecht_of_bavaria.dds` assets were treated as immutable. No portrait, manifest, resume-packet, tag-audit, or skill file was changed.
 
+Later visual correction: the user rejected the non-protected sourced treatment
+family because it remains photographic rather than HOI4-painted. Harpe and Held
+remain source/ownership-valid subjects, but their current DDS treatments are not
+visually approved and require identity-preserving refinishing. Rupprecht and
+Matthes remain the only approved portraits. This correction is additional to the
+Adenauer/Epp ownership failures below.
+
 ## Disposition
 
 The country packages are internally complete for static gameplay content, setup,

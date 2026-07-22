@@ -5,7 +5,18 @@ Reviewer: parent integration agent
 Review surface: source crop, processed candidate, and the canonical vanilla
 leader references embedded in each `review_sheets/*_review.png` file.
 
-## Visual treatment approved
+## Final disposition: style approval revoked
+
+The user rejected this treatment family on 2026-07-22. The candidates preserve
+source identity and generally use appropriate head-and-shoulders crops, but they
+still read as sharpened, graded, monochrome, sepia, or lightly tinted archival
+photographs. They do not match the painted, muted-color HOI4 style demonstrated
+by the protected Rupprecht and Matthes portraits and the canonical vanilla leader
+references. All twenty-four runtime-treatment rows are therefore
+`rejected_visual_style_pending_refinish`. The observations below are retained
+only as identity-preservation and crop notes, not approval.
+
+## Identity-preservation and crop notes
 
 - Arthur Quiller-Couch: identity, moustache, hair, formal coat, and three-quarter
   pose remain recognizable; framing and contrast match the leader canvas.

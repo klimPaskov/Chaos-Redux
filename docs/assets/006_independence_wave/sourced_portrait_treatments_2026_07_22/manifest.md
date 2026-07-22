@@ -4,10 +4,13 @@ Date: 2026-07-22
 Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` v5.0, `leader` mode
 Reference family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
 
-This package converts attributed archival portraits into identity-preserving
-156x210 HOI4 leader textures. It does not use ImageGen, face reconstruction,
-generic portraits, generated institutions, or fictional substitutes. Source
-masters and rights evidence remain in the adjacent
+This package records attributed archival portraits and identity-preserving
+156x210 treatment attempts. It does not use ImageGen, face reconstruction,
+generic portraits, generated institutions, or fictional substitutes. The user
+rejected the current treatment family on 2026-07-22 because the results still
+read as archival photographs rather than HOI4 painted portraits. Except for the
+separately protected Rupprecht and Matthes files, no treatment in this ledger is
+visually approved for runtime admission. Source masters and rights evidence remain in the adjacent
 `sourced_portrait_replacements_2026_07_22/` research packages.
 
 No Event 006 advisor, theorist, high-command, officer-corps, or dossier portrait
@@ -17,14 +20,21 @@ removed rather than regenerated. Commanders use their full 156x210 portrait.
 The review-only contact sheet is
 `contact_sheets/processed_sourced_portraits_contact_sheet.png` (SHA-256
 `9a778c245221acac7b2859d98555ce13fb046a7cf65aa2244ba0b9a583040bb2`).
-It displays all twenty-four source- and visually reviewed treatments at native
-portrait aspect and is never referenced by runtime GFX. Twenty-one treatments
-currently pass the separate vanilla-character ownership gate. Three retained
+It displays all twenty-four sourced treatments at native portrait aspect and is
+never referenced by runtime GFX. The sheet title's former "approved runtime
+candidates" wording is superseded by this manifest and the current visual review.
+Twenty-one subjects currently pass the separate vanilla-character ownership
+gate but still fail the final HOI4-style gate. Three retained
 treatments (Konrad Adenauer, Franz Ritter von Epp, and Edmund Ironside) fail that
 gate because vanilla recruits the same people as active characters; they remain
 rejected evidence pending different sourced replacements.
 
 ## Treatment ledger
+
+Every row below is on `rejected_visual_style_pending_refinish` unless its status
+records a stricter subject, source, or ownership rejection. `processed_wired` and
+`processed_readiness_only` describe historical file/consumer state only; neither
+is visual approval or package readiness.
 
 | Subject | Grounded role and source authority | Crop | Processed candidate | Runtime DDS | Status |
 |---|---|---:|---|---|---|
@@ -87,9 +97,9 @@ rejected evidence pending different sourced replacements.
 
 Every listed DDS decodes as RGBA `156x210` and is pixel-identical to its
 processed PNG. Pixel equality proves conversion fidelity only; it does not
-override the active-character ownership rejection for Adenauer, Epp, or
-Ironside. Protected BAY Rupprecht and RHI Matthes retained their approved hashes
-unchanged.
+override the user-rejected photographic finish or the active-character ownership
+rejection for Adenauer, Epp, or Ironside. Protected BAY Rupprecht and RHI Matthes
+retained their approved hashes unchanged.
 
 ## Admission boundary
 

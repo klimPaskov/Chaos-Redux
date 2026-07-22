@@ -6,6 +6,12 @@ Sardinia identities in Event 006.
 **Mode:** no crop, resize, image processing, face generation, advisor/dossier
 asset, DDS conversion, `.gfx` edit, or gameplay edit.
 
+Parent follow-up: an explicit `0,0,181,244` Solinas crop was processed through
+the deterministic v5.0 leader finish after this source handoff. The candidate is
+identity-safe but rejected because it remains photographic rather than
+HOI4-painted. `sardinia_crown_command_retry/visual_review.md` is authoritative;
+no DDS or runtime wiring was created.
+
 ## Result
 
 - `ARX_gavino_piras` / `GFX_portrait_ARX_independence_wave_gavino_piras`:

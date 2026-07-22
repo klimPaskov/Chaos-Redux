@@ -275,13 +275,18 @@ remain consumer/provenance evidence awaiting replacement and do not grant
 package visual readiness. The protected BAY Rupprecht and RHI Matthes files
 remain approved and byte-locked. The sourced treatment tranche is documented
 in `sourced_portrait_treatments_2026_07_22/manifest.md`: twenty-four attributed
-real-male portrait treatments are processed and visually reviewed. Twenty-one
-currently pass subject-source and active-character ownership review. Konrad
+real-male portrait treatments are processed and reviewed. The user rejected the
+entire treatment family because it remains photographic rather than HOI4-painted;
+none grants visual readiness. Twenty-one subjects still pass source and
+active-character ownership review and may be refinished from their retained
+masters. Konrad
 Adenauer, Franz Ritter von Epp, and Edmund Ironside are retained only as
 rejected treatment evidence because vanilla recruits the same men as active
 GER or ENG characters; their Event 006 roles require different sourced male
 replacements. Luigi Rizzo remains valid because vanilla uses his name only for
-ship-production lines, not a character or portrait. The rejected Hawaiian scan and every incomplete
+ship-production lines, not a character or portrait. Protected Rupprecht and
+Matthes remain the only approved Event 006 leader portraits. The rejected
+Hawaiian scan and every incomplete
 package remain fail-closed. Event 6 uses no custom advisor, high-command,
 officer-corps, or dossier portrait sprites. All fourteen obsolete `_small`
 dossier DDS files, registrations, and consumers have been removed.
