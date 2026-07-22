@@ -33,7 +33,7 @@ No daily, weekly, or monthly on-action is used. Wave initialization iterates onl
 | The Open-Border Reckoning | Radical route triggers the radical dangerous milestone, then receives an external containment attack and survives one year; scenario-forced qualification excluded | Wired |
 | The Long Roll Call | Low-intensity, non-Common-Congress `SCN-008`; after five years at least 85 percent of that plan's released countries remain active and independent | Wired |
 | Three Patrons, No Master | Major aid history from three distinct patrons; no dependency history or client route; all concessions bought out | Wired |
-| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war or DM-51 coercion invalidates that term | Arbitration, war, and coercion proof are wired. The accepted expulsion disqualifier has no writer because the league expulsion transaction is not implemented |
+| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war, DM-51 coercion, or a completed DM-60 charter expulsion invalidates that term | Arbitration, war, coercion, and the bounded patron-client expulsion proof are wired |
 | One Capital, Ten Years | Former host left with one state; settlements with all ledgered breakaways; never a subject or reconqueror; ten peaceful years, 60 percent stability, two civilian factories, and level-two capital infrastructure | Wired |
 
 ## Historical transactions
@@ -44,7 +44,7 @@ No daily, weekly, or monthly on-action is used. Wave initialization iterates onl
 
 ### League history
 
-Formal proclamation marks the exact founder array. A global provenance marker excludes a scenario-preformed Common Congress, including countries that join it after scenario application, from both founding proof and cross-regional clocks. The marker is cleared on league dissolution, first network initialization, or a genuinely new natural proclamation, so it cannot permanently lock later league generations. The cross-regional clock starts only while member count, region count, cohesion, phase, and route all qualify; it is cleared on threshold loss, exit, split, dissolution, or radicalization. Leadership changes begin a fresh arbitration term. DM-43 increments that term only for the current leader, while member wars and DM-51 invalidate it.
+Formal proclamation marks the exact founder array. A global provenance marker excludes a scenario-preformed Common Congress, including countries that join it after scenario application, from both founding proof and cross-regional clocks. The marker is cleared on league dissolution, first network initialization, or a genuinely new natural proclamation, so it cannot permanently lock later league generations. The cross-regional clock starts only while member count, region count, cohesion, phase, and route all qualify; it is cleared on threshold loss, exit, split, dissolution, or radicalization. Leadership changes begin a fresh arbitration term. DM-43 increments that term only for the current leader, while member wars, DM-51 coercion, and completed DM-60 charter expulsions invalidate it.
 
 ### War, peace, and state control
 
@@ -83,11 +83,11 @@ The completion audit must cover at least:
 5. two continuous cross-regional years, including cohesion loss, split, radicalization, and reformation resets;
 6. rescue survival and voluntary reunion;
 7. every admitted formable family's first-stage integration receipts;
-8. leadership transfer, five arbitrations, member war, and DM-51 coercion;
+8. leadership transfer, five arbitrations, member war, DM-51 coercion, a successful DM-60 patron-client expulsion, and a DM-60 vote cancelled after commitment;
 9. all five `SCN-008` intensities and every scenario type, confirming only Low non-Common-Congress attempts start the survival ledger;
 10. host remnant settlement counting, subject disqualification, reconquest disqualification, and economic thresholds;
 11. Event 5 origin collision checks, exact compile-time admission rejection, and fail-closed route-proof checks for the currently unadmitted Volga Bulgaria and Assyria packages.
 
 ## Future extensions
 
-The accepted league expulsion system still requires a charter-governed vote, a membership-removal transaction, cohesion and confidence consequences, AI behavior, localisation, and a narrow achievement writer that marks the current leader's arbitration term as disqualified. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.
+DM-60 covers only the written patron-client breach. Annexation, refusal of arbitration, abandoned rescue obligations, repeated charter violations, sponsored coups, and unauthorized wars still need their own factual transaction writers before they can enter the same expulsion target pool. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.

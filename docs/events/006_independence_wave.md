@@ -106,7 +106,7 @@ Host death records Host Collapse and removes only the bilateral mirror. It does 
 
 Patron rows store the patron country, owner generation, total influence, aid value, and nine channel values. Dead, stale, and empty rows are reverse-pruned before strongest-patron and dependency checks.
 
-The informal network and league registries use country plus generation as their authoritative key. League transitions have exact source phases, idempotent dates, and mutually exclusive phase flags. Network exit cascades founder and member removal; league exit preserves the informal network and active origin.
+The informal network and league registries use country plus generation as their authoritative key. League transitions have exact source phases, idempotent dates, and mutually exclusive phase flags. Network exit cascades founder and member removal; league exit preserves the informal network and active origin. A member that locks the patron-client route remains in the league ledger only as a charter-enforcement target. The current leader may run one 120-day anti-puppetry expulsion vote when at least four members remain. Success removes the captured member through the aligned membership helper, retains its active origin and informal-network relationship, marks it discredited, reduces the five league values, and may enter league crisis. The bounded action does not create a rival bloc because no safe rival-bloc transaction exists in the current architecture.
 
 ## Idea lifecycles
 

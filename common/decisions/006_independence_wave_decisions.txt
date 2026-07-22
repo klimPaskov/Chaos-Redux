@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISIONS AND MISSIONS
 # ============================================================================
-# Complete DM-01 through DM-59 action map. Costs are material commitments,
+# Complete DM-01 through DM-60 action map. Costs are material commitments,
 # missions are bounded, and repeatable actions use target or country cooldowns.
 # All value, relationship, patron, network, and league changes pass through the
 # Event 006 scripted ledgers. No periodic world iteration is used.
@@ -2060,7 +2060,7 @@ independence_wave_network_category = {
 		icon = GFX_decision_independence_wave_network_aid
 		visible = {
 			is_independence_wave_recognized_or_later = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 		}
 		available = { has_independence_wave_safe_reserve_surplus = yes }
 		custom_cost_trigger = { has_independence_wave_safe_reserve_surplus = yes }
@@ -2088,7 +2088,7 @@ independence_wave_network_category = {
 		on_map_mode = map_and_decisions_view
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2096,11 +2096,12 @@ independence_wave_network_category = {
 				is_capital = yes
 				owner = {
 					is_valid_independence_wave_network_target = yes
+					is_independence_wave_charter_compliant_member = yes
 					check_variable = { var = independence_wave_recognition value = constant:independence_wave_phase_gate.regional_recognition compare = less_than }
 				}
 			}
 		}
-		visible = { has_country_flag = independence_wave_league_member }
+		visible = { is_independence_wave_charter_compliant_member = yes }
 		available = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
@@ -2128,7 +2129,9 @@ independence_wave_network_category = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
 				NOT = { has_country_flag = independence_wave_league_member }
+				has_country_flag = independence_wave_client_route_locked
 				FROM = { owner = { NOT = { is_independence_wave_active_country = yes } } }
+				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
 			}
 		}
 		cancel_effect = {
@@ -2154,7 +2157,7 @@ independence_wave_network_category = {
 		on_map_mode = map_and_decisions_view
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2162,7 +2165,7 @@ independence_wave_network_category = {
 				is_capital = yes
 				owner = {
 					is_valid_independence_wave_network_target = yes
-					has_country_flag = independence_wave_league_member
+					is_independence_wave_charter_compliant_member = yes
 					OR = {
 						any_owned_state = { is_claimed_by = ROOT }
 						ROOT = { any_owned_state = { is_claimed_by = PREV } }
@@ -2170,7 +2173,7 @@ independence_wave_network_category = {
 				}
 			}
 		}
-		visible = { has_country_flag = independence_wave_league_member }
+		visible = { is_independence_wave_charter_compliant_member = yes }
 		available = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
@@ -2204,7 +2207,9 @@ independence_wave_network_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
+				has_country_flag = independence_wave_client_route_locked
 				FROM = { owner = { NOT = { has_country_flag = independence_wave_league_member } } }
+				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
 			}
 		}
 		ai_will_do = {
@@ -2222,7 +2227,7 @@ independence_wave_network_category = {
 		on_map_mode = map_and_decisions_view
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2230,12 +2235,12 @@ independence_wave_network_category = {
 				is_capital = yes
 				owner = {
 					is_valid_independence_wave_network_target = yes
-					has_country_flag = independence_wave_league_member
+					is_independence_wave_charter_compliant_member = yes
 					has_war = yes
 				}
 			}
 		}
-		visible = { has_country_flag = independence_wave_league_member }
+		visible = { is_independence_wave_charter_compliant_member = yes }
 		available = {
 			can_pay_independence_wave_diplomatic_light_cost = yes
 			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
@@ -2280,7 +2285,9 @@ independence_wave_network_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
+				has_country_flag = independence_wave_client_route_locked
 				FROM = { owner = { NOT = { is_independence_wave_active_country = yes } } }
+				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
 				FROM = { owner = { has_war = no } }
 			}
 		}
@@ -2479,7 +2486,7 @@ independence_wave_league_category = {
 		icon = GFX_decision_independence_wave_league_votes
 		activation = {
 			is_independence_wave_regional_power = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_country_flag = independence_wave_dm47_leadership_won }
 			NOT = { has_country_flag = independence_wave_dm47_leadership_lost }
 			NOT = { has_independence_wave_active_league_crisis = yes }
@@ -2522,6 +2529,7 @@ independence_wave_league_category = {
 			OR = {
 				NOT = { is_independence_wave_active_country = yes }
 				NOT = { has_country_flag = independence_wave_league_member }
+				has_country_flag = independence_wave_client_route_locked
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
 			}
 		}
@@ -2531,6 +2539,70 @@ independence_wave_league_category = {
 			modifier = {
 				factor = constant:independence_wave_decision_ai.modifier_major
 				check_variable = { var = independence_wave_network_standing value = constant:independence_wave_network.leadership_gate compare = greater_than }
+			}
+		}
+	}
+
+	# DM-60
+	independence_wave_call_charter_expulsion_vote = {
+		name = independence_wave_call_charter_expulsion_vote
+		desc = independence_wave_call_charter_expulsion_vote_desc
+		icon = GFX_decision_independence_wave_league_votes
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			is_independence_wave_charter_expulsion_authority = yes
+			NOT = { has_independence_wave_active_league_crisis = yes }
+		}
+		target_trigger = {
+			FROM = {
+				is_capital = yes
+				owner = { is_valid_independence_wave_charter_expulsion_target = yes }
+			}
+		}
+		visible = { is_independence_wave_charter_expulsion_authority = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_charter_expulsion_vote_cost_tt
+				can_pay_independence_wave_strategic_cost = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_decision_duration.charter_expulsion_vote
+		days_re_enable = constant:independence_wave_decision_cooldown.charter_expulsion_vote
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_charter_expulsion_vote_started_tt
+			independence_wave_decision_pay_strategic = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_charter_expulsion_vote_effect_tt
+			independence_wave_decision_resolve_charter_expulsion_vote = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_charter_expulsion_authority = yes }
+				FROM = { owner = { NOT = { is_valid_independence_wave_charter_expulsion_target = yes } } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = independence_wave_charter_expulsion_vote_failure_tt
+			independence_wave_decision_fail_charter_expulsion_vote = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.very_low
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_half
+				check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
 			}
 		}
 	}
@@ -3125,7 +3197,7 @@ independence_wave_high_chaos_category = {
 		icon = GFX_decision_independence_wave_depot_border_actions
 		activation = {
 			can_independence_wave_use_high_chaos_actions = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_global_flag = independence_wave_reclamation_fronts_coordinated }
 			NOT = { has_country_flag = independence_wave_dm58_reclamation_front_complete }
 			NOT = { has_country_flag = independence_wave_dm58_reclamation_front_failed }
@@ -3180,6 +3252,7 @@ independence_wave_high_chaos_category = {
 				has_global_flag = independence_wave_reclamation_fronts_coordinated
 				NOT = { is_independence_wave_active_country = yes }
 				NOT = { has_country_flag = independence_wave_league_member }
+				has_country_flag = independence_wave_client_route_locked
 				NOT = { can_independence_wave_use_high_chaos_actions = yes }
 			}
 		}
@@ -3194,7 +3267,7 @@ independence_wave_high_chaos_category = {
 		icon = GFX_decision_independence_wave_league_votes
 		activation = {
 			can_independence_wave_use_high_chaos_actions = yes
-			has_country_flag = independence_wave_league_member
+			is_independence_wave_charter_compliant_member = yes
 			NOT = { has_global_flag = independence_wave_radical_charter_active }
 			NOT = { has_country_flag = independence_wave_radical_charter_transformed }
 			NOT = { has_country_flag = independence_wave_dm59_charter_vote_failed }
@@ -3254,6 +3327,7 @@ independence_wave_high_chaos_category = {
 				has_global_flag = independence_wave_radical_charter_active
 				NOT = { is_independence_wave_active_country = yes }
 				NOT = { has_country_flag = independence_wave_league_member }
+				has_country_flag = independence_wave_client_route_locked
 				NOT = { can_independence_wave_use_high_chaos_actions = yes }
 			}
 		}
