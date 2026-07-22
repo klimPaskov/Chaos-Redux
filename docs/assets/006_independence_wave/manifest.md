@@ -290,7 +290,10 @@ The stable Event 6 character tokens now display those three replacement
 identities, but none of their sources is processed into or approved as a
 runtime portrait. Luigi Rizzo remains valid because vanilla uses his name only for
 ship-production lines, not a character or portrait. Protected Rupprecht and
-Matthes remain the only approved Event 006 leader portraits. Prempeh II's
+Matthes remain approved and byte-locked. Brittany's Régis de l'Estourbeillon
+civic leader and Henri-Léon Devin coastal commander also have independently
+approved, source-preserving full-color HOI4 repaint packages and byte-matched
+runtime DDS files. Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
 real-person restyling is withdrawn. The deterministic Solinas/Harpe finish
 trial also remains visibly photographic and is rejected; its dated blocker
@@ -344,20 +347,23 @@ the gameplay offices remain asset-neutral.
 
 ## Historical 2026-07-18 BRI portrait disposition
 
-IW-004 Brittany's generated civic and commander evidence is part of
-`portrait_refresh_male_hoi4_2026_07_18/manifest.md` and the reviewed handoff
-named above. The full-size BRI filenames and consumers remain pending sourced
-replacement; the obsolete commander-small dossier file, registration, and
-consumer have been removed. Neither this package nor the 2026-07-15 portrait
-package satisfies current readiness.
+IW-004 Brittany's generated civic and commander evidence remains historical in
+`portrait_refresh_male_hoi4_2026_07_18/manifest.md`, but both live full-size
+portrait paths have been replaced by sourced real male identities. Régis de
+l'Estourbeillon supplies the civic/regionalist token through the reviewed
+`sourced_portrait_refinishes_2026_07_22/bri_regionalist/` package; Henri-Léon
+Devin supplies the coastal-command token through the same tranche's main
+ledger. The obsolete commander-small dossier file, registration, and consumer
+remain removed. Portrait completion does not itself grant package readiness;
+the fresh IW-004 country-package audit owns the re-admission recommendation.
 
 The package reuses the installed vanilla BRI Gwenn-ha-du flag and historical
-political portraits. François Debeauvais remains explicitly blocked because
-the available portrait candidates lack both adequate identity detail and a
-defensible United States public-domain basis. No Debeauvais asset or generated
-likeness is wired. The generated BRI civic portrait does not clear or
-replace that historical-person rights blocker, and portrait presence does not
-grant runtime content attestation or SCN008 scenario-preflight readiness.
+political portraits. François Debeauvais remains absent because the available
+portrait candidates lack both adequate identity detail and a defensible United
+States public-domain basis. No Debeauvais asset or generated likeness is wired;
+the separately sourced, role-compatible de l'Estourbeillon fills the civic
+surface instead. Portrait presence still does not grant runtime content
+attestation or SCN008 scenario-preflight readiness.
 
 ## 2026-07-18 FORM-48 Pacific visual-asset handoff
 

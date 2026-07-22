@@ -191,6 +191,33 @@ people.
   prematurely calling him maritime prefect. No advisor, dossier, miniature,
   `_small`, or generated substitute asset was created.
 
+## Régis de l'Estourbeillon — Breton regionalist civic leader
+
+The `bri_regionalist/` package supplies the approved source-preserving portrait
+for the traditional and patron-facing Brittany civic token. Its unchanged
+identity source is John Wickens's 1904 photograph of de l'Estourbeillon in
+Breton national costume, retained with source, publication, authorship,
+public-domain, and ownership-search evidence. ImageGen edited only that sourced
+person into the full-color restrained HOI4 leader style. Independent review
+passed likeness, male-only, role, crop, costume, provenance, style, and native
+readability gates.
+
+- Processed v3 PNG:
+  `bri_regionalist/processed_png/leader_bri_regionalist_regis_de_l_estourbeillon_v3.png`,
+  `156x210`, SHA-256
+  `5426E39BC1622E7ECD32A41CC0A1C05D6596446A40FA0B7BA2047EF350BBAE80`.
+- Package DDS:
+  `bri_regionalist/final_dds/BRI/portrait_BRI_independence_wave_civic_commission.dds`.
+- Runtime DDS:
+  `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`.
+- DDS SHA-256:
+  `583F821ED7F8B78A89321DBB7E1E7B7CAD7E30829DFA5DD14B6F255E42E27DC0`;
+  package and runtime files are byte-identical.
+- Stable sprite:
+  `GFX_portrait_BRI_independence_wave_civic_commission`; no new sprite,
+  advisor, dossier, miniature, `_small`, female, or substitute identity was
+  added.
+
 ## Eugen Ritter von Schobert — blocked repaint attempt
 
 The source-ready Schobert master remains valid source evidence for Bavaria's
@@ -200,6 +227,15 @@ identity, deterministic photographic treatment, PNG, DDS, or runtime overwrite
 was created. A different rights-clear real Bavarian officer may be researched,
 or the same source may be revisited only if the image service can process it
 without weakening the identity gate.
+
+## Frisia — both first refinishes rejected
+
+The Douwe Kalma civic-leader and Pieter Reenalda maritime-command refinishes
+under `frisia/` are both `rejected_material_face_drift`. They satisfy the male,
+grounded-source, provenance, crop, period, and broad HOI4-style checks, but the
+painted faces materially diverge from their attributed masters. No DDS or
+runtime overwrite is authorized. The independent evidence is recorded in
+`../../../plans/006_independence_wave_plans/subagent_handoffs/006_frisia_refinishes_visual_audit_2026_07_22.md`.
 
 ## Admission boundary
 

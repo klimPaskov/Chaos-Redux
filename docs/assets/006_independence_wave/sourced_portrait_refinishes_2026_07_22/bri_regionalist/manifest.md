@@ -5,7 +5,7 @@ Asset: `leader_bri_regionalist_regis_de_l_estourbeillon`
 Role: existing `BRI_independence_wave_civic_delegate` country-leader token; male civic/regionalist leader  
 Identity classification: `grounded_identity`  
 Source treatment: attributed real-person source plus ImageGen edit restricted to identity-preserving repaint/recomposition  
-Package status: `needs_user_review` (revision 3 is the current full-color candidate; parent explicitly deferred DDS/runtime conversion)
+Package status: `approved_and_wired` (revision 3 passed independent visual/provenance review and parent runtime conversion)
 
 ## Source authority
 
@@ -84,11 +84,8 @@ Processed preview: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillo
 Dimensions: `156x210`, PNG RGB, opaque  
 SHA-256: `BDEDCCB06A25807C70A774871607AE72DA4F9A51B711E88E45F1E389A99500C8`
 
-The local processed PNG is a review artifact only. No DDS was created and no
-runtime path was changed, per parent scope.
-
-The current v3 processed PNG is also review-only. No DDS was created and no
-runtime path was changed, per parent scope.
+The prior v2 processed PNG remains review evidence only. The current v3
+processed PNG is the sole approved DDS input.
 
 ## Exact ImageGen prompts
 
@@ -98,22 +95,24 @@ photograph as the identity-bearing edit target and only male vanilla
 country-leader portraits as style references. The comparison sheets are review
 evidence, not runtime textures.
 
-## Runtime handoff (parent-owned)
+## Runtime integration
 
 - existing sprite: `GFX_portrait_BRI_independence_wave_civic_commission`
 - existing `.gfx`: `interface/006_independence_wave_brittany_portraits.gfx`
-- deferred runtime texture: `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`
-- candidate processed input for parent DDS conversion: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillon_v3.png`
-- target final texture size: `156x210`, uncompressed BGRA DDS through the repository converter when the parent performs the deferred conversion
+- approved runtime texture: `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`
+- preserved package DDS: `final_dds/BRI/portrait_BRI_independence_wave_civic_commission.dds`
+- sole approved conversion input: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillon_v3.png`
+- final texture: `156x210`, one-level uncompressed BGRA DDS, SHA-256 `583F821ED7F8B78A89321DBB7E1E7B7CAD7E30829DFA5DD14B6F255E42E27DC0`
+- package and runtime DDS files are byte-identical
 - no new sprite declaration is requested; preserve the existing mapping
 
 ## Fail-closed review verdict
 
-Revision 3 is the current source-preserving candidate: it is visibly full-color
+Revision 3 is the accepted source-preserving portrait. It is visibly full-color
 and painted in the restrained vanilla HOI4 direction while retaining the same
 source-supported face, moustache, gaze, age appearance, hat, pose, silhouette,
-and costume. The package remains `needs_user_review` until the parent accepts
-the direct source/v2/v3 comparison and performs the deferred DDS/runtime step.
-If the parent judges the face to drift or any costume detail to be invented,
-reject v3 and leave the civic slot blocked; do not use the Dulac illustration or
-a generated/generic/female/advisor substitute.
+and costume. The independent visual/provenance audit passed every identity,
+crop, source, style, and native-readability gate; the parent then accepted the
+direct comparison and converted only v3. Any later replacement must pass the
+same gate and must not use the Dulac illustration or a generated, generic,
+female, advisor, or operative substitute.
