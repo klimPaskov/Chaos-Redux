@@ -1,18 +1,16 @@
 # Curated male portrait reference manifest
 
-This manifest records the binary copies retained for the top-level
-`assets/leader_portraits/` compatibility pack. Every PNG below is an exact
-copy of a canonical Vanilla HOI4 review PNG from
-`../vanilla_reference/portraits/`; the pack files are reference-only and must
-never be wired or shipped as Chaos Redux runtime art.
-
-Canonical provenance, native dimensions, source DDS paths, and owning
-definitions remain in [`../vanilla_reference/CATALOG.md`](../vanilla_reference/CATALOG.md).
+This manifest records the binary copies retained in `assets/leader_portraits/`.
+Every portrait PNG is an exact copy of a canonical Vanilla HOI4 review PNG from
+`../vanilla_reference/portraits/`. The pack is reference-only and must never be
+wired or shipped as Chaos Redux runtime art. Canonical provenance, dimensions,
+source DDS paths, and owning definitions remain in
+[`../vanilla_reference/CATALOG.md`](../vanilla_reference/CATALOG.md).
 
 ## Portrait copies
 
 All eight portrait copies decode as RGBA `156x210` PNGs. Pack and canonical
-SHA-256 values are identical because the files are byte-for-byte copies.
+SHA-256 values are identical.
 
 | Role | Pack PNG | Canonical PNG | Vanilla source DDS | Owning definition | SHA-256 |
 | --- | --- | --- | --- | --- | --- |
@@ -25,24 +23,12 @@ SHA-256 values are identical because the files are byte-for-byte copies.
 | Naval commander | `commanders/generic_africa_navy_1.png` | `../vanilla_reference/portraits/commanders/generic_africa_navy_1.png` | `gfx/leaders/Africa/Portrait_Africa_Generic_navy_1.dds` | `interface/_random_portraits.gfx` | `6351227cc9a7416698d2b94e87ea07fb1cf97afe8874cbee2015a3362cfcb0ec` |
 | Naval commander | `commanders/generic_africa_navy_2.png` | `../vanilla_reference/portraits/commanders/generic_africa_navy_2.png` | `gfx/leaders/Africa/Portrait_Africa_Generic_navy_2.dds` | `interface/_random_portraits.gfx` | `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f` |
 
-The four named country-leader references and four generic Africa commander
-references were visually checked against their canonical contact sheets and
-are male-presenting. This is a style-reference classification; it does not
-create character metadata, a name pool, or a claim about the identities of
-generic commander portraits.
-
-## Pack contact sheets
-
-The contact sheets contain only the eight curated male references above and
-are review aids, not final assets.
+## Contact sheets
 
 | Pack sheet | Canvas | SHA-256 |
 | --- | ---: | --- |
 | `leaders/contact_sheet.png` | `440x558` RGB | `bf1ac6a6ed7f1d91b3fa8e4069c7b9f396bb63f450af1fe340005f7981a3cb60` |
 | `commanders/contact_sheet.png` | `440x558` RGB | `9c56b18b1d6115c3cc5c6b46a90b7b26121b46182822cef1b8fae05835834faf` |
 
-No female leader, advisor, theorist, high-command, officer-corps, or Event 6
-asset is included in this compatibility pack. Use
-`../vanilla_reference/portraits/advisors/` for the separate `65x67` dossier
-family and follow the advisor provenance workflow when that asset type is
-explicitly required.
+The pack contains no female portrait, advisor icon, dossier card, `_small`
+derivative, generated identity, or Event 6 runtime asset.
