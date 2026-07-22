@@ -24,10 +24,13 @@ identity-preserving HOI4 treatments, pixel-identical runtime DDS files, and no
 advisor or `_small` derivatives. IW-018 and IW-019 remain visually withdrawn.
 Sardinia still lacks sourced real male crown-route and command identities, and
 its Emilio Lussu treatment still needs a compliant painted finish. Sicily's
-Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo identities and sources are
-valid, but their installed treatments remain too photographic. Those two
-packages stay outside runtime content attestation until every live role passes
-the same source and style gates.
+Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo trial refinishes pass
+independent source, identity, male-only, crop, and HOI4-painted-style review,
+but are not yet wired. Rizzo remains valid as the straits-security country
+leader and invalid as an army corps commander because his source and historical
+role are naval. Sicily therefore also requires a separate sourced real Sicilian
+army officer. Both packages stay outside runtime content attestation until every
+live role passes the same source, role, and style gates.
 
 ## Release and host-survival contract
 

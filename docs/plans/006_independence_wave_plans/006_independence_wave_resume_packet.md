@@ -171,7 +171,7 @@ they are not current routing documents.
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
 | IW-017 COR | Admitted after current portrait and full post-wiring package audits | Adolphe Landry and Jean Chiappe pass source, crop, ownership, identity-likeness, male-only, and HOI4 painted-style review. Their exact approved PNGs are pixel-identical to the runtime DDS files. The fresh package audit passes dormant-vanilla identity safety, anchor 1/RG-1, FRA survival, Event-5 collision guards, setup, force, focus, decisions, events, AI, cleanup, localisation, historical flag, generic-tree protection, Mediterranean mechanics, and FORM-05 access. Preserve exact-ID attestation and every live allocation proof |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
-| IW-019 ASX | Static gameplay audit passed; portrait style blocked | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo are source/ownership-valid, and vanilla has no Rizzo character/portrait owner, but all three current treatments fail the HOI4 painted-style gate. Refinish them from the retained masters and re-audit; preserve the Sicilian package and FORM-05 access |
+| IW-019 ASX | Static gameplay audit passed; role-correct portrait wiring blocked | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo have independently approved sourced real-male HOI4 refinishes, and vanilla has no conflicting character or portrait owner. Rizzo is a naval admiral and may remain the straits-security country leader, but he cannot remain the package's army corps commander. Preserve the Sicilian package and FORM-05 access; keep admission closed until a sourced real Sicilian army officer fills the command slot, every approved portrait is wired to a role-correct consumer, and a fresh package audit passes |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
 | IW-179 FSM | Gameplay retained; visual admission withdrawn | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 decisions, and FORM-48 membership logic. Replace the generated congress chair with a sourced real male Micronesian person before re-admission |
 | IW-184 HBX | Gameplay retained; visual admission withdrawn | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. Replace the generated civic chair with a sourced real male Californian person before re-admission |
@@ -230,8 +230,10 @@ satisfy the synchronized frozen plan.
   and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
   Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted-
   style review and is wired to pixel-identical runtime DDS files; its fresh package
-  audit passes and exact IW-017 is admitted. Sicily's Sturzo/Lanza/Rizzo roster passes subject-source and
-  active-person ownership review but its current finishes remain photographic.
+  audit passes and exact IW-017 is admitted. Sicily's Sturzo/Lanza/Rizzo trial
+  refinishes pass independent source, identity, male-only, crop, and HOI4-style
+  review, but remain unwired while the separate real Sicilian army commander is
+  sourced; naval admiral Rizzo is not valid for the current corps-command slot.
   Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
   created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,
