@@ -1999,8 +1999,11 @@ fallout_event_reconcile_one_delayed_row = {
 						check_variable = { fallout_event_reconciled_delayed_status = constant:fallout_event_queue_status.cancelled }
 					}
 				}
-				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
-				fallout_event_prepare_delayed_cleanup = yes
+				if = {
+					limit = { NOT = { fallout_event_delayed_cleanup_is_deferred = yes } }
+					set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+					fallout_event_prepare_delayed_cleanup = yes
+				}
 			}
 			else_if = {
 				limit = { check_variable = { fallout_event_reconciled_delayed_status = constant:fallout_event_queue_status.cleanup_pending } }

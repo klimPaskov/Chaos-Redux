@@ -10,7 +10,7 @@ The opening uses one exact ordinary receipt from the Fallout dispatch substrate.
 
 The opening copies the state target into a country and state registry. The country stores `fallout_event_107_intake_state_id`, `fallout_event_107_intake_registry_generation`, and `fallout_event_107_intake_registry_owner`. The state stores the generation and owner values and receives `fallout_event_107_intake_registry_committed`.
 
-Every delayed result and cleanup trigger rechecks the generation, owner, state flag, state identity row, durable resource row, state owner, water-security variable, Air Winter snapshot generation, and produced source kind. Result and callback effects run only after their exact delayed receipt has been terminalized. The result cleanup receipt can arrive before the callback due date, so it releases only its own row and keeps the intake registry alive. Final cleanup clears the registry after both rows are released, or after a callback scheduling failure. Durable state memories remain after cleanup so later chains can read the water history.
+Every delayed result and cleanup trigger rechecks the generation, owner, state flag, state identity row, durable resource row, state owner, water-security variable, Air Winter snapshot generation, and produced source kind. Result and callback effects run only after their exact delayed receipt has been terminalized. A resolved result row remains callback-held until the callback cleanup receipt has removed its own row and prepared the exact result cleanup ticket. Final cleanup clears the registry after both rows are released, or after a callback scheduling failure. Durable state memories remain after cleanup so later chains can read the water history.
 
 ## Tuning tables
 
@@ -56,6 +56,7 @@ The dedicated event image `GFX_report_event_fallout_river_intake_at_dawn` is reu
 - All new event, modifier, history, payload, and scripted-localisation keys are present in the touched localisation surfaces.
 - The water chain contains no scheduler activation flag, active scheduler flag, or caller.
 - The water chain contains no zombie reference.
+- Callback cleanup order is statically reconciled in `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md`.
 - The foreign testing result remains visible in the pilot event surface, but the full bilateral registry remains pending and is therefore not counted as a completed diplomacy chain.
 
 ## Runtime proof still required
