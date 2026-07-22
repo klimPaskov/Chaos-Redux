@@ -3558,6 +3558,29 @@ fallout_event_frozen_country_size_is_current = {
 	}
 }
 
+# Supported scope: STATE while called from the Fallout-owned candidate builder.
+# These are selection proofs only. The opening chains still revalidate the
+# dispatch target and commit their own typed state registry.
+fallout_event_pilot_water_state_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = air_winter_water_security
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	NOT = { has_state_flag = fallout_event_107_intake_registry_committed }
+}
+
+fallout_event_pilot_rail_state_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = air_winter_phase
+	check_variable = { air_winter_phase value = constant:fallout_event_114_threshold.phase_minimum compare = greater_than_or_equals }
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	rail_way > constant:fallout_event_runtime.zero
+	NOT = { has_state_flag = fallout_event_114_rail_registry_committed }
+}
+
 # Supported scope: COUNTRY. Candidate rows are parallel arrays. Empty arrays
 # are a valid dormant shape. The reviewed producer gate below requires rows.
 fallout_event_candidate_registry_arrays_are_aligned = {
