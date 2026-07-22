@@ -1,0 +1,94 @@
+# Event 006 BRI regionalist portrait refinish
+
+Date: 2026-07-22  
+Asset: `leader_bri_regionalist_regis_de_l_estourbeillon`  
+Role: existing `BRI_independence_wave_civic_delegate` country-leader token; male civic/regionalist leader  
+Identity classification: `grounded_identity`  
+Source treatment: attributed real-person source plus ImageGen edit restricted to identity-preserving repaint/recomposition  
+Package status: `needs_user_review` (selected portrait is processed and reviewable; parent explicitly deferred DDS/runtime conversion)
+
+## Source authority
+
+The only identity source used is the source-ready John Wickens 1904 photograph
+retained by the source-research package:
+
+- source master: `../../sourced_portrait_replacements_2026_07_22/bri_regionalist_retry/source_masters/BRI/BRI_regis_de_l_estourbeillon_john_wickens_1904.jpg`
+- source dimensions: `1145x1707`, JPEG, RGB
+- source SHA-256: `C310F1D916A578FD4E3C5B9ADAC4D4737DA6D841D02D5EA59F66C4589AE9230D`
+- source link: [Commons File:Estourbeillon.jpg](https://commons.wikimedia.org/wiki/File:Estourbeillon.jpg)
+- direct original: [upload.wikimedia.org original](https://upload.wikimedia.org/wikipedia/commons/b/b5/Estourbeillon.jpg)
+- provenance: John Wickens, *A Book of Mad Celts* (1904); subject described as the Marquis de Estourbeillon in Breton national costume at the Pan-Celtic Congress
+- rights basis: Wikimedia Commons records Public domain/PD. The retained source package also records Wickens's 1864-1936 dates, the UK life-plus-70 analysis, pre-1929 publication, and the missing structured copyright-status caveat. Preserve attribution and do not treat the Commons tag as the sole rights evidence.
+
+The Maurice Dulac 1898 illustration was not used as an identity source and was
+not included in this package.
+
+## Ownership and role evidence
+
+The source package's bounded ownership scan searched exact and variant forms of
+`Régis de l'Estourbeillon`, `L'Estourbeillon`, and related spellings across the
+current project and vanilla character, leader, commander, operative,
+officeholder, portrait, `.gfx`, and localisation roots. It found no active
+owner or consumer. The same package records institutional role evidence from
+BnF, Assemblée nationale Sycomore, and CRBC/PRELIB: founder/president of the
+Union régionaliste bretonne, a Morbihan deputy, and a conservative Breton
+regionalist civic figure alive at the 1936 start. See the source package's
+`search_notes/ownership_and_candidate_log.md` for the complete search terms,
+roots, and evidence chain.
+
+## Selected source-preserving edit
+
+- ImageGen selected raw master: `source_png/leader_bri_regionalist_regis_de_l_estourbeillon_imagegen_master.png`
+- raw dimensions: `1024x1536`, PNG RGB, opaque; SHA-256 `CAE505FFA05FBEE59360FAB7993062078482F01142F83F061A73193EB7953FF7`
+- retained alternative for comparison: `source_png/leader_bri_regionalist_regis_de_l_estourbeillon_imagegen_candidate_v1.png`
+- alternative dimensions: `1080x1456`, PNG RGB, opaque; SHA-256 `8BE51C6A25E14BB93CE1996483F0E76CAB76B708118723091C998B49E454418B`
+- generated-image intent: edit the sourced person, not generate or substitute an identity
+- invariants checked visually: same male face, moustache, apparent age, expression/gaze, head angle, hat, and visible period Breton costume; no invented medals, insignia, tartan, pseudo-Celtic motif, sacred/cultural symbol, flag, text, modern prop, stereotype, or generic face
+- style references inspected: canonical vanilla leader family contact sheet and `portraits/leaders/den_thorvald_stauning.png`, `portraits/leaders/fin_carl_mannerheim.png`; references supplied only for quiet pale background, head-and-shoulders framing, restrained brush texture, and controlled contrast
+- review sheet: `contact_sheets/bri_regionalist_identity_review.png` (source crop, both ImageGen candidates, selected processed output, and canonical style references; review only)
+
+## Crop and processing
+
+The selected raw master is `1024x1536`. To preserve the complete head, hat,
+shoulders, and visible upper-torso costume while matching the HOI4 portrait
+ratio, a deterministic top/bottom crop was applied:
+
+```text
+crop box (x0, y0, x1, y1): (0, 79, 1024, 1457)
+crop size: 1024x1378
+resize: Lanczos -> 156x210
+output mode: RGB, opaque (no alpha)
+```
+
+Processed preview: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillon.png`  
+Dimensions: `156x210`, PNG RGB, opaque  
+SHA-256: `BDEDCCB06A25807C70A774871607AE72DA4F9A51B711E88E45F1E389A99500C8`
+
+The local processed PNG is a review artifact only. No DDS was created and no
+runtime path was changed, per parent scope.
+
+## Exact ImageGen prompts
+
+The selected v2 prompt and the retained v1 prompt are preserved verbatim in
+[`prompt.md`](prompt.md). The selected edit used the source photograph as the
+edit target and `den_thorvald_stauning.png` as a style-only reference. The
+candidate contact sheet is review evidence, not a runtime texture.
+
+## Runtime handoff (parent-owned)
+
+- existing sprite: `GFX_portrait_BRI_independence_wave_civic_commission`
+- existing `.gfx`: `interface/006_independence_wave_brittany_portraits.gfx`
+- deferred runtime texture: `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`
+- target final texture size: `156x210`, uncompressed BGRA DDS through the repository converter when the parent performs the deferred conversion
+- no new sprite declaration is requested; preserve the existing mapping
+
+## Fail-closed review verdict
+
+The selected edit is a source-preserving candidate: the face, moustache,
+expression/gaze, hat, and period costume remain visibly the same subject as the
+John Wickens source, and the output contains no prohibited invented cultural or
+military details. The package remains `needs_user_review` until the parent
+accepts the identity comparison and performs the deferred DDS/runtime step. If
+the parent judges the face to drift or the costume to be invented, reject this
+edit and leave the civic slot blocked; do not use the Dulac illustration or a
+generated/generic/female/advisor substitute.
