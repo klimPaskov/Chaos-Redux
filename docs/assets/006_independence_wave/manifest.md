@@ -282,13 +282,17 @@ active-character ownership review and may be refinished from their retained
 masters. Konrad
 Adenauer, Franz Ritter von Epp, and Edmund Ironside are retained only as
 rejected treatment evidence because vanilla recruits the same men as active
-GER or ENG characters; their Event 006 roles require different sourced male
-replacements. Luigi Rizzo remains valid because vanilla uses his name only for
+GER or ENG characters. Source-ready replacement primaries are Karl Jarres for
+RHI, Eugen Ritter von Schobert for BAY, and Victor Morven Fortune for SCO;
+their unchanged sources and ownership evidence are in
+`sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
+None is processed or wired. Luigi Rizzo remains valid because vanilla uses his name only for
 ship-production lines, not a character or portrait. Protected Rupprecht and
 Matthes remain the only approved Event 006 leader portraits. Prempeh II's
 TNA/OGL archival master remains source-ready, but its installed ImageGen-based
-real-person restyling is withdrawn and requires a deterministic refinish from
-the unchanged source. The rejected Hawaiian scan and every incomplete
+real-person restyling is withdrawn. The deterministic Solinas/Harpe finish
+trial also remains visibly photographic and is rejected; its dated blocker
+handoff authorizes no DDS conversion or runtime wiring. The rejected Hawaiian scan and every incomplete
 package remain fail-closed. Event 6 uses no custom advisor, high-command,
 officer-corps, or dossier portrait sprites. All fourteen obsolete `_small`
 dossier DDS files, registrations, and consumers have been removed.
