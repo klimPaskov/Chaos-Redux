@@ -972,16 +972,27 @@ bio_lifecycle_mark_current_agent_detected = {
 
 bio_lifecycle_update_current_agent_attribution = {
 	set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.unknown_natural }
+	# Laboratory, captured-facility, and field-test releases are accident-class
+	# sources. Evidence can confirm responsibility for the accident, but cannot
+	# relabel the same record as a deliberate attack.
 	if = {
 		limit = {
-			check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+			OR = {
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.captured_facility compare = equals }
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.field_test compare = equals }
+			}
 			check_variable = { var = bio_current_evidence value = constant:bio_lifecycle_evidence.confirmed_accident_threshold compare = greater_than_or_equals }
 		}
 		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.confirmed_accident }
 	}
 	else_if = {
 		limit = {
-			check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+			OR = {
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.accident compare = equals }
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.captured_facility compare = equals }
+				check_variable = { var = bio_current_source value = constant:bio_lifecycle_source.field_test compare = equals }
+			}
 			check_variable = { var = bio_current_evidence value = constant:bio_lifecycle_evidence.suspicious_threshold compare = greater_than_or_equals }
 		}
 		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.suspicious }
