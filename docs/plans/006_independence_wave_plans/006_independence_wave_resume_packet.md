@@ -69,9 +69,9 @@ they are not current routing documents.
   vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only rows:
   191 unique nonblank carrier tags overall, with only `CHU` and `BIA`
   intentionally shared.
-- The 2026-07-18 installed-mod audit covers 108 Event 006-owned identifiers,
-  122 Workshop directories, three sibling local mods, archives, and reports
-  zero collisions.
+- The 2026-07-22 installed-mod audit covers 108 Event 006-owned identifiers,
+  122 Workshop directories, eight archives, three sibling local mods, and
+  reports zero tag and custom-cosmetic collisions.
 - The installed-map registry has 138 selectable bound packages, 55 selectable
   unbound packages, and 13 overlays.
 - Trabzon state 354 and Kashmir state 441 have implemented cross-group
@@ -177,7 +177,7 @@ they are not current routing documents.
 | IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Muhammadu Dikko has a valid sourced TNA master and replaces fictional Umaru Gwadabawa, but the current photographic treatment fails the HOI4 painted-style gate. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, and Bello Rabah still require sourced real-person portraits before admission. Preserve the gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until the complete sourced roster, exact flag, FORM-25 contract, and final country audits pass |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set is empty |
 
-Sixteen compile-time attestations do not guarantee a valid wave. The allocator
+An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
 chaos-band, and wave-size gates. Ten disjoint reservation groups can
 structurally supply every 3-, 4-, 5-, 7-, and 10-country band. World Collapse

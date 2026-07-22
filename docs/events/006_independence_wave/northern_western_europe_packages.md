@@ -59,9 +59,9 @@ IW-001 verifies the existing p1 territorial-defense package with military tradit
 
 ### Institutional authority and command
 
-Scotland uses the source-backed R. B. Cunninghame Graham character token `SCO_independence_wave_civic_convention` for its civic routes and the source-backed Edmund Ironside token `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses the source-backed Saunders Lewis token `WLS_independence_wave_national_council` as its civic leader. Its `WLS_independence_wave_mountain_commandant` remains source-blocked.
+Scotland uses the sourced R. B. Cunninghame Graham character token `SCO_independence_wave_civic_convention` for its civic routes and the sourced Victor Morven Fortune token `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses the sourced Saunders Lewis token `WLS_independence_wave_national_council` as its civic leader. Its `WLS_independence_wave_mountain_commandant` remains source-blocked.
 
-These are guarded runtime Event 6 characters, not replacements for vanilla characters. Setup applies exact `156x210` sprites with `set_portraits`; Event 6 defines no commander miniature, advisor-card, dossier, or `_small` portrait. The Scottish and accepted Welsh portraits begin with attributed archival masters, use explicit head-and-shoulders crops and the deterministic identity-preserving HOI4 finish, and are reviewed against the canonical vanilla portrait references. A package cannot pass content attestation while one of its required identities remains source-blocked.
+These are guarded runtime Event 6 characters, not replacements for vanilla characters. Setup retains stable `156x210` sprite consumers with `set_portraits`; Event 6 defines no commander miniature, advisor-card, dossier, or `_small` portrait. Their real-person masters are attributed archival sources, but the current non-protected treatments remain rejected because they do not meet the HOI4 painted-style gate. A package cannot pass content attestation while one of its required identities is source-blocked or its complete portrait set has not passed visual review.
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
@@ -138,9 +138,9 @@ The unique package portraits are registered in `interface/006_independence_wave_
 
 | Country | Real male identity | Runtime portrait | Source status |
 | --- | --- | --- | --- |
-| Scotland | R. B. Cunninghame Graham | `portrait_SCO_independence_wave_civic_convention.dds` | Rijksmuseum archival source, processed and wired |
-| Scotland | Edmund Ironside | `portrait_SCO_independence_wave_territorial_commandant.dds` | Library of Congress archival source, processed and wired |
-| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | Y Drych/National Library of Wales archival source, processed and wired |
+| Scotland | R. B. Cunninghame Graham | `portrait_SCO_independence_wave_civic_convention.dds` | attributed archival master retained; current treatment rejected on painted style |
+| Scotland | Victor Morven Fortune | `portrait_SCO_independence_wave_territorial_commandant.dds` | IWM source-ready replacement master retained; runtime treatment not approved |
+| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | attributed archival master retained; current treatment rejected on painted style |
 | Wales | Mountain/territorial commander | `portrait_WLS_independence_wave_mountain_commandant.dds` | blocked; generated file is not accepted evidence |
 
 Scotland and Wales retain their installed vanilla flag triplets because these are reused vanilla countries, not newly created Event 006 tags. Any future royal Scottish cosmetic route must remain traditional-route-only. Wales receives no invented pre-1959 fallback.
@@ -564,16 +564,16 @@ Each prepared proof checks the exact tag, package ID, region, depth, archetype, 
 
 The package creates stable Event 6 character tokens with guarded `generate_character` calls and reapplies their exact portraits on every setup:
 
-- `RHI_independence_wave_provisional_directorate` — Konrad Adenauer
+- `RHI_independence_wave_provisional_directorate` — Karl Jarres
 - `RHI_independence_wave_river_commandant` — Josef Harpe
 - `BAY_independence_wave_state_council` — Heinrich Held
-- `BAY_independence_wave_mountain_commandant` — Franz Ritter von Epp
+- `BAY_independence_wave_mountain_commandant` — Eugen Ritter von Schobert
 
 The two commandants have distinct corps-commander roles. Every grounded identity in these packages must use an attributed, role-accurate real male source and a reviewed identity-preserving `156x210` HOI4 treatment; generated officeholders and generic reuse of unrelated vanilla figures are prohibited. Event 006 defines no commander thumbnails.
 
-`RHI_josef_friedrich_matthes` is used only when he remains recruited by Rhineland. Package setup applies `GFX_portrait_RHI_josef_friedrich_matthes` with `set_portraits`, while Konrad Adenauer remains the opening civic leader. Matthes becomes leader only for the labor settlement; when he is unavailable, the established directorate retains office as the designed institutional outcome. Josef Harpe commands the armed river authority and leads the emergency settlement.
+`RHI_josef_friedrich_matthes` is used only when he remains recruited by Rhineland. Package setup applies `GFX_portrait_RHI_josef_friedrich_matthes` with `set_portraits`, while Karl Jarres remains the opening civic leader. Matthes becomes leader only for the labor settlement; when he is unavailable, the established directorate retains office as the designed institutional outcome. Josef Harpe commands the armed river authority and leads the emergency settlement.
 
-`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while Heinrich Held provides the opening civic authority. Rupprecht becomes leader only for the traditional restoration settlement; Held's state administration retains the institutional regency if he is unavailable. Franz Ritter von Epp commands the mountain forces and leads the emergency settlement; his Freikorps violence and Nazi office are stated explicitly rather than sanitized.
+`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while Heinrich Held provides the opening civic authority. Rupprecht becomes leader only for the traditional restoration settlement; Held's state administration retains the institutional regency if he is unavailable. Eugen Ritter von Schobert commands the mountain-region emergency forces; the role is a territorial command assignment, not a claim that he belonged to the Gebirgstruppe.
 
 Cleanup restores both vanilla character portraits. No `.gfx` character sprite is globally replaced.
 
@@ -767,11 +767,11 @@ The additional package portrait sprites are registered in `interface/006_indepen
 - `GFX_portrait_BAY_independence_wave_state_council`
 - `GFX_portrait_BAY_independence_wave_mountain_commandant`
 
-The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations, and Event 006 defines no commander miniatures or dossier portraits. Konrad Adenauer, Josef Harpe, Josef Friedrich Matthes, Heinrich Held, Franz Ritter von Epp, and Rupprecht of Bavaria are the source-cleared identities in this pair. The authoritative source treatment and review package is `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations, and Event 006 defines no commander miniatures or dossier portraits. Karl Jarres, Josef Harpe, Josef Friedrich Matthes, Heinrich Held, Eugen Ritter von Schobert, and Rupprecht of Bavaria are the grounded sourced identities in this pair. Rupprecht and Matthes are the two protected approved portraits. The other four retain attributed masters but still require an approved painted finish and visual review. Source and replacement authority lives in `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/` and `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
 
 ### Readiness boundary
 
-Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focus art, route-idea art, incident scenes, and the complete grounded portrait rosters are wired. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. `IW-008` and `IW-009` remain fail-closed for automatic waves and SCN-008 until a fresh package audit confirms the post-replacement portrait consumers together with the existing tag, anchor, host-survival, reservation, and Event 5 collision contracts. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
+Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focus art, route-idea art, incident scenes, and stable portrait consumers are wired. The complete grounded portrait rosters are not visually admitted. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. `IW-008` and `IW-009` remain fail-closed for automatic waves and SCN-008 until a fresh package audit confirms the post-replacement portrait consumers together with the existing tag, anchor, host-survival, reservation, and Event 5 collision contracts. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
 
 ### Future plans and suggestions
 
