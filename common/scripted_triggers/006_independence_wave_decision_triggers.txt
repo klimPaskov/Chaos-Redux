@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
 # ============================================================================
 # Reusable phase, target, mission-cap, resource-safety, and material-cost
-# predicates for DM-01 through DM-60. All country scans are initiated by a
+# predicates for DM-01 through DM-61. All country scans are initiated by a
 # player or AI targeted action. No periodic world iteration is performed here.
 # ============================================================================
 
@@ -80,6 +80,8 @@ has_independence_wave_active_league_crisis = {
 		has_decision = independence_wave_request_border_arbitration
 		has_decision = independence_wave_rescue_threatened_member
 		has_decision = independence_wave_call_charter_expulsion_vote
+		has_decision = independence_wave_sponsor_member_coup
+		has_decision = independence_wave_refuse_binding_arbitration
 		has_active_mission = independence_wave_convene_founding_congress
 		has_active_mission = independence_wave_challenge_league_leadership
 		has_active_mission = independence_wave_coordinate_reclamation_fronts
@@ -93,6 +95,21 @@ has_independence_wave_active_league_crisis = {
 is_independence_wave_charter_compliant_member = {
 	has_country_flag = independence_wave_league_member
 	NOT = { has_country_flag = independence_wave_client_route_locked }
+}
+
+# Country scope. A member can refuse one pending binding-arbitration request
+# only when the requester is still a live, compliant Event 006 member. The
+# requester pointer is written by DM-43 and cleared by its resolution or
+# cancellation effect.
+is_independence_wave_binding_arbitration_refusal_target = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_arbitration_pending
+	has_variable = independence_wave_arbitration_requester
+	var:independence_wave_arbitration_requester = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		is_independence_wave_charter_compliant_member = yes
+	}
 }
 
 # The leader authority used by DM-60. The active-vote guard stays in the
@@ -122,14 +139,15 @@ is_independence_wave_charter_expulsion_authority = {
 	}
 }
 
-# DM-60 intentionally recognizes only the already-written patron-client
-# breach. Other accepted expulsion grounds need their own factual writers and
-# are never inferred from a generic war, claim, or diplomatic disagreement.
+# DM-60 consumes a recorded factual ground. The writer is responsible for
+# setting the case flag at the exact transaction point; a generic member,
+# client, claim, or war relation never creates a case on its own.
 is_valid_independence_wave_charter_expulsion_target = {
 	exists = yes
 	is_independence_wave_active_country = yes
 	has_country_flag = independence_wave_league_member
-	has_country_flag = independence_wave_client_route_locked
+	has_country_flag = independence_wave_expulsion_ground_recorded
+	NOT = { has_country_flag = independence_wave_expulsion_resolved }
 	NOT = { tag = ROOT }
 	ROOT = { is_independence_wave_charter_expulsion_authority = yes }
 }

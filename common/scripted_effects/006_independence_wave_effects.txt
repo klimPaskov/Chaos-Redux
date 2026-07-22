@@ -123,6 +123,132 @@ independence_wave_change_instability = {
 	}
 }
 
+# Country scope. Records one factual charter-expulsion ground at the exact
+# transaction point. Callers set the temporary ground enum and a zero/one
+# `independence_wave_expulsion_has_target_input`; when that input is one they
+# also set `independence_wave_expulsion_evidence_target_input` to a surviving
+# country scope. The accused country owns the case, violation count, and date.
+# A second recorded breach promotes the case to the repeated-violation ground.
+independence_wave_record_league_expulsion_ground = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_league_member
+			has_global_flag = independence_wave_charter_anti_puppetry
+			OR = {
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = independence_wave_charter_violation_count } }
+			set_variable = { independence_wave_charter_violation_count = constant:independence_wave_value.minimum }
+		}
+		add_to_variable = { independence_wave_charter_violation_count = constant:independence_wave_plan.loop_increment }
+		set_variable = { independence_wave_expulsion_ground = independence_wave_expulsion_ground_input }
+		set_variable = { independence_wave_expulsion_ground_date = global.date }
+		set_country_flag = independence_wave_expulsion_ground_recorded
+		clr_country_flag = independence_wave_expulsion_resolved
+		if = {
+			limit = { check_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment } }
+			set_variable = { independence_wave_expulsion_evidence_target = independence_wave_expulsion_evidence_target_input }
+		}
+		else = { clear_variable = independence_wave_expulsion_evidence_target }
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_charter_violation_count
+					value = constant:independence_wave_decision_gate.repeated_charter_violation_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.repeated_charter_violation }
+			set_country_flag = independence_wave_expulsion_repeated
+		}
+	}
+}
+
+# Country scope. Clears generation-local case markers while retaining no stale
+# target pointer, ground enum, date, or violation count for a later Event 006
+# generation.
+independence_wave_clear_league_expulsion_case = {
+	clr_country_flag = independence_wave_expulsion_ground_recorded
+	clr_country_flag = independence_wave_expulsion_repeated
+	clr_country_flag = independence_wave_expulsion_resolved
+	clear_variable = independence_wave_charter_violation_count
+	clear_variable = independence_wave_expulsion_ground
+	clear_variable = independence_wave_expulsion_ground_date
+	clear_variable = independence_wave_expulsion_evidence_target
+}
+
+# Country scope. DM-43 and its response decision use this narrow cleanup so a
+# refusal pointer cannot survive a completed, cancelled, or invalid request.
+independence_wave_clear_binding_arbitration_request = {
+	clr_country_flag = independence_wave_arbitration_pending
+	clr_country_flag = independence_wave_arbitration_refusal_recorded
+	clear_variable = independence_wave_arbitration_requester
+	clear_variable = independence_wave_arbitration_request_date
+}
+
+# Country scope. DM-61's coup action uses the vanilla civil-war effect, with a
+# route-selected opposing ideology and a central size constant injected via a
+# meta effect because `start_civil_war.size` is not a documented constant field.
+independence_wave_start_sponsored_member_coup = {
+	set_temp_variable = { independence_wave_coup_size = constant:independence_wave_decision_coup.revolt_size }
+	if = {
+		limit = { has_government = fascism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = democratic
+					ruling_party = democratic
+					size = [IW_COUP_SIZE]
+				}
+			}
+			IW_COUP_SIZE = "[?independence_wave_coup_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = democratic }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = fascism
+					ruling_party = fascism
+					size = [IW_COUP_SIZE]
+				}
+			}
+			IW_COUP_SIZE = "[?independence_wave_coup_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = communism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = democratic
+					ruling_party = democratic
+					size = [IW_COUP_SIZE]
+				}
+			}
+			IW_COUP_SIZE = "[?independence_wave_coup_size|.2]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = fascism
+					ruling_party = neutrality
+					size = [IW_COUP_SIZE]
+				}
+			}
+			IW_COUP_SIZE = "[?independence_wave_coup_size|.2]"
+		}
+	}
+}
+
 # Input: temporary `independence_wave_government_route_input`. Package-aware
 # availability is checked by the route decision/focus before this lock effect.
 independence_wave_select_government_route = {
@@ -142,6 +268,20 @@ independence_wave_select_government_route = {
 		else_if = {
 			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.patron_client } }
 			set_country_flag = independence_wave_route_patron_client
+			if = {
+				limit = {
+					has_country_flag = independence_wave_league_member
+					has_global_flag = independence_wave_charter_anti_puppetry
+					OR = {
+						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+						check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+					}
+				}
+				set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.patron_client }
+				set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_value.minimum }
+				independence_wave_record_league_expulsion_ground = yes
+			}
 			set_country_flag = independence_wave_client_route_locked
 			independence_wave_unregister_league_founder = yes
 			# A captured member remains in the league ledger only until a
@@ -168,6 +308,8 @@ independence_wave_reset_current_generation = {
 	independence_wave_clear_focus_runtime = yes
 	independence_wave_unregister_league_member = yes
 	independence_wave_unregister_league_founder = yes
+	independence_wave_clear_league_expulsion_case = yes
+	independence_wave_clear_binding_arbitration_request = yes
 	independence_wave_unregister_network_member = yes
 	independence_wave_unregister_active_country = yes
 	independence_wave_remove_former_host_ledger_entry = yes
@@ -2045,18 +2187,20 @@ independence_wave_leave_league = {
 	}
 }
 
-# Country scope. DM-60 calls this only after its leader authority and the
-# patron-client breach have been revalidated. It removes every aligned league
-# record through the existing helper, leaves the informal network and origin
-# intact, and marks the former member as discredited through the existing
-# failure-idea lifecycle.
+# Country scope. DM-60 calls this only after its leader authority and a
+# recorded factual ground have been revalidated. It removes every aligned
+# league record through the existing helper, leaves the informal network and
+# origin intact, and marks the former member as discredited through the
+# existing failure-idea lifecycle.
 independence_wave_expel_league_member = {
 	if = {
 		limit = {
 			is_independence_wave_active_country = yes
 			has_country_flag = independence_wave_league_member
-			has_country_flag = independence_wave_client_route_locked
+			has_country_flag = independence_wave_expulsion_ground_recorded
 		}
+		set_country_flag = independence_wave_expulsion_resolved
+		clr_country_flag = independence_wave_expulsion_ground_recorded
 		independence_wave_unregister_league_member = yes
 		set_country_flag = independence_wave_league_member_discredited
 		independence_wave_refresh_idea_lifecycles = yes
@@ -2501,6 +2645,8 @@ independence_wave_end_active_origin = {
 		independence_wave_cleanup_decision_layer = yes
 		independence_wave_clear_focus_runtime = yes
 		independence_wave_unregister_league_member = yes
+		independence_wave_clear_league_expulsion_case = yes
+		independence_wave_clear_binding_arbitration_request = yes
 		independence_wave_unregister_network_member = yes
 		independence_wave_unregister_active_country = yes
 		independence_wave_remove_former_host_ledger_entry = yes

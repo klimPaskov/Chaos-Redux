@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISIONS AND MISSIONS
 # ============================================================================
-# Complete DM-01 through DM-60 action map. Costs are material commitments,
+# Complete DM-01 through DM-61 action map. Costs are material commitments,
 # missions are bounded, and repeatable actions use target or country cooldowns.
 # All value, relationship, patron, network, and league changes pass through the
 # Event 006 scripted ledgers. No periodic world iteration is used.
@@ -2089,6 +2089,7 @@ independence_wave_network_category = {
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
 			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_arbitration
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2158,6 +2159,7 @@ independence_wave_network_category = {
 		target_root_trigger = {
 			is_independence_wave_recognized_or_later = yes
 			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_arbitration
 			NOT = { has_independence_wave_active_league_crisis = yes }
 		}
 		target_trigger = {
@@ -2179,10 +2181,20 @@ independence_wave_network_category = {
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.standard
 		days_re_enable = constant:independence_wave_decision_cooldown.major
-		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_standard = yes
+			FROM = {
+				owner = {
+					set_country_flag = independence_wave_arbitration_pending
+					set_variable = { independence_wave_arbitration_requester = ROOT }
+					set_variable = { independence_wave_arbitration_request_date = global.date }
+				}
+			}
+		}
 		remove_effect = {
 			FROM = {
 				owner = {
+					independence_wave_clear_binding_arbitration_request = yes
 					every_owned_state = {
 						limit = { is_claimed_by = ROOT }
 						remove_claim_by = ROOT
@@ -2210,7 +2222,33 @@ independence_wave_network_category = {
 				has_country_flag = independence_wave_client_route_locked
 				FROM = { owner = { NOT = { has_country_flag = independence_wave_league_member } } }
 				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
+				FROM = { owner = { has_country_flag = independence_wave_arbitration_refusal_recorded } }
 			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				if = {
+					limit = { FROM = { owner = { has_country_flag = independence_wave_arbitration_refusal_recorded } } }
+					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major_loss }
+					independence_wave_change_network_standing = yes
+					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major_loss }
+					set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+					set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+					set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_major_loss }
+					independence_wave_decision_apply_league_deltas = yes
+				}
+				else = {
+					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_value.minimum }
+					set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+					set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+					set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					independence_wave_decision_apply_league_deltas = yes
+				}
+			}
+			FROM = { owner = { independence_wave_clear_binding_arbitration_request = yes } }
 		}
 		ai_will_do = {
 			base = constant:independence_wave_decision_ai.high
@@ -2313,6 +2351,22 @@ independence_wave_network_category = {
 					independence_wave_decision_apply_league_deltas = yes
 				}
 				else = {
+					if = {
+						limit = {
+							FROM = {
+								owner = {
+									is_independence_wave_active_country = yes
+									has_country_flag = independence_wave_league_member
+									has_war = yes
+								}
+							}
+						}
+						FROM = { owner = { save_event_target_as = independence_wave_rescue_abandonment_target } }
+						set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.rescue_abandonment }
+						set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
+						set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_rescue_abandonment_target }
+						independence_wave_record_league_expulsion_ground = yes
+					}
 					set_global_flag = independence_wave_league_failed_rescue
 					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_major_loss }
 					independence_wave_change_network_standing = yes
@@ -2327,6 +2381,33 @@ independence_wave_network_category = {
 		}
 		days_re_enable = constant:independence_wave_decision_cooldown.major
 		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	# DM-43 response: an explicitly targeted member can refuse the pending
+	# binding-arbitration term. The refusal writes the expulsion case on this
+	# country; DM-43's requester-side cancel effect applies the league damage.
+	independence_wave_refuse_binding_arbitration = {
+		name = independence_wave_refuse_binding_arbitration
+		desc = independence_wave_refuse_binding_arbitration_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = { is_independence_wave_binding_arbitration_refusal_target = yes }
+		available = { can_pay_independence_wave_diplomatic_light_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_light_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_light
+		days_re_enable = constant:independence_wave_decision_cooldown.major
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_light = yes
+			set_country_flag = independence_wave_arbitration_refusal_recorded
+			set_variable = { independence_wave_arbitration_refusal_date = global.date }
+			set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.arbitration_refusal }
+			set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
+			set_temp_variable = { independence_wave_expulsion_evidence_target_input = var:independence_wave_arbitration_requester }
+			independence_wave_record_league_expulsion_ground = yes
+			clr_country_flag = independence_wave_arbitration_pending
+			clear_variable = independence_wave_arbitration_requester
+			clear_variable = independence_wave_arbitration_request_date
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.low }
 	}
 }
 
@@ -2594,7 +2675,11 @@ independence_wave_league_category = {
 			base = constant:independence_wave_decision_ai.very_low
 			modifier = {
 				factor = constant:independence_wave_decision_ai.modifier_major
-				FROM = { owner = { has_country_flag = independence_wave_client_route_locked } }
+				FROM = { owner = { has_country_flag = independence_wave_expulsion_repeated } }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = { owner = { has_country_flag = independence_wave_expulsion_ground_recorded } }
 			}
 			modifier = {
 				factor = constant:independence_wave_decision_ai.modifier_double
@@ -2604,6 +2689,64 @@ independence_wave_league_category = {
 				factor = constant:independence_wave_decision_ai.modifier_half
 				check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
 			}
+		}
+	}
+
+	# DM-61 supporting action for the accepted sponsored-coup ground. It is a
+	# real, material civil-war intervention against a live member, not a flag-only
+	# accusation. The sponsor owns the expulsion case immediately after the war
+	# is started, so the target remains auditable even if the civil war changes
+	# its controller later.
+	independence_wave_sponsor_member_coup = {
+		name = independence_wave_sponsor_member_coup
+		desc = independence_wave_sponsor_member_coup_desc
+		icon = GFX_decision_generic_ignite_civil_war
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			is_independence_wave_recognized_or_later = yes
+			is_independence_wave_charter_compliant_member = yes
+			has_global_flag = independence_wave_charter_anti_puppetry
+			NOT = { has_independence_wave_active_league_crisis = yes }
+		}
+		target_trigger = {
+			FROM = {
+				is_capital = yes
+				owner = {
+					is_independence_wave_active_country = yes
+					has_country_flag = independence_wave_league_member
+					NOT = { has_country_flag = independence_wave_client_route_locked }
+					NOT = { has_civil_war = yes }
+					has_war = no
+					NOT = { tag = ROOT }
+				}
+			}
+		}
+		visible = { is_independence_wave_charter_compliant_member = yes }
+		available = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_re_enable = constant:independence_wave_decision_cooldown.major
+		complete_effect = {
+			independence_wave_decision_pay_security_standard = yes
+			FROM = { owner = { save_event_target_as = independence_wave_sponsored_coup_target } }
+			event_target:independence_wave_sponsored_coup_target = {
+				independence_wave_start_sponsored_member_coup = yes
+			}
+			set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.sponsored_coup }
+			set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
+			set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_sponsored_coup_target }
+			independence_wave_record_league_expulsion_ground = yes
+			set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major_loss }
+			set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard_loss }
+			set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_major_loss }
+			independence_wave_decision_apply_league_deltas = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.very_low
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_country_flag = independence_wave_route_radical_sovereignty }
 		}
 	}
 }

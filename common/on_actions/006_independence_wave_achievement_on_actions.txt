@@ -12,6 +12,24 @@ on_actions = {
 			save_event_target_as = independence_wave_achievement_war_attacker
 			FROM = { save_event_target_as = independence_wave_achievement_war_defender }
 			independence_wave_achievement_record_war = yes
+			# ROOT is the attacker for this on-action. A live Event 006 member
+			# starting an external war under the defensive charter is the factual
+			# unauthorized-war ground. Civil-war sides are excluded so DM-61 does
+			# not self-report the internal revolt it deliberately starts.
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					has_country_flag = independence_wave_league_member
+					has_global_flag = independence_wave_charter_anti_puppetry
+					has_global_flag = independence_wave_charter_mutual_defense
+					check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress }
+					has_civil_war = no
+				}
+				set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.unauthorized_war }
+				set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_plan.loop_increment }
+				set_temp_variable = { independence_wave_expulsion_evidence_target_input = event_target:independence_wave_achievement_war_defender }
+				independence_wave_record_league_expulsion_ground = yes
+			}
 		}
 	}
 
@@ -117,6 +135,24 @@ on_actions = {
 	on_annex = {
 		effect = {
 			save_event_target_as = independence_wave_achievement_annexer
+			# The annexation callback is the exact transaction witness. It runs
+			# before the victim is removed, so both league-member flags are still
+			# available. The victim pointer is intentionally not persisted because
+			# the annexed country ceases to exist at the end of this action.
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					has_country_flag = independence_wave_league_member
+					has_global_flag = independence_wave_charter_anti_puppetry
+					FROM = {
+						is_independence_wave_active_country = yes
+						has_country_flag = independence_wave_league_member
+					}
+				}
+				set_temp_variable = { independence_wave_expulsion_ground_input = constant:independence_wave_expulsion_ground.annexed_member }
+				set_temp_variable = { independence_wave_expulsion_has_target_input = constant:independence_wave_value.minimum }
+				independence_wave_record_league_expulsion_ground = yes
+			}
 			FROM = {
 				independence_wave_achievement_remove_scenario_survivor = yes
 				if = {
