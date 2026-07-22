@@ -10,13 +10,14 @@ Country-package implementation references are grouped by region. See the [Northe
 
 ## Current portrait-gated admission (2026-07-22)
 
-IW-004 Brittany is the sole package currently present in
+IW-004 Brittany and IW-007 Frisia are the packages currently present in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
-Its gameplay package and its sourced real male Régis de l'Estourbeillon and
-Henri-Léon Devin portraits passed the current independent audits. Every other
-formerly admitted grounded package with a generated or generic leader,
-commander, or institutional portrait remains withdrawn until sourced real male
-replacements pass review. IW-173 is included because vanilla maps David
+Their gameplay packages and sourced real-male portrait rosters passed the
+current independent audits: Régis de l'Estourbeillon and Henri-Léon Devin for
+Brittany, and Douwe Kalma and Pieter Reenalda for Frisia. Every other formerly
+admitted grounded package with a generated or generic leader, commander, or
+institutional portrait remains withdrawn until sourced real male replacements
+pass review. IW-173 is included because vanilla maps David
 Kalakaua Kawananakoa to generic `Portrait_Asia_Generic_land_5.dds`. FORM-48
 remains implemented with HBX as carrier and HAW/FSM as sovereign autonomous
 members, but HBX/FSM withdrawal prevents a complete currently admitted
