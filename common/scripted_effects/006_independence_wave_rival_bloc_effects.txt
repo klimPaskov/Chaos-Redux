@@ -1,0 +1,688 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RIVAL BLOC EFFECTS
+# ============================================================================
+# The post-expulsion rival bloc is a separate, generation-safe contract.  It
+# shares the Event 006 network and former-host ledgers, but never reuses the
+# main league member arrays.  Every public action has an explicit caller,
+# value transaction, resource cost in the decision layer, and cleanup path.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Contract state and value transactions
+# ---------------------------------------------------------------------------
+
+independence_wave_rival_bloc_initialize_runtime = {
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_next_contract_generation } } set_variable = { global.independence_wave_rival_bloc_next_contract_generation = constant:independence_wave_value.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_contract_generation } } set_variable = { global.independence_wave_rival_bloc_contract_generation = constant:independence_wave_value.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_member_count } } set_variable = { global.independence_wave_rival_bloc_member_count = constant:independence_wave_value.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_region_count } } set_variable = { global.independence_wave_rival_bloc_region_count = constant:independence_wave_value.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_route } } set_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.grievance_caucus } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_cohesion } } set_variable = { global.independence_wave_rival_bloc_cohesion = constant:independence_wave_rival_bloc.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_common_cause } } set_variable = { global.independence_wave_rival_bloc_common_cause = constant:independence_wave_rival_bloc.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_patron_capture } } set_variable = { global.independence_wave_rival_bloc_patron_capture = constant:independence_wave_rival_bloc.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_shared_reserve } } set_variable = { global.independence_wave_rival_bloc_shared_reserve = constant:independence_wave_rival_bloc.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_member_confidence } } set_variable = { global.independence_wave_rival_bloc_member_confidence = constant:independence_wave_rival_bloc.minimum } }
+	if = { limit = { NOT = { has_variable = global.independence_wave_rival_bloc_host_pressure } } set_variable = { global.independence_wave_rival_bloc_host_pressure = constant:independence_wave_rival_bloc.minimum } }
+}
+
+independence_wave_rival_bloc_clamp_values = {
+	clamp_variable = { var = global.independence_wave_rival_bloc_cohesion min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+	clamp_variable = { var = global.independence_wave_rival_bloc_common_cause min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+	clamp_variable = { var = global.independence_wave_rival_bloc_patron_capture min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+	clamp_variable = { var = global.independence_wave_rival_bloc_shared_reserve min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+	clamp_variable = { var = global.independence_wave_rival_bloc_member_confidence min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+	clamp_variable = { var = global.independence_wave_rival_bloc_host_pressure min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+}
+
+# Inputs are temporary `independence_wave_rival_bloc_*_delta` values.
+independence_wave_rival_bloc_change_values = {
+	independence_wave_rival_bloc_initialize_runtime = yes
+	add_to_variable = { global.independence_wave_rival_bloc_cohesion = independence_wave_rival_bloc_cohesion_delta }
+	add_to_variable = { global.independence_wave_rival_bloc_common_cause = independence_wave_rival_bloc_common_cause_delta }
+	add_to_variable = { global.independence_wave_rival_bloc_patron_capture = independence_wave_rival_bloc_patron_capture_delta }
+	add_to_variable = { global.independence_wave_rival_bloc_shared_reserve = independence_wave_rival_bloc_shared_reserve_delta }
+	add_to_variable = { global.independence_wave_rival_bloc_member_confidence = independence_wave_rival_bloc_member_confidence_delta }
+	add_to_variable = { global.independence_wave_rival_bloc_host_pressure = independence_wave_rival_bloc_host_pressure_delta }
+	independence_wave_rival_bloc_clamp_values = yes
+}
+
+independence_wave_rival_bloc_clear_member_arrays = {
+	clear_array = global.independence_wave_rival_bloc_member_country_entries
+	clear_array = global.independence_wave_rival_bloc_member_generation_entries
+	clear_array = global.independence_wave_rival_bloc_member_contract_generation_entries
+	clear_array = global.independence_wave_rival_bloc_member_region_entries
+	clear_array = global.independence_wave_rival_bloc_member_contribution_entries
+	clear_array = global.independence_wave_rival_bloc_member_confidence_entries
+	clear_array = global.independence_wave_rival_bloc_region_entries
+	set_variable = { global.independence_wave_rival_bloc_member_count = constant:independence_wave_rival_bloc.minimum }
+	set_variable = { global.independence_wave_rival_bloc_region_count = constant:independence_wave_rival_bloc.minimum }
+}
+
+# ---------------------------------------------------------------------------
+# Generation-safe member registry
+# ---------------------------------------------------------------------------
+
+independence_wave_rival_bloc_rebuild_regions = {
+	clear_array = global.independence_wave_rival_bloc_region_entries
+	set_variable = { global.independence_wave_rival_bloc_region_count = constant:independence_wave_rival_bloc.minimum }
+	set_temp_variable = { independence_wave_rival_bloc_region_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_rival_bloc_region_index value = global.independence_wave_rival_bloc_member_region_entries^num compare = less_than } }
+		set_temp_variable = { independence_wave_rival_bloc_region_value = global.independence_wave_rival_bloc_member_region_entries^independence_wave_rival_bloc_region_index }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.independence_wave_rival_bloc_region_entries value = independence_wave_rival_bloc_region_value } } }
+			add_to_array = { array = global.independence_wave_rival_bloc_region_entries value = independence_wave_rival_bloc_region_value }
+			add_to_variable = { global.independence_wave_rival_bloc_region_count = constant:independence_wave_plan.loop_increment }
+		}
+		add_to_temp_variable = { independence_wave_rival_bloc_region_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_rival_bloc_recalculate_confidence = {
+	set_variable = { global.independence_wave_rival_bloc_member_count = global.independence_wave_rival_bloc_member_country_entries^num }
+	set_temp_variable = { independence_wave_rival_bloc_confidence_total = constant:independence_wave_rival_bloc.minimum }
+	set_temp_variable = { independence_wave_rival_bloc_confidence_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_rival_bloc_confidence_index value = global.independence_wave_rival_bloc_member_confidence_entries^num compare = less_than } }
+		add_to_temp_variable = { independence_wave_rival_bloc_confidence_total = global.independence_wave_rival_bloc_member_confidence_entries^independence_wave_rival_bloc_confidence_index }
+		add_to_temp_variable = { independence_wave_rival_bloc_confidence_index = constant:independence_wave_plan.loop_increment }
+	}
+	if = {
+		limit = { check_variable = { var = global.independence_wave_rival_bloc_member_count value = constant:independence_wave_rival_bloc.minimum compare = greater_than } }
+		divide_temp_variable = { var = independence_wave_rival_bloc_confidence_total value = global.independence_wave_rival_bloc_member_count if_zero = 0 }
+		set_variable = { global.independence_wave_rival_bloc_member_confidence = independence_wave_rival_bloc_confidence_total }
+	}
+	else = { set_variable = { global.independence_wave_rival_bloc_member_confidence = constant:independence_wave_rival_bloc.minimum } }
+	independence_wave_rival_bloc_clamp_values = yes
+}
+
+independence_wave_rival_bloc_remove_member_row = {
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_country_entries index = independence_wave_rival_bloc_row }
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_generation_entries index = independence_wave_rival_bloc_row }
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_contract_generation_entries index = independence_wave_rival_bloc_row }
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_region_entries index = independence_wave_rival_bloc_row }
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_contribution_entries index = independence_wave_rival_bloc_row }
+	remove_from_array = { array = global.independence_wave_rival_bloc_member_confidence_entries index = independence_wave_rival_bloc_row }
+}
+
+# Reverse-prunes dead tags, reused tags with a new origin generation, stale
+# contract rows, and countries that have lost the rival-member flag.
+independence_wave_rival_bloc_reconcile_registry = {
+	independence_wave_rival_bloc_initialize_runtime = yes
+	if = {
+		limit = { independence_wave_rival_bloc_member_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_rival_bloc_row = global.independence_wave_rival_bloc_member_country_entries^num }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_rival_bloc_row value = constant:independence_wave_rival_bloc.minimum compare = greater_than } }
+			subtract_from_temp_variable = { independence_wave_rival_bloc_row = constant:independence_wave_plan.loop_increment }
+			set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_plan.loop_increment }
+			set_temp_variable = { independence_wave_rival_bloc_row_generation = global.independence_wave_rival_bloc_member_generation_entries^independence_wave_rival_bloc_row }
+			set_temp_variable = { independence_wave_rival_bloc_row_contract_generation = global.independence_wave_rival_bloc_member_contract_generation_entries^independence_wave_rival_bloc_row }
+			if = {
+				limit = { NOT = { check_variable = { var = independence_wave_rival_bloc_row_contract_generation value = global.independence_wave_rival_bloc_contract_generation compare = equals } } }
+				set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum }
+			}
+			var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_row = {
+				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+				if = { limit = { exists = yes NOT = { is_independence_wave_active_country = yes } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+				if = { limit = { exists = yes NOT = { has_country_flag = independence_wave_network_member } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+			if = { limit = { exists = yes has_country_flag = independence_wave_client_route_locked NOT = { check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced } } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+				if = { limit = { exists = yes NOT = { has_country_flag = independence_wave_rival_bloc_member } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+				if = { limit = { exists = yes NOT = { check_variable = { var = independence_wave_generation_id value = ROOT.independence_wave_rival_bloc_row_generation compare = equals } } } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_valid = constant:independence_wave_value.minimum } } }
+			}
+			if = { limit = { check_variable = { var = independence_wave_rival_bloc_row_valid value = constant:independence_wave_value.minimum compare = equals } } independence_wave_rival_bloc_remove_member_row = yes }
+		}
+	}
+	else = { independence_wave_rival_bloc_clear_member_arrays = yes }
+	independence_wave_rival_bloc_recalculate_confidence = yes
+	independence_wave_rival_bloc_rebuild_regions = yes
+}
+
+independence_wave_rival_bloc_register_member = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_network_member
+			NOT = { has_country_flag = independence_wave_league_member }
+			NOT = { has_country_flag = independence_wave_league_founder }
+			OR = {
+				NOT = { has_country_flag = independence_wave_client_route_locked }
+				check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced }
+			}
+			NOT = { has_country_flag = independence_wave_rival_bloc_member }
+			has_global_flag = independence_wave_rival_bloc_active
+			check_variable = { var = global.independence_wave_rival_bloc_contract_generation value = constant:independence_wave_rival_bloc.minimum compare = greater_than }
+			independence_wave_rival_bloc_member_arrays_are_aligned = yes
+		}
+		set_temp_variable = { independence_wave_rival_bloc_row = constant:independence_wave_plan.invalid_index }
+		set_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = independence_wave_rival_bloc_row value = constant:independence_wave_plan.invalid_index compare = equals }
+				check_variable = { var = independence_wave_rival_bloc_index value = global.independence_wave_rival_bloc_member_country_entries^num compare = less_than }
+			}
+			var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_index = {
+				if = { limit = { tag = ROOT } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row = independence_wave_rival_bloc_index } } }
+			}
+			add_to_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.loop_increment }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_rival_bloc_row value = constant:independence_wave_plan.invalid_index compare = equals } }
+			set_temp_variable = { independence_wave_rival_bloc_row = global.independence_wave_rival_bloc_member_country_entries^num }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_country_entries value = THIS }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_generation_entries value = independence_wave_generation_id }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_contract_generation_entries value = global.independence_wave_rival_bloc_contract_generation }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_region_entries value = independence_wave_region }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_contribution_entries value = constant:independence_wave_rival_bloc.minimum }
+			add_to_array = { array = global.independence_wave_rival_bloc_member_confidence_entries value = constant:independence_wave_rival_bloc.member_confidence_start }
+			set_country_flag = independence_wave_rival_bloc_member
+		}
+		independence_wave_rival_bloc_recalculate_confidence = yes
+		independence_wave_rival_bloc_rebuild_regions = yes
+		if = { limit = { NOT = { has_event_target = independence_wave_rival_bloc_leader_target } } independence_wave_rival_bloc_select_leader = yes }
+	}
+}
+
+independence_wave_rival_bloc_select_leader = {
+	if = {
+		limit = { has_event_target = independence_wave_rival_bloc_leader_target }
+		event_target:independence_wave_rival_bloc_leader_target = { clr_country_flag = independence_wave_rival_bloc_leader }
+	}
+	clear_global_event_target = independence_wave_rival_bloc_leader_target
+	clear_variable = global.independence_wave_rival_bloc_leader
+	set_temp_variable = { independence_wave_rival_bloc_best_confidence = constant:independence_wave_rival_bloc.minimum }
+	set_temp_variable = { independence_wave_rival_bloc_best_index = constant:independence_wave_plan.invalid_index }
+	set_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_rival_bloc_index value = global.independence_wave_rival_bloc_member_country_entries^num compare = less_than } }
+		set_temp_variable = { independence_wave_rival_bloc_candidate_confidence = global.independence_wave_rival_bloc_member_confidence_entries^independence_wave_rival_bloc_index }
+			if = {
+				limit = {
+				OR = {
+					check_variable = { var = independence_wave_rival_bloc_candidate_confidence value = independence_wave_rival_bloc_best_confidence compare = greater_than }
+					check_variable = { var = independence_wave_rival_bloc_best_index value = constant:independence_wave_plan.invalid_index compare = equals }
+				}
+			}
+			var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_index = { save_event_target_as = independence_wave_rival_bloc_candidate_target }
+			set_temp_variable = { independence_wave_rival_bloc_best_confidence = independence_wave_rival_bloc_candidate_confidence }
+			set_temp_variable = { independence_wave_rival_bloc_best_index = independence_wave_rival_bloc_index }
+		}
+		add_to_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.loop_increment }
+	}
+	if = {
+		limit = { has_event_target = independence_wave_rival_bloc_candidate_target }
+		event_target:independence_wave_rival_bloc_candidate_target = {
+			set_country_flag = independence_wave_rival_bloc_leader
+			save_global_event_target_as = independence_wave_rival_bloc_leader_target
+			set_variable = { global.independence_wave_rival_bloc_leader = THIS }
+		}
+	}
+}
+
+independence_wave_rival_bloc_set_leader = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_member = yes }
+		if = { limit = { has_event_target = independence_wave_rival_bloc_leader_target } event_target:independence_wave_rival_bloc_leader_target = { clr_country_flag = independence_wave_rival_bloc_leader } }
+		clear_global_event_target = independence_wave_rival_bloc_leader_target
+		set_country_flag = independence_wave_rival_bloc_leader
+		set_variable = { global.independence_wave_rival_bloc_leader = THIS }
+		save_global_event_target_as = independence_wave_rival_bloc_leader_target
+	}
+}
+
+independence_wave_rival_bloc_unregister_member = {
+	if = {
+		limit = { has_country_flag = independence_wave_rival_bloc_member }
+		save_event_target_as = independence_wave_rival_bloc_departing_member
+		set_temp_variable = { independence_wave_rival_bloc_index = global.independence_wave_rival_bloc_member_country_entries^num }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_rival_bloc_index value = constant:independence_wave_rival_bloc.minimum compare = greater_than } }
+			subtract_from_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.loop_increment }
+			set_temp_variable = { independence_wave_rival_bloc_row_match = constant:independence_wave_value.minimum }
+			var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_index = {
+				if = { limit = { tag = event_target:independence_wave_rival_bloc_departing_member } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row_match = constant:independence_wave_plan.loop_increment } } }
+			}
+			if = { limit = { check_variable = { var = independence_wave_rival_bloc_row_match value = constant:independence_wave_plan.loop_increment compare = equals } } independence_wave_rival_bloc_remove_member_row = yes }
+		}
+		set_temp_variable = { independence_wave_rival_bloc_was_leader = constant:independence_wave_value.minimum }
+		if = { limit = { has_country_flag = independence_wave_rival_bloc_leader } set_temp_variable = { independence_wave_rival_bloc_was_leader = constant:independence_wave_plan.loop_increment } }
+		clr_country_flag = independence_wave_rival_bloc_member
+		clr_country_flag = independence_wave_rival_bloc_leader
+		clr_country_flag = independence_wave_rival_bloc_host_front
+		clr_country_flag = independence_wave_rival_bloc_patron_pressure
+		clr_country_flag = independence_wave_rival_bloc_invitation_pending
+		clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
+		clear_variable = independence_wave_rival_bloc_inviter
+		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		if = {
+			limit = { check_variable = { var = independence_wave_rival_bloc_was_leader value = constant:independence_wave_plan.loop_increment compare = equals } }
+			if = {
+				limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
+				event_target:independence_wave_rival_bloc_pending_invitation_target = {
+					clr_country_flag = independence_wave_rival_bloc_invitation_pending
+					clear_variable = independence_wave_rival_bloc_inviter
+					clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+				}
+				clr_global_flag = independence_wave_rival_bloc_invitation_open
+				clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+			}
+			clear_global_event_target = independence_wave_rival_bloc_leader_target
+			clear_variable = global.independence_wave_rival_bloc_leader
+			independence_wave_rival_bloc_select_leader = yes
+		}
+		independence_wave_rival_bloc_recalculate_confidence = yes
+		independence_wave_rival_bloc_rebuild_regions = yes
+		if = { limit = { check_variable = { global.independence_wave_rival_bloc_member_count = constant:independence_wave_rival_bloc.minimum } } independence_wave_rival_bloc_dissolve_contract = yes }
+	}
+}
+
+independence_wave_rival_bloc_change_member_record = {
+	if = {
+		limit = { has_country_flag = independence_wave_rival_bloc_member independence_wave_rival_bloc_member_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.first_array_index }
+		set_temp_variable = { independence_wave_rival_bloc_row = constant:independence_wave_plan.invalid_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = independence_wave_rival_bloc_row value = constant:independence_wave_plan.invalid_index compare = equals }
+				check_variable = { var = independence_wave_rival_bloc_index value = global.independence_wave_rival_bloc_member_country_entries^num compare = less_than }
+			}
+			var:global.independence_wave_rival_bloc_member_country_entries^independence_wave_rival_bloc_index = {
+				if = { limit = { tag = ROOT } ROOT = { set_temp_variable = { independence_wave_rival_bloc_row = independence_wave_rival_bloc_index } } }
+			}
+			add_to_temp_variable = { independence_wave_rival_bloc_index = constant:independence_wave_plan.loop_increment }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_rival_bloc_row value = constant:independence_wave_plan.invalid_index compare = greater_than } }
+			add_to_variable = { global.independence_wave_rival_bloc_member_contribution_entries^independence_wave_rival_bloc_row = independence_wave_rival_bloc_contribution_delta }
+			add_to_variable = { global.independence_wave_rival_bloc_member_confidence_entries^independence_wave_rival_bloc_row = independence_wave_rival_bloc_confidence_delta }
+			set_temp_variable = { independence_wave_rival_bloc_record_value = global.independence_wave_rival_bloc_member_contribution_entries^independence_wave_rival_bloc_row }
+			clamp_temp_variable = { var = independence_wave_rival_bloc_record_value min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+			set_variable = { global.independence_wave_rival_bloc_member_contribution_entries^independence_wave_rival_bloc_row = independence_wave_rival_bloc_record_value }
+			set_temp_variable = { independence_wave_rival_bloc_record_value = global.independence_wave_rival_bloc_member_confidence_entries^independence_wave_rival_bloc_row }
+			clamp_temp_variable = { var = independence_wave_rival_bloc_record_value min = constant:independence_wave_rival_bloc.minimum max = constant:independence_wave_rival_bloc.maximum }
+			set_variable = { global.independence_wave_rival_bloc_member_confidence_entries^independence_wave_rival_bloc_row = independence_wave_rival_bloc_record_value }
+			independence_wave_rival_bloc_recalculate_confidence = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Opening, invitation, and paid bloc actions
+# ---------------------------------------------------------------------------
+
+independence_wave_rival_bloc_open_after_expulsion = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_member_discredited
+		}
+		independence_wave_rival_bloc_initialize_runtime = yes
+		if = {
+			limit = { NOT = { has_global_flag = independence_wave_rival_bloc_active } }
+			independence_wave_rival_bloc_clear_member_arrays = yes
+			add_to_variable = { global.independence_wave_rival_bloc_next_contract_generation = constant:independence_wave_plan.loop_increment }
+			set_variable = { global.independence_wave_rival_bloc_contract_generation = global.independence_wave_rival_bloc_next_contract_generation }
+			set_variable = { global.independence_wave_rival_bloc_cohesion = constant:independence_wave_rival_bloc.cohesion_start }
+			set_variable = { global.independence_wave_rival_bloc_common_cause = constant:independence_wave_rival_bloc.common_cause_start }
+			set_variable = { global.independence_wave_rival_bloc_patron_capture = constant:independence_wave_rival_bloc.patron_capture_start }
+			set_variable = { global.independence_wave_rival_bloc_shared_reserve = constant:independence_wave_rival_bloc.shared_reserve_start }
+			set_variable = { global.independence_wave_rival_bloc_member_confidence = constant:independence_wave_rival_bloc.member_confidence_start }
+			set_variable = { global.independence_wave_rival_bloc_host_pressure = constant:independence_wave_rival_bloc.host_pressure_start }
+			set_variable = { global.independence_wave_rival_bloc_contract_open_date = global.date }
+			if = {
+				limit = { check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist compare = greater_than_or_equals } }
+				set_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.counterleague }
+			}
+			else_if = {
+				limit = { check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.armed_liberation compare = equals } }
+				set_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.counterleague }
+			}
+				else = { set_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.grievance_caucus } }
+			if = { limit = { has_independence_wave_patron_control = yes } set_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced } }
+			set_global_flag = independence_wave_rival_bloc_active
+			set_global_flag = independence_wave_rival_bloc_league_rivalry_active
+			set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.main_league_cohesion_loss }
+			set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.main_league_common_cause_loss }
+			set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.main_league_confidence_loss }
+			set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+			set_global_flag = independence_wave_rival_bloc_activation_pending
+			# This is a main-league transaction, not a rival value transaction.
+			set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_rival_bloc.main_league_cohesion_loss }
+			set_temp_variable = { independence_wave_league_common_cause_delta = constant:independence_wave_rival_bloc.main_league_common_cause_loss }
+			set_temp_variable = { independence_wave_league_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_league_shared_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_rival_bloc.main_league_confidence_loss }
+			independence_wave_change_league_values = yes
+			independence_wave_enter_league_crisis = yes
+			independence_wave_split_league = yes
+			clr_global_flag = independence_wave_rival_bloc_activation_pending
+		}
+		independence_wave_rival_bloc_register_member = yes
+		if = { limit = { NOT = { has_event_target = independence_wave_rival_bloc_leader_target } } independence_wave_rival_bloc_set_leader = yes }
+		if = { limit = { has_independence_wave_living_former_host = yes } set_country_flag = independence_wave_rival_bloc_host_front }
+		if = { limit = { has_independence_wave_patron_control = yes } set_country_flag = independence_wave_rival_bloc_patron_pressure }
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_rival_bloc.host_pressure_gain }
+			independence_wave_rival_bloc_change_values = yes
+		}
+		if = {
+			limit = { has_independence_wave_patron_control = yes }
+			set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_rival_bloc.patron_capture_gain }
+			set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+			independence_wave_rival_bloc_change_values = yes
+		}
+		set_variable = { global.independence_wave_rival_bloc_last_action_date = global.date }
+	}
+}
+
+# Leader scope. The decision layer stores the target in a normal variable for
+# the timer duration; the target receives an explicit acceptance action.
+independence_wave_rival_bloc_issue_invitation = {
+	if = {
+		limit = {
+			is_independence_wave_rival_bloc_authority = yes
+			has_variable = independence_wave_rival_bloc_active_target_country
+			var:independence_wave_rival_bloc_active_target_country = { is_valid_independence_wave_rival_bloc_invitation_target = yes }
+		}
+		var:independence_wave_rival_bloc_active_target_country = {
+			set_country_flag = independence_wave_rival_bloc_invitation_pending
+			set_variable = { independence_wave_rival_bloc_inviter = ROOT }
+			set_variable = { independence_wave_rival_bloc_invitation_contract_generation = ROOT.global.independence_wave_rival_bloc_contract_generation }
+			save_global_event_target_as = independence_wave_rival_bloc_pending_invitation_target
+		}
+		set_global_flag = independence_wave_rival_bloc_invitation_open
+		clear_variable = independence_wave_rival_bloc_active_target_country
+		set_variable = { global.independence_wave_rival_bloc_last_action_date = global.date }
+	}
+}
+
+independence_wave_rival_bloc_accept_invitation = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		clear_variable = independence_wave_rival_bloc_inviter
+		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		clr_country_flag = independence_wave_rival_bloc_invitation_pending
+		clr_global_flag = independence_wave_rival_bloc_invitation_open
+		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		independence_wave_rival_bloc_register_member = yes
+		if = { limit = { has_independence_wave_living_former_host = yes } set_country_flag = independence_wave_rival_bloc_host_front }
+		if = { limit = { has_independence_wave_patron_control = yes } set_country_flag = independence_wave_rival_bloc_patron_pressure }
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.invite_cohesion_gain }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.invite_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.invite_confidence_gain }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+		set_temp_variable = { independence_wave_rival_bloc_contribution_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.invite_confidence_gain }
+		independence_wave_rival_bloc_change_member_record = yes
+		set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_rival_bloc.main_league_member_join_cohesion_loss }
+		set_temp_variable = { independence_wave_league_common_cause_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_league_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_league_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_rival_bloc.main_league_member_join_confidence_loss }
+		independence_wave_change_league_values = yes
+	}
+}
+
+independence_wave_rival_bloc_decline_invitation = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		clear_variable = independence_wave_rival_bloc_inviter
+		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		clr_country_flag = independence_wave_rival_bloc_invitation_pending
+		clr_global_flag = independence_wave_rival_bloc_invitation_open
+		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.decline_confidence_loss }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+	}
+}
+
+independence_wave_rival_bloc_commit_reserve = {
+	if = {
+		limit = {
+			is_independence_wave_rival_bloc_member = yes
+			OR = {
+				check_variable = { var = global.independence_wave_rival_bloc_shared_reserve value = constant:independence_wave_rival_bloc.reserve_commit_gate compare = less_than }
+				check_variable = { var = global.independence_wave_rival_bloc_common_cause value = constant:independence_wave_rival_bloc.reserve_commit_gate compare = less_than }
+			}
+		}
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.reserve_cohesion_gain }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.reserve_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_rival_bloc.reserve_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.reserve_confidence_gain }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+		set_temp_variable = { independence_wave_rival_bloc_contribution_delta = constant:independence_wave_rival_bloc.reserve_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.reserve_confidence_gain }
+		independence_wave_rival_bloc_change_member_record = yes
+		set_variable = { global.independence_wave_rival_bloc_last_action_date = global.date }
+	}
+}
+
+independence_wave_rival_bloc_fail_reserve = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_member = yes }
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+	}
+}
+
+independence_wave_rival_bloc_fail_leadership = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_member = yes }
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.leadership_cohesion_loss }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.reserve_failure_loss }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+	}
+}
+
+independence_wave_rival_bloc_balance_patron = {
+	if = {
+		limit = {
+			is_independence_wave_rival_bloc_patron_pressure_member = yes
+			OR = {
+				check_variable = { var = global.independence_wave_rival_bloc_patron_capture value = constant:independence_wave_rival_bloc.patron_balance_gate compare = greater_than_or_equals }
+				check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals }
+			}
+		}
+		clr_country_flag = independence_wave_rival_bloc_patron_pressure
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.leadership_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_rival_bloc.patron_capture_reduction }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.leadership_confidence_gain }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+		set_temp_variable = { independence_wave_rival_bloc_contribution_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.leadership_confidence_gain }
+		independence_wave_rival_bloc_change_member_record = yes
+		independence_wave_refresh_strongest_patron = yes
+	}
+}
+
+independence_wave_rival_bloc_coordinate_host = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_host_front_member = yes }
+		set_temp_variable = { independence_wave_host_claim_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
+		set_temp_variable = { independence_wave_host_obligations_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_property_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_border_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_change_host_relation = yes
+		set_country_flag = independence_wave_rival_bloc_host_front
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.reserve_cohesion_gain }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.leadership_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.reserve_confidence_gain }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_rival_bloc.host_pressure_reduction }
+		independence_wave_rival_bloc_change_values = yes
+		set_temp_variable = { independence_wave_rival_bloc_contribution_delta = constant:independence_wave_rival_bloc.reserve_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.reserve_confidence_gain }
+		independence_wave_rival_bloc_change_member_record = yes
+	}
+}
+
+independence_wave_rival_bloc_challenge_leadership = {
+	if = {
+		limit = { is_valid_independence_wave_rival_bloc_leadership_candidate = yes }
+		independence_wave_rival_bloc_set_leader = yes
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.leadership_cohesion_loss }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_rival_bloc.leadership_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.leadership_confidence_gain }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+		set_temp_variable = { independence_wave_rival_bloc_contribution_delta = constant:independence_wave_rival_bloc.leadership_common_cause_gain }
+		set_temp_variable = { independence_wave_rival_bloc_confidence_delta = constant:independence_wave_rival_bloc.leadership_confidence_gain }
+		independence_wave_rival_bloc_change_member_record = yes
+	}
+	else = { independence_wave_rival_bloc_fail_leadership = yes }
+}
+
+independence_wave_rival_bloc_leave = {
+	if = {
+		limit = { is_independence_wave_rival_bloc_member = yes }
+		set_temp_variable = { independence_wave_rival_bloc_cohesion_delta = constant:independence_wave_rival_bloc.leave_cohesion_loss }
+		set_temp_variable = { independence_wave_rival_bloc_common_cause_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_patron_capture_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_shared_reserve_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_rival_bloc_member_confidence_delta = constant:independence_wave_rival_bloc.leave_cohesion_loss }
+		set_temp_variable = { independence_wave_rival_bloc_host_pressure_delta = constant:independence_wave_value.minimum }
+		independence_wave_rival_bloc_change_values = yes
+		independence_wave_rival_bloc_unregister_member = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Contract cleanup and main-league interaction
+# ---------------------------------------------------------------------------
+
+independence_wave_rival_bloc_dissolve_contract = {
+	if = {
+		limit = { has_global_flag = independence_wave_rival_bloc_active }
+		if = {
+			limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
+			event_target:independence_wave_rival_bloc_pending_invitation_target = {
+				clr_country_flag = independence_wave_rival_bloc_invitation_pending
+				clear_variable = independence_wave_rival_bloc_inviter
+				clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+			}
+		}
+		clr_global_flag = independence_wave_rival_bloc_invitation_open
+		clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		for_each_scope_loop = {
+			array = global.independence_wave_rival_bloc_member_country_entries
+			clr_country_flag = independence_wave_rival_bloc_member
+			clr_country_flag = independence_wave_rival_bloc_leader
+			clr_country_flag = independence_wave_rival_bloc_host_front
+			clr_country_flag = independence_wave_rival_bloc_patron_pressure
+			clr_country_flag = independence_wave_rival_bloc_invitation_pending
+			clear_variable = independence_wave_rival_bloc_inviter
+			clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+		}
+		independence_wave_rival_bloc_clear_member_arrays = yes
+		clr_global_flag = independence_wave_rival_bloc_active
+		clr_global_flag = independence_wave_rival_bloc_league_rivalry_active
+		clr_global_flag = independence_wave_rival_bloc_activation_pending
+		clear_variable = global.independence_wave_rival_bloc_contract_generation
+		clear_variable = global.independence_wave_rival_bloc_route
+		clear_variable = global.independence_wave_rival_bloc_cohesion
+		clear_variable = global.independence_wave_rival_bloc_common_cause
+		clear_variable = global.independence_wave_rival_bloc_patron_capture
+		clear_variable = global.independence_wave_rival_bloc_shared_reserve
+		clear_variable = global.independence_wave_rival_bloc_member_confidence
+		clear_variable = global.independence_wave_rival_bloc_host_pressure
+		clear_variable = global.independence_wave_rival_bloc_contract_open_date
+		clear_variable = global.independence_wave_rival_bloc_last_action_date
+		clear_variable = global.independence_wave_rival_bloc_leader
+		clear_global_event_target = independence_wave_rival_bloc_leader_target
+		if = {
+			limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.rival_leagues } }
+			if = {
+				limit = { check_variable = { global.independence_wave_league_member_count value = constant:independence_wave_rival_bloc.minimum compare = greater_than } }
+				independence_wave_clear_league_phase_flags = yes
+				set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+				set_global_flag = independence_wave_formal_league_active
+			}
+			else = {
+				independence_wave_clear_league_phase_flags = yes
+				set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
+			}
+		}
+	}
+}
+
+# Called from origin cleanup even when the origin is not the last bloc member.
+independence_wave_rival_bloc_cleanup_for_origin = {
+	if = { limit = { has_country_flag = independence_wave_rival_bloc_member } independence_wave_rival_bloc_leave = yes }
+	else = {
+		if = {
+			limit = { has_event_target = independence_wave_rival_bloc_pending_invitation_target }
+			event_target:independence_wave_rival_bloc_pending_invitation_target = {
+				clr_country_flag = independence_wave_rival_bloc_invitation_pending
+				clear_variable = independence_wave_rival_bloc_inviter
+				clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+			}
+			clr_global_flag = independence_wave_rival_bloc_invitation_open
+			clear_global_event_target = independence_wave_rival_bloc_pending_invitation_target
+		}
+		clr_country_flag = independence_wave_rival_bloc_invitation_pending
+		clear_variable = independence_wave_rival_bloc_inviter
+		clear_variable = independence_wave_rival_bloc_invitation_contract_generation
+	}
+}
+
+# The main league calls this after moving the phase to formal_league.  A copy
+# array prevents member-row mutation from skipping the next rival member.
+independence_wave_rival_bloc_reunify_into_league = {
+	if = {
+		limit = { has_global_flag = independence_wave_rival_bloc_active }
+		clear_array = global.independence_wave_rival_bloc_reunification_entries
+		for_each_scope_loop = { array = global.independence_wave_rival_bloc_member_country_entries add_to_array = { array = global.independence_wave_rival_bloc_reunification_entries value = THIS } }
+		for_each_scope_loop = {
+			array = global.independence_wave_rival_bloc_reunification_entries
+			if = {
+				limit = { is_independence_wave_active_country = yes has_country_flag = independence_wave_rival_bloc_member NOT = { has_country_flag = independence_wave_client_route_locked } }
+				independence_wave_rival_bloc_unregister_member = yes
+				independence_wave_register_league_member = yes
+			}
+		}
+		clear_array = global.independence_wave_rival_bloc_reunification_entries
+		independence_wave_rival_bloc_dissolve_contract = yes
+	}
+}

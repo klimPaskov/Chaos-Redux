@@ -1,0 +1,172 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RIVAL BLOC TRIGGERS
+# ============================================================================
+# Read-only contract, membership, target, cost, and AI gates for the rival
+# bloc created by a factual league expulsion.  No trigger performs a scan or
+# mutates state; all rows are checked against the current contract generation.
+# ============================================================================
+
+independence_wave_rival_bloc_member_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_rival_bloc_member_generation_entries^num value = global.independence_wave_rival_bloc_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_rival_bloc_member_contract_generation_entries^num value = global.independence_wave_rival_bloc_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_rival_bloc_member_region_entries^num value = global.independence_wave_rival_bloc_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_rival_bloc_member_contribution_entries^num value = global.independence_wave_rival_bloc_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_rival_bloc_member_confidence_entries^num value = global.independence_wave_rival_bloc_member_country_entries^num compare = equals }
+}
+
+is_independence_wave_rival_bloc_active = {
+	has_global_flag = independence_wave_rival_bloc_active
+	check_variable = { var = global.independence_wave_rival_bloc_contract_generation value = constant:independence_wave_value.minimum compare = greater_than }
+	check_variable = { var = global.independence_wave_rival_bloc_member_count value = constant:independence_wave_rival_bloc.minimum_members compare = greater_than_or_equals }
+	independence_wave_rival_bloc_member_arrays_are_aligned = yes
+}
+
+is_independence_wave_rival_bloc_member = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_rival_bloc_member
+	is_independence_wave_rival_bloc_active = yes
+	is_in_array = { array = global.independence_wave_rival_bloc_member_country_entries value = THIS }
+}
+
+is_independence_wave_rival_bloc_leader = {
+	is_independence_wave_rival_bloc_member = yes
+	has_country_flag = independence_wave_rival_bloc_leader
+	has_event_target = independence_wave_rival_bloc_leader_target
+	event_target:independence_wave_rival_bloc_leader_target = {
+		exists = yes
+		tag = ROOT
+	}
+}
+
+is_independence_wave_rival_bloc_authority = {
+	is_independence_wave_rival_bloc_leader = yes
+	NOT = { has_country_flag = independence_wave_rival_bloc_invitation_pending }
+	NOT = { has_country_flag = independence_wave_rival_bloc_invitation_in_progress }
+	NOT = { has_global_flag = independence_wave_rival_bloc_invitation_open }
+	NOT = { has_active_mission = independence_wave_rival_bloc_challenge_leadership }
+}
+
+is_independence_wave_rival_bloc_pending_invitation = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_rival_bloc_invitation_pending
+	has_variable = independence_wave_rival_bloc_inviter
+	var:independence_wave_rival_bloc_inviter = {
+		exists = yes
+		is_independence_wave_rival_bloc_leader = yes
+	}
+	has_variable = independence_wave_rival_bloc_invitation_contract_generation
+	check_variable = {
+		var = independence_wave_rival_bloc_invitation_contract_generation
+		value = global.independence_wave_rival_bloc_contract_generation
+		compare = equals
+	}
+}
+
+# Country scope. Called as FROM by a targeted invitation decision. ROOT is the
+# current rival-bloc leader, so a stale target cannot be redirected by a tag
+# reuse or by joining the main league while the invitation is pending.
+is_valid_independence_wave_rival_bloc_invitation_target = {
+	is_independence_wave_active_country = yes
+	NOT = { tag = ROOT }
+	has_country_flag = independence_wave_network_member
+	NOT = { has_country_flag = independence_wave_league_member }
+	NOT = { has_country_flag = independence_wave_league_founder }
+	NOT = { has_country_flag = independence_wave_rival_bloc_member }
+	NOT = { has_country_flag = independence_wave_rival_bloc_invitation_pending }
+	OR = {
+		NOT = { has_country_flag = independence_wave_client_route_locked }
+		check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced }
+	}
+	check_variable = { var = independence_wave_network_standing value = constant:independence_wave_rival_bloc.invitation_standing compare = greater_than_or_equals }
+	NOT = { has_war = yes }
+	ROOT = {
+		is_independence_wave_rival_bloc_authority = yes
+		NOT = { has_war_with = PREV }
+		OR = {
+			check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.grievance_caucus }
+			check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.counterleague }
+			AND = {
+				check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced }
+			}
+		}
+	}
+}
+
+is_valid_independence_wave_rival_bloc_leadership_candidate = {
+	is_independence_wave_rival_bloc_member = yes
+	NOT = { has_country_flag = independence_wave_rival_bloc_leader }
+	check_variable = { var = global.independence_wave_rival_bloc_member_confidence value = constant:independence_wave_rival_bloc.leadership_confidence compare = greater_than_or_equals }
+	NOT = { has_independence_wave_severe_instability = yes }
+}
+
+is_independence_wave_rival_bloc_host_front_member = {
+	is_independence_wave_rival_bloc_member = yes
+	has_country_flag = independence_wave_rival_bloc_host_front
+	has_independence_wave_living_former_host = yes
+}
+
+is_independence_wave_rival_bloc_patron_pressure_member = {
+	is_independence_wave_rival_bloc_member = yes
+	has_country_flag = independence_wave_rival_bloc_patron_pressure
+}
+
+can_pay_independence_wave_rival_bloc_invitation_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.invitation_command_power
+	has_equipment = { infantry_equipment > constant:independence_wave_rival_bloc_cost.invitation_infantry }
+	has_equipment = { support_equipment > constant:independence_wave_rival_bloc_cost.invitation_support }
+	has_equipment = { convoy > constant:independence_wave_rival_bloc_cost.invitation_convoys }
+}
+
+can_pay_independence_wave_rival_bloc_accept_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.accept_command_power
+	has_equipment = { convoy > constant:independence_wave_rival_bloc_cost.accept_convoys }
+}
+
+can_pay_independence_wave_rival_bloc_reserve_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.reserve_command_power
+	has_equipment = { infantry_equipment > constant:independence_wave_rival_bloc_cost.reserve_infantry }
+	has_equipment = { train_equipment > constant:independence_wave_rival_bloc_cost.reserve_trains }
+	has_fuel > constant:independence_wave_rival_bloc_cost.reserve_fuel
+}
+
+can_pay_independence_wave_rival_bloc_leadership_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.leadership_command_power
+	army_experience > constant:independence_wave_rival_bloc_cost.leadership_army_experience
+	has_equipment = { infantry_equipment > constant:independence_wave_rival_bloc_cost.leadership_infantry }
+}
+
+can_pay_independence_wave_rival_bloc_patron_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.patron_command_power
+	has_equipment = { convoy > constant:independence_wave_rival_bloc_cost.patron_convoys }
+	has_fuel > constant:independence_wave_rival_bloc_cost.patron_fuel
+}
+
+can_pay_independence_wave_rival_bloc_host_cost = {
+	command_power > constant:independence_wave_rival_bloc_cost.host_command_power
+	has_equipment = { infantry_equipment > constant:independence_wave_rival_bloc_cost.host_infantry }
+	has_fuel > constant:independence_wave_rival_bloc_cost.host_fuel
+}
+
+can_independence_wave_rival_bloc_commit_reserve = {
+	is_independence_wave_rival_bloc_member = yes
+	check_variable = { var = global.independence_wave_rival_bloc_cohesion value = constant:independence_wave_rival_bloc.reserve_commit_gate compare = less_than }
+	OR = {
+		check_variable = { var = global.independence_wave_rival_bloc_shared_reserve value = constant:independence_wave_rival_bloc.reserve_commit_gate compare = less_than }
+		check_variable = { var = global.independence_wave_rival_bloc_common_cause value = constant:independence_wave_rival_bloc.reserve_commit_gate compare = less_than }
+	}
+	can_pay_independence_wave_rival_bloc_reserve_cost = yes
+}
+
+can_independence_wave_rival_bloc_balance_patron = {
+	is_independence_wave_rival_bloc_patron_pressure_member = yes
+	OR = {
+		check_variable = { var = global.independence_wave_rival_bloc_patron_capture value = constant:independence_wave_rival_bloc.patron_balance_gate compare = greater_than_or_equals }
+		check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals }
+	}
+	can_pay_independence_wave_rival_bloc_patron_cost = yes
+}
+
+can_independence_wave_rival_bloc_coordinate_host = {
+	is_independence_wave_rival_bloc_host_front_member = yes
+	can_pay_independence_wave_rival_bloc_host_cost = yes
+}

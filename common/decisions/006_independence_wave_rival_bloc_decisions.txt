@@ -1,0 +1,209 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RIVAL BLOC DECISIONS
+# ============================================================================
+# The category exposes the rival contract's actual state and paid actions.
+# Invitations are targeted and generation-checked, acceptance is explicit, and
+# reserve, host, patron, leadership, and departure actions all have timers or
+# consequences rather than passive value drift.
+# ============================================================================
+
+independence_wave_rival_bloc_category = {
+	# A leader commits a real convoy and arms package before an invitation can
+	# sit with the target. The target must still accept within the timer window.
+	independence_wave_rival_bloc_invite_member = {
+		name = independence_wave_rival_bloc_invite_member
+		desc = independence_wave_rival_bloc_invite_member_desc
+		icon = GFX_decision_independence_wave_network_aid
+		target_array = global.independence_wave_network_member_country_entries
+		target_root_trigger = { is_independence_wave_rival_bloc_authority = yes }
+		target_trigger = { FROM = { is_valid_independence_wave_rival_bloc_invitation_target = yes } }
+		visible = { is_independence_wave_rival_bloc_authority = yes }
+		available = { can_pay_independence_wave_rival_bloc_invitation_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_invitation_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_invitation
+		days_remove = constant:independence_wave_rival_bloc_duration.invitation
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.invitation_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_rival_bloc_cost.invitation_infantry_spend }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_rival_bloc_cost.invitation_support_spend }
+			add_equipment_to_stockpile = { type = convoy amount = constant:independence_wave_rival_bloc_cost.invitation_convoys_spend }
+			set_variable = { independence_wave_rival_bloc_active_target_country = FROM }
+			set_country_flag = independence_wave_rival_bloc_invitation_in_progress
+		}
+		remove_effect = {
+			independence_wave_rival_bloc_issue_invitation = yes
+			clear_variable = independence_wave_rival_bloc_active_target_country
+			clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_rival_bloc_authority = yes }
+				FROM = { NOT = { is_valid_independence_wave_rival_bloc_invitation_target = yes } }
+			}
+		}
+		cancel_effect = {
+			clear_variable = independence_wave_rival_bloc_active_target_country
+			clr_country_flag = independence_wave_rival_bloc_invitation_in_progress
+		}
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.standard
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_country_flag = independence_wave_rival_bloc_host_front }
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.patron_pressure_factor has_country_flag = independence_wave_rival_bloc_patron_pressure }
+		}
+	}
+
+	independence_wave_rival_bloc_accept_membership = {
+		name = independence_wave_rival_bloc_accept_membership
+		desc = independence_wave_rival_bloc_accept_membership_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		available = { can_pay_independence_wave_rival_bloc_accept_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_accept_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_accept
+		days_remove = constant:independence_wave_rival_bloc_duration.acceptance
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.accept_command_power_spend
+			add_equipment_to_stockpile = { type = convoy amount = constant:independence_wave_rival_bloc_cost.accept_convoys_spend }
+		}
+		remove_effect = { independence_wave_rival_bloc_accept_invitation = yes }
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_pending_invitation = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.high
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_rival_bloc_decline_membership = {
+		name = independence_wave_rival_bloc_decline_membership
+		desc = independence_wave_rival_bloc_decline_membership_desc
+		icon = GFX_decision_independence_wave_network_aid
+		visible = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		available = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		complete_effect = { independence_wave_rival_bloc_decline_invitation = yes }
+		ai_will_do = { base = constant:independence_wave_rival_bloc_ai.low }
+	}
+
+	independence_wave_rival_bloc_commit_shared_reserve = {
+		name = independence_wave_rival_bloc_commit_shared_reserve
+		desc = independence_wave_rival_bloc_commit_shared_reserve_desc
+		icon = GFX_decision_independence_wave_network_aid
+		activation = {
+			can_independence_wave_rival_bloc_commit_reserve = yes
+			NOT = { has_active_mission = independence_wave_rival_bloc_commit_shared_reserve }
+		}
+		selectable_mission = yes
+		visible = { is_independence_wave_rival_bloc_member = yes }
+		available = { can_independence_wave_rival_bloc_commit_reserve = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_reserve_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_reserve
+		days_mission_timeout = constant:independence_wave_rival_bloc_duration.reserve_commitment
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.reserve_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_rival_bloc_cost.reserve_infantry_spend }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_rival_bloc_cost.reserve_trains_spend }
+			add_fuel = constant:independence_wave_rival_bloc_cost.reserve_fuel_spend
+		}
+		timeout_effect = { independence_wave_rival_bloc_commit_reserve = yes }
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_member = yes } }
+		cancel_effect = { independence_wave_rival_bloc_fail_leadership = yes }
+		is_good = yes
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.standard
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_country_flag = independence_wave_rival_bloc_host_front }
+		}
+	}
+
+	independence_wave_rival_bloc_coordinate_host_front = {
+		name = independence_wave_rival_bloc_coordinate_host_front
+		desc = independence_wave_rival_bloc_coordinate_host_front_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		activation = {
+			can_independence_wave_rival_bloc_coordinate_host = yes
+		}
+		visible = { is_independence_wave_rival_bloc_host_front_member = yes }
+		available = { can_independence_wave_rival_bloc_coordinate_host = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_host_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_host
+		days_remove = constant:independence_wave_rival_bloc_duration.host_coordination
+		days_re_enable = constant:independence_wave_decision_cooldown.standard
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.host_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_rival_bloc_cost.host_infantry_spend }
+			add_fuel = constant:independence_wave_rival_bloc_cost.host_fuel_spend
+		}
+		remove_effect = { independence_wave_rival_bloc_coordinate_host = yes }
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_host_front_member = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.high
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_rival_bloc_balance_patron = {
+		name = independence_wave_rival_bloc_balance_patron
+		desc = independence_wave_rival_bloc_balance_patron_desc
+		icon = GFX_decision_independence_wave_network_aid
+		activation = {
+			can_independence_wave_rival_bloc_balance_patron = yes
+		}
+		visible = { is_independence_wave_rival_bloc_patron_pressure_member = yes }
+		available = { can_independence_wave_rival_bloc_balance_patron = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_patron_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_patron
+		days_remove = constant:independence_wave_rival_bloc_duration.patron_balancing
+		days_re_enable = constant:independence_wave_decision_cooldown.standard
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.patron_command_power_spend
+			add_equipment_to_stockpile = { type = convoy amount = constant:independence_wave_rival_bloc_cost.patron_convoys_spend }
+			add_fuel = constant:independence_wave_rival_bloc_cost.patron_fuel_spend
+		}
+		remove_effect = { independence_wave_rival_bloc_balance_patron = yes }
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_patron_pressure_member = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.high
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.patron_pressure_factor has_independence_wave_patron_control = yes }
+		}
+	}
+
+	independence_wave_rival_bloc_challenge_leadership = {
+		name = independence_wave_rival_bloc_challenge_leadership
+		desc = independence_wave_rival_bloc_challenge_leadership_desc
+		icon = GFX_decision_independence_wave_league_votes
+		activation = {
+			is_valid_independence_wave_rival_bloc_leadership_candidate = yes
+			NOT = { has_active_mission = independence_wave_rival_bloc_challenge_leadership }
+		}
+		selectable_mission = yes
+		visible = { is_independence_wave_rival_bloc_member = yes }
+		available = { can_pay_independence_wave_rival_bloc_leadership_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_rival_bloc_leadership_cost = yes }
+		custom_cost_text = independence_wave_rival_bloc_cost_leadership
+		days_mission_timeout = constant:independence_wave_rival_bloc_duration.leadership_challenge
+		complete_effect = {
+			add_command_power = constant:independence_wave_rival_bloc_cost.leadership_command_power_spend
+			army_experience = constant:independence_wave_rival_bloc_cost.leadership_army_experience_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_rival_bloc_cost.leadership_infantry_spend }
+		}
+		timeout_effect = { independence_wave_rival_bloc_challenge_leadership = yes }
+		cancel_trigger = { NOT = { is_valid_independence_wave_rival_bloc_leadership_candidate = yes } }
+		cancel_effect = { independence_wave_rival_bloc_fail_reserve = yes }
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.low
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.leadership_factor check_variable = { var = global.independence_wave_rival_bloc_cohesion value = constant:independence_wave_rival_bloc.fracture_cohesion compare = less_than } }
+		}
+	}
+
+	independence_wave_rival_bloc_leave_contract = {
+		name = independence_wave_rival_bloc_leave_contract
+		desc = independence_wave_rival_bloc_leave_contract_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_rival_bloc_member = yes }
+		available = { is_independence_wave_rival_bloc_member = yes }
+		days_re_enable = constant:independence_wave_decision_cooldown.standard
+		complete_effect = { independence_wave_rival_bloc_leave = yes }
+		ai_will_do = {
+			base = constant:independence_wave_rival_bloc_ai.low
+			modifier = { factor = constant:independence_wave_rival_bloc_ai.high check_variable = { var = global.independence_wave_rival_bloc_patron_capture value = constant:independence_wave_rival_bloc.patron_balance_gate compare = greater_than_or_equals } }
+		}
+	}
+}
