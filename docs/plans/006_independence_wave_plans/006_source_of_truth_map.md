@@ -222,20 +222,23 @@ described as absent:
 
 The authoritative current static asset ledger is
 `../../assets/006_independence_wave/manifest.md`. It records final static focus,
-idea, decision, mission, achievement, portrait, commander-miniature, report, and formable
-packages. It also records these open boundaries:
+idea, decision, mission, achievement, full leader and commander portrait,
+report, and formable packages. It also records these open boundaries:
 
-- Sixteen Event 006 achievement definitions and their English localisation are
-  present, but the parent-wide achievement and completion audits remain
-  outstanding.
+- The parent-wide achievement definition, proof, localisation, visibility, and
+  icon audit is complete in
+  `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`.
+  All sixteen definitions and all forty-eight runtime icon states are present.
   The bounded IW-043/IW-058 static package contains the final normal, grey, and
   not-eligible `chaosx_006_assyria_survives` triplet. The two signature
   achievements remain hidden by their route and survival visibility rules, and
   their exact proof writers and formable adapter attestations are operational
   for the matching CHU and ASY generations. The vanilla CHU/ASY shortcut guards
   passed their parent re-audit. Radical Bloc
-  currently has only its package-1 qualification record; no achievement is
-  awarded.
+  currently has no admitted route that can complete its full
+  containment-survival proof. The league expulsion transaction remains an
+  accepted implementation gap, so its arbitration-term disqualifier still has
+  no writer.
 
 The current portrait authority is
 `../../assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/manifest.md`,

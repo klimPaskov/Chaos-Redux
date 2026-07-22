@@ -27,13 +27,13 @@ No daily, weekly, or monthly on-action is used. Wave initialization iterates onl
 | Four Regions, One Charter | Ten members, four regions, 70 cohesion for two continuous years; formal/durable/reformed phase only; radical and scenario-preformed membership excluded | Wired |
 | The Smallest Capital Saved | DM-44 rescue target remains active, independent, and uncapitulated for one year; voluntary reunion invalidates the rescuer's current proof | Wired |
 | A Union Beyond Proclamation | Registered formable transaction committed; first-stage and every required initial integration objective completed | Wired for admitted formable families |
-| Bolgar's Modern Heirs | Exact `CHU` / IW-043 Event 6 origin; restoration or federal route; states 249 and 256; Soviet Collapse origin excluded | Regional readiness shell exists, but exact package admission and route-specific proof remain deliberately fail-closed |
-| The Council Between Two Rivers | Exact `ASY` / IW-058 Event 6 origin; recognition, population protection, Mesopotamian settlement, host-conflict survival, and state 676; client and Soviet Collapse origins excluded | Regional readiness shell exists, but exact package admission, route-specific proof, and the achievement icon triplet remain incomplete and fail-closed |
+| Bolgar's Modern Heirs | Exact `CHU` / IW-043 Event 6 origin; restoration or federal route; states 249 and 256; Soviet Collapse origin excluded | Definition, route-specific proof, and writers are wired. The achievement remains unreachable while the package portrait admission gate is closed |
+| The Council Between Two Rivers | Exact `ASY` / IW-058 Event 6 origin; recognition, population protection, Mesopotamian settlement, host-conflict survival, and state 676; client and Soviet Collapse origins excluded | Definition, route-specific proof, writers, and icon triplet are wired. The achievement remains unreachable while the package portrait admission gate is closed |
 | Institutions Before Empire | One-state opening becomes a major before a formable, fields the professional army, and leads a successful league goal | Wired |
 | The Open-Border Reckoning | Radical route triggers the radical dangerous milestone, then receives an external containment attack and survives one year; scenario-forced qualification excluded | Wired |
 | The Long Roll Call | Low-intensity, non-Common-Congress `SCN-008`; after five years at least 85 percent of that plan's released countries remain active and independent | Wired |
 | Three Patrons, No Master | Major aid history from three distinct patrons; no dependency history or client route; all concessions bought out | Wired |
-| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war or DM-51 coercion invalidates that term | Wired; no separate expulsion action currently exists |
+| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war or DM-51 coercion invalidates that term | Arbitration, war, and coercion proof are wired. The accepted expulsion disqualifier has no writer because the league expulsion transaction is not implemented |
 | One Capital, Ten Years | Former host left with one state; settlements with all ledgered breakaways; never a subject or reconqueror; ten peaceful years, 60 percent stability, two civilian factories, and level-two capital infrastructure | Wired |
 
 ## Historical transactions
@@ -70,13 +70,7 @@ Achievement art uses the standard HOI4 filename convention and does not require 
 - `gfx/achievements/<achievement_id>_grey.dds`;
 - `gfx/achievements/<achievement_id>_not_eligible.dds`.
 
-Fifteen achievements have all three 64×64 runtime DDS files and matching source/processed PNG records under `docs/assets/006_independence_wave/`. The sensitive Assyria achievement-art package remains incomplete and still requires:
-
-- `gfx/achievements/chaosx_006_assyria_survives.dds`;
-- `gfx/achievements/chaosx_006_assyria_survives_grey.dds`;
-- `gfx/achievements/chaosx_006_assyria_survives_not_eligible.dds`.
-
-Those files must not be improvised before the accepted Assyrian symbol research and package distinction are promoted into runtime content.
+All sixteen achievements have all three 64 by 64 runtime DDS files and matching source and processed PNG records under `docs/assets/006_independence_wave/`. The Assyria triplet is supplied by `iw043_iw058_static_icons_2026_07_18`, is installed in `gfx/achievements/`, and has a dated parent visual approval record. Asset completion does not bypass the package portrait and origin-admission gates.
 
 ## Validation scenarios
 
@@ -96,4 +90,4 @@ The completion audit must cover at least:
 
 ## Future extensions
 
-If a charter action later gains an explicit member-expulsion transaction, it should call a narrow achievement helper that marks the current leader's term as coercive. The two package-specific achievements should remain fail-closed until their signature route proofs, accepted research, and complete icon triplets are implemented together.
+The accepted league expulsion system still requires a charter-governed vote, a membership-removal transaction, cohesion and confidence consequences, AI behavior, localisation, and a narrow achievement writer that marks the current leader's arbitration term as disqualified. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.

@@ -276,12 +276,15 @@ satisfy the synchronized frozen plan.
 
 - IW-003 has no legal current-map state binding.
 - `6001` lacks verified redistribution rights for the specified recording.
-- The parent-wide achievement definitions/localisation audit remains incomplete.
-  The bounded package contains the final Assyria three-state icon triplet, and
-  the two IW-043 plus three IW-058 signature proof writers and exact-carrier
-  adapter attestations are operational. Signature achievements remain hidden
-  by their intended route, survival, and terminal-record predicates; Radical
-  Bloc has a qualification record only and cannot yet award.
+- The parent-wide achievement definition, proof, localisation, visibility, and
+  icon audit is complete in
+  `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`.
+  All sixteen definitions and all forty-eight runtime icon states are present.
+  One accepted league action remains missing: no complete expulsion transaction
+  writes the arbitration-term expulsion disqualifier. Signature achievements
+  remain unreachable while their country portrait admission gates are closed,
+  and Radical Bloc has no currently admitted route that can complete its full
+  containment-survival proof.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 is promoted, but its hidden-high-chaos route
