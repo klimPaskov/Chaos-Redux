@@ -133,6 +133,20 @@ event targets, advisors, or assets. Existing Event 006 setup event targets and
 cleanup chain remain the owner of short-lived scope pointers and global target
 cleanup.
 
+## Country-history ownership
+
+Every new Chaos Redux carrier may use a normal country-history filename in the
+form `TAG - Country Name.txt`. Static setup that is native to that new country
+in every origin may live in its history file. The current 85 registered new-tag
+history files use their documented country names rather than the generic
+`Event 006 Country Shell` suffix.
+
+Existing vanilla and previously registered carriers keep their original
+history files unchanged. Event 006, Event 012, and other creating events apply
+their own setup additively after recording provenance. A shared carrier never
+loads another event's history or package simply because it appears in a
+regional registry group.
+
 ## Assets and future work
 
 This registry adds no player-facing icons, portraits, flags, advisor assets, or
