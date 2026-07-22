@@ -194,6 +194,18 @@ fallout_pretransition_air_winter_source_is_structurally_current = {
 		value = global.fallout_pretransition_air_winter_ledger_generation
 		compare = equals
 	}
+	OR = {
+		NOT = { has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded }
+		AND = {
+			has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded
+			has_variable = fallout_pretransition_air_winter_greenhouse_generation
+			check_variable = {
+				var = fallout_pretransition_air_winter_greenhouse_generation
+				value = fallout_pretransition_air_winter_source_generation
+				compare = equals
+			}
+		}
+	}
 	check_variable = {
 		var = fallout_pretransition_air_winter_original_category
 		value = constant:air_winter_state_category.wasteland

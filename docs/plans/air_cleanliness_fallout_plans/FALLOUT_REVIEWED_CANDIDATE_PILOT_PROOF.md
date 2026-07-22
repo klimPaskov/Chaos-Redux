@@ -91,3 +91,14 @@ The producer now carries seven reviewed ordinary rows, adding Triage Wall id
 Queue, and Animal Feed rows. The candidate effect appends all 53 mutable row
 arrays for the new rows as well. Triage Wall and Seed Vault remain dormant and
 uncounted, with the living-world release-floor total at `0 of 660`.
+
+## Bad Batch correction
+
+The producer now carries eight reviewed ordinary rows. Bad Batch adds state
+candidate id `204`, transaction key `710008`, route `7108`, and event tokens
+`204` through `216`. Its target is the lowest valid owned state with a
+generation-bound seed or greenhouse provenance receipt, produced Air Winter
+snapshot, reclamation and adaptation thresholds, and an affordable branch.
+The row is tagged to `first_winter_year`, remains dormant, and contributes no
+release-floor credit. The greenhouse receipt is copied during pretransition
+capture so the candidate does not depend on the Air Winter teardown flag.

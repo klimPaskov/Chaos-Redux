@@ -238,3 +238,16 @@ current-generation resource row. Four policy lanes have human and hidden AI
 result events, followed by a human and hidden AI agronomist callback and
 authenticated cleanup. The chain remains dormant and uncounted. The countable
 Fallout living-world release-floor total remains `0 of 660`.
+
+## Bad Batch count correction
+
+The Bad Batch reservation adds thirteen dormant suffixes, so the authoritative
+living-world pilot total is `88` identities and `98` defined blocks. The chain
+uses event suffixes `204` through `216`, candidate id `204`, transaction key
+`710008`, route `7108`, and history id `9113`. Its candidate row requires a
+generation-bound seed or greenhouse provenance receipt, produced Air Winter
+snapshot, state reclamation and adaptation thresholds, and an affordable
+branch. Four human and hidden-AI result lanes share one delayed scheduler
+transaction, a ninety-day callback, Deaths-backed failure handling, Event Log
+payloads, and authenticated cleanup. The chain remains dormant and uncounted.
+The countable Fallout living-world release-floor total remains `0 of 660`.

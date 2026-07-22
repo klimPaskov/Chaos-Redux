@@ -234,3 +234,13 @@ Seed Vault Custody. It uses candidate id `188`, transaction key `710007`, route
 reclamation value as its state input. The row is appended only after exact seed
 memory, owner, generation, source, and affordability checks. No activation flag
 setter or event caller was added, so the release-floor count remains `0 of 660`.
+
+## Bad Batch candidate correction
+
+The reviewed ordinary candidate producer now carries an eighth dormant row for
+The Bad Batch. It uses candidate id `204`, transaction key `710008`, route
+`7108`, a state target, first-winter-year phase, food-security cooldown, and a
+generation-bound seed or greenhouse provenance receipt. The greenhouse receipt
+is copied during pretransition capture because Air Winter teardown clears the
+live project flag. The row remains behind the unset activation flags and adds
+no release-floor credit.
