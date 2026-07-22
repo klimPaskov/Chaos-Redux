@@ -22,7 +22,19 @@ The five groups below are mutually exclusive and collectively exhaustive. Their 
 - Exact-community review: use only symbols and institutions belonging to the named community. No pan-identity invention, sacred-symbol repurposing, or fictional individual presented as representative of a broad living people.
 - Signature dossier: follow the accepted country dossier and the package-specific source notes in the companion source ledger.
 
-All final flag families require normal, medium, and small 32-bit uncompressed TGA files at 82x52, 41x26, and 10x7, with bottom-left origin. All sourced portraits require a provenance record and a 156x210 final DDS. Generated institutional portraits and fictional leaders are owned by the generated-art route.
+All final flag families require normal, medium, and small 32-bit uncompressed TGA files at 82x52, 41x26, and 10x7, with bottom-left origin. All sourced portraits require a provenance record and a 156x210 final DDS.
+
+The later sourced-only portrait direction supersedes every generated-person or
+generated-institution portrait instruction formerly recorded in this ledger.
+All 206 current Event 006 registry identities are grounded in real countries,
+communities, institutions, movements, restorations, or historical claims. None
+qualifies for a generated leader portrait. A grounded package remains disabled
+until every visible leader and commander role has a rights-cleared sourced real
+male subject, a source-pixel head-and-shoulders crop, an identity-preserving
+HOI4-painted treatment, role-correct wiring, and independent review. Generated
+one-person portraits are reserved for a later package only if both its country
+and leader are truly fictional and high-chaos. Event 006 also has no advisor,
+dossier, or `_small` portrait assets.
 
 ### Current produced-asset progress
 
@@ -35,34 +47,29 @@ The source and generated packages are under `docs/assets/006_independence_wave/m
 
 ### Current northern and western Europe portrait coverage
 
-The accepted portrait authority is
-`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
-and its reviewed production handoff at
-`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-The following rows supersede all 2026-07-15 fictional portrait, mixed NWE, BRI,
-and army-small visual/hash claims:
+The current authority is `../006_source_of_truth_map.md`, the dated sourced
+treatment ledger, and the independent per-subject visual/provenance audits. The
+2026-07-18 generated-person manifest and every army-small handoff are historical
+evidence only and authorize no runtime or readiness claim.
 
-| Package | Accepted fictional portrait coverage | Runtime disposition |
+| Package | Current sourced portrait evidence | Runtime disposition |
 |---|---|---|
-| IW-003 ACX | male institutional large, commander large, commander-small | unregistered readiness pool only; map blocker unchanged |
-| IW-005 AEX | male institutional large, commander large, commander-small | unregistered readiness pool only; no standalone release claim |
-| IW-006 AFX | male institutional large, commander large, commander-small | installed with existing consumers |
-| IW-007 AGX | male institutional large, commander large, commander-small | installed with existing consumers |
-| IW-010 AJX | male institutional large, commander large, commander-small | installed with existing consumers |
-| IW-009 BAY | male institutional large, commander large, commander-small | installed; protected Rupprecht portrait remains separate |
-| IW-004 BRI | male civic large, commander large, commander-small | installed; Debeauvais historical-source blocker remains separate |
-| IW-008 RHI | male institutional large, commander large, commander-small | installed; protected Matthes portrait remains separate |
-| IW-001 SCO | male institutional large, commander large, commander-small | installed with existing consumers |
-| IW-002 WLS | male institutional large, commander large, commander-small | installed with existing consumers |
+| IW-004 BRI | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
+| IW-007 AGX | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
+| IW-017 COR | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
+| IW-008 RHI | protected sourced Josef Friedrich Matthes portrait only; remaining sourced roles are unfinished | closed |
+| IW-009 BAY | protected sourced Rupprecht portrait only; remaining sourced roles are unfinished | closed |
+| IW-019 ASX | Sturzo, Lanza di Scalea, and Rizzo refinishes pass image review; Rizzo must be separated from the army command role | closed pending role-correct roster and post-wire audit |
+| All other grounded packages | generated, generic, photographic, incomplete, or unresolved portrait evidence is rejected | closed until a complete sourced roster passes |
 
-Rupprecht and Matthes are the only protected historical portrait exemptions.
-Gameplay advisor offices remain active without custom Event 006 advisor cards,
-sprites, or runtime DDS files. Portrait delivery does not grant package
-readiness or scenario admission.
+Rupprecht and Matthes are protected from alteration, not exemptions from the
+sourced-only rule. Gameplay advisor offices remain active without custom Event
+006 advisor cards, sprites, or runtime DDS files. Portrait delivery does not
+grant package readiness or scenario admission.
 
 ## Group A: existing registered base reuse — 63
 
-Installed Hearts of Iron IV provides at least one complete normal/medium/small flag set for every tag in this group. The base may be retained only when it matches the package identity and opening route. Existing character art may be reused only after the implementation pass confirms the leader is period-valid and not active in another country. Otherwise the accepted opening is a generated institutional cabinet, not a borrowed real person.
+Installed Hearts of Iron IV provides at least one complete normal/medium/small flag set for every tag in this group. The base may be retained only when it matches the package identity and opening route. Existing character art may be reused only after the implementation pass confirms the real male subject is period-valid, identity-correct, and not actively owned by another vanilla or Chaos Redux country. Otherwise the package remains disabled while a different sourced subject is researched.
 
 IW-001 Scotland; IW-002 Wales; IW-004 Brittany; IW-008 Rhineland; IW-009 Bavaria; IW-012 Icelandic emergency republic; IW-013 Basque Country; IW-014 Catalonia; IW-015 Galicia; IW-016 Occitania; IW-017 Corsica; IW-023 Transylvania; IW-026 Macedonia; IW-029 Bosnia; IW-030 Montenegro; IW-031 Kosovo; IW-033 Karelia; IW-039 Cossack Don; IW-040 Kuban Cossack Host; IW-041 Crimean Tatar state; IW-044 Tatarstan; IW-045 Bashkiria; IW-046 Chuvashia; IW-047 Mari El; IW-048 Udmurtia; IW-050 Komi; IW-051 Sakha; IW-052 Buryatia; IW-053 Altai; IW-054 Khakassia; IW-057 Far Eastern Republic; IW-065 Chechnya; IW-070 Armenia; IW-071 Georgia; IW-072 Azerbaijan; IW-078 Oman Imamate; IW-081 Lebanon; IW-083 Rif; IW-095 Dahomey; IW-107 Biafran regional state; IW-108 Buganda; IW-110 Rwanda; IW-111 Burundi; IW-113 Harar; IW-114 Afar state; IW-119 Tigray; IW-126 Barotseland; IW-130 Madagascar restoration; IW-136 Sindh; IW-140 Hyderabad; IW-141 Mysore; IW-143 Tamil state; IW-147 Manipur; IW-148 Sikkim; IW-166 Lan Xang restoration; IW-170 Inner Mongolia; IW-173 Hawaii; IW-175 Samoa; IW-177 Fiji; IW-179 Micronesian federation; IW-180 Quebec; IW-192 Yucatan; IW-194 Miskito state.
 
@@ -77,7 +84,11 @@ The local audit found complete flag families for all 63. Seventy-three of the 74
 
 These packages do not have an accepted, safely attributable 1936 state flag. Their baseline flags must be generated from documented regional civic, heraldic, municipal, landscape, or administrative motifs. They must not contain generated lettering, a generic sacred symbol, or an invented design described as authentic history.
 
-Opening portrait mode is a generated provisional assembly, cabinet, municipal council, or congress. A later fictional personal leader requires a gender-aligned regional name pool and generated portrait.
+The flag-production mode does not authorize portrait generation. Every package
+in this group remains sourced-only for its leader and commander roster. If no
+rights-cleared real male subject is available for an opening office, the package
+stays disabled; a generated assembly, cabinet, council, congress, or fictional
+person is not a substitute.
 
 IW-003 Cornwall; IW-005 Flanders; IW-006 Wallonia; IW-007 Frisia; IW-010 Saar; IW-011 Faroe Islands; IW-018 Sardinia; IW-019 Sicily; IW-021 Trieste Free State; IW-022 Dalmatia; IW-024 Banat; IW-025 Vojvodina; IW-027 Thrace; IW-028 Epirus; IW-032 Slavonia; IW-037 Polesia; IW-038 Ruthenia; IW-049 Mordovia; IW-061 Luristan; IW-062 Khuzestan or Arabistan; IW-063 Bakhtiari; IW-064 Circassia; IW-067 Lazistan; IW-073 Hejaz; IW-084 Kabylia; IW-086 Tripolitania; IW-087 Fezzan; IW-094 Fante; IW-123 Xhosa; IW-132 Mauritius; IW-142 Travancore; IW-145 Assam; IW-151 Minangkabau; IW-154 Bugis state; IW-156 Moluccan federation; IW-159 Shan federation; IW-162 Kachin state; IW-165 Wa state; IW-169 East Turkestan; IW-181 Acadia; IW-182 Newfoundland; IW-184 California; IW-185 Texas; IW-203 Patagonian state.
 
@@ -95,36 +106,43 @@ The following decisions prevent a weak or falsely precise claimant from being in
 
 | Package | Opening leader direction | Portrait source status |
 |---|---|---|
-| IW-075 Jabal Shammar | Rashidi restoration council; the emirate ended in 1921, so do not invent a reigning 1936 emir | Generated institutional portrait |
-| IW-076 Hadhramaut | Federation council representing the relevant Hadhrami states; no single dynasty is universal | Generated institutional portrait |
-| IW-077 Mahra | Confirm the 1936 Al Afrar incumbent and territorial fit before using a person | Source gap; institutional regency is the accepted opening if unresolved |
+| IW-075 Jabal Shammar | Rashidi restoration council; the emirate ended in 1921, so do not invent a reigning 1936 emir | Source gap; disabled pending a sourced real male officeholder |
+| IW-076 Hadhramaut | Federation council representing the relevant Hadhrami states; no single dynasty is universal | Source gap; disabled pending a sourced real male officeholder |
+| IW-077 Mahra | Confirm the 1936 Al Afrar incumbent and territorial fit before using a person | Source gap; disabled pending a rights-cleared exact-role subject |
 | IW-085 Cyrenaica | Idris al-Senussi is a defensible period claimant | Cleared public-domain candidate in the source ledger |
-| IW-089 Darfur | Post-sultanate restoration council; Ali Dinar died in 1916 | Generated institutional portrait |
-| IW-090 Wadai | Restoration council; do not revive a dead claimant or merge neighboring dynasties | Generated institutional portrait |
+| IW-089 Darfur | Post-sultanate restoration council; Ali Dinar died in 1916 | Source gap; disabled pending a sourced real male officeholder |
+| IW-090 Wadai | Restoration council; do not revive a dead claimant or merge neighboring dynasties | Source gap; disabled pending a sourced real male officeholder |
 | IW-101 Kongo | Pedro VII is a documented 1936 Manikongo | Historically exact 1934 candidate; conditional because the Commons record explicitly lacks a United States public-domain tag |
-| IW-102 Kuba | Verify the Nyim and reign dates against a kingdom or museum source before personal assignment | Source gap; generated royal council until resolved |
-| IW-103 Luba | Multiple royal lineages require route ownership | Generated royal council |
-| IW-104 Lunda | Verify the relevant Mwata Yamvo and territorial branch | Source gap; generated royal council until resolved |
-| IW-105 Loango | Verify Moe Poaty III and locate a distributable portrait | Source gap; generated royal council until resolved |
-| IW-109 Bunyoro | Verify Tito Winyi IV and locate a distributable portrait | Source gap; generated royal council until resolved |
-| IW-112 Ankole | Verify Edward Suleiman Kahaya II and locate a distributable portrait | Source gap; generated royal council until resolved |
+| IW-102 Kuba | Verify the Nyim and reign dates against a kingdom or museum source before personal assignment | Source gap; disabled until resolved |
+| IW-103 Luba | Multiple royal lineages require route ownership | Source gap; disabled pending an exact-route sourced subject |
+| IW-104 Lunda | Verify the relevant Mwata Yamvo and territorial branch | Source gap; disabled until resolved |
+| IW-105 Loango | Verify Moe Poaty III and locate a distributable portrait | Source gap; disabled until resolved |
+| IW-109 Bunyoro | Verify Tito Winyi IV and locate a distributable portrait | Source gap; disabled until resolved |
+| IW-112 Ankole | Verify Edward Suleiman Kahaya II and locate a distributable portrait | Source gap; disabled until resolved |
 | IW-116 Zanzibar | Khalifa bin Harub is the period sultan | Cleared 1920 public-domain candidate |
-| IW-121 Zulu | Verify regent Mshiyeni kaDinuzulu and do not treat a regency as an unqualified kingship | Source gap; generated royal council until resolved |
-| IW-122 Ndebele | No uncontested reigning king in 1936 | Generated restoration council |
-| IW-124 Basotho | Verify Griffith Lerotholi and locate a distributable portrait | Source gap; generated council until resolved |
+| IW-121 Zulu | Verify regent Mshiyeni kaDinuzulu and do not treat a regency as an unqualified kingship | Source gap; disabled until resolved |
+| IW-122 Ndebele | No uncontested reigning king in 1936 | Source gap; disabled pending an exact-route sourced subject |
+| IW-124 Basotho | Verify Griffith Lerotholi and locate a distributable portrait | Source gap; disabled until resolved |
 | IW-125 Eswatini | Sobhuza II is the period ruler | Cleared OGL candidate, photographed in 1945 |
-| IW-131 Comoros | The archipelago's former sultanates do not support one universal claimant | Generated federal council |
-| IW-152 Riau | A Siak route may use Syarif Kasim II; a broad Riau baseline may not present him as universal | Conditional CC BY-SA candidate; baseline remains a generated council |
-| IW-155 Bali | Multiple houses require route ownership | Generated council of houses |
-| IW-158 Pattani | Tengku Mahmood Mahyideen is a later route figure, not an automatic 1936 sovereign | Conditional source only; generated council at opening |
-| IW-171 Ryukyu | Verify the Sho house head and political role before personal assignment | Source gap; generated regency council |
-| IW-176 Tonga | Salote Tupou III is the period monarch | Cleared public-domain candidate |
+| IW-131 Comoros | The archipelago's former sultanates do not support one universal claimant | Source gap; disabled pending an exact-route sourced subject |
+| IW-152 Riau | A Siak route may use Syarif Kasim II; a broad Riau baseline may not present him as universal | Conditional CC BY-SA candidate; the baseline remains disabled until its own sourced subject is approved |
+| IW-155 Bali | Multiple houses require route ownership | Source gap; disabled pending an exact-route sourced subject |
+| IW-158 Pattani | Tengku Mahmood Mahyideen is a later route figure, not an automatic 1936 sovereign | Conditional later-route source only; opening remains disabled pending its own sourced subject |
+| IW-171 Ryukyu | Verify the Sho house head and political role before personal assignment | Source gap; disabled until resolved |
+| IW-176 Tonga | Salote Tupou III is the period monarch, but the Event 006 male-only direction excludes her as a character or portrait | Disabled pending a sourced real male Tongan constitutional, chiefly, or civic subject whose office is not misrepresented as the monarchy |
 
-The other eleven packages in Group C use a generated provisional assembly or restoration council at opening unless implementation research identifies a dated, rights-cleared personal claimant.
+The other eleven packages in Group C remain disabled until implementation
+research identifies a dated, rights-cleared real male subject for the exact
+route. No generated provisional assembly
+or restoration council portrait is authorized.
 
 ## Group D: exact-community or institution review — 15
 
-These packages require an institutional council or a sourced leader from the exact named community. A fictional personal leader cannot stand in for a broad real identity. The flag must belong to the exact named community or institution; sacred and ceremonial symbols are not generic state decoration.
+These packages require a sourced real male leader from the exact named
+community. A fictional person or
+generated council cannot stand in for a broad real identity. The flag must
+belong to the exact named community or institution; sacred and ceremonial
+symbols are not generic state decoration.
 
 IW-060 Kurdistan; IW-066 Dagestan; IW-082 Palestine; IW-115 Somaliland sultanate federation; IW-134 Punjab; IW-135 Sikh state; IW-137 Balochistan; IW-138 Pashtunistan; IW-139 Kashmir; IW-164 Arakan or Rakhine; IW-186 Cherokee state; IW-188 Lakota state; IW-189 Dine state; IW-198 Aymara state; IW-200 Guarani state.
 
@@ -146,16 +164,16 @@ Binding distinctions:
 
 | Package | Baseline symbol direction | Opening portrait direction |
 |---|---|---|
-| IW-043 Volga Bulgaria | Generated civic flag using documented Bolgar architectural and archaeological geometry; do not copy modern Bulgaria or invent an ancient flag | Generated Volga congress |
-| IW-058 Assyria | Generated 1930s council standard with explicitly attributed community motifs; distinguish Assyrian, Chaldean, Syriac, Aramean, church, and political-faction ownership | Generated provisional Assyrian national council unless a route selects a sourced person |
-| IW-059 Mesopotamia | Generated Baghdad civic cabinet flag grounded in interwar Iraqi civic and administrative motifs; do not disguise an Iraq flag as a new historical Mesopotamian flag | Generated Baghdad civic cabinet |
+| IW-043 Volga Bulgaria | Generated civic flag using documented Bolgar architectural and archaeological geometry; do not copy modern Bulgaria or invent an ancient flag | Source gap; disabled pending a sourced real male roster |
+| IW-058 Assyria | Generated 1930s council standard with explicitly attributed community motifs; distinguish Assyrian, Chaldean, Syriac, Aramean, church, and political-faction ownership | Source gap; disabled pending sourced real male subjects that preserve community distinctions |
+| IW-059 Mesopotamia | Generated Baghdad civic cabinet flag grounded in interwar Iraqi civic and administrative motifs; do not disguise an Iraq flag as a new historical Mesopotamian flag | Source gap; disabled pending a sourced real male Baghdad civic subject |
 | IW-093 Asante | Treat the 1935 restoration and Asantehene institution as the evidence base; do not use the Golden Stool as free decorative clip art | Prempeh II, cleared 1935 OGL portrait |
 | IW-096 Benin | Generated Edo Benin civic/royal design grounded in court institutions; the famous captured flag has disputed ownership and must not be asserted as the national flag | Akenzua II, exact-year museum portrait, conditional pending correction or confirmation of the inconsistent United States public-domain metadata |
-| IW-097 Oyo | Generated Oyo civic/royal design grounded in the Alaafin institution; no generic Yoruba or modern Oyo State flag | Ladigbolu I only after original-photo provenance is cleared; otherwise generated palace council |
+| IW-097 Oyo | Generated Oyo civic/royal design grounded in the Alaafin institution; no generic Yoruba or modern Oyo State flag | Ladigbolu I only after original-photo provenance is cleared; otherwise the package remains disabled |
 | IW-098 Sokoto | Generated Hausa civic and Fulani dynastic treatment tied to the sultanate institution; do not use modern Sokoto State art or unverified sacred text | Hasan dan Mu'azu Ahmadu before 17 June 1938; Siddiq Abubakar III after that date |
-| IW-150 Aceh | Attested Aceh Sultanate standard may support the traditional route; PUSA symbols and Daud Beureueh are locked to 1939 or later | Generated opening coalition; Daud Beureueh route portrait is rights-cleared but not a 1936 opening portrait |
-| IW-161 Mon | Generated prewar Mon civic council design; do not use post-1947 nationalist organization art as a 1936 flag | Generated Mon council |
-| IW-197 Mapuche | Federación Araucana reconstruction is route-specific and attributed, not a universal Mapuche flag; the 1992 Wenufoye is excluded | Manuel Aburto Panguilef requires archive permission; Herminia Aburto Colihueque remains conditional pending a complete rights record |
+| IW-150 Aceh | Attested Aceh Sultanate standard may support the traditional route; PUSA symbols and Daud Beureueh are locked to 1939 or later | Opening source gap; disabled until a 1936-valid sourced real male subject is approved. Daud Beureueh remains a rights-cleared later-route subject only |
+| IW-161 Mon | Generated prewar Mon civic council design; do not use post-1947 nationalist organization art as a 1936 flag | Source gap; disabled pending a sourced real male Mon civic subject |
+| IW-197 Mapuche | Federación Araucana reconstruction is route-specific and attributed, not a universal Mapuche flag; the 1992 Wenufoye is excluded | Manuel Aburto Panguilef requires archive permission. Herminia Aburto Colihueque remains historical research context only and is excluded as a character or portrait by the Event 006 male-only rule |
 
 ## Production gates
 
@@ -167,6 +185,11 @@ No package may receive final art until its row has:
 4. Creator or institution, date, license, and attribution text.
 5. A statement explaining whether the source is a flag, standard, seal, emblem, portrait, reconstruction, or contextual motif.
 6. An identity review for Groups D and E.
-7. A static institutional portrait plan whenever a real-person source remains unresolved.
+7. A complete sourced real-male leader and commander plan. A grounded package
+   remains disabled wherever a source, role, rights, crop, or review gap remains.
 
-An unresolved real-person portrait is not permission to use a generic person. The accepted opening government in those cases is the specified institutional council or regency.
+An unresolved real-person portrait is not permission to use a generic person,
+generated person, generated council, or emblem-only substitute. The package
+remains disabled until the real-male source gap is resolved and the selected
+subject passes provenance, rights, crop, HOI4 treatment, role, and independent
+review.

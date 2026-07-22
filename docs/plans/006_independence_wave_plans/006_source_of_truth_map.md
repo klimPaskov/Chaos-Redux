@@ -216,12 +216,12 @@ described as absent:
 | Liberations cluster availability | `62e937dcc` |
 | FORM-01 through FORM-04 | `98ec32e93` |
 | FORM-01 tag correction and ideology aliases | `e983b676d` and `ffc227156` |
-| Current male HOI4 portrait replacement | `../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md` and `subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`; older portrait and army-small commits remain historical only, and no Event 006 advisor portrait or icon package exists |
+| Current sourced male HOI4 portrait authority | The 2026-07-22 sourced-treatment ledger, per-subject source/refinish manifests, independent visual/provenance audits, and fresh post-wire country-package audits. The 2026-07-18 fictional-person refresh and every army-small package are historical evidence only. Brittany, Frisia, and Corsica are the current fully sourced/admitted rosters; Sicily's three trial images pass but remain unwired pending a separate real army commander. No Event 006 advisor portrait or icon package exists |
 | Installed-mod tag collision audit | `e0c1d5831` |
 | IW-003 map blocker record | `2f867e9cd` |
 | AFX and AGX package promotions | AGX entered through `2912e0a46`; AFX was later repaired at Level 2 and restored through `006_afx_final_admission_audit_2026_07_16.md` and the exact current registry |
 | Living-BEL IW-005 Flanders overlay and independent audit | `a2c274d1e` |
-| Five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment | `45bee09d2` |
+| Historical five-line ACX, AEX, AFX, AGX, and AJX army-small checksum alignment | `45bee09d2`; superseded and absent from the current runtime |
 | IW-004 BRI and IW-010 AJX implementation and promotion | `7368cc0bf`, `5d17e55b3`, and `f64d9640e` |
 | IW-008 RHI and IW-009 BAY Level 2 implementation and promotion | `006_rhi_bay_level2_focus_implementation_2026_07_16.md`, `006_rhi_bay_final_admission_audit_2026_07_16.md`, and the exact current registry |
 | Mediterranean IW-017 through IW-019 and FORM-05 | `006_mediterranean_country_package_audit_2026_07_16.md`, `006_mediterranean_focus_tree_audit_2026_07_16.md`, `006_mediterranean_form05_decision_mission_audit_2026_07_16.md`, `006_mediterranean_localisation_audit_2026_07_16.md`, and the current exact registry |
@@ -306,7 +306,7 @@ recording without explicit user approval.
 | `006_package_allocator_integration_handoff.md` | Historical implementation snapshot | Its 149/57 and 128-shell coverage figures are at-time evidence; use the canonical identity/binding/safety files for current routing |
 | `006_installed_tag_and_vanilla_identity_audit_handoff.md` | Superseded first-pass evidence | Its 103/90 and 128/78 tables are historical; use the canonical candidate registry, current binding CSV, the 2026-07-22 tag audit, and the research collision/reuse audit |
 | `tag_audit/006_installed_tag_collision_audit_2026_07_22.md` and dated tag audit | Implemented evidence | Current tag-safety snapshot until the registry or installed environment changes |
-| All 2026-07-15 and 2026-07-16 fictional portrait, BRI portrait, mixed NWE portrait, and army-small handoffs | Superseded for portrait visuals, hashes, and approval | Use the 2026-07-18 male-HOI4 refresh manifest and handoff. Historical gameplay and flag findings remain bounded by each file's supersession note |
+| All 2026-07-15 and 2026-07-16 fictional portrait, BRI portrait, mixed NWE portrait, and army-small handoffs | Superseded for portrait visuals, hashes, and approval | Use the 2026-07-22 sourced-treatment ledger and the independent source/refinish/post-wire audits. The 2026-07-18 fictional-person refresh is also superseded. Historical gameplay and flag findings remain bounded by each file's supersession note |
 | `006_event6_male_commander_portrait_refresh_2026_07_18.md` | Superseded portrait evidence | Its fictional grounded-polity approvals and commander miniatures are obsolete. Use the 2026-07-22 sourced-treatment ledger and visual review; ACX/AEX remain readiness-pool only, Rupprecht/Matthes remain protected, and no Event 6 advisor icon or portrait asset is present |
 | `006_nwe_country_package_audit_2026_07_15.md` | Partly superseded | Use later remediation, FORM commits, package re-audits, and the current compile-time registry for readiness |
 | FORM-01 through FORM-04 operational, FORM-03 promotion, and readiness-promotion chain | Implemented evidence | Current bounded formable authority |
@@ -329,7 +329,7 @@ recording without explicit user approval.
 | IW-005 Flanders implementation and independent-audit handoffs | Implemented evidence | Commit `a2c274d1e` contains the corrected living-BEL overlay and the independent PASS addendum. Preserve the timeout-ordering and opportunistic-garrison risks |
 | `006_bri_ajx_commit_readiness_reaudit_2026_07_16.md` plus the BRI and AJX implementation/audit handoffs | Partly superseded implemented evidence for the bounded package tranche | Findings B1 through B4 are closed in source and committed by `7368cc0bf`. Its advisor-portrait inventory is superseded by the later user-directed icon withdrawal. Automatic content attestation and SCN-008 admission remain separate and closed |
 | `006_event6_advisor_icon_withdrawal_2026_07_16.md` and its final audit | Current user-directed asset boundary | Event 006 gameplay advisor offices remain active but carry no custom advisor portrait block, sprite registration, runtime DDS, or explicit gender metadata |
-| Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence; current hashes are in the 2026-07-18 portrait package runtime ledger |
+| Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence only. Event 006 has no runtime `_small` files, registrations, or consumers; current full-portrait hashes belong to the sourced per-subject manifests and post-wire package audits |
 | Super-event audio research handoff | Partly superseded | `6002` production and runtime wiring are complete. Its rights research and `6001` blocker remain current. Use `docs/super_events/006_independence_wave_super_event_research.md` for the canonical implementation contract |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
 | `006_round_number_balance_preflight_2026_07_15.md` | Implemented evidence | Commit `879e511cc` contains its reviewed tuning tranche. It is not a final Event 006 balance or completion audit |
@@ -345,7 +345,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | --- | --- |
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
-| Older portrait handoffs approve 2026-07-15 or 2026-07-16 fictional or army-small art | Superseded by the 2026-07-18 male-HOI4 manifest and reviewed handoff |
+| Older portrait handoffs approve 2026-07-15, 2026-07-16, or 2026-07-18 fictional-person or army-small art | Superseded by the 2026-07-22 sourced-treatment ledger and independent source/refinish/post-wire audits |
 | Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof, while FORM-42 remains fail-closed. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
 | Earlier AFX source was revoked for missing Level 2 content | Resolved. The Sambre-Meuse lane and unique visual package passed the final exact-package audit, and IW-006 is restored to the exact registry |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |

@@ -83,3 +83,11 @@ unset because the living-world content caller, full candidate matrix, complete
 human and AI result coverage, event log and detail depth, focus integration,
 and runtime proof are still incomplete. The exact engine-native all-valid-land-
 province sweep blocker for the manual scenario is unchanged.
+
+## Candidate count correction
+
+The producer now carries seven reviewed ordinary rows, adding Triage Wall id
+`175` and Seed Vault Custody id `188` after the original food, water, rail, Well
+Queue, and Animal Feed rows. The candidate effect appends all 53 mutable row
+arrays for the new rows as well. Triage Wall and Seed Vault remain dormant and
+uncounted, with the living-world release-floor total at `0 of 660`.

@@ -253,3 +253,12 @@ lanes with human and hidden AI delayed results, Deaths-backed failure, a
 doctor's callback, history `9111`, authenticated cleanup, and a dedicated
 report asset. It remains uncounted until scheduler activation and manual
 review gates are open. Countable living-world blocks remain `0 of 660`.
+
+## Seed Vault Custody surface correction
+
+The dormant Seed Vault Custody chain is defined at `chaosx.fallout.188`
+through `.200`. It adds a produced Air Winter seed-memory gate, four policy
+lanes with human and hidden AI delayed results, Deaths-backed failure, state
+memory, an agronomist callback, history `9112`, authenticated cleanup, and a
+dedicated wired report asset. It remains uncounted until scheduler activation
+and manual review gates are open. Countable living-world blocks remain `0 of 660`.

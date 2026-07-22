@@ -999,6 +999,19 @@ fallout_event_id = {
 	triage_wall_callback = 185
 	triage_wall_callback_ai = 186
 	triage_wall_cleanup = 187
+	seed_vault_human = 188
+	seed_vault_ai = 189
+	seed_vault_nationalize_result = 190
+	seed_vault_farmers_result = 191
+	seed_vault_allies_result = 192
+	seed_vault_auction_result = 193
+	seed_vault_nationalize_result_ai = 194
+	seed_vault_farmers_result_ai = 195
+	seed_vault_allies_result_ai = 196
+	seed_vault_auction_result_ai = 197
+	seed_vault_callback = 198
+	seed_vault_callback_ai = 199
+	seed_vault_cleanup = 200
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1028,7 +1041,10 @@ fallout_event_candidate_pilot = {
 	triage_wall_candidate_id = 175
 	triage_wall_transaction_key = 710006
 	triage_wall_route = 7106
-	upper_bound = 7107
+	seed_vault_candidate_id = 188
+	seed_vault_transaction_key = 710007
+	seed_vault_route = 7107
+	upper_bound = 7108
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -1111,6 +1127,20 @@ fallout_event_175_branch = {
 	prioritize_workers = 2
 	prioritize_soldiers = 3
 	equal_chance = 4
+	upper_bound = 5
+}
+
+fallout_event_188_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	nationalize_archive = 1
+	entrust_farmers = 2
+	share_with_allies = 3
+	auction_access = 4
 	upper_bound = 5
 }
 
@@ -3005,6 +3035,212 @@ fallout_event_175_modifier = {
 	equal_stability = 0.03
 	equal_supply = -0.01
 	equal_consumer_goods = 0.02
+	grievance_stability = -0.08
+	grievance_consumer_goods = 0.08
+	upper_bound = 1
+}
+
+fallout_event_188_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 7
+	callback_delay_days = 60
+	nationalize_modifier_days = 240
+	farmers_modifier_days = 300
+	allies_modifier_days = 210
+	auction_modifier_days = 180
+	grievance_modifier_days = 240
+	upper_bound = 301
+}
+
+fallout_event_188_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100000
+	callback_transaction_key_offset = 200000
+	visible_budget_cost = 1
+	upper_bound = 200001
+}
+
+fallout_event_188_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_food = 28
+	minimum_reclamation = 22
+	minimum_adaptation = 24
+	minimum_recognition = 18
+	nationalize_success_reclamation = 38
+	nationalize_success_food = 32
+	farmers_success_adaptation = 36
+	farmers_success_food = 30
+	allies_success_recognition = 34
+	allies_success_water = 30
+	auction_success_food = 25
+	auction_success_reclamation = 24
+	partial_reclamation = 20
+	partial_adaptation = 22
+	partial_recognition = 20
+	minimum_remaining_people = 100
+	failure_death_percent = 0.004
+	upper_bound = 100
+}
+
+fallout_event_188_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	nationalize_scrap = 6
+	farmers_food = 4
+	allies_recognition = 3
+	auction_scrap = 3
+	minimum_food = 8
+	minimum_scrap = 3
+	minimum_recognition = 3
+	upper_bound = 7
+}
+
+fallout_event_188_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	nationalize_success_food = 8
+	nationalize_success_reclamation = 9
+	nationalize_success_recognition = 2
+	nationalize_success_cohesion = 2
+	nationalize_success_stability = 0.02
+	nationalize_partial_food = 4
+	nationalize_partial_reclamation = 3
+	nationalize_partial_recognition = -1
+	nationalize_partial_cohesion = 0
+	nationalize_partial_stability = -0.01
+	nationalize_failure_food = 1
+	nationalize_failure_reclamation = -5
+	nationalize_failure_recognition = -7
+	nationalize_failure_cohesion = -5
+	nationalize_failure_stability = -0.07
+
+	farmers_success_food = 7
+	farmers_success_adaptation = 9
+	farmers_success_recognition = 5
+	farmers_success_cohesion = 4
+	farmers_success_stability = 0.03
+	farmers_partial_food = 4
+	farmers_partial_adaptation = 3
+	farmers_partial_recognition = 1
+	farmers_partial_cohesion = 1
+	farmers_partial_stability = -0.01
+	farmers_failure_food = 1
+	farmers_failure_adaptation = -4
+	farmers_failure_recognition = -6
+	farmers_failure_cohesion = -5
+	farmers_failure_stability = -0.07
+
+	allies_success_food = 6
+	allies_success_water = 5
+	allies_success_recognition = 8
+	allies_success_cohesion = 3
+	allies_success_stability = 0.02
+	allies_partial_food = 3
+	allies_partial_water = 2
+	allies_partial_recognition = 2
+	allies_partial_cohesion = 0
+	allies_partial_stability = -0.01
+	allies_failure_food = 1
+	allies_failure_water = -4
+	allies_failure_recognition = -8
+	allies_failure_cohesion = -4
+	allies_failure_stability = -0.06
+
+	auction_success_food = 8
+	auction_success_reclamation = 5
+	auction_success_recognition = -2
+	auction_success_cohesion = -1
+	auction_success_stability = 0.01
+	auction_partial_food = 4
+	auction_partial_reclamation = 2
+	auction_partial_recognition = -3
+	auction_partial_cohesion = -2
+	auction_partial_stability = -0.02
+	auction_failure_food = 1
+	auction_failure_reclamation = -4
+	auction_failure_recognition = -10
+	auction_failure_cohesion = -6
+	auction_failure_stability = -0.08
+
+	callback_success_food = 5
+	callback_success_reclamation = 4
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_stability = 0.02
+	callback_partial_food = 2
+	callback_partial_reclamation = 1
+	callback_partial_recognition = 0
+	callback_partial_cohesion = 1
+	callback_partial_stability = -0.01
+	callback_failure_food = 1
+	callback_failure_reclamation = -3
+	callback_failure_recognition = -5
+	callback_failure_cohesion = -3
+	callback_failure_stability = -0.05
+	upper_bound = 101
+}
+
+fallout_event_188_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9112
+	nationalize_success = 11
+	nationalize_partial = 12
+	nationalize_failure = 13
+	farmers_success = 21
+	farmers_partial = 22
+	farmers_failure = 23
+	allies_success = 31
+	allies_partial = 32
+	allies_failure = 33
+	auction_success = 41
+	auction_partial = 42
+	auction_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_188_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	nationalize_stability = 0.02
+	nationalize_supply = 0.02
+	nationalize_production = 0.03
+	farmers_stability = 0.03
+	farmers_supply = 0.01
+	farmers_production = 0.02
+	allies_stability = 0.02
+	allies_supply = 0.03
+	allies_consumer_goods = -0.02
+	auction_stability = 0.01
+	auction_supply = -0.02
+	auction_consumer_goods = -0.03
 	grievance_stability = -0.08
 	grievance_consumer_goods = 0.08
 	upper_bound = 1

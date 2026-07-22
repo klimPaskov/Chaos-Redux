@@ -8,22 +8,24 @@ No art was generated in this research pass.
 
 ## Current produced portrait disposition
 
-This remains a planning inventory for unresolved Event 006 art. Any produced
-portrait rows or completion claims tied to the 2026-07-15 fictional portrait,
-mixed NWE portrait, BRI portrait, or army-small packages are superseded. The
-current produced authority is
-`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`,
-accepted by
-`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-It covers twenty male fictional large portraits and ten commander-only 65x67
-miniatures. ACX and AEX remain unregistered readiness-pool art only, Rupprecht
-and Matthes remain protected historical exemptions, and custom Event 006
-advisor icons remain withdrawn.
+This remains a planning inventory for unresolved non-portrait Event 006 art.
+Every portrait claim tied to the 2026-07-15 fictional, mixed NWE, BRI, or
+army-small packages and the 2026-07-18 fictional-person refresh is superseded.
+Those files are historical evidence only and authorize no runtime or readiness
+claim. Use `../006_source_of_truth_map.md`, the dated sourced-treatment ledger,
+and the independent per-subject visual/provenance audits as current portrait
+authority. Brittany, Frisia, and Corsica have approved and wired sourced real
+male rosters; Rupprecht and Matthes are protected sourced portraits. Sicily's
+three sourced refinishes pass image review but remain unwired pending a
+role-correct army commander. Every other grounded generated, generic,
+photographic, or incomplete portrait remains rejected. Event 006 has no
+advisor, dossier, or `_small` portrait assets.
 
 ## Production ownership
 
-- Historical flags, real portraits, and archival imagery: source-research route, using the companion source ledger and a per-file provenance manifest.
-- Fictional civic flags, fictional route flags, provisional councils, fictional individual leaders, report/news scenes, super-event scenes, focus/idea/decision/achievement art, UI panel art, and real frame-by-frame animation: generated-event-art or icon-art route as appropriate.
+- Historical flags, all current Event 006 leader portraits, and archival imagery: source-research route, using the companion source ledger and a per-file provenance manifest.
+- Fictional civic flags, fictional route flags, report/news scenes, super-event scenes, focus/idea/decision/achievement art, UI panel art, and real frame-by-frame animation: generated-event-art or icon-art route as appropriate.
+- Generated one-person leaders: unavailable to every current registry row. This route opens only for a later package when both the country and leader are truly fictional and high-chaos.
 - Final TGA/DDS conversion, manifests, contact sheets, previews, and source/processed/final folder separation: event-asset workflow.
 - Animated seals, warnings, and emblems: event-asset workflow plus frame-animation workflow. Final animation must contain independently planned and rendered frames; transforms, recolors, blurs, or filters of one still do not qualify.
 - Main agent: final filenames, GFX and GUI definitions, gameplay references, localisation references, and final validation.
@@ -51,12 +53,20 @@ Generated designs must not contain readable generated text. Sacred, ceremonial, 
 
 ### Portraits
 
-1. Provisional assemblies, cabinets, congresses, municipal councils, royal councils, regencies, and councils of houses specified in the package coverage ledger.
-2. Fictional one-person leaders introduced by later route content. Each requires a gender-aligned regional name pool and a generated portrait; no real person's likeness may be used.
-3. Institutional portrait sets for unresolved royal or claimant packages. These are deliberately not generic headshots: the scene must visually communicate the institution, such as a council table, regency chamber, assembly dais, or cabinet group.
-4. Distinct institutional portraits for sensitive packages. A fictional individual must not visually stand in for a broad living identity.
+No current Event 006 registry package qualifies for generated portrait work.
+All 206 identities are grounded in real countries, communities, institutions,
+movements, restorations, or historical claims. A missing real-person source
+keeps that package disabled; it does not authorize a generated individual,
+generated council scene, generic face, emblem, or borrowed person.
 
-Each final leader portrait is 156x210 DDS and needs source art, processed PNG, final DDS, identity note, name-pool note, and generated-content disclosure in the manifest.
+If a later accepted design adds a truly fictional high-chaos country with a
+truly fictional leader, its generated portrait must depict one adult male,
+remain culturally coherent without borrowing or exaggerating traits or sacred
+objects of a real people, use extraordinary invented regalia or features rather
+than a normal generic face, and avoid stereotypes, caricature, gore, memes,
+modern props, or a real person's likeness. It still requires an original source
+master, processed `156x210` PNG, final DDS, identity/name-pool note, generated-
+content disclosure, contact-sheet review, and independent visual audit.
 
 ## Registry inventory
 
@@ -77,7 +87,7 @@ Each final leader portrait is 156x210 DDS and needs source art, processed PNG, f
 | ASSET-042 | League charter activation animation | Real frame sequence plus static fallback; rest, drafting, vote, and activated states |
 | ASSET-043 | Formable eligibility seal animation | Real frame sequence plus static fallback; hidden, discovered, eligible, and proclaimed states |
 | ASSET-044 | Country flag family | Mixed sourced and generated. All generated families follow the flag rules above. |
-| ASSET-045 | Country leader portrait family | Mixed sourced and generated. Real leaders stay sourced; fictional leaders and councils stay generated. |
+| ASSET-045 | Country leader portrait family | Sourced-only for every current registry package. Generated portraits remain unavailable unless a later accepted package makes both the country and leader truly fictional and high-chaos. |
 | ASSET-046 | Formable flags and emblems | Mixed sourced and generated flag triplets plus UI sizes. The league emblem may also receive a real-frame animated UI package. |
 | ASSET-047 | Sixteen achievement icon families | 64x64 plus grey and not-eligible variants; one distinct composition per final achievement ID |
 | ASSET-048 | Regional report variants | 210x176; generated or sourced by exact scene, prioritizing signature packages and heavily used regions |
