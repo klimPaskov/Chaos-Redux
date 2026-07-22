@@ -3,7 +3,7 @@
 # ============================================================================
 # Overview:
 # - Applies auditable five-value, former-host, patron, network, and league
-#   transactions for DM-01 through DM-61.
+#   transactions for DM-01 through DM-62.
 # - Consumes real material resources through reusable cost palettes.
 # - Publishes bounded state targets for integration and future-wave support.
 # - Removes decision-layer missions and state when Event 006 origin ends.
@@ -47,20 +47,50 @@ independence_wave_decision_apply_league_deltas = {
 	independence_wave_change_league_values = yes
 }
 
-# Country scope. DM-60 saves the capital's owner as the regular event target
-# below, then rechecks both the leader's authority and the target's recorded
-# factual ground before removing membership. No global target persists after
-# the decision effect chain ends.
+# Country scope, with FROM as the selected state. DM-42/43/44/60/62 share one
+# persistent target pointer because their active-crisis gate prevents them from
+# overlapping. The pointer fixes the selected country for the full timer; the
+# state-targeted decision must also prove that country still owns FROM before
+# resolving.
+independence_wave_decision_store_active_league_target = {
+	FROM = {
+		owner = {
+			ROOT = { set_variable = { independence_wave_active_league_target_country = PREV } }
+		}
+	}
+}
+
+independence_wave_decision_clear_active_league_target = {
+	clear_variable = independence_wave_active_league_target_country
+}
+
+# Country scope. At most one unconsumed defensive-charter war mandate is kept
+# per member. Clearing it through the stored country scope prevents a later tag
+# reuse from inheriting an authorization aimed at an earlier government.
+independence_wave_decision_clear_charter_war_mandate = {
+	if = {
+		limit = { has_variable = independence_wave_last_charter_war_mandate_target }
+		var:independence_wave_last_charter_war_mandate_target = {
+			ROOT = { clr_country_flag = independence_wave_charter_war_authorized_@PREV }
+		}
+		clear_variable = independence_wave_last_charter_war_mandate_target
+		clear_variable = independence_wave_last_charter_war_mandate_date
+	}
+}
+
+# Country scope. DM-60 rechecks both leader authority and the stored accused
+# country's factual ground before removing membership. The caller owns pointer
+# cleanup after either success or failure.
 independence_wave_decision_resolve_charter_expulsion_vote = {
-	FROM = { owner = { save_event_target_as = independence_wave_charter_expulsion_target } }
 	if = {
 		limit = {
 			is_independence_wave_charter_expulsion_authority = yes
-			event_target:independence_wave_charter_expulsion_target = {
+			has_valid_independence_wave_active_league_decision_target = yes
+			var:independence_wave_active_league_target_country = {
 				is_valid_independence_wave_charter_expulsion_target = yes
 			}
 		}
-		event_target:independence_wave_charter_expulsion_target = {
+		var:independence_wave_active_league_target_country = {
 			independence_wave_expel_league_member = yes
 		}
 		independence_wave_achievement_record_member_expulsion = yes
@@ -118,6 +148,32 @@ independence_wave_decision_pay_diplomatic_light = {
 			type = train_equipment
 			amount = constant:independence_wave_decision_cost.train_light_spend
 		}
+	}
+}
+
+# Country scope. DM-44 reserves its promised arms when the convoy is opened.
+# Normal completion delivers the reserve from the stored target's scope;
+# cancellation may refund it unless the actor factually abandons the obligation
+# by accepting a client route while the protected member remains at war.
+independence_wave_decision_reserve_rescue_equipment = {
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_decision_cost.infantry_standard_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_decision_cost.support_standard_spend
+	}
+}
+
+independence_wave_decision_refund_rescue_equipment = {
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_decision_cost.infantry_standard
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_decision_cost.support_standard
 	}
 }
 
@@ -605,6 +661,8 @@ independence_wave_decision_request_selected_formable_commit = {
 # Parent integration hook: call before or from `independence_wave_end_active_origin`.
 independence_wave_cleanup_decision_layer = {
 	independence_wave_formable_cleanup_runtime = yes
+	independence_wave_decision_clear_active_league_target = yes
+	independence_wave_decision_clear_charter_war_mandate = yes
 	if = {
 		limit = { has_country_flag = independence_wave_emergency_formations_active }
 		independence_wave_decision_demobilize_emergency_formations = yes

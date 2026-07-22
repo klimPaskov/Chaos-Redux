@@ -83,11 +83,11 @@ The completion audit must cover at least:
 5. two continuous cross-regional years, including cohesion loss, split, radicalization, and reformation resets;
 6. rescue survival and voluntary reunion;
 7. every admitted formable family's first-stage integration receipts;
-8. leadership transfer, five arbitrations, member war, DM-51 coercion, a successful DM-60 patron-client expulsion, and a DM-60 vote cancelled after commitment;
+8. leadership transfer, five arbitrations, member war, DM-51 coercion, all seven factual expulsion grounds, a successful DM-60 expulsion for each ground, a DM-60 vote cancelled after commitment, DM-61 coup evidence without civil-war double counting, and DM-62 matching-mandate consumption versus an unauthorized declaration;
 9. all five `SCN-008` intensities and every scenario type, confirming only Low non-Common-Congress attempts start the survival ledger;
 10. host remnant settlement counting, subject disqualification, reconquest disqualification, and economic thresholds;
 11. Event 5 origin collision checks, exact compile-time admission rejection, and fail-closed route-proof checks for the currently unadmitted Volga Bulgaria and Assyria packages.
 
 ## Future extensions
 
-DM-60 covers only the written patron-client breach. Annexation, refusal of arbitration, abandoned rescue obligations, repeated charter violations, sponsored coups, and unauthorized wars still need their own factual transaction writers before they can enter the same expulsion target pool. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.
+All seven accepted factual grounds now enter the same DM-60 expulsion target pool. The remaining league extension is the charter-governed rival-bloc transaction after expulsion; it still needs a separate generation-safe membership contract, visible actions, AI, cleanup, and achievement-scenario coverage. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.
