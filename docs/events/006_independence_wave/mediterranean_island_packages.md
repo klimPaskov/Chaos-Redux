@@ -17,14 +17,17 @@ only when it is not living and still owns the vanilla `generic_focus` tree.
 mod-provided meaningful COR tree fails the setup gate and rolls the release
 back instead of being overwritten.
 
-Current visual admission remains withdrawn for IW-017, IW-018, and IW-019.
-Adolphe Landry, Jean Chiappe, Emilio Lussu, Luigi Sturzo, and Pietro Lanza di
-Scalea now have attributed source masters, explicit head-and-shoulders crops,
-identity-preserving HOI4 treatments, reviewed DDS files, and runtime wiring.
-The remaining Sardinian civic/crown route and command identities plus the
-Sicilian emergency commander are still generated and therefore invalid for
-grounded polities. All three packages stay outside runtime content attestation
-until every required real male identity passes the same source gate.
+IW-017 Corsica is admitted after its current portrait and full post-wiring
+country-package audits. Adolphe Landry and Jean Chiappe have attributed source
+masters, explicit head-and-shoulders crops, independently reviewed
+identity-preserving HOI4 treatments, pixel-identical runtime DDS files, and no
+advisor or `_small` derivatives. IW-018 and IW-019 remain visually withdrawn.
+Sardinia still lacks sourced real male crown-route and command identities, and
+its Emilio Lussu treatment still needs a compliant painted finish. Sicily's
+Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo identities and sources are
+valid, but their installed treatments remain too photographic. Those two
+packages stay outside runtime content attestation until every live role passes
+the same source and style gates.
 
 ## Release and host-survival contract
 

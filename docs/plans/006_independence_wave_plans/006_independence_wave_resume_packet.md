@@ -85,11 +85,11 @@ they are not current routing documents.
   promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
   fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM/
   HBX carrier set has no currently admitted country and cannot form.
-- IW-001/002/006/008/009/010, IW-017/018/019, IW-043/058,
+- IW-001/002/006/008/009/010, IW-018/019, IW-043/058,
   IW-173/179/184, IW-093, and IW-098 retain implemented gameplay adapters, but
   their generated or generic grounded-polity portraits withdraw visual
   readiness and runtime content attestation. The compile-time package content-
-  attestation set contains IW-004 and IW-007.
+  attestation set contains IW-004, IW-007, and IW-017.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched. Their
   packages still require sourced replacements for every other live leader and
   commander role.
@@ -98,12 +98,14 @@ they are not current routing documents.
   sourced portrait of the person.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
   carriers cannot execute while their owning package admission is withdrawn.
-- With only two attested packages, the allocator cannot satisfy the minimum
-  three-country automatic wave and fails closed before mutation. The exact
-  3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
-  `independence_wave_form48_registry_surface_registered` and
-  `independence_wave_form48_readiness_attested` after coordinated PASS audits.
-  No annexation or integration fallback is used.
+- The three attested packages can satisfy the minimum three-country automatic
+  wave only when all three pass their live host, anchor, reservation, Event-5
+  collision, chaos-band, force, and transaction gates. Higher automatic bands
+  remain fail-closed until enough additional packages are admitted. The exact
+  3/4/5/7/10 ladder and World Collapse count of ten remain unchanged. FORM-48's
+  proof writers own `independence_wave_form48_registry_surface_registered` and
+  `independence_wave_form48_readiness_attested`; no annexation or integration
+  fallback is used.
 - The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
   27 static icons including the three-state Assyria survival triplet, ten flat
   flags, and two report images. Mirsaid Sultan-Galiev and Gallo Shabo are the
@@ -167,7 +169,7 @@ they are not current routing documents.
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Admitted after current package and portrait audits | Régis de l'Estourbeillon and Henri-Léon Devin use independently approved sourced real-male HOI4 repaints, and the fresh package audit passes identity, setup, force, focus, decisions, AI, localisation, flags, collision guards, and cleanup. Preserve exact-ID compile-time attestation; live host, anchor, reservation, Event-5 collision, chaos-band, and transaction gates still decide each allocation |
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-017 COR | Approved portraits wired; fresh package audit pending | Adolphe Landry and Jean Chiappe pass source, crop, ownership, identity-likeness, male-only, and HOI4 painted-style review. Their exact approved PNGs are pixel-identical to the new runtime DDS files. Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access; do not attest until the fresh post-wiring country-package audit passes |
+| IW-017 COR | Admitted after current portrait and full post-wiring package audits | Adolphe Landry and Jean Chiappe pass source, crop, ownership, identity-likeness, male-only, and HOI4 painted-style review. Their exact approved PNGs are pixel-identical to the runtime DDS files. The fresh package audit passes dormant-vanilla identity safety, anchor 1/RG-1, FRA survival, Event-5 collision guards, setup, force, focus, decisions, events, AI, cleanup, localisation, historical flag, generic-tree protection, Mediterranean mechanics, and FORM-05 access. Preserve exact-ID attestation and every live allocation proof |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
 | IW-019 ASX | Static gameplay audit passed; portrait style blocked | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo are source/ownership-valid, and vanilla has no Rizzo character/portrait owner, but all three current treatments fail the HOI4 painted-style gate. Refinish them from the retained masters and re-audit; preserve the Sicilian package and FORM-05 access |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
@@ -177,7 +179,7 @@ they are not current routing documents.
 | IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Gallo Shabo is sourced, processed, and wired. Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until the other three route leaders are replaced and the full package is re-audited |
 | IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. The TNA/OGL Prempeh II photograph remains the approved source and identity, but the installed DDS is an ImageGen restyling of that real person and is withdrawn under the current deterministic real-person pipeline. Rebuild it from the unchanged archive master. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images and invented identities must be replaced by sourced real-person full portraits and matching names. Event 6 defines no commander miniatures. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until the complete sourced roster, exact flag, FORM-24 contract, and final country audits pass |
 | IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Muhammadu Dikko has a valid sourced TNA master and replaces fictional Umaru Gwadabawa, but the current photographic treatment fails the HOI4 painted-style gate. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, and Bello Rabah still require sourced real-person portraits before admission. Preserve the gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until the complete sourced roster, exact flag, FORM-25 contract, and final country audits pass |
-| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains IW-004 and IW-007 |
+| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains IW-004, IW-007, and IW-017 |
 
 An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
@@ -228,7 +230,7 @@ satisfy the synchronized frozen plan.
   and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
   Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted-
   style review and is wired to pixel-identical runtime DDS files; its fresh package
-  audit is pending. Sicily's Sturzo/Lanza/Rizzo roster passes subject-source and
+  audit passes and exact IW-017 is admitted. Sicily's Sturzo/Lanza/Rizzo roster passes subject-source and
   active-person ownership review but its current finishes remain photographic.
   Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
   created.
