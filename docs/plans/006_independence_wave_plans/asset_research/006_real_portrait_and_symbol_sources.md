@@ -15,18 +15,24 @@ The contextual source IDs already accepted in docs/specs/006_independence_wave_s
 
 ## Current Event 006 portrait-authority boundary
 
-This research ledger is not the authority for produced fictional portraits.
-Every 2026-07-15 fictional portrait and army-small visual/hash approval is
-superseded by
-`../../../assets/006_independence_wave/portrait_refresh_male_hoi4_2026_07_18/manifest.md`
-and
-`../subagent_handoffs/006_event6_male_commander_portrait_refresh_2026_07_18.md`.
-Rupprecht and Matthes remain protected route-owned historical exemptions with
-their source and review evidence preserved in
+This research ledger is not the authority for portrait admission. The current
+source-mode rules live in the accepted Event 006 specs, the source-of-truth
+map, the resume packet, and the event-asset skill. Every grounded, historical,
+restoration, separatist, regional, indigenous, dynastic, or otherwise
+plausibly historical package requires sourced real male people or sourced
+archival material depicting the actual institution. Generated one-person or
+institutional portraits are reserved for countries that are themselves truly
+fictional and high-chaos; no current Event 006 registry row qualifies.
+
+The 2026-07-15 and 2026-07-18 generated grounded-polity portraits and
+commander miniatures are therefore rejected historical evidence, not visual
+readiness. Rupprecht and Matthes remain protected route-owned sourced
+portraits with their review evidence preserved in
 `../../../assets/006_independence_wave/northern_western_europe_source_manifest.md`.
-The Debeauvais rights blocker remains current and is not cleared by BRI's
-fictional civic portrait. ACX and AEX portrait files are readiness-pool only,
-and custom Event 006 advisor icons remain withdrawn.
+Every other grounded runtime portrait must pass the current unchanged-source,
+head-and-shoulders crop, identity-preserving HOI4 repaint, independent visual
+audit, and ownership gate. ACX and AEX remain readiness-pool only, and custom
+Event 006 advisor icons remain withdrawn.
 
 ## Portrait candidates with reusable-rights evidence
 
@@ -54,7 +60,11 @@ and custom Event 006 advisor icons remain withdrawn.
 | IW-158 Tengku Mahmood Mahyideen | https://commons.wikimedia.org/wiki/Category:Tengku_Mahmood_Mahyideen | Conditional. Several files exist, but the clean portrait candidates are recent uploads whose underlying historical photograph provenance is not adequately described. He is a later Pattani route figure, not the 1936 opening sovereign. |
 | IW-077 Mahra incumbent; IW-102 Kuba Nyim; IW-104 Lunda Mwata Yamvo; IW-105 Moe Poaty III; IW-109 Tito Winyi IV; IW-112 Edward Suleiman Kahaya II; IW-121 regent Mshiyeni kaDinuzulu; IW-124 Griffith Lerotholi; IW-171 Sho house claimant | Package research and regional histories establish plausible offices or names, but this pass found no distributable, fully attributed portrait tied to the correct 1936 office | Source gap. Use the accepted generated institutional council or regency at opening. Do not borrow a later relative, neighboring ruler, generic chief, or unlabeled archive photograph. |
 
-The generated institutional solution above is a first-class package design already allowed by the accepted specification. It is not permission to substitute a generic real person.
+These source gaps keep the affected packages closed. Do not use a generated
+institution, generic real person, later relative, neighbouring ruler, or
+unlabelled archive photograph as a substitute. Admission requires a sourced
+real male officeholder or authentic sourced archival material of the actual
+institution, followed by the current portrait audit workflow.
 
 ## Cleared or usable symbol evidence
 
