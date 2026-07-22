@@ -3,7 +3,7 @@
 **Package dates:** 2026-07-18 source recovery; 2026-07-19 final portrait pass
 **Related event:** Event 006 — Independence Wave
 **Package row:** IW-093 Asante (`DOX`)
-**Asset status:** approved country-leader portrait; runtime DDS present
+**Asset status:** archival source approved; former ImageGen-based runtime visual withdrawn
 
 ## Final asset
 
@@ -12,22 +12,22 @@
 | Subject | Nana Otumfuo Agyeman Prempeh II |
 | Consumer type | Male civilian country leader; never an advisor |
 | Source photograph | `source_image/CO_1069-44-12_prempeh_ii_1935.jpg` |
-| ImageGen master | `source_png/portrait_DOX_prempeh_ii_imagegen_master.png` |
-| Approved PNG | `processed_png/portrait_DOX_prempeh_ii_hoi4.png` |
+| Historical ImageGen master | `source_png/portrait_DOX_prempeh_ii_imagegen_master.png` |
+| Withdrawn PNG | `processed_png/portrait_DOX_prempeh_ii_hoi4.png` |
 | Runtime DDS | `gfx/leaders/006_independence_wave/portrait_DOX_prempeh_ii.dds` |
 | Runtime dimensions | `156x210`, uncompressed BGRA, one mip level |
 | Sprite | `GFX_portrait_DOX_prempeh_ii` |
 | Character | `DOX_prempeh_ii` |
-| Visual review | `contact_sheets/portrait_DOX_prempeh_ii_hoi4_review.png` and `validation/visual_review.md` |
+| Superseded visual review | `contact_sheets/portrait_DOX_prempeh_ii_hoi4_review.png` and `validation/visual_review.md` |
 | Processing metadata | `metadata/portrait_DOX_prempeh_ii_hoi4_processing.json` |
 | Generation prompt | `prompts/portrait_DOX_prempeh_ii_imagegen_prompt.md` |
 
-The final image is an identity-preserving ImageGen edit of the attributed 1935
-photograph. It retains Prempeh II's face, expression, beaded head ornament,
-Asante cloth, and dignified direct gaze while applying the painted color,
-background, crop, and tonal treatment of the canonical vanilla HOI4 male
-leader references. The deterministic leader processor performs only the final
-explicit crop, resize, grade, review-sheet build, and export.
+The installed image is an identity-preserving ImageGen edit of the attributed
+1935 photograph. That production method is no longer allowed for a real-person
+portrait. The unchanged TNA/OGL source remains valid and must be used for a new
+explicit head-and-shoulders crop and deterministic HOI4 painted finish. The
+historical ImageGen master, PNG, DDS, sprite, and review sheet remain provenance
+and consumer evidence only; they do not grant visual or package readiness.
 
 ## Historical source and rights
 

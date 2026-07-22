@@ -285,8 +285,10 @@ rejected treatment evidence because vanilla recruits the same men as active
 GER or ENG characters; their Event 006 roles require different sourced male
 replacements. Luigi Rizzo remains valid because vanilla uses his name only for
 ship-production lines, not a character or portrait. Protected Rupprecht and
-Matthes remain the only approved Event 006 leader portraits. The rejected
-Hawaiian scan and every incomplete
+Matthes remain the only approved Event 006 leader portraits. Prempeh II's
+TNA/OGL archival master remains source-ready, but its installed ImageGen-based
+real-person restyling is withdrawn and requires a deterministic refinish from
+the unchanged source. The rejected Hawaiian scan and every incomplete
 package remain fail-closed. Event 6 uses no custom advisor, high-command,
 officer-corps, or dossier portrait sprites. All fourteen obsolete `_small`
 dossier DDS files, registrations, and consumers have been removed.
