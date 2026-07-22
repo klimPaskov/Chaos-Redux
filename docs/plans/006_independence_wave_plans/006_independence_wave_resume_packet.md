@@ -167,7 +167,7 @@ they are not current routing documents.
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
 | IW-004 BRI | Admitted after current package and portrait audits | Régis de l'Estourbeillon and Henri-Léon Devin use independently approved sourced real-male HOI4 repaints, and the fresh package audit passes identity, setup, force, focus, decisions, AI, localisation, flags, collision guards, and cleanup. Preserve exact-ID compile-time attestation; live host, anchor, reservation, Event-5 collision, chaos-band, and transaction gates still decide each allocation |
 | IW-010 AJX | Gameplay retained; visual admission withdrawn | Preserve its package logic, but keep execution closed until its generated leader and commander are replaced by sourced real-person portraits and re-audited |
-| IW-017 COR | Static gameplay audit passed; portrait style blocked | Adolphe Landry and Jean Chiappe are source/ownership-valid, but their current treatments fail the HOI4 painted-style gate. Refinish both from the retained masters and re-audit; preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access |
+| IW-017 COR | Approved portraits wired; fresh package audit pending | Adolphe Landry and Jean Chiappe pass source, crop, ownership, identity-likeness, male-only, and HOI4 painted-style review. Their exact approved PNGs are pixel-identical to the new runtime DDS files. Preserve dormant-vanilla identity safety, anchor 1, generic-tree protection, Mediterranean mechanics, and FORM-05 access; do not attest until the fresh post-wiring country-package audit passes |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
 | IW-019 ASX | Static gameplay audit passed; portrait style blocked | Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo are source/ownership-valid, and vanilla has no Rizzo character/portrait owner, but all three current treatments fail the HOI4 painted-style gate. Refinish them from the retained masters and re-audit; preserve the Sicilian package and FORM-05 access |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
@@ -226,11 +226,12 @@ satisfy the synchronized frozen plan.
   former exact content attestations and SCN-008 admissions remain withdrawn.
 - Mediterranean IW-017 through IW-019 gameplay, historical flat flag families,
   and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
-  Chiappe roster and Sicily's Sturzo/Lanza/Rizzo roster pass subject-source and
-  active-person ownership review, but their current portrait finishes are rejected
-  as photographic. Sardinia has sourced Lussu but two unresolved roles. All three
-  country admissions remain withdrawn under the deliberately empty global runtime
-  attestation. No advisor icons were created.
+  Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted-
+  style review and is wired to pixel-identical runtime DDS files; its fresh package
+  audit is pending. Sicily's Sturzo/Lanza/Rizzo roster passes subject-source and
+  active-person ownership review but its current finishes remain photographic.
+  Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
+  created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,
   architecture, decision/mission, localisation, flags, and postformation logic
   remain implemented. HAW's generic vanilla portrait and the generated FSM/HBX
