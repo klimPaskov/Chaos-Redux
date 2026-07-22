@@ -209,3 +209,18 @@ per component and transition generation, and it refreshes the shared Event Log
 views after a committed row. The history surface remains dormant and earns no
 release-floor credit until the orientation caller, coverage, event details,
 activation, and runtime gates are approved.
+
+## Triage Wall count correction
+
+The Triage Wall reservation adds thirteen dormant suffixes, so the authoritative
+living-world pilot total is `62` identities and `72` defined blocks. The chain
+uses event suffixes `175` through `187`, candidate id `175`, transaction key
+`710006`, route `7106`, and history id `9111`.
+
+Its candidate gate requires a produced Air Winter shelter snapshot, current
+medicine below the pressure band, affordable policy cost, current state
+ownership, and shelter capacity above the reviewed minimum. Four policy lanes
+have human and hidden AI result events, followed by a human and hidden AI
+doctor callback and authenticated cleanup. The chain remains dormant and
+uncounted. The countable Fallout living-world release-floor total remains
+`0 of 660`.
