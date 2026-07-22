@@ -1,4 +1,4 @@
-# Prempeh II final DDS validation
+# Prempeh II historical DDS validation
 
 **Validation date:** 2026-07-19
 **PNG:** `processed_png/portrait_DOX_prempeh_ii_hoi4.png`
@@ -12,5 +12,7 @@
 - Decoded PNG RGBA SHA-256: `33f8cbc6a5bbf90ebd6f543d75fa9f5acab16646218d343c1e6cb3cba77455b6`
 - Decoded DDS RGBA SHA-256: `33f8cbc6a5bbf90ebd6f543d75fa9f5acab16646218d343c1e6cb3cba77455b6`
 
-The decoded pixel streams are exactly equal. This mechanical validation is
-paired with the separate visual approval in `validation/visual_review.md`.
+The decoded pixel streams are exactly equal. This proves only the historical
+PNG-to-DDS export. The separate visual review is withdrawn because the PNG was
+produced through an ImageGen restyling of a real person; these hashes do not
+grant current visual or package readiness.
