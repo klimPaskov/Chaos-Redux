@@ -82,11 +82,15 @@ Read only the Event 6 asset prompt, the relevant source-mode sections of the ass
 
 ## 9. Generated event art
 
-Use for fictional report and news scenes, super-event images, fictional portraits, councils, alternate flags, faction emblems, and UI art.
+Use for fictional report and news scenes, super-event images, identity-preserving
+HOI4 refinishes of already sourced real portraits, truly fictional high-chaos
+portraits or institutions, alternate flags, faction emblems, and UI art. Every
+one of the current 206 country-registry rows is grounded; none authorizes a
+generated portrait identity.
 
 ### Prompt
 
-Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow. Produce final-source art for the exact assets named by the parent. Event 6 leader, commander, and collective portrait subjects must all be male and must match the canonical vanilla HOI4 portrait family. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not create advisor portrait icons. Do not generate real leaders or attested historical flags.
+Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow. Produce final-source art for the exact assets named by the parent. Event 6 leader, commander, and collective portrait subjects must all be male and must match the canonical vanilla HOI4 portrait family. For a grounded real person, accept only an unchanged attributed source and explicit head-and-shoulders crop from the source researcher; use ImageGen solely to repaint that exact person into the HOI4 finish, compare the result directly with the source, and fail closed on identity drift. Never generate, reconstruct, or substitute a real identity. Generate a one-person portrait or institution only when the parent identifies a truly fictional high-chaos country and leader; no current Event 6 registry row qualifies. Such an allowed fictional leader must use extraordinary, internally coherent invented regalia, dress, adornment, objects, or altered uniform rather than an ordinary or interchangeable design, without borrowing sacred traits from a real people. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not create advisor portrait icons. Historical flags still require source research and ImageGen must reconstruct them as clean flat flag geometry rather than artwork.
 
 ## 10. Icon artist
 
