@@ -1,57 +1,60 @@
-# Event 006 Rival Bloc Invitation Response Expiry — Follow-up Plan
+# Event 006 Rival Bloc Invitation Response Expiry — Implemented 2026-07-22
 
-## Problem
+## Result
 
-`independence_wave_rival_bloc_invite_member` spends resources and runs for 90
-days before `independence_wave_rival_bloc_issue_invitation` sets the target's
-pending invitation. That 90-day `days_remove` is a delivery timer; it is not a
-response timer. If the recipient never selects Accept or Decline, its pending
-flag, the global pending-target event target, and
-`independence_wave_rival_bloc_invitation_open` persist indefinitely. The last
-flag blocks every later leader invitation.
+The rival-bloc invitation lifecycle has three distinct, centrally tuned
+intervals:
 
-The Decision Modding reference confirms why a second response mechanism is
-needed: `remove_effect` starts only after a decision has been selected, not
-while an available decision is ignored. A timed country flag alone is also not
-sufficient because expiry would not clear the global pending target or apply
-the intended decline consequences.
+1. **Delivery — 90 days.** The leader pays the existing transport-and-arms
+   package when `independence_wave_rival_bloc_invite_member` is selected; its
+   `days_remove` represents dispatch and delivery only.
+2. **Response — 90 days.** Delivery activates the non-selectable,
+   recipient-owned `independence_wave_rival_bloc_respond_to_invitation`
+   mission. Ignoring it expires through the same central decline effect as an
+   explicit refusal.
+3. **Ratification — 30 days.** Choosing Accept removes only the response
+   mission, retains the pending contract state, pays the recipient's existing
+   cost, and begins the independent acceptance decision timer. Eligibility is
+   checked again when that timer completes.
 
-## Proposed bounded implementation
+`independence_wave_rival_bloc_clear_local_invitation_state` owns all
+recipient-side invitation variables and response-mission removal. The global
+`independence_wave_rival_bloc_clear_pending_invitation` effect invokes it on
+the saved target, then clears the global lock and event target. The target
+also records both the current contract generation and its own
+`independence_wave_generation_id`; a stale mission therefore cannot accept or
+expire a reused country's later invitation.
 
-1. Add one response-window constant to
-   `common/script_constants/006_independence_wave_rival_bloc_constants.txt`.
-2. When delivery succeeds, activate a recipient-owned timed response mission
-   (or fire an equivalent delayed event) bound to the same exact pending target,
-   inviter, and contract generation.
-3. Its timeout must call `independence_wave_rival_bloc_decline_invitation` in
-   the recipient scope. Acceptance and explicit decline must remove/cancel the
-   response surface first, then use the same central cleanup helper.
-4. Keep the existing 30-day acceptance ratification timer and its eligibility
-   recheck. The response timer only governs whether a recipient responds at
-   all; it must not duplicate membership registration or material costs.
-5. Ensure leader removal, origin cleanup, registry reconciliation, dissolution,
-   and reunification clear/cancel the response mission or event state along
-   with `independence_wave_rival_bloc_clear_pending_invitation`.
-6. Add recipient-facing localisation that distinguishes delivery, response
-   deadline, acceptance ratification, and a declined/expired offer. Do not
-   claim a deadline until the response surface exists.
+## Lifecycle and cleanup guarantees
 
-## Required validation scenarios
+- Delivery removes any obsolete active ratification decision and recipient
+  state before setting the new pending flag, inviter, contract generation,
+  target generation, global target, and response mission.
+- Explicit decline and unanswered timeout use
+  `independence_wave_rival_bloc_decline_invitation`; a valid pending offer
+  receives the confidence loss once and all invitation state is removed.
+- Acceptance selection removes the response mission. Ratification completion
+  registers the member only after the existing full eligibility recheck;
+  failed ratification centrally declines the offer.
+- Recipient invalidation, leader removal, origin cleanup, registry
+  reconciliation, dissolution, reunification, and a new contract generation
+  all route through either the global pending clear or the local state helper.
+  An old recipient scope that is no longer the saved pending target can only
+  clear its own obsolete fields, never the current global offer.
 
-- Delivery followed by no recipient choice: response expiry clears all pending
-  flags/variables/global target and permits a new invitation.
-- Accept before expiry: response state clears, 30-day ratification completes,
-  and one valid member row is created.
-- Decline before expiry: same cleanup path with one confidence loss.
-- Recipient joins main league, becomes an incompatible client, enters war, or
-  the leader changes/dissolves while the response is open: the offer closes
-  safely and does not alter main/rival values twice.
-- A reused tag or old contract generation cannot accept, expire, or clear the
-  current contract's invitation.
+## Files implemented
 
-## Ownership and scope
+- `common/script_constants/006_independence_wave_rival_bloc_constants.txt`
+- `common/scripted_triggers/006_independence_wave_rival_bloc_triggers.txt`
+- `common/scripted_effects/006_independence_wave_rival_bloc_effects.txt`
+- `common/decisions/006_independence_wave_rival_bloc_decisions.txt`
+- `localisation/english/006_independence_wave_rival_bloc_l_english.yml`
 
-This is a targeted expansion of the existing rival decision lifecycle, but it
-adds a new timed response surface and requires event/mission design review.
-It was deliberately not implemented during the decision-audit hardening patch.
-No fallback is proposed.
+The detailed implementation evidence and validation matrix are recorded in
+`subagent_handoffs/2026-07-22_rival_bloc_response_expiry_implementation_handoff.md`.
+
+## Scope resolution
+
+This follow-up is resolved. It introduced no fallback and no additional
+decision system; it extends the existing invitation category with one
+recipient-owned mission and existing central cleanup paths.

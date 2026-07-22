@@ -69,6 +69,7 @@ independence_wave_rival_bloc_category = {
 		custom_cost_text = independence_wave_rival_bloc_cost_accept
 		days_remove = constant:independence_wave_rival_bloc_duration.acceptance
 		complete_effect = {
+			independence_wave_rival_bloc_begin_acceptance_ratification = yes
 			add_command_power = constant:independence_wave_rival_bloc_cost.accept_command_power_spend
 			add_equipment_to_stockpile = { type = convoy amount = constant:independence_wave_rival_bloc_cost.accept_convoys_spend }
 		}
@@ -79,6 +80,28 @@ independence_wave_rival_bloc_category = {
 			base = constant:independence_wave_rival_bloc_ai.high
 			modifier = { factor = constant:independence_wave_rival_bloc_ai.host_pressure_factor has_independence_wave_severe_host_threat = yes }
 		}
+	}
+
+	# Activated by the delivery effect. This is a response deadline, not the
+	# paid acceptance-ratification timer that begins only when the target chooses
+	# the acceptance decision above.
+	independence_wave_rival_bloc_respond_to_invitation = {
+		name = independence_wave_rival_bloc_respond_to_invitation
+		desc = independence_wave_rival_bloc_respond_to_invitation_desc
+		icon = GFX_decision_independence_wave_league_votes
+		activation = { always = no }
+		selectable_mission = no
+		fire_only_once = no
+		visible = { is_independence_wave_rival_bloc_pending_invitation = yes }
+		days_mission_timeout = constant:independence_wave_rival_bloc_duration.invitation_response
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_rival_bloc_invitation_response_expired_tt
+			independence_wave_rival_bloc_expire_invitation = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_rival_bloc_valid_pending_acceptance = yes } }
+		cancel_effect = { independence_wave_rival_bloc_decline_invitation = yes }
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_rival_bloc_ai.blocked }
 	}
 
 	independence_wave_rival_bloc_decline_membership = {
