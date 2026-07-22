@@ -189,6 +189,10 @@ fallout_event_100_schedule_result = {
 			fallout_event_consume_issued_ordinary_receipt = yes
 			if = {
 				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				set_variable = { fallout_event_100_result_cleanup_ticket = fallout_event_transaction_ticket }
+				clr_country_flag = fallout_event_100_result_cleanup_released
+				clr_country_flag = fallout_event_100_callback_cleanup_released
+				clear_variable = fallout_event_100_callback_cleanup_ticket
 				set_variable = { fallout_event_100_selected_branch = fallout_event_100_requested_branch }
 				set_variable = { fallout_event_100_result_outcome = fallout_event_100_calculated_outcome }
 				set_variable = { fallout_event_100_result_generation = fallout_event_runtime_generation }
@@ -373,17 +377,23 @@ fallout_event_100_resolve_result_and_schedule_callback = {
 	set_temp_variable = { fallout_event_100_result_target = fallout_event_dispatch_issued_target }
 	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 	set_temp_variable = { fallout_event_requested_outcome = fallout_event_100_result_outcome }
-	fallout_event_100_apply_result_effects = yes
 	fallout_event_resolve_issued_delayed_result = yes
 	if = {
 		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
-		set_temp_variable = { fallout_event_requested_ticket = fallout_event_100_result_ticket }
-		fallout_event_prepare_delayed_cleanup = yes
+		fallout_event_100_apply_result_effects = yes
 		set_temp_variable = { fallout_event_100_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_100_record_history = yes
 		fallout_event_100_schedule_callback = yes
-		if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_100_callback_scheduled }
-		else = { set_country_flag = fallout_event_100_callback_schedule_error }
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_country_flag = fallout_event_100_callback_scheduled
+			set_variable = { fallout_event_100_callback_cleanup_ticket = fallout_event_transaction_ticket }
+		}
+		else = {
+			set_country_flag = fallout_event_100_callback_schedule_error
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_100_result_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+		}
 	}
 	clear_temp_variable = fallout_event_100_result_ticket
 	clear_temp_variable = fallout_event_100_result_mode
@@ -426,10 +436,11 @@ fallout_event_100_resolve_callback_and_prepare_cleanup = {
 	set_temp_variable = { fallout_event_100_callback_ticket = fallout_event_dispatch_issued_ticket }
 	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 	set_temp_variable = { fallout_event_requested_outcome = fallout_event_100_result_outcome }
-	fallout_event_100_apply_callback_effects = yes
 	fallout_event_resolve_issued_delayed_result = yes
 	if = {
 		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		fallout_event_100_apply_callback_effects = yes
+		set_variable = { fallout_event_100_callback_cleanup_ticket = fallout_event_100_callback_ticket }
 		set_temp_variable = { fallout_event_requested_ticket = fallout_event_100_callback_ticket }
 		fallout_event_prepare_delayed_cleanup = yes
 		set_temp_variable = { fallout_event_100_history_stage = constant:fallout_event_runtime.two }
@@ -442,7 +453,60 @@ fallout_event_100_resolve_callback_and_prepare_cleanup = {
 }
 
 fallout_event_100_cleanup = {
+	set_temp_variable = { fallout_event_100_cleanup_ticket = fallout_event_dispatch_issued_ticket }
 	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 	fallout_event_release_issued_delayed_cleanup = yes
-	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } clr_country_flag = fallout_event_100_callback_scheduled }
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		if = {
+			limit = { check_variable = { fallout_event_100_cleanup_ticket value = fallout_event_100_result_cleanup_ticket compare = equals } }
+			set_country_flag = fallout_event_100_result_cleanup_released
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_100_cleanup_ticket value = fallout_event_100_callback_cleanup_ticket compare = equals } }
+			set_country_flag = fallout_event_100_callback_cleanup_released
+		}
+		if = {
+			limit = {
+				check_variable = { fallout_event_100_cleanup_ticket value = fallout_event_100_callback_cleanup_ticket compare = equals }
+				has_country_flag = fallout_event_100_callback_cleanup_released
+			}
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_100_result_cleanup_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				clr_country_flag = fallout_event_100_callback_scheduled
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = fallout_event_100_result_cleanup_released
+						has_country_flag = fallout_event_100_callback_cleanup_released
+					}
+					AND = {
+						has_country_flag = fallout_event_100_result_cleanup_released
+						NOT = { has_country_flag = fallout_event_100_callback_scheduled }
+					}
+				}
+			}
+			clr_country_flag = fallout_event_100_chain_committed
+			clr_country_flag = fallout_event_100_callback_scheduled
+			clr_country_flag = fallout_event_100_callback_resolved
+			clr_country_flag = fallout_event_100_schedule_error
+			clr_country_flag = fallout_event_100_callback_schedule_error
+			clr_country_flag = fallout_event_100_result_history_recorded
+			clr_country_flag = fallout_event_100_callback_history_recorded
+			clr_country_flag = fallout_event_100_result_cleanup_released
+			clr_country_flag = fallout_event_100_callback_cleanup_released
+			clear_variable = fallout_event_100_selected_branch
+			clear_variable = fallout_event_100_result_outcome
+			clear_variable = fallout_event_100_result_generation
+			clear_variable = fallout_event_100_result_day
+			clear_variable = fallout_event_100_result_cleanup_ticket
+			clear_variable = fallout_event_100_callback_cleanup_ticket
+		}
+	}
+	clear_temp_variable = fallout_event_100_cleanup_ticket
 }
