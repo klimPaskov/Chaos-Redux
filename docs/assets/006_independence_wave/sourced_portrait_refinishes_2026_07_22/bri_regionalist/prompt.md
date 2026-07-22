@@ -1,8 +1,24 @@
 # ImageGen prompts - BRI regionalist portrait refinish
 
-The selected master is v2. Candidate v1 is retained only as review evidence.
-Both prompts treat the John Wickens photograph as the identity-bearing edit
-target. Canonical vanilla portraits are style references only.
+The current master is v3. Prior v2 and candidate v1 are retained as review
+evidence. Every prompt treats the unchanged John Wickens photograph as the
+identity-bearing edit target. Male vanilla HOI4 country-leader portraits are
+style references only.
+
+## Selected v3 prompt
+
+```text
+Use case: identity-preserve. Asset type: Hearts of Iron IV country-leader portrait, full 156x210 portrait convention. Edit Image 1 only: the exact sourced John Wickens 1904 photograph of Régis de l'Estourbeillon. Images 2, 3, and 4 are male vanilla HOI4 country-leader portrait references used for style only: full-color restrained painted rendering, pale quiet painted background, controlled value range, and readable head-and-shoulders silhouette. Do not copy their faces, clothing, identities, insignia, or poses.
+
+Primary request: create a stricter revision 3 as a full-color, restrained 1930s HOI4-painted portrait while preserving the exact sourced man from Image 1. This is not a new portrait and not a reconstructed likeness. Keep the same male face and facial geometry: exact brow, eyes and gaze direction, nose, cheeks, jaw, ears, moustache/facial hair, apparent age as seen in the source, expression, head angle, pose, and proportions. Keep the same broad dark hat, hairline, shoulder silhouette, and every visible part of the period Breton costume from Image 1: dark outer garment, cape-like shoulder panels, rows of buttons, and the visible patterned chest panel. Do not invent or reveal hidden costume detail.
+
+Apply only a restrained HOI4 painted finish: convert the monochrome source into subtle muted full color with period-appropriate 1930s palette and brushwork; quiet pale painted neutral background; controlled contrast and soft edge separation; light painterly texture instead of photographic halftone. Visible costume colors must remain subdued charcoal/black, slate, muted tan/gray and restrained dull-metal highlights, with no bright or symbolic colors. Keep the face natural, not beautified, idealized, de-aged, aged, or genericized.
+
+Composition/framing: centered vertical head-and-shoulders crop, full hat and both shoulders visible, source head angle unchanged, no extra people or objects.
+Lighting/mood: calm, dignified, softly lit archival portrait; no cinematic drama.
+Constraints: change only color treatment, quiet painted backdrop, subtle HOI4 brush finish, and the crop. Preserve exact source identity, facial hair, gaze/expression, age appearance, pose, silhouette, hat, and visible costume. No text, watermark, UI, frame, badge, flag, invented symbol, sacred/cultural motif, tartan, pseudo-Celtic motif, invented insignia, medals, modern props, stereotype, caricature, glamour, or photographic/sepia filter.
+Avoid: sepia monochrome, black-and-white output, brown photo tint, modern digital concept art, glossy photorealism, heavy oil-paint abstraction, face reconstruction, face substitution, changed ethnicity, altered facial proportions, altered gaze, changed hat or costume, newly invented clothing, or any readable text.
+```
 
 ## Selected v2 prompt
 
@@ -30,4 +46,3 @@ Color palette: muted warm gray and restrained sepia-neutral tones consistent wit
 Constraints: change only the crop, quiet backdrop, and subtle painterly finish. Preserve the exact source identity, facial hair, expression, age appearance, pose, hat, and visible clothing/regalia. Keep the result realistic and non-caricatured. No text, watermark, UI artifact, frame, border, badge, medal, invented insignia, invented uniform, or face substitution.
 Avoid: new or generic face, beautification, de-aging, aging beyond source, facial reconstruction, altered ethnicity, altered expression, altered hat or clothing, tartan, pseudo-Celtic motifs, sacred/cultural symbols, flags, slogans, modern props, stereotypes, caricature, glamour lighting, cinematic concept art, oil-paint filter that obscures likeness, and any readable text.
 ```
-

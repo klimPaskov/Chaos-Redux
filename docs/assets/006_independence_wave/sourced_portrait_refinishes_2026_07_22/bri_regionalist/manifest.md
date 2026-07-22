@@ -5,7 +5,7 @@ Asset: `leader_bri_regionalist_regis_de_l_estourbeillon`
 Role: existing `BRI_independence_wave_civic_delegate` country-leader token; male civic/regionalist leader  
 Identity classification: `grounded_identity`  
 Source treatment: attributed real-person source plus ImageGen edit restricted to identity-preserving repaint/recomposition  
-Package status: `needs_user_review` (selected portrait is processed and reviewable; parent explicitly deferred DDS/runtime conversion)
+Package status: `needs_user_review` (revision 3 is the current full-color candidate; parent explicitly deferred DDS/runtime conversion)
 
 ## Source authority
 
@@ -22,6 +22,13 @@ retained by the source-research package:
 
 The Maurice Dulac 1898 illustration was not used as an identity source and was
 not included in this package.
+
+The unchanged source master is also retained byte-for-byte inside this package
+for direct v2/v3 comparison:
+
+- `source_png/leader_bri_regionalist_regis_de_l_estourbeillon_john_wickens_1904_source_master.jpg`
+- dimensions: `1145x1707`, JPEG RGB
+- SHA-256: `C310F1D916A578FD4E3C5B9ADAC4D4737DA6D841D02D5EA59F66C4589AE9230D`
 
 ## Ownership and role evidence
 
@@ -47,9 +54,22 @@ roots, and evidence chain.
 - style references inspected: canonical vanilla leader family contact sheet and `portraits/leaders/den_thorvald_stauning.png`, `portraits/leaders/fin_carl_mannerheim.png`; references supplied only for quiet pale background, head-and-shoulders framing, restrained brush texture, and controlled contrast
 - review sheet: `contact_sheets/bri_regionalist_identity_review.png` (source crop, both ImageGen candidates, selected processed output, and canonical style references; review only)
 
+## Revision 3 current candidate
+
+- ImageGen v3 raw master: `source_png/leader_bri_regionalist_regis_de_l_estourbeillon_imagegen_master_v3.png`
+- raw dimensions: `1082x1454`, PNG RGB, opaque; SHA-256 `660E954102CC6DF902792E84D0B0F97F178351476485A008362E64A1610E8120`
+- processed preview: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillon_v3.png`
+- processed dimensions: `156x210`, PNG RGB, opaque; SHA-256 `5426E39BC1622E7ECD32A41CC0A1C05D6596446A40FA0B7BA2047EF350BBAE80`
+- generation intent: strict edit of the John Wickens source photograph, not a new identity
+- style references: skill-local male vanilla HOI4 country-leader portraits `leader_portraits/leaders/den_thorvald_stauning.png`, `leader_portraits/leaders/ire_eamon_de_valera.png`, and `leader_portraits/leaders/afg_mohammed_zahir_shah.png`; references were used only for full-color restrained HOI4 paint, pale quiet backdrop, controlled values, and head-and-shoulders composition
+- visual direction: muted charcoal/black, slate, subdued tan/gray and restrained dull-metal highlights; quiet painted neutral background; no sepia or black-and-white treatment
+- identity invariants checked: same male face, gaze, facial geometry, apparent source age, moustache, hat, costume, pose, and silhouette; no hidden detail reconstructed and no symbols, flags, text, invented insignia, medals, tartan, pseudo-Celtic motif, sacred/cultural symbol, stereotype, or generic face
+- crop: source v3 master `(1,0,1081,1454)` -> `1080x1454` -> Lanczos `156x210`
+- current comparison sheet: `contact_sheets/bri_regionalist_v3_comparison.png` (unchanged source crop, v2 processed, v3 processed, v3 master, and three male vanilla references; review only)
+
 ## Crop and processing
 
-The selected raw master is `1024x1536`. To preserve the complete head, hat,
+The prior v2 raw master is `1024x1536`. To preserve the complete head, hat,
 shoulders, and visible upper-torso costume while matching the HOI4 portrait
 ratio, a deterministic top/bottom crop was applied:
 
@@ -67,28 +87,33 @@ SHA-256: `BDEDCCB06A25807C70A774871607AE72DA4F9A51B711E88E45F1E389A99500C8`
 The local processed PNG is a review artifact only. No DDS was created and no
 runtime path was changed, per parent scope.
 
+The current v3 processed PNG is also review-only. No DDS was created and no
+runtime path was changed, per parent scope.
+
 ## Exact ImageGen prompts
 
-The selected v2 prompt and the retained v1 prompt are preserved verbatim in
-[`prompt.md`](prompt.md). The selected edit used the source photograph as the
-edit target and `den_thorvald_stauning.png` as a style-only reference. The
-candidate contact sheet is review evidence, not a runtime texture.
+The selected v3 prompt, prior v2 prompt, and retained v1 prompt are preserved
+verbatim in [`prompt.md`](prompt.md). The v3 edit used the unchanged source
+photograph as the identity-bearing edit target and only male vanilla
+country-leader portraits as style references. The comparison sheets are review
+evidence, not runtime textures.
 
 ## Runtime handoff (parent-owned)
 
 - existing sprite: `GFX_portrait_BRI_independence_wave_civic_commission`
 - existing `.gfx`: `interface/006_independence_wave_brittany_portraits.gfx`
 - deferred runtime texture: `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`
+- candidate processed input for parent DDS conversion: `processed_png/leader_bri_regionalist_regis_de_l_estourbeillon_v3.png`
 - target final texture size: `156x210`, uncompressed BGRA DDS through the repository converter when the parent performs the deferred conversion
 - no new sprite declaration is requested; preserve the existing mapping
 
 ## Fail-closed review verdict
 
-The selected edit is a source-preserving candidate: the face, moustache,
-expression/gaze, hat, and period costume remain visibly the same subject as the
-John Wickens source, and the output contains no prohibited invented cultural or
-military details. The package remains `needs_user_review` until the parent
-accepts the identity comparison and performs the deferred DDS/runtime step. If
-the parent judges the face to drift or the costume to be invented, reject this
-edit and leave the civic slot blocked; do not use the Dulac illustration or a
-generated/generic/female/advisor substitute.
+Revision 3 is the current source-preserving candidate: it is visibly full-color
+and painted in the restrained vanilla HOI4 direction while retaining the same
+source-supported face, moustache, gaze, age appearance, hat, pose, silhouette,
+and costume. The package remains `needs_user_review` until the parent accepts
+the direct source/v2/v3 comparison and performs the deferred DDS/runtime step.
+If the parent judges the face to drift or any costume detail to be invented,
+reject v3 and leave the civic slot blocked; do not use the Dulac illustration or
+a generated/generic/female/advisor substitute.
