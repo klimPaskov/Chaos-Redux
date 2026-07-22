@@ -24,9 +24,10 @@ The country-package handoffs describe the existing fictional placeholders as:
 
 ## Candidate ledger
 
-### BRI civic — source-ready
+### BRI civic — sourced identity rejected for the current route role
 
-**Marcel Cachin (1869–1958)** — `source_ready` for the BRI civic role.
+**Marcel Cachin (1869–1958)** — `rejected_current_role_mismatch` for the
+existing BRI civic-delegate token; `source_ready_labor_identity_only`.
 
 - Identity and timing: male French politician, born in Paimpol, Brittany;
   alive on 1936-01-01. The Breton birth link supplies a direct regional civic
@@ -50,6 +51,12 @@ The country-package handoffs describe the existing fictional placeholders as:
 - Ownership scan: no exact current-project or vanilla character/portrait hit
   for `Marcel Cachin`, `Marcel_Cachin`, or `Cachin` in the bounded history,
   common, interface, gfx/leaders, and localisation roots.
+- Role correction: the current `BRI_independence_wave_civic_delegate` is
+  promoted as the oligarchic leader of the traditional regionalist compact or
+  protected-ports patron route. Cachin's socialist and communist political
+  career cannot plausibly fill either office. His source may support a future
+  explicit labor-route slot, but it must not be wired to the current sprite or
+  used to claim IW-004 portrait completeness.
 
 ### BRI coastal commandant — source-ready
 
@@ -186,8 +193,10 @@ character/portrait owner was found for Cachin, Devin, or Hoffmann. Castex appear
 only in a historical vanilla naval-unit comment, not as an active character or
 portrait.
 
-Marcel Cachin and Henri-Léon Devin are source-ready. Hoffmann requires rights
-review, and the AJX command role remains blocked. No candidate may be sent through
+Henri-Léon Devin is source-ready for the BRI coastal command. Cachin is usable
+only for a separate labor-route identity and does not clear the current BRI
+civic token. Hoffmann requires rights review, and the AJX command role remains
+blocked. No candidate may be sent through
 the report-event processor, advisor pipeline, or DDS converter from this retry
 folder until role and rights decisions are recorded by the parent.
 
@@ -195,7 +204,7 @@ folder until role and rights decisions are recorded by the parent.
 
 | Sprite name | Deferred runtime path | Source status |
 |---|---|---|
-| `GFX_portrait_BRI_independence_wave_civic_commission` | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds` | Marcel Cachin `source_ready` |
+| `GFX_portrait_BRI_independence_wave_civic_commission` | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds` | Blocked; Marcel Cachin rejected for the current traditional/patron role |
 | `GFX_portrait_BRI_independence_wave_coastal_commandant` | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds` | Henri-Léon Devin `source_ready` |
 | `GFX_portrait_AJX_saar_municipal_neutral_commission` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | Hoffmann rights review-gated |
 | `GFX_portrait_AJX_saar_industrial_security_command` | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_command.dds` | Blocked |
@@ -203,5 +212,5 @@ folder until role and rights decisions are recorded by the parent.
 Processed PNG paths and final DDS paths are intentionally empty. The parent
 agent owns independent visual approval, native portrait processing, DDS conversion,
 and `.gfx` wiring after a candidate is accepted. No contact sheet was created:
-there is one source-ready master and the remaining retained binaries are
+there is one current-role source-ready master and the remaining retained binaries are
 explicitly rejected/review evidence rather than alternatives for selection.

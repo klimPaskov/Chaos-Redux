@@ -17,7 +17,7 @@ portrait processing, PNG, or DDS edits.
 
 | Role | Result | Candidate and evidence |
 |---|---|---|
-| BRI civic commission | `source_ready` | Marcel Cachin, Agence Meurisse/Gallica 1918, PD-US-expired basis; 5063×7000 source, SHA-256 `85fa2c4d485bddde3e5fee903f52a3dc8f91f53f22159b38e1a62164f024e2a9`; born Paimpol/Brittany, alive 1936; clear face; no active owner. |
+| BRI civic commission | `rejected_current_role_mismatch`; `source_ready_labor_identity_only` | Marcel Cachin has an excellent Agence Meurisse/Gallica 1918 source, was born in Paimpol, was alive in 1936, and has no active owner. However, the existing civic-delegate token becomes the oligarchic traditional or patron-route leader; Cachin's socialist/communist career is not plausible for that office. He may be used only if a separate labor-route character slot is deliberately implemented. |
 | BRI coastal commandant | `source_ready` | Henri-Léon Devin has a clean Gallica/Agence Rol 1930 headshot and rights basis. He commanded the École navale at Brest from September 1930, which is valid for the accepted Joint Coastal Command role on 1936-01-01; the later maritime-prefect appointment is not required by that role. Raoul Castex's bust is unnecessary, and Abrial/Huntziger remain rejected active vanilla identities. |
 | AJX/Saar municipal neutral commission | `needs_review_rights` (exact role blocked pending evidence) | Johannes Hoffmann, Saar-Nostalgie/Brazilian Immigration Agency photo, 1941, 306×408, SHA-256 `9f9032681cd7cb2f087d2b89cd7932c8702e1fe872e33533cd754d19819416cf`; clear face and Saar civic identity, but family-estate source and URAA/US status are unresolved. |
 | AJX/Saar industrial-security command | `blocked` | Anton Dunckern, Willy Schmelcher, Theodor Berkelmann, and Kurt Daluege were screened; each fails rights, role, or both. No generic/generated fallback is allowed. |
@@ -31,9 +31,11 @@ historical naval-unit comment, not a portrait owner.
 
 ## Parent actions
 
-1. Process Marcel Cachin as a full `156×210` country-leader portrait and record
-   independent visual approval before DDS conversion. Event 006 does not use
-   advisor/dossier portrait assets.
+1. Do not wire Marcel Cachin to the existing civic-commission sprite. Retain his
+   source and visual treatment only as a labor-route candidate. Research a real
+   male Breton regionalist/traditional civic figure for the current token;
+   Régis de l'Estourbeillon is a strong lead subject to source and ownership
+   review. Event 006 does not use advisor/dossier portrait assets.
 2. Treat Devin as the source-ready Joint Coastal Command identity. His command
    of the École navale at Brest from 1930 supplies the required start-date naval
    and regional fit; do not relabel him as maritime prefect before September
@@ -46,8 +48,9 @@ historical naval-unit comment, not a portrait owner.
 
 ## Residual risks and simplifications
 
-- Both BRI roles have source-ready masters. AJX civic is rights-review-gated,
-  and AJX command remains blocked.
+- BRI coastal command has a source-ready master, but the current BRI
+  traditional/patron civic slot remains source-blocked after Cachin's role
+  mismatch. AJX civic is rights-review-gated, and AJX command remains blocked.
 - No processed PNG, DDS, contact sheet, or `.gfx` edit is included by design;
   the parent portrait pipeline owns those steps.
 - The retained Castex bust and Abrial originals/derivative are rejection

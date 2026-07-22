@@ -11,19 +11,21 @@ a role whose source status is `needs_review` or `blocked`.
 
 | Proposed sprite name | Intended target `.gfx` | Deferred DDS path | Candidate/source status | Handoff action |
 |---|---|---|---|---|
-| `GFX_portrait_BRI_independence_wave_civic_commission` | `interface/_leader_portraits.gfx` (or the parent package's dedicated leader GFX file) | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds` | Marcel Cachin — `source_ready` | Parent may process after its normal review gate. |
+| `GFX_portrait_BRI_independence_wave_civic_commission` | `interface/_leader_portraits.gfx` (or the parent package's dedicated leader GFX file) | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds` | Blocked; Marcel Cachin is `rejected_current_role_mismatch` for the oligarchic traditional/patron token | Do not wire Cachin here. Retain him only as a possible separately implemented labor-route identity; source a real Breton regionalist for this sprite. |
 | `GFX_portrait_BRI_independence_wave_coastal_commandant` | `interface/_leader_portraits.gfx` (or dedicated package file) | `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds` | Henri-Léon Devin `source_ready` | Process as a full `156×210` portrait; his École navale command at Brest supplies the 1936 Joint Coastal Command fit. Do not depict or describe him as maritime prefect before September 1936. |
 | `GFX_portrait_AJX_saar_municipal_neutral_commission` | `interface/_leader_portraits.gfx` (or dedicated package file) | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | Johannes Hoffmann — `needs_review_rights` | Do not process until independent US redistribution evidence is recorded. |
 | `GFX_portrait_AJX_saar_industrial_security_command` | `interface/_leader_portraits.gfx` (or dedicated package file) | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_command.dds` | `blocked` | No fallback portrait; source a new rights-clear, role-valid candidate in a later retry. |
 
-## Source path for the one ready candidate
+## Source path for the one current-role ready candidate
 
-`source_masters/BRI/BRI_marcel_cachin_gallica_meurisse_1918.jpg`
+`source_masters/BRI/BRI_leon_henri_devin_brest_prefet_1930.jpg`
 
-The source is a 5063×7000 Gallica IIIF original from Agence Meurisse (1918),
-SHA-256 `85fa2c4d485bddde3e5fee903f52a3dc8f91f53f22159b38e1a62164f024e2a9`.
-Its face is centered and crop-capable. The manifest contains the source URLs,
-public-domain basis, and ownership-scan result.
+The source is a 6318×8587 Gallica IIIF original from Agence Rol (1930),
+SHA-256 `ab7d69e6f485be51bfc02823bf94187a9239b54f56525ff97223c9e7b2f7e4c0`.
+Its face, cap, and upper uniform are clear and crop-capable. The manifest
+contains the source URLs, public-domain basis, role evidence, and ownership-scan
+result. Marcel Cachin's source remains retained only for a possible future
+labor-route identity and is not ready for the current civic token.
 
 ## Runtime snippet policy
 
