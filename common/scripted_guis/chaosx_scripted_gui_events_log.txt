@@ -1227,6 +1227,51 @@ scripted_gui = {
 				}
 			}
 
+			events_log_event_detail_rival_member_previous_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = independence_wave_rival_bloc_event_detail_member_index
+							value = global.independence_wave_rival_bloc_member_country_entries^num
+							compare = greater_than_or_equals
+						}
+					}
+					set_variable = { independence_wave_rival_bloc_event_detail_member_index = global.independence_wave_rival_bloc_member_country_entries^num }
+				}
+				if = {
+					limit = { check_variable = { independence_wave_rival_bloc_event_detail_member_index > 0 } }
+					subtract_from_variable = { independence_wave_rival_bloc_event_detail_member_index = constant:independence_wave_plan.loop_increment }
+				}
+				else = {
+					set_variable = { independence_wave_rival_bloc_event_detail_member_index = global.independence_wave_rival_bloc_member_country_entries^num }
+					subtract_from_variable = { independence_wave_rival_bloc_event_detail_member_index = constant:independence_wave_plan.loop_increment }
+				}
+			}
+
+			events_log_event_detail_rival_member_next_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = independence_wave_rival_bloc_event_detail_member_index
+							value = global.independence_wave_rival_bloc_member_country_entries^num
+							compare = greater_than_or_equals
+						}
+					}
+					set_variable = { independence_wave_rival_bloc_event_detail_member_index = constant:independence_wave_plan.first_array_index }
+				}
+				add_to_variable = { independence_wave_rival_bloc_event_detail_member_index = constant:independence_wave_plan.loop_increment }
+				if = {
+					limit = {
+						check_variable = {
+							var = independence_wave_rival_bloc_event_detail_member_index
+							value = global.independence_wave_rival_bloc_member_country_entries^num
+							compare = greater_than_or_equals
+						}
+					}
+					set_variable = { independence_wave_rival_bloc_event_detail_member_index = constant:independence_wave_plan.first_array_index }
+				}
+			}
+
 			history_detail_evolution_open_details_button_click = {
 				events_log_open_selected_event_detail_evolution = yes
 			}
@@ -1384,6 +1429,32 @@ scripted_gui = {
 			}
 			events_log_event_detail_open_abnormal_map_button_click_enabled = {
 				has_global_flag = natural_disaster_evolution_iii_logged
+			}
+			events_log_event_detail_rival_member_previous_button_visible = {
+				check_variable = {
+					var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+					value = constant:independence_wave_event.id
+					compare = equals
+				}
+				has_global_flag = independence_wave_rival_bloc_active
+				independence_wave_rival_bloc_member_arrays_are_aligned = yes
+				check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 0 }
+			}
+			events_log_event_detail_rival_member_next_button_visible = {
+				check_variable = {
+					var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+					value = constant:independence_wave_event.id
+					compare = equals
+				}
+				has_global_flag = independence_wave_rival_bloc_active
+				independence_wave_rival_bloc_member_arrays_are_aligned = yes
+				check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 0 }
+			}
+			events_log_event_detail_rival_member_previous_button_click_enabled = {
+				check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 1 }
+			}
+			events_log_event_detail_rival_member_next_button_click_enabled = {
+				check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 1 }
 			}
 			events_log_event_detail_actor_flag_visible = {
 				AND = {
