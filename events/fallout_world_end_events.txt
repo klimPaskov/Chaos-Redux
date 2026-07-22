@@ -7876,6 +7876,250 @@ country_event = {
 # Air Winter terminal response results
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival pilot: The Last Inventory
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.100
+	title = chaosx.fallout.100.t
+	desc = chaosx.fallout.100.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_country_can_receive_ordinary_event = yes
+		fallout_event_issued_ordinary_receipt_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_human }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	}
+
+	option = {
+		name = chaosx.fallout.100.a
+		hidden_effect = {
+			set_temp_variable = { fallout_event_100_requested_branch = constant:fallout_event_100_branch.publish_strict_rations }
+			fallout_event_100_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.100.a.tt
+		ai_chance = { base = 8 modifier = { factor = 2 has_government = democratic } modifier = { factor = 2 has_government = communism } }
+	}
+
+	option = {
+		name = chaosx.fallout.100.b
+		hidden_effect = {
+			set_temp_variable = { fallout_event_100_requested_branch = constant:fallout_event_100_branch.hide_shortage_protect_caches }
+			fallout_event_100_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.100.b.tt
+		ai_chance = { base = 6 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_100_threshold.recognition_success compare = less_than } } }
+	}
+
+	option = {
+		name = chaosx.fallout.100.c
+		hidden_effect = {
+			set_temp_variable = { fallout_event_100_requested_branch = constant:fallout_event_100_branch.requisition_private_stores }
+			fallout_event_100_choose_branch = yes
+		}
+		custom_effect_tooltip = chaosx.fallout.100.c.tt
+		ai_chance = { base = 4 modifier = { factor = 2 has_government = fascism } modifier = { factor = 2 has_government = neutrality } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.101
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_country_can_receive_ordinary_event = yes
+		fallout_event_issued_ordinary_receipt_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+	immediate = { fallout_event_100_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.102
+	title = chaosx.fallout.102.t
+	desc = {
+		text = chaosx.fallout.102.success.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.102.partial.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.102.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_public_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.publish_strict_rations }
+	}
+	option = {
+		name = chaosx.fallout.102.a
+		hidden_effect = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.102.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.103
+	title = chaosx.fallout.103.t
+	desc = {
+		text = chaosx.fallout.103.success.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.103.partial.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.103.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_household_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.hide_shortage_protect_caches }
+	}
+	option = {
+		name = chaosx.fallout.103.a
+		hidden_effect = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.103.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.104
+	title = chaosx.fallout.104.t
+	desc = {
+		text = chaosx.fallout.104.success.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.104.partial.d
+		trigger = { check_variable = { fallout_event_100_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.104.failure.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_seizure_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.requisition_private_stores }
+	}
+	option = {
+		name = chaosx.fallout.104.a
+		hidden_effect = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+		custom_effect_tooltip = chaosx.fallout.104.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.105
+	title = chaosx.fallout.105.t
+	desc = {
+		text = chaosx.fallout.105.public.d
+		trigger = { check_variable = { fallout_event_100_selected_branch = constant:fallout_event_100_branch.publish_strict_rations } }
+	}
+	desc = {
+		text = chaosx.fallout.105.household.d
+		trigger = { check_variable = { fallout_event_100_selected_branch = constant:fallout_event_100_branch.hide_shortage_protect_caches } }
+	}
+	desc = chaosx.fallout.105.requisition.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_callback }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_100_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_100_branch.upper_bound }
+	}
+	option = {
+		name = chaosx.fallout.105.a
+		hidden_effect = { fallout_event_100_resolve_callback_and_prepare_cleanup = yes }
+		custom_effect_tooltip = chaosx.fallout.105.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.106
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_event_issued_delayed_cleanup_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_cleanup }
+	}
+	immediate = { fallout_event_100_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.123
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_public_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.publish_strict_rations }
+	}
+	immediate = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.124
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_household_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.hide_shortage_protect_caches }
+	}
+	immediate = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.125
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_seizure_result_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_100_branch.requisition_private_stores }
+	}
+	immediate = { fallout_event_100_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.126
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_inventory_callback_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_100_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_100_branch.upper_bound }
+	}
+	immediate = { fallout_event_100_resolve_callback_and_prepare_cleanup = yes }
+}
+
 country_event = {
 	id = chaosx.fallout.201
 	title = chaosx.fallout.201.t
