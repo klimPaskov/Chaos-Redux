@@ -1,0 +1,121 @@
+# ============================================================================
+# CHAOS REDUX - CAPTURED BIOLOGICAL FACILITY SCRIPTED TRIGGERS
+# ============================================================================
+# Inputs: exact state records created by on_state_control_changed, or native
+#   raid variables var:actor_country and var:target_state.
+# Outputs: fail-closed capture, controller, payload, raid, hazard, and AI checks.
+# Side effects: none. These triggers never scan for a replacement facility,
+#   deploy a biological weapon, move payload, or schedule a global pulse.
+# ============================================================================
+
+bio_facility_capture_state_has_complete_ledger = {
+	has_state_flag = bio_captured_facility_unsecured
+	has_variable = bio_stockpile_safety_arsenal_actor
+	has_variable = bio_captured_facility_controller
+	has_variable = bio_captured_facility_anthrax
+	has_variable = bio_captured_facility_plague
+	has_variable = bio_captured_facility_tularemia
+	has_variable = bio_captured_facility_smallpox
+	has_variable = bio_captured_facility_total
+	has_variable = bio_captured_facility_original_pointer_source
+	check_variable = {
+		var = bio_captured_facility_total
+		value = constant:bio_facility_capture_math.zero
+		compare = greater_than_or_equals
+	}
+}
+
+bio_facility_capture_controller_record_is_current = {
+	bio_facility_capture_state_has_complete_ledger = yes
+	CONTROLLER = {
+		exists = yes
+		tag = var:PREV.bio_captured_facility_controller
+	}
+}
+
+bio_facility_capture_state_has_payload = {
+	bio_facility_capture_state_has_complete_ledger = yes
+	check_variable = {
+		var = bio_captured_facility_total
+		value = constant:bio_facility_capture_math.zero
+		compare = greater_than
+	}
+}
+
+bio_facility_capture_target_has_high_hazard = {
+	bio_facility_capture_state_has_payload = yes
+	check_variable = {
+		var = bio_captured_facility_total
+		value = constant:bio_facility_capture_payload.high_hazard_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+# Country scope. This state iteration is evaluated only for raid visibility and
+# availability. It is not a periodic world sampler.
+bio_facility_capture_country_has_recoverable_site = {
+	any_controlled_state = {
+		bio_facility_capture_controller_record_is_current = yes
+		is_controlled_by = ROOT
+	}
+}
+
+# Actor-country scope with var:target_state supplied by the native raid. FROM
+# may be the state's recorded original owner, but no diplomatic relationship is
+# required because the operation occurs inside territory controlled by ROOT.
+bio_facility_capture_target_from_is_valid = {
+	var:target_state = {
+		bio_facility_capture_controller_record_is_current = yes
+		is_controlled_by = ROOT
+		impassable = no
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	}
+}
+
+# Raid-instance scope. The selected exact state must still be controlled by the
+# native actor at outcome time. No alternate target is selected on failure.
+bio_facility_capture_native_context_is_valid = {
+	var:actor_country = { exists = yes }
+	var:target_state = {
+		bio_facility_capture_controller_record_is_current = yes
+		is_controlled_by = var:ROOT.actor_country
+		impassable = no
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	}
+}
+
+bio_facility_capture_state_is_initial_hostile_capture = {
+	has_state_flag = bio_stockpile_safety_arsenal_complex
+	has_variable = bio_stockpile_safety_arsenal_actor
+	NOT = { has_state_flag = bio_captured_facility_unsecured }
+	CONTROLLER = {
+		exists = yes
+		NOT = { tag = var:PREV.bio_stockpile_safety_arsenal_actor }
+	}
+}
+
+bio_facility_capture_state_is_original_custodian_recapture = {
+	bio_facility_capture_state_has_complete_ledger = yes
+	CONTROLLER = {
+		exists = yes
+		tag = var:PREV.bio_stockpile_safety_arsenal_actor
+	}
+}
+
+bio_facility_capture_hazard_event_is_due = {
+	bio_facility_capture_controller_record_is_current = yes
+	bio_facility_capture_state_has_payload = yes
+	has_state_flag = bio_captured_facility_hazard_event_scheduled
+	has_variable = bio_captured_facility_hazard_due_day
+	check_variable = {
+		var = global.num_days
+		value = bio_captured_facility_hazard_due_day
+		compare = greater_than_or_equals
+	}
+}
+
+bio_facility_capture_release_context_is_valid = {
+	bio_facility_capture_controller_record_is_current = yes
+	bio_facility_capture_state_has_payload = yes
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+}
