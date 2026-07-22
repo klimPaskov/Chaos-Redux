@@ -11,14 +11,16 @@ crop, resize, processing, PNG/DDS conversion, or portrait wiring was done.
 - [ARX retry manifest](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/manifest.md)
 - [SHA-256 inventory](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/source_hashes.sha256)
 - [Unchanged source masters](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/source_masters/sardinia/)
+- [Documentation-only GFX handoff](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/gfx_handoff.md)
+- [Ownership and candidate log](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/search_notes/ownership_and_candidate_log.md)
 
 ## Result
 
 | ARX role | Candidate | Disposition |
 |---|---|---|
-| `ARX_sardinian_crown_consultative_council` | Prince Adalberto di Savoia-Genova, Duke of Bergamo | `needs_user_review`: 1935 photographic master, House of Savoy-Genova dynastic identity, and 1935–36 general/division-command record. Italian `PD-Italy` is documented, but no explicit US `PD-1996` determination is present. Parent owner scan and independent rights/visual approval remain required. |
+| `ARX_sardinian_crown_consultative_council` | Prince Adalberto di Savoia-Genova, Duke of Bergamo | `needs_user_review`: 1935 photographic master, House of Savoy-Genova dynastic identity, and 1935–36 general/division-command record. Parent exact/variant scan found no owner across Chaos Redux, vanilla, Kaiserreich, or approved mods `2265420196`/`1458561226`. Commons `PD-Italy` lacks publication evidence needed to establish the US condition independently; rights and visual review remain required. |
 | `ARX_gavino_piras` | Prince Adalberto di Savoia-Genova, Duke of Bergamo | `needs_user_review`: strong 1935–36 active-general role fit; using one dynastic general for both crown/council and command is a parent design decision, not an automatic replacement. |
-| `ARX_gavino_piras` naval/coastal alternative | Giovanni Sechi | `needs_user_review`: Sassari-born admiral and former Navy minister, alive in 1936, but senior reserve/retired and the only available Commons original is a low-resolution 250×207 landscape portrait. Commons `PD-anon-70-EU` lacks a US determination. |
+| `ARX_gavino_piras` naval/coastal alternative | Giovanni Sechi | `rejected_external_mod_owner`: parent ownership scan found the active Kaiserreich Sardinia character `SRD_giovanni_sechi`. The retained low-resolution Commons files are provenance evidence only and must not be processed or wired. |
 | `ARX_gavino_piras` Sardinian army lead | Nino Salvatore Villa Santa | `blocked`: Cagliari-born and 1935–38 commander of 19th Infantry Division, but available Generals.dk image is copyright-controlled and the Regio Esercito page only exposes an unlicensed 90×110 thumbnail. |
 | `ARX_gavino_piras` Sardinian army lead | Gavino Pizzolato | `blocked`: Sassari-born and 1934–37 artillery-regiment commander, but available portraits carry unclear/copyright-controlled reuse terms and no rights-clear original was found. |
 
@@ -44,8 +46,11 @@ duplicated here.
   September 1935, and general of division in 1936:
   <https://www.treccani.it/enciclopedia/savoia-adalberto-di-duca-di-bergamo/>.
 - Rights note: Commons provides an Italian simple-photograph PD-Italy claim
-  but explicitly warns that a US PD-1996 determination must be established
-  separately. Do not call this source-ready without that review.
+  but does not supply publication evidence needed to establish the US
+  condition independently. Do not call this source-ready without that review.
+- Ownership note: the parent exact/variant scan found no Adalberto owner in
+  current Chaos Redux, vanilla, Kaiserreich `1521695605`, or approved mods
+  `2265420196` and `1458561226`.
 
 ### Giovanni Sechi
 
@@ -63,27 +68,32 @@ duplicated here.
   is supplied. The image is low-resolution and landscape. An untouched Commons
   extracted derivative (167×202, SHA-256
   `329fbec43bf0c34c210653f70f0aa35da60bc15a3884ef1dfebdba1d953a0573`) is
-  retained only as a reference variant, not as a processed game asset.
+  retained only as provenance evidence, not as a processed game asset.
+- Ownership rejection: active Kaiserreich Sardinia character
+  `SRD_giovanni_sechi`; disposition `rejected_external_mod_owner`.
 
 ## Ownership gate and parent actions
 
-The asset subagent did not read runtime gameplay, vanilla, or other-mod
-implementation files. A documentation-only scan found no Adalberto/Eugenio or
-Duke-of-Bergamo references, but this is not an owner clearance. Before wiring,
-the parent must scan active vanilla/current Chaos Redux character/history/GFX
-roots and installed other-mod roots for exact and variant identities. Existing
-ARX evidence already records vanilla Savoy collisions for Aimone, Amedeo,
-Filiberto, and Ferdinando variants; do not infer that Adalberto or Sechi are
-free of collisions.
+The parent completed exact/variant scans across current Chaos Redux, vanilla,
+Kaiserreich workshop mod `1521695605`, and approved workshop mods
+`2265420196` and `1458561226`. Adalberto has no active owner match. Giovanni
+Sechi matches active Kaiserreich Sardinia character `SRD_giovanni_sechi` and is
+rejected. The full terms, roots, collision exclusions, and candidate log are in
+the package [ownership evidence](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/search_notes/ownership_and_candidate_log.md).
 
-If the parent accepts either candidate after separate review, use only the
-exact unchanged master listed in the manifest and then run the repository’s
-approved portrait pipeline. No DDS/GFX path is supplied by this handoff.
+If the parent accepts Adalberto after separate rights and visual review, use
+only the exact unchanged master listed in the manifest and then run the
+repository’s approved portrait pipeline. Sechi must not be processed or wired.
+The package [GFX handoff](../../../assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/arx_sardinia_rights_clear_retry/gfx_handoff.md)
+records every DDS, sprite, `.gfx`, and runtime path as deferred; no final path
+or sprite snippet is supplied before approval.
 
 ## Simplifications, blockers, and non-claims
 
 - No source-ready ARX command or crown portrait is claimed in this retry.
-- Adalberto and Sechi are `needs_user_review`, not approvals.
+- Adalberto remains `needs_user_review`; its owner scan is clear, but its US
+  rights evidence and visual approval are unresolved.
+- Sechi is `rejected_external_mod_owner`, not an alternative awaiting review.
 - Villa Santa and Pizzolato are blocked by rights/bitstream uncertainty; no
   copyrighted site image was copied.
 - No generated, generic, modern, female, fictional, or invented identity was
