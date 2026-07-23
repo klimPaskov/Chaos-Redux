@@ -32,7 +32,7 @@ The current Fallout content boundary is dormant by design where the activation g
 
 ## Proof index
 
-- `AIR_CONTAMINATION_NATURAL_SOURCE_PROOF.md` records low, capped wildfire, volcanic eruption, ashfall, and massive-eruption pressure.
+- `AIR_CONTAMINATION_NATURAL_SOURCE_PROOF.md` records low, capped wildfire, volcanic eruption, ashfall, massive-eruption, and settled-ash aftermath pressure.
 - `AIR_WINTER_NORMAL_MAP_PROOF.md` and `subagent_handoffs/air_winter_normal_map_static_reaudit_2026-07-22.md` record the ordinary-map visual route.
 - `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md` records the pinned installed-map sweep and its strict engine-native blocker.
 - `FALLOUT_MANUAL_POPULATION_CONTRACT_PROOF.md` records the generation-bound 90 to 95 percent manual population contract.
