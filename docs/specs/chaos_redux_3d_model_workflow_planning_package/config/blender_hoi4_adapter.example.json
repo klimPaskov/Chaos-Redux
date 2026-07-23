@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "status": "template_not_approved",
+  "transport": "stdio",
+  "blender": {
+    "executable": "C:\\Program Files\\Blender Foundation\\Blender <LOCKED_VERSION>\\blender.exe",
+    "user_resource_root": "C:\\path\\to\\chaos_redux\\.tools\\3d_pipeline\\blender_profile",
+    "background_mode_default": true,
+    "dependency_lock": "C:\\path\\to\\chaos_redux\\.tools\\3d_pipeline\\config\\dependencies.lock.json"
+  },
+  "paths": {
+    "mod_root": "C:\\path\\to\\chaos_redux",
+    "job_root": "C:\\path\\to\\chaos_redux\\docs\\assets",
+    "final_staging_root": "C:\\path\\to\\chaos_redux\\.tools\\3d_pipeline\\staging",
+    "vanilla_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV",
+    "log_root": "C:\\path\\to\\chaos_redux\\.tools\\3d_pipeline\\logs"
+  },
+  "path_policy": {
+    "reject_parent_traversal": true,
+    "reject_unc_paths": true,
+    "resolve_and_check_symlinks": true,
+    "network_paths_allowed": false
+  },
+  "runtime": {
+    "max_concurrent_blender_processes": 1,
+    "operation_timeout_seconds": 1800,
+    "checkpoint_before_mutation": true,
+    "overwrite_approved_checkpoint": false,
+    "retain_failed_workdir": true
+  },
+  "extensions": {
+    "io_pdx_mesh": {
+      "required": true,
+      "version": "0.91",
+      "archive_sha256": "REPLACE_WITH_64_HEX_SHA256"
+    },
+    "blender_lab_mcp": {
+      "required_for_production_adapter": false,
+      "version_or_commit": "REPLACE_WITH_LOCKED_VALUE",
+      "archive_sha256": "REPLACE_WITH_64_HEX_SHA256"
+    }
+  },
+  "allowed_operations": [
+    "blender_hoi4_health",
+    "blender_hoi4_create_scene",
+    "blender_hoi4_inspect_scene",
+    "blender_hoi4_import_candidate",
+    "blender_hoi4_import_reference",
+    "blender_hoi4_duplicate_working_mesh",
+    "blender_hoi4_audit_geometry",
+    "blender_hoi4_apply_geometry_repairs",
+    "blender_hoi4_normalize_transform",
+    "blender_hoi4_configure_materials",
+    "blender_hoi4_export_texture_preview",
+    "blender_hoi4_import_provider_rig",
+    "blender_hoi4_create_rig_from_recipe",
+    "blender_hoi4_map_skeleton",
+    "blender_hoi4_bind_weights",
+    "blender_hoi4_audit_weights",
+    "blender_hoi4_create_test_poses",
+    "blender_hoi4_import_action",
+    "blender_hoi4_retarget_action",
+    "blender_hoi4_author_action_from_recipe",
+    "blender_hoi4_audit_action",
+    "blender_hoi4_render_action_preview",
+    "blender_hoi4_prepare_export_collection",
+    "blender_hoi4_export_mesh",
+    "blender_hoi4_export_animation",
+    "blender_hoi4_reimport_export",
+    "blender_hoi4_save_checkpoint",
+    "blender_hoi4_package_evidence"
+  ],
+  "forbidden_capabilities": [
+    "arbitrary_python",
+    "shell_execution",
+    "url_download",
+    "unrestricted_filesystem",
+    "dependency_install_during_job",
+    "external_scene_upload"
+  ]
+}

@@ -1,0 +1,19 @@
+@echo off
+setlocal
+
+rem Development-only template. Replace both paths after locking the official Blender Lab MCP checkout and uv executable.
+set "UV_EXE=C:\path\to\uv.exe"
+set "BLENDER_MCP_PROJECT=C:\path\to\blender_mcp"
+
+if not exist "%UV_EXE%" (
+  echo ERROR: uv executable not found. 1>&2
+  exit /b 2
+)
+if not exist "%BLENDER_MCP_PROJECT%" (
+  echo ERROR: Blender MCP project not found. 1>&2
+  exit /b 2
+)
+
+"%UV_EXE%" --directory "%BLENDER_MCP_PROJECT%" run blender-mcp
+set "exit_code=%ERRORLEVEL%"
+endlocal & exit /b %exit_code%

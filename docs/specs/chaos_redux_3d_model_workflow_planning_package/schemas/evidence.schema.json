@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chaos-redux.local/schemas/evidence.schema.json",
+  "title": "Chaos Redux 3D Evidence Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "generated_at",
+    "environment",
+    "artifacts",
+    "gates",
+    "crosswalk",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_id",
+          "role",
+          "path",
+          "sha256",
+          "size_bytes",
+          "status"
+        ],
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_artifact_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "provider_task_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "captured",
+              "approved",
+              "rejected",
+              "exported",
+              "wired",
+              "complete",
+              "blocked"
+            ]
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gate",
+          "status",
+          "reviewer",
+          "evidence_paths",
+          "findings"
+        ],
+        "properties": {
+          "gate": {
+            "type": "string",
+            "enum": [
+              "source",
+              "generation",
+              "geometry",
+              "materials",
+              "rig",
+              "animation",
+              "export",
+              "runtime",
+              "in_game"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "not_started",
+              "blocked",
+              "needs_review",
+              "passed"
+            ]
+          },
+          "reviewer": {
+            "type": "string"
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "severity",
+                "code",
+                "message",
+                "disposition"
+              ],
+              "properties": {
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "blocker",
+                    "major",
+                    "minor",
+                    "note"
+                  ]
+                },
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "disposition": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "crosswalk": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requirement_id",
+          "design_source",
+          "purpose",
+          "source_artifact",
+          "final_runtime_file",
+          "registration",
+          "consumer",
+          "binding",
+          "evidence",
+          "status"
+        ],
+        "properties": {
+          "requirement_id": {
+            "type": "string"
+          },
+          "design_source": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "source_artifact": {
+            "type": "string"
+          },
+          "working_artifact": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "final_runtime_file": {
+            "type": "string"
+          },
+          "registration": {
+            "type": "string"
+          },
+          "consumer": {
+            "type": "string"
+          },
+          "binding": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "produced",
+              "handed_off",
+              "wired",
+              "validated",
+              "blocked"
+            ]
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "needs_user_review",
+        "blocked",
+        "complete",
+        "canceled"
+      ]
+    }
+  }
+}

@@ -1,0 +1,64 @@
+# Chaos Redux 3D model pilot showcase consumer.
+#
+# This effect is deliberately scoped to Germany by its on-action callers. It
+# creates the live unit template and one pilot division once. The country flag
+# makes the unit portion idempotent for saves that were already running when
+# the standalone showcase was enabled. The unit creation command is kept in a
+# direct state-scoped effect, matching the engine's create_unit contract.
+
+chaosx_3d_model_pilot_showcase_activate_country = {
+	if = {
+		limit = {
+			NOT = {
+				has_country_flag = chaosx_3d_model_pilot_showcase_active
+			}
+		}
+
+		division_template = {
+			name = "Chaos Redux Pilot Recon"
+			priority = 0
+			is_locked = yes
+			force_allow_recruiting = yes
+			template_counter = 0
+			override_model = chaosx_anomaly_recon_trooper_entity
+			regiments = {
+				chaosx_anomaly_recon_trooper = { x = 0 y = 0 }
+			}
+		}
+
+	}
+
+	64 = {
+		chaosx_3d_model_pilot_showcase_activate_state = yes
+	}
+}
+
+chaosx_3d_model_pilot_showcase_activate_state = {
+	set_building_level = {
+		type = anomaly_signal_beacon_pilot
+		level = 1
+		province = 11219
+	}
+
+	if = {
+		limit = {
+			owner = {
+				NOT = {
+					has_country_flag = chaosx_3d_model_pilot_showcase_active
+				}
+			}
+		}
+
+		create_unit = {
+			division = "name = \"Chaos Redux Pilot Trooper\" division_template = \"Chaos Redux Pilot Recon\""
+			owner = GER
+			count = 1
+			prioritize_location = 6521
+			allow_spawning_on_enemy_provs = no
+		}
+
+		owner = {
+			set_country_flag = chaosx_3d_model_pilot_showcase_active
+		}
+	}
+}

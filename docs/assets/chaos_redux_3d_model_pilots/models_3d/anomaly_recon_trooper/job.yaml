@@ -1,0 +1,163 @@
+{
+  "asset_id": "chaosx.model.pilot.anomaly_recon_trooper",
+  "asset_kind": "humanoid",
+  "asset_slug": "anomaly_recon_trooper",
+  "blender_plan": {
+    "dependency_lock": ".tools/3d_pipeline/config/dependencies.lock.json",
+    "effective_runtime_height_m": 5.8814594268,
+    "provider_height_m": 1.8,
+    "runtime_stem": "chaosx_anomaly_recon_trooper",
+    "target_height_m": 7.3518242835,
+    "vanilla_scale_reference": {
+      "calibration_note": "The reference is imported read-only in Blender; collision geometry is excluded.",
+      "entity": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset#infantry_rifle_entity",
+      "entity_scale": 0.8,
+      "exclude_name_patterns": [
+        "collision"
+      ],
+      "forward_axis": "-Y",
+      "mesh": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh",
+      "mesh_height": 7.3518242835,
+      "mesh_object_names": [
+        "polySurface106"
+      ],
+      "runtime_height": 5.8814594268,
+      "up_axis": "+Z"
+    }
+  },
+  "brief": "A complete full-body anomaly reconnaissance trooper in a dark 1940s-inspired field uniform: sealed respirator, compact field harness, gloves, trousers, and boots. Preserve a clean standard humanoid biped in a T-pose with empty hands, clearly separated limbs, readable boots, and no backpack or weapon that would interfere with rigging. Use a single clean three-quarter full-body view on a neutral background.",
+  "created_at": "2026-07-22T15:57:01Z",
+  "exports": {
+    "animations": {
+      "attack": "export/anim/chaosx_anomaly_recon_trooper_attack.anim",
+      "idle": "export/anim/chaosx_anomaly_recon_trooper_idle.anim",
+      "move": "export/anim/chaosx_anomaly_recon_trooper_move.anim"
+    },
+    "mesh": "export/mesh/chaosx_anomaly_recon_trooper.mesh"
+  },
+  "forbidden_additions": [
+    "weapons",
+    "floating props",
+    "extra limbs",
+    "text",
+    "multi-view board",
+    "side-profile sheet"
+  ],
+  "handoff": {
+    "crosswalk": "runtime/crosswalk.md",
+    "manifest": "manifest.md",
+    "runtime_handoff": "runtime/handoff.md"
+  },
+  "job_id": "chaos_redux_3d_model_pilots_anomaly_recon_trooper",
+  "meshy_input_gate": {
+    "image": "refs/original/meshy_input.png",
+    "image_count": 1,
+    "multi_view_thumbnails": false,
+    "side_profile_sheet": false,
+    "turnaround_board": false
+  },
+  "owner_id": "chaos_redux_3d_model_pilots",
+  "profile": "humanoid_unit",
+  "provider_plan": {
+    "ai_model": "meshy-6",
+    "enable_pbr": true,
+    "estimated_credits": {
+      "animation": 3,
+      "image_to_3d": 20,
+      "remesh": 5,
+      "rig": 5
+    },
+    "model_type": "standard",
+    "paid_attempts": 1,
+    "pose_mode": "t-pose",
+    "retry_paid_calls": false,
+    "should_texture": true,
+    "target_polycount": 30000,
+    "topology": "triangle"
+  },
+  "required_actions": [
+    {
+      "frame_policy": "24fps_in_place",
+      "loop": true,
+      "provider_action_id": 0,
+      "role": "idle",
+      "task_type": "animation"
+    },
+    {
+      "frame_policy": "24fps_in_place",
+      "loop": false,
+      "provider_action_id": 4,
+      "role": "attack",
+      "task_type": "animation"
+    }
+  ],
+  "required_components": [
+    "head and sealed respirator",
+    "torso and field uniform",
+    "left and right upper/lower limbs",
+    "gloves",
+    "trousers",
+    "boots"
+  ],
+  "runtime": {
+    "actual_registration": {
+      "entity": "chaosx_anomaly_recon_trooper_entity",
+      "files": [
+        "gfx/entities/chaosx_3d_model_pilots.gfx",
+        "gfx/entities/chaosx_3d_model_pilots.asset",
+        "gfx/models/units/chaosx_3d_model_pilots/animation_chaosx_3d_model_pilots.asset",
+        "common/units/chaosx_3d_model_pilots.txt",
+        "gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh",
+        "gfx/models/units/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper_idle.anim",
+        "gfx/models/units/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper_attack.anim",
+        "gfx/models/units/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper_move.anim",
+        "gfx/models/chaosx_3d_model_pilots/texture_0.dds",
+        "gfx/models/chaosx_3d_model_pilots/texture_normal.dds",
+        "gfx/models/chaosx_3d_model_pilots/texture_specular.dds",
+        "interface/chaosx_3d_model_pilots.gfx"
+      ],
+      "status": "wired_pending_live_recheck"
+    },
+    "in_game_evidence": {
+      "note": "A user-run session reported an oversized texture, a missing custom unit texticon, an undersized black unit, movement shrink, a stretched or hollow surface, and a missing building. The mesh was recalibrated against vanilla infantry, the PdxMeshAdvanced material and all three maps were rebuilt at 1024 with the PDX packed spec layout, the GFX mesh object name was corrected, the texticon and move action were registered, all exported animation scale samples were normalized to unit scale, and the beacon was moved to province 11219 at map coordinate 2996, 9.70, 1588. A fresh live screenshot and visual recheck are still required.",
+      "screenshots": [],
+      "status": "needs_user_review"
+    },
+    "live_consumer": {
+      "files": [
+        "common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt",
+        "common/on_actions/chaosx_3d_model_pilot_showcase_on_actions.txt",
+        "history/units/GER_1936.txt",
+        "history/states/64-Brandenburg.txt",
+        "map/buildings.txt"
+      ],
+      "renderer_validation": "pending_user_recheck_after_offline_material_animation_and_building_repair",
+      "status": "prepared_isolated_showcase"
+    },
+    "proposed_identifiers": {
+      "consumer": "land-unit entity",
+      "entity": "chaosx_anomaly_recon_trooper_entity",
+      "pdxmesh": "chaosx_anomaly_recon_trooper_mesh"
+    }
+  },
+  "schema_version": "1.0.0",
+  "selected_provider_task": "019f8a68-1c0b-776d-aac7-9ff5a0981548",
+  "source": {
+    "authorization": "User-authorized agent-generated pilot reference.",
+    "dimensions": {
+      "height": 1536,
+      "width": 1024
+    },
+    "generator_output": "C:/Users/klimp/.codex/generated_images/019f89cf-495a-74e0-8bca-702d31bb209b/exec-117e6bdb-d9a1-489d-992f-4ce6abd32e9b.png",
+    "mode": "built_in_imagegen",
+    "reference": {
+      "bytes": 2006566,
+      "name": "meshy_input.png",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\assets\\chaos_redux_3d_model_pilots\\models_3d\\anomaly_recon_trooper\\refs\\original\\meshy_input.png",
+      "relative_path": "refs/original/meshy_input.png",
+      "sha256": "2965C0B7A50F79CA8D48CB59ED2707553BB81194CAB801B4EC5F706AF73907EC"
+    }
+  },
+  "status": "pdx_exported",
+  "updated_at": "2026-07-23T17:29:17Z"
+}

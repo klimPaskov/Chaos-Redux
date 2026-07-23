@@ -1,0 +1,555 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chaos-redux.local/schemas/model_job.schema.json",
+  "title": "Chaos Redux 3D Model Job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "state",
+    "owner",
+    "asset",
+    "reference",
+    "profile",
+    "brief",
+    "generation",
+    "rigging",
+    "animation",
+    "budget",
+    "paths",
+    "approvals"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "job_id": {
+      "type": "string",
+      "pattern": "^3d_[a-z0-9_]+_[0-9]{8}_[0-9]{6}$"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "preflight_blocked",
+        "preflight_approved",
+        "generation_queued",
+        "generation_in_progress",
+        "generation_review",
+        "generation_rejected",
+        "generation_approved",
+        "blender_imported",
+        "geometry_blocked",
+        "geometry_approved",
+        "materials_approved",
+        "rigging_not_required",
+        "rigging_in_progress",
+        "rigging_blocked",
+        "rigging_approved",
+        "animation_not_required",
+        "animation_in_progress",
+        "animation_blocked",
+        "animation_approved",
+        "pdx_exported",
+        "export_blocked",
+        "runtime_handoff_ready",
+        "runtime_wired",
+        "in_game_blocked",
+        "complete",
+        "canceled"
+      ]
+    },
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_or_system",
+        "parent_agent",
+        "reviewer"
+      ],
+      "properties": {
+        "event_or_system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handoff_path": {
+          "type": "string"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "slug",
+        "display_purpose",
+        "runtime_domain",
+        "runtime_consumer"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "display_purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtime_domain": {
+          "type": "string",
+          "enum": [
+            "land",
+            "air",
+            "naval",
+            "building",
+            "map_prop",
+            "gui_3d",
+            "other"
+          ]
+        },
+        "runtime_consumer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_instance_density": {
+          "type": "string",
+          "enum": [
+            "rare_unique",
+            "low",
+            "medium",
+            "high",
+            "very_high"
+          ]
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_path",
+        "sha256",
+        "source_mode",
+        "provenance",
+        "license_status",
+        "preflight_status"
+      ],
+      "properties": {
+        "original_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "user_provided",
+            "sourced",
+            "generated_reference"
+          ]
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "license_status": {
+          "type": "string",
+          "enum": [
+            "user_authorized",
+            "verified",
+            "uncertain",
+            "blocked"
+          ]
+        },
+        "preflight_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "approved_original",
+            "approved_derived",
+            "needs_user_review",
+            "blocked"
+          ]
+        },
+        "derived_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derived_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "known_ambiguity": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "calibration_record",
+        "vanilla_references"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "enum": [
+            "static_prop",
+            "building",
+            "humanoid_unit",
+            "nonhumanoid_creature",
+            "vehicle_land",
+            "aircraft",
+            "naval",
+            "articulated_attachment"
+          ]
+        },
+        "calibration_record": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vanilla_references": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "target_relative_scale": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "brief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "geometry_intent",
+        "texture_direction",
+        "forbidden_additions",
+        "required_components"
+      ],
+      "properties": {
+        "geometry_intent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texture_direction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "forbidden_additions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "rear_side_policy": {
+          "type": "string",
+          "enum": [
+            "strict_symmetry",
+            "reference_inference",
+            "manual_design_required",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "model_strategy",
+        "texture",
+        "triangle_topology",
+        "download_formats"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "const": "meshy"
+        },
+        "model_strategy": {
+          "type": "string",
+          "enum": [
+            "smart_topology",
+            "high_detail_then_reduce",
+            "profile_decides"
+          ]
+        },
+        "texture": {
+          "type": "boolean"
+        },
+        "texture_prompt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 600
+        },
+        "triangle_topology": {
+          "type": "boolean",
+          "const": true
+        },
+        "target_polygon_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 100
+        },
+        "remove_lighting": {
+          "type": "boolean"
+        },
+        "pose_mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "a_pose",
+            "t_pose",
+            "provider_default"
+          ]
+        },
+        "download_formats": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "glb",
+              "fbx",
+              "obj"
+            ]
+          }
+        }
+      }
+    },
+    "rigging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "route"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "route": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "meshy_candidate",
+            "blender_custom",
+            "retarget_existing",
+            "profile_decides"
+          ]
+        },
+        "expected_skeleton_precedent": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "actions",
+        "root_motion_policy"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role",
+              "source_route",
+              "loop"
+            ],
+            "properties": {
+              "role": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "source_route": {
+                "type": "string",
+                "enum": [
+                  "meshy_candidate",
+                  "blender_authored",
+                  "sourced",
+                  "profile_decides"
+                ]
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "fps": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "enum": [
+                  24,
+                  25,
+                  30,
+                  60,
+                  null
+                ]
+              }
+            }
+          }
+        },
+        "root_motion_policy": {
+          "type": "string",
+          "enum": [
+            "in_place",
+            "runtime_translation",
+            "limited_recoil",
+            "mechanical_rotation",
+            "per_action"
+          ]
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credit_soft_limit",
+        "credit_hard_limit",
+        "paid_generation_attempt_limit",
+        "paid_postprocess_attempt_limit"
+      ],
+      "properties": {
+        "credit_soft_limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "credit_hard_limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "paid_generation_attempt_limit": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "paid_postprocess_attempt_limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "animation_action_limit": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "job_root",
+        "final_runtime_root",
+        "dependency_lock"
+      ],
+      "properties": {
+        "job_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "final_runtime_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependency_lock": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_approved",
+        "paid_calls_approved",
+        "fallbacks_allowed"
+      ],
+      "properties": {
+        "reference_approved": {
+          "type": "boolean"
+        },
+        "paid_calls_approved": {
+          "type": "boolean"
+        },
+        "fallbacks_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "approval_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
