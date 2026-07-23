@@ -85,7 +85,7 @@ The live Fallout package includes:
 - schema-2 country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, one fixed ordinary opening, compact arc, delayed-result, reciprocal bilateral, cancellation, cleanup, and routing receipts
 - a generation-bound monotonic ticket allocator, three independent compact-ledger reconciliation cursors, an ordinary receipt reconciler, exact dispatch envelopes, and mirrored issuance receipts
 - exact token-authenticated issued bilateral response, orphan cancellation, and cleanup terminalizers with no detached acknowledgement path
-- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for five ordinary global-survival rows
+- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for thirteen ordinary global-survival rows
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 
@@ -101,9 +101,9 @@ The numerical substrate calculates the accepted score once per reviewed local ca
 
 Schema 3 child ledgers retain the idempotent arc, delayed-result, and reciprocal bilateral APIs. Major arcs are capped at three, delayed rows at eight, bilateral rows at six per participant, and new delayed or bilateral dates must be 1 through 730 days away. Visible cost and selected control mode are frozen on every row. Exact retries are checked before capacity and mutable current-control tests. Issued ordinary, delayed, and bilateral rows remain blocking tombstones until the exact token-authenticated content wrapper terminalizes them. Empty legacy receipts can promote only while dormant. Numerical initialization, fatigue issue memory, reviewed candidates, completion memory, bilateral memory, pending rows, and nonempty rows all block promotion.
 
-Major-arc and relationship candidates are deliberately ineligible because their reviewed candidate payloads do not yet carry the complete atomic arc or reciprocal bilateral reservation fields. Delayed and bilateral rows also lack actor identities for cross-ledger independent-actor exclusion. Pair-family memory is not yet pruned and is not an atomic substitute for reciprocal reservation. Current capitals authenticate the recurrence exception through the live state trigger. Active sieges remain fail-closed until a typed current-siege producer receipt exists. The reviewed candidate pilot producer covers only the food, produced-water, native-rail, Air Winter Well Queue, and Animal Feed ordinary rows. Its activation caller, hidden AI result caller, content cleanup caller, full matrix, and scheduler debug presentation remain absent. These are explicit activation blockers.
+Major-arc and relationship candidates are deliberately ineligible because their reviewed candidate payloads do not yet carry the complete atomic arc or reciprocal bilateral reservation fields. Delayed and bilateral rows also lack actor identities for cross-ledger independent-actor exclusion. Pair-family memory is not yet pruned and is not an atomic substitute for reciprocal reservation. Current capitals authenticate the recurrence exception through the live state trigger. Active sieges remain fail-closed until a typed current-siege producer receipt exists. The reviewed candidate pilot producer covers thirteen ordinary rows, including food, produced-water, native-rail, Air Winter Well Queue, Animal Feed, Triage Wall, Seed Vault, Bad Batch, Filters Fail, Door List, Last Transformer, Fever Dormitory, and Names for the Missing. Its activation caller, hidden AI result caller, content cleanup caller, full matrix, and scheduler debug presentation remain absent. These are explicit activation blockers.
 
-The transition stages exact country and state survival identities after final allocation and blocks player continuation until the committed ledger exists. The numerical coordinator calculates all nine state resources, aggregates countries through frozen ownership and bounded survivor-population weights, replays every row into separate proof arrays, derives Cohesion and Supply Access, and sets the sole global ready flag last. The state result gate is approved only by an exact schema-3 country replay and is cleared on any uncommitted reset. Separate exact survivor-allocation recovery wrappers own malformed uncommitted identity and numerical payloads. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md), [FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md), and [FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md) record the accepted formulas. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md), `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`, `FALLOUT_EVENT_SCHEDULER_PROOF.md`, and `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` record the implementation boundary. The dormant orientation transaction, national pilot at `62` through `65`, exact twelve-memory resource pilot at `70` through `73`, exact twelve-memory government pilot at `74` through `77`, closure and cleanup at `82` through `84`, and the global-survival pilots at `100` through `126`, `1009` through `1018`, `153` through `174`, and `230` through `242` provide real human and hidden-AI content, but they have no activation caller and remain outside the release count. Regional, archetype, country-memory, government-row, resource capital-asset, infrastructure-repair, and character-install approval gates remain unset. Both scheduler activation flags have no setter. Defined event blocks in the global-survival ranges: `111`. Countable living-world blocks toward the release floor: `0 of 660`.
+The transition stages exact country and state survival identities after final allocation and blocks player continuation until the committed ledger exists. The numerical coordinator calculates all nine state resources, aggregates countries through frozen ownership and bounded survivor-population weights, replays every row into separate proof arrays, derives Cohesion and Supply Access, and sets the sole global ready flag last. The state result gate is approved only by an exact schema-3 country replay and is cleared on any uncommitted reset. Separate exact survivor-allocation recovery wrappers own malformed uncommitted identity and numerical payloads. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md), [FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md), and [FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md) record the accepted formulas. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md), `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`, `FALLOUT_EVENT_SCHEDULER_PROOF.md`, and `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` record the implementation boundary. The dormant orientation transaction, national pilot at `62` through `65`, exact twelve-memory resource pilot at `70` through `73`, exact twelve-memory government pilot at `74` through `77`, closure and cleanup at `82` through `84`, and the global-survival pilots at `100` through `126`, `1009` through `1018`, `153` through `200`, and `204` through `281` provide real human and hidden-AI content, but they have no activation caller and remain outside the release count. Regional, archetype, country-memory, government-row, resource capital-asset, infrastructure-repair, and character-install approval gates remain unset. Both scheduler activation flags have no setter. Defined event blocks in the global-survival ranges: `163`. Countable living-world blocks toward the release floor: `0 of 660`.
 
 ## Candidate pilot count correction
 
@@ -283,6 +283,15 @@ dedicated wired report asset. It remains uncounted until scheduler activation,
 manual review, and the deeper regional and government-aware localisation pass
 are complete. Countable living-world blocks remain `0 of 660`.
 
+## Filters Fail surface correction
+
+The dormant Filters Fail chain is defined at `chaosx.fallout.217` through
+`.229`. It binds shelter capacity, Filters pressure, and the current Air Winter
+snapshot to four policy lanes with human and hidden AI delayed results,
+Deaths-backed failure, branch memory, a callback, history `9114`, authenticated
+cleanup, and a dedicated report asset. The candidate producer and all 13 event
+blocks remain dormant. Countable living-world blocks remain `0 of 660`.
+
 ## Door List surface correction
 
 The dormant Door List chain is defined at `chaosx.fallout.230` through
@@ -327,7 +336,7 @@ dedicated report image is registered as
 This chain is still dormant and earns no release-floor credit. The candidate
 producer has no activation caller, host authority remains unproven, and no
 Hearts of Iron IV runtime was launched. Countable Fallout living-world blocks
-remain `0 of 660`. The defined living-world total is `124`.
+remain `0 of 660`. The defined living-world total is `137`.
 
 ## Fever Dormitory surface correction
 
@@ -348,5 +357,26 @@ stability, with fifteen Event Log payloads and a dedicated report image.
 The chain remains dormant and earns no release-floor credit because scheduler
 activation, host authority, runtime state-target scope, save recovery,
 multiplayer behavior, and Event Log delivery remain unobserved. The defined
-living-world total is now `137`, while countable Fallout living-world blocks
+living-world total is now `150`, while countable Fallout living-world blocks
 remain `0 of 660`.
+
+## Names for the Missing surface correction
+
+Names for the Missing is implemented as a dormant country-level chain at
+`chaosx.fallout.269` through `.281`. It uses candidate `269`, transaction key
+`710013`, route `7113`, and Event Log history `9118`. Four authored branches
+freeze the country Deaths, Recognition, Cohesion, and exposure ledgers before
+a 21-day delayed result. Candidate severity is `clamp(Deaths * 0.001, 0, 100)`
+and its survival-resource pressure field is zero as required by the scheduler
+validator. The human opening reserves three visible budget units for its full
+envelope, human delayed rows cost one each, and hidden-AI delayed rows cost
+zero. A 180-day callback records durable memory, adds
+maintenance or backlog pressure, and routes failure through the shared Deaths
+contract, with callback failure using the documented 0.2 percent helper.
+Dedicated report art, dynamic modifiers, central Event Log routes,
+and payload detail text are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, save recovery, multiplayer behavior, and runtime
+Event Log delivery remain unobserved. The defined living-world total is now
+`163`, while countable Fallout living-world blocks remain `0 of 660`.

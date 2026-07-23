@@ -1,7 +1,7 @@
 # CHAOS REDUX - FALLOUT REVIEWED CANDIDATE PILOT EFFECTS
 # ============================================================================
 # This file owns the first reviewed ordinary-candidate producer for the Fallout
-# scheduler. It installs only eight manually authored global-survival rows.
+# scheduler. It installs the manually authored global-survival rows.
 # Food has a country target. Water, rail, Well Queue, and Animal Feed carry one
 # selected state target only when their native source proof is present. The
 # producer never sets a scheduler activation flag and never fires an event by
@@ -228,6 +228,36 @@ fallout_event_build_pilot_candidate_registries = {
 			set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
 			set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.food_route }
 			fallout_event_append_pilot_candidate_row = yes
+
+			# Names for the Missing is admitted only after a country has recorded a
+			# material civilian death count and its recognition ledger still shows an
+			# incomplete census. The row has no state target or invented actor.
+			if = {
+				limit = { fallout_event_269_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.names_missing_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.names_missing_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.cause_memory }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.names_missing_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.names_missing_ai }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_269_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_269_candidate_severity = chaos_meter_deaths_country_civilian_total }
+				multiply_temp_variable = { fallout_event_269_candidate_severity = constant:fallout_event_269_threshold.deaths_to_severity }
+				clamp_temp_variable = { var = fallout_event_269_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_269_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_269_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^9 }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_survival_resource.recognition }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.recognition }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.recognition }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.names_missing_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_269_candidate_severity
+			}
 
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.

@@ -10,6 +10,7 @@
 6. `specs/03_fallout_timeline_and_campaign_pacing.md`
 7. `matrices/fallout_event_library_master_matrix.md`
 8. `specs/12_event_content_budget_and_acceptance.md`
+9. `specs/13_reviewed_global_survival_pilots.md`
 
 
 ## Accepted baseline specs included here
@@ -43,6 +44,7 @@
 - `specs/09_diplomacy_war_trade_and_world_order_events.md`
 - `specs/10_cause_memory_mutant_fiction_and_altered_ecology.md`
 - `specs/11_recovery_generation_change_and_ten_year_endgame.md`
+- `specs/13_reviewed_global_survival_pilots.md`
 
 ## Matrices
 

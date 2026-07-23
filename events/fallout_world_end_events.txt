@@ -12770,3 +12770,173 @@ country_event = {
 	trigger = { fallout_event_256_cleanup_can_enter = yes }
 	immediate = { fallout_event_256_cleanup = yes }
 }
+
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival chain: Names for the Missing
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.269
+	title = chaosx.fallout.269.t
+	desc = chaosx.fallout.269.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { fallout_event_269_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.269.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_269_cost.publish_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_269_cost.publish_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_269_requested_branch = constant:fallout_event_269_branch.publish_names } fallout_event_269_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.269.a.tt
+		ai_chance = { base = constant:fallout_event_269_ai.publish_priority }
+	}
+	option = {
+		name = chaosx.fallout.269.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_269_cost.secrecy_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_269_cost.secrecy_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_269_requested_branch = constant:fallout_event_269_branch.maintain_military_secrecy } fallout_event_269_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.269.b.tt
+		ai_chance = { base = constant:fallout_event_269_ai.secrecy_priority modifier = { factor = constant:fallout_event_269_ai.strong_modifier OR = { has_government = fascism has_government = neutrality } } }
+	}
+	option = {
+		name = chaosx.fallout.269.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_269_cost.memorial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_269_cost.memorial_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_269_requested_branch = constant:fallout_event_269_branch.permit_community_memorials } fallout_event_269_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.269.c.tt
+		ai_chance = { base = constant:fallout_event_269_ai.memorial_priority modifier = { factor = constant:fallout_event_269_ai.strong_modifier NOT = { has_war = yes } } }
+	}
+	option = {
+		name = chaosx.fallout.269.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_269_cost.clerks_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_269_cost.clerks_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_269_requested_branch = constant:fallout_event_269_branch.delegate_to_local_clerks } fallout_event_269_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.269.d_option.tt
+		ai_chance = { base = constant:fallout_event_269_ai.clerks_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.270
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_269_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_269_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.271
+	title = chaosx.fallout.271.t
+	desc = { text = chaosx.fallout.271.success.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.271.partial.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.271.failure.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_publish_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.publish_names } }
+	option = { name = chaosx.fallout.271.a hidden_effect = { fallout_event_269_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.271.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.272
+	title = chaosx.fallout.272.t
+	desc = { text = chaosx.fallout.272.success.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.272.partial.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.272.failure.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_secrecy_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.maintain_military_secrecy } }
+	option = { name = chaosx.fallout.272.a hidden_effect = { fallout_event_269_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.272.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.273
+	title = chaosx.fallout.273.t
+	desc = { text = chaosx.fallout.273.success.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.273.partial.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.273.failure.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_memorial_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.permit_community_memorials } }
+	option = { name = chaosx.fallout.273.a hidden_effect = { fallout_event_269_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.273.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.274
+	title = chaosx.fallout.274.t
+	desc = { text = chaosx.fallout.274.success.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.274.partial.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.274.failure.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_clerks_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.delegate_to_local_clerks } }
+	option = { name = chaosx.fallout.274.a hidden_effect = { fallout_event_269_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.274.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.275
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_publish_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.publish_names } }
+	immediate = { fallout_event_269_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.276
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_secrecy_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.maintain_military_secrecy } }
+	immediate = { fallout_event_269_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.277
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_memorial_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.permit_community_memorials } }
+	immediate = { fallout_event_269_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.278
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_269_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_clerks_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_269_branch.delegate_to_local_clerks } }
+	immediate = { fallout_event_269_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.279
+	title = chaosx.fallout.279.t
+	desc = { text = chaosx.fallout.279.success.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.279.partial.d trigger = { check_variable = { fallout_event_269_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.279.failure.d
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_269_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_269_branch.upper_bound } fallout_event_269_registry_is_current = yes }
+	option = { name = chaosx.fallout.279.a hidden_effect = { fallout_event_269_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.279.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.280
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.names_missing_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_269_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_269_branch.upper_bound } fallout_event_269_registry_is_current = yes }
+	immediate = { fallout_event_269_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.281
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_269_cleanup_can_enter = yes }
+	immediate = { fallout_event_269_cleanup = yes }
+}

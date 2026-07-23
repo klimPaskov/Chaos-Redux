@@ -62,3 +62,7 @@ Working labels are not final localisation. Each row describes a family or anchor
 | Thaw Water | Recovery years | Severe snow and ice melt over damaged settlements. | Drain, evacuate, rebuild channels, use flood for fields. | Changes infrastructure, deaths, disease, water, and agriculture. | Creates bridge, cemetery, and contamination follow-ups. |
 | Bright Sky Sickness | Years 6 onward | Sunlight returns while ultraviolet risk is high. | Issue protection, keep workers underground, ignore, study. | Changes production, health, medicine, research, and public trust. | Creates ultraviolet adaptation and climate-monitoring cooperation. |
 | The First Unmasked Day | Recovery years | Air and radiation burden fall below local threshold. | Public reopening, cautious trial, military parade, no declaration. | Changes cohesion, risk, surface settlement, and memory. | Can become a recovery landmark or renewed exposure scandal. |
+
+## Pilot disposition
+
+Names for the Missing is implemented as dormant candidate 269 with its opening, four branch result lanes, callback, cleanup, Event Log history, and dedicated report art. The memorial, archive, and family-reunion consumers in its follow-up column remain queued for later reviewed tranches. They are not counted as implemented by this pilot.
