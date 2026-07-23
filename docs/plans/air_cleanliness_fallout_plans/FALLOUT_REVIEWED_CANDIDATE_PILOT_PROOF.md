@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for five
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for twelve
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -57,15 +57,16 @@ and generation markers instead of selecting a fallback.
 - `fallout_event_candidate_registry_arrays_are_aligned` lists 55 arrays. The
   producer appends all 53 mutable row arrays and leaves the two completion
   history arrays intentionally durable.
-- The new candidate effect file balances at 229 braces. The edited constants,
+- The candidate effect file balances at 508 braces. The edited constants,
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define five candidate ids, five transaction
-  keys, and five route ids in a dedicated Fallout namespace.
-- The event tokens resolve to existing dormant Fallout event blocks 100, 101,
-  107, 108, 114, 115, and 153 through 174. No zombie event id, file, asset,
-  audio, sprite, or path is reused.
+- The candidate pilot constants define twelve candidate ids, twelve transaction
+  keys, and twelve route ids in a dedicated Fallout namespace.
+- The event tokens resolve to existing dormant Fallout event blocks 100 through
+  126, 153 through 200, 204 through 268, and the hidden companion ranges
+  `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
+  path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
   relationship rows until their complete atomic reservations are reviewed.
 - The Well Queue cost is paid only after its delayed row and ordinary receipt
@@ -102,3 +103,36 @@ snapshot, reclamation and adaptation thresholds, and an affordable branch.
 The row is tagged to `first_winter_year`, remains dormant, and contributes no
 release-floor credit. The greenhouse receipt is copied during pretransition
 capture so the candidate does not depend on the Air Winter teardown flag.
+
+## Filters Fail correction
+
+The producer now carries nine reviewed ordinary rows. Filters Fail adds state
+candidate id `217`, transaction key `710009`, route `7109`, and event tokens
+`217` through `229`. Its state gate requires shelter capacity, current Filters
+pressure, a produced Air Winter snapshot, and an affordable branch. The chain
+remains dormant and contributes no release-floor credit.
+
+## Door List correction
+
+The producer now carries ten reviewed ordinary rows. Door List adds state
+candidate id `230`, transaction key `710010`, route `7110`, and event tokens
+`230` through `242`. It selects a deterministic source and shelter-qualified
+destination state, then remains dormant behind scheduler activation.
+
+## Last Transformer correction
+
+The producer now carries eleven reviewed ordinary rows. Last Transformer adds
+state candidate id `243`, transaction key `710011`, route `7111`, and event
+tokens `243` through `255`. It requires a produced Air Winter state snapshot,
+durable Supply Access, repairable infrastructure, and a live factory. Its
+state and partner selections use stable id tie breaks.
+
+## Fever Dormitory correction
+
+The producer now carries twelve reviewed ordinary rows. Fever Dormitory adds
+state candidate id `256`, transaction key `710012`, route `7112`, and event
+tokens `256` through `268`. The state gate binds disease and shelter to the
+current Air Winter receipt and requires low Medicine with an affordable policy.
+The chain has four human and hidden-AI policy lanes, delayed results, callback,
+Deaths-backed failure, fifteen Event Log payloads, dedicated art, and cleanup.
+It remains dormant and uncounted. No HOI4 runtime was launched.

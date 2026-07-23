@@ -289,3 +289,21 @@ uncounted because scheduler activation, host proof, and runtime state-target
 proof are still open. The documented living-world block total is now `124`
 and the countable Fallout living-world release-floor total remains `0 of
 660`.
+
+## Fever Dormitory count correction
+
+The Fever Dormitory disease and shelter transaction adds thirteen dormant event
+blocks at suffixes `256` through `268`. The candidate row is `256`, transaction
+key `710012`, route `7112`, and history id `9117`. It selects the lowest owned
+state with a current produced Air Winter shelter receipt, disease pressure in
+the crisis band, low Medicine, and an affordable policy.
+
+The four human policies and four hidden-AI result lanes share deterministic
+viability, branch costs, delayed results at exactly fourteen days, a callback
+at exactly 120 days, Deaths-backed failure, fifteen Event Log payloads, and
+authenticated cleanup. Dedicated report art and the shared name, detail, and
+Event Details routes are wired. Scheduler activation, host authority,
+save-recovery, state-target scope, multiplayer behavior, and runtime Event Log
+delivery remain unobserved. The documented living-world block total is now
+`137`, while the countable Fallout living-world release-floor total remains
+`0 of 660`.

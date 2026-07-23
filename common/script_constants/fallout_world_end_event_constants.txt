@@ -1064,6 +1064,19 @@ fallout_event_id = {
 	last_transformer_callback = 253
 	last_transformer_callback_ai = 254
 	last_transformer_cleanup = 255
+	fever_dormitory_human = 256
+	fever_dormitory_ai = 257
+	fever_dormitory_quarantine_result = 258
+	fever_dormitory_disperse_result = 259
+	fever_dormitory_public_result = 260
+	fever_dormitory_conceal_result = 261
+	fever_dormitory_quarantine_result_ai = 262
+	fever_dormitory_disperse_result_ai = 263
+	fever_dormitory_public_result_ai = 264
+	fever_dormitory_conceal_result_ai = 265
+	fever_dormitory_callback = 266
+	fever_dormitory_callback_ai = 267
+	fever_dormitory_cleanup = 268
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1108,7 +1121,10 @@ fallout_event_candidate_pilot = {
 	last_transformer_candidate_id = 243
 	last_transformer_transaction_key = 710011
 	last_transformer_route = 7111
-	upper_bound = 7112
+	fever_dormitory_candidate_id = 256
+	fever_dormitory_transaction_key = 710012
+	fever_dormitory_route = 7112
+	upper_bound = 7113
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -4729,5 +4745,320 @@ fallout_event_243_ai = {
 	single_factory_penalty = -8
 	single_factory_bonus = 2
 	dockyard_bonus = 2
+	upper_bound = 1001
+}
+
+# Fever Dormitory is a dormant global disease and shelter candidate. The
+# values are deliberately state and ledger oriented so every consequence can
+# be audited without direct population writes.
+fallout_event_256_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	quarantine_dormitory = 1
+	disperse_bunks = 2
+	treat_in_public = 3
+	conceal_fever = 4
+	upper_bound = 5
+}
+
+fallout_event_256_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 14
+	callback_delay_days = 120
+	modifier_days = 150
+	upper_bound = 151
+}
+
+fallout_event_256_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 1
+	upper_bound = 301
+}
+
+fallout_event_256_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_shelter = 20
+	minimum_disease = 35
+	minimum_population_k = 5
+	maximum_medicine = 55
+	minimum_filters = 8
+	minimum_food = 8
+	minimum_viability = 0
+	maximum_viability = 100
+	shelter_weight = 35
+	adaptation_weight = 20
+	filters_weight = 20
+	medicine_weight = 15
+	disease_relief_weight = 10
+	weight_divisor = 100
+	quarantine_success_viability = 72
+	quarantine_partial_viability = 48
+	quarantine_success_medicine = 22
+	quarantine_partial_medicine = 12
+	disperse_success_viability = 68
+	disperse_partial_viability = 44
+	disperse_success_food = 20
+	disperse_partial_food = 12
+	public_success_viability = 70
+	public_partial_viability = 46
+	public_success_medicine = 18
+	public_partial_medicine = 10
+	conceal_success_viability = 62
+	conceal_partial_viability = 38
+	conceal_success_recognition = 22
+	conceal_partial_recognition = 12
+	failure_death_percent = 0.060
+	callback_failure_death_percent = 0.025
+	minimum_remaining_people = 1
+	upper_bound = 101
+}
+
+fallout_event_256_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quarantine_filters = 5
+	quarantine_medicine = 10
+	quarantine_food = 3
+	disperse_food = 8
+	disperse_recognition = 4
+	public_medicine = 6
+	public_shelter = 5
+	public_recognition = 2
+	conceal_scrap = 5
+	conceal_recognition = 5
+	upper_bound = 11
+}
+
+fallout_event_256_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quarantine_success_disease = -18
+	quarantine_success_shelter = 6
+	quarantine_success_exposure = -4
+	quarantine_success_adaptation = 3
+	quarantine_success_reclamation = 1
+	quarantine_success_food = -2
+	quarantine_success_filters = -4
+	quarantine_success_medicine = -7
+	quarantine_success_recognition = 2
+	quarantine_success_cohesion = 3
+	quarantine_success_stability = 0.03
+	quarantine_partial_disease = -7
+	quarantine_partial_shelter = 2
+	quarantine_partial_exposure = 1
+	quarantine_partial_adaptation = 1
+	quarantine_partial_reclamation = 0
+	quarantine_partial_food = -3
+	quarantine_partial_filters = -2
+	quarantine_partial_medicine = -4
+	quarantine_partial_recognition = 1
+	quarantine_partial_cohesion = 1
+	quarantine_partial_stability = 0
+	quarantine_failure_disease = 8
+	quarantine_failure_shelter = -3
+	quarantine_failure_exposure = 5
+	quarantine_failure_adaptation = -1
+	quarantine_failure_reclamation = -1
+	quarantine_failure_food = -5
+	quarantine_failure_filters = 0
+	quarantine_failure_medicine = -3
+	quarantine_failure_recognition = -2
+	quarantine_failure_cohesion = -4
+	quarantine_failure_stability = -0.04
+	disperse_success_disease = -12
+	disperse_success_shelter = -2
+	disperse_success_exposure = 5
+	disperse_success_adaptation = 5
+	disperse_success_reclamation = 1
+	disperse_success_food = -5
+	disperse_success_filters = 0
+	disperse_success_medicine = 0
+	disperse_success_recognition = 4
+	disperse_success_cohesion = 2
+	disperse_success_stability = 0.02
+	disperse_partial_disease = -4
+	disperse_partial_shelter = -3
+	disperse_partial_exposure = 8
+	disperse_partial_adaptation = 2
+	disperse_partial_reclamation = 0
+	disperse_partial_food = -6
+	disperse_partial_filters = 0
+	disperse_partial_medicine = 0
+	disperse_partial_recognition = 1
+	disperse_partial_cohesion = 0
+	disperse_partial_stability = -0.01
+	disperse_failure_disease = 12
+	disperse_failure_shelter = -5
+	disperse_failure_exposure = 12
+	disperse_failure_adaptation = -2
+	disperse_failure_reclamation = -1
+	disperse_failure_food = -8
+	disperse_failure_filters = 0
+	disperse_failure_medicine = 0
+	disperse_failure_recognition = -2
+	disperse_failure_cohesion = -5
+	disperse_failure_stability = -0.05
+	public_success_disease = -15
+	public_success_shelter = 3
+	public_success_exposure = -1
+	public_success_adaptation = 2
+	public_success_reclamation = 1
+	public_success_food = -3
+	public_success_filters = 0
+	public_success_medicine = -8
+	public_success_recognition = 3
+	public_success_cohesion = 2
+	public_success_stability = 0.03
+	public_partial_disease = -6
+	public_partial_shelter = 0
+	public_partial_exposure = 3
+	public_partial_adaptation = 1
+	public_partial_reclamation = 0
+	public_partial_food = -4
+	public_partial_filters = 0
+	public_partial_medicine = -5
+	public_partial_recognition = 1
+	public_partial_cohesion = 0
+	public_partial_stability = 0
+	public_failure_disease = 10
+	public_failure_shelter = -2
+	public_failure_exposure = 7
+	public_failure_adaptation = -1
+	public_failure_reclamation = -1
+	public_failure_food = -5
+	public_failure_filters = 0
+	public_failure_medicine = -7
+	public_failure_recognition = -3
+	public_failure_cohesion = -4
+	public_failure_stability = -0.04
+	conceal_success_disease = -4
+	conceal_success_shelter = 0
+	conceal_success_exposure = 3
+	conceal_success_adaptation = 1
+	conceal_success_reclamation = 0
+	conceal_success_food = -1
+	conceal_success_filters = 0
+	conceal_success_medicine = -2
+	conceal_success_recognition = 0
+	conceal_success_cohesion = 1
+	conceal_success_stability = 0.01
+	conceal_partial_disease = 5
+	conceal_partial_shelter = -1
+	conceal_partial_exposure = 7
+	conceal_partial_adaptation = 0
+	conceal_partial_reclamation = 0
+	conceal_partial_food = -3
+	conceal_partial_filters = 0
+	conceal_partial_medicine = -3
+	conceal_partial_recognition = -1
+	conceal_partial_cohesion = -2
+	conceal_partial_stability = -0.02
+	conceal_failure_disease = 15
+	conceal_failure_shelter = -4
+	conceal_failure_exposure = 12
+	conceal_failure_adaptation = -2
+	conceal_failure_reclamation = -1
+	conceal_failure_food = -4
+	conceal_failure_filters = 0
+	conceal_failure_medicine = -4
+	conceal_failure_recognition = -3
+	conceal_failure_cohesion = -5
+	conceal_failure_stability = -0.06
+	callback_success_disease = -4
+	callback_success_shelter = 1
+	callback_success_exposure = -1
+	callback_success_adaptation = 2
+	callback_success_reclamation = 1
+	callback_success_food = -2
+	callback_success_medicine = -2
+	callback_success_recognition = 1
+	callback_success_cohesion = 2
+	callback_success_stability = 0.01
+	callback_partial_disease = 3
+	callback_partial_shelter = -1
+	callback_partial_exposure = 2
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 0
+	callback_partial_food = -3
+	callback_partial_medicine = -2
+	callback_partial_recognition = 0
+	callback_partial_cohesion = -1
+	callback_partial_stability = -0.01
+	callback_failure_disease = 8
+	callback_failure_shelter = -2
+	callback_failure_exposure = 4
+	callback_failure_adaptation = -1
+	callback_failure_reclamation = -1
+	callback_failure_food = -4
+	callback_failure_medicine = -2
+	callback_failure_recognition = -1
+	callback_failure_cohesion = -3
+	callback_failure_stability = -0.03
+	upper_bound = 1001
+}
+
+fallout_event_256_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9117
+	quarantine_success = 11
+	quarantine_partial = 12
+	quarantine_failure = 13
+	disperse_success = 21
+	disperse_partial = 22
+	disperse_failure = 23
+	public_success = 31
+	public_partial = 32
+	public_failure = 33
+	conceal_success = 41
+	conceal_partial = 42
+	conceal_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_256_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	success_bonus = 8
+	partial_bonus = 3
+	invalid_score = -1000
+	quarantine_priority = 6
+	disperse_priority = 5
+	public_priority = 4
+	conceal_priority = 2
 	upper_bound = 1001
 }
