@@ -328,3 +328,25 @@ This chain is still dormant and earns no release-floor credit. The candidate
 producer has no activation caller, host authority remains unproven, and no
 Hearts of Iron IV runtime was launched. Countable Fallout living-world blocks
 remain `0 of 660`. The defined living-world total is `124`.
+
+## Fever Dormitory surface correction
+
+The dormant Fever Dormitory chain is implemented at
+`chaosx.fallout.256` through `.268`. It uses candidate `256`, transaction key
+`710012`, route `7112`, and Event Log history `9117`. Its candidate state is
+selected by the lowest owned state with a current produced Air Winter shelter
+receipt, disease pressure above the reviewed threshold, low Medicine, and an
+affordable branch.
+
+Four human policy lanes and four hidden-AI result lanes share the same
+deterministic outcome calculation. One delayed result is reserved at exactly
+14 days, one callback is reserved at exactly 120 days, and cleanup releases
+both receipts. Failure losses use the shared Deaths contract. The chain updates
+disease, shelter, exposure, adaptation, reclamation, resources, cohesion, and
+stability, with fifteen Event Log payloads and a dedicated report image.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, runtime state-target scope, save recovery,
+multiplayer behavior, and Event Log delivery remain unobserved. The defined
+living-world total is now `137`, while countable Fallout living-world blocks
+remain `0 of 660`.

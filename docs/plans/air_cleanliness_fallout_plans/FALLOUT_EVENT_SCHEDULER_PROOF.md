@@ -186,7 +186,7 @@ The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are implemented. Cohesion and Reclamation remain separate mechanics. Scheduler activation and event content remain absent.
 - World transition schema 12 authenticates frozen Air Winter rows with an Air-owned producer schema and generation, the frozen live category, accepted specialty buildings, coal, population, building, and supply receipts. Valid rows use exact produced values. Invalid rows use a typed N/A payload and are excluded from country coverage.
-- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for three ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
+- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for twelve ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
 - Exact bilateral wrappers and issued-orphan retention are implemented without gameplay callers. Activation remains blocked until reviewed bilateral event content invokes those wrappers and proves its human, hidden AI, stale-subject, delayed-result, and cleanup paths.
 - Twenty-three dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted.
 - Major-arc and relationship candidates fail closed until reviewed rows freeze the complete atomic class-reservation payload.
@@ -261,3 +261,28 @@ the current Air Winter phase. Its state target and optional AI-neighbour
 receipt use stable id tie breaks. The thirteen human, hidden-AI, callback, and
 cleanup blocks remain behind the unset activation flags and add no release-
 floor credit.
+
+## Fever Dormitory candidate and event correction
+
+The reviewed ordinary candidate producer now carries the twelfth dormant row
+for The Fever Dormitory. It uses candidate id `256`, transaction key `710012`,
+route `7112`, a state target, the Medicine cooldown family, and a first-winter-
+year phase. The state gate requires a current produced Air Winter shelter
+receipt, disease pressure at or above the reviewed threshold, population above
+the minimum, baseline Filters and Food, low country Medicine, and at least one
+affordable branch.
+
+Events `256` through `268` provide one human opening, one hidden-AI opening,
+four human delayed results, four hidden-AI delayed results, one human callback,
+one hidden-AI callback, and authenticated cleanup. Branch costs are paid only
+after the delayed result and ordinary receipt commit. Results update the
+disease, shelter, exposure, adaptation, reclamation, food, Medicine, Filters,
+Recognition, Cohesion, Stability, and Deaths ledgers. History `9117` carries
+fifteen branch and outcome payloads through the shared Event Log name, detail,
+and Event Details routes. The dedicated report image is registered as
+`GFX_report_event_fallout_fever_dormitory`.
+
+The Fever Dormitory chain remains dormant and earns no release-floor credit.
+Scheduler activation, host authority, save recovery, multiplayer behavior,
+state-target scope, and runtime Event Log delivery remain unobserved because
+HOI4 was not launched.
