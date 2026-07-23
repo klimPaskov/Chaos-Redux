@@ -207,3 +207,17 @@ supplies the state value and Food supplies the required resource. The chain
 freezes family ledgers, schedules a 42-day result and a 300-day household
 callback with hidden-AI parity, records history `9122`, and remains dormant and
 uncounted.
+
+## Black Start correction
+
+Black Start is the eighteenth reviewed ordinary candidate row. Candidate `310`
+uses transaction key `710018`, route `7118`, and history `9123`. It requires
+the closed Shelter Marriage Law memory, a second-generation country with
+Power, Scrap, Cohesion, Recognition, Reclamation, and an affordable grid policy.
+Events `310` through `316` provide four authored policies, deterministic result
+grading, a 270-day maintenance callback, hidden-AI parity, Deaths-backed
+failure, durable grid ledgers, fifteen Event Log payloads, dedicated report art,
+and authenticated cleanup. It remains dormant and contributes zero blocks to
+the `0 of 660` release-floor total. The event inspector request returned
+`Transport closed`, so engine-sensitive reachability and host or save behavior
+remain unproven.

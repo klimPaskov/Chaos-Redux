@@ -49,6 +49,7 @@
 - `specs/10_cause_memory_mutant_fiction_and_altered_ecology.md`
 - `specs/11_recovery_generation_change_and_ten_year_endgame.md`
 - `specs/13_reviewed_global_survival_pilots.md`
+- `specs/18_reviewed_global_survival_black_start.md`
 
 ## Matrices
 

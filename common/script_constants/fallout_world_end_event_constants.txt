@@ -1118,6 +1118,13 @@ fallout_event_id = {
 	shelter_marriage_law_callback = 307
 	shelter_marriage_law_callback_ai = 308
 	shelter_marriage_law_cleanup = 309
+	black_start_human = 310
+	black_start_ai = 311
+	black_start_result = 312
+	black_start_result_ai = 313
+	black_start_callback = 314
+	black_start_callback_ai = 315
+	black_start_cleanup = 316
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1180,7 +1187,10 @@ fallout_event_candidate_pilot = {
 	shelter_marriage_law_candidate_id = 303
 	shelter_marriage_law_transaction_key = 710017
 	shelter_marriage_law_route = 7117
-	upper_bound = 7118
+	black_start_candidate_id = 310
+	black_start_transaction_key = 710018
+	black_start_route = 7118
+	upper_bound = 7119
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -6819,5 +6829,359 @@ fallout_event_303_ai = {
 	communal_priority = 8
 	religious_priority = 7
 	leave_priority = 5
+	upper_bound = 1001
+}
+
+fallout_event_310_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	centralized_grid = 1
+	local_cooperatives = 2
+	military_grid = 3
+	foreign_backed = 4
+	upper_bound = 5
+}
+
+fallout_event_310_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 45
+	callback_delay_days = 270
+	modifier_days = 420
+	callback_modifier_days = 300
+	upper_bound = 421
+}
+
+fallout_event_310_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 4
+	upper_bound = 301
+}
+
+fallout_event_310_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 900
+	maximum_campaign_day = 2001
+	minimum_power = 25
+	minimum_scrap = 25
+	minimum_cohesion = 30
+	minimum_recognition = 25
+	minimum_reclamation = 20
+	minimum_viability = 0
+	maximum_viability = 100
+	maximum_candidate_severity = 100
+	deaths_to_severity = 0.0002
+	power_weight = 35
+	scrap_weight = 25
+	cohesion_weight = 20
+	recognition_weight = 20
+	weight_divisor = 100
+	central_success_viability = 68
+	central_partial_viability = 45
+	central_success_power = 45
+	central_partial_power = 35
+	cooperative_success_viability = 62
+	cooperative_partial_viability = 40
+	cooperative_success_cohesion = 42
+	cooperative_partial_cohesion = 32
+	military_success_viability = 64
+	military_partial_viability = 42
+	military_success_power = 40
+	military_partial_power = 30
+	foreign_success_viability = 60
+	foreign_partial_viability = 38
+	foreign_success_recognition = 40
+	foreign_partial_recognition = 28
+	result_failure_death_percent = 0.0007
+	callback_failure_death_percent = 0.00035
+	minimum_remaining_people = 1
+	maximum_capacity = 100
+	maximum_governance = 100
+	maximum_dependency = 100
+	maximum_resilience = 100
+	maximum_exposure = 100
+	ai_central_power = 40
+	ai_cooperative_cohesion = 42
+	ai_military_power = 35
+	ai_foreign_recognition = 35
+	upper_bound = 101
+}
+
+fallout_event_310_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	central_power = 4
+	central_scrap = 4
+	cooperative_power = 2
+	cooperative_scrap = 3
+	cooperative_food = 1
+	military_power = 3
+	military_fuel = 2
+	foreign_power = 2
+	foreign_recognition = 3
+	upper_bound = 4
+}
+
+fallout_event_310_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	central_success_power = 8
+	central_success_scrap = -2
+	central_success_recognition = 3
+	central_success_cohesion = 2
+	central_success_stability = 0.04
+	central_success_war_support = 0.01
+	central_success_capacity = 45
+	central_success_governance = 40
+	central_success_dependency = -8
+	central_success_resilience = 30
+	central_success_exposure = 1
+	central_partial_power = 4
+	central_partial_scrap = -3
+	central_partial_recognition = 1
+	central_partial_cohesion = 0
+	central_partial_stability = 0.01
+	central_partial_war_support = 0
+	central_partial_capacity = 24
+	central_partial_governance = 20
+	central_partial_dependency = 0
+	central_partial_resilience = 12
+	central_partial_exposure = 7
+	central_failure_power = -5
+	central_failure_scrap = -4
+	central_failure_recognition = -5
+	central_failure_cohesion = -4
+	central_failure_stability = -0.05
+	central_failure_war_support = -0.02
+	central_failure_capacity = 6
+	central_failure_governance = -12
+	central_failure_dependency = 12
+	central_failure_resilience = -8
+	central_failure_exposure = 18
+
+	cooperative_success_power = 5
+	cooperative_success_scrap = -1
+	cooperative_success_recognition = 4
+	cooperative_success_cohesion = 7
+	cooperative_success_stability = 0.03
+	cooperative_success_war_support = 0
+	cooperative_success_capacity = 30
+	cooperative_success_governance = 30
+	cooperative_success_dependency = -4
+	cooperative_success_resilience = 42
+	cooperative_success_exposure = 2
+	cooperative_partial_power = 2
+	cooperative_partial_scrap = -2
+	cooperative_partial_recognition = 2
+	cooperative_partial_cohesion = 3
+	cooperative_partial_stability = 0.01
+	cooperative_partial_war_support = 0
+	cooperative_partial_capacity = 15
+	cooperative_partial_governance = 18
+	cooperative_partial_dependency = 2
+	cooperative_partial_resilience = 20
+	cooperative_partial_exposure = 8
+	cooperative_failure_power = -4
+	cooperative_failure_scrap = -3
+	cooperative_failure_recognition = -4
+	cooperative_failure_cohesion = -6
+	cooperative_failure_stability = -0.04
+	cooperative_failure_war_support = -0.01
+	cooperative_failure_capacity = 4
+	cooperative_failure_governance = -8
+	cooperative_failure_dependency = 8
+	cooperative_failure_resilience = -10
+	cooperative_failure_exposure = 20
+
+	military_success_power = 7
+	military_success_scrap = -2
+	military_success_recognition = 1
+	military_success_cohesion = -1
+	military_success_stability = 0.02
+	military_success_war_support = 0.04
+	military_success_capacity = 38
+	military_success_governance = 28
+	military_success_dependency = -5
+	military_success_resilience = 22
+	military_success_exposure = 3
+	military_partial_power = 3
+	military_partial_scrap = -3
+	military_partial_recognition = 0
+	military_partial_cohesion = -2
+	military_partial_stability = 0.01
+	military_partial_war_support = 0.02
+	military_partial_capacity = 20
+	military_partial_governance = 12
+	military_partial_dependency = 2
+	military_partial_resilience = 12
+	military_partial_exposure = 10
+	military_failure_power = -6
+	military_failure_scrap = -4
+	military_failure_recognition = -6
+	military_failure_cohesion = -5
+	military_failure_stability = -0.06
+	military_failure_war_support = -0.02
+	military_failure_capacity = 4
+	military_failure_governance = -14
+	military_failure_dependency = 14
+	military_failure_resilience = -12
+	military_failure_exposure = 24
+
+	foreign_success_power = 6
+	foreign_success_scrap = 0
+	foreign_success_recognition = 6
+	foreign_success_cohesion = 1
+	foreign_success_stability = 0.03
+	foreign_success_war_support = 0
+	foreign_success_capacity = 35
+	foreign_success_governance = 22
+	foreign_success_dependency = 24
+	foreign_success_resilience = 35
+	foreign_success_exposure = 2
+	foreign_partial_power = 3
+	foreign_partial_scrap = -1
+	foreign_partial_recognition = 3
+	foreign_partial_cohesion = 0
+	foreign_partial_stability = 0.01
+	foreign_partial_war_support = 0
+	foreign_partial_capacity = 18
+	foreign_partial_governance = 12
+	foreign_partial_dependency = 14
+	foreign_partial_resilience = 18
+	foreign_partial_exposure = 9
+	foreign_failure_power = -5
+	foreign_failure_scrap = -2
+	foreign_failure_recognition = -8
+	foreign_failure_cohesion = -4
+	foreign_failure_stability = -0.05
+	foreign_failure_war_support = -0.01
+	foreign_failure_capacity = 2
+	foreign_failure_governance = -10
+	foreign_failure_dependency = 20
+	foreign_failure_resilience = -10
+	foreign_failure_exposure = 22
+
+	callback_success_power = 4
+	callback_success_scrap = 2
+	callback_success_recognition = 3
+	callback_success_cohesion = 3
+	callback_success_stability = 0.04
+	callback_success_war_support = 0.01
+	callback_success_capacity = 18
+	callback_success_governance = 12
+	callback_success_dependency = -6
+	callback_success_resilience = 15
+	callback_success_exposure = -4
+	callback_partial_power = 1
+	callback_partial_scrap = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 1
+	callback_partial_stability = 0.01
+	callback_partial_war_support = 0
+	callback_partial_capacity = 8
+	callback_partial_governance = 5
+	callback_partial_dependency = 2
+	callback_partial_resilience = 7
+	callback_partial_exposure = 6
+	callback_failure_power = -3
+	callback_failure_scrap = -2
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -3
+	callback_failure_stability = -0.04
+	callback_failure_war_support = -0.01
+	callback_failure_capacity = 0
+	callback_failure_governance = -6
+	callback_failure_dependency = 10
+	callback_failure_resilience = -8
+	callback_failure_exposure = 15
+	upper_bound = 1001
+}
+
+fallout_event_310_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	central_stability = 0.03
+	central_war_support = 0.01
+	central_political_power = 0.01
+	cooperative_stability = 0.03
+	cooperative_war_support = 0
+	cooperative_political_power = 0.02
+	military_stability = 0.01
+	military_war_support = 0.04
+	military_political_power = 0
+	foreign_stability = 0.02
+	foreign_war_support = 0
+	foreign_political_power = 0.01
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_political_power = 0.02
+	failed_stability = -0.05
+	failed_war_support = -0.02
+	failed_political_power = -0.02
+	upper_bound = 1
+}
+
+fallout_event_310_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9123
+	central_success = 11
+	central_partial = 12
+	central_failure = 13
+	cooperative_success = 21
+	cooperative_partial = 22
+	cooperative_failure = 23
+	military_success = 31
+	military_partial = 32
+	military_failure = 33
+	foreign_success = 41
+	foreign_partial = 42
+	foreign_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_310_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	central_priority = 9
+	cooperative_priority = 8
+	military_priority = 7
+	foreign_priority = 6
 	upper_bound = 1001
 }
