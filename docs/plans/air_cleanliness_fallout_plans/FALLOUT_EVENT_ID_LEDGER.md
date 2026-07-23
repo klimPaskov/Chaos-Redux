@@ -397,3 +397,15 @@ hidden-AI parity, Deaths-backed failure, durable grid ledgers, dedicated
 modifiers, Event Log payloads, and authenticated cleanup. The documented
 living-world block total is now `198`, while the countable Fallout living-world
 release-floor total remains `0 of 660`.
+
+## First Streetlight count correction
+
+First Streetlight adds seven dormant country-level event blocks at suffixes
+`317` through `323`. Candidate `317` uses transaction key `710019`, route
+`7119`, and history `9124`. It follows the closed Black Start memory, then
+offers capital, clinic, factory, or perimeter first-light policies with
+deterministic grading, a 35-day result, a 240-day public maintenance callback,
+hidden-AI parity, Deaths-backed failure, durable urban ledgers, dedicated
+modifiers, Event Log payloads, and authenticated cleanup. The documented
+living-world block total is now `205`, while the countable Fallout living-world
+release-floor total remains `0 of 660`.

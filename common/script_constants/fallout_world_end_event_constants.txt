@@ -1125,6 +1125,13 @@ fallout_event_id = {
 	black_start_callback = 314
 	black_start_callback_ai = 315
 	black_start_cleanup = 316
+	first_streetlight_human = 317
+	first_streetlight_ai = 318
+	first_streetlight_result = 319
+	first_streetlight_result_ai = 320
+	first_streetlight_callback = 321
+	first_streetlight_callback_ai = 322
+	first_streetlight_cleanup = 323
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1190,7 +1197,10 @@ fallout_event_candidate_pilot = {
 	black_start_candidate_id = 310
 	black_start_transaction_key = 710018
 	black_start_route = 7118
-	upper_bound = 7119
+	first_streetlight_candidate_id = 317
+	first_streetlight_transaction_key = 710019
+	first_streetlight_route = 7119
+	upper_bound = 7120
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -7183,5 +7193,362 @@ fallout_event_310_ai = {
 	cooperative_priority = 8
 	military_priority = 7
 	foreign_priority = 6
+	upper_bound = 1001
+}
+
+fallout_event_317_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	capital_first = 1
+	clinics_first = 2
+	factories_first = 3
+	perimeter_first = 4
+	upper_bound = 5
+}
+
+fallout_event_317_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 35
+	callback_delay_days = 240
+	modifier_days = 360
+	callback_modifier_days = 270
+	upper_bound = 361
+}
+
+fallout_event_317_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 4
+	upper_bound = 301
+}
+
+fallout_event_317_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 1100
+	maximum_campaign_day = 2201
+	minimum_power = 30
+	minimum_capacity = 25
+	minimum_governance = 25
+	minimum_cohesion = 30
+	minimum_reclamation = 25
+	minimum_viability = 0
+	maximum_viability = 100
+	maximum_candidate_severity = 100
+	deaths_to_severity = 0.00025
+	power_weight = 30
+	capacity_weight = 25
+	governance_weight = 20
+	cohesion_weight = 25
+	weight_divisor = 100
+	capital_success_viability = 65
+	capital_partial_viability = 42
+	capital_success_power = 45
+	capital_partial_power = 35
+	clinic_success_viability = 62
+	clinic_partial_viability = 40
+	clinic_success_cohesion = 42
+	clinic_partial_cohesion = 32
+	factory_success_viability = 64
+	factory_partial_viability = 42
+	factory_success_capacity = 42
+	factory_partial_capacity = 30
+	perimeter_success_viability = 60
+	perimeter_partial_viability = 38
+	perimeter_success_governance = 40
+	perimeter_partial_governance = 28
+	result_failure_death_percent = 0.0006
+	callback_failure_death_percent = 0.0003
+	minimum_remaining_people = 1
+	maximum_city_identity = 100
+	maximum_civic = 100
+	maximum_production = 100
+	maximum_security = 100
+	maximum_exposure = 100
+	ai_capital_governance = 42
+	ai_clinic_cohesion = 45
+	ai_factory_capacity = 40
+	ai_perimeter_reclamation = 35
+	upper_bound = 101
+}
+
+fallout_event_317_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	capital_power = 3
+	capital_scrap = 2
+	capital_recognition = 1
+	clinic_power = 2
+	clinic_medicine = 2
+	clinic_cohesion = 0
+	factory_power = 3
+	factory_scrap = 3
+	factory_food = 1
+	perimeter_power = 2
+	perimeter_fuel = 2
+	perimeter_reclamation = 1
+	upper_bound = 4
+}
+
+fallout_event_317_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	capital_success_power = 6
+	capital_success_scrap = -1
+	capital_success_recognition = 3
+	capital_success_cohesion = 4
+	capital_success_stability = 0.04
+	capital_success_war_support = 0.01
+	capital_success_city_identity = 45
+	capital_success_civic = 35
+	capital_success_production = 12
+	capital_success_security = 18
+	capital_success_exposure = 1
+	capital_partial_power = 3
+	capital_partial_scrap = -2
+	capital_partial_recognition = 1
+	capital_partial_cohesion = 2
+	capital_partial_stability = 0.01
+	capital_partial_war_support = 0
+	capital_partial_city_identity = 24
+	capital_partial_civic = 18
+	capital_partial_production = 8
+	capital_partial_security = 8
+	capital_partial_exposure = 7
+	capital_failure_power = -4
+	capital_failure_scrap = -3
+	capital_failure_recognition = -4
+	capital_failure_cohesion = -4
+	capital_failure_stability = -0.05
+	capital_failure_war_support = -0.01
+	capital_failure_city_identity = 5
+	capital_failure_civic = -10
+	capital_failure_production = -5
+	capital_failure_security = -4
+	capital_failure_exposure = 18
+
+	clinic_success_power = 4
+	clinic_success_scrap = 0
+	clinic_success_recognition = 2
+	clinic_success_cohesion = 6
+	clinic_success_stability = 0.03
+	clinic_success_war_support = 0
+	clinic_success_city_identity = 28
+	clinic_success_civic = 42
+	clinic_success_production = 8
+	clinic_success_security = 12
+	clinic_success_exposure = 2
+	clinic_partial_power = 2
+	clinic_partial_scrap = 0
+	clinic_partial_recognition = 1
+	clinic_partial_cohesion = 3
+	clinic_partial_stability = 0.01
+	clinic_partial_war_support = 0
+	clinic_partial_city_identity = 15
+	clinic_partial_civic = 24
+	clinic_partial_production = 4
+	clinic_partial_security = 6
+	clinic_partial_exposure = 8
+	clinic_failure_power = -3
+	clinic_failure_scrap = -1
+	clinic_failure_recognition = -3
+	clinic_failure_cohesion = -5
+	clinic_failure_stability = -0.04
+	clinic_failure_war_support = -0.01
+	clinic_failure_city_identity = 3
+	clinic_failure_civic = -12
+	clinic_failure_production = -4
+	clinic_failure_security = -6
+	clinic_failure_exposure = 20
+
+	factory_success_power = 7
+	factory_success_scrap = -2
+	factory_success_recognition = 1
+	factory_success_cohesion = 1
+	factory_success_stability = 0.03
+	factory_success_war_support = 0.02
+	factory_success_city_identity = 32
+	factory_success_civic = 20
+	factory_success_production = 48
+	factory_success_security = 10
+	factory_success_exposure = 3
+	factory_partial_power = 3
+	factory_partial_scrap = -3
+	factory_partial_recognition = 0
+	factory_partial_cohesion = 0
+	factory_partial_stability = 0.01
+	factory_partial_war_support = 0.01
+	factory_partial_city_identity = 17
+	factory_partial_civic = 10
+	factory_partial_production = 24
+	factory_partial_security = 4
+	factory_partial_exposure = 10
+	factory_failure_power = -5
+	factory_failure_scrap = -4
+	factory_failure_recognition = -5
+	factory_failure_cohesion = -4
+	factory_failure_stability = -0.05
+	factory_failure_war_support = -0.02
+	factory_failure_city_identity = 4
+	factory_failure_civic = -8
+	factory_failure_production = 8
+	factory_failure_security = -5
+	factory_failure_exposure = 24
+
+	perimeter_success_power = 5
+	perimeter_success_scrap = -1
+	perimeter_success_recognition = 3
+	perimeter_success_cohesion = 2
+	perimeter_success_stability = 0.02
+	perimeter_success_war_support = 0.04
+	perimeter_success_city_identity = 30
+	perimeter_success_civic = 24
+	perimeter_success_production = 12
+	perimeter_success_security = 42
+	perimeter_success_exposure = 2
+	perimeter_partial_power = 2
+	perimeter_partial_scrap = -2
+	perimeter_partial_recognition = 1
+	perimeter_partial_cohesion = 0
+	perimeter_partial_stability = 0.01
+	perimeter_partial_war_support = 0.02
+	perimeter_partial_city_identity = 16
+	perimeter_partial_civic = 12
+	perimeter_partial_production = 6
+	perimeter_partial_security = 20
+	perimeter_partial_exposure = 9
+	perimeter_failure_power = -4
+	perimeter_failure_scrap = -3
+	perimeter_failure_recognition = -5
+	perimeter_failure_cohesion = -3
+	perimeter_failure_stability = -0.04
+	perimeter_failure_war_support = -0.02
+	perimeter_failure_city_identity = 2
+	perimeter_failure_civic = -9
+	perimeter_failure_production = -5
+	perimeter_failure_security = -10
+	perimeter_failure_exposure = 22
+
+	callback_success_power = 3
+	callback_success_scrap = 2
+	callback_success_recognition = 2
+	callback_success_cohesion = 3
+	callback_success_stability = 0.03
+	callback_success_war_support = 0.01
+	callback_success_city_identity = 18
+	callback_success_civic = 14
+	callback_success_production = 16
+	callback_success_security = 12
+	callback_success_exposure = -4
+	callback_partial_power = 1
+	callback_partial_scrap = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 1
+	callback_partial_stability = 0.01
+	callback_partial_war_support = 0
+	callback_partial_city_identity = 8
+	callback_partial_civic = 7
+	callback_partial_production = 8
+	callback_partial_security = 6
+	callback_partial_exposure = 6
+	callback_failure_power = -2
+	callback_failure_scrap = -2
+	callback_failure_recognition = -3
+	callback_failure_cohesion = -3
+	callback_failure_stability = -0.04
+	callback_failure_war_support = -0.01
+	callback_failure_city_identity = 0
+	callback_failure_civic = -6
+	callback_failure_production = -6
+	callback_failure_security = -8
+	callback_failure_exposure = 15
+	upper_bound = 1001
+}
+
+fallout_event_317_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	capital_stability = 0.03
+	capital_war_support = 0.01
+	capital_political_power = 0.01
+	clinic_stability = 0.03
+	clinic_war_support = 0
+	clinic_political_power = 0.02
+	factory_stability = 0.02
+	factory_war_support = 0.02
+	factory_political_power = 0
+	perimeter_stability = 0.01
+	perimeter_war_support = 0.03
+	perimeter_political_power = 0.01
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_political_power = 0.02
+	failed_stability = -0.05
+	failed_war_support = -0.02
+	failed_political_power = -0.02
+	upper_bound = 1
+}
+
+fallout_event_317_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9124
+	capital_success = 11
+	capital_partial = 12
+	capital_failure = 13
+	clinic_success = 21
+	clinic_partial = 22
+	clinic_failure = 23
+	factory_success = 31
+	factory_partial = 32
+	factory_failure = 33
+	perimeter_success = 41
+	perimeter_partial = 42
+	perimeter_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_317_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	capital_priority = 9
+	clinic_priority = 8
+	factory_priority = 7
+	perimeter_priority = 6
 	upper_bound = 1001
 }

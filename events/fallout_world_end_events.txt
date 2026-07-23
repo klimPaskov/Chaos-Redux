@@ -13542,3 +13542,124 @@ country_event = {
 	trigger = { fallout_event_310_cleanup_can_enter = yes }
 	immediate = { fallout_event_310_cleanup = yes }
 }
+
+# Dormant Fallout global-survival chain: First Streetlight
+# -------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.317
+	title = chaosx.fallout.317.t
+	desc = chaosx.fallout.317.d
+	picture = GFX_report_event_fallout_first_streetlight
+	is_triggered_only = yes
+	trigger = { fallout_event_317_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.317.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_317_cost.capital_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_317_cost.capital_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_317_cost.capital_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_317_requested_branch = constant:fallout_event_317_branch.capital_first } fallout_event_317_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.317.a.tt
+		ai_chance = { base = constant:fallout_event_317_ai.capital_priority }
+	}
+	option = {
+		name = chaosx.fallout.317.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_317_cost.clinic_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_317_cost.clinic_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_317_cost.clinic_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_317_requested_branch = constant:fallout_event_317_branch.clinics_first } fallout_event_317_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.317.b.tt
+		ai_chance = { base = constant:fallout_event_317_ai.clinic_priority }
+	}
+	option = {
+		name = chaosx.fallout.317.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_317_cost.factory_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_317_cost.factory_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_317_cost.factory_food compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_317_requested_branch = constant:fallout_event_317_branch.factories_first } fallout_event_317_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.317.c.tt
+		ai_chance = { base = constant:fallout_event_317_ai.factory_priority }
+	}
+	option = {
+		name = chaosx.fallout.317.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_317_cost.perimeter_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_317_cost.perimeter_fuel compare = greater_than_or_equals }
+			check_variable = { air_winter_reclamation value = constant:fallout_event_317_cost.perimeter_reclamation compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_317_requested_branch = constant:fallout_event_317_branch.perimeter_first } fallout_event_317_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.317.d_option.tt
+		ai_chance = { base = constant:fallout_event_317_ai.perimeter_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.318
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_317_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_317_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.319
+	title = chaosx.fallout.319.t
+	desc = { text = chaosx.fallout.319.capital.success.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.capital_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.319.capital.partial.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.capital_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.319.capital.failure.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.capital_first } } }
+	desc = { text = chaosx.fallout.319.clinic.success.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.clinics_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.319.clinic.partial.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.clinics_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.319.clinic.failure.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.clinics_first } } }
+	desc = { text = chaosx.fallout.319.factory.success.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.factories_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.319.factory.partial.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.factories_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.319.factory.failure.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.factories_first } } }
+	desc = { text = chaosx.fallout.319.perimeter.success.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.perimeter_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.319.perimeter.partial.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.perimeter_first } check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.319.perimeter.failure.d trigger = { check_variable = { fallout_event_317_selected_branch = constant:fallout_event_317_branch.perimeter_first } } }
+	picture = GFX_report_event_fallout_first_streetlight
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_317_delayed_result_can_enter check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_streetlight_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.319.a hidden_effect = { fallout_event_317_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.319.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.320
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_317_delayed_result_can_enter check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_streetlight_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_317_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.321
+	title = chaosx.fallout.321.t
+	desc = { text = chaosx.fallout.321.success.d trigger = { check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.321.partial.d trigger = { check_variable = { fallout_event_317_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.321.failure.d
+	picture = GFX_report_event_fallout_first_streetlight
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_streetlight_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_317_registry_is_current = yes }
+	option = { name = chaosx.fallout.321.a hidden_effect = { fallout_event_317_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.321.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.322
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_streetlight_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_317_registry_is_current = yes }
+	immediate = { fallout_event_317_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.323
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_317_cleanup_can_enter = yes }
+	immediate = { fallout_event_317_cleanup = yes }
+}

@@ -221,3 +221,17 @@ and authenticated cleanup. It remains dormant and contributes zero blocks to
 the `0 of 660` release-floor total. The event inspector request returned
 `Transport closed`, so engine-sensitive reachability and host or save behavior
 remain unproven.
+
+## First Streetlight correction
+
+The producer now carries the nineteenth reviewed ordinary row. First
+Streetlight uses country candidate id `317`, transaction key `710019`, route
+`7119`, and event tokens `317` through `323`. Its gate requires the closed
+Black Start memory, second-generation timing, Power, grid capacity,
+governance, Cohesion, Reclamation, and one affordable urban policy. Its
+severity is the clamped recorded-Deaths score and its mechanic-pressure field
+is the Black Start capacity ledger. The chain freezes urban and grid ledgers,
+uses a 35-day first-light result and a 240-day public maintenance callback
+with hidden-AI parity, records history `9124`, and remains dormant and
+uncounted. The dedicated report art and the event-inspector `Transport closed`
+proof are recorded in `FALLOUT_FIRST_STREETLIGHT_CHAIN_PROOF.md`.
