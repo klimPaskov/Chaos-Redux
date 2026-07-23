@@ -26,6 +26,8 @@ The scenario must be directly launchable unless a world-end scenario is already 
 
 The completed manual scenario must remove approximately 90 through 95 percent of each state's population according to the standard Fallout grade ladder. This is the total loss measured from the population immediately before the province sweep, not a second 90 through 95 percent loss applied after the visible seven-day interval.
 
+For the thermonuclear type, the verified native-strike aggregate itself uses a direct 90 through 95 percent band from the prestrike population. The first strike starts at 90 percent and additional province strikes add only a small capped increment. The seven-day rewrite remains idempotent and requests only any remaining grade-specific difference.
+
 The manual coordinator records every state's prestrike population before the first native launch. Strike and first-week deaths remain visible and enter the Deaths system. During the standard rewrite, the population phase removes only the additional amount needed to reach the grade-specific survivor target from that original baseline. A nonempty state retains the existing one-person floor. Missing, stale, or arithmetically inconsistent provenance blocks the population phase and must never fall back to applying the ordinary percentage to the already reduced population. If the frozen post-seven-day population is already below the grade survivor target, the transition enters a terminal contract error. It must not silently accept excess loss or add population.
 
 ## Type options
