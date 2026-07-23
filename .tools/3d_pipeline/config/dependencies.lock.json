@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0.0",
+  "lock_name": "chaos-redux-3d-model-pipeline",
+  "recorded_at": "2026-07-22T00:00:00Z",
+  "routes": {
+    "meshy_mcp": {
+      "package": "@meshy-ai/meshy-mcp-server",
+      "version": "0.4.0",
+      "git_head": "d8c77d1cb897e345eb41d38b510b8391b1664346",
+      "license": "MIT",
+      "node_minimum": "18",
+      "wrapper": ".tools/3d_pipeline/wrappers/run_meshy_mcp.cmd",
+      "required_environment": [
+        "MESHY_API_KEY"
+      ],
+      "verified_tools": [
+        "meshy_check_balance",
+        "meshy_image_to_3d",
+        "meshy_get_task_status",
+        "meshy_download_model",
+        "meshy_remesh",
+        "meshy_rig",
+        "meshy_convert",
+        "meshy_animate"
+      ]
+    },
+    "blender_lab_mcp": {
+      "repository": "https://projects.blender.org/lab/blender_mcp.git",
+      "tag": "v1.0.0",
+      "commit": "03004fd0216bfe5e0a3d9ac9b47d5efadc3d78c4",
+      "server_project": ".tools/3d_pipeline/vendor/blender_mcp/mcp",
+      "server_name": "blender-mcp",
+      "verified_server_version": "1.28.1",
+      "development_only": true,
+      "wrapper": ".tools/3d_pipeline/wrappers/run_blender_lab_mcp.cmd"
+    },
+    "blender": {
+      "version": "5.1.2",
+      "build_commit": "ec6e62d40fa9",
+      "shortcut": "C:/Users/klimp/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Blender/Blender 5.1.lnk",
+      "launcher": "C:/Program Files/Blender Foundation/Blender 5.1/blender-launcher.exe",
+      "executable": "C:/Program Files/Blender Foundation/Blender 5.1/blender.exe",
+      "minimum_addon_blender": "5.1.0"
+    },
+    "blender_mcp_addon": {
+      "id": "mcp",
+      "version": "1.0.0",
+      "manifest": ".tools/3d_pipeline/vendor/blender_mcp/addon/blender_mcp_addon/blender_manifest.toml",
+      "socket_port": 9876
+    },
+    "io_pdx_mesh": {
+      "repository": "https://github.com/ross-g/io_pdx_mesh",
+      "release": "0.91",
+      "version": "0.91.0",
+      "asset": "blender-io_pdx_mesh.zip",
+      "download_url": "https://github.com/ross-g/io_pdx_mesh/releases/download/0.91/blender-io_pdx_mesh.zip",
+      "sha256": "A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2",
+      "installed_extension_id": "io_pdx_mesh",
+      "installed_manifest": "C:/Users/klimp/AppData/Roaming/Blender Foundation/Blender/5.1/extensions/user_default/io_pdx_mesh/blender_manifest.toml",
+      "verified_export_functions": [
+        "io_pdx_mesh.pdx_blender.blender_import_export.export_meshfile",
+        "io_pdx_mesh.pdx_blender.blender_import_export.export_animfile"
+      ]
+    }
+  },
+  "policy": {
+    "provider_input_image_count": 1,
+    "allow_meshy_multiview_thumbnails": false,
+    "paid_generation_attempts_per_pilot": 1,
+    "retry_paid_calls": false,
+    "runtime_sources_must_not_reference_docs_assets": true
+  },
+  "verification": {
+    "meshy_route": {
+      "status": "verified",
+      "balance_probe": true,
+      "schema_probe": true
+    },
+    "blender_lab_mcp_route": {
+      "status": "verified",
+      "handshake": true,
+      "tool_listing": true,
+      "live_bridge": true
+    },
+    "io_pdx_mesh": {
+      "status": "verified_installed_and_probed",
+      "archive_sha256_verified": true,
+      "extension_manifest_verified": true,
+      "mesh_export_probe": true,
+      "anim_export_probe": true,
+      "reimport_probe": true,
+      "probe_jobs": [
+        "docs/assets/chaos_redux_3d_model_pilots/models_3d/anomaly_signal_beacon",
+        "docs/assets/chaos_redux_3d_model_pilots/models_3d/anomaly_recon_trooper"
+      ]
+    }
+  }
+}

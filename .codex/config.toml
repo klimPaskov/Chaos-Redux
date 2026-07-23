@@ -2,9 +2,7 @@ approval_policy = "never"
 
 sandbox_mode = "danger-full-access"
 
-[mcp_servers.blender]
-command = "C:\\blender_mcp\\mcp\\.venv\\Scripts\\blender-mcp.exe"
-cwd = "C:\\blender_mcp\\mcp"
+project_doc_max_bytes = 65536
 
 [mcp_servers.hoi4_agent_tools]
 command = "hoi4-agent-tools.cmd"
@@ -12,3 +10,87 @@ cwd = "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iro
 startup_timeout_sec = 120
 tool_timeout_sec = 180
 default_tools_approval_mode = "auto"
+
+# Production Meshy route. The wrapper enforces the MESHY_API_KEY hard gate and
+# pins the official server package through MESHY_MCP_VERSION.
+[mcp_servers.meshy]
+enabled = true
+required = true
+command = "cmd.exe"
+args = [
+  "/d",
+  "/c",
+  "call",
+  "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd"
+]
+cwd = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
+env_vars = ["MESHY_API_KEY", "MESHY_MCP_VERSION"]
+startup_timeout_sec = 120.0
+tool_timeout_sec = 1800.0
+default_tools_approval_mode = "auto"
+enabled_tools = [
+  "meshy_check_balance",
+  "meshy_image_to_3d",
+  "meshy_get_task_status",
+  "meshy_list_tasks",
+  "meshy_cancel_task",
+  "meshy_download_model",
+  "meshy_remesh",
+  "meshy_retexture",
+  "meshy_rig",
+  "meshy_animate",
+  "meshy_convert",
+  "meshy_uv_unwrap",
+  "meshy_resize"
+]
+
+# Production Blender route. This is the narrow allowlisted HOI4 adapter, not
+# the general-purpose Blender Python bridge.
+[mcp_servers.blender_hoi4]
+enabled = true
+required = true
+command = "cmd.exe"
+args = [
+  "/d",
+  "/c",
+  "call",
+  "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.tools/3d_pipeline/wrappers/run_blender_hoi4_adapter.cmd"
+]
+cwd = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
+env_vars = ["MESHY_API_KEY"]
+startup_timeout_sec = 120.0
+tool_timeout_sec = 1800.0
+default_tools_approval_mode = "auto"
+enabled_tools = [
+  "chaosx_blender_hoi4_health",
+  "chaosx_blender_hoi4_prepare_candidate",
+  "chaosx_blender_hoi4_inspect_scene",
+  "chaosx_blender_hoi4_process_textures",
+  "chaosx_blender_hoi4_export_mesh",
+  "chaosx_blender_hoi4_export_animation",
+  "chaosx_blender_hoi4_reimport_export",
+  "chaosx_blender_hoi4_save_checkpoint"
+]
+
+[mcp_servers.blender_hoi4.env]
+CHAOS_REDUX_MOD_ROOT = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
+CHAOS_REDUX_3D_JOB_ROOT = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/chaos_redux_3d_model_pilots/models_3d"
+
+# Development-only official Blender Lab route. It remains installed and
+# available for controlled diagnostics, but is disabled for production runs
+# because its general code tool is outside the production allowlist.
+[mcp_servers.blender_lab_dev]
+enabled = false
+required = false
+command = "cmd.exe"
+args = [
+  "/d",
+  "/c",
+  "call",
+  "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.tools/3d_pipeline/wrappers/run_blender_lab_mcp.cmd"
+]
+cwd = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
+env_vars = ["MESHY_API_KEY"]
+startup_timeout_sec = 120.0
+tool_timeout_sec = 1800.0
+default_tools_approval_mode = "prompt"

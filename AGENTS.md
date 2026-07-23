@@ -66,6 +66,7 @@ Use repo skills as required implementation guidance.
 
 - Use `chaos-redux-events` for Chaos Redux event implementation, event logs, evolutions, event details, documentation, and spreadsheet alignment.
 - Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes.
+- Use `chaos-redux-3d-model-pipeline` when creating, rigging, animating, converting, exporting, auditing, or documenting Chaos Redux HOI4 3D models; route bounded production work to `chaosx_3d_model_pipeline` with `fork_context=false`.
 - Use `chaos-redux-frame-animation` when a task needs animated sprites, frame sequences, sprite sheets, GIF previews, animated UI pieces, animated portraits, hover loops, pulse loops, route emblems, or frame-by-frame visual packages. This skill forbids final animation made only by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
 - Use `chaos-redux-super-events` when a task creates, updates, researches, or wires a super-event.
 - Use `hoi4-focus-trees` before editing national focus trees.
@@ -76,36 +77,16 @@ Use repo skills as required implementation guidance.
 
 ### HOI4 MCP
 
-The installed `hoi4-agent-tools` server is the normal coding-agent tool for
-focus trees, event-chain analysis, scripted GUIs, and maps. Register one server
-entry with this repository as its working directory:
+The installed `hoi4-agent-tools` server is the coding-agent tool for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
 
-```toml
-[mcp_servers.hoi4_agent_tools]
-command = "hoi4-agent-tools.cmd"
-cwd = "C:\\Users\\<you>\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux"
-```
+- Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or a complete new route plan; review the returned layout and diagnostics.
+- Event work: use narrow `hoi4.event_inspect` queries and the read-only render and compare tools, then edit source files through the normal workflow.
+- Technology work: inspect, render, and compare technology and doctrine trees, including their prerequisites, placements, unlocks, bonuses, references, and missing assets.
+- Weighted-logic work: inspect and evaluate event MTTH, event options, decision and mission scores, focus and research selection, random blocks, AI strategy factors, and declared custom pools under explicit scenarios; use sweeps, seeded simulation, sequence analysis, and comparisons when needed.
+- GUI work: inspect and render the linked layout, states, resolutions, and click regions before an in-scope `hoi4.gui_rewrite`.
+- Map work: inspect connected province, state, region, adjacency, supply, and railway data before a declarative `hoi4.map_rewrite`.
 
-Install it once with `npm install --global hoi4-agent-tools@2.0.0`. If the npm
-release is not available yet, clone the standalone project and run
-`npm install --global . --ignore-scripts` from its root. Reload the coding
-agent and call the domain tool directly. With `cwd` inside this mod,
-omit `workspaceId`; the server resolves the current mod automatically. The
-optional `hoi4-agent-tools-setup --init` flow is for persistent multi-mod or
-remote deployments, not ordinary mod-local work.
-
-- Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or
-  a complete new route plan; review the returned layout and diagnostics.
-- Event work: use narrow `hoi4.event_inspect` queries and the read-only render
-  and compare tools, then edit source files through the normal workflow.
-- GUI work: inspect and render the linked layout, states, resolutions, and
-  click regions before an in-scope `hoi4.gui_rewrite`.
-- Map work: inspect connected province, state, region, adjacency, supply, and
-  railway data before a declarative `hoi4.map_rewrite`.
-
-The agent may call MCP autonomously as part of the larger skills, source review,
-wiki and vanilla-documentation checks, tests, audits, and subagent handoffs.
-MCP does not replace those repository requirements.
+The agent may call MCP autonomously as part of the larger skills, source review, wiki and vanilla-documentation checks, tests, audits, and subagent handoffs. MCP does not replace those repository requirements.
 
 ### Subagents
 
@@ -140,6 +121,14 @@ Spreadsheet source and export rule:
 Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. They must not expand a whole mechanic, redesign a route family, add a new country package, create a new scripted GUI system, or change the requested design on their own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup work should also record which specs, plans, handoffs, manifests, or reports were promoted, queued, rejected, superseded, or left unresolved.
 
 For major event work, the main agent should use the improvement loop after meaningful implementation tranches when several new mechanics have been added and now need deeper connections. The planner should expand ideas using the event-planning skill and relevant research. It should not be used repeatedly while a previous plan for the same event is still unresolved.
+
+### Specs and Plans
+
+Event source specifications belong under `docs/specs/<event_id>_<event_slug>_specs/`.
+
+Subagent plans, improvement addenda, audit follow-up notes, and implementation handoffs belong under `docs/plans/<event_id>_<event_slug>_plans/`.
+
+The plans folder is a working area. The specs folder is the source-of-truth design area. If an accepted plan changes the event design, the main agent should merge it into the relevant spec or report that it remains queued.
 
 ## 1. Coding Style
 
@@ -306,6 +295,7 @@ When implementing any new mechanic, follow this checklist:
 18. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
 19. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
 20. Respect the player-facing writing style found in `chaos-redux-events`.
+21. Markdown prose must not be hard-wrapped in the middle of a sentence. Keep each sentence on one physical line and place line breaks only between sentences or paragraphs.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If this checklist cannot be satisfied, stop and request more design input instead of guessing.
@@ -346,14 +336,6 @@ For large events, mechanics, focus-tree rewrites, country packages, balance pass
 Every simplification must be reported. This includes skipped routes, fallback trees used in place of bespoke trees, missing assets, missing localisation, missing AI behavior, missing focus paths, missing dynamic scaling, hardcoded values where dynamic logic was requested, placeholder content, or weaker substitutes.
 
 If there are no simplifications, say so explicitly and provide evidence through audits, docs, or changed files. If the goal cannot be fully implemented, report that the goal is incomplete instead of presenting partial work as done.
-
-### Specs and Plans
-
-Event source specifications belong under `docs/specs/<event_id>_<event_slug>_specs/`.
-
-Subagent plans, improvement addenda, audit follow-up notes, and implementation handoffs belong under `docs/plans/<event_id>_<event_slug>_plans/`.
-
-The plans folder is a working area. The specs folder is the source-of-truth design area. If an accepted plan changes the event design, the main agent should merge it into the relevant spec or report that it remains queued.
 
 ## 6. Event Integration
 

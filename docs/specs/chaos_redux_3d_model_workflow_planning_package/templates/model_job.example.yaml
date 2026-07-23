@@ -1,0 +1,106 @@
+schema_version: "1.0.0"
+job_id: "3d_014_cannibal_raider_20260722_150500"
+state: "draft"
+
+owner:
+  event_or_system: "014_cannibalism"
+  parent_agent: "main_agent"
+  reviewer: "asset_owner"
+  handoff_path: "docs/plans/014_cannibalism_plans/subagent_handoffs/cannibal_raider_3d_model_handoff.md"
+
+asset:
+  asset_id: "014_cannibal_raider"
+  slug: "cannibal_raider"
+  display_purpose: "Animated land-unit model for the event-created raider formation"
+  runtime_domain: "land"
+  runtime_consumer: "REPLACE_AFTER_LOCAL_PRECEDENT_REVIEW"
+  expected_instance_density: "medium"
+
+reference:
+  original_path: "docs/assets/014_cannibalism/models_3d/cannibal_raider/references/original/cannibal_raider.png"
+  sha256: "0000000000000000000000000000000000000000000000000000000000000000" # Replace before use
+  source_mode: "user_provided"
+  provenance: "User-provided reference image"
+  source_url: null
+  license_status: "user_authorized"
+  preflight_status: "pending"
+  derived_path: null
+  derived_sha256: null
+  known_ambiguity:
+    - "Rear equipment is not visible"
+
+profile:
+  profile_id: "humanoid_unit"
+  calibration_record: ".tools/3d_pipeline/config/profile_calibration/humanoid_unit.json"
+  vanilla_references:
+    - "REPLACE_WITH_LOCAL_VANILLA_MODEL_PATH"
+  target_relative_scale: 1.0
+
+brief:
+  geometry_intent: "One complete humanoid raider with separated arms and legs, a readable weapon, and no fused backpack or weapon geometry."
+  texture_direction: "Late-1930s to 1940s improvised military clothing, weathered fabric and metal, no readable text, no modern tactical equipment, no baked spotlight."
+  forbidden_additions:
+    - "modern optics"
+    - "readable labels"
+    - "extra limbs"
+    - "floating ammunition"
+  required_components:
+    - "head"
+    - "torso"
+    - "two arms"
+    - "two legs"
+    - "weapon"
+  rear_side_policy: "reference_inference"
+
+generation:
+  provider: "meshy"
+  model_strategy: "smart_topology"
+  texture: true
+  texture_prompt: "Late-1930s improvised military clothing, weathered fabric and metal, no modern equipment, no readable text, neutral lighting."
+  triangle_topology: true
+  target_polygon_count: null
+  remove_lighting: true
+  pose_mode: "a_pose"
+  download_formats:
+    - "glb"
+    - "fbx"
+
+rigging:
+  required: true
+  route: "meshy_candidate"
+  expected_skeleton_precedent: "REPLACE_AFTER_LOCAL_VANILLA_REVIEW"
+
+animation:
+  required: true
+  actions:
+    - role: "idle"
+      source_route: "meshy_candidate"
+      loop: true
+      fps: 30
+    - role: "move"
+      source_route: "meshy_candidate"
+      loop: true
+      fps: 30
+    - role: "attack"
+      source_route: "blender_authored"
+      loop: false
+      fps: 30
+  root_motion_policy: "in_place"
+
+budget:
+  credit_soft_limit: 35
+  credit_hard_limit: 50
+  paid_generation_attempt_limit: 2
+  paid_postprocess_attempt_limit: 4
+  animation_action_limit: 3
+
+paths:
+  job_root: "docs/assets/014_cannibalism/models_3d/cannibal_raider"
+  final_runtime_root: "REPLACE_AFTER_LOCAL_PRECEDENT_REVIEW"
+  dependency_lock: ".tools/3d_pipeline/config/dependencies.lock.json"
+
+approvals:
+  reference_approved: false
+  paid_calls_approved: false
+  fallbacks_allowed: false
+  approval_notes: []
