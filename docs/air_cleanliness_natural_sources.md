@@ -13,6 +13,11 @@ Event 013 registers a natural atmospheric source after it resolves the impact fa
 - ashfall at any resolved severity
 - massive eruptions at any resolved severity
 
+When an ash-heavy aftermath card opens, a second state-scoped helper records a
+small settled-ash contribution. Severe or worse volcanic eruptions, regional or
+worse ashfall, and severe or worse massive eruptions qualify. The stored disaster sequence is the idempotency key,
+so reopening the same card cannot add the aftermath source twice.
+
 Each state records the disaster sequence, impact index, and family that last contributed. Repeating the same physical impact does not add the source twice. A later impact in the same sequence can contribute when its impact index or family differs.
 
 The contribution enters `global.air_contamination_natural_source_reservoir_bp`. The reservoir represents the next monthly smoke-and-ash contribution in Air Contamination basis points.
@@ -38,6 +43,9 @@ The maximum natural-source contribution is `4 bp` per month, equal to `0.04 perc
 | Volcanic eruption | Local through abnormal | 0.05 through 0.50 bp |
 | Ashfall | Local through abnormal | 0.05 through 0.75 bp |
 | Massive eruption | Local through abnormal | 0.25 through 1.25 bp |
+| Ashfall aftermath | Regional through abnormal | 0.05 through 0.15 bp |
+| Volcanic aftermath | Severe through abnormal | 0.05 through 0.20 bp |
+| Massive-eruption aftermath | Severe through abnormal | 0.10 through 0.25 bp |
 
 At the ceiling, the source remains close to the reversible low-contamination recovery rate. A long series of ash impacts can keep the burden present, while the hard monthly ceiling prevents many affected states from multiplying into a large contamination spike.
 
@@ -49,6 +57,7 @@ At the ceiling, the source remains close to the reversible low-contamination rec
 - Disabling Air Cleanliness blocks new natural-source registration and prevents the cached source amount from entering contamination. The existing atmospheric reservoir continues to dissipate through the host monthly pulse.
 - Final Silence blocks new natural-source registration and shows zero natural contribution. The hidden reservoir continues to dissipate without changing the locked total.
 - Natural disaster recovery cards do not clear the reservoir. The atmospheric burden fades on its own after the local response has ended.
+- The aftermath receipt is written before the recovery card's first reassessment. It does not alter the card's population, building, or recovery effects.
 
 ## Files
 

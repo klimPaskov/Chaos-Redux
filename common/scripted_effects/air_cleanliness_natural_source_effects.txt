@@ -140,6 +140,116 @@ air_contamination_register_natural_disaster_source = {
 	}
 }
 
+# Supported scope: STATE, called when a qualifying ash aftermath card opens.
+# The impact writer already covers the physical event. This second receipt
+# represents settled ash in exposed streets and roof systems. It is limited to
+# ash-heavy families and can write only once for a stored disaster sequence.
+air_contamination_register_natural_disaster_aftermath_source = {
+	set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.zero }
+	if = {
+		limit = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
+			check_variable = {
+				var = natural_disaster_severity
+				value = constant:natural_disaster_severity.regional
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.ashfall_aftermath_regional_bp }
+		if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.ashfall_aftermath_catastrophic_bp }
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.ashfall_aftermath_abnormal_bp }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.volcanic_eruption }
+			check_variable = {
+				var = natural_disaster_severity
+				value = constant:natural_disaster_severity.severe
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.volcanic_aftermath_severe_bp }
+		if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.volcanic_aftermath_regional_bp }
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.volcanic_aftermath_catastrophic_bp }
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.volcanic_aftermath_abnormal_bp }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.massive_eruption }
+			check_variable = {
+				var = natural_disaster_severity
+				value = constant:natural_disaster_severity.severe
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.massive_eruption_aftermath_severe_bp }
+		if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.massive_eruption_aftermath_regional_bp }
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.massive_eruption_aftermath_catastrophic_bp }
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } }
+			set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.massive_eruption_aftermath_abnormal_bp }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = settings_air_cleanliness_disabled
+				has_global_flag = air_contamination_final_silence_locked
+			}
+		}
+		set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.zero }
+	}
+	if = {
+		limit = {
+			check_variable = { air_natural_aftermath_add_bp > constant:air_contamination_natural_source.zero }
+			has_variable = natural_disaster_sequence_id
+			OR = {
+				NOT = { has_variable = air_contamination_natural_aftermath_sequence_id }
+				NOT = {
+					check_variable = {
+						var = air_contamination_natural_aftermath_sequence_id
+						value = natural_disaster_sequence_id
+						compare = equals
+					}
+				}
+			}
+		}
+		set_variable = { air_contamination_natural_aftermath_sequence_id = natural_disaster_sequence_id }
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_natural_source_reservoir_bp } }
+			set_variable = { global.air_contamination_natural_source_reservoir_bp = constant:air_contamination_natural_source.zero }
+		}
+		add_to_variable = { global.air_contamination_natural_source_reservoir_bp = air_natural_aftermath_add_bp }
+		clamp_variable = {
+			var = global.air_contamination_natural_source_reservoir_bp
+			min = constant:air_contamination_natural_source.zero
+			max = constant:air_contamination_natural_source.monthly_cap_bp
+		}
+	}
+	clear_temp_variable = air_natural_aftermath_add_bp
+}
+
 # Supported scope: COUNTRY, called by the existing host monthly pulse.
 # Output: air_monthly_natural_bp temporary variable.
 air_contamination_prepare_natural_source_monthly = {

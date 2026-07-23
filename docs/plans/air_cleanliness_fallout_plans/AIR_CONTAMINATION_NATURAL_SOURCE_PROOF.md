@@ -18,6 +18,14 @@ Event 013 owns physical disaster impact resolution. Air Cleanliness owns monthly
 
 Chained ashfall and massive-eruption jobs return through the ordinary Event 013 impact route. The regional-spread route copies its parent sequence id and impact index before registration. Each state removes itself from the neighbor candidate array after selection.
 
+`air_contamination_register_natural_disaster_aftermath_source` runs from the
+state aftermath-card opener. It accepts severe or worse volcanic eruptions,
+regional or worse ashfall, and severe or worse massive eruptions, then stores
+the disaster sequence id on the state.
+The same aftermath card cannot write the source twice. This is a second
+physical contribution for settled ash, not a second registration of the impact
+receipt.
+
 The source key is the state-local tuple of Event 013 sequence id, impact index, and family. Re-entry of the same physical impact therefore contributes once. A later segment or a different physical family remains eligible.
 
 ## Magnitude proof
@@ -34,6 +42,17 @@ The complete accepted source ladder is centralized in `common/script_constants/a
 | Volcanic eruption | 0.05 bp | 0.10 bp | 0.20 bp | 0.35 bp | 0.50 bp |
 | Ashfall | 0.05 bp | 0.15 bp | 0.30 bp | 0.50 bp | 0.75 bp |
 | Massive eruption | 0.25 bp | 0.50 bp | 0.75 bp | 1.00 bp | 1.25 bp |
+
+The aftermath ladder adds 0.05, 0.10, or 0.15 bp for regional, catastrophic, or
+abnormal ashfall, 0.05, 0.10, 0.15, or 0.20 bp for severe, regional,
+catastrophic, or abnormal volcanic eruptions, and 0.10, 0.15, 0.20, or 0.25 bp
+for severe, regional, catastrophic, or abnormal massive eruptions. These values
+share the same global 4 bp reservoir clamp.
+
+Even the largest direct massive-eruption impact and its largest aftermath
+receipt total only `1.50 bp` before the shared reservoir clamp, equal to `0.015
+percent` Air Contamination. Natural sources therefore remain a low-pressure
+contributor even when an ash-heavy card follows the impact.
 
 Event 013 defines severity as the ordered integer ladder from Local `1` through Abnormal `5`. The wildfire gate uses `greater_than_or_equals` against Regional `3`, then selects the exact Catastrophic and Abnormal overrides. Volcanic eruption, ashfall, and massive eruption select an exact value for every defined severity. No natural-source constant exceeds the shared `4 bp` ceiling.
 
@@ -71,7 +90,14 @@ The three Event 013 registration sites were checked in their surrounding state-s
 | `natural_disaster_execute_repeated_impact` | Yes | Yes | Before population, building, chain, and report resolution |
 | `natural_disaster_apply_neighbor_impact` | Yes | Parent sequence and impact index copied first | Before population, building, aftermath, and report resolution |
 
-The regional-spread candidate is removed from `natural_disaster_neighbor_candidates` before its impact effect runs. Chained ashfall and massive-eruption work returns through the ordinary or repeated impact effects, so it reaches the same registration helper and ceiling. A repository-wide reference check found no fourth writer to `global.air_contamination_natural_source_reservoir_bp` outside initialization, registration, and monthly decay.
+The regional-spread candidate is removed from `natural_disaster_neighbor_candidates` before its impact effect runs. Chained ashfall and massive-eruption work returns through the ordinary or repeated impact effects, so it reaches the same registration helper and ceiling.
+
+The aftermath-card opener calls the settled-ash helper immediately after the
+state receives `natural_disaster_aftermath_active`. The helper's sequence guard
+prevents duplicate writes if the card is reopened or reassessed. A
+repository-wide reference check found no writer to
+`global.air_contamination_natural_source_reservoir_bp` outside initialization,
+the impact registration, the aftermath registration, and monthly decay.
 
 ## Lock and save behavior
 

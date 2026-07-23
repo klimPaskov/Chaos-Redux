@@ -27,7 +27,7 @@ On monthly host tick (`on_monthly`), `air_contamination_monthly_update` runs and
 
 Biological outbreak states do not add air contamination. They remain part of the biological warfare and deaths systems, but they are excluded from Air Cleanliness growth.
 
-Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and massive eruptions contribute at every resolved severity. Each physical Event 013 impact is registered once by state, sequence, impact index, and family. The reservoir loses `0.25 bp` of monthly pressure after each host tick, which lets widespread ash linger without allowing the natural source to scale without limit. See `docs/air_cleanliness_natural_sources.md`.
+Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and massive eruptions contribute at every resolved severity. Severe or stronger volcanic eruptions, regional or stronger ashfall, and severe or stronger massive eruptions also add one small settled-ash aftermath receipt when their recovery card opens. Each physical Event 013 impact is registered once by state, sequence, impact index, and family, while each aftermath sequence is registered once by its stored disaster id. The reservoir loses `0.25 bp` of monthly pressure after each host tick, which lets widespread ash linger without allowing the natural source to scale without limit. See `docs/air_cleanliness_natural_sources.md`.
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
