@@ -1104,6 +1104,13 @@ fallout_event_id = {
 	school_vent_room_callback = 293
 	school_vent_room_callback_ai = 294
 	school_vent_room_cleanup = 295
+	empty_ward_human = 296
+	empty_ward_ai = 297
+	empty_ward_result = 298
+	empty_ward_result_ai = 299
+	empty_ward_callback = 300
+	empty_ward_callback_ai = 301
+	empty_ward_cleanup = 302
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1160,7 +1167,10 @@ fallout_event_candidate_pilot = {
 	school_vent_room_candidate_id = 289
 	school_vent_room_transaction_key = 710015
 	school_vent_room_route = 7115
-	upper_bound = 7116
+	empty_ward_candidate_id = 296
+	empty_ward_transaction_key = 710016
+	empty_ward_route = 7116
+	upper_bound = 7117
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -6059,5 +6069,374 @@ fallout_event_289_ai = {
 	history_priority = 6
 	civic_priority = 8
 	faith_priority = 9
+	upper_bound = 1001
+}
+
+fallout_event_296_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	veteran_home = 1
+	research_clinic = 2
+	memorial_hall = 3
+	leave_ward = 4
+	upper_bound = 5
+}
+
+fallout_event_296_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 35
+	callback_delay_days = 240
+	modifier_days = 330
+	callback_modifier_days = 270
+	upper_bound = 331
+}
+
+fallout_event_296_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 3
+	upper_bound = 301
+}
+
+fallout_event_296_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 500
+	maximum_campaign_day = 1200
+	minimum_medicine = 15
+	minimum_shelter = 30
+	minimum_cohesion = 30
+	minimum_viability = 0
+	maximum_viability = 100
+	maximum_candidate_severity = 100
+	deaths_to_severity = 0.0004
+	cohesion_weight = 25
+	medicine_weight = 35
+	shelter_weight = 25
+	generation_weight = 15
+	weight_divisor = 100
+	veteran_success_viability = 68
+	veteran_partial_viability = 44
+	veteran_success_cohesion = 45
+	veteran_partial_cohesion = 35
+	research_success_viability = 64
+	research_partial_viability = 42
+	research_success_recognition = 45
+	research_partial_recognition = 30
+	memorial_success_viability = 60
+	memorial_partial_viability = 38
+	memorial_success_recognition = 55
+	memorial_partial_recognition = 35
+	leave_success_viability = 58
+	leave_partial_viability = 35
+	leave_success_shelter = 55
+	leave_partial_shelter = 40
+	result_failure_death_percent = 0.001
+	callback_failure_death_percent = 0.0005
+	minimum_remaining_people = 1
+	maximum_capacity = 100
+	maximum_research = 100
+	maximum_trust = 100
+	maximum_exposure = 100
+	ai_veteran_trust = 30
+	ai_research_level = 25
+	ai_memorial_recognition = 45
+	ai_leave_shelter = 50
+	upper_bound = 101
+}
+
+fallout_event_296_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	veteran_food = 2
+	veteran_medicine = 3
+	veteran_scrap = 2
+	research_medicine = 2
+	research_power = 2
+	research_recognition = 2
+	memorial_food = 2
+	memorial_medicine = 1
+	memorial_recognition = 3
+	leave_medicine = 2
+	leave_shelter = 2
+	leave_scrap = 1
+	upper_bound = 4
+}
+
+fallout_event_296_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	veteran_success_food = -1
+	veteran_success_medicine = -1
+	veteran_success_power = 0
+	veteran_success_recognition = 2
+	veteran_success_cohesion = 4
+	veteran_success_stability = 0.04
+	veteran_success_war_support = 0.02
+	veteran_success_manpower = 260
+	veteran_success_capacity = 35
+	veteran_success_research = 4
+	veteran_success_trust = 40
+	veteran_success_exposure = 2
+	veteran_partial_food = -2
+	veteran_partial_medicine = -2
+	veteran_partial_power = -1
+	veteran_partial_recognition = 1
+	veteran_partial_cohesion = 1
+	veteran_partial_stability = 0.01
+	veteran_partial_war_support = 0.01
+	veteran_partial_manpower = 130
+	veteran_partial_capacity = 18
+	veteran_partial_research = 2
+	veteran_partial_trust = 20
+	veteran_partial_exposure = 8
+	veteran_failure_food = -3
+	veteran_failure_medicine = -3
+	veteran_failure_power = -2
+	veteran_failure_recognition = -5
+	veteran_failure_cohesion = -5
+	veteran_failure_stability = -0.05
+	veteran_failure_war_support = -0.02
+	veteran_failure_manpower = 0
+	veteran_failure_capacity = 3
+	veteran_failure_research = 0
+	veteran_failure_trust = -15
+	veteran_failure_exposure = 18
+
+	research_success_food = -2
+	research_success_medicine = -1
+	research_success_power = -1
+	research_success_recognition = 5
+	research_success_cohesion = 2
+	research_success_stability = 0.03
+	research_success_war_support = 0
+	research_success_manpower = 120
+	research_success_capacity = 8
+	research_success_research = 35
+	research_success_trust = 5
+	research_success_exposure = 4
+	research_partial_food = -3
+	research_partial_medicine = -2
+	research_partial_power = -2
+	research_partial_recognition = 3
+	research_partial_cohesion = 0
+	research_partial_stability = 0.01
+	research_partial_war_support = 0
+	research_partial_manpower = 60
+	research_partial_capacity = 4
+	research_partial_research = 18
+	research_partial_trust = 3
+	research_partial_exposure = 12
+	research_failure_food = -4
+	research_failure_medicine = -3
+	research_failure_power = -2
+	research_failure_recognition = -7
+	research_failure_cohesion = -4
+	research_failure_stability = -0.06
+	research_failure_war_support = -0.01
+	research_failure_manpower = 0
+	research_failure_capacity = 0
+	research_failure_research = 4
+	research_failure_trust = -12
+	research_failure_exposure = 22
+
+	memorial_success_food = -1
+	memorial_success_medicine = -1
+	memorial_success_power = 0
+	memorial_success_recognition = 8
+	memorial_success_cohesion = 9
+	memorial_success_stability = 0.05
+	memorial_success_war_support = 0.01
+	memorial_success_manpower = 80
+	memorial_success_capacity = 12
+	memorial_success_research = 5
+	memorial_success_trust = 35
+	memorial_success_exposure = 1
+	memorial_partial_food = -2
+	memorial_partial_medicine = -2
+	memorial_partial_power = 0
+	memorial_partial_recognition = 4
+	memorial_partial_cohesion = 3
+	memorial_partial_stability = 0.02
+	memorial_partial_war_support = 0
+	memorial_partial_manpower = 40
+	memorial_partial_capacity = 6
+	memorial_partial_research = 2
+	memorial_partial_trust = 18
+	memorial_partial_exposure = 7
+	memorial_failure_food = -3
+	memorial_failure_medicine = -3
+	memorial_failure_power = -1
+	memorial_failure_recognition = -8
+	memorial_failure_cohesion = -8
+	memorial_failure_stability = -0.07
+	memorial_failure_war_support = -0.02
+	memorial_failure_manpower = 0
+	memorial_failure_capacity = 0
+	memorial_failure_research = 0
+	memorial_failure_trust = -18
+	memorial_failure_exposure = 24
+
+	leave_success_food = 1
+	leave_success_medicine = -1
+	leave_success_power = -1
+	leave_success_recognition = 1
+	leave_success_cohesion = 3
+	leave_success_stability = 0.02
+	leave_success_war_support = 0.01
+	leave_success_manpower = 70
+	leave_success_capacity = 28
+	leave_success_research = 0
+	leave_success_trust = 18
+	leave_success_exposure = 3
+	leave_partial_food = -1
+	leave_partial_medicine = -2
+	leave_partial_power = -2
+	leave_partial_recognition = 0
+	leave_partial_cohesion = 0
+	leave_partial_stability = 0
+	leave_partial_war_support = 0
+	leave_partial_manpower = 30
+	leave_partial_capacity = 12
+	leave_partial_research = 0
+	leave_partial_trust = 8
+	leave_partial_exposure = 10
+	leave_failure_food = -3
+	leave_failure_medicine = -3
+	leave_failure_power = -3
+	leave_failure_recognition = -6
+	leave_failure_cohesion = -6
+	leave_failure_stability = -0.06
+	leave_failure_war_support = -0.02
+	leave_failure_manpower = 0
+	leave_failure_capacity = 4
+	leave_failure_research = 0
+	leave_failure_trust = -10
+	leave_failure_exposure = 20
+
+	callback_success_food = 2
+	callback_success_medicine = 1
+	callback_success_power = 1
+	callback_success_recognition = 3
+	callback_success_cohesion = 5
+	callback_success_stability = 0.04
+	callback_success_war_support = 0.01
+	callback_success_manpower = 140
+	callback_success_capacity = 12
+	callback_success_research = 8
+	callback_success_trust = 12
+	callback_success_exposure = -4
+	callback_partial_food = -1
+	callback_partial_medicine = 0
+	callback_partial_power = -1
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_stability = 0.01
+	callback_partial_war_support = 0
+	callback_partial_manpower = 60
+	callback_partial_capacity = 5
+	callback_partial_research = 3
+	callback_partial_trust = 4
+	callback_partial_exposure = 7
+	callback_failure_food = -2
+	callback_failure_medicine = -2
+	callback_failure_power = -2
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -5
+	callback_failure_stability = -0.05
+	callback_failure_war_support = -0.02
+	callback_failure_manpower = 0
+	callback_failure_capacity = 0
+	callback_failure_research = 0
+	callback_failure_trust = -8
+	callback_failure_exposure = 18
+	upper_bound = 1001
+}
+
+fallout_event_296_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	veteran_stability = 0.03
+	veteran_war_support = 0.02
+	veteran_research = 0.01
+	research_stability = 0.02
+	research_war_support = 0
+	research_research = 0.05
+	memorial_stability = 0.04
+	memorial_war_support = 0.01
+	memorial_research = 0.01
+	leave_stability = 0.01
+	leave_war_support = 0.01
+	leave_research = 0
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_research = 0.02
+	failed_stability = -0.06
+	failed_war_support = -0.02
+	failed_research = -0.03
+	upper_bound = 1
+}
+
+fallout_event_296_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9121
+	veteran_success = 11
+	veteran_partial = 12
+	veteran_failure = 13
+	research_success = 21
+	research_partial = 22
+	research_failure = 23
+	memorial_success = 31
+	memorial_partial = 32
+	memorial_failure = 33
+	leave_success = 41
+	leave_partial = 42
+	leave_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_296_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	veteran_priority = 8
+	research_priority = 9
+	memorial_priority = 6
+	leave_priority = 5
 	upper_bound = 1001
 }

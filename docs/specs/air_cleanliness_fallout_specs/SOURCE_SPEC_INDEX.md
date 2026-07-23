@@ -13,6 +13,7 @@
 9. `specs/13_reviewed_global_survival_pilots.md`
 10. `specs/14_reviewed_global_survival_generation.md`
 11. `specs/15_reviewed_global_survival_education.md`
+12. `specs/16_reviewed_global_survival_institutions.md`
 
 
 ## Accepted baseline specs included here
