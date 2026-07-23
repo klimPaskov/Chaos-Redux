@@ -1,0 +1,148 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THE DOOR LIST TRIGGERS
+# ============================================================================
+# The dormant chain authenticates one destination and one different source
+# state. It uses the current Fallout generation and produced Air Winter rows.
+# No trigger opens the scheduler or bypasses the Ash-week quiet period.
+# ============================================================================
+
+fallout_event_pilot_door_list_destination_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = fallout_pretransition_air_winter_shelter_capacity
+	has_variable = fallout_pretransition_air_winter_exposure
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	check_variable = { fallout_pretransition_air_winter_shelter_capacity value = constant:fallout_event_230_threshold.minimum_destination_shelter compare = greater_than_or_equals }
+	check_variable = { state_population_k value = constant:fallout_event_230_threshold.minimum_remaining_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_230_destination_registry_committed }
+}
+
+fallout_event_pilot_door_list_destination_receipt_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = fallout_pretransition_air_winter_shelter_capacity
+	has_variable = fallout_pretransition_air_winter_exposure
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+}
+
+fallout_event_pilot_door_list_source_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = fallout_pretransition_air_winter_exposure
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	check_variable = { state_population_k value = constant:fallout_event_230_threshold.minimum_source_population_k compare = greater_than_or_equals }
+}
+
+fallout_event_pilot_door_list_source_receipt_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = fallout_pretransition_air_winter_exposure
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+}
+
+fallout_event_230_candidate_pair_is_current = {
+	has_variable = fallout_event_230_candidate_destination_state_id
+	has_variable = fallout_event_230_candidate_source_state_id
+	has_variable = fallout_event_230_candidate_source_generation
+	check_variable = { fallout_event_230_candidate_destination_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_230_candidate_source_state_id > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { var = fallout_event_230_candidate_destination_state_id value = fallout_event_230_candidate_source_state_id compare = equals } }
+	check_variable = { fallout_event_230_candidate_source_generation value = global.fallout_transition_generation compare = equals }
+	set_temp_variable = { fallout_event_230_candidate_destination_context_loaded = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_230_candidate_source_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_230_candidate_destination_state_id = {
+		set_temp_variable = { fallout_event_230_candidate_destination_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_door_list_destination_is_current = yes
+	}
+	var:fallout_event_230_candidate_source_state_id = {
+		set_temp_variable = { fallout_event_230_candidate_source_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_door_list_source_is_current = yes
+	}
+	check_variable = { fallout_event_230_candidate_destination_context_loaded = constant:fallout_event_runtime.one }
+	check_variable = { fallout_event_230_candidate_source_context_loaded = constant:fallout_event_runtime.one }
+	has_variable = fallout_event_230_candidate_destination_exposure
+	has_variable = fallout_event_230_candidate_source_exposure_floor
+	var:fallout_event_230_candidate_source_state_id = {
+		check_variable = { fallout_pretransition_air_winter_exposure value = ROOT.fallout_event_230_candidate_source_exposure_floor compare = greater_than_or_equals }
+	}
+}
+
+fallout_event_230_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	fallout_event_230_candidate_pair_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_target value = fallout_event_230_candidate_destination_state_id compare = equals }
+}
+
+fallout_event_230_registry_is_current = {
+	has_variable = fallout_event_230_destination_state_id
+	has_variable = fallout_event_230_source_state_id
+	has_variable = fallout_event_230_registry_generation
+	has_variable = fallout_event_230_registry_owner
+	check_variable = { fallout_event_230_destination_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_230_source_state_id > constant:fallout_event_runtime.zero }
+	NOT = { check_variable = { var = fallout_event_230_destination_state_id value = fallout_event_230_source_state_id compare = equals } }
+	check_variable = { fallout_event_230_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_230_registry_owner value = ROOT compare = equals }
+	set_temp_variable = { fallout_event_230_destination_context_loaded = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_230_source_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_230_destination_state_id = {
+		set_temp_variable = { fallout_event_230_destination_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_door_list_destination_receipt_is_current = yes
+		has_state_flag = fallout_event_230_destination_registry_committed
+		check_variable = { fallout_event_230_destination_registry_generation value = ROOT.fallout_event_230_registry_generation compare = equals }
+		check_variable = { fallout_event_230_destination_registry_owner value = ROOT compare = equals }
+	}
+	var:fallout_event_230_source_state_id = {
+		set_temp_variable = { fallout_event_230_source_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_door_list_source_receipt_is_current = yes
+		has_state_flag = fallout_event_230_source_registry_committed
+		check_variable = { fallout_event_230_source_registry_generation value = ROOT.fallout_event_230_registry_generation compare = equals }
+		check_variable = { fallout_event_230_source_registry_owner value = ROOT compare = equals }
+	}
+	check_variable = { fallout_event_230_destination_context_loaded = constant:fallout_event_runtime.one }
+	check_variable = { fallout_event_230_source_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_230_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_230_opening_target_is_current = yes
+}
+
+fallout_event_230_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_230_opening_target_is_current = yes
+}
+
+fallout_event_230_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_230_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_230_branch.upper_bound }
+	fallout_event_230_registry_is_current = yes
+}
+
+fallout_event_230_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_cleanup }
+	fallout_event_230_registry_is_current = yes
+}

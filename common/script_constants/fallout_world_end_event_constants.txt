@@ -1038,6 +1038,19 @@ fallout_event_id = {
 	filters_fail_callback = 227
 	filters_fail_callback_ai = 228
 	filters_fail_cleanup = 229
+	door_list_human = 230
+	door_list_ai = 231
+	door_list_family_result = 232
+	door_list_specialist_result = 233
+	door_list_lottery_result = 234
+	door_list_refusal_result = 235
+	door_list_family_result_ai = 236
+	door_list_specialist_result_ai = 237
+	door_list_lottery_result_ai = 238
+	door_list_refusal_result_ai = 239
+	door_list_callback = 240
+	door_list_callback_ai = 241
+	door_list_cleanup = 242
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1076,7 +1089,10 @@ fallout_event_candidate_pilot = {
 	filters_fail_candidate_id = 217
 	filters_fail_transaction_key = 710009
 	filters_fail_route = 7109
-	upper_bound = 7110
+	door_list_candidate_id = 230
+	door_list_transaction_key = 710010
+	door_list_route = 7110
+	upper_bound = 7111
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -4013,5 +4029,332 @@ fallout_event_217_ai = {
 	prior_household = 4
 	low_filters_threshold = 12
 	high_exposure_threshold = 55
+	upper_bound = 1001
+}
+
+fallout_event_230_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	admit_families = 1
+	admit_specialists = 2
+	public_lottery = 3
+	refuse_entry = 4
+	upper_bound = 5
+}
+
+fallout_event_230_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 12
+	callback_delay_days = 180
+	upper_bound = 181
+}
+
+fallout_event_230_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100000
+	callback_transaction_key_offset = 200000
+	visible_budget_cost = 3
+	upper_bound = 200001
+}
+
+fallout_event_230_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_country_shelter = 20
+	minimum_destination_shelter = 35
+	# State population is stored in thousands. This is the 25,000-person floor.
+	minimum_source_population_k = 25
+	minimum_source_exposure_gap = 15
+	minimum_remaining_people = 100
+	minimum_remaining_population_k = 0.1
+	base_cohort_share = 0.004
+	base_cohort_cap = 20000
+	receiving_capacity_divisor = 1000
+	minimum_arrival_pressure = 0
+	maximum_arrival_pressure = 100
+	family_success_viability = 60
+	family_partial_viability = 40
+	family_success_food = 35
+	family_partial_food = 20
+	family_success_filters = 30
+	family_partial_filters = 18
+	specialist_success_viability = 55
+	specialist_partial_viability = 38
+	specialist_success_medicine = 30
+	specialist_partial_medicine = 18
+	specialist_success_supply = 35
+	specialist_partial_supply = 20
+	lottery_success_viability = 58
+	lottery_partial_viability = 40
+	lottery_success_recognition = 35
+	lottery_partial_recognition = 20
+	lottery_success_cohesion = 40
+	lottery_partial_cohesion = 25
+	refusal_orderly_score = 55
+	refusal_fractured_score = 35
+	upper_bound = 101
+}
+
+fallout_event_230_viability = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	destination_shelter_weight = 30
+	country_shelter_weight = 15
+	filters_weight = 15
+	food_weight = 15
+	medicine_weight = 10
+	destination_supply_weight = 10
+	cohesion_weight = 5
+	source_exposure_penalty = 20
+	arrival_pressure_penalty = 20
+	refusal_scrap_weight = 40
+	refusal_cohesion_weight = 25
+	refusal_recognition_weight = 20
+	refusal_supply_weight = 15
+	refusal_exposure_penalty = 25
+	weight_divisor = 100
+	minimum = 0
+	maximum = 100
+	upper_bound = 101
+}
+
+fallout_event_230_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	family_food = 6
+	family_filters = 4
+	specialist_medicine = 4
+	specialist_shelter = 3
+	lottery_recognition = 4
+	lottery_filters = 3
+	refusal_scrap = 5
+	upper_bound = 6
+}
+
+fallout_event_230_movement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	family_success_move = 1.0
+	family_success_deaths = 0.0
+	family_partial_move = 0.75
+	family_partial_deaths = 0.02
+	family_failure_move = 0.50
+	family_failure_deaths = 0.08
+	specialist_success_move = 0.35
+	specialist_success_deaths = 0.0
+	specialist_partial_move = 0.25
+	specialist_partial_deaths = 0.01
+	specialist_failure_move = 0.15
+	specialist_failure_deaths = 0.06
+	lottery_success_move = 0.70
+	lottery_success_deaths = 0.0
+	lottery_partial_move = 0.50
+	lottery_partial_deaths = 0.015
+	lottery_failure_move = 0.30
+	lottery_failure_deaths = 0.07
+	refusal_success_move = 0.0
+	refusal_success_deaths = 0.0
+	refusal_partial_move = 0.0
+	refusal_partial_deaths = 0.03
+	refusal_failure_move = 0.0
+	refusal_failure_deaths = 0.10
+	upper_bound = 2
+}
+
+fallout_event_230_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	family_success_shelter_capacity = -4
+	family_success_recognition = 5
+	family_success_cohesion = 6
+	family_success_destination_shelter = -3
+	family_partial_shelter_capacity = -6
+	family_partial_recognition = 2
+	family_partial_cohesion = 1
+	family_partial_destination_shelter = -5
+	family_failure_shelter_capacity = -8
+	family_failure_medicine = -2
+	family_failure_recognition = -4
+	family_failure_cohesion = -6
+	family_failure_destination_shelter = -7
+
+	specialist_success_reclamation = 5
+	specialist_success_adaptation = 3
+	specialist_success_recognition = 1
+	specialist_success_cohesion = -2
+	specialist_success_destination_shelter = -2
+	specialist_partial_reclamation = 2
+	specialist_partial_adaptation = 1
+	specialist_partial_recognition = -2
+	specialist_partial_cohesion = -4
+	specialist_partial_destination_shelter = -3
+	specialist_failure_medicine = -2
+	specialist_failure_recognition = -5
+	specialist_failure_cohesion = -7
+	specialist_failure_destination_shelter = -5
+
+	lottery_success_shelter_capacity = -4
+	lottery_success_recognition = 5
+	lottery_success_cohesion = 7
+	lottery_success_destination_shelter = -3
+	lottery_partial_shelter_capacity = -6
+	lottery_partial_cohesion = 1
+	lottery_partial_destination_shelter = -5
+	lottery_failure_shelter_capacity = -8
+	lottery_failure_recognition = -6
+	lottery_failure_cohesion = -8
+	lottery_failure_destination_shelter = -7
+
+	refusal_success_recognition = -6
+	refusal_success_cohesion = -5
+	refusal_partial_recognition = -9
+	refusal_partial_cohesion = -8
+	refusal_failure_shelter_capacity = -3
+	refusal_failure_recognition = -12
+	refusal_failure_cohesion = -12
+	refusal_failure_destination_shelter = -3
+
+	callback_success_recognition = 2
+	callback_success_cohesion = 2
+	callback_success_adaptation = 1
+	callback_partial_recognition = -1
+	callback_partial_cohesion = -2
+	callback_partial_adaptation = 1
+	callback_failure_recognition = -3
+	callback_failure_cohesion = -4
+	callback_failure_reclamation = -1
+	upper_bound = 101
+}
+
+fallout_event_230_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9115
+	family_success = 11
+	family_partial = 12
+	family_failure = 13
+	specialist_success = 21
+	specialist_partial = 22
+	specialist_failure = 23
+	lottery_success = 31
+	lottery_partial = 32
+	lottery_failure = 33
+	refusal_success = 41
+	refusal_partial = 42
+	refusal_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_230_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	success_bonus = 8
+	partial_bonus = 3
+	invalid_score = -1000
+	continuity_families = 7
+	continuity_specialists = 4
+	continuity_lottery = 5
+	bunker_families = -3
+	bunker_specialists = 6
+	bunker_lottery = 2
+	bunker_refusal = 5
+	warlord_families = -5
+	warlord_specialists = 4
+	warlord_lottery = -5
+	warlord_refusal = 8
+	food_compact_families = 7
+	food_compact_specialists = 0
+	food_compact_lottery = 5
+	food_compact_refusal = -5
+	maritime_families = 5
+	maritime_specialists = 5
+	maritime_lottery = 3
+	quarantine_families = -4
+	quarantine_specialists = 6
+	quarantine_lottery = 3
+	quarantine_refusal = 7
+	scavenger_specialists = 7
+	scavenger_refusal = 3
+	nomad_families = 6
+	nomad_lottery = 4
+	nomad_refusal = -3
+	machine_families = -4
+	machine_specialists = 8
+	machine_lottery = -4
+	machine_refusal = 5
+	technate_families = 0
+	technate_specialists = 9
+	technate_lottery = 1
+	technate_refusal = 2
+	mutant_families = 5
+	mutant_specialists = 0
+	mutant_lottery = 6
+	mutant_refusal = -8
+	religious_families = 8
+	religious_specialists = 0
+	religious_lottery = 2
+	religious_refusal = -4
+	low_food_threshold = 28
+	low_food_families = -5
+	low_food_lottery = -2
+	low_food_refusal = 6
+	low_shelter_threshold = 28
+	low_shelter_families = -6
+	low_shelter_specialists = -3
+	low_shelter_lottery = -5
+	low_shelter_refusal = 8
+	healthy_recognition_threshold = 35
+	healthy_recognition_families = 2
+	healthy_recognition_lottery = 4
+	high_source_exposure_threshold = 70
+	high_source_exposure_families = 4
+	high_source_exposure_specialists = 3
+	high_source_exposure_lottery = 4
+	high_source_exposure_refusal = -4
+	memory_families = 4
+	memory_specialists = 4
+	memory_lottery = 4
+	memory_refusal = 4
+	war_families = -2
+	war_specialists = 4
+	war_lottery = -1
+	war_refusal = 5
 	upper_bound = 1001
 }

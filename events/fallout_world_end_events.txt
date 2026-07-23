@@ -12206,3 +12206,232 @@ country_event = {
 	trigger = { fallout_event_217_cleanup_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.filters_fail_cleanup } }
 	immediate = { fallout_event_217_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.230
+	title = chaosx.fallout.230.t
+	desc = chaosx.fallout.230.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = { fallout_event_230_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.230.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_230_cost.family_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_230_cost.family_filters compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_230_requested_branch = constant:fallout_event_230_branch.admit_families } fallout_event_230_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.230.a.tt
+	}
+	option = {
+		name = chaosx.fallout.230.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_230_cost.specialist_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_230_cost.specialist_shelter compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_230_requested_branch = constant:fallout_event_230_branch.admit_specialists } fallout_event_230_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.230.b.tt
+	}
+	option = {
+		name = chaosx.fallout.230.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_230_cost.lottery_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_230_cost.lottery_filters compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_230_requested_branch = constant:fallout_event_230_branch.public_lottery } fallout_event_230_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.230.c.tt
+	}
+	option = {
+		name = chaosx.fallout.230.d
+		trigger = { check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_230_cost.refusal_scrap compare = greater_than_or_equals } }
+		hidden_effect = { set_temp_variable = { fallout_event_230_requested_branch = constant:fallout_event_230_branch.refuse_entry } fallout_event_230_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.230.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.231
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_230_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_230_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.232
+	title = chaosx.fallout.232.t
+	desc = {
+		text = chaosx.fallout.232.success.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.232.partial.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.232.failure.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_230_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_family_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.admit_families }
+	}
+	option = { name = chaosx.fallout.232.a hidden_effect = { fallout_event_230_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.232.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.233
+	title = chaosx.fallout.233.t
+	desc = {
+		text = chaosx.fallout.233.success.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.233.partial.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.233.failure.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_230_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_specialist_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.admit_specialists }
+	}
+	option = { name = chaosx.fallout.233.a hidden_effect = { fallout_event_230_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.233.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.234
+	title = chaosx.fallout.234.t
+	desc = {
+		text = chaosx.fallout.234.success.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.234.partial.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.234.failure.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_230_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_lottery_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.public_lottery }
+	}
+	option = { name = chaosx.fallout.234.a hidden_effect = { fallout_event_230_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.234.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.235
+	title = chaosx.fallout.235.t
+	desc = {
+		text = chaosx.fallout.235.success.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.235.partial.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.235.failure.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_230_delayed_result_can_enter = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_refusal_result }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.refuse_entry }
+	}
+	option = { name = chaosx.fallout.235.a hidden_effect = { fallout_event_230_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.235.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.236
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_230_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_family_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.admit_families } }
+	immediate = { fallout_event_230_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.237
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_230_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_specialist_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.admit_specialists } }
+	immediate = { fallout_event_230_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.238
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_230_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_lottery_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.public_lottery } }
+	immediate = { fallout_event_230_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.239
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_230_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_refusal_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_230_branch.refuse_entry } }
+	immediate = { fallout_event_230_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.240
+	title = chaosx.fallout.240.t
+	desc = {
+		text = chaosx.fallout.240.success.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.success } }
+	}
+	desc = {
+		text = chaosx.fallout.240.partial.d
+		trigger = { check_variable = { fallout_event_230_result_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	desc = chaosx.fallout.240.failure.d
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_callback }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_230_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_230_branch.upper_bound }
+		fallout_event_230_registry_is_current = yes
+	}
+	option = { name = chaosx.fallout.240.a hidden_effect = { fallout_event_230_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.240.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.241
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+		fallout_event_issued_delayed_result_is_current = yes
+		check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.door_list_callback_ai }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_230_branch.none }
+		check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_230_branch.upper_bound }
+		fallout_event_230_registry_is_current = yes
+	}
+	immediate = { fallout_event_230_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.242
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_230_cleanup_can_enter = yes }
+	immediate = { fallout_event_230_cleanup = yes }
+}
