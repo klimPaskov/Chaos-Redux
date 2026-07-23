@@ -454,10 +454,25 @@ fallout_manual_apply_state_aggregate_consequence = {
 		min = constant:fallout_manual_aggregate.death_percent_base
 		max = constant:fallout_manual_aggregate.death_percent_max
 	}
-	set_temp_variable = { state_civilian_population_loss_requested = state_population_k }
-	multiply_temp_variable = { state_civilian_population_loss_requested = constant:fallout_runtime.population_scale }
+	# Resolve the direct loss against the captured prestrike baseline. The live
+	# population may already be lower because native nuclear hooks ran first.
+	# Request only the delta needed to reach the direct survivor target so the
+	# aggregate cannot overshoot the approved 90 to 95 percent band.
+	set_temp_variable = { state_civilian_population_loss_requested = fallout_manual_prestrike_population_people }
+	multiply_temp_variable = { state_civilian_population_loss_requested = constant:fallout_runtime.percentage_scale }
 	multiply_temp_variable = { state_civilian_population_loss_requested = chaos_state_deaths_percent }
 	round_temp_variable = state_civilian_population_loss_requested
+	set_temp_variable = { fallout_manual_direct_target_survivor_population = fallout_manual_prestrike_population_people }
+	subtract_from_temp_variable = { fallout_manual_direct_target_survivor_population = state_civilian_population_loss_requested }
+	set_temp_variable = { fallout_manual_current_population_people = state_population_k }
+	multiply_temp_variable = { fallout_manual_current_population_people = constant:fallout_runtime.population_scale }
+	round_temp_variable = fallout_manual_current_population_people
+	set_temp_variable = { state_civilian_population_loss_requested = fallout_manual_current_population_people }
+	subtract_from_temp_variable = { state_civilian_population_loss_requested = fallout_manual_direct_target_survivor_population }
+	clamp_temp_variable = {
+		var = state_civilian_population_loss_requested
+		min = constant:fallout_runtime.zero
+	}
 	set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_runtime.minimum_remaining_population }
 	set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
 	set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_runtime.zero }
