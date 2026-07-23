@@ -13663,3 +13663,123 @@ country_event = {
 	trigger = { fallout_event_317_cleanup_can_enter = yes }
 	immediate = { fallout_event_317_cleanup = yes }
 }
+
+# Dormant Fallout global-survival chain: The Working Elevator
+# -------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.324
+	title = chaosx.fallout.324.t
+	desc = chaosx.fallout.324.d
+	picture = GFX_report_event_fallout_working_elevator
+	is_triggered_only = yes
+	trigger = { fallout_event_324_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.324.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_324_cost.granary_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_324_cost.granary_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_324_requested_branch = constant:fallout_event_324_branch.public_granary } fallout_event_324_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.324.a.tt
+		ai_chance = { base = constant:fallout_event_324_ai.granary_priority }
+	}
+	option = {
+		name = chaosx.fallout.324.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_324_cost.military_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_324_cost.military_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_324_cost.military_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_324_requested_branch = constant:fallout_event_324_branch.military_depot } fallout_event_324_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.324.b.tt
+		ai_chance = { base = constant:fallout_event_324_ai.military_priority }
+	}
+	option = {
+		name = chaosx.fallout.324.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_324_cost.merchant_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_324_cost.merchant_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_324_cost.merchant_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_324_requested_branch = constant:fallout_event_324_branch.merchant_exchange } fallout_event_324_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.324.c.tt
+		ai_chance = { base = constant:fallout_event_324_ai.merchant_priority }
+	}
+	option = {
+		name = chaosx.fallout.324.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_324_cost.refugee_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_324_cost.refugee_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_324_cost.refugee_shelter compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_324_requested_branch = constant:fallout_event_324_branch.refugee_ration_center } fallout_event_324_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.324.d_option.tt
+		ai_chance = { base = constant:fallout_event_324_ai.refugee_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.325
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_324_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_324_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.326
+	title = chaosx.fallout.326.t
+	desc = { text = chaosx.fallout.326.granary.success.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.public_granary } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.326.granary.partial.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.public_granary } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.326.granary.failure.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.public_granary } } }
+	desc = { text = chaosx.fallout.326.military.success.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.military_depot } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.326.military.partial.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.military_depot } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.326.military.failure.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.military_depot } } }
+	desc = { text = chaosx.fallout.326.merchant.success.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.merchant_exchange } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.326.merchant.partial.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.merchant_exchange } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.326.merchant.failure.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.merchant_exchange } } }
+	desc = { text = chaosx.fallout.326.refugee.success.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.refugee_ration_center } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.326.refugee.partial.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.refugee_ration_center } check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.326.refugee.failure.d trigger = { check_variable = { fallout_event_324_selected_branch = constant:fallout_event_324_branch.refugee_ration_center } } }
+	picture = GFX_report_event_fallout_working_elevator
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_324_delayed_result_can_enter check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.working_elevator_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.326.a hidden_effect = { fallout_event_324_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.326.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.327
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_324_delayed_result_can_enter check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.working_elevator_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_324_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.328
+	title = chaosx.fallout.328.t
+	desc = { text = chaosx.fallout.328.success.d trigger = { check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.328.partial.d trigger = { check_variable = { fallout_event_324_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.328.failure.d
+	picture = GFX_report_event_fallout_working_elevator
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.working_elevator_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_324_registry_is_current = yes }
+	option = { name = chaosx.fallout.328.a hidden_effect = { fallout_event_324_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.328.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.329
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.working_elevator_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_324_registry_is_current = yes }
+	immediate = { fallout_event_324_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.330
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_324_cleanup_can_enter = yes }
+	immediate = { fallout_event_324_cleanup = yes }
+}

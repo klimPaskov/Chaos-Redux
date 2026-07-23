@@ -1,0 +1,32 @@
+# Fallout Working Elevator chain proof
+
+## Static evidence
+
+- Candidate row: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `324`.
+- Trigger contract: `common/scripted_triggers/fallout_world_end_working_elevator_event_triggers.txt`.
+- Transaction effects: `common/scripted_effects/fallout_world_end_working_elevator_event_effects.txt`.
+- Event ids `324` through `330`: `events/fallout_world_end_events.txt`.
+- Constants: `fallout_event_324_*` groups in `common/script_constants/fallout_world_end_working_elevator_constants.txt`.
+- Event Log id `9125`: shared effects and scripted localisation plus the dedicated fifteen-payload mapping.
+- Report asset: source, processed preview, DDS, manifest, and GFX handoff under `docs/assets/air_cleanliness_fallout/fallout_working_elevator/`.
+
+The touched script files have balanced braces, no unsupported `<=` or `>=`
+operators, and no non-ASCII script tokens. Event ids `324` through `330` are
+defined once. Localisation keys are BOM encoded and event, modifier, and Event
+Log references resolve by static scan.
+
+## Engine-sensitive evidence
+
+The bounded read-only `hoi4.event_inspect` lint request for
+`chaosx.fallout.324`, with helper expansion disabled and bounded nodes and
+edges, returned `Transport closed`. No HOI4 runtime was launched, as
+authorized by the task. Therefore exact engine-side reachability of the
+delayed result, host authority, save recovery, and multiplayer delivery is
+unproven.
+
+## Release-floor disposition
+
+The Working Elevator is a dormant reviewed pilot and contributes zero
+countable blocks to the 660-block release floor. It is suitable for deeper
+expansion only after the engine-sensitive coordinator surfaces are proven or
+the blocker is resolved.

@@ -235,3 +235,17 @@ uses a 35-day first-light result and a 240-day public maintenance callback
 with hidden-AI parity, records history `9124`, and remains dormant and
 uncounted. The dedicated report art and the event-inspector `Transport closed`
 proof are recorded in `FALLOUT_FIRST_STREETLIGHT_CHAIN_PROOF.md`.
+
+## Working Elevator correction
+
+The producer now carries the twentieth reviewed ordinary row. The Working
+Elevator uses country candidate id `324`, transaction key `710020`, route
+`7120`, and event tokens `324` through `330`. Its gate requires the closed
+First Streetlight memory, campaign timing, Food, Power, Reclamation,
+Cohesion, Recognition, and one affordable storage policy. Its severity is the
+clamped recorded-Deaths score and its mechanic-pressure field is Food. The
+chain freezes grain, logistics, market, refugee, and spoilage ledgers, uses a
+28-day hopper result and a 210-day storehouse maintenance callback with
+hidden-AI parity, records history `9125`, and remains dormant and uncounted.
+The dedicated report art and the event-inspector `Transport closed` proof are
+recorded in `FALLOUT_WORKING_ELEVATOR_CHAIN_PROOF.md`.

@@ -386,6 +386,19 @@ modifiers, Event Log payloads, and authenticated cleanup. The documented
 living-world block total is now `191`, while the countable Fallout living-world
 release-floor total remains `0 of 660`.
 
+## Working Elevator count correction
+
+The Working Elevator adds seven dormant country-level event blocks at suffixes
+`324` through `330`. Candidate `324` uses transaction key `710020`, route
+`7120`, and history `9125`. It follows the closed First Streetlight memory,
+then offers public granary, military depot, merchant exchange, or refugee
+ration-center policies with deterministic grading, a 28-day hopper result, a
+210-day storehouse maintenance callback, hidden-AI parity, Deaths-backed
+failure, durable grain ledgers, dedicated modifiers, Event Log payloads, and
+authenticated cleanup. The documented living-world block total is now `212`,
+while the countable Fallout living-world release-floor total remains `0 of
+660`.
+
 ## Black Start count correction
 
 Black Start adds seven dormant country-level event blocks at suffixes `310`
