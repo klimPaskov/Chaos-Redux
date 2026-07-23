@@ -460,3 +460,22 @@ The chain remains dormant and earns no release-floor credit because scheduler
 activation, host authority, save recovery, multiplayer behavior, and runtime
 Event Log delivery remain unobserved. The defined living-world total is now
 `191`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## Black Start grid recovery tranche
+
+Black Start is implemented as a dormant country-level chain at
+`chaosx.fallout.310` through `.316`. It uses candidate `310`, transaction key
+`710018`, route `7118`, and Event Log history `9123`. Four authored policies
+freeze Power, Scrap, Cohesion, Recognition, Reclamation, and durable capacity,
+governance, dependency, resilience, and exposure ledgers before a 45-day
+delayed result. The result grades each policy, updates resources and grid
+memory, routes failure through Deaths, and schedules a 270-day maintenance
+callback. Human and hidden-AI lanes share the same delayed transaction and
+cleanup wrappers. Six dedicated timed modifiers, fifteen Event Log payloads,
+localisation, and a dedicated report image are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, save recovery, multiplayer behavior, and runtime
+Event Log delivery remain unobserved. The read-only event lint request returned
+`Transport closed`. The defined living-world total is now `198`, while
+countable Fallout living-world blocks remain `0 of 660`.

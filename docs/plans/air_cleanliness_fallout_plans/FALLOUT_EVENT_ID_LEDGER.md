@@ -385,3 +385,15 @@ hidden-AI parity, Deaths-backed failure, durable family ledgers, dedicated
 modifiers, Event Log payloads, and authenticated cleanup. The documented
 living-world block total is now `191`, while the countable Fallout living-world
 release-floor total remains `0 of 660`.
+
+## Black Start count correction
+
+Black Start adds seven dormant country-level event blocks at suffixes `310`
+through `316`. Candidate `310` uses transaction key `710018`, route `7118`,
+and history `9123`. It follows the closed Shelter Marriage Law memory, then
+offers centralized, cooperative, military, or foreign-backed grid policies
+with deterministic grading, a 45-day result, a 270-day maintenance callback,
+hidden-AI parity, Deaths-backed failure, durable grid ledgers, dedicated
+modifiers, Event Log payloads, and authenticated cleanup. The documented
+living-world block total is now `198`, while the countable Fallout living-world
+release-floor total remains `0 of 660`.

@@ -8,6 +8,11 @@ The activation flags `fallout_event_scheduler_activation_approved` and `fallout_
 
 ## Accepted numerical-contract tranche
 
+The current count supersedes the historical opening paragraph: eighteen
+reviewed global-survival rows cover event blocks through `316`, with `198`
+defined blocks and `0 of 660` countable release-floor blocks. Black Start is
+the latest dormant row and has no activation setter.
+
 The user approved `FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md` on 2026-07-18. The accepted values are promoted into the source specs and implemented as typed script constants and dormant scheduler receipts.
 
 - Frozen pacing size is small for 1 through 3 states, medium for 4 through 9, and large for 10 or more. The state count is copied from the committed survival row during dormant promotion and is not recomputed from later ownership.
@@ -305,6 +310,15 @@ and the dedicated report image are statically wired. The chain remains dormant
 and earns no release-floor credit because activation, host authority, save
 recovery, multiplayer behavior, and runtime Event Log delivery remain
 unobserved.
+
+## Black Start scheduler correction
+
+The reviewed ordinary producer now carries eighteen rows and the defined
+living-world event range reaches `316`, with `198` defined blocks. Black Start
+is candidate `310`, transaction `710018`, route `7118`, and history `9123`.
+It remains dormant and contributes zero countable blocks to the `0 of 660`
+release-floor total. Its engine-sensitive lint request returned `Transport
+closed`, so delayed reachability and host or save behavior remain unproven.
 
 ## Empty Ward candidate and event correction
 
