@@ -33,6 +33,7 @@ The 1940 source is later than the 1936 start and remains disclosed. It is not us
 - Prompt: `prompts/SCO_victor_fortune_identity_preserve_trial_01.txt`.
 - ImageGen result: `imagegen_results/SCO_victor_fortune_identity_preserve_trial_01.png`, `1086x1448`, SHA-256 `A9033E201A25A3D8412FEAB6D4B50480729E2ADF3EB811820967C357F972E16F`.
 - Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit result crop `(0, 0, 1086, 1448)`, canonical vanilla leader review directory.
+- Processor-mode disclosure: `leader` is the tool's full-size `156x210` export mode for both leaders and commanders; Fortune's commander styling was established during ImageGen with the Montgomery commander reference and independently judged through the separate archival/result/commander-reference comparison sheet.
 - Processed `156x210` PNG: `processed_png/portrait_SCO_independence_wave_territorial_commandant.png`, SHA-256 `AA9A8E267444DC01B49C942E2C2D74C4ED9C90FB12F7F38F5C0FCF26941CFB7D`.
 - Processor sheet: `contact_sheets/SCO_victor_fortune_source_result_reference.png`, SHA-256 `A940C3B0B1D6585FF2AAC934111D8F282ED67B5252919D19E7FF50357F0DB86D`.
 - Archival/result comparison: `contact_sheets/SCO_victor_fortune_archival_result_comparison.png`, SHA-256 `0E10380DE0A9B1021996C4FE7165801CBEFC3339B50AA0DEBCDE266A55554F2B`.

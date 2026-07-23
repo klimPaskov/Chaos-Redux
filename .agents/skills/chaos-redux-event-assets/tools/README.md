@@ -12,6 +12,10 @@ are review-only copies and are never processor or runtime inputs. Advisor dossie
 cards use the separate canonical references under
 `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
+`advisor_icon_processing.py leader` is the processor's full-size `156x210` export mode for both country leaders and commanders; the mode name does not classify the character as a political leader.
+
+For a commander, use commander-specific HOI4 portraits as style-only ImageGen references and build a separate source/result/commander-reference comparison sheet for independent review, because the processor's built-in leader-family review sheet cannot establish commander role styling.
+
 ## `convert_to_dds.py`
 
 Converts an approved PNG to the legacy one-level uncompressed BGRA DDS layout
