@@ -330,6 +330,16 @@ the `0 of 660` release-floor total. Its bounded event-inspector request also
 returned `Transport closed`, so delayed reachability, host authority, save
 recovery, and multiplayer behavior remain unproven.
 
+## Working Elevator scheduler correction
+
+The reviewed ordinary producer now carries twenty rows and the defined
+living-world event range reaches `330`, with `212` defined blocks. The Working
+Elevator is candidate `324`, transaction `710020`, route `7120`, and history
+`9125`. It remains dormant and contributes zero countable blocks to the `0 of
+660` release-floor total. Its bounded event-inspector request also returned
+`Transport closed`, so delayed reachability, host authority, save recovery,
+and multiplayer behavior remain unproven.
+
 ## Empty Ward candidate and event correction
 
 The reviewed ordinary candidate producer now carries a sixteenth dormant row

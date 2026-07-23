@@ -31,9 +31,10 @@ All Fallout event definitions belong in `events/fallout_world_end_events.txt` un
 
 The reviewed global-survival pilot currently includes Shelter Marriage Law
 candidate `303`, Black Start candidate `310`, First Streetlight candidate
-`317`, and their dedicated specs, proofs, localisation, Event Log, and asset
-packages. The current documented pilot total is nineteen rows and 205 defined
-blocks, all dormant and outside release-floor credit.
+`317`, Working Elevator candidate `324`, and their dedicated specs, proofs,
+localisation, Event Log, and asset packages. The current documented pilot
+total is twenty rows and 212 defined blocks, all dormant and outside
+release-floor credit.
 
 The current Fallout content boundary is dormant by design where the activation gates are unset. Defined blocks, reserved ids, and candidate rows are not release-floor credit until their callers, human and hidden AI paths, effects, memory, cleanup, localisation, assets, and audits are complete.
 
@@ -49,10 +50,11 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the sixteen reviewed ordinary candidate rows. `FALLOUT_WELL_QUEUE_TUNING_AND_REGISTRY.md` records the fourth Well Queue candidate, state gate, branch tuning, callback deferral, and dedicated asset. `FALLOUT_ANIMAL_FEED_TUNING_AND_REGISTRY.md` records the fifth Animal Feed candidate, native food snapshot gate, branch tuning, callback deferral, and reused food art. `FALLOUT_FEVER_DORMITORY_CHAIN_PROOF.md` records the twelfth Fever Dormitory candidate, state gate, four policy lanes, delayed callback, Deaths route, Event Log payloads, and runtime proof boundary. `FALLOUT_NAMES_FOR_THE_MISSING_CHAIN_PROOF.md` records the thirteenth country candidate, four policy lanes, deterministic grading, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary. `FALLOUT_FIRST_SAFE_BIRTH_CHAIN_PROOF.md` records the fourteenth country candidate, generation-change grading, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary. `FALLOUT_SCHOOL_VENT_ROOM_CHAIN_PROOF.md` records the fifteenth country candidate, four curricula, education grading, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary. `FALLOUT_EMPTY_WARD_CHAIN_PROOF.md` records the sixteenth country candidate, four institution policies, ward grading, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 - `FALLOUT_BLACK_START_CHAIN_PROOF.md` records the eighteenth Black Start candidate, four grid policies, deterministic delayed result, maintenance callback, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 - `FALLOUT_FIRST_STREETLIGHT_CHAIN_PROOF.md` records the nineteenth First Streetlight candidate, four urban priorities, deterministic delayed result, public maintenance callback, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
+- `FALLOUT_WORKING_ELEVATOR_CHAIN_PROOF.md` records the twentieth Working Elevator candidate, four grain-storage priorities, deterministic delayed result, storehouse maintenance callback, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 
-The historical pilot-count wording above is superseded by the First Streetlight
-correction. The current reviewed total is nineteen rows and 205 defined
-blocks, all dormant and outside release-floor credit.
+The historical pilot-count wording above is superseded by the Working Elevator
+correction. The current reviewed total is twenty rows and 212 defined blocks,
+all dormant and outside release-floor credit.
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
 - `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.

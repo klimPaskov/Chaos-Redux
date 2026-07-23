@@ -500,3 +500,24 @@ activation, host authority, save recovery, multiplayer behavior, and runtime
 Event Log delivery remain unobserved. The bounded event-inspector request
 returned `Transport closed`. The defined living-world total is now `205`,
 while countable Fallout living-world blocks remain `0 of 660`.
+
+## Working Elevator food-storage tranche
+
+The Working Elevator is implemented as a dormant country-level chain at
+`chaosx.fallout.324` through `.330`. It uses candidate `324`, transaction key
+`710020`, route `7120`, and Event Log history `9125`. Four authored policies
+freeze Food, Power, Reclamation, Cohesion, Recognition, and grain ledgers
+before a 28-day delayed hopper result. The result updates Food, Power,
+Recognition, Cohesion, Stability, War Support, grain capacity, logistics,
+market legitimacy, refugee integration, and spoilage, then schedules a 210-day
+storehouse maintenance callback. Failure uses the Deaths contract at 0.05
+percent for the result and 0.025 percent for the callback. Human and hidden-AI
+lanes share the same delayed transaction and cleanup wrappers. Six dedicated
+timed modifiers, fifteen Event Log payloads, localisation, and a dedicated
+report image are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, save recovery, multiplayer behavior, and runtime
+Event Log delivery remain unobserved. The bounded event-inspector request
+returned `Transport closed`. The defined living-world total is now `212`,
+while countable Fallout living-world blocks remain `0 of 660`.

@@ -17,6 +17,7 @@
 13. `specs/17_reviewed_global_survival_family_law.md`
 14. `specs/18_reviewed_global_survival_black_start.md`
 15. `specs/19_reviewed_global_survival_first_streetlight.md`
+16. `specs/20_reviewed_global_survival_working_elevator.md`
 
 
 ## Accepted baseline specs included here
@@ -53,6 +54,7 @@
 - `specs/13_reviewed_global_survival_pilots.md`
 - `specs/18_reviewed_global_survival_black_start.md`
 - `specs/19_reviewed_global_survival_first_streetlight.md`
+- `specs/20_reviewed_global_survival_working_elevator.md`
 
 ## Matrices
 
