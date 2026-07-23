@@ -13182,3 +13182,124 @@ country_event = {
 	trigger = { fallout_event_289_cleanup_can_enter = yes }
 	immediate = { fallout_event_289_cleanup = yes }
 }
+
+# Dormant Fallout global-survival chain: The Empty Ward
+# -------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.296
+	title = chaosx.fallout.296.t
+	desc = chaosx.fallout.296.d
+	picture = GFX_report_event_fallout_empty_ward
+	is_triggered_only = yes
+	trigger = { fallout_event_296_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.296.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_296_cost.veteran_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.veteran_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_296_cost.veteran_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_296_requested_branch = constant:fallout_event_296_branch.veteran_home } fallout_event_296_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.296.a.tt
+		ai_chance = { base = constant:fallout_event_296_ai.veteran_priority }
+	}
+	option = {
+		name = chaosx.fallout.296.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.research_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_296_cost.research_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_296_cost.research_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_296_requested_branch = constant:fallout_event_296_branch.research_clinic } fallout_event_296_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.296.b.tt
+		ai_chance = { base = constant:fallout_event_296_ai.research_priority }
+	}
+	option = {
+		name = chaosx.fallout.296.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_296_cost.memorial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.memorial_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_296_cost.memorial_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_296_requested_branch = constant:fallout_event_296_branch.memorial_hall } fallout_event_296_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.296.c.tt
+		ai_chance = { base = constant:fallout_event_296_ai.memorial_priority }
+	}
+	option = {
+		name = chaosx.fallout.296.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.leave_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_296_cost.leave_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_296_cost.leave_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_296_requested_branch = constant:fallout_event_296_branch.leave_ward } fallout_event_296_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.296.d_option.tt
+		ai_chance = { base = constant:fallout_event_296_ai.leave_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.297
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_296_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_296_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.298
+	title = chaosx.fallout.298.t
+	desc = { text = chaosx.fallout.298.veteran.success.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.veteran_home } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.298.veteran.partial.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.veteran_home } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.298.veteran.failure.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.veteran_home } } }
+	desc = { text = chaosx.fallout.298.research.success.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.research_clinic } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.298.research.partial.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.research_clinic } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.298.research.failure.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.research_clinic } } }
+	desc = { text = chaosx.fallout.298.memorial.success.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.memorial_hall } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.298.memorial.partial.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.memorial_hall } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.298.memorial.failure.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.memorial_hall } } }
+	desc = { text = chaosx.fallout.298.leave.success.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.leave_ward } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.298.leave.partial.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.leave_ward } check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.298.leave.failure.d trigger = { check_variable = { fallout_event_296_selected_branch = constant:fallout_event_296_branch.leave_ward } } }
+	picture = GFX_report_event_fallout_empty_ward
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_296_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.298.a hidden_effect = { fallout_event_296_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.298.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.299
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_296_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_296_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.300
+	title = chaosx.fallout.300.t
+	desc = { text = chaosx.fallout.300.success.d trigger = { check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.300.partial.d trigger = { check_variable = { fallout_event_296_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.300.failure.d
+	picture = GFX_report_event_fallout_empty_ward
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_296_registry_is_current = yes }
+	option = { name = chaosx.fallout.300.a hidden_effect = { fallout_event_296_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.300.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.301
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_296_registry_is_current = yes }
+	immediate = { fallout_event_296_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.302
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_296_cleanup_can_enter = yes }
+	immediate = { fallout_event_296_cleanup = yes }
+}

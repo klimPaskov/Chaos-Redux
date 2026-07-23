@@ -325,6 +325,39 @@ fallout_event_build_pilot_candidate_registries = {
 				clear_temp_variable = fallout_event_289_candidate_severity
 			}
 
+			# The Empty Ward is a country-level Year 2 institution event. Its
+			# severity follows the recorded Deaths ledger and its state value is
+			# the current Medicine receipt. No invented state or actor target is stored.
+			if = {
+				limit = { fallout_event_296_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.empty_ward_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.empty_ward_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.empty_ward_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.empty_ward_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.soot_retreat }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_296_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_296_candidate_severity = chaos_meter_deaths_country_civilian_total }
+				multiply_temp_variable = { fallout_event_296_candidate_severity = constant:fallout_event_296_threshold.deaths_to_severity }
+				clamp_temp_variable = { var = fallout_event_296_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_296_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_296_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^3 }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.medicine }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.medicine }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.empty_ward_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_296_candidate_severity
+			}
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

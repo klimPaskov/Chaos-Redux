@@ -1,0 +1,110 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT EMPTY WARD TRIGGERS
+# ============================================================================
+# Country-level Year 2 institution chain. The ward follows a completed
+# generation and fever memory, then authenticates its delayed result, callback,
+# and cleanup against the Fallout registry without inventing a state target.
+# ============================================================================
+
+fallout_event_296_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_identity_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	has_country_flag = fallout_event_289_memory_closed
+	OR = {
+		has_country_flag = fallout_event_256_memory_fever_contained
+		has_country_flag = fallout_event_256_memory_fever_contested
+		has_country_flag = fallout_event_256_memory_fever_breach
+	}
+	has_variable = fallout_generation_change_count
+	check_variable = { fallout_generation_change_count value = constant:fallout_event_289_threshold.minimum_generation_count compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_296_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_296_threshold.maximum_campaign_day compare = less_than }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_296_threshold.minimum_cohesion compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_threshold.minimum_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_296_threshold.minimum_shelter compare = greater_than_or_equals }
+	NOT = { has_country_flag = fallout_event_296_chain_committed }
+	NOT = { has_country_flag = fallout_event_296_memory_closed }
+	OR = {
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_296_cost.veteran_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.veteran_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_296_cost.veteran_scrap compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.research_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_296_cost.research_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_296_cost.research_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_296_cost.memorial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.memorial_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_296_cost.memorial_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_296_cost.leave_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_296_cost.leave_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_296_cost.leave_scrap compare = greater_than_or_equals }
+		}
+	}
+}
+
+fallout_event_296_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.none }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = equals }
+	fallout_event_296_country_is_current = yes
+}
+
+fallout_event_296_registry_is_current = {
+	has_variable = fallout_event_296_registry_generation
+	has_variable = fallout_event_296_registry_owner
+	has_variable = fallout_event_296_candidate_id
+	has_variable = fallout_event_296_registry_target
+	has_variable = fallout_event_296_frozen_medicine
+	has_variable = fallout_event_296_frozen_shelter
+	has_variable = fallout_event_296_frozen_cohesion
+	has_variable = fallout_event_296_frozen_recognition
+	has_variable = fallout_event_296_frozen_generation
+	has_variable = fallout_event_296_frozen_capacity
+	has_variable = fallout_event_296_frozen_research
+	has_variable = fallout_event_296_frozen_trust
+	has_variable = fallout_event_296_frozen_exposure
+	check_variable = { fallout_event_296_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_296_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_296_candidate_id value = constant:fallout_event_candidate_pilot.empty_ward_candidate_id compare = equals }
+	check_variable = { fallout_event_296_registry_target value = constant:fallout_event_runtime.zero compare = equals }
+	has_country_flag = fallout_event_296_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+}
+
+fallout_event_296_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_296_opening_target_is_current = yes
+}
+
+fallout_event_296_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_296_opening_target_is_current = yes
+}
+
+fallout_event_296_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_296_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_296_branch.upper_bound }
+	fallout_event_296_registry_is_current = yes
+}
+
+fallout_event_296_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.empty_ward_cleanup }
+	fallout_event_296_registry_is_current = yes
+}

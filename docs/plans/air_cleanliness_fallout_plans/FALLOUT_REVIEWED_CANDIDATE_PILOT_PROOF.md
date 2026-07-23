@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifteen
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixteen
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,10 +61,10 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define fifteen candidate ids, fifteen transaction
-  keys, and fifteen route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixteen candidate ids, sixteen transaction
+  keys, and sixteen route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 295, and the hidden companion ranges
+  126, 153 through 200, 204 through 302, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
@@ -165,6 +165,21 @@ education, and exposure, then schedules a 28-day result and a 210-day cohort
 callback with hidden-AI parity. History `9120`, six dedicated modifiers,
 fifteen payloads, cleanup, and dedicated report art are statically wired. It
 remains dormant and uncounted.
+
+## Empty Ward correction
+
+The producer now carries the sixteenth reviewed ordinary row. The Empty Ward
+uses country candidate id `296`, transaction key `710016`, route `7116`, and
+event tokens `296` through `302`. Its gate requires the closed School memory,
+one Fever Dormitory outcome memory, campaign day `500` through `1199`, Cohesion
+at least `30`, Medicine at least `15`, Shelter at least `30`, and one affordable
+policy. Its severity is the clamped recorded-Deaths score and its
+mechanic-pressure field is zero. Medicine supplies the state value. The chain
+freezes Medicine, Shelter, Cohesion, Recognition, generation count, ward
+capacity, research, and trust, then schedules a 35-day result and a 240-day
+institution callback with hidden-AI parity. History `9121`, six dedicated
+modifiers, fifteen payloads, cleanup, and dedicated report art are statically
+wired. It remains dormant and uncounted.
 
 ## Names for the Missing correction
 

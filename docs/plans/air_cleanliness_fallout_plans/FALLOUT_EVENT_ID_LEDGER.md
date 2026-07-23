@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the School in the Vent Room tranche, the living-world pilot contains `177`
+After the Empty Ward tranche, the living-world pilot contains `184`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and `204` through `295`. All remain dormant and uncounted, so
+through `200`, and `204` through `302`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -360,4 +360,16 @@ curricula with deterministic grading, a 28-day result, a 210-day cohort
 callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event
 Log payloads, and authenticated cleanup. The documented living-world block
 total is now `177`, while the countable Fallout living-world release-floor total
+remains `0 of 660`.
+
+## Empty Ward count correction
+
+The Empty Ward adds seven dormant country-level event blocks at suffixes `296`
+through `302`. Candidate `296` uses transaction key `710016`, route `7116`, and
+history id `9121`. It follows the closed School and Fever Dormitory memories,
+then offers a veteran home, research clinic, memorial hall, or reserved empty
+ward with deterministic grading, a 35-day result, a 240-day institution
+callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event
+Log payloads, and authenticated cleanup. The documented living-world block
+total is now `184`, while the countable Fallout living-world release-floor total
 remains `0 of 660`.
