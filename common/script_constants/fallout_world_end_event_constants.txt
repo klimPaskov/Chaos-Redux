@@ -1077,6 +1077,19 @@ fallout_event_id = {
 	fever_dormitory_callback = 266
 	fever_dormitory_callback_ai = 267
 	fever_dormitory_cleanup = 268
+	names_missing_human = 269
+	names_missing_ai = 270
+	names_missing_publish_result = 271
+	names_missing_secrecy_result = 272
+	names_missing_memorial_result = 273
+	names_missing_clerks_result = 274
+	names_missing_publish_result_ai = 275
+	names_missing_secrecy_result_ai = 276
+	names_missing_memorial_result_ai = 277
+	names_missing_clerks_result_ai = 278
+	names_missing_callback = 279
+	names_missing_callback_ai = 280
+	names_missing_cleanup = 281
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1124,7 +1137,10 @@ fallout_event_candidate_pilot = {
 	fever_dormitory_candidate_id = 256
 	fever_dormitory_transaction_key = 710012
 	fever_dormitory_route = 7112
-	upper_bound = 7113
+	names_missing_candidate_id = 269
+	names_missing_transaction_key = 710013
+	names_missing_route = 7113
+	upper_bound = 7114
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -5060,5 +5076,307 @@ fallout_event_256_ai = {
 	disperse_priority = 5
 	public_priority = 4
 	conceal_priority = 2
+	upper_bound = 1001
+}
+
+# Names for the Missing is a dormant country-level death-register and census
+# candidate. It records no state target and resolves through the same delayed
+# result, callback, and cleanup queue as the other reviewed families.
+fallout_event_269_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	publish_names = 1
+	maintain_military_secrecy = 2
+	permit_community_memorials = 3
+	delegate_to_local_clerks = 4
+	upper_bound = 5
+}
+
+fallout_event_269_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 21
+	callback_delay_days = 180
+	modifier_days = 240
+	callback_modifier_days = 180
+	upper_bound = 241
+}
+
+fallout_event_269_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 3
+	upper_bound = 301
+}
+
+fallout_event_269_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_deaths = 25000
+	deaths_score_cap = 100000
+	deaths_to_severity = 0.001
+	maximum_candidate_severity = 100
+	maximum_recognition = 65
+	minimum_viability = 0
+	maximum_viability = 100
+	deaths_weight = 40
+	recognition_weight = 35
+	cohesion_weight = 25
+	weight_divisor = 100
+	publish_success_viability = 68
+	publish_partial_viability = 45
+	publish_success_recognition = 30
+	publish_partial_recognition = 18
+	secrecy_success_viability = 62
+	secrecy_partial_viability = 40
+	secrecy_success_recognition = 15
+	secrecy_partial_recognition = 5
+	memorial_success_viability = 58
+	memorial_partial_viability = 36
+	memorial_success_cohesion = 35
+	memorial_partial_cohesion = 20
+	clerks_success_viability = 52
+	clerks_partial_viability = 32
+	clerks_success_recognition = 20
+	clerks_partial_recognition = 10
+	failure_death_percent = 0.004
+	callback_failure_death_percent = 0.002
+	minimum_remaining_people = 1
+	maximum_exposure = 100
+	ai_high_cohesion = 65
+	ai_memorial_cohesion = 45
+	ai_low_recognition = 35
+	upper_bound = 101
+}
+
+fallout_event_269_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	publish_scrap = 4
+	publish_power = 3
+	secrecy_scrap = 2
+	secrecy_power = 5
+	memorial_food = 2
+	memorial_scrap = 3
+	clerks_scrap = 2
+	clerks_recognition = 4
+	upper_bound = 6
+}
+
+fallout_event_269_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	publish_success_food = 2
+	publish_success_scrap = -1
+	publish_success_power = -1
+	publish_success_recognition = 12
+	publish_success_cohesion = 8
+	publish_success_stability = 0.05
+	publish_success_war_support = 0.02
+	publish_success_exposure = 8
+	publish_partial_food = 1
+	publish_partial_scrap = -2
+	publish_partial_power = -2
+	publish_partial_recognition = 5
+	publish_partial_cohesion = 2
+	publish_partial_stability = 0.01
+	publish_partial_war_support = 0
+	publish_partial_exposure = 18
+	publish_failure_food = -2
+	publish_failure_scrap = -3
+	publish_failure_power = -2
+	publish_failure_recognition = -8
+	publish_failure_cohesion = -7
+	publish_failure_stability = -0.06
+	publish_failure_war_support = -0.03
+	publish_failure_exposure = 30
+
+	secrecy_success_food = 1
+	secrecy_success_scrap = 0
+	secrecy_success_power = -2
+	secrecy_success_recognition = -3
+	secrecy_success_cohesion = 5
+	secrecy_success_stability = 0.02
+	secrecy_success_war_support = 0.04
+	secrecy_success_exposure = -6
+	secrecy_partial_food = 0
+	secrecy_partial_scrap = -1
+	secrecy_partial_power = -3
+	secrecy_partial_recognition = -6
+	secrecy_partial_cohesion = 1
+	secrecy_partial_stability = -0.01
+	secrecy_partial_war_support = 0.02
+	secrecy_partial_exposure = 12
+	secrecy_failure_food = -2
+	secrecy_failure_scrap = -2
+	secrecy_failure_power = -4
+	secrecy_failure_recognition = -12
+	secrecy_failure_cohesion = -8
+	secrecy_failure_stability = -0.07
+	secrecy_failure_war_support = -0.04
+	secrecy_failure_exposure = 34
+
+	memorial_success_food = -1
+	memorial_success_scrap = -1
+	memorial_success_power = 0
+	memorial_success_recognition = 9
+	memorial_success_cohesion = 12
+	memorial_success_stability = 0.04
+	memorial_success_war_support = 0.01
+	memorial_success_exposure = 10
+	memorial_partial_food = -2
+	memorial_partial_scrap = -2
+	memorial_partial_power = -1
+	memorial_partial_recognition = 5
+	memorial_partial_cohesion = 5
+	memorial_partial_stability = 0.01
+	memorial_partial_war_support = 0
+	memorial_partial_exposure = 20
+	memorial_failure_food = -3
+	memorial_failure_scrap = -3
+	memorial_failure_power = -2
+	memorial_failure_recognition = -9
+	memorial_failure_cohesion = -10
+	memorial_failure_stability = -0.08
+	memorial_failure_war_support = -0.03
+	memorial_failure_exposure = 32
+
+	clerks_success_food = 1
+	clerks_success_scrap = -1
+	clerks_success_power = 0
+	clerks_success_recognition = 10
+	clerks_success_cohesion = 6
+	clerks_success_stability = 0.03
+	clerks_success_war_support = -0.01
+	clerks_success_exposure = 6
+	clerks_partial_food = 0
+	clerks_partial_scrap = -2
+	clerks_partial_power = -1
+	clerks_partial_recognition = 4
+	clerks_partial_cohesion = 2
+	clerks_partial_stability = 0
+	clerks_partial_war_support = -0.01
+	clerks_partial_exposure = 16
+	clerks_failure_food = -2
+	clerks_failure_scrap = -3
+	clerks_failure_power = -2
+	clerks_failure_recognition = -10
+	clerks_failure_cohesion = -6
+	clerks_failure_stability = -0.05
+	clerks_failure_war_support = -0.02
+	clerks_failure_exposure = 28
+
+	callback_success_food = 1
+	callback_success_scrap = 1
+	callback_success_power = 1
+	callback_success_recognition = 5
+	callback_success_cohesion = 5
+	callback_success_stability = 0.03
+	callback_success_war_support = 0.02
+	callback_success_exposure = -4
+	callback_partial_food = -1
+	callback_partial_scrap = 0
+	callback_partial_power = -1
+	callback_partial_recognition = 1
+	callback_partial_cohesion = -1
+	callback_partial_stability = -0.01
+	callback_partial_war_support = 0
+	callback_partial_exposure = 9
+	callback_failure_food = -2
+	callback_failure_scrap = -1
+	callback_failure_power = -2
+	callback_failure_recognition = -7
+	callback_failure_cohesion = -6
+	callback_failure_stability = -0.06
+	callback_failure_war_support = -0.03
+	callback_failure_exposure = 24
+	upper_bound = 1001
+}
+
+fallout_event_269_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	public_register_stability = 0.04
+	public_register_war_support = 0.02
+	public_register_consumer_goods = 0.02
+	military_archive_stability = -0.01
+	military_archive_war_support = 0.04
+	military_archive_consumer_goods = -0.01
+	community_memorial_stability = 0.02
+	community_memorial_war_support = 0.01
+	community_memorial_consumer_goods = 0.01
+	local_clerks_stability = 0.03
+	local_clerks_war_support = -0.01
+	local_clerks_consumer_goods = 0
+	maintenance_stability = 0.02
+	maintenance_war_support = 0.01
+	maintenance_consumer_goods = -0.01
+	backlog_stability = -0.08
+	backlog_war_support = -0.04
+	backlog_consumer_goods = 0.06
+	upper_bound = 1
+}
+
+fallout_event_269_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9118
+	publish_success = 11
+	publish_partial = 12
+	publish_failure = 13
+	secrecy_success = 21
+	secrecy_partial = 22
+	secrecy_failure = 23
+	memorial_success = 31
+	memorial_partial = 32
+	memorial_failure = 33
+	clerks_success = 41
+	clerks_partial = 42
+	clerks_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_269_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	publish_priority = 7
+	secrecy_priority = 5
+	memorial_priority = 6
+	clerks_priority = 4
+	strong_modifier = 2
 	upper_bound = 1001
 }

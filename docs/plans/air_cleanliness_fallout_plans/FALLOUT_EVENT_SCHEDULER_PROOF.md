@@ -2,9 +2,9 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Five global-survival pilot rows now have a Fallout-owned generation-bound producer for the food, produced-water, native-rail, Air Winter well, and Animal Feed chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Thirteen global-survival pilot rows now have a Fallout-owned generation-bound producer covering the food, produced-water, native-rail, Air Winter well, Animal Feed, Triage Wall, Seed Vault, Bad Batch, Filters Fail, Door List, Last Transformer, Fever Dormitory, and Names for the Missing chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. Suffixes `100` through `126`, `1009` through `1018`, and `153` through `174` are dormant typed reservations. Defined event blocks in those ranges: `59`. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and `204` through `281`. It has `163` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
@@ -186,7 +186,7 @@ The following work remains blocked or absent:
 
 - Numeric initialization and aggregation rules for Food, Clean water, Medicine, Scrap, Fuel, Power, Filters, Shelter capacity, and Recognition are implemented. Cohesion and Reclamation remain separate mechanics. Scheduler activation and event content remain absent.
 - World transition schema 12 authenticates frozen Air Winter rows with an Air-owned producer schema and generation, the frozen live category, accepted specialty buildings, coal, population, building, and supply receipts. Valid rows use exact produced values. Invalid rows use a typed N/A payload and are excluded from country coverage.
-- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for twelve ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
+- Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for thirteen ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
 - Exact bilateral wrappers and issued-orphan retention are implemented without gameplay callers. Activation remains blocked until reviewed bilateral event content invokes those wrappers and proves its human, hidden AI, stale-subject, delayed-result, and cleanup paths.
 - Twenty-three dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted.
 - Major-arc and relationship candidates fail closed until reviewed rows freeze the complete atomic class-reservation payload.
@@ -286,3 +286,22 @@ The Fever Dormitory chain remains dormant and earns no release-floor credit.
 Scheduler activation, host authority, save recovery, multiplayer behavior,
 state-target scope, and runtime Event Log delivery remain unobserved because
 HOI4 was not launched.
+
+## Names for the Missing candidate and event correction
+
+The reviewed ordinary candidate producer now carries the thirteenth dormant
+row for Names for the Missing. It uses candidate id `269`, transaction key
+`710013`, route `7113`, a country-owned row with no state target, the cause-memory cooldown family,
+and a first-winter-year phase. Its gate requires a current country registry,
+at least 25,000 Deaths entries, incomplete Recognition, and one affordable
+branch.
+
+Events `269` through `281` provide one human opening, one hidden-AI opening,
+four human delayed results, four hidden-AI delayed results, one human callback,
+one hidden-AI callback, and authenticated cleanup. The chain freezes its
+country values before the 21-day result, schedules the 180-day callback, and
+routes failure population requests through the Deaths contract. History `9118`
+and the dedicated report image are statically wired. The chain remains dormant
+and earns no release-floor credit because activation, host authority, save
+recovery, multiplayer behavior, and runtime Event Log delivery remain
+unobserved.

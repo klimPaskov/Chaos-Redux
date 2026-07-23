@@ -4,6 +4,14 @@
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
+## Current reconciliation
+
+After the Names for the Missing tranche, the living-world pilot contains `163`
+defined event blocks across `100` through `126`, `1009` through `1018`, `153`
+through `200`, and `204` through `281`. All remain dormant and uncounted, so
+the release-floor total is `0 of 660`. Historical count snapshots below are
+retained as corrections and are superseded by the later correction sections.
+
 ## Reserved Ash-week orientation tranche
 
 The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. This ledger reserves suffixes `62` through `84` with the following exact roles:
@@ -134,7 +142,7 @@ Suffixes `6` and `49` are allocated to implemented Air Winter results and are no
 
 ## Collision boundary
 
-The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126`, `1009` through `1018`, and `153` through `163` remain reserved for the living-world pilot even if implementation order changes.
+The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126`, `1009` through `1018`, `153` through `200`, and `204` through `281` remain reserved for the living-world pilot even if implementation order changes.
 
 ## Pilot gates
 
@@ -254,6 +262,18 @@ transaction, a ninety-day callback, Deaths-backed failure handling, Event Log
 payloads, and authenticated cleanup. The chain remains dormant and uncounted.
 The countable Fallout living-world release-floor total remains `0 of 660`.
 
+## Filters Fail count correction
+
+The Filters Fail reservation adds thirteen dormant suffixes, so the
+authoritative living-world pilot total is `101` identities and `111` defined
+blocks. The chain uses event suffixes `217` through `229`, candidate id `217`,
+transaction key `710009`, route `7109`, and history id `9114`.
+
+Its candidate gate requires shelter capacity, current Filters pressure, a
+produced Air Winter snapshot, and an affordable branch. The chain remains
+dormant and uncounted. The countable Fallout living-world release-floor total
+remains `0 of 660`.
+
 ## Door List count correction
 
 The Door List survival transaction adds thirteen dormant event blocks at
@@ -265,7 +285,7 @@ applies the accepted branch viability and movement bands, records source
 losses through the shared exact population contract, and uses a delayed
 callback with authenticated cleanup. It remains dormant and uncounted because
 the scheduler activation gates, host proof, and runtime state-target proof are
-still open. The documented living-world block total is now `111` and the
+still open. The documented living-world block total is now `124` and the
 countable Fallout living-world release-floor total remains `0 of 660`.
 
 ## Last Transformer count correction
@@ -286,7 +306,7 @@ exactly ten days, branch-specific viability and outcome bands, Deaths-backed
 failure handling, one callback at exactly 120 days, Event Log payloads, timed
 country modifiers, and authenticated cleanup. It remains dormant and
 uncounted because scheduler activation, host proof, and runtime state-target
-proof are still open. The documented living-world block total is now `124`
+proof are still open. The documented living-world block total is now `137`
 and the countable Fallout living-world release-floor total remains `0 of
 660`.
 
@@ -305,5 +325,16 @@ authenticated cleanup. Dedicated report art and the shared name, detail, and
 Event Details routes are wired. Scheduler activation, host authority,
 save-recovery, state-target scope, multiplayer behavior, and runtime Event Log
 delivery remain unobserved. The documented living-world block total is now
-`137`, while the countable Fallout living-world release-floor total remains
+`150`, while the countable Fallout living-world release-floor total remains
 `0 of 660`.
+
+## Names for the Missing count correction
+
+Names for the Missing adds thirteen dormant country-level event blocks at
+suffixes `269` through `281`. The candidate row is `269`, transaction key
+`710013`, route `7113`, and history id `9118`. It freezes country Deaths,
+Recognition, Cohesion, and intelligence exposure, then offers four costed
+census and memorial policies with deterministic delayed results, a callback,
+Deaths-backed failure, dedicated modifiers, and authenticated cleanup. The
+documented living-world block total is now `163`, while the countable Fallout
+living-world release-floor total remains `0 of 660`.

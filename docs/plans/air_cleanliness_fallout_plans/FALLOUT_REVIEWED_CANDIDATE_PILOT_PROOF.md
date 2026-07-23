@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for twelve
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for thirteen
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,10 +61,10 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define twelve candidate ids, twelve transaction
-  keys, and twelve route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define thirteen candidate ids, thirteen transaction
+  keys, and thirteen route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 268, and the hidden companion ranges
+  126, 153 through 200, 204 through 281, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
@@ -136,3 +136,16 @@ current Air Winter receipt and requires low Medicine with an affordable policy.
 The chain has four human and hidden-AI policy lanes, delayed results, callback,
 Deaths-backed failure, fifteen Event Log payloads, dedicated art, and cleanup.
 It remains dormant and uncounted. No HOI4 runtime was launched.
+
+## Names for the Missing correction
+
+The producer now carries thirteen reviewed ordinary rows. Names for the
+Missing adds country candidate id `269`, transaction key `710013`, route
+`7113`, and event tokens `269` through `281`. Its gate requires a current
+country row, high recorded civilian deaths, incomplete Recognition, and an
+affordable census branch. The chain freezes country ledgers, uses the bounded
+severity formula `clamp(Deaths * 0.001, 0, 100)` with zero survival-resource
+mechanic pressure, reserves a three-unit human opening envelope, and uses zero
+visible budget for hidden-AI delayed rows. It writes history `9118`, routes
+result failure at 0.4 percent and callback failure at 0.2 percent through
+Deaths, and remains dormant behind scheduler activation.

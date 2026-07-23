@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout source of truth map
 
-Status: current implementation map, reconciled 2026-07-22. Fallout remains incomplete and dormant where the proof ledger says so.
+Status: current implementation map, reconciled 2026-07-23. Fallout remains incomplete and dormant where the proof ledger says so.
 
 ## Authority order
 
@@ -19,6 +19,7 @@ Status: current implementation map, reconciled 2026-07-22. Fallout remains incom
 | Fallout request and transition | `FALLOUT_TRANSITION_ARCHITECTURE.md` and current status | `common/scripted_effects/fallout_world_end_effects.txt`, `common/scripted_triggers/fallout_world_end_triggers.txt`, and `events/fallout_world_end_events.txt` |
 | Fallout event scheduler | `01_living_world_event_ecosystem.md`, `FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md`, and `FALLOUT_EVENT_SCHEDULER_PROOF.md` | Fallout constants, coordinator effects and triggers, candidate registry, delayed queue, ordinary receipt, and dispatch envelope |
 | Fallout event content | `fallout_event_library_master_matrix.md`, event id ledger, and accepted event specs | `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`, Fallout scripted content, event localisation, logs, and details |
+| Reviewed global-survival pilot contract | `specs/13_reviewed_global_survival_pilots.md` and the detailed Names addendum | candidate 269 constants, registry row, delayed effects, event blocks, Event Log history, localisation, and dedicated asset package |
 | Manual Fallout scenario | `MANUAL_FALLOUT_SCENARIO_PLAN.md`, sweep proof, and population contract | manual scenario constants, sweep effects, scenario dispatch, and Fallout request handoff |
 | Blackout presentation | `FALLOUT_BLACKOUT_GUI_PROOF.md` and super-event ownership reconciliation | Fallout scripted GUI, interface GFX, blackout events, dedicated Fallout audio, and Fallout asset manifests |
 | Successor allocation and player continuation | `FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md`, transition architecture, and allocation proofs | transition ledgers, conflict inventory, package receipts, player reservation, allocation, and map-return validation |
@@ -39,13 +40,14 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_BLACKOUT_GUI_PROOF.md` records full-screen input blocking and blackout surface ownership.
 - `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md` records the accepted numerical survival transaction.
 - `FALLOUT_EVENT_SCHEDULER_PROOF.md` records the dormant scheduler substrate and activation gates.
-- `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the twelve reviewed ordinary candidate rows. `FALLOUT_WELL_QUEUE_TUNING_AND_REGISTRY.md` records the fourth Well Queue candidate, state gate, branch tuning, callback deferral, and dedicated asset. `FALLOUT_ANIMAL_FEED_TUNING_AND_REGISTRY.md` records the fifth Animal Feed candidate, native food snapshot gate, branch tuning, callback deferral, and reused food art. `FALLOUT_FEVER_DORMITORY_CHAIN_PROOF.md` records the twelfth Fever Dormitory candidate, state gate, four policy lanes, delayed callback, Deaths route, Event Log payloads, and runtime proof boundary.
+- `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` records the thirteen reviewed ordinary candidate rows. `FALLOUT_WELL_QUEUE_TUNING_AND_REGISTRY.md` records the fourth Well Queue candidate, state gate, branch tuning, callback deferral, and dedicated asset. `FALLOUT_ANIMAL_FEED_TUNING_AND_REGISTRY.md` records the fifth Animal Feed candidate, native food snapshot gate, branch tuning, callback deferral, and reused food art. `FALLOUT_FEVER_DORMITORY_CHAIN_PROOF.md` records the twelfth Fever Dormitory candidate, state gate, four policy lanes, delayed callback, Deaths route, Event Log payloads, and runtime proof boundary. `FALLOUT_NAMES_FOR_THE_MISSING_CHAIN_PROOF.md` records the thirteenth country candidate, four policy lanes, deterministic grading, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
 - `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.
 - `FALLOUT_TRIAGE_WALL_CHAIN_PROOF.md` records the dormant medicine candidate at suffixes `175` through `187`, history `9111`, state gate, four human and hidden-AI policies, doctor's callback, cleanup, and dedicated report asset.
 - `FALLOUT_SEED_VAULT_CHAIN_PROOF.md` records the dormant seed candidate at suffixes `188` through `200`, history `9112`, Air Winter seed provenance, four policy lanes, agronomist callback, cleanup, and dedicated report asset.
 - `FALLOUT_BAD_BATCH_CHAIN_PROOF.md` records the dormant crop-trial candidate at suffixes `204` through `216`, history `9113`, generation-bound seed or greenhouse provenance, four delayed policy lanes, callback, cleanup, and dedicated report asset.
+- `docs/specs/air_cleanliness_fallout_specs/specs/13_reviewed_global_survival_pilots.md` promotes the normalized Names severity, visible-budget envelope, and separate callback Deaths rate. `docs/assets/air_cleanliness_fallout/fallout_names_missing/manifest.md` is the active asset crosswalk.
 
 ## Current blockers
 
