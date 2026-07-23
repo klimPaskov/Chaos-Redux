@@ -251,3 +251,17 @@ branch. Four human and hidden-AI result lanes share one delayed scheduler
 transaction, a ninety-day callback, Deaths-backed failure handling, Event Log
 payloads, and authenticated cleanup. The chain remains dormant and uncounted.
 The countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Door List count correction
+
+The Door List survival transaction adds thirteen dormant event blocks at
+suffixes `230` through `242`. The candidate row is `230`, transaction key
+`710010`, route `7110`, and history id `9115`. The chain selects one current
+source state with a higher Air Winter exposure and one current shelter-
+qualified destination state. It freezes the two-state population ledger,
+applies the accepted branch viability and movement bands, records source
+losses through the shared exact population contract, and uses a delayed
+callback with authenticated cleanup. It remains dormant and uncounted because
+the scheduler activation gates, host proof, and runtime state-target proof are
+still open. The documented living-world block total is now `111` and the
+countable Fallout living-world release-floor total remains `0 of 660`.

@@ -103,7 +103,7 @@ Schema 3 child ledgers retain the idempotent arc, delayed-result, and reciprocal
 
 Major-arc and relationship candidates are deliberately ineligible because their reviewed candidate payloads do not yet carry the complete atomic arc or reciprocal bilateral reservation fields. Delayed and bilateral rows also lack actor identities for cross-ledger independent-actor exclusion. Pair-family memory is not yet pruned and is not an atomic substitute for reciprocal reservation. Current capitals authenticate the recurrence exception through the live state trigger. Active sieges remain fail-closed until a typed current-siege producer receipt exists. The reviewed candidate pilot producer covers only the food, produced-water, native-rail, Air Winter Well Queue, and Animal Feed ordinary rows. Its activation caller, hidden AI result caller, content cleanup caller, full matrix, and scheduler debug presentation remain absent. These are explicit activation blockers.
 
-The transition stages exact country and state survival identities after final allocation and blocks player continuation until the committed ledger exists. The numerical coordinator calculates all nine state resources, aggregates countries through frozen ownership and bounded survivor-population weights, replays every row into separate proof arrays, derives Cohesion and Supply Access, and sets the sole global ready flag last. The state result gate is approved only by an exact schema-3 country replay and is cleared on any uncommitted reset. Separate exact survivor-allocation recovery wrappers own malformed uncommitted identity and numerical payloads. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md), [FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md), and [FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md) record the accepted formulas. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md), `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`, `FALLOUT_EVENT_SCHEDULER_PROOF.md`, and `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` record the implementation boundary. The dormant orientation transaction, national pilot at `62` through `65`, exact twelve-memory resource pilot at `70` through `73`, exact twelve-memory government pilot at `74` through `77`, closure and cleanup at `82` through `84`, and the global-survival pilots at `100` through `126`, `1009` through `1018`, and `153` through `163` provide real human and hidden-AI content, but they have no activation caller and remain outside the release count. Regional, archetype, country-memory, government-row, resource capital-asset, infrastructure-repair, and character-install approval gates remain unset. Both scheduler activation flags have no setter. Defined event blocks in the global-survival ranges: `48`. Countable living-world blocks toward the release floor: `0 of 660`.
+The transition stages exact country and state survival identities after final allocation and blocks player continuation until the committed ledger exists. The numerical coordinator calculates all nine state resources, aggregates countries through frozen ownership and bounded survivor-population weights, replays every row into separate proof arrays, derives Cohesion and Supply Access, and sets the sole global ready flag last. The state result gate is approved only by an exact schema-3 country replay and is cleared on any uncommitted reset. Separate exact survivor-allocation recovery wrappers own malformed uncommitted identity and numerical payloads. [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md), [FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md), and [FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md) record the accepted formulas. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md), `FALLOUT_ORIENTATION_LIVE_LEDGER_TRANSACTION_PROOF.md`, `FALLOUT_EVENT_SCHEDULER_PROOF.md`, and `FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` record the implementation boundary. The dormant orientation transaction, national pilot at `62` through `65`, exact twelve-memory resource pilot at `70` through `73`, exact twelve-memory government pilot at `74` through `77`, closure and cleanup at `82` through `84`, and the global-survival pilots at `100` through `126`, `1009` through `1018`, `153` through `174`, and `230` through `242` provide real human and hidden-AI content, but they have no activation caller and remain outside the release count. Regional, archetype, country-memory, government-row, resource capital-asset, infrastructure-repair, and character-install approval gates remain unset. Both scheduler activation flags have no setter. Defined event blocks in the global-survival ranges: `111`. Countable living-world blocks toward the release floor: `0 of 660`.
 
 ## Candidate pilot count correction
 
@@ -272,3 +272,24 @@ memory, a ninety-day callback, history `9113`, authenticated cleanup, and a
 dedicated wired report asset. It remains uncounted until scheduler activation,
 manual review, and the deeper regional and government-aware localisation pass
 are complete. Countable living-world blocks remain `0 of 660`.
+
+## Door List surface correction
+
+The dormant Door List chain is defined at `chaosx.fallout.230` through
+`.242`. It freezes one higher-exposure source state and one shelter-qualified
+destination state, then offers families, specialists, a public lottery, or an
+orderly refusal. The result uses the shared exact state population loss
+contract with Deaths logging disabled during the source transaction, reads the
+applied amount, adds only the reconciled movement to the destination, and
+records the death remainder once through the Deaths API. Human and hidden-AI
+routes share the same viability bands, costs, branch effects, memory, delayed
+callback, Event Log payloads, and authenticated cleanup. The dedicated report
+asset is wired through `GFX_report_event_fallout_door_list`.
+
+The candidate producer and all 13 event blocks remain dormant. The scheduler
+activation flags remain unset, so this chain is not release-floor credit.
+The exact population ledger, scoped-variable proof, asset manifest, and
+engine-sensitive limits are recorded in
+`FALLOUT_DOOR_LIST_CHAIN_PROOF.md` and
+`FALLOUT_DOOR_LIST_IMPLEMENTATION_HANDOFF.md`. Countable living-world blocks
+remain `0 of 660`.
