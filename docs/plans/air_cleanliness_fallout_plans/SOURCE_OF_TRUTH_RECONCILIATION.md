@@ -176,6 +176,19 @@ Accepted post-pilot live-ledger disposition:
 - The exact one-damaged-level infrastructure repair result remains blocked. No construction, total-level, repair-speed, or variable-only substitute is approved.
 - The live-ledger approval does not by itself authorize the eight missing orientation blocks, a caller, or scheduler activation. Later accepted resource, government, and closure plans own the implemented blocks in their exact ranges.
 
+Accepted Last Transformer disposition:
+
+- The reviewed dormant power-grid pilot uses event suffixes `243` through
+  `255`, candidate `243`, route `7111`, and history `9116`.
+- Its deterministic state target, partner receipt, branch costs, ten-day
+  result, 120-day callback, Deaths failure path, Event Log payloads, dedicated
+  report asset, and cleanup proof are recorded in
+  `FALLOUT_LAST_TRANSFORMER_CHAIN_PROOF.md` and
+  `FALLOUT_LAST_TRANSFORMER_IMPLEMENTATION_HANDOFF.md`.
+- The candidate caller and both scheduler activation flags remain unset. The
+  pilot is not release-floor credit and does not authorize a public Fallout
+  scenario row.
+
 Current implementation authority:
 
 - `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.

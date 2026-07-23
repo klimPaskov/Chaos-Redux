@@ -12435,3 +12435,174 @@ country_event = {
 	trigger = { fallout_event_230_cleanup_can_enter = yes }
 	immediate = { fallout_event_230_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.243
+	title = chaosx.fallout.243.t
+	desc = chaosx.fallout.243.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { fallout_event_243_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.243.a
+		trigger = { check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.industry_power compare = greater_than_or_equals } }
+		hidden_effect = { set_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.cannibalize_industrial_line } fallout_event_243_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.243.a.tt
+		ai_chance = { base = 4 modifier = { factor = 2 has_government = neutrality } }
+	}
+	option = {
+		name = chaosx.fallout.243.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.hospital_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_243_cost.hospital_medicine compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.protect_hospital_power } fallout_event_243_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.243.b.tt
+		ai_chance = { base = 5 modifier = { factor = 2 has_government = democratic } }
+	}
+	option = {
+		name = chaosx.fallout.243.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.microgrid_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_243_cost.microgrid_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.decentralize_microgrids } fallout_event_243_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.243.c.tt
+		ai_chance = { base = 5 modifier = { factor = 2 has_government = communism } }
+	}
+	option = {
+		name = chaosx.fallout.243.e
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.neighbor_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_243_cost.neighbor_recognition compare = greater_than_or_equals }
+			any_neighbor_country = {
+				is_ai = yes
+				NOT = { has_war_with = ROOT }
+				fallout_survival_country_identity_row_is_current = yes
+				fallout_survival_country_resource_row_is_durable = yes
+				check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_partner.minimum_power compare = greater_than_or_equals }
+				any_owned_state = { check_variable = { air_winter_reclamation value = constant:fallout_event_243_partner.minimum_reclamation compare = greater_than_or_equals } }
+			}
+		}
+		hidden_effect = { set_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.request_neighbor_technicians } fallout_event_243_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.243.e.tt
+		ai_chance = { base = 3 modifier = { factor = 2 has_government = democratic } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.244
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_243_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_243_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.245
+	title = chaosx.fallout.245.t
+	desc = { text = chaosx.fallout.245.success.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.245.partial.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.245.failure.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_industry_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.cannibalize_industrial_line } }
+	option = { name = chaosx.fallout.245.a hidden_effect = { fallout_event_243_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.245.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.246
+	title = chaosx.fallout.246.t
+	desc = { text = chaosx.fallout.246.success.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.246.partial.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.246.failure.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_hospital_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.protect_hospital_power } }
+	option = { name = chaosx.fallout.246.a hidden_effect = { fallout_event_243_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.246.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.247
+	title = chaosx.fallout.247.t
+	desc = { text = chaosx.fallout.247.success.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.247.partial.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.247.failure.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_microgrid_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.decentralize_microgrids } }
+	option = { name = chaosx.fallout.247.a hidden_effect = { fallout_event_243_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.247.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.248
+	title = chaosx.fallout.248.t
+	desc = { text = chaosx.fallout.248.success.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.248.partial.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.248.failure.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_neighbor_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.request_neighbor_technicians } }
+	option = { name = chaosx.fallout.248.a hidden_effect = { fallout_event_243_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.248.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.249
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_industry_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.cannibalize_industrial_line } }
+	immediate = { fallout_event_243_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.250
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_hospital_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.protect_hospital_power } }
+	immediate = { fallout_event_243_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.251
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_microgrid_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.decentralize_microgrids } }
+	immediate = { fallout_event_243_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.252
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_243_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_neighbor_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_243_branch.request_neighbor_technicians } }
+	immediate = { fallout_event_243_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.253
+	title = chaosx.fallout.253.t
+	desc = { text = chaosx.fallout.253.success.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.253.partial.d trigger = { check_variable = { fallout_event_243_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.253.failure.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_243_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_243_branch.upper_bound } fallout_event_243_transformer_registry_is_current = yes }
+	option = { name = chaosx.fallout.253.a hidden_effect = { fallout_event_243_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.253.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.254
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_243_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_243_branch.upper_bound } fallout_event_243_transformer_registry_is_current = yes }
+	immediate = { fallout_event_243_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.255
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_243_cleanup_can_enter = yes }
+	immediate = { fallout_event_243_cleanup = yes }
+}

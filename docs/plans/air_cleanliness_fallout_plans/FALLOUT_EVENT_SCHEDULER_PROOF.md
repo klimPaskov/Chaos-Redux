@@ -244,3 +244,15 @@ generation-bound seed or greenhouse provenance receipt. The greenhouse receipt
 is copied during pretransition capture because Air Winter teardown clears the
 live project flag. The row remains behind the unset activation flags and adds
 no release-floor credit.
+
+## Last Transformer candidate correction
+
+The reviewed ordinary candidate producer now carries the ninth dormant row
+for The Last Transformer. It uses candidate id `243`, transaction key
+`710011`, route `7111`, a state target, the Power cooldown family, and the
+first-season or first-winter-year phase pair. The row freezes Power as
+mechanic pressure, Exposure as severity, target priority as state value, and
+the current Air Winter phase. Its state target and optional AI-neighbour
+receipt use stable id tie breaks. The thirteen human, hidden-AI, callback, and
+cleanup blocks remain behind the unset activation flags and add no release-
+floor credit.
