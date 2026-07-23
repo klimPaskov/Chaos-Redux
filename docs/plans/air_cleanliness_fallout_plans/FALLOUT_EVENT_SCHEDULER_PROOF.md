@@ -320,6 +320,16 @@ It remains dormant and contributes zero countable blocks to the `0 of 660`
 release-floor total. Its engine-sensitive lint request returned `Transport
 closed`, so delayed reachability and host or save behavior remain unproven.
 
+## First Streetlight scheduler correction
+
+The reviewed ordinary producer now carries nineteen rows and the defined
+living-world event range reaches `323`, with `205` defined blocks. First
+Streetlight is candidate `317`, transaction `710019`, route `7119`, and
+history `9124`. It remains dormant and contributes zero countable blocks to
+the `0 of 660` release-floor total. Its bounded event-inspector request also
+returned `Transport closed`, so delayed reachability, host authority, save
+recovery, and multiplayer behavior remain unproven.
+
 ## Empty Ward candidate and event correction
 
 The reviewed ordinary candidate producer now carries a sixteenth dormant row

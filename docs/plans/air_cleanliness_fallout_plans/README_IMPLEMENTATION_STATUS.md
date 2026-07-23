@@ -479,3 +479,24 @@ activation, host authority, save recovery, multiplayer behavior, and runtime
 Event Log delivery remain unobserved. The read-only event lint request returned
 `Transport closed`. The defined living-world total is now `198`, while
 countable Fallout living-world blocks remain `0 of 660`.
+
+## First Streetlight urban recovery tranche
+
+First Streetlight is implemented as a dormant country-level chain at
+`chaosx.fallout.317` through `.323`. It uses candidate `317`, transaction key
+`710019`, route `7119`, and Event Log history `9124`. Four authored urban
+priorities freeze Power, grid capacity and governance, Cohesion, Reclamation,
+Recognition, and city ledgers before a 35-day delayed result. The result
+updates resources, Cohesion, Stability, War Support, city identity, civic
+capacity, production, security, exposure, and timed modifiers, then schedules
+a 240-day public maintenance callback. Failure uses the Deaths contract at
+0.06 percent for the result and 0.03 percent for the callback. Human and
+hidden-AI lanes share the same delayed transaction and cleanup wrappers.
+Six dedicated timed modifiers, fifteen Event Log payloads, localisation, and
+a dedicated report image are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, save recovery, multiplayer behavior, and runtime
+Event Log delivery remain unobserved. The bounded event-inspector request
+returned `Transport closed`. The defined living-world total is now `205`,
+while countable Fallout living-world blocks remain `0 of 660`.
