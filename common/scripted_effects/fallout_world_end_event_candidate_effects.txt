@@ -292,6 +292,39 @@ fallout_event_build_pilot_candidate_registries = {
 				clear_temp_variable = fallout_event_282_candidate_severity
 			}
 
+			# The School in the Vent Room is a country-level second-generation
+			# institution event. Its severity is the durable generation count and
+			# its state value is the current food ledger. No invented target is used.
+			if = {
+				limit = { fallout_event_289_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.school_vent_room_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.school_vent_room_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.school_vent_room_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.school_vent_room_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.new_states }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_289_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_289_candidate_severity = fallout_generation_change_count }
+				multiply_temp_variable = { fallout_event_289_candidate_severity = constant:fallout_event_289_threshold.generation_severity_factor }
+				clamp_temp_variable = { var = fallout_event_289_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_289_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_289_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^1 }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.school_vent_room_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_289_candidate_severity
+			}
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

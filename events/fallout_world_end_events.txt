@@ -13061,3 +13061,124 @@ country_event = {
 	trigger = { fallout_event_282_cleanup_can_enter = yes }
 	immediate = { fallout_event_282_cleanup = yes }
 }
+
+# Dormant Fallout global-survival chain: The School in the Vent Room
+# -------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.289
+	title = chaosx.fallout.289.t
+	desc = chaosx.fallout.289.d
+	picture = GFX_report_event_fallout_school_vent_room
+	is_triggered_only = yes
+	trigger = { fallout_event_289_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.289.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.technical_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_289_cost.technical_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_289_cost.technical_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_289_requested_branch = constant:fallout_event_289_branch.technical_curriculum } fallout_event_289_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.289.a.tt
+		ai_chance = { base = constant:fallout_event_289_ai.technical_priority }
+	}
+	option = {
+		name = chaosx.fallout.289.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.history_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_289_cost.history_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.history_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_289_requested_branch = constant:fallout_event_289_branch.old_world_history } fallout_event_289_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.289.b.tt
+		ai_chance = { base = constant:fallout_event_289_ai.history_priority }
+	}
+	option = {
+		name = chaosx.fallout.289.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.civic_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_289_cost.civic_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.civic_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_289_requested_branch = constant:fallout_event_289_branch.civic_survival } fallout_event_289_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.289.c.tt
+		ai_chance = { base = constant:fallout_event_289_ai.civic_priority }
+	}
+	option = {
+		name = chaosx.fallout.289.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.faith_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_289_cost.faith_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.faith_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_289_requested_branch = constant:fallout_event_289_branch.faith_classroom } fallout_event_289_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.289.d_option.tt
+		ai_chance = { base = constant:fallout_event_289_ai.faith_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.290
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_289_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_289_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.291
+	title = chaosx.fallout.291.t
+	desc = { text = chaosx.fallout.291.technical.success.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.technical_curriculum } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.291.technical.partial.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.technical_curriculum } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.291.technical.failure.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.technical_curriculum } } }
+	desc = { text = chaosx.fallout.291.history.success.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.old_world_history } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.291.history.partial.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.old_world_history } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.291.history.failure.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.old_world_history } } }
+	desc = { text = chaosx.fallout.291.civic.success.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.civic_survival } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.291.civic.partial.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.civic_survival } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.291.civic.failure.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.civic_survival } } }
+	desc = { text = chaosx.fallout.291.faith.success.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.faith_classroom } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.291.faith.partial.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.faith_classroom } check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.291.faith.failure.d trigger = { check_variable = { fallout_event_289_selected_branch = constant:fallout_event_289_branch.faith_classroom } } }
+	picture = GFX_report_event_fallout_school_vent_room
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_289_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.291.a hidden_effect = { fallout_event_289_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.291.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.292
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_289_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_289_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.293
+	title = chaosx.fallout.293.t
+	desc = { text = chaosx.fallout.293.success.d trigger = { check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.293.partial.d trigger = { check_variable = { fallout_event_289_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.293.failure.d
+	picture = GFX_report_event_fallout_school_vent_room
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_289_registry_is_current = yes }
+	option = { name = chaosx.fallout.293.a hidden_effect = { fallout_event_289_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.293.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.294
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_289_registry_is_current = yes }
+	immediate = { fallout_event_289_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.295
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_289_cleanup_can_enter = yes }
+	immediate = { fallout_event_289_cleanup = yes }
+}

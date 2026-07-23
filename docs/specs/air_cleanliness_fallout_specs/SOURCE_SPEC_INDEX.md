@@ -12,6 +12,7 @@
 8. `specs/12_event_content_budget_and_acceptance.md`
 9. `specs/13_reviewed_global_survival_pilots.md`
 10. `specs/14_reviewed_global_survival_generation.md`
+11. `specs/15_reviewed_global_survival_education.md`
 
 
 ## Accepted baseline specs included here

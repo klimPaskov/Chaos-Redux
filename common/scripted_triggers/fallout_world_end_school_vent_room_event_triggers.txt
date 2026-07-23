@@ -1,0 +1,103 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT SCHOOL IN THE VENT ROOM TRIGGERS
+# ============================================================================
+# Country-level second-generation education chain. The opening is unlocked by
+# the durable First Safe Birth memory and a current survival ledger. Delayed
+# rows authenticate the same country without inventing a state target.
+# ============================================================================
+
+fallout_event_289_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_identity_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	has_country_flag = fallout_event_282_memory_opened
+	has_variable = fallout_generation_change_count
+	check_variable = { fallout_generation_change_count value = constant:fallout_event_289_threshold.minimum_generation_count compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_289_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_289_threshold.maximum_campaign_day compare = less_than }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_289_threshold.minimum_cohesion compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_threshold.minimum_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_289_threshold.minimum_shelter compare = greater_than_or_equals }
+	NOT = { has_country_flag = fallout_event_289_chain_committed }
+	NOT = { has_country_flag = fallout_event_289_memory_closed }
+	OR = {
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.technical_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_289_cost.technical_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_289_cost.technical_scrap compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.history_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_289_cost.history_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.history_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.civic_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_289_cost.civic_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.civic_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_289_cost.faith_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_289_cost.faith_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_289_cost.faith_recognition compare = greater_than_or_equals }
+		}
+	}
+}
+
+fallout_event_289_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.none }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = equals }
+	fallout_event_289_country_is_current = yes
+}
+
+fallout_event_289_registry_is_current = {
+	has_variable = fallout_event_289_registry_generation
+	has_variable = fallout_event_289_registry_owner
+	has_variable = fallout_event_289_candidate_id
+	has_variable = fallout_event_289_registry_target
+	has_variable = fallout_event_289_frozen_cohesion
+	has_variable = fallout_event_289_frozen_food
+	has_variable = fallout_event_289_frozen_shelter
+	has_variable = fallout_event_289_frozen_recognition
+	has_variable = fallout_event_289_frozen_generation
+	has_variable = fallout_event_289_frozen_education
+	has_variable = fallout_event_289_frozen_exposure
+	check_variable = { fallout_event_289_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_289_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_289_candidate_id value = constant:fallout_event_candidate_pilot.school_vent_room_candidate_id compare = equals }
+	check_variable = { fallout_event_289_registry_target value = constant:fallout_event_runtime.zero compare = equals }
+	has_country_flag = fallout_event_289_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+}
+
+fallout_event_289_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_289_opening_target_is_current = yes
+}
+
+fallout_event_289_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_289_opening_target_is_current = yes
+}
+
+fallout_event_289_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_289_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_289_branch.upper_bound }
+	fallout_event_289_registry_is_current = yes
+}
+
+fallout_event_289_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.school_vent_room_cleanup }
+	fallout_event_289_registry_is_current = yes
+}

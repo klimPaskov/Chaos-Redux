@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fourteen
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifteen
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,10 +61,10 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define fourteen candidate ids, fourteen transaction
-  keys, and fourteen route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define fifteen candidate ids, fifteen transaction
+  keys, and fifteen route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 288, and the hidden companion ranges
+  126, 153 through 200, 204 through 295, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
@@ -150,6 +150,21 @@ Cohesion, Medicine, Shelter, Recognition, and exposure, then schedules a
 21-day result and 180-day callback with hidden-AI parity. History `9119`, six
 dedicated modifiers, fifteen payloads, cleanup, and dedicated report art are
 statically wired. It remains dormant and uncounted.
+
+## School in the Vent Room correction
+
+The producer now carries the fifteenth reviewed ordinary row. School in the
+Vent Room uses country candidate id `289`, transaction key `710015`, route
+`7115`, and event tokens `289` through `295`. Its gate requires the durable
+First Safe Birth memory, one generation change, campaign day `360` through
+`899`, Cohesion at least `35`, Food at least `25`, Shelter at least `35`, and
+one affordable curriculum. Its severity is the clamped generation-count score
+and its mechanic-pressure field is zero. Food supplies the state value. The
+chain freezes Cohesion, Food, Shelter, Recognition, generation count,
+education, and exposure, then schedules a 28-day result and a 210-day cohort
+callback with hidden-AI parity. History `9120`, six dedicated modifiers,
+fifteen payloads, cleanup, and dedicated report art are statically wired. It
+remains dormant and uncounted.
 
 ## Names for the Missing correction
 
