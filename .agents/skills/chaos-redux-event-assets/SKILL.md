@@ -414,6 +414,8 @@ Canonical gameplay-icon paths:
 - buildings: `icons/buildings/`
 - modifiers: `icons/modifiers/`
 
+After placing a technology or doctrine icon, use `hoi4.tech_inspect` in `explain` or `lint` mode to verify the sprite and texture references, then use the `assets` or affected folder view in `hoi4.tech_render` for deterministic review. Missing or ambiguous assets remain implementation findings; this skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
+
 Canonical unit-visual paths:
 
 - equipment and technology art: `units/equipment/technology_art/`
