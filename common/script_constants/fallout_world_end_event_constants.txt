@@ -1111,6 +1111,13 @@ fallout_event_id = {
 	empty_ward_callback = 300
 	empty_ward_callback_ai = 301
 	empty_ward_cleanup = 302
+	shelter_marriage_law_human = 303
+	shelter_marriage_law_ai = 304
+	shelter_marriage_law_result = 305
+	shelter_marriage_law_result_ai = 306
+	shelter_marriage_law_callback = 307
+	shelter_marriage_law_callback_ai = 308
+	shelter_marriage_law_cleanup = 309
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1170,7 +1177,10 @@ fallout_event_candidate_pilot = {
 	empty_ward_candidate_id = 296
 	empty_ward_transaction_key = 710016
 	empty_ward_route = 7116
-	upper_bound = 7117
+	shelter_marriage_law_candidate_id = 303
+	shelter_marriage_law_transaction_key = 710017
+	shelter_marriage_law_route = 7117
+	upper_bound = 7118
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -6437,6 +6447,377 @@ fallout_event_296_ai = {
 	veteran_priority = 8
 	research_priority = 9
 	memorial_priority = 6
+	leave_priority = 5
+	upper_bound = 1001
+}
+
+fallout_event_303_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	civil_marriage = 1
+	communal_contract = 2
+	religious_authority = 3
+	no_state_role = 4
+	upper_bound = 5
+}
+
+fallout_event_303_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 42
+	callback_delay_days = 300
+	modifier_days = 360
+	callback_modifier_days = 300
+	upper_bound = 361
+}
+
+fallout_event_303_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 3
+	upper_bound = 301
+}
+
+fallout_event_303_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 720
+	maximum_campaign_day = 1501
+	minimum_cohesion = 35
+	minimum_food = 20
+	minimum_shelter = 35
+	minimum_recognition = 20
+	minimum_generation_count = 2
+	minimum_viability = 0
+	maximum_viability = 100
+	maximum_candidate_severity = 100
+	deaths_to_severity = 0.00025
+	cohesion_weight = 30
+	food_weight = 25
+	shelter_weight = 25
+	recognition_weight = 20
+	weight_divisor = 100
+	civil_success_viability = 67
+	civil_partial_viability = 43
+	civil_success_recognition = 35
+	civil_partial_recognition = 25
+	communal_success_viability = 62
+	communal_partial_viability = 40
+	communal_success_cohesion = 45
+	communal_partial_cohesion = 35
+	religious_success_viability = 60
+	religious_partial_viability = 38
+	religious_success_recognition = 30
+	religious_partial_recognition = 20
+	leave_success_viability = 56
+	leave_partial_viability = 34
+	leave_success_shelter = 50
+	leave_partial_shelter = 40
+	result_failure_death_percent = 0.0008
+	callback_failure_death_percent = 0.0004
+	minimum_remaining_people = 1
+	maximum_legitimacy = 100
+	maximum_integration = 100
+	maximum_fertility = 100
+	maximum_exposure = 100
+	ai_civil_recognition = 30
+	ai_communal_cohesion = 45
+	ai_religious_recognition = 25
+	ai_leave_shelter = 50
+	upper_bound = 101
+}
+
+fallout_event_303_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	civil_food = 2
+	civil_medicine = 1
+	civil_recognition = 2
+	communal_food = 1
+	communal_shelter = 2
+	communal_scrap = 1
+	religious_food = 2
+	religious_medicine = 2
+	religious_recognition = 1
+	leave_food = 1
+	leave_scrap = 2
+	leave_power = 1
+	upper_bound = 4
+}
+
+fallout_event_303_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	civil_success_food = -1
+	civil_success_medicine = -1
+	civil_success_power = 0
+	civil_success_recognition = 4
+	civil_success_cohesion = 6
+	civil_success_stability = 0.04
+	civil_success_war_support = 0.01
+	civil_success_manpower = 180
+	civil_success_legitimacy = 45
+	civil_success_integration = 30
+	civil_success_fertility = 35
+	civil_success_exposure = 1
+	civil_partial_food = -2
+	civil_partial_medicine = -1
+	civil_partial_power = -1
+	civil_partial_recognition = 2
+	civil_partial_cohesion = 1
+	civil_partial_stability = 0.01
+	civil_partial_war_support = 0
+	civil_partial_manpower = 80
+	civil_partial_legitimacy = 20
+	civil_partial_integration = 12
+	civil_partial_fertility = 15
+	civil_partial_exposure = 6
+	civil_failure_food = -3
+	civil_failure_medicine = -2
+	civil_failure_power = -1
+	civil_failure_recognition = -6
+	civil_failure_cohesion = -5
+	civil_failure_stability = -0.05
+	civil_failure_war_support = -0.02
+	civil_failure_manpower = 0
+	civil_failure_legitimacy = -18
+	civil_failure_integration = -12
+	civil_failure_fertility = -8
+	civil_failure_exposure = 18
+
+	communal_success_food = -1
+	communal_success_medicine = 0
+	communal_success_power = -1
+	communal_success_recognition = 2
+	communal_success_cohesion = 8
+	communal_success_stability = 0.03
+	communal_success_war_support = 0
+	communal_success_manpower = 150
+	communal_success_legitimacy = 30
+	communal_success_integration = 45
+	communal_success_fertility = 28
+	communal_success_exposure = 2
+	communal_partial_food = -2
+	communal_partial_medicine = -1
+	communal_partial_power = -2
+	communal_partial_recognition = 1
+	communal_partial_cohesion = 3
+	communal_partial_stability = 0.01
+	communal_partial_war_support = 0
+	communal_partial_manpower = 70
+	communal_partial_legitimacy = 12
+	communal_partial_integration = 20
+	communal_partial_fertility = 10
+	communal_partial_exposure = 9
+	communal_failure_food = -3
+	communal_failure_medicine = -2
+	communal_failure_power = -2
+	communal_failure_recognition = -4
+	communal_failure_cohesion = -7
+	communal_failure_stability = -0.06
+	communal_failure_war_support = -0.01
+	communal_failure_manpower = 0
+	communal_failure_legitimacy = -12
+	communal_failure_integration = -20
+	communal_failure_fertility = -12
+	communal_failure_exposure = 22
+
+	religious_success_food = -1
+	religious_success_medicine = -1
+	religious_success_power = 0
+	religious_success_recognition = 3
+	religious_success_cohesion = 5
+	religious_success_stability = 0.05
+	religious_success_war_support = 0.01
+	religious_success_manpower = 120
+	religious_success_legitimacy = 38
+	religious_success_integration = 20
+	religious_success_fertility = 40
+	religious_success_exposure = 1
+	religious_partial_food = -2
+	religious_partial_medicine = -2
+	religious_partial_power = -1
+	religious_partial_recognition = 2
+	religious_partial_cohesion = 2
+	religious_partial_stability = 0.01
+	religious_partial_war_support = 0
+	religious_partial_manpower = 50
+	religious_partial_legitimacy = 18
+	religious_partial_integration = 8
+	religious_partial_fertility = 18
+	religious_partial_exposure = 8
+	religious_failure_food = -3
+	religious_failure_medicine = -3
+	religious_failure_power = -1
+	religious_failure_recognition = -5
+	religious_failure_cohesion = -6
+	religious_failure_stability = -0.05
+	religious_failure_war_support = -0.02
+	religious_failure_manpower = 0
+	religious_failure_legitimacy = -15
+	religious_failure_integration = -8
+	religious_failure_fertility = -15
+	religious_failure_exposure = 20
+
+	leave_success_food = 1
+	leave_success_medicine = 0
+	leave_success_power = 0
+	leave_success_recognition = 1
+	leave_success_cohesion = 3
+	leave_success_stability = 0.02
+	leave_success_war_support = 0
+	leave_success_manpower = 90
+	leave_success_legitimacy = 20
+	leave_success_integration = 15
+	leave_success_fertility = 20
+	leave_success_exposure = 3
+	leave_partial_food = -1
+	leave_partial_medicine = -1
+	leave_partial_power = -1
+	leave_partial_recognition = 0
+	leave_partial_cohesion = 0
+	leave_partial_stability = 0
+	leave_partial_war_support = 0
+	leave_partial_manpower = 30
+	leave_partial_legitimacy = 8
+	leave_partial_integration = 5
+	leave_partial_fertility = 8
+	leave_partial_exposure = 10
+	leave_failure_food = -3
+	leave_failure_medicine = -2
+	leave_failure_power = -2
+	leave_failure_recognition = -3
+	leave_failure_cohesion = -4
+	leave_failure_stability = -0.04
+	leave_failure_war_support = -0.01
+	leave_failure_manpower = 0
+	leave_failure_legitimacy = -10
+	leave_failure_integration = -15
+	leave_failure_fertility = -10
+	leave_failure_exposure = 18
+
+	callback_success_food = 2
+	callback_success_medicine = 1
+	callback_success_power = 1
+	callback_success_recognition = 2
+	callback_success_cohesion = 4
+	callback_success_stability = 0.04
+	callback_success_war_support = 0.01
+	callback_success_manpower = 100
+	callback_success_legitimacy = 12
+	callback_success_integration = 18
+	callback_success_fertility = 12
+	callback_success_exposure = -4
+	callback_partial_food = -1
+	callback_partial_medicine = 0
+	callback_partial_power = -1
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 1
+	callback_partial_stability = 0.01
+	callback_partial_war_support = 0
+	callback_partial_manpower = 40
+	callback_partial_legitimacy = 5
+	callback_partial_integration = 6
+	callback_partial_fertility = 5
+	callback_partial_exposure = 6
+	callback_failure_food = -2
+	callback_failure_medicine = -2
+	callback_failure_power = -2
+	callback_failure_recognition = -3
+	callback_failure_cohesion = -4
+	callback_failure_stability = -0.04
+	callback_failure_war_support = -0.01
+	callback_failure_manpower = 0
+	callback_failure_legitimacy = -8
+	callback_failure_integration = -10
+	callback_failure_fertility = -8
+	callback_failure_exposure = 16
+	upper_bound = 1001
+}
+
+fallout_event_303_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	civil_stability = 0.03
+	civil_war_support = 0.01
+	civil_political_power = 0.02
+	communal_stability = 0.02
+	communal_war_support = 0
+	communal_political_power = 0.01
+	religious_stability = 0.04
+	religious_war_support = 0.01
+	religious_political_power = 0
+	leave_stability = 0.01
+	leave_war_support = 0
+	leave_political_power = 0.03
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_political_power = 0.02
+	failed_stability = -0.05
+	failed_war_support = -0.02
+	failed_political_power = -0.02
+	upper_bound = 1
+}
+
+fallout_event_303_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9122
+	civil_success = 11
+	civil_partial = 12
+	civil_failure = 13
+	communal_success = 21
+	communal_partial = 22
+	communal_failure = 23
+	religious_success = 31
+	religious_partial = 32
+	religious_failure = 33
+	leave_success = 41
+	leave_partial = 42
+	leave_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_303_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	civil_priority = 9
+	communal_priority = 8
+	religious_priority = 7
 	leave_priority = 5
 	upper_bound = 1001
 }
