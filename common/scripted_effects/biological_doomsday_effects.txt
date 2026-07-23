@@ -1,0 +1,375 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL DOOMSDAY RELEASE EFFECTS
+# ============================================================================
+# Inputs: country scope. Public callers must satisfy bio_doomsday_actor_can_release.
+# Outputs: bio_doomsday_release_status and bio_doomsday_full_resolution_status.
+# Side effects: consumes the complete four-agent arsenal, seeds every exact
+#   eligible controlled state and unique adjacent enemy-front state through the
+#   ordinary biological lifecycle, and records one public doomsday consequence.
+# The subsystem uses no alternate state, inferred target, proxy, estimator,
+# continuous-air activity, global periodic pulse, or zombie helper.
+# ============================================================================
+
+# Country scope. Builds one unique, bounded state array. Controlled territory is
+# inserted first; adjacent enemy-front states are then de-duplicated explicitly.
+bio_doomsday_collect_target_states = {
+	clear_temp_array = bio_doomsday_target_states
+	every_controlled_state = {
+		limit = { bio_doomsday_domestic_state_is_eligible = yes }
+		add_to_temp_array = { bio_doomsday_target_states = THIS }
+	}
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				bio_doomsday_front_state_is_eligible = yes
+				NOT = { is_in_array = { bio_doomsday_target_states = THIS } }
+			}
+			add_to_temp_array = { bio_doomsday_target_states = THIS }
+		}
+	}
+	set_temp_variable = { bio_doomsday_target_count = bio_doomsday_target_states^num }
+}
+
+# Country scope. This separate array exists only to print the exact domestic
+# warning required by the decision. It never mutates a state or chooses a target.
+bio_doomsday_collect_domestic_warning_states = {
+	clear_temp_array = bio_doomsday_domestic_warning_states
+	every_controlled_state = {
+		limit = { bio_doomsday_domestic_state_is_eligible = yes }
+		add_to_temp_array = { bio_doomsday_domestic_warning_states = THIS }
+	}
+}
+
+bio_doomsday_present_risk_tooltips = {
+	bio_doomsday_collect_domestic_warning_states = yes
+	if = {
+		limit = { check_variable = { bio_doomsday_domestic_warning_states^num > constant:bio_lifecycle_math.zero } }
+		custom_effect_tooltip = bio_doomsday_domestic_warning_header_tt
+		for_each_scope_loop = {
+			array = bio_doomsday_domestic_warning_states
+			custom_effect_tooltip = bio_doomsday_domestic_state_at_risk_tt
+		}
+	}
+	else = { custom_effect_tooltip = bio_doomsday_no_domestic_states_tt }
+	custom_effect_tooltip = bio_doomsday_front_and_allied_spread_warning_tt
+}
+
+# Country scope. Captures and removes the aggregate national count for each real
+# agent model. Omitting producer for negative amounts intentionally includes
+# captured and licensed payloads in the national arsenal debit.
+bio_doomsday_capture_and_consume_arsenal = {
+	set_temp_variable = { bio_doomsday_stock_anthrax = num_equipment@anthrax_bomb_1 }
+	set_temp_variable = { bio_doomsday_stock_plague = num_equipment@plague_bomb_1 }
+	set_temp_variable = { bio_doomsday_stock_tularemia = num_equipment@tularemia_bomb_1 }
+	set_temp_variable = { bio_doomsday_stock_smallpox = num_equipment@smallpox_bomb_1 }
+
+	if = { limit = { check_variable = { bio_doomsday_stock_anthrax < constant:bio_lifecycle_math.zero } } set_temp_variable = { bio_doomsday_stock_anthrax = constant:bio_lifecycle_math.zero } }
+	if = { limit = { check_variable = { bio_doomsday_stock_plague < constant:bio_lifecycle_math.zero } } set_temp_variable = { bio_doomsday_stock_plague = constant:bio_lifecycle_math.zero } }
+	if = { limit = { check_variable = { bio_doomsday_stock_tularemia < constant:bio_lifecycle_math.zero } } set_temp_variable = { bio_doomsday_stock_tularemia = constant:bio_lifecycle_math.zero } }
+	if = { limit = { check_variable = { bio_doomsday_stock_smallpox < constant:bio_lifecycle_math.zero } } set_temp_variable = { bio_doomsday_stock_smallpox = constant:bio_lifecycle_math.zero } }
+
+	round_temp_variable = bio_doomsday_stock_anthrax
+	round_temp_variable = bio_doomsday_stock_plague
+	round_temp_variable = bio_doomsday_stock_tularemia
+	round_temp_variable = bio_doomsday_stock_smallpox
+
+	set_temp_variable = { bio_doomsday_arsenal_consumed_total = bio_doomsday_stock_anthrax }
+	add_to_temp_variable = { bio_doomsday_arsenal_consumed_total = bio_doomsday_stock_plague }
+	add_to_temp_variable = { bio_doomsday_arsenal_consumed_total = bio_doomsday_stock_tularemia }
+	add_to_temp_variable = { bio_doomsday_arsenal_consumed_total = bio_doomsday_stock_smallpox }
+
+	set_temp_variable = { bio_doomsday_debit_anthrax = bio_doomsday_stock_anthrax }
+	set_temp_variable = { bio_doomsday_debit_plague = bio_doomsday_stock_plague }
+	set_temp_variable = { bio_doomsday_debit_tularemia = bio_doomsday_stock_tularemia }
+	set_temp_variable = { bio_doomsday_debit_smallpox = bio_doomsday_stock_smallpox }
+	multiply_temp_variable = { bio_doomsday_debit_anthrax = constant:bio_lifecycle_math.negation }
+	multiply_temp_variable = { bio_doomsday_debit_plague = constant:bio_lifecycle_math.negation }
+	multiply_temp_variable = { bio_doomsday_debit_tularemia = constant:bio_lifecycle_math.negation }
+	multiply_temp_variable = { bio_doomsday_debit_smallpox = constant:bio_lifecycle_math.negation }
+
+	add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_doomsday_debit_anthrax }
+	add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_doomsday_debit_plague }
+	add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_doomsday_debit_tularemia }
+	add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_doomsday_debit_smallpox }
+
+	bio_stockpile_safety_capture_agent_stockpiles = yes
+	bio_stockpile_safety_remove_risk_ideas = yes
+}
+
+# Exact seeded-state scope. The current lifecycle agent and exact allocation are
+# temporary inputs. The lifecycle has already suppressed per-state political
+# release, and the country resolver will settle one consequence for the batch.
+bio_doomsday_mark_current_seed = {
+	set_state_flag = bio_doomsday_release_target_history
+	set_state_flag = bio_confirmed_attack_history
+	set_variable = { bio_doomsday_last_release_date = global.num_days }
+	if = {
+		limit = { is_controlled_by = event_target:bio_doomsday_actor }
+		set_state_flag = bio_doomsday_domestic_release_history
+	}
+	else = { set_state_flag = bio_doomsday_front_release_history }
+	if = {
+		limit = { NOT = { has_variable = bio_doomsday_payload_received_total } }
+		set_variable = { bio_doomsday_payload_received_total = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_doomsday_payload_received_total = bio_doomsday_current_allocation }
+	set_variable = { bio_doomsday_last_release_actor = event_target:bio_doomsday_actor }
+
+	meta_effect = {
+		text = {
+			set_state_flag = bio_agent_[BIO_AGENT]_doomsday_release_history
+			set_state_flag = bio_agent_[BIO_AGENT]_probable_condemnation_released
+			set_state_flag = bio_agent_[BIO_AGENT]_confirmed_condemnation_released
+			set_variable = { bio_agent_[BIO_AGENT]_actor = event_target:bio_doomsday_actor }
+			set_variable = { bio_agent_[BIO_AGENT]_victim = event_target:bio_doomsday_victim }
+			set_variable = { bio_agent_[BIO_AGENT]_route = constant:bio_lifecycle_route.doomsday_release }
+			set_variable = { bio_agent_[BIO_AGENT]_source = constant:bio_lifecycle_source.doomsday }
+			set_variable = { bio_agent_[BIO_AGENT]_result = bio_doomsday_active_result }
+			set_variable = { bio_agent_[BIO_AGENT]_evidence = constant:bio_lifecycle_bounds.evidence_max }
+			set_variable = { bio_agent_[BIO_AGENT]_actor_evidence = constant:bio_lifecycle_bounds.evidence_max }
+			set_variable = { bio_agent_[BIO_AGENT]_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
+			if = {
+				limit = { NOT = { has_variable = bio_agent_[BIO_AGENT]_doomsday_payload_received_total } }
+				set_variable = { bio_agent_[BIO_AGENT]_doomsday_payload_received_total = constant:bio_lifecycle_math.zero }
+			}
+			add_to_variable = { bio_agent_[BIO_AGENT]_doomsday_payload_received_total = bio_doomsday_current_allocation }
+		}
+		BIO_AGENT = "[?bio_doomsday_active_agent|.0]"
+	}
+
+	CONTROLLER = {
+		set_country_flag = bio_confirmed_attack_victim_history
+		set_country_flag = bio_doomsday_release_victim_history
+	}
+}
+
+# Country scope. Distributes one agent's complete captured stock across the exact
+# target array. When stock is smaller than the target count, the deterministic
+# first stock-count states receive one unit; no unit is duplicated or fabricated.
+bio_doomsday_dispatch_current_agent = {
+	set_temp_variable = { bio_doomsday_payload_remaining = bio_doomsday_active_stock }
+	set_temp_variable = { bio_doomsday_targets_remaining = bio_doomsday_target_states^num }
+	set_temp_variable = { bio_doomsday_active_seeded_payload = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.catastrophic }
+	if = {
+		limit = { check_variable = { var = bio_doomsday_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.severe }
+	}
+
+	for_each_scope_loop = {
+		array = bio_doomsday_target_states
+		if = {
+			limit = { check_variable = { bio_doomsday_payload_remaining > constant:bio_lifecycle_math.zero } }
+			set_temp_variable = { bio_doomsday_current_allocation = bio_doomsday_payload_remaining }
+			divide_temp_variable = { bio_doomsday_current_allocation = bio_doomsday_targets_remaining }
+			round_temp_variable = bio_doomsday_current_allocation
+			clamp_temp_variable = {
+				var = bio_doomsday_current_allocation
+				min = constant:bio_lifecycle_math.one
+				max = bio_doomsday_payload_remaining
+			}
+
+			CONTROLLER = { save_event_target_as = bio_doomsday_victim }
+			bio_lifecycle_reset_seed_record = yes
+			set_temp_variable = { bio_seed_agent = bio_doomsday_active_agent }
+			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.doomsday_release }
+			set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.doomsday }
+			set_temp_variable = { bio_seed_result = bio_doomsday_active_result }
+			set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.supplied }
+			set_temp_variable = { bio_seed_payload_required = bio_doomsday_current_allocation }
+			set_temp_variable = { bio_seed_payload_consumed = bio_doomsday_current_allocation }
+			set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.supplied }
+			event_target:bio_doomsday_actor = { save_event_target_as = bio_seed_actor }
+			event_target:bio_doomsday_victim = { save_event_target_as = bio_seed_victim }
+			bio_lifecycle_dispatch_seed = yes
+
+			if = {
+				limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+				bio_doomsday_mark_current_seed = yes
+				add_to_temp_variable = { bio_doomsday_active_seeded_payload = bio_doomsday_current_allocation }
+				add_to_temp_variable = { bio_doomsday_seeded_payload_total = bio_doomsday_current_allocation }
+				add_to_temp_variable = { bio_doomsday_seeded_state_agent_count = constant:bio_lifecycle_math.one }
+			}
+			subtract_from_temp_variable = { bio_doomsday_payload_remaining = bio_doomsday_current_allocation }
+		}
+		subtract_from_temp_variable = { bio_doomsday_targets_remaining = constant:bio_lifecycle_math.one }
+	}
+}
+
+# Country scope. Adds one per-agent operation record without multiplying the one
+# national deliberate-use and route counters by the number of agents or states.
+bio_doomsday_record_current_agent_history = {
+	if = {
+		limit = { check_variable = { bio_doomsday_active_stock > constant:bio_lifecycle_math.zero } }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { NOT = { has_variable = bio_agent_[BIO_AGENT]_deliberate_use_count } }
+					set_variable = { bio_agent_[BIO_AGENT]_deliberate_use_count = constant:bio_lifecycle_math.zero }
+				}
+				if = {
+					limit = { NOT = { has_variable = bio_agent_[BIO_AGENT]_payload_consumed_total } }
+					set_variable = { bio_agent_[BIO_AGENT]_payload_consumed_total = constant:bio_lifecycle_math.zero }
+				}
+				if = {
+					limit = { NOT = { has_variable = bio_agent_[BIO_AGENT]_doomsday_use_count } }
+					set_variable = { bio_agent_[BIO_AGENT]_doomsday_use_count = constant:bio_lifecycle_math.zero }
+				}
+				if = {
+					limit = { NOT = { has_variable = bio_agent_[BIO_AGENT]_doomsday_payload_consumed_total } }
+					set_variable = { bio_agent_[BIO_AGENT]_doomsday_payload_consumed_total = constant:bio_lifecycle_math.zero }
+				}
+				add_to_variable = { bio_agent_[BIO_AGENT]_deliberate_use_count = constant:bio_lifecycle_history.one_use }
+				add_to_variable = { bio_agent_[BIO_AGENT]_payload_consumed_total = bio_doomsday_active_stock }
+				add_to_variable = { bio_agent_[BIO_AGENT]_doomsday_use_count = constant:bio_lifecycle_history.one_use }
+				add_to_variable = { bio_agent_[BIO_AGENT]_doomsday_payload_consumed_total = bio_doomsday_active_stock }
+				set_country_flag = bio_agent_[BIO_AGENT]_doomsday_use_history
+			}
+			BIO_AGENT = "[?bio_doomsday_active_agent|.0]"
+		}
+	}
+}
+
+# Country scope. Registers the multi-state operation once. Doctrine may reduce
+# only the base Condemnation value; evidence, physical lifecycle values, payload
+# debit, public-use history, and the domestic penalty remain unmodified.
+bio_doomsday_register_batch_consequence = {
+	set_country_flag = used_bioweapon
+	set_country_flag = used_unconventional_weapon
+	set_country_flag = bio_internal_deliberate_release_history
+	set_country_flag = bio_internal_doomsday_release_history
+	set_country_flag = bio_confirmed_use_history
+	set_country_flag = bio_doomsday_release_history
+	set_global_flag = cbrn_world_confirmed_biological_use
+
+	if = { limit = { NOT = { has_variable = bio_deliberate_use_count } } set_variable = { bio_deliberate_use_count = constant:bio_lifecycle_math.zero } }
+	if = { limit = { NOT = { has_variable = bio_deliberate_payload_consumed_total } } set_variable = { bio_deliberate_payload_consumed_total = constant:bio_lifecycle_math.zero } }
+	if = { limit = { NOT = { has_variable = bio_doomsday_release_count } } set_variable = { bio_doomsday_release_count = constant:bio_lifecycle_math.zero } }
+	if = { limit = { NOT = { has_variable = bio_doomsday_payload_consumed_total } } set_variable = { bio_doomsday_payload_consumed_total = constant:bio_lifecycle_math.zero } }
+	add_to_variable = { bio_deliberate_use_count = constant:bio_lifecycle_history.one_use }
+	add_to_variable = { bio_deliberate_payload_consumed_total = bio_doomsday_arsenal_consumed_total }
+	add_to_variable = { bio_doomsday_release_count = constant:bio_lifecycle_history.one_use }
+	add_to_variable = { bio_doomsday_payload_consumed_total = bio_doomsday_arsenal_consumed_total }
+	set_variable = { bio_last_deliberate_agent = constant:bio_lifecycle_agent.none }
+	set_variable = { bio_last_deliberate_route = constant:bio_lifecycle_route.doomsday_release }
+	set_variable = { bio_last_deliberate_payload_required = bio_doomsday_arsenal_consumed_total }
+	set_variable = { bio_last_deliberate_payload_consumed = bio_doomsday_arsenal_consumed_total }
+	set_variable = { bio_last_deliberate_use_date = global.num_days }
+	set_variable = { bio_last_doomsday_target_count = bio_doomsday_target_count }
+	set_variable = { bio_last_doomsday_seeded_state_agent_count = bio_doomsday_seeded_state_agent_count }
+	set_variable = { bio_last_doomsday_seeded_payload = bio_doomsday_seeded_payload_total }
+
+	set_temp_variable = { bio_doomsday_history_route = constant:bio_lifecycle_route.doomsday_release }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { NOT = { has_variable = bio_route_[BIO_ROUTE]_deliberate_use_count } }
+				set_variable = { bio_route_[BIO_ROUTE]_deliberate_use_count = constant:bio_lifecycle_math.zero }
+			}
+			if = {
+				limit = { NOT = { has_variable = bio_route_[BIO_ROUTE]_payload_consumed_total } }
+				set_variable = { bio_route_[BIO_ROUTE]_payload_consumed_total = constant:bio_lifecycle_math.zero }
+			}
+			add_to_variable = { bio_route_[BIO_ROUTE]_deliberate_use_count = constant:bio_lifecycle_history.one_use }
+			add_to_variable = { bio_route_[BIO_ROUTE]_payload_consumed_total = bio_doomsday_arsenal_consumed_total }
+		}
+		BIO_ROUTE = "[?bio_doomsday_history_route|.0]"
+	}
+
+	set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.anthrax }
+	set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_anthrax }
+	bio_doomsday_record_current_agent_history = yes
+	set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.plague }
+	set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_plague }
+	bio_doomsday_record_current_agent_history = yes
+	set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.tularemia }
+	set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_tularemia }
+	bio_doomsday_record_current_agent_history = yes
+	set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.smallpox }
+	set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_smallpox }
+	bio_doomsday_record_current_agent_history = yes
+
+	set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.severe }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { bio_doomsday_stock_anthrax > constant:bio_lifecycle_math.zero }
+				check_variable = { bio_doomsday_stock_plague > constant:bio_lifecycle_math.zero }
+				check_variable = { bio_doomsday_stock_smallpox > constant:bio_lifecycle_math.zero }
+			}
+		}
+		set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.catastrophic }
+	}
+
+	event_target:bio_doomsday_actor = { save_event_target_as = bio_seed_actor }
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	bio_lifecycle_prepare_actor_doctrine_snapshot = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = constant:bio_lifecycle_route_profile.doomsday_release.condemnation }
+	multiply_temp_variable = { condemnation_base_gain = bio_seed_doctrine_condemnation_mult }
+	clamp_temp_variable = {
+		var = condemnation_base_gain
+		min = constant:bio_lifecycle_condemnation.doomsday_confirmed_floor
+		max = constant:bio_lifecycle_condemnation.maximum
+	}
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+	set_temp_variable = { condemnation_civilian_deaths = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:bio_lifecycle_route_profile.doomsday_release.seed_intensity }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_doomsday }
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:bio_lifecycle_math.zero }
+	condemnation_add_source = yes
+
+	add_war_support = constant:bio_lifecycle_political.doomsday_domestic_war_support
+	brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
+	air_cleanliness_treaty_on_unconventional_use = yes
+}
+
+# Public country-scoped resolver used by the stable legacy decision wrapper.
+bio_doomsday_resolve_release = {
+	set_temp_variable = { bio_doomsday_release_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_doomsday_full_resolution_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_doomsday_seeded_payload_total = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_seeded_state_agent_count = constant:bio_lifecycle_math.zero }
+	save_event_target_as = bio_doomsday_actor
+	bio_doomsday_collect_target_states = yes
+
+	if = {
+		limit = {
+			bio_doomsday_actor_can_release = yes
+			check_variable = { bio_doomsday_target_count > constant:bio_lifecycle_math.zero }
+		}
+		bio_doomsday_capture_and_consume_arsenal = yes
+
+		set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.anthrax }
+		set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_anthrax }
+		bio_doomsday_dispatch_current_agent = yes
+		set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.plague }
+		set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_plague }
+		bio_doomsday_dispatch_current_agent = yes
+		set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.tularemia }
+		set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_tularemia }
+		bio_doomsday_dispatch_current_agent = yes
+		set_temp_variable = { bio_doomsday_active_agent = constant:bio_lifecycle_agent.smallpox }
+		set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_smallpox }
+		bio_doomsday_dispatch_current_agent = yes
+
+		if = {
+			limit = { check_variable = { bio_doomsday_seeded_payload_total > constant:bio_lifecycle_math.zero } }
+			set_temp_variable = { bio_doomsday_release_status = constant:bio_lifecycle_proof.supplied }
+			bio_doomsday_register_batch_consequence = yes
+		}
+		else = { set_country_flag = bio_doomsday_dispatch_failure_history }
+
+		if = {
+			limit = { check_variable = { var = bio_doomsday_seeded_payload_total value = bio_doomsday_arsenal_consumed_total compare = equals } }
+			set_temp_variable = { bio_doomsday_full_resolution_status = constant:bio_lifecycle_proof.supplied }
+			set_country_flag = bio_doomsday_full_resolution_history
+		}
+		else = { set_country_flag = bio_doomsday_partial_resolution_history }
+	}
+}

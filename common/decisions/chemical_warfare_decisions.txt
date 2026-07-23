@@ -1,6 +1,6 @@
 # Tuning constants:
 # - `common/script_constants/chemical_warfare_constants.txt` (cbw_doom_decision / chem_doom_ai)
-# - `common/script_constants/biowarfare_constants.txt` (bio_doom_ai)
+# - `common/script_constants/biological_doomsday_constants.txt` (bio_doomsday_ai)
 
 chaosx_cbw_doom_category = {
     chem_unleash_stockpiled_cylinders = {
@@ -56,56 +56,54 @@ chaosx_cbw_doom_category = {
         }
     }
 
-    bio_unleash_stockpiled_pathogens = {
+	bio_unleash_stockpiled_pathogens = {
 		icon = GFX_decision_bio_unleash_stockpiled_pathogens
-        cost = constant:cbw_doom_decision.defaults.pp_cost
-        days_re_enable = constant:cbw_doom_decision.defaults.cooldown_days
+		cost = constant:cbw_doom_decision.defaults.pp_cost
+		days_re_enable = constant:cbw_doom_decision.defaults.cooldown_days
+		visible = { bio_doomsday_category_is_visible = yes }
 
-        available = {
-            has_government = fascism
-            has_war = yes
-            NOT = { has_capitulated = yes }
-            surrender_progress > constant:cbw_doom_decision.defaults.surrender_threshold
-            OR = {
-                has_equipment = { anthrax_bomb_1 > 0 }
-                has_equipment = { plague_bomb_1 > 0 }
-                has_equipment = { tularemia_bomb_1 > 0 }
-                has_equipment = { smallpox_bomb_1 > 0 }
-            }
-        }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_doomsday_route_or_policy_tt
+				bio_doomsday_actor_has_explicit_route_or_extreme_policy = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = bio_doomsday_last_resort_tt
+				bio_doomsday_actor_is_in_last_resort_condition = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = bio_doomsday_arsenal_tt
+				bio_doomsday_actor_has_arsenal = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = bio_doomsday_target_tt
+				bio_doomsday_actor_has_target = yes
+			}
+		}
 
-	        ai_will_do = {
-	            base = constant:bio_doom_ai.defaults.base
-	            modifier = {
-	                add = constant:bio_doom_ai.defaults.add_base
-	                is_ai = yes
-	            }
-            modifier = {
-                add = constant:bio_doom_ai.defaults.add_high_morale
-                check_variable = { stability > constant:bio_doom_ai.defaults.stability_threshold }
-                check_variable = { war_support > constant:bio_doom_ai.defaults.war_support_threshold }
-            }
-	            modifier = {
-	                add = constant:bio_doom_ai.defaults.add_big_stockpile
-	                OR = {
-	                    has_equipment = { anthrax_bomb_1 > constant:bio_doom_ai.defaults.stockpile_threshold }
-	                    has_equipment = { plague_bomb_1 > constant:bio_doom_ai.defaults.stockpile_threshold }
-	                    has_equipment = { tularemia_bomb_1 > constant:bio_doom_ai.defaults.stockpile_threshold }
-	                    has_equipment = { smallpox_bomb_1 > constant:bio_doom_ai.defaults.stockpile_threshold }
-	                }
-	            }
-	            modifier = {
-	                has_country_flag = air_cleanliness_treaty_member
-	                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-	            }
-	        }
+		ai_will_do = {
+			base = constant:bio_doomsday_ai.base
+			modifier = { factor = constant:bio_doomsday_ai.disabled_factor NOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.high_stockpile_factor bio_doomsday_ai_has_large_arsenal = yes }
+			modifier = { factor = constant:bio_doomsday_ai.theater_doctrine_factor has_idea = cbrn_theater_contamination_doctrine_spirit }
+			modifier = { factor = constant:bio_doomsday_ai.terminal_doctrine_factor has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:bio_doomsday_ai.safe_program_factor bio_doomsday_ai_has_minimum_containment = yes }
+			modifier = { factor = constant:bio_doomsday_ai.unsafe_program_factor NOT = { bio_doomsday_ai_has_minimum_containment = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.active_domestic_outbreak_factor bio_doomsday_ai_has_active_domestic_outbreak = yes }
+			modifier = { factor = constant:bio_doomsday_ai.sanction_vulnerability_factor bio_doomsday_ai_is_sanction_vulnerable = yes }
+			modifier = { factor = constant:bio_doomsday_ai.treaty_factor has_country_flag = air_cleanliness_treaty_member }
+		}
 
-        complete_effect = {
-            custom_effect_tooltip = bio_unleash_stockpiled_pathogens_tt
-            hidden_effect = {
-                bio_unleash_stockpile_doomsday = yes
-            }
-            news_event = { id = chaosx_cbw_doom.2 }
-        }
-    }
+		complete_effect = {
+			bio_doomsday_present_risk_tooltips = yes
+			custom_effect_tooltip = bio_unleash_stockpiled_pathogens_tt
+			hidden_effect = {
+				bio_unleash_stockpile_doomsday = yes
+				if = {
+					limit = { check_variable = { var = bio_doomsday_release_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					news_event = { id = chaosx_cbw_doom.2 }
+				}
+			}
+		}
+	}
 }

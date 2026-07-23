@@ -179,6 +179,11 @@ bio_lifecycle_doomsday_seed_record_is_valid = {
 		compare = equals
 	}
 	check_variable = {
+		var = bio_seed_batch_condemnation_proof
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	check_variable = {
 		var = bio_seed_payload_required
 		value = constant:bio_lifecycle_math.zero
 		compare = greater_than
@@ -193,10 +198,15 @@ bio_lifecycle_doomsday_seed_record_is_valid = {
 		value = bio_seed_payload_required
 		compare = less_than_or_equals
 	}
-	check_variable = {
-		var = bio_seed_result
-		value = constant:bio_lifecycle_result.catastrophic
-		compare = equals
+	OR = {
+		AND = {
+			check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.severe compare = equals }
+		}
+		AND = {
+			NOT = { check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+			check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.catastrophic compare = equals }
+		}
 	}
 }
 
