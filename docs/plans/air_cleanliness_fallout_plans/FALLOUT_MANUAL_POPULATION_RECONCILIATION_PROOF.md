@@ -38,8 +38,12 @@ direct_loss_percent = clamp(
 )
 ```
 
-The aggregate state mutation applies that percentage to `B` through the exact
-state-population Deaths contract. The reconciliation helper then computes:
+The aggregate state mutation derives the direct survivor target from `B`,
+converts the current live population to people, and requests only
+`max(0, current - direct_target)` through the exact state-population Deaths
+contract. Native nuclear deaths therefore remain visible without allowing the
+aggregate row to remove more than its approved baseline band. The reconciliation
+helper then computes:
 
 1. `target_loss = round(B * 0.01 * G)`.
 2. If `B > 0`, `target_survivors = max(1, B - target_loss)`. If `B = 0`, the target is zero.
@@ -48,7 +52,7 @@ state-population Deaths contract. The reconciliation helper then computes:
    replay. The live state is consulted only for the existing mutation clamp and
    observed receipt.
 
-The preflight requires `C >= target_survivors` for every state. If native or
+The preflight requires `C` to be at least `target_survivors` for every state. If native or
 concurrent first-week loss has already pushed a state below the survivor target,
 the transition records the terminal manual population-contract error before any
 population row mutates. The system neither adds population nor silently accepts
