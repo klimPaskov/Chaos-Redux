@@ -1025,6 +1025,19 @@ fallout_event_id = {
 	bad_batch_callback = 214
 	bad_batch_callback_ai = 215
 	bad_batch_cleanup = 216
+	filters_fail_human = 217
+	filters_fail_ai = 218
+	filters_fail_seal_result = 219
+	filters_fail_rotate_result = 220
+	filters_fail_vent_result = 221
+	filters_fail_household_result = 222
+	filters_fail_seal_result_ai = 223
+	filters_fail_rotate_result_ai = 224
+	filters_fail_vent_result_ai = 225
+	filters_fail_household_result_ai = 226
+	filters_fail_callback = 227
+	filters_fail_callback_ai = 228
+	filters_fail_cleanup = 229
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1060,7 +1073,10 @@ fallout_event_candidate_pilot = {
 	bad_batch_candidate_id = 204
 	bad_batch_transaction_key = 710008
 	bad_batch_route = 7108
-	upper_bound = 7109
+	filters_fail_candidate_id = 217
+	filters_fail_transaction_key = 710009
+	filters_fail_route = 7109
+	upper_bound = 7110
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -3593,5 +3609,409 @@ fallout_event_204_ai = {
 	healthy_recognition_isolate = 2
 	healthy_recognition_share = 5
 	low_food_threshold = 28
+	upper_bound = 1001
+}
+
+fallout_event_217_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	seal_lower_levels = 1
+	rotate_surface_teams = 2
+	open_emergency_vents = 3
+	ration_by_household = 4
+	upper_bound = 5
+}
+
+fallout_event_217_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 14
+	callback_delay_days = 120
+	seal_modifier_days = 180
+	rotate_modifier_days = 150
+	vent_modifier_days = 120
+	household_modifier_days = 210
+	grievance_modifier_days = 240
+	upper_bound = 241
+}
+
+fallout_event_217_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100000
+	callback_transaction_key_offset = 200000
+	visible_budget_cost = 1
+	upper_bound = 200001
+}
+
+fallout_event_217_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_shelter = 35
+	minimum_exposure = 20
+	maximum_filters = 24
+	minimum_filters = 8
+	minimum_medicine = 6
+	minimum_scrap = 6
+	minimum_recognition = 4
+	minimum_adaptation = 25
+	minimum_reclamation = 20
+	seal_success_viability = 56
+	seal_partial_viability = 40
+	seal_success_filters = 18
+	seal_success_medicine = 14
+	seal_partial_filters = 12
+	seal_partial_medicine = 8
+	rotate_success_viability = 54
+	rotate_partial_viability = 38
+	rotate_success_adaptation = 42
+	rotate_success_food = 18
+	rotate_partial_adaptation = 30
+	rotate_partial_food = 12
+	vent_success_viability = 52
+	vent_partial_viability = 36
+	vent_success_reclamation = 40
+	vent_success_scrap = 14
+	vent_partial_reclamation = 28
+	vent_partial_scrap = 8
+	household_success_viability = 58
+	household_partial_viability = 42
+	household_success_filters = 20
+	household_success_recognition = 18
+	household_partial_filters = 12
+	household_partial_recognition = 10
+	minimum_remaining_people = 100
+	failure_death_percent = 0.004
+	upper_bound = 100
+}
+
+fallout_event_217_viability = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shelter_weight = 40
+	filters_weight = 25
+	medicine_weight = 15
+	adaptation_weight = 20
+	exposure_penalty = 25
+	weight_divisor = 100
+	minimum = 0
+	maximum = 100
+	upper_bound = 101
+}
+
+fallout_event_217_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	seal_filters = 4
+	seal_medicine = 3
+	rotate_filters = 3
+	rotate_food = 2
+	vent_scrap = 5
+	vent_recognition = 2
+	household_filters = 5
+	household_recognition = 4
+	upper_bound = 6
+}
+
+fallout_event_217_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	seal_success_filters = -2
+	seal_success_medicine = -1
+	seal_success_food = -1
+	seal_success_shelter = 8
+	seal_success_exposure = -6
+	seal_success_adaptation = 2
+	seal_success_reclamation = 1
+	seal_success_cohesion = 2
+	seal_success_recognition = 1
+	seal_partial_filters = -2
+	seal_partial_medicine = -2
+	seal_partial_food = -2
+	seal_partial_shelter = 3
+	seal_partial_exposure = -2
+	seal_partial_adaptation = 1
+	seal_partial_reclamation = 0
+	seal_partial_cohesion = -1
+	seal_partial_recognition = 0
+	seal_failure_filters = -3
+	seal_failure_medicine = -3
+	seal_failure_food = -3
+	seal_failure_shelter = -5
+	seal_failure_exposure = 5
+	seal_failure_adaptation = -2
+	seal_failure_reclamation = -2
+	seal_failure_cohesion = -4
+	seal_failure_recognition = -3
+
+	rotate_success_filters = -2
+	rotate_success_medicine = 1
+	rotate_success_food = -3
+	rotate_success_shelter = 2
+	rotate_success_exposure = -3
+	rotate_success_adaptation = 6
+	rotate_success_reclamation = 2
+	rotate_success_cohesion = 2
+	rotate_success_recognition = 2
+	rotate_partial_filters = -2
+	rotate_partial_medicine = 0
+	rotate_partial_food = -3
+	rotate_partial_shelter = 1
+	rotate_partial_exposure = -1
+	rotate_partial_adaptation = 2
+	rotate_partial_reclamation = 1
+	rotate_partial_cohesion = -1
+	rotate_partial_recognition = 1
+	rotate_failure_filters = -3
+	rotate_failure_medicine = -1
+	rotate_failure_food = -4
+	rotate_failure_shelter = -2
+	rotate_failure_exposure = 5
+	rotate_failure_adaptation = -4
+	rotate_failure_reclamation = -2
+	rotate_failure_cohesion = -4
+	rotate_failure_recognition = -2
+
+	vent_success_filters = -1
+	vent_success_medicine = 0
+	vent_success_food = -1
+	vent_success_shelter = 6
+	vent_success_exposure = 3
+	vent_success_adaptation = 1
+	vent_success_reclamation = 5
+	vent_success_cohesion = 0
+	vent_success_recognition = 3
+	vent_partial_filters = -1
+	vent_partial_medicine = 0
+	vent_partial_food = -2
+	vent_partial_shelter = 3
+	vent_partial_exposure = 4
+	vent_partial_adaptation = 0
+	vent_partial_reclamation = 2
+	vent_partial_cohesion = -1
+	vent_partial_recognition = 1
+	vent_failure_filters = -2
+	vent_failure_medicine = -2
+	vent_failure_food = -3
+	vent_failure_shelter = -4
+	vent_failure_exposure = 8
+	vent_failure_adaptation = -3
+	vent_failure_reclamation = -3
+	vent_failure_cohesion = -5
+	vent_failure_recognition = -4
+
+	household_success_filters = -3
+	household_success_medicine = 0
+	household_success_food = -1
+	household_success_shelter = 3
+	household_success_exposure = -2
+	household_success_adaptation = 2
+	household_success_reclamation = 1
+	household_success_cohesion = 5
+	household_success_recognition = 6
+	household_partial_filters = -3
+	household_partial_medicine = 0
+	household_partial_food = -2
+	household_partial_shelter = 1
+	household_partial_exposure = 0
+	household_partial_adaptation = 1
+	household_partial_reclamation = 0
+	household_partial_cohesion = 1
+	household_partial_recognition = 2
+	household_failure_filters = -4
+	household_failure_medicine = -1
+	household_failure_food = -3
+	household_failure_shelter = -3
+	household_failure_exposure = 3
+	household_failure_adaptation = -2
+	household_failure_reclamation = -2
+	household_failure_cohesion = -6
+	household_failure_recognition = -6
+
+	callback_success_filters = 3
+	callback_success_medicine = 2
+	callback_success_food = 2
+	callback_success_shelter = 2
+	callback_success_exposure = -2
+	callback_success_adaptation = 2
+	callback_success_reclamation = 2
+	callback_success_cohesion = 3
+	callback_success_recognition = 3
+	callback_partial_filters = 1
+	callback_partial_medicine = 1
+	callback_partial_food = 0
+	callback_partial_shelter = 0
+	callback_partial_exposure = 1
+	callback_partial_adaptation = 1
+	callback_partial_reclamation = 1
+	callback_partial_cohesion = 1
+	callback_partial_recognition = 1
+	callback_failure_filters = -2
+	callback_failure_medicine = -2
+	callback_failure_food = -2
+	callback_failure_shelter = -2
+	callback_failure_exposure = 3
+	callback_failure_adaptation = -2
+	callback_failure_reclamation = -2
+	callback_failure_cohesion = -3
+	callback_failure_recognition = -4
+	upper_bound = 101
+}
+
+fallout_event_217_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9114
+	seal_success = 11
+	seal_partial = 12
+	seal_failure = 13
+	rotate_success = 21
+	rotate_partial = 22
+	rotate_failure = 23
+	vent_success = 31
+	vent_partial = 32
+	vent_failure = 33
+	household_success = 41
+	household_partial = 42
+	household_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_217_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	seal_stability = 0.02
+	seal_supply = -0.01
+	seal_consumer_goods = 0.01
+	rotate_stability = 0.01
+	rotate_supply = 0.02
+	rotate_production = -0.01
+	vent_stability = -0.01
+	vent_supply = 0.03
+	vent_production = 0.02
+	household_stability = 0.03
+	household_supply = -0.01
+	household_consumer_goods = -0.01
+	breach_stability = -0.06
+	breach_supply = 0.04
+	breach_consumer_goods = 0.04
+	upper_bound = 1
+}
+
+fallout_event_217_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	success_bonus = 8
+	partial_bonus = 3
+	invalid_score = -1000
+	continuity_seal = 6
+	continuity_rotate = 2
+	continuity_vent = -2
+	continuity_household = 5
+	bunker_seal = 7
+	bunker_rotate = -2
+	bunker_vent = 3
+	bunker_household = -3
+	warlord_seal = 1
+	warlord_rotate = 4
+	warlord_vent = 5
+	warlord_household = -4
+	food_compact_seal = 1
+	food_compact_rotate = 6
+	food_compact_vent = -2
+	food_compact_household = 5
+	maritime_seal = -2
+	maritime_rotate = 4
+	maritime_vent = 6
+	maritime_household = 3
+	quarantine_seal = 8
+	quarantine_rotate = -2
+	quarantine_vent = -4
+	quarantine_household = 2
+	scavenger_seal = -2
+	scavenger_rotate = 2
+	scavenger_vent = 6
+	scavenger_household = 3
+	nomad_seal = -4
+	nomad_rotate = 6
+	nomad_vent = 3
+	nomad_household = 1
+	machine_seal = 4
+	machine_rotate = -2
+	machine_vent = 7
+	machine_household = -3
+	technate_seal = 6
+	technate_rotate = 1
+	technate_vent = 4
+	technate_household = -2
+	mutant_seal = -3
+	mutant_rotate = 3
+	mutant_vent = 4
+	mutant_household = 2
+	religious_seal = 4
+	religious_rotate = 0
+	religious_vent = -2
+	religious_household = 6
+	cause_hazard_seal = 6
+	cause_hazard_rotate = -2
+	cause_hazard_vent = 4
+	cause_hazard_household = -4
+	terminal_seal = 4
+	terminal_rotate = 1
+	terminal_vent = -3
+	terminal_household = -4
+	war_seal = 2
+	war_rotate = 4
+	war_vent = 3
+	war_household = -5
+	low_filters_seal = -3
+	low_filters_rotate = -2
+	low_filters_vent = 4
+	low_filters_household = 5
+	high_exposure_seal = 6
+	high_exposure_rotate = -2
+	high_exposure_vent = -4
+	high_exposure_household = 3
+	prior_seal = 3
+	prior_rotate = 2
+	prior_vent = -3
+	prior_household = 4
+	low_filters_threshold = 12
+	high_exposure_threshold = 55
 	upper_bound = 1001
 }

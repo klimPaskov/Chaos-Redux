@@ -1,0 +1,1041 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT FILTERS FAIL AT NIGHT EFFECTS
+# ============================================================================
+# A shelter filter crisis with four costed policies. The chain freezes the
+# produced Air Winter state receipt before its fourteen-day result and keeps
+# casualties inside the shared Deaths contract.
+# ============================================================================
+
+fallout_event_217_apply_failure_deaths = {
+	if = {
+		limit = {
+			has_variable = fallout_event_217_result_state_id
+			fallout_event_217_filters_registry_is_current = yes
+		}
+		var:fallout_event_217_result_state_id = {
+			set_temp_variable = { fallout_event_217_death_request = state_population_k }
+			multiply_temp_variable = { fallout_event_217_death_request = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { fallout_event_217_death_request = constant:fallout_event_217_threshold.failure_death_percent }
+			round_temp_variable = fallout_event_217_death_request
+			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_requested = fallout_event_217_death_request }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_event_217_threshold.minimum_remaining_people }
+			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
+			apply_exact_state_civilian_population_loss = yes
+		}
+	}
+}
+
+fallout_event_217_record_history = {
+	set_temp_variable = { fallout_event_217_history_should_record = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			check_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.one }
+			NOT = { has_country_flag = fallout_event_217_result_history_recorded }
+		}
+		set_temp_variable = { fallout_event_217_history_should_record = constant:fallout_event_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.two }
+			NOT = { has_country_flag = fallout_event_217_callback_history_recorded }
+		}
+		set_temp_variable = { fallout_event_217_history_should_record = constant:fallout_event_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { fallout_event_217_history_should_record = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.callback_failure }
+		if = {
+			limit = { check_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.one } }
+			if = {
+				limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.seal_lower_levels } }
+				if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.seal_success } }
+				else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.seal_partial } }
+				else = { set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.seal_failure } }
+			}
+			else_if = {
+				limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.rotate_surface_teams } }
+				if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.rotate_success } }
+				else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.rotate_partial } }
+				else = { set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.rotate_failure } }
+			}
+			else_if = {
+				limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.open_emergency_vents } }
+				if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.vent_success } }
+				else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.vent_partial } }
+				else = { set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.vent_failure } }
+			}
+			else = {
+				if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.household_success } }
+				else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.household_partial } }
+				else = { set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.household_failure } }
+			}
+		}
+		else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.callback_success } }
+		else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_history_payload = constant:fallout_event_217_log.callback_partial } }
+		set_temp_variable = { events_log_system_event_id = constant:fallout_event_217_log.history_id }
+		set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.fallout_country_memory }
+		set_temp_variable = { events_log_system_payload = fallout_event_217_history_payload }
+		set_temp_variable = { events_log_system_actor = ROOT.id }
+		set_temp_variable = { events_log_system_has_actor = constant:fallout_event_runtime.one }
+		set_temp_variable = { events_log_system_secondary_actor = constant:fallout_event_runtime.zero }
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:fallout_event_runtime.zero }
+		record_events_log_system_history_entry = yes
+		refresh_events_log_system_history_views = yes
+		if = { limit = { check_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_217_result_history_recorded }
+		else = { set_country_flag = fallout_event_217_callback_history_recorded }
+	}
+	clear_temp_variable = fallout_event_217_history_should_record
+	clear_temp_variable = fallout_event_217_history_payload
+	clear_temp_variable = events_log_system_event_id
+	clear_temp_variable = events_log_system_event_type
+	clear_temp_variable = events_log_system_payload
+	clear_temp_variable = events_log_system_actor
+	clear_temp_variable = events_log_system_has_actor
+	clear_temp_variable = events_log_system_secondary_actor
+	clear_temp_variable = events_log_system_has_secondary_actor
+	clear_temp_variable = fallout_event_217_history_stage
+}
+
+fallout_event_217_calculate_outcome = {
+	set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.failure }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_217_target_exposure = fallout_pretransition_air_winter_exposure }
+		set_temp_variable = { fallout_event_217_target_shelter = fallout_pretransition_air_winter_shelter_capacity }
+		set_temp_variable = { fallout_event_217_target_adaptation = fallout_pretransition_air_winter_adaptation }
+		set_temp_variable = { fallout_event_217_target_reclamation = fallout_pretransition_air_winter_reclamation }
+	}
+	set_temp_variable = { fallout_event_217_target_filters = fallout_survival_current_entries^7 }
+	set_temp_variable = { fallout_event_217_target_medicine = fallout_survival_current_entries^3 }
+	set_temp_variable = { fallout_event_217_target_food = fallout_survival_current_entries^1 }
+	set_temp_variable = { fallout_event_217_target_scrap = fallout_survival_current_entries^4 }
+	set_temp_variable = { fallout_event_217_target_recognition = fallout_survival_current_entries^9 }
+	set_temp_variable = { fallout_event_217_target_viability = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_viability_component = fallout_event_217_target_shelter }
+	multiply_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.shelter_weight }
+	divide_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.weight_divisor }
+	add_to_temp_variable = { fallout_event_217_target_viability = fallout_event_217_viability_component }
+	set_temp_variable = { fallout_event_217_viability_component = fallout_event_217_target_filters }
+	multiply_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.filters_weight }
+	divide_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.weight_divisor }
+	add_to_temp_variable = { fallout_event_217_target_viability = fallout_event_217_viability_component }
+	set_temp_variable = { fallout_event_217_viability_component = fallout_event_217_target_medicine }
+	multiply_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.medicine_weight }
+	divide_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.weight_divisor }
+	add_to_temp_variable = { fallout_event_217_target_viability = fallout_event_217_viability_component }
+	set_temp_variable = { fallout_event_217_viability_component = fallout_event_217_target_adaptation }
+	multiply_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.adaptation_weight }
+	divide_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.weight_divisor }
+	add_to_temp_variable = { fallout_event_217_target_viability = fallout_event_217_viability_component }
+	set_temp_variable = { fallout_event_217_viability_component = fallout_event_217_target_exposure }
+	multiply_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.exposure_penalty }
+	divide_temp_variable = { fallout_event_217_viability_component = constant:fallout_event_217_viability.weight_divisor }
+	subtract_from_temp_variable = { fallout_event_217_target_viability = fallout_event_217_viability_component }
+	round_temp_variable = fallout_event_217_target_viability
+	clamp_temp_variable = { var = fallout_event_217_target_viability min = constant:fallout_event_217_viability.minimum max = constant:fallout_event_217_viability.maximum }
+	if = {
+		limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.seal_lower_levels } }
+		if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.seal_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_filters value = constant:fallout_event_217_threshold.seal_success_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_medicine value = constant:fallout_event_217_threshold.seal_success_medicine compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.success }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.seal_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_filters value = constant:fallout_event_217_threshold.seal_partial_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_medicine value = constant:fallout_event_217_threshold.seal_partial_medicine compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.partial }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.rotate_surface_teams } }
+		if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.rotate_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_adaptation value = constant:fallout_event_217_threshold.rotate_success_adaptation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_food value = constant:fallout_event_217_threshold.rotate_success_food compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.success }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.rotate_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_adaptation value = constant:fallout_event_217_threshold.rotate_partial_adaptation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_food value = constant:fallout_event_217_threshold.rotate_partial_food compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.partial }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.open_emergency_vents } }
+		if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.vent_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_reclamation value = constant:fallout_event_217_threshold.vent_success_reclamation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_scrap value = constant:fallout_event_217_threshold.vent_success_scrap compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.success }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.vent_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_reclamation value = constant:fallout_event_217_threshold.vent_partial_reclamation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_scrap value = constant:fallout_event_217_threshold.vent_partial_scrap compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.partial }
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.household_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_filters value = constant:fallout_event_217_threshold.household_success_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_recognition value = constant:fallout_event_217_threshold.household_success_recognition compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.success }
+		}
+		else_if = {
+			limit = {
+				check_variable = { fallout_event_217_target_viability value = constant:fallout_event_217_threshold.household_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_filters value = constant:fallout_event_217_threshold.household_partial_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_target_recognition value = constant:fallout_event_217_threshold.household_partial_recognition compare = greater_than_or_equals }
+			}
+			set_temp_variable = { fallout_event_217_calculated_outcome = constant:fallout_event_outcome_type.partial }
+		}
+	}
+	set_temp_variable = { fallout_event_217_calculated_viability = fallout_event_217_target_viability }
+	clear_temp_variable = fallout_event_217_viability_component
+	clear_temp_variable = fallout_event_217_target_viability
+	clear_temp_variable = fallout_event_217_target_exposure
+	clear_temp_variable = fallout_event_217_target_shelter
+	clear_temp_variable = fallout_event_217_target_adaptation
+	clear_temp_variable = fallout_event_217_target_reclamation
+	clear_temp_variable = fallout_event_217_target_filters
+	clear_temp_variable = fallout_event_217_target_medicine
+	clear_temp_variable = fallout_event_217_target_food
+	clear_temp_variable = fallout_event_217_target_scrap
+	clear_temp_variable = fallout_event_217_target_recognition
+}
+
+fallout_event_217_pay_branch_cost = {
+	if = {
+		limit = { NOT = { has_country_flag = fallout_event_217_cost_paid } }
+		if = {
+			limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.seal_lower_levels } }
+			subtract_from_variable = { fallout_survival_current_entries^7 = constant:fallout_event_217_cost.seal_filters }
+			subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_217_cost.seal_medicine }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.rotate_surface_teams } }
+			subtract_from_variable = { fallout_survival_current_entries^7 = constant:fallout_event_217_cost.rotate_filters }
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_217_cost.rotate_food }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.open_emergency_vents } }
+			subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_event_217_cost.vent_scrap }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_217_cost.vent_recognition }
+		}
+		else = {
+			subtract_from_variable = { fallout_survival_current_entries^7 = constant:fallout_event_217_cost.household_filters }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_217_cost.household_recognition }
+		}
+		set_country_flag = fallout_event_217_cost_paid
+	}
+}
+
+fallout_event_217_schedule_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_issued_ordinary_receipt_is_current = yes
+			NOT = { has_country_flag = fallout_event_217_chain_committed }
+			check_variable = { fallout_event_217_requested_branch > constant:fallout_event_217_branch.none }
+			check_variable = { fallout_event_217_requested_branch < constant:fallout_event_217_branch.upper_bound }
+			fallout_event_217_opening_filters_target_is_current = yes
+		}
+		fallout_event_217_calculate_outcome = yes
+		set_temp_variable = { fallout_event_217_opening_target = fallout_event_dispatch_issued_target }
+		set_temp_variable = { fallout_event_217_opening_mode = fallout_event_dispatch_issued_mode }
+		set_temp_variable = { fallout_event_217_opening_target_type = fallout_event_dispatch_issued_target_type }
+		set_temp_variable = { fallout_event_217_opening_event_token = fallout_event_dispatch_issued_event_token }
+		set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_dispatch_issued_ticket }
+		add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_217_transaction.result_transaction_key_offset }
+		add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_217_requested_branch }
+		set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+		set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.filters_fail_seal_result }
+		set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.filters_fail_seal_result_ai }
+		if = { limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.rotate_surface_teams } } set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.filters_fail_rotate_result } set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.filters_fail_rotate_result_ai } }
+		else_if = { limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.open_emergency_vents } } set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.filters_fail_vent_result } set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.filters_fail_vent_result_ai } }
+		else_if = { limit = { check_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.ration_by_household } } set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.filters_fail_household_result } set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.filters_fail_household_result_ai } }
+		set_temp_variable = { fallout_event_requested_branch = fallout_event_217_requested_branch }
+		set_temp_variable = { fallout_event_requested_due_day = global.num_days }
+		add_to_temp_variable = { fallout_event_requested_due_day = constant:fallout_event_217_timing.result_delay_days }
+		set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_217_transaction.visible_budget_cost }
+		set_temp_variable = { fallout_event_requested_control_mode = fallout_event_217_opening_mode }
+		set_temp_variable = { fallout_event_requested_queue_status = constant:fallout_event_queue_status.result_scheduled }
+		set_temp_variable = { fallout_event_requested_target_type = fallout_event_217_opening_target_type }
+		set_temp_variable = { fallout_event_requested_target = fallout_event_217_opening_target }
+		set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.filters_fail_cleanup }
+		fallout_event_schedule_delayed_result = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_event_token = fallout_event_217_opening_event_token }
+			fallout_event_consume_issued_ordinary_receipt = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				set_variable = { fallout_event_217_result_cleanup_ticket = fallout_event_transaction_ticket }
+				clr_country_flag = fallout_event_217_result_cleanup_released
+				clr_country_flag = fallout_event_217_callback_cleanup_released
+				clear_variable = fallout_event_217_callback_cleanup_ticket
+				set_variable = { fallout_event_217_selected_branch = fallout_event_217_requested_branch }
+				set_variable = { fallout_event_217_result_outcome = fallout_event_217_calculated_outcome }
+				set_variable = { fallout_event_217_result_generation = fallout_event_runtime_generation }
+				set_variable = { fallout_event_217_result_day = global.num_days }
+				set_variable = { fallout_event_217_result_state_id = fallout_event_217_opening_target }
+				set_variable = { fallout_event_217_filters_state_id = fallout_event_217_opening_target }
+				set_variable = { fallout_event_217_filters_registry_generation = fallout_event_runtime_generation }
+				set_variable = { fallout_event_217_filters_registry_owner = ROOT }
+				set_variable = { fallout_event_217_frozen_filters = fallout_survival_current_entries^7 }
+				set_variable = { fallout_event_217_frozen_medicine = fallout_survival_current_entries^3 }
+				set_variable = { fallout_event_217_frozen_food = fallout_survival_current_entries^1 }
+				set_variable = { fallout_event_217_frozen_scrap = fallout_survival_current_entries^4 }
+				set_variable = { fallout_event_217_frozen_recognition = fallout_survival_current_entries^9 }
+				var:fallout_event_217_opening_target = {
+					set_variable = { ROOT.fallout_event_217_frozen_shelter = fallout_pretransition_air_winter_shelter_capacity }
+					set_variable = { ROOT.fallout_event_217_frozen_exposure = fallout_pretransition_air_winter_exposure }
+					set_variable = { ROOT.fallout_event_217_frozen_adaptation = fallout_pretransition_air_winter_adaptation }
+					set_variable = { ROOT.fallout_event_217_frozen_reclamation = fallout_pretransition_air_winter_reclamation }
+				}
+				set_variable = { fallout_event_217_frozen_viability = fallout_event_217_calculated_viability }
+				set_variable = { fallout_event_217_frozen_cause_memory = global.fallout_pretransition_request_source }
+				var:fallout_event_217_opening_target = {
+					set_state_flag = fallout_event_217_filters_registry_committed
+					set_variable = { fallout_event_217_filters_registry_generation = ROOT.fallout_event_runtime_generation }
+					set_variable = { fallout_event_217_filters_registry_owner = ROOT }
+					set_variable = { fallout_event_217_filters_viability = ROOT.fallout_event_217_frozen_viability }
+					set_variable = { fallout_event_217_filters_branch = ROOT.fallout_event_217_selected_branch }
+					set_variable = { fallout_event_217_filters_outcome = ROOT.fallout_event_217_result_outcome }
+					set_variable = { fallout_event_217_filters_cause_memory = ROOT.fallout_event_217_frozen_cause_memory }
+					set_variable = { fallout_event_217_filters_shelter = fallout_pretransition_air_winter_shelter_capacity }
+					set_variable = { fallout_event_217_filters_exposure = fallout_pretransition_air_winter_exposure }
+					set_variable = { fallout_event_217_filters_adaptation = fallout_pretransition_air_winter_adaptation }
+					set_variable = { fallout_event_217_filters_reclamation = fallout_pretransition_air_winter_reclamation }
+				}
+				set_country_flag = fallout_event_217_chain_committed
+			}
+			else = {
+				set_temp_variable = { fallout_event_requested_ticket = fallout_event_transaction_ticket }
+				set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+				set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.caller_cancelled }
+				fallout_event_cancel_delayed_result = yes
+				set_country_flag = fallout_event_217_schedule_error
+			}
+		}
+		else = { set_country_flag = fallout_event_217_schedule_error }
+	}
+	clear_temp_variable = fallout_event_217_calculated_outcome
+	clear_temp_variable = fallout_event_217_calculated_viability
+	clear_temp_variable = fallout_event_217_opening_target
+	clear_temp_variable = fallout_event_217_opening_mode
+	clear_temp_variable = fallout_event_217_opening_target_type
+	clear_temp_variable = fallout_event_217_opening_event_token
+	clear_temp_variable = fallout_event_217_requested_branch
+}
+
+fallout_event_217_choose_branch = {
+	fallout_event_217_schedule_result = yes
+	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_217_pay_branch_cost = yes }
+}
+
+fallout_event_217_choose_ai_branch_and_schedule_result = {
+	set_temp_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.none }
+	set_temp_variable = { fallout_event_217_ai_viability = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_217_ai_component = fallout_pretransition_air_winter_shelter_capacity }
+		multiply_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.shelter_weight }
+		divide_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.weight_divisor }
+		add_to_temp_variable = { fallout_event_217_ai_viability = fallout_event_217_ai_component }
+		set_temp_variable = { fallout_event_217_ai_component = fallout_pretransition_air_winter_adaptation }
+		multiply_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.adaptation_weight }
+		divide_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.weight_divisor }
+		add_to_temp_variable = { fallout_event_217_ai_viability = fallout_event_217_ai_component }
+		set_temp_variable = { fallout_event_217_ai_component = fallout_survival_current_entries^7 }
+		multiply_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.filters_weight }
+		divide_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.weight_divisor }
+		add_to_temp_variable = { fallout_event_217_ai_viability = fallout_event_217_ai_component }
+		set_temp_variable = { fallout_event_217_ai_component = fallout_survival_current_entries^3 }
+		multiply_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.medicine_weight }
+		divide_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.weight_divisor }
+		add_to_temp_variable = { fallout_event_217_ai_viability = fallout_event_217_ai_component }
+		set_temp_variable = { fallout_event_217_ai_component = fallout_pretransition_air_winter_exposure }
+		multiply_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.exposure_penalty }
+		divide_temp_variable = { fallout_event_217_ai_component = constant:fallout_event_217_viability.weight_divisor }
+		subtract_from_temp_variable = { fallout_event_217_ai_viability = fallout_event_217_ai_component }
+	}
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_217_ai_shelter = fallout_pretransition_air_winter_shelter_capacity }
+		set_temp_variable = { fallout_event_217_ai_exposure = fallout_pretransition_air_winter_exposure }
+		set_temp_variable = { fallout_event_217_ai_adaptation = fallout_pretransition_air_winter_adaptation }
+		set_temp_variable = { fallout_event_217_ai_reclamation = fallout_pretransition_air_winter_reclamation }
+	}
+	round_temp_variable = fallout_event_217_ai_viability
+	clamp_temp_variable = { var = fallout_event_217_ai_viability min = constant:fallout_event_217_viability.minimum max = constant:fallout_event_217_viability.maximum }
+	set_temp_variable = { fallout_event_217_ai_filters = fallout_survival_current_entries^7 }
+	set_temp_variable = { fallout_event_217_ai_medicine = fallout_survival_current_entries^3 }
+	set_temp_variable = { fallout_event_217_ai_food = fallout_survival_current_entries^1 }
+	set_temp_variable = { fallout_event_217_ai_scrap = fallout_survival_current_entries^4 }
+	set_temp_variable = { fallout_event_217_ai_recognition = fallout_survival_current_entries^9 }
+	set_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.base_score }
+	set_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.base_score }
+	set_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.base_score }
+	set_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.base_score }
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.seal_filters compare = greater_than_or_equals }
+					check_variable = { fallout_event_217_ai_medicine value = constant:fallout_event_217_cost.seal_medicine compare = greater_than_or_equals }
+				}
+			}
+		}
+		set_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.invalid_score }
+	}
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.rotate_filters compare = greater_than_or_equals }
+					check_variable = { fallout_event_217_ai_food value = constant:fallout_event_217_cost.rotate_food compare = greater_than_or_equals }
+				}
+			}
+		}
+		set_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.invalid_score }
+	}
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { fallout_event_217_ai_scrap value = constant:fallout_event_217_cost.vent_scrap compare = greater_than_or_equals }
+					check_variable = { fallout_event_217_ai_recognition value = constant:fallout_event_217_cost.vent_recognition compare = greater_than_or_equals }
+				}
+			}
+		}
+		set_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.invalid_score }
+	}
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.household_filters compare = greater_than_or_equals }
+					check_variable = { fallout_event_217_ai_recognition value = constant:fallout_event_217_cost.household_recognition compare = greater_than_or_equals }
+				}
+			}
+		}
+		set_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.invalid_score }
+	}
+	if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.seal_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_threshold.seal_success_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_medicine value = constant:fallout_event_217_threshold.seal_success_medicine compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.success_bonus }
+	}
+	else_if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.seal_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_threshold.seal_partial_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_medicine value = constant:fallout_event_217_threshold.seal_partial_medicine compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.partial_bonus }
+	}
+	if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.rotate_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_adaptation value = constant:fallout_event_217_threshold.rotate_success_adaptation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_food value = constant:fallout_event_217_threshold.rotate_success_food compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.success_bonus }
+	}
+	else_if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.rotate_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_adaptation value = constant:fallout_event_217_threshold.rotate_partial_adaptation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_food value = constant:fallout_event_217_threshold.rotate_partial_food compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.partial_bonus }
+	}
+	if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.vent_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_reclamation value = constant:fallout_event_217_threshold.vent_success_reclamation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_scrap value = constant:fallout_event_217_threshold.vent_success_scrap compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.success_bonus }
+	}
+	else_if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.vent_partial_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_reclamation value = constant:fallout_event_217_threshold.vent_partial_reclamation compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_scrap value = constant:fallout_event_217_threshold.vent_partial_scrap compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.partial_bonus }
+	}
+	if = {
+		limit = {
+			AND = {
+				check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.household_success_viability compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_threshold.household_success_filters compare = greater_than_or_equals }
+				check_variable = { fallout_event_217_ai_recognition value = constant:fallout_event_217_threshold.household_success_recognition compare = greater_than_or_equals }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.success_bonus }
+	}
+	else_if = { limit = { check_variable = { fallout_event_217_ai_viability value = constant:fallout_event_217_threshold.household_partial_viability compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.partial_bonus } }
+	if = { limit = { check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_ai.low_filters_threshold compare = less_than } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.low_filters_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.low_filters_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.low_filters_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.low_filters_household } }
+	if = { limit = { check_variable = { fallout_event_217_ai_exposure value = constant:fallout_event_217_ai.high_exposure_threshold compare = greater_than } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.high_exposure_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.high_exposure_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.high_exposure_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.high_exposure_household } }
+	if = {
+		limit = { has_variable = fallout_government_archetype }
+		if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.continuity_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.continuity_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.continuity_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.continuity_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.bunker_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.bunker_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.bunker_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.bunker_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.warlord_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.warlord_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.warlord_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.warlord_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.food_compact_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.food_compact_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.food_compact_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.food_compact_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.maritime_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.maritime_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.maritime_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.maritime_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.quarantine_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.quarantine_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.quarantine_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.quarantine_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.scavenger_syndicate } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.scavenger_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.scavenger_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.scavenger_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.scavenger_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.nomad_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.nomad_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.nomad_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.nomad_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.machine_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.machine_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.machine_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.machine_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.technate_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.technate_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.technate_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.technate_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.mutant_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.mutant_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.mutant_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.mutant_household } }
+		else_if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.religious_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.religious_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.religious_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.religious_household } }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.chemical_saturation }
+				check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.biological_follow_through }
+			}
+		}
+		add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.cause_hazard_seal }
+		add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.cause_hazard_rotate }
+		add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.cause_hazard_vent }
+		add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.cause_hazard_household }
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.war_seal }
+		add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.war_rotate }
+		add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.war_vent }
+		add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.war_household }
+	}
+	if = { limit = { OR = { has_country_flag = fallout_event_217_memory_sealed_levels has_country_flag = fallout_event_217_memory_partial_seal has_country_flag = fallout_event_217_memory_breach has_country_flag = fallout_event_217_memory_rotating_teams has_country_flag = fallout_event_217_memory_exhausted_teams has_country_flag = fallout_event_217_memory_exposure_deaths has_country_flag = fallout_event_217_memory_vented_levels has_country_flag = fallout_event_217_memory_unstable_vents has_country_flag = fallout_event_217_memory_vent_failure has_country_flag = fallout_event_217_memory_household_ledger has_country_flag = fallout_event_217_memory_contested_ledger has_country_flag = fallout_event_217_memory_class_grievance } } add_to_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.prior_seal } add_to_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.prior_rotate } add_to_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.prior_vent } add_to_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.prior_household } }
+	if = { limit = { NOT = { check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.seal_filters compare = greater_than_or_equals } } } set_temp_variable = { fallout_event_217_ai_seal_score = constant:fallout_event_217_ai.invalid_score } }
+	if = { limit = { NOT = { check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.rotate_filters compare = greater_than_or_equals } } } set_temp_variable = { fallout_event_217_ai_rotate_score = constant:fallout_event_217_ai.invalid_score } }
+	if = { limit = { NOT = { check_variable = { fallout_event_217_ai_scrap value = constant:fallout_event_217_cost.vent_scrap compare = greater_than_or_equals } } } set_temp_variable = { fallout_event_217_ai_vent_score = constant:fallout_event_217_ai.invalid_score } }
+	if = { limit = { NOT = { check_variable = { fallout_event_217_ai_filters value = constant:fallout_event_217_cost.household_filters compare = greater_than_or_equals } } } set_temp_variable = { fallout_event_217_ai_household_score = constant:fallout_event_217_ai.invalid_score } }
+	set_temp_variable = { fallout_event_217_ai_selected_score = constant:fallout_event_217_ai.invalid_score }
+	if = { limit = { check_variable = { var = fallout_event_217_ai_seal_score value = fallout_event_217_ai_selected_score compare = greater_than } } set_temp_variable = { fallout_event_217_ai_selected_score = fallout_event_217_ai_seal_score } set_temp_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.seal_lower_levels } }
+	if = { limit = { check_variable = { var = fallout_event_217_ai_rotate_score value = fallout_event_217_ai_selected_score compare = greater_than } } set_temp_variable = { fallout_event_217_ai_selected_score = fallout_event_217_ai_rotate_score } set_temp_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.rotate_surface_teams } }
+	if = { limit = { check_variable = { var = fallout_event_217_ai_vent_score value = fallout_event_217_ai_selected_score compare = greater_than } } set_temp_variable = { fallout_event_217_ai_selected_score = fallout_event_217_ai_vent_score } set_temp_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.open_emergency_vents } }
+	if = { limit = { check_variable = { var = fallout_event_217_ai_household_score value = fallout_event_217_ai_selected_score compare = greater_than } } set_temp_variable = { fallout_event_217_ai_selected_score = fallout_event_217_ai_household_score } set_temp_variable = { fallout_event_217_requested_branch = constant:fallout_event_217_branch.ration_by_household } }
+	fallout_event_217_schedule_result = yes
+	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_217_pay_branch_cost = yes }
+	clear_temp_variable = fallout_event_217_ai_viability
+	clear_temp_variable = fallout_event_217_ai_component
+	clear_temp_variable = fallout_event_217_ai_shelter
+	clear_temp_variable = fallout_event_217_ai_exposure
+	clear_temp_variable = fallout_event_217_ai_adaptation
+	clear_temp_variable = fallout_event_217_ai_reclamation
+	clear_temp_variable = fallout_event_217_ai_filters
+	clear_temp_variable = fallout_event_217_ai_medicine
+	clear_temp_variable = fallout_event_217_ai_food
+	clear_temp_variable = fallout_event_217_ai_scrap
+	clear_temp_variable = fallout_event_217_ai_recognition
+	clear_temp_variable = fallout_event_217_ai_seal_score
+	clear_temp_variable = fallout_event_217_ai_rotate_score
+	clear_temp_variable = fallout_event_217_ai_vent_score
+	clear_temp_variable = fallout_event_217_ai_household_score
+	clear_temp_variable = fallout_event_217_ai_selected_score
+}
+
+fallout_event_217_apply_result_effects = {
+	set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days }
+	if = {
+		limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.seal_lower_levels } }
+		if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.seal_success_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.seal_success_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.seal_success_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.seal_success_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.seal_success_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.seal_success_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.seal_success_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.seal_success_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.seal_success_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.seal_modifier_days }
+			set_country_flag = fallout_event_217_memory_sealed_levels
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.seal_partial_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.seal_partial_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.seal_partial_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.seal_partial_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.seal_partial_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.seal_partial_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.seal_partial_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.seal_partial_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.seal_partial_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.seal_modifier_days }
+			set_country_flag = fallout_event_217_memory_partial_seal
+		}
+		else = {
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.seal_failure_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.seal_failure_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.seal_failure_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.seal_failure_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.seal_failure_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.seal_failure_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.seal_failure_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.seal_failure_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.seal_failure_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days }
+			set_country_flag = fallout_event_217_memory_breach
+			fallout_event_217_apply_failure_deaths = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.rotate_surface_teams } }
+		if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.rotate_success_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.rotate_success_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.rotate_success_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.rotate_success_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.rotate_success_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.rotate_success_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.rotate_success_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.rotate_success_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.rotate_success_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.rotate_modifier_days }
+			set_country_flag = fallout_event_217_memory_rotating_teams
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.rotate_partial_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.rotate_partial_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.rotate_partial_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.rotate_partial_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.rotate_partial_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.rotate_partial_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.rotate_partial_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.rotate_partial_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.rotate_partial_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.rotate_modifier_days }
+			set_country_flag = fallout_event_217_memory_exhausted_teams
+		}
+		else = {
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.rotate_failure_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.rotate_failure_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.rotate_failure_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.rotate_failure_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.rotate_failure_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.rotate_failure_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.rotate_failure_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.rotate_failure_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.rotate_failure_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days }
+			set_country_flag = fallout_event_217_memory_exposure_deaths
+			fallout_event_217_apply_failure_deaths = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.open_emergency_vents } }
+		if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.vent_success_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.vent_success_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.vent_success_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.vent_success_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.vent_success_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.vent_success_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.vent_success_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.vent_success_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.vent_success_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.vent_modifier_days }
+			set_country_flag = fallout_event_217_memory_vented_levels
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.vent_partial_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.vent_partial_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.vent_partial_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.vent_partial_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.vent_partial_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.vent_partial_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.vent_partial_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.vent_partial_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.vent_partial_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.vent_modifier_days }
+			set_country_flag = fallout_event_217_memory_unstable_vents
+		}
+		else = {
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.vent_failure_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.vent_failure_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.vent_failure_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.vent_failure_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.vent_failure_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.vent_failure_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.vent_failure_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.vent_failure_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.vent_failure_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days }
+			set_country_flag = fallout_event_217_memory_vent_failure
+			fallout_event_217_apply_failure_deaths = yes
+		}
+	}
+	else = {
+		if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.household_success_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.household_success_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.household_success_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.household_success_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.household_success_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.household_success_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.household_success_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.household_success_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.household_success_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.household_modifier_days }
+			set_country_flag = fallout_event_217_memory_household_ledger
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } }
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.household_partial_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.household_partial_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.household_partial_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.household_partial_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.household_partial_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.household_partial_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.household_partial_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.household_partial_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.household_partial_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.household_modifier_days }
+			set_country_flag = fallout_event_217_memory_contested_ledger
+		}
+		else = {
+			set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.household_failure_filters }
+			set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.household_failure_medicine }
+			set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.household_failure_food }
+			set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.household_failure_shelter }
+			set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.household_failure_exposure }
+			set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.household_failure_adaptation }
+			set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.household_failure_reclamation }
+			set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.household_failure_recognition }
+			set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.household_failure_cohesion }
+			set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days }
+			set_country_flag = fallout_event_217_memory_class_grievance
+			fallout_event_217_apply_failure_deaths = yes
+		}
+	}
+	add_to_variable = { fallout_survival_current_entries^7 = fallout_event_217_delta_filters }
+	add_to_variable = { fallout_survival_current_entries^3 = fallout_event_217_delta_medicine }
+	add_to_variable = { fallout_survival_current_entries^1 = fallout_event_217_delta_food }
+	add_to_variable = { fallout_survival_current_entries^9 = fallout_event_217_delta_recognition }
+	if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.failure } } add_dynamic_modifier = { modifier = fallout_filters_fail_breach days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.seal_lower_levels } } add_dynamic_modifier = { modifier = fallout_filters_fail_sealed_levels days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.rotate_surface_teams } } add_dynamic_modifier = { modifier = fallout_filters_fail_rotating_teams days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.open_emergency_vents } } add_dynamic_modifier = { modifier = fallout_filters_fail_emergency_vents days = fallout_event_217_modifier_days } }
+	else = { add_dynamic_modifier = { modifier = fallout_filters_fail_household_ledger days = fallout_event_217_modifier_days } }
+	add_stability = fallout_event_217_delta_cohesion
+	set_temp_variable = { fallout_survival_cohesion_delta = fallout_event_217_delta_cohesion }
+	fallout_survival_apply_cohesion_delta = yes
+	set_variable = { fallout_event_217_applied_delta_shelter = fallout_event_217_delta_shelter }
+	set_variable = { fallout_event_217_applied_delta_exposure = fallout_event_217_delta_exposure }
+	set_variable = { fallout_event_217_applied_delta_adaptation = fallout_event_217_delta_adaptation }
+	set_variable = { fallout_event_217_applied_delta_reclamation = fallout_event_217_delta_reclamation }
+	if = {
+		limit = { has_variable = fallout_event_217_result_state_id }
+		var:fallout_event_217_result_state_id = {
+			add_to_variable = { fallout_event_217_filters_shelter = ROOT.fallout_event_217_applied_delta_shelter }
+			add_to_variable = { fallout_event_217_filters_exposure = ROOT.fallout_event_217_applied_delta_exposure }
+			add_to_variable = { fallout_event_217_filters_adaptation = ROOT.fallout_event_217_applied_delta_adaptation }
+			add_to_variable = { fallout_event_217_filters_reclamation = ROOT.fallout_event_217_applied_delta_reclamation }
+			if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_217_applied_delta_shelter } }
+			if = { limit = { has_variable = air_winter_exposure } add_to_variable = { air_winter_exposure = ROOT.fallout_event_217_applied_delta_exposure } }
+			if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = ROOT.fallout_event_217_applied_delta_adaptation } }
+			if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_217_applied_delta_reclamation } }
+			clamp_variable = { var = fallout_event_217_filters_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			if = { limit = { has_variable = air_winter_shelter_capacity } clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
+			if = { limit = { has_variable = air_winter_exposure } clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
+			if = { limit = { has_variable = air_winter_adaptation } clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
+			if = { limit = { has_variable = air_winter_reclamation } clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
+		}
+	}
+	fallout_orientation_clamp_resources = yes
+	clear_variable = fallout_event_217_applied_delta_shelter
+	clear_variable = fallout_event_217_applied_delta_exposure
+	clear_variable = fallout_event_217_applied_delta_adaptation
+	clear_variable = fallout_event_217_applied_delta_reclamation
+	clear_temp_variable = fallout_event_217_delta_filters
+	clear_temp_variable = fallout_event_217_delta_medicine
+	clear_temp_variable = fallout_event_217_delta_food
+	clear_temp_variable = fallout_event_217_delta_shelter
+	clear_temp_variable = fallout_event_217_delta_exposure
+	clear_temp_variable = fallout_event_217_delta_adaptation
+	clear_temp_variable = fallout_event_217_delta_reclamation
+	clear_temp_variable = fallout_event_217_delta_recognition
+	clear_temp_variable = fallout_event_217_delta_cohesion
+	clear_temp_variable = fallout_event_217_modifier_days
+	clear_temp_variable = fallout_survival_cohesion_delta
+}
+
+fallout_event_217_schedule_callback = {
+	set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_217_result_ticket }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_217_transaction.callback_transaction_key_offset }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_217_selected_branch }
+	set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.filters_fail_callback }
+	set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.filters_fail_callback_ai }
+	set_temp_variable = { fallout_event_requested_branch = fallout_event_217_selected_branch }
+	set_temp_variable = { fallout_event_requested_due_day = global.num_days }
+	add_to_temp_variable = { fallout_event_requested_due_day = constant:fallout_event_217_timing.callback_delay_days }
+	set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_217_transaction.visible_budget_cost }
+	set_temp_variable = { fallout_event_requested_control_mode = fallout_event_217_result_mode }
+	set_temp_variable = { fallout_event_requested_queue_status = constant:fallout_event_queue_status.callback_scheduled }
+	set_temp_variable = { fallout_event_requested_target_type = constant:fallout_event_subject_type.state }
+	set_temp_variable = { fallout_event_requested_target = fallout_event_217_result_state_id }
+	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.filters_fail_cleanup }
+	fallout_event_schedule_delayed_result = yes
+}
+
+fallout_event_217_resolve_result_and_schedule_callback = {
+	set_temp_variable = { fallout_event_217_result_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_217_result_mode = fallout_event_dispatch_issued_mode }
+	set_temp_variable = { fallout_event_217_result_state_id = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	set_temp_variable = { fallout_event_requested_outcome = fallout_event_217_result_outcome }
+	fallout_event_resolve_issued_delayed_result = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		fallout_event_217_apply_result_effects = yes
+		set_temp_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.one }
+		fallout_event_217_record_history = yes
+		fallout_event_217_schedule_callback = yes
+		if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_217_callback_scheduled set_variable = { fallout_event_217_callback_cleanup_ticket = fallout_event_transaction_ticket } }
+		else = { set_country_flag = fallout_event_217_callback_schedule_error set_temp_variable = { fallout_event_requested_ticket = fallout_event_217_result_ticket } fallout_event_prepare_delayed_cleanup = yes }
+	}
+	clear_temp_variable = fallout_event_217_result_ticket
+	clear_temp_variable = fallout_event_217_result_mode
+	clear_temp_variable = fallout_event_217_result_state_id
+}
+
+fallout_event_217_apply_callback_effects = {
+	set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.household_modifier_days }
+	if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.callback_success_filters } set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.callback_success_medicine } set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.callback_success_food } set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.callback_success_shelter } set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.callback_success_exposure } set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.callback_success_adaptation } set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.callback_success_reclamation } set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.callback_success_recognition } set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.callback_success_cohesion } set_country_flag = fallout_event_217_memory_callback_stable }
+	else_if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.callback_partial_filters } set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.callback_partial_medicine } set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.callback_partial_food } set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.callback_partial_shelter } set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.callback_partial_exposure } set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.callback_partial_adaptation } set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.callback_partial_reclamation } set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.callback_partial_recognition } set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.callback_partial_cohesion } set_country_flag = fallout_event_217_memory_callback_contested }
+	else = {
+		set_temp_variable = { fallout_event_217_delta_filters = constant:fallout_event_217_result.callback_failure_filters }
+		set_temp_variable = { fallout_event_217_delta_medicine = constant:fallout_event_217_result.callback_failure_medicine }
+		set_temp_variable = { fallout_event_217_delta_food = constant:fallout_event_217_result.callback_failure_food }
+		set_temp_variable = { fallout_event_217_delta_shelter = constant:fallout_event_217_result.callback_failure_shelter }
+		set_temp_variable = { fallout_event_217_delta_exposure = constant:fallout_event_217_result.callback_failure_exposure }
+		set_temp_variable = { fallout_event_217_delta_adaptation = constant:fallout_event_217_result.callback_failure_adaptation }
+		set_temp_variable = { fallout_event_217_delta_reclamation = constant:fallout_event_217_result.callback_failure_reclamation }
+		set_temp_variable = { fallout_event_217_delta_recognition = constant:fallout_event_217_result.callback_failure_recognition }
+		set_temp_variable = { fallout_event_217_delta_cohesion = constant:fallout_event_217_result.callback_failure_cohesion }
+		set_country_flag = fallout_event_217_memory_callback_failed
+		fallout_event_217_apply_failure_deaths = yes
+	}
+	add_to_variable = { fallout_survival_current_entries^7 = fallout_event_217_delta_filters }
+	add_to_variable = { fallout_survival_current_entries^3 = fallout_event_217_delta_medicine }
+	add_to_variable = { fallout_survival_current_entries^1 = fallout_event_217_delta_food }
+	add_to_variable = { fallout_survival_current_entries^9 = fallout_event_217_delta_recognition }
+	if = { limit = { check_variable = { fallout_event_217_result_outcome = constant:fallout_event_outcome_type.failure } } set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.grievance_modifier_days } add_dynamic_modifier = { modifier = fallout_filters_fail_breach days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.seal_lower_levels } } set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.seal_modifier_days } add_dynamic_modifier = { modifier = fallout_filters_fail_sealed_levels days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.rotate_surface_teams } } set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.rotate_modifier_days } add_dynamic_modifier = { modifier = fallout_filters_fail_rotating_teams days = fallout_event_217_modifier_days } }
+	else_if = { limit = { check_variable = { fallout_event_217_selected_branch = constant:fallout_event_217_branch.open_emergency_vents } } set_temp_variable = { fallout_event_217_modifier_days = constant:fallout_event_217_timing.vent_modifier_days } add_dynamic_modifier = { modifier = fallout_filters_fail_emergency_vents days = fallout_event_217_modifier_days } }
+	else = { add_dynamic_modifier = { modifier = fallout_filters_fail_household_ledger days = fallout_event_217_modifier_days } }
+	set_temp_variable = { fallout_survival_cohesion_delta = fallout_event_217_delta_cohesion }
+	fallout_survival_apply_cohesion_delta = yes
+	add_stability = fallout_event_217_delta_cohesion
+	set_variable = { fallout_event_217_applied_delta_shelter = fallout_event_217_delta_shelter }
+	set_variable = { fallout_event_217_applied_delta_exposure = fallout_event_217_delta_exposure }
+	set_variable = { fallout_event_217_applied_delta_adaptation = fallout_event_217_delta_adaptation }
+	set_variable = { fallout_event_217_applied_delta_reclamation = fallout_event_217_delta_reclamation }
+	if = {
+		limit = { has_variable = fallout_event_217_filters_state_id }
+		var:fallout_event_217_filters_state_id = {
+			add_to_variable = { fallout_event_217_filters_shelter = ROOT.fallout_event_217_applied_delta_shelter }
+			add_to_variable = { fallout_event_217_filters_exposure = ROOT.fallout_event_217_applied_delta_exposure }
+			add_to_variable = { fallout_event_217_filters_adaptation = ROOT.fallout_event_217_applied_delta_adaptation }
+			add_to_variable = { fallout_event_217_filters_reclamation = ROOT.fallout_event_217_applied_delta_reclamation }
+			if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_217_applied_delta_shelter } }
+			if = { limit = { has_variable = air_winter_exposure } add_to_variable = { air_winter_exposure = ROOT.fallout_event_217_applied_delta_exposure } }
+			if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = ROOT.fallout_event_217_applied_delta_adaptation } }
+			if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_217_applied_delta_reclamation } }
+			clamp_variable = { var = fallout_event_217_filters_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+			clamp_variable = { var = fallout_event_217_filters_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+		}
+	}
+	fallout_orientation_clamp_resources = yes
+	clear_variable = fallout_event_217_applied_delta_shelter
+	clear_variable = fallout_event_217_applied_delta_exposure
+	clear_variable = fallout_event_217_applied_delta_adaptation
+	clear_variable = fallout_event_217_applied_delta_reclamation
+	clear_temp_variable = fallout_event_217_delta_filters
+	clear_temp_variable = fallout_event_217_delta_medicine
+	clear_temp_variable = fallout_event_217_delta_food
+	clear_temp_variable = fallout_event_217_delta_shelter
+	clear_temp_variable = fallout_event_217_delta_exposure
+	clear_temp_variable = fallout_event_217_delta_adaptation
+	clear_temp_variable = fallout_event_217_delta_reclamation
+	clear_temp_variable = fallout_event_217_delta_recognition
+	clear_temp_variable = fallout_event_217_delta_cohesion
+	clear_temp_variable = fallout_event_217_modifier_days
+	clear_temp_variable = fallout_survival_cohesion_delta
+}
+
+fallout_event_217_resolve_callback_and_prepare_cleanup = {
+	set_temp_variable = { fallout_event_217_callback_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	set_temp_variable = { fallout_event_requested_outcome = fallout_event_217_result_outcome }
+	fallout_event_resolve_issued_delayed_result = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		fallout_event_217_apply_callback_effects = yes
+		set_variable = { fallout_event_217_callback_cleanup_ticket = fallout_event_217_callback_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_217_callback_ticket }
+		fallout_event_prepare_delayed_cleanup = yes
+		set_temp_variable = { fallout_event_217_history_stage = constant:fallout_event_runtime.two }
+		fallout_event_217_record_history = yes
+		set_country_flag = fallout_event_217_callback_resolved
+	}
+	clear_temp_variable = fallout_event_217_callback_ticket
+}
+
+fallout_event_217_cleanup = {
+	set_temp_variable = { fallout_event_217_cleanup_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	fallout_event_release_issued_delayed_cleanup = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		if = { limit = { check_variable = { fallout_event_217_cleanup_ticket value = fallout_event_217_result_cleanup_ticket compare = equals } } set_country_flag = fallout_event_217_result_cleanup_released }
+		else_if = { limit = { check_variable = { fallout_event_217_cleanup_ticket value = fallout_event_217_callback_cleanup_ticket compare = equals } } set_country_flag = fallout_event_217_callback_cleanup_released }
+		if = {
+			limit = {
+				check_variable = { fallout_event_217_cleanup_ticket value = fallout_event_217_callback_cleanup_ticket compare = equals }
+				has_country_flag = fallout_event_217_callback_cleanup_released
+			}
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_217_result_cleanup_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } clr_country_flag = fallout_event_217_callback_scheduled }
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = { has_country_flag = fallout_event_217_result_cleanup_released has_country_flag = fallout_event_217_callback_cleanup_released }
+					AND = { has_country_flag = fallout_event_217_result_cleanup_released NOT = { has_country_flag = fallout_event_217_callback_scheduled } }
+				}
+			}
+			clr_country_flag = fallout_event_217_chain_committed
+			clr_country_flag = fallout_event_217_callback_scheduled
+			clr_country_flag = fallout_event_217_callback_resolved
+			clr_country_flag = fallout_event_217_schedule_error
+			clr_country_flag = fallout_event_217_callback_schedule_error
+			clr_country_flag = fallout_event_217_cost_paid
+			clr_country_flag = fallout_event_217_result_history_recorded
+			clr_country_flag = fallout_event_217_callback_history_recorded
+			clr_country_flag = fallout_event_217_result_cleanup_released
+			clr_country_flag = fallout_event_217_callback_cleanup_released
+			clear_variable = fallout_event_217_selected_branch
+			clear_variable = fallout_event_217_result_outcome
+			clear_variable = fallout_event_217_result_generation
+			clear_variable = fallout_event_217_result_day
+			clear_variable = fallout_event_217_result_cleanup_ticket
+			clear_variable = fallout_event_217_callback_cleanup_ticket
+			clear_variable = fallout_event_217_result_state_id
+			clear_variable = fallout_event_217_filters_registry_generation
+			clear_variable = fallout_event_217_filters_registry_owner
+			clear_variable = fallout_event_217_frozen_food
+			clear_variable = fallout_event_217_frozen_medicine
+			clear_variable = fallout_event_217_frozen_scrap
+			clear_variable = fallout_event_217_frozen_filters
+			clear_variable = fallout_event_217_frozen_shelter
+			clear_variable = fallout_event_217_frozen_exposure
+			clear_variable = fallout_event_217_frozen_adaptation
+			clear_variable = fallout_event_217_frozen_reclamation
+			clear_variable = fallout_event_217_frozen_recognition
+			clear_variable = fallout_event_217_frozen_viability
+			clear_variable = fallout_event_217_frozen_cause_memory
+			clear_variable = fallout_event_217_applied_delta_shelter
+			clear_variable = fallout_event_217_applied_delta_exposure
+			clear_variable = fallout_event_217_applied_delta_adaptation
+			clear_variable = fallout_event_217_applied_delta_reclamation
+			if = {
+				limit = { has_variable = fallout_event_217_filters_state_id }
+				var:fallout_event_217_filters_state_id = {
+					clr_state_flag = fallout_event_217_filters_registry_committed
+					clear_variable = fallout_event_217_filters_registry_generation
+					clear_variable = fallout_event_217_filters_registry_owner
+					clear_variable = fallout_event_217_filters_viability
+					clear_variable = fallout_event_217_filters_branch
+					clear_variable = fallout_event_217_filters_outcome
+					clear_variable = fallout_event_217_filters_cause_memory
+					clear_variable = fallout_event_217_filters_shelter
+					clear_variable = fallout_event_217_filters_exposure
+					clear_variable = fallout_event_217_filters_adaptation
+					clear_variable = fallout_event_217_filters_reclamation
+				}
+			}
+			clear_variable = fallout_event_217_filters_state_id
+			set_country_flag = fallout_event_217_cleanup_complete
+		}
+	}
+	clear_temp_variable = fallout_event_217_cleanup_ticket
+}

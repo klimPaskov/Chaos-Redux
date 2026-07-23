@@ -467,6 +467,43 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 
+			# Filters Fail at Night row. This medicine-pressure route requires a
+			# produced Air Winter shelter snapshot and a low but usable filter stock.
+			set_temp_variable = { fallout_event_pilot_filters_fail_target = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_filters_fail_value = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+			set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+			if = {
+				limit = {
+					fallout_event_pilot_filters_fail_state_is_current = yes
+					OR = {
+						check_variable = { fallout_event_pilot_filters_fail_target = constant:fallout_event_runtime.zero }
+						check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_filters_fail_target compare = less_than }
+					}
+				}
+				set_temp_variable = { fallout_event_pilot_filters_fail_target = fallout_event_pilot_state_candidate_id }
+				set_temp_variable = { fallout_event_pilot_filters_fail_value = fallout_pretransition_air_winter_shelter_capacity }
+			}
+		}
+		if = {
+			limit = { check_variable = { fallout_event_pilot_filters_fail_target > constant:fallout_event_runtime.zero } }
+			fallout_event_initialize_pilot_candidate_row = yes
+			set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.filters_fail_candidate_id }
+			set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.filters_fail_transaction_key }
+			set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.medicine }
+			set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.filters_fail_human }
+			set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.filters_fail_ai }
+			set_temp_variable = { fallout_event_pilot_branch = constant:fallout_event_217_branch.seal_lower_levels }
+			set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.medicine }
+			set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.filters_fail_route }
+			set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+			set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_filters_fail_target }
+			set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+			set_temp_variable = { fallout_event_pilot_state_value = fallout_event_pilot_filters_fail_value }
+			set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_pilot_filters_fail_target }
+			fallout_event_append_pilot_candidate_row = yes
+		}
+
 			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }
 			set_country_flag = fallout_event_candidate_registry_reviewed

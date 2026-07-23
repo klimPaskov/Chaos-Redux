@@ -286,30 +286,23 @@ person.
 
 ### Real-person portraits
 
-Do not generate, reconstruct, or substitute the identity of a real person. This
-applies to country leaders, commanders, operatives, and named officeholders. The only
-allowed ImageGen use for a real-person portrait is an image edit of that person's
-unchanged attributed source master, performed to apply the HOI4 painted portrait
-finish while preserving the source likeness.
+Do not generate, reconstruct, or substitute the identity of a real person. This applies to country leaders, commanders, operatives, and named officeholders. For a male subject, the source must be an unchanged attributed archival male source master; for any other real-person subject, use the equivalent unchanged attributed archival source master.
 
-For real people, preserve an unchanged, attributed original master from the internet or a user-provided image; never overwrite or silently replace that provenance input. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
+Use this mandatory fail-closed sequence for every real-person portrait: unchanged attributed archival source master (archival male source master for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
-Follow this fixed real-portrait sequence: unchanged attributed original master ->
-explicit head-and-shoulders crop -> identity-preserving ImageGen edit using the exact
-crop as the required input reference -> visual comparison against both the unchanged
-source and the matching canonical leader or commander reference family -> DDS
-conversion. Preserve the person's facial geometry, expression, age, hair, clothing,
-pose, and other recognisable source details while applying a quiet painted background,
-controlled contrast, restrained period brush texture, and readable HOI4 silhouette.
-Keep the ImageGen result in a separate path and never overwrite the source master.
-Reject the edit when it invents hidden facial detail, changes proportions or apparent
-age, beautifies or genericises the subject, replaces clothing or pose without an
-explicit source-backed reason, or can no longer be identified confidently in a direct
-before/after comparison. Never create the person from text, a name, a written
-description, or another person's face, and do not accept a generic oil-paint filter as
-an HOI4 finish.
+Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
-Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
+Preserve the unchanged master as immutable evidence and use the exact crop as the ImageGen identity reference; role-specific canonical references may guide style only and may not supply, replace, or invent the person's face.
+
+Identity preservation is a separate non-compensable pass/fail gate: style quality can never excuse identity drift. Preserve exact facial geometry, asymmetry, age, expression, hair and facial hair, pose, and source-visible clothing, and do not add hidden detail or unsupported clothing or insignia.
+
+Compare the unchanged master, explicit crop, raw ImageGen result, processed 156x210 candidate, and role-specific canonical references at native size and an enlarged inspection scale of at least 4x nearest-neighbour.
+
+Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, or a mere filtered/resized photograph. Raw or merely resized sourced images are evidence only and never final runtime portraits.
+
+Keep the source, crop, raw ImageGen result, processed candidate, audit sheet, and final DDS in distinct paths; never overwrite the source master or silently replace provenance.
+
+Record the source link, attribution, archive, license or public-domain status when available, immutable source hash, crop coordinates, prompt or generation record, role/reference family, candidate hash, audit reviewer and date, separate likeness/style/provenance verdicts, final DDS path, and sprite name in the manifest and handoff. If any source, identity, provenance, or audit evidence is missing or fails, mark the portrait blocked and do not substitute a generated or generic person.
 
 For generated or sourced one-person portraits, the asset handoff must identify the subject's role and gender presentation plus any matching name-pool or character-metadata requirement. Female-presenting portraits must not be paired with male names and should require `female = yes` where a country leader is created directly. Male-presenting portraits must not be paired with female names or `female = yes`. Council, board, office, crowd, and symbolic-institution portraits should keep institutional leader names instead of personal random-name pools.
 
@@ -534,21 +527,23 @@ For every asset package:
    leader, commander, operative, or named officeholder, apply the portrait subject
    ownership gate above and record its evidence. Missing or contradictory source-mode
    or ownership evidence fails closed.
-11. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
-12. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
-13. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
-14. For user-provided assets, record that the image was provided by the user.
-15. Save the original generated, sourced, or provided image as a source PNG.
-16. Crop and resize the image to the target size.
-17. Save a processed PNG preview.
-18. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
-19. Move the DDS into the correct mod folder.
-20. Create or update the asset manifest.
-21. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
-22. Update event docs or asset docs when the parent prompt grants that documentation scope.
-23. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
+11. For every real-person leader, commander, operative, or named-officeholder portrait, run the section 3 sequence exactly and stop before conversion or wiring for the independent audit.
+12. Compare the unchanged master, crop, raw ImageGen result, processed 156x210 candidate, and role-specific references at native and enlarged sizes, and record independent likeness, style, and provenance verdicts; a pending or failed identity gate is `needs_user_review` or `blocked`, never converted or wired.
+13. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
+14. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
+15. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
+16. For user-provided assets, record that the image was provided by the user.
+17. Save the original generated, sourced, or provided image as a source PNG.
+18. Crop and resize non-portrait assets to the target size; real-person portraits require the explicit crop and deterministic 156x210 candidate from section 3.
+19. Save a processed PNG preview.
+20. Convert a real-person portrait to DDS only after an independent audit PASS; convert other processed assets to DDS 32 bit unsigned BGRB 8.8.8.8.
+21. Move the DDS into the correct mod folder.
+22. Create or update the asset manifest.
+23. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
+24. Update event docs or asset docs when the parent prompt grants that documentation scope.
+25. Report all created files, proposed sprite names, final paths, independent audit status, blocked assets, and any handoff uncertainty.
 
-Do not mark assets complete until the DDS files exist, the manifest is written, and the main agent has enough handoff information to wire every sprite without guessing.
+Do not mark assets complete until the DDS files exist, the manifest is written, every real-person portrait has an independent audit PASS, and the main agent has enough handoff information to wire every sprite without guessing.
 
 ## Asset depth from improvement addenda
 
@@ -617,6 +612,8 @@ Each asset entry should include:
 - frame count, frame timing, loop behavior, and anchor point for animated assets
 - static fallback path and animated sheet or frame-sequence path for animated assets
 - source mode and source note for every animation frame when animated
+- for real-person portraits, immutable source-master path and hash, attribution, explicit crop coordinates, raw ImageGen result path and hash, deterministic processor/version with normalized arguments and hash, deterministic 156x210 candidate path and hash, role-specific reference folder and hashes, and native/enlarged comparison-sheet path
+- for real-person portraits, independent reviewer identity and date, proof that the reviewer is not the producer, separate likeness/style/provenance verdicts, and the portrait gate state
 - portrait subject-ownership search terms, roots/files and ids checked, matched owner or
   consumer (or explicit no-match evidence), disposition, and any guarded transfer/
   availability contract
@@ -636,6 +633,8 @@ Before any asset completion claim, create or refresh a row-level coverage crossw
 - the current audit record path, evidence, and row status
 
 For every animation family, also record the purpose and the direction or state semantics that distinguish the family, together with its frame, timing, and loop evidence. Frame totals, live animation-family totals, and registered sprite totals are not coverage proof.
+
+For every real-person portrait row, the current audit record must link the unchanged source master, explicit crop, raw ImageGen result, deterministic 156x210 candidate, matching role-specific references, native/enlarged comparison evidence, independent reviewer identity, and separate likeness/style/provenance PASS; style quality cannot compensate for an identity failure, and DDS conversion or runtime wiring evidence is valid only after PASS.
 
 Audit exact rows, not counts. An extra asset or animation cannot satisfy an absent accepted row unless an explicit accepted design amendment identifies that row and names the replacement; link that amendment in the crosswalk. Any missing source package, runtime registration, live consumer, required state or visibility binding, or current audit record leaves the row incomplete.
 
@@ -1049,20 +1048,20 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 - no upside-down copies
 - no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants
 
-## 21. Country-leader, commander, and operative portraits
+## 21. Country-leader, commander, operative, and named-officeholder portraits
 
-For real people, do not generate or reconstruct an identity with `$imagegen`. Use
-`$imagegen` only to edit an unchanged, attributed source portrait into the HOI4 painted
-finish defined in section 3, with the exact source crop supplied as the required image
-reference and with direct before/after identity review.
+For real country-leader, commander, operative, and named-officeholder portraits, apply the section 3 sequence exactly: unchanged attributed archival source master (archival male source master for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
 Choose the canonical reference family by role before starting:
 
 - country leader: `portraits/leaders/`
 - army or navy commander: `portraits/commanders/`
 - operative: `portraits/operatives/`
+- named officeholder: the canonical family owned by its consuming leader, commander, operative, advisor, or high-command surface
 
-Use an attributed real source image from the internet or a user-provided image. Select and record an explicit head-and-shoulders crop, then apply an identity-preserving HOI4 painted finish while retaining the person's face, expression, age, hair, clothing, pose, and other recognisable source details. Match the vanilla family's quiet painted background, controlled value range, restrained texture, period treatment, and readable silhouette. A raw photograph, simple resize, generic oil-paint filter, face replacement, reconstructed face, or weak likeness is not a finished portrait.
+Use role-specific references as style-family controls only and never as a source for the person's face. Compare the unchanged master, explicit crop, raw ImageGen result, processed 156x210 candidate, and role-specific canonical references at native size and an enlarged inspection scale of at least 4x nearest-neighbour.
+
+Preserve exact facial geometry, asymmetry, age, expression, hair and facial hair, pose, and source-visible clothing. Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, or a mere filtered/resized photograph. Raw or merely resized sourced images are evidence only and never final runtime portraits.
 
 Record:
 
@@ -1070,12 +1069,13 @@ Record:
 - author or archive if available
 - license or public domain status if available
 - original image path
+- immutable source hash, explicit crop coordinates, raw ImageGen result path and hash, deterministic 156x210 candidate hash, matching reference folder and hashes, comparison-sheet path, independent reviewer identity and date, and separate likeness/style/provenance verdicts
 - processed PNG path
 - final DDS path
 
 For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, and controlled contrast. Reject normal-looking, conventionally dressed, or interchangeable fictional leaders. Require culturally coherent absurdity designed for the invented polity without borrowing or distorting sacred objects or traits of a real people. Allow no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
 
-Country-leader, commander, and operative portrait textures are `156x210`. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline; follow their cataloged owning sprite.
+Country-leader, commander, operative, and named-officeholder identity candidates are deterministic `156x210` portraits. Advisor and high-command cards then follow section 21.1's separate native `65x67` dossier pipeline after the shared identity gate. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline; follow their cataloged owning sprite.
 
 ## 21.1 Advisor and high-command portrait icons
 
@@ -1093,10 +1093,7 @@ advisors are limited to truly fictional high-chaos or impossible/supernatural
 entities. Missing or contradictory classification fails closed. For a fictional
 advisor in the allowed class, generate a distinct full-resolution portrait master
 with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a
-local drawing script. For real people, follow the real-person portrait rules above
-and preserve source attribution. Institutional or collective briefs must state
-whether the result is people-free or includes a governing group; never imply that
-invented faces are sourced historical individuals.
+local drawing script. For real people, complete the shared real-person identity gate through an independently approved 156x210 candidate before following this separate dossier-card pipeline, and preserve source attribution. Institutional or collective briefs must state whether the result is people-free or includes a governing group; never imply that invented faces are sourced historical individuals.
 
 Every advisor run requires a repo-contained schema-1 portrait-provenance manifest
 through `--portrait-provenance-manifest`. A manifest may contain several approved
@@ -1488,7 +1485,7 @@ Before finishing, confirm:
 16. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-19. Every real country-leader, commander, and operative portrait has an explicit head-and-shoulders crop, source attribution, identity-preserving HOI4 finish, metadata, visual comparison against its matching canonical portrait family, and recorded subject-ownership search evidence. A reused person also has a guarded transfer/availability contract preventing simultaneous ownership. Commander textures are full `156x210` portraits, never fabricated 50x67 sources.
+19. Every real country-leader, commander, operative, and named-officeholder portrait follows the fail-closed sequence of unchanged attributed archival source master (archival male master for male subjects), explicit head-and-shoulders crop, source-locked identity-preserving ImageGen repaint in the matching HOI4 family, deterministic `156x210` processing, and independent likeness/style/provenance audit by someone other than the producer before DDS conversion or runtime wiring. The audit compares the unchanged master, crop, raw ImageGen result, processed candidate, and role-specific references at native and enlarged sizes, keeps identity as a separate non-compensable gate, records subject-ownership evidence and a guarded transfer contract when reused, and rejects genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, and raw or merely resized sourced images; commander textures are full `156x210` portraits, never fabricated `50x67` sources.
 20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
 22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
