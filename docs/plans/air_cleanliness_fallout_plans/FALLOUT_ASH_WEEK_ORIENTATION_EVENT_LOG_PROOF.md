@@ -2,7 +2,8 @@
 
 Status: dormant additive substrate. The five orientation components remain
 uncredited toward the 660-block release floor until an approved scheduler
-caller, coverage ledger, event details surface, and runtime gate are live.
+caller, coverage ledger, activation gate, and runtime gate are live. The shared
+Event Log detail route is statically proven below.
 
 ## History identity
 
@@ -61,8 +62,31 @@ and uses the approved regional and government-aware orientation vocabulary.
 - No HOI4 process was launched. Runtime rendering and save/reload behavior are
   therefore still unobserved.
 
+## Event Details route
+
+The history row reaches the player-facing detail window through the existing
+generic history path. A click on a history row stores the selected event id,
+history type, date, sequence, payload, and actor in
+`common/scripted_guis/chaosx_scripted_gui_events_log.txt`, then calls
+`events_log_open_history_event_details_entry` in
+`common/scripted_effects/chaosx_events_log_effects.txt`. That effect rebuilds
+the open detail arrays. The detail window is
+`events_log_event_details_window` in `interface/chaosx_events_log_popup.gui`.
+
+The open-detail type helper recognizes `fallout_orientation_log.history_id`
+`9110` as `event_system_event_type.fallout_country_memory`. The history detail
+localisation dispatch recognizes the same id and returns
+`fallout.event_log.orientation.detail`. The scripted selector
+`GetFalloutOrientationEventLogDetail` maps all 45 payload values to dedicated
+localisation keys. The history-name selector returns
+`fallout.event_log.orientation.name` for the same row.
+
+This is a source-level route proof only. No runtime click, payload rendering,
+save reload, or multiplayer observation is claimed because HOI4 was not
+launched.
+
 ## Remaining gates
 
 The orientation caller remains dormant by contract. The full Ash-week block
-coverage, event detail window proof, scheduler activation, and live campaign
-review remain required before this surface can receive release-floor credit.
+coverage, scheduler activation, and live campaign review remain required before
+this surface can receive release-floor credit.
