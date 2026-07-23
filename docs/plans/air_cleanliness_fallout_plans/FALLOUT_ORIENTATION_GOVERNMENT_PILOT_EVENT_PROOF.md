@@ -43,7 +43,7 @@ The human root combines one archetype paragraph with one exact country-memory op
 
 The mapper cannot approve itself. No setter exists for `fallout_orientation_government_row_surface_status`, the regional row approval, the archetype row approval, or the memory row approval. No call to `fallout_orientation_begin_government_archetype` exists outside its helper definition. Neither scheduler activation flag has a setter.
 
-The other 96 region and archetype cells have no government runtime row. No generic row is substituted. Events `74` through `77` have no event-log or event-detail rows and remain uncounted. Defined Ash-week orientation blocks are now 15 of 23. The countable Fallout living-world total remains 0 of 660.
+The other 96 region and archetype cells have no government runtime row. No generic row is substituted. Events `74` through `77` have no caller-owned event receipt. History `9110` supplies their component, branch, and outcome payloads through the shared Event Log and generic Event Details route, but runtime delivery remains unobserved. All 23 Ash-week orientation blocks are defined, remain dormant, and remain uncounted. The countable Fallout living-world total remains 0 of 660.
 
 ## Asset and engine-sensitive evidence
 
@@ -57,7 +57,7 @@ Hearts of Iron IV was not run, as requested. Source inspection proves the event 
 - no regional, archetype, or memory approval setters
 - no government rows for the other 96 cells
 - no orientation caller
-- no event-log or event-detail integration
+- no caller-owned event receipt or runtime Event Log and Event Details delivery proof
 - no complete Ash-week orientation audit
 - successor allocation and player continuation remain unproven
 - the ordinary Fallout scheduler remains inactive

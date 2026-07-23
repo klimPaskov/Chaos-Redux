@@ -46,4 +46,4 @@ The root and result use the dedicated `GFX_report_event_fallout_character_instit
 
 ## Remaining gates
 
-The orientation package remains dormant. It still lacks a proven host-authoritative successor caller, complete nine-region and twelve-archetype manual coverage, a final candidate install surface for every selected country, event-log and event-detail rows, workbook alignment for these new keys, and a completion audit. The read-only event inspector remains blocked by its fixed helper projection ceiling. HOI4 was not launched.
+The orientation package remains dormant. It still lacks a proven host-authoritative successor caller, complete nine-region and twelve-archetype manual coverage, a final candidate install surface for every selected country, caller-owned event-log receipts, workbook alignment for these new keys, and a completion audit. History `9110` and the shared Event Details route are statically wired, but runtime rendering and row delivery remain unobserved. The read-only event inspector remains blocked by its fixed helper projection ceiling. HOI4 was not launched.
