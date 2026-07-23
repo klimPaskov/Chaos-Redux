@@ -54,6 +54,7 @@ bio_lifecycle_prepare_agent_profile = {
 	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
 
@@ -71,6 +72,7 @@ bio_lifecycle_prepare_agent_profile = {
 		set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_agent_profile.anthrax.persistence_mult }
 		set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_agent_profile.anthrax.spread_seed_mult }
 		set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_agent_profile.anthrax.spread_exposed_mult }
+		set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_agent_profile.anthrax.weapon_strength_mult }
 		set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_agent_profile.anthrax.exposed_growth_per_intensity }
 		set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_agent_profile.anthrax.exposed_decline_per_response }
 	}
@@ -88,6 +90,7 @@ bio_lifecycle_prepare_agent_profile = {
 		set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_agent_profile.plague.persistence_mult }
 		set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_agent_profile.plague.spread_seed_mult }
 		set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_agent_profile.plague.spread_exposed_mult }
+		set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_agent_profile.plague.weapon_strength_mult }
 		set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_agent_profile.plague.exposed_growth_per_intensity }
 		set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_agent_profile.plague.exposed_decline_per_response }
 	}
@@ -105,6 +108,7 @@ bio_lifecycle_prepare_agent_profile = {
 		set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_agent_profile.tularemia.persistence_mult }
 		set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_agent_profile.tularemia.spread_seed_mult }
 		set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_agent_profile.tularemia.spread_exposed_mult }
+		set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_agent_profile.tularemia.weapon_strength_mult }
 		set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_agent_profile.tularemia.exposed_growth_per_intensity }
 		set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_agent_profile.tularemia.exposed_decline_per_response }
 	}
@@ -122,6 +126,7 @@ bio_lifecycle_prepare_agent_profile = {
 		set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_agent_profile.smallpox.persistence_mult }
 		set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_agent_profile.smallpox.spread_seed_mult }
 		set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_agent_profile.smallpox.spread_exposed_mult }
+		set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_agent_profile.smallpox.weapon_strength_mult }
 		set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_agent_profile.smallpox.exposed_growth_per_intensity }
 		set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_agent_profile.smallpox.exposed_decline_per_response }
 	}
@@ -318,12 +323,14 @@ bio_lifecycle_finalize_seed_values = {
 	bio_lifecycle_prepare_actor_doctrine_snapshot = yes
 	set_temp_variable = { bio_seed_intensity_final = bio_seed_intensity }
 	multiply_temp_variable = { bio_seed_intensity_final = bio_seed_result_intensity_mult }
+	multiply_temp_variable = { bio_seed_intensity_final = bio_agent_weapon_strength_mult }
 	multiply_temp_variable = { bio_seed_intensity_final = bio_seed_weaponization_mult }
 	multiply_temp_variable = { bio_seed_intensity_final = bio_seed_doctrine_potency_mult }
 	clamp_temp_variable = { var = bio_seed_intensity_final min = constant:bio_lifecycle_bounds.intensity_min max = constant:bio_lifecycle_bounds.intensity_max }
 
 	set_temp_variable = { bio_seed_exposed_share_final = bio_seed_exposed_share }
 	multiply_temp_variable = { bio_seed_exposed_share_final = bio_seed_result_exposed_mult }
+	multiply_temp_variable = { bio_seed_exposed_share_final = bio_agent_weapon_strength_mult }
 	multiply_temp_variable = { bio_seed_exposed_share_final = bio_seed_weaponization_mult }
 	multiply_temp_variable = { bio_seed_exposed_share_final = bio_seed_doctrine_potency_mult }
 	clamp_temp_variable = { var = bio_seed_exposed_share_final min = constant:bio_lifecycle_bounds.exposed_share_min max = constant:bio_lifecycle_bounds.exposed_share_max }
@@ -645,6 +652,7 @@ bio_lifecycle_dispatch_seed = {
 	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_result_intensity_mult = constant:bio_lifecycle_math.one }
@@ -893,6 +901,7 @@ bio_lifecycle_attempt_detection_for_current_agent = {
 	set_temp_variable = { bio_agent_persistence_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_seed_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_spread_exposed_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_agent_weapon_strength_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_agent_exposed_growth_per_intensity = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_agent_exposed_decline_per_response = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_response_surveillance = constant:bio_lifecycle_math.zero }

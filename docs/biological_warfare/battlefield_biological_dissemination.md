@@ -24,14 +24,18 @@ No state is inferred from the headquarters, no estimator or proxy launch hook is
 
 The values below are gameplay tuning for route identity and balance. They are not claims that historical battlefield biological doctrine used standardized HOI4-sized packages. The equipment quantities represent complete route packages within the mod's production scale.
 
-| Agent | Native payload reservation | Command Power | Route potency | Base AI weight | Base success factor |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Anthrax | 50 | 10 | 1.00 | 1.00 | 0.50 |
-| Plague | 25 | 12 | 0.70 | 0.60 | 0.45 |
-| Tularemia | 25 | 10 | 1.35 | 1.50 | 0.55 |
-| Smallpox | 10 | 15 | 0.60 | 0.40 | 0.40 |
+| Agent | Overall severity | Native payload reservation | Command Power | Route potency | Canonical lifecycle strength | Base AI weight | Base success factor |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Tularemia | low | 25 | 10 | 1.00 | 0.85 | 1.50 | 0.50 |
+| Anthrax | moderate | 50 | 10 | 1.00 | 1.00 | 1.00 | 0.50 |
+| Plague | serious | 25 | 12 | 1.00 | 1.15 | 0.60 | 0.50 |
+| Smallpox | severe | 10 | 15 | 1.00 | 1.30 | 0.40 | 0.50 |
 
-Anthrax emphasizes persistent local burden. Plague is less reliable as open-front dissemination but can become a dangerous connected outbreak. Tularemia has the strongest frontline disruption identity. Smallpox is the least suitable battlefield route but can create a long-incubation strategic danger if the seed survives.
+Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
+
+All four agents have the same native battlefield-delivery reliability. The different AI weights describe route preference and strategic willingness, not success probability.
+
+Tularemia emphasizes incapacitation and frontline medical disruption at the lowest overall severity. Anthrax creates a moderate persistent local burden. Plague is a serious regional-spread threat. Smallpox is the severe agent, with the greatest canonical lifecycle strength and long-incubation strategic danger.
 
 The raid parser requires file-local `@` values for native preparation, cooldown, Command Power, success, damage, and essential-equipment fields. Shared lifecycle, history, AI, blowback, and consequence tuning lives in `common/script_constants/biological_battlefield_constants.txt`. Reservation and Command Power values are mirrored deliberately and must remain equal across the two parser surfaces.
 
@@ -44,7 +48,9 @@ The native result callbacks map to the ordinary lifecycle as follows:
 | Failure | No release; full payload lost; attempt evidence and eligible Condemnation recorded | none |
 | Limited success | Weak exact-state release | partial |
 | Success | Effective exact-state release | success |
-| Critical success | Severe exact-state release | catastrophic |
+| Critical success | High-intensity exact-state release | catastrophic operational result |
+
+The internal `catastrophic` result token represents a critical operational delivery multiplier shared by every agent. It does not classify Tularemia, Anthrax, or Plague as severe weapons.
 
 Every releasing outcome calls `bio_resolve_battlefield_dissemination`, which validates the immutable raid agent, exact actor, victim, selected state, active authorization, native debit authority, and result. It then prepares the private `battlefield_dissemination` seed record and calls `bio_lifecycle_dispatch_seed` in the selected state.
 

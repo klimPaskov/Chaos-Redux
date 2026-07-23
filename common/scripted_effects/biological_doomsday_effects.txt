@@ -150,9 +150,9 @@ bio_doomsday_dispatch_current_agent = {
 	set_temp_variable = { bio_doomsday_payload_remaining = bio_doomsday_active_stock }
 	set_temp_variable = { bio_doomsday_targets_remaining = bio_doomsday_target_states^num }
 	set_temp_variable = { bio_doomsday_active_seeded_payload = constant:bio_lifecycle_math.zero }
-	set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.catastrophic }
+	set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.success }
 	if = {
-		limit = { check_variable = { var = bio_doomsday_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		limit = { check_variable = { var = bio_doomsday_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
 		set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.severe }
 	}
 
@@ -293,16 +293,12 @@ bio_doomsday_register_batch_consequence = {
 	set_temp_variable = { bio_doomsday_active_stock = bio_doomsday_stock_smallpox }
 	bio_doomsday_record_current_agent_history = yes
 
-	set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.severe }
+	set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.success }
 	if = {
 		limit = {
-			OR = {
-				check_variable = { bio_doomsday_stock_anthrax > constant:bio_lifecycle_math.zero }
-				check_variable = { bio_doomsday_stock_plague > constant:bio_lifecycle_math.zero }
-				check_variable = { bio_doomsday_stock_smallpox > constant:bio_lifecycle_math.zero }
-			}
+			check_variable = { bio_doomsday_stock_smallpox > constant:bio_lifecycle_math.zero }
 		}
-		set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.catastrophic }
+		set_variable = { bio_last_deliberate_result = constant:bio_lifecycle_result.severe }
 	}
 
 	event_target:bio_doomsday_actor = { save_event_target_as = bio_seed_actor }

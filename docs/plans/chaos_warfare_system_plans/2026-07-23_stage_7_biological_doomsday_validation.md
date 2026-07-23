@@ -15,7 +15,7 @@ Status: implemented source tranche; Stage 7 and the overall Chaos Warfare goal r
 | Domestic warning list | Temporary domestic state array and per-state tooltip loop | implemented |
 | Controlled territory and nearby fronts | Deduplicated controlled-state plus enemy-controlled wartime-border array | implemented |
 | Complete arsenal consumption | Four aggregate stock snapshots and four producer-agnostic negative stockpile effects | implemented |
-| Distinct agents and severity | Catastrophic Anthrax, Plague, and Smallpox; severe Tularemia | implemented |
+| Distinct agents and severity | Low Tularemia, moderate Anthrax, serious Plague, and severe Smallpox; only Smallpox uses the severe result | implemented |
 | Shared biological lifecycle | Every successful state-agent allocation calls `bio_lifecycle_dispatch_seed` | implemented |
 | Maximum evidence and confirmed attribution | Doomsday route profile, force-detection record, public state flags, and one batch consequence | implemented |
 | Severe deaths, contamination, medical load, and spread | Route profile plus agent profile plus doctrine snapshot in the ordinary lifecycle | implemented |
@@ -34,8 +34,11 @@ Status: implemented source tranche; Stage 7 and the overall Chaos Warfare goal r
 | Explicit unrestricted AI route at 0.81 surrender progress | AI may use the decision and evaluates doctrine, arsenal, safety, outbreak, sanctions, and treaty factors. | `ai_will_do` matrix and installed decision analyzer. |
 | World-end condition below the surrender threshold | The last-resort gate succeeds without inventing a surrender value. | `bio_doomsday_actor_is_in_world_end_condition`. |
 | Four-agent arsenal | Every agent is consumed and dispatched separately through one state array. | `bio_doomsday_capture_and_consume_arsenal` and four calls to `bio_doomsday_dispatch_current_agent`. |
-| Tularemia-only arsenal | The last national result is severe and every accepted Tularemia seed validates as severe. | Severe lifecycle result token and doomsday validator branch. |
-| Anthrax, Plague, or Smallpox present | The national result is catastrophic and each accepted non-Tularemia seed validates as catastrophic. | Catastrophic branch in dispatcher and national history calculation. |
+| Tularemia-only arsenal | Every accepted Tularemia seed validates as a successful low-severity release with the 0.85 canonical agent multiplier. | Successful lifecycle result and canonical Tularemia profile. |
+| Anthrax-only arsenal | Every accepted Anthrax seed validates as a successful moderate-severity release with the 1.00 canonical agent multiplier. | Successful lifecycle result and canonical Anthrax profile. |
+| Plague-only arsenal | Every accepted Plague seed validates as a successful serious release with the 1.15 canonical agent multiplier. | Successful lifecycle result and canonical Plague profile. |
+| Smallpox-only arsenal | The last national result is severe and every accepted Smallpox seed validates as severe, with the severe operational multiplier applied after the 1.30 canonical agent multiplier. | Severe lifecycle result and doomsday validator branch. |
+| Mixed arsenal without Smallpox | The last national result remains success; no non-Smallpox agent is relabeled severe or catastrophic. | Successful default in the dispatcher and national history calculation. |
 | Agent stock smaller than state count | One unit reaches each state in array order until the stock reaches zero. | Allocation minimum and remaining-stock clamp. |
 | One enemy state adjacent to several controlled states | The enemy state appears once and cannot receive duplicate array entries from adjacency alone. | `NOT = { is_in_array = ... }` before every front-state insertion. |
 | Controlled and enemy-held border states | Controlled states are marked domestic; non-domestic targets are marked front release. | Exact controller check in `bio_doomsday_mark_current_seed`. |
