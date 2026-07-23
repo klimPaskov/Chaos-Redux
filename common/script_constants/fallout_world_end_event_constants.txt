@@ -1090,6 +1090,13 @@ fallout_event_id = {
 	names_missing_callback = 279
 	names_missing_callback_ai = 280
 	names_missing_cleanup = 281
+	first_safe_birth_human = 282
+	first_safe_birth_ai = 283
+	first_safe_birth_result = 284
+	first_safe_birth_result_ai = 285
+	first_safe_birth_callback = 286
+	first_safe_birth_callback_ai = 287
+	first_safe_birth_cleanup = 288
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1140,7 +1147,10 @@ fallout_event_candidate_pilot = {
 	names_missing_candidate_id = 269
 	names_missing_transaction_key = 710013
 	names_missing_route = 7113
-	upper_bound = 7114
+	first_safe_birth_candidate_id = 282
+	first_safe_birth_transaction_key = 710014
+	first_safe_birth_route = 7114
+	upper_bound = 7115
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -5378,5 +5388,328 @@ fallout_event_269_ai = {
 	memorial_priority = 6
 	clerks_priority = 4
 	strong_modifier = 2
+	upper_bound = 1001
+}
+
+fallout_event_282_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	public_celebration = 1
+	private_protection = 2
+	demographic_campaign = 3
+	elders_rite = 4
+	upper_bound = 5
+}
+
+fallout_event_282_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 21
+	callback_delay_days = 180
+	modifier_days = 240
+	callback_modifier_days = 180
+	upper_bound = 241
+}
+
+fallout_event_282_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 3
+	upper_bound = 301
+}
+
+fallout_event_282_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 120
+	maximum_campaign_day = 420
+	minimum_cohesion = 45
+	minimum_medicine = 35
+	minimum_shelter = 50
+	deaths_score_cap = 150000
+	deaths_to_severity = 0.000666
+	maximum_candidate_severity = 100
+	minimum_viability = 0
+	maximum_viability = 100
+	cohesion_weight = 40
+	medicine_weight = 35
+	shelter_weight = 25
+	deaths_weight = 10
+	weight_divisor = 100
+	public_success_viability = 70
+	public_partial_viability = 47
+	public_success_cohesion = 65
+	public_partial_cohesion = 50
+	private_success_viability = 63
+	private_partial_viability = 40
+	private_success_medicine = 58
+	private_partial_medicine = 43
+	campaign_success_viability = 72
+	campaign_partial_viability = 48
+	campaign_success_recognition = 45
+	campaign_partial_recognition = 30
+	elders_success_viability = 60
+	elders_partial_viability = 38
+	elders_success_cohesion = 62
+	elders_partial_cohesion = 48
+	failure_death_percent = 0.0015
+	callback_failure_death_percent = 0.0008
+	minimum_remaining_people = 1
+	maximum_exposure = 100
+	maximum_generation_counter = 100
+	ai_public_cohesion = 70
+	ai_private_medicine = 55
+	ai_campaign_recognition = 40
+	ai_elders_cohesion = 52
+	upper_bound = 101
+}
+
+fallout_event_282_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	public_food = 3
+	public_medicine = 2
+	public_recognition = 3
+	private_medicine = 2
+	private_shelter = 2
+	private_scrap = 1
+	campaign_food = 2
+	campaign_power = 2
+	campaign_recognition = 5
+	elders_food = 1
+	elders_medicine = 1
+	elders_recognition = 2
+	upper_bound = 6
+}
+
+fallout_event_282_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	public_success_food = -1
+	public_success_medicine = -1
+	public_success_power = 0
+	public_success_recognition = 8
+	public_success_cohesion = 9
+	public_success_stability = 0.04
+	public_success_war_support = 0.01
+	public_success_exposure = 4
+	public_success_manpower = 250
+	public_partial_food = -2
+	public_partial_medicine = -2
+	public_partial_power = 0
+	public_partial_recognition = 3
+	public_partial_cohesion = 2
+	public_partial_stability = 0.01
+	public_partial_war_support = 0
+	public_partial_exposure = 12
+	public_partial_manpower = 100
+	public_failure_food = -3
+	public_failure_medicine = -3
+	public_failure_power = -1
+	public_failure_recognition = -7
+	public_failure_cohesion = -8
+	public_failure_stability = -0.06
+	public_failure_war_support = -0.02
+	public_failure_exposure = 24
+	public_failure_manpower = 0
+
+	private_success_food = 0
+	private_success_medicine = 1
+	private_success_power = -1
+	private_success_recognition = 1
+	private_success_cohesion = 4
+	private_success_stability = 0.02
+	private_success_war_support = 0
+	private_success_exposure = -5
+	private_success_manpower = 250
+	private_partial_food = -1
+	private_partial_medicine = -1
+	private_partial_power = -1
+	private_partial_recognition = -2
+	private_partial_cohesion = 1
+	private_partial_stability = 0
+	private_partial_war_support = 0
+	private_partial_exposure = 4
+	private_partial_manpower = 100
+	private_failure_food = -2
+	private_failure_medicine = -3
+	private_failure_power = -2
+	private_failure_recognition = -6
+	private_failure_cohesion = -5
+	private_failure_stability = -0.04
+	private_failure_war_support = -0.01
+	private_failure_exposure = 20
+	private_failure_manpower = 0
+
+	campaign_success_food = -2
+	campaign_success_medicine = 0
+	campaign_success_power = -1
+	campaign_success_recognition = 11
+	campaign_success_cohesion = 6
+	campaign_success_stability = 0.03
+	campaign_success_war_support = 0.03
+	campaign_success_exposure = 10
+	campaign_success_manpower = 300
+	campaign_partial_food = -3
+	campaign_partial_medicine = -1
+	campaign_partial_power = -2
+	campaign_partial_recognition = 5
+	campaign_partial_cohesion = 1
+	campaign_partial_stability = 0
+	campaign_partial_war_support = 0.02
+	campaign_partial_exposure = 18
+	campaign_partial_manpower = 125
+	campaign_failure_food = -4
+	campaign_failure_medicine = -2
+	campaign_failure_power = -3
+	campaign_failure_recognition = -10
+	campaign_failure_cohesion = -9
+	campaign_failure_stability = -0.07
+	campaign_failure_war_support = -0.03
+	campaign_failure_exposure = 30
+	campaign_failure_manpower = 0
+
+	elders_success_food = -1
+	elders_success_medicine = -1
+	elders_success_power = 0
+	elders_success_recognition = 5
+	elders_success_cohesion = 12
+	elders_success_stability = 0.05
+	elders_success_war_support = 0
+	elders_success_exposure = 2
+	elders_success_manpower = 275
+	elders_partial_food = -2
+	elders_partial_medicine = -2
+	elders_partial_power = 0
+	elders_partial_recognition = 3
+	elders_partial_cohesion = 5
+	elders_partial_stability = 0.02
+	elders_partial_war_support = 0
+	elders_partial_exposure = 9
+	elders_partial_manpower = 125
+	elders_failure_food = -3
+	elders_failure_medicine = -3
+	elders_failure_power = -1
+	elders_failure_recognition = -6
+	elders_failure_cohesion = -11
+	elders_failure_stability = -0.08
+	elders_failure_war_support = -0.02
+	elders_failure_exposure = 26
+	elders_failure_manpower = 0
+
+	callback_success_food = 2
+	callback_success_medicine = 1
+	callback_success_power = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 6
+	callback_success_stability = 0.04
+	callback_success_war_support = 0.01
+	callback_success_exposure = -4
+	callback_success_manpower = 150
+	callback_partial_food = -1
+	callback_partial_medicine = 0
+	callback_partial_power = -1
+	callback_partial_recognition = 1
+	callback_partial_cohesion = -1
+	callback_partial_stability = 0
+	callback_partial_war_support = 0
+	callback_partial_exposure = 8
+	callback_partial_manpower = 50
+	callback_failure_food = -2
+	callback_failure_medicine = -2
+	callback_failure_power = -1
+	callback_failure_recognition = -5
+	callback_failure_cohesion = -6
+	callback_failure_stability = -0.05
+	callback_failure_war_support = -0.02
+	callback_failure_exposure = 20
+	callback_failure_manpower = 0
+	upper_bound = 1001
+}
+
+fallout_event_282_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	public_stability = 0.03
+	public_war_support = 0.01
+	public_consumer_goods = 0.01
+	private_stability = 0.02
+	private_war_support = 0
+	private_consumer_goods = -0.01
+	campaign_stability = 0.01
+	campaign_war_support = 0.03
+	campaign_consumer_goods = 0.02
+	elders_stability = 0.04
+	elders_war_support = 0
+	elders_consumer_goods = 0
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_consumer_goods = -0.01
+	failed_stability = -0.06
+	failed_war_support = -0.02
+	failed_consumer_goods = 0.04
+	upper_bound = 1
+}
+
+fallout_event_282_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9119
+	public_success = 11
+	public_partial = 12
+	public_failure = 13
+	private_success = 21
+	private_partial = 22
+	private_failure = 23
+	campaign_success = 31
+	campaign_partial = 32
+	campaign_failure = 33
+	elders_success = 41
+	elders_partial = 42
+	elders_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_282_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	public_priority = 7
+	private_priority = 5
+	campaign_priority = 6
+	elders_priority = 8
 	upper_bound = 1001
 }

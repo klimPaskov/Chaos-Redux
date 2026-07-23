@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the Names for the Missing tranche, the living-world pilot contains `163`
+After the First Safe Birth tranche, the living-world pilot contains `170`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and `204` through `281`. All remain dormant and uncounted, so
+through `200`, and `204` through `288`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -338,3 +338,14 @@ census and memorial policies with deterministic delayed results, a callback,
 Deaths-backed failure, dedicated modifiers, and authenticated cleanup. The
 documented living-world block total is now `163`, while the countable Fallout
 living-world release-floor total remains `0 of 660`.
+
+## First Safe Birth count correction
+
+The First Safe Birth adds seven dormant country-level event blocks at suffixes
+`282` through `288`. Candidate `282` uses transaction key `710014`, route
+`7114`, and history id `9119`. It freezes Deaths, Cohesion, Medicine, Shelter,
+Recognition, and exposure, then offers four costed generation-change policies
+with deterministic grading, a 21-day result, a 180-day callback, hidden-AI
+parity, Deaths-backed failure, dedicated modifiers, Event Log payloads, and
+authenticated cleanup. The documented living-world block total is now `170`,
+while the countable Fallout living-world release-floor total remains `0 of 660`.

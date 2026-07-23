@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for thirteen
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fourteen
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,10 +61,10 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define thirteen candidate ids, thirteen transaction
-  keys, and thirteen route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define fourteen candidate ids, fourteen transaction
+  keys, and fourteen route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 281, and the hidden companion ranges
+  126, 153 through 200, 204 through 288, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
@@ -136,6 +136,20 @@ current Air Winter receipt and requires low Medicine with an affordable policy.
 The chain has four human and hidden-AI policy lanes, delayed results, callback,
 Deaths-backed failure, fifteen Event Log payloads, dedicated art, and cleanup.
 It remains dormant and uncounted. No HOI4 runtime was launched.
+
+## First Safe Birth correction
+
+The producer now carries the fourteenth reviewed ordinary row. First Safe Birth
+uses country candidate id `282`, transaction key `710014`, route `7114`, and
+event tokens `282` through `288`. Its gate requires the current country row,
+campaign day `120` through `420`, Cohesion at least `45`, Medicine at least
+`35`, Shelter at least `50`, and one affordable generation-change branch. Its
+severity is the clamped Deaths score and its mechanic-pressure field is zero.
+The country Cohesion ledger supplies the state value. The chain freezes Deaths,
+Cohesion, Medicine, Shelter, Recognition, and exposure, then schedules a
+21-day result and 180-day callback with hidden-AI parity. History `9119`, six
+dedicated modifiers, fifteen payloads, cleanup, and dedicated report art are
+statically wired. It remains dormant and uncounted.
 
 ## Names for the Missing correction
 

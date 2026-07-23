@@ -12940,3 +12940,124 @@ country_event = {
 	trigger = { fallout_event_269_cleanup_can_enter = yes }
 	immediate = { fallout_event_269_cleanup = yes }
 }
+
+# Dormant Fallout global-survival chain: The First Safe Birth
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.282
+	title = chaosx.fallout.282.t
+	desc = chaosx.fallout.282.d
+	picture = GFX_report_event_fallout_first_safe_birth
+	is_triggered_only = yes
+	trigger = { fallout_event_282_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.282.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_282_cost.public_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_282_cost.public_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_282_cost.public_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_282_requested_branch = constant:fallout_event_282_branch.public_celebration } fallout_event_282_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.282.a.tt
+		ai_chance = { base = constant:fallout_event_282_ai.public_priority }
+	}
+	option = {
+		name = chaosx.fallout.282.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_282_cost.private_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_282_cost.private_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_282_cost.private_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_282_requested_branch = constant:fallout_event_282_branch.private_protection } fallout_event_282_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.282.b.tt
+		ai_chance = { base = constant:fallout_event_282_ai.private_priority }
+	}
+	option = {
+		name = chaosx.fallout.282.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_282_cost.campaign_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_282_cost.campaign_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_282_cost.campaign_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_282_requested_branch = constant:fallout_event_282_branch.demographic_campaign } fallout_event_282_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.282.c.tt
+		ai_chance = { base = constant:fallout_event_282_ai.campaign_priority }
+	}
+	option = {
+		name = chaosx.fallout.282.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_282_cost.elders_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_282_cost.elders_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_282_cost.elders_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_282_requested_branch = constant:fallout_event_282_branch.elders_rite } fallout_event_282_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.282.d_option.tt
+		ai_chance = { base = constant:fallout_event_282_ai.elders_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.283
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_282_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_282_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.284
+	title = chaosx.fallout.284.t
+	desc = { text = chaosx.fallout.284.public.success.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.public_celebration } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.284.public.partial.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.public_celebration } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.284.public.failure.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.public_celebration } } }
+	desc = { text = chaosx.fallout.284.private.success.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.private_protection } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.284.private.partial.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.private_protection } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.284.private.failure.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.private_protection } } }
+	desc = { text = chaosx.fallout.284.campaign.success.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.demographic_campaign } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.284.campaign.partial.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.demographic_campaign } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.284.campaign.failure.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.demographic_campaign } } }
+	desc = { text = chaosx.fallout.284.elders.success.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.elders_rite } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.284.elders.partial.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.elders_rite } check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.284.elders.failure.d trigger = { check_variable = { fallout_event_282_selected_branch = constant:fallout_event_282_branch.elders_rite } } }
+	picture = GFX_report_event_fallout_first_safe_birth
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_282_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_safe_birth_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.284.a hidden_effect = { fallout_event_282_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.284.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.285
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_282_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_safe_birth_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_282_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.286
+	title = chaosx.fallout.286.t
+	desc = { text = chaosx.fallout.286.success.d trigger = { check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.286.partial.d trigger = { check_variable = { fallout_event_282_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.286.failure.d
+	picture = GFX_report_event_fallout_first_safe_birth
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_safe_birth_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_282_registry_is_current = yes }
+	option = { name = chaosx.fallout.286.a hidden_effect = { fallout_event_282_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.286.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.287
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_safe_birth_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_282_registry_is_current = yes }
+	immediate = { fallout_event_282_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.288
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_282_cleanup_can_enter = yes }
+	immediate = { fallout_event_282_cleanup = yes }
+}

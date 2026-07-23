@@ -11,6 +11,7 @@
 7. `matrices/fallout_event_library_master_matrix.md`
 8. `specs/12_event_content_budget_and_acceptance.md`
 9. `specs/13_reviewed_global_survival_pilots.md`
+10. `specs/14_reviewed_global_survival_generation.md`
 
 
 ## Accepted baseline specs included here
