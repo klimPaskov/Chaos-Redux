@@ -206,9 +206,10 @@ Fallout living-world release-floor total remains `0 of 660`.
 The five orientation components now share Fallout memory history `9110` with
 45 explicit component, branch, and outcome payloads. The writer is idempotent
 per component and transition generation, and it refreshes the shared Event Log
-views after a committed row. The history surface remains dormant and earns no
-release-floor credit until the orientation caller, coverage, event details,
-activation, and runtime gates are approved.
+views after a committed row. The history name, detail type, and generic detail
+window route are statically wired. The history surface remains dormant and
+earns no release-floor credit until the orientation caller, coverage,
+activation, audits, and runtime gates are approved.
 
 ## Triage Wall count correction
 
