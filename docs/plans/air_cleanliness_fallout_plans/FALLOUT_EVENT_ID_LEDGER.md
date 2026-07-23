@@ -422,3 +422,10 @@ hidden-AI parity, Deaths-backed failure, durable urban ledgers, dedicated
 modifiers, Event Log payloads, and authenticated cleanup. The documented
 living-world block total is now `205`, while the countable Fallout living-world
 release-floor total remains `0 of 660`.
+
+## Sealed Warehouse count correction
+
+The Sealed Warehouse adds seven dormant country-level event blocks at suffixes `331` through `337`.
+Candidate `331` uses transaction key `710021`, route `7121`, and history `9126`.
+It follows the closed Working Elevator memory, then offers immediate opening, quarantine inspection, licensed coordinates, or a sealed watch with deterministic grading, a 21-day inventory result, a 180-day warehouse claim callback, hidden-AI parity, Deaths-backed failure, durable salvage ledgers, dedicated modifiers, Event Log payloads, and authenticated cleanup.
+The documented living-world block total is now `219`, while the countable Fallout living-world release-floor total remains `0 of 660`.

@@ -13783,3 +13783,81 @@ country_event = {
 	trigger = { fallout_event_324_cleanup_can_enter = yes }
 	immediate = { fallout_event_324_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.331
+	title = chaosx.fallout.331.t
+	desc = chaosx.fallout.331.d
+	picture = GFX_report_event_fallout_sealed_warehouse
+	is_triggered_only = yes
+	trigger = { fallout_event_331_opening_event_can_enter = yes }
+	option = { name = chaosx.fallout.331.a hidden_effect = { set_temp_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.open_immediately } fallout_event_331_choose_branch = yes } custom_effect_tooltip = chaosx.fallout.331.a.tt }
+	option = { name = chaosx.fallout.331.b hidden_effect = { set_temp_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.inspect_quarantine } fallout_event_331_choose_branch = yes } custom_effect_tooltip = chaosx.fallout.331.b.tt }
+	option = { name = chaosx.fallout.331.c hidden_effect = { set_temp_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.sell_coordinates } fallout_event_331_choose_branch = yes } custom_effect_tooltip = chaosx.fallout.331.c.tt }
+	option = { name = chaosx.fallout.331.d_option hidden_effect = { set_temp_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.leave_sealed } fallout_event_331_choose_branch = yes } custom_effect_tooltip = chaosx.fallout.331.d_option.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.332
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_331_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_331_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.333
+	title = chaosx.fallout.333.t
+	desc = { text = chaosx.fallout.333.open.success.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.open_immediately } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.333.open.partial.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.open_immediately } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.333.open.failure.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.open_immediately } } }
+	desc = { text = chaosx.fallout.333.inspect.success.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.inspect_quarantine } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.333.inspect.partial.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.inspect_quarantine } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.333.inspect.failure.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.inspect_quarantine } } }
+	desc = { text = chaosx.fallout.333.sell.success.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.sell_coordinates } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.333.sell.partial.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.sell_coordinates } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.333.sell.failure.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.sell_coordinates } } }
+	desc = { text = chaosx.fallout.333.leave.success.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.leave_sealed } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.333.leave.partial.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.leave_sealed } check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.333.leave.failure.d trigger = { check_variable = { fallout_event_331_selected_branch = constant:fallout_event_331_branch.leave_sealed } } }
+	picture = GFX_report_event_fallout_sealed_warehouse
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_331_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.sealed_warehouse_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.333.a hidden_effect = { fallout_event_331_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.333.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.334
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_331_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.sealed_warehouse_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_331_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.335
+	title = chaosx.fallout.335.t
+	desc = { text = chaosx.fallout.335.success.d trigger = { check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.335.partial.d trigger = { check_variable = { fallout_event_331_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.335.failure.d
+	picture = GFX_report_event_fallout_sealed_warehouse
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.sealed_warehouse_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_331_registry_is_current = yes }
+	option = { name = chaosx.fallout.335.a hidden_effect = { fallout_event_331_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.335.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.336
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.sealed_warehouse_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_331_registry_is_current = yes }
+	immediate = { fallout_event_331_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.337
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_331_cleanup_can_enter = yes }
+	immediate = { fallout_event_331_cleanup = yes }
+}

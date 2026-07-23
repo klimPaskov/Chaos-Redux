@@ -249,3 +249,12 @@ chain freezes grain, logistics, market, refugee, and spoilage ledgers, uses a
 hidden-AI parity, records history `9125`, and remains dormant and uncounted.
 The dedicated report art and the event-inspector `Transport closed` proof are
 recorded in `FALLOUT_WORKING_ELEVATOR_CHAIN_PROOF.md`.
+
+## Sealed Warehouse correction
+
+The producer now carries the twenty-first reviewed ordinary row.
+The Sealed Warehouse uses country candidate id `331`, transaction key `710021`, route `7121`, and event tokens `331` through `337`.
+Its gate requires the closed Working Elevator memory, campaign timing, Scrap, Medicine, Reclamation, Cohesion, Recognition, and one affordable salvage policy.
+Its severity is the clamped recorded-Deaths score and its mechanic-pressure field is Scrap.
+The chain freezes access, salvage, contamination, legitimacy, and scavenger reputation ledgers, uses a 21-day inventory result and a 180-day warehouse claim callback with hidden-AI parity, records history `9126`, and remains dormant and uncounted.
+The dedicated report art and the event-inspector `Transport closed` proof are recorded in `FALLOUT_SEALED_WAREHOUSE_CHAIN_PROOF.md`.
