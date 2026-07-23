@@ -46,7 +46,7 @@ The component sequence and delayed-result cadence are fixed:
 
 Every result uses the accepted deterministic bands of 70 or more for success, 45 through 69 for partial success, and below 45 for failure. Human and hidden-AI routes use identical costs, scoring, effects, memory, and cleanup. Save recovery preserves the exact generation, transaction, due-day, mode, and event-token identity so an unissued result can issue once and an issued result cannot issue again. Missing regional, archetype, country-memory, state-target, or curated character or institution registry rows refuse orientation with no generic fallback.
 
-The tranche requires six dedicated report assets for the five components and closure. All six assets and their sprite registrations exist. The dormant transaction substrate, the manually written national pilot at `62` through `65`, the exact twelve-memory resource pilot at `70` through `73`, the exact twelve-memory government pilot at `74` through `77`, and the authenticated closure and cleanup events at `82` through `84` are blocked and uncounted. Dedicated localisation exists for the human national, resource, government, and closure events. The other eight blocks, caller, event-log rows, event-detail rows, complete regional and archetype coverage, and registry-backed character component remain absent. No caller may be wired until successor allocation, player continuation, and all required candidate registries are proven. Neither scheduler activation flag may be set by this tranche. The Fallout living-world total remains 0 of 660 until every reserved block is implemented, wired, manually reviewed, logged, detailed, and audited.
+The tranche requires six dedicated report assets for the five components and closure. All six assets and their sprite registrations exist. The dormant transaction substrate, the national pilot at `62` through `65`, the capital-condition pilot at `66` through `69`, the exact twelve-memory resource pilot at `70` through `73`, the exact twelve-memory government pilot at `74` through `77`, the character or institution pilot at `78` through `81`, and the authenticated closure and cleanup events at `82` through `84` are blocked and uncounted. Dedicated localisation exists for all visible component routes, and history `9110` supplies the 45 payloads through the shared Event Log detail route. The caller, complete regional and archetype coverage, exact capital repair approval, and registry-backed character installation remain absent. No caller may be wired until successor allocation, player continuation, and all required candidate registries are proven. Neither scheduler activation flag may be set by this tranche. The Fallout living-world total remains 0 of 660 until every reserved block is implemented, wired, manually reviewed, logged, detailed, and audited.
 
 The dedicated event file was scanned on 2026-07-15 before this reservation. Suffixes `100` through `126` were unused. This reservation does not count as implemented content. A row becomes countable only after final localisation, gameplay effects, AI behavior, memory or closure, cleanup, asset disposition, and manual audit are complete.
 
@@ -196,9 +196,10 @@ living-world release-floor total remains `0 of 660`.
 The capital condition blocks `66` through `69` and the character or institution
 blocks `78` through `81` are now defined in the dedicated Fallout event file.
 The authoritative Ash-week defined-block count is therefore `23` of `23`, but
-all 23 remain dormant and uncounted until callers, event logs, event details,
-complete regional and archetype coverage, candidate installation surfaces,
-manual audits, and the host-authority gate are complete. The countable
+all 23 remain dormant and uncounted until callers, caller-owned event receipts,
+accepted runtime Event Log and Event Details delivery, complete regional and
+archetype coverage, candidate installation surfaces, manual audits, and the
+host-authority gate are complete. The countable
 Fallout living-world release-floor total remains `0 of 660`.
 
 ## Ash-week orientation event-log correction

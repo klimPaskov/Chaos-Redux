@@ -66,7 +66,7 @@ Human events `70` and `72` use `GFX_report_event_fallout_resource_crisis`. The s
 
 This tranche adds no call to `fallout_orientation_begin_immediate_resource_crisis`. It adds no setter for the resource package receipt, any regional, archetype, or memory approval surface, `fallout_event_scheduler_activation_approved`, or `fallout_event_scheduler_active`.
 
-Events `70` through `73` have no event-log rows or event-detail rows. They remain uncounted. After the later government pilot, defined Ash-week orientation blocks are 15 of 23, while countable Fallout living-world blocks remain 0 of 660.
+Events `70` through `73` have no caller-owned event receipt. History `9110` supplies their component, branch, and outcome payloads through the shared Event Log and generic Event Details route, but runtime delivery remains unobserved. All 23 Ash-week orientation blocks are defined and remain uncounted, while countable Fallout living-world blocks remain 0 of 660.
 
 ## Engine-sensitive proof status
 
@@ -78,7 +78,7 @@ The event definitions, event tokens, exact four-day constant, tokenized dispatch
 - no resource capital-asset receipt producer
 - no setters for the regional, archetype, or memory approval surfaces
 - no resource rows for the other 96 region and archetype cells
-- no event-log or event-detail integration
+- no caller-owned event receipt or runtime Event Log and Event Details delivery proof
 - no completion audit for the full Ash-week orientation sequence
 - successor allocation and player continuation remain unproven
 - the ordinary Fallout scheduler remains inactive

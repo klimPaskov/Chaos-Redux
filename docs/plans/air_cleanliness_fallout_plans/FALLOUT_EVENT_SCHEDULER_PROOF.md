@@ -188,7 +188,7 @@ The following work remains blocked or absent:
 - World transition schema 12 authenticates frozen Air Winter rows with an Air-owned producer schema and generation, the frozen live category, accepted specialty buildings, coal, population, building, and supply receipts. Valid rows use exact produced values. Invalid rows use a typed N/A payload and are excluded from country coverage.
 - Structural transaction families and deterministic crisis, routine, and broadcast selection are implemented but dormant. The reviewed candidate pilot producer is present for three ordinary global-survival rows, while the full candidate matrix, living-world event caller, human-choice caller, hidden AI result caller, content-owned cleanup execution, and scheduler debug presentation remain absent.
 - Exact bilateral wrappers and issued-orphan retention are implemented without gameplay callers. Activation remains blocked until reviewed bilateral event content invokes those wrappers and proves its human, hidden AI, stale-subject, delayed-result, and cleanup paths.
-- Fifteen dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted.
+- Twenty-three dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted.
 - Major-arc and relationship candidates fail closed until reviewed rows freeze the complete atomic class-reservation payload.
 - Delayed and bilateral rows do not yet own actor fields, so cross-ledger independent-actor exclusion remains blocked.
 - Pair-family memory is not yet an atomic reciprocal reservation and stale pair-memory rows are not yet pruned.
@@ -204,14 +204,19 @@ The capital condition and first character or institution event surfaces are now
 defined at `chaosx.fallout.66` through `.69` and `chaosx.fallout.78` through
 `.81`. The Ash-week orientation package has 23 defined blocks of 23 reserved
 identities. They remain dormant and uncounted because the host-authoritative
-caller, complete manual coverage, candidate installation audits, event logs,
-event details, and runtime proof are still absent.
+caller, complete manual coverage, candidate installation audits, workbook
+alignment, and runtime proof are still absent. History `9110` and the shared
+Event Log and generic Event Details routes are statically wired, but no
+caller-owned event receipt or runtime delivery proof exists.
 
 The orientation result surface now has a dormant Fallout memory history at
 `9110`. Its 45 payloads distinguish every component, branch, and outcome, and
 the writer rejects duplicate rows for the same component and transition
-generation. This improves observability but does not activate the scheduler
-or add release-floor credit.
+generation. The shared Event Log name, detail, and generic Event Details
+window routes are statically wired. This improves observability but does not
+activate the scheduler or add release-floor credit. Caller-owned event-log
+receipts, complete coverage, workbook alignment, and runtime rendering remain
+unproven.
 
 ## Triage Wall event-surface correction
 

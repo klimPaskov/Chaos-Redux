@@ -195,7 +195,7 @@ Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`
 
 ## B9: living-world scheduler activation
 
-Status: schema-2 dormant transaction integrity, ordinary-opening receipt, and issued bilateral terminalization implemented, gameplay activation blocked
+Status: dormant numerical and transaction-integrity substrate implemented, gameplay activation blocked
 
 Implemented structural proof:
 
@@ -205,7 +205,7 @@ Implemented structural proof:
 - aligned country, generation, and stable-index arrays reject missing, extra, stale, and duplicate rows
 - country runtime rows have separate schema receipts for orientation, arcs, delayed queue, bilateral data, and one fixed ordinary opening
 - five independent orientation components gate ordinary events
-- per-country fatigue slots are initialized, while the last cooldown family provides the hard immediate-repeat veto
+- per-country fatigue slots are initialized, index zero remains fixed at zero, and accepted fatigue decay, issue mutation, scoring, and the hard immediate-repeat veto remain behind the activation gates
 - one generation-bound global allocator issues monotonic ordinary-opening, arc, delayed-result, and bilateral tickets
 - the ordinary receipt owns at most one crisis opening per country, has distinct human and AI tokens, does not consume a major-arc slot, and commits its pending flag last
 - an issued ordinary receipt remains as a blocking tombstone after subject loss. Generic reconciliation cannot clear it or admit a second opening. The exact issued event must consume it or cancel it through the token-authenticated issued wrapper
@@ -220,11 +220,11 @@ Implemented structural proof:
 - the selected-country consumer copies the complete envelope identity, records engine date and day, writes its issued flag last, and emits the tokenized `chaosx.fallout` country event only after that receipt proves current
 - a persisted issued receipt prevents a later coordinator pass from emitting the same ready envelope again. The ordinary consume and issued cancellation wrappers release the fixed receipt atomically. Issued delayed and bilateral terminalizer wrappers consume their envelope internally, so no second acknowledgement is valid. No detached acknowledgement API exists. No event block calls the content-facing wrappers in this tranche
 - one primary frozen registry country reconciles per date and selects one primary row from each family. A proven bilateral pair may also mutate its exact reciprocal row. Recurring structural and selected-identity reads remain linear in those two local ledgers
-- production-only full uniqueness gates are quadratic in each uncapped local ledger. Delayed and bilateral queue caps remain absent
+- production-only full uniqueness gates are quadratic in each uncapped local ledger. Hard caps are three major arcs, eight delayed rows, and six bilateral rows per participant. Recurring reads remain bounded to the selected local ledgers
 - paired runtime-schema-1 and registry-schema-1 rows promote to schema 2 only while dormant, after the map-return, a fully current committed survival ledger, and all preserved runtime fields pass, and only when every later transaction, ticket, history, cleanup, and envelope surface is absent or empty as required
 - a current runtime schema can bind a schema-1 registry only while registry-ready and dormant, with no scheduler error, after the map-return and full survival ledger pass, and after every indexed registry, allocation, and survival row agrees
 - successful registry commit clears the initialization request, so later annexation does not rerun the frozen successor-allocation barrier. Lost owners cannot receive new reservations or dispatch envelopes
-- no daily global candidate pool, candidate selector, call to the ordinary reservation API, event definition, or activation setter exists
+- no daily global candidate pool, reviewed candidate producer, gameplay call to the ordinary reservation API, living-world event definition, content caller, or activation setter exists. The deterministic selector and numerical review lanes remain dormant behind the gates
 - the identity-first transaction stages exact successor and state rows with generation, allocation, region, archetype, country-memory, destructive-phase, and resource-index provenance
 - a malformed uncommitted identity payload can be reset and restaged only during survivor allocation. The error-owned route requires the sole `survival_ledger_incomplete` signature, current planning and allocation proof, and no committed survival or player-continuation receipt
 - the numerical transaction calculates and replays every state and country row from frozen receipts, preserves immutable initial values, and writes the sole global ready flag last
@@ -234,12 +234,16 @@ Implemented structural proof:
 
 Missing release work:
 
-- survival numerical initialization is implemented under the accepted contract. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md) records the exact transaction and static arithmetic cases. Scheduler activation and event content remain absent
-- no candidate selection, event definition, actual human choice content, hidden AI mechanical resolution, content-owned cleanup execution, or scheduler debug presentation exists
+- survival numerical initialization is implemented under the accepted contract. [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md) records the exact transaction and static arithmetic cases. Scheduler activation and ordinary living-world event content remain absent. The dormant Ash-week pilot is tracked in B12
+- no reviewed candidate producer, living-world event definition, human-choice caller, hidden AI result caller, content-owned cleanup execution, or scheduler debug presentation exists. The numerical selector and human or AI review lanes are implemented but dormant
 - bilateral event content and callers remain absent. Human choices, hidden AI resolution, stale-subject cancellation, delayed results, and content-owned cleanup must invoke the exact wrappers and pass review before activation
-- family-fatigue mutation, decay, and scoring remain absent because the accepted specs do not set their magnitudes
-- the five orientation receipts have no implemented Fallout orientation event content
-- reserved suffixes `100` through `126` have no event definitions and count as zero release-floor blocks. Suffixes `123` through `126` are the distinct hidden AI result and callback companions required by the delayed queue contract
+- the accepted family-fatigue mutation, decay, scoring, pressure, cadence, queue-cap, and deterministic tie values are implemented behind the unset gates, but no reviewed content producer can consume them
+- major-arc and relationship candidates remain fail-closed because reviewed rows do not freeze the complete atomic class reservation and reciprocal payload before dispatch
+- the accepted 25-point human-owned war or mission relevance case remains fail-closed because no typed relationship receipt exists
+- pair-family memory is recorded only behind the dormant bilateral path and is not yet an atomic reciprocal reservation with deterministic expiry compaction
+- active-siege recurrence remains fail-closed because Fallout has no typed current-siege producer receipt
+- twenty-three dormant Ash-week orientation pilot, result, closure, and cleanup blocks exist without a caller or complete matrix. They remain uncounted
+- reserved suffixes `100` through `126` have no event definitions and count as zero release-floor blocks. They remain typed reservations only
 - literal lobby-host authority, schema-2 runtime save-load preservation, and multiplayer behavior remain unproven
 
 Both activation flags remain unset. No ordinary Fallout living-world event can pass its eligibility trigger. Full evidence is recorded in `FALLOUT_EVENT_SCHEDULER_PROOF.md`.
@@ -279,11 +283,13 @@ Runtime acceptance remains required for railway topology, supply-node removal, i
 
 ## B12: Ash-week orientation implementation
 
-Status: accepted design, implementation and caller remain blocked
+Status: accepted design with a partial dormant pilot, caller and release remain blocked
 
 The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. Suffixes `62` through `84` are reserved with the accepted visible, hidden AI, result, closure, and cleanup roles. The accepted contract fixes the five-component sequence, 2, 3, 4, 3, and 2 day result delays, deterministic success bands, human and hidden-AI parity, save-recovery identity, missing-registry refusal, six dedicated assets, and non-activation rules.
 
-No matching event, localisation, caller, or asset is implemented. A caller remains forbidden until successor allocation, player continuation, every regional and archetype row, country memory, main-state target, and curated character or institution registry are proven. `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` remain unset. The living-world count remains 0 of 660 until the complete orientation tranche is wired, logged, detailed, manually reviewed, and audited.
+Current implementation evidence defines all twenty-three reserved blocks in `events/fallout_world_end_events.txt`: national orientation `62` through `65`, capital condition `66` through `69`, immediate resource crisis `70` through `73`, government archetype `74` through `77`, character or institution `78` through `81`, and closure and cleanup `82` through `84`. Their shared and pilot-specific localisation is present, and the six dedicated Fallout report sprites are source-reviewed, converted, and registered. History `9110` supplies 45 payloads through the shared Event Log detail route. These blocks remain dormant, have no caller, and earn no release-floor credit. Exact capital repair, complete coverage, and registry-backed character installation remain undefined.
+
+The approved 108-cell orientation matrix has twelve country-memory cells with dormant resource and government rows. The other 96 cells remain source design only. The capital-repair approval surface, resource package receipt producer, government-row approval setter, character or institution registry and install producer, and complete candidate asset package remain unproven. A caller remains forbidden until successor allocation, player continuation, every regional and archetype row, country memory, main-state target, and curated character or institution registry are proven. `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` remain unset. The living-world count remains 0 of 660 until the complete orientation tranche is wired, logged, detailed, manually reviewed, and audited.
 
 ## Design decisions already resolved
 
