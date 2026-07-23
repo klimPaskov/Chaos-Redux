@@ -14,6 +14,7 @@
 10. `specs/14_reviewed_global_survival_generation.md`
 11. `specs/15_reviewed_global_survival_education.md`
 12. `specs/16_reviewed_global_survival_institutions.md`
+13. `specs/17_reviewed_global_survival_family_law.md`
 
 
 ## Accepted baseline specs included here

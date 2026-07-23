@@ -29,6 +29,11 @@ Status: current implementation map, reconciled 2026-07-23. Fallout remains incom
 
 All Fallout event definitions belong in `events/fallout_world_end_events.txt` under `chaosx.fallout`. Fallout is a terminal transition with its own blackout and scheduler. It is not an ordinary super-event. Zombie Apocalypse retains its own ids, files, assets, audio, sprites, and paths. New Fallout work must not borrow them.
 
+The reviewed global-survival pilot currently includes Shelter Marriage Law
+candidate `303` and its dedicated spec, proof, localisation, Event Log, and
+asset package. The current documented pilot total is seventeen rows and 191
+defined blocks, all dormant and outside release-floor credit.
+
 The current Fallout content boundary is dormant by design where the activation gates are unset. Defined blocks, reserved ids, and candidate rows are not release-floor credit until their callers, human and hidden AI paths, effects, memory, cleanup, localisation, assets, and audits are complete.
 
 ## Proof index

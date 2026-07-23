@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixteen
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for seventeen
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,10 +61,10 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixteen candidate ids, sixteen transaction
-  keys, and sixteen route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define seventeen candidate ids, seventeen transaction
+  keys, and seventeen route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 302, and the hidden companion ranges
+  126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger still rejects major-arc and
@@ -193,3 +193,17 @@ mechanic pressure, reserves a three-unit human opening envelope, and uses zero
 visible budget for hidden-AI delayed rows. It writes history `9118`, routes
 result failure at 0.4 percent and callback failure at 0.2 percent through
 Deaths, and remains dormant behind scheduler activation.
+
+## Shelter Marriage Law correction
+
+The producer now carries the seventeenth reviewed ordinary row. Shelter
+Marriage Law uses country candidate id `303`, transaction key `710017`, route
+`7117`, and event tokens `303` through `309`. Its gate requires the closed Empty
+Ward memory, generation count at least two, campaign day `720` through `1500`,
+Cohesion at least `35`, Food at least `20`, Shelter at least `35`, Recognition
+at least `20`, and one affordable family-law policy. Its severity is the
+clamped recorded-Deaths score and its mechanic-pressure field is zero. Cohesion
+supplies the state value and Food supplies the required resource. The chain
+freezes family ledgers, schedules a 42-day result and a 300-day household
+callback with hidden-AI parity, records history `9122`, and remains dormant and
+uncounted.

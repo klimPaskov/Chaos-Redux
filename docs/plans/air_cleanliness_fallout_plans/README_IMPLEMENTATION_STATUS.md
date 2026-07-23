@@ -85,7 +85,7 @@ The live Fallout package includes:
 - schema-2 country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, one fixed ordinary opening, compact arc, delayed-result, reciprocal bilateral, cancellation, cleanup, and routing receipts
 - a generation-bound monotonic ticket allocator, three independent compact-ledger reconciliation cursors, an ordinary receipt reconciler, exact dispatch envelopes, and mirrored issuance receipts
 - exact token-authenticated issued bilateral response, orphan cancellation, and cleanup terminalizers with no detached acknowledgement path
-- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for sixteen ordinary global-survival rows
+- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for seventeen ordinary global-survival rows
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 
@@ -441,3 +441,22 @@ The chain remains dormant and earns no release-floor credit because scheduler
 activation, host authority, save recovery, multiplayer behavior, and runtime
 Event Log delivery remain unobserved. The defined living-world total is now
 `184`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## Shelter Marriage Law family-law tranche
+
+Shelter Marriage Law is implemented as a dormant country-level chain at
+`chaosx.fallout.303` through `.309`. It uses candidate `303`, transaction key
+`710017`, route `7117`, and Event Log history `9122`. Four authored policies
+freeze Cohesion, Food, Shelter, Recognition, generation count, legitimacy,
+integration, fertility, and exposure before a 42-day delayed result. The result
+updates resources, Cohesion, stability, war support, manpower, durable family
+ledgers, policy memory, and timed modifiers, then schedules a 300-day household
+callback. Failure uses the Deaths contract at 0.08 percent, while callback
+failure uses 0.04 percent. Human and hidden-AI lanes share the same delayed
+transaction and cleanup wrappers. Six dedicated timed modifiers, fifteen Event
+Log payloads, localisation, and a dedicated report image are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler
+activation, host authority, save recovery, multiplayer behavior, and runtime
+Event Log delivery remain unobserved. The defined living-world total is now
+`191`, while countable Fallout living-world blocks remain `0 of 660`.

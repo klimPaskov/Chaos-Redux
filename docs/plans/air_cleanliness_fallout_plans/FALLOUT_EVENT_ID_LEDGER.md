@@ -373,3 +373,15 @@ callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event
 Log payloads, and authenticated cleanup. The documented living-world block
 total is now `184`, while the countable Fallout living-world release-floor total
 remains `0 of 660`.
+
+## Shelter Marriage Law count correction
+
+Shelter Marriage Law adds seven dormant country-level event blocks at suffixes
+`303` through `309`. Candidate `303` uses transaction key `710017`, route
+`7117`, and history id `9122`. It follows the closed Empty Ward memory, then
+offers civil, communal, religious, or private family-law policies with
+deterministic grading, a 42-day result, a 300-day household callback,
+hidden-AI parity, Deaths-backed failure, durable family ledgers, dedicated
+modifiers, Event Log payloads, and authenticated cleanup. The documented
+living-world block total is now `191`, while the countable Fallout living-world
+release-floor total remains `0 of 660`.
