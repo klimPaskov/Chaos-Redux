@@ -340,6 +340,13 @@ Elevator is candidate `324`, transaction `710020`, route `7120`, and history
 `Transport closed`, so delayed reachability, host authority, save recovery,
 and multiplayer behavior remain unproven.
 
+## Sealed Warehouse scheduler correction
+
+The reviewed ordinary producer now carries twenty-one rows and the defined living-world event range reaches `337`, with `219` defined blocks.
+The Sealed Warehouse is candidate `331`, transaction `710021`, route `7121`, and history `9126`.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+Its bounded event-inspector request returned `Transport closed`, so delayed reachability, host authority, save recovery, and multiplayer behavior remain unproven.
+
 ## Empty Ward candidate and event correction
 
 The reviewed ordinary candidate producer now carries a sixteenth dormant row

@@ -404,7 +404,7 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.black_start_human }
 				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.black_start_ai }
 				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
-				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.reclamation }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
 				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
 				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_310_transaction.visible_budget_cost }
 				set_temp_variable = { fallout_event_310_candidate_severity = chaos_meter_deaths_country_civilian_total }
@@ -414,7 +414,7 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_severity = fallout_event_310_candidate_severity }
 				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^6 }
 				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
-				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.reclamation }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
 				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
 				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.power }
 				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.power }
@@ -436,7 +436,7 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.first_streetlight_human }
 				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.first_streetlight_ai }
 				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
-				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.recovery }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.soot_retreat }
 				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
 				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_317_transaction.visible_budget_cost }
 				set_temp_variable = { fallout_event_317_candidate_severity = chaos_meter_deaths_country_civilian_total }
@@ -469,7 +469,7 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.working_elevator_human }
 				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.working_elevator_ai }
 				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
-				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.recovery }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.new_states }
 				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.new_states }
 				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_324_transaction.visible_budget_cost }
 				set_temp_variable = { fallout_event_324_candidate_severity = chaos_meter_deaths_country_civilian_total }
@@ -487,6 +487,38 @@ fallout_event_build_pilot_candidate_registries = {
 				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.working_elevator_route }
 				fallout_event_append_pilot_candidate_row = yes
 				clear_temp_variable = fallout_event_324_candidate_severity
+			}
+
+			# The Sealed Warehouse is a country-level salvage and contamination
+			# decision. Its locked-store memory stays separate from state targets.
+			if = {
+				limit = { fallout_event_331_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.sealed_warehouse_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.sealed_warehouse_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.salvage }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.sealed_warehouse_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.sealed_warehouse_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.new_states }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.new_states }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_331_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_331_candidate_severity = chaos_meter_deaths_country_civilian_total }
+				multiply_temp_variable = { fallout_event_331_candidate_severity = constant:fallout_event_331_threshold.deaths_to_severity }
+				clamp_temp_variable = { var = fallout_event_331_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_331_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_survival_current_entries^4 }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_331_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^4 }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.scrap }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.scrap }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.sealed_warehouse_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_331_candidate_severity
 			}
 
 			# Water row. The state trigger proves an existing produced water source,

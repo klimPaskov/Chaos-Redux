@@ -29,12 +29,8 @@ Status: current implementation map, reconciled 2026-07-23. Fallout remains incom
 
 All Fallout event definitions belong in `events/fallout_world_end_events.txt` under `chaosx.fallout`. Fallout is a terminal transition with its own blackout and scheduler. It is not an ordinary super-event. Zombie Apocalypse retains its own ids, files, assets, audio, sprites, and paths. New Fallout work must not borrow them.
 
-The reviewed global-survival pilot currently includes Shelter Marriage Law
-candidate `303`, Black Start candidate `310`, First Streetlight candidate
-`317`, Working Elevator candidate `324`, and their dedicated specs, proofs,
-localisation, Event Log, and asset packages. The current documented pilot
-total is twenty rows and 212 defined blocks, all dormant and outside
-release-floor credit.
+The reviewed global-survival pilot currently includes Shelter Marriage Law candidate `303`, Black Start candidate `310`, First Streetlight candidate `317`, Working Elevator candidate `324`, Sealed Warehouse candidate `331`, and their dedicated specs, proofs, localisation, Event Log, and asset packages.
+The current documented pilot total is twenty-one rows and 219 defined blocks, all dormant and outside release-floor credit.
 
 The current Fallout content boundary is dormant by design where the activation gates are unset. Defined blocks, reserved ids, and candidate rows are not release-floor credit until their callers, human and hidden AI paths, effects, memory, cleanup, localisation, assets, and audits are complete.
 
@@ -52,9 +48,10 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_FIRST_STREETLIGHT_CHAIN_PROOF.md` records the nineteenth First Streetlight candidate, four urban priorities, deterministic delayed result, public maintenance callback, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 - `FALLOUT_WORKING_ELEVATOR_CHAIN_PROOF.md` records the twentieth Working Elevator candidate, four grain-storage priorities, deterministic delayed result, storehouse maintenance callback, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
 
-The historical pilot-count wording above is superseded by the Working Elevator
-correction. The current reviewed total is twenty rows and 212 defined blocks,
-all dormant and outside release-floor credit.
+- `FALLOUT_SEALED_WAREHOUSE_CHAIN_PROOF.md` records the twenty-first Sealed Warehouse candidate, four salvage policies, deterministic delayed result, warehouse claim callback, contamination ledgers, Deaths route, Event Log payloads, dedicated report art, and dormant runtime boundary.
+
+The historical pilot-count wording above is superseded by the Sealed Warehouse correction.
+The current reviewed total is twenty-one rows and 219 defined blocks, all dormant and outside release-floor credit.
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
 - `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.

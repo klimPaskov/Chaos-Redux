@@ -521,3 +521,17 @@ activation, host authority, save recovery, multiplayer behavior, and runtime
 Event Log delivery remain unobserved. The bounded event-inspector request
 returned `Transport closed`. The defined living-world total is now `212`,
 while countable Fallout living-world blocks remain `0 of 660`.
+
+## Sealed Warehouse salvage tranche
+
+The Sealed Warehouse is implemented as a dormant country-level chain at `chaosx.fallout.331` through `.337`.
+It uses candidate `331`, transaction key `710021`, route `7121`, and Event Log history `9126`.
+Four authored policies freeze Scrap, Medicine, Reclamation, Cohesion, Recognition, and five warehouse ledgers before a 21-day delayed inventory result.
+The result updates Medicine, Scrap, Power, Filters, Recognition, Cohesion, Stability, War Support, access, salvage, contamination, legitimacy, and scavenger reputation, then schedules a 180-day warehouse claim callback.
+Failure uses the Deaths contract at 0.02 percent for the result and 0.01 percent for the callback.
+Human and hidden-AI lanes share the same delayed transaction and cleanup wrappers.
+Six dedicated timed modifiers, fifteen Event Log payloads, localisation, and a dedicated report image are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The bounded event-inspector request returned `Transport closed`.
+The defined living-world total is now `219`, while countable Fallout living-world blocks remain `0 of 660`.
