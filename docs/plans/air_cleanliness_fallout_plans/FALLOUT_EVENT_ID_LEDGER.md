@@ -429,3 +429,10 @@ The Sealed Warehouse adds seven dormant country-level event blocks at suffixes `
 Candidate `331` uses transaction key `710021`, route `7121`, and history `9126`.
 It follows the closed Working Elevator memory, then offers immediate opening, quarantine inspection, licensed coordinates, or a sealed watch with deterministic grading, a 21-day inventory result, a 180-day warehouse claim callback, hidden-AI parity, Deaths-backed failure, durable salvage ledgers, dedicated modifiers, Event Log payloads, and authenticated cleanup.
 The documented living-world block total is now `219`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Dead City Permit count correction
+
+The Dead City Permit adds seven dormant country-level event blocks at suffixes `338` through `344`.
+Candidate `338` uses transaction key `710022`, route `7122`, and history `9127`.
+It follows the closed Sealed Warehouse memory, then offers a state expedition, licensed guilds, military seizure, or forbidden entry with deterministic grading, a 28-day permit result, a 210-day city callback, hidden-AI parity, Deaths-backed failure, durable city ledgers, dedicated modifiers, Event Log payloads, dedicated report art, and authenticated cleanup.
+The documented living-world block total is now `226`, while the countable Fallout living-world release-floor total remains `0 of 660`.

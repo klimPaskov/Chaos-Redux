@@ -258,3 +258,12 @@ Its gate requires the closed Working Elevator memory, campaign timing, Scrap, Me
 Its severity is the clamped recorded-Deaths score and its mechanic-pressure field is Scrap.
 The chain freezes access, salvage, contamination, legitimacy, and scavenger reputation ledgers, uses a 21-day inventory result and a 180-day warehouse claim callback with hidden-AI parity, records history `9126`, and remains dormant and uncounted.
 The dedicated report art and the event-inspector `Transport closed` proof are recorded in `FALLOUT_SEALED_WAREHOUSE_CHAIN_PROOF.md`.
+
+## Dead City Permit correction
+
+The producer now carries the twenty-second reviewed ordinary row.
+The Dead City Permit uses country candidate id `338`, transaction key `710022`, route `7122`, and event tokens `338` through `344`.
+Its gate requires the closed Sealed Warehouse memory, a deterministic owned city or large-city dead state, exposure at least `42`, population at least `1,000`, campaign day `730` through `1999`, Scrap, Medicine, Fuel, Recognition, Cohesion, and one affordable expedition policy.
+Its severity is the clamped recorded city exposure and its mechanic-pressure field is the selected state's exposure.
+The chain freezes resource and state ledgers, uses a 28-day permit result and a 210-day city callback with hidden-AI parity, records history `9127`, and remains dormant and uncounted.
+The dedicated report art and the `EVENT_ISSUE_LIMIT` inspector proof are recorded in `FALLOUT_DEAD_CITY_PERMIT_CHAIN_PROOF.md`.
