@@ -1,0 +1,117 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL DOOMSDAY RELEASE TRIGGERS
+# ============================================================================
+# Overview:
+# - Gates the exceptional decision behind an explicit unrestricted route or
+#   extreme use policy and a genuine last-resort condition.
+# - Defines exact eligible domestic and adjacent enemy-front state scopes.
+# - Keeps AI use route-locked and exposes no alternate target, proxy, estimator,
+#   continuous-air hook, or periodic country scan.
+# ============================================================================
+
+bio_doomsday_actor_has_explicit_route_or_extreme_policy = {
+	OR = {
+		cbrn_ai_route_allows_unrestricted_use = yes
+		cbrn_policy_allows_extreme_use = yes
+	}
+}
+
+bio_doomsday_actor_is_in_world_end_condition = {
+	OR = {
+		has_global_flag = world_end
+		AND = {
+			NOT = { has_global_flag = world_end_disabled }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+bio_doomsday_actor_is_in_last_resort_condition = {
+	OR = {
+		surrender_progress > constant:bio_doomsday_gate.surrender_threshold
+		bio_doomsday_actor_is_in_world_end_condition = yes
+	}
+}
+
+bio_doomsday_actor_has_arsenal = {
+	OR = {
+		has_equipment = { anthrax_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+		has_equipment = { plague_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+		has_equipment = { tularemia_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+		has_equipment = { smallpox_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+	}
+}
+
+# State scope with the releasing country as ROOT.
+bio_doomsday_domestic_state_is_eligible = {
+	is_controlled_by = ROOT
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+}
+
+# State scope with the releasing country as ROOT. The engine exposes no exact
+# active-front predicate, so this accepted route uses only a verified wartime
+# border: an eligible neighboring state controlled by a country at war with ROOT.
+bio_doomsday_front_state_is_eligible = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	CONTROLLER = {
+		exists = yes
+		has_war_with = ROOT
+	}
+}
+
+bio_doomsday_actor_has_target = {
+	OR = {
+		any_controlled_state = { bio_doomsday_domestic_state_is_eligible = yes }
+		any_controlled_state = {
+			any_neighbor_state = { bio_doomsday_front_state_is_eligible = yes }
+		}
+	}
+}
+
+bio_doomsday_category_is_visible = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	bio_doomsday_actor_has_explicit_route_or_extreme_policy = yes
+	bio_doomsday_actor_is_in_last_resort_condition = yes
+	bio_doomsday_actor_has_arsenal = yes
+}
+
+bio_doomsday_actor_can_release = {
+	bio_doomsday_category_is_visible = yes
+	bio_doomsday_actor_has_target = yes
+}
+
+bio_doomsday_ai_has_minimum_containment = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+bio_doomsday_ai_has_active_domestic_outbreak = {
+	any_controlled_state = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+}
+
+bio_doomsday_ai_has_large_arsenal = {
+	OR = {
+		has_equipment = { anthrax_bomb_1 > constant:bio_doomsday_gate.high_single_agent_stockpile }
+		has_equipment = { plague_bomb_1 > constant:bio_doomsday_gate.high_single_agent_stockpile }
+		has_equipment = { tularemia_bomb_1 > constant:bio_doomsday_gate.high_single_agent_stockpile }
+		has_equipment = { smallpox_bomb_1 > constant:bio_doomsday_gate.high_single_agent_stockpile }
+	}
+}
+
+bio_doomsday_ai_is_sanction_vulnerable = {
+	check_variable = {
+		var = condemnation_total
+		value = constant:bio_doomsday_gate.high_condemnation_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = condemnation_import_vulnerability
+		value = constant:bio_doomsday_gate.high_import_vulnerability_threshold
+		compare = greater_than_or_equals
+	}
+}

@@ -23,6 +23,7 @@ bio_lifecycle_reset_seed_record = {
 	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_seed_payload_required = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_payload_consumed = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_intensity = constant:bio_lifecycle_math.zero }
@@ -284,6 +285,12 @@ bio_lifecycle_prepare_result_multipliers = {
 		set_temp_variable = { bio_seed_result_intensity_mult = constant:bio_lifecycle_result_mult.partial_seed }
 		set_temp_variable = { bio_seed_result_exposed_mult = constant:bio_lifecycle_result_mult.partial_exposed }
 		set_temp_variable = { bio_seed_result_evidence_mult = constant:bio_lifecycle_result_mult.partial_evidence }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.severe compare = equals } }
+		set_temp_variable = { bio_seed_result_intensity_mult = constant:bio_lifecycle_result_mult.severe_seed }
+		set_temp_variable = { bio_seed_result_exposed_mult = constant:bio_lifecycle_result_mult.severe_exposed }
+		set_temp_variable = { bio_seed_result_evidence_mult = constant:bio_lifecycle_result_mult.severe_evidence }
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.catastrophic compare = equals } }
@@ -662,6 +669,20 @@ bio_lifecycle_dispatch_seed = {
 	if = {
 		limit = { bio_lifecycle_seed_record_is_valid = yes }
 		bio_lifecycle_store_seed_in_current_agent_record = yes
+		if = {
+			limit = {
+				check_variable = { var = bio_seed_batch_condemnation_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.doomsday_release compare = equals }
+				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.doomsday compare = equals }
+			}
+			meta_effect = {
+				text = {
+					set_state_flag = bio_agent_[BIO_AGENT]_probable_condemnation_released
+					set_state_flag = bio_agent_[BIO_AGENT]_confirmed_condemnation_released
+				}
+				BIO_AGENT = "[?bio_active_agent|.0]"
+			}
+		}
 		meta_effect = {
 			text = {
 				if = {
