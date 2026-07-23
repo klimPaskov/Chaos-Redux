@@ -58,6 +58,16 @@ The existing Phase 1 asset covers all five regional openings and their shared re
 
 The Phase 3 furnace opening and result reuse this dedicated registered report asset. The heavy-industry tranche creates no new report image, sprite, audio, source PNG, processed PNG, DDS, or runtime path.
 
+## Filters Fail at Night report-event asset
+
+The Filters Fail at Night opening uses one dedicated fictional shelter interior. Built in ImageGen generation fits because the chain is alternate history and needs a unique technical failure scene rather than a real archive photograph. The source contains no real person, flag, attested symbol, readable text, Zombie visual, reused asset, or audio.
+
+| Asset | Related events | Visual identity | Source mode | Source PNG | Processed PNG | Final DDS | Sprite | Target GFX | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Filters Fail at Night shelter filter failure | `chaosx.fallout.217`, `chaosx.fallout.219` through `chaosx.fallout.222`, and `chaosx.fallout.227` human surfaces | Empty underground shelter filter room at night with torn filter bags and a dead pressure apparatus | Built in ImageGen, fictional alternate history documentary | `source_png/report_events/report_event_fallout_filters_fail_source.png` | `processed_png/report_events/report_event_fallout_filters_fail.png` | `gfx/event_pictures/fallout_filters_fail/report_event_fallout_filters_fail.dds` | `GFX_report_event_fallout_filters_fail` | `interface/fallout_world_end.gfx` | `handed_off` |
+
+The source master is 1370 by 1148 RGB. The report processor created a 210 by 176 RGBA card with grayscale conversion, restrained sepia, grain, a subtle tilt, transparent corners, and a soft shadow. The DDS is one level, uncompressed 32 bit BGRA with alpha. Prompt provenance and the suggested sprite definition are recorded in `prompts/report_event_fallout_filters_fail.md` and `fallout_filters_fail_gfx_handoff.md`.
+
 ### Image generation prompts
 
 #### Air Winter phase 1
