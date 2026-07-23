@@ -535,3 +535,17 @@ Six dedicated timed modifiers, fifteen Event Log payloads, localisation, and a d
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The bounded event-inspector request returned `Transport closed`.
 The defined living-world total is now `219`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## Dead City Permit expedition tranche
+
+The Dead City Permit is implemented as a dormant country-level chain at `chaosx.fallout.338` through `.344`.
+It uses candidate `338`, transaction key `710022`, route `7122`, and Event Log history `9127`.
+The gate selects one deterministic owned city or large-city dead state after the Sealed Warehouse memory and requires exposure, population, resource, cohesion, timing, and affordability thresholds.
+Four authored policies freeze Scrap, Medicine, Fuel, Power, Recognition, Cohesion, and the selected state id before a 28-day delayed permit result.
+The result updates resources, Stability, War Support, reclamation, local supply, exposure, building damage, state memory, and Deaths-backed failure, then schedules a 210-day city callback.
+Human and hidden-AI lanes share the same delayed transaction, Event Log history, and authenticated cleanup wrappers.
+Six dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedicated report image, a manifest, and a GFX handoff are wired.
+
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The bounded event-inspector request returned `EVENT_ISSUE_LIMIT` with 23,001 issues against a fixed ceiling of 20,000 and no artifact.
+The defined living-world total is now `226`, while countable Fallout living-world blocks remain `0 of 660`.

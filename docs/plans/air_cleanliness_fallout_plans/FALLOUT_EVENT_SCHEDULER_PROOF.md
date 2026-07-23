@@ -411,3 +411,10 @@ dedicated timed modifiers, fifteen payloads, the report image, and shared Event
 Log routes are statically wired. The chain remains dormant and earns no
 release-floor credit because activation, host authority, save recovery,
 multiplayer behavior, and runtime Event Log delivery remain unobserved.
+
+## Dead City Permit scheduler correction
+
+The reviewed ordinary producer now carries twenty-two rows and the defined living-world event range reaches `344`, with `226` defined blocks.
+The Dead City Permit is candidate `338`, transaction `710022`, route `7122`, and history `9127`.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+Its bounded read-only event-inspector request returned `EVENT_ISSUE_LIMIT` with 23,001 issues against a fixed ceiling of 20,000 and no artifact, so delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.

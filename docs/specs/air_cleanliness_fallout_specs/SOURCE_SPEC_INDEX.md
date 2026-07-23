@@ -57,6 +57,7 @@
 - `specs/19_reviewed_global_survival_first_streetlight.md`
 - `specs/20_reviewed_global_survival_working_elevator.md`
 - `specs/21_reviewed_global_survival_sealed_warehouse.md`
+- `specs/22_reviewed_global_survival_dead_city_permit.md`
 
 ## Matrices
 

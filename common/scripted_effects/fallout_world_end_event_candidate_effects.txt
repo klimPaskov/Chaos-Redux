@@ -521,6 +521,59 @@ fallout_event_build_pilot_candidate_registries = {
 				clear_temp_variable = fallout_event_331_candidate_severity
 			}
 
+			# The Dead City Permit selects one owned dead-city state. The lowest
+			# native state id breaks exact ties so repeated registry builds stay
+			# deterministic without scanning the world for a second target.
+			set_variable = { fallout_event_338_candidate_state_id = constant:fallout_event_runtime.zero }
+			clear_variable = fallout_event_338_candidate_state_exposure
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_338_dead_city_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_338_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_338_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_338_candidate_state_id = fallout_event_pilot_state_candidate_id }
+					set_variable = { ROOT.fallout_event_338_candidate_state_exposure = fallout_pretransition_air_winter_exposure }
+				}
+			}
+			if = {
+				limit = { fallout_event_338_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.dead_city_permit_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.dead_city_permit_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.salvage }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.dead_city_permit_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.dead_city_permit_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.new_states }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_338_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_338_candidate_severity = chaos_meter_deaths_country_civilian_total }
+				multiply_temp_variable = { fallout_event_338_candidate_severity = constant:fallout_event_338_threshold.deaths_to_severity }
+				clamp_temp_variable = { var = fallout_event_338_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_338_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_338_candidate_state_exposure }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_338_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_338_candidate_state_exposure }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.scrap }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.scrap }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.none }
+				set_temp_variable = { fallout_event_pilot_target = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.dead_city_permit_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_338_candidate_severity
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_338_candidate_state_exposure
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

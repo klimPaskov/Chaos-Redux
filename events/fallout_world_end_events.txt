@@ -13861,3 +13861,117 @@ country_event = {
 	trigger = { fallout_event_331_cleanup_can_enter = yes }
 	immediate = { fallout_event_331_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.338
+	title = chaosx.fallout.338.t
+	desc = chaosx.fallout.338.d
+	picture = GFX_report_event_fallout_dead_city_permit
+	is_triggered_only = yes
+	trigger = { fallout_event_338_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.338.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_338_cost.survey_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_338_cost.survey_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_338_cost.survey_medicine compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.survey_expedition } fallout_event_338_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.338.a.tt
+	}
+	option = {
+		name = chaosx.fallout.338.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_338_cost.license_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_338_cost.license_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_338_cost.license_fuel compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.license_guilds } fallout_event_338_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.338.b.tt
+	}
+	option = {
+		name = chaosx.fallout.338.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_338_cost.military_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_338_cost.military_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_338_cost.military_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.military_seizure } fallout_event_338_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.338.c.tt
+	}
+	option = {
+		name = chaosx.fallout.338.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_338_cost.forbid_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_338_cost.forbid_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_338_cost.forbid_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.forbid_entry } fallout_event_338_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.338.d_option.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.339
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_338_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_338_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.340
+	title = chaosx.fallout.340.t
+	desc = { text = chaosx.fallout.340.survey.success.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.survey_expedition } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.340.survey.partial.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.survey_expedition } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.340.survey.failure.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.survey_expedition } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.340.license.success.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.license_guilds } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.340.license.partial.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.license_guilds } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.340.license.failure.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.license_guilds } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.340.military.success.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.military_seizure } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.340.military.partial.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.military_seizure } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.340.military.failure.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.military_seizure } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.340.forbid.success.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.forbid_entry } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.340.forbid.partial.d trigger = { check_variable = { fallout_event_338_selected_branch = constant:fallout_event_338_branch.forbid_entry } check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.340.forbid.failure.d
+	picture = GFX_report_event_fallout_dead_city_permit
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_338_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.dead_city_permit_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.340.a hidden_effect = { fallout_event_338_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.340.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.341
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_338_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.dead_city_permit_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_338_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.342
+	title = chaosx.fallout.342.t
+	desc = { text = chaosx.fallout.342.success.d trigger = { check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.342.partial.d trigger = { check_variable = { fallout_event_338_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.342.failure.d
+	picture = GFX_report_event_fallout_dead_city_permit
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_338_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.dead_city_permit_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.342.a hidden_effect = { fallout_event_338_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.342.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.343
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_338_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.dead_city_permit_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_338_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.344
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_338_cleanup_can_enter = yes }
+	immediate = { fallout_event_338_cleanup = yes }
+}
