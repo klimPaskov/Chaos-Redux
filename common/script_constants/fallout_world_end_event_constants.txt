@@ -1051,6 +1051,19 @@ fallout_event_id = {
 	door_list_callback = 240
 	door_list_callback_ai = 241
 	door_list_cleanup = 242
+	last_transformer_human = 243
+	last_transformer_ai = 244
+	last_transformer_industry_result = 245
+	last_transformer_hospital_result = 246
+	last_transformer_microgrid_result = 247
+	last_transformer_neighbor_result = 248
+	last_transformer_industry_result_ai = 249
+	last_transformer_hospital_result_ai = 250
+	last_transformer_microgrid_result_ai = 251
+	last_transformer_neighbor_result_ai = 252
+	last_transformer_callback = 253
+	last_transformer_callback_ai = 254
+	last_transformer_cleanup = 255
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1092,7 +1105,10 @@ fallout_event_candidate_pilot = {
 	door_list_candidate_id = 230
 	door_list_transaction_key = 710010
 	door_list_route = 7110
-	upper_bound = 7111
+	last_transformer_candidate_id = 243
+	last_transformer_transaction_key = 710011
+	last_transformer_route = 7111
+	upper_bound = 7112
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -4356,5 +4372,362 @@ fallout_event_230_ai = {
 	war_specialists = 4
 	war_lottery = -1
 	war_refusal = 5
+	upper_bound = 1001
+}
+
+# Dormant Last Transformer power-grid contract. The chain uses the accepted
+# country Power resource and the durable state Supply Access row. It never
+# invents a specialized power building or activates the scheduler.
+fallout_event_243_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	cannibalize_industrial_line = 1
+	protect_hospital_power = 2
+	decentralize_microgrids = 3
+	request_neighbor_technicians = 4
+	upper_bound = 5
+}
+
+fallout_event_243_building_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	civilian = 1
+	military = 2
+	upper_bound = 3
+}
+
+fallout_event_243_partner = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_power = 25
+	minimum_reclamation = 20
+	upper_bound = 26
+}
+
+fallout_event_243_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 10
+	callback_delay_days = 120
+	industrial_modifier_days = 180
+	hospital_modifier_days = 150
+	microgrid_modifier_days = 240
+	neighbor_modifier_days = 120
+	grid_failure_modifier_days = 180
+	upper_bound = 241
+}
+
+fallout_event_243_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 500000
+	callback_transaction_key_offset = 600000
+	visible_budget_cost = 3
+	upper_bound = 600001
+}
+
+fallout_event_243_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_exposure = 20
+	maximum_power = 55
+	minimum_reclamation = 15
+	minimum_infrastructure = 1
+	minimum_industry = 1
+	minimum_population = 100
+	infrastructure_score_multiplier = 20
+	industry_score_multiplier = 10
+	auxiliary_score_multiplier = 10
+	infrastructure_priority_weight = 4
+	industry_priority_weight = 3
+	auxiliary_priority_weight = 1
+	viability_minimum = 0
+	viability_maximum = 100
+	power_weight = 30
+	supply_weight = 20
+	infrastructure_weight = 15
+	industry_weight = 10
+	medicine_weight = 5
+	reclamation_weight = 10
+	shelter_weight = 5
+	recognition_weight = 5
+	auxiliary_load_penalty = 10
+	exposure_penalty = 20
+	weight_divisor = 100
+	industry_civilian_bonus = 10
+	industry_military_bonus = 6
+	hospital_medicine_weight = 20
+	microgrid_scrap_weight = 20
+	microgrid_reclamation_weight = 10
+	neighbor_recognition_weight = 15
+	neighbor_power_weight = 10
+	neighbor_reclamation_weight = 10
+	industry_success_viability = 58
+	industry_partial_viability = 38
+	hospital_success_viability = 62
+	hospital_partial_viability = 42
+	microgrid_success_viability = 60
+	microgrid_partial_viability = 40
+	neighbor_success_viability = 60
+	neighbor_partial_viability = 40
+	industry_failure_death_percent = 0.0004
+	hospital_failure_death_percent = 0.0006
+	microgrid_failure_death_percent = 0.0003
+	neighbor_failure_death_percent = 0.0002
+	minimum_power = 5
+	minimum_remaining_people = 100
+	upper_bound = 101
+}
+
+fallout_event_243_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	industry_scrap = 0
+	industry_power = 2
+	hospital_medicine = 4
+	hospital_power = 5
+	microgrid_power = 4
+	microgrid_scrap = 6
+	neighbor_power = 3
+	neighbor_recognition = 4
+	upper_bound = 7
+}
+
+fallout_event_243_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	industry_success_power = 12
+	industry_success_scrap = 5
+	industry_success_recognition = 0
+	industry_success_cohesion = 0
+	industry_success_supply = 4
+	industry_success_exposure = 0
+	industry_success_reclamation = 3
+	industry_partial_power = 7
+	industry_partial_scrap = 3
+	industry_partial_recognition = -2
+	industry_partial_cohesion = 0
+	industry_partial_supply = 1
+	industry_partial_exposure = 0
+	industry_partial_reclamation = 0
+	industry_failure_power = 2
+	industry_failure_scrap = 1
+	industry_failure_recognition = 0
+	industry_failure_cohesion = 0
+	industry_failure_supply = -5
+	industry_failure_exposure = 3
+	industry_failure_reclamation = -3
+	industry_failure_building_damage = 1
+
+	hospital_success_power = 0
+	hospital_success_medicine = 0
+	hospital_success_recognition = 6
+	hospital_success_cohesion = 0
+	hospital_success_supply = 2
+	hospital_success_exposure = 0
+	hospital_success_shelter = 2
+	hospital_partial_power = 0
+	hospital_partial_medicine = 0
+	hospital_partial_recognition = 2
+	hospital_partial_cohesion = 0
+	hospital_partial_supply = -1
+	hospital_partial_exposure = 0
+	hospital_partial_shelter = 1
+	hospital_failure_power = 0
+	hospital_failure_medicine = -2
+	hospital_failure_recognition = -5
+	hospital_failure_cohesion = 0
+	hospital_failure_supply = -5
+	hospital_failure_exposure = 2
+	hospital_failure_shelter = 0
+
+	microgrid_success_power = 8
+	microgrid_success_scrap = 0
+	microgrid_success_recognition = 3
+	microgrid_success_cohesion = 0
+	microgrid_success_supply = 6
+	microgrid_success_reclamation = 6
+	microgrid_success_adaptation = 0
+	microgrid_success_shelter = 2
+	microgrid_partial_power = 4
+	microgrid_partial_scrap = 0
+	microgrid_partial_recognition = 1
+	microgrid_partial_cohesion = 0
+	microgrid_partial_supply = 2
+	microgrid_partial_reclamation = 2
+	microgrid_partial_adaptation = 0
+	microgrid_partial_shelter = 0
+	microgrid_failure_power = 0
+	microgrid_failure_scrap = 0
+	microgrid_failure_recognition = 0
+	microgrid_failure_cohesion = 0
+	microgrid_failure_supply = -6
+	microgrid_failure_reclamation = -4
+	microgrid_failure_adaptation = 0
+	microgrid_failure_exposure = 4
+	microgrid_failure_shelter = 0
+	microgrid_failure_building_damage = 1
+
+	neighbor_success_power = 9
+	neighbor_success_recognition = 2
+	neighbor_success_cohesion = 0
+	neighbor_success_supply = 4
+	neighbor_success_reclamation = 4
+	neighbor_partial_power = 5
+	neighbor_partial_recognition = -2
+	neighbor_partial_cohesion = 0
+	neighbor_partial_supply = 1
+	neighbor_partial_reclamation = 0
+	neighbor_failure_power = 0
+	neighbor_failure_recognition = -5
+	neighbor_failure_cohesion = 0
+	neighbor_failure_supply = -3
+	neighbor_failure_reclamation = 0
+
+	callback_success_power = 0
+	callback_success_recognition = 0
+	callback_success_cohesion = 0
+	callback_success_supply = 2
+	callback_success_reclamation = 2
+	callback_partial_power = 0
+	callback_partial_recognition = 0
+	callback_partial_cohesion = 0
+	callback_partial_supply = 0
+	callback_failure_power = 0
+	callback_failure_recognition = 0
+	callback_failure_cohesion = 0
+	callback_failure_supply = -3
+	callback_failure_reclamation = -1
+	upper_bound = 101
+}
+
+fallout_event_243_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	industrial_stability = 0.02
+	industrial_production = 0.04
+	industrial_supply = -0.04
+	hospital_stability = 0.03
+	hospital_consumer_goods = -0.02
+	hospital_supply = 0.03
+	microgrid_stability = 0.01
+	microgrid_local_supplies = 0.04
+	microgrid_supply = -0.02
+	neighbor_stability = 0.01
+	neighbor_trade = 0.05
+	neighbor_supply = 0.02
+	failure_stability = -0.04
+	failure_local_supplies = -0.05
+	failure_production = -0.03
+	upper_bound = 1
+}
+
+fallout_event_243_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9116
+	industry_success = 11
+	industry_partial = 12
+	industry_failure = 13
+	hospital_success = 21
+	hospital_partial = 22
+	hospital_failure = 23
+	microgrid_success = 31
+	microgrid_partial = 32
+	microgrid_failure = 33
+	neighbor_success = 41
+	neighbor_partial = 42
+	neighbor_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_243_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	success_bonus = 8
+	partial_bonus = 3
+	invalid_score = -1000
+	low_power_threshold = 30
+	low_power_industry = 6
+	low_power_hospital = 8
+	low_power_microgrid = 4
+	low_power_neighbor = 2
+	high_exposure_threshold = 65
+	high_exposure_industry = -3
+	high_exposure_hospital = 4
+	high_exposure_microgrid = 3
+	high_exposure_neighbor = 2
+	war_industry = 3
+	war_hospital = 2
+	war_microgrid = 4
+	war_neighbor = -2
+	continuity_industry = 4
+	continuity_hospital = 5
+	bunker_hospital = 6
+	bunker_microgrid = 4
+	warlord_industry = 5
+	warlord_neighbor = -3
+	food_compact_hospital = 4
+	food_compact_microgrid = 3
+	maritime_neighbor = 5
+	quarantine_hospital = 7
+	quarantine_neighbor = 2
+	scavenger_industry = 6
+	scavenger_microgrid = 5
+	nomad_neighbor = 6
+	nomad_industry = -2
+	machine_microgrid = 8
+	machine_neighbor = 4
+	technate_industry = 5
+	technate_microgrid = 8
+	mutant_microgrid = 5
+	mutant_neighbor = 4
+	religious_hospital = 5
+	religious_industry = 2
+	recognition_threshold = 35
+	recognition_neighbor = 4
+	prior_memory_bonus = 5
+	single_factory_penalty = -8
+	single_factory_bonus = 2
+	dockyard_bonus = 2
 	upper_bound = 1001
 }

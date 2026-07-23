@@ -16,6 +16,11 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_230_candidate_destination_state_id
 	clear_variable = fallout_event_230_candidate_destination_exposure
 	clear_variable = fallout_event_230_candidate_source_exposure_floor
+	clear_variable = fallout_event_243_candidate_state_id
+	clear_variable = fallout_event_243_candidate_supply
+	clear_variable = fallout_event_243_candidate_priority
+	clear_variable = fallout_event_243_candidate_exposure
+	clear_variable = fallout_event_243_candidate_phase
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -602,6 +607,109 @@ fallout_event_build_pilot_candidate_registries = {
 			}
 			clear_temp_variable = fallout_event_pilot_door_list_destination
 			clear_variable = fallout_event_pilot_door_list_source
+
+			# The Last Transformer row freezes one state with a live Supply Access
+			# receipt, operational infrastructure, and an operating factory. The
+			# authored target priority wins, then the lowest native state id breaks
+			# an exact tie so repeated registry builds are stable.
+			set_variable = { fallout_event_243_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_243_candidate_supply = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_243_candidate_priority = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_243_candidate_exposure = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_243_candidate_phase = constant:fallout_event_air_winter_phase.phase_zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_last_transformer_state_is_current = yes
+					}
+					set_temp_variable = { fallout_event_243_state_priority = non_damaged_building_level@infrastructure }
+					multiply_temp_variable = { fallout_event_243_state_priority = constant:fallout_event_243_threshold.infrastructure_priority_weight }
+					set_temp_variable = { fallout_event_243_industry_priority = non_damaged_building_level@industrial_complex }
+					multiply_temp_variable = { fallout_event_243_industry_priority = constant:fallout_event_243_threshold.industry_priority_weight }
+					add_to_temp_variable = { fallout_event_243_state_priority = fallout_event_243_industry_priority }
+					set_temp_variable = { fallout_event_243_industry_priority = non_damaged_building_level@arms_factory }
+					multiply_temp_variable = { fallout_event_243_industry_priority = constant:fallout_event_243_threshold.industry_priority_weight }
+					add_to_temp_variable = { fallout_event_243_state_priority = fallout_event_243_industry_priority }
+					set_temp_variable = { fallout_event_243_industry_priority = non_damaged_building_level@air_base }
+					multiply_temp_variable = { fallout_event_243_industry_priority = constant:fallout_event_243_threshold.auxiliary_priority_weight }
+					add_to_temp_variable = { fallout_event_243_state_priority = fallout_event_243_industry_priority }
+					set_temp_variable = { fallout_event_243_industry_priority = non_damaged_building_level@dockyard }
+					multiply_temp_variable = { fallout_event_243_industry_priority = constant:fallout_event_243_threshold.auxiliary_priority_weight }
+					add_to_temp_variable = { fallout_event_243_state_priority = fallout_event_243_industry_priority }
+					clamp_temp_variable = { var = fallout_event_243_state_priority min = constant:fallout_event_243_threshold.viability_minimum max = constant:fallout_event_243_threshold.viability_maximum }
+					if = {
+						limit = {
+							OR = {
+								check_variable = { fallout_event_243_candidate_priority = constant:fallout_event_runtime.zero }
+								check_variable = { var = fallout_event_243_state_priority value = ROOT.fallout_event_243_candidate_priority compare = greater_than }
+								AND = {
+									check_variable = { var = fallout_event_243_state_priority value = ROOT.fallout_event_243_candidate_priority compare = equals }
+									check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_243_candidate_state_id compare = less_than }
+								}
+							}
+						}
+						set_variable = { ROOT.fallout_event_243_candidate_state_id = fallout_event_pilot_state_candidate_id }
+						set_variable = { ROOT.fallout_event_243_candidate_supply = fallout_state_supply_access_current }
+						set_variable = { ROOT.fallout_event_243_candidate_priority = fallout_event_243_state_priority }
+						set_variable = { ROOT.fallout_event_243_candidate_exposure = fallout_pretransition_air_winter_exposure }
+						set_variable = { ROOT.fallout_event_243_candidate_phase = air_winter_phase }
+					}
+					clear_temp_variable = fallout_event_243_state_priority
+					clear_temp_variable = fallout_event_243_industry_priority
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { fallout_event_243_candidate_state_id > constant:fallout_event_runtime.zero }
+					OR = {
+						AND = {
+							check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_243_cost.industry_scrap compare = greater_than_or_equals }
+							check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.industry_power compare = greater_than_or_equals }
+						}
+						AND = {
+							check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_243_cost.hospital_medicine compare = greater_than_or_equals }
+							check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.hospital_power compare = greater_than_or_equals }
+						}
+						AND = {
+							check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.microgrid_power compare = greater_than_or_equals }
+							check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_243_cost.microgrid_scrap compare = greater_than_or_equals }
+						}
+						AND = {
+							check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.neighbor_power compare = greater_than_or_equals }
+							check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_243_cost.neighbor_recognition compare = greater_than_or_equals }
+						}
+					}
+				}
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.last_transformer_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.last_transformer_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.power }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.last_transformer_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.last_transformer_ai }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_243_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.power }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_survival_current_entries^6 }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_survival_resource.power }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_243_candidate_exposure }
+				set_temp_variable = { fallout_event_pilot_severity_source = fallout_event_243_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_243_candidate_priority }
+				set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_243_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = fallout_event_243_candidate_phase }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_243_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.last_transformer_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_variable = fallout_event_243_candidate_state_id
+			clear_variable = fallout_event_243_candidate_supply
+			clear_variable = fallout_event_243_candidate_priority
+			clear_variable = fallout_event_243_candidate_exposure
+			clear_variable = fallout_event_243_candidate_phase
 
 			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }

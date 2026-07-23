@@ -1,0 +1,149 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THE LAST TRANSFORMER TRIGGERS
+# ============================================================================
+# State and receipt authentication for the dormant power-grid pilot.
+
+fallout_event_pilot_last_transformer_state_is_current = {
+	owner = {
+	fallout_event_timeline_phase_receipt_is_current = yes
+		OR = {
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.first_season }
+			check_variable = { global.fallout_event_current_phase = constant:fallout_event_phase.first_winter_year }
+		}
+		check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_threshold.minimum_power compare = greater_than_or_equals }
+		check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_threshold.maximum_power compare = less_than }
+		NOT = { has_country_flag = fallout_event_243_chain_committed }
+		NOT = { has_country_flag = fallout_event_243_memory_transformer_from_the_line }
+		NOT = { has_country_flag = fallout_event_243_memory_factory_stripped_for_a_weak_grid }
+		NOT = { has_country_flag = fallout_event_243_memory_factory_lost_with_the_transformer }
+		NOT = { has_country_flag = fallout_event_243_memory_protected_clinical_circuit }
+		NOT = { has_country_flag = fallout_event_243_memory_ward_by_ward_power }
+		NOT = { has_country_flag = fallout_event_243_memory_darkened_wards }
+		NOT = { has_country_flag = fallout_event_243_memory_feeder_councils }
+		NOT = { has_country_flag = fallout_event_243_memory_uneven_microgrids }
+		NOT = { has_country_flag = fallout_event_243_memory_burned_local_feeders }
+		NOT = { has_country_flag = fallout_event_243_memory_technician_compact }
+		NOT = { has_country_flag = fallout_event_243_memory_borrowed_switchgear }
+		NOT = { has_country_flag = fallout_event_243_memory_crew_arrived_too_late }
+	}
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = fallout_pretransition_air_winter_exposure
+	has_variable = fallout_pretransition_air_winter_reclamation
+	check_variable = { state_population_k > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_pretransition_air_winter_exposure > constant:fallout_event_243_threshold.minimum_exposure }
+	check_variable = { fallout_pretransition_air_winter_reclamation > constant:fallout_event_243_threshold.minimum_reclamation }
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_243_threshold.minimum_infrastructure compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_243_threshold.minimum_industry compare = greater_than_or_equals }
+		check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_243_threshold.minimum_industry compare = greater_than_or_equals }
+	}
+	NOT = { has_state_flag = fallout_event_243_transformer_registry_committed }
+	owner = {
+		check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_threshold.maximum_power compare = less_than }
+		OR = {
+			AND = {
+				check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_243_cost.industry_scrap compare = greater_than_or_equals }
+				check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.industry_power compare = greater_than_or_equals }
+			}
+			AND = {
+				check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_243_cost.hospital_medicine compare = greater_than_or_equals }
+				check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.hospital_power compare = greater_than_or_equals }
+			}
+			AND = {
+				check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.microgrid_power compare = greater_than_or_equals }
+				check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_243_cost.microgrid_scrap compare = greater_than_or_equals }
+			}
+			AND = {
+				check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_243_cost.neighbor_power compare = greater_than_or_equals }
+				check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_243_cost.neighbor_recognition compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+fallout_event_243_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_243_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_243_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_243_target_to_check = {
+		set_temp_variable = { fallout_event_243_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_last_transformer_state_is_current = yes
+	}
+	check_variable = { fallout_event_243_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_243_factory_selection_is_current = {
+	OR = {
+		NOT = { check_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.cannibalize_industrial_line } }
+		AND = {
+			check_variable = { fallout_event_243_requested_branch = constant:fallout_event_243_branch.cannibalize_industrial_line }
+			var:fallout_event_dispatch_issued_target = {
+				OR = {
+					check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_runtime.zero compare = greater_than }
+					check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_runtime.zero compare = greater_than }
+				}
+			}
+		}
+	}
+}
+
+fallout_event_243_transformer_registry_is_current = {
+	has_variable = fallout_event_243_transformer_state_id
+	has_variable = fallout_event_243_registry_generation
+	has_variable = fallout_event_243_registry_owner
+	check_variable = { fallout_event_243_transformer_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_243_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_243_registry_owner value = ROOT compare = equals }
+	set_temp_variable = { fallout_event_243_registry_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_243_transformer_state_id = {
+		set_temp_variable = { fallout_event_243_registry_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		has_state_flag = fallout_event_243_transformer_registry_committed
+		fallout_survival_state_identity_row_is_current = yes
+		fallout_survival_state_resource_row_is_durable = yes
+		fallout_state_supply_access_row_is_current = yes
+		check_variable = { fallout_survival_state_owner value = ROOT compare = equals }
+		check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+		check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	}
+	check_variable = { fallout_event_243_registry_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_243_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_243_opening_target_is_current = yes
+}
+
+fallout_event_243_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_243_opening_target_is_current = yes
+}
+
+fallout_event_243_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_243_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_243_branch.upper_bound }
+	fallout_event_243_transformer_registry_is_current = yes
+}
+
+fallout_event_243_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.last_transformer_cleanup }
+	fallout_event_243_transformer_registry_is_current = yes
+}

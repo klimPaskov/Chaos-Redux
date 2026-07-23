@@ -293,3 +293,28 @@ engine-sensitive limits are recorded in
 `FALLOUT_DOOR_LIST_CHAIN_PROOF.md` and
 `FALLOUT_DOOR_LIST_IMPLEMENTATION_HANDOFF.md`. Countable living-world blocks
 remain `0 of 660`.
+
+## Last Transformer surface correction
+
+The dormant Last Transformer chain is implemented at
+`chaosx.fallout.243` through `.255`. It uses candidate `243`, transaction
+key `710011`, route `7111`, and Event Log history `9116`. Its candidate
+producer requires a current produced Air Winter state snapshot, durable
+Supply Access, repairable infrastructure, an operational civilian or
+military factory, exposure above `20`, reclamation above `15`, and Power
+below `55`. The state priority and neighbouring-AI selection are deterministic
+with stable id tie breaks.
+
+The four human branches and hidden-AI parity lane freeze resource, state,
+building, partner, viability, and outcome inputs before reserving one delayed
+result at exactly 10 days. Results apply branch-specific state Supply Access,
+Air Winter, resource, infrastructure, memory, timed modifier, and Deaths
+effects. A single callback is reserved at exactly 120 days, then the
+authenticated result and callback receipts are released by cleanup. The
+dedicated report image is registered as
+`GFX_report_event_fallout_last_transformer`.
+
+This chain is still dormant and earns no release-floor credit. The candidate
+producer has no activation caller, host authority remains unproven, and no
+Hearts of Iron IV runtime was launched. Countable Fallout living-world blocks
+remain `0 of 660`. The defined living-world total is `124`.

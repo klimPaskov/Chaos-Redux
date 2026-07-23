@@ -265,3 +265,25 @@ callback with authenticated cleanup. It remains dormant and uncounted because
 the scheduler activation gates, host proof, and runtime state-target proof are
 still open. The documented living-world block total is now `111` and the
 countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Last Transformer count correction
+
+The Last Transformer power-grid reservation adds thirteen dormant event
+blocks at suffixes `243` through `255`. The candidate row is `243`,
+transaction key `710011`, route `7111`, and history id `9116`. The chain
+selects one current state with a produced Air Winter snapshot, durable Supply
+Access, repairable infrastructure, an operational civilian or military
+factory, exposure above `20`, reclamation above `15`, and Power below `55`.
+Priority is deterministic from infrastructure, industry, airbase, and
+dockyard evidence with lowest state id as the tie break. A neighbouring AI
+country is selected by Power plus its highest owned-state reclamation, with
+lowest country id as the tie break.
+
+The human and hidden-AI lanes share four costed plans, one delayed result at
+exactly ten days, branch-specific viability and outcome bands, Deaths-backed
+failure handling, one callback at exactly 120 days, Event Log payloads, timed
+country modifiers, and authenticated cleanup. It remains dormant and
+uncounted because scheduler activation, host proof, and runtime state-target
+proof are still open. The documented living-world block total is now `124`
+and the countable Fallout living-world release-floor total remains `0 of
+660`.
