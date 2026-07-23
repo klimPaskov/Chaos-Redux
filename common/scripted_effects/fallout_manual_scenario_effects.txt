@@ -426,6 +426,9 @@ fallout_manual_on_native_nuke_observed = {
 }
 
 # Supported scope: STATE
+# The verified native-strike consequence removes a direct 90 to 95 percent
+# band from the prestrike state population. The later standard rewrite is
+# idempotent because it requests only the remaining grade-specific delta.
 fallout_manual_apply_state_aggregate_consequence = {
 	set_temp_variable = { fallout_manual_additional_state_strikes = fallout_manual_native_strike_count }
 	subtract_from_temp_variable = { fallout_manual_additional_state_strikes = constant:fallout_runtime.one }
@@ -491,7 +494,7 @@ fallout_manual_apply_state_aggregate_consequence = {
 # Supported scope: STATE
 # Records the observed first-week loss against the generation-authenticated
 # prestrike baseline. The aggregate Deaths row remains the accounting entry for
-# this phase; this receipt is provenance for the later manual rewrite.
+# this phase. This receipt is provenance for the later manual rewrite.
 fallout_manual_record_state_population_loss_provenance = {
 	if = {
 		limit = { fallout_manual_prestrike_population_baseline_is_current = yes }

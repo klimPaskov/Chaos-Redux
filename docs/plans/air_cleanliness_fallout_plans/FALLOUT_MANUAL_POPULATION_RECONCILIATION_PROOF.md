@@ -3,10 +3,11 @@
 ## Scope and status
 
 The exact-province manual thermonuclear scenario remains dormant and release-
-blocked. This contract changes only how a future manual request reconciles its
-population: the first-week native/aggregate consequence remains intact, while
-the later standard Fallout rewrite removes only the additional loss needed to
-reach the ordinary grade ladder from the original prestrike population.
+blocked. The verified first-week aggregate consequence uses a direct
+90 to 95 percent band from each state's prestrike population. The later
+standard Fallout rewrite removes only the remaining grade-specific delta from
+that same baseline, so the completed scenario never applies a second 90 to 95
+percent loss to an already reduced population.
 
 No scenario registry row, scheduler activation, public event, Zombie surface,
 localisation, or asset is added by this proof. Assets: none.
@@ -16,19 +17,32 @@ localisation, or asset is added by this proof. Assets: none.
 | Helper | Scope | Inputs | Outputs | Side effects | Call site |
 | --- | --- | --- | --- | --- | --- |
 | `fallout_manual_capture_population_baselines` | Country | current `state_population_k`, `global.fallout_manual_generation` | per-state prestrike population in `k` and people, plus generation and counted ledger receipt | sets `fallout_manual_prestrike_population_recorded` and the O(1) global completion receipt after 1,081 rows | manual sweep initialization |
-| `fallout_manual_record_state_population_loss_provenance` | State | prestrike receipt and live state population | first-week after-population, loss, reconciled total, and generation in people | sets `fallout_manual_first_week_population_loss_recorded`; does not write Deaths | manual aggregate state consequence |
+| `fallout_manual_record_state_population_loss_provenance` | State | prestrike receipt and live state population | first-week after-population, loss, reconciled total, and generation in people | sets `fallout_manual_first_week_population_loss_recorded`, does not write Deaths | manual aggregate state consequence |
 | `fallout_manual_calculate_population_loss_intent` | State | authenticated baseline, frozen post-first-week population, standard grade | `fallout_state_loss_percent`, `fallout_expected_population_before_loss`, `fallout_expected_population_requested_loss` | none beyond temporary values | both standard population-loss receipt paths |
 | `fallout_manual_preflight_population_contract` | Country | all manual receipts, frozen snapshot, grade rows | one state-bound replay receipt per row and one global generation receipt | performs the sole all-state population-contract replay before mutation | population-loss phase gate |
-| `fallout_manual_population_contract_preflight_is_current` | Country trigger | manual source, preflight count and generation | true only after all 1,081 rows replay successfully | none; failure becomes terminal `manual_population_contract_unproven` | population-loss phase gate |
+| `fallout_manual_population_contract_preflight_is_current` | Country trigger | manual source, preflight count and generation | true only after all 1,081 rows replay successfully | none, failure becomes terminal `manual_population_contract_unproven` | population-loss phase gate |
 
 ## Numerical contract
 
 For each state, let `B` be the captured prestrike people receipt,
-`C = round(fallout_pretransition_population_k * 1000)`, and `G` be the unchanged
-standard Fallout grade percentage from 90 through 95. The helper computes:
+`S` be the verified native province-strike count for that state, `C =
+round(fallout_pretransition_population_k * 1000)`, and `G` be the unchanged
+standard Fallout grade percentage from 90 through 95. The aggregate consequence
+computes the direct first-week loss band as:
+
+```text
+direct_loss_percent = clamp(
+    0.900 + (S - 1) * 0.000005,
+    0.900,
+    0.950
+)
+```
+
+The aggregate state mutation applies that percentage to `B` through the exact
+state-population Deaths contract. The reconciliation helper then computes:
 
 1. `target_loss = round(B * 0.01 * G)`.
-2. If `B > 0`, `target_survivors = max(1, B - target_loss)`; if `B = 0`, the target is zero.
+2. If `B > 0`, `target_survivors = max(1, B - target_loss)`. If `B = 0`, the target is zero.
 3. `additional_request = max(0, C - target_survivors)`, where `C` is the frozen
    post-first-week `fallout_pretransition_population_k` used for both issue and
    replay. The live state is consulted only for the existing mutation clamp and
@@ -46,12 +60,13 @@ the resulting live delta, and registers that observed delta through Deaths with
 state-population application disabled. A state already below its target blocks
 the complete transaction and is never raised.
 
-| Original `B` | Grade | Live `C` before rewrite | Target survivors | Additional request | Final loss from `B` |
-| ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 95% | 1 | 1 | 0 | 0 (floor) |
-| 2 | 90% | 2 | 1 | 1 | 1 (50%, floor) |
-| 10 | 90% | 5 | 1 | 4 | 9 (90%) |
-| 1,000 | 95% | 500 | 50 | 450 | 950 (95%) |
+| Original `B` | Native strikes | Direct loss | Grade | Live `C` before rewrite | Additional request | Final loss from `B` |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0 (floor) | 95% | 1 | 0 | 0 (floor) |
+| 10 | 1 | 9 | 90% | 1 | 0 | 9 (90%) |
+| 1,000 | 1 | 900 | 90% | 100 | 0 | 900 (90%) |
+| 1,000 | 1 | 900 | 95% | 100 | 50 | 950 (95%) |
+| 1,000 | 10,154 | 950 | 95% | 50 | 0 | 950 (95%) |
 
 Rounding is performed after applying the fixed-point percentage scale, matching
 the existing standard helper and avoiding a large intermediate percentage value.
@@ -67,15 +82,15 @@ collection scan. After the direct first-week loss, each
 struck state records the observed baseline-to-live loss, post-loss population,
 reconciled total, and the same generation token. The rewrite trigger requires:
 
-- manual pretransition request source;
-- current manual schema and generation;
-- a nonnegative prestrike baseline;
-- a nonnegative first-week observed loss; and
+- manual pretransition request source
+- current manual schema and generation
+- a nonnegative prestrike baseline
+- a nonnegative first-week observed loss
 - a nonnegative first-week after-population and a reconciled total equal to the
-  original baseline (`baseline = after_population + loss`); and
-- matching generation values for both receipts;
-- replayed `prestrike_people = round(prestrike_k * 1000)`;
-- replayed `first_week_loss = max(0, prestrike_people - after_population)`; and
+  original baseline (`baseline = after_population + loss`)
+- matching generation values for both receipts
+- replayed `prestrike_people = round(prestrike_k * 1000)`
+- replayed `first_week_loss = max(0, prestrike_people - after_population)`
 - frozen post-seven-day population at or above the grade survivor target.
 
 Before the population phase iterates mutation rows, one all-state preflight
@@ -107,7 +122,7 @@ manual source is still unregistered and no runtime activation is implied.
   effects, triggers, event targets, and rounding, plus the installed vanilla
   effects/triggers/script-constants documentation.
 - Static formula checks cover empty states, one- and two-person floor cases,
-  an exact 90% case, an exact 95% case, overshoot refusal, and replay binding;
+  an exact 90% case, an exact 95% case, overshoot refusal, and replay binding.
   no Hearts of Iron IV process was run.
 - Existing unrelated strategic-singularity changes in the world-end files were
   preserved byte-for-byte outside the two population call-site edits.

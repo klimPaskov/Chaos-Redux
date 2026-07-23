@@ -41,6 +41,13 @@ On confirmation:
 4. the normal world rewrite runs
 5. the post-Fallout campaign begins
 
+The thermonuclear aggregate consequence removes 90 to 95 percent of each
+state's prestrike population during the verified strike resolution. The first
+strike uses the 90 percent floor and additional province strikes provide only
+a small capped increment. The later rewrite reconciles the original baseline
+against the grade-specific survivor target and never applies a second full
+population percentage to the already reduced state.
+
 The manual scenario uses the same transition and successor systems as every other Fallout caller.
 
 ## Scenario id allocation
