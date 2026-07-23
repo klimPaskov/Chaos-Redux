@@ -29,6 +29,7 @@ The installed raid documentation defines the predefined `enemy_units` success fa
 | Theater authorization | A current valid Combined CBRN Overmatch command, full readiness, battlefield-use policy, Theater CBRN Headquarters technology, war, and matching project are required. | implemented |
 | Assigned delivery force | One infantry, motorized, or mechanized formation with at least three matching battalions is required; the origin is a supply node and the path is land. | implemented |
 | Exact payload | Native essential equipment reserves 50 Anthrax, 25 Plague, 25 Tularemia, or 10 Smallpox packages. Shared constants mirror those values for lifecycle and history records. | implemented |
+| Equal delivery reliability | All four agent raids use the same 0.50 native base success factor; agent identity changes lifecycle potency, not delivery chance. | implemented |
 | Shared lifecycle | Limited, success, and critical outcomes map to partial, success, and catastrophic `battlefield_dissemination` seeds through `bio_lifecycle_dispatch_seed`. | implemented |
 | Failed attempt | Failure loses the native reservation, stores 50 exact-state attempt evidence, adds the eligible 12-base biological Condemnation source, and does not create completed-use history. | implemented |
 | Friendly blowback | A successful primary dispatch may seed one exact eligible adjacent actor-controlled state through `connected_spread`; there is no second payload debit, alternate-state search, or periodic retry. | implemented |
@@ -54,14 +55,16 @@ The AI minimum success chance is 0.35 in both parser surfaces.
 
 These are deterministic source calculations, not substitutes for the final Stage 14 live package scenarios. They verify that agent identity, native result, and doctrine produce differentiated route values before protection, target response, outbreak progression, and later containment are applied.
 
-| Agent | Partial seed intensity | Success seed intensity | Catastrophic seed intensity | Theater net Command Power | Terminal net Command Power |
+| Agent | Partial seed intensity | Success seed intensity | Critical-result seed intensity | Theater net Command Power | Terminal net Command Power |
 | --- | ---: | ---: | ---: | ---: | ---: |
+| Tularemia | 9.35 | 17.00 | 22.95 | 5 | 0 |
 | Anthrax | 11.00 | 20.00 | 27.00 | 5 | 0 |
-| Plague | 7.70 | 14.00 | 18.90 | 7 | 2 |
-| Tularemia | 14.85 | 27.00 | 36.45 | 5 | 0 |
-| Smallpox | 6.60 | 12.00 | 16.20 | 10 | 5 |
+| Plague | 12.65 | 23.00 | 31.05 | 7 | 2 |
+| Smallpox | 14.30 | 26.00 | 35.10 | 10 | 5 |
 
-The intensity calculations are `20 route intensity × agent potency × result multiplier`. Theater Contamination then multiplies physical seed potency by 1.10 and Terminal Hazard by 1.15. The Command Power columns apply the 5- or 10-point post-resolution refund capped to the native cost. Every row still consumes the complete native payload reservation for failure, partial, success, and critical resolution; doctrine never changes that debit. Evidence remains 40 for partial, 50 for success, and 65 for catastrophic release before the shared evidence clamp, independent of doctrine.
+The intensity calculations are `20 route intensity × canonical agent strength × result multiplier`. The route multiplier is neutral for every agent. Theater Contamination then multiplies physical seed potency by 1.10 and Terminal Hazard by 1.15. The Command Power columns apply the 5- or 10-point post-resolution refund capped to the native cost. Every row still consumes the complete native payload reservation for failure, partial, success, and critical resolution; doctrine never changes that debit. Evidence remains 40 for partial, 50 for success, and 65 for the critical operational result before the shared evidence clamp, independent of doctrine.
+
+The internal catastrophic result token names the critical operational multiplier. Only Smallpox belongs to the severe weapon tier; Tularemia, Anthrax, and Plague retain their low, moderate, and serious classifications even after a critical delivery.
 
 ## Existing asset reuse
 

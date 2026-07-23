@@ -20,9 +20,15 @@ Conventional biological warfare and weaponized zombies remain separate. Zombie s
 
 ## Agent profiles
 
+Overall weapon severity follows the accepted gameplay hierarchy `Tularemia < Anthrax < Plague < Smallpox`.
+
+Tularemia is low severity, Anthrax is moderate severity, Plague is serious, and only Smallpox belongs to the severe weapon tier.
+
+Delivery success is a separate operational question from agent potency.
+
 ### Anthrax
 
-Role: persistent local contamination and high local lethality with limited person-to-person spread.
+Role: moderate-severity persistent local contamination and high local lethality with limited person-to-person spread.
 
 Gameplay profile:
 
@@ -46,7 +52,7 @@ Counterplay:
 
 ### Plague
 
-Role: high-spread outbreak weapon.
+Role: serious high-spread outbreak weapon.
 
 Gameplay profile:
 
@@ -54,7 +60,7 @@ Gameplay profile:
 - strong neighbor-state spread
 - urban and low-healthcare amplification
 - border closure and quarantine are important
-- severe international reaction
+- major international reaction
 
 Best use:
 
@@ -71,7 +77,7 @@ Counterplay:
 
 ### Tularemia
 
-Role: military incapacitation and regional disruption.
+Role: low-severity military incapacitation and regional disruption.
 
 Gameplay profile:
 
@@ -94,7 +100,7 @@ Counterplay:
 
 ### Smallpox
 
-Role: long-incubation mass civilian and military outbreak.
+Role: severe long-incubation mass civilian and military outbreak.
 
 Gameplay profile:
 
@@ -229,11 +235,11 @@ Doctrine cannot create, reveal, authorize, or unlock camps, extermination sites,
 
 ## Current implementation boundary
 
-The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. It does not seed contamination from continuous air activity or infer a launch state.
+The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. All four ordinary agents use identical native base success, critical-success, and disaster factors. Verified aircraft, formation, intelligence, interception, anti-air, radar, reliability, and operational conditions may modify those factors, but agent identity does not. It does not seed contamination from continuous air activity or infer a launch state.
 
 The ordinary operative-release tranche implements four separate native intelligence operations for Anthrax, Plague, Tularemia, and Smallpox. Each operation uses its native selected state, agent-specific state profile, native non-refunded agent equipment, distinct preparation time and equipment bill, and abort, partial-release, or full-release resolution. Partial and full release enter the same state-owned lifecycle as the strategic raid with the operative-release route profile; an abort records an attempt but does not create confirmed biological-use history. The operation engine does not expose the runtime amount charged by its equipment block, so the native cost and `return_on_complete = no` are authoritative and no numeric payload proof or lifecycle amount is fabricated for this route.
 
-The battlefield-dissemination tranche implements four separate native land raids for Anthrax, Plague, Tularemia, and Smallpox. Deployment is not a decision click. Each raid selects the exact native target state, starts from a supply node, assigns an infantry, motorized, or mechanized formation, reserves the exact matching agent payload as essential equipment, and resolves failure, limited success, success, or critical success through the shared ordinary lifecycle. Full Chemical Readiness, battlefield-use policy, the matching project, and a valid active Combined CBRN Overmatch headquarters posture are mandatory. The theater headquarters proves authorization and preparation; the native selected state and assigned formation prove release context.
+The battlefield-dissemination tranche implements four separate native land raids for Anthrax, Plague, Tularemia, and Smallpox. Deployment is not a decision click. Each raid selects the exact native target state, starts from a supply node, assigns an infantry, motorized, or mechanized formation, reserves the exact matching agent payload as essential equipment, and resolves failure, limited success, success, or critical success through the shared ordinary lifecycle. All four agents use the same native base success factor. Full Chemical Readiness, battlefield-use policy, the matching project, and a valid active Combined CBRN Overmatch headquarters posture are mandatory. The theater headquarters proves authorization and preparation; the native selected state and assigned formation prove release context.
 
 The current raid API exposes no launch callback and no exact link between a headquarters command and the raid's selected state. The implementation therefore does not infer a headquarters state or retain a proxy. If exact authorization or target context is invalid at resolution, the reserved payload remains lost and no release, evidence substitute, or use record is fabricated. Successful primary dispatch may create one bounded adjacent friendly connected-spread seed. It performs no alternate-state search or periodic retry.
 
@@ -255,7 +261,7 @@ The operative operations reuse the existing `GFX_operations_plant_bioweapon`, `G
 
 Captured biological arsenals use two native land recovery raids, never a deployment decision. First hostile capture moves every unallocated Anthrax, Plague, Tularemia, and Smallpox payload from the original custodian's aggregate national stock into an exact state ledger, including foreign-produced equipment. The selected formation requires a Biosecurity Assault Detachment and its assigned Army Headquarters Biological Security Section; the documented raid API cannot remove a formation from unit selection by character trigger, so a visible fail-closed character success factor makes the missing section unable to succeed without a national-HQ proxy. Limited preservation/destruction uses nominal 40/50-percent rounding without the minimum-one release rule. Failure and targeted delayed hazards debit one exact weighted agent and enter the ordinary lifecycle as captured-facility accidents with current-controller victim proof, payload-debit proof, evidence, attribution where the original custodian still exists, and no deliberate-use history.
 
-The exceptional doomsday route remains the stable `bio_unleash_stockpiled_pathogens` decision. It requires an explicit unrestricted route or extreme policy, a surrender threshold above 80 percent or a verified world-end condition, a real four-agent arsenal, and an exact eligible state. Its warning tooltip lists every eligible controlled state. The resolver consumes the complete aggregate Anthrax, Plague, Tularemia, and Smallpox stock, builds one deduplicated array of eligible controlled states and enemy-controlled wartime-border neighbors, and distributes each agent without fabricating material or targets. Anthrax, Plague, and Smallpox dispatch as catastrophic results while Tularemia dispatches as severe. Every successful allocation enters the ordinary lifecycle with maximum evidence, confirmed public responsibility, 0.85 friendly-spread risk, and agent-specific incubation. The multi-state order records one public Condemnation source in the accepted 200–500 range, one treaty callback, one domestic penalty, and exact route, agent, state, payload, and resolution history. Doctrine can intensify physical harm and reduce only Condemnation. The engine exposes no exact active-front state predicate, so nearby fronts are exact enemy-controlled wartime-border neighbors; no combat estimator, continuous-air hook, inferred state, alternate target, refund, proxy, or periodic country scan exists.
+The exceptional doomsday route remains the stable `bio_unleash_stockpiled_pathogens` decision. It requires an explicit unrestricted route or extreme policy, a surrender threshold above 80 percent or a verified world-end condition, a real four-agent arsenal, and an exact eligible state. Its warning tooltip lists every eligible controlled state. The resolver consumes the complete aggregate Anthrax, Plague, Tularemia, and Smallpox stock, builds one deduplicated array of eligible controlled states and enemy-controlled wartime-border neighbors, and distributes each agent without fabricating material or targets. Tularemia, Anthrax, and Plague dispatch as successful releases and receive their low, moderate, or serious canonical agent-strength multipliers inside the lifecycle. Smallpox alone dispatches as a severe result and receives the severe operational multiplier in addition to its canonical agent profile. Every successful allocation enters the ordinary lifecycle with maximum evidence, confirmed public responsibility, 0.85 friendly-spread risk, and agent-specific incubation. The multi-state order records one public Condemnation source in the accepted 200–500 range, one treaty callback, one domestic penalty, and exact route, agent, state, payload, and resolution history. Doctrine can intensify physical harm and reduce only Condemnation. The engine exposes no exact active-front state predicate, so nearby fronts are exact enemy-controlled wartime-border neighbors; no combat estimator, continuous-air hook, inferred state, alternate target, refund, proxy, or periodic country scan exists.
 
 These implemented surfaces do not close Stage 7. Historically specific Japan–China biological campaign actions, the complete countermeasure and treatment package, remaining required assets and localisation, package scenarios, and the mapped audits remain accepted wherever the Stage 7 plan has not established completion evidence. Captured-facility live raid targeting remains a package-scenario risk because the installed schema documents arbitrary state targets but vanilla contains no actor-controlled, enemy-owned land-raid precedent; no alternate decision or inferred target is permitted.
 
@@ -365,10 +371,10 @@ Suggested weekly exposed-population death bands before countermeasures:
 
 | Agent | Low intensity | Serious | Catastrophic |
 | --- | ---: | ---: | ---: |
-| Anthrax | 0.0005% | 0.004% | 0.015% |
-| Plague | 0.0003% | 0.006% | 0.025% |
 | Tularemia | 0.00005% | 0.0008% | 0.004% |
-| Smallpox | 0.0002% | 0.005% | 0.020% |
+| Anthrax | 0.0002% | 0.004% | 0.015% |
+| Plague | 0.0003% | 0.006% | 0.020% |
+| Smallpox | 0.0004% | 0.008% | 0.025% |
 
 The exposed share is calculated separately. Continuing deaths are capped, use the shared Deaths tracker, and stop when the outbreak ends.
 
@@ -459,10 +465,13 @@ AI evaluates:
 
 Ordinary AI avoids strategic biological first use. High-chaos, radical, retaliatory, or desperate AI can use it. Japan-specific historical routes can have stronger China-theater willingness, but they remain gated by route, war, evidence, and program state.
 
+Agent-specific AI willingness and route preference may differ, but those preferences do not alter the equal native biological-raid base success probabilities.
+
 ## Acceptance criteria
 
 - Biological use creates incubation and outbreak rather than instant chemical-style penalties.
 - Agent profiles differ meaningfully.
+- Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, only Smallpox is severe, and ordinary agent identity does not alter native raid base success probabilities.
 - Countermeasures can prevent or contain spread.
 - Accidents scale with stockpile and safety.
 - Captured facilities create evidence and release risk.

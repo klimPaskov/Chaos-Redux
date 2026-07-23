@@ -46,11 +46,15 @@ Every successful state-agent allocation calls `bio_lifecycle_dispatch_seed` with
 
 The route is `bio_lifecycle_route.doomsday_release` and the source is `bio_lifecycle_source.doomsday`.
 
-Anthrax, Plague, and Smallpox use the catastrophic result required by the biological-agent matrix.
+Overall weapon severity follows the canonical hierarchy `Tularemia < Anthrax < Plague < Smallpox`.
 
-Tularemia uses the matrix-required severe result.
+Tularemia is low severity, Anthrax is moderate, Plague is serious, and only Smallpox belongs to the severe weapon tier.
 
-The severe result is a neutral lifecycle result multiplier because Tularemia’s agent profile and the doomsday route profile already supply its distinct physical behavior.
+Tularemia, Anthrax, and Plague use the successful-release result and receive their canonical 0.85, 1.00, or 1.15 agent-strength multiplier inside the shared lifecycle.
+
+Smallpox alone uses the severe result, whose 1.15 operational multiplier combines with Smallpox’s canonical 1.30 agent strength.
+
+The result token records operational release quality while the agent profile records disease potency, so an effective delivery never changes the weapon-severity classification.
 
 Every accepted episode receives the doomsday route’s intensity, exposed share, 0.85 friendly-spread risk, maximum evidence, incubation schedule, later detection and spread behavior, medical load, deaths, contamination, and attribution records.
 

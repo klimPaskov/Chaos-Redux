@@ -22,14 +22,18 @@ The designated state is a secured handling, storage, inspection, and loading com
 
 ## Agent Profiles
 
-| Agent | Preparation | Command Power | Tactical bombers | Strategic bombers | Payload reservation |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Anthrax | 28 days | 10 | 25 | 10 | 200 Anthrax Bombs |
-| Plague | 35 days | 15 | 50 | 20 | 100 Plague Bombs |
-| Tularemia | 21 days | 8 | 15 | 5 | 100 Tularemia Bombs |
-| Smallpox | 45 days | 25 | 25 | 10 | 50 Smallpox Bombs |
+| Agent | Overall severity | Canonical strength | Preparation | Command Power | Tactical bombers | Strategic bombers | Payload reservation |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Tularemia | low | 0.85 | 21 days | 8 | 15 | 5 | 100 Tularemia Bombs |
+| Anthrax | moderate | 1.00 | 28 days | 10 | 25 | 10 | 200 Anthrax Bombs |
+| Plague | serious | 1.15 | 35 days | 15 | 50 | 20 | 100 Plague Bombs |
+| Smallpox | severe | 1.30 | 45 days | 25 | 25 | 10 | 50 Smallpox Bombs |
 
-Each selected state has a 120-day raid cooldown through the native state-target contract. Aircraft experience, defence, agility, reliability, air superiority, interception, anti-air, radar, and intelligence feed the native raid result. The four agents then retain their own incubation, growth, spread, detection, medical, mortality, persistence, and countermeasure profiles in the lifecycle.
+Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
+
+All four agents use the same native base result factors: 0.50 success, 0.12 critical success, and 0.10 disaster.
+
+Each selected state has a 120-day raid cooldown through the native state-target contract. Aircraft experience, defence, agility, reliability, air superiority, interception, anti-air, radar, and intelligence feed the native raid result. Agent identity does not alter those delivery probabilities. Once a release is accepted, the four agents retain their distinct canonical strength, incubation, growth, spread, detection, medical, mortality, persistence, and countermeasure profiles in the lifecycle.
 
 ## Reservation, Consumption, and Refunds
 
@@ -53,7 +57,7 @@ The native raid engine exposes four success levels. The resolver maps them to th
 2. `partial_contamination`: a weaker seed enters the selected state and begins incubation.
 3. `hidden_contamination`: a viable seed enters with stronger concealment and lower initial evidence.
 4. `detected_outbreak_seed`: a viable seed enters and is forced into detection when incubation activates.
-5. `successful_outbreak_seed`: a stronger catastrophic-result seed enters incubation. This still does not guarantee an outbreak.
+5. `successful_outbreak_seed`: a stronger critical-result seed enters incubation. This still does not guarantee an outbreak or change the agent’s weapon-severity tier.
 6. `attacker_accident`: the full payload is released in the designated staging complex and enters the accident lifecycle there.
 
 Native failure selects between failed delivery and attacker accident according to the actor's biological-security level, handling technologies, Headquarters preparation, and sealed-bomb-bay designer capability. Native success selects between hidden and detected seeding according to attribution control, precision-release capability, and the defender's surveillance and response technologies.

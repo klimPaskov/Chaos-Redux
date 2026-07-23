@@ -4,13 +4,19 @@
 
 Ratings use 1 to 5.
 
-| Agent | Local lethality | Spread | Incubation | Persistence | Military disruption | Treatment sensitivity | Vaccination value | Attribution difficulty |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Anthrax | 5 | 1 | 2 | 5 | 3 | 4 with antibiotics | 2 | 3 |
-| Plague | 4 | 5 | 2 | 3 | 4 | 4 with antibiotics | 2 | 4 |
-| Tularemia | 2 | 3 | 2 | 3 | 5 | 4 with antibiotics | 2 | 4 |
-| Smallpox | 4 | 5 | 4 | 4 | 4 | 2 | 5 | 3 |
-| Zombie pathogen | special | special | special | special | special | separate cure system | separate | separate |
+| Agent | Overall weapon severity | Local lethality | Spread | Incubation | Persistence | Military disruption | Treatment sensitivity | Vaccination value | Attribution difficulty |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Tularemia | 1, low | 2 | 3 | 2 | 3 | 5 | 4 with antibiotics | 2 | 4 |
+| Anthrax | 2, moderate | 5 | 1 | 2 | 5 | 3 | 4 with antibiotics | 2 | 3 |
+| Plague | 3, serious | 4 | 5 | 2 | 3 | 4 | 4 with antibiotics | 2 | 4 |
+| Smallpox | 4, severe | 4 | 5 | 4 | 4 | 4 | 2 | 5 | 3 |
+| Zombie pathogen | special | special | special | special | special | special | separate cure system | separate | separate |
+
+Overall weapon severity is an explicit gameplay hierarchy: Tularemia < Anthrax < Plague < Smallpox.
+
+Only Smallpox belongs to the severe weapon tier.
+
+The individual trait columns remain non-monotonic because they describe distinct disease behavior rather than delivery reliability or total weapon strength.
 
 ## Delivery matrix
 
@@ -18,10 +24,14 @@ Ratings use 1 to 5.
 | --- | --- | --- | --- | --- | ---: | ---: | ---: |
 | strategic air raid | strong | strong | strong | strong late | 21 to 45 days | high | medium |
 | operative outbreak | strong | strong | moderate | strong | 90 to 240 days | low to extreme on capture | medium to high |
-| battlefield dissemination | moderate | weak | strong | limited | 14 to 30 days | high | high |
+| battlefield dissemination | moderate persistent effect | serious spread effect | low overall with high disruption | severe long-incubation effect | 14 to 30 days | high | high |
 | food or water sabotage | moderate | strong | moderate | moderate | 120 to 300 days | low initially | medium |
 | stockpile accident | strong local | strong spread | moderate | strong spread | none | public if severe | domestic high |
-| doomsday release | catastrophic | catastrophic | severe | catastrophic | route gated | confirmed | maximum |
+| doomsday release | moderate tier | serious tier | low tier | severe tier | route gated | confirmed | maximum |
+
+Strategic and battlefield biological raids use the same native base success, critical-success, and disaster chances for every ordinary agent.
+
+Aircraft, assigned formation quality, intelligence, interception, anti-air, radar, reliability, and other verified raid conditions may change those chances, but agent identity does not.
 
 ## Outbreak modifiers
 
@@ -65,10 +75,10 @@ Exact chance uses event-driven checks after production milestones, bombing, sabo
 
 | Agent | Low-intensity weekly exposed death | Serious | Catastrophic | Maximum episode cap |
 | --- | ---: | ---: | ---: | ---: |
-| Anthrax | 0.0005% | 0.004% | 0.015% | 1.5% state population |
-| Plague | 0.0003% | 0.006% | 0.025% | 5% |
 | Tularemia | 0.00005% | 0.0008% | 0.004% | 1% |
-| Smallpox | 0.0002% | 0.005% | 0.020% | 8% |
+| Anthrax | 0.0002% | 0.004% | 0.015% | 1.5% state population |
+| Plague | 0.0003% | 0.006% | 0.020% | 5% |
+| Smallpox | 0.0004% | 0.008% | 0.025% | 8% |
 
 The model applies these rates to an exposed share, not automatically to the whole state.
 
