@@ -1097,6 +1097,13 @@ fallout_event_id = {
 	first_safe_birth_callback = 286
 	first_safe_birth_callback_ai = 287
 	first_safe_birth_cleanup = 288
+	school_vent_room_human = 289
+	school_vent_room_ai = 290
+	school_vent_room_result = 291
+	school_vent_room_result_ai = 292
+	school_vent_room_callback = 293
+	school_vent_room_callback_ai = 294
+	school_vent_room_cleanup = 295
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -1150,7 +1157,10 @@ fallout_event_candidate_pilot = {
 	first_safe_birth_candidate_id = 282
 	first_safe_birth_transaction_key = 710014
 	first_safe_birth_route = 7114
-	upper_bound = 7115
+	school_vent_room_candidate_id = 289
+	school_vent_room_transaction_key = 710015
+	school_vent_room_route = 7115
+	upper_bound = 7116
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -5711,5 +5721,343 @@ fallout_event_282_ai = {
 	private_priority = 5
 	campaign_priority = 6
 	elders_priority = 8
+	upper_bound = 1001
+}
+
+fallout_event_289_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	technical_curriculum = 1
+	old_world_history = 2
+	civic_survival = 3
+	faith_classroom = 4
+	upper_bound = 5
+}
+
+fallout_event_289_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 28
+	callback_delay_days = 210
+	modifier_days = 300
+	callback_modifier_days = 240
+	upper_bound = 301
+}
+
+fallout_event_289_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_transaction_key_offset = 100
+	callback_transaction_key_offset = 200
+	visible_budget_cost = 3
+	upper_bound = 301
+}
+
+fallout_event_289_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_campaign_day = 360
+	maximum_campaign_day = 900
+	minimum_generation_count = 1
+	generation_severity_factor = 10
+	minimum_cohesion = 35
+	minimum_food = 25
+	minimum_shelter = 35
+	minimum_viability = 0
+	maximum_viability = 100
+	maximum_candidate_severity = 100
+	cohesion_weight = 35
+	food_weight = 25
+	shelter_weight = 25
+	generation_weight = 15
+	weight_divisor = 100
+	technical_success_viability = 68
+	technical_partial_viability = 45
+	technical_success_education = 35
+	technical_partial_education = 18
+	history_success_viability = 64
+	history_partial_viability = 42
+	history_success_recognition = 45
+	history_partial_recognition = 28
+	civic_success_viability = 70
+	civic_partial_viability = 46
+	civic_success_cohesion = 52
+	civic_partial_cohesion = 38
+	faith_success_viability = 60
+	faith_partial_viability = 38
+	faith_success_generation = 2
+	faith_partial_generation = 1
+	result_failure_death_percent = 0.0012
+	callback_failure_death_percent = 0.0006
+	minimum_remaining_people = 1
+	maximum_education = 100
+	maximum_exposure = 100
+	ai_technical_education = 30
+	ai_history_recognition = 40
+	ai_civic_cohesion = 48
+	ai_faith_generation = 2
+	upper_bound = 101
+}
+
+fallout_event_289_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	technical_food = 3
+	technical_power = 2
+	technical_scrap = 2
+	history_food = 2
+	history_scrap = 3
+	history_recognition = 2
+	civic_food = 3
+	civic_medicine = 1
+	civic_recognition = 3
+	faith_food = 2
+	faith_medicine = 2
+	faith_recognition = 1
+	upper_bound = 4
+}
+
+fallout_event_289_result = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	technical_success_food = -2
+	technical_success_medicine = 0
+	technical_success_power = -1
+	technical_success_recognition = 5
+	technical_success_cohesion = 5
+	technical_success_stability = 0.03
+	technical_success_war_support = 0.01
+	technical_success_manpower = 180
+	technical_success_education = 28
+	technical_success_exposure = 3
+	technical_partial_food = -3
+	technical_partial_medicine = -1
+	technical_partial_power = -2
+	technical_partial_recognition = 2
+	technical_partial_cohesion = 1
+	technical_partial_stability = 0.01
+	technical_partial_war_support = 0
+	technical_partial_manpower = 90
+	technical_partial_education = 14
+	technical_partial_exposure = 12
+	technical_failure_food = -4
+	technical_failure_medicine = -2
+	technical_failure_power = -3
+	technical_failure_recognition = -6
+	technical_failure_cohesion = -6
+	technical_failure_stability = -0.05
+	technical_failure_war_support = -0.01
+	technical_failure_manpower = 0
+	technical_failure_education = 3
+	technical_failure_exposure = 24
+
+	history_success_food = -1
+	history_success_medicine = 0
+	history_success_power = 0
+	history_success_recognition = 8
+	history_success_cohesion = 7
+	history_success_stability = 0.04
+	history_success_war_support = 0
+	history_success_manpower = 160
+	history_success_education = 20
+	history_success_exposure = 2
+	history_partial_food = -2
+	history_partial_medicine = 0
+	history_partial_power = 0
+	history_partial_recognition = 4
+	history_partial_cohesion = 2
+	history_partial_stability = 0.01
+	history_partial_war_support = 0
+	history_partial_manpower = 80
+	history_partial_education = 10
+	history_partial_exposure = 9
+	history_failure_food = -3
+	history_failure_medicine = -1
+	history_failure_power = -1
+	history_failure_recognition = -8
+	history_failure_cohesion = -5
+	history_failure_stability = -0.06
+	history_failure_war_support = -0.01
+	history_failure_manpower = 0
+	history_failure_education = 0
+	history_failure_exposure = 20
+
+	civic_success_food = -2
+	civic_success_medicine = -1
+	civic_success_power = 0
+	civic_success_recognition = 6
+	civic_success_cohesion = 10
+	civic_success_stability = 0.05
+	civic_success_war_support = 0.02
+	civic_success_manpower = 220
+	civic_success_education = 24
+	civic_success_exposure = 5
+	civic_partial_food = -3
+	civic_partial_medicine = -1
+	civic_partial_power = 0
+	civic_partial_recognition = 3
+	civic_partial_cohesion = 4
+	civic_partial_stability = 0.02
+	civic_partial_war_support = 0.01
+	civic_partial_manpower = 110
+	civic_partial_education = 12
+	civic_partial_exposure = 14
+	civic_failure_food = -4
+	civic_failure_medicine = -2
+	civic_failure_power = -1
+	civic_failure_recognition = -7
+	civic_failure_cohesion = -9
+	civic_failure_stability = -0.07
+	civic_failure_war_support = -0.02
+	civic_failure_manpower = 0
+	civic_failure_education = 2
+	civic_failure_exposure = 26
+
+	faith_success_food = -1
+	faith_success_medicine = -1
+	faith_success_power = 0
+	faith_success_recognition = 4
+	faith_success_cohesion = 12
+	faith_success_stability = 0.05
+	faith_success_war_support = 0
+	faith_success_manpower = 200
+	faith_success_education = 18
+	faith_success_exposure = 1
+	faith_partial_food = -2
+	faith_partial_medicine = -2
+	faith_partial_power = 0
+	faith_partial_recognition = 2
+	faith_partial_cohesion = 5
+	faith_partial_stability = 0.02
+	faith_partial_war_support = 0
+	faith_partial_manpower = 100
+	faith_partial_education = 9
+	faith_partial_exposure = 8
+	faith_failure_food = -3
+	faith_failure_medicine = -3
+	faith_failure_power = -1
+	faith_failure_recognition = -5
+	faith_failure_cohesion = -10
+	faith_failure_stability = -0.08
+	faith_failure_war_support = -0.02
+	faith_failure_manpower = 0
+	faith_failure_education = 0
+	faith_failure_exposure = 22
+
+	callback_success_food = 2
+	callback_success_medicine = 1
+	callback_success_power = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 6
+	callback_success_stability = 0.04
+	callback_success_war_support = 0.01
+	callback_success_manpower = 130
+	callback_success_education = 12
+	callback_success_exposure = -4
+	callback_partial_food = -1
+	callback_partial_medicine = 0
+	callback_partial_power = -1
+	callback_partial_recognition = 1
+	callback_partial_cohesion = -1
+	callback_partial_stability = 0
+	callback_partial_war_support = 0
+	callback_partial_manpower = 50
+	callback_partial_education = 4
+	callback_partial_exposure = 8
+	callback_failure_food = -2
+	callback_failure_medicine = -2
+	callback_failure_power = -1
+	callback_failure_recognition = -5
+	callback_failure_cohesion = -6
+	callback_failure_stability = -0.05
+	callback_failure_war_support = -0.02
+	callback_failure_manpower = 0
+	callback_failure_education = 0
+	callback_failure_exposure = 20
+	upper_bound = 1001
+}
+
+fallout_event_289_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	technical_stability = 0.02
+	technical_war_support = 0.01
+	technical_research = 0.04
+	history_stability = 0.03
+	history_war_support = 0
+	history_research = 0.02
+	civic_stability = 0.04
+	civic_war_support = 0.02
+	civic_research = 0.01
+	faith_stability = 0.05
+	faith_war_support = 0
+	faith_research = 0
+	maintained_stability = 0.03
+	maintained_war_support = 0.01
+	maintained_research = 0.02
+	failed_stability = -0.06
+	failed_war_support = -0.02
+	failed_research = -0.03
+	upper_bound = 1
+}
+
+fallout_event_289_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9120
+	technical_success = 11
+	technical_partial = 12
+	technical_failure = 13
+	history_success = 21
+	history_partial = 22
+	history_failure = 23
+	civic_success = 31
+	civic_partial = 32
+	civic_failure = 33
+	faith_success = 41
+	faith_partial = 42
+	faith_failure = 43
+	callback_success = 51
+	callback_partial = 52
+	callback_failure = 53
+	upper_bound = 54
+}
+
+fallout_event_289_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 10
+	technical_priority = 7
+	history_priority = 6
+	civic_priority = 8
+	faith_priority = 9
 	upper_bound = 1001
 }

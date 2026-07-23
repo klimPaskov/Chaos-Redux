@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the First Safe Birth tranche, the living-world pilot contains `170`
+After the School in the Vent Room tranche, the living-world pilot contains `177`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and `204` through `288`. All remain dormant and uncounted, so
+through `200`, and `204` through `295`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -349,3 +349,15 @@ with deterministic grading, a 21-day result, a 180-day callback, hidden-AI
 parity, Deaths-backed failure, dedicated modifiers, Event Log payloads, and
 authenticated cleanup. The documented living-world block total is now `170`,
 while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## School in the Vent Room count correction
+
+The School in the Vent Room adds seven dormant country-level event blocks at
+suffixes `289` through `295`. Candidate `289` uses transaction key `710015`,
+route `7115`, and history id `9120`. It freezes Cohesion, Food, Shelter,
+Recognition, generation count, education, and exposure, then offers four
+curricula with deterministic grading, a 28-day result, a 210-day cohort
+callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event
+Log payloads, and authenticated cleanup. The documented living-world block
+total is now `177`, while the countable Fallout living-world release-floor total
+remains `0 of 660`.
