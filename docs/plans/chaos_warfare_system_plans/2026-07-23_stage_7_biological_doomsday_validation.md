@@ -85,6 +85,6 @@ No file under `gfx/interface/military_raids/` was edited or replaced by this tra
 
 ## Remaining Stage 7 work
 
-Historically specific Japan–China biological campaign actions, the complete surveillance, containment, countermeasure, and treatment package, remaining biological designers, differentiated AI closure, remaining assets and final localisation, cross-route package scenarios, improvement-loop review, and mapped specialist audits remain open.
+The complete surveillance, containment, countermeasure, and treatment package, remaining biological designers, differentiated AI closure, remaining assets and final localisation, cross-route package scenarios, improvement-loop review, and mapped specialist audits remain open.
 
 This validation does not claim Stage 7 or overall goal completion.

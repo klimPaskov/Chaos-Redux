@@ -450,3 +450,11 @@ The Working Machine adds seven dormant country-level event blocks at suffixes `3
 Candidate `352` uses transaction key `710024`, route `7124`, and history `9129`.
 It follows the closed Manual Nobody Read memory, then offers machine integration, dismantling, protocol veneration, or facility isolation with deterministic state selection, a 49-day machine result, a 300-day inspection callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event Log payloads, dedicated report art, and authenticated cleanup.
 The documented living-world block total is now `240`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Vault of Voices count correction
+
+The Vault of Voices adds seven dormant country-level event blocks at suffixes `359` through `365`.
+It owns candidate `359`, transaction `710025`, route `7125`, and Event Log history `9130`.
+The row selects one native archive, radio, or data-center state using radar, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break.
+Its four branches preserve, curate, weaponize, or trade the recovered record and each branch has a human lane, hidden AI lane, delayed result, callback, Event Log payloads, dedicated report art, and authenticated cleanup.
+The documented living-world block total is now `247`, while the countable Fallout living-world release-floor total remains `0 of 660`.

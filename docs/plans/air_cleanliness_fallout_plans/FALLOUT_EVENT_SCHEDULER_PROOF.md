@@ -432,6 +432,15 @@ Delayed reachability, host authority, save recovery, multiplayer behavior, and E
 
 The reviewed ordinary producer now carries twenty-four rows and the defined living-world event range reaches `358`, with `240` defined blocks.
 The Working Machine is candidate `352`, transaction `710024`, route `7124`, and history `9129`.
+
+## The Vault of Voices scheduler correction
+
+The reviewed ordinary producer now carries twenty-five rows and the defined living-world event range reaches `365`, with `247` defined blocks.
+The Vault of Voices is candidate `359`, transaction `710025`, route `7125`, and history `9130`.
+Its country row requires the closed Working Machine memory, durable resources, campaign-day and exposure gates, and one deterministic native archive state scored from radar, infrastructure, and industrial capacity.
+The four branches preserve, curate, weaponize, or trade a recovered record. Each branch uses a separate cost, outcome threshold, state memory, dynamic modifier, callback payload, and Deaths-backed failure route.
+The row remains dormant and contributes zero countable blocks because the scheduler activation flags, host authority, save recovery, multiplayer delivery, and full-screen Fallout blackout remain unproven.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.359` returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23077`, `maximum: 20000`, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.
 Its machine score uses native non-damaged industrial complex, synthetic refinery, and arms factory levels, with the lowest native state id as the deterministic tie-break.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges.

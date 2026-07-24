@@ -22,6 +22,7 @@
 18. `specs/22_reviewed_global_survival_dead_city_permit.md`
 19. `specs/23_reviewed_global_survival_manual_nobody_read.md`
 20. `specs/24_reviewed_global_survival_working_machine.md`
+21. `specs/25_reviewed_global_survival_vault_of_voices.md`
 
 
 ## Accepted baseline specs included here
@@ -63,6 +64,7 @@
 - `specs/22_reviewed_global_survival_dead_city_permit.md`
 - `specs/23_reviewed_global_survival_manual_nobody_read.md`
 - `specs/24_reviewed_global_survival_working_machine.md`
+- `specs/25_reviewed_global_survival_vault_of_voices.md`
 
 ## Matrices
 
