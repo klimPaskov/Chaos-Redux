@@ -34,6 +34,7 @@
 30. `specs/34_reviewed_global_survival_ship_that_will_not_dock.md`
 31. `specs/35_reviewed_global_survival_the_skilled_list.md`
 32. `specs/36_reviewed_global_survival_the_children_from_elsewhere.md`
+33. `specs/37_reviewed_global_survival_the_empty_village_offer.md`
 
 
 ## Accepted baseline specs included here
@@ -87,6 +88,7 @@
 - `specs/34_reviewed_global_survival_ship_that_will_not_dock.md`
 - `specs/35_reviewed_global_survival_the_skilled_list.md`
 - `specs/36_reviewed_global_survival_the_children_from_elsewhere.md`
+- `specs/37_reviewed_global_survival_the_empty_village_offer.md`
 
 ## Matrices
 

@@ -523,3 +523,11 @@ The reviewed ordinary producer now carries thirty-six rows and the defined livin
 Its country row follows the closed Skilled List memory and requires a current produced Air Winter snapshot, surviving shelter or industrial capacity, current-generation ownership, campaign-day eligibility, and a deterministic native state target. The four branches grant citizenship, foster through local communities, build a school quarter, or keep a return claim. They freeze Food, Medicine, Recognition, Cohesion, citizenship, foster, school, and return ledgers before a 35-day result and a 365-day generation review callback.
 
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. Native character, dynamic-tag, and return-country allocation surfaces are not claimed.
+
+## The Empty Village Offer scheduler correction
+
+The reviewed ordinary producer now carries thirty-seven rows and the defined living-world event range reaches `449`, with `331` defined blocks. The Empty Village Offer is candidate `443`, transaction `710037`, route `7137`, and history `9142`.
+
+Its country row follows the closed Children From Elsewhere memory and requires a current produced Air Winter snapshot, a low-population non-urban native state with surviving infrastructure, current-generation ownership, campaign-day eligibility, and a deterministic state target. The four branches resettle refugee families, grant veteran allotments, charter a mixed village, or keep a border buffer. They freeze Food, Medicine, Recognition, Cohesion, settlement, land, border, and integration ledgers before a 42-day result and a 540-day village review callback. Migration is recorded in a bounded country ledger and manpower reserve. Native state-population relocation is not claimed.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.

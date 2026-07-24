@@ -251,3 +251,7 @@ The Skilled List uses a dedicated generated report image of a census clerk and f
 ## The Children From Elsewhere report-event asset
 
 The Children From Elsewhere uses a dedicated generated report image of a repaired freight-depot school where refugee children and a teacher preserve names and route maps. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_children_from_elsewhere/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_children_from_elsewhere` in `interface/fallout_world_end.gfx`.
+
+## The Empty Village Offer report-event asset
+
+The Empty Village Offer uses a dedicated generated report image of an ash-frosted village with a public well, empty houses, refugee families, and a veteran watch. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_empty_village_offer/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_empty_village_offer` in `interface/fallout_world_end.gfx`.
