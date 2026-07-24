@@ -28,7 +28,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.
 
 ## `extract_portrait_source_crop.py`
 
-This is the only accepted immutable crop stage for a real-person archival portrait. It decodes the master and crops it with Pillow, preserves the decoded source mode in a lossless PNG, reopens that PNG, and proves exact decoded-pixel equality against the same master rectangle in RGBA form before committing the PNG and JSON evidence together. It never resizes, enhances, recolours, retouches, or replaces an existing artifact without `--force`.
+This is the only accepted immutable crop stage for a real-person archival photograph. It decodes the photographic master and crops it with Pillow, preserves the decoded source mode in a lossless PNG, reopens that PNG, and proves exact decoded-pixel equality against the same master rectangle in RGBA form before committing the PNG and JSON evidence together. It never resizes, enhances, recolours, retouches, or replaces an existing artifact without `--force`. Illustrations and generated reconstructions cannot be used as real-person identity masters.
 
 Run it before ImageGen with the measured boundary in decoded master pixels:
 
