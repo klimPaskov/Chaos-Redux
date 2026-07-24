@@ -21,7 +21,7 @@ No Event 12 completion claim is valid until every accepted row is either:
   complete; or
 - `rejected`, with an explicit design reason approved by the user.
 
-The ledger begins with every row accepted and pending. It contains 809 rows:
+The ledger was created with every row accepted and pending as the pre-implementation baseline. It contains 809 rows, and its dated reconciliation handoffs record later implementation evidence without changing the accepted design criteria:
 
 | Acceptance surface | Rows |
 |---|---:|
@@ -113,13 +113,18 @@ League role, refusal behaviour, and post-settlement play are implemented.
 - Other continents cannot enter world-order play until each has a unique,
   implemented package.
 
-## Initial live-state audit
+## Historical initial live-state audit
 
-At the start of this implementation, live Event 12 consists only of the empty
-entry event and placeholder localisation. The active runtime has no Event 12
+At the start of this implementation, live Event 12 consisted only of the empty
+entry event and placeholder localisation. The active runtime had no Event 12
 preflight, host selector, League state, actions, focus tree, country packages,
 AI, achievements, GUI, assets, evolutions, super-events, or complete catalog
-wiring. The acceptance ledger therefore begins with zero implemented rows.
+wiring. The acceptance ledger therefore began with zero implemented rows.
+
+This is a historical baseline, not the current implementation audit. The
+current row-by-row status is in `012_africa_acceptance_ledger.csv`, with the
+2026-07-24 reconciliation and unresolved contradictions recorded in
+`subagent_handoffs/012_africa_acceptance_ledger_reconciliation_2026_07_24.md`.
 
 The worktree also contains unrelated changes belonging to other tasks. Event 12
 changes must remain path-scoped, and any shared-file edit must be reviewed
