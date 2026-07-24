@@ -5,7 +5,13 @@ This tool is a deterministic finishing and presentation step. It does not
 invent a person's face or draw advisor-card artwork, and it is not a substitute
 for source research or the required visual review against the canonical
 event-assets skill references in ``assets/vanilla_reference/portraits/leaders``
-and ``assets/vanilla_reference/portraits/advisors``.
+``assets/vanilla_reference/portraits/commanders``, and
+``assets/vanilla_reference/portraits/advisors``.
+
+Full-size ``leader`` mode keeps the positional mode name for compatibility and
+selects a deterministic style family with ``--role-family leader|commander``;
+the default is ``leader``. Commander runs must opt into ``--role-family
+commander`` so the review sheet and evidence use commander references.
 
 Real people must start from an attributed archival image. Pass an explicit
 head-and-shoulders crop, preserve the person's recognisable features, and
@@ -55,6 +61,18 @@ ADVISOR_SUPPORTED_PILLOW_VERSION = "11.1.0"
 SKILL_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = SKILL_ROOT.parents[2]
 REFERENCE_ROOT = SKILL_ROOT / "assets" / "vanilla_reference" / "portraits"
+ROLE_FAMILY_REFERENCE_NAMES = {
+	"leader": ("den_thorvald_stauning.png", "fin_carl_mannerheim.png"),
+	"commander": (
+		"eng_bernard_montgomery.png",
+		"ger_erwin_von_witzleben.png",
+	),
+}
+ROLE_FAMILY_REFERENCE_DIRS = {
+	role_family: REFERENCE_ROOT / f"{role_family}s"
+	for role_family in ROLE_FAMILY_REFERENCE_NAMES
+}
+PROCESSOR_INPUT_CROP_LABEL = "processor input crop"
 IMAGEGEN_ALPHA_TOOL_MANIFEST_PATH = "imagegen/scripts/remove_chroma_key.py"
 IMAGEGEN_ALPHA_TOOL = (
 	Path.home()
@@ -402,6 +420,53 @@ def repo_relative_path(path: Path) -> str:
 		raise ValueError(f"Path must remain inside the repository: {resolved}") from error
 
 
+def selected_reference_records(
+	reference_dir: Path,
+	reference_names: tuple[str, ...],
+	expected_size: tuple[int, int],
+) -> list[dict[str, str]]:
+	"""Validate and hash the exact role references shown in a review sheet."""
+	reference_dir = reference_dir.expanduser().resolve()
+	repo_relative_path(reference_dir)
+	records: list[dict[str, str]] = []
+	for name in reference_names:
+		path = reference_dir / name
+		if not path.is_file():
+			raise FileNotFoundError(f"Missing role-family reference: {path}")
+		with Image.open(path) as image:
+			if image.size != expected_size:
+				raise ValueError(
+					f"Role-family reference is not {expected_size[0]}x{expected_size[1]}: "
+					f"{path} ({image.size[0]}x{image.size[1]})"
+				)
+		records.append(
+			{
+				"name": name,
+				"path": repo_relative_path(path),
+				"sha256": sha256_file(path),
+			}
+		)
+	return records
+
+
+def resolve_full_size_references(
+	role_family: str,
+	reference_dir: Path | None = None,
+) -> tuple[Path, list[dict[str, str]]]:
+	"""Resolve the deterministic full-size style family and its evidence."""
+	if role_family not in ROLE_FAMILY_REFERENCE_NAMES:
+		raise ValueError(f"Unsupported full-size role family: {role_family}")
+	resolved_dir = (
+		reference_dir or ROLE_FAMILY_REFERENCE_DIRS[role_family]
+	).expanduser().resolve()
+	references = selected_reference_records(
+		resolved_dir,
+		ROLE_FAMILY_REFERENCE_NAMES[role_family],
+		LEADER_SIZE,
+	)
+	return resolved_dir, references
+
+
 def validate_output_contract(
 	output: Path,
 	review_sheet: Path,
@@ -573,6 +638,9 @@ def discard_prepared_artifacts(prepared: list[dict[str, object]]) -> None:
 def normalized_command_record(
 	args: argparse.Namespace,
 	metadata_path: Path,
+	role_family: str,
+	effective_reference_dir: Path,
+	selected_references: list[dict[str, str]],
 ) -> dict[str, object]:
 	"""Record every effective CLI argument using stable repository paths."""
 	def optional_path(value: Path | None) -> str | None:
@@ -587,7 +655,10 @@ def normalized_command_record(
 		"face_box": list(args.face_box) if args.face_box is not None else None,
 		"review_sheet": repo_relative_path(args.review_sheet),
 		"metadata": repo_relative_path(metadata_path),
+		"role_family": role_family,
 		"reference_dir": optional_path(args.reference_dir),
+		"effective_reference_dir": repo_relative_path(effective_reference_dir),
+		"selected_references": selected_references,
 		"advisor_overlay_manifest": optional_path(args.advisor_overlay_manifest),
 		"portrait_provenance_manifest": optional_path(
 			args.portrait_provenance_manifest
@@ -600,6 +671,9 @@ def normalized_command_record(
 	}
 	return {
 		"schema": "chaos-redux-normalized-portrait-command-v1",
+		"role_family": role_family,
+		"effective_reference_dir": repo_relative_path(effective_reference_dir),
+		"selected_references": selected_references,
 		"python": {
 			"implementation": platform.python_implementation(),
 			"version": platform.python_version(),
@@ -3935,11 +4009,12 @@ def make_review_sheet(
 	finished: Image.Image,
 	mode: str,
 	reference_dir: Path,
+	role_family: str = "leader",
 ) -> Image.Image:
 	if mode == "advisor":
 		items: list[tuple[str, Image.Image]] = [
 			(
-				"explicit source crop",
+				PROCESSOR_INPUT_CROP_LABEL,
 				ImageOps.fit(source_crop, ADVISOR_SIZE, Image.Resampling.LANCZOS),
 			),
 			("processed candidate", finished),
@@ -3975,12 +4050,17 @@ def make_review_sheet(
 			draw.text((x, native_height + enlarged_size[1] + 34), label, fill=(236, 236, 232, 255))
 		return sheet
 
-	reference_names = ("den_thorvald_stauning.png", "fin_carl_mannerheim.png")
+	if role_family not in ROLE_FAMILY_REFERENCE_NAMES:
+		raise ValueError(f"Unsupported full-size role family: {role_family}")
+	reference_names = ROLE_FAMILY_REFERENCE_NAMES[role_family]
 	display_size = LEADER_SIZE
 	scale = 2
 
 	items: list[tuple[str, Image.Image]] = [
-		("explicit source crop", ImageOps.fit(source_crop, display_size, Image.Resampling.LANCZOS)),
+		(
+			PROCESSOR_INPUT_CROP_LABEL,
+			ImageOps.fit(source_crop, display_size, Image.Resampling.LANCZOS),
+		),
 		("processed candidate", finished),
 	]
 	for name in reference_names:
@@ -4024,6 +4104,15 @@ def parse_args() -> argparse.Namespace:
 		"--source-kind",
 		choices=("real", "fictional", "collective", "symbolic"),
 		required=True,
+	)
+	parser.add_argument(
+		"--role-family",
+		choices=("leader", "commander"),
+		default="leader",
+		help=(
+			"Full-size style-reference family. Use --role-family commander for an "
+			"army or navy commander; leader is the backward-compatible default."
+		),
 	)
 	parser.add_argument(
 		"--face-box",
@@ -4094,6 +4183,12 @@ def main() -> None:
 	face_box: tuple[int, int, int, int] | None = None
 	render_version = LEADER_RENDER_VERSION if args.mode == "leader" else ADVISOR_RENDER_VERSION
 	source_sha256 = sha256_file(source_path)
+	if args.mode == "advisor" and args.role_family != "leader":
+		raise ValueError(
+			"--role-family applies to full-size leader mode; advisor mode uses its "
+			"canonical advisor reference family"
+		)
+	role_family = args.role_family if args.mode == "leader" else "advisor"
 	metadata_requested = args.metadata or args.output.with_suffix(
 		args.output.suffix + ".json"
 	)
@@ -4103,16 +4198,18 @@ def main() -> None:
 	composition_metadata: dict[str, object] | None = None
 	validation_metadata: dict[str, object] | None = None
 	render_configuration: dict[str, object] | None = None
+	selected_references: list[dict[str, str]] = []
 	if args.mode == "leader":
 		runtime = {
 			"python": platform.python_version(),
 			"pillow": PILLOW_VERSION,
 		}
-		reference_dir = (
-			args.reference_dir or REFERENCE_ROOT / "leaders"
-		).expanduser().resolve()
-		repo_relative_path(reference_dir)
-		for name in ("den_thorvald_stauning.png", "fin_carl_mannerheim.png"):
+		reference_dir, selected_references = resolve_full_size_references(
+			role_family,
+			args.reference_dir,
+		)
+		for reference in selected_references:
+			name = str(reference["name"])
 			forbidden_inputs.append(reference_dir / name)
 		output_path, review_path, metadata_path = validate_output_contract(
 			args.output,
@@ -4217,6 +4314,11 @@ def main() -> None:
 				forbidden_inputs.append(Path(str(input_record["path"])))
 		for name in ADVISOR_REFERENCE_NAMES:
 			forbidden_inputs.append(canonical_advisor_references / name)
+		selected_references = selected_reference_records(
+			canonical_advisor_references,
+			ADVISOR_REFERENCE_NAMES,
+			ADVISOR_SIZE,
+		)
 		output_path, review_path, metadata_path = validate_output_contract(
 			args.output,
 			args.review_sheet,
@@ -4269,6 +4371,7 @@ def main() -> None:
 		finished,
 		args.mode,
 		reference_dir,
+		role_family,
 	)
 	output_payload = png_bytes(finished)
 	review_payload = png_bytes(review_image)
@@ -4276,7 +4379,13 @@ def main() -> None:
 	review_file_sha256 = hashlib.sha256(review_payload).hexdigest()
 	output_decoded_sha256 = decoded_rgba_sha256(finished)
 	review_decoded_sha256 = decoded_rgba_sha256(review_image)
-	command_record = normalized_command_record(args, metadata_path)
+	command_record = normalized_command_record(
+		args,
+		metadata_path,
+		role_family,
+		reference_dir,
+		selected_references,
+	)
 	metadata = {
 		"processor": ".agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py",
 		"processor_version": PROCESSOR_VERSION,
@@ -4284,6 +4393,7 @@ def main() -> None:
 		"render_version": render_version,
 		"runtime": runtime,
 		"mode": args.mode,
+		"role_family": role_family,
 		"source": repo_relative_path(source_path),
 		"source_kind": args.source_kind,
 		"crop": list(crop_box),
@@ -4292,6 +4402,7 @@ def main() -> None:
 		"size": list(finished.size),
 		"review_sheet": repo_relative_path(review_path),
 		"reference_dir": repo_relative_path(reference_dir),
+		"selected_references": selected_references,
 		"source_sha256": source_sha256,
 		"portrait_provenance": portrait_provenance_metadata,
 		"determinism": seed_record,

@@ -12,9 +12,19 @@ are review-only copies and are never processor or runtime inputs. Advisor dossie
 cards use the separate canonical references under
 `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
-`advisor_icon_processing.py leader` is the processor's full-size `156x210` export mode for both country leaders and commanders; the mode name does not classify the character as a political leader.
+`advisor_icon_processing.py leader` remains the processor's full-size `156x210` export mode for both country leaders and commanders; the positional mode name does not classify the character as a political leader. The full-size role family defaults to `leader` for backward compatibility.
 
-For a commander, use commander-specific HOI4 portraits as style-only ImageGen references and build a separate source/result/commander-reference comparison sheet for independent review, because the processor's built-in leader-family review sheet cannot establish commander role styling.
+Commanders must pass `--role-family commander` on the full-size command. That selector uses the canonical `assets/vanilla_reference/portraits/commanders/` directory and the deterministic land-command references `eng_bernard_montgomery.png` and `ger_erwin_von_witzleben.png`. Country leaders retain the canonical leader directory and `den_thorvald_stauning.png` / `fin_carl_mannerheim.png` defaults. A custom `--reference-dir` must still contain the exact selected filenames and remain inside the repository.
+
+The review sheet's first panel is labelled `processor input crop`; it is the crop of the supplied processed source or ImageGen result, not the immutable archival crop. Use the role-family references for style review only. An independent auditor must separately compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references; the processor sheet cannot replace provenance evidence or the independent likeness/style/provenance audit.
+
+The commander boundary is explicit in the full-size invocation:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader `
+	<processed_source_or_imagegen_result.png> <candidate.png> --role-family commander `
+	--source-kind real --crop <left> <top> <right> <bottom> --review-sheet <review.png>
+```
 
 ## `convert_to_dds.py`
 

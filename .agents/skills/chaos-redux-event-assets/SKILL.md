@@ -1054,6 +1054,16 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 
 For real country-leader, commander, operative, and named-officeholder portraits, apply the section 3 sequence exactly: unchanged attributed archival source master (archival male source master for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
+The full-size processor keeps positional mode `leader` for backward compatibility and defaults `--role-family leader`. Commanders must pass `--role-family commander`; this selects the canonical commander directory and commander-only style references (Montgomery and Witzleben) for the processor review sheet and evidence. The review sheet's first panel is the `processor input crop`, meaning the crop of the supplied processed source or ImageGen result; it is not the immutable archival crop. The independent auditor must still compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references separately, because the processor sheet cannot replace provenance evidence.
+
+Use this full-size commander boundary exactly:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader `
+	<processed_source_or_imagegen_result.png> <candidate.png> --role-family commander `
+	--source-kind real --crop <left> <top> <right> <bottom> --review-sheet <review.png>
+```
+
 Choose the canonical reference family by role before starting:
 
 - country leader: `portraits/leaders/`
