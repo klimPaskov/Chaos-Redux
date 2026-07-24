@@ -15724,3 +15724,121 @@ country_event = {
 	trigger = { fallout_event_443_cleanup_can_enter = yes }
 	immediate = { fallout_event_443_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.450
+	title = chaosx.fallout.450.t
+	desc = chaosx.fallout.450.d
+	picture = GFX_report_event_fallout_ash_wolves
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_450_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.450.a
+		trigger = {
+			OR = { has_government = fascism has_government = communism has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_450_cost.hunt_pack_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_450_cost.hunt_pack_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_450_cost.hunt_pack_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_450_requested_branch = constant:fallout_event_450_branch.hunt_pack } fallout_event_450_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.450.a.tt
+	}
+	option = {
+		name = chaosx.fallout.450.b
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_450_cost.fence_corridor_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_450_cost.fence_corridor_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_450_cost.fence_corridor_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_450_requested_branch = constant:fallout_event_450_branch.fence_corridor } fallout_event_450_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.450.b.tt
+	}
+	option = {
+		name = chaosx.fallout.450.c
+		trigger = {
+			OR = { has_government = democratic has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_450_cost.study_tracks_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_450_cost.study_tracks_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_450_cost.study_tracks_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_450_requested_branch = constant:fallout_event_450_branch.study_tracks } fallout_event_450_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.450.c.tt
+	}
+	option = {
+		name = chaosx.fallout.450.d
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_450_cost.leave_corridor_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_450_cost.leave_corridor_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_450_cost.leave_corridor_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_450_requested_branch = constant:fallout_event_450_branch.leave_corridor } fallout_event_450_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.450.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.451
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_450_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_450_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.452
+	title = chaosx.fallout.452.t
+	desc = { text = chaosx.fallout.452.hunt_pack.success.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.hunt_pack } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.452.hunt_pack.partial.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.hunt_pack } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.452.hunt_pack.failure.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.hunt_pack } } }
+	desc = { text = chaosx.fallout.452.fence_corridor.success.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.fence_corridor } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.452.fence_corridor.partial.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.fence_corridor } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.452.fence_corridor.failure.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.fence_corridor } } }
+	desc = { text = chaosx.fallout.452.study_tracks.success.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.study_tracks } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.452.study_tracks.partial.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.study_tracks } check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.452.study_tracks.failure.d trigger = { check_variable = { fallout_event_450_selected_branch = constant:fallout_event_450_branch.study_tracks } } }
+	desc = { text = chaosx.fallout.452.leave_corridor.success.d trigger = { check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.452.leave_corridor.partial.d trigger = { check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.452.leave_corridor.failure.d
+	picture = GFX_report_event_fallout_ash_wolves
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_450_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ash_wolves_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.452.a hidden_effect = { fallout_event_450_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.452.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.453
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_450_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ash_wolves_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_450_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.454
+	title = chaosx.fallout.454.t
+	desc = { text = chaosx.fallout.454.success.d trigger = { check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.454.partial.d trigger = { check_variable = { fallout_event_450_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.454.failure.d
+	picture = GFX_report_event_fallout_ash_wolves
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_450_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ash_wolves_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_450_registry_is_current = yes }
+	option = { name = chaosx.fallout.454.a hidden_effect = { fallout_event_450_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.454.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.455
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_450_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ash_wolves_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_450_registry_is_current = yes }
+	immediate = { fallout_event_450_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.456
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_450_cleanup_can_enter = yes }
+	immediate = { fallout_event_450_cleanup = yes }
+}
