@@ -563,3 +563,11 @@ The reviewed ordinary producer now carries forty-one rows and the defined living
 Its state row requires a produced Air Winter snapshot with thaw-eligible normal-map provenance, global Air Contamination above the spread threshold and below the severe-winter threshold, intact infrastructure, low supply access, surviving population, adaptation, reclamation, high disease pressure, and less than maximum water security. The deterministic selector chooses the lowest valid owned state id. The four branches test a public schoolyard opening, masked work shifts, a clinic daylight trial, or a sealed shelter. Each lane shares the same 35-day result, 365-day callback, Deaths-backed failure path, state infrastructure or railway consequences, ledgers, Event Log payloads, dedicated report art, and authenticated cleanup.
 
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+
+## The Desalination Night Shift scheduler correction
+
+The reviewed ordinary producer now carries forty-three rows and the defined living-world event range reaches `491`, with `373` defined blocks.
+The Desalination Night Shift is candidate `485`, transaction `710043`, route `7143`, and history `9148`.
+Its country row requires durable resources, campaign-day and water-security gates, and one deterministic native Middle Eastern coastal state with a naval-base port proxy, surviving population, supported urban category, and low supply access. The selector chooses the lowest valid state id.
+The four branches run the plant, call desert technicians, reserve clinic power, or impose a guarded ration. Each branch has separate costs, viability thresholds, state memory, water and technical ledgers, dynamic modifiers, callback payloads, and Deaths-backed failure.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_DESALINATION_NIGHT_SHIFT_CHAIN_PROOF.md`.

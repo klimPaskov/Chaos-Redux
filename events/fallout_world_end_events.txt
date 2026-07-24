@@ -16313,3 +16313,124 @@ country_event = {
 	trigger = { fallout_event_471_cleanup_can_enter = yes }
 	immediate = { fallout_event_471_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.485
+	title = chaosx.fallout.485.t
+	desc = chaosx.fallout.485.intro
+	picture = GFX_report_event_fallout_desalination_night_shift
+	is_triggered_only = yes
+	trigger = { fallout_event_485_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.485.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_485_cost.run_full_shift_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_485_cost.run_full_shift_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_485_cost.run_full_shift_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_485_cost.run_full_shift_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_485_requested_branch = constant:fallout_event_485_branch.run_full_shift } fallout_event_485_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.485.a.tt
+	}
+	option = {
+		name = chaosx.fallout.485.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_485_cost.call_desert_technicians_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_485_cost.call_desert_technicians_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_485_cost.call_desert_technicians_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_485_cost.call_desert_technicians_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_485_requested_branch = constant:fallout_event_485_branch.call_desert_technicians } fallout_event_485_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.485.b.tt
+	}
+	option = {
+		name = chaosx.fallout.485.c
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_485_cost.reserve_clinic_power_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_485_cost.reserve_clinic_power_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_485_cost.reserve_clinic_power_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_485_cost.reserve_clinic_power_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_485_requested_branch = constant:fallout_event_485_branch.reserve_clinic_power } fallout_event_485_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.485.c.tt
+	}
+	option = {
+		name = chaosx.fallout.485.d
+		trigger = {
+			OR = { has_government = fascism has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_485_cost.lock_and_ration_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_485_cost.lock_and_ration_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_485_cost.lock_and_ration_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_485_cost.lock_and_ration_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_485_requested_branch = constant:fallout_event_485_branch.lock_and_ration } fallout_event_485_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.485.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.486
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_485_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_485_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.487
+	title = chaosx.fallout.485.t
+	desc = { text = chaosx.fallout.487.run_full_shift.success.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.run_full_shift } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.487.run_full_shift.partial.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.run_full_shift } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.487.run_full_shift.failure.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.run_full_shift } } }
+	desc = { text = chaosx.fallout.487.call_desert_technicians.success.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.call_desert_technicians } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.487.call_desert_technicians.partial.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.call_desert_technicians } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.487.call_desert_technicians.failure.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.call_desert_technicians } } }
+	desc = { text = chaosx.fallout.487.reserve_clinic_power.success.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.reserve_clinic_power } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.487.reserve_clinic_power.partial.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.reserve_clinic_power } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.487.reserve_clinic_power.failure.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.reserve_clinic_power } } }
+	desc = { text = chaosx.fallout.487.lock_and_ration.success.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.lock_and_ration } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.487.lock_and_ration.partial.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.lock_and_ration } check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.487.lock_and_ration.failure.d trigger = { check_variable = { fallout_event_485_selected_branch = constant:fallout_event_485_branch.lock_and_ration } } }
+	picture = GFX_report_event_fallout_desalination_night_shift
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_485_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.desalination_night_shift_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.487.a hidden_effect = { fallout_event_485_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.487.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.488
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_485_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.desalination_night_shift_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_485_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.489
+	title = chaosx.fallout.489.t
+	desc = { text = chaosx.fallout.489.success.d trigger = { check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.489.partial.d trigger = { check_variable = { fallout_event_485_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.489.failure.d
+	picture = GFX_report_event_fallout_desalination_night_shift
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_485_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.desalination_night_shift_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_485_registry_is_current = yes }
+	option = { name = chaosx.fallout.489.a hidden_effect = { fallout_event_485_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.489.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.490
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_485_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.desalination_night_shift_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_485_registry_is_current = yes }
+	immediate = { fallout_event_485_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.491
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_485_cleanup_can_enter = yes }
+	immediate = { fallout_event_485_cleanup = yes }
+}

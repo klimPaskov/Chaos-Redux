@@ -40,6 +40,7 @@
 36. `specs/40_reviewed_global_survival_bridge_that_moved.md`
 37. `specs/41_reviewed_global_survival_first_unmasked_day.md`
 38. `specs/42_reviewed_global_survival_false_spring_losses.md`
+39. `specs/43_reviewed_global_survival_desalination_night_shift.md`
 
 
 ## Accepted baseline specs included here
@@ -99,6 +100,7 @@
 - `specs/40_reviewed_global_survival_bridge_that_moved.md`
 - `specs/41_reviewed_global_survival_first_unmasked_day.md`
 - `specs/42_reviewed_global_survival_false_spring_losses.md`
+- `specs/43_reviewed_global_survival_desalination_night_shift.md`
 
 ## Matrices
 

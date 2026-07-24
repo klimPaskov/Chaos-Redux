@@ -63,6 +63,8 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_first_unmasked_day_child_memory_current
 	clear_variable = fallout_event_478_candidate_state_id
 	clear_variable = fallout_event_478_false_spring_pressure
+	clear_variable = fallout_event_485_candidate_state_id
+	clear_variable = fallout_event_485_desalination_pressure
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -1802,6 +1804,59 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_temp_variable = fallout_event_pilot_state_candidate_id
 			clear_variable = fallout_event_478_candidate_state_id
 			clear_variable = fallout_event_478_false_spring_pressure
+
+			# Desalination Night Shift selects the lowest native Middle Eastern
+			# coastal state with a port-side plant proxy, current Air Winter water
+			# evidence, and enough surviving people for a night operation.
+			set_variable = { fallout_event_485_candidate_state_id = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_485_desalination_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_485_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_485_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_485_candidate_state_id = fallout_event_pilot_state_candidate_id }
+					set_variable = { ROOT.fallout_event_485_desalination_pressure = fallout_pretransition_air_winter_water_security }
+				}
+			}
+			if = {
+				limit = { fallout_event_485_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.desalination_night_shift_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.desalination_night_shift_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.water_security }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.desalination_night_shift_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.desalination_night_shift_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_485_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_485_desalination_pressure }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_485_desalination_pressure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_485_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.clean_water }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.clean_water }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_two }
+				set_temp_variable = { fallout_event_pilot_bilateral_opportunity = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_485_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.desalination_night_shift_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_485_candidate_state_id
+			clear_variable = fallout_event_485_desalination_pressure
 
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
