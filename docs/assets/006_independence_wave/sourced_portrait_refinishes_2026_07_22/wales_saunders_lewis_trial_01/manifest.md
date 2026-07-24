@@ -1,6 +1,6 @@
 # Saunders Lewis source-locked portrait trial 01
 
-Status: **candidate awaiting independent visual and provenance audit; not approved for runtime wiring**
+Status: **rejected on independent likeness review; no runtime wiring authorized**
 
 This package contains one sourced real-male civic portrait candidate for IW-002 Wales. It contains no advisor, dossier, `_small`, female, fictional, flag, focus, decision, localisation, gameplay, interface, or runtime asset.
 
@@ -37,8 +37,16 @@ This package contains one sourced real-male civic portrait candidate for IW-002 
 - Processor/style sheet: `contact_sheets/WLS_saunders_lewis_processor_style_comparison.png`.
 - Processor metadata: `metadata/WLS_saunders_lewis_processing.json`.
 
-Independent review must decide whether the compact face, ears, hairline, deep-set asymmetric eyes, nose, narrow cheeks, mouth, expression, sourced age, and 1916 uniform remain recognizably Saunders Lewis at full and native size. Reject if the newspaper source is too weak, the large eyes become caricature, facial detail is invented, or the result reads as a generic young soldier.
+Independent audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sco_wls_afx_civic_portrait_visual_provenance_audit_2026_07_22.md`.
+
+- Source, role, and date: `PASS_WITH_WEAK_SOURCE_AND_DATE_CAVEATS`.
+- Ownership and intended consumer: `PASS_WITH_CROSS_MOD_DISCLOSURE`.
+- HOI4 painted style: `PASS`.
+- Identity and likeness: `FAIL`.
+- Runtime verdict: `HOLD`.
+
+The independent reviewer found that the repaint materially enlarges, rounds, brightens, and symmetrizes the eyes; regularizes the ears and cheek planes; and turns a weak halftone source into a generic young soldier rather than a verifiable Saunders Lewis likeness. This non-compensable identity failure overrides the style pass.
 
 ## Runtime gate
 
-Do not copy, convert, register, or wire this candidate before an independent PASS. IW-002 remains closed until this civic portrait and a rights-cleared sourced Welsh territorial/mountain commander portrait both pass independent review, exact runtime DDS files are pixel-verified, and a fresh full package audit passes. Robert Knox Ross remains `needs_user_review` pending exact institutional licence confirmation and is not bundled here.
+Do not copy, convert, register, or wire this rejected candidate. The existing runtime DDS was restored unchanged after review and does not derive from trial 01. IW-002 remains closed until a tighter source-locked civic repaint or a stronger archival source and a rights-cleared sourced Welsh territorial/mountain commander portrait both pass independent review, exact runtime DDS files are pixel-verified, and a fresh full package audit passes. Robert Knox Ross remains `needs_user_review` pending exact institutional licence confirmation and is not bundled here.
