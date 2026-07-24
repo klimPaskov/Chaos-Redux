@@ -4,6 +4,8 @@ Date: 2026-07-24
 
 Scope: documentation-only reconciliation for Event 006. The accepted specification area, current implementation authorities, event documentation, FORM-48 plan, and the 2026-07-24 content-attestation repair were reviewed. No gameplay, localisation, asset, spreadsheet, source-spec, source-of-truth-map, or resume-packet file was edited.
 
+> **Later same-day supersession:** This reconciliation predates the independently approved IW-009 Bavaria post-wire promotion. The canonical set is now IW-001, IW-004, IW-007, IW-008, IW-009, IW-017, and IW-019. The 3/4/5/7 bands are conditionally plannable from those seven packages, while both ten-country bands remain fail-closed below capacity. Use the source-of-truth map and `006_iw009_bavaria_postwire_country_package_audit_2026_07_24.md` for current admission status.
+
 ## Source-of-truth map
 
 | Surface | Authority | Current interpretation |

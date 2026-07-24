@@ -6,7 +6,7 @@ Audit mode: Read-only current-state completion audit.
 
 Accepted design baseline: Every file under `docs/specs/006_independence_wave_specs/`, except where a later explicit user decision supersedes it.
 
-> **Allocator supersession note (2026-07-24):** The automatic-band and candidate-contamination findings below are a pre-fix snapshot. `006_automatic_content_attestation_weight_gate_reaudit_2026_07_24.md` independently passes the centralized repair. The confirmed pre-fix contamination paths were IW-018, IW-043, and IW-058; IW-173, IW-179, and IW-184 already had local attestation gates. The current three-, four-, and five-country bands are conditionally plannable from the exact six admitted packages, while the seven- and ten-country bands remain fail-closed below capacity. All non-allocator completion gaps in this report remain current unless a later handoff says otherwise.
+> **Allocator and admission supersession note (2026-07-24):** The automatic-band and candidate-contamination findings below are a pre-fix, pre-Bavaria snapshot. `006_automatic_content_attestation_weight_gate_reaudit_2026_07_24.md` independently passes the centralized repair. The confirmed pre-fix contamination paths were IW-018, IW-043, and IW-058; IW-173, IW-179, and IW-184 already had local attestation gates. Commit `ca25615` and `006_iw009_bavaria_postwire_country_package_audit_2026_07_24.md` then independently clear and authorize IW-009 Bavaria. The current three-, four-, five-, and seven-country bands are conditionally plannable from the exact seven admitted packages, while both ten-country bands remain fail-closed below capacity. The historical body below remains useful for non-Bavaria, non-allocator gaps unless a later handoff says otherwise.
 
 ## Executive verdict
 
