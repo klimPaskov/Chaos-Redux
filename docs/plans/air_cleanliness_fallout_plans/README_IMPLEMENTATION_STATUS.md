@@ -643,3 +643,11 @@ The Ration Thief Election is implemented as a dormant country-level chain at `ch
 
 Year Zero is implemented as a dormant country-level chain at `chaosx.fallout.401` through `.407`. It has four calendar identity policies, frozen food, recognition, cohesion, calendar memory, legitimacy, anniversary cohesion, and ideology-pressure ledgers, a delayed result, a first-anniversary callback, Deaths-system failure accounting, branch and anniversary memories, cleanup receipts, Event Log history `9136`, candidate row `401`, and a dedicated report-art package. The defined living-world total is now `289`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded inspector boundary, if attempted, will be recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.
+
+## The Orchard Flowers Once recovery tranche
+
+The Orchard Flowers Once is implemented as a dormant state-level chain at `chaosx.fallout.408` through `.414`. It has four recovery policies, frozen Food, Medicine, Cohesion, Recognition, Adaptation, Reclamation, and seed-memory ledgers, a delayed result, a first-harvest callback, Deaths-system failure accounting, state recovery memories, cleanup receipts, Event Log history `9137`, candidate row `408`, and a dedicated report-art package. The defined living-world total is now `296`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Refugee Train border and migration tranche
+
+The Refugee Train is implemented as a dormant state-level chain at `chaosx.fallout.415` through `.421`. It has four authored rail-border policies, frozen Food, Recognition, Cohesion, family-memory, border-legitimacy, integration, and bilateral-trust ledgers, a delayed result, a first-anniversary callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9138`, candidate row `415`, and a dedicated report-art package. The defined living-world total is now `303`, while countable Fallout living-world blocks remain `0 of 660`.

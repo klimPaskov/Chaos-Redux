@@ -502,3 +502,15 @@ The documented living-world block total is now `282`, while the countable Fallou
 Year Zero adds seven dormant country-level event blocks at suffixes `401` through `407`. It uses candidate `401`, transaction `710031`, route `7131`, and history `9136`.
 
 The documented living-world block total is now `289`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Orchard Flowers count correction
+
+The Orchard Flowers Once reservation adds seven dormant state-level event blocks at suffixes `408` through `414`. It uses candidate `408`, transaction `710032`, route `7132`, and history `9137`. The chain carries four recovery policies, deterministic state selection, a delayed result, a first-harvest callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
+
+The documented living-world block total is now `296`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Refugee Train count correction
+
+The Refugee Train reservation adds seven dormant state-level event blocks at suffixes `415` through `421`. It uses candidate `415`, transaction `710033`, route `7133`, and history `9138`. The chain carries four rail-border policies, deterministic state selection, a delayed result, an anniversary callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
+
+The documented living-world block total is now `303`, while the countable Fallout living-world release-floor total remains `0 of 660`.

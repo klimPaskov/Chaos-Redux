@@ -436,6 +436,10 @@ Its country row requires the closed Working Machine memory, durable resources, c
 The deterministic state score is nuclear reactor level times `5` plus infrastructure and industrial capacity, with the lowest native state id resolving ties.
 The four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown and each has separate costs, thresholds, state memory, dynamic modifier, callback payload, and Deaths-backed failure route.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+
+## Orchard Flowers scheduler correction
+
+The reviewed ordinary producer now carries thirty-two rows and the defined living-world event range reaches `414`, with `296` defined blocks. Orchard Flowers Once is candidate `408`, transaction `710032`, route `7132`, and history `9137`. Its state gate requires a produced Air Winter recovery snapshot, rural native category, surviving food reserve, and current-generation ownership. The four recovery branches freeze Food, Medicine, Cohesion, Recognition, Adaptation, Reclamation, and seed memory before a 42-day result and schedule a 210-day first-harvest callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
 The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges.
 It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23102`, `maximum: 20000`, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.
 The exact result is recorded in `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md`.
@@ -495,3 +499,7 @@ The reviewed ordinary producer now carries thirty-one rows and the defined livin
 Its country row requires medicine pressure below the reviewed ceiling, a current-generation native state with Air Winter exposure, surviving population, and current Fallout ownership. The lowest native state id resolves ties.
 The four branches use separate medicine, food, scrap, recognition, and cohesion costs. The chain freezes medicine, food, recognition, cohesion, adulteration, trust, and supplier ledgers before a 42-day result and a 330-day supplier review callback.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+
+## Refugee Train scheduler correction
+
+The reviewed ordinary producer now carries thirty-three rows and the defined living-world event range reaches `421`, with `303` defined blocks. Refugee Train is candidate `415`, transaction `710033`, route `7133`, and history `9138`. Its state row requires a current Air Winter snapshot, native rail capacity, surviving population, and current-generation ownership. The four branches admit families, redirect the column, quarantine the train, or recruit specialists. They freeze survival and migration-memory ledgers before a 35-day result and a 365-day anniversary callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
