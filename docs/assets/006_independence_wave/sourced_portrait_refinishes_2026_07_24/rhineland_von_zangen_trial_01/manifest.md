@@ -4,7 +4,7 @@ Date: 2026-07-24.
 Event/package: IW-008 Rhineland.
 Stable consumer: `RHI_independence_wave_river_commandant`.
 Source mode: `grounded_source_only`.
-Status: `identity_transfer_recorded_reaudit_required`.
+Status: `independently_approved_and_wired`.
 
 ## Mandatory transformation chain
 
@@ -46,10 +46,14 @@ Ownership must be rechecked by the independent auditor before any runtime admiss
 `identity_transfer.md` records the parent-owned transfer of the stable generated Event 006 token from its prior Josef Harpe display identity to Gustav-Adolf von Zangen.
 The English localisation implements that transfer while IW-008 remains fail-closed outside runtime content attestation.
 The transfer creates no second historical character and authorizes only the token's existing full `civilian.large` and `army.large` consumers.
+The independent visual audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_von_zangen_trial01_independent_audit_2026_07_24.md`.
+The independent transfer re-audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_von_zangen_trial01_transfer_reaudit_2026_07_24.md`.
+Together they pass provenance, exact identity, HOI4 commander style, role fit, and exclusive ownership for the authorized consumers.
 
-## Runtime hold
+## Runtime wiring
 
-No Trial 01 DDS was created, and no GFX, character, history, readiness, or runtime portrait file was changed.
-The stable token's English display identity is now Gustav-Adolf von Zangen, but the candidate still requires a fresh independent ownership-transfer PASS before conversion or wiring.
-Failure or uncertainty in that verdict keeps the stable RHI consumer unwired to this trial and keeps IW-008 outside runtime content attestation.
+The approved PNG was converted to `final_dds/portrait_RHI_independence_wave_river_commandant.dds` and copied byte-identically to `gfx/leaders/006_independence_wave/portrait_RHI_independence_wave_river_commandant.dds`.
+Both DDS copies are legacy one-level opaque BGRA at `156x210`, SHA-256 `F8F99F0D3EF38601DA687B9A2CEA63EDBDE629017076E26E46B26B4B762E0DF2`, and decode pixel-identically to the approved PNG.
+The stable sprite already points to the runtime path, and the male token uses only the approved `civilian.large` and `army.large` slots.
+IW-008 remains outside runtime content attestation until a full post-wiring country-package audit passes.
 No advisor, dossier, `_small`, high-command, theorist, operative, female, navy, alternate, or fallback asset is authorized.

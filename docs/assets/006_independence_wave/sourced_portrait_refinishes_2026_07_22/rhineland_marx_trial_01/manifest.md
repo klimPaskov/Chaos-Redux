@@ -1,6 +1,6 @@
 # Wilhelm Marx source-locked portrait trial
 
-Status: **candidate awaiting independent visual and provenance audit; not approved for runtime wiring**
+Status: **independently approved and wired**
 
 This package contains one sourced real-male Rhineland civic-leader portrait candidate. It creates no advisor, dossier, `_small`, female, fictional, flag, focus, decision, localisation, gameplay, interface, or runtime asset.
 
@@ -37,8 +37,13 @@ This package contains one sourced real-male Rhineland civic-leader portrait cand
 - Review sheet: `contact_sheets/RHI_wilhelm_marx_source_result_reference.png`, SHA-256 `66C3BBC688C1F1A679E691CA6173A163C394E16B8489648F8D9815D2EF836056`.
 - Processor metadata: `metadata/RHI_wilhelm_marx_processing.json`.
 
-The refinish preserves Marx's bald crown and side hair, round spectacles, small pale moustache, long nose, cheeks and jowls, three-quarter gaze, expression, civilian suit, collar, and tie. Independent review must reject it if the tiny portrait loses his identity, reads as ordinary photography instead of HOI4 painted art, invents anatomy or attire, or fails the source/rights/ownership gates.
+The refinish preserves Marx's bald crown and side hair, round spectacles, small pale moustache, long nose, cheeks and jowls, three-quarter gaze, expression, civilian suit, collar, and tie.
+The independent audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wilhelm_marx_trial01_visual_audit_2026_07_23.md` passes provenance, exact identity, HOI4 leader style, role fit, and ownership for this stable consumer.
 
-## Runtime gate
+## Runtime wiring
 
-Do not copy this candidate into `gfx/leaders/006_independence_wave/`, convert it to DDS, register or change a sprite, rename the character in localisation/docs, or reopen IW-008 on this package alone. IW-008 also needs a separately approved sourced Josef Harpe commander portrait, exact runtime wiring, protected Josef Friedrich Matthes hash verification, and a fresh full country-package audit.
+The approved PNG was converted to `final_dds/portrait_RHI_independence_wave_provisional_directorate.dds` and copied byte-identically to `gfx/leaders/006_independence_wave/portrait_RHI_independence_wave_provisional_directorate.dds`.
+Both DDS copies are legacy one-level opaque BGRA at `156x210`, SHA-256 `080A1C3B3F6C7C3F01F7E380C8C6BFC064C238FCC44DB084F2C559F1C3436BCB`, and decode pixel-identically to the approved PNG.
+The stable `GFX_portrait_RHI_independence_wave_provisional_directorate` sprite already points to that exact runtime path, and the English consumer identity is Wilhelm Marx.
+No `_small`, advisor, dossier, high-command, theorist, or alternate-country derivative was created.
+The protected Matthes DDS remains byte-identical, and IW-008 remains outside runtime content attestation until its complete post-wiring country-package audit passes.
