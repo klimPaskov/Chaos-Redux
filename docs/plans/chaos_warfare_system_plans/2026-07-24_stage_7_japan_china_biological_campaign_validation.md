@@ -29,7 +29,7 @@ Status: implemented source tranche; Stage 7 and the overall Chaos Warfare goal r
 
 The custom cost validates and displays all four resources but does not consume them.
 
-The complete effect therefore revalidates every route, target, and resource condition before atomically debiting Political Power, the exact payload model, Support Equipment, and Command Power in the committed release chain.
+The complete effect therefore revalidates every route, target, and resource condition before debiting Political Power, the exact payload model, Support Equipment, and Command Power together in the committed release chain.
 
 This structure follows the installed Decision Modding documentation, which states that `custom_cost_trigger` and `custom_cost_text` do not perform the resource debit and should not be combined with a regular Political Power `cost`.
 
@@ -76,7 +76,9 @@ High Condemnation plus high import vulnerability applies a further factor of 0.3
 
 These are decision-selection scores, not biological delivery-success probabilities.
 
-The inspector artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f1d1a0315cab5c402bc7432e390533c3a2d4f9e7607e7d514cb62f790e23e7e4/6b50cbfd00d7c07f58c7e9ec55904d9d70310baff124cacf619f0a10627ab298/probability-inspect-b1ea018f054f.json`.
+The refreshed inspector parsed both decisions, their file-local AI Political Power reservation macros, all weighted modifiers, referenced script constants, and helper calls with zero unresolved constructs.
+
+The current inspector artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b84c27d71f3ca9f436f0e251e95c964e9c7f27fac9d774e85005b6c1b878e8e9/329f4d84df798c3a56a515fe478edf716fd9564b7bc931bdd6057947518ffd13/probability-inspect-54acd120d787.json`.
 
 The scenario evaluation artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9f3cc39e68753ef2e9f123a5c5edfd02e86ea69e3f2d5858e052746f635f4f5a/d8cde6e3745e7c90abb50f423d35ee4a29681207114fc38c1b4543ff88e27629/probability-ef79cef83ee02714acaa4c49.json`.
 
@@ -85,6 +87,19 @@ The analyzer cannot independently model several different `FROM` expressions wit
 Those analyzer limits leave valid-target scores partially symbolic, so the exact arithmetic above was checked directly from the parsed source factors.
 
 No gameplay estimator or approximation was added in response to the analyzer limitation.
+
+## Specialist Audit Resolution
+
+The decision and mission auditor recorded two high findings, one medium finding, and one low presentation finding in `docs/plans/chaos_warfare_system_plans/audits/2026-07-24_japan_china_biological_campaign_decision_audit.md`.
+
+| Finding | Resolution |
+| --- | --- |
+| Doctrine Command Power refunds were treated as prohibited. | Rejected as a design conflict. Numbered Spec 06 explicitly permits a bounded post-resolution Command Power refund, and the user directed Chaos Warfare doctrine to make CBRN deployment easier while reducing only Condemnation among consequence records. The 2/4 refund remains, payload and Support Equipment remain fully consumed, and both player-facing effect tooltips now disclose the exact refund. |
+| A non-Chinese enemy controller could pass the Chinese-core target gate. | Accepted and fixed. The exact selected-state controller must now be CHI, PRC, SHX, GXC, YUN, XSM, or SIK in addition to being at war with Japan and outside Japan's alliance. |
+| `ai_hint_pp_cost` script-constant parsing was not proven. | Resolved with a file-local `@` macro, which preprocesses to the fixed 35 or 40 literal required by this engine-only AI reservation field. Actual cost checks and debits remain sourced from shared script constants. |
+| Custom costs do not show agent payload text icons. | No suitable agent-payload text icon is registered. The exact payload names and quantities remain explicit rather than introducing a placeholder or cross-type substitute. |
+
+The audit's older requirement-text note is superseded by the current localisation, which lists Political Power alongside payload, Support Equipment, and Command Power.
 
 ## Historical Confidence
 
