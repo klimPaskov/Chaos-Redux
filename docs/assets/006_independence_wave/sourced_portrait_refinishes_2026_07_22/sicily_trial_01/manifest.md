@@ -1,10 +1,6 @@
 # Event 006 Sicily sourced-real-male portrait refinish trial 01
 
-Status: `needs_user_review` for all three results. The package is physically
-complete through processed PNG and DDS conversion, but the producer does not
-self-approve real-person identity preservation or source/licence provenance.
-An independent visual/provenance audit is required before any runtime copy,
-`.gfx` registration, gameplay use, or status promotion.
+Status: `independently_approved_and_wired` for Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo under the independent visual/provenance audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sicily_trial01_portrait_visual_provenance_audit_2026_07_22.md`.
 
 ## Scope and method
 
@@ -17,16 +13,16 @@ An independent visual/provenance audit is required before any runtime copy,
   `convert_to_dds.py` -> final one-level uncompressed BGRA DDS
 - ImageGen outputs remain separate under `imagegen_masters/`; source masters are
   copied unchanged under `source_masters/` and are never overwritten.
-- No advisor art, advisor portrait, `_small` miniature, GFX edit, runtime copy,
-  localisation, gameplay, or generated identity is included.
+- No advisor art, advisor portrait, `_small` miniature, female portrait, alternate portrait, or generated identity is included.
+- The approved large portraits are copied to the runtime paths and registered by the parent-owned GFX and character files.
 
 ## Asset ledger
 
 | Result | Grounded role / gender | Exact source and crop | Source provenance | Output files | Status |
 |---|---|---|---|---|---|
-| `ASX_luigi_sturzo.png` | Country leader / Sicilian provisional assembly; male | `asx_luigi_sturzo_albert_kahn_big.jpeg`, `(520,330,1170,1205)`, source `1519x2048`, crop `650x875` | Albert Kahn collection record and Commons `1925_Luigi_Sturzo.jpg`; Georges Chevalier; 1925; Albert Kahn record/Commons attribution state `CC BY 4.0`; source SHA-256 `4c18893744627c83761ee2b838a18f2f4798026811b888ecfb96d1f1d7a168ec` | `imagegen_masters/ASX_luigi_sturzo_imagegen_master.png`; `processed_png/ASX_luigi_sturzo.png`; `final_dds/ASX_luigi_sturzo.dds`; prompt and crop preview | `needs_user_review` |
-| `ASX_pietro_lanza_di_scalea.png` | Country leader / Sicilian crown council; male | `asx_pietro_lanza_di_scalea_commons_original.jpg`, `(155,15,495,473)`, source `602x800`, crop `340x458` | Commons file “Pietro Lanza di Scalea by Mario Nunes Vais”; ICCD Fondo Nunes Vais; before 1932; Mario Nunes Vais (1856–1932); Commons PD-old/PD-US/PDM tags; source SHA-256 `5cbf419d7f33539e726f0ef4089b1c9995e1bfdbcd8b581f8eaa996659d02f0b` | `imagegen_masters/ASX_pietro_lanza_di_scalea_imagegen_master.png`; `processed_png/ASX_pietro_lanza_di_scalea.png`; `final_dds/ASX_pietro_lanza_di_scalea.dds`; prompt and crop preview | `needs_user_review` |
-| `ASX_luigi_rizzo.png` | Navy commander / Sicilian emergency command; male | `asx_luigi_rizzo_rear_admiral_1935.jpg`, `(70,0,333,354)`, source `402x582`, crop `263x354` | Commons “Rear Admiral Luigi Rizzo in 1935”; *Medaglie d'oro della Grande Guerra*, Rome, 1935; Italian Navy biography; photographer unnamed; Commons PD-Italy and PD-1996/US tags; source SHA-256 `aa113393b9b51ed481bfa485aaf729e867c20c6a364b41d3f8999b0dc2c8663e` | `imagegen_masters/ASX_luigi_rizzo_imagegen_master.png`; `processed_png/ASX_luigi_rizzo.png`; `final_dds/ASX_luigi_rizzo.dds`; prompt and crop preview | `needs_user_review` |
+| `ASX_luigi_sturzo.png` | Country leader / Sicilian provisional assembly; male | `asx_luigi_sturzo_albert_kahn_big.jpeg`, `(520,330,1170,1205)`, source `1519x2048`, crop `650x875` | Albert Kahn collection record and Commons `1925_Luigi_Sturzo.jpg`; Georges Chevalier; 1925; Albert Kahn record/Commons attribution state `CC BY 4.0`; source SHA-256 `4c18893744627c83761ee2b838a18f2f4798026811b888ecfb96d1f1d7a168ec` | `imagegen_masters/ASX_luigi_sturzo_imagegen_master.png`; `processed_png/ASX_luigi_sturzo.png`; `final_dds/ASX_luigi_sturzo.dds`; prompt and crop preview | `independently_approved_and_wired` |
+| `ASX_pietro_lanza_di_scalea.png` | Country leader / Sicilian crown council; male | `asx_pietro_lanza_di_scalea_commons_original.jpg`, `(155,15,495,473)`, source `602x800`, crop `340x458` | Commons file “Pietro Lanza di Scalea by Mario Nunes Vais”; ICCD Fondo Nunes Vais; before 1932; Mario Nunes Vais (1856–1932); Commons PD-old/PD-US/PDM tags; source SHA-256 `5cbf419d7f33539e726f0ef4089b1c9995e1bfdbcd8b581f8eaa996659d02f0b` | `imagegen_masters/ASX_pietro_lanza_di_scalea_imagegen_master.png`; `processed_png/ASX_pietro_lanza_di_scalea.png`; `final_dds/ASX_pietro_lanza_di_scalea.dds`; prompt and crop preview | `independently_approved_and_wired` |
+| `ASX_luigi_rizzo.png` | Country leader / Sicilian straits-security government; male | `asx_luigi_rizzo_rear_admiral_1935.jpg`, `(70,0,333,354)`, source `402x582`, crop `263x354` | Commons “Rear Admiral Luigi Rizzo in 1935”; *Medaglie d'oro della Grande Guerra*, Rome, 1935; Italian Navy biography; photographer unnamed; Commons PD-Italy and PD-1996/US tags; source SHA-256 `aa113393b9b51ed481bfa485aaf729e867c20c6a364b41d3f8999b0dc2c8663e` | `imagegen_masters/ASX_luigi_rizzo_imagegen_master.png`; `processed_png/ASX_luigi_rizzo.png`; `final_dds/ASX_luigi_rizzo.dds`; prompt and crop preview | `independently_approved_and_wired`; civilian large consumer only after separation from the corps-command role |
 
 ## Source links and rights notes
 
@@ -74,7 +70,6 @@ Known audit risks:
 
 ## Explicit non-authorization
 
-This package does not authorize parent conversion, runtime copying, `.gfx`
-registration, or gameplay/localisation wiring. Those actions remain blocked
-until an independent visual/provenance audit records acceptance for each
-subject. No fallback or generic face was used.
+The independent audit authorized the three exact processed identities, and their approved DDS files are wired to the current runtime paths.
+No fallback or generic face was used.
+No advisor, dossier, `_small`, female, alternate, or newly generated identity is authorized.

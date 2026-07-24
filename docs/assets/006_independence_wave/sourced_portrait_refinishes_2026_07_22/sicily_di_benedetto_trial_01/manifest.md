@@ -4,9 +4,7 @@ Date: 2026-07-22
 Event/package: IW-019 ASX Sicily  
 Asset type: full male leader/army-command portrait  
 Source mode: `grounded_source_only`  
-Overall status: `candidate_requires_independent_review` — source, crop, and
-source-locked painted candidate are complete; runtime wiring remains forbidden
-until an independent identity/style/provenance audit passes.
+Overall status: `independently_approved_and_wired` — the archival source, explicit crop, source-locked repaint, deterministic processing, independent audit, DDS conversion, and army-large runtime wiring are complete.
 
 ## Role decision
 
@@ -103,9 +101,10 @@ and `7C52D1BD089271AE57F9FBB0291579CE1F03E945FAEC36D072BE509718587665`.
 
 ## DDS and runtime status
 
-No final DDS exists. The painted candidate is still awaiting independent audit,
-so runtime conversion and wiring remain deferred. No runtime DDS, `.gfx`,
-character, history, localisation, GUI, or gameplay file was edited.
+The independent audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sicily_di_benedetto_trial01_independent_audit_2026_07_24.md` records PASS for provenance, exact likeness and identity, HOI4 commander style, emergency role fit, and ownership/exclusivity.
+The processed candidate was converted to `gfx/leaders/006_independence_wave/portrait_ASX_independence_wave_vincenzo_di_benedetto.dds`, SHA-256 `BC709FE8D00916A60DA4B7445E872A746A41901F3C619502824B078DBF7EC173`.
+The runtime DDS is a legacy one-level BGRA texture, exactly `156x210` and 131,168 bytes, and decodes pixel-identically to the approved processed PNG.
+The sole consumer is the male `ASX_vincenzo_di_benedetto` army/corps-command large portrait through `GFX_portrait_ASX_independence_wave_vincenzo_di_benedetto`.
 
 ## Ownership gate
 
@@ -117,12 +116,7 @@ not make an exclusivity claim about unrelated reference mods.
 
 ## Simplifications and blockers
 
-- The source, crop, and painted candidate are complete, but independent review
-  and the complete Sicily package audit remain outstanding.
-- Di Benedetto's emergency army slot is an explicit role adaptation; it must not
-  be described as an active 1936 historical command.
-- The civilian suit and tie are intentional source evidence; no invented
-  military clothing or insignia is authorized.
-- No generated identity, generic substitute, female portrait, advisor/dossier,
-  `_small` file, DDS, GFX edit, or gameplay change was made. ImageGen was used
-  only to repaint the attributed archival identity under a source lock.
+- Di Benedetto's emergency army slot remains an explicit role adaptation and is described only as a retired Sicilian general recalled for the synchronized independence emergency.
+- The civilian suit and tie remain intentional source evidence; no invented military clothing or insignia was introduced.
+- No generated identity, generic substitute, female portrait, advisor/dossier, `_small` file, navy portrait, or alternate asset was made.
+- The complete Sicily country-package re-audit remains pending after this portrait and role wiring change.
