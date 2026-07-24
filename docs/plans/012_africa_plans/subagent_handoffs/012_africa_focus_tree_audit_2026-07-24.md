@@ -44,7 +44,7 @@ The current source contains 405 focus blocks: 276 continental, 8 priority-member
 | Shared support | 36 | `common/national_focus/012_africa_continental_focus_tree.txt:5664-6612` | All 36 support IDs exist and route through the support reward helper. |
 | Formation and post-formation | 20 | `africa_charter_league_declared` at line 6642 through `africa_one_continent_many_peoples` at line 7109 | All 20 final-band IDs exist and use the final-focus helper family. |
 | Payoff anchors | 78/78 | Rows 1-78 in `docs/plans/012_africa_plans/012_africa_focus_architecture_handoff.md:152-269` | Every accepted anchor resolves to a focus ID; no missing or duplicate anchors were found. |
-| World-order packages | 20 Asia, 20 Europe, 20 Middle East, 20 North America, 20 Oceania, 21 South America | Six `common/national_focus/012_africa_world_*_focus.txt` files | All package focuses have prerequisites, rewards, AI blocks, and localisation, but most AI blocks are static package weights and their goal art is not delivered. |
+| World-order packages | 20 Asia, 20 Europe, 20 Middle East, 20 North America, 20 Oceania, 21 South America | Six `common/national_focus/012_africa_world_*_focus.txt` files | All package focuses have expected prerequisite structure, rewards, AI blocks, and localisation; opening nodes intentionally have no prerequisite. Most AI blocks are static package weights and their goal art is not delivered. |
 
 ## Missing or simplified content
 
