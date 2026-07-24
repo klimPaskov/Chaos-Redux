@@ -1,6 +1,6 @@
 # Saunders Lewis source-locked portrait trial 02
 
-Status: `candidate_pending_independent_audit`
+Status: `rejected_identity_runtime_hold`
 
 ## Immutable archival source
 
@@ -31,11 +31,18 @@ Trial 02 uses the exact same immutable source and crop, explicitly preserves the
 - Processor metadata: `metadata/WLS_saunders_lewis_trial_02_processing.json`, SHA-256 `78B6881254AFB23456C819F1A540C055C5EBF35DAF850C8B9FE7FA77899CFA12`.
 - Processor style sheet: `review_sheets/WLS_saunders_lewis_trial_02_processor_style_comparison.png`, `1344x464`, SHA-256 `D6BCAF653E1816DA5ECA2054EA8D1E9498EA17F8F170CD239D238C4A88ECB43D`.
 - Evidence limitation: the processor sheet labels its first panel as an explicit source crop, but that panel is the crop of the raw ImageGen result. Independent review must separately compare the immutable archival master and exact archival crop recorded above.
-- Independent provenance/likeness/style audit: pending.
-- DDS conversion and runtime wiring: forbidden until an independent reviewer records PASS for likeness, style, provenance, role, and consumer boundary.
+- Independent audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wls_lussu_trial_visual_provenance_audit_2026_07_24.md`.
+- Provenance, HOI4 style, framing, ownership, role, consumer-boundary, and male-only gates: `PASS`.
+- Likeness/identity gate: `FAIL`.
+- Runtime authorization: `FAIL`.
+- Trial 02 materially improves trial 01's enlarged and bright eyes, but it still regularizes and near-symmetrizes the source's small deep-set asymmetric eyes, frontalizes the face, smooths weakly evidenced facial planes, and can read as a generic young soldier at native size.
+- No candidate DDS was created or wired.
+- Further work requires a stronger archival source or a new source-locked pass from archival evidence; this rejected result must not be used as an identity source.
 
 ## Consumer boundary
 
 The only proposed consumer is `WLS_independence_wave_national_council` through the existing full-size sprite `GFX_portrait_WLS_independence_wave_national_council`.
 
 No advisor, dossier, `_small`, commander, operative, alternate-country, or unrelated consumer is authorized.
+
+This candidate remains unwired and may not be converted, resized into a fallback, or substituted for the existing stable runtime texture.
