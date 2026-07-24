@@ -1,0 +1,543 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE DECISION EFFECTS
+# ============================================================================
+# Sovereign initialization, paid logistics, exact stockpile accounting,
+# project production, integration receipts, temporal actions, and terminal
+# disarmament. Existing Event 016 project, force, temporal, and terminal helpers
+# remain canonical.
+# ============================================================================
+
+# COUNTRY scope. One-time initialization is player/AI decision-driven.
+brilliant_scientist_krg_initialize_decision_layer = {
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_scientist_roster } } set_variable = { brilliant_scientist_krg_scientist_roster = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_interface_roster } } set_variable = { brilliant_scientist_krg_interface_roster = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_paleogenetic_handler_roster } } set_variable = { brilliant_scientist_krg_paleogenetic_handler_roster = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_clone_growth_cycles } } set_variable = { brilliant_scientist_krg_clone_growth_cycles = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_robot_assembly_cycles } } set_variable = { brilliant_scientist_krg_robot_assembly_cycles = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_paleogenetic_breeding_cycles } } set_variable = { brilliant_scientist_krg_paleogenetic_breeding_cycles = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_xenobiological_production_cycles } } set_variable = { brilliant_scientist_krg_xenobiological_production_cycles = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_portal_transit_batches } } set_variable = { brilliant_scientist_krg_portal_transit_batches = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_exotic_guard_batches } } set_variable = { brilliant_scientist_krg_exotic_guard_batches = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_temporal_guard_batches } } set_variable = { brilliant_scientist_krg_temporal_guard_batches = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_krg_terminal_count } } set_variable = { brilliant_scientist_krg_terminal_count = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_submission_acceptance_count } } set_variable = { brilliant_scientist_submission_acceptance_count = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_global_administration_score } } set_variable = { brilliant_scientist_global_administration_score = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_global_submission_score } } set_variable = { brilliant_scientist_global_submission_score = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_world_control_ratio } } set_variable = { brilliant_scientist_world_control_ratio = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_integrated_state_ratio } } set_variable = { brilliant_scientist_integrated_state_ratio = constant:brilliant_scientist_krg_value.zero } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_major_opposition_count } } set_variable = { brilliant_scientist_major_opposition_count = constant:brilliant_scientist_krg_value.zero } }
+
+	set_variable = { brilliant_scientist_krg_conventional_guard_cap = constant:brilliant_scientist_krg_capacity.conventional_guard_maximum }
+	set_division_template_cap = {
+		division_template = "Laboratory Guard"
+		division_cap = brilliant_scientist_krg_conventional_guard_cap
+	}
+	set_division_template_lock = { division_template = "Laboratory Guard" is_locked = yes }
+	set_division_force_allow_recruiting = { division_template = "Laboratory Guard" force_allow_recruiting = yes }
+	brilliant_scientist_rebuild_project_force_runtime_package = yes
+	set_country_flag = brilliant_scientist_krg_decision_layer_initialized
+}
+
+# COUNTRY scope. Material costs are explicit because custom decision cost text
+# does not debit equipment or fuel.
+brilliant_scientist_krg_pay_light_material_cost = {
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_krg_cost.support_light_spend }
+	add_fuel = constant:brilliant_scientist_krg_cost.fuel_light_spend
+}
+
+brilliant_scientist_krg_pay_standard_material_cost = {
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_krg_cost.support_standard_spend }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_krg_cost.motorized_light_spend }
+	add_fuel = constant:brilliant_scientist_krg_cost.fuel_standard_spend
+}
+
+brilliant_scientist_krg_pay_heavy_material_cost = {
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_krg_cost.support_heavy_spend }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_krg_cost.motorized_standard_spend }
+	add_fuel = constant:brilliant_scientist_krg_cost.fuel_heavy_spend
+}
+
+brilliant_scientist_krg_pay_project_batch_cost = {
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_krg_cost.project_batch_support_spend }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_krg_cost.project_batch_motorized_spend }
+	add_fuel = constant:brilliant_scientist_krg_cost.project_batch_fuel_spend
+	add_manpower = constant:brilliant_scientist_krg_cost.project_batch_manpower_spend
+}
+
+brilliant_scientist_krg_pay_foreign_operation_cost = {
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:brilliant_scientist_krg_cost.foreign_operation_convoy_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_krg_cost.foreign_operation_support_spend }
+	add_fuel = constant:brilliant_scientist_krg_cost.foreign_operation_fuel_spend
+}
+
+# COUNTRY scope. The four hazardous missions use transient objective receipts.
+# Cancellation and terminal resolution clear the receipts; permanent history is
+# written only after a paid objective or a contained failure has actually occurred.
+brilliant_scientist_krg_clear_clone_drift_review_objective_state = {
+	clr_country_flag = brilliant_scientist_krg_clone_drift_review_objective_active
+	clr_country_flag = brilliant_scientist_krg_clone_drift_review_objective_complete
+}
+
+brilliant_scientist_krg_clear_rogue_node_containment_objective_state = {
+	clr_country_flag = brilliant_scientist_krg_rogue_node_containment_objective_active
+	clr_country_flag = brilliant_scientist_krg_rogue_node_containment_objective_complete
+}
+
+brilliant_scientist_krg_clear_maintenance_audit_objective_state = {
+	clr_country_flag = brilliant_scientist_krg_maintenance_audit_objective_active
+	clr_country_flag = brilliant_scientist_krg_maintenance_audit_objective_complete
+}
+
+brilliant_scientist_krg_clear_transit_breach_closure_objective_state = {
+	clr_country_flag = brilliant_scientist_krg_transit_breach_closure_objective_active
+	clr_country_flag = brilliant_scientist_krg_transit_breach_closure_objective_complete
+}
+
+# COUNTRY scope. Timed flags receive a temporary-variable duration because the
+# engine does not reliably parse a script constant directly in the days field.
+brilliant_scientist_krg_fail_clone_drift_review = {
+	clr_country_flag = brilliant_scientist_krg_clone_drift_review_active
+	brilliant_scientist_krg_clear_clone_drift_review_objective_state = yes
+	set_country_flag = brilliant_scientist_krg_clone_drift_review_failed_ever
+	set_temp_variable = { brilliant_scientist_krg_hazardous_mission_retry_days = constant:brilliant_scientist_krg_timing.hazardous_mission_retry_days }
+	set_country_flag = {
+		flag = brilliant_scientist_krg_clone_drift_review_retry_cooldown
+		days = brilliant_scientist_krg_hazardous_mission_retry_days
+	}
+	add_stability = constant:brilliant_scientist_krg_outcome.stability_minor_loss
+}
+
+brilliant_scientist_krg_fail_rogue_node_containment = {
+	clr_country_flag = brilliant_scientist_krg_rogue_node_containment_active
+	brilliant_scientist_krg_clear_rogue_node_containment_objective_state = yes
+	set_country_flag = brilliant_scientist_krg_rogue_node_containment_failed_ever
+	set_temp_variable = { brilliant_scientist_krg_hazardous_mission_retry_days = constant:brilliant_scientist_krg_timing.hazardous_mission_retry_days }
+	set_country_flag = {
+		flag = brilliant_scientist_krg_rogue_node_containment_retry_cooldown
+		days = brilliant_scientist_krg_hazardous_mission_retry_days
+	}
+	add_stability = constant:brilliant_scientist_krg_outcome.stability_minor_loss
+}
+
+brilliant_scientist_krg_fail_maintenance_audit = {
+	clr_country_flag = brilliant_scientist_krg_maintenance_audit_active
+	brilliant_scientist_krg_clear_maintenance_audit_objective_state = yes
+	set_country_flag = brilliant_scientist_krg_maintenance_audit_failed_ever
+	set_temp_variable = { brilliant_scientist_krg_hazardous_mission_retry_days = constant:brilliant_scientist_krg_timing.hazardous_mission_retry_days }
+	set_country_flag = {
+		flag = brilliant_scientist_krg_maintenance_audit_retry_cooldown
+		days = brilliant_scientist_krg_hazardous_mission_retry_days
+	}
+	add_stability = constant:brilliant_scientist_krg_outcome.stability_standard_loss
+}
+
+brilliant_scientist_krg_fail_transit_breach_closure = {
+	clr_country_flag = brilliant_scientist_krg_transit_breach_closure_active
+	brilliant_scientist_krg_clear_transit_breach_closure_objective_state = yes
+	set_country_flag = brilliant_scientist_krg_transit_breach_closure_failed_ever
+	set_temp_variable = { brilliant_scientist_krg_hazardous_mission_retry_days = constant:brilliant_scientist_krg_timing.hazardous_mission_retry_days }
+	set_country_flag = {
+		flag = brilliant_scientist_krg_transit_breach_closure_retry_cooldown
+		days = brilliant_scientist_krg_hazardous_mission_retry_days
+	}
+	add_stability = constant:brilliant_scientist_krg_outcome.stability_minor_loss
+	add_war_support = constant:brilliant_scientist_krg_outcome.war_support_minor_loss
+}
+
+# COUNTRY scope. Canonical biological lifecycle and hostile weaponized-zombie
+# effects call this only after they have proven a real offensive release. It
+# never infers use from research, custody, readiness, reservation, or failure.
+brilliant_scientist_krg_record_confirmed_offensive_biological_use = {
+	if = {
+		limit = {
+			brilliant_scientist_is_kruger_sovereign_country = yes
+			has_country_flag = brilliant_scientist_kruger_state_active
+			has_country_flag = brilliant_scientist_focus_unlock_canonical_biological_last_resort_actions
+			NOT = { has_country_flag = brilliant_scientist_offensive_biological_weapon_used }
+		}
+		set_country_flag = brilliant_scientist_offensive_biological_weapon_used
+		brilliant_scientist_refresh_world_threat_source = yes
+	}
+}
+
+# COUNTRY scope. These bounded fabrication cycles create only physical stockpile
+# equipment. The player must still train the canonical locked templates, pay
+# their manpower/equipment bill, and remain inside canonical division caps.
+brilliant_scientist_krg_complete_clone_growth_cycle = {
+	add_equipment_to_stockpile = { type = infantry_equipment_0 amount = constant:brilliant_scientist_krg_output.clone_infantry_batch }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.clone_support_batch }
+	add_to_variable = { brilliant_scientist_krg_clone_growth_cycles = constant:brilliant_scientist_krg_value.one }
+	set_country_flag = brilliant_scientist_krg_clone_growth_burden_active
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_krg_clone_growth_cycles
+				value = constant:brilliant_scientist_krg_capacity.clone_identity_pressure_cycle
+				compare = greater_than_or_equals
+			}
+			NOT = { brilliant_scientist_krg_clone_identity_revolt_is_prevented = yes }
+			has_country_flag = brilliant_scientist_focus_unlock_clone_identity_pressure_crises
+			NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_active }
+			NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_resolved }
+			NOT = { has_country_flag = brilliant_scientist_clone_revolt_ever }
+		}
+		set_country_flag = brilliant_scientist_krg_clone_identity_pressure_active
+		set_country_flag = brilliant_scientist_krg_clone_identity_pressure_occurred
+		activate_mission = brilliant_scientist_krg_clone_identity_pressure_mission
+	}
+}
+
+brilliant_scientist_krg_complete_robot_assembly_cycle = {
+	add_equipment_to_stockpile = { type = kruger_robot_equipment_1 amount = constant:brilliant_scientist_krg_output.robot_equipment_batch }
+	add_to_variable = { brilliant_scientist_krg_robot_assembly_cycles = constant:brilliant_scientist_krg_value.one }
+	set_country_flag = brilliant_scientist_krg_machine_power_burden_active
+}
+
+brilliant_scientist_krg_complete_portal_transit_batch = {
+	add_equipment_to_stockpile = { type = kruger_portal_equipment_1 amount = constant:brilliant_scientist_krg_output.portal_equipment_batch }
+	add_to_variable = { brilliant_scientist_krg_portal_transit_batches = constant:brilliant_scientist_krg_value.one }
+}
+
+brilliant_scientist_krg_complete_exotic_guard_batch = {
+	add_equipment_to_stockpile = { type = kruger_exotic_arms_equipment_1 amount = constant:brilliant_scientist_krg_output.exotic_equipment_batch }
+	add_to_variable = { brilliant_scientist_krg_exotic_guard_batches = constant:brilliant_scientist_krg_value.one }
+}
+
+brilliant_scientist_krg_complete_temporal_guard_batch = {
+	add_equipment_to_stockpile = { type = kruger_temporal_equipment_1 amount = constant:brilliant_scientist_krg_output.temporal_equipment_batch }
+	clr_country_flag = brilliant_scientist_krg_temporal_guard_batch_committed
+}
+
+# COUNTRY scope. Each guard batch consumes a distinct temporal target ID at
+# decision start. The batch index advances on commit, so an interrupted build
+# still consumes synchronization, debt, and one of the three allowed attempts.
+brilliant_scientist_krg_commit_temporal_guard_batch = {
+	set_temp_variable = { brilliant_scientist_temporal_target_id = constant:brilliant_scientist_krg_temporal.temporal_guard_target_id_base }
+	add_to_temp_variable = { brilliant_scientist_temporal_target_id = brilliant_scientist_krg_temporal_guard_batches }
+	brilliant_scientist_bind_temporal_target = yes
+	set_temp_variable = { brilliant_scientist_temporal_sync_cost = constant:brilliant_scientist_krg_temporal.temporal_guard_sync_cost }
+	set_temp_variable = { brilliant_scientist_temporal_debt_gain = constant:brilliant_scientist_krg_temporal.temporal_guard_debt_gain }
+	brilliant_scientist_commit_bounded_temporal_action = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_temporal_action_committed > constant:brilliant_scientist_krg_value.zero } }
+		brilliant_scientist_krg_pay_project_batch_cost = yes
+		add_to_variable = { brilliant_scientist_krg_temporal_guard_batches = constant:brilliant_scientist_krg_value.one }
+		set_country_flag = brilliant_scientist_krg_temporal_guard_batch_committed
+	}
+}
+
+# COUNTRY scope. Administrative and submission scores remain route-owned
+# progress measures. Terminal territorial proof is deliberately separate and
+# is computed only by the explicit audit below, never from these receipts.
+brilliant_scientist_krg_refresh_global_administration_metrics = {
+	clamp_variable = { var = brilliant_scientist_global_administration_score min = constant:brilliant_scientist_krg_value.zero max = constant:brilliant_scientist_krg_value.percent_scale }
+	clamp_variable = { var = brilliant_scientist_global_submission_score min = constant:brilliant_scientist_krg_value.zero max = constant:brilliant_scientist_krg_value.percent_scale }
+	clamp_variable = { var = brilliant_scientist_world_control_ratio min = constant:brilliant_scientist_krg_value.zero max = constant:brilliant_scientist_krg_value.one }
+	clamp_variable = { var = brilliant_scientist_integrated_state_ratio min = constant:brilliant_scientist_krg_value.zero max = constant:brilliant_scientist_krg_value.one }
+	clamp_variable = { var = brilliant_scientist_major_opposition_count min = constant:brilliant_scientist_krg_value.zero }
+	set_country_flag = brilliant_scientist_krg_global_metrics_audited
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+# COUNTRY scope. This is an on-demand terminal/map audit, invoked only by
+# deliberate administration or terminal-resolution decisions. It counts real
+# control of currently owned world states, direct core integration, and living
+# major non-subject powers; it is never called from a recurring on_action.
+brilliant_scientist_krg_audit_terminal_world_state = {
+	set_variable = { brilliant_scientist_krg_terminal_world_state_count = constant:brilliant_scientist_krg_value.zero }
+	set_variable = { brilliant_scientist_krg_terminal_controlled_state_count = constant:brilliant_scientist_krg_value.zero }
+	set_variable = { brilliant_scientist_krg_terminal_integrated_state_count = constant:brilliant_scientist_krg_value.zero }
+	set_variable = { brilliant_scientist_major_opposition_count = constant:brilliant_scientist_krg_value.zero }
+	every_state = {
+		limit = { OWNER = { exists = yes } }
+		ROOT = { add_to_variable = { brilliant_scientist_krg_terminal_world_state_count = constant:brilliant_scientist_krg_value.one } }
+		if = {
+			limit = {
+				OR = {
+					is_controlled_by = ROOT
+					CONTROLLER = { is_subject_of = ROOT }
+				}
+			}
+			ROOT = { add_to_variable = { brilliant_scientist_krg_terminal_controlled_state_count = constant:brilliant_scientist_krg_value.one } }
+		}
+		if = {
+			limit = {
+				is_controlled_by = ROOT
+				is_core_of = ROOT
+			}
+			ROOT = { add_to_variable = { brilliant_scientist_krg_terminal_integrated_state_count = constant:brilliant_scientist_krg_value.one } }
+		}
+	}
+	every_country = {
+		limit = {
+			exists = yes
+			is_major = yes
+			NOT = { tag = ROOT }
+			NOT = { has_capitulated = yes }
+			NOT = { is_subject_of = ROOT }
+		}
+		ROOT = { add_to_variable = { brilliant_scientist_major_opposition_count = constant:brilliant_scientist_krg_value.one } }
+	}
+	set_temp_variable = { brilliant_scientist_krg_terminal_control_ratio = brilliant_scientist_krg_terminal_controlled_state_count }
+	set_temp_variable = { brilliant_scientist_krg_terminal_integration_ratio = brilliant_scientist_krg_terminal_integrated_state_count }
+	if = {
+		limit = { check_variable = { brilliant_scientist_krg_terminal_world_state_count > constant:brilliant_scientist_krg_value.zero } }
+		divide_temp_variable = { brilliant_scientist_krg_terminal_control_ratio = brilliant_scientist_krg_terminal_world_state_count }
+		divide_temp_variable = { brilliant_scientist_krg_terminal_integration_ratio = brilliant_scientist_krg_terminal_world_state_count }
+	}
+	else = {
+		set_temp_variable = { brilliant_scientist_krg_terminal_control_ratio = constant:brilliant_scientist_krg_value.zero }
+		set_temp_variable = { brilliant_scientist_krg_terminal_integration_ratio = constant:brilliant_scientist_krg_value.zero }
+	}
+	set_variable = { brilliant_scientist_world_control_ratio = brilliant_scientist_krg_terminal_control_ratio }
+	set_variable = { brilliant_scientist_integrated_state_ratio = brilliant_scientist_krg_terminal_integration_ratio }
+	set_country_flag = brilliant_scientist_krg_terminal_map_audit_completed
+	if = {
+		limit = { brilliant_scientist_krg_terminal_map_control_is_sufficient = yes }
+		set_country_flag = brilliant_scientist_krg_terminal_map_audit_passed
+	}
+	else = { clr_country_flag = brilliant_scientist_krg_terminal_map_audit_passed }
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+# COUNTRY scope. Input temporary brilliant_scientist_krg_administration_gain.
+brilliant_scientist_krg_add_administration_score = {
+	add_to_variable = { brilliant_scientist_global_administration_score = brilliant_scientist_krg_administration_gain }
+	clamp_variable = { var = brilliant_scientist_global_administration_score min = constant:brilliant_scientist_krg_value.zero }
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+# COUNTRY scope, called from a target state's remove effect. FROM is the state.
+brilliant_scientist_krg_integrate_target_state = {
+	FROM = {
+		add_core_of = ROOT
+		set_state_flag = brilliant_scientist_krg_integrated_state
+		clr_state_flag = brilliant_scientist_krg_integration_in_progress
+	}
+	set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.integration_state_gain }
+	brilliant_scientist_krg_add_administration_score = yes
+	set_country_flag = brilliant_scientist_krg_integration_completed
+	brilliant_scientist_krg_refresh_global_administration_metrics = yes
+}
+
+# COUNTRY scope. Terminal arming, fail-deadly authority, detonation, and
+# controlled disarmament keep their transient flags local to the decision
+# lifecycle so interrupted work cannot leave a phantom terminal state behind.
+brilliant_scientist_krg_begin_singularity_arming = {
+	set_country_flag = brilliant_scientist_krg_singularity_arming_active
+	set_country_flag = brilliant_scientist_singularity_arming_ever_started
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.arming }
+}
+
+brilliant_scientist_krg_complete_singularity_arming = {
+	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+	set_country_flag = brilliant_scientist_singularity_armed
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.armed }
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_krg_cancel_singularity_arming = {
+	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_singularity_armed } }
+		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.construction }
+	}
+}
+
+brilliant_scientist_krg_activate_singularity_fail_deadly = {
+	set_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	set_country_flag = brilliant_scientist_singularity_fail_deadly_ever_activated
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.armed }
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_krg_begin_singularity_detonation_protocol = {
+	set_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+}
+
+brilliant_scientist_krg_cancel_singularity_detonation_protocol = {
+	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+}
+
+brilliant_scientist_krg_begin_controlled_singularity_disarmament = {
+	set_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.disarming }
+}
+
+brilliant_scientist_krg_complete_controlled_singularity_disarmament = {
+	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	clr_country_flag = brilliant_scientist_singularity_armed
+	clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	set_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
+	set_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_krg_cancel_controlled_singularity_disarmament = {
+	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	if = {
+		limit = { has_country_flag = brilliant_scientist_singularity_armed }
+		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.armed }
+	}
+}
+
+# COUNTRY scope. FROM is the threatened state selected by the warning decision.
+# A global event target survives into the mission and is explicitly cleared on
+# every success or failure path. The attempt lock is permanent and is set before
+# the canonical temporal commit, so no failed or interrupted warning can retry.
+brilliant_scientist_krg_commit_warning_temporal_action = {
+	set_country_flag = brilliant_scientist_krg_temporal_rescue_attempted
+	clr_country_flag = brilliant_scientist_temporal_stabilization_completed
+	clr_country_flag = brilliant_scientist_temporal_bounded_intervention_completed
+	if = {
+		limit = { has_event_target = brilliant_scientist_krg_temporal_rescue_target }
+		clear_global_event_target = brilliant_scientist_krg_temporal_rescue_target
+	}
+	FROM = {
+		save_global_event_target_as = brilliant_scientist_krg_temporal_rescue_target
+		set_state_flag = brilliant_scientist_krg_temporal_rescue_target_bound
+	}
+	clr_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_capital
+	clr_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_singularity_site
+	if = {
+		limit = { FROM = { is_capital = yes } }
+		set_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_capital
+	}
+	else = {
+		set_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_singularity_site
+	}
+	set_temp_variable = { brilliant_scientist_temporal_target_id = constant:brilliant_scientist_krg_temporal.warning_target_id }
+	brilliant_scientist_bind_temporal_target = yes
+	set_temp_variable = { brilliant_scientist_temporal_sync_cost = constant:brilliant_scientist_krg_temporal.warning_sync_cost }
+	set_temp_variable = { brilliant_scientist_temporal_debt_gain = constant:brilliant_scientist_krg_temporal.warning_debt_gain }
+	brilliant_scientist_commit_bounded_temporal_action = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_temporal_action_committed > constant:brilliant_scientist_krg_value.zero } }
+		set_country_flag = brilliant_scientist_krg_future_warning_issued
+		set_country_flag = brilliant_scientist_temporal_capital_or_singularity_danger_recorded
+		set_country_flag = brilliant_scientist_temporal_debt_incurred_by_intervention
+		FROM = {
+			add_building_construction = { type = bunker level = constant:brilliant_scientist_krg_facility.bunker_increment instant_build = yes }
+			add_building_construction = { type = anti_air_building level = constant:brilliant_scientist_krg_facility.anti_air_increment instant_build = yes }
+			set_state_flag = brilliant_scientist_krg_temporal_intervention_reinforced
+		}
+		set_country_flag = brilliant_scientist_krg_temporal_rescue_survival_active
+		activate_mission = brilliant_scientist_krg_temporal_rescue_survival_mission
+		country_event = { id = chaosx.brilliant_scientist_krg.42 }
+	}
+	else = {
+		set_country_flag = brilliant_scientist_krg_temporal_rescue_failed
+		FROM = { clr_state_flag = brilliant_scientist_krg_temporal_rescue_target_bound }
+		clear_global_event_target = brilliant_scientist_krg_temporal_rescue_target
+	}
+}
+
+# COUNTRY scope. Used by rescue and stabilization cancellation paths. The
+# achievement-facing civil-war flag is permanent; all other target state is
+# cleaned so no stale pointer can qualify a later action.
+brilliant_scientist_krg_fail_temporal_rescue = {
+	if = {
+		limit = { has_civil_war = yes }
+		set_country_flag = brilliant_scientist_temporal_civil_war
+	}
+	set_country_flag = brilliant_scientist_krg_temporal_rescue_failed
+	clr_country_flag = brilliant_scientist_temporal_bounded_intervention_completed
+	clr_country_flag = brilliant_scientist_krg_temporal_rescue_survival_active
+	clr_country_flag = brilliant_scientist_krg_temporal_stabilization_supervision_active
+	clr_country_flag = brilliant_scientist_temporal_stabilization_active
+	clr_country_flag = brilliant_scientist_temporal_stabilization_pending
+	clr_country_flag = brilliant_scientist_temporal_weakness_window
+	clr_country_flag = brilliant_scientist_temporal_stabilization_completed
+	clr_country_flag = brilliant_scientist_krg_post_rescue_stabilization_required
+	if = {
+		limit = { has_event_target = brilliant_scientist_krg_temporal_rescue_target }
+		event_target:brilliant_scientist_krg_temporal_rescue_target = { clr_state_flag = brilliant_scientist_krg_temporal_rescue_target_bound }
+		clear_global_event_target = brilliant_scientist_krg_temporal_rescue_target
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_primary_facility }
+		event_target:brilliant_scientist_primary_facility = { clr_state_flag = brilliant_scientist_temporal_stabilization_occupied }
+	}
+}
+
+# COUNTRY scope. The survival mission calls this only after the same bound
+# state has remained valid for the whole window. It then starts the canonical
+# debt stabilization; its separate mission owns the final completion flag.
+brilliant_scientist_krg_complete_temporal_rescue_survival = {
+	set_country_flag = brilliant_scientist_temporal_bounded_intervention_completed
+	clr_country_flag = brilliant_scientist_krg_temporal_rescue_survival_active
+	if = {
+		limit = { has_event_target = brilliant_scientist_krg_temporal_rescue_target }
+		event_target:brilliant_scientist_krg_temporal_rescue_target = { clr_state_flag = brilliant_scientist_krg_temporal_rescue_target_bound }
+		clear_global_event_target = brilliant_scientist_krg_temporal_rescue_target
+	}
+	brilliant_scientist_begin_temporal_stabilization = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_temporal_stabilization_started > constant:brilliant_scientist_krg_value.zero } }
+		set_country_flag = brilliant_scientist_krg_post_rescue_stabilization_required
+		set_country_flag = brilliant_scientist_krg_temporal_stabilization_supervision_active
+		activate_mission = brilliant_scientist_krg_temporal_stabilization_supervision_mission
+	}
+	else = { brilliant_scientist_krg_fail_temporal_rescue = yes }
+}
+
+# COUNTRY scope. Performs the machine route's actual head-of-state succession.
+# Kruger's continuity mark is written before retirement, then the recruited
+# network character is promoted as the neutrality/despotism party leader.
+brilliant_scientist_krg_install_machine_continuity_network = {
+	recruit_character = KRG_continuity_network
+	KRG_warren_kruger = {
+		set_character_flag = brilliant_scientist_continuity_machine
+		set_character_flag = brilliant_scientist_personal_removed_from_rule
+		clr_character_flag = brilliant_scientist_personal_active
+		clr_character_flag = brilliant_scientist_personal_sovereign
+	}
+	set_country_flag = brilliant_scientist_continuity_machine
+	brilliant_scientist_refresh_kruger_continuity_state = yes
+	retire_character = KRG_warren_kruger
+	promote_character = {
+		character = KRG_continuity_network
+		ideology = despotism
+	}
+	set_country_flag = brilliant_scientist_machine_network_rule_active
+	set_country_flag = brilliant_scientist_biological_kruger_removed_from_rule
+	set_country_flag = brilliant_scientist_krg_machine_succession_completed
+	every_enemy_country = {
+		limit = { is_major = yes }
+		set_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession
+	}
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_krg_commit_strategic_temporal_action = {
+	set_temp_variable = { brilliant_scientist_temporal_target_id = constant:brilliant_scientist_krg_temporal.strategic_target_id }
+	brilliant_scientist_bind_temporal_target = yes
+	set_temp_variable = { brilliant_scientist_temporal_sync_cost = constant:brilliant_scientist_krg_temporal.strategic_sync_cost }
+	set_temp_variable = { brilliant_scientist_temporal_debt_gain = constant:brilliant_scientist_krg_temporal.strategic_debt_gain }
+	brilliant_scientist_commit_bounded_temporal_action = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_temporal_action_committed > constant:brilliant_scientist_krg_value.zero } }
+		set_country_flag = brilliant_scientist_krg_temporal_strategic_window_used
+	}
+}
+
+brilliant_scientist_krg_commit_continuity_temporal_action = {
+	set_temp_variable = { brilliant_scientist_temporal_target_id = constant:brilliant_scientist_krg_temporal.continuity_target_id }
+	brilliant_scientist_bind_temporal_target = yes
+	set_temp_variable = { brilliant_scientist_temporal_sync_cost = constant:brilliant_scientist_krg_temporal.continuity_sync_cost }
+	set_temp_variable = { brilliant_scientist_temporal_debt_gain = constant:brilliant_scientist_krg_temporal.continuity_debt_gain }
+	brilliant_scientist_commit_bounded_temporal_action = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_temporal_action_committed > constant:brilliant_scientist_krg_value.zero } }
+		set_country_flag = brilliant_scientist_krg_continuity_action_used
+	}
+}
+
+# COUNTRY scope. Called only after the timed disarmament hold mission expires.
+brilliant_scientist_krg_complete_durable_settlement = {
+	set_country_flag = brilliant_scientist_durable_settlement_active
+	set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.settlement_gain }
+	brilliant_scientist_krg_add_administration_score = yes
+	brilliant_scientist_verify_singularity_nonterminal = yes
+	brilliant_scientist_refresh_world_threat_source = yes
+}

@@ -1,0 +1,547 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE DECISION TRIGGERS
+# ============================================================================
+# Reusable availability, cost, stockpile, target, maintenance, and terminal
+# checks for the sovereign decision layer. All scopes and inputs are stated at
+# the call sites; no trigger performs periodic world iteration.
+# ============================================================================
+
+# COUNTRY scope.
+brilliant_scientist_krg_decisions_are_active = {
+	brilliant_scientist_kruger_focus_is_active = yes
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+}
+
+# COUNTRY scope. Terminal commitments deliberately close the ordinary focus and
+# decision layer, but they must not hide the actions that arm, resolve, audit,
+# or safely dismantle the committed terminal program.
+brilliant_scientist_krg_terminal_decisions_are_active = {
+	brilliant_scientist_is_active_kruger_state = yes
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. Temporal actions are additionally locked during the explicit
+# stabilization mission; the debt never decays passively.
+brilliant_scientist_krg_temporal_actions_are_active = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	NOT = { has_country_flag = brilliant_scientist_temporal_stabilization_active }
+	NOT = { has_country_flag = brilliant_scientist_temporal_stabilization_pending }
+}
+
+# STATE scope, ROOT = Kruger State. Enemy control in an adjacent state creates
+# a bounded defensive crisis without scanning every state on a periodic pulse.
+brilliant_scientist_krg_state_is_under_enemy_pressure = {
+	exists = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	any_neighbor_state = {
+		controller = { has_war_with = ROOT }
+	}
+}
+
+# STATE scope, ROOT = Kruger State. A warning may defend either the current
+# capital or a verified primary/secondary laboratory while the live singularity
+# command network makes that site strategically indispensable.
+brilliant_scientist_krg_is_live_temporal_rescue_target = {
+	brilliant_scientist_krg_state_is_under_enemy_pressure = yes
+	OR = {
+		is_capital = yes
+		AND = {
+			ROOT = { has_country_flag = brilliant_scientist_singularity_live_command_network }
+			OR = {
+				has_state_flag = brilliant_scientist_primary_facility
+				has_state_flag = brilliant_scientist_secondary_facility
+			}
+			NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+		}
+	}
+}
+
+# COUNTRY scope. This is the pre-bind half of the canonical named-target
+# temporal contract. The target ID is checked here and bound only on completion.
+brilliant_scientist_krg_temporal_warning_commit_is_ready = {
+	brilliant_scientist_kruger_focus_temporal_evidence_is_valid = yes
+	brilliant_scientist_krg_temporal_actions_are_active = yes
+	brilliant_scientist_krg_has_strategic_factory_capacity = yes
+	NOT = { has_country_flag = brilliant_scientist_krg_temporal_rescue_attempted }
+	NOT = { has_country_flag = brilliant_scientist_temporal_civil_war }
+	check_variable = {
+		var = brilliant_scientist_temporal_sync_capacity
+		value = constant:brilliant_scientist_krg_temporal.warning_sync_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_temporal_debt
+		value = constant:brilliant_scientist_temporal.debt_maximum
+		compare = less_than
+	}
+	NOT = {
+		is_in_array = {
+			array = brilliant_scientist_temporal_used_target_ids
+			value = constant:brilliant_scientist_krg_temporal.warning_target_id
+		}
+	}
+}
+
+# COUNTRY scope. The global event target is unique because Event 016 has one
+# sovereign Kruger State. Classification flags keep the original target type
+# immutable while the survival mission is running.
+brilliant_scientist_krg_bound_temporal_rescue_target_is_valid = {
+	has_event_target = brilliant_scientist_krg_temporal_rescue_target
+	brilliant_scientist_kruger_focus_temporal_evidence_is_valid = yes
+	event_target:brilliant_scientist_krg_temporal_rescue_target = {
+		exists = yes
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		if = {
+			limit = { ROOT = { has_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_capital } }
+			is_capital = yes
+		}
+		else_if = {
+			limit = { ROOT = { has_country_flag = brilliant_scientist_krg_temporal_rescue_target_was_singularity_site } }
+			ROOT = { has_country_flag = brilliant_scientist_singularity_live_command_network }
+			OR = {
+				has_state_flag = brilliant_scientist_primary_facility
+				has_state_flag = brilliant_scientist_secondary_facility
+			}
+			NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+		}
+		else = { always = no }
+	}
+}
+
+# COUNTRY scope. Preparatory legal and medical work prevents identity pressure
+# from becoming a revolt when the fourth maturation cohort leaves the tanks.
+brilliant_scientist_krg_clone_identity_revolt_is_prevented = {
+	has_country_flag = brilliant_scientist_krg_clone_identity_register_active
+	has_country_flag = brilliant_scientist_krg_clone_personhood_heard
+	has_country_flag = brilliant_scientist_krg_clone_registry_repaired
+}
+
+# COUNTRY scope. Focus 088 opens the canonical raid surface only after the
+# defensive governance chain has produced a real dual-key, authenticated,
+# segregated, hardened, and quarantine-ready release authority.
+brilliant_scientist_krg_canonical_biological_last_resort_is_authorized = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_focus_unlock_canonical_biological_last_resort_actions
+	has_country_flag = brilliant_scientist_krg_consequence_ledger_ratified
+	has_country_flag = brilliant_scientist_krg_dual_key_safety_board_active
+	has_country_flag = brilliant_scientist_krg_restricted_delivery_chain_authenticated
+	has_country_flag = brilliant_scientist_krg_restricted_material_custody_audited
+	has_country_flag = brilliant_scientist_krg_restricted_network_compartmentalized
+	has_country_flag = brilliant_scientist_krg_containment_logistics_segregated
+	has_country_flag = brilliant_scientist_krg_restricted_command_node_hardened
+	has_country_flag = brilliant_scientist_krg_quarantine_lockdown_ready
+	has_country_flag = brilliant_scientist_krg_canonical_biological_raid_authority_active
+}
+
+# COUNTRY scope. Non-Kruger actors retain the shared CBRN contract. The Kruger
+# State must explicitly complete Focus 088's governance chain before any of the
+# four ordinary-pathogen strategic raids can be prepared or launched.
+bio_kruger_last_resort_authority_is_valid = {
+	OR = {
+		NOT = { brilliant_scientist_is_active_kruger_state = yes }
+		brilliant_scientist_krg_canonical_biological_last_resort_is_authorized = yes
+	}
+}
+
+# COUNTRY scope. Even after the player-facing authority exists, Kruger AI may
+# cross it only on coercive/high-threat routes under extreme policy or while
+# near capitulation. The human scientific republic never authorizes first use.
+bio_kruger_last_resort_ai_is_valid = {
+	OR = {
+		NOT = { brilliant_scientist_is_active_kruger_state = yes }
+		AND = {
+			brilliant_scientist_krg_canonical_biological_last_resort_is_authorized = yes
+			NOT = { has_country_flag = brilliant_scientist_route_human_technocracy }
+			OR = {
+				AND = {
+					cbrn_policy_allows_extreme_use = yes
+					OR = {
+						has_country_flag = brilliant_scientist_route_sovereign_directorate
+						has_country_flag = brilliant_scientist_route_xenobiological_ascendancy
+						has_country_flag = brilliant_scientist_world_threat_active
+					}
+				}
+				AND = {
+					cbrn_policy_allows_strategic_use = yes
+					surrender_progress > constant:bio_strategic_raid_ai.desperate_surrender_threshold
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Rechecked throughout the machine succession's 120-day transfer
+# so a subject state or displaced biological ruler cannot complete the handoff.
+brilliant_scientist_krg_machine_succession_is_ready = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_route_machine_ascendancy
+	has_country_flag = brilliant_scientist_machine_population_majority
+	has_country_flag = brilliant_scientist_krg_machine_command_network_protocol
+	OR = {
+		has_country_flag = brilliant_scientist_krg_machine_network_partnership_recognized
+		has_country_flag = brilliant_scientist_krg_machine_network_service_status
+	}
+	has_country_flag = brilliant_scientist_krg_ministry_replacement_completed
+	has_country_flag = brilliant_scientist_krg_machine_population_transition_complete
+	NOT = { has_country_flag = brilliant_scientist_machine_network_rule_active }
+	is_subject = no
+	has_character = KRG_warren_kruger
+	KRG_warren_kruger = {
+		has_character_flag = brilliant_scientist_personal_active
+		has_character_flag = brilliant_scientist_personal_sovereign
+		NOT = { has_character_flag = brilliant_scientist_personal_removed_from_rule }
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_has_light_factory_capacity = {
+	num_of_available_civilian_factories > constant:brilliant_scientist_krg_modifier.light_factory_gate
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_has_standard_factory_capacity = {
+	num_of_available_civilian_factories > constant:brilliant_scientist_krg_modifier.standard_factory_gate
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_has_heavy_factory_capacity = {
+	num_of_available_civilian_factories > constant:brilliant_scientist_krg_modifier.heavy_factory_gate
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_has_strategic_factory_capacity = {
+	num_of_available_civilian_factories > constant:brilliant_scientist_krg_modifier.strategic_factory_gate
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_pay_light_material_cost = {
+	has_equipment = { support_equipment > constant:brilliant_scientist_krg_cost.support_light_gate }
+	has_fuel > constant:brilliant_scientist_krg_cost.fuel_light_gate
+	brilliant_scientist_krg_has_light_factory_capacity = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_pay_standard_material_cost = {
+	has_equipment = { support_equipment > constant:brilliant_scientist_krg_cost.support_standard_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_krg_cost.motorized_light_gate }
+	has_fuel > constant:brilliant_scientist_krg_cost.fuel_standard_gate
+	brilliant_scientist_krg_has_standard_factory_capacity = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_pay_heavy_material_cost = {
+	has_equipment = { support_equipment > constant:brilliant_scientist_krg_cost.support_heavy_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_krg_cost.motorized_standard_gate }
+	has_fuel > constant:brilliant_scientist_krg_cost.fuel_heavy_gate
+	brilliant_scientist_krg_has_heavy_factory_capacity = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_pay_project_batch_cost = {
+	has_equipment = { support_equipment > constant:brilliant_scientist_krg_cost.project_batch_support_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_krg_cost.project_batch_motorized_gate }
+	has_fuel > constant:brilliant_scientist_krg_cost.project_batch_fuel_gate
+	manpower > constant:brilliant_scientist_krg_cost.project_batch_manpower_gate
+	num_of_military_factories > constant:brilliant_scientist_krg_value.zero
+	brilliant_scientist_krg_has_heavy_factory_capacity = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_pay_foreign_operation_cost = {
+	convoy > constant:brilliant_scientist_krg_cost.foreign_operation_convoy_gate
+	has_equipment = { support_equipment > constant:brilliant_scientist_krg_cost.foreign_operation_support_gate }
+	has_fuel > constant:brilliant_scientist_krg_cost.foreign_operation_fuel_gate
+}
+
+# COUNTRY scope. Each hazardous mission keeps its own operational proof so a
+# paid objective cannot convert a lost site, node, facility, or terminal into
+# a free completion receipt.
+brilliant_scientist_krg_clone_drift_review_operational_evidence_is_valid = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	brilliant_scientist_kruger_focus_cloning_is_operational = yes
+	has_country_flag = brilliant_scientist_krg_clone_growth_site_operational
+	any_owned_state = {
+		is_controlled_by = ROOT
+		has_state_flag = brilliant_scientist_krg_clone_growth_site
+	}
+}
+
+brilliant_scientist_krg_rogue_node_containment_operational_evidence_is_valid = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	brilliant_scientist_kruger_focus_robotics_is_operational = yes
+	has_country_flag = brilliant_scientist_krg_machine_power_node_operational
+	any_owned_state = {
+		is_controlled_by = ROOT
+		has_state_flag = brilliant_scientist_krg_machine_power_node
+	}
+}
+
+brilliant_scientist_krg_maintenance_audit_operational_evidence_is_valid = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	has_event_target = brilliant_scientist_primary_facility
+	event_target:brilliant_scientist_primary_facility = {
+		exists = yes
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		has_state_flag = brilliant_scientist_primary_facility
+		NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+	}
+}
+
+brilliant_scientist_krg_transit_breach_closure_operational_evidence_is_valid = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	brilliant_scientist_kruger_focus_teleportation_is_operational = yes
+	has_country_flag = brilliant_scientist_krg_terminal_network_present
+	any_owned_state = {
+		is_controlled_by = ROOT
+		has_state_flag = brilliant_scientist_krg_transit_terminal
+	}
+}
+
+# COUNTRY scope. A full mission outcome requires both the paid objective's
+# transient receipt and the still-valid operational proof above.
+brilliant_scientist_krg_clone_drift_review_full_success_is_ready = {
+	has_country_flag = brilliant_scientist_krg_clone_drift_review_objective_complete
+	brilliant_scientist_krg_clone_drift_review_operational_evidence_is_valid = yes
+}
+
+brilliant_scientist_krg_rogue_node_containment_full_success_is_ready = {
+	has_country_flag = brilliant_scientist_krg_rogue_node_containment_objective_complete
+	brilliant_scientist_krg_rogue_node_containment_operational_evidence_is_valid = yes
+}
+
+brilliant_scientist_krg_maintenance_audit_full_success_is_ready = {
+	has_country_flag = brilliant_scientist_krg_maintenance_audit_objective_complete
+	brilliant_scientist_krg_maintenance_audit_operational_evidence_is_valid = yes
+}
+
+brilliant_scientist_krg_transit_breach_closure_full_success_is_ready = {
+	has_country_flag = brilliant_scientist_krg_transit_breach_closure_objective_complete
+	brilliant_scientist_krg_transit_breach_closure_operational_evidence_is_valid = yes
+}
+
+# STATE scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_owned_construction_state = {
+	exists = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	infrastructure > constant:brilliant_scientist_krg_facility.industrial_gate
+}
+
+# STATE scope, ROOT = Kruger State. Clone and xeno sites are deliberately
+# separate and cannot satisfy one another's state flags.
+brilliant_scientist_krg_is_valid_clone_growth_state = {
+	brilliant_scientist_krg_is_valid_owned_construction_state = yes
+	NOT = { has_state_flag = brilliant_scientist_krg_clone_growth_site }
+}
+
+# STATE scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_machine_power_state = {
+	brilliant_scientist_krg_is_valid_owned_construction_state = yes
+	NOT = { has_state_flag = brilliant_scientist_krg_machine_power_node }
+	industrial_complex > constant:brilliant_scientist_krg_facility.industrial_gate
+}
+
+# STATE scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_terminal_state = {
+	brilliant_scientist_krg_is_valid_owned_construction_state = yes
+	NOT = { has_state_flag = brilliant_scientist_krg_transit_terminal }
+	NOT = { has_state_flag = brilliant_scientist_temporal_anchor }
+}
+
+# STATE scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_temporal_anchor_state = {
+	brilliant_scientist_krg_is_valid_owned_construction_state = yes
+	NOT = { has_state_flag = brilliant_scientist_temporal_anchor }
+	NOT = { has_state_flag = brilliant_scientist_krg_transit_terminal }
+	OR = {
+		is_capital = yes
+		infrastructure > constant:brilliant_scientist_krg_facility.infrastructure_gate
+	}
+}
+
+# COUNTRY scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_foreign_country_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_capitulated = yes }
+	NOT = { is_subject_of = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+# COUNTRY scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_submission_target = {
+	brilliant_scientist_krg_is_valid_foreign_country_target = yes
+	is_subject = no
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_country_flag = brilliant_scientist_krg_submission_demand_pending }
+	NOT = { has_country_flag = brilliant_scientist_krg_submission_demand_resolved }
+}
+
+# STATE scope, ROOT = Kruger State.
+brilliant_scientist_krg_is_valid_integration_state = {
+	exists = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	compliance > constant:brilliant_scientist_krg_facility.compliance_gate
+	resistance < constant:brilliant_scientist_krg_facility.resistance_ceiling
+	infrastructure > constant:brilliant_scientist_krg_facility.industrial_gate
+	NOT = { has_state_flag = brilliant_scientist_krg_integration_in_progress }
+}
+
+# COUNTRY scope.
+brilliant_scientist_krg_can_begin_world_conquest_decision = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_focus_unlock_world_route_decisions
+	has_country_flag = brilliant_scientist_focus_unlock_global_scientist_and_facility_targets
+	has_country_flag = brilliant_scientist_krg_terminal_map_audit_completed
+	brilliant_scientist_krg_terminal_map_control_is_sufficient = yes
+	check_variable = { brilliant_scientist_world_control_ratio > constant:brilliant_scientist_krg_score.world_conquest_control_gate }
+	check_variable = { brilliant_scientist_integrated_state_ratio > constant:brilliant_scientist_krg_score.world_conquest_integration_gate }
+	check_variable = {
+		var = brilliant_scientist_major_opposition_count
+		value = constant:brilliant_scientist_krg_score.world_conquest_opposition_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+# COUNTRY scope. This layer proves disarmament and durable settlement but does
+# not emit a world-end event or shared threat flag.
+brilliant_scientist_krg_can_verify_durable_nonterminal_settlement = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
+	OR = {
+		has_country_flag = brilliant_scientist_global_weapons_dismantled
+		has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete
+	}
+	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+	NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}
+
+# COUNTRY scope. All component, command, and settings checks are repeated when
+# the timed arming action resolves; this continuation gate is valid while the
+# arming decision itself has marked the process active.
+brilliant_scientist_krg_singularity_arming_can_continue = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	NOT = { has_country_flag = brilliant_scientist_singularity_routes_blocked }
+	NOT = { has_global_flag = brilliant_scientist_singularity_permanently_cancelled }
+	NOT = { has_country_flag = brilliant_scientist_global_weapons_dismantled }
+	NOT = { has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete }
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete }
+	NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+	has_country_flag = brilliant_scientist_singularity_weaponization_completed
+	has_country_flag = brilliant_scientist_singularity_facilities_verified
+	has_country_flag = brilliant_scientist_singularity_live_command_network
+	check_variable = {
+		var = brilliant_scientist_singularity_component_count
+		value = constant:brilliant_scientist_singularity.components_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_live_command_node_count
+		value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_power_link_count
+		value = constant:brilliant_scientist_singularity.minimum_power_links
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}
+
+# COUNTRY scope. Start-only gate for the timed arming action.
+brilliant_scientist_krg_singularity_arming_is_ready = {
+	brilliant_scientist_krg_singularity_arming_can_continue = yes
+	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+	NOT = { has_country_flag = brilliant_scientist_krg_singularity_arming_active }
+}
+
+# COUNTRY scope. Fail-deadly authority is a distinct, reversible player action
+# after successful arming, rather than an implicit component-completion reward.
+brilliant_scientist_krg_fail_deadly_activation_is_ready = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	has_country_flag = brilliant_scientist_singularity_armed
+	has_country_flag = brilliant_scientist_singularity_fail_deadly_governor_complete
+	has_country_flag = brilliant_scientist_singularity_live_command_network
+	NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}
+
+# COUNTRY scope. The deliberate route is an explicit terminal choice after the
+# full system is armed; the regular capitulation failsafe keeps its own
+# defeat-only trigger.
+brilliant_scientist_krg_singularity_detonation_can_continue = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	brilliant_scientist_singularity_terminal_is_ready = yes
+}
+
+# COUNTRY scope. Start-only gate for the deliberate terminal action.
+brilliant_scientist_krg_can_deliberately_detonate_singularity = {
+	brilliant_scientist_krg_singularity_detonation_can_continue = yes
+	NOT = { has_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active }
+}
+
+# COUNTRY scope. Disarmament is a costly timed reversal that gives the player
+# a way back to a nonterminal settlement and keeps both terminal routes
+# mutually exclusive after arming has begun.
+brilliant_scientist_krg_controlled_singularity_disarmament_can_continue = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete }
+	OR = {
+		has_country_flag = brilliant_scientist_singularity_armed
+		has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+		AND = {
+			has_country_flag = brilliant_scientist_singularity_arming_ever_started
+			NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+			NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+		}
+	}
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. Start-only gate for the controlled disarmament action.
+brilliant_scientist_krg_can_begin_controlled_singularity_disarmament = {
+	brilliant_scientist_krg_controlled_singularity_disarmament_can_continue = yes
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active }
+}
+
+# COUNTRY scope. The audit is explicit and non-recurring. Its effect computes
+# the three values from current state/country ownership and control, then this
+# trigger is used by both the world-conquest and Laboratory World resolutions.
+brilliant_scientist_krg_terminal_map_control_is_sufficient = {
+	check_variable = {
+		var = brilliant_scientist_world_control_ratio
+		value = constant:brilliant_scientist_lab_world.minimum_world_control_ratio
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_integrated_state_ratio
+		value = constant:brilliant_scientist_lab_world.minimum_integrated_state_ratio
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_major_opposition_count
+		value = constant:brilliant_scientist_lab_world.maximum_major_opposition
+		compare = less_than_or_equals
+	}
+}
