@@ -484,6 +484,10 @@ The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.380` uses help
 
 The reviewed ordinary producer now carries twenty-nine rows and the defined living-world event range reaches `393`, with `275` defined blocks.
 Counterfeit Antibiotics is candidate `387`, transaction `710029`, route `7129`, and history `9134`.
+
+## Ration Thief Election scheduler correction
+
+The reviewed ordinary producer now carries thirty rows and the defined living-world event range reaches `400`, with `282` defined blocks. The Ration Thief Election is candidate `394`, transaction `710030`, route `7130`, and history `9135`. Its four government-aware branches, delayed result, second-count callback, cleanup receipts, candidate row, and dedicated report art remain dormant until activation authority is proven.
 Its country row requires medicine pressure below the reviewed ceiling, a current-generation native state with Air Winter exposure, surviving population, and current Fallout ownership. The lowest native state id resolves ties.
 The four branches use separate medicine, food, scrap, recognition, and cohesion costs. The chain freezes medicine, food, recognition, cohesion, adulteration, trust, and supplier ledgers before a 42-day result and a 330-day supplier review callback.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.

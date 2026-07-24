@@ -634,4 +634,8 @@ The chain freezes Medicine, Food, Recognition, Cohesion, adulteration, trust, an
 Human and hidden-AI lanes share the delayed transaction, Deaths-backed failure, dedicated modifiers, Event Log payloads, report art, and authenticated cleanup wrappers.
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `275`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Ration Thief Election government-legitimacy tranche
+
+The Ration Thief Election is implemented as a dormant country-level chain at `chaosx.fallout.394` through `.400`. It has four government-aware policies, frozen food, medicine, recognition, cohesion, ration trust, and legitimacy ledgers, a delayed result, a second-count callback, Deaths-system failure accounting, branch memories, cleanup receipts, Event Log history `9135`, candidate row `394`, and a dedicated report-art package. The defined living-world total is now `282`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded inspector boundary, if attempted, will be recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.
