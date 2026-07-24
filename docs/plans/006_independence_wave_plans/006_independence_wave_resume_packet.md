@@ -1,19 +1,17 @@
 # Event 006 resume packet
 
-Updated: 2026-07-22 after the sourced-portrait policy withdrawal and country-history normalization
+Updated: 2026-07-24 after the IW-184 California post-wire country-package PASS and canonical admission review
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-Current portrait authority: the sourced-only gate in the accepted specification
-and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`. Earlier
-generated grounded-polity portrait packages are provenance evidence only.
+Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`.
+Earlier generated grounded-polity portrait packages are provenance evidence only.
 
-IW-005 is a committed, independently audited living-BEL overlay and remains
-outside the selectable pool. The canonical runtime content-attestation set is
-IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-009
-Bavaria, IW-017 Corsica, and IW-019 Sicily after their current package and
-sourced real-male portrait audits. Every other package remains closed until its
-complete current admission contract is implemented and independently re-audited.
+IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
+The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
+The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.
+Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
+Every other package remains closed until its complete current admission contract is implemented and independently re-audited.
 
 The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
@@ -81,15 +79,9 @@ they are not current routing documents.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
   point-of-no-return, sponsorship transaction, and Liberations cluster capacity
   surface are implemented.
-- FORM-01 through FORM-05 are implemented, source-audited, and readiness-
-  promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
-  fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM/
-  HBX carrier set has no currently admitted country and cannot form.
-- IW-002/006/010, IW-018, IW-043/058, IW-173/179/184, IW-093, and
-  IW-098 retain implemented gameplay adapters, but their generated, generic, or
-  incomplete grounded-polity portrait rosters withdraw visual readiness and
-  runtime content attestation. The compile-time package content-attestation set
-  contains IW-001, IW-004, IW-007, IW-008, IW-009, IW-017, and IW-019.
+- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
+- IW-002/006/010, IW-018, IW-043/058, IW-173/179, IW-093, and IW-098 retain implemented gameplay adapters, but their generated, generic, or incomplete grounded-polity portrait rosters withdraw visual readiness and runtime content attestation.
+  The compile-time package content-attestation set contains IW-001, IW-004, IW-007, IW-008, IW-009, IW-017, IW-019, and IW-184.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
   RHI's complete replacement roster is admitted. BAY is also admitted after the
   Held and Dollmann exact-source portrait chains and its fresh post-wire package
@@ -98,15 +90,13 @@ they are not current routing documents.
 - IW-173 HAW is also withdrawn: vanilla defines the real David Kalakaua
   Kawananakoa but maps him to generic `Portrait_Asia_Generic_land_5.dds`, not a
   sourced portrait of the person. Trial 01 used the correct 1925 archival source and passed HOI4 style review, but failed the separate independent likeness gate because the source clips identity-bearing facial highlights. It produced no DDS or runtime wiring.
-- FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
-  carriers cannot execute while their owning package admission is withdrawn.
-- The seven attested packages can satisfy the three-, four-, five-, and seven-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
+- FORM-12/13/18 and FORM-48 remain implemented system contracts, but the FORM-48 carrier cannot execute while the HAW/FSM member admissions are withdrawn.
+- IW-184 HBX is admitted after the full post-wire country-package audit. William D. Stephens is the sourced real-male civic leader with the exact identity-preserving HOI4 repaint wired to the stable civilian-large consumer. The package/runtime DDS is byte-identical at SHA-256 `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor, dossier, operative, commander, or `_small` derivative is authorized. Exact content attestation, automatic readiness, and the Event 005-aware capacity witness are implemented; live execution evidence remains pending.
+- The eight attested packages can satisfy the three-, four-, five-, and seven-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
   Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction.
-  The ten-country bands remain fail-closed until at least three additional packages are admitted.
-  The exact 3/4/5/7/10 ladder and World Collapse count of ten remain unchanged. FORM-48's
-  proof writers own `independence_wave_form48_registry_surface_registered` and
-  `independence_wave_form48_readiness_attested`; no annexation or integration
-  fallback is used.
+  The ten-country bands remain fail-closed until at least two additional packages are admitted.
+  The exact 3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
+  FORM-48's proof writers own `independence_wave_form48_registry_surface_registered` and `independence_wave_form48_readiness_attested`; no annexation or integration fallback is used.
 - The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
   27 static icons including the three-state Assyria survival triplet, ten flat
   flags, and two report images. Mirsaid Sultan-Galiev and Gallo Shabo are the
@@ -175,7 +165,7 @@ they are not current routing documents.
 | IW-019 ASX | Admitted after current package, portrait, and consumer-role audits | Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto have independently approved sourced real-male HOI4 refinishes wired to role-correct full-size consumers. Rizzo is the civilian-large Straits Security Directorate political leader with the recorded fictional-office disclosure, and Di Benedetto is the sole army-large corps commander. Preserve state-115/ITA-survival setup, FORM-05 access, exact-ID content attestation, and every live allocation proof |
 | IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa. The correct-source trial failed independent likeness review and remains unwired; require a stronger archival source of the actual man before re-admission |
 | IW-179 FSM | Gameplay retained; visual admission withdrawn | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 decisions, and FORM-48 membership logic. Replace the generated congress chair with a sourced real male Micronesian person before re-admission |
-| IW-184 HBX | Gameplay retained; visual admission withdrawn | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. Replace the generated civic chair with a sourced real male Californian person before re-admission |
+| IW-184 HBX | Admitted after current post-wire country-package audit | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. William D. Stephens is the sourced real-male civic leader with an independently approved identity-preserving HOI4 repaint wired to the stable civilian-large consumer. The package/runtime DDS is byte-identical at SHA-256 `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`; no advisor, dossier, operative, commander, or `_small` derivative is authorized. Exact content attestation, automatic readiness, and the Event 005-aware capacity witness are implemented; live execution evidence remains pending. |
 | IW-043 CHU | Signature gameplay retained; visual admission withdrawn | Mirsaid Sultan-Galiev and Galimzhan Ibrahimov are sourced, processed, and wired. Preserve CHU identity, route, forces, focus, decisions, centralized politics, exact vanilla guard, and FORM-12/13 contracts. Keep execution closed until the Bolgar and river-security route leaders are replaced and the full package is re-audited |
 | IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Gallo Shabo is sourced, processed, and wired. Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until the other three route leaders are replaced and the full package is re-audited |
 | IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. The TNA/OGL Prempeh II photograph remains the approved source and identity, but the installed DDS is an ImageGen restyling of that real person and is withdrawn under the current deterministic real-person pipeline. Rebuild it from the unchanged archive master. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images and invented identities must be replaced by sourced real-person full portraits and matching names. Event 6 defines no commander miniatures. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until the complete sourced roster, exact flag, FORM-24 contract, and final country audits pass |
@@ -237,13 +227,13 @@ satisfy the synchronized frozen plan.
   sourced; naval admiral Rizzo is not valid for the current corps-command slot.
   Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
   created.
-- Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon,
-  architecture, decision/mission, localisation, flags, and postformation logic
-  remain implemented. HAW's generic vanilla portrait and the generated FSM/HBX
-  officeholders withdraw the country admissions, making FORM-48 unreachable
-  until sourced replacements pass. HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. HAW/FSM remain sovereign autonomous members
-  and HBX remains the PFX carrier contract. No custom Event 006 advisor
-  icons/assets/sprites/portrait blocks were created.
+- Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon, architecture, decision/mission, localisation, flags, and postformation logic remain implemented.
+  HAW's generic vanilla portrait and FSM's generated congress chair keep those two country admissions withdrawn, making FORM-48 unreachable until their sourced replacements pass.
+  HBX is admitted after its full post-wire country-package PASS, and its William D. Stephens portrait is sourced, independently approved, wired, and byte-identical to the runtime DDS.
+  Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
+  HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS.
+  HAW/FSM remain sovereign autonomous members and HBX remains the PFX carrier contract.
+  No custom Event 006 advisor icons, assets, sprites, or portrait blocks were created.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
   `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
   and distinct standard versus major focus rewards.
@@ -325,7 +315,7 @@ satisfy the synchronized frozen plan.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The seven exact package attestations remain binding runtime gates; a broad
+- The eight exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
