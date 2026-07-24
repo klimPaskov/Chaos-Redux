@@ -279,16 +279,18 @@ real-male portrait treatments are processed and reviewed. The user rejected the
 entire treatment family because it remains photographic rather than HOI4-painted;
 none grants visual readiness. Twenty-one subjects still pass source and
 active-character ownership review and may be refinished from their retained
-masters. Konrad
-Adenauer, Franz Ritter von Epp, and Edmund Ironside are retained only as
+masters. Konrad Adenauer, Franz Ritter von Epp, and Edmund Ironside are retained only as
 rejected treatment evidence because vanilla recruits the same men as active
 GER or ENG characters. Source-ready replacement primaries are Karl Jarres for
-RHI, Eugen Ritter von Schobert for BAY, and Victor Morven Fortune for SCO;
-their unchanged sources and ownership evidence are in
-`sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
-The stable Event 6 character tokens now display those three replacement
-identities, but none of their sources is processed into or approved as a
-runtime portrait. Luigi Rizzo remains valid because vanilla uses his name only for
+RHI and Victor Morven Fortune for SCO; their unchanged sources and ownership
+evidence are in `sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
+Bavaria's command role instead uses Friedrich Dollmann from exact Bundesarchiv
+accession `Bild 101I-052-1435-20`: unchanged archival master, explicit
+head-and-shoulders pixel-equality crop, source-locked ImageGen repaint,
+deterministic commander-family `156x210` processing, independent
+likeness/style/provenance PASS, and byte-matched evidence/runtime DDS are
+retained under `sourced_portrait_refinishes_2026_07_24/bavaria_dollmann_trial_03/`.
+Luigi Rizzo remains valid because vanilla uses his name only for
 ship-production lines, not a character or portrait. Protected Rupprecht and
 Matthes remain approved and byte-locked. Brittany's Régis de l'Estourbeillon
 civic leader and Henri-Léon Devin coastal commander also have independently
