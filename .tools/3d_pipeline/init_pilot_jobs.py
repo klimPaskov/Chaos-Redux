@@ -127,6 +127,7 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
             "provider_height_m": spec["target_height_m"],
             "target_height_m": spec.get("blender_target_height_m", spec["target_height_m"]),
             "effective_runtime_height_m": spec.get("blender_effective_runtime_height_m"),
+            "runtime_entity_scale": spec.get("runtime_entity_scale"),
             "vanilla_scale_reference": spec.get("vanilla_scale_reference"),
             "runtime_stem": spec["runtime_stem"],
             "dependency_lock": ".tools/3d_pipeline/config/dependencies.lock.json",
@@ -171,6 +172,7 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
 - Meshy/provider character height: {spec["target_height_m"]} m
 - Blender source-mesh calibration height: {spec.get("blender_target_height_m", spec["target_height_m"])} m
 - Blender effective runtime height after entity scale: {spec.get("blender_effective_runtime_height_m", spec.get("blender_target_height_m", spec["target_height_m"]))} m
+- Pilot unit consumer scale: {spec.get("runtime_entity_scale", "not applicable")}
 - Target topology: triangles
 - Meshy model: {spec["meshy_ai_model"]}
 - Meshy reference: {spec["reference_path"]}

@@ -22,9 +22,9 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Idle binding: `idle` -> `chaosx_anomaly_recon_trooper_idle_animation` -> `chaosx_anomaly_recon_trooper_idle.anim`
 - Attack binding: `attack` -> `chaosx_anomaly_recon_trooper_attack_animation` -> `chaosx_anomaly_recon_trooper_attack.anim`
 - Move binding: `move`/`retreat` -> `chaosx_anomaly_recon_trooper_move_animation` -> `chaosx_anomaly_recon_trooper_move.anim`; the action is a 24-frame in-place Blender-authored walk cycle
-- Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` normal, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
+- Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
 - Exported mesh object: `char1.002`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
-- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, entity scale `0.8`, effective runtime target `5.881459`
+- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, reference entity scale `0.8`; the pilot consumer scale is `0.25`, giving a recorded effective pilot height of about `1.837956`
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
 - Animation stability: the Blender worker removed all provider scale F-curves and reset the imported `Hips` pose scale; all three exported actions contain no scale channels and unit root scale values.
 

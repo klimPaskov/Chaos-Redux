@@ -105,13 +105,12 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
 def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
     """Pack a conventional RGB tangent normal into HOI4's PDX ``n`` layout.
 
-    The pinned ``io_pdx_mesh`` route reconstructs the tangent normal from the
-    PDX texture's red and alpha channels and forces blue to one on import. The
-    provider's standard RGB normal therefore needs R=source.R, A=source.G,
-    with the unused green and blue channels zeroed. Passing the provider RGB
-    image through unchanged makes the game read an opaque alpha channel as the
-    normal Y component, producing the bright, broken surfaces seen in the
-    pilot's map render.
+    The pinned ``io_pdx_mesh`` material route reads the PDX normal texture's
+    green channel as tangent X, its alpha channel as tangent Y, and supplies a
+    constant tangent Z. The provider's RGB normal therefore needs R=unused,
+    G=source.R, B=unused, and A=source.G. The previous pack put source.R in
+    the unused red channel and left the engine's tangent-X channel at zero,
+    which produced the bright, broken surfaces seen in the pilot's map render.
     """
 
     source = (job / normal_source_rel).resolve()
@@ -128,7 +127,7 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
         red = rgba.getchannel("R")
         green = rgba.getchannel("G")
         zero = Image.new("L", rgba.size, 0)
-        packed = Image.merge("RGBA", (red, zero, zero, green))
+        packed = Image.merge("RGBA", (zero, red, zero, green))
 
     output = source.with_name("pdx_normal.png")
     _replace_file(output)
@@ -136,10 +135,10 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
     report = {
         "status": "packed",
         "layout": {
-            "red": "source_normal_red",
-            "green": "unused_zero",
+            "red": "unused_zero",
+            "green": "source_normal_red_tangent_x",
             "blue": "unused_zero",
-            "alpha": "source_normal_green",
+            "alpha": "source_normal_green_tangent_y",
         },
         "source": _record(source, job),
         "output": _record(output, job),

@@ -570,10 +570,10 @@ def finalize_pdx_runtime_textures(
             packer=pack_pdx_normal_map,
             report_key="pdx_normal_pack",
             layout={
-                "red": "source_normal_red",
-                "green": "unused_zero",
+                "red": "unused_zero",
+                "green": "source_normal_red_tangent_x",
                 "blue": "unused_zero",
-                "alpha": "source_normal_green",
+                "alpha": "source_normal_green_tangent_y",
             },
         )
     report = job / "blender" / "reports" / "textures_dds.json"

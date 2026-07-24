@@ -47,7 +47,7 @@ Status: needs_user_review
 - Vanilla calibration reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh`
 - Vanilla entity reference: `gfx/entities/units_infantry.asset#infantry_rifle_entity`, runtime `scale = 0.8`
 - Reference measurement: main imported `polySurface106` height `7.3518248` source units, collision geometry excluded, `-Y` forward and `+Z` up; effective runtime height `5.8814594` units
-- Corrected pilot normalization: Blender target `7.3518242835` source units, final effective runtime heights `5.882473` attack and `5.879207` idle, same runtime entity scale `0.8`
+- Corrected pilot normalization: Blender target `7.3518242835` source units, final source-calibrated heights `5.882473` attack and `5.879207` idle; the live unit consumer is separately calibrated to entity scale `0.25` (about `1.837956` source units)
 - Animation scale sanitation: the provider working actions had 72 root/bone scale F-curves removed, non-unit `Hips` pose scale reset to `(1, 1, 1)`, and the authored move action was created without scale channels.
 
 ## Textures and PDX exports
@@ -57,10 +57,11 @@ Status: needs_user_review
 - Runtime DDS dimensions: `1024 x 1024`, one-level uncompressed BGRA; the prior `2048 x 2048` texture exceeded the observed HOI4 model-texture limit
 - Runtime textures: `textures/dds/texture_0.dds` (diffuse), `textures/dds/texture_normal.dds` (normal), and `textures/dds/texture_specular.dds` (PDX packed specular/roughness)
 - PDX material shader: `PdxMeshAdvanced`, with explicit diffuse, normal, and specular bindings
+- PDX normal packing: red `0`, green source tangent X, blue `0`, alpha source tangent Y; source maps and checksums are recorded in `blender/reports/pdx_normal_pack.json`
 - PDX specular packing: red `0`, green `32` specular level, blue metallic, alpha roughness; source maps are recorded in `blender/reports/pdx_material_pack.json`
 - Mesh: `export/mesh/chaosx_anomaly_recon_trooper.mesh`, 7,562,695 bytes, SHA-256 `8AA8AEDA3A958BC23CD21EB41F86A765A6F8DAD0C6AB242FABD4A5EE9D764757`
 - Runtime DDS: `textures/dds/texture_0.dds`, 4,194,432 bytes, SHA-256 `FB4886FDA5FBF1FE0634556BD53BAC4A9DFAD603D2E7890B7D858F6A0F9F390D`
-- Runtime normal DDS: `textures/dds/texture_normal.dds`, 4,194,432 bytes, SHA-256 `8E98BCA21204FD3A6376034E6EA33BB37149EFB3A9D4E7092C4EE06FF1DC00A7`
+- Runtime normal DDS: `textures/dds/texture_normal.dds`, 4,194,432 bytes, SHA-256 `E23A43045A419AAFB61AD6F49370D946D7A5EC7A2B94D9636E90A571E4FB16F1`
 - Runtime specular DDS: `textures/dds/texture_specular.dds`, 4,194,432 bytes, SHA-256 `E22BA0B1A2BD79D133DF7B5D28D5DDD65BD7D36C3AD4648D7605B15FD36B515F`
 - Idle action: `export/anim/chaosx_anomaly_recon_trooper_idle.anim`, 77,395 bytes, SHA-256 `72F6C722052DC7CBDCC76CC23CB99D111252A06778724F1548E11EBF74A815CB`, frames `0-97`, 24 fps, loop, no scale channels
 - Attack action: `export/anim/chaosx_anomaly_recon_trooper_attack.anim`, 55,123 bytes, SHA-256 `C42D5507BD8549C055C0840491A22A913139A0B2C488E3AB652E3A140FFC14C0`, frames `0-68`, 24 fps, non-loop, unit root scale
@@ -88,6 +89,6 @@ The pilot remains `needs_user_review` until the corrected unit is visibly confir
 
 - `MAX_TEXTURE_SIZE`: fixed by rebuilding `texture_0.dds`, `texture_normal.dds`, and `texture_specular.dds` at `1024 x 1024`.
 - Missing `unit_chaosx_anomaly_recon_trooper_icon_small`: fixed by registering the custom texticon in `interface/chaosx_3d_model_pilots.gfx`.
-- Undersized unit: fixed by recalibrating the Blender export to the imported vanilla infantry mesh and retaining the vanilla `scale = 0.8` entity value.
+- Unit-size mismatch: the Blender export remains calibrated to the imported vanilla infantry mesh, while the pilot entity uses the separately recorded live-consumer calibration `scale = 0.25`.
 - White/black material and missing-surface symptom: fixed offline by packing Meshy metallic and roughness maps into the PDX `spec` channel layout and matching `meshsettings.name` to the exported `char1.002` object.
 - Moving disappearance: fixed offline by normalizing every exported animation sample to unit scale and exporting a dedicated 24-frame in-place move action with no scale channels and a submillimeter root translation channel; live confirmation remains pending.

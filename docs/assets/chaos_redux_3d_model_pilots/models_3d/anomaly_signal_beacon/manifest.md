@@ -48,9 +48,10 @@ Status: needs_user_review
 - DDS evidence: `blender/reports/textures_dds.json`
 - DDS backend: repository `convert_to_dds.py` using its verified ffmpeg backend; the texture report records each conversion log
 - Runtime DDS dimensions: `1024 x 1024` for `Image_0.dds` through `Image_3.dds`; the prior `2048 x 2048` maps exceeded the observed HOI4 model-texture limit
-- DDS SHA-256: `Image_0` `1C51F4468EEC000A3706930FF598BAB8A2926B943AEB75BB7BD2E5DDA634A534`; `Image_1` `EABC8186B94A6D51E2C36B543B28C9EAD82CFF091A794633526BF891B822E2C7`; `Image_2` `7960800E261DD57DF62AF78263F60AC73CD67237EA0F8F8431CE7D7B850DFEA6`; auxiliary `Image_3` `F5D9DDB268DB8AB4CFD7CA4AEC315628B06C7CA90A08B8E0C1F6D8ACA65235A0`
+- DDS SHA-256: `Image_0` `1C51F4468EEC000A3706930FF598BAB8A2926B943AEB75BB7BD2E5DDA634A534`; `Image_1` `EABC8186B94A6D51E2C36B543B28C9EAD82CFF091A794633526BF891B822E2C7`; `Image_2` `9FCE01EB4B6B417E836D06CC670A21602D038DA6AA876FC01D889D5AA545892F`; auxiliary `Image_3` `F5D9DDB268DB8AB4CFD7CA4AEC315628B06C7CA90A08B8E0C1F6D8ACA65235A0`
 - Runtime maps: `Image_0.dds` diffuse, `Image_1.dds` specular, `Image_2.dds` normal; `Image_3.dds` retained as extracted auxiliary evidence
 - PDX material shader: `PdxMeshAdvanced`, with the three runtime texture channels explicitly registered in the entity GFX
+- PDX normal packing: red `0`, green source tangent X, blue `0`, alpha source tangent Y
 - Mesh export: `export/mesh/chaosx_anomaly_signal_beacon.mesh`
 - Mesh bytes: `811835`
 - Mesh SHA-256: `93D6DF50C8F58192CF597CF708DB144DDF80A0A132E8841BDBF4DE402937E9E6`

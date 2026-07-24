@@ -10,7 +10,7 @@
 | Move action | `export/anim/chaosx_anomaly_recon_trooper_move.anim`, 24 fps, frames 0-24, Blender-authored in place | entity states `move`/`retreat` | complete |
 | PDX material channels | `blender/reports/textures_dds.json`, `blender/reports/pdx_material_pack.json`; diffuse and normal maps plus PDX packed specular layout | `texture_0.dds`, `texture_normal.dds`, `texture_specular.dds`; GFX object `char1.002` | complete |
 | Texture size gate | `blender/reports/textures_dds.json`; 1024 x 1024 DDS headers | `gfx/models/chaosx_3d_model_pilots/texture_0.dds`, `texture_normal.dds`, `texture_specular.dds` | corrected; pending live check |
-| Vanilla unit scale | `western_european_infantry.mesh` source height 7.351824; entity scale 0.8; effective runtime target 5.881459 | `chaosx_anomaly_recon_trooper_entity` | corrected; pending live check |
+| Vanilla unit scale | `western_european_infantry.mesh` source height 7.351824; reference entity scale 0.8; pilot consumer scale 0.25; effective pilot height 1.837956 | `chaosx_anomaly_recon_trooper_entity` | corrected; pending live check |
 | Unit texticon | `interface/chaosx_3d_model_pilots.gfx` | `unit_chaosx_anomaly_recon_trooper_icon_small` | registered; pending live check |
 | `.mesh` export | `export/mesh/chaosx_anomaly_recon_trooper.mesh` | `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh` | complete |
 | Reimport proof | idle/attack/move validation JSON and proof `.blend` files | exporter/importer path | complete |
