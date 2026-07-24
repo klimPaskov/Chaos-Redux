@@ -11,6 +11,15 @@ source/crop/result/canonical contact sheets. The docs-only DDS files are not
 engine-facing assets and must not be copied into `gfx/leaders/` until an
 independent reviewer approves both identity and visual finish.
 
+## Current gate reconciliation
+
+On `2026-07-24`, the current exact-pixel crop utility re-extracted Heinrich Held's documented rectangle `(400,160)-(2070,2409)` from the unchanged archival master into the already retained crop path.
+The re-extracted PNG is byte-identical to the reviewed crop at SHA-256 `11841151745e97e7398bef3c60481C0BFEEFABA2B2D8225F3E3466D78F75CF3A`.
+The new `crops/BAY_heinrich_held_crop_400_160_2070_2409.json` records `decoded_pixels_equal = true`, matching RGBA hashes for the decoded master rectangle and output, the normalized utility invocation, Pillow version, master hash, crop coordinates, and output hash.
+This closes the current explicit-crop evidence requirement without changing the ImageGen identity input or reviewed result.
+The independent audit passes Heinrich Held's likeness, HOI4 leader style, male grounded identity, period role, and provenance; only parent runtime promotion remains.
+Eugen Ritter von Schobert remains blocked on source rights and must not be promoted from this package.
+
 ## Source-mode and identity gate
 
 Bavaria is a grounded historical polity. Both rows therefore use attributed
