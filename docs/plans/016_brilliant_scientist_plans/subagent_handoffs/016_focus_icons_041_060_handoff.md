@@ -48,7 +48,17 @@ For every row, the exact filename stem is shared across `source_png/focus_icons/
 - Runtime decode PNGs are retained under `docs/assets/016_brilliant_scientist/dds_decoded_png/focus_icons/`.
 - Contact sheets: `focus_icon_sources_041_060_contact_sheet.png`, `focus_icon_processed_041_060_contact_sheet.png`, and `focus_icon_dds_decoded_041_060_contact_sheet.png`.
 - Read-only consumer audit found all 20 exact normal sprite names and all 20 `_shine` sprite names in `interface/016_brilliant_scientist_kruger_state_focus.gfx`, and all 20 exact focus IDs in the loaded `common/national_focus` sources; no missing consumer was found.
-- Visual review note: all 20 compositions are distinct, centered, high-contrast, painterly HOI4-style emblems with route-specific subjects (conventional command, engineering/counterintelligence/air defense, clone infrastructure and host, robotics power/repair/command, and paleogenetic restoration). The enlarged processed sheet shows clean silhouettes and no opaque background. Parent visual acceptance remains the final review gate.
+- Visual review note: all 20 compositions are distinct, centered, high-contrast, painterly HOI4-style emblems with route-specific subjects (conventional command, engineering/counterintelligence/air defense, clone infrastructure and host, robotics power/repair/command, and paleogenetic restoration). The enlarged processed sheet shows clean silhouettes and no opaque background.
+
+## Parent rejection and row 053 revision
+
+- Parent rejected the original `KRG_the_replicated_host` master because the bottom shield and several medical-supply surfaces contained recognizable red-cross medical emblems.
+- A targeted built-in ImageGen edit preserved the host ranks, DNA standard, laurel, neutral supply gear, and overall composition, removed every red-cross/protected mark, and replaced the bottom shield with a fictional gold-and-ivory double-helix-and-cradle clone-host symbol.
+- Stable source, alpha, processed PNG, DDS, and DDS-decoded filenames remain unchanged. All three 041-060 contact sheets were rebuilt so row 053 shows the accepted revision.
+- Rejected source SHA-256: `048388512bd70ee18cefedd392b69dfbfb12d43593268d562bfc09a2c81b245f` from ImageGen output `exec-a76ba041-ecf5-4222-96a9-7464d094da58.png`.
+- Accepted source SHA-256: `cc9d1ffb3b19ba12e07b21552d950195471383128ee7cead52cd2549b83d67c7` from ImageGen edit `exec-b4adabf4-f00d-487f-964c-4747a99fc801.png`.
+- Accepted row 053 processed SHA-256: `5ee8b601b834f13ee7a53a6e0d966290938b7c91cbd4661f1582ce0b4b036746`; accepted DDS SHA-256: `0a56ce2b7be73b8cf1ea195f5936d1d37f948fe08e27bd96008158c37ada8e30`.
+- The complete revision lineage is recorded in `docs/assets/016_brilliant_scientist/package_records/focus_icon_generation_041_060_provenance.json`; updated row-level hashes are in both validation TSVs.
 
 ## Manifest and handoff updates
 
@@ -57,6 +67,9 @@ For every row, the exact filename stem is shared across `source_png/focus_icons/
 
 ## Remaining risks
 
-- Parent `.gfx` registration and focus-consumer verification remain parent-owned; this tranche assumes the existing exact normal and `_shine` sprite registrations.
-- Native in-game rendering was not claimed; parent should perform the final focus-tree consumer/render check.
-- Rows 061-100 remain blocked and were not touched.
+- Native in-game rendering was not claimed and remains part of final acceptance.
+- Rows 061-100 are complete and have separate accepted handoffs; they were not edited by this tranche.
+
+## Parent review disposition
+
+Accepted on 2026-07-24 after review of the rebuilt source, processed, and DDS-decoded contact sheets. The revised row 053 removes every recognizable red-cross or protected medical emblem and replaces the shield with a fictional double-helix-and-cradle clone-host mark while preserving the intended replicated-host composition. All twenty rows are visually accepted, and the exact normal and `_shine` registrations plus matching focus consumers are accepted from the recorded static audit. Live in-game focus-tree rendering is not claimed here.
