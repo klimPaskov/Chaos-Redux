@@ -92,6 +92,7 @@
 - `specs/37_reviewed_global_survival_the_empty_village_offer.md`
 - `specs/38_reviewed_global_survival_ash_wolves.md`
 - `specs/39_reviewed_global_survival_thaw_water.md`
+- `specs/40_reviewed_global_survival_bridge_that_moved.md`
 
 ## Matrices
 

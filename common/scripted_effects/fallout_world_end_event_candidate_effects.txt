@@ -49,6 +49,12 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_ash_wolves_research_current
 	clear_variable = fallout_ash_wolves_corridor_memory_current
 	clear_variable = fallout_ash_wolves_altered_pressure_current
+	clear_variable = fallout_event_464_candidate_state_id
+	clear_variable = fallout_bridge_that_moved_crossing_damage_current
+	clear_variable = fallout_bridge_that_moved_route_reliability_current
+	clear_variable = fallout_bridge_that_moved_engineer_capacity_current
+	clear_variable = fallout_bridge_that_moved_local_consent_current
+	clear_variable = fallout_bridge_that_moved_trade_memory_current
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -1623,6 +1629,62 @@ fallout_event_build_pilot_candidate_registries = {
 			}
 			clear_temp_variable = fallout_event_pilot_state_candidate_id
 			clear_variable = fallout_event_457_candidate_state_id
+
+			# The Bridge That Moved is a thaw-year route row. It selects the lowest
+			# owned native railway state whose infrastructure and supply access are
+			# damaged enough to make the crossing a public decision.
+			if = { limit = { NOT = { has_variable = fallout_bridge_that_moved_crossing_damage_current } } set_variable = { fallout_bridge_that_moved_crossing_damage_current = constant:fallout_event_464_threshold.initial_crossing_damage } }
+			if = { limit = { NOT = { has_variable = fallout_bridge_that_moved_route_reliability_current } } set_variable = { fallout_bridge_that_moved_route_reliability_current = constant:fallout_event_464_threshold.initial_route_reliability } }
+			if = { limit = { NOT = { has_variable = fallout_bridge_that_moved_engineer_capacity_current } } set_variable = { fallout_bridge_that_moved_engineer_capacity_current = constant:fallout_event_464_threshold.initial_engineer_capacity } }
+			if = { limit = { NOT = { has_variable = fallout_bridge_that_moved_local_consent_current } } set_variable = { fallout_bridge_that_moved_local_consent_current = constant:fallout_event_464_threshold.initial_local_consent } }
+			if = { limit = { NOT = { has_variable = fallout_bridge_that_moved_trade_memory_current } } set_variable = { fallout_bridge_that_moved_trade_memory_current = constant:fallout_event_464_threshold.initial_trade_memory } }
+			set_variable = { fallout_event_464_candidate_state_id = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_bridge_that_moved_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_464_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_464_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_464_candidate_state_id = fallout_event_pilot_state_candidate_id }
+				}
+			}
+			if = {
+				limit = { fallout_event_464_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.bridge_that_moved_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.bridge_that_moved_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.bridge_that_moved_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.bridge_that_moved_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_464_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_bridge_that_moved_engineer_capacity_current }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_bridge_that_moved_crossing_damage_current }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_464_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.medicine }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.medicine }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_six }
+				set_temp_variable = { fallout_event_pilot_cause_memory_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_464_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.bridge_that_moved_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_464_candidate_state_id
 
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.

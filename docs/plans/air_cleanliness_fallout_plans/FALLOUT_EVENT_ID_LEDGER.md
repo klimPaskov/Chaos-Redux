@@ -550,3 +550,9 @@ The documented living-world block total is now `338`, while the countable Fallou
 The Thaw Water reservation adds seven dormant state-level event blocks at suffixes `457` through `463`. It uses candidate `457`, transaction `710039`, route `7139`, and history `9144`. The chain carries four water-management policies, deterministic thaw-eligible state selection, flood-pressure, water-safety, channel-trust, disease-control, thaw-memory, food, recognition, and cohesion ledgers, a 60-day result, a 480-day thaw review callback, Deaths-system failure accounting, Air Winter water-security and disease-pressure updates, supply and reclamation effects, Event Log payloads, exact cleanup, and a dedicated report asset. Native water simulation remains unproven.
 
 The documented living-world block total is now `345`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Bridge That Moved count correction
+
+The Bridge That Moved reservation adds seven dormant state-level event blocks at suffixes `464` through `470`. It uses candidate `464`, transaction `710040`, route `7140`, and history `9145`. The chain carries four bridge policies, deterministic thaw-state railway selection, crossing-damage, route-reliability, engineer-capacity, local-consent, and trade-memory ledgers, a 45-day result, a 365-day bridge review callback, Deaths-system failure accounting, infrastructure and railway consequences, Event Log payloads, exact cleanup, and a dedicated report asset. Native bridge topology and live bilateral partner allocation remain unproven.
+
+The documented living-world block total is now `352`, while the countable Fallout living-world total remains `0 of 660`.

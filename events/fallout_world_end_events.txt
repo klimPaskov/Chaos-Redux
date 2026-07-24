@@ -15959,3 +15959,122 @@ country_event = {
 	trigger = { fallout_event_457_cleanup_can_enter = yes }
 	immediate = { fallout_event_457_cleanup = yes }
 }
+
+
+country_event = {
+	id = chaosx.fallout.464
+	title = chaosx.fallout.464.t
+	desc = chaosx.fallout.464.d
+	picture = GFX_report_event_fallout_bridge_that_moved
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_464_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.464.a
+		trigger = {
+			OR = { has_government = fascism has_government = communism has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_464_cost.close_crossing_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_464_cost.close_crossing_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_464_cost.close_crossing_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_464_requested_branch = constant:fallout_event_464_branch.close_crossing } fallout_event_464_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.464.a.tt
+	}
+	option = {
+		name = chaosx.fallout.464.b
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_464_cost.temporary_trestle_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_464_cost.temporary_trestle_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_464_cost.temporary_trestle_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_464_requested_branch = constant:fallout_event_464_branch.temporary_trestle } fallout_event_464_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.464.b.tt
+	}
+	option = {
+		name = chaosx.fallout.464.c
+		trigger = {
+			OR = { has_government = democratic has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_464_cost.military_pontoon_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_464_cost.military_pontoon_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_464_cost.military_pontoon_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_464_requested_branch = constant:fallout_event_464_branch.military_pontoon } fallout_event_464_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.464.c.tt
+	}
+	option = {
+		name = chaosx.fallout.464.d
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_464_cost.shared_bridge_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_464_cost.shared_bridge_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_464_cost.shared_bridge_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_464_requested_branch = constant:fallout_event_464_branch.shared_bridge } fallout_event_464_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.464.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.465
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_464_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_464_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.466
+	title = chaosx.fallout.466.t
+	desc = { text = chaosx.fallout.466.close_crossing.success.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.close_crossing } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.466.close_crossing.partial.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.close_crossing } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.466.close_crossing.failure.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.close_crossing } } }
+	desc = { text = chaosx.fallout.466.temporary_trestle.success.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.temporary_trestle } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.466.temporary_trestle.partial.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.temporary_trestle } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.466.temporary_trestle.failure.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.temporary_trestle } } }
+	desc = { text = chaosx.fallout.466.military_pontoon.success.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.military_pontoon } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.466.military_pontoon.partial.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.military_pontoon } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.466.military_pontoon.failure.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.military_pontoon } } }
+	desc = { text = chaosx.fallout.466.shared_bridge.success.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.shared_bridge } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.466.shared_bridge.partial.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.shared_bridge } check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.466.shared_bridge.failure.d trigger = { check_variable = { fallout_event_464_selected_branch = constant:fallout_event_464_branch.shared_bridge } } }
+	picture = GFX_report_event_fallout_bridge_that_moved
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_464_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.bridge_that_moved_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.466.a hidden_effect = { fallout_event_464_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.466.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.467
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_464_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.bridge_that_moved_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_464_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.468
+	title = chaosx.fallout.468.t
+	desc = { text = chaosx.fallout.468.success.d trigger = { check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.468.partial.d trigger = { check_variable = { fallout_event_464_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.468.failure.d
+	picture = GFX_report_event_fallout_bridge_that_moved
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_464_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.bridge_that_moved_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_464_registry_is_current = yes }
+	option = { name = chaosx.fallout.468.a hidden_effect = { fallout_event_464_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.468.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.469
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_464_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.bridge_that_moved_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_464_registry_is_current = yes }
+	immediate = { fallout_event_464_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.470
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_464_cleanup_can_enter = yes }
+	immediate = { fallout_event_464_cleanup = yes }
+}
