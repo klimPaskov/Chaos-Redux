@@ -547,3 +547,11 @@ The reviewed ordinary producer now carries thirty-seven rows and the defined liv
 Its country row follows the closed Children From Elsewhere memory and requires a current produced Air Winter snapshot, a low-population non-urban native state with surviving infrastructure, current-generation ownership, campaign-day eligibility, and a deterministic state target. The four branches resettle refugee families, grant veteran allotments, charter a mixed village, or keep a border buffer. They freeze Food, Medicine, Recognition, Cohesion, settlement, land, border, and integration ledgers before a 42-day result and a 540-day village review callback. Migration is recorded in a bounded country ledger and manpower reserve. Native state-population relocation is not claimed.
 
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+
+## The First Unmasked Day scheduler correction
+
+The reviewed ordinary producer now carries forty-one rows and the defined living-world event range reaches `477`, with `359` defined blocks. The First Unmasked Day is candidate `471`, transaction `710041`, route `7141`, and history `9146`.
+
+Its state row requires a produced Air Winter snapshot with thaw-eligible normal-map provenance, global Air Contamination above the spread threshold and below the severe-winter threshold, intact infrastructure, low supply access, surviving population, adaptation, reclamation, high disease pressure, and less than maximum water security. The deterministic selector chooses the lowest valid owned state id. The four branches test a public schoolyard opening, masked work shifts, a clinic daylight trial, or a sealed shelter. Each lane shares the same 35-day result, 365-day callback, Deaths-backed failure path, state infrastructure or railway consequences, ledgers, Event Log payloads, dedicated report art, and authenticated cleanup.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
