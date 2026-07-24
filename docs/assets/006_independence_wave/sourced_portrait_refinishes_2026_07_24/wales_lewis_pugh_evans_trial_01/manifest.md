@@ -1,6 +1,7 @@
 # IW-002 Wales Lewis Pugh Evans portrait trial 01
 
-Status: `candidate_pending_independent_audit`.
+Status: `blocked`.
+Independent audit verdict: **FAIL** — exact likeness and commander-family evidence gates do not pass; keep this trial unwired.
 
 This trial follows the required archival-to-runtime chain and remains deliberately unwired.
 
