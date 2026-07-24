@@ -38,6 +38,7 @@ Status: needs_user_review
 - Export checkpoint: `blender/checkpoints/06_exported.blend`
 - Working geometry: one Blender mesh object, `Mesh_0.001`, exported as `.mesh` object `Mesh_0.002`, 5,202 triangles, 4,711 source vertices, one UV layer, one PDX material
 - Bounds: approximately `0.668 x 0.619 x 1.503 m`; normalized height target `1.5 m`
+- Runtime scale calibration: vanilla `TEST_building3.mesh` measures `2.464908` source units and renders at scale `2.0`; the custom beacon measures `1.502979` source units and uses entity/spawn scale `3.280031` to match the vanilla rendered height `4.929816`
 - QA: 0 non-manifold edges, 0 degenerate faces, no negative scale objects
 - Review warning: 3,586 loose boundary edges remain in the provider geometry and are carried as a visible review item
 - Rendered preview set: `blender/previews/`; parent visual review recorded in `validation/provider_candidate_gate.json`
@@ -61,7 +62,7 @@ Status: needs_user_review
 
 ## Runtime handoff state
 
-- Production entity registration: `gfx/entities/chaosx_3d_model_pilots.gfx` and `gfx/entities/chaosx_3d_model_pilots.asset`; entity `building_anomaly_signal_beacon_pilot_spawn` uses the GFX meshsettings name `Mesh_0.002`, matching the exported mesh object
+- Production entity registration: `gfx/entities/chaosx_3d_model_pilots.gfx` and `gfx/entities/chaosx_3d_model_pilots.asset`; entity `building_anomaly_signal_beacon_pilot_spawn` uses the GFX meshsettings name `Mesh_0.002`, matching the exported mesh object, and both building entities use scale `3.280031`
 - Production consumer definition: `common/buildings/chaosx_3d_model_pilots.txt`, token `anomaly_signal_beacon_pilot`
 - Runtime artifact: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_signal_beacon.mesh`
 - Runtime maps: `Image_0.dds`, `Image_1.dds`, and `Image_2.dds`; each final map is `1024 x 1024` one-level uncompressed BGRA

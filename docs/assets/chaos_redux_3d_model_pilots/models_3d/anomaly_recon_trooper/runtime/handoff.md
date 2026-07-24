@@ -11,7 +11,7 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Source `.mesh`: `export/mesh/chaosx_anomaly_recon_trooper.mesh`
 - Runtime `.mesh`: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`
 - Humanoid entity: `chaosx_anomaly_recon_trooper_entity`
-- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, `scale = 0.8`
+- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, `scale = 0.25`; effective runtime height is `1.837956` source units from the `7.351824` normalized mesh
 - Humanoid object definition: `gfx/entities/chaosx_3d_model_pilots.gfx`
 - Unit consumer: `chaosx_anomaly_recon_trooper` in `common/units/chaosx_3d_model_pilots.txt`
 - Live consumer effect: `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`
@@ -25,9 +25,9 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Attack binding: `attack` -> `chaosx_anomaly_recon_trooper_attack_animation` -> `chaosx_anomaly_recon_trooper_attack.anim`
 - Move binding: `move`/`retreat` -> `chaosx_anomaly_recon_trooper_move_animation` -> `chaosx_anomaly_recon_trooper_move.anim`; the action is a 24-frame in-place Blender-authored walk cycle
 - Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
-- Exported mesh object: `char1.002`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
-- Final mesh payload: shared-vertex export, 32,993 exported vertices, 30,000 triangles; the previous per-loop export carried 90,000 vertices and produced the live stretched geometry symptom.
-- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, reference entity scale `0.8`, and expected effective pilot height about `5.881459`
+- Exported mesh object: `Mesh_0.001`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
+- Final mesh payload: shared-vertex export, 14,970 source vertices, 30,000 triangles, and 0 source loose boundary edges; the dual-source geometry comes from the watertight generation candidate while the provider armature supplies the approved actions and weights.
+- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, reference entity scale `0.8`, and the pilot's separately measured consumer calibration is `0.25` for an effective height of `1.837956`
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
 - Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, exports unit scale values, and divides exported translation samples by the uniform armature world scale so movement uses mesh units.
 
@@ -36,11 +36,11 @@ The template is created in Germany's country scope, and the live `create_unit` c
 The source reference is the one-image file `refs/original/meshy_input.png`.
 Meshy generation, remesh, rigging, idle, and attack task IDs are recorded in the manifest and append-only provider lineage; the move action is recorded as Blender-authored production evidence.
 The official rig/animation MCP results were signed provider URLs; the job stores the downloaded artifacts and checksums, rather than leaving remote URLs as the only copy.
-The corrected `.mesh` and all three corrected skeletal actions were reimported through `io_pdx_mesh` proof scenes, with bounded evaluated dimensions recorded in `validation/reimport_evaluated_bounds_corrected.json`.
+The corrected `.mesh` and all three corrected skeletal actions were reimported through `io_pdx_mesh` proof scenes, with 30,000 triangles, 0 position-welded loose edges, and 0 non-manifold edges recorded in the dual-source validation reports.
 The installed vanilla infantry mesh was staged read-only and imported into each humanoid preparation scene for scale and orientation comparison.
 
 The source provider collection retains two unwanted `Icosphere` objects, but the working/render/export collections explicitly exclude them.
-The provider mesh still has 31,520 loose boundary edges, so open-surface topology remains a review item and is not represented as a completed hole repair.
+The previous provider remesh was not exported as final geometry because its open seams became holes after reduction; the watertight generation candidate is the final geometry source, and the reimport audit distinguishes harmless UV/normal seam splits from position-welded topology.
 
 ## Parent verification
 

@@ -20,6 +20,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 import bpy
 import bmesh
 from mathutils import Quaternion, Vector
+from mathutils.kdtree import KDTree
 
 
 PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
@@ -274,6 +275,83 @@ def duplicate_hierarchy(
         source.hide_render = True
         source.hide_set(True)
     return list(mapping.values())
+
+
+def bind_geometry_to_existing_rig(
+    source_mesh: bpy.types.Object,
+    target_mesh: bpy.types.Object,
+    target_armature: bpy.types.Object,
+) -> Dict[str, Any]:
+    """Transfer rest-pose weights from the provider rig mesh to a closed mesh candidate."""
+
+    source_minimum, source_maximum = world_bounds([source_mesh])
+    target_minimum, target_maximum = world_bounds([target_mesh])
+    source_height = source_maximum.z - source_minimum.z
+    target_height = target_maximum.z - target_minimum.z
+    if source_height <= 0 or target_height <= 0:
+        raise RuntimeError("Dual-source rig transfer requires positive source and target heights.")
+
+    target_mesh.scale *= source_height / target_height
+    bpy.context.view_layer.update()
+    target_minimum, target_maximum = world_bounds([target_mesh])
+    source_center = (source_minimum + source_maximum) * 0.5
+    target_center = (target_minimum + target_maximum) * 0.5
+    target_mesh.location += source_center - target_center
+    bpy.context.view_layer.update()
+
+    for group in list(target_mesh.vertex_groups):
+        target_mesh.vertex_groups.remove(group)
+    target_groups = {
+        group.name: target_mesh.vertex_groups.new(name=group.name)
+        for group in source_mesh.vertex_groups
+    }
+    if not target_groups:
+        raise RuntimeError("Dual-source rig transfer found no provider vertex groups.")
+
+    tree = KDTree(len(source_mesh.data.vertices))
+    for vertex in source_mesh.data.vertices:
+        tree.insert(source_mesh.matrix_world @ vertex.co, vertex.index)
+    tree.balance()
+    source_groups = list(source_mesh.vertex_groups)
+    transferred_vertices = 0
+    for vertex in target_mesh.data.vertices:
+        nearest = tree.find_n(target_mesh.matrix_world @ vertex.co, 4)
+        accumulated: Dict[str, float] = {}
+        for _, source_index, distance in nearest:
+            influence = 1.0 / max(distance, 1e-6)
+            for source_group in source_groups:
+                try:
+                    weight = source_group.weight(source_index)
+                except RuntimeError:
+                    continue
+                if weight > 0:
+                    accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * influence
+        total = sum(accumulated.values())
+        if total <= 1e-8:
+            continue
+        for name, weight in accumulated.items():
+            target_groups[name].add([vertex.index], weight / total, "REPLACE")
+        transferred_vertices += 1
+
+    world_matrix = target_mesh.matrix_world.copy()
+    target_mesh.parent = target_armature
+    target_mesh.parent_type = "OBJECT"
+    target_mesh.matrix_world = world_matrix
+    modifier = target_mesh.modifiers.new("CHAOSX_RIG_TRANSFER", type="ARMATURE")
+    modifier.object = target_armature
+    modifier.use_deform_preserve_volume = True
+    return {
+        "method": "four-nearest-provider-vertex inverse-distance weight transfer",
+        "source_mesh": source_mesh.name,
+        "target_mesh": target_mesh.name,
+        "armature": target_armature.name,
+        "source_vertices": len(source_mesh.data.vertices),
+        "target_vertices": len(target_mesh.data.vertices),
+        "transferred_vertices": transferred_vertices,
+        "alignment_scale": source_height / target_height,
+        "source_height": source_height,
+        "target_height_before_alignment": target_height,
+    }
 
 
 def mesh_objects(working_only: bool = True) -> List[bpy.types.Object]:
@@ -656,14 +734,61 @@ def controlled_decimate(target_triangles: int) -> Dict[str, Any]:
     }
 
 
-def repair_open_surface_boundaries() -> Dict[str, Any]:
-    """Cap bounded open boundary loops before the final mesh checkpoint."""
+def repair_open_surface_boundaries(weld_distance: float = 1e-5) -> Dict[str, Any]:
+    """Weld coincident provider seams, then cap only bounded small loops."""
 
     records: List[Dict[str, Any]] = []
     for obj in mesh_objects():
         before = geometry_metrics_for_object(obj)
         original_data = obj.data.copy()
         bm = bmesh.new()
+        bm.from_mesh(obj.data)
+        vertices_before_weld = len(bm.verts)
+        bmesh.ops.remove_doubles(bm, verts=list(bm.verts), dist=weld_distance)
+        welded_vertices = max(0, vertices_before_weld - len(bm.verts))
+        bm.verts.index_update()
+        bm.edges.index_update()
+        duplicate_faces = set()
+        for edge in bm.edges:
+            if len(edge.link_faces) > 2:
+                duplicate_faces.update(edge.link_faces[2:])
+        if duplicate_faces:
+            bmesh.ops.delete(bm, geom=list(duplicate_faces), context="FACES")
+        duplicate_faces_removed = len(duplicate_faces)
+        bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
+        bm.to_mesh(obj.data)
+        obj.data.update()
+        welded_metrics = geometry_metrics_for_object(obj)
+        welded_data = obj.data.copy()
+        weld_rolled_back = welded_metrics["non_manifold_edges"] > before["non_manifold_edges"]
+        if weld_rolled_back:
+            repaired_data = obj.data
+            obj.data = original_data
+            if repaired_data.users == 0:
+                bpy.data.meshes.remove(repaired_data)
+            if welded_data.users == 0:
+                bpy.data.meshes.remove(welded_data)
+            records.append(
+                {
+                    "object": obj.name,
+                    "boundary_edges_before": before["loose_boundary_edges"],
+                    "boundary_edges_after": before["loose_boundary_edges"],
+                    "welded_vertices": welded_vertices,
+                    "duplicate_faces_removed": duplicate_faces_removed,
+                    "welded_boundary_edges": welded_metrics["loose_boundary_edges"],
+                    "welded_non_manifold_edges": welded_metrics["non_manifold_edges"],
+                    "weld_rolled_back": True,
+                    "faces_added": 0,
+                    "skipped_components": 0,
+                    "rolled_back_non_manifold": True,
+                    "non_manifold_edges_before": before["non_manifold_edges"],
+                    "non_manifold_edges_after": before["non_manifold_edges"],
+                    "triangles_after": before["triangles"],
+                }
+            )
+            continue
+
+        bm.clear()
         bm.from_mesh(obj.data)
         boundary_edges = [edge for edge in bm.edges if len(edge.link_faces) == 1]
         edge_by_id = {id(edge): edge for edge in boundary_edges}
@@ -692,79 +817,212 @@ def repair_open_surface_boundaries() -> Dict[str, Any]:
                     )
             components.append(component)
 
-        filled_faces = []
+        filled_face_count = 0
         skipped_components = 0
-        non_manifold_before = before["non_manifold_edges"]
+        max_bounded_loop_edges = 96
+        cap_methods: Dict[str, int] = {}
+        component_specs = [
+            [tuple(sorted(vertex.index for vertex in edge.verts)) for edge in component]
+            for component in components
+        ]
 
-        for component in components:
-            vertices = {vertex.index for edge in component for vertex in edge.verts}
-            if len(component) < 3 or any(len(edges_by_vertex.get(vertex, [])) != 2 for vertex in vertices):
+        component_rejections = 0
+        for component_spec in component_specs:
+            vertices = {vertex for edge in component_spec for vertex in edge}
+            if (
+                len(component_spec) < 3
+                or len(component_spec) > max_bounded_loop_edges
+                or any(len(edges_by_vertex.get(vertex, [])) != 2 for vertex in vertices)
+            ):
                 skipped_components += 1
                 continue
-            result = bmesh.ops.holes_fill(bm, edges=component, sides=0)
-            filled_faces.extend(face for face in result.get("faces", []) if face.is_valid)
+            candidate_bm = bm.copy()
+            candidate_bm.verts.index_update()
+            candidate_bm.edges.index_update()
+            candidate_edges_by_vertices = {
+                frozenset(vertex.index for vertex in edge.verts): edge
+                for edge in candidate_bm.edges
+            }
+            candidate_edges = [
+                candidate_edges_by_vertices.get(frozenset(edge))
+                for edge in component_spec
+            ]
+            if any(edge is None for edge in candidate_edges):
+                candidate_bm.free()
+                skipped_components += 1
+                continue
+            result = bmesh.ops.holes_fill(
+                candidate_bm,
+                edges=candidate_edges,
+                sides=0,
+            ) or {}
+            candidate_faces = [face for face in result.get("faces", []) if face.is_valid]
+            fill_method = "holes_fill"
+            if not candidate_faces:
+                result = bmesh.ops.triangle_fill(
+                    candidate_bm,
+                    edges=candidate_edges,
+                    use_beauty=True,
+                ) or {}
+                candidate_faces = [face for face in result.get("faces", []) if face.is_valid]
+                fill_method = "triangle_fill"
+            candidate_non_manifold_edges = sum(
+                1 for edge in candidate_bm.edges if len(edge.link_faces) > 2
+            )
+            if candidate_non_manifold_edges > welded_metrics["non_manifold_edges"]:
+                candidate_bm.free()
+                component_rejections += 1
+                skipped_components += 1
+                continue
+            for face in candidate_faces:
+                face.material_index = 0
+            bm.free()
+            bm = candidate_bm
+            filled_face_count += len(candidate_faces)
+            cap_methods[fill_method] = cap_methods.get(fill_method, 0) + 1
 
         degenerate_faces = [face for face in bm.faces if face.calc_area() <= 1e-10]
         if degenerate_faces:
             bmesh.ops.delete(bm, geom=degenerate_faces, context="FACES")
-        if filled_faces or degenerate_faces:
+        if filled_face_count or degenerate_faces:
             bmesh.ops.triangulate(bm, faces=list(bm.faces))
             bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
         bm.to_mesh(obj.data)
         bm.free()
         obj.data.update()
         after = geometry_metrics_for_object(obj)
-        rolled_back_non_manifold = after["non_manifold_edges"] > non_manifold_before
+        rolled_back_non_manifold = after["non_manifold_edges"] > welded_metrics["non_manifold_edges"]
         if rolled_back_non_manifold:
-            # The provider mesh is allowed to retain open boundaries, but the
-            # runtime mesh must never gain edges shared by more than two faces.
-            # Revert the bounded cap pass as one transaction if Blender's
-            # triangulator produced a non-manifold result.
+            # Keep a valid weld when the optional cap pass creates a bad edge.
             repaired_data = obj.data
-            obj.data = original_data
+            obj.data = welded_data
             if repaired_data.users == 0:
                 bpy.data.meshes.remove(repaired_data)
             after = geometry_metrics_for_object(obj)
-            filled_faces = []
-        elif original_data.users == 0:
+            filled_face_count = 0
+        elif welded_data.users == 0:
+            bpy.data.meshes.remove(welded_data)
+        if original_data.users == 0:
             bpy.data.meshes.remove(original_data)
         records.append(
             {
                 "object": obj.name,
                 "boundary_edges_before": before["loose_boundary_edges"],
                 "boundary_edges_after": after["loose_boundary_edges"],
-                "faces_added": len(filled_faces),
+                "welded_vertices": welded_vertices,
+                "duplicate_faces_removed": duplicate_faces_removed,
+                "welded_boundary_edges": welded_metrics["loose_boundary_edges"],
+                "welded_non_manifold_edges": welded_metrics["non_manifold_edges"],
+                "weld_rolled_back": False,
+                "faces_added": filled_face_count,
                 "skipped_components": skipped_components,
+                "component_rejections": component_rejections,
+                "cap_methods": cap_methods,
                 "rolled_back_non_manifold": rolled_back_non_manifold,
-                "non_manifold_edges_before": non_manifold_before,
+                "non_manifold_edges_before": before["non_manifold_edges"],
                 "degenerate_faces_removed": len(degenerate_faces),
                 "non_manifold_edges_after": after["non_manifold_edges"],
                 "triangles_after": after["triangles"],
             }
         )
     return {
-        "applied": any(record["faces_added"] for record in records),
-        "method": "bmesh holes_fill on bounded boundary loops with transactional non-manifold rollback, then triangulate and recalc normals",
+        "applied": any(record["welded_vertices"] or record["faces_added"] for record in records),
+        "method": f"bmesh remove_doubles at {weld_distance:g}, remove duplicate-overlap faces, then bounded holes_fill/triangle_fill on loops up to 96 edges with cap-only non-manifold rollback",
         "objects": records,
+    }
+
+
+def topology_metrics_from_bmesh(bm: bmesh.types.BMesh) -> Dict[str, Any]:
+    boundary_edges = [edge for edge in bm.edges if len(edge.link_faces) == 1]
+    loose_edges = len(boundary_edges)
+    non_manifold_edges = sum(1 for edge in bm.edges if len(edge.link_faces) > 2)
+    degenerate_faces = sum(1 for face in bm.faces if face.calc_area() <= 1e-10)
+    edges_by_vertex: Dict[int, List[Any]] = {}
+    boundary_by_id = {id(edge): edge for edge in boundary_edges}
+    for edge in boundary_edges:
+        for vertex in edge.verts:
+            edges_by_vertex.setdefault(vertex.index, []).append(edge)
+    unvisited = set(boundary_by_id)
+    boundary_components = []
+    while unvisited:
+        seed_id = next(iter(unvisited))
+        stack = [boundary_by_id[seed_id]]
+        component = []
+        while stack:
+            edge = stack.pop()
+            edge_id = id(edge)
+            if edge_id not in unvisited:
+                continue
+            unvisited.remove(edge_id)
+            component.append(edge)
+            for vertex in edge.verts:
+                stack.extend(
+                    neighbour
+                    for neighbour in edges_by_vertex.get(vertex.index, [])
+                    if id(neighbour) in unvisited
+                )
+        vertices = {vertex.index for edge in component for vertex in edge.verts}
+        degrees = [len(edges_by_vertex.get(vertex, [])) for vertex in vertices]
+        boundary_components.append(
+            {
+                "edges": len(component),
+                "vertices": len(vertices),
+                "closed_simple_cycle": bool(degrees) and all(degree == 2 for degree in degrees),
+                "endpoint_vertices": sum(degree == 1 for degree in degrees),
+                "branch_vertices": sum(degree > 2 for degree in degrees),
+                "max_vertex_degree": max(degrees, default=0),
+                "perimeter": sum(edge.calc_length() for edge in component),
+            }
+        )
+    zero_length_normals = sum(1 for face in bm.faces if face.normal.length <= 1e-8)
+    return {
+        "loose_boundary_edges": loose_edges,
+        "non_manifold_edges": non_manifold_edges,
+        "degenerate_faces": degenerate_faces,
+        "triangles": sum(max(0, len(face.verts) - 2) for face in bm.faces),
+        "boundary_component_count": len(boundary_components),
+        "closed_boundary_component_count": sum(
+            1 for component in boundary_components if component["closed_simple_cycle"]
+        ),
+        "branched_boundary_component_count": sum(
+            1 for component in boundary_components if component["branch_vertices"]
+        ),
+        "max_boundary_component_edges": max(
+            (component["edges"] for component in boundary_components), default=0
+        ),
+        "zero_length_normals": zero_length_normals,
     }
 
 
 def geometry_metrics_for_object(obj: bpy.types.Object) -> Dict[str, Any]:
     bm = bmesh.new()
     bm.from_mesh(obj.data)
-    loose_edges = sum(1 for edge in bm.edges if len(edge.link_faces) == 1)
-    non_manifold_edges = sum(1 for edge in bm.edges if len(edge.link_faces) > 2)
-    degenerate_faces = sum(1 for face in bm.faces if face.calc_area() <= 1e-10)
+    result = topology_metrics_from_bmesh(bm)
     bm.free()
-    return {
-        "loose_boundary_edges": loose_edges,
-        "non_manifold_edges": non_manifold_edges,
-        "degenerate_faces": degenerate_faces,
-        "triangles": sum(max(0, len(poly.vertices) - 2) for poly in obj.data.polygons),
-    }
+    return result
 
 
-def geometry_metrics(working_only: bool = True) -> Dict[str, Any]:
+def position_welded_geometry_metrics_for_object(
+    obj: bpy.types.Object,
+    weld_distance: float,
+) -> Dict[str, Any]:
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    vertices_before = len(bm.verts)
+    bmesh.ops.remove_doubles(bm, verts=list(bm.verts), dist=weld_distance)
+    bm.verts.ensure_lookup_table()
+    result = topology_metrics_from_bmesh(bm)
+    result["vertices_before"] = vertices_before
+    result["vertices_after_position_weld"] = len(bm.verts)
+    result["weld_distance"] = weld_distance
+    bm.free()
+    return result
+
+
+def geometry_metrics(
+    working_only: bool = True,
+    position_weld_distance: Optional[float] = None,
+) -> Dict[str, Any]:
     meshes = mesh_objects(working_only=working_only)
     vertices = sum(len(obj.data.vertices) for obj in meshes)
     polygons = sum(len(obj.data.polygons) for obj in meshes)
@@ -772,15 +1030,33 @@ def geometry_metrics(working_only: bool = True) -> Dict[str, Any]:
     loose_edges = 0
     non_manifold_edges = 0
     degenerate_faces = 0
+    boundary_component_count = 0
+    closed_boundary_component_count = 0
+    branched_boundary_component_count = 0
+    max_boundary_component_edges = 0
+    zero_length_normals = 0
+    position_welded = []
     for obj in meshes:
-        bm = bmesh.new()
-        bm.from_mesh(obj.data)
-        loose_edges += sum(1 for edge in bm.edges if len(edge.link_faces) == 1)
-        non_manifold_edges += sum(1 for edge in bm.edges if len(edge.link_faces) > 2)
-        degenerate_faces += sum(1 for face in bm.faces if face.calc_area() <= 1e-10)
-        bm.free()
+        object_metrics = geometry_metrics_for_object(obj)
+        loose_edges += object_metrics["loose_boundary_edges"]
+        non_manifold_edges += object_metrics["non_manifold_edges"]
+        degenerate_faces += object_metrics["degenerate_faces"]
+        zero_length_normals += object_metrics["zero_length_normals"]
+        boundary_component_count += object_metrics["boundary_component_count"]
+        closed_boundary_component_count += object_metrics["closed_boundary_component_count"]
+        branched_boundary_component_count += object_metrics["branched_boundary_component_count"]
+        max_boundary_component_edges = max(
+            max_boundary_component_edges, object_metrics["max_boundary_component_edges"]
+        )
+        if position_weld_distance is not None:
+            position_welded.append(
+                {
+                    "object": obj.name,
+                    **position_welded_geometry_metrics_for_object(obj, position_weld_distance),
+                }
+            )
     minimum, maximum = world_bounds(meshes)
-    return {
+    result = {
         "objects": len(meshes),
         "vertices": vertices,
         "polygons": polygons,
@@ -788,6 +1064,11 @@ def geometry_metrics(working_only: bool = True) -> Dict[str, Any]:
         "loose_boundary_edges": loose_edges,
         "non_manifold_edges": non_manifold_edges,
         "degenerate_faces": degenerate_faces,
+        "boundary_component_count": boundary_component_count,
+        "closed_boundary_component_count": closed_boundary_component_count,
+        "branched_boundary_component_count": branched_boundary_component_count,
+        "max_boundary_component_edges": max_boundary_component_edges,
+        "zero_length_normals": zero_length_normals,
         "bounds_min": list(minimum),
         "bounds_max": list(maximum),
         "dimensions": list(maximum - minimum),
@@ -800,6 +1081,16 @@ def geometry_metrics(working_only: bool = True) -> Dict[str, Any]:
             for obj in meshes
         },
     }
+    if position_weld_distance is not None:
+        result["position_welded_topology"] = {
+            "policy": "diagnostic_position_weld_only; exported UV and normal seams remain unchanged",
+            "weld_distance": position_weld_distance,
+            "objects": position_welded,
+            "loose_boundary_edges": sum(item["loose_boundary_edges"] for item in position_welded),
+            "non_manifold_edges": sum(item["non_manifold_edges"] for item in position_welded),
+            "degenerate_faces": sum(item["degenerate_faces"] for item in position_welded),
+        }
+    return result
 
 
 def action_metrics() -> Dict[str, Any]:
@@ -1252,18 +1543,54 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     working_collection = new_collection("WORKING")
     vanilla_reference = import_vanilla_reference(job, payload, pdx)
     imported = import_candidate(source)
-    for obj in imported:
-        move_to_collection(obj, source_collection)
     excluded_names = {str(name) for name in payload.get("excluded_provider_objects", [])}
-    working_source = [obj for obj in imported if obj.name not in excluded_names]
-    if not working_source:
-        raise RuntimeError("Provider-object exclusion removed the entire candidate.")
+    geometry_source = None
+    geometry_transfer = None
+    if payload.get("geometry_source_rel"):
+        geometry_source = within(job, str(payload["geometry_source_rel"]))
+        imported_geometry = import_candidate(geometry_source)
+        imported_rig = imported
+        imported = imported_geometry + imported_rig
+        geometry_candidates = [
+            obj for obj in imported_geometry
+            if obj.type == "MESH" and obj.name not in excluded_names
+        ]
+        rig_mesh_candidates = [
+            obj for obj in imported_rig
+            if obj.type == "MESH" and obj.name not in excluded_names
+        ]
+        armature_candidates = [obj for obj in imported_rig if obj.type == "ARMATURE"]
+        if len(geometry_candidates) != 1 or len(rig_mesh_candidates) != 1 or len(armature_candidates) != 1:
+            raise RuntimeError(
+                "Dual-source humanoid preparation requires one geometry mesh, one rig mesh, and one armature."
+            )
+        working_source = [geometry_candidates[0], armature_candidates[0]]
+        for obj in imported:
+            move_to_collection(obj, source_collection)
+        working = duplicate_hierarchy(working_source, source_collection, working_collection)
+        working_by_source = {
+            str(obj.get("chaosx_source_object")): obj
+            for obj in working
+        }
+        target_mesh = working_by_source[geometry_candidates[0].name]
+        target_armature = working_by_source[armature_candidates[0].name]
+        geometry_transfer = bind_geometry_to_existing_rig(
+            rig_mesh_candidates[0],
+            target_mesh,
+            target_armature,
+        )
+    else:
+        for obj in imported:
+            move_to_collection(obj, source_collection)
+        working_source = [obj for obj in imported if obj.name not in excluded_names]
+        if not working_source:
+            raise RuntimeError("Provider-object exclusion removed the entire candidate.")
+        working = duplicate_hierarchy(working_source, source_collection, working_collection)
     for obj in imported:
         if obj not in working_source:
             obj["chaosx_provider_excluded"] = True
             obj.hide_render = True
             obj.hide_set(True)
-    working = duplicate_hierarchy(working_source, source_collection, working_collection)
 
     source_blend = job / "blender" / "source" / f"{runtime_stem}_provider_source.blend"
     save_blend(source_blend)
@@ -1274,8 +1601,22 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     target_height = float(payload["target_height_m"])
     normalize = normalize_geometry(target_height)
     triangulation = triangulate_and_normals()
+    weld_distance = float(payload.get("topology_weld_distance", 1e-5))
+    pre_reduction_topology_repair = None
+    if payload.get("repair_before_reduction", False):
+        pre_reduction_topology_repair = repair_open_surface_boundaries(weld_distance)
     reduction = controlled_decimate(int(payload.get("target_triangles", 0)))
-    topology_repair = repair_open_surface_boundaries()
+    topology_repair = repair_open_surface_boundaries(weld_distance)
+    if pre_reduction_topology_repair is not None:
+        topology_repair = {
+            "applied": bool(
+                pre_reduction_topology_repair.get("applied") or topology_repair.get("applied")
+            ),
+            "method": "pre-reduction seam weld followed by post-reduction bounded repair",
+            "weld_distance": weld_distance,
+            "pre_reduction": pre_reduction_topology_repair,
+            "post_reduction": topology_repair,
+        }
     geometry = geometry_metrics()
     if vanilla_reference:
         final_height = float(geometry["dimensions"][2])
@@ -1314,17 +1655,23 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         action_checkpoint = job / "blender" / "checkpoints" / "04_actions_approved.blend"
         save_blend(action_checkpoint)
     pre_export = job / "blender" / "checkpoints" / "05_pre_export.blend"
-    previews = render_previews(job, runtime_stem)
+    previews = render_previews(job, runtime_stem) if payload.get("render_previews", True) else []
     save_blend(pre_export)
 
     report = {
         "asset_kind": payload["asset_kind"],
         "source": str(source.relative_to(job)).replace("\\", "/"),
+        "geometry_source": (
+            str(geometry_source.relative_to(job)).replace("\\", "/")
+            if geometry_source
+            else None
+        ),
         "source_objects": len(imported),
         "excluded_provider_objects": sorted(excluded_names),
         "vanilla_reference": vanilla_reference,
         "working_source_objects": len(working_source),
         "working_objects": len(working),
+        "geometry_transfer": geometry_transfer,
         "imported_geometry": imported_metrics,
         "normalization": normalize,
         "triangulation": triangulation,
@@ -1422,6 +1769,23 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         )
     return {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "objects": [
+            {
+                "name": obj.name,
+                "type": obj.type,
+                "parent": obj.parent.name if obj.parent else None,
+                "parent_type": obj.parent_type if obj.parent else None,
+                "modifiers": [
+                    {
+                        "name": modifier.name,
+                        "type": modifier.type,
+                        "object": modifier.object.name if getattr(modifier, "object", None) else None,
+                    }
+                    for modifier in obj.modifiers
+                ],
+            }
+            for obj in bpy.context.scene.objects
+        ],
         "geometry": geometry_metrics(),
         "rig_and_actions": action_metrics(),
         "evaluated_actions": evaluated_action_metrics(),
@@ -1821,7 +2185,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             for obj in bpy.context.scene.objects
             if obj.type == "MESH"
         ],
-        "geometry": geometry_metrics(working_only=False),
+        "geometry": geometry_metrics(working_only=False, position_weld_distance=1e-6),
         "armatures": [
             {"name": obj.name, "bones": len(obj.data.bones)}
             for obj in bpy.context.scene.objects

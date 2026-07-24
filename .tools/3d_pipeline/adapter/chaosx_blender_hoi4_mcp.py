@@ -135,7 +135,10 @@ def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]
     if not result_lines:
         raise RuntimeError(f"Blender worker returned no JSON result; evidence: {output_path}")
     try:
-        result = json.loads(result_lines[-1])
+        # Blender can append its version banner to the same physical line as
+        # the worker's JSON result. Decode the first complete JSON value and
+        # ignore that non-JSON trailer instead of rejecting a successful job.
+        result, _ = json.JSONDecoder().raw_decode(result_lines[-1])
     except json.JSONDecodeError as exc:
         raise RuntimeError(f"Blender worker returned invalid JSON; evidence: {output_path}") from exc
     result["adapter"] = {
@@ -285,6 +288,9 @@ def chaosx_blender_hoi4_prepare_candidate(
     excluded_provider_objects: list[str] | None = None,
     vanilla_reference: Dict[str, Any] | None = None,
     texture_source_rels: Dict[str, str] | None = None,
+    geometry_source_rel: str = "",
+    repair_before_reduction: bool = False,
+    topology_weld_distance: float = 1e-5,
 ) -> Dict[str, Any]:
     """Import, preserve, normalize, triangulate, material-tag, and checkpoint a candidate."""
 
@@ -300,6 +306,9 @@ def chaosx_blender_hoi4_prepare_candidate(
             "excluded_provider_objects": excluded_provider_objects or [],
             "vanilla_reference": vanilla_reference or {},
             "texture_source_rels": texture_source_rels or {},
+            "geometry_source_rel": geometry_source_rel,
+            "repair_before_reduction": repair_before_reduction,
+            "topology_weld_distance": topology_weld_distance,
         },
     )
 

@@ -8,6 +8,7 @@
 | Texture size gate | `blender/reports/textures_dds.json`; 1024 x 1024 DDS headers | `Image_0.dds`, `Image_1.dds`, `Image_2.dds` | corrected; pending live check |
 | `.mesh` export | `export/mesh/chaosx_anomaly_signal_beacon.mesh` | `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_signal_beacon.mesh` | complete |
 | Reimport proof | `validation/reimport_chaosx_anomaly_signal_beacon_mesh.json` | exporter/importer path | complete |
+| Building scale | Vanilla `TEST_building3.mesh` is 2.464908 source units at entity scale 2.0; the custom 1.502979-unit beacon uses entity scale 3.280031 for the same rendered height | `building_anomaly_signal_beacon_pilot` and `building_anomaly_signal_beacon_pilot_spawn` | corrected; pending live check |
 | Static runtime consumer | `common/buildings/chaosx_3d_model_pilots.txt` | `anomaly_signal_beacon_pilot` | registered |
 | Live runtime placement | `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`; `common/on_actions/chaosx_3d_model_pilot_showcase_on_actions.txt`; `map/buildings.txt`; `history/states/64-Brandenburg.txt` | Brandenburg state 64, province 9560 at map coordinate `2995, 9.70, 1556` using `building_anomaly_signal_beacon_pilot_spawn`; the coordinate is an interior province-9560 pixel under the map's bottom-up Z convention, and the effect selects `province = { id = 9560 }` | wired; pending live check |
 | In-game renderer proof | `runtime/screenshots/` | building entity | pending |

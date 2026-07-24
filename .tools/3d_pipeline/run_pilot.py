@@ -847,6 +847,9 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         excluded_provider_objects=spec.get("excluded_provider_objects"),
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
+        geometry_source_rel=spec.get("geometry_source_rel"),
+        repair_before_reduction=True,
+        topology_weld_distance=0.0,
     )
     candidate_gate(
         job,
@@ -907,6 +910,9 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         excluded_provider_objects=spec.get("excluded_provider_objects"),
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
+        geometry_source_rel=spec.get("geometry_source_rel"),
+        repair_before_reduction=True,
+        topology_weld_distance=0.0,
     )
     candidate_gate(
         job,

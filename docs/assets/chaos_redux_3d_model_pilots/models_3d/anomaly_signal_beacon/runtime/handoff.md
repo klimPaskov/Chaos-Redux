@@ -13,6 +13,7 @@ The building write is isolated in a state-scoped effect; it is not combined with
 - Runtime `.mesh`: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_signal_beacon.mesh`
 - Entity: `building_anomaly_signal_beacon_pilot_spawn`
 - Entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`
+- Entity scale: `3.280031` for both the visible entity and spawn entity, matching the vanilla special-project facility rendered height of `4.929816` source units
 - Object definition: `gfx/entities/chaosx_3d_model_pilots.gfx`
 - Consumer: `anomaly_signal_beacon_pilot` in `common/buildings/chaosx_3d_model_pilots.txt`
 - Live consumer effect: `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`
