@@ -14546,3 +14546,118 @@ country_event = {
 	trigger = { fallout_event_373_cleanup_can_enter = yes }
 	immediate = { fallout_event_373_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.380
+	title = chaosx.fallout.380.t
+	desc = chaosx.fallout.380.d
+	picture = GFX_report_event_fallout_market_under_viaduct
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_380_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.380.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_380_cost.license_market_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_380_cost.license_market_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_380_cost.license_market_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_380_cost.license_market_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_380_requested_branch = constant:fallout_event_380_branch.license_market } fallout_event_380_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.380.a.tt
+	}
+	option = {
+		name = chaosx.fallout.380.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_380_cost.tax_market_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_380_cost.tax_market_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_380_cost.tax_market_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_380_requested_branch = constant:fallout_event_380_branch.tax_market } fallout_event_380_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.380.b.tt
+	}
+	option = {
+		name = chaosx.fallout.380.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_380_cost.police_market_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_380_cost.police_market_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_380_cost.police_market_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_380_requested_branch = constant:fallout_event_380_branch.police_market } fallout_event_380_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.380.c.tt
+	}
+	option = {
+		name = chaosx.fallout.380.d
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_380_cost.tolerate_barter_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_380_cost.tolerate_barter_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_380_cost.tolerate_barter_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_380_requested_branch = constant:fallout_event_380_branch.tolerate_barter } fallout_event_380_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.380.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.381
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_380_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_380_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.382
+	title = chaosx.fallout.382.t
+	desc = { text = chaosx.fallout.382.license_market.success.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.license_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.382.license_market.partial.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.license_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.382.license_market.failure.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.license_market } } }
+	desc = { text = chaosx.fallout.382.tax_market.success.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.tax_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.382.tax_market.partial.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.tax_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.382.tax_market.failure.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.tax_market } } }
+	desc = { text = chaosx.fallout.382.police_market.success.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.police_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.382.police_market.partial.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.police_market } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.382.police_market.failure.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.police_market } } }
+	desc = { text = chaosx.fallout.382.tolerate_barter.success.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.tolerate_barter } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.382.tolerate_barter.partial.d trigger = { check_variable = { fallout_event_380_selected_branch = constant:fallout_event_380_branch.tolerate_barter } check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.382.tolerate_barter.failure.d
+	picture = GFX_report_event_fallout_market_under_viaduct
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_380_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.market_under_viaduct_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.382.a hidden_effect = { fallout_event_380_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.382.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.383
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_380_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.market_under_viaduct_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_380_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.384
+	title = chaosx.fallout.384.t
+	desc = { text = chaosx.fallout.384.success.d trigger = { check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.384.partial.d trigger = { check_variable = { fallout_event_380_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.384.failure.d
+	picture = GFX_report_event_fallout_market_under_viaduct
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_380_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.market_under_viaduct_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_380_registry_is_current = yes }
+	option = { name = chaosx.fallout.384.a hidden_effect = { fallout_event_380_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.384.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.385
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_380_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.market_under_viaduct_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_380_registry_is_current = yes }
+	immediate = { fallout_event_380_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.386
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_380_cleanup_can_enter = yes }
+	immediate = { fallout_event_380_cleanup = yes }
+}

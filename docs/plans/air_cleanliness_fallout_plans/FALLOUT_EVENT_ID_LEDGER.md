@@ -474,3 +474,11 @@ It owns candidate `373`, transaction `710027`, route `7127`, and Event Log histo
 The row selects one native radar-station state using radar, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break and Air Winter instability gates.
 Its four branches fund observers, militarize the forecast, share the records, or abandon the tower, each with a human lane, hidden AI lane, delayed result, station review callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
 The documented living-world block total is now `261`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Market Under the Viaduct count correction
+
+The Market Under the Viaduct adds seven dormant country-level event blocks at suffixes `380` through `386`.
+It owns candidate `380`, transaction `710028`, route `7128`, and Event Log history `9133`.
+The row selects one native supply-node and railway state using supply node, railway, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break.
+Its four branches license the market, tax stalls, police the exchange, or tolerate barter, each with a human lane, hidden-AI lane, delayed result, civic review callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
+The documented living-world block total is now `268`, while the countable Fallout living-world release-floor total remains `0 of 660`.

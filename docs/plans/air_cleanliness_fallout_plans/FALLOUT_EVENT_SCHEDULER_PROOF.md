@@ -469,3 +469,13 @@ The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper ex
 It returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned in the returned bounded result.
 The exact result is recorded in `FALLOUT_WORKING_MACHINE_CHAIN_PROOF.md`.
 Delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
+
+## Market Under the Viaduct scheduler correction
+
+The reviewed ordinary producer now carries twenty-eight rows and the defined living-world event range reaches `386`, with `268` defined blocks.
+The Market Under the Viaduct is candidate `380`, transaction `710028`, route `7128`, and history `9133`.
+Its country row follows the closed Old Weather Station memory and requires durable resources, campaign-day and exposure gates, one current-generation native supply-node state with rail support, and reclamation or supply instability.
+The deterministic state score is supply-node level times `4` plus railway level times `2`, infrastructure, and industrial capacity, with the lowest native state id resolving ties.
+The four branches license, tax, police, or tolerate barter and each has separate costs, thresholds, state memory, market ledgers, dynamic modifier, callback payload, and Deaths-backed failure route.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.380` uses helper expansion disabled, depth one, twenty nodes, and forty edges. It timed out after 180 seconds while awaiting the tool and returned no files scanned, diagnostics, proposed files, changed files, artifacts, or validation result. The exact boundary is recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.

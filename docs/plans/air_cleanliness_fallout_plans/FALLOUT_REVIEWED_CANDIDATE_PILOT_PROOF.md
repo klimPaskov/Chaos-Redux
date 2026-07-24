@@ -283,6 +283,7 @@ It uses country candidate id `352`, transaction key `710024`, route `7124`, and 
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.
 
 ## The Vault of Voices correction
@@ -313,3 +314,13 @@ Its gate follows the closed Reactor Without a Country memory and selects one det
 The chain freezes Power, Fuel, Medicine, Recognition, Cohesion, and forecast, contact, and intelligence ledgers before a 42-day result and a 300-day station review callback.
 The four policies fund observers, militarize the forecast, share the records, or abandon the tower, with radar-first failure damage, separate climate ledgers, branch memories, modifiers, and Event Log payloads.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Market Under the Viaduct correction
+
+The Market Under the Viaduct is the twenty-eighth reviewed ordinary candidate.
+It uses country candidate id `380`, transaction `710028`, route `7128`, event tokens `380` through `386`, and history `9133`.
+Its gate follows the closed Old Weather Station memory and selects one deterministic native supply-node state with rail support, current Air Winter data, exposure from `18` through `73`, a surviving population, and reclamation or supply access below the stable market thresholds.
+The chain freezes Food, Scrap, Medicine, Recognition, Cohesion, and price, merchant, and ration ledgers before a 35-day result and a 270-day civic review callback.
+The four policies license the market, tax the stalls, police the exchange, or tolerate barter, with supply-node-first failure damage, separate market ledgers, branch memories, modifiers, and Event Log payloads.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The dedicated report art and the bounded inspector proof are recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.
