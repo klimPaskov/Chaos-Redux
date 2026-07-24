@@ -532,3 +532,9 @@ The documented living-world block total is now `317`, while the countable Fallou
 The Children From Elsewhere reservation adds seven dormant country-level event blocks at suffixes `436` through `442`. It uses candidate `436`, transaction `710036`, route `7136`, and history `9141`. The chain carries four second-generation identity policies, durable cohort ledgers, a delayed result, a 365-day generation review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
 
 The documented living-world block total is now `324`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## The Empty Village Offer count correction
+
+The Empty Village Offer reservation adds seven dormant state-level event blocks at suffixes `443` through `449`. It uses candidate `443`, transaction `710037`, route `7137`, and history `9142`. The chain carries four settlement and border-buffer policies, deterministic low-population state selection, bounded migration and manpower movement, a delayed result, a 540-day village review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, state-category consequences, and a dedicated report asset. Native state-population relocation remains unproven.
+
+The documented living-world block total is now `331`, while the countable Fallout living-world release-floor total remains `0 of 660`.

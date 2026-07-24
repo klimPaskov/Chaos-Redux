@@ -82,3 +82,5 @@ The Ship That Will Not Dock is implemented as dormant candidate 422 with four ma
 The Skilled List is implemented as dormant candidate 429 with four specialist-roster policies, a delayed result, 240-day generation review callback, role ledgers, cleanup, Event Log history, and dedicated report art. Native character installation remains an explicit engine-surface boundary.
 
 The Children From Elsewhere is implemented as dormant candidate 436 with four second-generation identity policies, a delayed result, 365-day generation review callback, cohort ledgers, cleanup, Event Log history, and dedicated report art. Native return-country or dynamic-tag allocation remains an explicit engine-surface boundary.
+
+The Empty Village Offer is implemented as dormant candidate 443 with four settlement and border-buffer policies, a delayed result, 540-day village review callback, settlement, land, border, integration, and migration ledgers, bounded manpower movement, state-category consequences, cleanup, Event Log history, and dedicated report art. Native state-population relocation remains an explicit engine-surface boundary.
