@@ -4,11 +4,11 @@
 
 Ordinary biological weapon strength follows `Tularemia < Anthrax < Plague < Smallpox`.
 
-Tularemia is low severity with a 0.85 canonical lifecycle-strength multiplier.
+Tularemia is the low-potency agent with a 0.85 canonical lifecycle-strength multiplier.
 
-Anthrax is moderate severity with a 1.00 multiplier.
+Anthrax is the moderately potent agent with a 1.00 multiplier.
 
-Plague is serious with a 1.15 multiplier.
+Plague is the high-potency but non-severe agent with a 1.15 multiplier.
 
 Smallpox is severe with a 1.30 multiplier.
 
@@ -32,11 +32,11 @@ Agent identity does not modify the base probability.
 
 Agent-specific AI weights describe strategic willingness and preferred use, not a different chance of delivery.
 
-## Operational results and severity
+## Operational results and potency
 
-The lifecycle result identifies delivery quality.
+The lifecycle result identifies delivery quality and is not a weapon-severity rating.
 
-The canonical agent profile identifies weapon severity.
+The canonical agent profile identifies weapon potency; only the Smallpox profile carries the severe classification.
 
 The existing internal `catastrophic` result token is the critical operational-result multiplier used by ordinary raids and does not promote a lower agent into the severe tier.
 

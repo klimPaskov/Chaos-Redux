@@ -1,0 +1,131 @@
+# ============================================================================
+# CHAOS REDUX - SHARED OUTBREAK-MEASURE EFFECTS
+# ============================================================================
+# Overview:
+# - Preserves the named national hygiene, migration, quarantine, border, and
+#   emergency-law controls shared with the weaponized-zombie system.
+# - Recalculates zombie outbreak chance immediately.
+# - Ordinary biological lifecycle ticks read the resulting flags and ideas
+#   directly where accepted; no all-state modifier refresh or death pass is
+#   performed here.
+# ============================================================================
+
+apply_shared_hygiene_measures = {
+	if = {
+		limit = { NOT = { has_country_flag = hygiene_measures_enforced } }
+		set_country_flag = hygiene_measures_enforced
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_hygiene_measures } }
+		add_ideas = outbreak_prevention_hygiene_measures
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+revoke_shared_hygiene_measures = {
+	if = {
+		limit = { has_country_flag = hygiene_measures_enforced }
+		clr_country_flag = hygiene_measures_enforced
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_hygiene_measures }
+		remove_ideas = outbreak_prevention_hygiene_measures
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+apply_shared_migration_restrictions = {
+	if = {
+		limit = { NOT = { has_country_flag = migration_restricted } }
+		set_country_flag = migration_restricted
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_migration_restricted } }
+		add_ideas = outbreak_prevention_migration_restricted
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+revoke_shared_migration_restrictions = {
+	if = {
+		limit = { has_country_flag = migration_restricted }
+		clr_country_flag = migration_restricted
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_migration_restricted }
+		remove_ideas = outbreak_prevention_migration_restricted
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+apply_shared_quarantine_protocols = {
+	if = {
+		limit = { NOT = { has_country_flag = quarantine_protocols_active } }
+		set_country_flag = quarantine_protocols_active
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_quarantine_protocols } }
+		add_ideas = outbreak_prevention_quarantine_protocols
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+revoke_shared_quarantine_protocols = {
+	if = {
+		limit = { has_country_flag = quarantine_protocols_active }
+		clr_country_flag = quarantine_protocols_active
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_quarantine_protocols }
+		remove_ideas = outbreak_prevention_quarantine_protocols
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+apply_shared_closed_borders = {
+	if = {
+		limit = { NOT = { has_country_flag = borders_completely_closed } }
+		set_country_flag = borders_completely_closed
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_borders_closed } }
+		add_ideas = outbreak_prevention_borders_closed
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+reopen_shared_borders = {
+	if = {
+		limit = { has_country_flag = borders_completely_closed }
+		clr_country_flag = borders_completely_closed
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_borders_closed }
+		remove_ideas = outbreak_prevention_borders_closed
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+apply_shared_extreme_martial_law = {
+	if = {
+		limit = { NOT = { has_country_flag = extreme_martial_law_active } }
+		set_country_flag = extreme_martial_law_active
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_extreme_martial_law } }
+		add_ideas = outbreak_prevention_extreme_martial_law
+	}
+	calculate_zombie_outbreak_chance = yes
+}
+
+revoke_shared_extreme_martial_law = {
+	if = {
+		limit = { has_country_flag = extreme_martial_law_active }
+		clr_country_flag = extreme_martial_law_active
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_extreme_martial_law }
+		remove_ideas = outbreak_prevention_extreme_martial_law
+	}
+	calculate_zombie_outbreak_chance = yes
+}
