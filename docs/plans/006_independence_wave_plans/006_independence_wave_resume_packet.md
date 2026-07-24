@@ -92,10 +92,10 @@ they are not current routing documents.
   contains IW-001, IW-004, IW-007, IW-008, IW-017, and IW-019.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
   RHI's complete replacement roster is admitted; BAY still requires an approved
-  replacement for its remaining command role and a fresh package audit.
+  replacement for its remaining command role and a fresh package audit. Dollmann's attributed source package is retained as evidence, but both ImageGen attempts were safety-blocked before generation because the archival crop contains prohibited source-visible insignia; no candidate or DDS exists.
 - IW-173 HAW is also withdrawn: vanilla defines the real David Kalakaua
   Kawananakoa but maps him to generic `Portrait_Asia_Generic_land_5.dds`, not a
-  sourced portrait of the person.
+  sourced portrait of the person. Trial 01 used the correct 1925 archival source and passed HOI4 style review, but failed the separate independent likeness gate because the source clips identity-bearing facial highlights. It produced no DDS or runtime wiring.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
   carriers cannot execute while their owning package admission is withdrawn.
 - The six attested packages can satisfy the three-, four-, and five-country
@@ -173,7 +173,7 @@ they are not current routing documents.
 | IW-017 COR | Admitted after current portrait and full post-wiring package audits | Adolphe Landry and Jean Chiappe pass source, crop, ownership, identity-likeness, male-only, and HOI4 painted-style review. Their exact approved PNGs are pixel-identical to the runtime DDS files. The fresh package audit passes dormant-vanilla identity safety, anchor 1/RG-1, FRA survival, Event-5 collision guards, setup, force, focus, decisions, events, AI, cleanup, localisation, historical flag, generic-tree protection, Mediterranean mechanics, and FORM-05 access. Preserve exact-ID attestation and every live allocation proof |
 | IW-018 ARX | Gameplay retained; visual admission withdrawn | Emilio Lussu is sourced, processed, and wired. Preserve the Sardinian identity, anchor 114, Italian host survival, Mediterranean mechanics, and FORM-05 access. Keep execution closed until the crown-route leader and commander are replaced and the full roster is re-audited |
 | IW-019 ASX | Admitted after current package, portrait, and consumer-role audits | Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto have independently approved sourced real-male HOI4 refinishes wired to role-correct full-size consumers. Rizzo is the civilian-large Straits Security Directorate political leader with the recorded fictional-office disclosure, and Di Benedetto is the sole army-large corps commander. Preserve state-115/ITA-survival setup, FORM-05 access, exact-ID content attestation, and every live allocation proof |
-| IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa; require a sourced portrait of the actual man before re-admission |
+| IW-173 HAW | Gameplay retained; visual admission withdrawn | Preserve vanilla HAW identity/flags, anchor 629, the Event 006 tree gate, and FORM-48 membership logic. Vanilla uses a generic sprite for David Kalakaua Kawananakoa. The correct-source trial failed independent likeness review and remains unwired; require a stronger archival source of the actual man before re-admission |
 | IW-179 FSM | Gameplay retained; visual admission withdrawn | Preserve vanilla FSM identity/flags/tree, anchor 684, additive Level-1 decisions, and FORM-48 membership logic. Replace the generated congress chair with a sourced real male Micronesian person before re-admission |
 | IW-184 HBX | Gameplay retained; visual admission withdrawn | Preserve HBX carrier identity, anchor 378, researched flat 1911 Bear Flag, and FORM-48 carrier logic. Replace the generated civic chair with a sourced real male Californian person before re-admission |
 | IW-043 CHU | Signature gameplay retained; visual admission withdrawn | Mirsaid Sultan-Galiev and Galimzhan Ibrahimov are sourced, processed, and wired. Preserve CHU identity, route, forces, focus, decisions, centralized politics, exact vanilla guard, and FORM-12/13 contracts. Keep execution closed until the Bolgar and river-security route leaders are replaced and the full package is re-audited |
@@ -241,7 +241,7 @@ satisfy the synchronized frozen plan.
   architecture, decision/mission, localisation, flags, and postformation logic
   remain implemented. HAW's generic vanilla portrait and the generated FSM/HBX
   officeholders withdraw the country admissions, making FORM-48 unreachable
-  until sourced replacements pass. HAW/FSM remain sovereign autonomous members
+  until sourced replacements pass. HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. HAW/FSM remain sovereign autonomous members
   and HBX remains the PFX carrier contract. No custom Event 006 advisor
   icons/assets/sprites/portrait blocks were created.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in

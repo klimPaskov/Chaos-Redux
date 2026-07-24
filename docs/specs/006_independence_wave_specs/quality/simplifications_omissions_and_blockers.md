@@ -6,11 +6,11 @@ This package is the accepted source specification; implementation status is reco
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
-## Current implementation reconciliation (2026-07-22)
+## Current implementation reconciliation (2026-07-24)
 
 The accepted specification includes the later sourced-portrait decision. This
 section is the current implementation ledger rather than a rewrite of the
-planning baseline. IW-004 Brittany, IW-007 Frisia, and IW-017 Corsica are the
+planning baseline. IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-017 Corsica, and IW-019 Sicily are the
 runtime content-attested packages after their full package and sourced
 real-male portrait audits.
 Every other formerly admitted grounded package whose live country leader,
@@ -19,7 +19,7 @@ withdrawn until sourced real male replacements pass review. FORM-48 remains impl
 annexation fallback, but HBX/FSM package withdrawal prevents a complete
 currently admitted carrier/member set. IW-173 `HAW` is also withdrawn because
 its vanilla David Kalakaua Kawananakoa sprite resolves to generic
-`Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
+`Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man. The source-locked trial built from his correct 1925 archival photograph passed the HOI4 style gate but failed independent likeness review because clipped source highlights forced the repaint to reconstruct identity-bearing facial geometry. It remains unwired and supplies no DDS.
 
 The 2026-07-22 installed scan covers 108 Event 006-owned identifiers, 122
 Workshop directories, eight archives, three sibling local mods, vanilla, and
