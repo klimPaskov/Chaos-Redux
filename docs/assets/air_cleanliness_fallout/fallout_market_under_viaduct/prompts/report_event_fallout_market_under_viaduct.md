@@ -1,0 +1,3 @@
+# Market Under the Viaduct report image prompt
+
+A fictional alternate-history Hearts of Iron IV report-event illustration of an ash-covered concrete viaduct sheltering a desperate post-nuclear market. Ration stalls with tins and clean-water drums, improvised brass scales, coils of salvaged wire, a hand-painted price board with no readable text, a rail embankment fading into gray snow, filtered amber lanterns, exhausted merchants in heavy coats, distant cold rain and soot. Muted charcoal, rust, ochre, and blue-gray palette, grounded documentary realism, strong focal center, no logos, no flags, no legible text, no modern brand marks, no UI frame. The image is framed for a 210 by 176 report-event card.

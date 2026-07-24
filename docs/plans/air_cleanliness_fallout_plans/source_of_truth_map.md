@@ -29,8 +29,8 @@ Status: current implementation map, reconciled 2026-07-23. Fallout remains incom
 
 All Fallout event definitions belong in `events/fallout_world_end_events.txt` under `chaosx.fallout`. Fallout is a terminal transition with its own blackout and scheduler. It is not an ordinary super-event. Zombie Apocalypse retains its own ids, files, assets, audio, sprites, and paths. New Fallout work must not borrow them.
 
-The reviewed global-survival pilot currently includes Shelter Marriage Law candidate `303`, Black Start candidate `310`, First Streetlight candidate `317`, Working Elevator candidate `324`, Sealed Warehouse candidate `331`, Dead City Permit candidate `338`, Manual Nobody Read candidate `345`, Working Machine candidate `352`, Vault of Voices candidate `359`, Reactor Without a Country candidate `366`, Old Weather Station candidate `373`, and their dedicated specs, proofs, localisation, Event Log, and asset packages.
-The current documented pilot total is twenty-seven rows and 261 defined blocks, all dormant and outside release-floor credit.
+The reviewed global-survival pilot currently includes Shelter Marriage Law candidate `303`, Black Start candidate `310`, First Streetlight candidate `317`, Working Elevator candidate `324`, Sealed Warehouse candidate `331`, Dead City Permit candidate `338`, Manual Nobody Read candidate `345`, Working Machine candidate `352`, Vault of Voices candidate `359`, Reactor Without a Country candidate `366`, Old Weather Station candidate `373`, Market Under the Viaduct candidate `380`, and their dedicated specs, proofs, localisation, Event Log, and asset packages.
+The current documented pilot total is twenty-eight rows and 268 defined blocks, all dormant and outside release-floor credit.
 
 The current Fallout content boundary is dormant by design where the activation gates are unset. Defined blocks, reserved ids, and candidate rows are not release-floor credit until their callers, human and hidden AI paths, effects, memory, cleanup, localisation, assets, and audits are complete.
 
@@ -55,9 +55,10 @@ The current Fallout content boundary is dormant by design where the activation g
 - `FALLOUT_VAULT_OF_VOICES_CHAIN_PROOF.md` records the twenty-fifth Vault of Voices candidate, four archive and broadcast policies, deterministic state selection, delayed result, archive callback, Deaths route, Event Log payloads, dedicated report art, and its bounded engine-inspector result.
 - `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md` records the twenty-sixth Reactor Without a Country candidate, four reactor-governance policies, deterministic state selection, delayed result, inspection callback, Deaths route, Event Log payloads, dedicated report art, and its bounded engine-inspector result.
 - `FALLOUT_OLD_WEATHER_STATION_CHAIN_PROOF.md` records the twenty-seventh Old Weather Station candidate, four climate-data policies, deterministic state selection, delayed result, station review callback, Deaths route, Event Log payloads, dedicated report art, and its bounded engine-inspector result.
+- `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md` records the twenty-eighth Market Under the Viaduct candidate, four transport-market policies, deterministic state selection, delayed result, civic review callback, Deaths route, Event Log payloads, dedicated report art, and its bounded engine-inspector result.
 
 The historical pilot-count wording above is superseded by the Dead City Permit, Manual Nobody Read, and Working Machine corrections.
-The current reviewed total is twenty-seven rows and 261 defined blocks, all dormant and outside release-floor credit.
+The current reviewed total is twenty-eight rows and 268 defined blocks, all dormant and outside release-floor credit.
 
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.

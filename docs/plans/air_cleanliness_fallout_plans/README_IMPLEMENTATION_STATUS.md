@@ -611,3 +611,15 @@ The four branches fund observers, militarize the forecast, share the records, or
 The dedicated report art, manifest, GFX handoff, localisation, Event Log mapping, and bounded inspector proof are recorded in `FALLOUT_OLD_WEATHER_STATION_CHAIN_PROOF.md`.
 The documented living-world block total is now `261`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` lint for `chaosx.fallout.373` returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23137`, and `maximum: 20000`, with no files scanned, diagnostics, proposed files, changed files, or artifacts and `validation.passed: false`.
+
+## The Market Under the Viaduct transport-market tranche
+
+The Market Under the Viaduct is implemented as a dormant country-level chain at `chaosx.fallout.380` through `.386`.
+It uses candidate `380`, transaction key `710028`, route `7128`, and Event Log history `9133`.
+The gate selects one deterministic native supply-node and railway state after the Old Weather Station memory and requires current Air Winter data, surviving population, market exposure, and reclamation or supply instability.
+Four authored policies license the exchange, tax stalls, police the ration gate, or tolerate barter.
+The chain freezes Food, Scrap, Medicine, Recognition, Cohesion, and price, merchant, and ration ledgers before a 35-day result and a 270-day civic review callback.
+Human and hidden-AI lanes share the delayed transaction, Deaths-backed failure, dedicated modifiers, Event Log payloads, report art, and authenticated cleanup wrappers.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `268`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` request timed out after 180 seconds while awaiting the tool and returned no files scanned, diagnostics, proposed files, changed files, artifacts, or validation result. The exact boundary is recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.

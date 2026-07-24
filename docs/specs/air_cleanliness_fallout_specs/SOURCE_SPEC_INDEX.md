@@ -25,6 +25,7 @@
 21. `specs/25_reviewed_global_survival_vault_of_voices.md`
 22. `specs/26_reviewed_global_survival_reactor_without_a_country.md`
 23. `specs/27_reviewed_global_survival_old_weather_station.md`
+24. `specs/28_reviewed_global_survival_market_under_viaduct.md`
 
 
 ## Accepted baseline specs included here
@@ -69,6 +70,7 @@
 - `specs/25_reviewed_global_survival_vault_of_voices.md`
 - `specs/26_reviewed_global_survival_reactor_without_a_country.md`
 - `specs/27_reviewed_global_survival_old_weather_station.md`
+- `specs/28_reviewed_global_survival_market_under_viaduct.md`
 
 ## Matrices
 
