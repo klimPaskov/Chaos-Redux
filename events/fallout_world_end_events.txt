@@ -15480,3 +15480,125 @@ country_event = {
 	trigger = { fallout_event_429_cleanup_can_enter = yes }
 	immediate = { fallout_event_429_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.436
+	title = chaosx.fallout.436.t
+	desc = chaosx.fallout.436.d
+	picture = GFX_report_event_fallout_children_from_elsewhere
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_436_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.436.a
+		trigger = {
+			OR = { has_government = democratic has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_436_cost.grant_citizenship_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_436_cost.grant_citizenship_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_436_cost.grant_citizenship_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_436_cost.grant_citizenship_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_436_requested_branch = constant:fallout_event_436_branch.grant_citizenship } fallout_event_436_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.436.a.tt
+	}
+	option = {
+		name = chaosx.fallout.436.b
+		trigger = {
+			OR = { has_government = neutrality has_government = democratic }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_436_cost.foster_communities_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_436_cost.foster_communities_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_436_cost.foster_communities_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_436_cost.foster_communities_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_436_requested_branch = constant:fallout_event_436_branch.foster_communities } fallout_event_436_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.436.b.tt
+	}
+	option = {
+		name = chaosx.fallout.436.c
+		trigger = {
+			OR = { has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_436_cost.build_school_quarter_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_436_cost.build_school_quarter_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_436_cost.build_school_quarter_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_436_cost.build_school_quarter_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_436_requested_branch = constant:fallout_event_436_branch.build_school_quarter } fallout_event_436_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.436.c.tt
+	}
+	option = {
+		name = chaosx.fallout.436.d
+		trigger = {
+			OR = { has_government = neutrality has_government = fascism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_436_cost.keep_return_claim_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_436_cost.keep_return_claim_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_436_cost.keep_return_claim_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_436_cost.keep_return_claim_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_436_requested_branch = constant:fallout_event_436_branch.keep_return_claim } fallout_event_436_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.436.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.437
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_436_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_436_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.438
+	title = chaosx.fallout.438.t
+	desc = { text = chaosx.fallout.438.grant_citizenship.success.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.grant_citizenship } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.438.grant_citizenship.partial.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.grant_citizenship } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.438.grant_citizenship.failure.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.grant_citizenship } } }
+	desc = { text = chaosx.fallout.438.foster_communities.success.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.foster_communities } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.438.foster_communities.partial.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.foster_communities } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.438.foster_communities.failure.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.foster_communities } } }
+	desc = { text = chaosx.fallout.438.build_school_quarter.success.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.build_school_quarter } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.438.build_school_quarter.partial.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.build_school_quarter } check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.438.build_school_quarter.failure.d trigger = { check_variable = { fallout_event_436_selected_branch = constant:fallout_event_436_branch.build_school_quarter } } }
+	desc = { text = chaosx.fallout.438.keep_return_claim.success.d trigger = { check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.438.keep_return_claim.partial.d trigger = { check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.438.keep_return_claim.failure.d
+	picture = GFX_report_event_fallout_children_from_elsewhere
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_436_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_from_elsewhere_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.438.a hidden_effect = { fallout_event_436_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.438.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.439
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_436_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_from_elsewhere_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_436_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.440
+	title = chaosx.fallout.440.t
+	desc = { text = chaosx.fallout.440.success.d trigger = { check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.440.partial.d trigger = { check_variable = { fallout_event_436_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.440.failure.d
+	picture = GFX_report_event_fallout_children_from_elsewhere
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_436_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_from_elsewhere_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_436_registry_is_current = yes }
+	option = { name = chaosx.fallout.440.a hidden_effect = { fallout_event_436_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.440.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.441
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_436_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_from_elsewhere_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_436_registry_is_current = yes }
+	immediate = { fallout_event_436_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.442
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_436_cleanup_can_enter = yes }
+	immediate = { fallout_event_436_cleanup = yes }
+}

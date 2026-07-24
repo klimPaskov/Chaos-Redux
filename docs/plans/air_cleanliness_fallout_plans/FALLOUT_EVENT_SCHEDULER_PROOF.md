@@ -515,3 +515,11 @@ The reviewed ordinary producer now carries thirty-five rows and the defined livi
 Its country row requires a current produced Air Winter snapshot, surviving state infrastructure, current-generation ownership, campaign-day eligibility, and a deterministic native state target. The four branches disperse the roster, form a specialist guild, bind the list to state service, or recognize a self-governing quarter. They freeze Food, Medicine, Recognition, Cohesion, roster, guild, service, and charter ledgers before a 42-day result and a 240-day review callback.
 
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. Native character installation is also not claimed because the engine surface has not been proven.
+
+## The Children From Elsewhere scheduler correction
+
+The reviewed ordinary producer now carries thirty-six rows and the defined living-world event range reaches `442`, with `324` defined blocks. The Children From Elsewhere is candidate `436`, transaction `710036`, route `7136`, and history `9141`.
+
+Its country row follows the closed Skilled List memory and requires a current produced Air Winter snapshot, surviving shelter or industrial capacity, current-generation ownership, campaign-day eligibility, and a deterministic native state target. The four branches grant citizenship, foster through local communities, build a school quarter, or keep a return claim. They freeze Food, Medicine, Recognition, Cohesion, citizenship, foster, school, and return ledgers before a 35-day result and a 365-day generation review callback.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. Native character, dynamic-tag, and return-country allocation surfaces are not claimed.

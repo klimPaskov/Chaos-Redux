@@ -1,0 +1,5 @@
+# The Children From Elsewhere report-event prompt
+
+Fallout survival report-event illustration for a fictional alternate-history Hearts of Iron IV event. In a repaired freight depot school under ash-gray winter light, a group of refugee children from several regions sit at a long wooden table with slate boards and colored thread maps while a patient teacher records family names in a ledger. A small water line and stove are visible, old rail luggage and a sealed family route map rest nearby, frost and soot mark the windows, realistic 1940s alternate-history documentary news illustration, subdued blue gray, rust, and warm lamplight palette, no readable text, no logos, no flags, no modern typography, no gore, no supernatural elements. Frame the source for a 210 by 176 report-event card with darker margins for the interface overlay.
+
+The source was generated through the approved Chaos Redux event-art workflow. The processed card and runtime DDS are dedicated to The Children From Elsewhere and do not reuse zombie assets, ids, audio, sprites, or paths.

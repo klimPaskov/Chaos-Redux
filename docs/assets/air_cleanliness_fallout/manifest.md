@@ -247,3 +247,7 @@ Package validation confirmed the exact nineteen expected sprite payloads, one im
 ## The Skilled List report-event asset
 
 The Skilled List uses a dedicated generated report image of a census clerk and four surviving specialists in an ash-frosted school boiler room. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_skilled_list/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_skilled_list` in `interface/fallout_world_end.gfx`.
+
+## The Children From Elsewhere report-event asset
+
+The Children From Elsewhere uses a dedicated generated report image of a repaired freight-depot school where refugee children and a teacher preserve names and route maps. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_children_from_elsewhere/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_children_from_elsewhere` in `interface/fallout_world_end.gfx`.
