@@ -36,6 +36,10 @@
 32. `specs/36_reviewed_global_survival_the_children_from_elsewhere.md`
 33. `specs/37_reviewed_global_survival_the_empty_village_offer.md`
 34. `specs/38_reviewed_global_survival_ash_wolves.md`
+35. `specs/39_reviewed_global_survival_thaw_water.md`
+36. `specs/40_reviewed_global_survival_bridge_that_moved.md`
+37. `specs/41_reviewed_global_survival_first_unmasked_day.md`
+38. `specs/42_reviewed_global_survival_false_spring_losses.md`
 
 
 ## Accepted baseline specs included here
@@ -94,6 +98,7 @@
 - `specs/39_reviewed_global_survival_thaw_water.md`
 - `specs/40_reviewed_global_survival_bridge_that_moved.md`
 - `specs/41_reviewed_global_survival_first_unmasked_day.md`
+- `specs/42_reviewed_global_survival_false_spring_losses.md`
 
 ## Matrices
 

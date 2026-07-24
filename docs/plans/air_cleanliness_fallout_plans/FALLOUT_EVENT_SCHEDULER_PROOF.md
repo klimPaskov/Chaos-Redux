@@ -437,6 +437,14 @@ The deterministic state score is nuclear reactor level times `5` plus infrastruc
 The four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown and each has separate costs, thresholds, state memory, dynamic modifier, callback payload, and Deaths-backed failure route.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
 
+## The False Spring Losses late-frost tranche
+
+The reviewed ordinary producer now carries forty-two rows and the defined living-world event range reaches `484`, with `366` defined blocks. False Spring Losses is candidate `478`, transaction `710042`, route `7142`, and history `9147`.
+
+Its state row requires a produced current-generation Air Winter snapshot, a valid first-frost marker, a thaw-eligible normal-map visual state, rural native category, surviving population, food reserve, adaptation, reclamation, and low supply access. The four branches replant before the ground closes, import seed from an eastern convoy, open an underground reserve, or accept a smaller harvest. They freeze survival, seed, frost-memory, adaptation, and diplomatic-credit ledgers before a 35-day result and a 240-day second-sowing callback. Failure uses the Deaths system and native building damage. The chain has dedicated report art, Event Log payloads, hidden-AI parity, and authenticated cleanup.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+
 ## The Ash Wolves scheduler correction
 
 The reviewed ordinary producer now carries thirty-eight rows and the defined living-world event range reaches `456`, with `338` defined blocks. The Ash Wolves is candidate `450`, transaction `710038`, route `7138`, and history `9143`.
