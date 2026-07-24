@@ -1506,10 +1506,12 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         exp_selected=True,
         as_blendshape=False,
         debug_mode=True,
-        # The pinned 0.91 exporter performs an O(n^2) list.index de-duplication
-        # pass when this is false. Fully splitting per-loop vertices preserves
-        # the same triangles/materials and keeps unattended exports bounded.
-        split_verts=True,
+        # The HOI4 renderer's supported vertex/index envelope is materially
+        # lower than the per-loop vertex stream produced by split_verts=True.
+        # The pinned 0.91 exporter has an O(n^2) de-duplication pass when this
+        # is false, but the shared-vertex route is required for runtime-safe
+        # humanoid exports. A diagnostic may opt into split vertices explicitly.
+        split_verts=bool(payload.get("split_verts", False)),
         sort_verts="+",
         plain_txt=True,
     )

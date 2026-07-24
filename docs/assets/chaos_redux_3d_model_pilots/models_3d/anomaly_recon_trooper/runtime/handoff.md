@@ -19,13 +19,14 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Live unit placement: Germany, province 6521, division `Chaos Redux Pilot Trooper`.
 - Building consumer: `anomaly_signal_beacon_pilot` is set at province 9560 in Brandenburg state 64 by `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`.
 - Building entity: `building_anomaly_signal_beacon_pilot` and its spawn entity `building_anomaly_signal_beacon_pilot_spawn` are registered in `gfx/entities/chaosx_3d_model_pilots.asset`.
-- Building map row: `map/buildings.txt` uses the vanilla spawn-point token `anomaly_signal_beacon_pilot_spawn` at `64;2998.00;9.70;1552.00`, which maps to province 9560 in Brandenburg.
+- Building map row: `map/buildings.txt` uses the vanilla spawn-point token `anomaly_signal_beacon_pilot_spawn` at `64;2995.00;9.70;1556.00`, an interior map pixel of province 9560 in Brandenburg under the bottom-up Z convention.
 - Animation asset: `gfx/models/units/chaosx_3d_model_pilots/animation_chaosx_3d_model_pilots.asset`
 - Idle binding: `idle` -> `chaosx_anomaly_recon_trooper_idle_animation` -> `chaosx_anomaly_recon_trooper_idle.anim`
 - Attack binding: `attack` -> `chaosx_anomaly_recon_trooper_attack_animation` -> `chaosx_anomaly_recon_trooper_attack.anim`
 - Move binding: `move`/`retreat` -> `chaosx_anomaly_recon_trooper_move_animation` -> `chaosx_anomaly_recon_trooper_move.anim`; the action is a 24-frame in-place Blender-authored walk cycle
 - Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
 - Exported mesh object: `char1.002`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
+- Final mesh payload: shared-vertex export, 32,993 exported vertices, 30,000 triangles; the previous per-loop export carried 90,000 vertices and produced the live stretched geometry symptom.
 - Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, reference entity scale `0.8`, and expected effective pilot height about `5.881459`
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
 - Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, exports unit scale values, and divides exported translation samples by the uniform armature world scale so movement uses mesh units.

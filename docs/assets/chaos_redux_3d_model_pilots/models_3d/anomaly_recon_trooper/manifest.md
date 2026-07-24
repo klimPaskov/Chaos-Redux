@@ -36,7 +36,7 @@ Status: needs_user_review
 - Blender: `5.1.2` (`ec6e62d40fa9`)
 - Adapter: `chaosx_blender_hoi4` `1.0.0`
 - Exporter: `io_pdx_mesh` `0.91.0`, archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`
-- Export preset: selected working mesh/armature only, triangulated, `exp_selected=true`, `split_verts=true`; the split-vertex setting is required for the pinned 0.91 exporter to avoid its quadratic unsplit-vertex path
+- Export preset: selected working mesh/armature only, triangulated, `exp_selected=true`, shared-vertex export with `split_verts=false`; this keeps the final 30,000-triangle mesh at 32,993 exported vertices instead of the 90,000-vertex per-loop stream consistent with the live stretched-geometry symptom
 - Source and rig/action checkpoints: `blender/checkpoints/`; corrected action checkpoints are `08_runtime_candidate_sanitized_attack.blend`, `08_runtime_candidate_sanitized_idle.blend`, and `08_runtime_candidate_sanitized_move.blend`
 - Vanilla reference staging: `blender/reference/western_european_infantry.mesh`; source checksum and read-only staging evidence are in `blender/reports/vanilla_reference_stage.json`
 - Working geometry: one Blender mesh object `char1.001` exported as `.mesh` object `char1.002`, 30,000 triangles, 36,990 source vertices, one UV layer, one explicitly textured PDX material, one armature with 24 bones
@@ -44,6 +44,7 @@ Status: needs_user_review
 - QA: 0 non-manifold edges, 0 degenerate faces, no negative scale objects
 - Review warning: 31,520 loose boundary edges remain in the provider geometry and are carried as a visible review item; the Blender front, rear, and three-quarter previews show the complete head, torso, limbs, gloves, trousers, and boots, but the provider mesh remains an open-surface asset rather than a watertight body
 - Provider-only `Icosphere` and `Icosphere.001` objects are explicitly excluded from working/render/export collections; the source remains preserved for audit
+- The final shared-vertex payload reimports at 32,993 vertices with the same 30,000 triangles and calibrated bounds; the post-fix live renderer check and screenshot remain pending because HOI4 was not launched.
 - Vanilla calibration reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh`
 - Vanilla entity reference: `gfx/entities/units_infantry.asset#infantry_rifle_entity`, runtime `scale = 0.8`
 - Reference measurement: main imported `polySurface106` height `7.3518248` source units, collision geometry excluded, `-Y` forward and `+Z` up; effective runtime height `5.8814594` units
@@ -59,7 +60,7 @@ Status: needs_user_review
 - PDX material shader: `PdxMeshAdvanced`, with explicit diffuse, normal, and specular bindings
 - PDX normal packing: red `0`, green source tangent X, blue `0`, alpha source tangent Y; source maps and checksums are recorded in `blender/reports/pdx_normal_pack.json`
 - PDX specular packing: red `0`, green `32` specular level, blue metallic, alpha roughness; source maps are recorded in `blender/reports/pdx_material_pack.json`
-- Mesh: `export/mesh/chaosx_anomaly_recon_trooper.mesh`, 7,562,695 bytes, SHA-256 `8AA8AEDA3A958BC23CD21EB41F86A765A6F8DAD0C6AB242FABD4A5EE9D764757`
+- Mesh: `export/mesh/chaosx_anomaly_recon_trooper.mesh`, 3,002,135 bytes, SHA-256 `E19341177161BF2AAA721A6A9FC77037ED77E8975ED4FB07B497C663E15D9683`
 - Runtime DDS: `textures/dds/texture_0.dds`, 4,194,432 bytes, SHA-256 `FB4886FDA5FBF1FE0634556BD53BAC4A9DFAD603D2E7890B7D858F6A0F9F390D`
 - Runtime normal DDS: `textures/dds/texture_normal.dds`, 4,194,432 bytes, SHA-256 `E23A43045A419AAFB61AD6F49370D946D7A5EC7A2B94D9636E90A571E4FB16F1`
 - Runtime specular DDS: `textures/dds/texture_specular.dds`, 4,194,432 bytes, SHA-256 `E22BA0B1A2BD79D133DF7B5D28D5DDD65BD7D36C3AD4648D7605B15FD36B515F`
@@ -79,7 +80,7 @@ Status: needs_user_review
 - Runtime artifacts: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`, `gfx/models/chaosx_3d_model_pilots/texture_0.dds`, `gfx/models/chaosx_3d_model_pilots/texture_normal.dds`, `gfx/models/chaosx_3d_model_pilots/texture_specular.dds`, and `gfx/models/units/chaosx_3d_model_pilots/*.anim`
 - Proposed entity: `chaosx_anomaly_recon_trooper_entity`
 - Live consumer evidence: prepared isolated showcase consumer; the offline repair also removes the prior move-scale collapse, material-channel mismatch, and stale building placement.
-- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, animation scale and translation tracks are unit-stable, explicit diffuse/normal/specular maps are installed, the model is normalized to the vanilla infantry source mesh, and a real move action is registered. The working previews show a complete full-body trooper. The post-fix live renderer check and screenshot remain pending because HOI4 was not launched.
+- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, animation scale and translation tracks are unit-stable, explicit diffuse/normal/specular maps are installed, the model is normalized to the vanilla infantry source mesh, and a real move action is registered.
 - Crosswalk: `runtime/crosswalk.md`
 - Parent handoff: `runtime/handoff.md`
 

@@ -32,7 +32,7 @@ Status: needs_user_review
 - Blender: `5.1.2` (`ec6e62d40fa9`)
 - Adapter: `chaosx_blender_hoi4` `1.0.0`
 - Exporter: `io_pdx_mesh` `0.91.0`, archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`
-- Export preset: selected working mesh only, triangulated, `exp_selected=true`, `split_verts=true`; the split-vertex setting is required for the pinned 0.91 exporter to avoid its quadratic unsplit-vertex path
+- Export preset: selected working mesh only, triangulated, `exp_selected=true`, shared-vertex export with `split_verts=false`; the final payload reimports at 4,807 vertices for 5,202 triangles
 - Source checkpoint: `blender/checkpoints/00_imported.blend`
 - Pre-export checkpoint: `blender/checkpoints/05_pre_export.blend`
 - Export checkpoint: `blender/checkpoints/06_exported.blend`
@@ -53,8 +53,8 @@ Status: needs_user_review
 - PDX material shader: `PdxMeshAdvanced`, with the three runtime texture channels explicitly registered in the entity GFX
 - PDX normal packing: red `0`, green source tangent X, blue `0`, alpha source tangent Y
 - Mesh export: `export/mesh/chaosx_anomaly_signal_beacon.mesh`
-- Mesh bytes: `811835`
-- Mesh SHA-256: `93D6DF50C8F58192CF597CF708DB144DDF80A0A132E8841BDBF4DE402937E9E6`
+- Mesh bytes: `293483`
+- Mesh SHA-256: `C304373FB7BB221826A88D1BB1F50B04025BDF58657F2DCD2D62972B8A60B37A`
 - Export report: `blender/reports/export_mesh.json`
 - Reimport proof: `blender/checkpoints/reimport_chaosx_anomaly_signal_beacon_mesh.blend`
 - Reimport report: `validation/reimport_chaosx_anomaly_signal_beacon_mesh.json`
@@ -66,7 +66,7 @@ Status: needs_user_review
 - Runtime artifact: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_signal_beacon.mesh`
 - Runtime maps: `Image_0.dds`, `Image_1.dds`, and `Image_2.dds`; each final map is `1024 x 1024` one-level uncompressed BGRA
 - Proposed entity: `building_anomaly_signal_beacon_pilot_spawn`
-- Live consumer evidence: prepared isolated showcase consumer; the beacon map row is `64;anomaly_signal_beacon_pilot_spawn;2998.00;9.70;1552.00;0.00;0` inside Brandenburg state 64 and province 9560, with no vanilla building row at that coordinate. The effect selects the exact province with `province = { id = 9560 }`. Live HOI4 renderer launch and screenshot capture were explicitly waived by the user on 2026-07-22.
+- Live consumer evidence: prepared isolated showcase consumer; the beacon map row is `64;anomaly_signal_beacon_pilot_spawn;2995.00;9.70;1556.00;0.00;0` inside Brandenburg state 64 and province 9560. The coordinate is an interior province-9560 pixel under the map's bottom-up Z convention, and the effect selects the exact province with `province = { id = 9560 }`. The latest user-run session still reports a missing building, so live renderer proof remains pending.
 - Crosswalk: `runtime/crosswalk.md`
 - Parent handoff: `runtime/handoff.md`
 

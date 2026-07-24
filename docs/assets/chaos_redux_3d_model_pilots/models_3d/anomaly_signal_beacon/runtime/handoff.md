@@ -17,7 +17,7 @@ The building write is isolated in a state-scoped effect; it is not combined with
 - Consumer: `anomaly_signal_beacon_pilot` in `common/buildings/chaosx_3d_model_pilots.txt`
 - Live consumer effect: `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`
 - Live consumer hooks: `common/on_actions/chaosx_3d_model_pilot_showcase_on_actions.txt`
-- Live placement: Brandenburg state 64, province 9560 at map coordinate `2998, 9.70, 1552`, level 1; the scripted effect selects the exact province with `province = { id = 9560 }`, the vanilla map building table has no row at that coordinate, and province 9560 has no province-specific building in the vanilla state history.
+- Live placement: Brandenburg state 64, province 9560 at map coordinate `2995, 9.70, 1556`, level 1; the coordinate is an interior pixel of province 9560 using the map's bottom-up Z convention. The scripted effect selects the exact province with `province = { id = 9560 }`, and province 9560 has no province-specific building in the vanilla state history.
 - Diffuse channel: `Image_0.dds`
 - Specular channel: `Image_1.dds`
 - Normal channel: `Image_2.dds`
