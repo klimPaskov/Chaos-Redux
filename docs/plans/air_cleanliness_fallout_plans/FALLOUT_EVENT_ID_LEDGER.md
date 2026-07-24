@@ -526,3 +526,9 @@ The documented living-world block total is now `310`, while the countable Fallou
 The Skilled List reservation adds seven dormant country-level event blocks at suffixes `429` through `435`. It uses candidate `429`, transaction `710035`, route `7135`, and history `9140`. The chain carries four specialist-roster policies, durable role ledgers, a delayed result, a 240-day review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset. Native character installation remains unproven.
 
 The documented living-world block total is now `317`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## The Children From Elsewhere count correction
+
+The Children From Elsewhere reservation adds seven dormant country-level event blocks at suffixes `436` through `442`. It uses candidate `436`, transaction `710036`, route `7136`, and history `9141`. The chain carries four second-generation identity policies, durable cohort ledgers, a delayed result, a 365-day generation review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
+
+The documented living-world block total is now `324`, while the countable Fallout living-world release-floor total remains `0 of 660`.

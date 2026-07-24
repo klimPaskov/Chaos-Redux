@@ -80,3 +80,5 @@ The Refugee Train is implemented as dormant candidate 415 with four rail-border 
 The Ship That Will Not Dock is implemented as dormant candidate 422 with four maritime quarantine, anchorage, neutral-tow, and manifest policies, a delayed result, first-harbour review callback, passenger transfer, port, quarantine, diaspora, and maritime-trust ledgers, cleanup, Event Log history, and dedicated report art.
 
 The Skilled List is implemented as dormant candidate 429 with four specialist-roster policies, a delayed result, 240-day generation review callback, role ledgers, cleanup, Event Log history, and dedicated report art. Native character installation remains an explicit engine-surface boundary.
+
+The Children From Elsewhere is implemented as dormant candidate 436 with four second-generation identity policies, a delayed result, 365-day generation review callback, cohort ledgers, cleanup, Event Log history, and dedicated report art. Native return-country or dynamic-tag allocation remains an explicit engine-surface boundary.
