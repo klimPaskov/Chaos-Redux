@@ -78,3 +78,5 @@ Names for the Missing is implemented as dormant candidate 269 with its opening, 
 The Refugee Train is implemented as dormant candidate 415 with four rail-border and migration policies, a delayed result, first-anniversary callback, family, border-legitimacy, integration, and bilateral-trust ledgers, cleanup, Event Log history, and dedicated report art.
 
 The Ship That Will Not Dock is implemented as dormant candidate 422 with four maritime quarantine, anchorage, neutral-tow, and manifest policies, a delayed result, first-harbour review callback, passenger transfer, port, quarantine, diaspora, and maritime-trust ledgers, cleanup, Event Log history, and dedicated report art.
+
+The Skilled List is implemented as dormant candidate 429 with four specialist-roster policies, a delayed result, 240-day generation review callback, role ledgers, cleanup, Event Log history, and dedicated report art. Native character installation remains an explicit engine-surface boundary.

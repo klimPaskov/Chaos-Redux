@@ -1336,6 +1336,65 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_variable = fallout_event_422_candidate_port_score
 			clear_variable = fallout_event_422_ship_pressure
 
+			# The Skilled List selects the lowest native state with a produced Air
+			# Winter row and surviving infrastructure. The adaptation ledger is
+			# frozen into the candidate so specialist memory is deterministic.
+			if = { limit = { NOT = { has_variable = fallout_skilled_roster_memory_current } } set_variable = { fallout_skilled_roster_memory_current = constant:fallout_event_429_threshold.initial_roster } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_guild_cohesion_current } } set_variable = { fallout_skilled_guild_cohesion_current = constant:fallout_event_429_threshold.initial_guild_cohesion } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_service_loyalty_current } } set_variable = { fallout_skilled_service_loyalty_current = constant:fallout_event_429_threshold.initial_service_loyalty } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_charter_legitimacy_current } } set_variable = { fallout_skilled_charter_legitimacy_current = constant:fallout_event_429_threshold.initial_charter_legitimacy } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_engineers_current } } set_variable = { fallout_skilled_engineers_current = constant:fallout_event_429_threshold.initial_engineers } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_doctors_current } } set_variable = { fallout_skilled_doctors_current = constant:fallout_event_429_threshold.initial_doctors } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_officers_current } } set_variable = { fallout_skilled_officers_current = constant:fallout_event_429_threshold.initial_officers } }
+			if = { limit = { NOT = { has_variable = fallout_skilled_agronomists_current } } set_variable = { fallout_skilled_agronomists_current = constant:fallout_event_429_threshold.initial_agronomists } }
+			set_variable = { fallout_event_429_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_429_specialist_pressure = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_429_skilled_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_429_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_429_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_429_candidate_state_id = fallout_event_pilot_state_candidate_id }
+					set_variable = { ROOT.fallout_event_429_specialist_pressure = fallout_pretransition_air_winter_adaptation }
+				}
+			}
+			if = {
+				limit = { fallout_event_429_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.skilled_list_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.major_arc }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.successor_memory }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.skilled_list_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.skilled_list_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.second_world }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_429_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_429_specialist_pressure }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_429_specialist_pressure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_429_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.recognition }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.recognition }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_three }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_429_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.skilled_list_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_429_candidate_state_id
+			clear_variable = fallout_event_429_specialist_pressure
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

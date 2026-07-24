@@ -507,3 +507,11 @@ The reviewed ordinary producer now carries thirty-three rows and the defined liv
 ## The Ship That Will Not Dock scheduler correction
 
 The reviewed ordinary producer now carries thirty-four rows and the defined living-world event range reaches `428`, with `310` defined blocks. The Ship That Will Not Dock is candidate `422`, transaction `710034`, route `7134`, and history `9139`. Its state row requires a current produced Air Winter snapshot, coastal geography, a non-damaged naval base, surviving population, and current-generation ownership. The four branches dock under quarantine, anchor and test, tow to neutral water, or seize the manifest. They freeze Food, Recognition, Cohesion, diaspora memory, port legitimacy, quarantine cohesion, and maritime trust before a 35-day result and a 270-day harbour review callback. Passenger movement differs by branch and outcome. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, live partner reservation, and runtime Event Log delivery remain unproven.
+
+## The Skilled List scheduler correction
+
+The reviewed ordinary producer now carries thirty-five rows and the defined living-world event range reaches `435`, with `317` defined blocks. The Skilled List is candidate `429`, transaction `710035`, route `7135`, and history `9140`.
+
+Its country row requires a current produced Air Winter snapshot, surviving state infrastructure, current-generation ownership, campaign-day eligibility, and a deterministic native state target. The four branches disperse the roster, form a specialist guild, bind the list to state service, or recognize a self-governing quarter. They freeze Food, Medicine, Recognition, Cohesion, roster, guild, service, and charter ledgers before a 42-day result and a 240-day review callback.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. Native character installation is also not claimed because the engine surface has not been proven.
