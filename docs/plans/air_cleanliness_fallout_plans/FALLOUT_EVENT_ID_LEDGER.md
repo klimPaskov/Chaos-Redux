@@ -482,3 +482,11 @@ It owns candidate `380`, transaction `710028`, route `7128`, and Event Log histo
 The row selects one native supply-node and railway state using supply node, railway, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break.
 Its four branches license the market, tax stalls, police the exchange, or tolerate barter, each with a human lane, hidden-AI lane, delayed result, civic review callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
 The documented living-world block total is now `268`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Counterfeit Antibiotics count correction
+
+Counterfeit Antibiotics adds seven dormant country-level event blocks at suffixes `387` through `393`.
+It owns candidate `387`, transaction `710029`, route `7129`, and Event Log history `9134`.
+The row selects one deterministic native medical-exposure state and freezes medicine pressure before a 42-day result and a 330-day supplier review callback.
+Its four branches expose a public trial, a quiet purchase, an apothecary guild charter, or a military seizure. Each branch has separate costs, outcome thresholds, state memory, medicine provenance ledgers, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
+The documented living-world block total is now `275`, while the countable Fallout living-world release-floor total remains `0 of 660`.
