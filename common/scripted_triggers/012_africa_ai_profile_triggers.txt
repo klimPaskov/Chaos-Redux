@@ -867,3 +867,351 @@ africa_ai_action_92_has_target = {
 		}
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Bounded controller predicates for the remaining matrix actions
+# ---------------------------------------------------------------------------
+
+# One host-only decision drives the complete matrix. A failed first proof is
+# intentionally admitted here so Action 101 can be selected; the early weight
+# helper suppresses every other family until that recovery contract is closed.
+africa_ai_action_controller_is_active = {
+	is_ai = yes
+	has_global_flag = africa_event_active
+	africa_is_current_host = yes
+	africa_has_open_action_capacity = yes
+	NOT = { has_country_flag = africa_first_proof_active }
+}
+
+africa_ai_has_bounded_country_target = {
+	OR = {
+		any_of_scopes = {
+			array = africa_selected_targets
+			africa_action_target_is_usable = yes
+		}
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_action_target_is_usable = yes
+		}
+		any_of_scopes = {
+			array = africa_selected_country_targets
+			africa_action_target_is_usable = yes
+		}
+	}
+}
+
+africa_ai_protection_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+africa_ai_accession_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+africa_ai_regional_congress_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+africa_ai_integration_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+africa_ai_economy_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+africa_ai_diaspora_family_has_bounded_candidate = {
+	OR = {
+		NOT = { has_country_flag = africa_voluntary_return_registry_open }
+		any_of_scopes = {
+			array = africa_selected_targets
+			has_country_flag = africa_diaspora_return_consent
+		}
+		any_of_scopes = {
+			array = africa_relationship_countries
+			has_country_flag = africa_diaspora_return_consent
+		}
+	}
+}
+
+africa_ai_rival_family_has_bounded_candidate = {
+	OR = {
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_action_target_is_usable = yes
+		}
+		any_of_scopes = {
+			array = africa_selected_targets
+			africa_action_target_is_usable = yes
+		}
+	}
+}
+
+africa_ai_high_chaos_family_has_bounded_candidate = {
+	has_global_flag = africa_evolution_iii_logged
+	OR = {
+		africa_is_current_host = yes
+		any_of_scopes = {
+			array = africa_selected_targets
+			africa_action_target_is_usable = yes
+		}
+		any_of_scopes = {
+			array = africa_relationship_countries
+			africa_action_target_is_usable = yes
+		}
+	}
+}
+
+africa_ai_constitutional_crisis_family_has_bounded_candidate = {
+	OR = {
+		has_country_flag = africa_federal_deadlock_active
+		has_country_flag = africa_first_continental_election_pending
+		any_of_scopes = {
+			array = africa_selected_targets
+			OR = {
+				has_country_flag = africa_succession_dispute_active
+				has_country_flag = africa_plan_balance_crisis_active
+				has_country_flag = africa_commander_loyalty_review_target
+				has_country_flag = africa_confederal_emergency_ratification_target
+				has_country_flag = africa_covenant_obligation_target
+			}
+		}
+	}
+}
+
+africa_ai_post_unification_family_has_bounded_candidate = {
+	has_global_flag = africa_is_one
+	has_country_flag = africa_postwar_constitutional_review_pending
+}
+
+africa_ai_host_opening_family_has_bounded_candidate = {
+	africa_first_proof_recovery_host_can_select_action = yes
+}
+
+africa_ai_regional_restorations_family_has_bounded_candidate = {
+	africa_ai_has_bounded_country_target = yes
+}
+
+# COUNTRY scope on a bounded candidate array entry. The shared action validator
+# remains authoritative; these gates keep the controller from selecting a
+# clearly incompatible target for consent, crisis, rival, chaos, or recovery
+# concepts and never invent a substitute scope.
+africa_ai_selected_target_is_candidate_for_action = {
+	africa_action_target_is_usable = yes
+	OR = {
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.secure_border_sanctuary } }
+			is_neighbor_of = ROOT
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+					check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+					check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+					check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+					check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+				}
+				has_country_flag = africa_voluntary_return_registry_open
+			}
+			has_country_flag = africa_diaspora_return_consent
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+			ROOT = { has_country_flag = africa_voluntary_return_registry_open }
+			has_country_flag = africa_diaspora_emergency_active
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_federal_charter }
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_crown_charter }
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_peoples_charter }
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_security_charter }
+				}
+			}
+			OR = { africa_relationship_is_associate = yes africa_relationship_is_chartered = yes }
+			check_variable = { var = africa_member_confidence value = constant:africa_action_threshold.federal_confidence compare = greater_than_or_equals }
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.build_administrative_bridge }
+					check_variable = { africa_requested_action_id = constant:africa_action.connect_member_capitals }
+					check_variable = { africa_requested_action_id = constant:africa_action.standardise_customs }
+					check_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services }
+					check_variable = { africa_requested_action_id = constant:africa_action.harmonise_officer_corps }
+					check_variable = { africa_requested_action_id = constant:africa_action.negotiate_autonomy_statute }
+					check_variable = { africa_requested_action_id = constant:africa_action.launch_local_settlement_programme }
+				}
+			}
+			OR = { africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_occupied_settlement = yes }
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_defence_charter }
+					check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor }
+					check_variable = { africa_requested_action_id = constant:africa_action.deploy_volunteers }
+				}
+			}
+			OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes }
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_sacred_ecological_compact }
+					check_variable = { africa_requested_action_id = constant:africa_action.bargain_with_the_green }
+					check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
+				}
+			}
+			has_country_flag = africa_registered_high_chaos_actor
+			OR = { has_country_flag = africa_ecological_bargain_site has_country_flag = africa_registered_high_chaos_actor }
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease }
+					check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure }
+					check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen }
+				}
+			}
+			OR = { has_country_flag = africa_disease_crisis_active has_country_flag = africa_disease_research_site }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen } }
+			ROOT = { has_country_flag = africa_fictional_pathogen_review_authorized }
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.monitor_rival_bloc }
+					check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration }
+					check_variable = { africa_requested_action_id = constant:africa_action.support_rival_member_defection }
+					check_variable = { africa_requested_action_id = constant:africa_action.counter_foreign_patronage }
+					check_variable = { africa_requested_action_id = constant:africa_action.prepare_member_exit_terms }
+					check_variable = { africa_requested_action_id = constant:africa_action.suspend_disloyal_member }
+					check_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote }
+					check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war }
+				}
+			}
+			OR = { africa_relationship_is_rival_bloc = yes africa_relationship_is_leaving = yes africa_relationship_is_resistant = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.counter_foreign_patronage } }
+			has_country_flag = africa_foreign_patronage_active
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.prepare_member_exit_terms } }
+			africa_relationship_is_leaving = yes
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war } }
+			has_war = yes
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.recognise_provisional_government } }
+			OR = { is_subject = yes has_country_flag = africa_contact_liberation_priority has_country_flag = africa_liberation_movement_candidate }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.evacuate_leaders_archives } }
+			surrender_progress > constant:africa_action_threshold.near_capitulation
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.break_blockade }
+					check_variable = { africa_requested_action_id = constant:africa_action.admit_member_in_emergency }
+				}
+			}
+			has_war = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.arbitrate_continental_succession }
+					check_variable = { africa_requested_action_id = constant:africa_action.balance_food_and_industrial_plan }
+					check_variable = { africa_requested_action_id = constant:africa_action.review_victorious_commander_loyalty }
+					check_variable = { africa_requested_action_id = constant:africa_action.ratify_confederal_emergency_action }
+					check_variable = { africa_requested_action_id = constant:africa_action.review_covenant_obligation }
+				}
+			}
+			OR = {
+				has_country_flag = africa_succession_dispute_active
+				has_country_flag = africa_plan_balance_crisis_active
+				has_country_flag = africa_commander_loyalty_review_target
+				has_country_flag = africa_confederal_emergency_ratification_target
+				has_country_flag = africa_covenant_obligation_target
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof } }
+			has_country_flag = africa_first_proof_recovery_target_eligible
+			has_country_flag = africa_first_proof_same_overlay_recovery_target
+			NOT = { has_country_flag = africa_original_failed_proof_target }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities } }
+			has_country_flag = africa_restored_polity_member
+			OR = { africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.promote_priority_member_package } }
+			has_country_flag = africa_selected_roster_target
+		}
+		# Actions without a narrower consent/crisis/route gate use the bounded
+		# roster and are checked again by africa_validate_action_specific_requirements.
+		AND = {
+			ROOT = {
+				NOT = {
+					OR = {
+						check_variable = { africa_requested_action_id = constant:africa_action.secure_border_sanctuary }
+						check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+						check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+						check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+						check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+						check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+						check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_federal_charter }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_crown_charter }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_peoples_charter }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_security_charter }
+						check_variable = { africa_requested_action_id = constant:africa_action.build_administrative_bridge }
+						check_variable = { africa_requested_action_id = constant:africa_action.connect_member_capitals }
+						check_variable = { africa_requested_action_id = constant:africa_action.standardise_customs }
+						check_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services }
+						check_variable = { africa_requested_action_id = constant:africa_action.harmonise_officer_corps }
+						check_variable = { africa_requested_action_id = constant:africa_action.negotiate_autonomy_statute }
+						check_variable = { africa_requested_action_id = constant:africa_action.launch_local_settlement_programme }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_sacred_ecological_compact }
+						check_variable = { africa_requested_action_id = constant:africa_action.bargain_with_the_green }
+						check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
+						check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease }
+						check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure }
+						check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen }
+						check_variable = { africa_requested_action_id = constant:africa_action.monitor_rival_bloc }
+						check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration }
+						check_variable = { africa_requested_action_id = constant:africa_action.support_rival_member_defection }
+						check_variable = { africa_requested_action_id = constant:africa_action.counter_foreign_patronage }
+						check_variable = { africa_requested_action_id = constant:africa_action.prepare_member_exit_terms }
+						check_variable = { africa_requested_action_id = constant:africa_action.suspend_disloyal_member }
+						check_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote }
+						check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war }
+						check_variable = { africa_requested_action_id = constant:africa_action.recognise_provisional_government }
+						check_variable = { africa_requested_action_id = constant:africa_action.evacuate_leaders_archives }
+						check_variable = { africa_requested_action_id = constant:africa_action.break_blockade }
+						check_variable = { africa_requested_action_id = constant:africa_action.admit_member_in_emergency }
+						check_variable = { africa_requested_action_id = constant:africa_action.arbitrate_continental_succession }
+						check_variable = { africa_requested_action_id = constant:africa_action.balance_food_and_industrial_plan }
+						check_variable = { africa_requested_action_id = constant:africa_action.review_victorious_commander_loyalty }
+						check_variable = { africa_requested_action_id = constant:africa_action.ratify_confederal_emergency_action }
+						check_variable = { africa_requested_action_id = constant:africa_action.review_covenant_obligation }
+						check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof }
+						check_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities }
+						check_variable = { africa_requested_action_id = constant:africa_action.promote_priority_member_package }
+					}
+				}
+			}
+		}
+	}
+}
