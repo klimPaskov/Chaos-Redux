@@ -20,6 +20,7 @@ No advisor, dossier, `_small`, high-command, theorist, operative, female, navy, 
 
 The late-1944 archival photograph establishes identity but does not establish a 1936 uniform or a historical RHI office; player-facing text describes earlier Rhenish regimental service and later western-front command experience without claiming that the fictional office existed historically.
 
-The current runtime DDS remains stale and is not authorized by this transfer record.
+The independently approved `156x210` candidate is wired to the stable runtime DDS, and the runtime DDS is byte-identical to the approved final DDS and pixel-identical to the approved PNG.
 
-IW-008 remains outside runtime content attestation until an independent reviewer passes this transfer and the parent subsequently converts and wires the already approved `156x210` candidate, followed by a full country-package re-audit.
+The independent transfer re-audit and full post-wiring IW-008 country-package audit pass.
+The shared content-attestation trigger admits IW-008 only through its exact package ID; every live tag, host-survival, anchor, reservation, Event 5 collision, chaos-band, force, and transaction proof remains mandatory.
