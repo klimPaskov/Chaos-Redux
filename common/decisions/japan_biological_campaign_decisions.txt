@@ -1,0 +1,146 @@
+# ============================================================================
+# CHAOS REDUX - JAPAN-CHINA BIOLOGICAL CAMPAIGN DECISIONS
+# ============================================================================
+# Overview:
+# - Adds two exact-state historical campaign actions for Japan's explicit
+#   offensive biological route in China.
+# - Strategic and battlefield biological delivery remain native raid systems.
+# - Each action consumes real agent payload and enters the shared lifecycle.
+# ============================================================================
+
+japan_biological_campaign_category = {
+	japan_bio_campaign_contaminate_supply_network = {
+		icon = GFX_decision_bio_sabotage_anthrax
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		ai_hint_pp_cost = constant:japan_bio_campaign_cost.anthrax_political_power
+		is_good = no
+		allowed = { original_tag = JAP }
+		visible = {
+			japan_bio_campaign_route_is_open = yes
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		target_root_trigger = {
+			japan_bio_campaign_route_is_open = yes
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = japan_bio_campaign_anthrax_target_tt
+				hidden_trigger = { FROM = { japan_bio_campaign_anthrax_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = japan_bio_campaign_anthrax_requirements_tt
+				hidden_trigger = {
+					japan_bio_campaign_actor_can_operate = yes
+					japan_bio_campaign_actor_has_anthrax_cost = yes
+					FROM = { japan_bio_campaign_anthrax_target_state = yes }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			japan_bio_campaign_actor_has_anthrax_cost = yes
+		}
+		custom_cost_text = japan_bio_campaign_anthrax_cost
+		complete_effect = {
+			custom_effect_tooltip = japan_bio_campaign_anthrax_effect_tt
+			hidden_effect = {
+				japan_bio_campaign_prepare_anthrax_parameters = yes
+				japan_bio_campaign_prepare_doctrine_parameters = yes
+				japan_bio_campaign_begin_release = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:japan_bio_campaign_ai.anthrax_base
+			modifier = { factor = constant:japan_bio_campaign_ai.disabled NOT = { FROM = { japan_bio_campaign_anthrax_target_state = yes } } }
+			modifier = {
+				factor = constant:japan_bio_campaign_ai.anthrax_logistics_factor
+				FROM = {
+					OR = {
+						supply_node > constant:japan_bio_campaign_target.building_floor
+						naval_base > constant:japan_bio_campaign_target.building_floor
+					}
+				}
+			}
+			modifier = { factor = constant:japan_bio_campaign_ai.theater_doctrine_factor japan_bio_campaign_uses_theater_doctrine_profile = yes }
+			modifier = { factor = constant:japan_bio_campaign_ai.terminal_doctrine_factor japan_bio_campaign_uses_terminal_doctrine_profile = yes }
+			modifier = { factor = constant:japan_bio_campaign_ai.repeated_target_factor FROM = { has_state_flag = bio_japan_campaign_target_history } }
+			modifier = {
+				factor = constant:japan_bio_campaign_ai.sanction_vulnerability_factor
+				check_variable = { var = condemnation_total value = constant:japan_bio_campaign_ai.high_condemnation_threshold compare = greater_than_or_equals }
+				check_variable = { var = condemnation_import_vulnerability value = constant:japan_bio_campaign_ai.high_import_vulnerability_threshold compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	japan_bio_campaign_disperse_plague_vectors = {
+		icon = GFX_decision_bio_sabotage_plague
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		ai_hint_pp_cost = constant:japan_bio_campaign_cost.plague_political_power
+		is_good = no
+		allowed = { original_tag = JAP }
+		visible = {
+			japan_bio_campaign_route_is_open = yes
+			is_special_project_completed = sp:plague_bomb
+		}
+		target_root_trigger = {
+			japan_bio_campaign_route_is_open = yes
+			is_special_project_completed = sp:plague_bomb
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = japan_bio_campaign_plague_target_tt
+				hidden_trigger = { FROM = { japan_bio_campaign_plague_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = japan_bio_campaign_plague_requirements_tt
+				hidden_trigger = {
+					japan_bio_campaign_actor_can_operate = yes
+					japan_bio_campaign_actor_has_plague_cost = yes
+					FROM = { japan_bio_campaign_plague_target_state = yes }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			japan_bio_campaign_actor_has_plague_cost = yes
+		}
+		custom_cost_text = japan_bio_campaign_plague_cost
+		complete_effect = {
+			custom_effect_tooltip = japan_bio_campaign_plague_effect_tt
+			hidden_effect = {
+				japan_bio_campaign_prepare_plague_parameters = yes
+				japan_bio_campaign_prepare_doctrine_parameters = yes
+				japan_bio_campaign_begin_release = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:japan_bio_campaign_ai.plague_base
+			modifier = { factor = constant:japan_bio_campaign_ai.disabled NOT = { FROM = { japan_bio_campaign_plague_target_state = yes } } }
+			modifier = {
+				factor = constant:japan_bio_campaign_ai.plague_urban_factor
+				FROM = {
+					OR = {
+						is_capital = yes
+						has_state_category = large_city
+						has_state_category = metropolis
+						has_state_category = megalopolis
+						state_population_k > constant:japan_bio_campaign_target.plague_population_threshold_k
+					}
+				}
+			}
+			modifier = { factor = constant:japan_bio_campaign_ai.theater_doctrine_factor japan_bio_campaign_uses_theater_doctrine_profile = yes }
+			modifier = { factor = constant:japan_bio_campaign_ai.terminal_doctrine_factor japan_bio_campaign_uses_terminal_doctrine_profile = yes }
+			modifier = { factor = constant:japan_bio_campaign_ai.repeated_target_factor FROM = { has_state_flag = bio_japan_campaign_target_history } }
+			modifier = {
+				factor = constant:japan_bio_campaign_ai.sanction_vulnerability_factor
+				check_variable = { var = condemnation_total value = constant:japan_bio_campaign_ai.high_condemnation_threshold compare = greater_than_or_equals }
+				check_variable = { var = condemnation_import_vulnerability value = constant:japan_bio_campaign_ai.high_import_vulnerability_threshold compare = greater_than_or_equals }
+			}
+		}
+	}
+}

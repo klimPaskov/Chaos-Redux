@@ -279,8 +279,18 @@ It remains dormant and uncounted while the scheduler activation and engine-sensi
 ## The Working Machine correction
 
 The Working Machine is the twenty-fourth reviewed ordinary candidate.
-It uses candidate `352`, transaction `710024`, route `7124`, event tokens `352` through `358`, and history `9129`.
+It uses country candidate id `352`, transaction key `710024`, route `7124`, and event tokens `352` through `358`.
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.
+
+## The Vault of Voices correction
+
+The Vault of Voices is the twenty-fifth reviewed ordinary candidate.
+Its producer selects one native archive, radio, or data-center state with a radar, infrastructure, and industrial score and uses the lowest native state id for exact ties.
+Candidate `359` uses transaction `710025`, route `7125`, and history `9130`.
+The row carries four authored policy branches, hidden AI parity, a delayed result, callback, state and country memory, Event Log payloads, dedicated art, and cleanup.
+The producer clears its candidate variables after row append and never sets a scheduler activation flag.
+The Vault of Voices remains dormant, simplified only by the unproven scheduler caller and engine-sensitive delivery surfaces, and contributes zero countable blocks.
+Its bounded `hoi4.event_inspect` lint returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23077 issues against a fixed ceiling of 20000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.

@@ -575,3 +575,16 @@ Six dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedic
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `240`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned, so its exact engine-sensitive reachability remains unproven.
+
+## The Vault of Voices archive and broadcast tranche
+
+The Vault of Voices is implemented as a dormant country-level chain at `chaosx.fallout.359` through `.365`.
+It uses candidate `359`, transaction key `710025`, route `7125`, and Event Log history `9130`.
+The gate follows the closed Working Machine memory and selects one deterministic native archive, radio, or data-center state using radar, infrastructure, and industrial capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
+Four authored policies preserve unedited recordings, curate a civic archive, weaponize the broadcasts, or trade verified copies.
+The result updates resources, Stability, War Support, reclamation, local supply, exposure, branch-specific state memory, diplomacy-facing modifiers, and Deaths-backed failure, then schedules a 270-day callback.
+Human and hidden-AI lanes share the same delayed transaction, Event Log history, dedicated generated report art, and authenticated cleanup wrappers.
+Seven dedicated event blocks, six timed modifiers, fifteen Event Log payloads, localisation, a manifest, and a GFX handoff are wired.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `247`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.359` used helper expansion disabled, depth one, twenty nodes, and forty edges. It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23,077 issues against a fixed ceiling of 20,000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`. The exact result is recorded in `FALLOUT_VAULT_OF_VOICES_CHAIN_PROOF.md`, so its delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.

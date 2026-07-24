@@ -1,0 +1,182 @@
+# ============================================================================
+# CHAOS REDUX - JAPAN-CHINA BIOLOGICAL CAMPAIGN SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Keeps every helper private to Japan's historically specific China campaign.
+# - Validates the explicit offensive program route, real agent stock, shared
+#   CBRN authorization, exact Chinese enemy state, and occupation-linked reach.
+# - No helper infers a state, substitutes another target, or creates a fallback.
+# ============================================================================
+
+japan_bio_campaign_actor_cooldown_is_ready = {
+	OR = {
+		NOT = { has_variable = japan_bio_campaign_next_allowed_day }
+		check_variable = {
+			var = japan_bio_campaign_next_allowed_day
+			value = global.num_days
+			compare = less_than_or_equals
+		}
+	}
+}
+
+japan_bio_campaign_route_is_open = {
+	exists = yes
+	original_tag = JAP
+	NOT = { has_capitulated = yes }
+	has_war_with_chinese_country = yes
+	has_country_flag = japan_pingfang_route_unlocked
+	has_country_flag = japan_ishii_program_active
+	has_country_flag = japan_ishii_authority_route
+	NOT = { has_country_flag = japan_biowarfare_containment_route }
+	NOT = { has_country_flag = japan_biowarfare_reform_route }
+	NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	cbrn_policy_allows_strategic_use = yes
+	has_variable = cbrn_biological_security
+	has_variable = cbrn_attribution_control
+}
+
+japan_bio_campaign_actor_can_operate = {
+	japan_bio_campaign_route_is_open = yes
+	japan_bio_campaign_actor_cooldown_is_ready = yes
+}
+
+japan_bio_campaign_actor_has_anthrax_cost = {
+	is_special_project_completed = sp:anthrax_bomb
+	has_political_power > constant:japan_bio_campaign_cost.anthrax_political_power_floor
+	has_equipment = { anthrax_bomb_1 > constant:japan_bio_campaign_cost.anthrax_payload_floor }
+	has_equipment = { support_equipment > constant:japan_bio_campaign_cost.anthrax_support_floor }
+	command_power > constant:japan_bio_campaign_cost.anthrax_command_power_floor
+}
+
+japan_bio_campaign_actor_has_plague_cost = {
+	is_special_project_completed = sp:plague_bomb
+	has_political_power > constant:japan_bio_campaign_cost.plague_political_power_floor
+	has_equipment = { plague_bomb_1 > constant:japan_bio_campaign_cost.plague_payload_floor }
+	has_equipment = { support_equipment > constant:japan_bio_campaign_cost.plague_support_floor }
+	command_power > constant:japan_bio_campaign_cost.plague_command_power_floor
+}
+
+japan_bio_campaign_selected_agent_cost_is_available = {
+	OR = {
+		AND = {
+			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			japan_bio_campaign_actor_has_anthrax_cost = yes
+		}
+		AND = {
+			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			japan_bio_campaign_actor_has_plague_cost = yes
+		}
+	}
+}
+
+japan_bio_campaign_state_cooldown_is_ready = {
+	OR = {
+		NOT = { has_variable = bio_japan_campaign_next_allowed_day }
+		check_variable = {
+			var = bio_japan_campaign_next_allowed_day
+			value = global.num_days
+			compare = less_than_or_equals
+		}
+	}
+}
+
+japan_bio_campaign_state_is_chinese_homeland = {
+	OR = {
+		is_core_of = CHI
+		is_core_of = PRC
+		is_core_of = SHX
+		is_core_of = GXC
+		is_core_of = YUN
+		is_core_of = XSM
+		is_core_of = SIK
+	}
+}
+
+# State scope with the acting country as ROOT. The target must remain under an
+# actual Chinese belligerent's control and cannot belong to Japan's alliance.
+japan_bio_campaign_state_relationship_is_valid = {
+	CONTROLLER = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject_of = ROOT }
+		ROOT = {
+			has_war_with = PREV
+			NOT = { is_in_faction_with = PREV }
+			NOT = { is_subject_of = PREV }
+		}
+	}
+}
+
+# State scope with the acting country as ROOT. A neighboring Japanese or
+# Japanese-subject occupation zone supplies the verified theater link.
+japan_bio_campaign_state_has_occupation_link = {
+	any_neighbor_state = {
+		CONTROLLER = {
+			OR = {
+				tag = ROOT
+				is_subject_of = ROOT
+			}
+		}
+	}
+}
+
+japan_bio_campaign_common_target_state = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	impassable = no
+	japan_bio_campaign_state_is_chinese_homeland = yes
+	japan_bio_campaign_state_relationship_is_valid = yes
+	japan_bio_campaign_state_has_occupation_link = yes
+	japan_bio_campaign_state_cooldown_is_ready = yes
+	state_population_k > constant:japan_bio_campaign_target.minimum_population_k
+}
+
+japan_bio_campaign_anthrax_target_state = {
+	japan_bio_campaign_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+	OR = {
+		supply_node > constant:japan_bio_campaign_target.building_floor
+		naval_base > constant:japan_bio_campaign_target.building_floor
+		industrial_complex > constant:japan_bio_campaign_target.anthrax_industry_threshold
+		arms_factory > constant:japan_bio_campaign_target.anthrax_industry_threshold
+		infrastructure > constant:japan_bio_campaign_target.anthrax_infrastructure_threshold
+		any_state_division = { always = yes }
+	}
+}
+
+japan_bio_campaign_plague_target_state = {
+	japan_bio_campaign_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_plague_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:japan_bio_campaign_target.plague_population_threshold_k
+		naval_base > constant:japan_bio_campaign_target.building_floor
+	}
+}
+
+japan_bio_campaign_selected_agent_target_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			japan_bio_campaign_anthrax_target_state = yes
+		}
+		AND = {
+			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			japan_bio_campaign_plague_target_state = yes
+		}
+	}
+}
+
+japan_bio_campaign_uses_theater_doctrine_profile = {
+	has_idea = cbrn_theater_contamination_doctrine_spirit
+	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+}
+
+japan_bio_campaign_uses_terminal_doctrine_profile = {
+	has_idea = cbrn_terminal_hazard_doctrine_spirit
+}
